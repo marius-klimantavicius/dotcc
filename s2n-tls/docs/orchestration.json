@@ -20,8 +20,8 @@
     },
     {
       "package": "api-qualification",
-      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-api-r5-local-validation-recovery-20261024",
-      "backing_thread": "thread:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-api-r5-local-validation-recovery-20261024",
+      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-api-r6-receipt-process-coordination-20261024",
+      "backing_thread": "thread:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-api-r6-receipt-process-coordination-20261024",
       "verified_model": "gpt-6.1-sol",
       "verified_reasoningEffort": "xhigh"
     }
@@ -65,6 +65,14 @@
       "verified_model": "gpt-6.1-sol",
       "verified_reasoningEffort": "xhigh",
       "terminal_status": "failed-content-flag; pending later turns cancelled; independent test controllers preserved"
+    },
+    {
+      "package": "api-qualification",
+      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-api-r5-local-validation-recovery-20261024",
+      "backing_thread": "thread:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-api-r5-local-validation-recovery-20261024",
+      "verified_model": "gpt-6.1-sol",
+      "verified_reasoningEffort": "xhigh",
+      "terminal_status": "failed-content-flag; later turns cancelled; artifacts preserved; sole r6 receipt/process coordinator replaces ownership"
     }
   ],
   "commits": [
@@ -135,12 +143,12 @@
     "final48_provider": "artifacts/provider/final48-asn1-211648/receipt.json",
     "post_asn1_api": "artifacts/managed-contract/api-r4-final-provider-progress.json",
     "post_asn1_abi": "artifacts/campaign/20261024-001718-6f72b210/receipt.json",
-    "provider_controller_pid": 1606362,
+    "provider_controller_pid": null,
     "final_provider_current_c_counts": {
-      "passed": 18,
+      "passed": 26,
       "failed": 0,
-      "unrun": 239,
-      "scope": "Captured f80 RSA+stdio all4; private EC candidate not applied."
+      "unrun": 231,
+      "scope": "Paused naturally after batch002, old f80 epoch; pending EC/source freeze."
     },
     "final_provider_cli": "build/managed-upstream/python-endpoints-final-rsa-stdio.json",
     "final_provider_cli_audit": "artifacts/managed-contract/final-asn1-cli-eight-supervisor-audit.json",
@@ -161,7 +169,7 @@
     "ec_private_baseline": "artifacts/provider/ec-public-contract-private/20261023T233124Z-f06a1d30/receipt.json",
     "ec_api_reader_plan": "artifacts/managed-contract/api-r4-pre-ec-reader-plan.json",
     "final_cross_raw_jit": "artifacts/managed-contract/final-rsa-stdio/cross-full-raw-jit.json",
-    "translated_python_controller_pid": 1648399,
+    "translated_python_controller_pid": null,
     "api_recovery_observation": {
       "absent_pids": [
         1593694,
@@ -178,9 +186,12 @@
       "python_passed": 1,
       "python_running": 1,
       "python_unrun": 70,
-      "cause": "Undetermined; no parent wait status. Original partial status bytes retained, separate truthful loss receipt."
+      "cause": "Undetermined; no parent wait status. Original partial status bytes retained, separate truthful loss receipt.",
+      "orphan_latest": "1648572 absent in23:52:36Z audit, no signal or wait status; no completion inferred"
     },
-    "api_recovery_receipt": "artifacts/managed-contract/api-r5-recovery-20261023T2341Z/receipt.json"
+    "api_recovery_receipt": "artifacts/managed-contract/api-r5-recovery-20261023T2341Z/receipt.json",
+    "ec_private_permanent_review": "artifacts/managed-contract/ec-private-permanent-supervisor-review.json",
+    "cbc_fixture_review": "artifacts/managed-contract/deterministic-cbc-fixture-supervisor-review.json"
   },
   "discovery_correction": {
     "original": "artifacts/managed/full-owning-matrix/report.json",
@@ -191,7 +202,7 @@
     "interop_revalidation": "artifacts/managed-contract/discovery-interop-observation-audit.json",
     "lifecycle_rerun": "artifacts/managed/lifecycle-corrected-raw-jit/report.json"
   },
-  "orchestration_recovery": "API r4 continuation failed automated content flag; task_cancel held later turns, sole r5 gpt-6.1-sol/xhigh replacement retains unchanged existing controllers and file ownership.",
+  "orchestration_recovery": "API r4/r5 continuation content flags retained. Sole r6 gpt-6.1-sol/xhigh owns process/receipt integration, supervisor reviews prepared fixture; provider r2 remains active. No duplicate controllers.",
   "passed_scoped_gates": {
     "P0": "174upstream+1adapter/36suites/14SSLv3/78pairs",
     "P2": "223542raw+processed175/183bindings",
