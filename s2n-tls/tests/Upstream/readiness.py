@@ -15,20 +15,30 @@ MAX_CONTROL_MARKER_BYTES = 1024 * 1024
 def control_match(communicator, marker, kind, report):
     """Search the original output chunks without joining different channels."""
     if isinstance(marker, bytes):
-        expected = marker
+        searches = [('raw-bytes', marker)]
+        marker_size = len(marker)
     elif isinstance(marker, str):
+        # The original send/close predicates search str(data), not decoded
+        # text. In particular record_padding supplies repr(payload)[2:-1].
+        # Preserve that comparison without interpreting plaintext escapes.
+        searches = [('original-bytes-repr', marker)]
+        marker_size = len(marker.encode('utf-8'))
         try:
             literal = ast.literal_eval(marker)
         except (SyntaxError, ValueError):
             literal = None
-        expected = literal if isinstance(literal, bytes) else marker.encode('utf-8')
+        # An explicit canonical bytes repr also identifies the whole payload
+        # when surrounding process output shares its pipe read. Do not apply
+        # this conversion to a stripped repr or an arbitrary text marker.
+        if isinstance(literal, bytes) and repr(literal) == marker:
+            searches.append(('explicit-bytes-repr', literal))
     else:
         raise RuntimeError('Original control marker must be bytes or text')
-    if not expected or len(expected) > MAX_CONTROL_MARKER_BYTES:
+    if not marker_size or marker_size > MAX_CONTROL_MARKER_BYTES:
         raise RuntimeError('Original control marker exceeds the bounded transport adapter')
     for stream, chunks in communicator._fileobj2output.items():
         tail, size = [], 0
-        required = (len(chunks[-1]) if chunks else 0) + len(expected) - 1
+        required = (len(chunks[-1]) if chunks else 0) + marker_size - 1
         for fragment in reversed(chunks):
             if len(fragment) > MAX_FRAGMENT_BYTES:
                 raise RuntimeError('Original pipe fragment exceeds os.read limit')
@@ -37,14 +47,26 @@ def control_match(communicator, marker, kind, report):
             if size >= required:
                 break
         accumulated = b''.join(reversed(tail))[-required:] if required else b''
-        offset = accumulated.find(expected)
-        if offset >= 0:
-            report['control_markers'].append({'kind': kind, 'name': communicator.name,
+        for domain, expected in searches:
+            searched = repr(accumulated) if domain == 'original-bytes-repr' else accumulated
+            offset = searched.find(expected)
+            if offset < 0:
+                continue
+            observation = {'kind': kind, 'name': communicator.name,
                 'nodeid': os.environ.get('PYTEST_CURRENT_TEST'), 'command': communicator.proc.args,
                 'stream': communicator.get_fd_name(communicator.proc, stream),
-                'marker_hex': expected.hex(), 'matched_tail_hex': accumulated[max(0, offset - 64):offset + len(expected) + 64].hex(),
+                'matching_domain': domain,
+                'marker_hex': expected.encode('utf-8').hex() if isinstance(expected, str) else expected.hex(),
                 'fragment_lengths': [len(fragment) for fragment in reversed(tail)],
-                'match_offset': offset, 'spanning_fragments': not any(expected in fragment for fragment in tail)})
+                'match_offset': offset, 'spanning_fragments': not any(
+                    expected in (repr(fragment) if domain == 'original-bytes-repr' else fragment) for fragment in tail)}
+            if domain == 'original-bytes-repr':
+                observation.update(marker_text=expected,
+                    matched_repr_text=searched[max(0, offset - 64):offset + len(expected) + 64],
+                    searched_raw_tail_sha256=hashlib.sha256(accumulated).hexdigest())
+            else:
+                observation['matched_tail_hex'] = accumulated[max(0, offset - 64):offset + len(expected) + 64].hex()
+            report['control_markers'].append(observation)
             return True
     return False
 
@@ -101,7 +123,8 @@ def install(report):
     report['control_marker_adapter'] = {'original_method_sha256': hashlib.sha256(source.encode()).hexdigest(),
         'replaced_comparisons': transform.controls, 'max_marker_bytes': MAX_CONTROL_MARKER_BYTES,
         'max_search_tail_bytes': MAX_CONTROL_MARKER_BYTES + MAX_FRAGMENT_BYTES,
-        'scope': 'Original close/kill/send marker bytes across original same-channel chunks only; original assertions/timeouts unchanged'}
+        'scope': 'Original close/kill/send markers across original same-channel chunks only; original assertions/timeouts unchanged',
+        'text_marker_semantics': 'Original marker in repr(bytes); explicit canonical full bytes repr additionally identifies its payload. No arbitrary text/stripped-repr escape decoding.'}
     report['control_markers'] = []
 
     def match(communicator, stream, fragment):
