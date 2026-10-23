@@ -172,6 +172,8 @@ class Pipeline:
                                                 "retained_prior_attempts": [copy.deepcopy(record)]}
             for batch in self.progress["batches"]:
                 if batch.get("raw_manifest"):
+                    batch["provider_refresh_from_active_cases"] = batch.get("active_cases", batch["cases"])
+                    batch["active_cases"] = list(batch["cases"])
                     batch["provider_refresh_from_raw_manifest"] = batch["raw_manifest"]
                     batch["provider_refresh_attempt"] = batch.get("provider_refresh_attempt", 0) + 1
                     batch["provider_refresh_from_batch_status"] = batch["status"]
@@ -183,13 +185,24 @@ class Pipeline:
         original_path = Path(batch["provider_refresh_from_raw_manifest"])
         original = read(original_path); self.validate_raw_inputs(original)
         combined = dict(original, executables=[], commands=[], evidence_kind="retained-linked-harnesses-for-provider-refresh",
-                        retained_input_manifests=[], provider_source_freeze=self.provider_freeze)
+                        retained_input_manifests=[], retained_case_selections=[], provider_source_freeze=self.provider_freeze)
         seen = set()
         for case in requested:
             if case in self.linked_reuse:
                 path, manifest, entry = self.linked_reuse[case]
+                selection = "explicit retained linked manifest"
             else:
-                path, manifest = original_path, original
+                # An adopted repair can live outside the last batch's raw
+                # manifest, or replace its failed entry. Retain the latest
+                # case's own provenance across every source-freeze refresh.
+                prior = self.progress["cases"][case].get("retained_prior_attempts", [])
+                paths = {Path(record["raw_manifest"]).resolve() for record in prior if record.get("raw_manifest")}
+                if len(paths) > 1:
+                    raise RuntimeError("Ambiguous prior raw provenance for source refresh: " + case)
+                path = next(iter(paths)) if paths else original_path
+                manifest = read(path) if path != original_path else original
+                self.validate_raw_inputs(manifest)
+                selection = "latest retained case provenance" if paths else "retained batch manifest"
                 found = [r for r in manifest["executables"] if (r["case"], r["form"], r["mode"]) == (case, "raw", "jit")]
                 if len(found) != 1:
                     raise RuntimeError("Missing exact retained raw harness for source refresh: " + case)
@@ -207,6 +220,8 @@ class Pipeline:
                     raise RuntimeError("Retained raw source project is missing or ambiguous: " + case)
                 entry["project"] = next(iter(projects))
             combined["executables"].append(entry)
+            combined["retained_case_selections"].append({"case": case, "manifest": str(path),
+                "manifest_sha256": sha(path), "selection": selection})
             if str(path) not in seen:
                 seen.add(str(path)); combined["commands"].extend(manifest["commands"])
                 combined["retained_input_manifests"].append({"path": str(path), "sha256": sha(path)})
