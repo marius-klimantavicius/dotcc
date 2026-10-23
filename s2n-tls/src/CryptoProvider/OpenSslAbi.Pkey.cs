@@ -76,7 +76,17 @@ public static unsafe partial class OpenSslAbi
     public static int EVP_PKEY_sign_init(void* ctx)=>KeyInit(ctx,KeyOperation.Sign);
     public static int EVP_PKEY_verify_init(void* ctx)=>KeyInit(ctx,KeyOperation.Verify);
     public static int EVP_PKEY_encrypt_init(void* ctx)=>KeyInit(ctx,KeyOperation.Encrypt);
-    public static int EVP_PKEY_decrypt_init(void* ctx)=>KeyInit(ctx,KeyOperation.Decrypt);
+    public static int EVP_PKEY_decrypt_init(void* ctx)
+    {
+        try
+        {
+            var state = Get<KeyContext>(ctx);
+            if (state.Type != RsaId) { Error(); return -2; }
+            state.Operation = KeyOperation.Decrypt;
+            return 1;
+        }
+        catch { Error(); return -2; }
+    }
     public static int EVP_PKEY_paramgen_init(void* ctx)=>KeyInit(ctx,KeyOperation.Paramgen);
     public static int EVP_PKEY_keygen_init(void* ctx)=>KeyInit(ctx,KeyOperation.Keygen);
     public static int EVP_PKEY_derive_init(void* ctx)=>KeyInit(ctx,KeyOperation.Derive);
@@ -135,7 +145,51 @@ public static unsafe partial class OpenSslAbi
         catch{Error();return 0;}
     }
     public static int EVP_PKEY_encrypt(void* ctx,byte* output,ulong* length,byte* input,ulong count)=>PkeyCrypt(ctx,output,length,input,count,true);
-    public static int EVP_PKEY_decrypt(void* ctx,byte* output,ulong* length,byte* input,ulong count)=>PkeyCrypt(ctx,output,length,input,count,false);
+    public static int EVP_PKEY_decrypt(void* ctx,byte* output,ulong* length,byte* input,ulong count)
+    {
+        byte[]? result = null;
+        try
+        {
+            KeyContext c;
+            try { c = Get<KeyContext>(ctx); }
+            catch { Error(); return -2; }
+            if (c.Type != RsaId) { Error(); return -2; }
+            if (c.Operation != KeyOperation.Decrypt) { Error(); return -1; }
+            var key = c.Key?.Rsa;
+            if (key == null || length == null) { Error(); return 0; }
+            // EVP's AUTOARGLEN query and capacity checks precede all input reads
+            // and private operations, even for malformed ciphertext.
+            if (output == null) { *length = (ulong)key.Size; return 1; }
+            if (*length < (ulong)key.Size) { Error(); return 0; }
+            try
+            {
+                if (c.Padding == 3) result = key.DecryptRaw(Input(input,count));
+                else if (c.Padding == 1)
+                {
+                    var cipher = Input(input,count);
+                    if (cipher.Length > key.Size) throw new CryptographicException();
+                    byte[] padded = new byte[key.Size];
+                    cipher.CopyTo(padded.AsSpan(key.Size - cipher.Length));
+                    try
+                    {
+                        result = new byte[key.Size];
+                        if (!key.TryDecryptPkcs1(padded,result,out int written)) throw new CryptographicException();
+                        Array.Resize(ref result,written);
+                    }
+                    finally { CryptographicOperations.ZeroMemory(padded); }
+                }
+                else throw new NotSupportedException();
+                result.CopyTo(Output(output,result.Length));
+                *length = (ulong)result.Length;
+                return 1;
+            }
+            // rsa_pmeth preserves negative private-operation returns and leaves
+            // the caller's length and output untouched on failure.
+            catch { Error(); return -1; }
+        }
+        catch { Error(); return 0; }
+        finally { if (result != null) CryptographicOperations.ZeroMemory(result); }
+    }
     private static int PkeyCrypt(void* ctx,byte* output,ulong* length,byte* input,ulong count,bool encrypt)
     {
         byte[]? result=null;

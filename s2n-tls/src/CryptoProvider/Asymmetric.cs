@@ -56,14 +56,42 @@ public sealed class RsaKey : IDisposable
         try { return rsa.TryDecrypt(ciphertext, plaintext, RSAEncryptionPadding.Pkcs1, out written); }
         catch (CryptographicException) { CryptographicOperations.ZeroMemory(plaintext); written = 0; return false; }
     }
+    // Keep BC's blinded private engine, CRT fault check, and output conversion.
+    // Only its generic cipher input restriction differs from native raw RSA.
+    private sealed class NativeRawRsaCore(RsaKeyParameters key) : RsaCoreEngine
+    {
+        public override BigInteger ConvertInput(byte[] input, int offset, int length)
+        {
+            int size = (key.Modulus.BitLength + 7) / 8;
+            if (length < 0 || offset < 0 || length > size || offset > input.Length - length)
+                throw new DataLengthException("Input exceeds native RSA modulus width.");
+            var value = new BigInteger(1, input, offset, length);
+            if (value.CompareTo(key.Modulus) >= 0)
+                throw new DataLengthException("Input is outside the native RSA range [0,n).");
+            return value;
+        }
+    }
     public byte[] DecryptRaw(ReadOnlySpan<byte> ciphertext)
     {
         // s2n_pkey_evp_decrypt performs its own constant-time PKCS1 unpadding.
-        ObjectDisposedException.ThrowIf(disposed,this);
-        if(ciphertext.Length!=Size)throw new CryptographicException("RSA_NO_PADDING input must have modulus width.");
-        var engine=new RsaBlindedEngine();engine.Init(false,DotNetUtilities.GetRsaKeyPair(rsa).Private);
-        byte[] block=ciphertext.ToArray(),raw=engine.ProcessBlock(block,0,block.Length),result=new byte[Size];
-        raw.CopyTo(result,Size-raw.Length);CryptographicOperations.ZeroMemory(raw);return result;
+        ObjectDisposedException.ThrowIf(disposed, this);
+        var privateKey = (RsaKeyParameters)DotNetUtilities.GetRsaKeyPair(rsa).Private;
+        var engine = new RsaBlindedEngine(new NativeRawRsaCore(privateKey));
+        engine.Init(false, privateKey);
+        byte[] block = ciphertext.ToArray();
+        byte[]? raw = null;
+        try
+        {
+            raw = engine.ProcessBlock(block, 0, block.Length);
+            byte[] result = new byte[Size];
+            raw.CopyTo(result, Size - raw.Length);
+            return result;
+        }
+        finally
+        {
+            CryptographicOperations.ZeroMemory(block);
+            if (raw != null) CryptographicOperations.ZeroMemory(raw);
+        }
     }
     private static void CheckDigest(DigestAlgorithm algorithm, ReadOnlySpan<byte> digest)
     {

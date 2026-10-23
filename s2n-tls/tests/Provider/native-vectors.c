@@ -30,9 +30,95 @@ static EVP_PKEY *readkey(const char *path, int public_only)
 static X509 *readcert(const char *path){FILE *f=fopen(path,"rb");if(!f)return NULL;X509 *x=PEM_read_X509(f,NULL,NULL,NULL);fclose(f);return x;}
 static void printtime(ASN1_GENERALIZEDTIME *time){if(!time){printf("-");return;}fwrite(ASN1_STRING_get0_data(time),1,ASN1_STRING_length(time),stdout);}
 static int ignore_crl_time(int ok,X509_STORE_CTX *ctx){int e=X509_STORE_CTX_get_error(ctx);return e>=11&&e<=16&&e!=13&&e!=14?1:ok;}
+static int rsa_contract_width;
+static unsigned long rsa_contract_seed;
+static void rsa_contract_clear(void) { while(ERR_get_error()){} }
+static void rsa_contract_check(EVP_PKEY_CTX *ctx,const char *label,const unsigned char *input,int count,int capacity,int query,int seeded,int null_input)
+{
+    rsa_contract_clear();size_t length=(size_t)capacity;
+    if(seeded){EVP_PKEY_decrypt(NULL,NULL,&length,NULL,0);length=(size_t)capacity;}
+    unsigned char output[4099];memset(output,0xA5,sizeof(output));
+    int result=EVP_PKEY_decrypt(ctx,query?NULL:output+1,&length,null_input?NULL:input,count<0?(size_t)-1:(size_t)count);
+    unsigned long error;int errors=0,preserved=!seeded;
+    while((error=ERR_get_error())!=0){if(errors==0&&seeded)preserved=error==rsa_contract_seed;errors++;}
+    printf("%s|%d|%d|%zu|%d|%d|",label,seeded,result,length,errors>(seeded?1:0),preserved);
+    for(int i=0;i<rsa_contract_width+3;i++)printf("%02X",output[i]);
+    putchar('\n');
+}
+static void rsa_contract_both(EVP_PKEY_CTX *ctx,const char *label,const unsigned char *input,int count,int capacity,int query,int null_input)
+{ rsa_contract_check(ctx,label,input,count,capacity,query,0,null_input);rsa_contract_check(ctx,label,input,count,capacity,query,1,null_input); }
+static void rsa_contract_init(EVP_PKEY_CTX *ctx,const char *label)
+{
+    rsa_contract_clear();int result=EVP_PKEY_decrypt_init(ctx);unsigned long error;int errors=0;
+    while((error=ERR_get_error())!=0){errors++;}
+    printf("init:%s|%d|%d\n",label,result,errors>0);
+}
+static int rsa_private_contract(int argc,char **argv)
+{
+    if(argc!=3||strncmp(OpenSSL_version(0),argv[2],strlen(argv[2])))return 2;
+    FILE *file=fopen(argv[1],"rb");if(!file)return 3;
+    EVP_PKEY *key=PEM_read_PrivateKey(file,NULL,NULL,NULL);fclose(file);if(!key)return 4;
+    RSA *rsa=EVP_PKEY_get1_RSA(key);if(!rsa)return 5;rsa_contract_width=RSA_size(rsa);if(rsa_contract_width>4096)return 6;
+    const BIGNUM *modulus;RSA_get0_key(rsa,&modulus,NULL,NULL);
+    size_t seedlen=0;EVP_PKEY_decrypt(NULL,NULL,&seedlen,NULL,0);rsa_contract_seed=ERR_get_error();if(!rsa_contract_seed||ERR_get_error())return 7;
+    EVP_PKEY_CTX *ctx=EVP_PKEY_CTX_new(key,NULL),*retained=EVP_PKEY_CTX_new(key,NULL);if(!ctx||!retained)return 8;
+    unsigned char zeros[4097]={0};char label[128];
+    rsa_contract_both(ctx,"before-init",zeros,rsa_contract_width,rsa_contract_width,0,0);rsa_contract_both(ctx,"before-init-query",zeros,rsa_contract_width,0,1,0);
+    if(EVP_PKEY_encrypt_init(ctx)!=1)return 9;
+    rsa_contract_both(ctx,"encrypt-operation",zeros,rsa_contract_width,rsa_contract_width,0,0);
+    rsa_contract_init(ctx,"rsa");rsa_contract_init(retained,"retained");EVP_PKEY_free(key);
+    int paddings[]={3,1},lengths[]={0,1,rsa_contract_width-1,rsa_contract_width,rsa_contract_width+1},capacities[]={0,1,rsa_contract_width-1,rsa_contract_width,rsa_contract_width+1};
+    for(int p=0;p<2;p++){
+        int padding=paddings[p];if(EVP_PKEY_CTX_set_rsa_padding(ctx,padding)!=1)return 10;
+        for(int kind=0;kind<5;kind++){
+            BIGNUM *value=BN_dup(modulus);if(kind==0)BN_zero(value);else if(kind==1)BN_one(value);else if(kind==2)BN_sub_word(value,1);else if(kind==4)BN_add_word(value,1);
+            unsigned char full[4096];BN_bn2binpad(value,full,rsa_contract_width);
+            for(int n=0;n<5;n++){
+                int count=lengths[n];unsigned char input[4097]={0};
+                if(count>=rsa_contract_width)memcpy(input+count-rsa_contract_width,full,rsa_contract_width);else if(count)memcpy(input,full+rsa_contract_width-count,count);
+                for(int c=0;c<5;c++){
+                    int capacity=capacities[c];snprintf(label,sizeof(label),"p%d:v%d:n%d:cap%d",padding,kind,count,capacity);
+                    rsa_contract_both(ctx,label,input,count,capacity,0,0);
+                }
+                snprintf(label,sizeof(label),"p%d:v%d:n%d:query",padding,kind,count);rsa_contract_both(ctx,label,input,count,7,1,0);
+            }
+            BN_free(value);
+        }
+        snprintf(label,sizeof(label),"p%d:null-zero",padding);rsa_contract_both(ctx,label,zeros,0,rsa_contract_width,0,1);
+        snprintf(label,sizeof(label),"p%d:query-invalid-input",padding);rsa_contract_both(ctx,label,zeros,-1,0,1,1);
+        snprintf(label,sizeof(label),"p%d:small-invalid-input",padding);rsa_contract_both(ctx,label,zeros,-1,rsa_contract_width-1,0,1);
+    }
+    for(int mutation=-1;mutation<rsa_contract_width;mutation++){
+        unsigned char encoded[4096],cipher[4096];memset(encoded,0x7F,rsa_contract_width);encoded[0]=0;encoded[1]=2;
+        int delimiter=rsa_contract_width-49;encoded[delimiter]=0;for(int i=0;i<48;i++)encoded[delimiter+1+i]=(unsigned char)i;
+        if(mutation>=0){if(mutation>1&&mutation<delimiter)encoded[mutation]=0;else encoded[mutation]++;}
+        if(RSA_public_encrypt(rsa_contract_width,encoded,cipher,rsa,RSA_NO_PADDING)!=rsa_contract_width)return 11;
+        snprintf(label,sizeof(label),"pkcs1-mutation-%d",mutation);rsa_contract_both(ctx,label,cipher,rsa_contract_width,rsa_contract_width,0,0);
+    }
+    int delimiters[]={2,3,8,9,10,11,rsa_contract_width-2,rsa_contract_width-1,rsa_contract_width};
+    for(int d=0;d<9;d++){
+        int delimiter=delimiters[d];unsigned char encoded[4096],cipher[4096];memset(encoded,0x7F,rsa_contract_width);encoded[0]=0;encoded[1]=2;
+        if(delimiter<rsa_contract_width)encoded[delimiter]=0;
+        if(RSA_public_encrypt(rsa_contract_width,encoded,cipher,rsa,RSA_NO_PADDING)!=rsa_contract_width)return 12;
+        snprintf(label,sizeof(label),"pkcs1-delimiter-%d",delimiter);rsa_contract_both(ctx,label,cipher,rsa_contract_width,rsa_contract_width,0,0);
+    }
+    EVP_PKEY_CTX_free(ctx);rsa_contract_both(retained,"other-context-survives",zeros,rsa_contract_width,rsa_contract_width,0,0);
+    if(EVP_PKEY_sign_init(retained)!=1)return 13;
+    rsa_contract_both(retained,"sign-operation",zeros,rsa_contract_width,rsa_contract_width,0,0);
+    rsa_contract_init(retained,"reinit");if(EVP_PKEY_CTX_set_rsa_padding(retained,3)!=1)return 14;
+    rsa_contract_both(retained,"reinit-raw",zeros,rsa_contract_width,rsa_contract_width,0,0);EVP_PKEY_CTX_free(retained);RSA_free(rsa);
+    int types[]={6,408,1034};for(int t=0;t<3;t++){
+        int type=types[t];EVP_PKEY_CTX *missing=EVP_PKEY_CTX_new_id(type,NULL);if(!missing)return 15;
+        snprintf(label,sizeof(label),"id-%d",type);rsa_contract_init(missing,label);rsa_contract_both(missing,label,zeros,rsa_contract_width,rsa_contract_width,0,0);
+        snprintf(label,sizeof(label),"id-query-%d",type);rsa_contract_both(missing,label,zeros,rsa_contract_width,0,1,0);EVP_PKEY_CTX_free(missing);
+    }
+    rsa_contract_init(NULL,"null");rsa_contract_both(NULL,"null-context",zeros,rsa_contract_width,rsa_contract_width,0,0);if(ERR_get_error())return 16;return 0;
+}
+
 int main(int argc, char **argv)
 {
     CHECK(argc >= 2);
+    if (!strcmp(argv[1], "rsa-private-contract")) return rsa_private_contract(argc-1,argv+1);
     if (!strcmp(argv[1], "version")) { puts(OpenSSL_version(OPENSSL_VERSION)); return 0; }
     unsigned char out[131072]; size_t outlen = sizeof(out), n=0, kn=0, ivn=0, an=0;
     if (!strcmp(argv[1], "asn1-utf8")) {
