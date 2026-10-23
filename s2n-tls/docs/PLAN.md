@@ -1,6 +1,6 @@
 # Translate s2n-tls to C# with DotCC
 
-Status: implementation authorized; P0/P1/P2/P3/P5 have passing evidence for their identified scopes, including the final provider application/delivery matrix; P4/P6 remain in progress. Product acceptance remains incomplete.
+Status: implementation authorized; P0/P2 and captured provider/application/delivery snapshots have passing evidence. A newly proved raw-RSA provider defect requires a fresh provider freeze and downstream qualification; P4/P6 remain in progress. Product acceptance remains incomplete.
 Campaign: `s2n-tls/`. Updated: 2026-10-24.
 
 Final-provider main1076, delivery12, native238 and recorded warn/off reproduction
@@ -8,8 +8,11 @@ gates pass for their identified snapshots. Required original certificate
 assertions exposed a production ASN.1 string-conversion defect. Repair5f0b8ff3d,
 48 provider groups, ABI all4 and unchanged certificate488 assertions per variant
 now pass. All18 native Python families qualify22,186 applicable original cases.
-Full final-provider original C/Python qualification and integrated acceptance
-remain required.
+Raw private RSA boundary inputs subsequently exposed a second production defect.
+A narrow input conversion override retaining BC blinding and CRT checks passes
+1,177 native rows in each private JIT/AOT run; production is held until the
+remaining source-owning batch drains. Full repaired-provider original C/Python
+qualification and integrated acceptance remain required.
 
 This plan adopts [translation baseline v4](../../docs/plans/translation-baseline.md)
 and the [shared campaign framework](../../docs/campaigns.md). The user requested

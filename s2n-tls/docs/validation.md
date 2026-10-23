@@ -152,3 +152,41 @@ retained files and exact family/count coverage. Nine impossible-HRR parameter
 combinations remain explicitly inapplicable with separately executed nine
 no-HRR controls; they are never added to original assertion counts. Final
 translated18-family execution in each of the four variants remains in progress.
+
+## Raw RSA finding after the0158 snapshot
+
+Private native differential checks confirm that the delivered raw private RSA
+path rejects integer0,1,n−1 that native OpenSSL accepts. The exact negative native
+return for out-of-range n also differs. Evidence is
+`artifacts/provider/rsa-private/20261023T221932Z-efde53a5/production-private-edges.json`.
+Production is held unchanged while the vetted BC blinded engine is retained
+behind a narrow native-range input adapter. Passing0158 matrix/ABI/provider
+receipts stay tied to their captured bytes; a changed provider requires fresh
+qualification. Original raw/JIT cross-compatibility also has5 ticket-out process
+failures under independent diagnosis; no common cause is claimed.
+
+Retained recipe inputs are now sealed explicitly against receipt and consumer
+source changes (`af8a1145c`). Ten no-protocol selection controls pass, including
+rejection of pending/incomplete receipts and changes during acceptance. The old
+selector accepted the pending/cache-drift controls; its red result and source
+are retained in `artifacts/managed-contract/retained-input-seal-contract/`.
+Complete specialist C/Python validation is still required after seal checks.
+
+
+## Reviewed private RSA candidate and source boundary
+
+The blinded-engine candidate and prospective permanent49th provider regression
+each pass1,177 native-matching rows in JIT and NativeAOT:
+`artifacts/provider/rsa-private-repair/20261023T223103Z-3879ea83/receipt.json` and
+`artifacts/provider/rsa-regression-private/20261023T223521Z-44c72bc9/receipt.json`.
+The candidate overrides only input conversion on the pinned BC private engine;
+blinding, CRT fault checks and output conversion remain inherited. This is private
+proof, not full49 or delivered-provider qualification. Production stays0158d36c
+until batch006 naturally drains. The API source-reader window is established at
+`artifacts/managed-contract/api-r4-pre-rsa-reader-window.json`.
+
+The pending retained-input bundle is
+`artifacts/managed-contract/final-upstream-223542/inputs.json`; actual selection
+rejects its pending status before commands. Ten retained-input contract tests
+were rerun with `python3 -B -m unittest discover -s s2n-tls/tests/Recipe -p
+'test_retained_inputs.py'` and pass. No upstream acceptance was executed.
