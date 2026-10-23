@@ -474,6 +474,9 @@ public sealed record Seq(IReadOnlyList<CStmt> Stmts) : CStmt;
 /// (<c>int a = 0, b;</c>).</summary>
 public sealed record DeclStmt(IReadOnlyList<LocalDecl> Decls) : CStmt
 {
+    /// <summary>Builder-only GNU cleanup action, consumed when the enclosing
+    /// lexical block is restructured into a DeferGuard.</summary>
+    public CStmt? ScopeCleanup { get; init; }
     /// <summary>Set when the C23 <c>[[maybe_unused]]</c> attribute prefixed this
     /// block-scope declaration. The C# backend brackets the emitted local(s) with
     /// <c>#pragma warning disable / restore CS0168</c> (declared, never used),

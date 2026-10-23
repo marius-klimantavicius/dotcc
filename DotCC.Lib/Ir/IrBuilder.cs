@@ -282,6 +282,7 @@ internal sealed partial class IrBuilder
                     case "weak": _pendingAttrWeak = true; break;
                     case "unused": break; // diagnostic-only annotation
                     case "warn_unused_result": _pendingAttrNodiscard = ""; break;
+                    case "deprecated": _pendingAttrDeprecated ??= ""; break;
                     case "always_inline": break; // optimization hint; no observable C behavior
                     case "noinline": case "no_instrument_function": break;
                     // Native headers use these optimizer promises. Leaving
@@ -294,6 +295,10 @@ internal sealed partial class IrBuilder
                 break;
             case C.AttrCall a when Tok(a.Arg0).Trim('_') == "alloc_size":
                 ValidateAllocationSizeIndex(a.Arg2);
+                break;
+            case C.AttrCall a when Tok(a.Arg0).Trim('_') == "deprecated":
+                _pendingAttrDeprecated ??= TryStringLiteral(a.Arg2)
+                    ?? throw new IrUnsupportedException("GNU deprecated requires a string literal");
                 break;
             case C.AttrCall a when Tok(a.Arg0).Trim('_') == "nonnull":
                 ValidateAttributeArgumentIndex(a.Arg2, "nonnull");
@@ -376,6 +381,7 @@ internal sealed partial class IrBuilder
                 var noreturn = _pendingAttrNoreturn;
                 var weak = _pendingAttrWeak;
                 var nodiscard = _pendingAttrNodiscard;
+                var deprecated = _pendingAttrDeprecated;
                 var weakApplications = _weakFunctionAttributeApplications;
                 ValidateGnuFormatAttribute(a.Arg0);
                 var requiresWeakFunction = _pendingAttrWeak;
@@ -385,6 +391,7 @@ internal sealed partial class IrBuilder
                 _pendingAttrNoreturn = noreturn;
                 _pendingAttrWeak = weak;
                 _pendingAttrNodiscard = nodiscard;
+                _pendingAttrDeprecated = deprecated;
                 break;
             }
             case C.EmptyTranslationUnit:
@@ -629,6 +636,7 @@ internal sealed partial class IrBuilder
     private bool _sawNoreturnSpec;
     private bool _sawInlineSpec;
     private string? _sawNodiscardSpec;
+    private string? _sawDeprecatedSpec;
     // TLS specifier on a file-scope or block-static declaration. Automatic
     // block declarations still reject TLS without an explicit storage class.
     private bool _sawThreadLocalSpec;
@@ -816,7 +824,7 @@ internal sealed partial class IrBuilder
         if (_sawNoreturnSpec || _pendingAttrNoreturn) { sym.IsNoReturn = true; }
         RememberWeakFunctionDeclaration(sym.Name, sym.Storage == Storage.Static);
         if (_sawInlineSpec) { sym.IsInline = true; }
-        if (_pendingAttrDeprecated is { } dep && sym.Deprecated is null) { sym.Deprecated = dep; }
+        if ((_pendingAttrDeprecated ?? _sawDeprecatedSpec) is { } dep && sym.Deprecated is null) { sym.Deprecated = dep; }
         if ((_pendingAttrNodiscard ?? _sawNodiscardSpec) is { } nd && sym.Nodiscard is null) { sym.Nodiscard = nd; }
     }
 
@@ -845,6 +853,7 @@ internal sealed partial class IrBuilder
         _sawInlineSpec = false;
         _sawWeakSpec = false;
         _sawNodiscardSpec = null;
+        _sawDeprecatedSpec = null;
         var sig = ExtractFnSig(fnSig);
         if (blockScope && sig.IsStatic)
             throw new IrUnsupportedException("block-scope function declaration cannot specify static storage");
@@ -906,6 +915,7 @@ internal sealed partial class IrBuilder
         _sawInlineSpec = false;
         _sawWeakSpec = false;
         _sawNodiscardSpec = null;
+        _sawDeprecatedSpec = null;
         var sig = ExtractFnSig(fnSig);
         if (_staticFunctionSymbols.ContainsKey((FunctionUnitIdentity, sig.Name))) sig = sig with { IsStatic = true };
         RememberWeakFunctionDeclaration(sig.Name, sig.IsStatic);
@@ -995,6 +1005,7 @@ internal sealed partial class IrBuilder
         _pendingAttrWeak = false;
         _sawWeakSpec = false;
         _sawNodiscardSpec = null;
+        _sawDeprecatedSpec = null;
         BindFunctionOverride(funcSym, sig, fnSig);
         if (_functionReplacements.ContainsKey(funcSym))
         {
@@ -1845,13 +1856,16 @@ internal sealed partial class IrBuilder
         var pending = _pendingAttrNoreturn;
         var weak = _pendingAttrWeak;
         var nodiscard = _pendingAttrNodiscard;
+        var deprecated = _pendingAttrDeprecated;
         ValidateGnuFormatAttribute(attributes);
         _sawNoreturnSpec |= _pendingAttrNoreturn;
         _sawWeakSpec |= _pendingAttrWeak;
         _sawNodiscardSpec ??= _pendingAttrNodiscard;
+        _sawDeprecatedSpec ??= _pendingAttrDeprecated;
         _pendingAttrNoreturn = pending;
         _pendingAttrWeak = weak;
         _pendingAttrNodiscard = nodiscard;
+        _pendingAttrDeprecated = deprecated;
     }
 
     private CType ResolveAnonAggregate(Item typeItem, Item memberListItem, bool isUnion)
@@ -2289,6 +2303,7 @@ internal sealed partial class IrBuilder
                 // Desugar a value-capturing `T r = setjmp(env); …rest…` — the rest of THIS
                 // block is the goto-restart body, so recognition is necessarily block-level.
                 stmts = RewriteSetjmpCaptures(stmts);
+                stmts = RewriteScopeCleanups(stmts);
                 _symbols.ExitScope();
                 break;
             case C.BlockEmpty:
@@ -2327,6 +2342,7 @@ internal sealed partial class IrBuilder
             case C.Block: return BuildBlock(it);
             case C.BlockEmpty: return BuildBlock(it);
             case C.StmtDecl d: return BuildDeclStmt(d.Arg0) with { Pos = pos };
+            case C.StmtGnuDeclaration d: return BuildGnuCleanupDeclaration(d.Arg0, d.Arg1) with { Pos = pos };
             case C.StmtStaticDecl s: return BuildStmtStaticDecl(s) with { Pos = pos };
             case C.StmtStaticStructInit s: return BuildStmtStaticStructInit(s.Arg1, s.Arg2, s.Arg5, designated: false) with { Pos = pos };
             case C.StmtStaticStructDesignated s: return BuildStmtStaticStructInit(s.Arg1, s.Arg2, s.Arg5, designated: true) with { Pos = pos };

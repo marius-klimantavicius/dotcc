@@ -25,6 +25,21 @@ namespace DotCC.Tests;
 [Collection("Attributes")]
 public sealed class AttributeTests
 {
+    [Theory]
+    [InlineData("__attribute__((deprecated)) int old(void);", "")]
+    [InlineData("int old(void) __attribute__((deprecated(\"use next\")));", "use next")]
+    public void Gnu_deprecated_annotations_keep_metadata_without_leaking(string prototype, string message)
+    {
+        var source = WriteTemp(prototype + " int old(void) { return 1; } int next(void) { return 2; }");
+        try
+        {
+            var emitted = Compiler.EmitCSharp(new[] { source }, emit: EmitMode.ManagedLib);
+            emitted.ShouldContain("global::System.Obsolete");
+            if (message.Length != 0) emitted.ShouldContain(message);
+            emitted.Split("global::System.Obsolete").Length.ShouldBe(2);
+        }
+        finally { File.Delete(source); }
+    }
     private static string WriteTemp(string body)
     {
         var path = Path.Combine(Path.GetTempPath(), $"dotcc-attr-{System.Guid.NewGuid():N}.c");

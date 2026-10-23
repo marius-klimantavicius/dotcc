@@ -31,6 +31,11 @@ internal sealed partial class IrBuilder
     {
         StructInit aggregate => System.Linq.Enumerable.All(aggregate.Members, field => ConstantAggregate(field.Value)),
         InlineArrayInit array => System.Linq.Enumerable.All(array.Elems, ConstantAggregate),
+        // String literals have static storage duration. Each TLS aggregate
+        // owns its fields, while its literal pointers can share rooted storage.
+        LitStr or LitU16Str or LitU32Str => true,
+        Paren parenthesized => ConstantAggregate(parenthesized.Inner),
+        Cast cast => ConstantAggregate(cast.Operand),
         _ => ConstEval(expression) is not null,
     };
 }

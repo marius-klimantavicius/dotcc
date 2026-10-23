@@ -19,6 +19,18 @@ namespace DotCC.Tests;
 [Collection("ThreadLocal")]
 public sealed class ThreadLocalTests
 {
+    [Fact]
+    public void Aggregate_tls_accepts_static_string_literal_addresses()
+    {
+        var source = WriteTemp("struct Debug { const char *text; }; __thread struct Debug debug = { .text = \"ready\" }; int first(void) { return debug.text[0]; }");
+        try
+        {
+            var emitted = Compiler.EmitCSharp(new[] { source }, emit: EmitMode.ManagedLib);
+            emitted.ShouldContain("__dotcc_tls_initialize_debug");
+            emitted.ShouldContain("[ThreadStatic]");
+        }
+        finally { File.Delete(source); }
+    }
     private static string WriteTemp(string body, string ext = "c")
     {
         var path = Path.Combine(Path.GetTempPath(), $"dotcc-tls-{System.Guid.NewGuid():N}.{ext}");

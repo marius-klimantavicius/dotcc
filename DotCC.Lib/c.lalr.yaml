@@ -1111,6 +1111,9 @@ productions:
       # matches C convention and C# requirement.
       - { lhs: Stmt, rhs: ['switch', '(', Expr, ')', Block], action: stmtSwitch }
       - { lhs: Stmt, rhs: [Decl, ';'],                    action: stmtDecl }
+      # GNU cleanup applies to the enclosing lexical scope, rather than the
+      # declaration statement alone. The IR builder guards the following tail.
+      - { lhs: Stmt, rhs: [GnuFormatAttr, Decl, ';'], action: stmtGnuDeclaration }
       # Block-scope `static T x;` / `static T x = C;` — static storage
       # duration, function-local visibility. Lowers to a mangled static field
       # in DotCcGlobals (one instance, persists across calls), with uses inside
