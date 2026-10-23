@@ -21,9 +21,22 @@ internal static unsafe class EndpointMain
                 argv[i] = (byte*)storage[i];
             }
             argv[storage.Length] = null;
+            // Linux C stdio defaults: _IOFBF=0, _IOLBF=1, BUFSIZ=8192.
+            if (Raw.Libc.setvbuf(Raw.Libc.stdout, null, Raw.Libc.isatty(1) != 0 ? 1 : 0, 8192) != 0)
+                throw new InvalidOperationException("Unable to initialize C stdout buffering");
             Raw.ResetUpstreamGetopt();
             return Raw.main(storage.Length, argv);
         }
-        finally { foreach (nint allocation in storage) if (allocation != 0) Marshal.FreeCoTaskMem(allocation); }
+        finally { Raw.Libc.fflush(null); foreach (nint allocation in storage) if (allocation != 0) Marshal.FreeCoTaskMem(allocation); }
+    }
+}
+
+namespace Managed.Security.S2n
+{
+    // Standalone CLI C exit flushes stdio; _Exit/abort keep their immediate path.
+    public static unsafe partial class S2nTls
+    {
+        [System.Diagnostics.CodeAnalysis.DoesNotReturn]
+        public static void exit(int code) { Libc.fflush(null); Libc.exit(code); }
     }
 }
