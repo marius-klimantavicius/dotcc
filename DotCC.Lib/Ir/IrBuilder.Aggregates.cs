@@ -199,6 +199,12 @@ internal sealed partial class IrBuilder
 
     private CExpr BuildFieldInitializer(CType type, Init initializer)
     {
+        // stdarg's cursor has a managed ref-like representation rather than
+        // native struct fields. C's braced zero initialization still means its
+        // empty state, before va_start/va_copy establishes a borrowed cursor.
+        if (type.Unqualified is CType.Named { Name: "VaList" }
+            && initializer is InitGroup { Items: [InitVal { Value: LitInt { Value: 0 } }] })
+            return new DefaultLit { Type = type };
         if (type.Unqualified is CType.Array array)
         {
             var dimensions = new List<int>();
