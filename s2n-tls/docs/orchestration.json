@@ -13,7 +13,7 @@
   "active_tasks": [
     {
       "package": "provider",
-      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-provider-r1-20261023"
+      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-provider-r2-recovery-20261023"
     },
     {
       "package": "api-qualification",
@@ -21,7 +21,7 @@
     }
   ],
   "shared_build_owner": "supervisor",
-  "next": "Finish257originalC\u00d74+18Python\u00d74, currentprotocol/lifecyclematrix, finalABI/sharedregressions/reproduction; repairobservedfailureswithoutreducinglegacy",
+  "next": "Repair production ASN.1 conversion in a coordinated source window; qualify final provider/main/delivery/CLI and complete257C\u00d74 plus18Python\u00d74 without reducing legacy scope.",
   "completed_tasks": [
     {
       "package": "inputs-native",
@@ -35,6 +35,11 @@
     {
       "package": "api-qualification",
       "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-api-qualification-r3-20261023",
+      "terminal_status": "failed-content-flag-cancelled-queued-turns"
+    },
+    {
+      "package": "provider",
+      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-provider-r1-20261023",
       "terminal_status": "failed-content-flag-cancelled-queued-turns"
     }
   ],
@@ -50,7 +55,10 @@
     "70d61f9b7",
     "d0f0146de",
     "08796c070",
-    "3a850635c"
+    "3a850635c",
+    "19e458789",
+    "640e15a69",
+    "4b33f6780"
   ],
   "current_attempt": "20261023-223542-f7e7054e (passed175/raw+processed; new actual qualification with base64 repair08796c070)",
   "last_complete_link": "20261023-223542-f7e7054e",
@@ -66,7 +74,11 @@
     "fresh_c_emission": "build/managed-upstream/all-required-257-emission-223542.json",
     "provider_required_c": "build/provider/required257-223542/progress.json",
     "native_psk_peer_proof": "artifacts/native-peer-psk/proof-v3/report.json",
-    "native_equivalence": "artifacts/provider/native-equivalence/214654-to-223542.json"
+    "native_equivalence": "artifacts/provider/native-equivalence/214654-to-223542.json",
+    "final_native": "artifacts/native/final-callsite-profile/report.json",
+    "reproduction": "artifacts/campaign/20261023-233001-6f4afff7/reproduction.json",
+    "translated_python_all18": "artifacts/managed-upstream/python-current-223542-base64/all18-all4-matrix.json",
+    "native_happy_retry": "artifacts/native-python/retry-investigation-r4/happy-repaired-matrix.json"
   },
   "discovery_correction": {
     "original": "artifacts/managed/full-owning-matrix/report.json",
@@ -81,13 +93,22 @@
   "passed_scoped_gates": {
     "P0": "174upstream+1adapter/36suites/14SSLv3/78pairs",
     "P2": "223542raw+processed175/183bindings",
-    "P3": "2146541076rowmatrixall4variants",
-    "P5": "223542base64delivery12/12+deep1682fileaudit",
-    "P1": "47providerJIT+AOT/currentABI4variants"
+    "P3": "223542/base64 1076/1076 all4 +5023filecombinedaudit",
+    "P5": "223542/base64 12/12 all4copied/rooted +5023filecombinedaudit",
+    "P1": "47providerJIT+AOT/currentABI4variants",
+    "P6_reproduction": "233001-6f4afff7 passed warn/off two full175 regenerations/private authored edit/failed-publication; overallP6 remainsopen"
   },
   "open_gates": [
     "P4full257Cplus18Pythonall4variants",
-    "P6newoutputreproduction/integratedfinalreceipts"
+    "P6integratedupstreamdefaultpreparationandfinalreceiptreview",
+    "ProductionASN1invalid-tag conversion/final-provider-requalification"
   ],
-  "native_python_gate": "14 disjoint families have strictly passed native views; PSK/HRR/happy/version require fresh qualifying receipts; original skips/retries remain failed"
+  "native_python_gate": "PSK1999/version1525 and HRR118 applicable plus9 separately proved controls pass; strict full happy-path retry queued after current family drains. Historical failures/skips/retries remain failed.",
+  "observed_provider_defect": {
+    "case": "tests/unit/s2n_certificate_test.c",
+    "assertion": 482,
+    "native_assertions": 488,
+    "reason": "ASN1_STRING_to_UTF8 accepts invalid universal29",
+    "state": "private native regression/repair preparation; production source held while active readers/builds drain"
+  }
 }

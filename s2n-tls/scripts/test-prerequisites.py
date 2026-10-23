@@ -96,7 +96,19 @@ def main():
         virtual = (upstream / "codebuild/bin/apache2/sites-enabled/renegotiate.conf").read_text()
         virtual = "\n".join(line + ":@SECLEVEL=0" if line.strip().startswith("SSLCipherSuite ") else line for line in virtual.splitlines()) + "\n"
         (apache / "sites-enabled/renegotiate.conf").write_text(virtual)
+        gnutls_policy = ROOT / "config/gnutls-test-policy.ini"
+        sslv3_prefix = ROOT / "build/native/openssl-peer-sslv3/peer-install"
+        (sslv3_prefix / "bin").mkdir(parents=True, exist_ok=True)
+        (sslv3_prefix / "lib").mkdir(exist_ok=True)
+        sslv3_binary = ROOT / "build/native/openssl-peer-sslv3/apps/openssl"
+        sslv3_link = sslv3_prefix / "bin/openssl"
+        if sslv3_link.exists() and sslv3_link.resolve() != sslv3_binary:
+            raise RuntimeError("Unexpected SSLv3 peer install-prefix executable")
+        if not sslv3_link.exists(): sslv3_link.symlink_to(sslv3_binary)
         env = {"LD_LIBRARY_PATH": str(target / "usr/lib/x86_64-linux-gnu"),
+               "GNUTLS_SYSTEM_PRIORITY_FILE": str(gnutls_policy),
+               "GNUTLS_SYSTEM_PRIORITY_FAIL_ON_INVALID": "1",
+               "OPENSSL_1_0_2_INSTALL_DIR": str(sslv3_prefix),
                "APACHE_SERVER_ROOT": str(apache), "APACHE_RUN_DIR": str(apache / "run"),
                "APACHE_PID_FILE": str(apache / "run/apache2.pid"), "APACHE_LOG_DIR": str(apache / "log"),
                "APACHE_RUN_USER": __import__("pwd").getpwuid(os.getuid()).pw_name,
@@ -104,6 +116,13 @@ def main():
                "APACHE_CERT_DIR": str(upstream / "tests/pems")}
         server = [str(target / "usr/sbin/apache2"), "-f", str(apache / "apache2.conf"), "-DFOREGROUND"]
         run([*server, "-t"], environment={**os.environ, **env})
+        report["gnutls_test_policy"] = {"path": str(gnutls_policy),
+            "sha256": hashlib.sha256(gnutls_policy.read_bytes()).hexdigest(),
+            "scope": "isolated test peer subprocesses; original CLI priority arguments unchanged"}
+        for version in ("TLS1.0", "TLS1.1", "TLS1.2"):
+            priority = "NONE:+VERS-" + version + ":+RSA:+AES-256-CBC:+SHA1:+GROUP-ALL:+SIGN-ALL:+COMP-NULL:%COMPAT:%DEBUG_ALLOW_KEY_USAGE_VIOLATIONS"
+            run([target / "usr/bin/gnutls-cli", "--priority", priority, "--list"],
+                environment={**os.environ, **env})
         old = ROOT / "build/native/s2n-peer/bin"
         if not all((old / name).is_file() for name in ("s2nc", "s2nd")):
             raise RuntimeError("Build the independently pinned s2n-peer CLI before qualification")
@@ -122,6 +141,7 @@ def main():
             if not Path(command[0]).is_file():
                 raise RuntimeError("Missing declared independent peer: " + name)
         peers = {"commands": commands, "environment": env, "python": str(python),
+                 "execution_inputs": [str(gnutls_policy), str(apache / "apache2.conf"), str(apache / "sites-enabled/renegotiate.conf")],
                  "assets": [{"source": str(java / "SSLSocketClient.class"), "destination": "tests/integrationv2/bin/SSLSocketClient.class"}],
                  "services": [{"name": "apache-renegotiation", "command": server, "host": "127.0.0.1", "port": 7777}]}
         (work / "peers.json").write_text(json.dumps(peers, indent=2) + "\n")

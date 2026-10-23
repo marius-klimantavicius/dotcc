@@ -19,6 +19,7 @@ import uuid
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tests/Upstream"))
 from feature_adaptations import apply
+from translation_evidence import read_closed
 
 
 def main():
@@ -28,15 +29,15 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     campaign = args.campaign.resolve()
-    receipt = json.loads((ROOT / "artifacts/campaign" / campaign.name / "receipt.json").read_text())
-    if receipt["status"] != "passed" or len(receipt["units"]) != 175:
-        raise RuntimeError("A successful complete175-unit product attempt is required")
+    receipt_path, receipt = read_closed(ROOT, campaign)
     run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ") + "-" + uuid.uuid4().hex[:8]
     work = ROOT / "build/native-profile-upstream" / run_id
     work.mkdir(parents=True)
     output = args.output.resolve()
     output.parent.mkdir(parents=True, exist_ok=True)
     report = {"status": "running", "scope": __doc__, "campaign": str(campaign), "commands": [], "upstream": []}
+    report['translation_receipt'] = str(receipt_path)
+    report['translation_receipt_sha256'] = hashlib.sha256(receipt_path.read_bytes()).hexdigest()
     flags = []
     first = next(row["command"] for row in receipt["commands"] if "--emit=obj" in row["command"])
     for i, flag in enumerate(first):

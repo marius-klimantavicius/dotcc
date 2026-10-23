@@ -18,6 +18,9 @@ def sources(root):
 
 
 def prepare(ctx):
+    # The declaration ABI uses generated, pinned OpenSSL headers. Acquisition
+    # preserves ref/; Configure/build runs only in the native control stage.
+    prepare_declaration_headers(ctx)
     policy = json_file(ctx.root / "config/translation.json")
     manifest = json_file(ctx.root / "config/source-manifest.json")
     reference = ctx.sources["s2n-tls"]
@@ -76,6 +79,22 @@ def prepare(ctx):
                        [*link_flags("S2nTls", "Managed.Security.S2n"), "--prune-unused-inline"], objects=True, configure=configure)
 
 
+def prepare_declaration_headers(ctx):
+    headers = ctx.root / "build/native/openssl-legacy/include/openssl"
+    required = [headers / name for name in ("opensslconf.h", "opensslv.h", "evp.h")]
+    native = helper(ctx.root / "scripts/native-control.py")
+    stamp = headers.parents[1] / ".dotcc-source.json"
+    recorded = json_file(stamp) if stamp.is_file() else {}
+    if (not all(path.is_file() for path in required)
+            or recorded.get("digest") != native.digest_tree(ctx.sources["openssl-legacy"])):
+        run = native.Run(ctx.artifacts / "declaration-headers")
+        run.openssl("openssl-legacy", ctx.sources["openssl-legacy"])
+        ctx.receipt["declaration_header_preparation"] = run.commands
+    if not all(path.is_file() for path in required):
+        raise RuntimeError("Pinned generated OpenSSL declaration headers are missing")
+    ctx.receipt["declaration_headers"] = ctx.policy.manifest(required, ctx.root)
+
+
 def configure(ctx, project, form):
     provider = json_file(ctx.root / "config/provider.json")
     helper(ctx.root / "scripts/notices.py").stage(ctx.root, project.parent)
@@ -101,6 +120,12 @@ def run_suite(ctx, suite):
     return helper(ctx.root / "scripts/qualification.py").run(ctx, suite)
 
 
+def freeze_translation(ctx):
+    if ctx.options.action == "probe":
+        return
+    helper(ctx.root / "scripts/translation_evidence.py").freeze(ctx)
+
+
 SUITES = ("native", "abi", "provider", "compatibility", "consumer", "upstream",
           "lifecycle", "interop", "rooted-aot", "delivery", "reproduction", "shared-regressions")
 
@@ -113,4 +138,5 @@ recipe = Recipe(
     suites=tuple(Suite(name, (), run=run_suite, matrix=name != "native",
                        scope="s2n-tls " + name + " acceptance") for name in SUITES),
     default_suites=("consumer",), verify_suites=SUITES,
+    after_translate=freeze_translation,
 )

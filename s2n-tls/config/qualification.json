@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "c_batch_size": 8,
+  "c_build_jobs": 2,
+  "python_workers": 4,
+  "native_python_workers": 1,
+  "python": "build/python-integration/bin/python",
+  "peer_commands": "build/test-prerequisites/peers.json",
+  "test_provider_policy": "tests/Provider/UpstreamSurface/policy.json",
+  "native_provider_version": "dotcc-native-openssl-1.1.1w",
+  "native_ports": [8000, 18000],
+  "translated_ports": [18001, 30000],
+  "reuse_evidence_environment": "S2N_QUALIFICATION_INPUTS",
+  "scope": "Default verification prepares and executes the full upstream gates. Explicit retained evidence is consumed read-only and must match the current closed translation."
+}
