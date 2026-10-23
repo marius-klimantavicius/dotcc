@@ -70,7 +70,9 @@
     "93398474e",
     "35f416b0c",
     "5f0b8ff3d",
-    "726a2e483"
+    "726a2e483",
+    "fb0dd598d",
+    "ad704df80"
   ],
   "current_attempt": "20261023-223542-f7e7054e (passed175/raw+processed; new actual qualification with base64 repair08796c070)",
   "last_complete_link": "20261023-223542-f7e7054e",
@@ -97,11 +99,15 @@
     "post_asn1_abi": "artifacts/campaign/20261024-001718-6f72b210/receipt.json",
     "provider_controller_pid": 1263486,
     "final_provider_current_c_counts": {
-      "passed": 9,
+      "passed": 17,
       "failed": 0,
-      "unrun": 248,
-      "scope": "9cases \u00d74actual original executions; earlier30/2historical"
-    }
+      "unrun": 240,
+      "scope": "17cases \u00d74actual final-provider original executions; earlier30/2 historical"
+    },
+    "final_provider_cli": "build/managed-upstream/python-endpoints-final-asn1.json",
+    "final_provider_cli_audit": "artifacts/managed-contract/final-asn1-cli-eight-supervisor-audit.json",
+    "post_asn1_main": "artifacts/managed/final-provider-asn1-main",
+    "post_asn1_companion": "artifacts/managed-contract/api-r4-final-provider-companion-progress.json"
   },
   "discovery_correction": {
     "original": "artifacts/managed/full-owning-matrix/report.json",
@@ -123,10 +129,10 @@
   },
   "open_gates": [
     "P4full257Cplus18Pythonall4variants",
-    "P6integratedupstreamdefaultpreparationandfinalreceiptreview",
-    "ProductionASN1invalid-tag conversion/final-provider-requalification"
+    "Final-provider main1076/delivery12 and strict native happy8840",
+    "P6integratedupstreamdefaultpreparationandfinalreceiptreview"
   ],
-  "native_python_gate": "PSK1999/version1525 and HRR118 applicable plus9 separately proved controls pass; strict full happy-path retry queued after current family drains. Historical failures/skips/retries remain failed.",
+  "native_python_gate": "17disjoint families/13346 applicable cases pass; repaired strict happy8840 running independently. Historical failures/skips/retries remain failed.",
   "observed_provider_defect": {
     "case": "tests/unit/s2n_certificate_test.c",
     "assertion": 482,

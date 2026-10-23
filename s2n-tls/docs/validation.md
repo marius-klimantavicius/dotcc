@@ -20,11 +20,30 @@ per runtime. The independent private review verifies56 files and the pinned
 native type table, legacy5/6-byte UTF8, raw BMP values and failure/output-pointer
 semantics: `artifacts/managed-contract/asn1-private-supervisor-review.json`.
 
-Fresh CLI8, main1076 and delivery12 builds/executions are controlled by
-`artifacts/managed-contract/api-r4-final-provider-progress.json`. The unchanged original certificate all4 refresh now passes488 assertions per
+Fresh CLI8 builds are complete. Independent audit
+`artifacts/managed-contract/final-asn1-cli-eight-supervisor-audit.json` verifies
+1,116 distinct files across all eight actual application identities, output,
+build, runtime and authored-source closures. JIT provider DLLs are labelled built
+outputs: the identity entry returns before provider initialization. NativeAOT
+embeds the provider in the new executable. Original TLS family execution remains
+a separate gate.
+
+Fresh main1076 and delivery12 run independently under the exclusive companion
+controller recorded in `artifacts/managed-contract/api-r4-final-provider-companion-progress.json`.
+The final18-family/four-variant Python controller waits for the verified legacy
+port-family drain; it must not overlap that port owner. The unchanged original certificate all4 refresh now passes488 assertions per
 variant at `artifacts/provider/original16-expanded/20261023T211832Z-6c2a4f05/all4.json`.
 The old required-C cases must also execute against this freeze; their earlier application outputs are not reused. No C regeneration is
 needed: the183 typed declarations and175 emitted engine objects are unchanged.
+
+The persistent final-provider C campaign has17/257 cases qualified in all four
+variants at the recorded checkpoint (68 original executions), with240 cases
+remaining. Its live progress is `build/provider/required257-223542/progress.json`;
+earlier30/2 counts belong to the archived old-provider run. Closed cases retain
+their executable/runtime bytes while identical pinned BC dependency files may
+share a private immutable inode. The bounded three-case storage proof is
+`artifacts/provider/dependency-dedupe-closed3-2140/receipt.json`; this is storage
+maintenance, not an additional test pass.
 
 ## Current223542 evidence
 
