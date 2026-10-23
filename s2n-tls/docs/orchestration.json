@@ -13,7 +13,10 @@
   "active_tasks": [
     {
       "package": "provider",
-      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-provider-r2-recovery-20261023"
+      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Athread-send%3Aprovider-r2-rsa-final-c-continuation-20261024",
+      "backing_thread": "thread:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-provider-r2-recovery-20261023",
+      "verified_model": "gpt-6.1-sol",
+      "verified_reasoningEffort": "xhigh"
     },
     {
       "package": "api-qualification",
@@ -47,6 +50,11 @@
       "package": "api-r4-bounded-harness-milestone",
       "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-api-qualification-r4-20261023",
       "terminal_status": "completed-bounded-file-freeze; campaign continued immediately in same child thread"
+    },
+    {
+      "package": "provider-rsa49-bounded-milestone",
+      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-provider-r2-recovery-20261023",
+      "terminal_status": "completed49group/ABI/privatepublicRSA277 milestone; continued immediately in samechildconversation"
     }
   ],
   "commits": [
@@ -84,7 +92,9 @@
     "5364f6f92",
     "f72519790",
     "e2876b1a6",
-    "659b3498a"
+    "659b3498a",
+    "05f2c741b",
+    "abe3bce25"
   ],
   "current_attempt": "20261023-223542-f7e7054e (passed175/raw+processed; new actual qualification with base64 repair08796c070)",
   "last_complete_link": "20261023-223542-f7e7054e",
@@ -128,7 +138,9 @@
     "pending_retained_inputs": "artifacts/managed-contract/final-upstream-223542/inputs.json",
     "final49_provider": "artifacts/provider/final49-rsa-224649/receipt.json",
     "rsa_abi": "artifacts/provider/emitted-probe-rsa-224649/receipt.json",
-    "rsa_supervisor_audit": "artifacts/managed-contract/rsa-runtime-milestone-supervisor-review.json"
+    "rsa_supervisor_audit": "artifacts/managed-contract/rsa-runtime-milestone-supervisor-review.json",
+    "ordinary_root_rsa": "artifacts/managed-contract/ordinary-solution-final-rsa/report.json",
+    "ordinary_root_rsa_audit": "artifacts/managed-contract/ordinary-solution-final-rsa/independent-audit.json"
   },
   "discovery_correction": {
     "original": "artifacts/managed/full-owning-matrix/report.json",

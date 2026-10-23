@@ -218,3 +218,13 @@ New-source original C, CLI, application1076, delivery12 and Python18×4 executio
 remain unrun. Old0158 controller results54/2/201 are historical; fresh raw JIT
 and all4 assertion runs are mandatory. The captured main/delivery passes above
 remain valid only for their captured source bytes.
+
+
+The repaired-RSA root solution locked Release build passes with0 errors and72
+existing compiler/analyzer warnings. Its ordinary processed-JIT consumer passes
+three forced SSLv3/RC4, SSLv3/3DES and TLS1.3 loopbacks (six role observations,
+1,027 binary bytes per direction, negotiated IDs and clean shutdown). Evidence:
+`artifacts/managed-contract/ordinary-solution-final-rsa/report.json` and its
+77-file independent audit. All18 actual output files have byte-identical retained
+copies before any future canonical rebuild. This check does not close the full
+application1076 or delivery12 gates for this provider.
