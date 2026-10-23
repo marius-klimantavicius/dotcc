@@ -19,7 +19,7 @@ from native_profile import validate_profile, sha
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts"))
 from translation_evidence import read_closed
-from required_c_receipt import _verify_test_provider_snapshot
+from required_c_receipt import _verify_test_provider_snapshot, require_passed_native
 
 
 def read(path):
@@ -43,6 +43,7 @@ class Pipeline:
             or len(observed) != len(self.required) or {r["case"] for r in observed} != set(self.required)
             or any(r["status"] != "emitted" for r in observed)):
             raise RuntimeError("Pipeline needs the complete new required-C emission manifest, without missing/duplicate cases")
+        require_passed_native(read(args.native_report))
         match = validate_profile(ROOT, self.campaign, args.native_report, args.native_equivalence)
         if self.progress_path.exists():
             if not args.resume:

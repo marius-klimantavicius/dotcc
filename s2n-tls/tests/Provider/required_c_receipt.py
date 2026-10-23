@@ -17,6 +17,12 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from translation_evidence import read_closed
 
 
+def require_passed_native(native):
+    """Profile equivalence alone does not establish a completed native oracle."""
+    if not isinstance(native, dict) or native.get("status") != "passed":
+        raise RuntimeError("Native reference must have top-level status 'passed' before original C qualification")
+
+
 def _verify_test_provider_snapshot(entry, identity, verify):
     """Validate the actual frozen extra assembly; its authored source may evolve."""
     snapshot = entry.get("provider_snapshot")
@@ -69,6 +75,8 @@ def _validate_completed_report(report_path, native_report, native_equivalence, *
     """
     report_path, native_report = Path(report_path).resolve(), Path(native_report).resolve()
     report = json.loads(report_path.read_text())
+    native = json.loads(native_report.read_text())
+    require_passed_native(native)
     inventory = json.loads((ROOT / "config/upstream-tests.json").read_text())
     required = {r["path"] for r in inventory["cases"] if r["status"].startswith("required") and r["path"].endswith(".c")}
     if (report["status"] != "passed" or len(required) != 257
@@ -85,7 +93,6 @@ def _validate_completed_report(report_path, native_report, native_equivalence, *
     match = validate_profile(ROOT, campaign, native_report, native_equivalence)
     if report["native_profile_match"] != match:
         raise RuntimeError("Completed aggregate native equivalence identity changed")
-    native = json.loads(native_report.read_text())
     controls = {r["case"]: r for r in native["upstream"] if r["status"] == "passed"}
     if set(controls) != required or len(controls) != len(native["upstream"]):
         raise RuntimeError("Native case-path inventory is incomplete or ambiguous")

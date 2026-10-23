@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tests/Upstream"))
 from feature_adaptations import apply as apply_features
 from native_profile import validate_profile, c_flags
+from required_c_receipt import require_passed_native
 sys.path.insert(0, str(ROOT / "scripts"))
 from translation_evidence import read_closed
 
@@ -46,6 +47,7 @@ manifest_bytes = args.executables.read_bytes()
 native_bytes = args.native_report.read_bytes()
 manifest = json.loads(manifest_bytes)
 native = json.loads(native_bytes)
+require_passed_native(native)
 native_rows = [r for r in native.get("upstream", []) if r["status"] == "passed"]
 native_cases = {r["case"]: r for r in native_rows}
 if len(native_cases) != len(native_rows):
