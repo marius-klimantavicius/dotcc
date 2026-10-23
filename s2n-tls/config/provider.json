@@ -41,7 +41,7 @@
     "RSA_PKCS1_RAW",
     "DH"
   ],
-  "binding_status": "183 typed overrides compile in raw/processed 175-unit product 214654; independent emitted JIT/AOT and unchanged original SHAKE hash test 45 assertions verified",
+  "binding_status": "183 typed overrides compile in raw/processed 175-unit product 223542; independent emitted JIT/AOT and selected16 original C assertions in all four modes verified on recorded snapshots",
   "compiler_definitions": [
     "S2N_DOTCC_MANAGED_PROVIDER=1",
     "S2N_LIBCRYPTO_SUPPORTS_PRIVATE_RAND=1",
@@ -110,15 +110,17 @@
     ],
     "shake_evidence": "artifacts/provider/shake/receipt.json",
     "shake_emitted_evidence": "artifacts/provider/shake-emitted/receipt.json",
-    "product_compile_evidence": "artifacts/campaign/20261023-214654-406d9780/receipt.json",
+    "product_compile_evidence": "artifacts/campaign/20261023-223542-f7e7054e/receipt.json",
     "original_hash_all_algs_evidence": {
       "case": "tests/unit/s2n_hash_all_algs_test.c",
       "original_sha256": "ebc5c2f1fb6e7332e805d6c2d85d894fca6fac15101f6d2b18d43ecb3289a653",
       "assertions": 45,
-      "form": "raw",
-      "mode": "jit",
-      "receipt": "artifacts/provider/original16-shake-proof/raw-jit.json"
-    }
+      "form": "raw+processed",
+      "mode": "jit+aot",
+      "receipt": "artifacts/provider/original16-expanded/20261023T191422Z-2c6e0696/all4.json"
+    },
+    "base64_evidence": "artifacts/provider/base64-contract/receipt.json",
+    "selected_original_controls_evidence": "artifacts/provider/original16-expanded/20261023T191422Z-2c6e0696/all4.json"
   },
   "restore_locks": {
     "selection": "PublishAot=true adds .aot; propagated RuntimeIdentifier adds .<RID>; no RID remains separate",

@@ -161,11 +161,37 @@ public static unsafe partial class OpenSslAbi
     {
         try
         {
-            var text=Encoding.ASCII.GetString(Input(input,(ulong)length)).Trim();
-            byte[] decoded=Convert.FromBase64String(text);decoded.CopyTo(Output(output,decoded.Length));
-            // EVP_DecodeBlock includes zero bytes for '=' in its reported/output length.
-            int padded=text.Length/4*3;Output(output+decoded.Length,padded-decoded.Length).Clear();return padded;
+            if(length<0)return -1;
+            var encoded=Input(input,(ulong)length);int start=0,end=encoded.Length;
+            // Match the pinned block API: leading space/tab only, then its
+            // line-ending/EOF trim. Interior whitespace remains an error.
+            while(start<end&&DecodeBlockValue(encoded[start])==0xe0)start++;
+            while(end-start>3&&(DecodeBlockValue(encoded[end-1]) is 0xe0 or 0xf0 or 0xf1 or 0xf2))end--;
+            int count=end-start;if(count%4!=0)return -1;
+            var decoded=Output(output,count/4*3);int written=0;
+            for(int offset=start;offset<end;offset+=4)
+            {
+                int a=DecodeBlockValue(encoded[offset]),b=DecodeBlockValue(encoded[offset+1]),
+                    c=DecodeBlockValue(encoded[offset+2]),d=DecodeBlockValue(encoded[offset+3]);
+                if(((a|b|c|d)&0x80)!=0)return -1;
+                // '=' is zero in this native block API, including interior
+                // slots. s2n handles its trailing padding/cursors itself.
+                int word=(a<<18)|(b<<12)|(c<<6)|d;
+                decoded[written++]=(byte)(word>>16);
+                decoded[written++]=(byte)((word>>8)&0xff);
+                decoded[written++]=(byte)(word&0xff);
+            }
+            // Native format rejection does not enqueue an OpenSSL error.
+            return written;
         }
         catch { Error();return -1; }
+    }
+    private static int DecodeBlockValue(byte value)
+    {
+        if(value>='A'&&value<='Z')return value-'A';
+        if(value>='a'&&value<='z')return value-'a'+26;
+        if(value>='0'&&value<='9')return value-'0'+52;
+        return value switch{(byte)'+'=>62,(byte)'/'=>63,(byte)'='=>0,
+            (byte)' ' or (byte)'\t'=>0xe0,(byte)'\n'=>0xf0,(byte)'\r'=>0xf1,(byte)'-'=>0xf2,_=>0xff};
     }
 }

@@ -35,6 +35,12 @@ int main(int argc, char **argv)
     CHECK(argc >= 2);
     if (!strcmp(argv[1], "version")) { puts(OpenSSL_version(OPENSSL_VERSION)); return 0; }
     unsigned char out[131072]; size_t outlen = sizeof(out), n=0, kn=0, ivn=0, an=0;
+    if (!strcmp(argv[1], "base64-encode") || !strcmp(argv[1], "base64-decode")) {
+        CHECK(argc==3);unsigned char *in=unhex(argv[2],&n);CHECK(in&&n<=64);
+        unsigned char guarded[128];memset(guarded,0xa5,sizeof(guarded));ERR_clear_error();
+        int result=!strcmp(argv[1],"base64-encode")?EVP_EncodeBlock(guarded+8,in,n):EVP_DecodeBlock(guarded+8,in,n);
+        printf("%d %lu ",result,ERR_get_error());printhex(guarded,sizeof(guarded));free(in);return 0;
+    }
     if (!strcmp(argv[1], "hash")) {
         CHECK(argc==4); unsigned char *in = unhex(argv[3], &n); CHECK(in);
         if(!strcmp(argv[2],"shake256-64")){EVP_MD_CTX *ctx=EVP_MD_CTX_new();CHECK(ctx&&EVP_DigestInit_ex(ctx,EVP_shake256(),NULL)==1&&EVP_DigestUpdate(ctx,in,n)==1&&EVP_DigestFinalXOF(ctx,out,64)==1);printhex(out,64);EVP_MD_CTX_free(ctx);free(in);return 0;}

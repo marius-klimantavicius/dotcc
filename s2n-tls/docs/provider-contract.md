@@ -2,7 +2,7 @@
 
 This records the implemented provider boundary and its independent evidence.
 All 183 typed overrides compile in the supervisor's raw and processed 175-unit
-product, `20261023-214654-406d9780`, including the required SHAKE branch. The
+product, `20261023-223542-f7e7054e`, including the required SHAKE branch. The
 actual emitted provider probe passes independently in JIT and NativeAOT.
 Provider tests, emitted ABI checks and product TLS qualification remain separate
 gates; this document does not pass the campaign.
@@ -177,7 +177,9 @@ Private output is under `build/provider/`; receipts and differential vectors
 are under `artifacts/provider/`. `closure/20261023-214654-406d9780/receipt.json`
 includes commands and per-import source units. `provider-binding-contract.json`
 in `tests/Abi/` records the reviewed signatures and selected native inventory.
-The full provider runner passes 42 groups in JIT and NativeAOT:
+The recorded full provider run passed 42 groups in JIT and NativeAOT before
+the later SHAKE/intermediate/base64 additions. Focused receipts qualify those
+subsequent changes; the current runner declares 47 groups.
 
 | Group | Executed evidence |
 | --- | --- |
@@ -308,6 +310,43 @@ recorded in `artifacts/provider/original16-shake-proof/raw-jit.json`. The
 214654 selected16 retry and remaining forms/modes have separate receipts.
 Historical old-profile results of 40 assertions remain failures and their
 frozen objects and receipts are preserved.
+
+The selected16 original C controls subsequently passed all four raw/processed
+JIT/NativeAOT modes on 214654: 64 executions with exact native assertion-count
+equality, original source hashes and empty test adaptations. This includes 45
+assertions in every hash-test mode, CBC's profile-matching 238 assertions and
+1783 X509 intent assertions. The aggregate is
+`artifacts/provider/original16-expanded/20261023T191422Z-2c6e0696/all4.json`.
+These remain bounded discovery results; the new 223542 compiler/product and
+all 257 required C cases need their separate qualification.
+
+## Base64 block contract repair
+
+The old BCL string conversion differed from the selected native
+`EVP_DecodeBlock`: it accepted interior whitespace, trimmed a leading newline,
+and rejected native block padding/EOF forms. The frozen failure is
+`artifacts/provider/base64-audit/frozen-mismatch.json`; the authored regression
+also failed before repair against a frozen provider DLL, without rebuilding
+the provider (`authored-before-fix.log` in the same directory).
+
+The block decoder now matches the pinned native byte mapping, space/tab
+prefix handling, line-ending/EOF suffix handling and zero-valued `=` slots.
+It preserves complete-block writes before malformed input and does not add an
+error-queue entry when native format rejection adds none. The translated s2n
+stuffer still owns padding/cursor handling. No override or C feature changed.
+
+The focused encoder and decoder groups pass in JIT and NativeAOT, comparing
+all 256 byte values in each input slot and at both ends, valid encodings,
+malformed padding/whitespace, output guard bytes, partial writes and error
+queues against actual pinned OpenSSL calls. There are 1659 vectors per mode.
+
+```sh
+python3 s2n-tls/tests/Provider/run.py --fetch never --mode all --filter base64 --artifacts s2n-tls/artifacts/provider/base64-contract
+```
+
+The receipt is `artifacts/provider/base64-contract/receipt.json`. It qualifies
+the provider repair; new full-upstream and product execution gates remain
+separate.
 
 ## Restore locks
 

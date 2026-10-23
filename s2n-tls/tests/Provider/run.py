@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT.parent / "Scripts"))
 from campaigns.identity import HashPolicy
 from campaigns.inputs import acquire
-from campaigns.model import Source
+from campaigns.recipes import load
 
 
 def main():
@@ -22,6 +22,7 @@ def main():
     parser.add_argument("--mode", choices=("jit", "aot", "all"), default="all")
     parser.add_argument("--openssl", type=Path, default=ROOT / "build/native/openssl-legacy")
     parser.add_argument("--artifacts", type=Path, default=ROOT / "artifacts/provider")
+    parser.add_argument("--work", type=Path, default=ROOT / "build/provider")
     parser.add_argument("--filter", help="Run only managed case names matching this regular expression")
     args = parser.parse_args()
     if platform.system() != "Linux" or platform.machine() not in ("x86_64", "AMD64"):
@@ -37,15 +38,17 @@ def main():
         (args.artifacts / "receipt.json").write_text(json.dumps(receipt, indent=2) + "\n")
 
     status("running")
-    source = Source("provider-managed", pin["url"], ROOT / "ref" / pin["archive"], ROOT / "ref" / pin["directory"], pin["prefix"],
-                    required=(pin["license_path"], "crypto/src/crypto/engines/RC4Engine.cs"))
+    source = next(s for s in load(ROOT.parent, "s2n-tls").sources(ROOT) if s.name == "provider-managed")
+    if (source.url != pin["url"] or source.directory != ROOT / "ref" / pin["directory"]
+            or source.archive != ROOT / "ref" / pin["archive"]):
+        raise RuntimeError("Managed dependency metadata differs from the shared acquisition input")
     # Match the shared campaign policy: never replace an existing usable local tree.
     try:
         acquire(source, HashPolicy(args.hashes), args.fetch)
     except Exception as error:
         status("failed", error=str(error))
         raise
-    work = ROOT / "build/provider"
+    work = args.work.resolve()
     work.mkdir(parents=True, exist_ok=True)
     args.artifacts.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(source.directory / pin["license_path"], args.artifacts / "BouncyCastle-LICENSE.md")
