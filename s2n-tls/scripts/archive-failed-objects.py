@@ -1,7 +1,9 @@
-"""Reversibly archive serialized objects from inactive failed campaign attempts.
+"""Reversibly archive inactive serialized C objects with checked restoration.
 
-Successful product attempts, tools, sources, logs and executable outputs are
-outside this operation. Every archive member is checked before files are removed.
+The default accepts failed attempts only. Explicit --superseded additionally
+accepts complete historical translations absent from every current profile
+pointer. Tools, sources, published projects and executable outputs remain intact.
+Every archive member is checked before serialized intermediates are removed.
 """
 import argparse
 import hashlib
@@ -13,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def sha(path):
-    with path.open('rb') as stream:
+    with Path(path).open('rb') as stream:
         return hashlib.file_digest(stream, 'sha256').hexdigest()
 
 
@@ -21,16 +23,21 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--run', action='append', required=True)
     parser.add_argument('--restore', action='store_true')
+    parser.add_argument('--superseded', action='store_true',
+                        help='Archive complete passed historical translations only; every current profile pointer is protected.')
     args = parser.parse_args()
-    output = ROOT / 'artifacts/failed-object-archives'
+    output = ROOT / ('artifacts/superseded-object-archives' if args.superseded else 'artifacts/failed-object-archives')
     output.mkdir(exist_ok=True)
     for name in args.run:
         if Path(name).name != name:
             raise RuntimeError('A campaign run basename is required')
         record_path = ROOT / 'artifacts/campaign' / name / 'receipt.json'
         record = json.loads(record_path.read_text())
-        if record['status'] not in ('failed', 'cancelled'):
+        if not args.superseded and record['status'] not in ('failed', 'cancelled'):
             raise RuntimeError('Only failed/cancelled serialized objects may be archived')
+        if args.superseded and (record['status'] != 'passed' or record.get('action') not in ('translate', 'verify')
+                                or len(record.get('units', ())) != 175 or len(set(record['units'])) != 175):
+            raise RuntimeError('Superseded archival requires a complete passed175-unit translation')
         directory = ROOT / 'build/campaign' / name / 'objects'
         archive = output / (name + '.tar.gz')
         receipt = output / (name + '.json')
@@ -57,6 +64,13 @@ def main():
                         target.chmod(member.mode)
             print('RESTORED', directory)
             continue
+        protected = {}
+        if args.superseded:
+            for pointer in (ROOT / 'artifacts/campaign').glob('current-*.json'):
+                selected = json.loads(pointer.read_text())
+                if Path(selected['receipt']).parent.name == name:
+                    raise RuntimeError('A current profile still selects this translation: ' + str(pointer))
+                protected[str(pointer)] = sha(pointer)
         # A process may hold a snapshot through a command argument or cwd.
         # Refuse the operation if any live local process names this attempt.
         for process in Path('/proc').iterdir():
@@ -75,6 +89,8 @@ def main():
         if not files or any(not path.is_file() or path.is_symlink() or path.suffix != '.cs' for path in files):
             raise RuntimeError('Expected a nonempty flat serialized C object directory')
         inventory = {p.name: {'sha256': sha(p), 'size': p.stat().st_size} for p in files}
+        if args.superseded and len(files) != 175:
+            raise RuntimeError('Expected every175 serialized object in a superseded translation')
         temporary = archive.with_suffix('.gz.tmp')
         with tarfile.open(temporary, 'w:gz', compresslevel=3) as target:
             for path in files:
@@ -93,11 +109,15 @@ def main():
                     'directory': str(directory), 'files': inventory, 'archive': str(archive),
                     'archive_sha256': sha(archive), 'original_bytes': sum(x['size'] for x in inventory.values()),
                     'archive_bytes': archive.stat().st_size,
-                    'restore_command': ['python3', str(Path(__file__).resolve()), '--run', name, '--restore']}
+                    'protected_current_pointers_sha256': protected,
+                    'restore_command': ['python3', str(Path(__file__).resolve()), '--run', name, '--restore',
+                                        *(['--superseded'] if args.superseded else [])]}
         receipt.write_text(json.dumps(metadata, indent=2) + '\n')
         for path in files:
             if sha(path) != inventory[path.name]['sha256']:
                 raise RuntimeError('Object changed before verified archival removal: ' + str(path))
+        if any(sha(pointer) != expected for pointer, expected in protected.items()):
+            raise RuntimeError('Current profile selection changed during archival')
         for path in files:
             path.unlink()
         print('ARCHIVED', name, metadata['original_bytes'] - metadata['archive_bytes'], 'bytes recovered')
