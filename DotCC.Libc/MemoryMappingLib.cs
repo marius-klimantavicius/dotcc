@@ -9,6 +9,32 @@ namespace DotCC.Libc;
 
 public static unsafe partial class Libc
 {
+    /// <summary>Real Linux page residency and dump advice. These operate on
+    /// caller-owned addresses; failure preserves the kernel errno.</summary>
+    public static int madvise(void* address, ulong length, int advice)
+    {
+        if (!OperatingSystem.IsLinux() || IntPtr.Size != 8) { errno = ENOTSUP; return -1; }
+        int result = PosixMadvise(address, length, advice);
+        if (result != 0) errno = Marshal.GetLastPInvokeError();
+        return result;
+    }
+
+    public static int mlock(void* address, ulong length)
+    {
+        if (!OperatingSystem.IsLinux() || IntPtr.Size != 8) { errno = ENOTSUP; return -1; }
+        int result = PosixMlock(address, length);
+        if (result != 0) errno = Marshal.GetLastPInvokeError();
+        return result;
+    }
+
+    public static int munlock(void* address, ulong length)
+    {
+        if (!OperatingSystem.IsLinux() || IntPtr.Size != 8) { errno = ENOTSUP; return -1; }
+        int result = PosixMunlock(address, length);
+        if (result != 0) errno = Marshal.GetLastPInvokeError();
+        return result;
+    }
+
     private readonly record struct PosixMapping(ulong Start, ulong End, RuntimeContext? Owner);
     private static readonly Lock mappingGate = new();
     private static readonly List<PosixMapping> posixMappings = new();
@@ -96,4 +122,10 @@ public static unsafe partial class Libc
     private static extern void* PosixMmap(void* address, ulong length, int protection, int flags, int descriptor, long offset);
     [DllImport("libc", EntryPoint = "munmap", SetLastError = true)]
     private static extern int PosixMunmap(void* address, ulong length);
+    [DllImport("libc", EntryPoint = "madvise", SetLastError = true)]
+    private static extern int PosixMadvise(void* address, ulong length, int advice);
+    [DllImport("libc", EntryPoint = "mlock", SetLastError = true)]
+    private static extern int PosixMlock(void* address, ulong length);
+    [DllImport("libc", EntryPoint = "munlock", SetLastError = true)]
+    private static extern int PosixMunlock(void* address, ulong length);
 }

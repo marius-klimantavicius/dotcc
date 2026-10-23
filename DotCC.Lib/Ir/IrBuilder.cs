@@ -3533,8 +3533,8 @@ internal sealed partial class IrBuilder
     /// <summary>A positional struct/union aggregate initializer from an
     /// <c>InitList</c> — shared by local, file-scope, and static-local struct
     /// inits (see <see cref="BuildStructPositional"/>).</summary>
-    private StructInit BuildAggregateInit(CType type, Item initListItem) =>
-        BuildStructPositional(type, ParseInitList(initListItem));
+    private CExpr BuildAggregateInit(CType type, Item initListItem) =>
+        BuildFieldInitializer(type, new InitGroup(ParseInitList(initListItem)));
 
     private For BuildForDecl(C.StmtForDecl s)
     {

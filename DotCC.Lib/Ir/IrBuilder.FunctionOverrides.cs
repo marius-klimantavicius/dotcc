@@ -81,12 +81,12 @@ internal sealed partial class IrBuilder
         {
             CType.Prim or CType.VoidType or CType.Named or CType.Enum => true,
             CType.Pointer p => Supported(p.Pointee),
-            CType.Func f => rule.Target.PassInstance && !f.Variadic && !f.IsNativeCallConv
+            CType.Func f => rule.Target.Kind == "managedMethod" && !f.Variadic && !f.IsNativeCallConv
                 && Supported(f.Return) && f.Params.All(Supported),
             _ => false,
         };
         if (type.Variadic || !Supported(type.Return) || type.Params.Any(p => !Supported(p)))
-            throw CPreprocessingOptions.FunctionError(rule, "unsupported signature: variadic and volatile/atomic signatures are not supported; callbacks require passInstance with a managed target");
+            throw CPreprocessingOptions.FunctionError(rule, "unsupported signature: variadic and volatile/atomic signatures are not supported; callbacks require a managed target and managed calling convention");
         if (rule.Target.Kind == "intrinsic")
         {
             var intrinsic = FunctionOverrideIntrinsic.Find(rule.Target.Value)
