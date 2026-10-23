@@ -20,8 +20,8 @@
     },
     {
       "package": "api-qualification",
-      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Athread-send%3Aapi-r4-ec-state-final-qualification-continuation-20261024",
-      "backing_thread": "thread:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-api-qualification-r4-20261023",
+      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-api-r5-local-validation-recovery-20261024",
+      "backing_thread": "thread:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-api-r5-local-validation-recovery-20261024",
       "verified_model": "gpt-6.1-sol",
       "verified_reasoningEffort": "xhigh"
     }
@@ -57,6 +57,14 @@
       "package": "provider-rsa49-bounded-milestone",
       "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-provider-r2-recovery-20261023",
       "terminal_status": "completed49group/ABI/privatepublicRSA277 milestone; continued immediately in samechildconversation"
+    },
+    {
+      "package": "api-qualification",
+      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Athread-send%3Aapi-r4-ec-state-final-qualification-continuation-20261024",
+      "backing_thread": "thread:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-api-qualification-r4-20261023",
+      "verified_model": "gpt-6.1-sol",
+      "verified_reasoningEffort": "xhigh",
+      "terminal_status": "failed-content-flag; pending later turns cancelled; independent test controllers preserved"
     }
   ],
   "commits": [
@@ -150,7 +158,8 @@
     "rsa_framework_abi": "artifacts/campaign/20261024-022207-747d11cc/receipt.json",
     "ec_private_baseline": "artifacts/provider/ec-public-contract-private/20261023T233124Z-f06a1d30/receipt.json",
     "ec_api_reader_plan": "artifacts/managed-contract/api-r4-pre-ec-reader-plan.json",
-    "final_cross_raw_jit": "artifacts/managed-contract/final-rsa-stdio/cross-full-raw-jit.json"
+    "final_cross_raw_jit": "artifacts/managed-contract/final-rsa-stdio/cross-full-raw-jit.json",
+    "translated_python_controller_pid": 1648399
   },
   "discovery_correction": {
     "original": "artifacts/managed/full-owning-matrix/report.json",
@@ -161,7 +170,7 @@
     "interop_revalidation": "artifacts/managed-contract/discovery-interop-observation-audit.json",
     "lifecycle_rerun": "artifacts/managed/lifecycle-corrected-raw-jit/report.json"
   },
-  "orchestration_recovery": "r2 original failed with pending follow-up run; task_cancel stops all later turns after r3 recovery, preserving authored files/receipts.",
+  "orchestration_recovery": "API r4 continuation failed automated content flag; task_cancel held later turns, sole r5 gpt-6.1-sol/xhigh replacement retains unchanged existing controllers and file ownership.",
   "passed_scoped_gates": {
     "P0": "174upstream+1adapter/36suites/14SSLv3/78pairs",
     "P2": "223542raw+processed175/183bindings",
