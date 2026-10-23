@@ -1,0 +1,4 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><AllowUnsafeBlocks>true</AllowUnsafeBlocks><IsAotCompatible>true</IsAotCompatible></PropertyGroup>
+  <ItemGroup><Compile Include="../../src/Boundary/S2nHost.cs" Link="S2nHost.cs" /></ItemGroup>
+</Project>

@@ -1,5 +1,6 @@
 """s2n-tls source-to-managed campaign; policy lives in JSON metadata."""
 from pathlib import Path
+import json
 import os
 import shutil
 import xml.etree.ElementTree as ET
@@ -37,7 +38,7 @@ def prepare(ctx):
             raise RuntimeError("Invalid or missing selected source: " + name)
         # CMake force-includes this header. Materialize that input in the staged
         # TU because DotCC's CLI has no force-include option; never edit ref/.
-        path.write_text('#include "utils/s2n_prelude.h"\n' + path.read_text())
+        path.write_text('#include "utils/s2n_prelude.h"\n#include "dotcc_s2n_host.h"\n' + path.read_text())
     headers = ctx.work / "include"
     for header in policy.get("staged_headers", ()):
         destination = headers / header["destination"]
@@ -51,30 +52,47 @@ def prepare(ctx):
     options = ["-std=" + policy["dialect"], *flags([*policy["defines"], *provider["compiler_definitions"]], include_paths)]
     for name in policy.get("emit_defines", ()):
         options += ["--emit-define", name]
-    overrides = ctx.root / "config/dotcc-overrides.json"
-    if overrides.exists():
-        options += ["--overrides-file", str(overrides)]
-    provider_overrides = ctx.root / provider["override_file"]
-    if provider_overrides.exists():
-        override_snapshot = ctx.work / "provider-overrides.json"
-        shutil.copyfile(provider_overrides, override_snapshot)
-        options += ["--overrides-file", str(override_snapshot)]
+    merged = {"version": 1}
+    for profile_path in (ctx.root / "config/dotcc-overrides.json", ctx.root / provider["override_file"]):
+        profile = json_file(profile_path)
+        if profile["version"] != 1:
+            raise RuntimeError("Unsupported override profile: " + str(profile_path))
+        for name, value in profile.items():
+            if name != "version":
+                if not isinstance(value, list):
+                    raise RuntimeError("Expected override array: " + name)
+                merged.setdefault(name, []).extend(value)
+    override_snapshot = ctx.work / "provider-overrides.json"
+    override_snapshot.write_text(json.dumps(merged, indent=2) + "\n")
+    options += ["--overrides-file", str(override_snapshot)]
     ctx.receipt["s2n_configuration"] = policy
     ctx.receipt["source_manifest"] = manifest
-    return Translation([*[Unit(stage / name) for name in units], Unit(ctx.root / "src/Boundary/dotcc_s2n_compat.c")], options,
+    ctx.receipt["provider_configuration"] = provider
+    ctx.receipt["campaign_metadata"] = ctx.policy.manifest(
+        sorted((ctx.root / "config").rglob("*.json")), ctx.root)
+    ctx.receipt["override_snapshot"] = ctx.policy.manifest([override_snapshot], ctx.work)
+    return Translation([*[Unit(stage / name) for name in units],
+                        *[Unit(ctx.root / name) for name in policy["authored_units"]]], options,
                        [*link_flags("S2nTls", "Managed.Security.S2n"), "--prune-unused-inline"], objects=True, configure=configure)
 
 
 def configure(ctx, project, form):
     provider = json_file(ctx.root / "config/provider.json")
+    helper(ctx.root / "scripts/notices.py").stage(ctx.root, project.parent)
+    authored = [path for path in (ctx.root / "src").rglob("*")
+                if path.is_file() and not {"obj", "bin"}.intersection(path.relative_to(ctx.root).parts)]
+    ctx.receipt.setdefault("authored_inputs_at_configuration", {})[form] = ctx.policy.manifest(authored, ctx.root)
     tree = ET.parse(project)
     group = ET.SubElement(tree.getroot(), "ItemGroup")
     reference = os.path.relpath(ctx.root / provider["project_reference"], project.parent)
     if not any(node.get("Include") == reference for node in tree.iter("ProjectReference")):
         ET.SubElement(group, "ProjectReference", Include=reference)
-    for source in provider["authored_bindings"]:
+    for source in [*provider["authored_bindings"], "src/Boundary/S2nHost.cs"]:
         if not any(node.get("Link") == Path(source).name for node in tree.iter("Compile")):
             ET.SubElement(group, "Compile", Include=os.path.relpath(ctx.root / source, project.parent), Link=Path(source).name)
+    for name in ("THIRD-PARTY-NOTICES.txt", "notices/**/*"):
+        if not any(node.get("Update") == name for node in tree.iter("None")):
+            ET.SubElement(group, "None", Update=name, CopyToOutputDirectory="PreserveNewest", CopyToPublishDirectory="PreserveNewest")
     ET.indent(tree, space="  ")
     tree.write(project, encoding="unicode")
 
@@ -88,8 +106,10 @@ SUITES = ("native", "abi", "provider", "compatibility", "consumer", "upstream",
 
 recipe = Recipe(
     "s2n-tls", "TranslatedS2nTls", ("compat",),
-    ("samples/ManagedConsumer/ManagedConsumer.csproj",), sources, prepare,
-    consumer=Consumer(property="S2nTlsProject"),
+    ("src/CryptoProvider/CryptoProvider.csproj", "src/Managed.S2nTls/Managed.S2nTls.csproj",
+     "samples/ManagedConsumer/ManagedConsumer.csproj"), sources, prepare,
+    consumer=Consumer(property="S2nTlsProject", arguments=("--fixtures", "{root}/build/native/credentials",
+                                                        "--source", "{root}/ref/s2n-tls")),
     suites=tuple(Suite(name, (), run=run_suite, matrix=name != "native",
                        scope="s2n-tls " + name + " acceptance") for name in SUITES),
     default_suites=("consumer",), verify_suites=SUITES,

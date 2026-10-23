@@ -1,7 +1,7 @@
 # Current validation
 
-P0 passed. P1/P2 are in progress. All raw/processed × JIT/NativeAOT Linux x64
-translated TLS behavioral rows remain unrun. Native exchanges and independent
+P0 and P2 passed. P1 and P3–P6 remain open. The first raw JIT TLS consumer passed; the complete raw/processed × JIT/NativeAOT Linux x64
+behavioral matrix remains in progress. Native exchanges and independent
 provider tests do not establish translated product acceptance.
 
 Validated inputs/native baseline:
@@ -44,3 +44,23 @@ their own focused receipts and remain subject to complete-source retries.
 Required suites: native, abi, provider, compatibility, consumer, upstream,
 lifecycle, interop, rooted-aot, delivery, reproduction, shared-regressions.
 Each remains open until current case-level evidence is recorded here.
+
+Integration evidence:
+
+- Full 175-object emission and linking passed in `20261023-203434-5650c832` and `20261023-205255-fc99db78`. The latter raw build has only nine OCSP import names and three braced `va_list` initialization errors; no missing provider aggregate types or earlier host-service names remain. The 181-entry profile and `27c3194dc` address those findings; full retry `20261023-210200-74eee32f` is in progress.
+- `7aa3f97de`: static managed callback override tests pass twice (direct/object emission), sixty focused semantic override tests pass, three braced pointer runtime fixtures pass, and two actual Linux memory-residency/affected CPython mapping tests pass. Logs: `artifacts/compiler-discovery/{static-callback-overrides,static-callback-unit,braced-pointer-functional,memory-residency}.log`.
+- `27c3194dc`: braced-zero variadic cursor fixture executes copied/divergent cursors and passes. `artifacts/compiler-discovery/va-list-braced-zero.log`.
+- `python3 tests/CoreAbi/run.py --compiler ../DotCC/bin/Release/net10.0/dotcc.dll --mode all`: native/emitted upstream blob, stuffer, hash, cipher, policy, config and connection layouts/offsets/bitfields agree in JIT and NativeAOT. [Receipt](../artifacts/core-abi/receipt.json). This is a scoped actual-header probe, not the complete linked-product ABI gate.
+- Authored process-exit registry executes reverse-order retained callbacks and registration during draining, output `main;231`, in JIT and NativeAOT. Logs: `artifacts/compiler-discovery/atexit-{jit,aot}.log`.
+- Provider primitive runner now passes 42 groups in both JIT/NativeAOT. Actual emitted provider probe passes both modes with 181 exact typed declarations, actual native ASN1/GENERAL_NAME storage, digest cloning, callback identity/retention and zero live-context delta. [Probe receipt](../artifacts/provider/emitted-probe/receipt.json). Full255 capability advertisement is now backed by42 native differential groups in JIT/AOT and the actual emitted ABI/name/init/capability probe.
+- Exact-profile native compilation of all175 staged units reconciles176 real external crypto symbols against181 typed declarations, zero missing. [Closure receipt](../artifacts/provider/closure/20261023-205255-fc99db78/receipt.json). This import inventory is separate from operation semantics.
+- Original sixteen native-qualified upstream test C files emit unchanged except the required prelude; no assertions executed in managed code yet. [Emission receipt](../artifacts/managed-contract/upstream-native16-emission.json).
+- `python3 scripts/test-prerequisites.py --fetch never`: isolated Python3.12 dependencies, private GnuTLS/Apache binaries, original Java client asset and Apache configuration validation pass. [Receipt](../artifacts/test-prerequisites/receipt.json). The independently pinned previous-release native s2n CLI uses static pinned OpenSSL1.1.1w; no native TLS/crypto dynamic import appears in its `ldd` output. These peers are test prerequisites, not product dependencies or managed qualification.
+
+Full product build/publication milestone:
+
+- [20261023-210200-74eee32f](../artifacts/campaign/20261023-210200-74eee32f/receipt.json) passed all175-unit emission/linking, raw build, semantic context, postprocessing, processed build and both final canonical builds/publication. No generated C# edits. This is P2 build/source closure, not TLS execution or P6.
+
+- Actual canonical processed product/native layouts, offsets, bitfield bytes, managed function address and thread-local error identity pass JIT and NativeAOT: `artifacts/core-abi/product-first{,-aot}.json`. Full ABI runner matrix is in progress.
+- Actual owning raw JIT consumer passes forced SSLv3 RC4-MD5(0004), SSLv3 3DES(000a), TLS1.3 AES128-GCM(1301), exact versions/IDs,1027 binary bytes both directions, close_notify and cleanup: [first loopbacks](../artifacts/managed/first-ready-loopbacks/report.json). Full compatibility/interop/lifecycle matrix is in progress.
+- Focused shared regressions pass204 unit tests and10 functional tests, zero failures/skips: [211208-f1dd6d23](../artifacts/campaign/20261023-211208-f1dd6d23/receipt.json). The earlier211102 attempt included eight Windows-only oracle cases on Linux; the corrected selection explicitly targets the applicable emitted runtime fixtures.

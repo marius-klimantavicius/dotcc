@@ -3,6 +3,7 @@
   "dialect": "c99",
   "abi": "linux-x64-lp64-little-endian",
   "required_upstream_units": 174,
+  "authored_units": ["src/Boundary/dotcc_s2n_compat.c"],
   "defines": [
     "S2N_BUILD_RELEASE=1",
     "S2N_BLOCK_NONPORTABLE_OPTIMIZATIONS=1"

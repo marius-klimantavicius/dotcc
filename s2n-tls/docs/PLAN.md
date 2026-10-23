@@ -1,6 +1,6 @@
 # Translate s2n-tls to C# with DotCC
 
-Status: implementation authorized; P0 passed, P1/P2 in progress. Product acceptance remains incomplete.
+Status: implementation authorized; P0 and P2 passed; P1/P3–P6 remain in progress. Product acceptance remains incomplete.
 Campaign: `s2n-tls/`. Updated: 2026-10-23.
 
 This plan adopts [translation baseline v4](../../docs/plans/translation-baseline.md)
@@ -261,9 +261,9 @@ Do not push without authorization.
 | Phase | Concrete exit gate | Status | Planned evidence and remaining work |
 | --- | --- | --- | --- |
 | P0 — Scope/native baseline | Exact pins, 174-unit manifest reconciled to build, complete legacy inventory, recipe/layout, working native SSLv3/RC4 + TLS 1.3 controls and first full-source translation attempt. | Passed | Framework acquisition `20261023-200313-154db7b3`; source inventory 174/36/14/78; native `20261023T171931Z` passes 238 cases and 590,537 upstream assertions; full-source attempts have concrete compiler findings. |
-| P1 — Boundary feasibility | Real emitted/native ABI checks; legacy provider operations and truthful capability configuration; default compatibility policy; ownership and peer capability probes. | In progress | Independent managed primitive JIT/AOT checks pass; actual emitted ABI, complete binding/capability contract and ownership remain open. |
-| P2 — Complete translation | All selected units emit/link; raw and processed libraries build at canonical paths; no unresolved required imports or manual output repair. | In progress | Full-source retry reached 156 successful objects before the implicit-outer callback-array parser gap; repairing and retrying. No canonical product yet. |
-| P3 — Useful execution | Managed client/server execute forced SSLv3 RC4, SSLv3 3DES and TLS 1.3 round trips through translated code, with clean lifecycle. | Planned | Consumer and lifecycle reports in all four forms/modes. Intermediate modern-only success does not close this phase. |
+| P1 — Boundary feasibility | Real emitted/native ABI checks; legacy provider operations and truthful capability configuration; default compatibility policy; ownership and peer capability probes. | In progress | Native/emitted core and provider ABI probes pass JIT/AOT;38 provider groups pass both modes.176 actual crypto imports are covered by181 declarations. Complete linked-product ABI/operations, CRL validation audit/capabilities and managed ownership execution remain open. |
+| P2 — Complete translation | All selected units emit/link; raw and processed libraries build at canonical paths; no unresolved required imports or manual output repair. | Passed | Full175-unit attempt20261023-210200-74eee32f emitted/linked, built raw/processed, postprocessed and transactionally published both canonical projects.181 exact typed bindings compile. Behavioral/provider capability gates remain open. |
+| P3 — Useful execution | Managed client/server execute forced SSLv3 RC4, SSLv3 3DES and TLS 1.3 round trips through translated code, with clean lifecycle. | In progress | First raw JIT consumer passes all three forced exchanges, exact IDs/versions, binary payloads and close_notify/final cleanup. Remaining forms/modes and lifecycle matrix are running. |
 | P4 — Behavioral qualification | Every required suite/version/role row, applicable upstream cases, compatibility controls, errors and independent interop pass. | Planned | Case inventory and matrix reports; all 14 SSLv3 suite rows and all 36 negotiable suites accounted for. |
 | P5 — Consumer delivery | Root solution builds; separate ordinary consumer runs JIT and trimmed AOT; whole-library AOT and package/import/notices audits pass. | Planned | Consumer, copied-consumer, rooted-AOT and audit receipts. |
 | P6 — Reproduction/acceptance | Final-tool regeneration, complete verification matrix, affected shared regressions and reproduction checks pass. | Planned | `docs/validation.md` and current receipts; no required skipped/blocked row. |

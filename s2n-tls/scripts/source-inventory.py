@@ -29,7 +29,8 @@ def selected_units(source):
     if len(units) != len(set(units)):
         raise RuntimeError('Duplicate CMake units')
     return {'units': units, 'groups': groups, 'cmake_source': 'CMakeLists.txt',
-            'upstream_c_units': len(units), 'authored_units': []}
+            'upstream_c_units': len(units),
+            'authored_units': json.loads((ROOT / 'config/translation.json').read_text())['authored_units']}
 
 
 def suite_inventory(source):

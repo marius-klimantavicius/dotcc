@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+    <BouncyCastleVersion>$([System.Text.RegularExpressions.Regex]::Match($([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)../../config/provider.json')), '&quot;package_version&quot;\s*:\s*&quot;([^&quot;]+)&quot;').Groups[1].Value)</BouncyCastleVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <AssemblyName>Managed.S2nTls.CryptoProvider</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Compiled into the translated class, after actual type/name checks by the campaign. -->
+    <Compile Remove="Bindings/**/*.cs" />
+    <EmbeddedResource Include="openssl-oid-map.json" LogicalName="Managed.S2nTls.Crypto.openssl-oid-map.json" />
+    <PackageReference Include="BouncyCastle.Cryptography" Version="[$(BouncyCastleVersion)]" />
+  </ItemGroup>
+</Project>

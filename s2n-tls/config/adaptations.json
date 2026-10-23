@@ -119,6 +119,18 @@
       "old": "#ifndef _WIN32",
       "new": "#if !defined(_WIN32) && !defined(S2N_DOTCC_MANAGED_PROVIDER)",
       "reason": "kTLS is outside managed product: select existing upstream unsupported-platform errors without claiming Windows or kernel TLS support"
+    },
+    {
+      "path": "crypto/s2n_libcrypto.c",
+      "old": "static S2N_RESULT s2n_libcrypto_validate_expected_version_number(void)\n{",
+      "new": "#if !defined(S2N_DOTCC_MANAGED_PROVIDER)\nstatic S2N_RESULT s2n_libcrypto_validate_expected_version_number(void)\n{",
+      "reason": "Keep the native vendor-version helper outside the explicitly named managed provider; do not fabricate a native OpenSSL runtime identity"
+    },
+    {
+      "path": "crypto/s2n_libcrypto.c",
+      "old": "    RESULT_ENSURE(compile_time_version_number == run_time_version_number, S2N_ERR_LIBCRYPTO_VERSION_NUMBER_MISMATCH);\n\n    return S2N_RESULT_OK;\n}",
+      "new": "    RESULT_ENSURE(compile_time_version_number == run_time_version_number, S2N_ERR_LIBCRYPTO_VERSION_NUMBER_MISMATCH);\n\n    return S2N_RESULT_OK;\n}\n#endif",
+      "reason": "Keep the native vendor-version helper outside the explicitly named managed provider; do not fabricate a native OpenSSL runtime identity"
     }
   ]
 }

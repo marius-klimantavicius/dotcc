@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="generated/TranslatedS2nTls/TranslatedS2nTls.csproj" />
+  <Project Path="samples/ManagedConsumer/ManagedConsumer.csproj" />
+  <Project Path="src/CryptoProvider/CryptoProvider.csproj" />
+  <Project Path="src/Managed.S2nTls/Managed.S2nTls.csproj" />
+</Solution>

@@ -1,0 +1,7 @@
+{
+  "sources": {
+    "s2n-tls": ["LICENSE", "NOTICE"],
+    "openssl-legacy": ["LICENSE"],
+    "provider-managed": ["LICENSE.md"]
+  }
+}

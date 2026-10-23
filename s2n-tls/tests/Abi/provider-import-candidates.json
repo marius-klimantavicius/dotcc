@@ -1,0 +1,1503 @@
+{
+  "scope": "source call candidates, including macros/inactive branches; not linked imports",
+  "unit_count": 174,
+  "units": [
+    "crypto/s2n_aead_cipher_aes_gcm.c",
+    "crypto/s2n_aead_cipher_chacha20_poly1305.c",
+    "crypto/s2n_cbc_cipher_3des.c",
+    "crypto/s2n_cbc_cipher_aes.c",
+    "crypto/s2n_certificate.c",
+    "crypto/s2n_cipher.c",
+    "crypto/s2n_composite_cipher_aes_sha.c",
+    "crypto/s2n_crypto.c",
+    "crypto/s2n_dhe.c",
+    "crypto/s2n_ecc_evp.c",
+    "crypto/s2n_evp_kem.c",
+    "crypto/s2n_fips.c",
+    "crypto/s2n_fips_rules.c",
+    "crypto/s2n_hash.c",
+    "crypto/s2n_hkdf.c",
+    "crypto/s2n_hmac.c",
+    "crypto/s2n_libcrypto.c",
+    "crypto/s2n_locking.c",
+    "crypto/s2n_mldsa.c",
+    "crypto/s2n_openssl_x509.c",
+    "crypto/s2n_pkey.c",
+    "crypto/s2n_pkey_evp.c",
+    "crypto/s2n_pq.c",
+    "crypto/s2n_prf_libcrypto.c",
+    "crypto/s2n_rsa_pss.c",
+    "crypto/s2n_sequence.c",
+    "crypto/s2n_stream_cipher_null.c",
+    "crypto/s2n_stream_cipher_rc4.c",
+    "crypto/s2n_tls13_keys.c",
+    "error/s2n_errno.c",
+    "stuffer/s2n_stuffer.c",
+    "stuffer/s2n_stuffer_base64.c",
+    "stuffer/s2n_stuffer_hex.c",
+    "stuffer/s2n_stuffer_network_order.c",
+    "stuffer/s2n_stuffer_pem.c",
+    "stuffer/s2n_stuffer_text.c",
+    "tls/extensions/s2n_cert_authorities.c",
+    "tls/extensions/s2n_cert_status.c",
+    "tls/extensions/s2n_cert_status_response.c",
+    "tls/extensions/s2n_client_alpn.c",
+    "tls/extensions/s2n_client_cert_status_request.c",
+    "tls/extensions/s2n_client_cookie.c",
+    "tls/extensions/s2n_client_early_data_indication.c",
+    "tls/extensions/s2n_client_ems.c",
+    "tls/extensions/s2n_client_key_share.c",
+    "tls/extensions/s2n_client_max_frag_len.c",
+    "tls/extensions/s2n_client_pq_kem.c",
+    "tls/extensions/s2n_client_psk.c",
+    "tls/extensions/s2n_client_renegotiation_info.c",
+    "tls/extensions/s2n_client_sct_list.c",
+    "tls/extensions/s2n_client_server_name.c",
+    "tls/extensions/s2n_client_session_ticket.c",
+    "tls/extensions/s2n_client_signature_algorithms.c",
+    "tls/extensions/s2n_client_supported_groups.c",
+    "tls/extensions/s2n_client_supported_versions.c",
+    "tls/extensions/s2n_ec_point_format.c",
+    "tls/extensions/s2n_extension_list.c",
+    "tls/extensions/s2n_extension_type.c",
+    "tls/extensions/s2n_extension_type_lists.c",
+    "tls/extensions/s2n_key_share.c",
+    "tls/extensions/s2n_npn.c",
+    "tls/extensions/s2n_nst_early_data_indication.c",
+    "tls/extensions/s2n_psk_key_exchange_modes.c",
+    "tls/extensions/s2n_quic_transport_params.c",
+    "tls/extensions/s2n_server_alpn.c",
+    "tls/extensions/s2n_server_cert_status_request.c",
+    "tls/extensions/s2n_server_cookie.c",
+    "tls/extensions/s2n_server_early_data_indication.c",
+    "tls/extensions/s2n_server_ems.c",
+    "tls/extensions/s2n_server_key_share.c",
+    "tls/extensions/s2n_server_max_fragment_length.c",
+    "tls/extensions/s2n_server_psk.c",
+    "tls/extensions/s2n_server_renegotiation_info.c",
+    "tls/extensions/s2n_server_sct_list.c",
+    "tls/extensions/s2n_server_server_name.c",
+    "tls/extensions/s2n_server_session_ticket.c",
+    "tls/extensions/s2n_server_signature_algorithms.c",
+    "tls/extensions/s2n_server_supported_versions.c",
+    "tls/extensions/s2n_supported_versions.c",
+    "tls/s2n_aead.c",
+    "tls/s2n_alerts.c",
+    "tls/s2n_async_offload.c",
+    "tls/s2n_async_pkey.c",
+    "tls/s2n_auth_selection.c",
+    "tls/s2n_cbc.c",
+    "tls/s2n_certificate_keys.c",
+    "tls/s2n_change_cipher_spec.c",
+    "tls/s2n_cipher_preferences.c",
+    "tls/s2n_cipher_suites.c",
+    "tls/s2n_client_cert.c",
+    "tls/s2n_client_cert_verify.c",
+    "tls/s2n_client_finished.c",
+    "tls/s2n_client_hello.c",
+    "tls/s2n_client_hello_request.c",
+    "tls/s2n_client_key_exchange.c",
+    "tls/s2n_config.c",
+    "tls/s2n_connection.c",
+    "tls/s2n_connection_serialize.c",
+    "tls/s2n_crl.c",
+    "tls/s2n_crypto.c",
+    "tls/s2n_early_data.c",
+    "tls/s2n_early_data_io.c",
+    "tls/s2n_ecc_preferences.c",
+    "tls/s2n_encrypted_extensions.c",
+    "tls/s2n_establish_session.c",
+    "tls/s2n_fingerprint.c",
+    "tls/s2n_fingerprint_ja3.c",
+    "tls/s2n_fingerprint_ja4.c",
+    "tls/s2n_handshake.c",
+    "tls/s2n_handshake_hashes.c",
+    "tls/s2n_handshake_io.c",
+    "tls/s2n_handshake_transcript.c",
+    "tls/s2n_handshake_type.c",
+    "tls/s2n_kem.c",
+    "tls/s2n_kem_preferences.c",
+    "tls/s2n_kex.c",
+    "tls/s2n_key_log.c",
+    "tls/s2n_key_update.c",
+    "tls/s2n_ktls.c",
+    "tls/s2n_ktls_io.c",
+    "tls/s2n_next_protocol.c",
+    "tls/s2n_ocsp_stapling.c",
+    "tls/s2n_policy_writer.c",
+    "tls/s2n_post_handshake.c",
+    "tls/s2n_prf.c",
+    "tls/s2n_protocol_preferences.c",
+    "tls/s2n_psk.c",
+    "tls/s2n_quic_support.c",
+    "tls/s2n_record_read.c",
+    "tls/s2n_record_read_aead.c",
+    "tls/s2n_record_read_cbc.c",
+    "tls/s2n_record_read_composite.c",
+    "tls/s2n_record_read_stream.c",
+    "tls/s2n_record_write.c",
+    "tls/s2n_recv.c",
+    "tls/s2n_renegotiate.c",
+    "tls/s2n_resume.c",
+    "tls/s2n_security_policies.c",
+    "tls/s2n_security_rules.c",
+    "tls/s2n_send.c",
+    "tls/s2n_server_cert.c",
+    "tls/s2n_server_cert_request.c",
+    "tls/s2n_server_done.c",
+    "tls/s2n_server_extensions.c",
+    "tls/s2n_server_finished.c",
+    "tls/s2n_server_hello.c",
+    "tls/s2n_server_hello_retry.c",
+    "tls/s2n_server_key_exchange.c",
+    "tls/s2n_server_new_session_ticket.c",
+    "tls/s2n_shutdown.c",
+    "tls/s2n_signature_algorithms.c",
+    "tls/s2n_signature_scheme.c",
+    "tls/s2n_supported_group_preferences.c",
+    "tls/s2n_tls.c",
+    "tls/s2n_tls13.c",
+    "tls/s2n_tls13_certificate_verify.c",
+    "tls/s2n_tls13_handshake.c",
+    "tls/s2n_tls13_key_schedule.c",
+    "tls/s2n_tls13_secrets.c",
+    "tls/s2n_x509_validator.c",
+    "utils/s2n_array.c",
+    "utils/s2n_atomic.c",
+    "utils/s2n_blob.c",
+    "utils/s2n_ensure.c",
+    "utils/s2n_events.c",
+    "utils/s2n_init.c",
+    "utils/s2n_io.c",
+    "utils/s2n_map.c",
+    "utils/s2n_mem.c",
+    "utils/s2n_random.c",
+    "utils/s2n_rfc5952.c",
+    "utils/s2n_safety.c",
+    "utils/s2n_socket.c",
+    "utils/s2n_timer.c"
+  ],
+  "headers": [
+    "openssl/aes.h",
+    "openssl/asn1.h",
+    "openssl/bn.h",
+    "openssl/core_names.h",
+    "openssl/crypto.h",
+    "openssl/des.h",
+    "openssl/dh.h",
+    "openssl/ecdh.h",
+    "openssl/err.h",
+    "openssl/evp.h",
+    "openssl/hkdf.h",
+    "openssl/hmac.h",
+    "openssl/kdf.h",
+    "openssl/md5.h",
+    "openssl/mem.h",
+    "openssl/objects.h",
+    "openssl/ocsp.h",
+    "openssl/opensslv.h",
+    "openssl/pem.h",
+    "openssl/rand.h",
+    "openssl/rc4.h",
+    "openssl/rsa.h",
+    "openssl/sha.h",
+    "openssl/x509.h",
+    "openssl/x509v3.h"
+  ],
+  "symbols": {
+    "ASN1_GENERALIZEDTIME_set": [
+      "tls/s2n_x509_validator.c:1103"
+    ],
+    "ASN1_OBJECT_free": [
+      "crypto/s2n_certificate.c:696"
+    ],
+    "ASN1_STRING_data": [
+      "crypto/s2n_openssl_x509.h:39"
+    ],
+    "ASN1_STRING_free": [
+      "crypto/s2n_certificate.c:704",
+      "crypto/s2n_openssl_x509.c:42"
+    ],
+    "ASN1_STRING_get0_data": [
+      "crypto/s2n_openssl_x509.h:37"
+    ],
+    "ASN1_STRING_length": [
+      "crypto/s2n_certificate.c:237",
+      "crypto/s2n_certificate.c:726",
+      "crypto/s2n_certificate.c:834",
+      "tls/s2n_x509_validator.c:240",
+      "tls/s2n_x509_validator.c:254",
+      "tls/s2n_x509_validator.c:350"
+    ],
+    "ASN1_STRING_to_UTF8": [
+      "crypto/s2n_certificate.c:301"
+    ],
+    "ASN1_STRING_type": [
+      "crypto/s2n_certificate.c:723",
+      "tls/s2n_x509_validator.c:339",
+      "tls/s2n_x509_validator.c:340",
+      "tls/s2n_x509_validator.c:341",
+      "tls/s2n_x509_validator.c:342",
+      "tls/s2n_x509_validator.c:343"
+    ],
+    "ASN1_TIME_diff": [
+      "tls/s2n_x509_validator.c:1121",
+      "tls/s2n_x509_validator.c:1127"
+    ],
+    "BN_bin2bn": [
+      "crypto/s2n_dhe.c:152",
+      "crypto/s2n_dhe.c:153",
+      "crypto/s2n_dhe.c:154",
+      "crypto/s2n_dhe.c:362"
+    ],
+    "BN_bn2bin": [
+      "crypto/s2n_dhe.c:260",
+      "crypto/s2n_dhe.c:265",
+      "crypto/s2n_dhe.c:270",
+      "crypto/s2n_dhe.c:308"
+    ],
+    "BN_cmp": [
+      "crypto/s2n_dhe.c:139"
+    ],
+    "BN_dup": [
+      "crypto/s2n_dhe.c:133"
+    ],
+    "BN_free": [
+      "crypto/s2n_dhe.c:136",
+      "crypto/s2n_dhe.c:140"
+    ],
+    "BN_is_one": [
+      "crypto/s2n_dhe.c:128"
+    ],
+    "BN_is_zero": [
+      "crypto/s2n_dhe.c:104",
+      "crypto/s2n_dhe.c:105",
+      "crypto/s2n_dhe.c:127"
+    ],
+    "BN_num_bytes": [
+      "crypto/s2n_dhe.c:240",
+      "crypto/s2n_dhe.c:241",
+      "crypto/s2n_dhe.c:242",
+      "crypto/s2n_dhe.c:293"
+    ],
+    "BN_sub_word": [
+      "crypto/s2n_dhe.c:135"
+    ],
+    "CRYPTO_get_locking_callback": [
+      "crypto/s2n_locking.c:68",
+      "crypto/s2n_locking.c:90"
+    ],
+    "CRYPTO_num_locks": [
+      "crypto/s2n_locking.c:72"
+    ],
+    "CRYPTO_pre_sandbox_init": [
+      "utils/s2n_init.c:91"
+    ],
+    "CRYPTO_set_locking_callback": [
+      "crypto/s2n_locking.c:84",
+      "crypto/s2n_locking.c:91"
+    ],
+    "CRYPTO_tls1_prf": [
+      "crypto/s2n_prf_libcrypto.c:33",
+      "crypto/s2n_prf_libcrypto.c:79"
+    ],
+    "DH_check": [
+      "crypto/s2n_dhe.c:380"
+    ],
+    "DH_compute_key": [
+      "crypto/s2n_dhe.c:317",
+      "crypto/s2n_dhe.c:366"
+    ],
+    "DH_free": [
+      "crypto/s2n_dhe.c:409"
+    ],
+    "DH_generate_key": [
+      "crypto/s2n_dhe.c:401"
+    ],
+    "DH_get0_key": [
+      "crypto/s2n_dhe.c:43"
+    ],
+    "DH_get0_pqg": [
+      "crypto/s2n_dhe.c:55",
+      "crypto/s2n_dhe.c:84"
+    ],
+    "DH_new": [
+      "crypto/s2n_dhe.c:220"
+    ],
+    "DH_set0_key": [
+      "crypto/s2n_dhe.c:163"
+    ],
+    "DH_set0_pqg": [
+      "crypto/s2n_dhe.c:160"
+    ],
+    "DH_size": [
+      "crypto/s2n_dhe.c:103",
+      "crypto/s2n_dhe.c:200",
+      "crypto/s2n_dhe.c:288",
+      "crypto/s2n_dhe.c:316",
+      "crypto/s2n_dhe.c:340"
+    ],
+    "EC_GROUP_get_curve_name": [
+      "crypto/s2n_openssl_x509.c:143",
+      "tls/s2n_signature_algorithms.c:442"
+    ],
+    "EC_KEY_check_fips": [
+      "crypto/s2n_ecc_evp.c:219"
+    ],
+    "EC_KEY_check_key": [
+      "crypto/s2n_ecc_evp.c:224"
+    ],
+    "EC_KEY_get0_group": [
+      "crypto/s2n_ecc_evp.c:387",
+      "crypto/s2n_ecc_evp.c:463",
+      "crypto/s2n_openssl_x509.c:141",
+      "tls/s2n_signature_algorithms.c:440"
+    ],
+    "EC_KEY_get0_public_key": [
+      "crypto/s2n_ecc_evp.c:462"
+    ],
+    "EC_KEY_new_by_curve_name": [
+      "crypto/s2n_ecc_evp.c:329",
+      "crypto/s2n_ecc_evp.c:530"
+    ],
+    "EC_KEY_set_public_key": [
+      "crypto/s2n_ecc_evp.c:336",
+      "crypto/s2n_ecc_evp.c:539"
+    ],
+    "EC_POINT_free": [
+      "crypto/s2n_ecc_evp.c:393"
+    ],
+    "EC_POINT_new": [
+      "crypto/s2n_ecc_evp.c:388"
+    ],
+    "EC_POINT_oct2point": [
+      "crypto/s2n_ecc_evp.c:392"
+    ],
+    "EC_POINT_point2oct": [
+      "crypto/s2n_ecc_evp.c:371",
+      "crypto/s2n_ecc_evp.c:380"
+    ],
+    "ERR_ENTRIES": [
+      "error/s2n_errno.c:51",
+      "error/s2n_errno.c:345",
+      "error/s2n_errno.c:368"
+    ],
+    "ERR_ENTRY": [
+      "error/s2n_errno.c:52",
+      "error/s2n_errno.c:53",
+      "error/s2n_errno.c:54",
+      "error/s2n_errno.c:55",
+      "error/s2n_errno.c:56",
+      "error/s2n_errno.c:57",
+      "error/s2n_errno.c:58",
+      "error/s2n_errno.c:59",
+      "error/s2n_errno.c:60",
+      "error/s2n_errno.c:61",
+      "error/s2n_errno.c:62",
+      "error/s2n_errno.c:63",
+      "error/s2n_errno.c:64",
+      "error/s2n_errno.c:65",
+      "error/s2n_errno.c:66",
+      "error/s2n_errno.c:67",
+      "error/s2n_errno.c:68",
+      "error/s2n_errno.c:69",
+      "error/s2n_errno.c:70",
+      "error/s2n_errno.c:71",
+      "error/s2n_errno.c:72",
+      "error/s2n_errno.c:73",
+      "error/s2n_errno.c:74",
+      "error/s2n_errno.c:75",
+      "error/s2n_errno.c:76",
+      "error/s2n_errno.c:77",
+      "error/s2n_errno.c:78",
+      "error/s2n_errno.c:79",
+      "error/s2n_errno.c:80",
+      "error/s2n_errno.c:81",
+      "error/s2n_errno.c:82",
+      "error/s2n_errno.c:83",
+      "error/s2n_errno.c:84",
+      "error/s2n_errno.c:85",
+      "error/s2n_errno.c:86",
+      "error/s2n_errno.c:87",
+      "error/s2n_errno.c:88",
+      "error/s2n_errno.c:89",
+      "error/s2n_errno.c:90",
+      "error/s2n_errno.c:91",
+      "error/s2n_errno.c:92",
+      "error/s2n_errno.c:93",
+      "error/s2n_errno.c:94",
+      "error/s2n_errno.c:95",
+      "error/s2n_errno.c:96",
+      "error/s2n_errno.c:97",
+      "error/s2n_errno.c:98",
+      "error/s2n_errno.c:99",
+      "error/s2n_errno.c:100",
+      "error/s2n_errno.c:101",
+      "error/s2n_errno.c:102",
+      "error/s2n_errno.c:103",
+      "error/s2n_errno.c:104",
+      "error/s2n_errno.c:105",
+      "error/s2n_errno.c:106",
+      "error/s2n_errno.c:107",
+      "error/s2n_errno.c:108",
+      "error/s2n_errno.c:109",
+      "error/s2n_errno.c:110",
+      "error/s2n_errno.c:111",
+      "error/s2n_errno.c:112",
+      "error/s2n_errno.c:113",
+      "error/s2n_errno.c:114",
+      "error/s2n_errno.c:115",
+      "error/s2n_errno.c:116",
+      "error/s2n_errno.c:117",
+      "error/s2n_errno.c:118",
+      "error/s2n_errno.c:119",
+      "error/s2n_errno.c:120",
+      "error/s2n_errno.c:121",
+      "error/s2n_errno.c:122",
+      "error/s2n_errno.c:123",
+      "error/s2n_errno.c:124",
+      "error/s2n_errno.c:125",
+      "error/s2n_errno.c:126",
+      "error/s2n_errno.c:127",
+      "error/s2n_errno.c:128",
+      "error/s2n_errno.c:129",
+      "error/s2n_errno.c:130",
+      "error/s2n_errno.c:131",
+      "error/s2n_errno.c:132",
+      "error/s2n_errno.c:133",
+      "error/s2n_errno.c:134",
+      "error/s2n_errno.c:135",
+      "error/s2n_errno.c:136",
+      "error/s2n_errno.c:137",
+      "error/s2n_errno.c:138",
+      "error/s2n_errno.c:139",
+      "error/s2n_errno.c:140",
+      "error/s2n_errno.c:141",
+      "error/s2n_errno.c:142",
+      "error/s2n_errno.c:143",
+      "error/s2n_errno.c:144",
+      "error/s2n_errno.c:145",
+      "error/s2n_errno.c:146",
+      "error/s2n_errno.c:147",
+      "error/s2n_errno.c:148",
+      "error/s2n_errno.c:149",
+      "error/s2n_errno.c:150",
+      "error/s2n_errno.c:151",
+      "error/s2n_errno.c:152",
+      "error/s2n_errno.c:153",
+      "error/s2n_errno.c:154",
+      "error/s2n_errno.c:155",
+      "error/s2n_errno.c:156",
+      "error/s2n_errno.c:157",
+      "error/s2n_errno.c:158",
+      "error/s2n_errno.c:159",
+      "error/s2n_errno.c:160",
+      "error/s2n_errno.c:161",
+      "error/s2n_errno.c:162",
+      "error/s2n_errno.c:163",
+      "error/s2n_errno.c:164",
+      "error/s2n_errno.c:165",
+      "error/s2n_errno.c:166",
+      "error/s2n_errno.c:167",
+      "error/s2n_errno.c:168",
+      "error/s2n_errno.c:169",
+      "error/s2n_errno.c:170",
+      "error/s2n_errno.c:171",
+      "error/s2n_errno.c:172",
+      "error/s2n_errno.c:173",
+      "error/s2n_errno.c:174",
+      "error/s2n_errno.c:175",
+      "error/s2n_errno.c:176",
+      "error/s2n_errno.c:177",
+      "error/s2n_errno.c:178",
+      "error/s2n_errno.c:179",
+      "error/s2n_errno.c:180",
+      "error/s2n_errno.c:181",
+      "error/s2n_errno.c:182",
+      "error/s2n_errno.c:183",
+      "error/s2n_errno.c:184",
+      "error/s2n_errno.c:185",
+      "error/s2n_errno.c:186",
+      "error/s2n_errno.c:187",
+      "error/s2n_errno.c:188",
+      "error/s2n_errno.c:189",
+      "error/s2n_errno.c:190",
+      "error/s2n_errno.c:191",
+      "error/s2n_errno.c:192",
+      "error/s2n_errno.c:193",
+      "error/s2n_errno.c:194",
+      "error/s2n_errno.c:195",
+      "error/s2n_errno.c:196",
+      "error/s2n_errno.c:197",
+      "error/s2n_errno.c:198",
+      "error/s2n_errno.c:199",
+      "error/s2n_errno.c:200",
+      "error/s2n_errno.c:201",
+      "error/s2n_errno.c:202",
+      "error/s2n_errno.c:203",
+      "error/s2n_errno.c:204",
+      "error/s2n_errno.c:205",
+      "error/s2n_errno.c:206",
+      "error/s2n_errno.c:207",
+      "error/s2n_errno.c:208",
+      "error/s2n_errno.c:209",
+      "error/s2n_errno.c:210",
+      "error/s2n_errno.c:211",
+      "error/s2n_errno.c:212",
+      "error/s2n_errno.c:213",
+      "error/s2n_errno.c:214",
+      "error/s2n_errno.c:215",
+      "error/s2n_errno.c:216",
+      "error/s2n_errno.c:217",
+      "error/s2n_errno.c:218",
+      "error/s2n_errno.c:219",
+      "error/s2n_errno.c:220",
+      "error/s2n_errno.c:221",
+      "error/s2n_errno.c:222",
+      "error/s2n_errno.c:223",
+      "error/s2n_errno.c:224",
+      "error/s2n_errno.c:225",
+      "error/s2n_errno.c:226",
+      "error/s2n_errno.c:227",
+      "error/s2n_errno.c:228",
+      "error/s2n_errno.c:229",
+      "error/s2n_errno.c:230",
+      "error/s2n_errno.c:231",
+      "error/s2n_errno.c:232",
+      "error/s2n_errno.c:233",
+      "error/s2n_errno.c:234",
+      "error/s2n_errno.c:235",
+      "error/s2n_errno.c:236",
+      "error/s2n_errno.c:237",
+      "error/s2n_errno.c:238",
+      "error/s2n_errno.c:239",
+      "error/s2n_errno.c:240",
+      "error/s2n_errno.c:241",
+      "error/s2n_errno.c:242",
+      "error/s2n_errno.c:243",
+      "error/s2n_errno.c:244",
+      "error/s2n_errno.c:245",
+      "error/s2n_errno.c:246",
+      "error/s2n_errno.c:247",
+      "error/s2n_errno.c:248",
+      "error/s2n_errno.c:249",
+      "error/s2n_errno.c:250",
+      "error/s2n_errno.c:251",
+      "error/s2n_errno.c:252",
+      "error/s2n_errno.c:253",
+      "error/s2n_errno.c:254",
+      "error/s2n_errno.c:255",
+      "error/s2n_errno.c:256",
+      "error/s2n_errno.c:257",
+      "error/s2n_errno.c:258",
+      "error/s2n_errno.c:259",
+      "error/s2n_errno.c:260",
+      "error/s2n_errno.c:261",
+      "error/s2n_errno.c:262",
+      "error/s2n_errno.c:263",
+      "error/s2n_errno.c:264",
+      "error/s2n_errno.c:265",
+      "error/s2n_errno.c:266",
+      "error/s2n_errno.c:267",
+      "error/s2n_errno.c:268",
+      "error/s2n_errno.c:269",
+      "error/s2n_errno.c:270",
+      "error/s2n_errno.c:271",
+      "error/s2n_errno.c:272",
+      "error/s2n_errno.c:273",
+      "error/s2n_errno.c:274",
+      "error/s2n_errno.c:275",
+      "error/s2n_errno.c:276",
+      "error/s2n_errno.c:277",
+      "error/s2n_errno.c:278",
+      "error/s2n_errno.c:279",
+      "error/s2n_errno.c:280",
+      "error/s2n_errno.c:281",
+      "error/s2n_errno.c:282",
+      "error/s2n_errno.c:283",
+      "error/s2n_errno.c:284",
+      "error/s2n_errno.c:285",
+      "error/s2n_errno.c:286",
+      "error/s2n_errno.c:287",
+      "error/s2n_errno.c:288",
+      "error/s2n_errno.c:289",
+      "error/s2n_errno.c:290",
+      "error/s2n_errno.c:291",
+      "error/s2n_errno.c:292",
+      "error/s2n_errno.c:293",
+      "error/s2n_errno.c:294",
+      "error/s2n_errno.c:295",
+      "error/s2n_errno.c:296",
+      "error/s2n_errno.c:297",
+      "error/s2n_errno.c:298",
+      "error/s2n_errno.c:299",
+      "error/s2n_errno.c:300",
+      "error/s2n_errno.c:301",
+      "error/s2n_errno.c:302",
+      "error/s2n_errno.c:303",
+      "error/s2n_errno.c:304",
+      "error/s2n_errno.c:305",
+      "error/s2n_errno.c:306",
+      "error/s2n_errno.c:307",
+      "error/s2n_errno.c:308",
+      "error/s2n_errno.c:309",
+      "error/s2n_errno.c:310",
+      "error/s2n_errno.c:311",
+      "error/s2n_errno.c:312",
+      "error/s2n_errno.c:313",
+      "error/s2n_errno.c:314",
+      "error/s2n_errno.c:315",
+      "error/s2n_errno.c:316",
+      "error/s2n_errno.c:317",
+      "error/s2n_errno.c:318",
+      "error/s2n_errno.c:319",
+      "error/s2n_errno.c:320",
+      "error/s2n_errno.c:321",
+      "error/s2n_errno.c:322",
+      "error/s2n_errno.c:323"
+    ],
+    "ERR_GET_REASON": [
+      "tls/s2n_x509_validator.c:123"
+    ],
+    "ERR_NAME_CASE": [
+      "error/s2n_errno.c:329"
+    ],
+    "ERR_STR_CASE": [
+      "error/s2n_errno.c:326"
+    ],
+    "ERR_get_error": [
+      "tls/s2n_x509_validator.c:122"
+    ],
+    "EVP_AEAD_CTX_cleanup": [
+      "crypto/s2n_aead_cipher_aes_gcm.c:201",
+      "crypto/s2n_aead_cipher_chacha20_poly1305.c:229"
+    ],
+    "EVP_AEAD_CTX_free": [
+      "crypto/s2n_cipher.c:50"
+    ],
+    "EVP_AEAD_CTX_init": [
+      "crypto/s2n_aead_cipher_aes_gcm.c:99",
+      "crypto/s2n_aead_cipher_aes_gcm.c:111",
+      "crypto/s2n_aead_cipher_aes_gcm.c:123",
+      "crypto/s2n_aead_cipher_aes_gcm.c:135",
+      "crypto/s2n_aead_cipher_aes_gcm.c:147",
+      "crypto/s2n_aead_cipher_aes_gcm.c:159",
+      "crypto/s2n_aead_cipher_aes_gcm.c:171",
+      "crypto/s2n_aead_cipher_aes_gcm.c:183",
+      "crypto/s2n_aead_cipher_chacha20_poly1305.c:206",
+      "crypto/s2n_aead_cipher_chacha20_poly1305.c:215"
+    ],
+    "EVP_AEAD_CTX_open": [
+      "crypto/s2n_aead_cipher_aes_gcm.c:85",
+      "crypto/s2n_aead_cipher_chacha20_poly1305.c:195"
+    ],
+    "EVP_AEAD_CTX_seal": [
+      "crypto/s2n_aead_cipher_aes_gcm.c:63",
+      "crypto/s2n_aead_cipher_chacha20_poly1305.c:179"
+    ],
+    "EVP_AEAD_CTX_zero": [
+      "crypto/s2n_aead_cipher_aes_gcm.c:192",
+      "crypto/s2n_aead_cipher_chacha20_poly1305.c:222",
+      "crypto/s2n_cipher.c:36"
+    ],
+    "EVP_CIPHER_CTX_cleanup": [
+      "crypto/s2n_aead_cipher_aes_gcm.c:369",
+      "crypto/s2n_aead_cipher_chacha20_poly1305.c:160",
+      "crypto/s2n_cbc_cipher_3des.c:87",
+      "crypto/s2n_cbc_cipher_aes.c:114",
+      "crypto/s2n_composite_cipher_aes_sha.c:305",
+      "crypto/s2n_stream_cipher_rc4.c:96"
+    ],
+    "EVP_CIPHER_CTX_ctrl": [
+      "crypto/s2n_aead_cipher_aes_gcm.c:237",
+      "crypto/s2n_aead_cipher_aes_gcm.c:259",
+      "crypto/s2n_aead_cipher_aes_gcm.c:286",
+      "crypto/s2n_aead_cipher_aes_gcm.c:299",
+      "crypto/s2n_aead_cipher_aes_gcm.c:312",
+      "crypto/s2n_aead_cipher_aes_gcm.c:325",
+      "crypto/s2n_aead_cipher_chacha20_poly1305.c:82",
+      "crypto/s2n_aead_cipher_chacha20_poly1305.c:104",
+      "crypto/s2n_aead_cipher_chacha20_poly1305.c:131",
+      "crypto/s2n_aead_cipher_chacha20_poly1305.c:144",
+      "crypto/s2n_composite_cipher_aes_sha.c:154",
+      "crypto/s2n_composite_cipher_aes_sha.c:194",
+      "crypto/s2n_composite_cipher_aes_sha.c:203"
+    ],
+    "EVP_CIPHER_CTX_free": [
+      "crypto/s2n_cipher.c:32",
+      "crypto/s2n_cipher.c:45"
+    ],
+    "EVP_CIPHER_CTX_init": [
+      "crypto/s2n_openssl.h:44",
+      "crypto/s2n_openssl.h:45",
+      "crypto/s2n_openssl.h:47",
+      "crypto/s2n_openssl.h:48"
+    ],
+    "EVP_CIPHER_CTX_new": [
+      "crypto/s2n_cipher.c:27"
+    ],
+    "EVP_CIPHER_CTX_set_padding": [
+      "crypto/s2n_cbc_cipher_3des.c:62",
+      "crypto/s2n_cbc_cipher_3des.c:73",
+      "crypto/s2n_cbc_cipher_aes.c:67",
+      "crypto/s2n_cbc_cipher_aes.c:78",
+      "crypto/s2n_cbc_cipher_aes.c:89",
+      "crypto/s2n_cbc_cipher_aes.c:100",
+      "crypto/s2n_composite_cipher_aes_sha.c:214",
+      "crypto/s2n_composite_cipher_aes_sha.c:225",
+      "crypto/s2n_composite_cipher_aes_sha.c:236",
+      "crypto/s2n_composite_cipher_aes_sha.c:247",
+      "crypto/s2n_composite_cipher_aes_sha.c:258",
+      "crypto/s2n_composite_cipher_aes_sha.c:269",
+      "crypto/s2n_composite_cipher_aes_sha.c:280",
+      "crypto/s2n_composite_cipher_aes_sha.c:291"
+    ],
+    "EVP_DecodeBlock": [
+      "stuffer/s2n_stuffer_base64.c:63"
+    ],
+    "EVP_DecryptFinal_ex": [
+      "crypto/s2n_aead_cipher_aes_gcm.c:273",
+      "crypto/s2n_aead_cipher_chacha20_poly1305.c:118"
+    ],
+    "EVP_DecryptInit_ex": [
+      "crypto/s2n_aead_cipher_aes_gcm.c:252",
+      "crypto/s2n_aead_cipher_aes_gcm.c:310",
+      "crypto/s2n_aead_cipher_aes_gcm.c:314",
+      "crypto/s2n_aead_cipher_aes_gcm.c:323",
+      "crypto/s2n_aead_cipher_aes_gcm.c:327",
+      "crypto/s2n_aead_cipher_chacha20_poly1305.c:97",
+      "crypto/s2n_aead_cipher_chacha20_poly1305.c:142",
+      "crypto/s2n_aead_cipher_chacha20_poly1305.c:146",
+      "crypto/s2n_cbc_cipher_3des.c:47",
+      "crypto/s2n_cbc_cipher_3des.c:60",
+      "crypto/s2n_cbc_cipher_aes.c:52",
+      "crypto/s2n_cbc_cipher_aes.c:65",
+      "crypto/s2n_cbc_cipher_aes.c:87",
+      "crypto/s2n_composite_cipher_aes_sha.c:181",
+      "crypto/s2n_composite_cipher_aes_sha.c:223",
+      "crypto/s2n_composite_cipher_aes_sha.c:245",
+      "crypto/s2n_composite_cipher_aes_sha.c:267",
+      "crypto/s2n_composite_cipher_aes_sha.c:289",
+      "crypto/s2n_stream_cipher_rc4.c:82"
+    ],
+    "EVP_DecryptUpdate": [
+      "crypto/s2n_aead_cipher_aes_gcm.c:266",
+      "crypto/s2n_aead_cipher_aes_gcm.c:270",
+      "crypto/s2n_aead_cipher_chacha20_poly1305.c:111",
+      "crypto/s2n_aead_cipher_chacha20_poly1305.c:115",
+      "crypto/s2n_cbc_cipher_3des.c:50",
+      "crypto/s2n_cbc_cipher_aes.c:55",
+      "crypto/s2n_composite_cipher_aes_sha.c:184",
+      "crypto/s2n_stream_cipher_rc4.c:64"
+    ],
+    "EVP_DigestFinalXOF": [
+      "crypto/s2n_hash.c:253"
+    ],
+    "EVP_DigestFinal_ex": [
+      "crypto/s2n_hash.c:241",
+      "crypto/s2n_hash.c:242",
+      "crypto/s2n_hash.c:262"
+    ],
+    "EVP_DigestInit_ex": [
+      "crypto/s2n_hash.c:182",
+      "crypto/s2n_hash.c:185",
+      "crypto/s2n_hash.c:193"
+    ],
+    "EVP_DigestSignFinal": [
+      "crypto/s2n_pkey_evp.c:140"
+    ],
+    "EVP_DigestUpdate": [
+      "crypto/s2n_hash.c:206",
+      "crypto/s2n_hash.c:210"
+    ],
+    "EVP_DigestVerifyFinal": [
+      "crypto/s2n_pkey_evp.c:230"
+    ],
+    "EVP_EncodeBlock": [
+      "stuffer/s2n_stuffer_base64.c:116"
+    ],
+    "EVP_EncryptFinal_ex": [
+      "crypto/s2n_aead_cipher_aes_gcm.c:234",
+      "crypto/s2n_aead_cipher_chacha20_poly1305.c:79"
+    ],
+    "EVP_EncryptInit_ex": [
+      "crypto/s2n_aead_cipher_aes_gcm.c:216",
+      "crypto/s2n_aead_cipher_aes_gcm.c:284",
+      "crypto/s2n_aead_cipher_aes_gcm.c:288",
+      "crypto/s2n_aead_cipher_aes_gcm.c:297",
+      "crypto/s2n_aead_cipher_aes_gcm.c:301",
+      "crypto/s2n_aead_cipher_chacha20_poly1305.c:61",
+      "crypto/s2n_aead_cipher_chacha20_poly1305.c:129",
+      "crypto/s2n_aead_cipher_chacha20_poly1305.c:133",
+      "crypto/s2n_cbc_cipher_3des.c:33",
+      "crypto/s2n_cbc_cipher_3des.c:71",
+      "crypto/s2n_cbc_cipher_aes.c:38",
+      "crypto/s2n_cbc_cipher_aes.c:76",
+      "crypto/s2n_cbc_cipher_aes.c:98",
+      "crypto/s2n_composite_cipher_aes_sha.c:167",
+      "crypto/s2n_composite_cipher_aes_sha.c:212",
+      "crypto/s2n_composite_cipher_aes_sha.c:234",
+      "crypto/s2n_composite_cipher_aes_sha.c:256",
+      "crypto/s2n_composite_cipher_aes_sha.c:278",
+      "crypto/s2n_stream_cipher_rc4.c:74"
+    ],
+    "EVP_EncryptUpdate": [
+      "crypto/s2n_aead_cipher_aes_gcm.c:225",
+      "crypto/s2n_aead_cipher_aes_gcm.c:228",
+      "crypto/s2n_aead_cipher_chacha20_poly1305.c:70",
+      "crypto/s2n_aead_cipher_chacha20_poly1305.c:73",
+      "crypto/s2n_cbc_cipher_3des.c:37",
+      "crypto/s2n_cbc_cipher_aes.c:42",
+      "crypto/s2n_composite_cipher_aes_sha.c:171",
+      "crypto/s2n_stream_cipher_rc4.c:51"
+    ],
+    "EVP_KDF_CTX_get_kdf_size": [
+      "crypto/s2n_hkdf.c:231"
+    ],
+    "EVP_KDF_CTX_new": [
+      "crypto/s2n_hkdf.c:200",
+      "crypto/s2n_prf_libcrypto.c:148"
+    ],
+    "EVP_KDF_CTX_set_params": [
+      "crypto/s2n_hkdf.c:230"
+    ],
+    "EVP_KDF_derive": [
+      "crypto/s2n_hkdf.c:237",
+      "crypto/s2n_prf_libcrypto.c:169"
+    ],
+    "EVP_KDF_fetch": [
+      "crypto/s2n_hkdf.c:196",
+      "crypto/s2n_prf_libcrypto.c:144"
+    ],
+    "EVP_MD_CTX_cleanup": [
+      "crypto/s2n_evp.h:36"
+    ],
+    "EVP_MD_CTX_copy_ex": [
+      "crypto/s2n_hash.c:273",
+      "crypto/s2n_hash.c:277"
+    ],
+    "EVP_MD_CTX_create": [
+      "crypto/s2n_evp.h:35"
+    ],
+    "EVP_MD_CTX_destroy": [
+      "crypto/s2n_evp.h:37"
+    ],
+    "EVP_MD_CTX_free": [
+      "crypto/s2n_evp.h:33"
+    ],
+    "EVP_MD_CTX_md": [
+      "crypto/s2n_hash.c:205",
+      "crypto/s2n_hash.c:209",
+      "crypto/s2n_hash.c:227",
+      "crypto/s2n_hash.c:230"
+    ],
+    "EVP_MD_CTX_new": [
+      "crypto/s2n_evp.h:31"
+    ],
+    "EVP_MD_CTX_reset": [
+      "crypto/s2n_evp.h:32"
+    ],
+    "EVP_MD_CTX_set_pkey_ctx": [
+      "crypto/s2n_pkey_evp.c:35"
+    ],
+    "EVP_MD_CTX_size": [
+      "crypto/s2n_hash.c:238",
+      "crypto/s2n_hash.c:239",
+      "crypto/s2n_hash.c:261"
+    ],
+    "EVP_MD_fetch": [
+      "crypto/s2n_hash.c:60",
+      "crypto/s2n_hash.c:61",
+      "crypto/s2n_hash.c:62",
+      "crypto/s2n_hash.c:63",
+      "crypto/s2n_hash.c:64",
+      "crypto/s2n_hash.c:65",
+      "crypto/s2n_hash.c:66",
+      "crypto/s2n_hash.c:67"
+    ],
+    "EVP_MD_free": [
+      "crypto/s2n_hash.c:98"
+    ],
+    "EVP_MD_get0_name": [
+      "crypto/s2n_hkdf.c:207",
+      "crypto/s2n_prf_libcrypto.c:137"
+    ],
+    "EVP_PKEY_CTX_kem_set_params": [
+      "crypto/s2n_evp_kem.c:37"
+    ],
+    "EVP_PKEY_CTX_new": [
+      "crypto/s2n_ecc_evp.c:190",
+      "crypto/s2n_ecc_evp.c:258",
+      "crypto/s2n_evp_kem.c:62",
+      "crypto/s2n_evp_kem.c:84",
+      "crypto/s2n_pkey_evp.c:81",
+      "crypto/s2n_pkey_evp.c:311",
+      "crypto/s2n_pkey_evp.c:344"
+    ],
+    "EVP_PKEY_CTX_new_from_pkey": [
+      "crypto/s2n_pkey_evp.c:78"
+    ],
+    "EVP_PKEY_CTX_new_id": [
+      "crypto/s2n_ecc_evp.c:166",
+      "crypto/s2n_ecc_evp.c:180",
+      "crypto/s2n_ecc_evp.c:320",
+      "crypto/s2n_ecc_evp.c:516",
+      "crypto/s2n_evp_kem.c:35"
+    ],
+    "EVP_PKEY_CTX_set_ec_paramgen_curve_nid": [
+      "crypto/s2n_ecc_evp.c:184",
+      "crypto/s2n_ecc_evp.c:323",
+      "crypto/s2n_ecc_evp.c:519"
+    ],
+    "EVP_PKEY_CTX_set_rsa_padding": [
+      "crypto/s2n_pkey_evp.c:201",
+      "crypto/s2n_pkey_evp.c:274",
+      "crypto/s2n_pkey_evp.c:314",
+      "crypto/s2n_pkey_evp.c:348"
+    ],
+    "EVP_PKEY_CTX_set_rsa_pss_saltlen": [
+      "crypto/s2n_pkey_evp.c:45"
+    ],
+    "EVP_PKEY_CTX_set_signature_md": [
+      "crypto/s2n_evp.h:45"
+    ],
+    "EVP_PKEY_base_id": [
+      "crypto/s2n_openssl_x509.c:138",
+      "crypto/s2n_openssl_x509.c:145",
+      "crypto/s2n_pkey.c:253"
+    ],
+    "EVP_PKEY_bits": [
+      "crypto/s2n_openssl_x509.c:135"
+    ],
+    "EVP_PKEY_decapsulate": [
+      "crypto/s2n_evp_kem.c:88"
+    ],
+    "EVP_PKEY_decrypt": [
+      "crypto/s2n_pkey_evp.c:351"
+    ],
+    "EVP_PKEY_decrypt_init": [
+      "crypto/s2n_pkey_evp.c:346"
+    ],
+    "EVP_PKEY_derive": [
+      "crypto/s2n_ecc_evp.c:263",
+      "crypto/s2n_ecc_evp.c:266"
+    ],
+    "EVP_PKEY_derive_init": [
+      "crypto/s2n_ecc_evp.c:261"
+    ],
+    "EVP_PKEY_derive_set_peer": [
+      "crypto/s2n_ecc_evp.c:262"
+    ],
+    "EVP_PKEY_encapsulate": [
+      "crypto/s2n_evp_kem.c:67"
+    ],
+    "EVP_PKEY_encrypt": [
+      "crypto/s2n_pkey_evp.c:317"
+    ],
+    "EVP_PKEY_encrypt_init": [
+      "crypto/s2n_pkey_evp.c:313"
+    ],
+    "EVP_PKEY_free": [
+      "crypto/s2n_ecc_evp.c:587",
+      "crypto/s2n_pkey.c:186"
+    ],
+    "EVP_PKEY_get1_EC_KEY": [
+      "crypto/s2n_ecc_evp.c:251",
+      "crypto/s2n_ecc_evp.c:460",
+      "crypto/s2n_openssl_x509.c:139",
+      "tls/s2n_signature_algorithms.c:438"
+    ],
+    "EVP_PKEY_get1_tls_encodedpoint": [
+      "crypto/s2n_ecc_evp.c:453"
+    ],
+    "EVP_PKEY_get_raw_private_key": [
+      "crypto/s2n_evp_kem.c:48"
+    ],
+    "EVP_PKEY_get_raw_public_key": [
+      "crypto/s2n_evp_kem.c:45",
+      "crypto/s2n_mldsa.c:67"
+    ],
+    "EVP_PKEY_id": [
+      "crypto/s2n_openssl_x509.c:153"
+    ],
+    "EVP_PKEY_kem_new_raw_public_key": [
+      "crypto/s2n_evp_kem.c:59"
+    ],
+    "EVP_PKEY_kem_new_raw_secret_key": [
+      "crypto/s2n_evp_kem.c:81"
+    ],
+    "EVP_PKEY_keygen": [
+      "crypto/s2n_ecc_evp.c:171",
+      "crypto/s2n_ecc_evp.c:194",
+      "crypto/s2n_evp_kem.c:41"
+    ],
+    "EVP_PKEY_keygen_init": [
+      "crypto/s2n_ecc_evp.c:170",
+      "crypto/s2n_ecc_evp.c:193",
+      "crypto/s2n_evp_kem.c:38"
+    ],
+    "EVP_PKEY_new": [
+      "crypto/s2n_ecc_evp.c:309",
+      "crypto/s2n_ecc_evp.c:511",
+      "crypto/s2n_ecc_evp.c:526"
+    ],
+    "EVP_PKEY_paramgen": [
+      "crypto/s2n_ecc_evp.c:187",
+      "crypto/s2n_ecc_evp.c:324",
+      "crypto/s2n_ecc_evp.c:520"
+    ],
+    "EVP_PKEY_paramgen_init": [
+      "crypto/s2n_ecc_evp.c:183",
+      "crypto/s2n_ecc_evp.c:322",
+      "crypto/s2n_ecc_evp.c:518"
+    ],
+    "EVP_PKEY_pqdsa_get_type": [
+      "crypto/s2n_openssl_x509.c:150",
+      "tls/s2n_signature_algorithms.c:467"
+    ],
+    "EVP_PKEY_set1_EC_KEY": [
+      "crypto/s2n_ecc_evp.c:337",
+      "crypto/s2n_ecc_evp.c:541"
+    ],
+    "EVP_PKEY_set1_tls_encodedpoint": [
+      "crypto/s2n_ecc_evp.c:326",
+      "crypto/s2n_ecc_evp.c:522"
+    ],
+    "EVP_PKEY_set_type": [
+      "crypto/s2n_ecc_evp.c:318",
+      "crypto/s2n_ecc_evp.c:514"
+    ],
+    "EVP_PKEY_sign": [
+      "crypto/s2n_pkey_evp.c:177"
+    ],
+    "EVP_PKEY_sign_init": [
+      "crypto/s2n_pkey_evp.c:194"
+    ],
+    "EVP_PKEY_size": [
+      "crypto/s2n_pkey_evp.c:293"
+    ],
+    "EVP_PKEY_verify": [
+      "crypto/s2n_pkey_evp.c:251"
+    ],
+    "EVP_PKEY_verify_init": [
+      "crypto/s2n_pkey_evp.c:267"
+    ],
+    "EVP_aead_aes_128_gcm": [
+      "crypto/s2n_aead_cipher_aes_gcm.c:28"
+    ],
+    "EVP_aead_aes_128_gcm_tls12": [
+      "crypto/s2n_aead_cipher_aes_gcm.c:99",
+      "crypto/s2n_aead_cipher_aes_gcm.c:123"
+    ],
+    "EVP_aead_aes_128_gcm_tls13": [
+      "crypto/s2n_aead_cipher_aes_gcm.c:147",
+      "crypto/s2n_aead_cipher_aes_gcm.c:171"
+    ],
+    "EVP_aead_aes_256_gcm": [
+      "crypto/s2n_aead_cipher_aes_gcm.c:37"
+    ],
+    "EVP_aead_aes_256_gcm_tls12": [
+      "crypto/s2n_aead_cipher_aes_gcm.c:111",
+      "crypto/s2n_aead_cipher_aes_gcm.c:135"
+    ],
+    "EVP_aead_aes_256_gcm_tls13": [
+      "crypto/s2n_aead_cipher_aes_gcm.c:159",
+      "crypto/s2n_aead_cipher_aes_gcm.c:183"
+    ],
+    "EVP_aead_chacha20_poly1305": [
+      "crypto/s2n_aead_cipher_chacha20_poly1305.c:206",
+      "crypto/s2n_aead_cipher_chacha20_poly1305.c:215"
+    ],
+    "EVP_aes_128_cbc": [
+      "crypto/s2n_cbc_cipher_aes.c:26",
+      "crypto/s2n_cbc_cipher_aes.c:65",
+      "crypto/s2n_cbc_cipher_aes.c:76"
+    ],
+    "EVP_aes_128_cbc_hmac_sha1": [
+      "crypto/s2n_composite_cipher_aes_sha.c:56"
+    ],
+    "EVP_aes_128_cbc_hmac_sha256": [
+      "crypto/s2n_composite_cipher_aes_sha.c:74"
+    ],
+    "EVP_aes_128_gcm": [
+      "crypto/s2n_aead_cipher_aes_gcm.c:30",
+      "crypto/s2n_aead_cipher_aes_gcm.c:284",
+      "crypto/s2n_aead_cipher_aes_gcm.c:310"
+    ],
+    "EVP_aes_256_cbc": [
+      "crypto/s2n_cbc_cipher_aes.c:31",
+      "crypto/s2n_cbc_cipher_aes.c:87",
+      "crypto/s2n_cbc_cipher_aes.c:98"
+    ],
+    "EVP_aes_256_cbc_hmac_sha1": [
+      "crypto/s2n_composite_cipher_aes_sha.c:65"
+    ],
+    "EVP_aes_256_cbc_hmac_sha256": [
+      "crypto/s2n_composite_cipher_aes_sha.c:83"
+    ],
+    "EVP_aes_256_gcm": [
+      "crypto/s2n_aead_cipher_aes_gcm.c:39",
+      "crypto/s2n_aead_cipher_aes_gcm.c:297",
+      "crypto/s2n_aead_cipher_aes_gcm.c:323"
+    ],
+    "EVP_chacha20_poly1305": [
+      "crypto/s2n_aead_cipher_chacha20_poly1305.c:129",
+      "crypto/s2n_aead_cipher_chacha20_poly1305.c:142"
+    ],
+    "EVP_cleanup": [
+      "tls/s2n_cipher_suites.c:1068"
+    ],
+    "EVP_default_properties_is_fips_enabled": [
+      "crypto/s2n_fips.c:51"
+    ],
+    "EVP_des_ede3_cbc": [
+      "crypto/s2n_cbc_cipher_3des.c:26",
+      "crypto/s2n_cbc_cipher_3des.c:60",
+      "crypto/s2n_cbc_cipher_3des.c:71"
+    ],
+    "EVP_md5": [
+      "crypto/s2n_hash.c:69",
+      "crypto/s2n_hmac.c:395"
+    ],
+    "EVP_md5_sha1": [
+      "crypto/s2n_hash.c:83",
+      "crypto/s2n_prf_libcrypto.c:50"
+    ],
+    "EVP_rc4": [
+      "crypto/s2n_stream_cipher_rc4.c:27"
+    ],
+    "EVP_sha1": [
+      "crypto/s2n_hash.c:70",
+      "crypto/s2n_hmac.c:399",
+      "tls/s2n_x509_validator.c:1075"
+    ],
+    "EVP_sha224": [
+      "crypto/s2n_hash.c:71",
+      "crypto/s2n_hmac.c:402"
+    ],
+    "EVP_sha256": [
+      "crypto/s2n_hash.c:72",
+      "crypto/s2n_hmac.c:405"
+    ],
+    "EVP_sha384": [
+      "crypto/s2n_hash.c:73",
+      "crypto/s2n_hmac.c:408"
+    ],
+    "EVP_sha512": [
+      "crypto/s2n_hash.c:74",
+      "crypto/s2n_hmac.c:411"
+    ],
+    "EVP_shake256": [
+      "crypto/s2n_hash.c:76"
+    ],
+    "OBJ_cmp": [
+      "crypto/s2n_certificate.c:821"
+    ],
+    "OBJ_find_sigid_algs": [
+      "crypto/s2n_openssl_x509.c:121"
+    ],
+    "OBJ_obj2nid": [
+      "crypto/s2n_openssl_x509.c:110"
+    ],
+    "OBJ_txt2obj": [
+      "crypto/s2n_certificate.c:794",
+      "tls/s2n_config.c:901"
+    ],
+    "OCSP_CERTID_free": [
+      "tls/s2n_x509_validator.c:1091"
+    ],
+    "OCSP_basic_verify": [
+      "tls/s2n_x509_validator.c:1065"
+    ],
+    "OCSP_cert_to_id": [
+      "tls/s2n_x509_validator.c:1075"
+    ],
+    "OCSP_resp_find_status": [
+      "tls/s2n_x509_validator.c:1090"
+    ],
+    "OCSP_response_get1_basic": [
+      "tls/s2n_x509_validator.c:1038"
+    ],
+    "OCSP_response_status": [
+      "tls/s2n_x509_validator.c:1035"
+    ],
+    "OPENSSL_free": [
+      "crypto/s2n_crypto.c:33"
+    ],
+    "OPENSSL_init_crypto": [
+      "tls/s2n_cipher_suites.c:1040"
+    ],
+    "OPENSSL_malloc": [
+      "crypto/s2n_cipher.c:30"
+    ],
+    "RAND_bytes": [
+      "utils/s2n_random.c:136",
+      "utils/s2n_random.c:148"
+    ],
+    "RAND_priv_bytes": [
+      "utils/s2n_random.c:129"
+    ],
+    "RAND_public_bytes": [
+      "utils/s2n_random.c:146"
+    ],
+    "SSLeay": [
+      "crypto/s2n_libcrypto.c:93"
+    ],
+    "SSLeay_version": [
+      "crypto/s2n_libcrypto.c:60"
+    ],
+    "X509_CRL_free": [
+      "tls/s2n_crl.c:68"
+    ],
+    "X509_CRL_get_issuer": [
+      "tls/s2n_crl.c:85"
+    ],
+    "X509_CRL_get_lastUpdate": [
+      "tls/s2n_crl.c:103"
+    ],
+    "X509_CRL_get_nextUpdate": [
+      "tls/s2n_crl.c:118"
+    ],
+    "X509_EXTENSION_get_critical": [
+      "crypto/s2n_certificate.c:853"
+    ],
+    "X509_EXTENSION_get_data": [
+      "crypto/s2n_certificate.c:829"
+    ],
+    "X509_EXTENSION_get_object": [
+      "crypto/s2n_certificate.c:815"
+    ],
+    "X509_NAME_ENTRY_get_data": [
+      "crypto/s2n_certificate.c:286",
+      "tls/s2n_x509_validator.c:335"
+    ],
+    "X509_NAME_cmp": [
+      "crypto/s2n_openssl_x509.c:102"
+    ],
+    "X509_NAME_get0_der": [
+      "tls/extensions/s2n_cert_authorities.c:67"
+    ],
+    "X509_NAME_get_entry": [
+      "crypto/s2n_certificate.c:281",
+      "tls/s2n_x509_validator.c:335"
+    ],
+    "X509_NAME_get_index_by_NID": [
+      "crypto/s2n_certificate.c:280",
+      "tls/s2n_x509_validator.c:325"
+    ],
+    "X509_NAME_hash": [
+      "tls/s2n_crl.c:90"
+    ],
+    "X509_OBJECT_get0_X509": [
+      "tls/extensions/s2n_cert_authorities.c:53"
+    ],
+    "X509_STORE_CTX_add_custom_crit_oid": [
+      "tls/s2n_x509_validator.c:749"
+    ],
+    "X509_STORE_CTX_free": [
+      "tls/s2n_x509_validator.c:203"
+    ],
+    "X509_STORE_CTX_get0_chain": [
+      "tls/s2n_x509_validator.c:510"
+    ],
+    "X509_STORE_CTX_get0_param": [
+      "tls/s2n_x509_validator.c:668",
+      "tls/s2n_x509_validator.c:821"
+    ],
+    "X509_STORE_CTX_get1_chain": [
+      "tls/s2n_x509_validator.c:513"
+    ],
+    "X509_STORE_CTX_get_error": [
+      "tls/s2n_crl.c:240",
+      "tls/s2n_x509_validator.c:683",
+      "tls/s2n_x509_validator.c:874"
+    ],
+    "X509_STORE_CTX_init": [
+      "tls/s2n_x509_validator.c:649"
+    ],
+    "X509_STORE_CTX_new": [
+      "tls/s2n_x509_validator.c:181"
+    ],
+    "X509_STORE_CTX_set0_crls": [
+      "tls/s2n_x509_validator.c:833"
+    ],
+    "X509_STORE_CTX_set_flags": [
+      "tls/s2n_x509_validator.c:868"
+    ],
+    "X509_STORE_CTX_set_time": [
+      "tls/s2n_x509_validator.c:860"
+    ],
+    "X509_STORE_CTX_set_verify_cb": [
+      "tls/s2n_x509_validator.c:724",
+      "tls/s2n_x509_validator.c:827"
+    ],
+    "X509_STORE_CTX_set_verify_crit_oids": [
+      "tls/s2n_x509_validator.c:759"
+    ],
+    "X509_STORE_add_cert": [
+      "tls/s2n_x509_validator.c:121"
+    ],
+    "X509_STORE_free": [
+      "tls/s2n_x509_validator.c:149"
+    ],
+    "X509_STORE_get0_objects": [
+      "tls/extensions/s2n_cert_authorities.c:43"
+    ],
+    "X509_STORE_load_locations": [
+      "tls/s2n_x509_validator.c:137"
+    ],
+    "X509_STORE_new": [
+      "tls/s2n_config.c:288",
+      "tls/s2n_x509_validator.c:100",
+      "tls/s2n_x509_validator.c:133"
+    ],
+    "X509_STORE_set_default_paths": [
+      "tls/s2n_config.c:292"
+    ],
+    "X509_VERIFY_PARAM_set_depth": [
+      "tls/s2n_x509_validator.c:822"
+    ],
+    "X509_VERIFY_PARAM_set_flags": [
+      "tls/s2n_x509_validator.c:672",
+      "tls/s2n_x509_validator.c:836",
+      "tls/s2n_x509_validator.c:840"
+    ],
+    "X509_check_issued": [
+      "tls/s2n_x509_validator.c:1055"
+    ],
+    "X509_check_purpose": [
+      "tls/s2n_x509_validator.c:780"
+    ],
+    "X509_cmp_time": [
+      "tls/s2n_crl.c:106",
+      "tls/s2n_crl.c:124"
+    ],
+    "X509_get_ext": [
+      "crypto/s2n_certificate.c:807"
+    ],
+    "X509_get_ext_count": [
+      "crypto/s2n_certificate.c:785"
+    ],
+    "X509_get_ext_d2i": [
+      "crypto/s2n_certificate.c:221",
+      "tls/s2n_x509_validator.c:290"
+    ],
+    "X509_get_issuer_name": [
+      "crypto/s2n_openssl_x509.c:96"
+    ],
+    "X509_get_pubkey": [
+      "crypto/s2n_openssl_x509.c:132",
+      "crypto/s2n_pkey.c:283"
+    ],
+    "X509_get_signature_nid": [
+      "crypto/s2n_openssl_x509.c:112"
+    ],
+    "X509_get_subject_name": [
+      "crypto/s2n_certificate.c:274",
+      "crypto/s2n_openssl_x509.c:99",
+      "tls/extensions/s2n_cert_authorities.c:59",
+      "tls/s2n_x509_validator.c:320"
+    ],
+    "X509_issuer_name_hash": [
+      "tls/s2n_crl.c:258"
+    ],
+    "X509_verify_cert": [
+      "tls/s2n_x509_validator.c:872"
+    ],
+    "d2i_ASN1_UTF8STRING": [
+      "crypto/s2n_certificate.c:718"
+    ],
+    "d2i_AutoPrivateKey": [
+      "crypto/s2n_pkey.c:202"
+    ],
+    "d2i_DHparams": [
+      "crypto/s2n_dhe.c:188"
+    ],
+    "d2i_OCSP_RESPONSE": [
+      "tls/s2n_x509_validator.c:1031"
+    ],
+    "d2i_PrivateKey": [
+      "crypto/s2n_pkey.c:218"
+    ],
+    "d2i_X509": [
+      "crypto/s2n_certificate.c:777",
+      "crypto/s2n_openssl_x509.c:55",
+      "tls/s2n_x509_validator.c:118"
+    ],
+    "d2i_X509_CRL": [
+      "tls/s2n_crl.c:52"
+    ],
+    "i2d_X509": [
+      "tls/s2n_connection.c:1626"
+    ],
+    "sk_ASN1_OBJECT_new_null": [
+      "tls/s2n_config.c:887"
+    ],
+    "sk_ASN1_OBJECT_num": [
+      "tls/s2n_x509_validator.c:745"
+    ],
+    "sk_ASN1_OBJECT_pop_free": [
+      "tls/s2n_config.c:132"
+    ],
+    "sk_ASN1_OBJECT_push": [
+      "tls/s2n_config.c:903"
+    ],
+    "sk_ASN1_OBJECT_value": [
+      "tls/s2n_x509_validator.c:747"
+    ],
+    "sk_GENERAL_NAME_num": [
+      "crypto/s2n_certificate.c:227",
+      "tls/s2n_x509_validator.c:293"
+    ],
+    "sk_GENERAL_NAME_value": [
+      "crypto/s2n_certificate.c:229",
+      "tls/s2n_x509_validator.c:298"
+    ],
+    "sk_X509_CRL_new_null": [
+      "tls/s2n_x509_validator.c:829"
+    ],
+    "sk_X509_CRL_push": [
+      "tls/s2n_crl.c:150"
+    ],
+    "sk_X509_OBJECT_num": [
+      "tls/extensions/s2n_cert_authorities.c:46"
+    ],
+    "sk_X509_OBJECT_value": [
+      "tls/extensions/s2n_cert_authorities.c:50"
+    ],
+    "sk_X509_new_null": [
+      "tls/s2n_x509_validator.c:164",
+      "tls/s2n_x509_validator.c:184"
+    ],
+    "sk_X509_num": [
+      "tls/s2n_connection.c:1619",
+      "tls/s2n_connection.c:1988",
+      "tls/s2n_crl.c:204",
+      "tls/s2n_x509_validator.c:560",
+      "tls/s2n_x509_validator.c:588",
+      "tls/s2n_x509_validator.c:596",
+      "tls/s2n_x509_validator.c:626",
+      "tls/s2n_x509_validator.c:797",
+      "tls/s2n_x509_validator.c:1000",
+      "tls/s2n_x509_validator.c:1046"
+    ],
+    "sk_X509_pop_free": [
+      "crypto/s2n_openssl_x509.c:27",
+      "tls/s2n_x509_validator.c:196"
+    ],
+    "sk_X509_push": [
+      "tls/s2n_x509_validator.c:607"
+    ],
+    "sk_X509_value": [
+      "tls/s2n_connection.c:1623",
+      "tls/s2n_connection.c:1992",
+      "tls/s2n_crl.c:213",
+      "tls/s2n_x509_validator.c:562",
+      "tls/s2n_x509_validator.c:642",
+      "tls/s2n_x509_validator.c:807",
+      "tls/s2n_x509_validator.c:1001",
+      "tls/s2n_x509_validator.c:1050",
+      "tls/s2n_x509_validator.c:1054"
+    ]
+  }
+}

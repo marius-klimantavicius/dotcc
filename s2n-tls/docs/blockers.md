@@ -1,6 +1,6 @@
 # s2n-tls implementation ledger
 
-Implementation is authorized through P6. No acceptance gate has passed.
+Implementation is authorized through P6. P0 passed; remaining acceptance gates are incomplete.
 
 | ID | Classification | Observation | Next resolution and evidence |
 | --- | --- | --- | --- |
@@ -11,7 +11,10 @@ Implementation is authorized through P6. No acceptance gate has passed.
 | S2N-005 | Translation/provider ABI | DotCC ref-like `va_list` cannot be an unmanaged field in the native-array portability wrapper. | Guarded scoped direct cursor adaptation preserves all copy/end/printf operations; complete retry passes `s2n_stuffer_text`. Native branch unchanged. Full stuffer formatting behavior remains a translated upstream gate. |
 | S2N-006 | Upstream; repaired in staging | Native finite-field DHE pads the premaster input to group width. Deterministic both-role vector observes 256 bytes versus required one; independent random handshakes occasionally fail. | Exact helper adaptation preserves actual DH bytes and length. RFC5246 8.1.2 and independent peers support correction; both deterministic cases and all238 native cases pass. References remain pristine. |
 | S2N-007 | Excluded platform boundary | kTLS I/O uses `msghdr` unavailable in selected runtime header. | Managed identity selects existing upstream unsupported-platform errors; all174 source units remain selected. No kernel TLS support is advertised. |
-| S2N-008 | Compiler; active | `s2n_tls13_secrets` requires `derive_methods[][2]`, with designated rows and inferred outer bound. | Extend callback grammar and shared initializer inference; native/emitted regression and complete-source retry required. |
-| S2N-009 | Link/import closure; active | Unused OpenSSL header inlines introduce imports absent from actual native s2n closure. | Opt-in shared static-inline reachability based on bound relocations, preserving exports/address roots; no unavailable-operation success stubs. |
+| S2N-008 | Compiler; repaired | `s2n_tls13_secrets` requires `derive_methods[][2]`, with designated rows and inferred outer bound. | `72011ea54` repairs callback grammar/shared bound inference; full175-object emission/link passes. |
+| S2N-009 | Link/import closure; repaired selection | Unused OpenSSL header inlines introduce imports absent from actual native s2n closure. | `72011ea54` adds opt-in static-inline reachability preserving exports/address roots. Scoped emitted probes pass, and exact-profile native closure reconciles176 symbols with181 declarations; product operation qualification remains open. |
+| S2N-010 | Compiler/host; repaired pending full retry | Linked C# previously had braced pointer initialization, static callback override and real memory-residency service gaps. | `7aa3f97de` focused runtime/semantic checks pass; process-exit authored callback registry passes JIT/AOT. Full retry closes prior host names and pointer error. |
+| S2N-011 | Compiler; repaired pending full retry | Generic scalar-brace initialization exposed `VaList cursor = 0`, invalid for the ref-like borrowed cursor. | `27c3194dc` preserves braced-zero cursor initialization as typed default; real copy/divergence fixture passes. Complete181-profile retry in progress. |
+| S2N-012 | Provider semantics; active | CRL scope/critical-extension behavior requires further negative/path validation; capability mask deliberately incomplete. | Provider agent audits actual selected s2n/OpenSSL flags, implements direct CRL scope and compares required outcomes without success stubs. |
 
 These are open work items, not demonstrated unavoidable external blockers.

@@ -21,7 +21,7 @@
     }
   ],
   "shared_build_owner": "supervisor",
-  "next": "Finish complete-source translation, integrate provider ABI and owning API, then execute all planned suites/matrix throughP6",
+  "next": "P1 provider semantic/capability completion, P3 owning consumer actual TLS, full P4\u2013P6 qualification",
   "completed_tasks": [
     {
       "package": "inputs-native",
@@ -29,6 +29,18 @@
     }
   ],
   "commits": [
-    "f5b36fc6a"
-  ]
+    "f5b36fc6a",
+    "72011ea54",
+    "bbe0217d8",
+    "7aa3f97de",
+    "27c3194dc"
+  ],
+  "current_attempt": null,
+  "last_complete_link": "20261023-205255-fc99db78",
+  "last_raw_build_failure": {
+    "missing_crypto_imports": 9,
+    "va_list_initializer_errors": 3,
+    "repairs": "181-entry validated profile and27c3194dc"
+  },
+  "p2_receipt": "artifacts/campaign/20261023-210200-74eee32f/receipt.json"
 }

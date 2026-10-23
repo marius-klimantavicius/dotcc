@@ -1,0 +1,166 @@
+using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using System.Text;
+
+namespace Managed.S2nTls.Crypto;
+
+/// <summary>Authored OpenSSL-1.1.1 declaration adapter. No native crypto imports.</summary>
+public static unsafe partial class OpenSslAbi
+{
+    private static class Registry { internal static readonly ConcurrentDictionary<nint, object> Table = new(); }
+    private static ConcurrentDictionary<nint,object> Handles => Registry.Table;
+    [ThreadStatic] private static Queue<ulong>? errors;
+    private static int transientHandles;
+    public static int LiveContexts => Volatile.Read(ref transientHandles);
+    private static void Error()
+    {
+        var queue=errors??=new();if(queue.Count>=16)queue.Dequeue();queue.Enqueue(0x80000001UL);
+    }
+    public static ulong ERR_get_error() => errors is { Count: > 0 } ? errors.Dequeue() : 0;
+    internal static void* Add(object state, bool permanent = false)
+    {
+        void* pointer = NativeMemory.AllocZeroed((nuint)IntPtr.Size);
+        if (pointer == null) throw new OutOfMemoryException();
+        if (!Handles.TryAdd((nint)pointer, state)) { NativeMemory.Free(pointer); throw new InvalidOperationException(); }
+        if (!permanent) Interlocked.Increment(ref transientHandles);
+        return pointer;
+    }
+    internal static T Get<T>(void* pointer) where T : class => pointer != null && Handles.TryGetValue((nint)pointer, out var value) && value is T typed
+        ? typed : throw new ArgumentException("Invalid or expired provider handle.");
+    internal static void Remove(void* pointer)
+    {
+        if (pointer == null) return;
+        if (!Handles.TryRemove((nint)pointer, out var value)) throw new ArgumentException("Expired provider handle.");
+        try { (value as IDisposable)?.Dispose(); }
+        finally { NativeMemory.Free(pointer); Interlocked.Decrement(ref transientHandles); }
+    }
+    internal static ReadOnlySpan<byte> Input(void* pointer, ulong length)
+    {
+        if (length > int.MaxValue || pointer == null && length != 0) throw new ArgumentException("Invalid input buffer.");
+        return new ReadOnlySpan<byte>(pointer, (int)length);
+    }
+    internal static Span<byte> Output(void* pointer, int length)
+    {
+        if (length < 0 || pointer == null && length != 0) throw new ArgumentException("Invalid output buffer.");
+        return new Span<byte>(pointer, length);
+    }
+    internal static byte* String(string value)
+    {
+        byte[] text = Encoding.UTF8.GetBytes(value + "\0"); byte* data = (byte*)NativeMemory.Alloc((nuint)text.Length); text.CopyTo(new Span<byte>(data,text.Length)); return data;
+    }
+    private static readonly byte* ProviderName = String("DotCC managed s2n crypto / OpenSSL 1.1.1 declaration ABI / BCL + BouncyCastle");
+    public static uint dotcc_crypto_provider_abi() => 1;
+    // All eight selected s2n operation groups have native differential and JIT/AOT
+    // evidence. This mask describes the declared s2n boundary, not all OpenSSL APIs.
+    public static ulong dotcc_crypto_provider_capabilities() => 0xff;
+    public static byte* dotcc_crypto_provider_name() => ProviderName;
+    private static readonly Lazy<bool> Initialized = new(() =>
+    {
+        // Validate the real registered primitive implementations; no OpenSSL engine/config loading.
+        foreach(var algorithm in Enum.GetValues<DigestAlgorithm>())
+        {using var hash=new Digest(algorithm);using var clone=hash.Clone();if(!hash.FinalizeHash().AsSpan().SequenceEqual(clone.FinalizeHash()))return false;}
+        if(!AesGcm.IsSupported||!ChaCha20Poly1305.IsSupported)return false;
+        using var rc4=new Rc4(new byte[16]);byte[] plain=new byte[16],cipher=new byte[16];rc4.Process(plain,cipher);
+        using var aes=new CbcCipher(false,true,new byte[16],new byte[16]);aes.Process(plain,cipher);
+        using var des=new CbcCipher(true,true,new byte[24],new byte[8]);des.Process(plain,cipher);
+        return true;
+    });
+    public static int OPENSSL_init_crypto(ulong options,void* settings)
+    {try{if(settings!=null||(options&~0x0eUL)!=0)throw new NotSupportedException("Only digest/cipher/string registration is used by s2n.");return Initialized.Value?1:0;}catch{Error();return 0;}}
+
+    private sealed record DigestDescriptor(DigestAlgorithm Algorithm);
+    private static readonly nint[] Digests = Enum.GetValues<DigestAlgorithm>().Select(x => (nint)Add(new DigestDescriptor(x), true)).ToArray();
+    public static void* EVP_md5() => (void*)Digests[(int)DigestAlgorithm.Md5];
+    public static void* EVP_sha1() => (void*)Digests[(int)DigestAlgorithm.Sha1];
+    public static void* EVP_sha224() => (void*)Digests[(int)DigestAlgorithm.Sha224];
+    public static void* EVP_sha256() => (void*)Digests[(int)DigestAlgorithm.Sha256];
+    public static void* EVP_sha384() => (void*)Digests[(int)DigestAlgorithm.Sha384];
+    public static void* EVP_sha512() => (void*)Digests[(int)DigestAlgorithm.Sha512];
+    public static void* EVP_md5_sha1() => (void*)Digests[(int)DigestAlgorithm.Md5Sha1];
+    private sealed class DigestContext : IDisposable
+    {
+        public nint Descriptor;
+        public nint KeyContext;
+        public Digest? Hash;
+        public void Dispose() { Hash?.Dispose(); Hash = null; Descriptor = KeyContext = 0; }
+    }
+    public static void* EVP_MD_CTX_new() { try { return Add(new DigestContext()); } catch { Error(); return null; } }
+    public static void EVP_MD_CTX_free(void* ctx) { try { Remove(ctx); } catch { Error(); } }
+    public static int EVP_MD_CTX_reset(void* ctx) { try { Get<DigestContext>(ctx).Dispose(); return 1; } catch { Error(); return 0; } }
+    public static void* EVP_MD_CTX_md(void* ctx) { try { return (void*)Get<DigestContext>(ctx).Descriptor; } catch { Error(); return null; } }
+    public static int EVP_MD_size(void* descriptor) { try { using var hash = new Digest(Get<DigestDescriptor>(descriptor).Algorithm); return hash.Size; } catch { Error(); return -1; } }
+    public static int EVP_DigestInit_ex(void* ctx, void* descriptor, void* engine)
+    {
+        try
+        {
+            if (engine != null) throw new ArgumentException("Native engines are not managed providers.");
+            var state = Get<DigestContext>(ctx); var algorithm = Get<DigestDescriptor>(descriptor == null ? (void*)state.Descriptor : descriptor).Algorithm;
+            state.Hash?.Dispose(); state.Hash = new Digest(algorithm); state.Descriptor = descriptor == null ? state.Descriptor : (nint)descriptor; return 1;
+        }
+        catch { Error(); return 0; }
+    }
+    public static int EVP_DigestUpdate(void* ctx, void* input, ulong length)
+    { try { (Get<DigestContext>(ctx).Hash ?? throw new InvalidOperationException()).Update(Input(input,length)); return 1; } catch { Error(); return 0; } }
+    public static int EVP_DigestFinal_ex(void* ctx, byte* output, uint* size)
+    {
+        try
+        {
+            var hash = Get<DigestContext>(ctx).Hash ?? throw new InvalidOperationException();
+            if (output == null) throw new ArgumentException();
+            byte[] result = hash.FinalizeHash(); result.CopyTo(Output(output,result.Length)); if (size != null) *size = (uint)result.Length; return 1;
+        }
+        catch { if(size!=null)*size=0; Error(); return 0; }
+    }
+    public static int EVP_MD_CTX_copy_ex(void* destination, void* source)
+    {
+        try
+        {
+            var from=Get<DigestContext>(source);var to=Get<DigestContext>(destination);
+            if(from==to)return 1;
+            var copy=from.Hash?.Clone();to.Dispose();to.Descriptor=from.Descriptor;to.KeyContext=from.KeyContext;to.Hash=copy;return 1;
+        }
+        catch { Error(); return 0; }
+    }
+    public static int RAND_bytes(byte* bytes,int count) { try { RandomNumberGenerator.Fill(Output(bytes,count));return 1; } catch { Error();return 0; } }
+    public static int RAND_priv_bytes(byte* bytes,int count) => RAND_bytes(bytes,count);
+    public static void EVP_MD_CTX_set_pkey_ctx(void* ctx,void* keyContext)
+    {try{if(keyContext!=null)_=Get<KeyContext>(keyContext);Get<DigestContext>(ctx).KeyContext=(nint)keyContext;}catch{Error();}}
+    public static int EVP_DigestSignFinal(void* ctx,byte* signature,ulong* length)
+    {
+        try
+        {
+            var state=Get<DigestContext>(ctx);using var hash=state.Hash?.Clone()??throw new InvalidOperationException();
+            byte[] digest=hash.FinalizeHash();try{fixed(byte* d=digest)return EVP_PKEY_sign((void*)state.KeyContext,signature,length,d,(ulong)digest.Length);}finally{CryptographicOperations.ZeroMemory(digest);}
+        }
+        catch{Error();return 0;}
+    }
+    public static int EVP_DigestVerifyFinal(void* ctx,byte* signature,ulong length)
+    {
+        try
+        {
+            var state=Get<DigestContext>(ctx);using var hash=state.Hash?.Clone()??throw new InvalidOperationException();
+            byte[] digest=hash.FinalizeHash();try{fixed(byte* d=digest)return EVP_PKEY_verify((void*)state.KeyContext,signature,length,d,(ulong)digest.Length);}finally{CryptographicOperations.ZeroMemory(digest);}
+        }
+        catch{Error();return 0;}
+    }
+    public static int EVP_EncodeBlock(byte* output,byte* input,int length)
+    {
+        try
+        {
+            string text=Convert.ToBase64String(Input(input,(ulong)length));int size=Encoding.ASCII.GetBytes(text,Output(output,text.Length));output[size]=0;return size;
+        }
+        catch { Error();return -1; }
+    }
+    public static int EVP_DecodeBlock(byte* output,byte* input,int length)
+    {
+        try
+        {
+            var text=Encoding.ASCII.GetString(Input(input,(ulong)length)).Trim();
+            byte[] decoded=Convert.FromBase64String(text);decoded.CopyTo(Output(output,decoded.Length));
+            // EVP_DecodeBlock includes zero bytes for '=' in its reported/output length.
+            int padded=text.Length/4*3;Output(output+decoded.Length,padded-decoded.Length).Clear();return padded;
+        }
+        catch { Error();return -1; }
+    }
+}

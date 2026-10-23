@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "functionOverrides": [
+    {
+      "name": "atexit",
+      "signature": {"returnType": "int", "parameterTypes": ["void (*)(void)"], "variadic": false},
+      "target": {"kind": "managedMethod", "method": "global::Managed.Security.S2n.S2nTls.HostAtExit"}
+    }
+  ]
+}

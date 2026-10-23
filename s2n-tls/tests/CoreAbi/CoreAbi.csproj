@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+    <CoreAbiProject Condition="'$(CoreAbiProject)' == ''">../../build/core-abi/Emitted/Emitted.csproj</CoreAbiProject>
+  </PropertyGroup>
+  <ItemGroup><ProjectReference Include="$(CoreAbiProject)" /><Compile Remove="Product/**/*.cs" /></ItemGroup>
+</Project>

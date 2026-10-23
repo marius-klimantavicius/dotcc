@@ -1,0 +1,2654 @@
+{
+  "version": 1,
+  "functionOverrides": [
+    {
+      "name": "EVP_md5",
+      "signature": {
+        "returnType": "const EVP_MD *",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_EVP_md5"
+      }
+    },
+    {
+      "name": "EVP_sha1",
+      "signature": {
+        "returnType": "const EVP_MD *",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_EVP_sha1"
+      }
+    },
+    {
+      "name": "EVP_sha224",
+      "signature": {
+        "returnType": "const EVP_MD *",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_EVP_sha224"
+      }
+    },
+    {
+      "name": "EVP_sha256",
+      "signature": {
+        "returnType": "const EVP_MD *",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_EVP_sha256"
+      }
+    },
+    {
+      "name": "EVP_sha384",
+      "signature": {
+        "returnType": "const EVP_MD *",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_EVP_sha384"
+      }
+    },
+    {
+      "name": "EVP_sha512",
+      "signature": {
+        "returnType": "const EVP_MD *",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_EVP_sha512"
+      }
+    },
+    {
+      "name": "EVP_md5_sha1",
+      "signature": {
+        "returnType": "const EVP_MD *",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_EVP_md5_sha1"
+      }
+    },
+    {
+      "name": "EVP_MD_CTX_new",
+      "signature": {
+        "returnType": "EVP_MD_CTX *",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_EVP_MD_CTX_new"
+      }
+    },
+    {
+      "name": "EVP_MD_CTX_md",
+      "signature": {
+        "returnType": "const EVP_MD *",
+        "parameterTypes": [
+          "const EVP_MD_CTX *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_EVP_MD_CTX_md"
+      }
+    },
+    {
+      "name": "EVP_MD_CTX_free",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "EVP_MD_CTX *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_MD_CTX_free"
+      }
+    },
+    {
+      "name": "EVP_MD_CTX_reset",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_MD_CTX *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_MD_CTX_reset"
+      }
+    },
+    {
+      "name": "EVP_MD_size",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const EVP_MD *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_MD_size"
+      }
+    },
+    {
+      "name": "EVP_DigestInit_ex",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_MD_CTX *",
+          "const EVP_MD *",
+          "ENGINE *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_DigestInit_ex"
+      }
+    },
+    {
+      "name": "EVP_DigestUpdate",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_MD_CTX *",
+          "const void *",
+          "size_t"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_DigestUpdate"
+      }
+    },
+    {
+      "name": "EVP_DigestFinal_ex",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_MD_CTX *",
+          "unsigned char *",
+          "unsigned int *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_DigestFinal_ex"
+      }
+    },
+    {
+      "name": "EVP_MD_CTX_copy_ex",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_MD_CTX *",
+          "const EVP_MD_CTX *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_MD_CTX_copy_ex"
+      }
+    },
+    {
+      "name": "EVP_rc4",
+      "signature": {
+        "returnType": "const EVP_CIPHER *",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_EVP_rc4"
+      }
+    },
+    {
+      "name": "EVP_des_ede3_cbc",
+      "signature": {
+        "returnType": "const EVP_CIPHER *",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_EVP_des_ede3_cbc"
+      }
+    },
+    {
+      "name": "EVP_aes_128_cbc",
+      "signature": {
+        "returnType": "const EVP_CIPHER *",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_EVP_aes_128_cbc"
+      }
+    },
+    {
+      "name": "EVP_aes_256_cbc",
+      "signature": {
+        "returnType": "const EVP_CIPHER *",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_EVP_aes_256_cbc"
+      }
+    },
+    {
+      "name": "EVP_aes_128_gcm",
+      "signature": {
+        "returnType": "const EVP_CIPHER *",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_EVP_aes_128_gcm"
+      }
+    },
+    {
+      "name": "EVP_aes_256_gcm",
+      "signature": {
+        "returnType": "const EVP_CIPHER *",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_EVP_aes_256_gcm"
+      }
+    },
+    {
+      "name": "EVP_chacha20_poly1305",
+      "signature": {
+        "returnType": "const EVP_CIPHER *",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_EVP_chacha20_poly1305"
+      }
+    },
+    {
+      "name": "EVP_CIPHER_CTX_new",
+      "signature": {
+        "returnType": "EVP_CIPHER_CTX *",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_EVP_CIPHER_CTX_new"
+      }
+    },
+    {
+      "name": "EVP_CIPHER_CTX_free",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "EVP_CIPHER_CTX *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_CIPHER_CTX_free"
+      }
+    },
+    {
+      "name": "EVP_CIPHER_CTX_reset",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_CIPHER_CTX *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_CIPHER_CTX_reset"
+      }
+    },
+    {
+      "name": "EVP_CIPHER_CTX_set_padding",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_CIPHER_CTX *",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_CIPHER_CTX_set_padding"
+      }
+    },
+    {
+      "name": "EVP_CIPHER_CTX_ctrl",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_CIPHER_CTX *",
+          "int",
+          "int",
+          "void *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_CIPHER_CTX_ctrl"
+      }
+    },
+    {
+      "name": "EVP_EncryptInit_ex",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_CIPHER_CTX *",
+          "const EVP_CIPHER *",
+          "ENGINE *",
+          "const unsigned char *",
+          "const unsigned char *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_EncryptInit_ex"
+      }
+    },
+    {
+      "name": "EVP_EncryptUpdate",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_CIPHER_CTX *",
+          "unsigned char *",
+          "int *",
+          "const unsigned char *",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_EncryptUpdate"
+      }
+    },
+    {
+      "name": "EVP_EncryptFinal_ex",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_CIPHER_CTX *",
+          "unsigned char *",
+          "int *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_EncryptFinal_ex"
+      }
+    },
+    {
+      "name": "EVP_DecryptInit_ex",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_CIPHER_CTX *",
+          "const EVP_CIPHER *",
+          "ENGINE *",
+          "const unsigned char *",
+          "const unsigned char *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_DecryptInit_ex"
+      }
+    },
+    {
+      "name": "EVP_DecryptUpdate",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_CIPHER_CTX *",
+          "unsigned char *",
+          "int *",
+          "const unsigned char *",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_DecryptUpdate"
+      }
+    },
+    {
+      "name": "EVP_DecryptFinal_ex",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_CIPHER_CTX *",
+          "unsigned char *",
+          "int *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_DecryptFinal_ex"
+      }
+    },
+    {
+      "name": "RAND_bytes",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "unsigned char *",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.RAND_bytes"
+      }
+    },
+    {
+      "name": "RAND_priv_bytes",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "unsigned char *",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.RAND_priv_bytes"
+      }
+    },
+    {
+      "name": "EVP_EncodeBlock",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "unsigned char *",
+          "const unsigned char *",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_EncodeBlock"
+      }
+    },
+    {
+      "name": "EVP_DecodeBlock",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "unsigned char *",
+          "const unsigned char *",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_DecodeBlock"
+      }
+    },
+    {
+      "name": "ERR_get_error",
+      "signature": {
+        "returnType": "unsigned long",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.ERR_get_error"
+      }
+    },
+    {
+      "name": "dotcc_crypto_provider_abi",
+      "signature": {
+        "returnType": "uint32_t",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.dotcc_crypto_provider_abi"
+      }
+    },
+    {
+      "name": "dotcc_crypto_provider_capabilities",
+      "signature": {
+        "returnType": "uint64_t",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.dotcc_crypto_provider_capabilities"
+      }
+    },
+    {
+      "name": "dotcc_crypto_provider_name",
+      "signature": {
+        "returnType": "const char *",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.dotcc_crypto_provider_name"
+      }
+    },
+    {
+      "name": "EVP_PKEY_new",
+      "signature": {
+        "returnType": "EVP_PKEY *",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_EVP_PKEY_new"
+      }
+    },
+    {
+      "name": "EVP_PKEY_free",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "EVP_PKEY *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_PKEY_free"
+      }
+    },
+    {
+      "name": "EVP_PKEY_CTX_new",
+      "signature": {
+        "returnType": "EVP_PKEY_CTX *",
+        "parameterTypes": [
+          "EVP_PKEY *",
+          "ENGINE *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_EVP_PKEY_CTX_new"
+      }
+    },
+    {
+      "name": "EVP_PKEY_CTX_new_id",
+      "signature": {
+        "returnType": "EVP_PKEY_CTX *",
+        "parameterTypes": [
+          "int",
+          "ENGINE *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_EVP_PKEY_CTX_new_id"
+      }
+    },
+    {
+      "name": "EVP_PKEY_CTX_free",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "EVP_PKEY_CTX *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_PKEY_CTX_free"
+      }
+    },
+    {
+      "name": "EVP_PKEY_CTX_ctrl",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_PKEY_CTX *",
+          "int",
+          "int",
+          "int",
+          "int",
+          "void *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_PKEY_CTX_ctrl"
+      }
+    },
+    {
+      "name": "EVP_PKEY_sign_init",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_PKEY_CTX *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_PKEY_sign_init"
+      }
+    },
+    {
+      "name": "EVP_PKEY_verify_init",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_PKEY_CTX *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_PKEY_verify_init"
+      }
+    },
+    {
+      "name": "EVP_PKEY_encrypt_init",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_PKEY_CTX *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_PKEY_encrypt_init"
+      }
+    },
+    {
+      "name": "EVP_PKEY_decrypt_init",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_PKEY_CTX *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_PKEY_decrypt_init"
+      }
+    },
+    {
+      "name": "EVP_PKEY_paramgen_init",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_PKEY_CTX *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_PKEY_paramgen_init"
+      }
+    },
+    {
+      "name": "EVP_PKEY_keygen_init",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_PKEY_CTX *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_PKEY_keygen_init"
+      }
+    },
+    {
+      "name": "EVP_PKEY_derive_init",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_PKEY_CTX *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_PKEY_derive_init"
+      }
+    },
+    {
+      "name": "EVP_PKEY_sign",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_PKEY_CTX *",
+          "unsigned char *",
+          "size_t *",
+          "const unsigned char *",
+          "size_t"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_PKEY_sign"
+      }
+    },
+    {
+      "name": "EVP_PKEY_encrypt",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_PKEY_CTX *",
+          "unsigned char *",
+          "size_t *",
+          "const unsigned char *",
+          "size_t"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_PKEY_encrypt"
+      }
+    },
+    {
+      "name": "EVP_PKEY_decrypt",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_PKEY_CTX *",
+          "unsigned char *",
+          "size_t *",
+          "const unsigned char *",
+          "size_t"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_PKEY_decrypt"
+      }
+    },
+    {
+      "name": "EVP_PKEY_verify",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_PKEY_CTX *",
+          "const unsigned char *",
+          "size_t",
+          "const unsigned char *",
+          "size_t"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_PKEY_verify"
+      }
+    },
+    {
+      "name": "EVP_PKEY_paramgen",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_PKEY_CTX *",
+          "EVP_PKEY **"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_EVP_PKEY_paramgen"
+      }
+    },
+    {
+      "name": "EVP_PKEY_keygen",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_PKEY_CTX *",
+          "EVP_PKEY **"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_EVP_PKEY_keygen"
+      }
+    },
+    {
+      "name": "EVP_PKEY_derive",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_PKEY_CTX *",
+          "unsigned char *",
+          "size_t *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_PKEY_derive"
+      }
+    },
+    {
+      "name": "EVP_PKEY_derive_set_peer",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_PKEY_CTX *",
+          "EVP_PKEY *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_PKEY_derive_set_peer"
+      }
+    },
+    {
+      "name": "EVP_PKEY_set_type",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_PKEY *",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_PKEY_set_type"
+      }
+    },
+    {
+      "name": "EVP_PKEY_id",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const EVP_PKEY *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_PKEY_id"
+      }
+    },
+    {
+      "name": "EVP_PKEY_base_id",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const EVP_PKEY *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_PKEY_base_id"
+      }
+    },
+    {
+      "name": "EVP_PKEY_bits",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const EVP_PKEY *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_PKEY_bits"
+      }
+    },
+    {
+      "name": "EVP_PKEY_size",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const EVP_PKEY *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_PKEY_size"
+      }
+    },
+    {
+      "name": "EVP_PKEY_set1_tls_encodedpoint",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_PKEY *",
+          "const unsigned char *",
+          "size_t"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_PKEY_set1_tls_encodedpoint"
+      }
+    },
+    {
+      "name": "EVP_PKEY_get1_tls_encodedpoint",
+      "signature": {
+        "returnType": "size_t",
+        "parameterTypes": [
+          "EVP_PKEY *",
+          "unsigned char **"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_PKEY_get1_tls_encodedpoint"
+      }
+    },
+    {
+      "name": "EVP_PKEY_get1_EC_KEY",
+      "signature": {
+        "returnType": "EC_KEY *",
+        "parameterTypes": [
+          "EVP_PKEY *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_EVP_PKEY_get1_EC_KEY"
+      }
+    },
+    {
+      "name": "EC_KEY_free",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "EC_KEY *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EC_KEY_free"
+      }
+    },
+    {
+      "name": "EC_KEY_get0_group",
+      "signature": {
+        "returnType": "const EC_GROUP *",
+        "parameterTypes": [
+          "const EC_KEY *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_EC_KEY_get0_group"
+      }
+    },
+    {
+      "name": "EC_GROUP_get_curve_name",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const EC_GROUP *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EC_GROUP_get_curve_name"
+      }
+    },
+    {
+      "name": "EC_KEY_check_key",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const EC_KEY *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EC_KEY_check_key"
+      }
+    },
+    {
+      "name": "d2i_AutoPrivateKey",
+      "signature": {
+        "returnType": "EVP_PKEY *",
+        "parameterTypes": [
+          "EVP_PKEY **",
+          "const unsigned char **",
+          "long"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_d2i_AutoPrivateKey"
+      }
+    },
+    {
+      "name": "d2i_PrivateKey",
+      "signature": {
+        "returnType": "EVP_PKEY *",
+        "parameterTypes": [
+          "int",
+          "EVP_PKEY **",
+          "const unsigned char **",
+          "long"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_d2i_PrivateKey"
+      }
+    },
+    {
+      "name": "CRYPTO_free",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "void *",
+          "const char *",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.CRYPTO_free"
+      }
+    },
+    {
+      "name": "EVP_MD_CTX_set_pkey_ctx",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "EVP_MD_CTX *",
+          "EVP_PKEY_CTX *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_MD_CTX_set_pkey_ctx"
+      }
+    },
+    {
+      "name": "EVP_DigestSignFinal",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_MD_CTX *",
+          "unsigned char *",
+          "size_t *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_DigestSignFinal"
+      }
+    },
+    {
+      "name": "EVP_DigestVerifyFinal",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_MD_CTX *",
+          "const unsigned char *",
+          "size_t"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_DigestVerifyFinal"
+      }
+    },
+    {
+      "name": "BN_bin2bn",
+      "signature": {
+        "returnType": "BIGNUM *",
+        "parameterTypes": [
+          "const unsigned char *",
+          "int",
+          "BIGNUM *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_BN_bin2bn"
+      }
+    },
+    {
+      "name": "BN_bn2bin",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const BIGNUM *",
+          "unsigned char *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.BN_bn2bin"
+      }
+    },
+    {
+      "name": "BN_num_bits",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const BIGNUM *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.BN_num_bits"
+      }
+    },
+    {
+      "name": "BN_is_zero",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const BIGNUM *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.BN_is_zero"
+      }
+    },
+    {
+      "name": "BN_is_one",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const BIGNUM *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.BN_is_one"
+      }
+    },
+    {
+      "name": "BN_cmp",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const BIGNUM *",
+          "const BIGNUM *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.BN_cmp"
+      }
+    },
+    {
+      "name": "BN_dup",
+      "signature": {
+        "returnType": "BIGNUM *",
+        "parameterTypes": [
+          "const BIGNUM *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_BN_dup"
+      }
+    },
+    {
+      "name": "BN_sub_word",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "BIGNUM *",
+          "unsigned long"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.BN_sub_word"
+      }
+    },
+    {
+      "name": "BN_free",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "BIGNUM *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.BN_free"
+      }
+    },
+    {
+      "name": "DH_new",
+      "signature": {
+        "returnType": "DH *",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_DH_new"
+      }
+    },
+    {
+      "name": "DH_free",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "DH *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.DH_free"
+      }
+    },
+    {
+      "name": "DH_size",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const DH *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.DH_size"
+      }
+    },
+    {
+      "name": "DH_set0_pqg",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "DH *",
+          "BIGNUM *",
+          "BIGNUM *",
+          "BIGNUM *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.DH_set0_pqg"
+      }
+    },
+    {
+      "name": "DH_set0_key",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "DH *",
+          "BIGNUM *",
+          "BIGNUM *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.DH_set0_key"
+      }
+    },
+    {
+      "name": "DH_get0_pqg",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "const DH *",
+          "const BIGNUM **",
+          "const BIGNUM **",
+          "const BIGNUM **"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_DH_get0_pqg"
+      }
+    },
+    {
+      "name": "DH_get0_key",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "const DH *",
+          "const BIGNUM **",
+          "const BIGNUM **"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_DH_get0_key"
+      }
+    },
+    {
+      "name": "DH_generate_key",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "DH *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.DH_generate_key"
+      }
+    },
+    {
+      "name": "DH_compute_key",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "unsigned char *",
+          "const BIGNUM *",
+          "DH *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.DH_compute_key"
+      }
+    },
+    {
+      "name": "DH_check",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const DH *",
+          "int *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.DH_check"
+      }
+    },
+    {
+      "name": "DHparams_dup",
+      "signature": {
+        "returnType": "DH *",
+        "parameterTypes": [
+          "DH *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_DHparams_dup"
+      }
+    },
+    {
+      "name": "d2i_DHparams",
+      "signature": {
+        "returnType": "DH *",
+        "parameterTypes": [
+          "DH **",
+          "const unsigned char **",
+          "long"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_d2i_DHparams"
+      }
+    },
+    {
+      "name": "RSA_pkey_ctx_ctrl",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_PKEY_CTX *",
+          "int",
+          "int",
+          "int",
+          "void *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.RSA_pkey_ctx_ctrl"
+      }
+    },
+    {
+      "name": "OPENSSL_init_crypto",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "uint64_t",
+          "const OPENSSL_INIT_SETTINGS *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.OPENSSL_init_crypto"
+      }
+    },
+    {
+      "name": "ASN1_STRING_get0_data",
+      "signature": {
+        "returnType": "const unsigned char *",
+        "parameterTypes": [
+          "const ASN1_STRING *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.ASN1_STRING_get0_data"
+      }
+    },
+    {
+      "name": "ASN1_STRING_length",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const ASN1_STRING *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.ASN1_STRING_length"
+      }
+    },
+    {
+      "name": "ASN1_STRING_type",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const ASN1_STRING *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.ASN1_STRING_type"
+      }
+    },
+    {
+      "name": "ASN1_STRING_free",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "ASN1_STRING *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.ASN1_STRING_free"
+      }
+    },
+    {
+      "name": "ASN1_STRING_to_UTF8",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "unsigned char **",
+          "const ASN1_STRING *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.ASN1_STRING_to_UTF8"
+      }
+    },
+    {
+      "name": "ASN1_GENERALIZEDTIME_set",
+      "signature": {
+        "returnType": "ASN1_GENERALIZEDTIME *",
+        "parameterTypes": [
+          "ASN1_GENERALIZEDTIME *",
+          "time_t"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_ASN1_GENERALIZEDTIME_set"
+      }
+    },
+    {
+      "name": "ASN1_TIME_diff",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "int *",
+          "int *",
+          "const ASN1_TIME *",
+          "const ASN1_TIME *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.ASN1_TIME_diff"
+      }
+    },
+    {
+      "name": "d2i_ASN1_UTF8STRING",
+      "signature": {
+        "returnType": "ASN1_UTF8STRING *",
+        "parameterTypes": [
+          "ASN1_UTF8STRING **",
+          "const unsigned char **",
+          "long"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_d2i_ASN1_UTF8STRING"
+      }
+    },
+    {
+      "name": "OBJ_obj2nid",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const ASN1_OBJECT *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.OBJ_obj2nid"
+      }
+    },
+    {
+      "name": "OBJ_cmp",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const ASN1_OBJECT *",
+          "const ASN1_OBJECT *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.OBJ_cmp"
+      }
+    },
+    {
+      "name": "OBJ_txt2obj",
+      "signature": {
+        "returnType": "ASN1_OBJECT *",
+        "parameterTypes": [
+          "const char *",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_OBJ_txt2obj"
+      }
+    },
+    {
+      "name": "ASN1_OBJECT_free",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "ASN1_OBJECT *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.ASN1_OBJECT_free"
+      }
+    },
+    {
+      "name": "OBJ_find_sigid_algs",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "int",
+          "int *",
+          "int *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.OBJ_find_sigid_algs"
+      }
+    },
+    {
+      "name": "OPENSSL_sk_new_null",
+      "signature": {
+        "returnType": "OPENSSL_STACK *",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_OPENSSL_sk_new_null"
+      }
+    },
+    {
+      "name": "OPENSSL_sk_free",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "OPENSSL_STACK *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.OPENSSL_sk_free"
+      }
+    },
+    {
+      "name": "OPENSSL_sk_num",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const OPENSSL_STACK *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.OPENSSL_sk_num"
+      }
+    },
+    {
+      "name": "OPENSSL_sk_value",
+      "signature": {
+        "returnType": "void *",
+        "parameterTypes": [
+          "const OPENSSL_STACK *",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.OPENSSL_sk_value"
+      }
+    },
+    {
+      "name": "OPENSSL_sk_push",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "OPENSSL_STACK *",
+          "const void *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.OPENSSL_sk_push"
+      }
+    },
+    {
+      "name": "OPENSSL_sk_pop_free",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "OPENSSL_STACK *",
+          "void (*)(void *)"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.OPENSSL_sk_pop_free"
+      }
+    },
+    {
+      "name": "d2i_X509",
+      "signature": {
+        "returnType": "X509 *",
+        "parameterTypes": [
+          "X509 **",
+          "const unsigned char **",
+          "long"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_d2i_X509"
+      }
+    },
+    {
+      "name": "i2d_X509",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "X509 *",
+          "unsigned char **"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.i2d_X509"
+      }
+    },
+    {
+      "name": "X509_free",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "X509 *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.X509_free"
+      }
+    },
+    {
+      "name": "X509_get_pubkey",
+      "signature": {
+        "returnType": "EVP_PKEY *",
+        "parameterTypes": [
+          "X509 *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_X509_get_pubkey"
+      }
+    },
+    {
+      "name": "X509_get_signature_nid",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const X509 *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.X509_get_signature_nid"
+      }
+    },
+    {
+      "name": "X509_get_subject_name",
+      "signature": {
+        "returnType": "X509_NAME *",
+        "parameterTypes": [
+          "const X509 *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_X509_get_subject_name"
+      }
+    },
+    {
+      "name": "X509_get_issuer_name",
+      "signature": {
+        "returnType": "X509_NAME *",
+        "parameterTypes": [
+          "const X509 *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_X509_get_issuer_name"
+      }
+    },
+    {
+      "name": "X509_NAME_cmp",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const X509_NAME *",
+          "const X509_NAME *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.X509_NAME_cmp"
+      }
+    },
+    {
+      "name": "X509_NAME_hash",
+      "signature": {
+        "returnType": "unsigned long",
+        "parameterTypes": [
+          "X509_NAME *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.X509_NAME_hash"
+      }
+    },
+    {
+      "name": "X509_issuer_name_hash",
+      "signature": {
+        "returnType": "unsigned long",
+        "parameterTypes": [
+          "X509 *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.X509_issuer_name_hash"
+      }
+    },
+    {
+      "name": "X509_NAME_get0_der",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "X509_NAME *",
+          "const unsigned char **",
+          "size_t *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.X509_NAME_get0_der"
+      }
+    },
+    {
+      "name": "X509_NAME_get_index_by_NID",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "X509_NAME *",
+          "int",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.X509_NAME_get_index_by_NID"
+      }
+    },
+    {
+      "name": "X509_NAME_get_entry",
+      "signature": {
+        "returnType": "X509_NAME_ENTRY *",
+        "parameterTypes": [
+          "const X509_NAME *",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_X509_NAME_get_entry"
+      }
+    },
+    {
+      "name": "X509_NAME_ENTRY_get_data",
+      "signature": {
+        "returnType": "ASN1_STRING *",
+        "parameterTypes": [
+          "const X509_NAME_ENTRY *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_X509_NAME_ENTRY_get_data"
+      }
+    },
+    {
+      "name": "X509_get_ext_count",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const X509 *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.X509_get_ext_count"
+      }
+    },
+    {
+      "name": "X509_get_ext",
+      "signature": {
+        "returnType": "X509_EXTENSION *",
+        "parameterTypes": [
+          "const X509 *",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_X509_get_ext"
+      }
+    },
+    {
+      "name": "X509_EXTENSION_get_critical",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const X509_EXTENSION *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.X509_EXTENSION_get_critical"
+      }
+    },
+    {
+      "name": "X509_EXTENSION_get_data",
+      "signature": {
+        "returnType": "ASN1_OCTET_STRING *",
+        "parameterTypes": [
+          "X509_EXTENSION *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_X509_EXTENSION_get_data"
+      }
+    },
+    {
+      "name": "X509_EXTENSION_get_object",
+      "signature": {
+        "returnType": "ASN1_OBJECT *",
+        "parameterTypes": [
+          "X509_EXTENSION *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_X509_EXTENSION_get_object"
+      }
+    },
+    {
+      "name": "X509_get_ext_d2i",
+      "signature": {
+        "returnType": "void *",
+        "parameterTypes": [
+          "const X509 *",
+          "int",
+          "int *",
+          "int *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.X509_get_ext_d2i"
+      }
+    },
+    {
+      "name": "GENERAL_NAMES_free",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "GENERAL_NAMES *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.GENERAL_NAMES_free"
+      }
+    },
+    {
+      "name": "X509_check_issued",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "X509 *",
+          "X509 *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.X509_check_issued"
+      }
+    },
+    {
+      "name": "X509_check_purpose",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "X509 *",
+          "int",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.X509_check_purpose"
+      }
+    },
+    {
+      "name": "X509_cmp_time",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const ASN1_TIME *",
+          "time_t *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.X509_cmp_time"
+      }
+    },
+    {
+      "name": "X509_STORE_new",
+      "signature": {
+        "returnType": "X509_STORE *",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_X509_STORE_new"
+      }
+    },
+    {
+      "name": "X509_STORE_free",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "X509_STORE *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.X509_STORE_free"
+      }
+    },
+    {
+      "name": "X509_STORE_add_cert",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "X509_STORE *",
+          "X509 *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.X509_STORE_add_cert"
+      }
+    },
+    {
+      "name": "X509_STORE_get0_objects",
+      "signature": {
+        "returnType": "struct stack_st_X509_OBJECT *",
+        "parameterTypes": [
+          "X509_STORE *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_X509_STORE_get0_objects"
+      }
+    },
+    {
+      "name": "X509_OBJECT_get0_X509",
+      "signature": {
+        "returnType": "X509 *",
+        "parameterTypes": [
+          "const X509_OBJECT *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_X509_OBJECT_get0_X509"
+      }
+    },
+    {
+      "name": "X509_STORE_load_locations",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "X509_STORE *",
+          "const char *",
+          "const char *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.X509_STORE_load_locations"
+      }
+    },
+    {
+      "name": "X509_STORE_set_default_paths",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "X509_STORE *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.X509_STORE_set_default_paths"
+      }
+    },
+    {
+      "name": "X509_STORE_CTX_new",
+      "signature": {
+        "returnType": "X509_STORE_CTX *",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_X509_STORE_CTX_new"
+      }
+    },
+    {
+      "name": "X509_STORE_CTX_free",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "X509_STORE_CTX *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.X509_STORE_CTX_free"
+      }
+    },
+    {
+      "name": "X509_STORE_CTX_init",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "X509_STORE_CTX *",
+          "X509_STORE *",
+          "X509 *",
+          "struct stack_st_X509 *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.X509_STORE_CTX_init"
+      }
+    },
+    {
+      "name": "X509_STORE_CTX_get0_param",
+      "signature": {
+        "returnType": "X509_VERIFY_PARAM *",
+        "parameterTypes": [
+          "X509_STORE_CTX *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_X509_STORE_CTX_get0_param"
+      }
+    },
+    {
+      "name": "X509_STORE_CTX_get_error",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "X509_STORE_CTX *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.X509_STORE_CTX_get_error"
+      }
+    },
+    {
+      "name": "X509_STORE_CTX_get0_chain",
+      "signature": {
+        "returnType": "struct stack_st_X509 *",
+        "parameterTypes": [
+          "X509_STORE_CTX *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_X509_STORE_CTX_get0_chain"
+      }
+    },
+    {
+      "name": "X509_VERIFY_PARAM_set_depth",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "X509_VERIFY_PARAM *",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.X509_VERIFY_PARAM_set_depth"
+      }
+    },
+    {
+      "name": "X509_VERIFY_PARAM_set_flags",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "X509_VERIFY_PARAM *",
+          "unsigned long"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.X509_VERIFY_PARAM_set_flags"
+      }
+    },
+    {
+      "name": "X509_STORE_CTX_set_flags",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "X509_STORE_CTX *",
+          "unsigned long"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.X509_STORE_CTX_set_flags"
+      }
+    },
+    {
+      "name": "X509_STORE_CTX_set_time",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "X509_STORE_CTX *",
+          "unsigned long",
+          "time_t"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.X509_STORE_CTX_set_time"
+      }
+    },
+    {
+      "name": "X509_STORE_CTX_set_verify_cb",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "X509_STORE_CTX *",
+          "X509_STORE_CTX_verify_cb"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_X509_STORE_CTX_set_verify_cb"
+      }
+    },
+    {
+      "name": "X509_STORE_CTX_set0_crls",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "X509_STORE_CTX *",
+          "struct stack_st_X509_CRL *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.X509_STORE_CTX_set0_crls"
+      }
+    },
+    {
+      "name": "X509_verify_cert",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "X509_STORE_CTX *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.X509_verify_cert"
+      }
+    },
+    {
+      "name": "d2i_X509_CRL",
+      "signature": {
+        "returnType": "X509_CRL *",
+        "parameterTypes": [
+          "X509_CRL **",
+          "const unsigned char **",
+          "long"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_d2i_X509_CRL"
+      }
+    },
+    {
+      "name": "X509_CRL_free",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "X509_CRL *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.X509_CRL_free"
+      }
+    },
+    {
+      "name": "X509_CRL_get_issuer",
+      "signature": {
+        "returnType": "X509_NAME *",
+        "parameterTypes": [
+          "const X509_CRL *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_X509_CRL_get_issuer"
+      }
+    },
+    {
+      "name": "X509_CRL_get_lastUpdate",
+      "signature": {
+        "returnType": "ASN1_TIME *",
+        "parameterTypes": [
+          "X509_CRL *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_X509_CRL_get_lastUpdate"
+      }
+    },
+    {
+      "name": "X509_CRL_get_nextUpdate",
+      "signature": {
+        "returnType": "ASN1_TIME *",
+        "parameterTypes": [
+          "X509_CRL *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_X509_CRL_get_nextUpdate"
+      }
+    },
+    {
+      "name": "d2i_OCSP_RESPONSE",
+      "signature": {
+        "returnType": "OCSP_RESPONSE *",
+        "parameterTypes": [
+          "OCSP_RESPONSE **",
+          "const unsigned char **",
+          "long"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_d2i_OCSP_RESPONSE"
+      }
+    },
+    {
+      "name": "OCSP_RESPONSE_free",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "OCSP_RESPONSE *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.OCSP_RESPONSE_free"
+      }
+    },
+    {
+      "name": "OCSP_response_status",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "OCSP_RESPONSE *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.OCSP_response_status"
+      }
+    },
+    {
+      "name": "OCSP_response_get1_basic",
+      "signature": {
+        "returnType": "OCSP_BASICRESP *",
+        "parameterTypes": [
+          "OCSP_RESPONSE *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_OCSP_response_get1_basic"
+      }
+    },
+    {
+      "name": "OCSP_BASICRESP_free",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "OCSP_BASICRESP *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.OCSP_BASICRESP_free"
+      }
+    },
+    {
+      "name": "OCSP_CERTID_free",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "OCSP_CERTID *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.OCSP_CERTID_free"
+      }
+    },
+    {
+      "name": "OCSP_cert_to_id",
+      "signature": {
+        "returnType": "OCSP_CERTID *",
+        "parameterTypes": [
+          "const EVP_MD *",
+          "const X509 *",
+          "const X509 *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_OCSP_cert_to_id"
+      }
+    },
+    {
+      "name": "OCSP_resp_find_status",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "OCSP_BASICRESP *",
+          "OCSP_CERTID *",
+          "int *",
+          "int *",
+          "ASN1_GENERALIZEDTIME **",
+          "ASN1_GENERALIZEDTIME **",
+          "ASN1_GENERALIZEDTIME **"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_OCSP_resp_find_status"
+      }
+    },
+    {
+      "name": "OCSP_basic_verify",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "OCSP_BASICRESP *",
+          "struct stack_st_X509 *",
+          "X509_STORE *",
+          "unsigned long"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.OCSP_basic_verify"
+      }
+    }
+  ]
+}

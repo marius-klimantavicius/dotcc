@@ -18,7 +18,7 @@
     "license": "MIT",
     "license_path": "LICENSE.md",
     "package_url": "https://api.nuget.org/v3-flatcontainer/bouncycastle.cryptography/2.7.0/bouncycastle.cryptography.2.7.0.nupkg",
-    "use": "SHA224, RC4, unrestricted 3DES keys, legacy raw RSA PKCS1 signatures, finite-field DH, X25519, DER/PEM parsing; no TLS engine use"
+    "use": "SHA224, RC4, unrestricted 3DES, legacy RSA, DH, X25519, DER/PEM/ASN.1 and PKIX/CRL/OCSP; no TLS engine use"
   },
   "bcl_operations": [
     "entropy",
@@ -29,7 +29,7 @@
     "RSA PKCS1 encryption/decryption and standard signatures",
     "RSA-PSS",
     "NIST ECDH/ECDSA",
-    "certificate chain validation"
+    "NIST key primitives and system root acquisition; managed BC PKIX with native-compatible selected verification policies"
   ],
   "required_legacy": [
     "MD5",
@@ -40,7 +40,7 @@
     "RSA_PKCS1_RAW",
     "DH"
   ],
-  "binding_status": "managed capability implementation; exact emitted ABI integration pending supervisor output",
+  "binding_status": "181 typed overrides compiled in complete raw/processed 175-unit product; independent JIT/AOT provider and emitted ABI checked; product TLS qualification remains separate",
   "compiler_definitions": [
     "S2N_DOTCC_MANAGED_PROVIDER=1",
     "S2N_LIBCRYPTO_SUPPORTS_PRIVATE_RAND=1",
@@ -76,5 +76,36 @@
     "src/CryptoProvider/Bindings/S2nProviderBindings.cs"
   ],
   "project_reference": "src/CryptoProvider/CryptoProvider.csproj",
-  "native_version_prefix": "OpenSSL 1.1.1w "
+  "native_version_prefix": "OpenSSL 1.1.1w ",
+  "declared_import_inventory": "tests/Abi/provider-binding-contract.json",
+  "capability_contract": {
+    "abi": 1,
+    "advertised_mask": 255,
+    "required_mask": 255,
+    "scope": "selected s2n libcrypto operations; not general OpenSSL compatibility or product TLS qualification",
+    "provider_evidence": "artifacts/provider/receipt.json",
+    "emitted_evidence": "artifacts/provider/emitted-probe/receipt.json",
+    "selected_native_closure": "artifacts/provider/closure/20261023-205255-fc99db78/receipt.json",
+    "verification_flags": [
+      4,
+      8,
+      524288,
+      2097152
+    ],
+    "ocsp_verification_flags": [
+      0
+    ],
+    "initialization_options_mask": 14,
+    "excluded_unselected_flags": [
+      "EXTENDED_CRL_SUPPORT",
+      "USE_DELTAS",
+      "IGNORE_CRITICAL"
+    ],
+    "unqualified_x509_variants": [
+      "RFC3779 resource constraints",
+      "proxy certificates",
+      "relative-name CRL distribution points",
+      "overlapping multi-CRL reason coverage"
+    ]
+  }
 }

@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><AllowUnsafeBlocks>true</AllowUnsafeBlocks><IsAotCompatible>true</IsAotCompatible>
+    <S2nTlsProject Condition="'$(S2nTlsProject)' == ''">../../../generated/TranslatedS2nTls/TranslatedS2nTls.csproj</S2nTlsProject>
+  </PropertyGroup>
+  <ItemGroup><ProjectReference Include="$(S2nTlsProject)" /></ItemGroup>
+</Project>

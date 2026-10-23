@@ -1,0 +1,42 @@
+{
+  "scope": "Linux x64 isolated test-only OS peer binaries; not delivered product",
+  "python": "3.12.3",
+  "python_lock": "config/python-requirements.lock",
+  "packages": [
+    {
+      "file": "apache2-bin_2.4.58-1ubuntu8.17_amd64.deb",
+      "metadata": "Package: apache2-bin\nVersion: 2.4.58-1ubuntu8.17\nArchitecture: amd64\n",
+      "sha256": "7c31f0e45695c1d0335d4bf654c644fc0977006bbefa22e1b2e0ef04d2e18744"
+    },
+    {
+      "file": "apache2-data_2.4.58-1ubuntu8.17_all.deb",
+      "metadata": "Package: apache2-data\nVersion: 2.4.58-1ubuntu8.17\nArchitecture: all\n",
+      "sha256": "aad82c20829ddbef9e868180b53a82470676966df1232f6eca1aa8526edada69"
+    },
+    {
+      "file": "gnutls-bin_3.8.3-1.1ubuntu3.6_amd64.deb",
+      "metadata": "Package: gnutls-bin\nVersion: 3.8.3-1.1ubuntu3.6\nArchitecture: amd64\n",
+      "sha256": "f633ba0c03d495c4845cbe127c87d16a748b10f1e75fd629024b3a7c099bcc06"
+    },
+    {
+      "file": "libapr1t64_1.7.2-3.1ubuntu0.1_amd64.deb",
+      "metadata": "Package: libapr1t64\nVersion: 1.7.2-3.1ubuntu0.1\nArchitecture: amd64\n",
+      "sha256": "3c719ecc010f5ad3aadb19dc192fc24eb4e0f2293ace527e9a8532810df14a92"
+    },
+    {
+      "file": "libaprutil1t64_1.6.3-1.1ubuntu7.1_amd64.deb",
+      "metadata": "Package: libaprutil1t64\nVersion: 1.6.3-1.1ubuntu7.1\nArchitecture: amd64\n",
+      "sha256": "f39c3cd8a87076d3bd586c192a25ed98c9c5b5ce80d37f92ce66021722995aba"
+    },
+    {
+      "file": "libgnutls-dane0t64_3.8.3-1.1ubuntu3.6_amd64.deb",
+      "metadata": "Package: libgnutls-dane0t64\nVersion: 3.8.3-1.1ubuntu3.6\nArchitecture: amd64\n",
+      "sha256": "1046a09befeb0a0913760ce28e46cd2b2758109325a30771a5f0c82a094a4631"
+    },
+    {
+      "file": "libunbound8_1.19.2-1ubuntu3.12_amd64.deb",
+      "metadata": "Package: libunbound8\nVersion: 1.19.2-1ubuntu3.12\nArchitecture: amd64\n",
+      "sha256": "e1d2295698567b1dfadc940d7fd69a8bab9be617bb886de2fc8297de514df3b0"
+    }
+  ]
+}

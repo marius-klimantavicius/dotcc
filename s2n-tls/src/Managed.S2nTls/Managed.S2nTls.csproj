@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+    <S2nTlsProject Condition="'$(S2nTlsProject)' == ''">../../generated/TranslatedS2nTls/TranslatedS2nTls.csproj</S2nTlsProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(S2nTlsProject)" />
+  </ItemGroup>
+  <Target Name="RequireTranslatedS2nTls" BeforeTargets="PrepareForBuild" Condition="!Exists('$(S2nTlsProject)')">
+    <Error Text="The actual translated s2n-tls project is missing: $(S2nTlsProject). Publish the product or select S2nTlsProject; no substitute TLS backend is available." />
+  </Target>
+</Project>

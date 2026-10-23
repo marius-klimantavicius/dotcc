@@ -105,5 +105,40 @@
     ],
     "group": "product",
     "sha256": "6bd6a66f06b29d19b2a171ead2010735e58ea24b5efbdc9551d5ec06eaec8337"
+  },
+  "s2n-peer": {
+    "url": "https://codeload.github.com/aws/s2n-tls/tar.gz/b170000016fb44fa4dfdd86ed0b75bd28241e707",
+    "revision": "b170000016fb44fa4dfdd86ed0b75bd28241e707",
+    "release": "v1.7.11",
+    "directory": "s2n-peer",
+    "prefix": "s2n-tls-b170000016fb44fa4dfdd86ed0b75bd28241e707",
+    "archive": "s2n-peer.tar.gz",
+    "required": [
+      "CMakeLists.txt",
+      "api/s2n.h",
+      "tls/s2n_cipher_suites.c",
+      "crypto/s2n_stream_cipher_rc4.c",
+      "LICENSE"
+    ],
+    "group": "tests",
+    "license": "Apache-2.0",
+    "use": "Independent previous-release native CLI peer for original cross-version tickets and serialization tests",
+    "archive_paths": [
+      "CMakeLists.txt",
+      "LICENSE",
+      "NOTICE",
+      "api/",
+      "bin/",
+      "cmake/",
+      "codebuild/",
+      "crypto/",
+      "docs/",
+      "error/",
+      "stuffer/",
+      "tests/",
+      "tls/",
+      "utils/"
+    ],
+    "sha256": "2c3b6878eed6301e93c0c836b58c449d229b4d1846940a770f36cb1b6a6f4648"
   }
 }

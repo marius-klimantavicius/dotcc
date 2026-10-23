@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+    <ProviderEmittedProject Condition="'$(ProviderEmittedProject)'==''">../../build/provider/emitted-probe/Emitted/Emitted.csproj</ProviderEmittedProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(ProviderEmittedProject)" />
+  </ItemGroup>
+</Project>
