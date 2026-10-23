@@ -78,6 +78,7 @@ public static unsafe partial class OpenSslAbi
     public static void* EVP_sha384() => (void*)Digests[(int)DigestAlgorithm.Sha384];
     public static void* EVP_sha512() => (void*)Digests[(int)DigestAlgorithm.Sha512];
     public static void* EVP_md5_sha1() => (void*)Digests[(int)DigestAlgorithm.Md5Sha1];
+    public static void* EVP_shake256() => (void*)Digests[(int)DigestAlgorithm.Shake256_64];
     private sealed class DigestContext : IDisposable
     {
         public nint Descriptor;
@@ -89,7 +90,7 @@ public static unsafe partial class OpenSslAbi
     public static void EVP_MD_CTX_free(void* ctx) { try { Remove(ctx); } catch { Error(); } }
     public static int EVP_MD_CTX_reset(void* ctx) { try { Get<DigestContext>(ctx).Dispose(); return 1; } catch { Error(); return 0; } }
     public static void* EVP_MD_CTX_md(void* ctx) { try { return (void*)Get<DigestContext>(ctx).Descriptor; } catch { Error(); return null; } }
-    public static int EVP_MD_size(void* descriptor) { try { using var hash = new Digest(Get<DigestDescriptor>(descriptor).Algorithm); return hash.Size; } catch { Error(); return -1; } }
+    public static int EVP_MD_size(void* descriptor) { try { using var hash = new Digest(Get<DigestDescriptor>(descriptor).Algorithm); return hash.Algorithm==DigestAlgorithm.Shake256_64?32:hash.Size; } catch { Error(); return -1; } }
     public static int EVP_DigestInit_ex(void* ctx, void* descriptor, void* engine)
     {
         try
@@ -108,9 +109,13 @@ public static unsafe partial class OpenSslAbi
         {
             var hash = Get<DigestContext>(ctx).Hash ?? throw new InvalidOperationException();
             if (output == null) throw new ArgumentException();
-            byte[] result = hash.FinalizeHash(); result.CopyTo(Output(output,result.Length)); if (size != null) *size = (uint)result.Length; return 1;
+            byte[] result = hash.Algorithm==DigestAlgorithm.Shake256_64?hash.FinalizeXof(32):hash.FinalizeHash(); result.CopyTo(Output(output,result.Length)); if (size != null) *size = (uint)result.Length; return 1;
         }
         catch { if(size!=null)*size=0; Error(); return 0; }
+    }
+    public static int EVP_DigestFinalXOF(void* ctx,byte* output,ulong size)
+    {
+        try{if(size>int.MaxValue)throw new ArgumentException();var destination=Output(output,(int)size);var hash=Get<DigestContext>(ctx).Hash??throw new InvalidOperationException();hash.FinalizeXof((int)size).CopyTo(destination);return 1;}catch{Error();return 0;}
     }
     public static int EVP_MD_CTX_copy_ex(void* destination, void* source)
     {

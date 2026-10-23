@@ -14,6 +14,7 @@ public static unsafe partial class S2nTls
     public static evp_md_st* Provider_EVP_sha384() => (evp_md_st*)Provider.EVP_sha384();
     public static evp_md_st* Provider_EVP_sha512() => (evp_md_st*)Provider.EVP_sha512();
     public static evp_md_st* Provider_EVP_md5_sha1() => (evp_md_st*)Provider.EVP_md5_sha1();
+    public static evp_md_st* Provider_EVP_shake256() => (evp_md_st*)Provider.EVP_shake256();
     public static evp_cipher_ctx_st* Provider_EVP_CIPHER_CTX_new() => (evp_cipher_ctx_st*)Provider.EVP_CIPHER_CTX_new();
     public static evp_cipher_st* Provider_EVP_rc4() => (evp_cipher_st*)Provider.EVP_rc4();
     public static evp_cipher_st* Provider_EVP_des_ede3_cbc() => (evp_cipher_st*)Provider.EVP_des_ede3_cbc();

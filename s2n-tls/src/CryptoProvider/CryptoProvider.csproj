@@ -5,6 +5,12 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <IsAotCompatible>true</IsAotCompatible>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <!-- NativeAOT introduces an implicit compiler package and RID target. Keep
+         those restores separate from ordinary builds and from other RIDs. -->
+    <ProviderLockAotSuffix Condition="'$(PublishAot)' == 'true'">.aot</ProviderLockAotSuffix>
+    <ProviderLockRid Condition="'$(RuntimeIdentifier)' != ''">$(RuntimeIdentifier)</ProviderLockRid>
+    <ProviderLockRidSuffix Condition="'$(ProviderLockRid)' != ''">.$(ProviderLockRid)</ProviderLockRidSuffix>
+    <NuGetLockFilePath>$(MSBuildThisFileDirectory)packages$(ProviderLockAotSuffix)$(ProviderLockRidSuffix).lock.json</NuGetLockFilePath>
     <AssemblyName>Managed.S2nTls.CryptoProvider</AssemblyName>
   </PropertyGroup>
   <ItemGroup>

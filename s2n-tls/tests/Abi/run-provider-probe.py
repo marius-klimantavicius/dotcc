@@ -16,9 +16,11 @@ def main():
     parser.add_argument("--compiler", type=Path, required=True)
     parser.add_argument("--mode", choices=("jit", "aot", "all"), default="all")
     parser.add_argument("--certificate",type=Path,default=ROOT / "artifacts/provider/jit/abi-leaf.pem")
+    parser.add_argument("--work",type=Path,default=ROOT / "build/provider/emitted-probe")
+    parser.add_argument("--artifacts",type=Path,default=ROOT / "artifacts/provider/emitted-probe")
     args = parser.parse_args()
     compiler = args.compiler.resolve()
-    work, artifacts = ROOT / "build/provider/emitted-probe", ROOT / "artifacts/provider/emitted-probe"
+    work, artifacts = args.work.resolve(), args.artifacts.resolve()
     work.mkdir(parents=True, exist_ok=True)
     artifacts.mkdir(parents=True, exist_ok=True)
     commands = []
@@ -59,9 +61,9 @@ def main():
         ET.SubElement(item, "Compile", Include=str(ROOT / authored), Link=Path(authored).name)
     ET.indent(tree); tree.write(project, encoding="unicode")
     if args.mode in ("jit", "all"):
-        run(["dotnet", "run", "--project", ROOT / "tests/Abi/ProviderAbiProbe.csproj", "-c", "Release", "--artifacts-path", work / "dotnet", "--", artifacts / "native.txt", artifacts / "jit.json",args.certificate.resolve()], "jit.log")
+        run(["dotnet", "run", "--project", ROOT / "tests/Abi/ProviderAbiProbe.csproj", "-p:ProviderEmittedProject=" + str(project), "-c", "Release", "--artifacts-path", work / "dotnet", "--", artifacts / "native.txt", artifacts / "jit.json",args.certificate.resolve()], "jit.log")
     if args.mode in ("aot", "all"):
-        run(["dotnet", "publish", ROOT / "tests/Abi/ProviderAbiProbe.csproj", "-c", "Release", "-r", "linux-x64", "-p:PublishAot=true", "-o", work / "aot", "-m:1", "--nologo", "-v", "minimal", "--artifacts-path", work / "dotnet"], "aot-build.log")
+        run(["dotnet", "publish", ROOT / "tests/Abi/ProviderAbiProbe.csproj", "-p:ProviderEmittedProject=" + str(project), "-c", "Release", "-r", "linux-x64", "-p:PublishAot=true", "-o", work / "aot", "-m:1", "--nologo", "-v", "minimal", "--artifacts-path", work / "dotnet"], "aot-build.log")
         run([work / "aot/ProviderAbiProbe", artifacts / "native.txt", artifacts / "aot.json",args.certificate.resolve()], "aot.log")
     status("passed", mode=args.mode, override_sha256=hashlib.sha256(snapshot.read_bytes()).hexdigest())
     print(f"Emitted provider ABI passed ({args.mode}): {artifacts / 'receipt.json'}")

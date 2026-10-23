@@ -18,7 +18,8 @@
     "license": "MIT",
     "license_path": "LICENSE.md",
     "package_url": "https://api.nuget.org/v3-flatcontainer/bouncycastle.cryptography/2.7.0/bouncycastle.cryptography.2.7.0.nupkg",
-    "use": "SHA224, RC4, unrestricted 3DES, legacy RSA, DH, X25519, DER/PEM/ASN.1 and PKIX/CRL/OCSP; no TLS engine use"
+    "use": "SHA224 and SHAKE256 XOF, RC4, unrestricted 3DES, legacy RSA, DH, X25519, DER/PEM/ASN.1 and PKIX/CRL/OCSP; no TLS engine use",
+    "package_content_hash": "U+12df8UEWHgBi04YVf/Lgi2dy3SItlIYvHjjEVa/BngCQIzDCDRBk50DDByCfDvSbe5pRNFr3b7UrVK2kMcLw=="
   },
   "bcl_operations": [
     "entropy",
@@ -40,7 +41,7 @@
     "RSA_PKCS1_RAW",
     "DH"
   ],
-  "binding_status": "181 typed overrides compiled in complete raw/processed 175-unit product; independent JIT/AOT provider and emitted ABI checked; product TLS qualification remains separate",
+  "binding_status": "183 typed overrides compile in raw/processed 175-unit product 214654; independent emitted JIT/AOT and unchanged original SHAKE hash test 45 assertions verified",
   "compiler_definitions": [
     "S2N_DOTCC_MANAGED_PROVIDER=1",
     "S2N_LIBCRYPTO_SUPPORTS_PRIVATE_RAND=1",
@@ -50,7 +51,8 @@
     "S2N_LIBCRYPTO_SUPPORTS_ASN1_STRING_GET0_DATA=1",
     "S2N_LIBCRYPTO_SUPPORTS_FLAG_NO_CHECK_TIME=1",
     "S2N_LIBCRYPTO_SUPPORTS_GET0_CHAIN=1",
-    "S2N_LIBCRYPTO_SUPPORTS_X509_STORE_LIST=1"
+    "S2N_LIBCRYPTO_SUPPORTS_X509_STORE_LIST=1",
+    "S2N_LIBCRYPTO_SUPPORTS_SHAKE=1"
   ],
   "undefined_features": [
     "S2N_LIBCRYPTO_SUPPORTS_CONST_X509_GETTERS",
@@ -60,7 +62,6 @@
     "S2N_LIBCRYPTO_SUPPORTS_PROVIDERS",
     "S2N_LIBCRYPTO_SUPPORTS_EVP_AEAD_TLS",
     "S2N_LIBCRYPTO_SUPPORTS_HKDF",
-    "S2N_LIBCRYPTO_SUPPORTS_SHAKE",
     "S2N_LIBCRYPTO_SUPPORTS_EVP_KEM",
     "S2N_LIBCRYPTO_SUPPORTS_MLKEM",
     "S2N_LIBCRYPTO_SUPPORTS_MLDSA",
@@ -85,7 +86,7 @@
     "scope": "selected s2n libcrypto operations; not general OpenSSL compatibility or product TLS qualification",
     "provider_evidence": "artifacts/provider/receipt.json",
     "emitted_evidence": "artifacts/provider/emitted-probe/receipt.json",
-    "selected_native_closure": "artifacts/provider/closure/20261023-205255-fc99db78/receipt.json",
+    "selected_native_closure": "artifacts/provider/closure/20261023-214654-406d9780/receipt.json",
     "verification_flags": [
       4,
       8,
@@ -106,6 +107,25 @@
       "proxy certificates",
       "relative-name CRL distribution points",
       "overlapping multi-CRL reason coverage"
-    ]
+    ],
+    "shake_evidence": "artifacts/provider/shake/receipt.json",
+    "shake_emitted_evidence": "artifacts/provider/shake-emitted/receipt.json",
+    "product_compile_evidence": "artifacts/campaign/20261023-214654-406d9780/receipt.json",
+    "original_hash_all_algs_evidence": {
+      "case": "tests/unit/s2n_hash_all_algs_test.c",
+      "original_sha256": "ebc5c2f1fb6e7332e805d6c2d85d894fca6fac15101f6d2b18d43ecb3289a653",
+      "assertions": 45,
+      "form": "raw",
+      "mode": "jit",
+      "receipt": "artifacts/provider/original16-shake-proof/raw-jit.json"
+    }
+  },
+  "restore_locks": {
+    "selection": "PublishAot=true adds .aot; propagated RuntimeIdentifier adds .<RID>; no RID remains separate",
+    "jit": "src/CryptoProvider/packages.lock.json",
+    "jit_linux_x64": "src/CryptoProvider/packages.linux-x64.lock.json",
+    "aot": "src/CryptoProvider/packages.aot.lock.json",
+    "aot_linux_x64": "src/CryptoProvider/packages.aot.linux-x64.lock.json",
+    "evidence": "artifacts/provider/lock-policy/receipt.json"
   }
 }

@@ -1,9 +1,11 @@
 # Managed libcrypto boundary
 
 This records the implemented provider boundary and its independent evidence.
-The complete 181 typed overrides compile in the supervisor's raw and processed
-175-unit product (210200). Provider tests, emitted ABI checks and product TLS
-qualification remain separate gates; this document does not pass the campaign.
+All 183 typed overrides compile in the supervisor's raw and processed 175-unit
+product, `20261023-214654-406d9780`, including the required SHAKE branch. The
+actual emitted provider probe passes independently in JIT and NativeAOT.
+Provider tests, emitted ABI checks and product TLS qualification remain separate
+gates; this document does not pass the campaign.
 
 The declaration reference is `openssl-legacy` in `config/inputs.json`: actual
 OpenSSL 1.1.1w headers. Its `OPENSSL_VERSION_NUMBER` describes those declarations.
@@ -136,8 +138,10 @@ DH uses unsigned big-endian integers, validates peers and returns the unpadded
 secret and its actual length for DH_compute_key. Pristine pinned s2n incorrectly
 left-pads the result to the modulus width (the native leading-zero control
 fails with a 256-byte modulus and one-byte secret). The supervisor's shared
-staged TLS <=1.2 repair retains the actual secret length; this provider does not
-pad that result. NIST ECDH
+staged TLS <=1.2 repair requests computed-size padding at the two TLS callers,
+retaining the actual secret length. The generic padding helper's body and
+contract stay unchanged; this provider does not pad DH_compute_key's result.
+NIST ECDH
 uses uncompressed SEC1 points and raw fixed-width shared secrets; X25519 uses
 32-byte little-endian encodings and rejects an all-zero secret. ECDSA signatures
 are DER sequences, not P1363. DER parsers advance input pointers by consumed
@@ -154,8 +158,8 @@ gates.
 
 `tests/Abi/audit-provider-closure.py` privately compiles all 175 frozen staged
 units with the translation receipt's exact declaration flags, then reconciles
-undefined symbols against the pinned native archive. For 205255 this measures
-176 libcrypto imports, all covered by the 181 typed overrides; there are no
+undefined symbols against the pinned native archive. For 214654 this measures
+178 libcrypto imports, all covered by the 183 typed overrides; there are no
 missing crypto bindings. The additional declarations are the three managed
 identity functions, `OBJ_obj2nid` used by header paths, and the unselected
 `EVP_MD_CTX_set_pkey_ctx` variant. The inventory is declaration/call closure,
@@ -164,13 +168,13 @@ not evidence that every argument or error branch has executed.
 Reproduce the inventory without rebuilding shared tools:
 
 ```sh
-python3 s2n-tls/tests/Abi/audit-provider-closure.py --campaign s2n-tls/build/campaign/20261023-205255-fc99db78
+python3 s2n-tls/tests/Abi/audit-provider-closure.py --campaign s2n-tls/build/campaign/20261023-214654-406d9780
 python3 s2n-tls/tests/Provider/run.py --fetch never --mode all
-python3 s2n-tls/tests/Abi/run-provider-probe.py --compiler s2n-tls/build/campaign/20261023-204707-1f228c70/tools/DotCC/dotcc.dll --mode all
+python3 s2n-tls/tests/Abi/run-provider-probe.py --compiler s2n-tls/build/campaign/20261023-214654-406d9780/tools/DotCC/dotcc.dll --mode all --work s2n-tls/build/provider/independent-emitted-probe --artifacts s2n-tls/artifacts/provider/independent-emitted-probe
 ```
 
 Private output is under `build/provider/`; receipts and differential vectors
-are under `artifacts/provider/`. `closure/20261023-205255-fc99db78/receipt.json`
+are under `artifacts/provider/`. `closure/20261023-214654-406d9780/receipt.json`
 includes commands and per-import source units. `provider-binding-contract.json`
 in `tests/Abi/` records the reviewed signatures and selected native inventory.
 The full provider runner passes 42 groups in JIT and NativeAOT:
@@ -219,6 +223,35 @@ CRL number and entry, root checking and callback-overridden expiry. Unknown
 critical extensions fail; they are not stripped or declared supported by a
 blanket verification flag.
 
+The legacy Netscape certificate-type BIT STRING is recognized by an explicit
+PKIX checker, matching native OpenSSL. Its client/server/CA bits are enforced
+by the authored X509_check_purpose calls made by translated s2n after chain
+validation. Native comparisons cover critical accepted and denied purpose
+bits, so recognizing this extension does not bypass intent validation.
+The focused post-integration regression is reproducible with:
+
+```sh
+python3 s2n-tls/tests/Provider/run.py --fetch never --mode all --filter '(abi|audit)/x509' --artifacts s2n-tls/artifacts/provider/netscape-critical
+```
+
+Its separate receipt passes four X509 groups in each runtime and records the
+38 unselected primitive groups explicitly. The earlier full 42-group receipts
+remain separate; filtered success cannot be mistaken for a full suite run.
+
+The unchanged original intent test subsequently exposed critical EKU on an
+intermediate: BC's PKIX validator recognizes this on the leaf, but leaves it
+unresolved on intermediate certificates. The explicit checker now decodes
+intermediate EKU and CRL distribution points. Translated s2n still enforces
+EKU over every chain certificate, and VerifyCrls processes distribution scope;
+these extensions do not acquire a blanket critical-extension bypass. Invalid
+CA intermediates report native error 24. Five focused X509 groups, including
+all original intent-chain fixtures, pass native comparison in JIT and NativeAOT
+under `artifacts/provider/critical-intermediate/`. Recompiling the unchanged
+original intent C harness then passes exactly 1783 assertions, matching native;
+its preserved earlier failure at assertion 763 remains under
+`artifacts/provider/original16-x509-probe/`, and the repaired execution/hash
+receipt is `artifacts/provider/original16-x509-repaired/raw-jit.json`.
+
 The selected native flags reject indirect and reason-partitioned CRLs; matching
 that rejection is a scoped exclusion, proven against this pin. EXTENDED_CRL_SUPPORT
 and USE_DELTAS are never requested by actual s2n and are not supported provider
@@ -236,8 +269,60 @@ with the required EKU and reject missing/wrong EKU. Signature, trusted signer
 chain and authorization remain separate checks. The translated s2n code keeps
 its own matching CertID/status/freshness policy.
 
-Remaining product gates are the supervisor's actual s2n init and owning API
-execution, required 36-suite/version matrix including SSLv3 legacy suites,
-upstream parser/validator rejection tests, resumption/nonblocking/lifecycle and
-delivery qualification. The provider's independent receipts do not substitute
-for those runs. No native libcrypto is imported by this provider assembly.
+The supervisor's receipts track actual s2n init and owning API execution,
+the required 36-suite/version matrix including SSLv3 legacy suites, upstream
+parser/validator rejection tests, resumption/nonblocking/lifecycle and delivery
+qualification. The provider's independent receipts do not substitute for those
+runs or close the outstanding whole-upstream gate. No native libcrypto is
+imported by this provider assembly.
+
+## SHAKE branch repair from original C assertions
+
+The original `s2n_hash_all_algs_test.c` initially executed 40 assertions in the
+translated product versus native's 45. Its loop silently continues past an
+unavailable algorithm, so a successful process exit did not pass this case.
+The missing branch was SHAKE256 with 64 output bytes. It is now implemented
+with the pinned BC SHAKE XOF, including copy/reset and variable output length;
+the truthful feature definition is `S2N_LIBCRYPTO_SUPPORTS_SHAKE=1`.
+`EVP_shake256` and `EVP_DigestFinalXOF` extend the override profile to 183.
+The OpenSSL descriptor retains native's 32-byte default size; the actual s2n
+branch explicitly finalizes 64 bytes. Ordinary RSA signature algorithms do
+not acquire a SHAKE DigestInfo.
+
+The focused native differential cases pass in JIT and NativeAOT, including
+empty input, diverging copies, 0/1/32/64/137-byte XOF widths, default finalization,
+buffer guards and rejection of non-XOF contexts. The actual emitted C probe
+also executes SHAKE update/copy/FinalXOF and matches native in both runtimes:
+
+```sh
+python3 s2n-tls/tests/Provider/run.py --fetch never --mode all --filter shake --artifacts s2n-tls/artifacts/provider/shake
+python3 s2n-tls/tests/Abi/run-provider-probe.py --compiler s2n-tls/build/campaign/20261023-212541-5df78e58/tools/DotCC/dotcc.dll --mode all --work s2n-tls/build/provider/shake-emitted --artifacts s2n-tls/artifacts/provider/shake-emitted
+```
+
+The regenerated 175-unit product `20261023-214654-406d9780` includes this C
+branch; the matching native inventory now has 178 imports and no missing
+bindings. The unchanged original `s2n_hash_all_algs_test.c` also passes all 45
+assertions in a raw JIT harness using the complete SHAKE-enabled product
+snapshot `20261023-213416-7ad33661`, with native count equality and source hash
+recorded in `artifacts/provider/original16-shake-proof/raw-jit.json`. The
+214654 selected16 retry and remaining forms/modes have separate receipts.
+Historical old-profile results of 40 assertions remain failures and their
+frozen objects and receipts are preserved.
+
+## Restore locks
+
+Provider restores select separate authored locks for ordinary and PublishAot
+builds, further separated when RuntimeIdentifier is propagated. The four
+qualified profiles are `packages.lock.json`, `packages.linux-x64.lock.json`,
+`packages.aot.lock.json` and `packages.aot.linux-x64.lock.json`. All preserve the
+exact BC 2.7.0 version and the same NuGet content hash recorded in provider.json.
+The implicit NativeAOT compiler package belongs only to the AOT locks. Ordinary
+compilation no longer removes it from an AOT lock or mutates a different mode's
+lock. Other RIDs get distinct paths and require their own qualification.
+
+`python3 s2n-tls/tests/Provider/check-locks.py` runs all four locked restores
+concurrently with separate assets directories, builds locked JIT and AOT/RID
+profiles, publishes and executes focused NativeAOT SHAKE tests with locked
+restore, and verifies that every authored lock hash remains unchanged. Its
+receipt is `artifacts/provider/lock-policy/receipt.json`. `--update` is an
+explicit lock-generation operation; the normal check never requests changes.

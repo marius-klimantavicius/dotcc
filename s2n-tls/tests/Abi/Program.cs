@@ -22,6 +22,8 @@ unsafe
         if(provider_digest_probe(input,(ulong)data.Length,output)!=1)throw new Exception("Actual emitted EVP digest probe failed.");
         if(Convert.ToHexString(digest).ToLowerInvariant()!=lines[17])throw new Exception("Emitted digest differs from native.");
     }
+    byte[] shake=new byte[64];fixed(byte* input=data)fixed(byte* output=shake)
+    {if(provider_shake_probe(input,(ulong)data.Length,output)!=1||Convert.ToHexString(shake).ToLowerInvariant()!=lines[18])throw new Exception("Actual emitted SHAKE256 XOF/copy differs from native.");}
     string pem=File.ReadAllText(args[2]);var field=PemEncoding.Find(pem);byte[] der=Convert.FromBase64String(pem[field.Base64Data]);byte[] name=new byte[512];
     fixed(byte* encoded=der)fixed(byte* output=name)
     {int count=provider_certificate_san_probe(encoded,(ulong)der.Length,output,name.Length);if(count!=16||!name.AsSpan(0,count).SequenceEqual("provider.example"u8))throw new Exception("Actual emitted GENERAL_NAME/ASN1_STRING field access failed.");}

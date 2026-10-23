@@ -135,6 +135,7 @@ internal static unsafe class CertificateChecks
         });
         AuditChecks.Run(test,oracle,artifacts,rootKey,root,leaf,now);
         RestrictedRsaChecks.Run(test,oracle,artifacts);
+        IntermediatePurposeChecks.Run(test,oracle);
     }
     private static class VerifyCallback
     {

@@ -10,6 +10,21 @@ internal static unsafe class AbiChecks
     private static string Hex(ReadOnlySpan<byte> bytes)=>Convert.ToHexString(bytes);
     internal static void Run(Action<string,Action> test,Func<string[],string> oracle,string artifacts)
     {
+        test("abi/shake256-xof-native-clone-width-final-reset",()=>
+        {
+            int before=OpenSslAbi.LiveContexts;byte[] input="original s2n SHAKE path"u8.ToArray();Check(OpenSslAbi.EVP_MD_size(OpenSslAbi.EVP_shake256())==32);
+            byte* fixedOutput=stackalloc byte[32];
+            foreach(int width in new[]{0,1,32,64,137})
+            {
+                void* ctx=OpenSslAbi.EVP_MD_CTX_new(),copy=OpenSslAbi.EVP_MD_CTX_new();
+                try{Check(OpenSslAbi.EVP_DigestInit_ex(ctx,OpenSslAbi.EVP_shake256(),null)==1);fixed(byte* p=input){Check(OpenSslAbi.EVP_DigestUpdate(ctx,p,(ulong)input.Length)==1);}Check(OpenSslAbi.EVP_MD_CTX_copy_ex(copy,ctx)==1);byte[] output=new byte[width+2];output[0]=output[^1]=0xa5;
+                    fixed(byte* p=output){Check(OpenSslAbi.EVP_DigestFinalXOF(ctx,p+1,(ulong)width)==1);Check(OpenSslAbi.EVP_DigestFinalXOF(ctx,p+1,(ulong)width)==0);}Check(output[0]==0xa5&&output[^1]==0xa5);Same(output.AsSpan(1,width),Bytes(oracle(["hash-xof",Hex(input),width.ToString()])));
+                    uint size=0;Check(OpenSslAbi.EVP_DigestFinal_ex(copy,fixedOutput,&size)==1&&size==32);Same(new ReadOnlySpan<byte>(fixedOutput,32),Bytes(oracle(["hash","shake256",Hex(input)])));
+                    Check(OpenSslAbi.EVP_MD_CTX_reset(ctx)==1&&OpenSslAbi.EVP_DigestInit_ex(ctx,OpenSslAbi.EVP_sha256(),null)==1);Check(OpenSslAbi.EVP_DigestFinalXOF(ctx,fixedOutput,32)==0);
+                }finally{OpenSslAbi.EVP_MD_CTX_free(ctx);OpenSslAbi.EVP_MD_CTX_free(copy);}
+            }
+            Check(OpenSslAbi.LiveContexts==before);
+        });
         test("abi/digest-copy-final-reset-error-lifetime",()=>
         {
             int before=OpenSslAbi.LiveContexts;byte[] message=Encoding.ASCII.GetBytes("state clone across boundaries");

@@ -69,6 +69,18 @@ int provider_digest_probe(const unsigned char *bytes,size_t length,unsigned char
     EVP_MD_CTX_free(first);EVP_MD_CTX_free(copy);return ok;
 }
 
+int provider_shake_probe(const unsigned char *bytes,size_t length,unsigned char *digest)
+{
+    EVP_MD_CTX *first=EVP_MD_CTX_new(),*copy=EVP_MD_CTX_new();unsigned char other[64];
+    int ok=first&&copy&&EVP_MD_size(EVP_shake256())==32
+        &&EVP_DigestInit_ex(first,EVP_shake256(),NULL)==1
+        &&EVP_DigestUpdate(first,bytes,length/2)==1&&EVP_MD_CTX_copy_ex(copy,first)==1
+        &&EVP_DigestUpdate(first,bytes+length/2,length-length/2)==1&&EVP_DigestFinalXOF(first,digest,64)==1
+        &&EVP_DigestUpdate(copy,bytes+length/2,length-length/2)==1&&EVP_DigestFinalXOF(copy,other,64)==1
+        &&memcmp(digest,other,64)==0;
+    EVP_MD_CTX_free(first);EVP_MD_CTX_free(copy);return ok;
+}
+
 /* Read actual exposed vendor fields through emitted C, not a C# mirror. */
 int provider_certificate_san_probe(const unsigned char *der,size_t length,unsigned char *dns,int capacity)
 {
@@ -97,6 +109,8 @@ int main(void)
     if(!provider_register_callback(native_callback,&sum)||!provider_callback_identity(native_callback)||provider_invoke_callback(bytes,sizeof(bytes))!=391)return 1;
     provider_clear_callback();if(provider_invoke_callback(bytes,sizeof(bytes))!=-1)return 2;
     if(!provider_digest_probe(bytes,sizeof(bytes),digest))return 3;
-    for(int i=0;i<36;i++)printf("%02x",digest[i]);putchar('\n');return 0;
+    for(int i=0;i<36;i++)printf("%02x",digest[i]);putchar('\n');
+    unsigned char shake[64];if(!provider_shake_probe(bytes,sizeof(bytes),shake))return 4;
+    for(int i=0;i<64;i++)printf("%02x",shake[i]);putchar('\n');return 0;
 }
 #endif

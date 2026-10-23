@@ -37,8 +37,12 @@ int main(int argc, char **argv)
     unsigned char out[131072]; size_t outlen = sizeof(out), n=0, kn=0, ivn=0, an=0;
     if (!strcmp(argv[1], "hash")) {
         CHECK(argc==4); unsigned char *in = unhex(argv[3], &n); CHECK(in);
+        if(!strcmp(argv[2],"shake256-64")){EVP_MD_CTX *ctx=EVP_MD_CTX_new();CHECK(ctx&&EVP_DigestInit_ex(ctx,EVP_shake256(),NULL)==1&&EVP_DigestUpdate(ctx,in,n)==1&&EVP_DigestFinalXOF(ctx,out,64)==1);printhex(out,64);EVP_MD_CTX_free(ctx);free(in);return 0;}
         const EVP_MD *md = EVP_get_digestbyname(argv[2]); CHECK(md);
         unsigned int length=0; CHECK(EVP_Digest(in,n,out,&length,md,NULL)==1); printhex(out,length); free(in); return 0;
+    }
+    if (!strcmp(argv[1], "hash-xof")) {
+        CHECK(argc==4);unsigned char *in=unhex(argv[2],&n);CHECK(in);size_t size=strtoul(argv[3],NULL,10);CHECK(size<=sizeof(out));EVP_MD_CTX *ctx=EVP_MD_CTX_new();CHECK(ctx&&EVP_DigestInit_ex(ctx,EVP_shake256(),NULL)==1&&EVP_DigestUpdate(ctx,in,n)==1&&EVP_DigestFinalXOF(ctx,out,size)==1);printhex(out,size);EVP_MD_CTX_free(ctx);free(in);return 0;
     }
     if (!strcmp(argv[1], "cipher")) {
         CHECK(argc==8); const EVP_CIPHER *cipher=EVP_get_cipherbyname(argv[2]); CHECK(cipher);
@@ -108,6 +112,9 @@ int main(int argc, char **argv)
     }
     if (!strcmp(argv[1],"x509-purpose")) {
         CHECK(argc==4);X509 *x=readcert(argv[2]);CHECK(x);int ca=atoi(argv[3]);printf("%d %d\n",X509_check_purpose(x,1,ca),X509_check_purpose(x,2,ca));X509_free(x);return 0;
+    }
+    if (!strcmp(argv[1],"x509-chain")) {
+        CHECK(argc==4);X509 *root=readcert(argv[3]);CHECK(root);FILE *file=fopen(argv[2],"rb");CHECK(file);X509 *leaf=PEM_read_X509(file,NULL,NULL,NULL);CHECK(leaf);STACK_OF(X509) *wire=sk_X509_new_null();CHECK(wire);X509 *item;while((item=PEM_read_X509(file,NULL,NULL,NULL))!=NULL)CHECK(sk_X509_push(wire,item));fclose(file);ERR_clear_error();X509_STORE *store=X509_STORE_new();CHECK(store&&X509_STORE_add_cert(store,root)==1);X509_STORE_CTX *ctx=X509_STORE_CTX_new();CHECK(ctx&&X509_STORE_CTX_init(ctx,store,leaf,wire)==1);X509_STORE_CTX_set_flags(ctx,X509_V_FLAG_PARTIAL_CHAIN);int ok=X509_verify_cert(ctx);printf("%d %d\n",ok,X509_STORE_CTX_get_error(ctx));X509_STORE_CTX_free(ctx);X509_STORE_free(store);sk_X509_pop_free(wire,X509_free);X509_free(leaf);X509_free(root);return 0;
     }
     if (!strcmp(argv[1],"ocsp-basic")) {
         CHECK(argc==4);X509 *root=readcert(argv[2]);CHECK(root);BIO *file=BIO_new_file(argv[3],"rb");CHECK(file);OCSP_RESPONSE *response=d2i_OCSP_RESPONSE_bio(file,NULL);BIO_free(file);CHECK(response);OCSP_BASICRESP *basic=OCSP_response_get1_basic(response);CHECK(basic);X509_STORE *store=X509_STORE_new();CHECK(store&&X509_STORE_add_cert(store,root)==1);printf("%d\n",OCSP_basic_verify(basic,NULL,store,0)>0);X509_STORE_free(store);OCSP_BASICRESP_free(basic);OCSP_RESPONSE_free(response);X509_free(root);return 0;

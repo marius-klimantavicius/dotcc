@@ -150,6 +150,28 @@ public static unsafe partial class OpenSslAbi
             base.CheckValidity(date);
         }
     }
+    private sealed class NativePurposeExtensions : PkixCertPathChecker
+    {
+        private const string Netscape="2.16.840.1.113730.1.1";
+        public override void Init(bool forward){}
+        public override bool IsForwardCheckingSupported()=>true;
+        public override ISet<string> GetSupportedExtensions()=>new HashSet<string>{Netscape,"2.5.29.37","2.5.29.31"};
+        public override void Check(Org.BouncyCastle.X509.X509Certificate certificate,ISet<string> unresolved)
+        {
+            // OpenSSL recognizes this legacy BIT STRING. Its SSL client/server
+            // and CA bits are enforced by X509_check_purpose when translated
+            // s2n checks the complete chain's intent, after path verification.
+            if(unresolved.Contains(Netscape))
+            {_=Org.BouncyCastle.Asn1.DerBitString.GetInstance(ExtensionValue(certificate,new Org.BouncyCastle.Asn1.DerObjectIdentifier(Netscape)));unresolved.Remove(Netscape);}
+            // BC handles these on the leaf, but leaves them unresolved on
+            // intermediates. Decode the actual values; translated s2n checks
+            // EKU on every validated certificate, and VerifyCrls uses each DP.
+            if(unresolved.Contains("2.5.29.37"))
+            {_=certificate.GetExtendedKeyUsage();unresolved.Remove("2.5.29.37");}
+            if(unresolved.Contains("2.5.29.31"))
+            {_=Org.BouncyCastle.Asn1.X509.CrlDistPoint.GetInstance(ExtensionValue(certificate,Org.BouncyCastle.Asn1.X509.X509Extensions.CrlDistributionPoints)).GetDistributionPoints();unresolved.Remove("2.5.29.31");}
+        }
+    }
     private static bool BuildChain(CertState current,StoreContext context,List<CertState> path,HashSet<CertState> seen)
     {
         if(path.Count>context.Param.Depth+1||!seen.Add(current))return false;path.Add(current);
@@ -178,12 +200,20 @@ public static unsafe partial class OpenSslAbi
             // Native checks critical extensions on the complete chain, including
             // its trust anchor. PKIX validation alone omits the anchor.
             foreach(var item in path)if(HasUnhandledCertificateCriticalExtension(item.Certificate.Value))return VerificationError(c,ctx,34);
+            // Native reports INVALID_CA before generic signature/path errors.
+            // Trust anchors are not ordinary intermediate certificates.
+            foreach(var item in path.Skip(1).Take(Math.Max(0,path.Count-2)))
+            {
+                var intermediate=item.Certificate.Value;bool[]? usage=intermediate.GetKeyUsage();
+                if(intermediate.GetBasicConstraints()<0||usage!=null&&(usage.Length<=5||!usage[5]))return VerificationError(c,ctx,24);
+            }
             if(path.Count==1)
             {new ValidatingCertificate(path[0].Certificate.Value,c,ctx).CheckValidity(time);}
             else
             {
                 var trust=new HashSet<TrustAnchor>{new(new ValidatingCertificate(path[^1].Certificate.Value,c,ctx),null)};
                 var options=new PkixParameters(trust){IsRevocationEnabled=false,Date=time};
+                options.AddCertPathChecker(new NativePurposeExtensions());
                 try{new PkixCertPathValidator().Validate(new PkixCertPath(path.Take(path.Count-1).Select(x=>(Org.BouncyCastle.X509.X509Certificate)new ValidatingCertificate(x.Certificate.Value,c,ctx)).ToList()),options);}
                 catch(PkixCertPathValidatorException error)
                 {return VerificationError(c,ctx,c.Error!=0?c.Error:error.Message.Contains("critical",StringComparison.OrdinalIgnoreCase)?34:7);}

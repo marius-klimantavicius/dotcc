@@ -1,10 +1,10 @@
 {
   "scope": "All selected staged C units compiled natively with the exact translation declaration flags; no product native backend",
-  "provider_profile_sha256": "5df3281516f5bde71b92b11dc18e2c2f35a1e413c4ad029399b463693e3124ad",
-  "selected_native_import_count": 176,
-  "declared_binding_count": 181,
-  "selected_profile_run": "20261023-205255-fc99db78",
-  "native_import_evidence": "artifacts/provider/closure/20261023-205255-fc99db78/receipt.json",
+  "provider_profile_sha256": "7c2a754f4711534434aa8652ec036a88e7b373c479c4cae90f7b269d8ae10acb",
+  "selected_native_import_count": 178,
+  "declared_binding_count": 183,
+  "selected_profile_run": "20261023-214654-406d9780",
+  "native_import_evidence": "artifacts/provider/closure/20261023-214654-406d9780/receipt.json",
   "bindings": [
     {
       "name": "EVP_md5",
@@ -2835,6 +2835,37 @@
         "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.OCSP_basic_verify"
       },
       "selected_native_import": true
+    },
+    {
+      "name": "EVP_shake256",
+      "signature": {
+        "returnType": "const EVP_MD *",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_EVP_shake256"
+      },
+      "selected_native_import": true
+    },
+    {
+      "name": "EVP_DigestFinalXOF",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_MD_CTX *",
+          "unsigned char *",
+          "size_t"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_DigestFinalXOF"
+      },
+      "selected_native_import": true
     }
-  ]
+  ],
+  "native_profile_omits_new_features": []
 }

@@ -6,10 +6,11 @@ using System.Text.Json;
 using Managed.S2nTls.Crypto;
 using CryptoCertificate = Managed.S2nTls.Crypto.Certificate;
 
-if (args.Length != 3) throw new ArgumentException("Usage: ProviderTests <native-vector-exe> <artifact-directory> <expected-native-version-prefix>");
+if (args.Length is <3 or >4) throw new ArgumentException("Usage: ProviderTests <native-vector-exe> <artifact-directory> <expected-native-version-prefix> [case-regex]");
 string native = Path.GetFullPath(args[0]), artifacts = Path.GetFullPath(args[1]);
 Directory.CreateDirectory(artifacts);
 var cases = new List<(string Name, bool Passed, string? Error)>();
+var filter=args.Length==4?new System.Text.RegularExpressions.Regex(args[3]):null;int skipped=0;
 string Hex(ReadOnlySpan<byte> value) => Convert.ToHexString(value).ToLowerInvariant();
 byte[] Bytes(string value) => Convert.FromHexString(value);
 string Oracle(params string[] argv)
@@ -35,6 +36,7 @@ void Reject(Action action)
 }
 void Test(string name, Action test)
 {
+    if(filter!=null&&!filter.IsMatch(name)){skipped++;return;}
     try { test(); cases.Add((name, true, null)); Console.WriteLine($"PASS {name}"); }
     catch (Exception e) { cases.Add((name, false, e.ToString())); Console.WriteLine($"FAIL {name}: {e.Message}"); }
 }
@@ -43,7 +45,7 @@ Assert(version.StartsWith(args[2], StringComparison.Ordinal), "Native oracle ver
 byte[] message = Enumerable.Range(0, 319).Select(i => (byte)(i * 31 + 7)).ToArray();
 foreach (var algorithm in Enum.GetValues<DigestAlgorithm>())
 {
-    string name = algorithm switch { DigestAlgorithm.Md5Sha1 => "md5-sha1", _ => algorithm.ToString().ToLowerInvariant() };
+    string name = algorithm switch { DigestAlgorithm.Md5Sha1 => "md5-sha1",DigestAlgorithm.Shake256_64=>"shake256-64", _ => algorithm.ToString().ToLowerInvariant() };
     Test($"digest/{name}/clone-reset-native", () =>
     {
         using var digest = new Digest(algorithm); digest.Update(message.AsSpan(0, 63));
@@ -120,6 +122,8 @@ foreach (int bits in new[] { 512, 1024, 2048 })
         Equal(publicKey.ExportPublicDer(),derKey.ExportPublicDer());
         foreach (var algorithm in Enum.GetValues<DigestAlgorithm>())
         {
+            // SHAKE is an XOF used by the selected hash API, not an RSA DigestInfo.
+            if(algorithm==DigestAlgorithm.Shake256_64)continue;
             // 512-bit RSA cannot encode SHA384/SHA512 DigestInfo under PKCS1.
             if (bits==512 && algorithm is DigestAlgorithm.Sha384 or DigestAlgorithm.Sha512) continue;
             string md=algorithm==DigestAlgorithm.Md5Sha1?"md5-sha1":algorithm.ToString().ToLowerInvariant();
@@ -182,6 +186,7 @@ Test("certificate/pem-der-spki-chain",()=>
 });
 AbiChecks.Run(Test,p=>Oracle(p),artifacts);
 CertificateChecks.Run(Test,p=>Oracle(p),artifacts);
+if(cases.Count==0)throw new ArgumentException("Case filter selected no tests.");
 int failures=cases.Count(x=>!x.Passed);
 using(var report = File.Create(Path.Combine(artifacts,"managed-report.json")))
 using(var writer = new Utf8JsonWriter(report,new JsonWriterOptions{Indented=true}))
@@ -190,7 +195,7 @@ using(var writer = new Utf8JsonWriter(report,new JsonWriterOptions{Indented=true
     writer.WriteString("native",version);writer.WriteNumber("passed",cases.Count-failures);writer.WriteNumber("failed",failures);writer.WriteStartArray("cases");
     foreach(var item in cases)
     { writer.WriteStartObject();writer.WriteString("name",item.Name);writer.WriteBoolean("passed",item.Passed);writer.WriteString("error",item.Error);writer.WriteEndObject(); }
-    writer.WriteEndArray();writer.WriteEndObject();
+    writer.WriteEndArray();writer.WriteNumber("unselected",skipped);if(filter!=null)writer.WriteString("case_filter",args[3]);writer.WriteEndObject();
 }
 Console.WriteLine($"{cases.Count-failures} passed; {failures} failed. Report: {Path.Combine(artifacts,"managed-report.json")}");
 return failures==0?0:1;

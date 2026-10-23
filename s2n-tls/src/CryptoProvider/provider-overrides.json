@@ -2649,6 +2649,34 @@
         "kind": "managedMethod",
         "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.OCSP_basic_verify"
       }
+    },
+    {
+      "name": "EVP_shake256",
+      "signature": {
+        "returnType": "const EVP_MD *",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Security.S2n.S2nTls.Provider_EVP_shake256"
+      }
+    },
+    {
+      "name": "EVP_DigestFinalXOF",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "EVP_MD_CTX *",
+          "unsigned char *",
+          "size_t"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.S2nTls.Crypto.OpenSslAbi.EVP_DigestFinalXOF"
+      }
     }
   ]
 }

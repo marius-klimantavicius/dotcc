@@ -64,13 +64,14 @@ internal static unsafe class AuditChecks
         test("audit/x509-purpose-critical-anchor-and-legacy-signatures-native",()=>
         {
             int before=OpenSslAbi.LiveContexts;
-            foreach(string variant in new[]{"agreement","any-eku","sgc","netscape-deny","legacy-ca","md5","sha1","unknown-critical-leaf","unknown-critical-root"})
+            foreach(string variant in new[]{"agreement","any-eku","sgc","netscape-deny","netscape-critical","netscape-critical-deny","legacy-ca","md5","sha1","unknown-critical-leaf","unknown-critical-root"})
             {
                 var generator=new X509V3CertificateGenerator();generator.SetIssuerDN(bcRoot.SubjectDN);generator.SetSubjectDN(new X509Name("CN=Audit "+variant));generator.SetSerialNumber(new Org.BouncyCastle.Math.BigInteger("123"));generator.SetNotBefore(now.AddHours(-1).UtcDateTime);generator.SetNotAfter(now.AddHours(1).UtcDateTime);generator.SetPublicKey(bcLeaf.GetPublicKey());
                 if(variant=="agreement")generator.AddExtension(BcExtensions.KeyUsage,true,new KeyUsage(KeyUsage.KeyAgreement));
                 if(variant=="any-eku")generator.AddExtension(BcExtensions.ExtendedKeyUsage,false,new ExtendedKeyUsage(KeyPurposeID.AnyExtendedKeyUsage));
                 if(variant=="sgc")generator.AddExtension(BcExtensions.ExtendedKeyUsage,false,new DerSequence(new DerObjectIdentifier("1.3.6.1.4.1.311.10.3.3")));
                 if(variant=="netscape-deny")generator.AddExtension(new DerObjectIdentifier("2.16.840.1.113730.1.1"),false,new DerBitString(new byte[]{0}));
+                if(variant.StartsWith("netscape-critical"))generator.AddExtension(new DerObjectIdentifier("2.16.840.1.113730.1.1"),true,new DerBitString(new byte[]{variant=="netscape-critical"?(byte)0xc0:(byte)0}));
                 if(variant=="legacy-ca")generator.AddExtension(BcExtensions.KeyUsage,true,new KeyUsage(KeyUsage.KeyCertSign));
                 if(variant.StartsWith("unknown-critical"))generator.AddExtension(new DerObjectIdentifier("1.2.3.4.5"),true,DerNull.Instance);
                 if(variant=="unknown-critical-root"){generator.SetSubjectDN(bcRoot.SubjectDN);generator.SetPublicKey(bcRoot.GetPublicKey());generator.AddExtension(BcExtensions.BasicConstraints,true,new BasicConstraints(true));}
@@ -79,7 +80,7 @@ internal static unsafe class AuditChecks
                 try
                 {
                     foreach(int ca in new[]{0,1}){string result=$"{OpenSslAbi.X509_check_purpose(cert,1,ca)} {OpenSslAbi.X509_check_purpose(cert,2,ca)}";Check(result==oracle(["x509-purpose",path,ca.ToString()]),"Purpose "+variant+": "+result);}
-                    if(variant is "md5" or "sha1" or "unknown-critical-leaf" or "unknown-critical-root")
+                    if(variant is "md5" or "sha1" or "unknown-critical-leaf" or "unknown-critical-root" or "netscape-critical" or "netscape-critical-deny")
                     {
                         bool rootVariant=variant=="unknown-critical-root";void* trust=Decode(rootVariant?der:root.RawData),target=rootVariant?Decode(leaf.RawData):cert,store=OpenSslAbi.X509_STORE_new(),ctx=OpenSslAbi.X509_STORE_CTX_new();
                         try{Check(OpenSslAbi.X509_STORE_add_cert(store,trust)==1&&OpenSslAbi.X509_STORE_CTX_init(ctx,store,target,null)==1,"Verify setup");OpenSslAbi.X509_STORE_CTX_set_flags(ctx,0x80000);OpenSslAbi.X509_STORE_CTX_set_time(ctx,0,now.ToUnixTimeSeconds());int ok=OpenSslAbi.X509_verify_cert(ctx),error=OpenSslAbi.X509_STORE_CTX_get_error(ctx);string native=oracle(["x509-verify",rootVariant?leafPath:path,rootVariant?path:rootPath,now.ToUnixTimeSeconds().ToString(),"524288"]);Check($"{ok} {error}"==native,$"Verify {variant}: {ok} {error} != {native}");}
