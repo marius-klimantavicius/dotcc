@@ -283,3 +283,16 @@ binary/cache files, under exclusive kernel write leases. All1,239 other own-run
 files (including sources, tools, metadata and every bin/publish output) remain
 unchanged;378 journal records independently verify at
 `artifacts/managed-contract/root-abi-closed-cache-2340/postflight.json`.
+
+
+The private EC rollup passes1,223 exact native comparisons per runtime at
+`artifacts/provider/ec-public-contract-private/20261023T234026Z-e2965f58/receipt.json`.
+The prospective permanent50th group separately passes1,223 comparisons per mode
+using a private production project and fresh BCL fixtures:
+`artifacts/provider/ec-regression-private/20261023T234346Z-86f9b5dd/receipt.json`.
+It selects1 group and explicitly leaves49 unselected. Independent root reviews
+check514 and539 source/native/output/runtime/proof files at
+`artifacts/managed-contract/ec-private-{rollup,permanent}-supervisor-review.json`.
+The exact two runtime files and three regression files are approved only after
+natural C batch002 drain/exclusive lease and actual API source-reader clearance.
+No live EC repair or full50 pass is claimed here.

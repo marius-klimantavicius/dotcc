@@ -137,10 +137,10 @@
     "post_asn1_abi": "artifacts/campaign/20261024-001718-6f72b210/receipt.json",
     "provider_controller_pid": 1606362,
     "final_provider_current_c_counts": {
-      "passed": 10,
+      "passed": 18,
       "failed": 0,
-      "unrun": 247,
-      "scope": "Captured f80 RSA+stdio all4; EC repair remains private/pending."
+      "unrun": 239,
+      "scope": "Captured f80 RSA+stdio all4; private EC candidate not applied."
     },
     "final_provider_cli": "build/managed-upstream/python-endpoints-final-rsa-stdio.json",
     "final_provider_cli_audit": "artifacts/managed-contract/final-asn1-cli-eight-supervisor-audit.json",
@@ -224,7 +224,11 @@
     "freeze": "artifacts/provider/freeze-rsa-20261023T224649Z/receipt.json"
   },
   "observed_ec_defect": {
-    "state": "Private native/current1080 rows,576 discrepancies; production unchanged; no signals or pause yet.",
-    "proof": "artifacts/provider/ec-public-contract-private/20261023T233124Z-f06a1d30/receipt.json"
+    "state": "Private two-file rollup and prospective50th production-project group each1223native comparisons JIT+AOT passed; root514/539-file reviews passed. Exact five-file application authorized only after C002 natural drain/exclusive lease and actual API source-reader window. Live f80 unchanged at capture.",
+    "proof": "artifacts/provider/ec-public-contract-private/20261023T233124Z-f06a1d30/receipt.json",
+    "private_rollup": "artifacts/provider/ec-public-contract-private/20261023T234026Z-e2965f58/receipt.json",
+    "private_permanent": "artifacts/provider/ec-regression-private/20261023T234346Z-86f9b5dd/receipt.json",
+    "supervisor_review": "artifacts/managed-contract/ec-private-permanent-supervisor-review.json",
+    "pause_marker": "artifacts/provider/ec-pause-after-batch-20261023T234522Z/receipt.json"
   }
 }
