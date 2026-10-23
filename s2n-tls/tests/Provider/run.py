@@ -25,6 +25,7 @@ def main():
     parser.add_argument("--work", type=Path, default=ROOT / "build/provider")
     parser.add_argument("--filter", help="Run only managed case names matching this regular expression")
     args = parser.parse_args()
+    args.artifacts = args.artifacts.resolve()
     if platform.system() != "Linux" or platform.machine() not in ("x86_64", "AMD64"):
         parser.error("This native oracle is qualified only on Linux x64; no portable execution claim.")
     metadata = json.loads((ROOT / "config/provider.json").read_text())
