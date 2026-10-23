@@ -35,6 +35,25 @@ int main(int argc, char **argv)
     CHECK(argc >= 2);
     if (!strcmp(argv[1], "version")) { puts(OpenSSL_version(OPENSSL_VERSION)); return 0; }
     unsigned char out[131072]; size_t outlen = sizeof(out), n=0, kn=0, ivn=0, an=0;
+    if (!strcmp(argv[1], "asn1-utf8")) {
+        CHECK(argc == 5);
+        unsigned char *input = unhex(argv[3], &n); CHECK(input);
+        ASN1_STRING *value = NULL;
+        if (strcmp(argv[2], "null")) {
+            value = ASN1_STRING_type_new(atoi(argv[2])); CHECK(value);
+            CHECK(ASN1_STRING_set(value, input, (int)n) == 1);
+            value->length = atoi(argv[4]);
+        }
+        unsigned char *converted = (unsigned char *)1;
+        ERR_clear_error();
+        int result = ASN1_STRING_to_UTF8(&converted, value);
+        int error = ERR_get_error() != 0;
+        while (ERR_get_error()) { }
+        printf("%d %d %d ", result, error, converted == (unsigned char *)1);
+        if (result >= 0) { printhex(converted, result + 1); OPENSSL_free(converted); }
+        else putchar('\n');
+        ASN1_STRING_free(value); free(input); return 0;
+    }
     if (!strcmp(argv[1], "base64-encode") || !strcmp(argv[1], "base64-decode")) {
         CHECK(argc==3);unsigned char *in=unhex(argv[2],&n);CHECK(in&&n<=64);
         unsigned char guarded[128];memset(guarded,0xa5,sizeof(guarded));ERR_clear_error();

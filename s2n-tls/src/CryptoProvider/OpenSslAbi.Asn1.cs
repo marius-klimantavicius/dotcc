@@ -57,12 +57,87 @@ public static unsafe partial class OpenSslAbi
     public static void ASN1_STRING_free(void* value){try{Remove(value);}catch{Error();}}
     public static int ASN1_STRING_to_UTF8(byte** output,void* value)
     {
+        byte* allocated=null;
         try
         {
-            if(output==null)throw new ArgumentException();var state=Get<AsnStringState>(value);string text=state.Text??new UTF8Encoding(false,true).GetString(Input(((AsnStringNative*)value)->Data,(ulong)((AsnStringNative*)value)->Length));
-            byte[] bytes=Encoding.UTF8.GetBytes(text);*output=(byte*)NativeMemory.Alloc((nuint)(bytes.Length+1));if(*output==null)throw new OutOfMemoryException();bytes.CopyTo(Output(*output,bytes.Length));(*output)[bytes.Length]=0;return bytes.Length;
+            if(value==null)return -1;
+            _=Get<AsnStringState>(value);
+            var native=(AsnStringNative*)value;
+            int width=native->Type switch
+            {
+                12=>0,
+                18 or 19 or 20 or 22 or 23 or 24 or 26=>1,
+                28=>4,
+                30=>2,
+                _=>-1
+            };
+            // Native rejects unsupported tags before mbstring conversion,
+            // without an error entry or a write to the caller's output pointer.
+            if(width<0)return -1;
+            if(output==null)throw new ArgumentException();
+            int length=native->Length;
+            if(length==-1)
+            {
+                if(native->Data==null)throw new ArgumentException();
+                length=0;while(native->Data[length]!=0)length=checked(length+1);
+            }
+            var input=Input(native->Data,checked((ulong)length));
+            byte[] bytes;
+            if(width==0)
+            {
+                Asn1ValidateNativeUtf8(input);
+                bytes=input.ToArray();
+            }
+            else if(width==1)bytes=Encoding.UTF8.GetBytes(Encoding.Latin1.GetString(input));
+            else
+            {
+                if(length%width!=0)throw new FormatException("Invalid native ASN.1 string width.");
+                var encoded=new List<byte>(length);
+                for(int i=0;i<input.Length;i+=width)
+                {
+                    uint code=width==2?global::System.Buffers.Binary.BinaryPrimitives.ReadUInt16BigEndian(input.Slice(i,2))
+                        :global::System.Buffers.Binary.BinaryPrimitives.ReadUInt32BigEndian(input.Slice(i,4));
+                    Asn1EncodeNativeUtf8(encoded,code);
+                }
+                bytes=encoded.ToArray();
+            }
+            allocated=(byte*)NativeMemory.Alloc(checked((nuint)bytes.Length+1));
+            if(allocated==null)throw new OutOfMemoryException();
+            bytes.CopyTo(Output(allocated,bytes.Length));allocated[bytes.Length]=0;
+            *output=allocated;allocated=null;return bytes.Length;
         }
-        catch{if(output!=null)*output=null;Error();return -1;}
+        catch{NativeMemory.Free(allocated);Error();return -1;}
+    }
+    private static void Asn1ValidateNativeUtf8(ReadOnlySpan<byte> input)
+    {
+        for(int i=0;i<input.Length;)
+        {
+            byte first=input[i];
+            if(first<0x80){i++;continue;}
+            int width=(first&0xe0)==0xc0?2:(first&0xf0)==0xe0?3:(first&0xf8)==0xf0?4
+                :(first&0xfc)==0xf8?5:(first&0xfe)==0xfc?6:0;
+            if(width==0||input.Length-i<width)throw new FormatException("Invalid native UTF8 string.");
+            uint code=(uint)(first&((1<<(7-width))-1));
+            for(int j=1;j<width;j++)
+            {
+                byte next=input[i+j];if((next&0xc0)!=0x80)throw new FormatException("Invalid native UTF8 continuation.");
+                code=(code<<6)|(uint)(next&0x3f);
+            }
+            uint minimum=width switch{2=>0x80,3=>0x800,4=>0x10000,5=>0x200000,_=>0x4000000};
+            if(code<minimum)throw new FormatException("Nonminimal native UTF8 string.");
+            i+=width;
+        }
+    }
+    private static void Asn1EncodeNativeUtf8(List<byte> output,uint code)
+    {
+        // The selected native declaration backend predates Unicode scalar
+        // restrictions here: BMP surrogates and 5/6-byte forms are preserved.
+        // This boundary conversion is not a general .NET text decoder.
+        if(code<0x80){output.Add((byte)code);return;}
+        int width=code<0x800?2:code<0x10000?3:code<0x200000?4:code<0x4000000?5:6;
+        int prefix=width switch{2=>0xc0,3=>0xe0,4=>0xf0,5=>0xf8,_=>0xfc};
+        output.Add((byte)((uint)prefix|((code>>(6*(width-1)))&(uint)((1<<(7-width))-1))));
+        for(int j=width-2;j>=0;j--)output.Add((byte)(0x80|((code>>(6*j))&0x3f)));
     }
     public static void* d2i_ASN1_UTF8STRING(void** output,byte** input,long length)
     {

@@ -185,6 +185,7 @@ Test("certificate/pem-der-spki-chain",()=>
     Assert(!CryptoCertificate.VerifyChain([cert],[],now.UtcDateTime),"Untrusted chain accepted.");Reject(()=>CryptoCertificate.ParseDer([0x30,0x80,0,0],out _));
 });
 Base64Checks.Run(Test,p=>Oracle(p));
+Asn1StringChecks.Run(Test,p=>Oracle(p));
 AbiChecks.Run(Test,p=>Oracle(p),artifacts);
 CertificateChecks.Run(Test,p=>Oracle(p),artifacts);
 if(cases.Count==0)throw new ArgumentException("Case filter selected no tests.");
