@@ -30,7 +30,7 @@ internal sealed class ShortTransport(Socket socket) : IS2nTransport
     public void Dispose() => _inner.Dispose();
 }
 
-internal sealed class CorruptTransport(Socket socket) : IS2nTransport
+internal sealed class CorruptTransport(Socket socket, int lastByteOffset = 0) : IS2nTransport
 {
     private readonly S2nSocketTransport _inner = new(socket);
     internal bool Corrupt;
@@ -43,9 +43,15 @@ internal sealed class CorruptTransport(Socket socket) : IS2nTransport
         {
             if (source.Length < 5) throw new InvalidOperationException("Expected complete outgoing TLS header in the translated record buffer.");
             _recordLength = 5 + (source[3] << 8) + source[4];
+            // SSLv3 3DES splits the first application write into a one-byte
+            // record: 1 payload + 20 SHA1 MAC + 3 padding = 24 encrypted bytes.
+            // Alter the previous CBC block to change the final padding byte
+            // predictably, rather than randomizing it via the final block.
+            if (lastByteOffset == 8 && _recordLength != 29)
+                throw new InvalidOperationException("Expected a 24-byte first SSLv3 3DES record.");
         }
         byte[] copy = source.ToArray();
-        int target = _recordLength - 1 - _position;
+        int target = _recordLength - 1 - lastByteOffset - _position;
         if ((uint)target < (uint)copy.Length) copy[target] ^= 0x80;
         var result = _inner.Send(copy);
         _position += result.Count;

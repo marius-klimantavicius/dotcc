@@ -198,7 +198,10 @@ public static class LifecycleCases
         using var runtime = new S2nRuntime();
         using var cc = Exchange.Configuration(runtime, S2nRole.Client, fixtures, source).SetMaximumBlindingDelay(0);
         using var sc = Exchange.Configuration(runtime, S2nRole.Server, fixtures, source).SetMaximumBlindingDelay(0);
-        var tamper = new CorruptTransport(clientSocket);
+        // The CBC identity makes record[-9] ^= 0x80 change the final
+        // plaintext padding byte 2 to 130, so 24 - 20 - (130 + 1)
+        // deterministically underflows, matching the native control.
+        var tamper = new CorruptTransport(clientSocket, suite == 0x000a ? 8 : 0);
         await using var client = new S2nConnection(cc, S2nRole.Client, tamper, new(protocol, protocol, suite));
         await using var server = new S2nConnection(sc, S2nRole.Server, serverSocket, new(protocol, protocol, suite));
         client.SetServerName("localhost");

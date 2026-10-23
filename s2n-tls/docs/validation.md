@@ -296,3 +296,21 @@ check514 and539 source/native/output/runtime/proof files at
 The exact two runtime files and three regression files are approved only after
 natural C batch002 drain/exclusive lease and actual API source-reader clearance.
 No live EC repair or full50 pass is claimed here.
+
+
+The exact deterministic CBC test fixture is applied under controller flock and
+six exclusive old/new-inode kernel leases. Freeze
+`artifacts/managed-contract/freeze-cbc-fixture-20261023T2357Z/receipt.json`
+SHA c0aa38f7e074cd1511c1f6a68e3af77edc0b02b126acc0f3805515d69fc79e48
+records the reviewed three files, unchanged provider25 and actual reader window.
+The first attempt reopened its own leased file and stopped before source changes;
+its script/zero-change receipt are preserved. Corrected held-descriptor reads
+complete the exact patch. Error assertions remain unchanged.
+
+Actual live native control command `python3 s2n-tls/tests/Managed/native-corruption.py
+--output s2n-tls/artifacts/managed-contract/deterministic-cbc-native-final-fixture`
+passes RC4 and3DES rows. CBC record length24, mutation offset20 and mask128 are
+asserted and encrypted before/after bytes retained in report.json. New-source
+managed lifecycle execution remains pending; old failed main/diagnostic receipts
+are not relabelled. The CBC relation changes plaintext padding length2 to130;
+24−20−131 underflows before MAC verification, removing the prior random outcome.

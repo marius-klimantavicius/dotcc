@@ -43,7 +43,18 @@ def probe(output, suite, cipher):
                         if len(buffers[source]) < length: break
                         record = buffers[source][:length]; del buffers[source][:length]
                         if client and record[0] == 23 and not row['flipped']:
-                            record[-1] ^= 0x80; row['flipped'] = True
+                            cbc = int(suite, 16) == 0x000a
+                            if cbc and length != 29:
+                                raise RuntimeError('Expected a 24-byte first SSLv3 3DES record')
+                            offset = length - 1 - (8 if cbc else 0)
+                            row['record_header_hex'] = record[:5].hex()
+                            row['record_ciphertext_length'] = length - 5
+                            row['record_before_hex'] = record.hex()
+                            row['mutation_offset_from_record_start'] = offset
+                            row['mutation_mask'] = 0x80
+                            record[offset] ^= 0x80
+                            row['record_after_hex'] = record.hex()
+                            row['flipped'] = True
                         try: target.sendall(record)
                         except (BrokenPipeError, ConnectionResetError):
                             selector.unregister(source)
@@ -53,7 +64,7 @@ def probe(output, suite, cipher):
         row['exit_codes'] = [p.returncode for p in processes]
         errors = re.findall(r'\b(S2N_ERR_\w+)\b', Path(row['logs'][1]).read_text())
         row['native_error'] = errors[0] if errors else None
-        expected = 'S2N_ERR_BAD_MESSAGE' if suite == '0x0004' else 'S2N_ERR_INTEGER_OVERFLOW'
+        expected = 'S2N_ERR_BAD_MESSAGE' if int(suite, 16) == 0x0004 else 'S2N_ERR_INTEGER_OVERFLOW'
         if row['flipped'] and all(code != 0 for code in row['exit_codes']) and row['native_error'] == expected:
             row['status'] = 'passed'
     except Exception as error:
