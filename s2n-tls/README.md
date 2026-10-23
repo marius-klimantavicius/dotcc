@@ -30,8 +30,11 @@ isolated Python/OS packages are separate from ordinary managed delivery.
 Sources/pins, adaptations, manifests and notice policy live in `config/`.
 Reference sources remain separate from staged adaptations and emitted C#.
 
-Current evidence: complete175-unit raw/processed builds and publication pass;
-the first raw JIT consumer exchanges pass SSLv3/RC4, SSLv3/3DES and TLS1.3.
-Full behavioral, upstream, matrix, rooted-AOT, delivery and reproduction gates
-remain in progress. [Validation](docs/validation.md), [plan](docs/PLAN.md) and
-[blocker ledger](docs/blockers.md) distinguish those results from completion.
+Current evidence: complete175-unit raw/processed builds and publication pass.
+The final provider passes48 native differential groups in JIT and NativeAOT;
+the consumer/protocol/lifecycle matrix passes1,076 rows across all four variants,
+and copied-consumer/rooted-AOT delivery passes12 rows. All18 native Python
+comparator families pass22,186 applicable original cases. Complete translated
+upstream C/Python qualification and integrated acceptance remain in progress.
+[Validation](docs/validation.md), [plan](docs/PLAN.md) and
+[blocker ledger](docs/blockers.md) identify the exact snapshots and open gates.
