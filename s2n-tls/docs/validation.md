@@ -228,3 +228,41 @@ three forced SSLv3/RC4, SSLv3/3DES and TLS1.3 loopbacks (six role observations,
 77-file independent audit. All18 actual output files have byte-identical retained
 copies before any future canonical rebuild. This check does not close the full
 application1076 or delivery12 gates for this provider.
+
+
+## RSA+stdio scoped execution and new EC finding
+
+CLI host freeze1e4b2c and commit f4465e175 preserve native stdout buffering and
+normal exit flushing without changing the original C or shared runtime. Fresh
+CLI8 identity audit is `artifacts/managed-contract/final-rsa-stdio/cli-eight-deep-audit.json`.
+The original five ticket-output failures now pass, and full raw/JIT cross family
+passes468/468 with zero skips/reruns at `cross-full-raw-jit.json` in that directory.
+`cross-full-native-comparison.json` checks14,924 retained files and exact native
+case coverage. Sole Python matrix PID1648399 adopts only that fresh whole-family
+receipt. Remaining72-leaf and application gates remain open; main raw/JIT
+bad-padding-3des has an actual BAD_MESSAGE/expected INTEGER_OVERFLOW mismatch in
+`artifacts/managed/final-provider-rsa-stdio-main/00501.log`, under native-fixture diagnosis.
+
+Original PSK1021 and client_key_exchange23229 assertions pass EACH in all four
+variants against both source freezes. The479-file audit is
+`artifacts/provider/final-rsa-original-preflights-2313/receipt.json`.
+Same required-C controller PID1606362 now records10/0/247, all fresh raw JIT/all4;
+old0158 results remain historical. No duplicate C emission/controller was started.
+
+Shared framework ABI command `bash s2n-tls/scripts/test.sh --suite abi --profile
+compat --form all --mode all --tools reuse --fetch never` passes all11 commands
+at `artifacts/campaign/20261024-022207-747d11cc/receipt.json`. Root builders drained.
+These checks do not cover the subsequently measured EC semantics gap:
+`artifacts/provider/ec-public-contract-private/20261023T233124Z-f06a1d30/receipt.json`
+retains1080 native/current rows and576 discrepancies. The private rolled-up repair
+is in progress; production f80f4238 remains unchanged and P1/P4/P6 remain open.
+
+Authorized old-application compilation-cache maintenance removed only7128 exact
+reviewed files (3,982,209,024 allocated bytes), preserving1921 actual outputs and
+runtime/product/receipt files. `artifacts/managed-contract/old-application-cache-cleanup-supervisor-postflight.json`
+checks all absent candidates, unchanged protected files and14,256 journal records.
+The writer reused the sha256 field for record digest; verification explicitly
+reconstructs its candidate hash from the immutable reviewed inventory before
+checking the original chain. Original journal and receipts remain untouched;
+future writers use distinct file_sha256/record_sha256 fields. This is storage
+maintenance, not qualification credit.

@@ -265,7 +265,7 @@ Use shared Python resolution and preserve invocation from unrelated directories.
 
 ## Milestones and evidence
 
-P0/P2 pass source/native/build gates. P1 passes the repaired RSA provider boundary;
+P0/P2 pass source/native/build gates. P1 has passing RSA boundary probes but a newly confirmed EC state/role gap;
 P3/P5 have passing captured0158 evidence and require refreshed application/delivery
 checks. P4/P6 remain open. Commit coherent
 milestones after required validation, respecting current user prerequisites.
@@ -274,7 +274,7 @@ Do not push without authorization.
 | Phase | Concrete exit gate | Status | Planned evidence and remaining work |
 | --- | --- | --- | --- |
 | P0 — Scope/native baseline | Exact pins, 174-unit manifest reconciled to build, complete legacy inventory, recipe/layout, working native SSLv3/RC4 + TLS 1.3 controls and first full-source translation attempt. | Passed | Framework acquisition `20261023-200313-154db7b3`; source inventory 174/36/14/78; native `20261023T171931Z` passes 238 cases and 590,537 upstream assertions; full-source attempts have concrete compiler findings. |
-| P1 — Boundary feasibility | Real emitted/native ABI checks; legacy provider operations and truthful capability configuration; default compatibility policy; ownership and peer capability probes. | Passed repaired RSA boundary | Capability255, final49 native differential groups in JIT/AOT and post-ASN1 canonical ABI all4 pass.178 selected crypto imports are covered by183 declarations. Base64 repair08796c070 matches1,659 native vectors and ASN.1 repair5f0b8ff3d matches3,131 vectors per runtime. Full upstream caller qualification remains P4. |
+| P1 — Boundary feasibility | Real emitted/native ABI checks; legacy provider operations and truthful capability configuration; default compatibility policy; ownership and peer capability probes. | EC repair in progress | Capability255, final49 native differential groups in JIT/AOT and post-ASN1 canonical ABI all4 pass.178 selected crypto imports are covered by183 declarations. Base64 repair08796c070 matches1,659 native vectors and ASN.1 repair5f0b8ff3d matches3,131 vectors per runtime. Full upstream caller qualification remains P4. |
 | P2 — Complete translation | All selected units emit/link; raw and processed libraries build at canonical paths; no unresolved required imports or manual output repair. | Passed | Full175-unit raw/processed publication223542 passes with183 exact bindings/SHAKE/correct DHE callers and array-lifetime compiler repair. No generated edits. Behavioral gates remain separate. |
 | P3 — Useful execution | Managed client/server execute forced SSLv3 RC4, SSLv3 3DES and TLS 1.3 round trips through translated code, with clean lifecycle. | Passed0158 snapshot; RSA refresh required | All4 ordinary consumer variants execute all3 forced exchanges with exact IDs/versions/binary payloads/shutdown;30 lifecycle cases pass pervariant. Final-source main matrix1076/1076 and combined5,023-file audit pass. |
 | P4 — Behavioral qualification | Every required suite/version/role row, applicable upstream cases, compatibility controls, errors and independent interop pass. | In progress | Recorded223542/base64 matrix1076/1076 passes for its pre-ASN1 provider. Final caller-only DHE native238/0/0 and matching-profile native257/257 pass. Final ASN1 source48 groups, ABI all4 and certificate488each pass; captured0158 required257C×4 controller has46passed/2rawfailed/209unrun at the recorded checkpoint. RSA repair e2876b1a6 and full49 groups/ABI JIT+AOT pass; no new C/application/delivery pass is claimed. Final-provider main1076/delivery12 and strict native18 Python families pass; complete translated C/Python qualification remains open. Original buffered-send overflow node passes all4. Failed/skipped/retried attempts remain preserved. |
@@ -373,3 +373,12 @@ build or an SSLv3 test that skips RC4 cannot close acceptance.
 [upstream-sslv3]: https://github.com/aws/s2n-tls/blob/6459002cd61e4bf3bbc53db23f068b21da9ff6bd/tests/unit/s2n_sslv3_test.c
 [upstream-rc4]: https://github.com/aws/s2n-tls/blob/6459002cd61e4bf3bbc53db23f068b21da9ff6bd/crypto/s2n_stream_cipher_rc4.c
 [upstream-api]: https://github.com/aws/s2n-tls/blob/6459002cd61e4bf3bbc53db23f068b21da9ff6bd/api/s2n.h
+
+
+Current boundary follow-up: existing183 EC APIs have measured public-state and
+key-role discrepancies (private1080-row baseline,576 differences). The delivered
+RSA freeze remains unchanged while one private repair is qualified and source
+readers are coordinated. Fresh RSA+stdio raw/JIT cross468 passes; current main has
+one bad-padding-3des expected-error mismatch under native-fixture diagnosis.
+Required-C captured count is10/257 cases all4, with no failed current C cases.
+No final provider or P6 claim follows from the scoped49-group/ABI passes.

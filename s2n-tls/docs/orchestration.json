@@ -20,12 +20,14 @@
     },
     {
       "package": "api-qualification",
-      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Athread-send%3Aapi-r4-checkpoint-and-final-source-continuation-20261024",
-      "backing_thread": "thread:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-api-qualification-r4-20261023"
+      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Athread-send%3Aapi-r4-ec-state-final-qualification-continuation-20261024",
+      "backing_thread": "thread:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-api-qualification-r4-20261023",
+      "verified_model": "gpt-6.1-sol",
+      "verified_reasoningEffort": "xhigh"
     }
   ],
   "shared_build_owner": "supervisor",
-  "next": "Freeze validated CLI stdout host semantics, retry original PSK/RSA cases, and refresh all original C/application/delivery/CLI/Python gates against RSA freeze f80f4238; then sealed P6 acceptance.",
+  "next": "Privately qualify rolled-up existing183 EC repair; preserve live f80 jobs, diagnose native corruption expectation, then coordinate source-reader window and fresh final C/API/Python gates.",
   "completed_tasks": [
     {
       "package": "inputs-native",
@@ -94,15 +96,19 @@
     "e2876b1a6",
     "659b3498a",
     "05f2c741b",
-    "abe3bce25"
+    "abe3bce25",
+    "d8a4f8c10",
+    "f4465e175",
+    "4803dbdbb",
+    "818ec2ef4"
   ],
   "current_attempt": "20261023-223542-f7e7054e (passed175/raw+processed; new actual qualification with base64 repair08796c070)",
   "last_complete_link": "20261023-223542-f7e7054e",
   "p2_receipt": "artifacts/campaign/20261023-210200-74eee32f/receipt.json",
   "workloads": {
     "provider_selected16": "build/provider/original16-retry/executables.json",
-    "final_current_matrix": "artifacts/managed/final-provider-asn1-main/report.json",
-    "current_delivery": "artifacts/managed/final-provider-asn1-delivery/report.json",
+    "final_current_matrix": "artifacts/managed/final-provider-rsa-stdio-main/report.json",
+    "current_delivery": "artifacts/managed/final-provider-rsa-stdio-delivery/report.json",
     "native_profile_all257": "artifacts/native-profile-upstream/all-required-214654-ktls-guards/report.json",
     "native_python18": "artifacts/native-python/final-eighteen-strict-comparator.json",
     "translated_python17": "artifacts/managed-upstream/python-current-223542-base64/controller-progress.json",
@@ -113,34 +119,38 @@
     "native_equivalence": "artifacts/provider/native-equivalence/214654-to-223542.json",
     "final_native": "artifacts/native/final-callsite-profile/report.json",
     "reproduction": "artifacts/campaign/20261023-233001-6f4afff7/reproduction.json",
-    "translated_python_all18": "artifacts/managed-upstream/python-current-223542-base64/all18-all4-matrix.json",
+    "translated_python_all18": "artifacts/managed-upstream/final-provider-rsa-stdio/all18-all4-matrix.json",
     "native_happy_retry": "artifacts/native-python/retry-investigation-r4/happy-repaired-matrix.json",
     "final_provider_freeze": "artifacts/provider/freeze-rsa-20261023T224649Z/receipt.json",
     "final48_provider": "artifacts/provider/final48-asn1-211648/receipt.json",
     "post_asn1_api": "artifacts/managed-contract/api-r4-final-provider-progress.json",
     "post_asn1_abi": "artifacts/campaign/20261024-001718-6f72b210/receipt.json",
-    "provider_controller_pid": 1263486,
+    "provider_controller_pid": 1606362,
     "final_provider_current_c_counts": {
-      "passed": 0,
+      "passed": 10,
       "failed": 0,
-      "unrun": 257,
-      "scope": "New RSA source awaits hostfreeze and mandatoryfreshrawJIT/all4; archived0158 was54/2/201."
+      "unrun": 247,
+      "scope": "Captured f80 RSA+stdio all4; EC repair remains private/pending."
     },
-    "final_provider_cli": "build/managed-upstream/python-endpoints-final-asn1.json",
+    "final_provider_cli": "build/managed-upstream/python-endpoints-final-rsa-stdio.json",
     "final_provider_cli_audit": "artifacts/managed-contract/final-asn1-cli-eight-supervisor-audit.json",
     "post_asn1_main": "artifacts/managed/final-provider-asn1-main",
     "post_asn1_companion": "artifacts/managed-contract/api-r4-final-provider-companion-progress.json",
     "final_applications_supervisor_audit": "artifacts/managed-contract/final-asn1-main-delivery-supervisor-audit.json",
     "native_python_supervisor_audit": "artifacts/managed-contract/native-eighteen-supervisor-audit.json",
-    "final_provider_python": "artifacts/managed-contract/api-r4-final-provider-companion-progress.json",
+    "final_provider_python": "artifacts/managed-contract/final-rsa-stdio/progress-v2.json",
     "retained_input_seal_controls": "artifacts/managed-contract/retained-input-seal-contract/report.json",
     "pre_rsa_api_reader_window": "artifacts/managed-contract/api-r4-pre-rsa-reader-window.json",
-    "pending_retained_inputs": "artifacts/managed-contract/final-upstream-223542/inputs.json",
+    "pending_retained_inputs": "artifacts/managed-contract/final-upstream-223542-rsa-stdio-pending/inputs.json",
     "final49_provider": "artifacts/provider/final49-rsa-224649/receipt.json",
     "rsa_abi": "artifacts/provider/emitted-probe-rsa-224649/receipt.json",
     "rsa_supervisor_audit": "artifacts/managed-contract/rsa-runtime-milestone-supervisor-review.json",
     "ordinary_root_rsa": "artifacts/managed-contract/ordinary-solution-final-rsa/report.json",
-    "ordinary_root_rsa_audit": "artifacts/managed-contract/ordinary-solution-final-rsa/independent-audit.json"
+    "ordinary_root_rsa_audit": "artifacts/managed-contract/ordinary-solution-final-rsa/independent-audit.json",
+    "rsa_framework_abi": "artifacts/campaign/20261024-022207-747d11cc/receipt.json",
+    "ec_private_baseline": "artifacts/provider/ec-public-contract-private/20261023T233124Z-f06a1d30/receipt.json",
+    "ec_api_reader_plan": "artifacts/managed-contract/api-r4-pre-ec-reader-plan.json",
+    "final_cross_raw_jit": "artifacts/managed-contract/final-rsa-stdio/cross-full-raw-jit.json"
   },
   "discovery_correction": {
     "original": "artifacts/managed/full-owning-matrix/report.json",
@@ -161,10 +171,10 @@
     "P6_reproduction": "233001-6f4afff7 passed warn/off two full175 regenerations/private authored edit/failed-publication; overallP6 remainsopen"
   },
   "open_gates": [
-    "Fresh application/delivery/CLI/original-C/Python qualification for repaired RSA freeze",
-    "P4full257Cplus18Pythonall4translatedvariants with repaired provider",
-    "Cross-compatibility5 TLS1.3 ticket-out failures require actual cause/repair",
-    "P6sealed retained upstream acceptance and final receipt review"
+    "Existing183 EC native state/key-role semantics repair and fresh provider boundary qualification",
+    "Current application 3DES corrupt-record expected-error mismatch diagnosis",
+    "Complete257 C and18 Python families all4 on final source",
+    "Final application/delivery refresh and sealed P6 acceptance"
   ],
   "native_python_gate": "18families/22186applicable originalcases strictpassed; nine HRR original combinations explicitly inapplicable with nine separate no-HRR controls. Historical failures/skips/retries preserved.",
   "observed_provider_defect": {
@@ -181,5 +191,9 @@
     "private_repair": "artifacts/provider/rsa-private-repair/20261023T223103Z-3879ea83/receipt.json",
     "permanent_regression_private": "artifacts/provider/rsa-regression-private/20261023T223521Z-44c72bc9/receipt.json",
     "freeze": "artifacts/provider/freeze-rsa-20261023T224649Z/receipt.json"
+  },
+  "observed_ec_defect": {
+    "state": "Private native/current1080 rows,576 discrepancies; production unchanged; no signals or pause yet.",
+    "proof": "artifacts/provider/ec-public-contract-private/20261023T233124Z-f06a1d30/receipt.json"
   }
 }
