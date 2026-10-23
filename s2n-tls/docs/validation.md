@@ -266,3 +266,20 @@ reconstructs its candidate hash from the immutable reviewed inventory before
 checking the original chain. Original journal and receipts remain untouched;
 future writers use distinct file_sha256/record_sha256 fields. This is storage
 maintenance, not qualification credit.
+
+
+API r4's continuation ended with an automated content flag. Recovery r5 verifies
+that the actual parent/main/matrix/observer PIDs are absent and no parent wait
+status explains the exit. The original main progress retains886 published rows:
+885passed/1failed,190 required rows unpublished, seven application receipts and
+no final report. The original Python matrix retains1passed/1running/70unrun;
+orphan pytest1648572 still owns workers/endpoints. Original statuses are untouched.
+Exact19 live identities and unchanged25 provider/host inputs are archived at
+`artifacts/managed-contract/api-r5-recovery-20261023T2341Z/receipt.json`.
+No duplicate controller, restart, signals or source mutation was used for recovery.
+
+Closed root ABI cache maintenance reclaimed111,722,496 bytes from189 exact obj
+binary/cache files, under exclusive kernel write leases. All1,239 other own-run
+files (including sources, tools, metadata and every bin/publish output) remain
+unchanged;378 journal records independently verify at
+`artifacts/managed-contract/root-abi-closed-cache-2340/postflight.json`.

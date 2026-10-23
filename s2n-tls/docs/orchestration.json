@@ -108,7 +108,9 @@
     "d8a4f8c10",
     "f4465e175",
     "4803dbdbb",
-    "818ec2ef4"
+    "818ec2ef4",
+    "0ef318df7",
+    "6455150b4"
   ],
   "current_attempt": "20261023-223542-f7e7054e (passed175/raw+processed; new actual qualification with base64 repair08796c070)",
   "last_complete_link": "20261023-223542-f7e7054e",
@@ -159,7 +161,26 @@
     "ec_private_baseline": "artifacts/provider/ec-public-contract-private/20261023T233124Z-f06a1d30/receipt.json",
     "ec_api_reader_plan": "artifacts/managed-contract/api-r4-pre-ec-reader-plan.json",
     "final_cross_raw_jit": "artifacts/managed-contract/final-rsa-stdio/cross-full-raw-jit.json",
-    "translated_python_controller_pid": 1648399
+    "translated_python_controller_pid": 1648399,
+    "api_recovery_observation": {
+      "absent_pids": [
+        1593694,
+        1593723,
+        1648399,
+        1595398
+      ],
+      "live_orphan_pytest_pid": 1648572,
+      "scope": "API r5 actual recovery; no parent completion/report inferred. Preserve active worker and diagnose exit boundary.",
+      "main_published_rows": 886,
+      "main_published_passed": 885,
+      "main_published_failed": 1,
+      "main_required_unpublished": 190,
+      "python_passed": 1,
+      "python_running": 1,
+      "python_unrun": 70,
+      "cause": "Undetermined; no parent wait status. Original partial status bytes retained, separate truthful loss receipt."
+    },
+    "api_recovery_receipt": "artifacts/managed-contract/api-r5-recovery-20261023T2341Z/receipt.json"
   },
   "discovery_correction": {
     "original": "artifacts/managed/full-owning-matrix/report.json",
@@ -183,7 +204,8 @@
     "Existing183 EC native state/key-role semantics repair and fresh provider boundary qualification",
     "Current application 3DES corrupt-record expected-error mismatch diagnosis",
     "Complete257 C and18 Python families all4 on final source",
-    "Final application/delivery refresh and sealed P6 acceptance"
+    "Final application/delivery refresh and sealed P6 acceptance",
+    "Recover API parent exit boundary; preserve active orphan pytest before new source reader window"
   ],
   "native_python_gate": "18families/22186applicable originalcases strictpassed; nine HRR original combinations explicitly inapplicable with nine separate no-HRR controls. Historical failures/skips/retries preserved.",
   "observed_provider_defect": {
