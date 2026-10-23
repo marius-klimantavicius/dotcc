@@ -1,5 +1,12 @@
 # Packet recovery and independent interop campaign
 
+The [2026-10-23 parity follow-up](recovery-parity-investigation-20261023.md)
+recounts comparable historical matrices and maps current failures to native
+checked-outcome witnesses. The 87 frozen-campaign strict failures are not 87
+translation discrepancies. Default warnings recognize evidence shapes; they do
+not compare each execution's semantics against native or establish full parity.
+The official observation classifier's unchanged rejection remains recorded.
+
 The current verification driver continues after recognized upstream recovery
 limitations and emits a warning stating that these tests are timing dependent
 and the outcomes are also observable in upstream MsQuic. This covers the
@@ -68,8 +75,9 @@ loss, periodic loss, reordering, duplication, delay and combined faults
 (`artifacts/recovery-checked/results.json`). Expired-mapping rebinding also passes
 strict new-path validation in all four native/managed role combinations. The
 original dual-live-mapping and decreasing-payload-ceiling failures remain
-preserved native-equivalent observations, described below; they do not become
-passing stronger recovery checks.
+preserved strict failures, with scoped native outcome support and explicit
+unmatched terminals described below; they do not become passing stronger recovery
+checks or establish full semantic parity.
 
 All 14 isolated UDP proxy controls pass. In addition to opaque-datagram fault,
 queue and mapping controls, real IPv4/IPv6 kernel refusals distinguish a closed

@@ -1,0 +1,217 @@
+{
+  "schema": "msquic-recovery-parity-investigation-v1",
+  "completed_utc": "2026-10-23T03:04:42.180387+00:00",
+  "status": "investigation_complete_with_explicit_parity_limits",
+  "acceptance": "Semantic parity with pinned native C includes equivalent unsuccessful outcomes; functional recovery is separate.",
+  "repository_head_before_report_commit": "5a34a56aca6ce73c65a3812c6c93e7e1a7c47868",
+  "upstream_revision": "80a065112426bce68c1da42d026478d3e40fd45e",
+  "original_campaign": {
+    "compiler_source": "123b3e76e",
+    "compiler_lib_sha256": "08a0ecd70213b342bb763a8bd381de64387953a8ba1c587fd8451d8d505d298d",
+    "cases": 576,
+    "strict_successes": 489,
+    "strict_failures": 87,
+    "warning_policy_unexpected": 0,
+    "positive_cases_passed": 480,
+    "rebinding_failures": 39,
+    "ceiling_down_failures": 48,
+    "functional_stronger_recovery_qualified": false,
+    "official_observation_qualified": false,
+    "historical_receipts_changed": false,
+    "new_sampling_added_to_original": false
+  },
+  "parity_findings": {
+    "demonstrated_compiler_translation_divergences": 0,
+    "full_semantic_parity_demonstrated": false,
+    "checked_failure_kind_native_witness_rows": 84,
+    "witnessed_rebinding_rows": 39,
+    "witnessed_ceiling_rows": 45,
+    "rows_without_same_profile_native_kind_witness": [
+      "raw-aot-both-ipv6-128-payload-ceiling-down",
+      "raw-aot-client-ipv6-128-payload-ceiling-down",
+      "raw-aot-server-ipv6-128-payload-ceiling-down"
+    ],
+    "historical_native_unclassified_observations": 1,
+    "historical_native_cause_resolved": false,
+    "fixed_observations": 288,
+    "fixed_current_case_validator_accepts": 287,
+    "mixed_role_additional_inventory_rows": 160,
+    "total_case_validator_accepts": 447,
+    "logical_groups": 80,
+    "one_way_managed_failure_witness_groups": 79,
+    "equal_bidirectional_observed_kind_set_groups": 72,
+    "finite_success_support_gap_groups": 7,
+    "witness_scope": "Existing validated terminal/path kind under same profile/configuration; not complete traces, failed-prefix integrity or frequency equality."
+  },
+  "historical_same_576_case_collections": [
+    {
+      "collection": "2026-09-24",
+      "strict_failures": 81
+    },
+    {
+      "collection": "2026-09-27",
+      "strict_failures": 88
+    },
+    {
+      "collection": "2026-10-18",
+      "strict_failures": 85
+    },
+    {
+      "collection": "2026-10-23",
+      "strict_failures": 87
+    }
+  ],
+  "history_conclusion": {
+    "all_pass_fail_transitions_rebinding": true,
+    "positive_480_pass_every_collection": true,
+    "current_minus_october18_strict_failures": 2,
+    "current_minus_september27_strict_failures": -1,
+    "current_minus_september24_strict_failures": 6,
+    "translation_regression_or_equal_frequency_established": false,
+    "early_positive_subset_and_weak_native_path_assertions_not_full_matrix_evidence": true
+  },
+  "new_bounded_experiments": {
+    "pairs_declared": 14,
+    "pairs_executed": 14,
+    "baseline_pairs_passed": 4,
+    "strict_negative_failures_retained": 10,
+    "unchanged_ceiling_pairs": 8,
+    "unchanged_ceiling_idle_idle_pairs": 8,
+    "late_control_native_terminal_statuses": [
+      0,
+      0
+    ],
+    "late_control_managed_terminal_statuses": [
+      0,
+      62
+    ],
+    "native_budget_cause_demonstrated_for_new_control": true,
+    "native_fin_wait_seconds": 15.787666396,
+    "native_idle_time_remaining_seconds_approx": 2.295,
+    "historical_asymmetric_native_shape_reproduced": false,
+    "full_bidirectional_fault_gate_failures_retained": 10,
+    "client_direction_negative_fault_exercise_passes": 10,
+    "native_ring_overflows": 0,
+    "extra_peer_attempts": 0,
+    "product_builds": 0,
+    "classifier_expanded": false,
+    "frozen_generation2_requalified": false,
+    "selected_prior_managed_binding_holds": true,
+    "full_current_managed_closure_matches": false,
+    "proxy_release_semantics": "Successful proxy UDP send; endpoint authenticated acceptance is not independently timestamped by that record.",
+    "manifest": {
+      "path": "msquic/artifacts/recovery-parity-investigation-20261023/experiments/manifest.json",
+      "sha256": "c97d6303dc299b614a05ad1f68c9ca4ff876c8bc9afffd8fabfe3ac29ae6202c"
+    },
+    "binary_identities": {
+      "native_peer": "4db6386a5a4d75b8040e23d0ff46ad6949ed02aeb3901e4b321d701103f81a17",
+      "native_library": "277bf7f2a3f392076a0289fe72d760a8938f7fd88b281f12799d533473a33b2f",
+      "canonical_raw_nativeaot": "4243ba969a149d35f49d077a7d8112f8af76f6b761be88bfdf8e38fb979c8cb1"
+    }
+  },
+  "review": {
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "xhigh",
+    "static_review": {
+      "request": "msquic-parity-static-review-20261023-r2",
+      "blocking_semantic_findings": 0,
+      "corrected": [
+        "Regenerated history/runtime manifests after archive-fallback script changes",
+        "Corrected pinned source line references"
+      ]
+    },
+    "experimental_review": {
+      "request": "msquic-parity-experiment-review-20261023-r1",
+      "blocking_findings": 0,
+      "clarification_applied": "Proxy release means successful UDP send, not independently timestamped authenticated endpoint acceptance"
+    },
+    "failed_review_attempt": {
+      "request": "msquic-parity-static-review-20261023-r1",
+      "reason": "Selected model at capacity; no alternate model used"
+    },
+    "remaining_limits": [
+      "Historical native client wait/first-close cause remains unknown",
+      "84 historical checked-kind witnesses are not full semantic parity",
+      "Prior canonical managed AOT and private instrumented native are diagnostic inputs, not frozen-generation-2 requalification",
+      "All ten negatives retain full bidirectional fault gate failure; only client-direction negative exercise is established"
+    ]
+  },
+  "validation": {
+    "all_three_readonly_audits_passed": true,
+    "temporary_input_archive_fallback_verified": true,
+    "integrated_validate_py_passed": true,
+    "peers_executed_by_final_validation": 0,
+    "packaged_members_verified": 255,
+    "original_archive_hash_verified_unchanged": true,
+    "git_diff_check_passed": true
+  },
+  "reproduction_commands": [
+    "python3 msquic/artifacts/recovery-parity-investigation-20261023/accounting/audit.py",
+    "python3 msquic/artifacts/recovery-parity-investigation-20261023/history/audit.py",
+    "python3 msquic/artifacts/recovery-parity-investigation-20261023/runtime/source-audit.py",
+    "python3 msquic/artifacts/recovery-parity-investigation-20261023/validate.py"
+  ],
+  "evidence": {
+    "archive": "msquic/artifacts/recovery-parity-investigation-20261023/evidence.tar.gz",
+    "archive_sha256": "3adff80507061d62be040557aa27adc080c809f030261bf51be0f118b6465b6d",
+    "archive_bytes": 1231178,
+    "index": "msquic/artifacts/recovery-parity-investigation-20261023/evidence-index.json",
+    "index_sha256": "fee9096fdedd16b59ce1d0bb4ce6bae4aec2d6d25bbe535239d8385f86bf5dde",
+    "retained_binary_files_not_archived": [
+      {
+        "path": "msquic/artifacts/recovery-parity-investigation-20261023/experiments/binaries/lib/libmsquic.so.2",
+        "sha256": "277bf7f2a3f392076a0289fe72d760a8938f7fd88b281f12799d533473a33b2f",
+        "bytes": 5694528
+      },
+      {
+        "path": "msquic/artifacts/recovery-parity-investigation-20261023/experiments/binaries/lib/libmsquic.so.2.7.0",
+        "sha256": "277bf7f2a3f392076a0289fe72d760a8938f7fd88b281f12799d533473a33b2f",
+        "bytes": 5694528
+      },
+      {
+        "path": "msquic/artifacts/recovery-parity-investigation-20261023/experiments/binaries/native-peer",
+        "sha256": "4db6386a5a4d75b8040e23d0ff46ad6949ed02aeb3901e4b321d701103f81a17",
+        "bytes": 33384
+      },
+      {
+        "path": "msquic/artifacts/recovery-parity-investigation-20261023/experiments/binaries/raw/aot/ManagedPeer",
+        "sha256": "4243ba969a149d35f49d077a7d8112f8af76f6b761be88bfdf8e38fb979c8cb1",
+        "bytes": 10027864
+      }
+    ],
+    "archive_excludes_private_test_keys": true,
+    "historical_native_finding_sha256": "ba64cdc0dc11771b2af7ec1d804a106b9b76fa3ea7c75caad448dcc119012838",
+    "scripts": {
+      "msquic/artifacts/recovery-parity-investigation-20261023/accounting/audit.py": "8feb045319a475dd584d431f649af8bfa979df9279d04c3bb6e8fe14c5dd71c1",
+      "msquic/artifacts/recovery-parity-investigation-20261023/history/audit.py": "048a51ca6113a7521f1d25ed4881bb6480f5f09fd6f7707e1a39961793ec5684",
+      "msquic/artifacts/recovery-parity-investigation-20261023/runtime/source-audit.py": "f83063121a68f6fe73b36824f8556bf0bf60c60cb510c7d3412830f5271ff962",
+      "msquic/artifacts/recovery-parity-investigation-20261023/package.py": "3a521f67675369e6c9f2f57a611c1f4b08166d3f0e5fd6d03f47f4f42ca2cdbf",
+      "msquic/artifacts/recovery-parity-investigation-20261023/validate.py": "6d6412f196d00052ed7b83026e0a42f940b01b39f402b57576cc363e59d11deb"
+    },
+    "documentation": {
+      "msquic/docs/recovery-parity-investigation-20261023.md": "af738d2262c5e3a09d984b4873b453187c862a1f7da860b9b23b82e7bbc8b308",
+      "msquic/docs/recovery-history-audit-20261023.md": "17d21b26f99f9b4cc77648ad0af6a23957846449175112e0049c1e9070d168ed",
+      "msquic/docs/recovery-runtime-audit-20261023.md": "3083e19ea349cacee7a99ba44f9a39f8ec4527cd259d9b3e4b7c9fad0bfd1ea2",
+      "msquic/docs/recovery-experiments-20261023.md": "37966f696c5b18f6f25cb9d3f432e96800b7e52afd9c9ecb34485b0c5394836b",
+      "msquic/docs/qualification.md": "a53519c61ffd754f0e402960b70bbed08ca178a754671d8a3dbf0684109da6d1",
+      "msquic/docs/recovery-campaign.md": "2174b076ed15614b03e1d5572518f95f434f8319ca1be2e743201fa38a956fe1"
+    }
+  },
+  "cleanup": {
+    "removed_utc": "2026-10-23T03:01:35.805240+00:00",
+    "removed_private_build_directory": "/mnt/secondary/dotcc-msquic-parity-20261023/bounded-0wxl6_jl",
+    "bytes_before_removal": 220936324,
+    "all_experiment_manifest_entries_verified_before_removal": 221,
+    "durable_evidence": "msquic/artifacts/recovery-parity-investigation-20261023",
+    "essential_binaries_retained": true,
+    "original_campaign_evidence_modified": false,
+    "other_work_removed": false
+  },
+  "remaining_evidence_needed": [
+    "Historical FIN wait exit/first-failure and worker first-close/timer order were not retained and cannot be reconstructed by a new similar run.",
+    "Three original raw/AOT/IPv6/AES128 role cases lack exact same-profile native checked-kind witnesses in the immutable fixed sample.",
+    "Seven rebinding groups have finite success-kind support gaps; absence in five attempts is not proof of impossibility.",
+    "Full unsuccessful-outcome parity needs integrity, event/reason provenance and schedule-sensitive comparisons beyond terminal scalars.",
+    "New diagnostic inputs do not requalify deleted frozen-generation-2 products."
+  ]
+}

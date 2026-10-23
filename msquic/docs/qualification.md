@@ -2,6 +2,16 @@
 
 ## Post-repair verification, 2026-10-23
 
+The subsequent [parity investigation](recovery-parity-investigation-20261023.md)
+separates strict recovery success from native outcome support. It finds no
+demonstrated compiler/translation divergence and does not establish full semantic
+parity. Of the 87 strict failures below, 84 have same-profile/configuration native
+witnesses for their checked terminal/path kind; three role cases share the one
+profile with the unsupported native terminal. The fixed sample's 79/80 diagnostic
+groups measure one-way managed-failure support; bidirectional observed kind sets
+agree in 72/80 groups. These are scoped observations, not parity qualification.
+The follow-up's new diagnostic evidence is separate from the frozen campaign.
+
 Verification work is complete, with **stronger recovery and observation
 qualification failed**. The [aggregate validation receipt](../../docs/validation/four-campaign-post-repair-20261023.json)
 indexes the exact commands, matrix rows, source overlays, hashes and retained
@@ -45,7 +55,8 @@ native terminal of unknown cause. A read-only inventory retained all 288 rows:
 287 pass the unchanged per-case validators, and 79 logical groups have matching
 shapes/configurations; the remaining group lacks a validated exact native
 witness. This diagnostic inventory receives no qualification credit. No extra
-sampling, classifier expansion or baseline compiler rerun was used.
+sampling, classifier expansion or baseline compiler rerun was used in that fixed
+campaign. Later investigation is recorded separately in the follow-up above.
 
 The other fresh suite results include 167 packet checks per cell, 20 TLS-adapter
 cases per cell, 80 transport pairs, 68 API mode executions, 32 public-consumer
