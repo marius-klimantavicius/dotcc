@@ -191,3 +191,30 @@ The pending retained-input bundle is
 rejects its pending status before commands. Ten retained-input contract tests
 were rerun with `python3 -B -m unittest discover -s s2n-tls/tests/Recipe -p
 'test_retained_inputs.py'` and pass. No upstream acceptance was executed.
+
+
+## Delivered RSA repair and full provider proof
+
+Commit e2876b1a6 applies the exact two-file reviewed blinded-RSA repair and
+permanent49th regression after the source-owning batch006 naturally drained.
+Freeze `artifacts/provider/freeze-rsa-20261023T224649Z/receipt.json` preserves
+all25 delivered provider inputs; ASN.1 repair0158d36c stays unchanged. Full49
+groups pass in JIT and NativeAOT at
+`artifacts/provider/final49-rsa-224649/receipt.json`; actual emitted183-binding
+ABI probes pass both modes at
+`artifacts/provider/emitted-probe-rsa-224649/receipt.json`. Independent review
+checks312 source/proof/report/output files in
+`artifacts/managed-contract/rsa-runtime-milestone-supervisor-review.json`.
+
+The provider runner had passed relative artifact paths to children with another
+working directory. Actual reports and fixtures are preserved under the root
+`artifacts/provider/final49-rsa-224649/`; campaign-local copies are byte-identical,
+with original/copy/output hashes in `report-path-derivation.json` beside the
+provider receipt. No tests were rerun for the path correction. Commit659b3498a
+resolves future artifact paths before child execution; bounded pre-output path
+controls are retained at `artifacts/provider/provider-runner-path-control-2250/`.
+
+New-source original C, CLI, application1076, delivery12 and Python18×4 execution
+remain unrun. Old0158 controller results54/2/201 are historical; fresh raw JIT
+and all4 assertion runs are mandatory. The captured main/delivery passes above
+remain valid only for their captured source bytes.

@@ -22,7 +22,7 @@
     }
   ],
   "shared_build_owner": "supervisor",
-  "next": "After batch006 natural drain, apply reviewed blinded-RSA conversion repair, qualify full49 and emitted ABI, then fresh C/application/delivery/CLI/Python gates and sealed P6 acceptance.",
+  "next": "Freeze validated CLI stdout host semantics, retry original PSK/RSA cases, and refresh all original C/application/delivery/CLI/Python gates against RSA freeze f80f4238; then sealed P6 acceptance.",
   "completed_tasks": [
     {
       "package": "inputs-native",
@@ -79,7 +79,12 @@
     "56fb66d7a",
     "185ee5985",
     "859dc56d0",
-    "af8a1145c"
+    "af8a1145c",
+    "d34185b7e",
+    "5364f6f92",
+    "f72519790",
+    "e2876b1a6",
+    "659b3498a"
   ],
   "current_attempt": "20261023-223542-f7e7054e (passed175/raw+processed; new actual qualification with base64 repair08796c070)",
   "last_complete_link": "20261023-223542-f7e7054e",
@@ -100,16 +105,16 @@
     "reproduction": "artifacts/campaign/20261023-233001-6f4afff7/reproduction.json",
     "translated_python_all18": "artifacts/managed-upstream/python-current-223542-base64/all18-all4-matrix.json",
     "native_happy_retry": "artifacts/native-python/retry-investigation-r4/happy-repaired-matrix.json",
-    "final_provider_freeze": "artifacts/provider/freeze-asn1-20261023T211648Z/receipt.json",
+    "final_provider_freeze": "artifacts/provider/freeze-rsa-20261023T224649Z/receipt.json",
     "final48_provider": "artifacts/provider/final48-asn1-211648/receipt.json",
     "post_asn1_api": "artifacts/managed-contract/api-r4-final-provider-progress.json",
     "post_asn1_abi": "artifacts/campaign/20261024-001718-6f72b210/receipt.json",
     "provider_controller_pid": 1263486,
     "final_provider_current_c_counts": {
-      "passed": 46,
-      "failed": 2,
-      "unrun": 209,
-      "scope": "Captured0158 source, batch006 draining; new RSA candidate not applied. No credit for changed provider."
+      "passed": 0,
+      "failed": 0,
+      "unrun": 257,
+      "scope": "New RSA source awaits hostfreeze and mandatoryfreshrawJIT/all4; archived0158 was54/2/201."
     },
     "final_provider_cli": "build/managed-upstream/python-endpoints-final-asn1.json",
     "final_provider_cli_audit": "artifacts/managed-contract/final-asn1-cli-eight-supervisor-audit.json",
@@ -120,7 +125,10 @@
     "final_provider_python": "artifacts/managed-contract/api-r4-final-provider-companion-progress.json",
     "retained_input_seal_controls": "artifacts/managed-contract/retained-input-seal-contract/report.json",
     "pre_rsa_api_reader_window": "artifacts/managed-contract/api-r4-pre-rsa-reader-window.json",
-    "pending_retained_inputs": "artifacts/managed-contract/final-upstream-223542/inputs.json"
+    "pending_retained_inputs": "artifacts/managed-contract/final-upstream-223542/inputs.json",
+    "final49_provider": "artifacts/provider/final49-rsa-224649/receipt.json",
+    "rsa_abi": "artifacts/provider/emitted-probe-rsa-224649/receipt.json",
+    "rsa_supervisor_audit": "artifacts/managed-contract/rsa-runtime-milestone-supervisor-review.json"
   },
   "discovery_correction": {
     "original": "artifacts/managed/full-owning-matrix/report.json",
@@ -137,11 +145,11 @@
     "P2": "223542raw+processed175/183bindings",
     "P3": "Final ASN1 0158d36c main1076/1076 all4, independent combined5023fileaudit",
     "P5": "Final ASN1 0158d36c delivery12/12 all4copied/rooted, independent combined5023fileaudit",
-    "P1": "ASN1freeze0158d36c/full48JIT+AOT/ABIall4; full originalcaller gate remainsP4",
+    "P1": "RSA freeze f80f4238/full49JIT+AOT/emitted183ABI both; original caller gates remainP4",
     "P6_reproduction": "233001-6f4afff7 passed warn/off two full175 regenerations/private authored edit/failed-publication; overallP6 remainsopen"
   },
   "open_gates": [
-    "ProductionRSA_NO_PADDING native boundary/return contract repair with vetted blinded operation",
+    "Fresh application/delivery/CLI/original-C/Python qualification for repaired RSA freeze",
     "P4full257Cplus18Pythonall4translatedvariants with repaired provider",
     "Cross-compatibility5 TLS1.3 ticket-out failures require actual cause/repair",
     "P6sealed retained upstream acceptance and final receipt review"
@@ -155,10 +163,11 @@
     "state": "resolved5f0b8ff3d:48groupsJIT+AOT/ABIall4/certificate488eachall4 pass; full final-provider application/upstream qualification running"
   },
   "observed_rsa_defect": {
-    "state": "Private blinded candidate and prospective permanent49th regression each1177 native rows JIT+AOT passed; production held for batch006 natural drain.",
+    "state": "Repaired e2876b1a6 after batch006 natural drain; full49 and actual183ABI JIT+AOT pass; downstream new-source gates pending.",
     "proof": "artifacts/provider/rsa-private/20261023T221932Z-efde53a5/production-private-edges.json",
     "details": "Native rawRSA accepts0/1/n-1; current BC default input converter rejects them; n failure return differs. Preserve BC blinding/CRT checks.",
     "private_repair": "artifacts/provider/rsa-private-repair/20261023T223103Z-3879ea83/receipt.json",
-    "permanent_regression_private": "artifacts/provider/rsa-regression-private/20261023T223521Z-44c72bc9/receipt.json"
+    "permanent_regression_private": "artifacts/provider/rsa-regression-private/20261023T223521Z-44c72bc9/receipt.json",
+    "freeze": "artifacts/provider/freeze-rsa-20261023T224649Z/receipt.json"
   }
 }
