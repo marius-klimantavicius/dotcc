@@ -1,0 +1,11 @@
+// Exact opaque declarations copied from the retained real translated header.
+namespace Managed.Security.S2n;
+public static unsafe partial class S2nTls
+{
+public unsafe partial struct rsa_st
+{
+}
+public unsafe partial struct evp_pkey_st
+{
+}
+}

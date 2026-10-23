@@ -485,6 +485,9 @@ an old-provider identity against the final freeze. Its receipt is
 `artifacts/provider/final-source-refresh-control-212202.json`. These results
 remain a subset of the required 257-case C gate; historical provider results
 and partial aggregates cannot close that gate.
+Each later source freeze resets the full batch selection and retains each
+case's latest raw-manifest provenance, including separately adopted repairs.
+Stale prior active-case subsets cannot omit those cases from requalification.
 
 ## Native RSA input and EVP decrypt contract
 
@@ -522,8 +525,25 @@ The runner now resolves the artifact directory before starting children.
 The original-C controller naturally drained batch006 at 54 passing cases under
 the prior provider before this repair was applied under its exclusive lease.
 Those results require fresh raw JIT and all four executions against the new
-freeze. C builds are held until the owning API host repair also freezes; the
+freeze. C builds were held until the owning API host repair also froze; the
 retained 257 C emissions and linked projects remain available for reuse.
+
+After the host freeze, the unchanged original `s2n_client_psk_extension_test`
+passes all four executions with exactly 1021 native assertions each, using the
+retained original policy testlib unit selected by the corrected support decoder.
+The unchanged original `s2n_client_key_exchange_test` also passes all four with
+exactly 23229 assertions each. Its additional public RSA APIs use real BC/BCL
+operations in the isolated test assembly; the canonical typed wrappers have a
+separate 277-row native differential in both runtimes. Only after original all4
+acceptance was its RSA binding added to the policy catalogue.
+
+`artifacts/provider/final-rsa-original-preflights-2313/receipt.json` records
+the eight actual executions and a 479-file source/output/runtime audit. The
+retained failed raw key-exchange project was copied with every generated C#
+byte preserved; only project XML selected a frozen provider/binding snapshot.
+`repair-linked-control.py` records the failed command, input manifest and fresh
+raw JIT identity before the four-mode expansion. No C emission was repeated.
+These two cases close neither the required 257-case C gate nor other P6 gates.
 
 ## Qualified dependency storage
 

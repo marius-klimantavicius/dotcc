@@ -1,0 +1,7 @@
+if (args is ["--identity"])
+{
+    ManagedConsumer.ExecutionIdentity.Print();
+    return;
+}
+if (args.Length != 1) throw new ArgumentException("Expected the RSA private fixture path");
+RsaChecks.Run(args[0]);

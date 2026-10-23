@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="RsaMain.cs.txt" />
+    <Compile Include="RsaChecks.cs.txt" />
+    <Compile Include="RsaOpaqueTypes.cs.txt" />
+    <Compile Include="ExecutionIdentity.cs" />
+    <Compile Include="../Bindings/Rsa.cs" Link="RsaBindings.cs" />
+    <ProjectReference Include="../CryptoProvider.Upstream.csproj" />
+  </ItemGroup>
+</Project>

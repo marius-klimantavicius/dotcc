@@ -1,0 +1,9 @@
+{
+  "scope": "Two verbatim opaque declaration blocks only; no original test/product implementation compiled by this focused check",
+  "actual_translated_header_source": "/home/marius/p/dotcc/s2n-tls/build/managed-upstream/20261023T221802Z-12d6243a/s2n_client_key_exchange_test/raw/S2nTls/S2nTls.cs",
+  "actual_translated_header_source_sha256": "228082f24fcbb3b547711aee0bab81b3e90ad85e955becaff1d04dd867c17e71",
+  "copied_declarations": [
+    "public unsafe partial struct rsa_st\n{\n}",
+    "public unsafe partial struct evp_pkey_st\n{\n}"
+  ]
+}

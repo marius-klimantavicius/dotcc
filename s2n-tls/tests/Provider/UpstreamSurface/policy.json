@@ -8,6 +8,9 @@
     ],
     "tests/unit/s2n_certificate_test.c": [
       "tests/Provider/UpstreamSurface/Bindings/Names.cs"
+    ],
+    "tests/unit/s2n_client_key_exchange_test.c": [
+      "tests/Provider/UpstreamSurface/Bindings/Rsa.cs"
     ]
   }
 }

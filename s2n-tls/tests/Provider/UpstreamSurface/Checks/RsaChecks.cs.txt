@@ -1,0 +1,47 @@
+using System.Security.Cryptography;
+using B = Managed.Security.S2n.S2nTls;
+using O = Managed.S2nTls.Crypto.OpenSslAbi;
+
+internal static unsafe class RsaChecks
+{
+    static int RSA_size(void* rsa) => B.RSA_size((B.rsa_st*)rsa);
+    static void RSA_free(void* rsa) => B.RSA_free((B.rsa_st*)rsa);
+    static void* EVP_PKEY_get1_RSA(void* key) => B.EVP_PKEY_get1_RSA((B.evp_pkey_st*)key);
+    static int RSA_public_encrypt(int length,byte* input,byte* output,void* rsa,int padding)
+        => B.RSA_public_encrypt(length,input,output,(B.rsa_st*)rsa,padding);
+    static int Errors() { bool value=false; while(O.ERR_get_error()!=0)value=true; return value?1:0; }
+    static void Raw(void* rsa,string label,byte[] input,int length,int padding)
+    {
+        int size=RSA_size(rsa);byte[] output=Enumerable.Repeat((byte)0xA5,size+2).ToArray();Errors();int result;
+        fixed(byte* source=input)fixed(byte* target=output)result=RSA_public_encrypt(length,source,target+1,rsa,padding);
+        Console.WriteLine($"raw:{label}|{result}|{Errors()}|{(output[0]==0xA5&&output[^1]==0xA5?1:0)}|{Convert.ToHexString(output.AsSpan(1,size))}");
+    }
+    public static void Run(string fixture)
+    {
+        int baseline=O.LiveContexts;using RSA original=RSA.Create();original.ImportFromPem(File.ReadAllText(fixture));byte[] der=original.ExportPkcs8PrivateKey();void* key;
+        fixed(byte* data=der){byte* cursor=data;key=O.d2i_AutoPrivateKey(null,&cursor,der.Length);if(key==null||cursor!=data+der.Length)throw new Exception("Private fixture import failed");}
+        void* first=EVP_PKEY_get1_RSA(key),rsa=EVP_PKEY_get1_RSA(key);if(rsa==null)throw new Exception("RSA view missing");int size=RSA_size(rsa);
+        Console.WriteLine($"alias|{(first==rsa?1:0)}|{size}|{Errors()}");O.EVP_PKEY_free(key);RSA_free(first);Console.WriteLine($"retained|{RSA_size(rsa)}|{Errors()}");
+        byte[] input=new byte[size+1];Raw(rsa,"zero",input,size,3);input[size-1]=1;Raw(rsa,"one",input,size,3);
+        byte[] modulus=original.ExportParameters(false).Modulus!;modulus.CopyTo(input,0);int at=size-1;while(input[at]==0)input[at--]=255;input[at]--;Raw(rsa,"n-minus-one",input,size,3);
+        modulus.CopyTo(input,0);Raw(rsa,"n",input,size,3);Array.Fill(input,(byte)255);Raw(rsa,"ff",input,size,3);Array.Clear(input);
+        foreach(int length in new[]{-1,0,size-1,size+1})Raw(rsa,"length-"+length,input,length,3);Raw(rsa,"padding-999",input,size,999);
+        for(int mutation=-1;mutation<size;mutation++){
+            Array.Fill(input,(byte)0x7F);input[0]=0;input[1]=2;int delimiter=size-49;input[delimiter]=0;for(int i=0;i<48;i++)input[delimiter+1+i]=(byte)i;
+            if(mutation>=0){if(mutation>1&&mutation<delimiter)input[mutation]=0;else input[mutation]++;}
+            Raw(rsa,"encoded-mutation-"+mutation,input,size,3);
+        }
+        foreach(int length in new[]{0,1,size-11,size-10}){
+            for(int i=0;i<length;i++)input[i]=(byte)i;byte[] output=Enumerable.Repeat((byte)0xA5,size+2).ToArray();Errors();int result;
+            fixed(byte* source=input)fixed(byte* target=output)result=RSA_public_encrypt(length,source,target+1,rsa,1);
+            byte[]? plain=result>=0?original.Decrypt(output.AsSpan(1,result).ToArray(),RSAEncryptionPadding.Pkcs1):null;
+            Console.WriteLine($"pkcs1:{length}|{result}|{Errors()}|{(output[0]==0xA5&&output[^1]==0xA5?1:0)}|{plain?.Length??-1}:{Convert.ToHexString(plain??output.AsSpan(1,size).ToArray())}");
+        }
+        RSA_free(rsa);RSA_free(null);
+        for(int type=0;type<3;type++){
+            void* empty=O.EVP_PKEY_new();if(type!=0&&O.EVP_PKEY_set_type(empty,type==1?6:408)!=1)throw new Exception("Empty key type failed");Errors();void* value=EVP_PKEY_get1_RSA(empty);
+            Console.WriteLine($"empty:{type}|{(value==null?1:0)}|{Errors()}");RSA_free(value);O.EVP_PKEY_free(empty);
+        }
+        Console.WriteLine($"freed|{Errors()}");if(O.LiveContexts!=baseline)throw new Exception("RSA context ownership leaked");
+    }
+}
