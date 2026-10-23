@@ -365,3 +365,116 @@ profiles, publishes and executes focused NativeAOT SHAKE tests with locked
 restore, and verifies that every authored lock hash remains unchanged. Its
 receipt is `artifacts/provider/lock-policy/receipt.json`. `--update` is an
 explicit lock-generation operation; the normal check never requests changes.
+
+## Additional APIs in original C tests
+
+The production provider remains frozen at 183 typed bindings and capability
+mask 255. Additional calls in original upstream tests belong to the separate
+`tests/Provider/UpstreamSurface/CryptoProvider.Upstream.csproj` assembly. It links
+the identical production C# and OID resource, uses the same exact BC dependency
+and four byte-identical locks, and adds only authored test APIs. Its canonical
+`S2nTls` partial bindings resolve existing emitted imports; neither original C
+nor generated C# is edited to introduce these bindings.
+
+`provider_snapshot.snapshot_provider(project, bindings, destination)` preserves
+the evaluated relative source/resource/configuration layout in a private tree.
+It checks copied bytes and original inputs before and after copying, omits
+build caches and test checks, and returns the frozen project, extra bindings,
+and original/frozen input hashes. The upstream builder's `--provider-project`
+and repeatable `--provider-binding` switches select this project for an explicit
+harness. Each actual application receipt records its own provider snapshot.
+Later authored test-surface changes cannot change those frozen applications.
+
+The observed first missing test API was `OpenSSL_version`, reached at compile
+time through the `SSLeay_version` macro in `s2n_build_test.c`. Selector 0 returns
+the existing actual managed provider identity. Other selectors return null and
+record a provider error because OpenSSL build selectors have no defined managed
+equivalent in this test surface. The header version never identifies the managed
+runtime. This original test's default environment exits after one assertion;
+its optional vendor-specific CI preset branch is separate from the provider
+identity contract. A managed name must not be replaced with an OpenSSL vendor
+claim to satisfy that branch.
+
+The private-snapshot identity check passes 35 assertions in JIT and NativeAOT,
+including the exact provider-name pointer, ABI/mask, unsupported selectors and
+error consumption, and unchanged context count. The command is:
+
+```sh
+python3 -B s2n-tls/tests/Provider/UpstreamSurface/Checks/run.py
+```
+
+Its receipt is
+`artifacts/provider/upstream-surface-check/20261023T204158Z-4ca44d59/receipt.json`.
+This focused identity result does not qualify the remaining original C cases.
+
+The unchanged original `s2n_build_test.c` subsequently passes all four variants
+with its exact matching native count of one. The retained repair manifest is
+`build/provider/required257-223542-repairs/build-version/expanded-executables.json`;
+its four-mode receipt is
+`artifacts/provider/original16-expanded/20261023T204431Z-67a7c869/all4.json`.
+The earlier failed production-reference build remains recorded by the live
+controller; this separate successful repair does not rewrite that attempt.
+`tests/Provider/UpstreamSurface/policy.json` catalogs only observed and repaired
+extra binding selections, independently of production provider metadata.
+
+The next observed compile failure, `s2n_certificate_test.c`, requires
+`X509_NAME_new/free/add_entry_by_NID` and `X509_set_subject_name`. The isolated
+extension uses real ASN.1 string storage and BCL DER encoding, preserves name
+entry ownership and RDN insertion, and copies the subject into the certificate's
+owned name cache. The selected native setter retains the original certificate
+DER/signature cache; this is independently measured rather than inferred from
+the setter name. The deliberately invalid ASN.1 tag 29 remains an actual tag 29
+for s2n's CN-type checks. BC rejects that tag in its certificate parser, so it
+must not be relabeled as a supported string to make parsing succeed.
+
+Pinned native, JIT and NativeAOT name mutation transcripts agree on exact tags,
+bytes, name DER, unchanged certificate DER cache, and copied-name survival after
+freeing its source. The snapshot test also verifies context cleanup and the
+identity assertions. Run `Checks/run.py --names`; the receipt is
+`artifacts/provider/upstream-surface-check/20261023T205844Z-3a12e1e0/receipt.json`.
+Those name boundary checks do not qualify production string conversion. The
+first original certificate execution exposed a production defect in
+`ASN1_STRING_to_UTF8`: it used cached text and accepted an unsupported tag.
+The failed executions remain historical evidence.
+
+## ASN.1 string conversion and final-source refresh
+
+`ASN1_STRING_to_UTF8` reads the actual native Type/Data/Length fields. It accepts
+the same tags as pinned OpenSSL: UTF8String (12), single-byte strings
+(18/19/20/22/23/24/26), UniversalString (28), and BMPString (30). Unsupported
+types return -1 without writing the output pointer or adding an error. Invalid
+lengths and encodings follow the native output-pointer/error behavior. The
+decoder also preserves the pinned implementation's legacy five/six-byte UTF8,
+BMP surrogate, and high UniversalString behavior.
+
+The regression compares 3131 vectors against actual native calls in each of
+JIT and NativeAOT, including mutated native fields, the full tag range, all
+single-byte values, malformed encodings and lengths, output guard state, and
+error consumption. The private candidate passed before the sole production
+file was replaced at the drained controller boundary. The final source-freeze
+receipt is `artifacts/provider/freeze-asn1-20261023T211648Z/receipt.json`;
+`artifacts/provider/final48-asn1-211648/receipt.json` records all 48 native
+differential groups passing in both modes with that source. Production still
+has the same 183 typed bindings, capability mask, dependency pin and locks.
+
+With the final provider, the unchanged original certificate test passes all
+four forms/modes with exactly 488 native assertions each. Its receipt is
+`artifacts/provider/original16-expanded/20261023T211832Z-6c2a4f05/all4.json`.
+Only after this actual pass was its Names binding added to the test policy.
+
+`expand-original-controls.py --refresh-provider --provider-freeze RECEIPT`
+copies retained linked raw projects, preserves every generated C# byte, selects
+the reviewed production source or a new immutable test-provider snapshot, and
+builds and executes all four variants anew. Raw JIT identity reuse is disabled
+in this mode. It performs no C emission or C-to-managed linking. The controller
+uses the same mode for prior batches, archives their exact old progress, and
+resets their current qualification before adopting or rerunning final-source
+results. `--reuse-linked-manifest` selects an already linked boundary repair;
+`--adopt-expanded` accepts its fresh four-mode result only after closure audit.
+
+The bounded refresh control requalified the certificate and two previously
+passing cases (12 actual executions), verified 506 retained files, and rejected
+an old-provider identity against the final freeze. Its receipt is
+`artifacts/provider/final-source-refresh-control-212202.json`. These results
+remain a subset of the required 257-case C gate; historical provider results
+and partial aggregates cannot close that gate.

@@ -59,6 +59,22 @@ class Pipeline:
                 "native_profile_match": match, "commands": [], "cases": {case: {"status": "unrun"} for case in self.required},
                 "batches": [{"index": index, "cases": cases, "status": "unrun"} for index, cases in enumerate(batches)]}
         self.support = self.output / "support-reuse.json"
+        self.provider_freeze = None
+        if args.provider_freeze:
+            path = args.provider_freeze.resolve()
+            frozen = read(path)
+            self.provider_freeze = {"receipt": str(path), "sha256": sha(path), "after_sha256": frozen["after_sha256"]}
+        if args.refresh_provider and not self.provider_freeze:
+            raise RuntimeError("Source-aware controller refresh needs an explicit --provider-freeze")
+        self.linked_reuse = {}
+        for path in args.reuse_linked_manifest:
+            manifest = read(path)
+            self.validate_raw_inputs(manifest)
+            for entry in manifest["executables"]:
+                if entry["form"] == "raw" and entry["mode"] == "jit" and entry["status"] == "built":
+                    if entry["case"] in self.linked_reuse:
+                        raise RuntimeError("Ambiguous retained linked raw harness selection: " + entry["case"])
+                    self.linked_reuse[entry["case"]] = (path.resolve(), manifest, entry)
         if self.progress.get("campaign_receipt_sha256", sha(self.translation_path)) != sha(self.translation_path):
             raise RuntimeError("Resume cannot change the closed translation receipt")
         self.progress.setdefault("campaign_receipt", str(self.translation_path))
@@ -69,6 +85,12 @@ class Pipeline:
     def verify_emissions(self):
         if sha(self.translation_path) != self.progress["campaign_receipt_sha256"]:
             raise RuntimeError("Closed translation evidence changed")
+        if self.provider_freeze:
+            if sha(self.provider_freeze["receipt"]) != self.provider_freeze["sha256"]:
+                raise RuntimeError("Reviewed provider freeze receipt changed")
+            for path, expected in self.provider_freeze["after_sha256"].items():
+                if sha(path) != expected:
+                    raise RuntimeError("Reviewed provider source freeze changed: " + path)
         for key in ("tool_sha256", "product_objects_sha256"):
             for path, expected in self.emission[key].items():
                 if sha(path) != expected:
@@ -122,15 +144,90 @@ class Pipeline:
             data["provenance"].append(provenance)
         self.support.write_text(json.dumps(data, indent=2) + "\n")
 
+    def validate_raw_inputs(self, manifest):
+        if (Path(manifest["campaign_run"]).resolve() != self.campaign
+            or manifest["tool_sha256"] != self.emission["tool_sha256"]
+            or manifest["product_objects_sha256"] != self.emission["product_objects_sha256"]):
+            raise RuntimeError("Retained linked harness must use the exact campaign/tool/175-object closure")
+
+    def prepare_provider_refresh(self):
+        if not self.provider_freeze:
+            return
+        previous = self.progress.get("provider_source_freeze")
+        if previous == self.provider_freeze:
+            return
+        has_old_results = any(r["status"] != "unrun" for r in self.progress["cases"].values())
+        if has_old_results and not self.args.refresh_provider:
+            raise RuntimeError("Existing results have a different provider source; use --refresh-provider to retain and requalify them")
+        if has_old_results:
+            archive = self.output / ("historical-provider-progress-" + str(time.time_ns()) + ".json")
+            shutil.copyfile(self.progress_path, archive)
+            self.progress.setdefault("historical_provider_progress", []).append({"path": str(archive), "sha256": sha(archive),
+                "counts": dict(self.progress["counts"]), "provider_source_freeze": previous})
+            for case, record in list(self.progress["cases"].items()):
+                if record["status"] == "unrun":
+                    continue
+                self.progress["cases"][case] = {"status": "unrun", "stage": "awaiting-final-provider-refresh",
+                                                "retained_prior_attempts": [copy.deepcopy(record)]}
+            for batch in self.progress["batches"]:
+                if batch.get("raw_manifest"):
+                    batch["provider_refresh_from_raw_manifest"] = batch["raw_manifest"]
+                    batch["provider_refresh_attempt"] = batch.get("provider_refresh_attempt", 0) + 1
+                    batch["provider_refresh_from_batch_status"] = batch["status"]
+                    batch["status"] = "refresh-retained"
+        self.progress["provider_source_freeze"] = self.provider_freeze
+        self.save()
+
+    def retained_raw_manifest(self, batch, requested, destination):
+        original_path = Path(batch["provider_refresh_from_raw_manifest"])
+        original = read(original_path); self.validate_raw_inputs(original)
+        combined = dict(original, executables=[], commands=[], evidence_kind="retained-linked-harnesses-for-provider-refresh",
+                        retained_input_manifests=[], provider_source_freeze=self.provider_freeze)
+        seen = set()
+        for case in requested:
+            if case in self.linked_reuse:
+                path, manifest, entry = self.linked_reuse[case]
+            else:
+                path, manifest = original_path, original
+                found = [r for r in manifest["executables"] if (r["case"], r["form"], r["mode"]) == (case, "raw", "jit")]
+                if len(found) != 1:
+                    raise RuntimeError("Missing exact retained raw harness for source refresh: " + case)
+                entry = found[0]
+            entry = dict(entry)
+            if entry["status"] == "built" and not entry.get("project"):
+                executable = Path(entry["command"][1] if entry["command"][0] == "dotnet" else entry["command"][0]).resolve()
+                projects = set()
+                for command in manifest["commands"]:
+                    argv = command["command"]
+                    if "--artifacts-path" not in argv or not executable.is_relative_to(Path(argv[argv.index("--artifacts-path") + 1]).resolve()):
+                        continue
+                    projects.update(str(Path(p).resolve()) for p in argv if p.endswith(".csproj") and not p.startswith("-"))
+                if len(projects) != 1:
+                    raise RuntimeError("Retained raw source project is missing or ambiguous: " + case)
+                entry["project"] = next(iter(projects))
+            combined["executables"].append(entry)
+            if str(path) not in seen:
+                seen.add(str(path)); combined["commands"].extend(manifest["commands"])
+                combined["retained_input_manifests"].append({"path": str(path), "sha256": sha(path)})
+        combined["status"] = "built" if all(r["status"] == "built" for r in combined["executables"]) else "failed"
+        destination.write_text(json.dumps(combined, indent=2) + "\n")
+
     def batch(self, row):
-        requested = row.get("active_cases", row["cases"])
+        requested = [case for case in row.get("active_cases", row["cases"]) if self.progress["cases"][case]["status"] != "passed"]
         if row["status"] in ("failed", "controller-error") and self.args.retry_failed:
             requested = [case for case in row["cases"] if self.progress["cases"][case]["status"] != "passed"]
             row["retry_attempt"] = row.get("retry_attempt", 0) + 1
         row["active_cases"] = requested
         suffix = "-retry-" + str(row["retry_attempt"]) if row.get("retry_attempt") else ""
+        if row.get("provider_refresh_attempt"):
+            suffix += "-provider-refresh-" + str(row["provider_refresh_attempt"])
         directory = self.output / ("batch-" + str(row["index"]).zfill(3) + suffix); directory.mkdir(exist_ok=True)
         raw = directory / "raw-executables.json"
+        if not requested:
+            row["status"] = "passed"; self.save(); return
+        if not raw.exists() and row.get("provider_refresh_from_raw_manifest"):
+            self.retained_raw_manifest(row, requested, raw)
+            row["raw_manifest"] = str(raw); self.save()
         if not raw.exists():
             argv = [sys.executable, "-B", ROOT / "tests/Upstream/build.py", "--campaign-run", self.campaign,
                     "--reuse-emission", self.args.emission_manifest.resolve(), "--form", "raw", "--mode", "jit", "--output", raw]
@@ -193,6 +290,8 @@ class Pipeline:
                     "--case-set", "required-c", "--jobs", self.args.jobs]
             if self.args.native_equivalence:
                 argv += ["--native-equivalence", self.args.native_equivalence.resolve()]
+            if row.get("provider_refresh_from_raw_manifest"):
+                argv += ["--refresh-provider", "--provider-freeze", self.provider_freeze["receipt"]]
             if expanded.exists():
                 argv.append("--resume")
             for case in built:
@@ -218,7 +317,8 @@ class Pipeline:
                             if sha(path) != expected:
                                 raise RuntimeError("Qualified actual source/execution/identity closure changed: " + path)
                     self.progress["cases"][case].update(status="passed", original_assertions_all4=checks["cases"],
-                        qualification=record, raw_manifest=str(raw), expanded_manifest=str(expanded))
+                        qualification=record, raw_manifest=str(raw), expanded_manifest=str(expanded),
+                        provider_source_freeze_sha256=self.provider_freeze["sha256"] if self.provider_freeze else None)
                 else:
                     errors = sorted({r.get("error", "Missing all-four-mode qualification") for r in evidence["executables"] if r["case"] == case})
                     if case in evidence.get("case_failures", {}):
@@ -266,6 +366,13 @@ class Pipeline:
                     verify(variant["application_execution_receipt"], variant["application_execution_receipt_sha256"])
                     identity = read(variant["application_execution_receipt"])
                     _verify_test_provider_snapshot(variant, identity, verify)
+                    if self.provider_freeze:
+                        captured = identity["authored_source_sha256"]
+                        for source, expected in self.provider_freeze["after_sha256"].items():
+                            path = Path(source)
+                            if path.is_relative_to(ROOT / "src/CryptoProvider") and path.suffix in (".cs", ".csproj", ".json"):
+                                if captured.get(source) != expected:
+                                    raise RuntimeError("Old-provider actual execution identity cannot qualify final sources: " + source)
                     files = {**variant["execution_sha256"], **identity["output_sha256"], **identity["runtime_closure_sha256"]}
                     files.update({str(Path(variant["project"]).parent / name): value for name, value in variant["source_sha256"].items()})
                     for source, expected in files.items():
@@ -285,6 +392,8 @@ class Pipeline:
             or expanded["native_profile_match"] != self.progress["native_profile_match"]
             or expanded["campaign_receipt_sha256"] != sha(self.translation_path)):
             raise RuntimeError("Repair adoption needs the exact campaign/native/closed-translation identities")
+        if self.provider_freeze and expanded.get("provider_source_freeze") != self.provider_freeze:
+            raise RuntimeError("Repair adoption cannot reuse an old-provider qualification")
         controls = {r["case"]: r for r in read(self.args.native_report)["upstream"] if r["status"] == "passed"}
         expected = {(form, mode) for form in ("raw", "processed") for mode in ("jit", "aot")}
         pending = {}
@@ -308,7 +417,8 @@ class Pipeline:
             prior = copy.deepcopy(self.progress["cases"][case])
             pending[case] = {"status": "passed", "original_assertions_all4": assertions["cases"],
                              "qualification": qualification, "raw_manifest": expanded["input_manifest"],
-                             "expanded_manifest": str(path), "retained_prior_attempts": [prior]}
+                             "expanded_manifest": str(path), "retained_prior_attempts": [prior],
+                             "provider_source_freeze_sha256": self.provider_freeze["sha256"] if self.provider_freeze else None}
         self.progress["cases"].update(pending)
         self.final_audit()
         rejected = [case for case in pending if self.progress["cases"][case]["status"] != "passed"]
@@ -328,6 +438,7 @@ class Pipeline:
             self.save()
             print("PIPELINE INPUTS VALIDATED;", len(self.required), "required C cases remain unrun", flush=True)
             return 0
+        self.prepare_provider_refresh()
         for path in self.args.adopt_expanded:
             self.adopt_expanded(path)
         self.progress["status"] = "running"; self.save()
@@ -364,6 +475,10 @@ def main():
                         help="Freeze an additional original-test provider selection catalogue separately for each raw batch")
     parser.add_argument("--adopt-expanded", type=Path, action="append", default=[],
                         help="Adopt retained all-four-mode private repairs under the exclusive controller lease, preserving failed attempts")
+    parser.add_argument("--refresh-provider", action="store_true", help="Retain historical old-provider progress and requalify linked projects against the final provider")
+    parser.add_argument("--provider-freeze", type=Path, help="Immutable reviewed final provider source-freeze receipt")
+    parser.add_argument("--reuse-linked-manifest", type=Path, action="append", default=[],
+                        help="Exact retained raw harness manifest for a previously repaired boundary; no old executable identity is reused")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--batch-size", type=int, choices=range(1, 9), default=4)
     parser.add_argument("--jobs", type=int, choices=range(1, 5), default=2)

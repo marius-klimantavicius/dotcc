@@ -99,6 +99,11 @@ def _validate_completed_report(report_path, native_report, native_equivalence, *
             raise RuntimeError("Completed C evidence content changed: " + path)
 
     verify(translation_path, translation_sha256)
+    freeze = report.get("provider_source_freeze")
+    if freeze:
+        verify(freeze["receipt"], freeze["sha256"])
+        for path, expected in freeze["after_sha256"].items():
+            verify(path, expected)
     verify(report["emission_manifest"], report["emission_manifest_sha256"])
     emission = json.loads(Path(report["emission_manifest"]).read_text())
     if emission["status"] != "emitted" or Path(emission["campaign_run"]).resolve() != campaign:

@@ -26,6 +26,8 @@ from execution_identity import authored_sources, capture, hashes
 from native_profile import validate_profile
 sys.path.insert(0, str(ROOT / "scripts"))
 from translation_evidence import read_closed
+sys.path.insert(0, str(ROOT / "tests/Provider/UpstreamSurface"))
+from provider_snapshot import snapshot_provider
 
 
 def digest(path):
@@ -69,6 +71,8 @@ class Expansion:
                 raise RuntimeError("Expansion input manifest changed")
             if self.report.get("case_set", "selected16") != args.case_set or {r["case"] for r in self.report["executables"]} != set(self.cases):
                 raise RuntimeError("Resume must retain the exact declared expansion case set")
+            if self.report.get("refresh_provider", False) != args.refresh_provider:
+                raise RuntimeError("Resume must retain the exact provider refresh policy")
             self.work = Path(self.report["work"])
         else:
             if self.output.exists():
@@ -109,6 +113,16 @@ class Expansion:
         self.report.setdefault("qualifications", {})
         self.report.setdefault("case_failures", {})
         self.report.setdefault("cache_cleanup", {})
+        self.report["refresh_provider"] = args.refresh_provider
+        if args.refresh_provider:
+            if not args.provider_freeze:
+                raise RuntimeError("Provider refresh needs an explicit reviewed --provider-freeze source receipt")
+            freeze_path = args.provider_freeze.resolve()
+            freeze = json.loads(freeze_path.read_text())
+            identity = {"receipt": str(freeze_path), "sha256": digest(freeze_path), "after_sha256": freeze["after_sha256"]}
+            if "provider_source_freeze" in self.report and self.report["provider_source_freeze"] != identity:
+                raise RuntimeError("Provider refresh cannot change its final source freeze")
+            self.report["provider_source_freeze"] = identity
         if self.report["campaign_receipt_sha256"] != digest(self.campaign_receipt_path):
             raise RuntimeError("Closed translation identity changed")
         self.report.setdefault("campaign_receipt", str(self.campaign_receipt_path))
@@ -138,6 +152,49 @@ class Expansion:
             snapshot = entry.get("provider_snapshot")
             if snapshot and hashes(snapshot["snapshot_inputs_sha256"]) != snapshot["snapshot_inputs_sha256"]:
                 raise RuntimeError("Frozen additional test provider input changed: " + entry["case"])
+        freeze = self.report.get("provider_source_freeze")
+        if freeze and (digest(freeze["receipt"]) != freeze["sha256"] or hashes(freeze["after_sha256"]) != freeze["after_sha256"]):
+            raise RuntimeError("Reviewed final provider source freeze changed")
+        for row in self.report["executables"]:
+            snapshot = row.get("provider_snapshot")
+            if snapshot and hashes(snapshot["snapshot_inputs_sha256"]) != snapshot["snapshot_inputs_sha256"]:
+                raise RuntimeError("Actual refreshed provider snapshot changed")
+
+    def refresh_project_provider(self, case, project):
+        """Change only authored project inputs; retain every generated C# byte."""
+        entry = self.entries[case]
+        old = entry.get("provider_snapshot")
+        tree = ET.parse(project)
+        references = list(tree.iter("ProjectReference"))
+        expected = Path(old["project"]) if old else ROOT / "src/CryptoProvider/CryptoProvider.csproj"
+        if len(references) != 1 or (project.parent / references[0].get("Include")).resolve() != expected.resolve():
+            raise RuntimeError("Retained raw harness has an unexpected provider reference")
+        fresh = None
+        if old:
+            repository = Path(old["project"]).parents[4]
+            original_bindings = [ROOT.parent / Path(p).relative_to(repository) for p in old["bindings"]]
+            fresh = snapshot_provider(ROOT / "tests/Provider/UpstreamSurface/CryptoProvider.Upstream.csproj",
+                                      original_bindings, self.work / Path(case).stem / "provider-inputs")
+            selected = Path(fresh["project"])
+            bindings = dict(zip(old["bindings"], fresh["bindings"]))
+            for node in tree.iter("Compile"):
+                original = str((project.parent / node.get("Include")).resolve())
+                if original in bindings:
+                    node.set("Include", bindings[original])
+        else:
+            selected = ROOT / "src/CryptoProvider/CryptoProvider.csproj"
+        references[0].set("Include", str(selected))
+        ET.indent(tree); tree.write(project, encoding="unicode")
+        for row in self.report["executables"]:
+            if row["case"] != case:
+                continue
+            if fresh:
+                row["provider_snapshot"] = fresh
+            row["provider_source_freeze"] = self.report["provider_source_freeze"]
+        return {"previous_provider_project": str(expected), "selected_provider_project": str(selected),
+                "provider_snapshot": fresh, "previous_raw_jit_identity": entry.get("application_execution_receipt"),
+                "previous_raw_jit_identity_sha256": entry.get("application_execution_receipt_sha256"),
+                "raw_jit_policy": "always build and execute fresh; old-provider identity is historical"}
 
     def save(self):
         with self.lock:
@@ -203,7 +260,7 @@ class Expansion:
         before = tree_hashes(origin)
         origin_tree = ET.parse(origin / "S2nTls.csproj")
         identity = ROOT / "samples/ManagedConsumer/ExecutionIdentity.cs"
-        if (entry.get("application_execution_receipt")
+        if (not self.args.refresh_provider and entry.get("application_execution_receipt")
             and any("UPSTREAM_EXECUTION_IDENTITY" in (n.text or "") for n in origin_tree.iter("DefineConstants"))
             and any(n.get("Include") == str(identity) for n in origin_tree.iter("Compile"))):
             # New raw harnesses already carry actual identity. Their immutable
@@ -217,6 +274,11 @@ class Expansion:
                 self.report["snapshots"].append(row)
                 self.save()
             return origin
+        if raw.exists():
+            failed = raw.parent.with_name("raw-failed-" + uuid.uuid4().hex[:8])
+            raw.parent.rename(failed)
+            self.report.setdefault("retained_partial_raw_snapshots", []).append(str(failed))
+            self.save()
         shutil.copytree(origin, raw, ignore=ignore_build_caches)
         if tree_hashes(raw) != before or tree_hashes(origin) != before:
             raise RuntimeError("Raw snapshot copy overlapped a source mutation")
@@ -230,6 +292,7 @@ class Expansion:
             ET.SubElement(group, "Compile", Include=str(identity), Link="ExecutionIdentity.cs")
         ET.indent(tree)
         tree.write(project, encoding="unicode")
+        refreshed = self.refresh_project_provider(case, project) if self.args.refresh_provider else None
         # Project XML is the sole authored change; all generated C# stays exact.
         for name, expected in before.items():
             if name.endswith(".cs") and digest(raw / name) != expected:
@@ -237,6 +300,8 @@ class Expansion:
         row = {"case": case, "original_raw_project": str(origin / "S2nTls.csproj"),
                "original_raw_source_sha256": before, "raw_project": str(project),
                "raw_source_sha256": tree_hashes(raw)}
+        if refreshed:
+            row["provider_refresh"] = refreshed
         with self.lock:
             self.report["snapshots"].append(row)
             self.save()
@@ -287,7 +352,7 @@ class Expansion:
         ET.indent(tree)
         tree.write(project, encoding="unicode")
         authored_before = authored_sources(ROOT)
-        snapshot = self.entries[case].get("provider_snapshot")
+        snapshot = next(r for r in self.report["executables"] if r["case"] == case).get("provider_snapshot")
         if snapshot:
             authored_before.update(snapshot["snapshot_inputs_sha256"])
         label = Path(case).stem
@@ -322,7 +387,7 @@ class Expansion:
             entry = self.entries[case]
             identity_path = entry.get("application_execution_receipt")
             raw_jit = next(r for r in rows if r["form"] == "raw" and r["mode"] == "jit")
-            if raw_jit["status"] != "built" and identity_path:
+            if raw_jit["status"] != "built" and identity_path and not self.args.refresh_provider:
                 if digest(identity_path) != entry["application_execution_receipt_sha256"]:
                     raise RuntimeError("Existing raw JIT application identity receipt changed")
                 identity = json.loads(Path(identity_path).read_text())
@@ -358,7 +423,7 @@ class Expansion:
                     authored = authored_sources(ROOT)
                     authored.update(hashes(p for p in (ROOT / "tests/Upstream").rglob("*")
                                           if p.is_file() and p.suffix in (".cs", ".json", ".h")))
-                    snapshot = entry.get("provider_snapshot")
+                    snapshot = row.get("provider_snapshot")
                     if snapshot:
                         authored.update(snapshot["snapshot_inputs_sha256"])
                     frozen = tree_hashes(directory)
@@ -372,7 +437,8 @@ class Expansion:
                     record = capture(launch, artifacts, runtime, authored,
                                      {"campaign_run": str(self.campaign), "core_tu_coverage": row.get("core_tu_coverage"),
                                       "reused_input_manifest_sha256": self.report["input_manifest_sha256"],
-                                      "test_provider_snapshot": snapshot})
+                                      "test_provider_snapshot": snapshot,
+                                      "provider_source_freeze": self.report.get("provider_source_freeze")})
                     identity_path = target / "execution-identity.json"
                     identity_path.write_text(json.dumps(record, indent=2) + "\n")
                     with self.lock:
@@ -515,6 +581,9 @@ def main():
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--validate-only", action="store_true", help="Validate the declared input/profile subset without emission, builds or execution")
     parser.add_argument("--aot-debug-symbols", action="store_true", help="Retain optional debug symbols in future test-only AOT builds (larger artifacts)")
+    parser.add_argument("--refresh-provider", action="store_true",
+                        help="Copy retained linked source projects, refresh authored provider inputs and build every application anew without C emission")
+    parser.add_argument("--provider-freeze", type=Path, help="Exact reviewed source-freeze receipt required by --refresh-provider")
     return Expansion(parser.parse_args()).run()
 
 

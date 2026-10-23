@@ -5,6 +5,9 @@
   "bindings_by_case": {
     "tests/unit/s2n_build_test.c": [
       "tests/Provider/UpstreamSurface/Bindings/Identity.cs"
+    ],
+    "tests/unit/s2n_certificate_test.c": [
+      "tests/Provider/UpstreamSurface/Bindings/Names.cs"
     ]
   }
 }
