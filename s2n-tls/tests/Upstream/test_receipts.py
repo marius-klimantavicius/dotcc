@@ -18,6 +18,50 @@ from python_receipt import Validator
 
 
 class ReceiptTests(unittest.TestCase):
+    def test_managed_forwarding_consumes_aggregate_output_not_last_python_input(self):
+        specification = importlib.util.spec_from_file_location('managed_qualification_forwarding',
+            HERE.parents[1] / 'scripts/managed-qualification.py')
+        managed = importlib.util.module_from_spec(specification)
+        specification.loader.exec_module(managed)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            fixtures = root / 'fixtures'
+            fixtures.mkdir()
+            for name in ('rsa.pem', 'rsa.key', 'ecdsa.pem', 'ecdsa.key'):
+                (fixtures / name).write_text('forwarding fixture')
+            source = root / 'source'
+            (source / 'tests/pems').mkdir(parents=True)
+            (source / 'tests/pems/dhparams_2048.pem').write_text('forwarding fixture')
+            translated = [root / 'translated-first.json', root / 'translated-second.json']
+            native = [root / 'native-first.json', root / 'native-second.json']
+            for path in (*translated, *native):
+                path.write_text(json.dumps({'cases': [{'case': 'input-only', 'status': 'failed'}]}))
+            product = root / 'product.csproj'
+            product.write_text('<Project/>')
+            output = root / 'output'
+            output.mkdir()
+            qualification = managed.Qualification.__new__(managed.Qualification)
+            qualification.args = types.SimpleNamespace(suite=['upstream'], form='raw', mode='jit',
+                product=product, rid='linux-x64', upstream_executables=root / 'executables.json',
+                native_report=None, native_equivalence=None, c_report=None, campaign_run=None,
+                python_executables=root / 'endpoints.json', python=sys.executable, python_workers=1,
+                peer_commands=None, python_report=translated, native_python_report=native)
+            qualification.output, qualification.fixtures, qualification.source = output, fixtures, source
+            qualification.report = {'status': 'failed', 'rows': [], 'errors': []}
+            def consume(command, **_kwargs):
+                self.assertEqual([command[i + 1] for i, value in enumerate(command)
+                                  if value == '--python-report'], translated)
+                self.assertEqual([command[i + 1] for i, value in enumerate(command)
+                                  if value == '--native-python-report'], native)
+                destination = command[command.index('--output') + 1]
+                destination.write_text(json.dumps({'cases': [{'case': 'actual-aggregate', 'status': 'passed'}]}))
+            with patch.object(qualification, 'snapshot_product', return_value=product), \
+                 patch.object(qualification, 'command', side_effect=consume):
+                self.assertEqual(qualification.run(), 0)
+            result = json.loads((output / 'report.json').read_text())
+            self.assertEqual(result['rows'], [{'case': 'actual-aggregate', 'status': 'passed'}])
+            self.assertEqual(result['counts']['passed'], 1)
+
     def test_provider_policy_cannot_mix_with_explicit_provider_before_any_build(self):
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / 'not-created.json'

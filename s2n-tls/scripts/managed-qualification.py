@@ -318,8 +318,8 @@ class Qualification:
                         if self.args.campaign_run: argv += ['--campaign-run', self.args.campaign_run]
                         argv += ['--python-executables', self.args.python_executables, '--python', self.args.python, '--python-workers', self.args.python_workers]
                         if self.args.peer_commands: argv += ['--peer-commands', self.args.peer_commands]
-                        for path in self.args.python_report or []: argv += ['--python-report', path]
-                        for path in self.args.native_python_report or []: argv += ['--native-python-report', path]
+                        for python_report in self.args.python_report or []: argv += ['--python-report', python_report]
+                        for native_python_report in self.args.native_python_report or []: argv += ['--native-python-report', native_python_report]
                         try: self.command(argv, timeout=262800)
                         finally:
                             if path.is_file(): self.report['rows'] += load(path)['cases']
