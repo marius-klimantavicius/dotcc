@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "functionOverrides": [
+    {
+      "name": "read",
+      "signature": {"returnType": "ssize_t", "parameterTypes": ["int", "void *", "size_t"], "variadic": false},
+      "target": {"kind": "managedMethod", "method": "global::Managed.Security.S2n.S2nTls.UpstreamRead"}
+    },
+    {
+      "name": "write",
+      "signature": {"returnType": "ssize_t", "parameterTypes": ["int", "void *", "size_t"], "variadic": false},
+      "target": {"kind": "managedMethod", "method": "global::Managed.Security.S2n.S2nTls.UpstreamWrite"}
+    },
+    {
+      "name": "poll",
+      "signature": {"returnType": "int", "parameterTypes": ["struct pollfd *", "unsigned long", "int"], "variadic": false},
+      "target": {"kind": "managedMethod", "method": "global::Managed.Security.S2n.S2nTls.UpstreamPoll"}
+    },
+    {
+      "name": "signal",
+      "signature": {"returnType": "void (*)(int)", "parameterTypes": ["int", "void (*)(int)"], "variadic": false},
+      "target": {"kind": "managedMethod", "method": "global::Managed.Security.S2n.S2nTls.UpstreamSignal"}
+    },
+    {
+      "name": "getopt_long",
+      "signature": {"returnType": "int", "parameterTypes": ["int", "char *const *", "const char *", "const struct option *", "int *"], "variadic": false},
+      "target": {"kind": "managedMethod", "method": "global::Managed.Security.S2n.S2nTls.UpstreamGetoptLong"}
+    },
+    {
+      "name": "dotcc_upstream_optarg",
+      "signature": {"returnType": "char **", "parameterTypes": [], "variadic": false},
+      "target": {"kind": "managedMethod", "method": "global::Managed.Security.S2n.S2nTls.UpstreamOptarg"}
+    },
+    {
+      "name": "dotcc_upstream_optind",
+      "signature": {"returnType": "int *", "parameterTypes": [], "variadic": false},
+      "target": {"kind": "managedMethod", "method": "global::Managed.Security.S2n.S2nTls.UpstreamOptind"}
+    },
+    {
+      "name": "dotcc_upstream_opterr",
+      "signature": {"returnType": "int *", "parameterTypes": [], "variadic": false},
+      "target": {"kind": "managedMethod", "method": "global::Managed.Security.S2n.S2nTls.UpstreamOpterr"}
+    },
+    {
+      "name": "dotcc_upstream_optopt",
+      "signature": {"returnType": "int *", "parameterTypes": [], "variadic": false},
+      "target": {"kind": "managedMethod", "method": "global::Managed.Security.S2n.S2nTls.UpstreamOptopt"}
+    }
+  ]
+}

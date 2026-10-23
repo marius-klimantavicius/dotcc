@@ -2,13 +2,15 @@
 
 The owning API is authored in `src/Managed.S2nTls`. It calls the actual
 translated C engine in `Managed.Security.S2n.S2nTls`; it contains no replacement
-TLS implementation. The owning API and consumer compile against canonical raw,
-and the lifecycle executable compiles against canonical processed. A bounded
-native lifecycle control also passed. The first actual consumer run stopped at
-`s2n_init` with `S2N_ERR_SAFETY` while provider initialization was gated; no
-handshake executed. Managed TLS execution and
-delivery remain **unqualified** until the complete product builds and the runtime
-matrix passes. A missing product or required harness returns a failing exit code.
+TLS implementation. The retained `223542` product snapshot with the base64 provider repair passed all 1,076
+consumer, compatibility, independent-peer and lifecycle rows across raw/processed
+JIT/NativeAOT. Its separate copied-consumer and whole-library-rooted delivery
+gate passed all 12 rows. These receipts identify the provider used for those
+builds; the pending ASN.1 tag-validation repair requires fresh CLI, main and
+delivery builds and fresh downstream qualification. Earlier receipts remain
+historical evidence. The original upstream C and Python execution gates
+remain **unqualified** until their own rows pass. A missing product or required
+harness returns a failing exit code.
 
 ## Build and run
 
@@ -43,8 +45,9 @@ absolute authored owning-project path, and `S2nTlsProject` to the chosen product
 `tests/Delivery/run.py` performs that external-copy build and real TLS execution,
 with a normally trimmed consumer and a separate whole-library-rooted AOT run.
 It audits the resulting source/dependency closure for replacement TLS engines
-and native s2n/libssl/libcrypto product dependencies. The independent native
-oracles remain test-only executables.
+and native s2n/libssl/libcrypto product dependencies. All four external-copy JIT/AOT raw/processed delivery variants pass the three
+loopbacks and notice, authored-reference and dependency audits. The independent
+native oracles remain test-only executables.
 
 ## Ownership and connection use
 
@@ -175,7 +178,9 @@ integrity protection. The caller must authenticate and protect it. Upstream
 rejects RC4 serialization and buffered I/O; those checks remain in C. Successful
 export closes the source connection; import reapplies this owner's config/policy.
 `ExportSession`/`ImportSession` expose upstream session blobs separately, and
-`RequestKeyUpdate` requests the actual TLS 1.3 key-update behavior.
+`RequestKeyUpdate` requests the actual TLS 1.3 key-update behavior. This upstream
+revision supports updating the local sending key; `requestPeerUpdate: true`
+returns its original invalid-argument error.
 
 Low-level declarations are public nested types/functions on `S2nTls`. In
 particular, `s2n_get_openssl_version` describes the selected OpenSSL declaration
@@ -196,29 +201,55 @@ Compatibility runs all 78 applicable version/suite pairs in both managed roles,
 plus validating rejection and explicit bypass controls. Interop uses the existing
 proven native OpenSSL endpoints in both roles for every pair, including the
 separate SSLv3 endpoint. Each process preserves its transcript, exit status,
-forced negotiation, payload lengths and close-notify observation. The lifecycle
+forced negotiation, payload lengths and close-notify observation. The qualification
+runner freezes both selected product trees before building. Each private JIT/AOT
+build records the actual executable/assembly, dependency and provider output,
+loaded runtime files, product snapshot hashes and current authored source hashes.
+Each exchange captures the actual native endpoint and certificate/key/DH hashes
+before execution and checks them again afterward. Historical discovery receipts
+remain separate from fresh current-product executions. The lifecycle
 runner has 30 named cases for ownership/freeze, cancellation, I/O and callback
 drain/errors, distinct-connection concurrency, per-connection serialization,
 malformed credentials, partial RC4/3DES/TLS1.3 I/O, GC-rooted callbacks,
 asynchronous validation, authentication rejection/bypass, record corruption and
 truncated EOF, reuse, session resumption, state transfer, TLS 1.3 key updates,
-ALPN, allocation failures and initialization-failure quarantine. It uses transport faults around the actual engine, without a mock
-TLS implementation. These executable cases are currently **unrun**.
+ALPN, allocation failures and initialization-failure quarantine. It uses transport
+faults around the actual engine, without a mock TLS implementation. All 30 cases
+pass in every required form/mode in the retained
+[`final-current-product-223542-base64/report.json`](../artifacts/managed/final-current-product-223542-base64/report.json),
+whose complete consumer/compatibility/interop/lifecycle matrix passes 1,076 rows.
+The independent receipt audit checks the actual executable outputs, mapped runtime
+files, product snapshots, authored sources and fixture/peer identities in
+[`final-current-223542-base64-r4-audit.json`](../artifacts/managed-contract/final-current-223542-base64-r4-audit.json).
+New runs isolate build intermediates per application as well as per form/mode.
 
-Every one of the 644 upstream inventory entries is retained: 276 required,
-286 explicit exclusions and 82 support entries. `tests/Upstream/build.py` reuses a
+Every one of the 644 upstream inventory entries is retained: 275 required
+(257 C sources and 18 Python families), 287 explicit exclusions and 82 support
+entries. The original record-stuffer test whose complete workload is disabled
+with `#if 0` has an explicit source-checked exclusion. `tests/Upstream/build.py` reuses a
 complete campaign object/tool snapshot, translates original C test/support units
-and links private test executables. It adds only prelude and host declaration includes to
-test source, preserving assertions. `tests/Upstream/run.py` rejects missing
+and links private test executables. Prelude/host includes preserve assertions;
+recv/shutdown/key-update kTLS regions additionally use the exact recorded outside-PLAN
+feature guards in `tests/Upstream/test-adaptations.json`. Every guarded body and
+assertion byte remains unchanged, with identical native control metadata.
+The builder omits a core object only when compiler dependencies prove its entire
+staged C implementation is explicitly included by the harness and all original
+external roots remain in that actual harness object. `tests/Upstream/run.py` rejects missing
 harnesses, changed inputs, skipped required capabilities, absent assertion counts
 and differing native/translated counts. The original 18 Python families have
 an endpoint adapter that preserves their test bodies and parameterization;
-collection selected 22,195 parameter cases with no product capability vetoes.
-They remain unrun. Peer command prefixes and assets come from
+initial collection selected 22,195 parameter cases with no product capability vetoes.
+The original SSLv2 ClientHello family has executed successfully; broader
+execution and native comparison remain required. Peer command prefixes and assets come from
 `build/test-prerequisites/peers.json`. Declared services start with private logs,
 must reach socket readiness and terminate/drain in a `finally` path. Original
 CLI argument parsing uses test-only GNU libc `getopt_long` bindings, including
-its original long options, argument permutation and `optind` state. Remaining
+its original long options, argument permutation and `optind` state. Standard
+descriptor byte I/O and mixed standard/socket polling use test-only Linux host
+services, with virtual socket handles borrowed from the actual embedded table.
+The exact upstream `AvailablePorts(low, high)` constructor can receive explicit
+`--port-low/--port-high` bounds; translated and native runs use disjoint ranges,
+while the original Apache port 7777 remains exclusive during its family. Remaining
 behavior and upstream execution rows still require actual assertions; source
 availability and compilation do not close them.
 
@@ -230,6 +261,114 @@ python3 s2n-tls/tests/Upstream/run.py --form raw --mode jit \
   --native-report s2n-tls/artifacts/native/<matching-run>/report.json \
   --output s2n-tls/artifacts/my-upstream.json
 ```
+
+Use `run.py --c-only` to execute and compare the complete required C inventory
+without launching Python controllers; its report explicitly covers C only.
+To assemble the complete gate from already executed Python families, pass
+`--python-report <translated-report>` and `--native-python-report <native-report>`.
+Both options can be repeated for disjoint family reports, such as separate Apache
+and non-Apache runs. The runner rejects duplicate families, mismatched execution
+variants, incomplete parameter executions, failures/skips and undrained processes,
+and compares the original native/translated parameters, exclusions and source
+inventories. It never starts another Python controller when `--python-report`
+is supplied.
+
+`run.py --c-report <completed-provider-progress.json> --native-report <matching.json>
+[--native-equivalence <proof.json>] [--campaign-run <immutable-run>]` consumes the
+provider's completed 257-by-four original-C receipts read-only. It verifies the
+original sources/assertions, native profile, application/runtime identities and
+retained snapshots through `tests/Provider/required_c_receipt.py`; it launches no
+C compiler, build or test controller. `--python-report` also accepts a durable
+Python matrix report and selects its exact requested execution variant.
+Native equivalence is required for controls retained from a different campaign.
+The builder uses `scripts/translation_evidence.py` to select the closed
+translation receipt and records its actual path and hash; a parent verification
+can continue without changing that build-only receipt.
+
+The repeatable Python driver is:
+
+```bash
+python3 -B s2n-tls/tests/Upstream/python-matrix.py \
+  --executables s2n-tls/build/managed-upstream/python-endpoints.json \
+  --peer-commands s2n-tls/build/test-prerequisites/peers-legacy-policy-v2.json \
+  --psk-peer-commands s2n-tls/build/test-prerequisites/peers-psk-measured-v3.json \
+  --python s2n-tls/build/python-integration/bin/python \
+  --endpoint-kind translated --form all --mode all --output <matrix.json>
+```
+
+Each whole original family gets a separate retained leaf report. `--resume`
+rechecks passed leaves; `--adopt-report` accepts already completed strict original
+families after deep validation, including passing families retained in a failed
+parent report. Only explicit `--retry-failed` starts another attempt, preserving
+the old one. The default is one worker and no retry plugin. Apache uses an
+exclusive port-7777 fixture lease. Both matrix and managed qualification entry
+points forward repeatable Python report inputs instead of duplicating controllers.
+
+`--available-port-probe` is an opt-in transport fixture adapter, enabled by the
+matrix driver. It consumes the original finite `AvailablePorts` candidates in
+order, probes kernel bind availability on IPv4 and IPv6 loopback, and removes
+only actual `EADDRINUSE` candidates. Every candidate/result/errno and the original
+method/adapter hashes are retained. It never listens, connects, cycles the
+iterator or excludes a test parameter. A contract using real held IPv4 and IPv6
+listeners proves the returned sequence equals the original sequence minus the
+occupied ports in
+[`available-port-probe-contract-r4.json`](../artifacts/managed-contract/available-port-probe-contract-r4.json).
+Earlier strict failures at the resident service on port 27036 remain failures.
+
+The process-control adapter recognizes the original readiness, send, close and
+kill markers across consecutive reads from the same pipe. It does not combine
+stdout and stderr or change test assertions and timeouts. Actual fragmented
+native payload markers and a managed SEND marker passed focused original-node
+replays; close handling has a separate real OS pipe contract in
+[`fragmented-control-markers-r4-v2.json`](../artifacts/managed-contract/fragmented-control-markers-r4-v2.json).
+The earlier timeouts remain failed attempts.
+
+The PSK-specific manifest keeps ordinary/version OpenSSL commands unchanged and
+routes only `OpenSSL:openssl` to the separately labelled app whose unchanged
+pinned TLS libraries support an explicitly selected PSK suite. The bounded helper
+adaptation verifies the complete native proof, build inputs/outputs and actual
+endpoint transcripts before bypassing only the original OpenSSL/SHA384 skip.
+The original `None` skip, parameters, test bodies and assertions remain unchanged.
+Fresh native execution passes all 1,999 cases, including all 351 previously
+skipped cases, in
+[`psk-measured-v3/full-family.json`](../artifacts/native-python/psk-measured-v3/full-family.json).
+
+The original HRR client test's exact `curve == S2N_DEFAULT_CURVE` predicate marks
+nine X25519 combinations inapplicable to an HRR assertion. Source and AST guards
+record those nine node IDs, parameters and reasons as explicit inapplicable
+exclusions. Before classification, a separate nine-control execution must prove
+TLS 1.3, the exact suite, X25519, actual payload and absence of both HRR markers.
+Those authored controls have separate counts and never count as original HRR
+assertions. Native evidence passes nine controls and all 118 applicable unchanged
+original assertions in
+[`hrr-no-retry-r4/controls-nine.json`](../artifacts/native-python/hrr-no-retry-r4/controls-nine.json)
+and [`original-applicable.json`](../artifacts/native-python/hrr-no-retry-r4/original-applicable.json).
+Native and translated original inventories and inapplicable node metadata must
+match. Other skips and every retry outcome remain failures.
+
+For a test-only provider surface, `build.py --provider-project <project.csproj>
+--provider-binding <extra-binding.cs>` selects one frozen test assembly and
+additional binding sources per harness. The binding option is repeatable.
+The provider-owned snapshot helper retains the project, linked production
+sources/resources, locks and test additions; its hashes are embedded in both
+the executable manifest and actual application identity. The production provider
+project and its 183-declaration profile remain separate from this test surface.
+Alternatively, `--provider-policy <catalogue.json>` selects that surface only
+for exact C cases listed in `bindings_by_case`; other cases use production.
+The builder freezes the policy bytes and records its hash and selected entry.
+Policy selection cannot be combined with explicit provider project/binding flags.
+
+For a bounded replay, `python-integration.py --node 'file.py::test[parameters]'`
+selects the exact unchanged original pytest node and freezes a new adapter/source
+snapshot. The resulting `focused-original-python-integration` receipt leaves
+whole-family qualification unrun and cannot be consumed as a complete family
+by `run.py`. Explicit port bounds keep these replays separate from active native
+and translated trials. Command provenance records the current pytest node and
+hashes actual file arguments without treating long PSK values as filenames.
+Final native and translated trials use explicit ranges 8000–18000 and
+18001–30000, respectively, below the qualification host's ephemeral range.
+Worker receipts record every unchanged allocator result and any ports reused by
+different workers, so crossing an upstream worker's nominal stride is visible.
 
 The bounded native lifecycle evidence is
 [`20261023T173507Z-c95586e4/report.json`](../artifacts/managed-native-lifecycle/20261023T173507Z-c95586e4/report.json).

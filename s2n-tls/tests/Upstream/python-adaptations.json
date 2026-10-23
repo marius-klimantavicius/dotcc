@@ -1,0 +1,22 @@
+{
+  "hrr_same_curve": {
+    "family": "test_hello_retry_requests.py",
+    "function": "test_hrr_with_s2n_as_client",
+    "function_sha256": "565bd616ecb376d9c5841b3c669ee2aaf6b04183927acfbeb4b3f60fce54d1b1",
+    "predicate": "curve == S2N_DEFAULT_CURVE",
+    "default_curve": "Curves.X25519",
+    "reason": "An HRR assertion is inapplicable when the server accepts the client's original X25519 key share. Nine separate actual no-HRR controls prove the same combinations; original assertion bodies remain unchanged."
+  },
+  "available_port_probe": {
+    "original_next_sha256": "7233c7aa66e5e90bf35cf96d34644d5b302573fbdf3e0f5a93a354a2e252dab7",
+    "scope": "Original AvailablePorts candidates, in order, excluding only actual EADDRINUSE on loopback kernel bind probes. No listen/connect, test case exclusion or iterator cycling."
+  },
+  "measured_external_psk": {
+    "family": "test_external_psk.py",
+    "helper": "skip_invalid_psk_tests",
+    "helper_sha256": "a2eb0704626fdf1520b2d29ef0572422ed8bf27619e33021e3579a85022b99fd",
+    "peer_label": "pinned-openssl-cli-explicit-psk-suite",
+    "reason": "The separately labelled app selects the explicitly configured TLS1.3 suite for its external-PSK session. Native positive, binder-rejection and identity-fallback proofs cover both roles and digests with unchanged pinned TLS libraries.",
+    "change": "Bypass only the original OpenSSL/SHA384 peer limitation when this measured peer is explicitly selected. Preserve the original None predicate, parameters, test bodies and assertions."
+  }
+}
