@@ -478,3 +478,25 @@ an old-provider identity against the final freeze. Its receipt is
 `artifacts/provider/final-source-refresh-control-212202.json`. These results
 remain a subset of the required 257-case C gate; historical provider results
 and partial aggregates cannot close that gate.
+
+## Qualified dependency storage
+
+After an original case passes all four executions, the expander may share its
+two exact pinned `BouncyCastle.Cryptography.dll` JIT output copies through a
+private content-addressed store under `build/provider/immutable-dependencies`.
+The helper verifies all four provider locks, NuGet's signed-package content
+hash and signatures, and the actual DLL archive member. It copies the store
+member into a new read-only inode; the global NuGet store is never linked or
+modified. Every application path remains a regular file with identical bytes.
+
+`qualified_dependencies.py` verifies the complete case output/runtime hashes
+before and after deduplication, inspects process commands/descriptors/maps, and
+requires a kernel write lease before replacing an inactive target with an
+atomic hardlink. Busy or unsupported targets remain intact. The shared inode
+must never be modified. Per-file receipts retain path, SHA, inode, link count,
+role and released allocation. The bounded three-case proof preserves all 12
+execution closures and relaunches six actual JIT applications:
+`artifacts/provider/dependency-dedupe-closed3-2140/receipt.json`. Descriptor,
+closed-descriptor mapping, symlink, mismatched-byte and unqualified-case
+controls accompany that proof. This operation changes storage only and does
+not qualify any additional original assertions.

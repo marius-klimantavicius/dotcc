@@ -28,6 +28,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from translation_evidence import read_closed
 sys.path.insert(0, str(ROOT / "tests/Provider/UpstreamSurface"))
 from provider_snapshot import snapshot_provider
+from qualified_dependencies import deduplicate_qualified_case
 
 
 def digest(path):
@@ -468,6 +469,7 @@ class Expansion:
             print("QUALIFIED", case, "all4", flush=True)
         except Exception as error:
             with self.lock:
+                self.report["qualifications"].pop(case, None)
                 self.report["case_failures"][case] = str(error)
                 for row in rows:
                     if row["status"] != "built":
@@ -511,6 +513,18 @@ class Expansion:
                 raise RuntimeError("Cache cleanup changed the actual execution closure")
         with self.lock:
             self.report["cache_cleanup"].setdefault(case, []).extend(removed)
+            self.save()
+        # This case's four assertion processes have exited. Keep every actual
+        # output path and byte while sharing only the verified pinned BC DLL.
+        qualified = self.report["qualifications"][case]
+        if digest(qualified["receipt"]) != qualified["sha256"]:
+            raise RuntimeError("Closed qualification changed before dependency storage cleanup")
+        receipt = self.artifacts / (Path(case).stem + "-dependencies-" + uuid.uuid4().hex[:8] + ".json")
+        storage = deduplicate_qualified_case(rows, qualified["receipt"], receipt)
+        with self.lock:
+            self.report.setdefault("dependency_storage", {}).setdefault(case, []).append({
+                "receipt": str(receipt), "sha256": digest(receipt), "status": storage["status"],
+                "allocated_bytes_released": storage["allocated_bytes_released"]})
             self.save()
 
     def run(self):
