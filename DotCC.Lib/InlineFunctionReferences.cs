@@ -19,6 +19,16 @@ internal static class InlineFunctionReferences
                 BoundSymbolReferences.Rewrite(source, names, Marker),
                 name => InstanceReferences.Target + names.GetValueOrDefault(name, name), InstanceReferences.Target),
             name => InstanceReferences.CallbackContext + names.GetValueOrDefault(name, name), InstanceReferences.CallbackContext);
+
+    internal static IReadOnlyCollection<string> ReferencedSymbols(string source)
+    {
+        var names = new HashSet<string>(StringComparer.Ordinal);
+        string Remember(string name) { names.Add(name); return name; }
+        BoundSymbolReferences.Rewrite(source, Remember, Marker);
+        BoundSymbolReferences.Rewrite(source, Remember, InstanceReferences.Target);
+        BoundSymbolReferences.Rewrite(source, Remember, InstanceReferences.CallbackContext);
+        return names;
+    }
 }
 
 /// <summary>Resolve explicit bound-symbol annotations, preserving strings and comments.</summary>

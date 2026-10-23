@@ -7,7 +7,7 @@ namespace DotCC;
 public static partial class Compiler
 {
     private static bool UsesInlineOptions(CSharpOutputOptions? options) =>
-        options?.DeduplicateStatic == true || options?.DeduplicateInline == true || options?.ExportInline is { Count: > 0 };
+        options?.DeduplicateStatic == true || options?.DeduplicateInline == true || options?.PruneUnusedInline == true || options?.ExportInline is { Count: > 0 };
 
     private sealed record InlineOutput(string Functions, IReadOnlyList<CSharpFunctionSource> Parts,
         IReadOnlyDictionary<string, string> Types, IReadOnlyList<Backends.CSharpGlobalSource> Globals);
@@ -99,11 +99,37 @@ public static partial class Compiler
                     { names[entry.Key] = target; removed.Add(entry.Key); }
                 }
         }
+        var retained = sources.Where(s => !removed.Contains(s.Name)).ToArray();
+        if (options?.PruneUnusedInline == true)
+        {
+            // Header-only static inlines are not library exports. Retaining an
+            // uncalled helper would impose its external imports on consumers.
+            // Follow explicit bound-symbol relocations, including bodies whose
+            // typed equivalence proof is unavailable; never infer references
+            // from arbitrary C# identifiers or string contents.
+            var graph = retained.ToDictionary(s => names.GetValueOrDefault(s.Name, s.Name),
+                s => InlineFunctionReferences.ReferencedSymbols(s.Text)
+                    .Select(name => names.GetValueOrDefault(name, name)).ToArray(), StringComparer.Ordinal);
+            var reachable = new HashSet<string>(StringComparer.Ordinal);
+            var pending = new Stack<string>();
+            var exports = (options.ExportInline ?? Array.Empty<string>()).Select(pattern => new InlineExportSelector(pattern)).ToArray();
+            foreach (var source in sources)
+                if (!metadata.TryGetValue(source.Name, out var entry) || !entry.IsStatic || !entry.IsInline
+                    || entry.AddressUsed || exports.Any(selector => selector.Matches(entry.OriginalName, source.Name)))
+                    pending.Push(names.GetValueOrDefault(source.Name, source.Name));
+            while (pending.TryPop(out var current))
+                if (reachable.Add(current) && graph.TryGetValue(current, out var dependencies))
+                    foreach (var dependency in dependencies) pending.Push(dependency);
+            foreach (var source in retained)
+                if (!reachable.Contains(names.GetValueOrDefault(source.Name, source.Name))) removed.Add(source.Name);
+        }
         var parts = sources.Where(s => !removed.Contains(s.Name)).Select(s =>
             new CSharpFunctionSource(names.GetValueOrDefault(s.Name, s.Name), InlineFunctionReferences.Rewrite(s.Text, names))).ToArray();
         var declarations = new Dictionary<string, string>(StringComparer.Ordinal);
         foreach (var (key, text) in types)
         {
+            if (key.StartsWith(FunctionPointerNames.TypeKeyPrefix, StringComparison.Ordinal)
+                && removed.Contains(key[FunctionPointerNames.TypeKeyPrefix.Length..])) continue;
             // Older objects may contain automatic public pointer properties.
             // Retain translated and explicitly requested host address uses.
             if (enabled && key.StartsWith(FunctionPointerNames.TypeKeyPrefix, StringComparison.Ordinal)

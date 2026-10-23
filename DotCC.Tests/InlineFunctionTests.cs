@@ -9,6 +9,21 @@ namespace DotCC.Tests;
 
 public sealed class InlineFunctionTests
 {
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Unreferenced_header_helpers_do_not_require_unavailable_native_imports(bool link)
+    {
+        const string header = "int unavailable_native(void); static inline int unused(void) { return unavailable_native(); } static inline int helper(int x) { return x + 1; }";
+        var source = Translate(link, header, First, Second, new(DeduplicateInline: true, PruneUnusedInline: true));
+        Methods(source, "unused").ShouldBe(0);
+        source.ShouldNotContain("unavailable_native(");
+        Methods(source, "helper").ShouldBe(1);
+        var exported = Translate(link, header, First, Second,
+            new(DeduplicateInline: true, PruneUnusedInline: true, ExportInline: new[] { "unused" }));
+        Methods(exported, "unused").ShouldBe(1);
+        exported.ShouldContain("unavailable_native(");
+    }
     private static string Translate(bool link, string header, string first, string second, CSharpOutputOptions? options)
     {
         var dir = Path.Combine(Path.GetTempPath(), "dotcc-inline-" + Guid.NewGuid().ToString("N"));

@@ -1439,6 +1439,7 @@ productions:
       - { lhs: FnPtrArrayDeclarator, rhs: [Type, '(', '*', FnPtrArrayName, ')', '(', ')'], action: fnPtrArrayDeclaratorNoArgs }
       - { lhs: FnPtrArrayName, rhs: [ID], action: fnPtrScalarName }
       - { lhs: FnPtrArrayName, rhs: [ID, '[', ']'], action: fnPtrArrayNameImplicit }
+      - { lhs: FnPtrArrayName, rhs: [ID, '[', ']', ArrDims], action: fnPtrArrayNameImplicitOuter }
       - { lhs: FnPtrArrayName, rhs: [ID, ArrDims], action: fnPtrArrayNameSized }
       - { lhs: FnPtrArrayName, rhs: ['const', FnPtrArrayName], action: fnPtrArrayNameConst }
       - { lhs: FnPtrArrayName, rhs: ['volatile', FnPtrArrayName], action: fnPtrArrayNameVolatile }

@@ -3046,14 +3046,17 @@ internal sealed partial class IrBuilder
         var (name, dimensions) = arrayName.Content switch
         {
             C.FnPtrArrayNameImplicit a => (a.Arg0, (Item?)null),
+            C.FnPtrArrayNameImplicitOuter a => (a.Arg0, (Item?)a.Arg3),
             C.FnPtrArrayNameSized a => (a.Arg0, (Item?)a.Arg1),
             _ => throw new IrUnsupportedException(TypeName(arrayName.Content)),
         };
         var element = FnPtrType(returnType, parameters).WithQuals(quals);
         var threadLocal = _sawThreadLocalSpec;
         var alignment = DeclarationAlignment(returnType, element);
+        var inferOuter = arrayName.Content is C.FnPtrArrayNameImplicitOuter;
+        if (isExtern && inferOuter) throw new IrUnsupportedException("extern callback array with an incomplete outer dimension");
         if (isExtern) BuildExternArr(element, name, dimensions, threadLocal);
-        else BuildGlobalArr(element, name, dimensions, initItem, null, alignment: alignment, threadLocal: threadLocal);
+        else BuildGlobalArr(element, name, dimensions, initItem, null, inferOuter: inferOuter, alignment: alignment, threadLocal: threadLocal);
     }
 
     private CStmt BuildLocalCallback(Item declarator, Item? initializer, bool braces = false)
@@ -3069,13 +3072,15 @@ internal sealed partial class IrBuilder
         var (identifier, dimensions) = name.Content switch
         {
             C.FnPtrArrayNameImplicit array => (array.Arg0, (Item?)null),
+            C.FnPtrArrayNameImplicitOuter array => (array.Arg0, (Item?)array.Arg3),
             C.FnPtrArrayNameSized array => (array.Arg0, (Item?)array.Arg1),
             _ => throw new IrUnsupportedException(TypeName(name.Content)),
         };
-        if (dimensions is null && initializer is null)
+        var inferOuter = name.Content is C.FnPtrArrayNameImplicitOuter;
+        if ((dimensions is null || inferOuter) && initializer is null)
             throw new IrUnsupportedException("local callback array requires complete bounds or an initializer");
         var element = FnPtrType(returnType, parameters).WithQuals(qualifiers);
-        return BuildArrDecl(element, identifier, dimensions, initializer, dimensions is null,
+        return BuildArrDecl(element, identifier, dimensions, initializer, dimensions is null || inferOuter, inferOuter: inferOuter,
             alignment: DeclarationAlignment(returnType, element));
     }
 

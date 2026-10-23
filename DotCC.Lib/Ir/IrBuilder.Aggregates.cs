@@ -744,11 +744,48 @@ internal sealed partial class IrBuilder
     {
         if (inner is not { Count: > 0 } || inner.Any(count => count <= 0))
             throw new IrUnsupportedException("inferred outer array extent requires positive constant inner dimensions");
-        if (items.Count == 0 || items.Any(item => item is InitAt))
-            throw new IrUnsupportedException("inferred multidimensional array requires a nonempty undesignated initializer");
+        if (items.Count == 0)
+            throw new IrUnsupportedException("inferred multidimensional array requires a nonempty initializer");
         if (elem.Unqualified is CType.Named aggregate && _structFields.ContainsKey(aggregate.Name))
             throw new IrUnsupportedException("inferred multidimensional arrays of struct/union elements are not supported");
         var rowSize = inner.Aggregate(1, (left, right) => checked(left * right));
+        if (items.Any(item => item is InitAt))
+        {
+            var strides = new int[inner.Count + 1];
+            strides[0] = rowSize;
+            for (int depth = 1; depth < strides.Length; ++depth)
+                strides[depth] = strides[depth - 1] / inner[depth - 1];
+            int cursor = 0, maximum = 0;
+            foreach (var item in items)
+            {
+                int offset = cursor, depth = strides.Length;
+                Init value = item;
+                if (item is InitAt)
+                {
+                    offset = 0;
+                    depth = 0;
+                    while (value is InitAt at)
+                    {
+                        if (depth >= strides.Length)
+                            throw new IrUnsupportedException("too many array designators for the target dimensions");
+                        if (depth > 0 && at.Index >= inner[depth - 1])
+                            throw new IrUnsupportedException("array designator exceeds an explicit inner bound");
+                        offset = checked(offset + at.Index * strides[depth++]);
+                        value = at.Value;
+                    }
+                }
+                else if (item is InitGroup)
+                {
+                    if (cursor % rowSize != 0)
+                        throw new IrUnsupportedException("array initializer brace group is not at a row boundary");
+                    depth = 1;
+                }
+                int extent = value is InitGroup && depth < strides.Length ? strides[depth - 1] : 1;
+                cursor = checked(offset + extent);
+                maximum = System.Math.Max(maximum, cursor);
+            }
+            return new[] { checked(1 + (maximum - 1) / rowSize) }.Concat(inner).ToList();
+        }
         var characterRows = inner.Count == 1
             && elem.Unqualified is CType.Prim { Name: "char" or "signed char" or "unsigned char" or "char8_t" or "char16_t" or "wchar_t" or "char32_t" }
             && ContainsString(new InitGroup(items));
