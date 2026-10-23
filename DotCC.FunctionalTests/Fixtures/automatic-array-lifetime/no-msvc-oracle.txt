@@ -1,0 +1,1 @@
+Uses a GNU aligned aggregate; native oracle is the Linux C compiler.

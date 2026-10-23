@@ -767,8 +767,9 @@ internal sealed partial class CSharpBackend
         var body = GotoScopeNormalizer.Normalize(ExternalSwitchEntryNormalizer.Normalize(fn.Body));
         body = GotoDeclarationNormalizer.Normalize(body);
         body = PrepareFunctionSwitchEntries(body);
+        PrepareRepeatedArrayStorage(body);
         PrepareStableAddressScope(visit => WalkStableAddressStatements(body, visit));
-        _stableAddressDeclarations = StableAddressDeclarations();
+        _stableAddressDeclarations = StableAddressDeclarations() + RepeatedArrayDeclarations();
         // A Zig `!T` function (error-union return) wraps its body so a propagated
         // `try` (ZigErrorReturn) converts back to an `Err` return — the exception-based
         // early-return-out-of-an-expression, modeled on the setjmp lowering. A `!void`
@@ -916,6 +917,7 @@ internal sealed partial class CSharpBackend
             }
             case ArrayDecl a:
                 {
+                    if (EmitRepeatedArray(sb, pad, a)) break;
                     if (EmitAlignedArray(sb, pad, a)) break;
                     var row = a.Inits is null ? a.Element.Unqualified as CType.Array : null;
                     var elemCs = Cs(row?.FlatElement ?? a.Element);
