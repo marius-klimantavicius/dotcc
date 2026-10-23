@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+    <BouncyCastleVersion>$([System.Text.RegularExpressions.Regex]::Match($([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)../../../config/provider.json')), '&quot;package_version&quot;\s*:\s*&quot;([^&quot;]+)&quot;').Groups[1].Value)</BouncyCastleVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <ProviderLockAotSuffix Condition="'$(PublishAot)' == 'true'">.aot</ProviderLockAotSuffix>
+    <ProviderLockRidSuffix Condition="'$(RuntimeIdentifier)' != ''">.$(RuntimeIdentifier)</ProviderLockRidSuffix>
+    <NuGetLockFilePath>$(MSBuildThisFileDirectory)packages$(ProviderLockAotSuffix)$(ProviderLockRidSuffix).lock.json</NuGetLockFilePath>
+    <AssemblyName>Managed.S2nTls.CryptoProvider</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Preserve the prior unfinished helpers on disk without evaluating them
+         until an observed original caller and native proof require them. -->
+    <Compile Remove="Bindings/**/*.cs;Checks/**/*.cs;NumbersAndTime.cs" />
+    <Compile Include="../../../src/CryptoProvider/*.cs" Link="Production/%(Filename)%(Extension)" />
+    <EmbeddedResource Include="../../../src/CryptoProvider/openssl-oid-map.json" LogicalName="Managed.S2nTls.Crypto.openssl-oid-map.json" />
+    <PackageReference Include="BouncyCastle.Cryptography" Version="[$(BouncyCastleVersion)]" />
+  </ItemGroup>
+</Project>

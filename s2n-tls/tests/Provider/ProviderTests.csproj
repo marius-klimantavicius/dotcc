@@ -5,6 +5,7 @@
     <IsAotCompatible>true</IsAotCompatible>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="UpstreamSurface/**/*.cs" />
     <ProjectReference Include="../../src/CryptoProvider/CryptoProvider.csproj" />
   </ItemGroup>
 </Project>

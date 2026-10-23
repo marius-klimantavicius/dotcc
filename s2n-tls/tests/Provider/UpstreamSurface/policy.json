@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "scope": "Additional original-C test APIs only; production provider remains frozen at 183 bindings",
+  "project": "tests/Provider/UpstreamSurface/CryptoProvider.Upstream.csproj",
+  "bindings_by_case": {
+    "tests/unit/s2n_build_test.c": [
+      "tests/Provider/UpstreamSurface/Bindings/Identity.cs"
+    ]
+  }
+}
