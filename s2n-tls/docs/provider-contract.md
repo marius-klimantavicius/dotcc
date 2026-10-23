@@ -7,6 +7,13 @@ actual emitted provider probe passes independently in JIT and NativeAOT.
 Provider tests, emitted ABI checks and product TLS qualification remain separate
 gates; this document does not pass the campaign.
 
+The current production runtime freeze is
+`artifacts/provider/freeze-rsa-20261023T224649Z/receipt.json`. All 49 provider
+groups pass in JIT and NativeAOT with its exact sources; the actual emitted
+183-binding ABI probe also passes both modes. The 25 production inputs,
+including `config/provider.json`, remain byte frozen. Prior application results
+under the ASN.1-only freeze remain historical until fresh source-aware execution.
+
 The declaration reference is `openssl-legacy` in `config/inputs.json`: actual
 OpenSSL 1.1.1w headers. Its `OPENSSL_VERSION_NUMBER` describes those declarations.
 Do not define AWS-LC, BoringSSL, LibreSSL or FIPS identity macros. The product
@@ -457,7 +464,7 @@ receipt is `artifacts/provider/freeze-asn1-20261023T211648Z/receipt.json`;
 differential groups passing in both modes with that source. Production still
 has the same 183 typed bindings, capability mask, dependency pin and locks.
 
-With the final provider, the unchanged original certificate test passes all
+Under that ASN.1-only freeze, the unchanged original certificate test passed all
 four forms/modes with exactly 488 native assertions each. Its receipt is
 `artifacts/provider/original16-expanded/20261023T211832Z-6c2a4f05/all4.json`.
 Only after this actual pass was its Names binding added to the test policy.
@@ -478,6 +485,45 @@ an old-provider identity against the final freeze. Its receipt is
 `artifacts/provider/final-source-refresh-control-212202.json`. These results
 remain a subset of the required 257-case C gate; historical provider results
 and partial aggregates cannot close that gate.
+
+## Native RSA input and EVP decrypt contract
+
+Native raw private RSA accepts every integer in `[0,n)`, including 0, 1 and
+`n-1`, and accepts inputs shorter than the modulus width. BC's generic cipher
+input conversion deliberately restricts that range. The provider supplies a
+narrow `RsaCoreEngine` subclass overriding only `ConvertInput`, and passes it
+to BC's existing `RsaBlindedEngine`. BC still performs private-operation
+blinding, CRT fault checks and output conversion. No private exponentiation or
+blinding algorithm is reimplemented.
+
+The EVP decrypt adapter checks operation support and initialization before
+AUTOARGLEN handling. A size query succeeds without reading ciphertext; a buffer
+smaller than `RSA_size` returns 0 before any private operation. Wrong operation
+and unsupported contexts return -1 and -2 respectively. A private-operation
+failure returns -1 and preserves the caller's output length and bytes.
+
+The permanent 49th regression compares 1177 native rows per runtime, covering
+lengths 0/1/size-1/size/size+1, values 0/1/n-1/n/n+1, malformed PKCS1 blocks,
+queries, undersized buffers, full guard bytes, context ownership and prior-error
+preservation. Exact native and synthetic managed error-code queues are retained
+separately by the private proof; the provider's existing error-presence contract
+is unchanged. Evidence is in
+`artifacts/provider/rsa-private-repair/20261023T223103Z-3879ea83/receipt.json`,
+`artifacts/provider/final49-rsa-224649/receipt.json`, and
+`artifacts/provider/emitted-probe-rsa-224649/receipt.json`.
+
+The full49 runner initially passed a relative artifact argument to a child
+whose working directory was the repository parent. Its actual JIT/AOT reports
+remain under `/home/marius/p/dotcc/artifacts/provider/final49-rsa-224649`.
+`report-path-derivation.json` in the campaign artifact directory records those
+original paths, byte-identical report/fixture copies and actual output hashes.
+The runner now resolves the artifact directory before starting children.
+
+The original-C controller naturally drained batch006 at 54 passing cases under
+the prior provider before this repair was applied under its exclusive lease.
+Those results require fresh raw JIT and all four executions against the new
+freeze. C builds are held until the owning API host repair also freezes; the
+retained 257 C emissions and linked projects remain available for reuse.
 
 ## Qualified dependency storage
 
