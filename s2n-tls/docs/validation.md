@@ -1,8 +1,10 @@
 # Current validation
 
 Implementation remains in progress through P6. Boundary, translation and current
-delivery gates pass. The fresh1076-row matrix is running; the complete upstream
-C/Python gates and reproduction remain open. No build-only, emission-only,
+delivery, native and reproduction gates pass for the recorded provider snapshot.
+The complete upstream C/Python gates remain open. Original certificate assertions
+have now exposed an ASN.1 conversion defect; its production repair will require
+a new provider freeze and fresh final-runtime qualification. No build-only, emission-only,
 skipped, retried or interrupted workload is counted as a strict protocol pass.
 Paths below are relative to this campaign.
 
@@ -13,7 +15,7 @@ Paths below are relative to this campaign.
 - Current ABI across raw/processed × JIT/AOT: `artifacts/campaign/20261023-224814-4bc6fd5e/receipt.json` passes, including the canonical translated product and actual emitted header/provider probes.
 - Current affected shared regressions:280 unit and23 functional tests pass with zero failures/skips in `artifacts/campaign/20261023-224117-ae267953/receipt.json`.
 - Current copied/rooted delivery:12/12 pass at `artifacts/managed/final-delivery-223542-base64/report.json`. Deep audit `artifacts/managed-contract/final-delivery-223542-base64-r3-audit.json` verifies six actual application receipts and1,682 immutable files, including exact rooted-project XML derivation.
-- Fresh1076-row ordinary consumer/compatibility/interop/lifecycle matrix runs at `artifacts/managed/final-current-product-223542-base64`. Its earlier214654 passing result remains scoped historical evidence below.
+- The1076-row ordinary consumer/compatibility/interop/lifecycle matrix passes at `artifacts/managed/final-current-product-223542-base64/report.json`:4consumer,328compatibility,624interop and120lifecycle rows. Together with delivery, the post-native audit verifies5,023 immutable files at `artifacts/managed-contract/post-native238-qualification-audit.json`. These receipts identify the provider before the newly observed ASN.1 repair; they are not evidence for a changed provider.
 - Fresh original257 C emissions pass at `build/managed-upstream/all-required-257-emission-223542.json`. Full257 × four-mode assertion execution is running under the persistent controller `build/provider/required257-223542/progress.json`; incomplete batches remain unrun/failed, never passes.
 - The unchanged original buffered-send node that overflowed on214654 now passes in all four variants: `artifacts/managed-upstream/python-current-223542-base64/buffered-original-replay-{form}-{mode}.json`. Original broad Python qualification remains open.
 - Native C oracle equivalence is independently checked at `artifacts/provider/native-equivalence/supervisor-review.json`:175 actual command-to-TU mappings, per-TU flags,1,321 staged source/header/fixture files and147 pinned OpenSSL headers. The native report stays unchanged; new managed executions are required.
@@ -23,7 +25,7 @@ Paths below are relative to this campaign.
 
 - Framework acquisition: `artifacts/campaign/20261023-200313-154db7b3/receipt.json`. Source pins/archive hashes are in `config/inputs.json`; references remain pristine. Source inventory:174 upstream C units plus1 authored adapter,36 suites,14SSLv3 entries and78 valid suite/version pairs.
 - All644 original inventory entries remain recorded:257 required C cases,18 required Python families,287 explicitly excluded and82 support. The formerly required record-stuffer file has its entire workload under literal `#if0`; it is now a source-checked exclusion, never a zero-assertion pass.
-- Native product compatibility adapter: [238 passed,0failed,0skipped](../artifacts/native/20261023T171931Z/report.json), including78 pairs through self and both independent roles plus4 authentication controls. All36 suites and14SSLv3 entries execute; binary1027bytes,3RC4records and close_notify are asserted.16 original native controls execute590,537 assertions.
+- Final caller-only DHE native product compatibility adapter: [238 passed,0failed,0skipped](../artifacts/native/final-callsite-profile/report.json), including78 pairs through self and both independent roles plus4 authentication controls. All36 suites and14SSLv3 entries execute; binary1027bytes,3RC4records and close_notify are asserted.16 original native controls execute590,537 assertions.
 - Pristine deterministic DHE client/server probes preserve256-versus1 failure. Final staged repair changes only the two TLS<=1.2 caller requested lengths, leaving the generic padding helper unchanged. Current probe receipt: `artifacts/native/dhe-callsite-repair/report.json/report.json`; generic helper17 original assertions pass. The old helper-body repair and its broad-control receipts are historical evidence.
 - Broader native original C controls: [257/257 pass](../artifacts/native-upstream/all-required-callsite/report.json). Their autodetected branch counts are retained rather than substituted for the product profile.
 - Exact214654 product-feature native control: [257/257 pass](../artifacts/native-profile-upstream/all-required-214654-ktls-guards/report.json). All algorithm operations use pinned native OpenSSL; three explicitly labelled test-only ABI/name/capability metadata bridge functions are not delivered. Original support closure comes from actual native object references, and archive extraction preserves tests that include a complete engine C TU. Eight accepted opening-directive guards across recv/shutdown/keyupdate exclude only outside-plan kTLS regions with unchanged assertion bodies and reversible hashes. CBC238 versus broader native406 is an approved composite-acceleration branch difference; ordinary CBC/HMAC suites remain required.
@@ -32,7 +34,7 @@ Reproduce from repository root:
 
 ```sh
 python3 s2n-tls/scripts/source-inventory.py
-python3 s2n-tls/scripts/native-control.py --fetch never --selection all
+python3 s2n-tls/scripts/native-control.py --fetch never --selection all --reuse-credentials
 python3 s2n-tls/scripts/native-upstream.py --output /absolute/output/native-all.json
 python3 s2n-tls/scripts/native-profile-upstream.py --campaign s2n-tls/build/campaign/20261023-214654-406d9780 --output /absolute/output/native-profile.json
 ```
@@ -51,7 +53,7 @@ python3 s2n-tls/scripts/native-profile-upstream.py --campaign s2n-tls/build/camp
 - [Current214654 matrix1076/1076 pass](../artifacts/managed/final-current-product-214654/report.json): each raw/processed×JIT/AOT variant has1 consumer,82 compatibility/authentication,156 independent peer and30 lifecycle rows. Totals4consumer,328compatibility,624interop,120lifecycle; no failed/unrun rows. Actual negotiated IDs/versions, both roles, binary payloads, shutdown and lifecycle controls are asserted.
 - Identity audit `artifacts/managed-contract/final-matrix-214654-identity.json` verifies8 actual application receipts and execution/runtime/provider/source/product/native/fixture hashes. `final-current-214654-r3-audit.json` additionally reconciles delivery. Twelve changing intermediate DLL/PDB copies are documented; executed outputs remain identical. Subsequent builds isolate intermediate artifacts per application.
 - [Current214654 delivery12/12 pass](../artifacts/managed/final-delivery-214654/report.json): copied ordinary consumer in all4 variants and whole-assembly TrimmerRootAssembly AOT in both forms, each actual3forced TLS exchanges plus dependency/native-import/original-reference/notices audits. Actual runtime/output identity receipts are retained.
-- Root solution locked Release build passes: `artifacts/managed-contract/solution-final214654.log` (two existing embedded-runtime unassigned-field warnings,0errors).
+- Current root solution locked Release build passes: `artifacts/managed-contract/solution-final223542-base64.log` (two existing embedded-runtime unassigned-field warnings,0errors).
 - Original discovery report remains443pass/629fail at `artifacts/managed/full-owning-matrix/report.json`.624 failures were an observer engine-name mismatch, corrected only by separate strict transcript/hash revalidation `artifacts/managed-contract/discovery-interop-observation-audit.json`. Five lifecycle expected-error assertions were corrected using native controls and independently30/30 rerun. The original failed report was not rewritten passed.
 
 ```sh
@@ -69,7 +71,8 @@ python3 s2n-tls/scripts/managed-qualification.py --suite delivery --suite rooted
 - Host GnuTLS configuration disabledTLS1.0/1.1 before networking. Explicit isolated test-only policy preserves original argv; native priority probes and actual original TLS1.0 payload replay pass. SSLv3Provider also requires a truthful1.0.2 installation prefix; exact focused native replay passes after setting it. Historical failures/interruption receipts remain. Reproduce isolated prerequisites with `python3 s2n-tls/scripts/test-prerequisites.py --fetch never` only when peer execution is drained (package extraction owns those binaries).
 - Current native18 and translated17 non-Apache broad Python trials remain incomplete. Native externalPSK549 failures are an authored provenance probe treating long command arguments as paths (ENAMETOOLONG); new adapter preserves argv and focused original long-PSK cases pass.351 original OpenSSL/SHA384 unconditional skips remain explicitly open, not counted as passes or algorithm omissions. Their S2N/S2N SHA384 counterparts remain required.
 - A genuine translated original CLI buffered-send stack overflow is preserved in `artifacts/managed-upstream/python-final-214654-legacy-policy/sslv3-buffered-replay/`. Fixed automatic arrays inside loops were emitted as cumulative CLR stackalloc. `d0f0146de` reuses one lazy fixed allocation per lexical declaration/invocation while re-running every initializer; no recursion or provider substitute. Reduced old compiler reproduces stack overflow; new JIT/AOT and native produce identical output: `artifacts/compiler-discovery/automatic-array-runtime-v2/receipt.json`. Full175 retry223542 and the actual original replay in all four modes pass; broad original-family qualification continues.
-- Provider EVP_DecodeBlock differences against native have been observed; focused repair is queued after active old16 builds drain. No silent semantic pass is claimed.
+- EVP_DecodeBlock repair08796c070 passes1,659 native vectors per runtime and the full47-group JIT/AOT suite. The original failure remains preserved.
+- Original certificate test currently fails assertion482 versus native488 because production ASN1_STRING_to_UTF8 accepts invalid universal tag29. The test-only X509_NAME mutation native comparator is exact; the failure is in production conversion. All four failed original executions are retained in `artifacts/provider/original16-expanded/20261023T205925Z-71055145/`. No certificate policy entry or pass is recorded; focused production repair and new final-runtime qualification are required.
 
 ## Shared changes and remaining gates
 
@@ -77,4 +80,6 @@ Validated local milestones: `f5b36fc6a` GNU cleanup/deprecated/TLS literals; `72
 
 Focused shared suite prior to the latest array repair passes241unit+12functional, zero skips: `artifacts/campaign/20261023-221258-5f860c83/receipt.json`. Array repair additional tests above pass. A mistakenly selected verify action began regeneration and was cancelled before linkage/publication (`221218-bde7bba7/cancellation-reason.json`); current publication remained214654.
 
-Still required: finish the current1076-row matrix; all257 original C and18 Python families across raw/processed×JIT/AOT; matching native Python families without required skips or retry events; final238 native exchanges under the caller-only DHE repair; integrated recipe acceptance; fetch-disabled warn/off reproduction from unrelated cwd, transactional failed-publication preservation and authored edit pickup without regeneration. Reproduction is not yet executed. These are ongoing authorized work, not unavoidable external blockers, and P6 is not claimed.
+Reproduction passes in `artifacts/campaign/20261023-233001-6f4afff7/reproduction.json`: two complete175-unit warn/off fetch-disabled regenerations from an unrelated cwd, expected invalid-C failure preserving prior publication, and real authored ProjectReference edit pickup without regeneration. A private identical authored host and destination-only profile preserve qualified production files. Original authored sources and delivered current pointer remain unchanged.
+
+Still required: finish all257 original C cases and18 Python families across raw/processed×JIT/AOT; matching native Python families without required skips or retry events; repair the observed production ASN.1 conversion and requalify the final provider snapshot; and integrated recipe acceptance. The default preparation/immutable translation-closure plumbing has focused contract checks but has not yet completed its full automatic upstream pipeline. These are ongoing authorized work, not unavoidable external blockers, and P6 is not claimed.

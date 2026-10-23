@@ -28,10 +28,11 @@ def digest_tree(path):
 
 
 class Run:
-    def __init__(self, output):
+    def __init__(self, output, reuse_credentials=False):
         self.output = output
         output.mkdir(parents=True, exist_ok=True)
         self.commands = []
+        self.reuse_credentials = reuse_credentials
 
     def command(self, argv, cwd=ROOT, timeout=600, env=None, expected_exit=0):
         log = self.output / ('%03d-%s.log' % (len(self.commands), Path(str(argv[0])).name))
@@ -151,6 +152,22 @@ class Run:
         fixtures = ROOT / 'build/native/credentials'
         fixtures.mkdir(parents=True, exist_ok=True)
         binary = str(peer / 'apps/openssl')
+        if self.reuse_credentials:
+            paths = [fixtures / (kind + suffix) for kind in ('rsa', 'ecdsa') for suffix in ('.pem', '.key')]
+            before = {str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in paths}
+            for kind in ('rsa', 'ecdsa'):
+                certificate, key = fixtures / (kind + '.pem'), fixtures / (kind + '.key')
+                self.command([binary, 'verify', '-CAfile', certificate, certificate])
+                self.command([binary, 'x509', '-in', certificate, '-checkend', '3600', '-noout'])
+                cert_public = self.command([binary, 'x509', '-in', certificate, '-pubkey', '-noout']).read_bytes()
+                key_public = self.command([binary, 'pkey', '-in', key, '-pubout']).read_bytes()
+                if cert_public != key_public:
+                    raise RuntimeError('Existing native fixture certificate/key mismatch: ' + kind)
+            if before != {str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in paths}:
+                raise RuntimeError('Native fixture validation modified credential bytes')
+            self.credential_policy = {'mode': 'reuse-validated', 'sha256': before,
+                                      'checks': 'Pinned native signature/trust, at least3600seconds validity, exact SPKI/key agreement'}
+            return
         config = fixtures / 'openssl.cnf'
         template = '[req]\ndistinguished_name=dn\nx509_extensions=ext\nprompt=no\n[dn]\nCN=localhost-{kind}\n[ext]\nsubjectAltName=DNS:localhost\nbasicConstraints=critical,CA:TRUE\nkeyUsage=digitalSignature,keyEncipherment,keyCertSign\nextendedKeyUsage=serverAuth,clientAuth\n'
         for kind, key_args in [('rsa', ['-newkey', 'rsa:2048']), ('ecdsa', ['-newkey', 'ec', '-pkeyopt', 'ec_paramgen_curve:P-256'])]:
@@ -158,6 +175,7 @@ class Run:
             self.command([binary, 'req', '-x509', '-nodes', *key_args, '-sha256', '-days', '2',
                           '-config', str(config), '-keyout', str(fixtures / (kind + '.key')),
                           '-out', str(fixtures / (kind + '.pem'))])
+        self.credential_policy = {'mode': 'generated', 'validity_days': 2}
 
     def upstream(self):
         config = json.loads((ROOT / 'config/upstream-tests.json').read_text())
@@ -236,11 +254,12 @@ def main():
     parser.add_argument('--build-only', action='store_true')
     parser.add_argument('--no-build', action='store_true')
     parser.add_argument('--no-upstream', action='store_true', help='Explicit diagnostic omission; report upstream as unrun.')
+    parser.add_argument('--reuse-credentials', action='store_true', help='Validate existing test credentials with pinned OpenSSL without changing their bytes; missing/expired/mismatched fixtures fail.')
     parser.add_argument('--selection', choices=('required', 'all'), default='all')
     parser.add_argument('--output', type=Path)
     args = parser.parse_args()
     output = args.output or ROOT / 'artifacts/native' / datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%SZ')
-    run = Run(output)
+    run = Run(output, args.reuse_credentials)
     report = {'scope': 'Native controls only; no translated product acceptance is claimed.', 'commands': run.commands, 'exchanges': [], 'upstream': []}
     try:
         os.environ['DOTCC_CAMPAIGN_FETCH'] = args.fetch
@@ -252,6 +271,7 @@ def main():
             report['adaptations'] = run.adaptations
             report['dh_leading_zero_regression'] = run.dh_regression
             report['native_configuration'] = run.native_configuration
+            report['credential_policy'] = run.credential_policy
         else:
             report['omissions'] = ['Build/provenance and deterministic DH control omitted (--no-build); diagnostic execution only.']
         identity_paths = [ROOT / 'build/native' / name for name in ('s2n-endpoint', 'openssl-endpoint', 'openssl-sslv3-endpoint')]

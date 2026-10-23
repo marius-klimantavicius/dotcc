@@ -225,3 +225,17 @@ exit cleanly; processes drain and input bytes remain unchanged. Initial probe
 setup failures remain under proof-v1/v2. These controls permit a bounded,
 source-guarded test adapter to execute the351 original cases; the old skips are
 not passes. Full native/managed original-family execution remains a separate gate.
+
+## Final caller-only DHE native gate
+
+The final full build and exchange receipt is
+[`final-callsite-profile/report.json`](../artifacts/native/final-callsite-profile/report.json):
+238 passed, zero failed/skipped,16 original controls and590,537 assertions. Both
+pristine DHE callers retain their256-versus1 failure; both staged callers return
+the correct1-byte secret. The generic helper remains unchanged.
+
+`--reuse-credentials` validates existing fixtures using pinned native signature
+verification, at least3,600 seconds remaining validity and exact public-key
+agreement, then verifies byte identity. Missing, expired or mismatched fixtures
+fail. This option allowed the full native gate to run while retaining every
+already qualified application and PSK-proof fixture hash.
