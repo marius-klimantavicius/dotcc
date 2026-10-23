@@ -136,6 +136,12 @@ def test_inventory(source):
                 if token in path.stem:
                     status, reason = 'excluded', label + ' is outside selected product.'
                     break
+            if path.name == 's2n_tls_record_stuffer_test.c':
+                # The pin places its complete BEGIN_TEST/END_TEST workload under
+                # literal #if 0. Native execution exits0 with no assertions.
+                if not re.search(r'int main\([^)]*\)\s*\{\s*#if 0.*?END_TEST\(\);\s*#endif\s*return 0;\s*\}', content, re.S):
+                    raise RuntimeError('Upstream disabled stuffer test changed; review applicability')
+                status, reason = 'excluded', 'Upstream disables the complete workload under literal #if0; native exits0 without assertions. No active test is counted as passing.'
         elif relative.startswith('tests/integrationv2/test_') and path.suffix == '.py':
             category, reason, status = 'integration', 'Peer/harness adaptation required; preserve individual pytest assertions and parameter combinations.', 'required-unrun'
             if any(token in path.stem for token in ('pq', 'early_data', 'ktls', 'quic', 'fips')):

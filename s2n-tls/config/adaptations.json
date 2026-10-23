@@ -38,9 +38,15 @@
     },
     {
       "path": "crypto/s2n_dhe.c",
-      "old": "static void s2n_dh_pad_shared_secret(struct s2n_blob *shared_key, int computed_size, int expected_size)\n{\n    int padding = expected_size - computed_size;\n    memmove(shared_key->data + padding, shared_key->data, computed_size);\n    memset(shared_key->data, 0, padding);\n    shared_key->size = expected_size;\n}",
-      "new": "/* Campaign upstream repair: TLS <= 1.2 DH premaster secrets strip leading\n * zeros (RFC 5246 section 8.1.2). Both callers are legacy finite-field DHE;\n * TLS 1.3 key shares use the separate ECC/KEM paths. Preserve the actual\n * DH_compute_key bytes and length; never add bytes to the PRF input. */\nstatic void s2n_dh_pad_shared_secret(struct s2n_blob *shared_key, int computed_size, int expected_size)\n{\n    (void) expected_size;\n    shared_key->size = computed_size;\n}",
-      "reason": "Upstream repair S2N-006: preserve unpadded TLS<=1.2 finite-field DH premaster secret; deterministic known-exponent and independent-peer regression required"
+      "old": "    s2n_dh_pad_shared_secret(shared_key, shared_key_size, server_dh_params_size);\n\n    POSIX_GUARD(s2n_dh_params_free(&client_params));",
+      "new": "    /* TLS <= 1.2 premaster secrets strip leading zeros (RFC 5246 8.1.2).\n     * Keep the reusable padding helper intact, but request the actual DH length. */\n    POSIX_ENSURE(shared_key_size <= server_dh_params_size, S2N_ERR_DH_SHARED_SECRET);\n    s2n_dh_pad_shared_secret(shared_key, shared_key_size, shared_key_size);\n\n    POSIX_GUARD(s2n_dh_params_free(&client_params));",
+      "reason": "Upstream repair S2N-006: client TLS<=1.2 DHE preserves actual unpadded premaster length; retain original generic padding helper semantics and its upstream assertions"
+    },
+    {
+      "path": "crypto/s2n_dhe.c",
+      "old": "    s2n_dh_pad_shared_secret(shared_key, shared_key_size, server_dh_params_size);\n\n    return S2N_SUCCESS;\n}\n\nint s2n_dh_params_check",
+      "new": "    /* TLS <= 1.2 premaster secrets strip leading zeros (RFC 5246 8.1.2).\n     * Keep the reusable padding helper intact, but request the actual DH length. */\n    POSIX_ENSURE(shared_key_size <= server_dh_params_size, S2N_ERR_DH_SHARED_SECRET);\n    s2n_dh_pad_shared_secret(shared_key, shared_key_size, shared_key_size);\n\n    return S2N_SUCCESS;\n}\n\nint s2n_dh_params_check",
+      "reason": "Upstream repair S2N-006: server TLS<=1.2 DHE preserves actual unpadded premaster length; retain original generic padding helper semantics and its upstream assertions"
     },
     {
       "path": "stuffer/s2n_stuffer_text.c",

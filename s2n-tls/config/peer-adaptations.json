@@ -1,0 +1,33 @@
+{
+  "source": "openssl-peer",
+  "label": "pinned-openssl-cli-explicit-psk-suite",
+  "scope": "Test-only apps/s_client.c and apps/s_server.c session setup; pinned libssl/libcrypto remain byte-identical",
+  "header": "tests/NativeOracle/peer_psk_cipher.h",
+  "staged_header": "apps/dotcc_test_psk_cipher.h",
+  "replacements": [
+    {
+      "path": "apps/s_client.c",
+      "old": "#include \"s_apps.h\"",
+      "new": "#include \"s_apps.h\"\n#include \"dotcc_test_psk_cipher.h\"",
+      "reason": "Declare the test-only explicit suite selection helper"
+    },
+    {
+      "path": "apps/s_server.c",
+      "old": "#include \"s_apps.h\"",
+      "new": "#include \"s_apps.h\"\n#include \"dotcc_test_psk_cipher.h\"",
+      "reason": "Declare the test-only explicit suite selection helper"
+    },
+    {
+      "path": "apps/s_client.c",
+      "old": "cipher = SSL_CIPHER_find(s, tls13_aes128gcmsha256_id);",
+      "new": "cipher = dotcc_test_psk_cipher(s, tls13_aes128gcmsha256_id);",
+      "reason": "Use a sole configured TLS1.3 suite for the PSK session, retaining SHA256 default otherwise"
+    },
+    {
+      "path": "apps/s_server.c",
+      "old": "cipher = SSL_CIPHER_find(ssl, tls13_aes128gcmsha256_id);",
+      "new": "cipher = dotcc_test_psk_cipher(ssl, tls13_aes128gcmsha256_id);",
+      "reason": "Use a sole configured TLS1.3 suite for the PSK session, retaining SHA256 default otherwise"
+    }
+  ]
+}

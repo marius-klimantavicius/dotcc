@@ -1,0 +1,130 @@
+{
+  "status": "accepted-excluded-plan-feature",
+  "macro": "DOTCC_TEST_EXCLUDE_KTLS",
+  "feature": "kTLS explicitly outside PLAN",
+  "policy": "Only replace listed conditional directive lines; retain every original assertion and all other bytes. Apply identical macro to native matching-profile control. The selected16 remain unchanged.",
+  "cases": [
+    {
+      "case": "tests/unit/s2n_recv_test.c",
+      "original_sha256": "d9ce11d932826159fa3cec77a397f6d9caa004a8bc836bb6ab88cc8ff1adcf40",
+      "regions": [
+        {
+          "start_line": 19,
+          "end_line": 21,
+          "original_condition": "#ifndef _WIN32",
+          "proposed_condition": "#if !defined(_WIN32) && !defined(DOTCC_TEST_EXCLUDE_KTLS)",
+          "original_region_sha256": "8406a7353d688868845f7ce4e82269ac1e3ab74c2966df1a7f36c31780700824",
+          "assertion_sites": 0,
+          "test_labels": [],
+          "role": "fixture-only"
+        },
+        {
+          "start_line": 38,
+          "end_line": 44,
+          "original_condition": "#ifndef _WIN32",
+          "proposed_condition": "#if !defined(_WIN32) && !defined(DOTCC_TEST_EXCLUDE_KTLS)",
+          "original_region_sha256": "20ec9c381f32adf7fa9553eeefded463fa7362ba6ad6d34029c3d1739eec42e1",
+          "assertion_sites": 0,
+          "test_labels": [],
+          "role": "fixture-only"
+        },
+        {
+          "start_line": 46,
+          "end_line": 56,
+          "original_condition": "#ifndef _WIN32",
+          "proposed_condition": "#if !defined(_WIN32) && !defined(DOTCC_TEST_EXCLUDE_KTLS)",
+          "original_region_sha256": "59fe3d758ea3583c86256115b4d23b750e27bedf1806f686d3f09713b86bdc8d",
+          "assertion_sites": 0,
+          "test_labels": [],
+          "role": "fixture-only"
+        },
+        {
+          "start_line": 370,
+          "end_line": 675,
+          "original_condition": "#ifndef _WIN32",
+          "proposed_condition": "#if !defined(_WIN32) && !defined(DOTCC_TEST_EXCLUDE_KTLS)",
+          "original_region_sha256": "a3fcf073cd0529f442dee17160d07ff427d8b91b9cb56f7089e018fe7a35d188",
+          "assertion_sites": 77,
+          "test_labels": [
+            "with ktls",
+            "receive all requested application data",
+            "receive partial application data",
+            "drain buffered application data",
+            "receive blocks",
+            "receive indicates end-of-data",
+            "receive alert",
+            "receive handshake message",
+            "Multirecord mode",
+            "receive all requested application data",
+            "receive partial application data"
+          ],
+          "role": "kTLS-only assertions"
+        }
+      ]
+    },
+    {
+      "case": "tests/unit/s2n_shutdown_test.c",
+      "original_sha256": "d55cc181c3cafc08b8a7231e6d9bf75c574a238a9d422d733e83258856abb8da",
+      "regions": [
+        {
+          "start_line": 19,
+          "end_line": 21,
+          "original_condition": "#ifndef _WIN32",
+          "proposed_condition": "#if !defined(_WIN32) && !defined(DOTCC_TEST_EXCLUDE_KTLS)",
+          "original_region_sha256": "8406a7353d688868845f7ce4e82269ac1e3ab74c2966df1a7f36c31780700824",
+          "assertion_sites": 0,
+          "test_labels": [],
+          "role": "fixture-only"
+        },
+        {
+          "start_line": 839,
+          "end_line": 1065,
+          "original_condition": "#ifndef _WIN32",
+          "proposed_condition": "#if !defined(_WIN32) && !defined(DOTCC_TEST_EXCLUDE_KTLS)",
+          "original_region_sha256": "c74bdc6ab83db69b4e4a3b5986b98f210f9a7c5690554edb81de52451d1eee5b",
+          "assertion_sites": 92,
+          "test_labels": [
+            "s2n_shutdown_send: kTLS enabled",
+            "Successfully send alert",
+            "Successfully send alert after blocking",
+            "ktls enabled",
+            "Successfully shutdown",
+            "Successfully shutdown after blocking",
+            "Skip application data when waiting for close_notify"
+          ],
+          "role": "kTLS-only assertions"
+        }
+      ]
+    },
+    {
+      "case": "tests/unit/s2n_key_update_test.c",
+      "original_sha256": "560dd43f54c31fe20470b48946457d0fcfdab0b9f10b26543cfb2d90e1dd0aad",
+      "regions": [
+        {
+          "start_line": 152,
+          "end_line": 193,
+          "original_condition": "#ifndef _WIN32",
+          "proposed_condition": "#if !defined(_WIN32) && !defined(DOTCC_TEST_EXCLUDE_KTLS)",
+          "original_region_sha256": "c802efdc3effd73493fba8652e6bd6cd5314ec56e4a0180f55c502849ccde191",
+          "assertion_sites": 13,
+          "test_labels": [
+            "Key update messages not allowed with ktls by default"
+          ],
+          "role": "kTLS-only assertions"
+        },
+        {
+          "start_line": 515,
+          "end_line": 538,
+          "original_condition": "#ifndef _WIN32",
+          "proposed_condition": "#if !defined(_WIN32) && !defined(DOTCC_TEST_EXCLUDE_KTLS)",
+          "original_region_sha256": "5bfccb3e8a671dd94a4f23fed79e9abce4a3813561871d3546a435e3d86e7629",
+          "assertion_sites": 6,
+          "test_labels": [
+            "KeyUpdate fails if ktls"
+          ],
+          "role": "kTLS-only assertions"
+        }
+      ]
+    }
+  ]
+}

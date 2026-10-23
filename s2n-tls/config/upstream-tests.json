@@ -2,8 +2,8 @@
   "counting": "File/case-family inventory and static assertion sites, not runtime assertion counts. Parameterized cases require runtime collection and execution receipts.",
   "summary": {
     "support": 82,
-    "excluded": 286,
-    "required-unrun": 276
+    "excluded": 287,
+    "required-unrun": 275
   },
   "native_control_tests": [
     "s2n_sslv3_test",
@@ -12020,8 +12020,8 @@
     {
       "path": "tests/unit/s2n_tls_record_stuffer_test.c",
       "category": "unit",
-      "status": "required-unrun",
-      "reason": "Applicable upstream assertions; conditional feature branches reviewed separately.",
+      "status": "excluded",
+      "reason": "Upstream disables the complete workload under literal #if0; native exits0 without assertions. No active test is counted as passing.",
       "assertion_sites": 30,
       "test_functions": [],
       "conditional_or_skip_sites": [

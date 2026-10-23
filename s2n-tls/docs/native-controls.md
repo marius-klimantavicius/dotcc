@@ -4,12 +4,16 @@ The native controls establish source availability, native assertions and real
 TLS exchanges. They do not establish translated C# behavior, the managed provider,
 managed interoperability, JIT/NativeAOT delivery or campaign completion.
 
-The current full native receipt is
+The historical full native receipt is
 [`20261023T171931Z/report.json`](../artifacts/native/20261023T171931Z/report.json):
 **238 passed, zero failed, zero skipped**, using the product compatibility
 adapter. All sixteen selected upstream executables passed, with **590,537**
 runtime assertions. The deterministic DH probe fails on the pristine pin and
 passes on the reviewed staged repair, for both client and server helpers.
+That run used the earlier helper-body DHE repair. The final repair changes only
+the two TLS caller lengths and preserves the generic helper; its deterministic
+both-role controls and all257 native C tests pass separately. A full238-exchange
+receipt with the final caller repair remains required.
 
 ## Inputs and source closure
 
@@ -161,11 +165,63 @@ That receipt covers source reuse, native builds and both deterministic DH probes
 the full exchange/assertion receipt remains `20261023T171931Z` above.
 
 The frozen [`upstream-tests.json`](../config/upstream-tests.json) contains 644
-source-file/case-family entries: 276 required for translation (258 unit, 18 integration),
-286 explicit exclusions and 82 support files. It records assertion sites,
+source-file/case-family entries: 275 required for translation (257 C, 18 Python),
+287 explicit exclusions and 82 support files. The record-stuffer source whose
+entire workload is under literal `#if 0` is an exclusion, never an executed test.
+The inventory records assertion sites,
 Python test functions and conditional/skip sites. These are static inventory
 counts, not executed parameter combinations. The selected native control list
 runs sixteen upstream executables and requires a positive `PASSED N tests`
 assertion count with no whole-test skip. Their current native execution reports
 590,537 assertions. The remaining applicable upstream cases, translated versions
-of these tests and all managed product gates still require execution.
+of these tests have their own current receipts in [validation.md](validation.md).
+
+## Exact product-profile native assertions
+
+The broader native configuration enables acceleration branches that the managed
+provider deliberately does not advertise. The separate
+[`native-profile-upstream.py`](../scripts/native-profile-upstream.py) compiles all
+175 engine/adapter units using the actual recorded product C flags. Algorithm
+operations use pinned native OpenSSL. The three functions in
+[`provider-profile-identity.c`](../tests/NativeOracle/provider-profile-identity.c)
+supply only test metadata/identity, and are never delivered in the product.
+Native archive extraction and actual symbol references select the original
+support closure, including tests that directly include an engine C file.
+
+All257 original C cases pass under the final caller repair and exact product
+feature profile in
+[`all-required-214654-ktls-guards/report.json`](../artifacts/native-profile-upstream/all-required-214654-ktls-guards/report.json).
+Accepted kTLS test guards retain every body/assertion byte and have matching
+native/managed metadata. The independent
+[`native equivalence proof`](../artifacts/provider/native-equivalence/214654-to-223542.json)
+and [supervisor review](../artifacts/provider/native-equivalence/supervisor-review.json)
+verify every175 TU, effective flag list, staged C/header/fixture file and pinned
+OpenSSL header for reuse of this native oracle with223542. They do not replace
+fresh managed executions or rewrite the old native report.
+
+## External PSK test application
+
+The pinned1.1.1v engine supports SHA384 external PSKs, but its two CLI callbacks
+hardcode a SHA256 session cipher. The original Python test skips351 SHA384 peer
+combinations on that premise. A separately labelled test CLI uses
+[`peer-adaptations.json`](../config/peer-adaptations.json) and
+[`peer_psk_cipher.h`](../tests/NativeOracle/peer_psk_cipher.h) to select a sole
+explicit TLS1.3 cipher for the PSK session, preserving the default otherwise.
+Only the two app sources change; the static libssl/libcrypto archives are
+byte-identical to the pinned independent peer. References remain pristine.
+
+Build and proof commands:
+
+```sh
+python3 s2n-tls/scripts/psk-peer.py --fetch never
+python3 s2n-tls/scripts/psk-peer-check.py --peer-receipt /absolute/derived/receipt.json --output /absolute/new-proof-directory
+```
+
+The [build receipt](../artifacts/native-peer-psk/03552a738fab77728885efd1006f32c6debb208e531feae645325cddd51bf583/receipt.json)
+and [12-case proof](../artifacts/native-peer-psk/proof-v3/report.json) record both
+roles, SHA256/SHA384, exact cipher/PSK identities, actual payloads, wrong-secret
+binder rejection and unknown-identity fallback/rejection. All positive endpoints
+exit cleanly; processes drain and input bytes remain unchanged. Initial probe
+setup failures remain under proof-v1/v2. These controls permit a bounded,
+source-guarded test adapter to execute the351 original cases; the old skips are
+not passes. Full native/managed original-family execution remains a separate gate.
