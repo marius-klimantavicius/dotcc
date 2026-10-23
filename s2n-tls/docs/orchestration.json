@@ -72,17 +72,20 @@
     "5f0b8ff3d",
     "726a2e483",
     "fb0dd598d",
-    "ad704df80"
+    "ad704df80",
+    "716ed156e",
+    "b85c50400",
+    "208fd4eb7"
   ],
   "current_attempt": "20261023-223542-f7e7054e (passed175/raw+processed; new actual qualification with base64 repair08796c070)",
   "last_complete_link": "20261023-223542-f7e7054e",
   "p2_receipt": "artifacts/campaign/20261023-210200-74eee32f/receipt.json",
   "workloads": {
     "provider_selected16": "build/provider/original16-retry/executables.json",
-    "final_current_matrix": "artifacts/managed/final-current-product-223542-base64",
-    "current_delivery": "artifacts/managed/final-delivery-223542-base64/report.json",
+    "final_current_matrix": "artifacts/managed/final-provider-asn1-main/report.json",
+    "current_delivery": "artifacts/managed/final-provider-asn1-delivery/report.json",
     "native_profile_all257": "artifacts/native-profile-upstream/all-required-214654-ktls-guards/report.json",
-    "native_python18": "artifacts/native-python/remaining14-policy-v2/report.json",
+    "native_python18": "artifacts/native-python/final-eighteen-strict-comparator.json",
     "translated_python17": "artifacts/managed-upstream/python-current-223542-base64/controller-progress.json",
     "provider_selected16_all4": "artifacts/provider/original16-expanded/20261023T191422Z-2c6e0696/all4.json",
     "fresh_c_emission": "build/managed-upstream/all-required-257-emission-223542.json",
@@ -99,15 +102,18 @@
     "post_asn1_abi": "artifacts/campaign/20261024-001718-6f72b210/receipt.json",
     "provider_controller_pid": 1263486,
     "final_provider_current_c_counts": {
-      "passed": 17,
+      "passed": 24,
       "failed": 0,
-      "unrun": 240,
-      "scope": "17cases \u00d74actual final-provider original executions; earlier30/2 historical"
+      "unrun": 233,
+      "scope": "24cases \u00d74actual final-provider original executions; earlier30/2 historical"
     },
     "final_provider_cli": "build/managed-upstream/python-endpoints-final-asn1.json",
     "final_provider_cli_audit": "artifacts/managed-contract/final-asn1-cli-eight-supervisor-audit.json",
     "post_asn1_main": "artifacts/managed/final-provider-asn1-main",
-    "post_asn1_companion": "artifacts/managed-contract/api-r4-final-provider-companion-progress.json"
+    "post_asn1_companion": "artifacts/managed-contract/api-r4-final-provider-companion-progress.json",
+    "final_applications_supervisor_audit": "artifacts/managed-contract/final-asn1-main-delivery-supervisor-audit.json",
+    "native_python_supervisor_audit": "artifacts/managed-contract/native-eighteen-supervisor-audit.json",
+    "final_provider_python": "artifacts/managed-contract/api-r4-final-provider-companion-progress.json"
   },
   "discovery_correction": {
     "original": "artifacts/managed/full-owning-matrix/report.json",
@@ -122,17 +128,16 @@
   "passed_scoped_gates": {
     "P0": "174upstream+1adapter/36suites/14SSLv3/78pairs",
     "P2": "223542raw+processed175/183bindings",
-    "P3": "223542/base64 1076/1076 all4 +5023filecombinedaudit",
-    "P5": "223542/base64 12/12 all4copied/rooted +5023filecombinedaudit",
+    "P3": "Final ASN1 0158d36c main1076/1076 all4, independent combined5023fileaudit",
+    "P5": "Final ASN1 0158d36c delivery12/12 all4copied/rooted, independent combined5023fileaudit",
     "P1": "ASN1freeze0158d36c/full48JIT+AOT/ABIall4; full originalcaller gate remainsP4",
     "P6_reproduction": "233001-6f4afff7 passed warn/off two full175 regenerations/private authored edit/failed-publication; overallP6 remainsopen"
   },
   "open_gates": [
-    "P4full257Cplus18Pythonall4variants",
-    "Final-provider main1076/delivery12 and strict native happy8840",
+    "P4full257Cplus18Pythonall4translatedvariants",
     "P6integratedupstreamdefaultpreparationandfinalreceiptreview"
   ],
-  "native_python_gate": "17disjoint families/13346 applicable cases pass; repaired strict happy8840 running independently. Historical failures/skips/retries remain failed.",
+  "native_python_gate": "18families/22186applicable originalcases strictpassed; nine HRR original combinations explicitly inapplicable with nine separate no-HRR controls. Historical failures/skips/retries preserved.",
   "observed_provider_defect": {
     "case": "tests/unit/s2n_certificate_test.c",
     "assertion": 482,

@@ -1,13 +1,15 @@
 # Translate s2n-tls to C# with DotCC
 
-Status: implementation authorized; P0/P1/P2/P3/P5 have scoped passing evidence; P4/P6 remain in progress. Product acceptance remains incomplete.
+Status: implementation authorized; P0/P1/P2/P3/P5 have passing evidence for their identified scopes, including the final provider application/delivery matrix; P4/P6 remain in progress. Product acceptance remains incomplete.
 Campaign: `s2n-tls/`. Updated: 2026-10-24.
 
-Recorded main1076, delivery12, native238 and warn/off reproduction gates pass for
-their identified snapshots. Required original certificate assertions have exposed
-a production ASN.1 string-conversion defect. Repair5f0b8ff3d,48 provider groups,
-ABI all4 and unchanged certificate488 assertions per variant now pass. Fresh
-final-provider application/upstream qualification remains required.
+Final-provider main1076, delivery12, native238 and recorded warn/off reproduction
+gates pass for their identified snapshots. Required original certificate
+assertions exposed a production ASN.1 string-conversion defect. Repair5f0b8ff3d,
+48 provider groups, ABI all4 and unchanged certificate488 assertions per variant
+now pass. All18 native Python families qualify22,186 applicable original cases.
+Full final-provider original C/Python qualification and integrated acceptance
+remain required.
 
 This plan adopts [translation baseline v4](../../docs/plans/translation-baseline.md)
 and the [shared campaign framework](../../docs/campaigns.md). The user requested
@@ -269,9 +271,9 @@ Do not push without authorization.
 | P0 — Scope/native baseline | Exact pins, 174-unit manifest reconciled to build, complete legacy inventory, recipe/layout, working native SSLv3/RC4 + TLS 1.3 controls and first full-source translation attempt. | Passed | Framework acquisition `20261023-200313-154db7b3`; source inventory 174/36/14/78; native `20261023T171931Z` passes 238 cases and 590,537 upstream assertions; full-source attempts have concrete compiler findings. |
 | P1 — Boundary feasibility | Real emitted/native ABI checks; legacy provider operations and truthful capability configuration; default compatibility policy; ownership and peer capability probes. | Passed scoped boundary | Capability255, final48 native differential groups in JIT/AOT and post-ASN1 canonical ABI all4 pass.178 selected crypto imports are covered by183 declarations. Base64 repair08796c070 matches1,659 native vectors and ASN.1 repair5f0b8ff3d matches3,131 vectors per runtime. Full upstream caller qualification remains P4. |
 | P2 — Complete translation | All selected units emit/link; raw and processed libraries build at canonical paths; no unresolved required imports or manual output repair. | Passed | Full175-unit raw/processed publication223542 passes with183 exact bindings/SHAKE/correct DHE callers and array-lifetime compiler repair. No generated edits. Behavioral gates remain separate. |
-| P3 — Useful execution | Managed client/server execute forced SSLv3 RC4, SSLv3 3DES and TLS 1.3 round trips through translated code, with clean lifecycle. | Passed scoped223542/base64 | All4 ordinary consumer variants execute all3 forced exchanges with exact IDs/versions/binary payloads/shutdown;30 lifecycle cases pass pervariant. Full current main matrix1076/1076 and combined5,023-file audit pass. |
-| P4 — Behavioral qualification | Every required suite/version/role row, applicable upstream cases, compatibility controls, errors and independent interop pass. | In progress | Recorded223542/base64 matrix1076/1076 passes for its pre-ASN1 provider. Final caller-only DHE native238/0/0 and matching-profile native257/257 pass. Final ASN1 source48 groups, ABI all4 and certificate488each pass; required257C×4 controller refresh has17cases/68executions passing at the recorded checkpoint. Complete C/Python and fresh final-provider application qualification remain open. Original buffered-send overflow node passes all4. Failed/skipped/retried attempts remain preserved. |
-| P5 — Consumer delivery | Root solution builds; separate ordinary consumer runs JIT and trimmed AOT; whole-library AOT and package/import/notices audits pass. | Passed scoped223542/base64 delivery | Current delivery12/12 covers copied ordinary consumer all4variants plus whole-library TrimmerRootAssembly AOT bothforms, actual3roundtrips and notices/import/original-reference/runtime identity audits. Deep audit verifies1,682 files and exact rooted XML derivation. Prior locked root solution build passes. |
+| P3 — Useful execution | Managed client/server execute forced SSLv3 RC4, SSLv3 3DES and TLS 1.3 round trips through translated code, with clean lifecycle. | Passed final ASN1 provider | All4 ordinary consumer variants execute all3 forced exchanges with exact IDs/versions/binary payloads/shutdown;30 lifecycle cases pass pervariant. Final-source main matrix1076/1076 and combined5,023-file audit pass. |
+| P4 — Behavioral qualification | Every required suite/version/role row, applicable upstream cases, compatibility controls, errors and independent interop pass. | In progress | Recorded223542/base64 matrix1076/1076 passes for its pre-ASN1 provider. Final caller-only DHE native238/0/0 and matching-profile native257/257 pass. Final ASN1 source48 groups, ABI all4 and certificate488each pass; required257C×4 controller refresh has24cases/96executions passing at the recorded checkpoint. Final-provider main1076/delivery12 and strict native18 Python families pass; complete translated C/Python qualification remains open. Original buffered-send overflow node passes all4. Failed/skipped/retried attempts remain preserved. |
+| P5 — Consumer delivery | Root solution builds; separate ordinary consumer runs JIT and trimmed AOT; whole-library AOT and package/import/notices audits pass. | Passed final ASN1 provider | Final-source delivery12/12 covers copied ordinary consumer all4variants plus whole-library TrimmerRootAssembly AOT bothforms, actual3roundtrips and notices/import/original-reference/runtime identity audits. Combined main/delivery deep audit verifies5,023 files and rooted XML derivation. Final-provider locked root solution build passes. |
 | P6 — Reproduction/acceptance | Final-tool regeneration, complete verification matrix, affected shared regressions and reproduction checks pass. | In progress | Final-tool223542 publication, current ABI, affected shared regressions and reproduction233001-6f4afff7 pass. Reproduction exercises two full175-unit regenerations, warn/off, fetch-disabled/unrelated cwd, authored edit pickup and failed publication in an isolated destination. Full upstream and final integrated acceptance remain open. |
 
 Dependency order is P0 → P1 → P2 → P3 → P4 → P5 → P6, with independent input,

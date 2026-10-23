@@ -2,14 +2,13 @@
 
 The owning API is authored in `src/Managed.S2nTls`. It calls the actual
 translated C engine in `Managed.Security.S2n.S2nTls`; it contains no replacement
-TLS implementation. The retained `223542` product snapshot with the base64 provider repair passed all 1,076
+TLS implementation. The frozen `223542` engine with the final ASN.1 provider repair passed all 1,076
 consumer, compatibility, independent-peer and lifecycle rows across raw/processed
 JIT/NativeAOT. Its separate copied-consumer and whole-library-rooted delivery
-gate passed all 12 rows. These receipts identify the provider used for those
-builds; the pending ASN.1 tag-validation repair requires fresh CLI, main and
-delivery builds and fresh downstream qualification. Earlier receipts remain
-historical evidence. The original upstream C and Python execution gates
-remain **unqualified** until their own rows pass. A missing product or required
+gate passed all 12 rows in fresh builds against provider source `0158d36c`.
+Earlier provider receipts remain historical evidence. The original managed
+upstream C and Python execution gates remain **unqualified** until their own
+rows pass. A missing product or required
 harness returns a failing exit code.
 
 ## Build and run
@@ -215,12 +214,19 @@ asynchronous validation, authentication rejection/bypass, record corruption and
 truncated EOF, reuse, session resumption, state transfer, TLS 1.3 key updates,
 ALPN, allocation failures and initialization-failure quarantine. It uses transport
 faults around the actual engine, without a mock TLS implementation. All 30 cases
-pass in every required form/mode in the retained
-[`final-current-product-223542-base64/report.json`](../artifacts/managed/final-current-product-223542-base64/report.json),
+pass in every required form/mode in
+[`final-provider-asn1-main/report.json`](../artifacts/managed/final-provider-asn1-main/report.json),
 whose complete consumer/compatibility/interop/lifecycle matrix passes 1,076 rows.
+Fresh copied-consumer and rooted delivery evidence passes all 12 rows in
+[`final-provider-asn1-delivery/report.json`](../artifacts/managed/final-provider-asn1-delivery/report.json).
 The independent receipt audit checks the actual executable outputs, mapped runtime
 files, product snapshots, authored sources and fixture/peer identities in
-[`final-current-223542-base64-r4-audit.json`](../artifacts/managed-contract/final-current-223542-base64-r4-audit.json).
+[`final-asn1-main-delivery-deep-audit.json`](../artifacts/managed-contract/final-asn1-main-delivery-deep-audit.json),
+covering 5,023 distinct files. The fresh eight original CLI applications have
+separate build/provider and actual host-runtime identities in
+[`final-asn1-cli-eight-identity-proof.json`](../artifacts/managed-contract/final-asn1-cli-eight-identity-proof.json).
+These builds reused the exact retained CLI/support C emissions and 175 engine
+objects; no C regeneration was needed.
 New runs isolate build intermediates per application as well as per form/mode.
 
 Every one of the 644 upstream inventory entries is retained: 275 required
@@ -319,8 +325,16 @@ The process-control adapter recognizes the original readiness, send, close and
 kill markers across consecutive reads from the same pipe. It does not combine
 stdout and stderr or change test assertions and timeouts. Actual fragmented
 native payload markers and a managed SEND marker passed focused original-node
-replays; close handling has a separate real OS pipe contract in
-[`fragmented-control-markers-r4-v2.json`](../artifacts/managed-contract/fragmented-control-markers-r4-v2.json).
+replays. String markers retain the original comparison against `repr(bytes)`,
+including the stripped byte representations used by original record-padding
+tests; arbitrary plaintext escapes are not decoded. Fifty marker cases and five
+additional scenarios on real OS pipes pass in
+[`fragmented-control-markers-r4-v3.json`](../artifacts/managed-contract/fragmented-control-markers-r4-v3.json).
+Two unchanged original record-padding cases also pass against the fresh provider
+CLI, observing both actual stripped send and close markers, in
+[`record-padding-marker-repair-proof.json`](../artifacts/managed-contract/record-padding-marker-repair-proof.json).
+Those actual matches were not split; fragmented cases are proven separately by
+the OS contract. Focused diagnostics never qualify a whole original family.
 The earlier timeouts remain failed attempts.
 
 The PSK-specific manifest keeps ordinary/version OpenSSL commands unchanged and
@@ -345,6 +359,15 @@ original assertions in
 and [`original-applicable.json`](../artifacts/native-python/hrr-no-retry-r4/original-applicable.json).
 Native and translated original inventories and inapplicable node metadata must
 match. Other skips and every retry outcome remain failures.
+
+The strict native comparator now passes all 18 original families and 22,186
+applicable parameter cases in
+[`final-eighteen-strict-comparator.json`](../artifacts/native-python/final-eighteen-strict-comparator.json),
+after deep validation of 49,656 retained files. Its happy-path family executes
+all 8,840 original cases without skips or retries. The nine original inapplicable
+HRR cases and nine separate authored controls retain their distinct inventories.
+This native result is independent of the managed 18-by-four Python matrix and
+the managed 257-by-four C gate; neither is inferred from native success.
 
 For a test-only provider surface, `build.py --provider-project <project.csproj>
 --provider-binding <extra-binding.cs>` selects one frozen test assembly and

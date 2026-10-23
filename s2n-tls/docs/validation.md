@@ -28,16 +28,22 @@ outputs: the identity entry returns before provider initialization. NativeAOT
 embeds the provider in the new executable. Original TLS family execution remains
 a separate gate.
 
-Fresh main1076 and delivery12 run independently under the exclusive companion
-controller recorded in `artifacts/managed-contract/api-r4-final-provider-companion-progress.json`.
-The final18-family/four-variant Python controller waits for the verified legacy
-port-family drain; it must not overlap that port owner. The unchanged original certificate all4 refresh now passes488 assertions per
+Fresh final-provider main1076/1076 and delivery12/12 pass at
+`artifacts/managed/final-provider-asn1-main/report.json` and
+`artifacts/managed/final-provider-asn1-delivery/report.json`. Independent repeated
+audit verifies all5,023 actual application/runtime/build/source/product/fixture
+files at `artifacts/managed-contract/final-asn1-main-delivery-supervisor-audit.json`.
+The main matrix contains4consumer,328compatibility,624interop and120lifecycle
+rows. Delivery covers copied ordinary consumers in all4 variants and whole-library
+rooted AOT in both forms. The final18-family/four-variant Python controller started
+once after verified legacy port-owner drain; original upstream qualification
+remains separate. The unchanged original certificate all4 refresh now passes488 assertions per
 variant at `artifacts/provider/original16-expanded/20261023T211832Z-6c2a4f05/all4.json`.
 The old required-C cases must also execute against this freeze; their earlier application outputs are not reused. No C regeneration is
 needed: the183 typed declarations and175 emitted engine objects are unchanged.
 
-The persistent final-provider C campaign has17/257 cases qualified in all four
-variants at the recorded checkpoint (68 original executions), with240 cases
+The persistent final-provider C campaign has24/257 cases qualified in all four
+variants at the recorded checkpoint (96 original executions), with233 cases
 remaining. Its live progress is `build/provider/required257-223542/progress.json`;
 earlier30/2 counts belong to the archived old-provider run. Closed cases retain
 their executable/runtime bytes while identical pinned BC dependency files may
@@ -45,7 +51,7 @@ share a private immutable inode. The bounded three-case storage proof is
 `artifacts/provider/dependency-dedupe-closed3-2140/receipt.json`; this is storage
 maintenance, not an additional test pass.
 
-## Current223542 evidence
+## Recorded pre-ASN.1 provider evidence for223542
 
 - Complete175-unit raw/processed publication: `artifacts/campaign/20261023-223542-f7e7054e/receipt.json` passes with the automatic-array compiler repair and183 typed provider declarations. Authored Base64 repair `08796c070` changes no C flags, headers or declarations.
 - Full current provider differential suite:47/47 JIT and47/47 NativeAOT, `artifacts/provider/final47-223542/receipt.json`. Focused Base64 evidence includes1,659 native vectors per runtime in `artifacts/provider/base64-contract/receipt.json`.
@@ -85,11 +91,11 @@ python3 s2n-tls/scripts/native-profile-upstream.py --campaign s2n-tls/build/camp
 - Complete175-unit raw+processed publication first passed [210200](../artifacts/campaign/20261023-210200-74eee32f/receipt.json). [214654](../artifacts/campaign/20261023-214654-406d9780/receipt.json) adds183 bindings, SHAKE and the final DHE caller repair. Both canonical forms build without generated C# edits.
 - Historical canonical ABI raw/processed×JIT/AOT receipt: `artifacts/campaign/20261023-211314-1e36e6dc/receipt.json`. Native/emitted sizes/alignments/offsets/bitfield bytes, actual function-pointer identity and distinct-thread errno agree. Current183-profile qualification is recorded above.
 
-## Actual managed execution and delivery
+## Historical managed execution and delivery
 
-- [Current214654 matrix1076/1076 pass](../artifacts/managed/final-current-product-214654/report.json): each raw/processed×JIT/AOT variant has1 consumer,82 compatibility/authentication,156 independent peer and30 lifecycle rows. Totals4consumer,328compatibility,624interop,120lifecycle; no failed/unrun rows. Actual negotiated IDs/versions, both roles, binary payloads, shutdown and lifecycle controls are asserted.
+- [Recorded214654 matrix1076/1076 pass](../artifacts/managed/final-current-product-214654/report.json): each raw/processed×JIT/AOT variant has1 consumer,82 compatibility/authentication,156 independent peer and30 lifecycle rows. Totals4consumer,328compatibility,624interop,120lifecycle; no failed/unrun rows. Actual negotiated IDs/versions, both roles, binary payloads, shutdown and lifecycle controls are asserted.
 - Identity audit `artifacts/managed-contract/final-matrix-214654-identity.json` verifies8 actual application receipts and execution/runtime/provider/source/product/native/fixture hashes. `final-current-214654-r3-audit.json` additionally reconciles delivery. Twelve changing intermediate DLL/PDB copies are documented; executed outputs remain identical. Subsequent builds isolate intermediate artifacts per application.
-- [Current214654 delivery12/12 pass](../artifacts/managed/final-delivery-214654/report.json): copied ordinary consumer in all4 variants and whole-assembly TrimmerRootAssembly AOT in both forms, each actual3forced TLS exchanges plus dependency/native-import/original-reference/notices audits. Actual runtime/output identity receipts are retained.
+- [Recorded214654 delivery12/12 pass](../artifacts/managed/final-delivery-214654/report.json): copied ordinary consumer in all4 variants and whole-assembly TrimmerRootAssembly AOT in both forms, each actual3forced TLS exchanges plus dependency/native-import/original-reference/notices audits. Actual runtime/output identity receipts are retained.
 - Current root solution locked Release build passes: `artifacts/managed-contract/solution-final223542-base64.log` (two existing embedded-runtime unassigned-field warnings,0errors).
 - Original discovery report remains443pass/629fail at `artifacts/managed/full-owning-matrix/report.json`.624 failures were an observer engine-name mismatch, corrected only by separate strict transcript/hash revalidation `artifacts/managed-contract/discovery-interop-observation-audit.json`. Five lifecycle expected-error assertions were corrected using native controls and independently30/30 rerun. The original failed report was not rewritten passed.
 
@@ -137,3 +143,12 @@ Release build and its three forced SSLv3/RC4, SSLv3/3DES, TLS1.3 loopbacks pass 
 actual runtime/source/fixture hashes at
 `artifacts/managed-contract/ordinary-solution-final-asn1/report.json`. This is a
 processed JIT check; it does not replace the pending all4 application matrix.
+
+All18 native Python comparator families now pass22,186 applicable original cases
+with zero required skips or retries at
+`artifacts/native-python/final-eighteen-strict-comparator.json`. The independent
+`artifacts/managed-contract/native-eighteen-supervisor-audit.json` rechecks49,656
+retained files and exact family/count coverage. Nine impossible-HRR parameter
+combinations remain explicitly inapplicable with separately executed nine
+no-HRR controls; they are never added to original assertion counts. Final
+translated18-family execution in each of the four variants remains in progress.
