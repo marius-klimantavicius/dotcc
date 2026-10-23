@@ -122,9 +122,7 @@ def main():
         report.update(evidence_kind='translated-upstream-c', scope='Original C inventory only; the 18 required Python families are outside this report.')
         report['cases'] = [row for row in report['cases'] if row['case'].endswith('.c')]
     manifest = json.loads(args.executables.read_text()) if not args.c_report and args.executables.is_file() else {'executables': []}
-    native = json.loads(args.native_report.read_text()) if args.native_report and args.native_report.is_file() else {}
-    native_rows = {r.get('case', 'tests/unit/' + str(r.get('name')) + '.c'): r
-                   for r in native.get('upstream', []) if r['status'] == 'passed'}
+    native_rows = {}
     retained_c, c_error = {}, None
     if args.c_report:
         try:
@@ -140,6 +138,16 @@ def main():
             report['retained_c_validation'] = {key: value for key, value in completed.items() if key != 'cases'}
         except Exception as error:
             c_error = str(error)
+    elif not args.inventory_only:
+        try:
+            sys.path.insert(0, str(ROOT / 'tests/Provider'))
+            from required_c_receipt import require_passed_native
+            native = json.loads(args.native_report.read_text()) if args.native_report else {}
+            require_passed_native(native)
+            native_rows = {r.get('case', 'tests/unit/' + str(r.get('name')) + '.c'): r
+                           for r in native.get('upstream', []) if r['status'] == 'passed'}
+        except Exception as error:
+            c_error = str(error)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     for index, row in enumerate(report['cases']):
         if row['status'] != 'unrun': continue
@@ -153,6 +161,9 @@ def main():
         entries = [e for e in manifest['executables'] if e['case'] == row['case'] and e['form'] == args.form and e['mode'] == args.mode]
         if args.inventory_only:
             row['reason'] = 'Static inventory only; required translated harness remains unrun.'; continue
+        if c_error:
+            row.update(status='failed', error=c_error)
+            continue
         if len(entries) != 1 or entries[0].get('status') != 'built':
             row['reason'] = 'Required exact translated harness is missing or failed to build.'; continue
         entry = entries[0]

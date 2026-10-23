@@ -18,6 +18,78 @@ from python_receipt import Validator
 
 
 class ReceiptTests(unittest.TestCase):
+    def direct_c_fixture(self, root):
+        """A harmless process fixture exercises caller acceptance without a build."""
+        case = 'tests/unit/receipt_gate.c'
+        original = root / 'ref/s2n-tls' / case
+        original.parent.mkdir(parents=True)
+        original.write_bytes(b'/* Native-report caller regression fixture. */\n')
+        staged = root / 'compiled.c'
+        staged.write_bytes(b'#include "utils/s2n_prelude.h"\n#include "dotcc_s2n_host.h"\n' + original.read_bytes())
+        sentinel = root / 'executed'
+        process = root / 'harness_fixture.py'
+        process.write_text('from pathlib import Path\nimport sys\n'
+                           'Path(sys.argv[1]).write_text("executed")\nprint("PASSED 17 tests")\n')
+        (root / 'config').mkdir()
+        (root / 'config/upstream-tests.json').write_text(json.dumps({'cases': [
+            dict(path=case, status='required', category='unit', reason='', assertion_sites=1,
+                 test_functions=[], conditional_or_skip_sites=0)]}))
+        manifest = root / 'executables.json'
+        manifest.write_text(json.dumps({'executables': [dict(case=case, form='raw', mode='jit', status='built',
+            compiled_source=str(staged), original_sha256=runner.hashlib.sha256(original.read_bytes()).hexdigest(),
+            compiled_sha256=runner.hashlib.sha256(staged.read_bytes()).hexdigest(),
+            execution_sha256={str(process): runner.hashlib.sha256(process.read_bytes()).hexdigest()},
+            command=[sys.executable, str(process), str(sentinel)])]}))
+        return case, manifest, sentinel
+
+    def test_direct_c_rejects_incomplete_native_before_harness_execution(self):
+        for status in ('failed', 'running', None):
+            for native_key in ('case', 'name'):
+                with self.subTest(status=status, native_key=native_key), tempfile.TemporaryDirectory() as directory:
+                    root = Path(directory)
+                    case, manifest, sentinel = self.direct_c_fixture(root)
+                    native = root / 'native.json'
+                    reference = {'upstream': [{native_key: case if native_key == 'case' else Path(case).stem,
+                                              'status': 'passed', 'assertions': 17}]}
+                    if status is not None:
+                        reference['status'] = status
+                    native.write_text(json.dumps(reference))
+                    output = root / 'result.json'
+                    argv = ['run.py', '--c-only', '--executables', str(manifest), '--native-report',
+                            str(native), '--output', str(output)]
+                    with patch.object(runner, 'ROOT', root), patch.object(sys, 'argv', argv), \
+                         patch.object(sys, 'path', [str(HERE.parent / 'Provider'), *sys.path]), \
+                         patch.object(runner.subprocess, 'run', wraps=subprocess.run) as execute:
+                        self.assertEqual(runner.main(), 1)
+                    execute.assert_not_called()
+                    self.assertFalse(sentinel.exists())
+                    result = json.loads(output.read_text())
+                    self.assertEqual(result['status'], 'failed')
+                    self.assertEqual(result['counts']['failed'], 1)
+                    self.assertEqual(result['cases'][0]['assertions'], 0)
+                    self.assertIn("top-level status 'passed'", result['cases'][0]['error'])
+
+    def test_direct_c_accepts_passed_native_with_exact_assertion_comparison(self):
+        for native_key in ('case', 'name'):
+            with self.subTest(native_key=native_key), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                case, manifest, sentinel = self.direct_c_fixture(root)
+                native = root / 'native.json'
+                native.write_text(json.dumps({'status': 'passed', 'upstream': [
+                    {native_key: case if native_key == 'case' else Path(case).stem,
+                     'status': 'passed', 'assertions': 17}]}))
+                output = root / 'result.json'
+                argv = ['run.py', '--c-only', '--executables', str(manifest), '--native-report',
+                        str(native), '--output', str(output)]
+                with patch.object(runner, 'ROOT', root), patch.object(sys, 'argv', argv), \
+                     patch.object(sys, 'path', [str(HERE.parent / 'Provider'), *sys.path]):
+                    self.assertEqual(runner.main(), 0)
+                self.assertEqual(sentinel.read_text(), 'executed')
+                result = json.loads(output.read_text())
+                self.assertEqual(result['counts']['passed'], 1)
+                self.assertEqual(result['cases'][0]['assertions'], 17)
+                self.assertEqual(result['cases'][0]['native_assertions'], 17)
+
     def test_managed_forwarding_consumes_aggregate_output_not_last_python_input(self):
         specification = importlib.util.spec_from_file_location('managed_qualification_forwarding',
             HERE.parents[1] / 'scripts/managed-qualification.py')
