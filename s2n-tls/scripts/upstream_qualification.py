@@ -30,20 +30,68 @@ def campaign(ctx):
     return selected.resolve()
 
 
+def sealed_inputs(ctx, policy, data):
+    """Check the retained selection before any acceptance command can use it.
+
+    This seal establishes immutable inputs and consumer code, not successful
+    assertions. The specialist C/Python validators still check those receipts.
+    """
+    if data.get('status') != 'passed':
+        raise RuntimeError('Retained upstream input bundle is not sealed passed')
+    if Path(data['campaign_run']).resolve() != campaign(ctx):
+        raise RuntimeError('Retained upstream evidence belongs to another translation; no implicit reuse')
+    selected = {}
+
+    def select(path, status):
+        path = str(Path(path).resolve())
+        if path in selected and selected[path] != status:
+            raise RuntimeError('Retained input is assigned conflicting evidence roles')
+        selected[path] = status
+
+    for name in ('c_report', 'native_report'):
+        select(data[name], 'passed')
+    if data.get('native_equivalence'):
+        select(data['native_equivalence'], 'passed')
+    if data.get('python_executables'):
+        select(data['python_executables'], 'built')
+    for paths in data.get('python_reports', {}).values():
+        for path in paths:
+            select(path, 'passed')
+    for path in data.get('native_python_reports', []):
+        select(path, 'passed')
+    recorded = data.get('input_sha256', {})
+    if set(recorded) != set(selected):
+        raise RuntimeError('Retained input seal does not cover exactly the selected receipts')
+    for path, status in selected.items():
+        if digest(path) != recorded[path] or load(path).get('status') != status:
+            raise RuntimeError('Retained receipt changed or is incomplete: ' + path)
+
+    required = {str((ctx.root / name).resolve()) for name in policy['acceptance_consumers']}
+    sources = data.get('consumer_source_sha256', {})
+    snapshots = data.get('consumer_source_snapshots', {})
+    if set(sources) != required or set(snapshots) != required:
+        raise RuntimeError('Retained input seal lacks the exact acceptance consumer sources')
+    for path in required:
+        if Path(snapshots[path]).resolve() == Path(path):
+            raise RuntimeError('Acceptance source snapshot must be a preserved copy: ' + path)
+        if digest(path) != sources[path] or digest(snapshots[path]) != sources[path]:
+            raise RuntimeError('Acceptance consumer or preserved source changed: ' + path)
+    bundle = data.get('input_bundle')
+    if bundle and digest(bundle['path']) != bundle['sha256']:
+        raise RuntimeError('Retained input bundle changed after selection')
+
+
 def existing(ctx, policy):
     name = os.environ.get(policy['reuse_evidence_environment'])
     if not name:
         return None
     path = Path(name).resolve()
-    data = load(path)
+    original = path.read_bytes()
+    data = json.loads(original)
     if data.get('schema_version') != 1:
         raise RuntimeError('Unsupported upstream qualification input bundle')
-    if Path(data['campaign_run']).resolve() != campaign(ctx):
-        raise RuntimeError('Retained upstream evidence belongs to another translation; no implicit reuse')
-    for key in ('c_report', 'native_report'):
-        if not Path(data[key]).is_file():
-            raise RuntimeError('Required retained upstream input is missing: ' + key)
-    data['input_bundle'] = {'path': str(path), 'sha256': digest(path)}
+    data['input_bundle'] = {'path': str(path), 'sha256': hashlib.sha256(original).hexdigest()}
+    sealed_inputs(ctx, policy, data)
     return data
 
 
@@ -137,6 +185,8 @@ def inputs(ctx, *, python=False):
         ctx._s2n_upstream_inputs = retained if retained is not None else prepare_c(ctx, policy)
         ctx._s2n_upstream_retained = retained is not None
     data = ctx._s2n_upstream_inputs
+    if ctx._s2n_upstream_retained:
+        sealed_inputs(ctx, policy, data)
     if python and not ctx._s2n_upstream_retained and 'python_reports' not in data:
         prepare_python(ctx, policy, data)
     ctx.receipt['upstream_qualification_inputs'] = data
@@ -168,3 +218,5 @@ def run(ctx, *, python):
             else:
                 command += ['--c-only']
             ctx.run(command, destination.stem, timeout=14400)
+            if ctx._s2n_upstream_retained:
+                sealed_inputs(ctx, load(ctx.root / 'config/qualification.json'), data)

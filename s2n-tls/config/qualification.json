@@ -8,8 +8,30 @@
   "peer_commands": "build/test-prerequisites/peers.json",
   "test_provider_policy": "tests/Provider/UpstreamSurface/policy.json",
   "native_provider_version": "dotcc-native-openssl-1.1.1w",
-  "native_ports": [8000, 18000],
-  "translated_ports": [18001, 30000],
+  "native_ports": [
+    8000,
+    18000
+  ],
+  "translated_ports": [
+    18001,
+    30000
+  ],
   "reuse_evidence_environment": "S2N_QUALIFICATION_INPUTS",
-  "scope": "Default verification prepares and executes the full upstream gates. Explicit retained evidence is consumed read-only and must match the current closed translation."
+  "scope": "Default verification prepares and executes the full upstream gates. Explicit retained evidence is consumed read-only and must match the current closed translation.",
+  "acceptance_consumers": [
+    "config/qualification.json",
+    "config/upstream-tests.json",
+    "scripts/upstream_qualification.py",
+    "scripts/qualification.py",
+    "scripts/managed-qualification.py",
+    "scripts/translation_evidence.py",
+    "tests/Upstream/run.py",
+    "tests/Upstream/python_receipt.py",
+    "tests/Upstream/feature_adaptations.py",
+    "tests/Upstream/test-adaptations.json",
+    "tests/Upstream/hrr_applicability.py",
+    "tests/Upstream/measured_psk.py",
+    "tests/Provider/required_c_receipt.py",
+    "tests/Provider/native_profile.py"
+  ]
 }
