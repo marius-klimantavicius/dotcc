@@ -40,10 +40,32 @@ def object_exports(path):
 def object_references(path):
     text = path.read_text()
     references = set(re.findall(r'^//!!dotcc-obj import:(\w+)', text, re.M))
+    field_counts = {'address_declaration': 3, 'address_use': 4, 'context_address': 2,
+                    'initializer_address': 3, 'bound_initializer_address': 3}
+    pattern = r'/\*__dotcc_(' + '|'.join(field_counts) + r')__\*/([A-Za-z_0-9@]*)'
     # Address-taking and externally defined fixture globals also participate.
     for part in text.split('//!!dotcc-obj section:')[1:]:
         if part.startswith(('functions\n', 'global-initializer\n')):
-            references.update(re.findall(r'\b[A-Za-z_]\w*\b', part))
+            fragments, seen = [part], set()
+            while fragments:
+                fragment = fragments.pop()
+                if fragment in seen: continue
+                seen.add(fragment)
+                references.update(re.findall(r'\b[A-Za-z_]\w*\b', fragment))
+                # GlobalStorageReferences.AddressRecord retains the C root
+                # inside NUL-separated UTF-8 hex until the final object link.
+                # Context/type fields may themselves contain global refs or
+                # nested address records, so inspect those decoded fields too.
+                for kind, record in re.findall(pattern, fragment):
+                    try:
+                        fields = bytes.fromhex(record[1:]).decode('utf-8').split('\0')
+                    except (ValueError, UnicodeError) as error:
+                        raise RuntimeError('Malformed emitted global address reference: ' + str(path)) from error
+                    if (not record.startswith('C') or len(fields) != field_counts[kind]
+                        or not re.fullmatch(r'@?[A-Za-z_]\w*', fields[0])):
+                        raise RuntimeError('Malformed emitted global address reference: ' + str(path))
+                    references.add(fields[0].removeprefix('@'))
+                    fragments.extend(fields[1:])
     return references
 
 
