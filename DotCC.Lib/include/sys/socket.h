@@ -80,6 +80,8 @@ struct sockaddr_storage {
 };
 
 int     socket(int domain, int type, int protocol);
+/* Real unnamed Unix-domain pairs are currently implemented on Linux only. */
+int     socketpair(int domain, int type, int protocol, int descriptors[2]);
 int     bind(int fd, const struct sockaddr *addr, socklen_t addrlen);
 int     listen(int fd, int backlog);
 int     accept(int fd, struct sockaddr *addr, socklen_t *addrlen);

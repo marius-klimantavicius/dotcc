@@ -31,6 +31,8 @@ namespace DotCC.Libc;
 /// IPv4/IPv6 and Unix sockets, including nonblocking operations, use the BCL
 /// socket stack. Address buffers retain Linux ABI layout; poll/fcntl live in
 /// PosixLib. DNS declarations and resolution are a separate surface.
+/// Unnamed socketpair creation is an explicitly Linux-only adapter: the kernel
+/// creates the peers and their handles enter this same BCL-backed descriptor table.
 /// </para>
 /// </remarks>
 public static unsafe partial class Libc

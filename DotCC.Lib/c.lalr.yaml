@@ -1485,6 +1485,7 @@ productions:
       # comma; a standalone array keeps its existing declaration productions.
       - { lhs: DeclItemList, rhs: [ID, ArrDims, ',', DeclItemTail], action: declItemListArrayHead }
       - { lhs: DeclItemList, rhs: [ID, ArrDims, '=', '{', InitList, '}', ',', DeclItemTail], action: declItemListArrayHeadInit }
+      - { lhs: DeclItemList, rhs: [ID, '[', ']', '=', '{', InitList, '}', ',', DeclItemTail], action: declItemListImplicitArrayHeadInit }
       - { lhs: DeclItemList, rhs: [ID, '[', ']', '=', StringArrayInitializer, ',', DeclItemTail], action: declItemListStringArrayHead }
       - { lhs: DeclItemList, rhs: [ID, ArrDims, '=', StringArrayInitializer, ',', DeclItemTail], action: declItemListSizedStringArrayHead }
       # A braced first initializer enters the shared list only when followed
@@ -1526,6 +1527,7 @@ productions:
       - { lhs: DeclItemTail, rhs: [ID, ArrDims],       action: declItemTailArr }
       - { lhs: DeclItemTail, rhs: [ID, '[', ']'], action: declItemTailFlexArr }
       - { lhs: DeclItemTail, rhs: [ID, ArrDims, '=', '{', InitList, '}'], action: declItemTailArrInit }
+      - { lhs: DeclItemTail, rhs: [ID, '[', ']', '=', '{', InitList, '}'], action: declItemTailImplicitArrInit }
       - { lhs: DeclItemTail, rhs: [ID, '[', ']', '=', StringArrayInitializer], action: declItemTailStringArray }
       - { lhs: DeclItemTail, rhs: [ID, ArrDims, '=', StringArrayInitializer], action: declItemTailSizedStringArray }
       - { lhs: DeclItemTail, rhs: [ID, '=', '{', InitList, '}'], action: declItemTailBraceInit }

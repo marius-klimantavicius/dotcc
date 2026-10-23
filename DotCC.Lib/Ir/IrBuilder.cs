@@ -3271,6 +3271,10 @@ internal sealed partial class IrBuilder
                     add(Tok(a.Arg0), a.Arg4, MakeArrayType(tailType,
                         TryConstDims(a.Arg1) ?? throw new IrUnsupportedException("non-constant array bound in a multi-declarator tail")));
                     break;
+                case C.DeclItemTailImplicitArrInit a:
+                    add(Tok(a.Arg0), a.Arg5, new CType.Array(tailType,
+                        BuildArrayElems(tailType, null, ParseInitList(a.Arg5)).Count));
+                    break;
                 case C.DeclItemTailStringArray a:
                     AddStringArray(a.Arg0, null, a.Arg4, tailType); break;
                 case C.DeclItemTailSizedStringArray a:
@@ -3298,6 +3302,11 @@ internal sealed partial class IrBuilder
                         TryConstDims(a.Arg1) ?? throw new IrUnsupportedException("non-constant array bound in a multi-declarator head")));
                     WalkTail(a.Arg7, element);
                     break;
+                case C.DeclItemListImplicitArrayHeadInit a:
+                    add(Tok(a.Arg0), a.Arg5, new CType.Array(baseType,
+                        BuildArrayElems(baseType, null, ParseInitList(a.Arg5)).Count));
+                    WalkTail(a.Arg8, element);
+                    break;
                 case C.DeclItemListStringArrayHead a:
                     AddStringArray(a.Arg0, null, a.Arg4, baseType); WalkTail(a.Arg6, element); break;
                 case C.DeclItemListSizedStringArrayHead a:
@@ -3311,7 +3320,7 @@ internal sealed partial class IrBuilder
                 case C.DeclItemGnuAttributesInit di: ValidateGnuObjectAttribute(di.Arg1); add(Tok(di.Arg0), di.Arg3, baseType); break;
                 case C.DeclItemTailPlain t: WalkTail(t.Arg0, element); break;
                 case C.DeclItemTailPtr or C.DeclItemTailConstPtr: WalkTail(it, element); break;
-                case C.DeclItemTailFlexArr or C.DeclItemTailArr or C.DeclItemTailArrInit: WalkTail(it, element); break;
+                case C.DeclItemTailFlexArr or C.DeclItemTailArr or C.DeclItemTailArrInit or C.DeclItemTailImplicitArrInit: WalkTail(it, element); break;
                 case C.DeclItemTailStringArray or C.DeclItemTailSizedStringArray: WalkTail(it, element); break;
                 case C.DeclItemTailBraceInit or C.DeclItemTailDesignatedInit or C.DeclItemTailEmptyInit: WalkTail(it, element); break;
                 default: throw new IrUnsupportedException(TypeName(it.Content));
