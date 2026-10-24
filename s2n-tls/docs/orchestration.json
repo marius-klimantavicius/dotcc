@@ -27,7 +27,7 @@
     }
   ],
   "shared_build_owner": "supervisor",
-  "next": "Continue sole final-source C controller and sole Python72 matrix. Current C captured62/2/193: compiler braced-string initializer repair under reduced proof; provider default CA path discrepancy under private native differential only. CLI8/main1076/delivery12 passed on unchanged current source; full C/Python and sealed P6 remain open.",
+  "next": "Preserve resource-stopped C62/10/185:four actual original failures and six fresh RAW/JIT built cases awaiting all4. Continue existing Python; review natural family checkpoint/external future evidence plan without source edits or existing path moves. Root preferences original build held by2GiB guard; default CA private proof and observed ECC test-surface work remain isolated.",
   "completed_tasks": [
     {
       "package": "inputs-native",
@@ -241,7 +241,26 @@
     "current_delivery_review": "artifacts/managed-contract/closed-python-source-sharing-supervisor-postflight/report.json",
     "closed_python_source_storage_postflight": "artifacts/managed-contract/closed-python-source-sharing-supervisor-postflight/report.json",
     "external_newraw_bounded_review": "artifacts/managed-contract/external-newraw-v2-bounded-supervisor-review.json",
-    "braced_string_repair": "artifacts/managed-contract/braced-string-compiler-repair/receipt.json"
+    "braced_string_repair": "artifacts/managed-contract/braced-string-compiler-repair/receipt.json",
+    "provider_resource_stop": {
+      "status": "resource-limit",
+      "ledger_counts": {
+        "passed": 62,
+        "failed": 10,
+        "unrun": 185
+      },
+      "real_failures": 4,
+      "built_raw_cases_awaiting_all4": 6,
+      "detail": "Config default CA; preferences braced strings; connection_test braced strings; ECC seven undefined canonical test APIs. Six resource-failed case rows are not semantic assertion failures. Original ledger statuses retained."
+    },
+    "translated_python_checkpoint": {
+      "passed": 9,
+      "failed": 0,
+      "running": 1,
+      "unrun": 62,
+      "scope": "Partial observation only; OCSP running at capture"
+    },
+    "delivery_storage_bounded_review": "artifacts/managed-contract/current-delivery-binary-bounded-supervisor-review.json"
   },
   "discovery_correction": {
     "original": "artifacts/managed/full-owning-matrix/report.json",

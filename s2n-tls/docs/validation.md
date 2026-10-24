@@ -521,3 +521,14 @@ compiler and original175 objects. Its raw managed build and132 original
 assertions remain UNRUN because the unchanged2GiB root reserve rejected
 admission before the build command. No original failure is retagged.
 Proof: `artifacts/managed-contract/braced-string-compiler-repair/receipt.json`.
+
+Later resource checkpoint: C controller2335343 naturally stopped with its
+original ledger62/10/185. Four are actual failures (config/defaultCA,
+preferences/compiler, connection/compiler, ECC/test API closure); six raw
+JIT applications built successfully but their four-mode execution awaits
+capacity. Original statuses are retained; no six-case semantic failure is
+inferred. Python latest partial9 passed/1 running/62 unrun; its completed
+happy-path parameter evidence totals about883MB, providing one measured ROOT
+allocation source. No complete attribution for all concurrent capacity loss
+is made. Future external evidence and a natural family checkpoint are being
+planned; no existing report is moved or source/API freeze changed.
