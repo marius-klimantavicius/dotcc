@@ -1,6 +1,6 @@
 # Translate s2n-tls to C# with DotCC
 
-Status: implementation authorized; P0/P2 and captured provider/application/delivery snapshots have passing evidence. A proved raw-RSA provider defect is repaired and its new freeze passes49 provider groups; downstream qualification must be refreshed. P4/P6 remain in progress. Product acceptance remains incomplete.
+Status: implementation authorized; P0/P2 and captured provider/application/delivery snapshots have passing evidence. Reviewed ASN.1, blinded raw-RSA and EC state repairs are frozen; current full50 provider groups and emitted183 ABI pass JIT/AOT. Downstream qualification must use the current source epoch. P4/P6 remain in progress. Product acceptance remains incomplete.
 Campaign: `s2n-tls/`. Updated: 2026-10-24.
 
 Final-provider main1076, delivery12, native238 and recorded warn/off reproduction
@@ -9,10 +9,13 @@ assertions exposed a production ASN.1 string-conversion defect. Repair5f0b8ff3d,
 48 provider groups, ABI all4 and unchanged certificate488 assertions per variant
 now pass. All18 native Python families qualify22,186 applicable original cases.
 Raw private RSA boundary inputs subsequently exposed a second production defect.
-A narrow input conversion override retaining BC blinding and CRT checks is now
-committed as e2876b1a6 after natural batch drain. All49 provider groups and emitted
-183-binding ABI probes pass in both JIT/AOT. Full repaired-provider original C/Python
-qualification and integrated acceptance remain required.
+A narrow input conversion override retaining BC blinding and CRT checks is
+committed as e2876b1a6. Subsequent native comparisons exposed EC public/private
+state and encoding differences; repair322d75bc1 is frozen in receipt202209f4.
+All50 provider groups and retained emitted183-binding ABI probes now pass in
+both JIT/AOT. A deterministic CBC fixture retains the original error assertion.
+Current original-C qualification has16 cases passed in all four modes; complete
+257-case/18-family matrices and integrated acceptance remain required.
 
 This plan adopts [translation baseline v4](../../docs/plans/translation-baseline.md)
 and the [shared campaign framework](../../docs/campaigns.md). The user requested
@@ -122,7 +125,7 @@ choice; only dependent work waits for it.
 | D1 | Source version and inputs | Start from release `v1.7.12`, commit `6459002cd61e4bf3bbc53db23f068b21da9ff6bd`, published 2026-10-16. Keep s2n product, provider/header dependencies, native oracle and independent peers separately identified in `config/inputs.json`. | Selected and acquired through framework JSON metadata; native/header, independent peers and managed dependency have separate pins/roles. |
 | D2 | Source/configuration closure | Select all 174 C files in the pinned upstream library build groups, retaining every required legacy branch. Explicit manifests, ordered include/define lists and per-unit flags; C99 plus the actual required GNU extensions. Default `compat`, non-FIPS, no native autodetection deciding managed capabilities. | Selected: actual CMake174-unit manifest plus authored adapter; final183-binding profile includes proved SHAKE and retains all36 suites. |
 | D3 | ABI and encodings | Linux x64 LP64 first: 64-bit pointers/long/size_t, little endian; preserve wire network byte order, byte-oriented PEM/DER and upstream text contracts. Measure layouts, unions, bitfields, callbacks and thread-local errors against the selected native build. | Provisional until actual native/emitted probes at P1. |
-| D4 | Host/provider and dependencies | Reuse DotCC runtime/libc and BCL execution services. Prefer BCL crypto where it satisfies the exact operation; allow a deliberately selected managed or translated crypto dependency for missing legacy operations. No native s2n/libcrypto wrapper in the proposed managed product. | Selected BCL plus pinned BC2.7.0,183 exact typed entries covering178 selected native imports. Repaired RSA provider passes49 native differential groups in both runtimes, including Base64, ASN.1 and blinded private-RSA contracts; complete original-caller qualification remains open. |
+| D4 | Host/provider and dependencies | Reuse DotCC runtime/libc and BCL execution services. Prefer BCL crypto where it satisfies the exact operation; allow a deliberately selected managed or translated crypto dependency for missing legacy operations. No native s2n/libcrypto wrapper in the proposed managed product. | Selected BCL plus pinned BC2.7.0,183 exact typed entries covering178 selected native imports. Current EC freeze passes50 native differential groups in both runtimes, including Base64, ASN.1, blinded private-RSA and EC public/private state contracts; complete original-caller qualification remains open. |
 | D5 | State and lifetime | One explicitly owned library initialization domain, shared immutable configurations after setup, separate connections; serialize entry per connection while allowing parallel connections. Final cleanup follows draining all users. No independent library-global isolation claim. | Provisional; audit init/cleanup, globals, TLS and reentrancy at P1/P3. |
 | D6 | Translation/delivery | Multi-unit object emission/linking into class `S2nTls`, namespace `Managed.Security.S2n`; .NET 10/C# 14. Shared `link_flags` with 256 KB splitting, literal pool and inline deduplication. Original authored host/API references. | Provisional route; complete raw and processed products at P2, including address identity checks. No default exceptions proposed. |
 | D7 | Native and independent controls | Same-pin native s2n using a legacy-capable non-FIPS libcrypto. OpenSSL 1.1.1 is a candidate oracle backend; a separately pinned SSLv3/RC4-capable OpenSSL build is a candidate independent peer. Modern peers may supplement coverage. | Selected OpenSSL1.1.1w backend, separately pinned1.1.1v and1.0.2u independent peers. All78pair/role native exchanges and214654 managed matrix execute; additional Python test peers are separately recorded. |
