@@ -2,8 +2,8 @@
 
 2026-10-24 bounded continuation: current authorization is limited to ordinary
 compiler semantics and managed build/cache placement, plus truthful evidence
-integration. Two independent `gpt-6.1-sol`/`xhigh` agents were launched under the
-`gpt-6.1-sol`/`high` supervisor. Protocol/provider qualification and private CA/EC
+integration. Both independent `gpt-6.1-sol`/`xhigh` agents completed under the
+`gpt-6.1-sol`/`high` supervisor; no child work remains active. Protocol/provider qualification and private CA/EC
 candidate application remain held following the prior automated provider content
 rejection; no stopped C/Python controller is restarted. P6 remains incomplete.
 Cleanup recovered about2.30GiB from the explicitly recorded inactive caches and
@@ -20,6 +20,13 @@ connection-test CS0266 errors. Fresh single-TU emission/original175-object link/
 C# build pass; no new compiler patch. Native/JIT/AOT reduction and65 unit/8
 functional rows pass, with10 optional oracle skips. Original connection runtime
 assertions remain UNRUN. See the current independent section in `validation.md`.
+
+Current independent infrastructure result: `5c02f59de` fixes explicit external
+output scopes and separates optional dependency-storage failure from exact
+completed assertion evidence. All23 synthetic tests pass; identity drift still
+fails and the2GiB reserve remains enforced. The old preferences standard
+expander stays incomplete, with no canonical adoption. Both bounded agents are
+completed; provider/protocol work and full P6 remain held.
 
 | ID | State | Observation and resolution |
 | --- | --- | --- |

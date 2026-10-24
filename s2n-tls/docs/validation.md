@@ -2,8 +2,8 @@
 
 2026-10-24 bounded continuation: current authorization is limited to ordinary
 compiler semantics and managed build/cache placement, plus truthful evidence
-integration. Two independent `gpt-6.1-sol`/`xhigh` agents were launched under the
-`gpt-6.1-sol`/`high` supervisor. Protocol/provider qualification and private CA/EC
+integration. Both independent `gpt-6.1-sol`/`xhigh` agents completed under the
+`gpt-6.1-sol`/`high` supervisor; no child work remains active. Protocol/provider qualification and private CA/EC
 candidate application remain held following the prior automated provider content
 rejection; no stopped C/Python controller is restarted. P6 remains incomplete.
 Cleanup recovered about2.30GiB from the explicitly recorded inactive caches and
@@ -21,6 +21,49 @@ qualification now pass for captured0158 bytes. A later private-RSA mismatch
 requires another provider freeze and fresh downstream qualification. No build-only, emission-only,
 skipped, retried or interrupted workload is counted as a strict protocol pass.
 Paths below are relative to this campaign.
+
+## Independent managed staging repair (2026-10-24)
+
+Commit `5c02f59de` adds repeatable `--dependency-output-root PATH` to the
+expander and standalone dependency-storage helper. Explicit absolute private
+external scopes support raw outputs placed outside the conventional work tree;
+recorded work/output scopes are preserved on resume. Existing legacy placement
+remains supported. This is a generic output-validation/optional-storage helper
+plus runner integration; provider implementation sources are unchanged.
+
+Completed qualification is retained after an optional sharing error only if
+exact qualification, application identity, source, output and runtime files
+verify before and after the attempted optimization. Storage errors receive
+separate immutable wrapper/operation receipts; partial-allocation savings are
+unknown. Evidence drift still invalidates the case. Symlink/protected-root and
+containment checks, pinned-package verification and inactivity guards remain;
+store allocation checks the existing2GiB filesystem reserve before writing.
+
+Both original infrastructure regressions reproduce with the old helper. The new
+23 synthetic non-network tests pass with zero skips, including explicit layout,
+retained-busy/partial failure, exact evidence drift and independent filesystem
+reserve controls. Supervisor rerun used external TMPDIR:
+
+```bash
+python3 -B -m unittest discover -s Scripts/production_tests -p test_managed_test_storage.py -v
+```
+
+Agent receipt:
+`/mnt/storage/dotcc-s2n-qualification-20261024/independent-infrastructure-20261024/final-evidence/receipt.json`
+(SHA256 `02c5a1255cc726db7cc38c75c3ddc14de681bdfeefcd6cfae81990c7c49e8dd2`).
+Separate supervisor review at `../runner-supervisor-review/receipt.json` checks
+all4 current source snapshots,63 new evidence files,6 unchanged historical
+receipts, unchanged guard ASTs and its independent test log. Read-only path
+selection confirms the original preferences raw output is now selectable with
+its explicit external scope; no actual historical dependency was replaced.
+
+The old standard expander report remains INCOMPLETE; no report is retagged and
+no canonical257 adoption occurs. Previously deleted caches were not reconstructed
+by these synthetic checks. No DotCC build or protocol/crypto execution occurred
+in the staging package. Compiler evidence in the next section is separate.
+The bounded continuation is complete with no active child work; root retains
+about16.1GiB free and external storage about350GiB. Capacity recovery closes
+no provider, original-runtime, upstream or sealed-P6 hold.
 
 ## Independent connection compiler check (2026-10-24)
 

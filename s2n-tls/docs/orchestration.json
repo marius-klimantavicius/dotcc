@@ -1,5 +1,5 @@
 {
-  "status": "bounded-independent-compiler-infrastructure-in-progress; full-campaign-incomplete",
+  "status": "bounded-independent-compiler-infrastructure-complete; full-campaign-held-incomplete",
   "supervisor": {
     "providerInstanceId": "codex",
     "model": "gpt-6.1-sol",
@@ -10,18 +10,9 @@
     "model": "gpt-6.1-sol",
     "reasoningEffort": "xhigh"
   },
-  "active_tasks": [
-    {
-      "package": "independent-managed-staging",
-      "taskId": "node:delegated-task:command%3Amcp%3Ac1cf210f-3a9e-4864-b261-5b23520e8f9f%3Adelegate-task%3As2n-independent-runner-20261024-round1",
-      "providerInstanceId": "codex",
-      "model": "gpt-6.1-sol",
-      "reasoningEffort": "xhigh",
-      "ownership": "Managed staging/cache/output helper and synthetic regressions; no DotCC builds or protocol execution"
-    }
-  ],
-  "shared_build_owner": "No active compiler builder; managed-staging task uses synthetic fixtures only; supervisor owns integration",
-  "next": "Integrate generic external managed staging fixes and synthetic current evidence. Connection compile-only proof passed with existing260387e88; runtime/all4 assertions remain UNRUN. No protocol/provider qualification, candidate application, controller restart or canonical257 adoption.",
+  "active_tasks": [],
+  "shared_build_owner": "none; both bounded tasks completed with no pending child runs",
+  "next": "Bounded compiler/build-infrastructure target is complete. Use explicit external output scopes for future independently authorized ordinary builds. Original connection runtime/all4, defaultCA/EC/ECC, complete C/Python and sealed P6 remain held outside this continuation; do not retry rejected execution, apply private candidates or restart stopped controllers.",
   "completed_tasks": [
     {
       "package": "inputs-native",
@@ -104,6 +95,18 @@
       "terminal_status": "completed-no-source-change-needed",
       "receipt": "/mnt/storage/dotcc-s2n-qualification-20261024/independent-infrastructure-20261024/compiler-connection/receipt.json",
       "supervisor_review": "/mnt/storage/dotcc-s2n-qualification-20261024/independent-infrastructure-20261024/compiler-connection/supervisor-review.json"
+    },
+    {
+      "package": "independent-managed-staging",
+      "taskId": "node:delegated-task:command%3Amcp%3Ac1cf210f-3a9e-4864-b261-5b23520e8f9f%3Adelegate-task%3As2n-independent-runner-20261024-round1",
+      "providerInstanceId": "codex",
+      "model": "gpt-6.1-sol",
+      "reasoningEffort": "xhigh",
+      "ownership": "Managed staging/cache/output helper and synthetic regressions; no DotCC builds or protocol execution",
+      "terminal_status": "completed-validated-synthetic-runner-fix",
+      "receipt": "/mnt/storage/dotcc-s2n-qualification-20261024/independent-infrastructure-20261024/final-evidence/receipt.json",
+      "supervisor_review": "/mnt/storage/dotcc-s2n-qualification-20261024/independent-infrastructure-20261024/runner-supervisor-review/receipt.json",
+      "commit": "5c02f59de"
     }
   ],
   "commits": [
@@ -159,7 +162,9 @@
     "4317f8d4b",
     "8d6cf122e",
     "e2e671460",
-    "260387e88"
+    "260387e88",
+    "c22ee81d4",
+    "5c02f59de"
   ],
   "current_attempt": "20261023-223542-f7e7054e (closed175/raw+processed; final EC202209f4 authored provider and CBC fixturec0aa38f7 qualification)",
   "last_complete_link": "20261023-223542-f7e7054e",
@@ -300,7 +305,9 @@
     "original_preferences_actual_all4_audit": "/mnt/storage/dotcc-s2n-qualification-20261024/root-braced-string-compiler/original-preferences/all4-20261024/actual-assertions-all4-independent-audit.json",
     "delegated_task_closeout": "/mnt/storage/dotcc-s2n-qualification-20261024/root-capacity-audit/delegated-task-closeout-20261024/receipt.json",
     "independent_connection_compiler": "/mnt/storage/dotcc-s2n-qualification-20261024/independent-infrastructure-20261024/compiler-connection/receipt.json",
-    "independent_connection_compiler_supervisor_review": "/mnt/storage/dotcc-s2n-qualification-20261024/independent-infrastructure-20261024/compiler-connection/supervisor-review.json"
+    "independent_connection_compiler_supervisor_review": "/mnt/storage/dotcc-s2n-qualification-20261024/independent-infrastructure-20261024/compiler-connection/supervisor-review.json",
+    "independent_managed_staging": "/mnt/storage/dotcc-s2n-qualification-20261024/independent-infrastructure-20261024/final-evidence/receipt.json",
+    "independent_managed_staging_supervisor_review": "/mnt/storage/dotcc-s2n-qualification-20261024/independent-infrastructure-20261024/runner-supervisor-review/receipt.json"
   },
   "discovery_correction": {
     "original": "artifacts/managed/full-owning-matrix/report.json",
@@ -323,7 +330,7 @@
   "open_gates": [
     "Complete final-source257 original C\u00d74 and18 original Python\u00d74; stopped C62/10/185 and historical Python13passed/1running/58unrun retained plus separate actual2588 leaf",
     "Provider defaultCA/EC and ECC caller qualification remain held; rejected provider work is not retried or applied",
-    "Connection translation/C# build passed existing260387e88; original runtime/all4 UNRUN. Managed external staging integration remains current bounded work; no full-upstream credit from build checks.",
+    "Connection translation/C# build passed existing260387e88; original runtime/all4 UNRUN. External managed staging repair5c02f59de passes23 synthetic tests; original preferences standard expander remains historically incomplete and is not adopted.",
     "Final deep-sealed framework retained-input acceptance and P6 closure"
   ],
   "native_python_gate": "18families/22186applicable originalcases strictpassed; nine HRR original combinations explicitly inapplicable with nine separate no-HRR controls. Historical failures/skips/retries preserved.",
@@ -402,7 +409,18 @@
       ],
       "scope": "443 inactive .NET obj directories, six temporary probe/planning directories, 4713 native intermediates and Python caches; about2.30GiB scoped reclamation",
       "effect": "Capacity shortage resolved for bounded work only. Sources/bin/publish/actual logs/results preserved. Deleted caches may be rebuilt as needed; historical cache hash closures no longer establish continued cache presence. All qualification/source/safeguard holds remain."
-    }
+    },
+    "status": "complete-within-explicit-scope",
+    "completed_utc": "2026-10-24T08:54:01.759811+00:00",
+    "commits": [
+      "c22ee81d4",
+      "5c02f59de"
+    ],
+    "resource_postflight": {
+      "root_free_bytes": 17273053184,
+      "external_free_bytes": 376248864768
+    },
+    "next_independent_use": "New compiler/build-only investigations can reuse the private output scope and exact-evidence guards. No remaining build blocker was found for connection_test. Broader runtime qualification is a separate held task."
   },
   "observed_connection_compilation": {
     "status": "resolved-existing-fix-build-only",
@@ -418,5 +436,16 @@
     "fresh_evidence_files_verified": 2042,
     "assertions": "UNRUN by scope",
     "canonical_adoption": false
+  },
+  "managed_staging_resolution": {
+    "status": "passed-synthetic-controls-no-historical-adoption",
+    "commit": "5c02f59de",
+    "option": "--dependency-output-root PATH (repeatable); standalone --work-root and recorded manifest scopes supported",
+    "behavior": "Explicit absolute external ownership scope; optional storage failure separately retained after exact pre/post receipt/source/output/runtime checks; identity drift still invalidates case;2GiB store allocation reserve checked",
+    "tests": "23 synthetic no-network tests passed independently; existing legacy/external layout checks; guard and partial failure controls",
+    "receipt": "/mnt/storage/dotcc-s2n-qualification-20261024/independent-infrastructure-20261024/final-evidence/receipt.json",
+    "receipt_sha256": "02c5a1255cc726db7cc38c75c3ddc14de681bdfeefcd6cfae81990c7c49e8dd2",
+    "historical_standard_expander": "incomplete, original bytes preserved",
+    "canonical257_adopted": false
   }
 }
