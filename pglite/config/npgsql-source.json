@@ -323,8 +323,8 @@
   },
   "adapted_files": {
     "Internal/NpgsqlConnector.cs": {
-      "reason": "Select managed embedded startup without sockets/authentication; owner-controlled shutdown instead of frontend Terminate; reject unsupported timeouts/COPY operation state/notification wait/cancellation; lock embedded StartUserAction and EndUserAction state transitions.",
-      "sha256": "55b16cd1026a850803d28243eff5eba3316711ce8f57ee8eca6f3a5711b4806a"
+      "reason": "Select managed embedded startup without sockets/authentication; owner-controlled shutdown instead of frontend Terminate; reject unsupported timeouts/COPY operation state/notification wait/cancellation; lock embedded StartUserAction and EndUserAction state transitions. Capture embedded shutdown errors while finishing client cleanup and preserve genuine shutdown quarantine.",
+      "sha256": "4c9556c730446a360404fd283133d83e3a7ce62adb0933de650f91a7a0bb22ad"
     },
     "Internal/NpgsqlReadBuffer.cs": {
       "reason": "Accept embedded infinite read timeout without dereferencing a nonexistent socket; reject finite timeout.",
@@ -343,8 +343,8 @@
       "sha256": "5b282f2010e0d3f786d02be966952ebc8109565ee71c713403f48998ec28a267"
     },
     "NpgsqlConnection.cs": {
-      "reason": "Reject streaming COPY APIs before binding; preserve embedded data source by rejecting ConnectionString reassignment, CloneWith variants, ChangeDatabase and distributed enlistment. Ordinary ICloneable.Clone retains upstream embedded binding.",
-      "sha256": "de91f47b97275ef589eb2ab2dfb23a65e23d1bed30a2aaf4c83f08c0b03afc0d"
+      "reason": "Reject streaming COPY APIs before binding; preserve embedded data source by rejecting ConnectionString reassignment, CloneWith variants, ChangeDatabase and distributed enlistment. Ordinary ICloneable.Clone retains upstream embedded binding. Reject type reload cancellation before mutation; report embedded close errors after logical close/unbinding, retaining genuine shutdown failure on retries.",
+      "sha256": "84baed951da7e75a5792d6b4b27f3402114a02e82161f48f4f09a3824e9c6442"
     },
     "NpgsqlDataReader.cs": {
       "reason": "Enforce cancellation-token policy in buffered fast paths for ReadAsync, NextResultAsync, GetFieldValueAsync and IsDBNullAsync, as well as connector nested operations.",
@@ -365,6 +365,14 @@
     "SourceGenerators/Npgsql.SourceGenerators.csproj": {
       "reason": "Standalone copied build-time analyzer project with explicit package versions; Scriban.Signed6.5.1 deliberately upgraded to7.2.1 to address restore advisories; generator source/template unchanged and not shipped as runtime dependencies. Treat NativeAOT/publish/runtime properties as local and explicitly disable them so static-graph restore cannot native-publish the netstandard compiler plugin.",
       "sha256": "3f1cd517efdee99c766f8ba5f3a7dbb80a75e9bc280406693e94bd75b435b527"
+    },
+    "NpgsqlActivitySource.cs": {
+      "reason": "Tag embedded activities without a fabricated network endpoint or backend PID; tracing listeners must not break opening or commands.",
+      "sha256": "a99f516b5a0326742ad712607946a8ffb8ec9a4dbc8590a94ed8ffda173f1a0a"
+    },
+    "NpgsqlDataSource.cs": {
+      "reason": "Acquire connector ownership before replacing the codec catalog during bootstrap/reload; restore the previous working state when catalog loading fails.",
+      "sha256": "310b28f9bc9661a307ecfc9bc12876537dc9848cf3007806b88e61519b6e4a03"
     }
   },
   "authored_files": [
@@ -388,5 +396,8 @@
   "runtime_dependencies": {
     "Microsoft.Extensions.Logging.Abstractions": "10.0.0",
     "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.0 (transitive)"
-  }
+  },
+  "authored_behavior_notes": [
+    "The embedded connector enables real BeginReportingGUCOptions after remote attachment; subsequent SET/RESET reports flow through original raw protocol bytes. Initial startup values still come from actual current_setting/session_user queries."
+  ]
 }

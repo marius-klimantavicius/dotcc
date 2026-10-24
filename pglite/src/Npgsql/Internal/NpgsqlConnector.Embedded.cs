@@ -3,12 +3,15 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Managed.PGlite;
+using Backend = Managed.PGlite.Translated.PGlite;
 
 namespace Npgsql.Internal;
 
 public sealed partial class NpgsqlConnector
 {
     internal bool IsEmbedded => DataSource is NpgsqlEmbeddedDataSource;
+    internal Exception? EmbeddedCleanupError { get; private set; }
+    internal bool EmbeddedEngineClosed { get; private set; }
 
     async Task OpenEmbedded(CancellationToken cancellationToken)
     {
@@ -18,7 +21,15 @@ public sealed partial class NpgsqlConnector
             throw new NotSupportedException("Embedded sessions require pooling, multiplexing, enlistment, keepalive and all client timeouts to be disabled.");
         var stream = await ((NpgsqlEmbeddedDataSource)DataSource).OpenStream(cancellationToken).ConfigureAwait(false);
         _stream = stream;
-        await stream.Worker.InvokeAsync(db => db.InvokeBackend(EmbeddedCopyGuard.Install)).ConfigureAwait(false);
+        await stream.Worker.InvokeAsync(db => db.InvokeBackend(() =>
+        {
+            EmbeddedCopyGuard.Install();
+            // --single startup predates remote protocol attachment. Enable the
+            // real engine's ParameterStatus reporting now, so later SET/RESET
+            // updates Npgsql's parser and session metadata through raw frames.
+            Backend.BeginReportingGUCOptions();
+            Backend.dpg_flush();
+        })).ConfigureAwait(false);
         TextEncoding = NpgsqlWriteBuffer.UTF8Encoding;
         RelaxedTextEncoding = NpgsqlWriteBuffer.RelaxedUTF8Encoding;
         ReadBuffer = new NpgsqlReadBuffer(this, stream, null, Settings.ReadBufferSize, TextEncoding, RelaxedTextEncoding);

@@ -22,6 +22,8 @@ commands, readers, codecs, transactions or protocol machinery.
 | `NpgsqlDataReader.cs` | Enforce cancellation-token policy in buffered fast paths for ReadAsync, NextResultAsync, GetFieldValueAsync and IsDBNullAsync, as well as connector nested operations. |
 | `NpgsqlSlimDataSourceBuilder.cs` | Expose PrepareConfiguration internally so embedded data source reuses AOT-compatible original slim builder/configuration. |
 | `NpgsqlTransaction.cs` | Enforce cancellation-token policy for SaveAsync which otherwise bypasses normal connector registration. |
+| `NpgsqlActivitySource.cs` | Emit embedded tracing tags without assuming a socket endpoint or inventing a network backend PID; active diagnostic listeners must not break commands. |
+| `NpgsqlDataSource.cs` | Acquire connector ownership before replacing the working codec catalog during reload; restore that catalog if loading fails. |
 | `README.md` | Document embedded factory, distinct identity/conflict with stock Npgsql, real startup/type bootstrap, supported lifetime and explicit exclusions; retain original upstream README below. |
 | `SourceGenerators/Npgsql.SourceGenerators.csproj` | Standalone copied build-time analyzer project with explicit package versions; Scriban.Signed6.5.1 deliberately upgraded to7.2.1 to address restore advisories; generator source/template unchanged and not shipped as runtime dependencies. Treat NativeAOT/publish/runtime properties as local and explicitly disable them so static-graph restore cannot native-publish the netstandard compiler plugin. |
 
@@ -36,6 +38,18 @@ commands, readers, codecs, transactions or protocol machinery.
 The supervisor-owned API adds only an internal context dispatch bridge and friend
 assembly permission, so hook installation uses the same existing owner dispatch.
 Those API changes are outside this directory's ownership.
+
+After remote attachment, embedded startup also enables the engine's actual GUC
+reporting and flushes its initial status messages into the configuration
+exchange. Startup values come from real SQL settings; subsequent SET/RESET
+ParameterStatus frames pass unchanged through the raw transport. This keeps
+Npgsql's named-parameter parser synchronized with standard_conforming_strings.
+
+Embedded disposal captures failures through complete connector cleanup and
+closes/unbinds the logical connection before throwing. A managed cleanup error
+after actual engine closure releases the lease; genuine failed shutdown retains
+quarantine and continues to reject close/open retries. ReloadTypesAsync rejects
+unsupported cancellation before any catalog mutation.
 
 ## Build and identity
 

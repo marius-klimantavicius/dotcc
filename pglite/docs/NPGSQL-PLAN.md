@@ -88,3 +88,12 @@ Raw/processed NativeAOT execution, the complete current regression matrix and
 independent final review remain required. The initial source-generator publish
 property failure was repaired in its build-time project; a PublishAot-configured
 managed build passes. This does not substitute for native executable execution.
+
+The first independent review reproduced four defects: missing live GUC reports,
+tracing's assumption of a network endpoint, swallowed embedded close failures,
+and type reload rejecting after codec-state mutation. Each was repaired and
+independently exercised through the actual engine. The current processed JIT
+suite passes 5,144 assertions in 41 cases. A separate process probe exercises
+response-limit quarantine through public options/SQL; it deliberately retains
+the failed owner and PGDATA rather than permitting a false successful close.
+Full native matrix acceptance is still required.

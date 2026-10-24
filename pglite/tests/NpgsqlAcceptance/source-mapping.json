@@ -1,0 +1,584 @@
+{
+  "schema": 1,
+  "release": "v10.0.1",
+  "archive_url": "https://codeload.github.com/npgsql/npgsql/tar.gz/refs/tags/v10.0.1",
+  "archive_sha256": "c4b1213bd847c387d9ed404027444803f2257008f71ceeee81235958cac19174",
+  "core_pin": "29b6424aa312ec3556247db069939006dd27f878",
+  "classification": "Selected upstream-derived public assertions plus explicit embedded-profile regressions; not the entire upstream NUnit suite.",
+  "sources": {
+    "ConnectionTests.cs": {
+      "path": "test/Npgsql.Tests/ConnectionTests.cs",
+      "sha256": "cff64a1ae02e4d17c95f8a048a97b929c4dcb30fc04ea3b0364f2f100545cf3d",
+      "url": "https://github.com/npgsql/npgsql/blob/v10.0.1/test/Npgsql.Tests/ConnectionTests.cs"
+    },
+    "ReaderTests.cs": {
+      "path": "test/Npgsql.Tests/ReaderTests.cs",
+      "sha256": "6132085c5355d28bf6e4cb40eaf4a007799f92852ba235dbbcc90c9fa98f662e",
+      "url": "https://github.com/npgsql/npgsql/blob/v10.0.1/test/Npgsql.Tests/ReaderTests.cs"
+    },
+    "PrepareTests.cs": {
+      "path": "test/Npgsql.Tests/PrepareTests.cs",
+      "sha256": "77158222a87e1cb7082bd33ece409972ecd0cacf155e1c6a0cb0b84dfd4d0b34",
+      "url": "https://github.com/npgsql/npgsql/blob/v10.0.1/test/Npgsql.Tests/PrepareTests.cs"
+    },
+    "CommandTests.cs": {
+      "path": "test/Npgsql.Tests/CommandTests.cs",
+      "sha256": "7ebe421b291ad5522885195ffad9be6bb983a5d273cac3fa39a7d28b43f02d72",
+      "url": "https://github.com/npgsql/npgsql/blob/v10.0.1/test/Npgsql.Tests/CommandTests.cs"
+    },
+    "BatchTests.cs": {
+      "path": "test/Npgsql.Tests/BatchTests.cs",
+      "sha256": "e9d5f9d384076c774ba9769e7fb661bf86f23d273a77957ac5d40cd1bb66e476",
+      "url": "https://github.com/npgsql/npgsql/blob/v10.0.1/test/Npgsql.Tests/BatchTests.cs"
+    },
+    "TransactionTests.cs": {
+      "path": "test/Npgsql.Tests/TransactionTests.cs",
+      "sha256": "e76cc2ffcda3771c0a91a4f8f80d7efb9f2c4a3ac3148482556da92fab7fad0d",
+      "url": "https://github.com/npgsql/npgsql/blob/v10.0.1/test/Npgsql.Tests/TransactionTests.cs"
+    },
+    "Types/MiscTypeTests.cs": {
+      "path": "test/Npgsql.Tests/Types/MiscTypeTests.cs",
+      "sha256": "39aed8a3442a61188b38d55f2b4d5bdb7f4e23d5fd150b1f9f7537de45d65b71",
+      "url": "https://github.com/npgsql/npgsql/blob/v10.0.1/test/Npgsql.Tests/Types/MiscTypeTests.cs"
+    },
+    "Types/TextTests.cs": {
+      "path": "test/Npgsql.Tests/Types/TextTests.cs",
+      "sha256": "7b78738eb4750686a905337a11d4ffd10d586be3000b45613e068eb5054d1ada",
+      "url": "https://github.com/npgsql/npgsql/blob/v10.0.1/test/Npgsql.Tests/Types/TextTests.cs"
+    },
+    "Types/ByteaTests.cs": {
+      "path": "test/Npgsql.Tests/Types/ByteaTests.cs",
+      "sha256": "578dc436a44e0a4090fbf84e39327b252c1b01f72cf5db2ee52154c3d15a9cab",
+      "url": "https://github.com/npgsql/npgsql/blob/v10.0.1/test/Npgsql.Tests/Types/ByteaTests.cs"
+    },
+    "Types/NumericTypeTests.cs": {
+      "path": "test/Npgsql.Tests/Types/NumericTypeTests.cs",
+      "sha256": "af9ce5010beb976df16ed5a6fd2dc4ab08b6d34d14236c86b96d94a0e9a81c19",
+      "url": "https://github.com/npgsql/npgsql/blob/v10.0.1/test/Npgsql.Tests/Types/NumericTypeTests.cs"
+    },
+    "Types/NumericTests.cs": {
+      "path": "test/Npgsql.Tests/Types/NumericTests.cs",
+      "sha256": "5dbf59e47ef014a2f7e6dd7306afe1e1237024d7623854885e6aa6c072507aee",
+      "url": "https://github.com/npgsql/npgsql/blob/v10.0.1/test/Npgsql.Tests/Types/NumericTests.cs"
+    },
+    "Types/ArrayTests.cs": {
+      "path": "test/Npgsql.Tests/Types/ArrayTests.cs",
+      "sha256": "3db1351e0806106a5fa487d08b3bfc596f997066fb00d794d3e7d91d4e9d0ac2",
+      "url": "https://github.com/npgsql/npgsql/blob/v10.0.1/test/Npgsql.Tests/Types/ArrayTests.cs"
+    },
+    "Types/DateTimeTests.cs": {
+      "path": "test/Npgsql.Tests/Types/DateTimeTests.cs",
+      "sha256": "ded25321ba982f5ec7f9daeef160e69d7dd1022d9b5a71a3464a8048bcd14aff",
+      "url": "https://github.com/npgsql/npgsql/blob/v10.0.1/test/Npgsql.Tests/Types/DateTimeTests.cs"
+    },
+    "Support/TestBase.cs": {
+      "path": "test/Npgsql.Tests/Support/TestBase.cs",
+      "sha256": "9f14ed2b4ac55d7d3fbfcb0c68737a9af9db653e58192c527aef6d08e422527e",
+      "url": "https://github.com/npgsql/npgsql/blob/v10.0.1/test/Npgsql.Tests/Support/TestBase.cs"
+    },
+    "SqlQueryParserTests.cs": {
+      "path": "test/Npgsql.Tests/SqlQueryParserTests.cs",
+      "sha256": "e3bf4a0858412a2b967f76a35fd700a1bd0087663b514380ec6ed7a0e8af0d58",
+      "url": "https://github.com/npgsql/npgsql/blob/v10.0.1/test/Npgsql.Tests/SqlQueryParserTests.cs"
+    },
+    "TracingTests.cs": {
+      "path": "test/Npgsql.Tests/TracingTests.cs",
+      "sha256": "30c9e76eafee63058c1bf3b266d415ce6cd1521c3d16bf4a4e57ed32259d1ab1",
+      "url": "https://github.com/npgsql/npgsql/blob/v10.0.1/test/Npgsql.Tests/TracingTests.cs"
+    }
+  },
+  "cases": [
+    {
+      "id": "protocol.server-metadata",
+      "sources": [
+        {
+          "file": "ConnectionTests.cs",
+          "methods": [
+            "PostgreSqlVersion_ServerVersion",
+            "Client_encoding_is_UTF8_by_default"
+          ]
+        }
+      ],
+      "kind": "upstream-derived"
+    },
+    {
+      "id": "protocol.same-pin-oracle",
+      "sources": [],
+      "kind": "embedded-profile-regression"
+    },
+    {
+      "id": "protocol.reader-metadata",
+      "sources": [
+        {
+          "file": "ReaderTests.cs",
+          "methods": [
+            "FieldCount",
+            "GetFieldType",
+            "GetDataTypeName",
+            "GetDataTypeOID",
+            "GetName",
+            "GetOrdinal_case_insensitive",
+            "Get_value_by_name"
+          ]
+        }
+      ],
+      "kind": "upstream-derived"
+    },
+    {
+      "id": "protocol.prepared-reuse",
+      "sources": [
+        {
+          "file": "PrepareTests.cs",
+          "methods": [
+            "Basic",
+            "Async",
+            "Unprepare",
+            "Reuse_prepared_statement"
+          ]
+        }
+      ],
+      "kind": "upstream-derived"
+    },
+    {
+      "id": "protocol.multiple-results",
+      "sources": [
+        {
+          "file": "CommandTests.cs",
+          "methods": [
+            "Multiple_statements_with_parameters"
+          ]
+        }
+      ],
+      "kind": "upstream-derived"
+    },
+    {
+      "id": "protocol.batch-parameters",
+      "sources": [
+        {
+          "file": "BatchTests.cs",
+          "methods": [
+            "Named_parameters",
+            "Positional_parameters"
+          ]
+        }
+      ],
+      "kind": "upstream-derived"
+    },
+    {
+      "id": "protocol.batch-records-affected",
+      "sources": [
+        {
+          "file": "BatchTests.cs",
+          "methods": [
+            "RecordsAffected_and_Rows"
+          ]
+        }
+      ],
+      "kind": "upstream-derived"
+    },
+    {
+      "id": "protocol.batch-error-recovery",
+      "sources": [
+        {
+          "file": "BatchTests.cs",
+          "methods": [
+            "Batch_with_result_sets_and_error",
+            "NpgsqlException_references_BatchCommand_with_multiple_commands"
+          ]
+        }
+      ],
+      "kind": "upstream-derived"
+    },
+    {
+      "id": "protocol.transactions-commit-rollback",
+      "sources": [
+        {
+          "file": "TransactionTests.cs",
+          "methods": [
+            "Commit",
+            "CommitAsync",
+            "Rollback",
+            "RollbackAsync"
+          ]
+        }
+      ],
+      "kind": "upstream-derived"
+    },
+    {
+      "id": "protocol.transaction-dispose-rollback",
+      "sources": [
+        {
+          "file": "TransactionTests.cs",
+          "methods": [
+            "Rollback_on_Dispose",
+            "Empty_rollback"
+          ]
+        }
+      ],
+      "kind": "upstream-derived"
+    },
+    {
+      "id": "protocol.sqlstate-recovery",
+      "sources": [
+        {
+          "file": "CommandTests.cs",
+          "methods": [
+            "ExecuteNonQuery_Throws_PostgresException"
+          ]
+        },
+        {
+          "file": "TransactionTests.cs",
+          "methods": [
+            "Rollback_failed"
+          ]
+        }
+      ],
+      "kind": "upstream-derived"
+    },
+    {
+      "id": "protocol.early-reader-dispose",
+      "sources": [
+        {
+          "file": "ReaderTests.cs",
+          "methods": [
+            "Cleans_up_ok_with_dispose_calls",
+            "GetBytes"
+          ]
+        }
+      ],
+      "kind": "upstream-derived"
+    },
+    {
+      "id": "protocol.same-connection-misuse",
+      "sources": [
+        {
+          "file": "ReaderTests.cs",
+          "methods": [
+            "Reader_is_still_open"
+          ]
+        }
+      ],
+      "kind": "upstream-derived"
+    },
+    {
+      "id": "protocol.parameter-reuse",
+      "sources": [
+        {
+          "file": "CommandTests.cs",
+          "methods": [
+            "Same_command_different_param_values",
+            "Same_command_different_param_instances"
+          ]
+        }
+      ],
+      "kind": "upstream-derived"
+    },
+    {
+      "id": "codecs.null",
+      "sources": [
+        {
+          "file": "ReaderTests.cs",
+          "methods": [
+            "Null"
+          ]
+        },
+        {
+          "file": "Types/MiscTypeTests.cs",
+          "methods": [
+            "Null"
+          ]
+        }
+      ],
+      "kind": "upstream-derived"
+    },
+    {
+      "id": "codecs.text-unicode",
+      "sources": [
+        {
+          "file": "Types/TextTests.cs",
+          "methods": [
+            "Text_as_string",
+            "Truncate"
+          ]
+        }
+      ],
+      "kind": "upstream-derived"
+    },
+    {
+      "id": "codecs.bytea",
+      "sources": [
+        {
+          "file": "Types/ByteaTests.cs",
+          "methods": [
+            "Bytea"
+          ]
+        }
+      ],
+      "kind": "upstream-derived"
+    },
+    {
+      "id": "codecs.integer-float-bool",
+      "sources": [
+        {
+          "file": "Types/NumericTypeTests.cs",
+          "methods": [
+            "Int16",
+            "Int32",
+            "Int64",
+            "Float",
+            "Double"
+          ]
+        },
+        {
+          "file": "Types/MiscTypeTests.cs",
+          "methods": [
+            "Boolean"
+          ]
+        }
+      ],
+      "kind": "upstream-derived"
+    },
+    {
+      "id": "codecs.numeric-all-upstream-vectors",
+      "sources": [
+        {
+          "file": "Types/NumericTests.cs",
+          "methods": [
+            "Read",
+            "Write",
+            "NumericZero_WithScale"
+          ]
+        }
+      ],
+      "kind": "upstream-derived"
+    },
+    {
+      "id": "codecs.numeric-overflow-recovery",
+      "sources": [
+        {
+          "file": "Types/NumericTests.cs",
+          "methods": [
+            "Read_overflow_is_safe"
+          ]
+        }
+      ],
+      "kind": "upstream-derived"
+    },
+    {
+      "id": "codecs.arrays",
+      "sources": [
+        {
+          "file": "Types/ArrayTests.cs",
+          "methods": [
+            "Arrays",
+            "NullableInts",
+            "Read_null_as_non_nullable_array_throws",
+            "Strings_with_null"
+          ]
+        }
+      ],
+      "kind": "upstream-derived"
+    },
+    {
+      "id": "codecs.date-time-uuid",
+      "sources": [
+        {
+          "file": "Types/DateTimeTests.cs",
+          "methods": [
+            "Date_as_DateOnly",
+            "Time_as_TimeOnly",
+            "Timestamp_as_DateTime",
+            "Timestamptz_as_DateTime",
+            "Interval_as_TimeSpan"
+          ]
+        },
+        {
+          "file": "Types/MiscTypeTests.cs",
+          "methods": [
+            "Uuid"
+          ]
+        }
+      ],
+      "kind": "upstream-derived"
+    },
+    {
+      "id": "codecs.large-fragmented-values",
+      "sources": [
+        {
+          "file": "Types/ByteaTests.cs",
+          "methods": [
+            "Bytea_long"
+          ]
+        },
+        {
+          "file": "Types/TextTests.cs",
+          "methods": [
+            "Text_long"
+          ]
+        }
+      ],
+      "kind": "upstream-derived"
+    },
+    {
+      "id": "codecs.sequential-getbytes",
+      "sources": [
+        {
+          "file": "ReaderTests.cs",
+          "methods": [
+            "GetBytes"
+          ]
+        }
+      ],
+      "kind": "upstream-derived"
+    },
+    {
+      "id": "excluded.copy-apis",
+      "sources": [],
+      "kind": "embedded-profile-regression"
+    },
+    {
+      "id": "excluded.copy-sql",
+      "sources": [],
+      "kind": "embedded-profile-regression"
+    },
+    {
+      "id": "supported.file-copy",
+      "sources": [],
+      "kind": "embedded-profile-regression"
+    },
+    {
+      "id": "excluded.cancel-timeout-tokens",
+      "sources": [
+        {
+          "file": "CommandTests.cs",
+          "methods": [
+            "Cancel",
+            "Timeout"
+          ]
+        }
+      ],
+      "kind": "embedded-profile-regression"
+    },
+    {
+      "id": "excluded.pooling-multiplexing-profile",
+      "sources": [],
+      "kind": "embedded-profile-regression"
+    },
+    {
+      "id": "lifetime.exclusive-sessions",
+      "sources": [],
+      "kind": "embedded-profile-regression"
+    },
+    {
+      "id": "lifetime.prepare-reopen-fixture",
+      "sources": [
+        {
+          "file": "TransactionTests.cs",
+          "methods": [
+            "Rollback_on_Close"
+          ]
+        }
+      ],
+      "kind": "embedded-profile-regression"
+    },
+    {
+      "id": "lifetime.same-datasource-reopen-reset",
+      "sources": [
+        {
+          "file": "TransactionTests.cs",
+          "methods": [
+            "Empty_Dispose"
+          ]
+        },
+        {
+          "file": "ConnectionTests.cs",
+          "methods": [
+            "Basic_lifecycle"
+          ]
+        }
+      ],
+      "kind": "embedded-profile-regression"
+    },
+    {
+      "id": "lifetime.new-datasource-persistence",
+      "sources": [],
+      "kind": "embedded-profile-regression"
+    },
+    {
+      "id": "lifetime.other-datasource-exclusive",
+      "sources": [],
+      "kind": "embedded-profile-regression"
+    },
+    {
+      "id": "excluded.wait-and-profile-escape",
+      "sources": [],
+      "kind": "embedded-profile-regression"
+    },
+    {
+      "id": "protocol.batch-constant-error-identity",
+      "sources": [],
+      "kind": "embedded-profile-regression"
+    },
+    {
+      "id": "protocol.live-session-gucs",
+      "sources": [
+        {
+          "file": "CommandTests.cs",
+          "methods": [
+            "Non_standards_conforming_strings"
+          ]
+        },
+        {
+          "file": "SqlQueryParserTests.cs",
+          "methods": [
+            "Non_conforming_string"
+          ]
+        }
+      ],
+      "kind": "upstream-derived-and-embedded-regression"
+    },
+    {
+      "id": "protocol.tracing-all-data",
+      "sources": [
+        {
+          "file": "TracingTests.cs",
+          "methods": [
+            "CommandExecute",
+            "CommandExecute_error"
+          ]
+        }
+      ],
+      "kind": "upstream-derived-and-embedded-regression"
+    },
+    {
+      "id": "protocol.rejected-reload-preserves-codecs",
+      "sources": [
+        {
+          "file": "CommandTests.cs",
+          "methods": [
+            "Use_after_reload_types_invalidates_cached_infos"
+          ]
+        }
+      ],
+      "kind": "embedded-profile-regression"
+    },
+    {
+      "id": "lifetime.tracing-open",
+      "sources": [
+        {
+          "file": "TracingTests.cs",
+          "methods": [
+            "PhysicalOpen"
+          ]
+        }
+      ],
+      "kind": "upstream-derived-and-embedded-regression"
+    },
+    {
+      "id": "lifetime.extension-close-failure",
+      "sources": [],
+      "kind": "embedded-profile-regression"
+    }
+  ],
+  "commit": "12d792ac2163596385152dcea5c68ba99769731f"
+}

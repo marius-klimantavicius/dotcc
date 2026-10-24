@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsAotCompatible>true</IsAotCompatible>
+    <TranslatedProject Condition="'$(TranslatedProject)' == ''">$(MSBuildThisFileDirectory)../../generated/TranslatedPGlite/TranslatedPGlite.csproj</TranslatedProject>
+    <InitdbTranslatedProject Condition="'$(InitdbTranslatedProject)' == ''">$(MSBuildThisFileDirectory)../../generated/TranslatedInitdb/TranslatedInitdb.csproj</InitdbTranslatedProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/Npgsql/Npgsql.csproj" />
+  </ItemGroup>
+  <Import Project="../../samples/ManagedConsumer/BootstrapAssets.targets" />
+  <Import Project="../../samples/ManagedConsumer/NativeAotNotices.targets" />
+</Project>

@@ -2482,6 +2482,8 @@ public sealed partial class NpgsqlConnector
 
                 if (connection is not null)
                 {
+                    if (IsEmbedded && EmbeddedCleanupError is { } cleanupError && !EmbeddedEngineClosed)
+                        connection.RecordEmbeddedShutdownFailure(new NpgsqlException("Embedded engine shutdown failed and remains quarantined.", cleanupError));
                     var closeLockTaken = connection.TakeCloseLock();
                     Debug.Assert(closeLockTaken);
                     if (Settings.ReplicationMode == ReplicationMode.Off)
@@ -2583,9 +2585,17 @@ public sealed partial class NpgsqlConnector
         {
             _stream?.Dispose();
         }
-        catch
+        catch (Exception error)
         {
-            // ignored
+            // A network stream close is best-effort; embedded disposal owns
+            // actual engine shutdown. Defer its failure until all client state
+            // is cleaned up and the logical connection is closed/unbound.
+            if (IsEmbedded) EmbeddedCleanupError ??= error;
+        }
+        finally
+        {
+            if (_stream is EmbeddedStream embedded)
+                EmbeddedEngineClosed = embedded.Worker.Closed;
         }
 
         if (CurrentReader != null)

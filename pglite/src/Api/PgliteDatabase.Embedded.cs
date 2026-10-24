@@ -10,8 +10,16 @@ public sealed unsafe partial class PgliteDatabase
     {
         ArgumentNullException.ThrowIfNull(operation);
         RequireQueryEntry();
-        int status = Dispatch(operation);
-        if (status != 0)
-            throw new IOException($"Embedded backend configuration unexpectedly yielded {status}.");
+        // Configuration can emit initial GUC reports. Keep those bytes in an
+        // owned, separate exchange; the connector obtains startup values from
+        // actual current_setting queries and subsequent reports use raw I/O.
+        transport.Begin([]);
+        try
+        {
+            int status = Dispatch(operation);
+            if (status != 0)
+                throw new IOException($"Embedded backend configuration unexpectedly yielded {status}.");
+        }
+        finally { transport.ReleaseRequest(); }
     }
 }

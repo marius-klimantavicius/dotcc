@@ -100,6 +100,13 @@ static class NpgsqlActivitySource
         // See #6336
         activity.SetTag("db.namespace", connector.Settings.Database ?? connector.InferredUserName);
 
+        if (connector.IsEmbedded)
+        {
+            activity.SetTag("db.npgsql.data_source", connector.DataSource.Name);
+            activity.SetTag("db.npgsql.embedded", true);
+            return;
+        }
+
         var endPoint = connector.ConnectedEndPoint;
         Debug.Assert(endPoint is not null);
         activity.SetTag("server.address", connector.Host);

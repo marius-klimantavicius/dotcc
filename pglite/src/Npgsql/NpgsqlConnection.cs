@@ -32,6 +32,10 @@ public sealed class NpgsqlConnection : DbConnection, ICloneable, IComponent
 
     // Set this when disposed is called.
     bool _disposed;
+    Exception? _embeddedShutdownFailure;
+
+    internal void RecordEmbeddedShutdownFailure(Exception error)
+        => _embeddedShutdownFailure ??= error;
 
     /// <summary>
     /// The connection string, without the password after open (unless Persist Security Info=true)
@@ -233,6 +237,8 @@ public sealed class NpgsqlConnection : DbConnection, ICloneable, IComponent
 
     internal Task Open(bool async, CancellationToken cancellationToken)
     {
+        if (_embeddedShutdownFailure is { } shutdownFailure)
+            throw new InvalidOperationException("The embedded engine failed to shut down and remains quarantined.", shutdownFailure);
         CheckClosed();
         Debug.Assert(Connector == null);
 
@@ -773,6 +779,8 @@ public sealed class NpgsqlConnection : DbConnection, ICloneable, IComponent
 
     internal Task Close(bool async)
     {
+        if (_embeddedShutdownFailure is { } shutdownFailure)
+            return Task.FromException(shutdownFailure);
         // Even though NpgsqlConnection isn't thread safe we'll make sure this part is.
         // Because we really don't want double returns to the pool.
         if (!TakeCloseLock())
@@ -894,6 +902,14 @@ public sealed class NpgsqlConnection : DbConnection, ICloneable, IComponent
             Connector = null;
             ConnectorBindingScope = ConnectorBindingScope.None;
             FullState = ConnectionState.Closed;
+
+            if (connector.IsEmbedded && connector.EmbeddedCleanupError is { } cleanupError)
+            {
+                var failure = new NpgsqlException("The embedded engine did not close cleanly.", cleanupError);
+                if (!connector.EmbeddedEngineClosed)
+                    RecordEmbeddedShutdownFailure(failure);
+                throw failure;
+            }
         }
         finally
         {
@@ -1942,6 +1958,7 @@ public sealed class NpgsqlConnection : DbConnection, ICloneable, IComponent
     /// </summary>
     public async Task ReloadTypesAsync(CancellationToken cancellationToken = default)
     {
+        if (_dataSource is NpgsqlEmbeddedDataSource) EmbeddedPolicy.CheckCancellation(cancellationToken);
         CheckReady();
 
         using var scope = StartTemporaryBindingScope(out var connector);

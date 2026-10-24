@@ -296,6 +296,11 @@ public abstract class NpgsqlDataSource : DbDataSource
             if (IsBootstrapped && !forceReload)
                 return;
 
+            // Reject cancellation or competing connection use before replacing
+            // the working catalog with the temporary bootstrap catalog.
+            using var userAction = connector.StartUserAction(ConnectorState.Executing, cancellationToken);
+            var previousReloadableState = connector.ReloadableState;
+
             // The type loading below will need to send queries to the database, and that depends on a type mapper being set up (even if its
             // empty). So we set up a minimal version here, and then later inject the actual DatabaseInfo.
             connector.ReloadableState = new(
@@ -309,8 +314,15 @@ public abstract class NpgsqlDataSource : DbDataSource
 
             NpgsqlDatabaseInfo databaseInfo;
 
-            using (connector.StartUserAction(ConnectorState.Executing, cancellationToken))
+            try
+            {
                 databaseInfo = await NpgsqlDatabaseInfo.Load(connector, timeout, async).ConfigureAwait(false);
+            }
+            catch
+            {
+                connector.ReloadableState = previousReloadableState;
+                throw;
+            }
 
             var serializerOptions = new PgSerializerOptions(databaseInfo, _resolverChain, CreateTimeZoneProvider(connector.Timezone))
             {

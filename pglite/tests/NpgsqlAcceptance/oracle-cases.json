@@ -1,0 +1,313 @@
+[
+  {
+    "name": "version-encoding",
+    "sql": "SELECT current_setting('server_version')::text, current_setting('server_encoding')::text",
+    "rows": [
+      [
+        "18.6",
+        "UTF8"
+      ]
+    ],
+    "ready": "I",
+    "commands": [
+      "SELECT 1"
+    ]
+  },
+  {
+    "name": "application-name-canonical-ascii",
+    "sql": "SET application_name='npgsql-live-Žąsis'; SHOW application_name; RESET application_name",
+    "rows": [
+      [
+        "npgsql-live-\\xc5\\xbd\\xc4\\x85sis"
+      ]
+    ],
+    "ready": "I",
+    "commands": [
+      "SET",
+      "SHOW",
+      "RESET"
+    ]
+  },
+  {
+    "name": "unicode-and-null",
+    "sql": "SELECT 'Žąsis 日本語 🦆'::text, NULL::text, ''::text",
+    "rows": [
+      [
+        "Žąsis 日本語 🦆",
+        null,
+        ""
+      ]
+    ],
+    "ready": "I",
+    "commands": [
+      "SELECT 1"
+    ]
+  },
+  {
+    "name": "bytea-all-bits",
+    "sql": "SELECT encode(decode('00017f80feff','hex'),'hex')::text",
+    "rows": [
+      [
+        "00017f80feff"
+      ]
+    ],
+    "ready": "I",
+    "commands": [
+      "SELECT 1"
+    ]
+  },
+  {
+    "name": "integer-bounds",
+    "sql": "SELECT '-32768'::smallint::text, 2147483647::integer::text, '-9223372036854775808'::bigint::text",
+    "rows": [
+      [
+        "-32768",
+        "2147483647",
+        "-9223372036854775808"
+      ]
+    ],
+    "ready": "I",
+    "commands": [
+      "SELECT 1"
+    ]
+  },
+  {
+    "name": "numeric-scale",
+    "sql": "SELECT 0.0000000000000000000000000001::numeric::text, 1234567844445555.000000000::numeric::text, 0.00::numeric::text",
+    "rows": [
+      [
+        "0.0000000000000000000000000001",
+        "1234567844445555.000000000",
+        "0.00"
+      ]
+    ],
+    "ready": "I",
+    "commands": [
+      "SELECT 1"
+    ]
+  },
+  {
+    "name": "numeric-rounding",
+    "sql": "SELECT 1.5::numeric(10,0)::text, 2.5::numeric(10,0)::text, (-2.5)::numeric(10,0)::text",
+    "rows": [
+      [
+        "2",
+        "3",
+        "-3"
+      ]
+    ],
+    "ready": "I",
+    "commands": [
+      "SELECT 1"
+    ]
+  },
+  {
+    "name": "arrays",
+    "sql": "SELECT ARRAY[1,2,NULL,3]::text, ARRAY['a','Žąsis',NULL]::text, ARRAY[[1,2],[7,8]]::text",
+    "rows": [
+      [
+        "{1,2,NULL,3}",
+        "{a,Žąsis,NULL}",
+        "{{1,2},{7,8}}"
+      ]
+    ],
+    "ready": "I",
+    "commands": [
+      "SELECT 1"
+    ]
+  },
+  {
+    "name": "date-time-uuid",
+    "sql": "SELECT '2020-10-01'::date::text, '10:45:34.5'::time::text, '1998-04-12 13:26:38'::timestamp::text, 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11'::uuid::text",
+    "rows": [
+      [
+        "2020-10-01",
+        "10:45:34.5",
+        "1998-04-12 13:26:38",
+        "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+      ]
+    ],
+    "ready": "I",
+    "commands": [
+      "SELECT 1"
+    ]
+  },
+  {
+    "name": "large-server-value",
+    "sql": "SELECT length(repeat('Ž🦆',100000))::text, octet_length(repeat('Ž🦆',100000))::text, md5(repeat('abc',100000))::text",
+    "rows": [
+      [
+        "200000",
+        "600000",
+        "738099772b5a9e6727a93949be623917"
+      ]
+    ],
+    "ready": "I",
+    "commands": [
+      "SELECT 1"
+    ]
+  },
+  {
+    "name": "create",
+    "sql": "CREATE TABLE npgsql_oracle(id integer primary key, note text)",
+    "rows": [],
+    "ready": "I",
+    "commands": [
+      "CREATE TABLE"
+    ]
+  },
+  {
+    "name": "begin-commit",
+    "sql": "BEGIN",
+    "rows": [],
+    "ready": "T",
+    "commands": [
+      "BEGIN"
+    ]
+  },
+  {
+    "name": "insert-commit",
+    "sql": "INSERT INTO npgsql_oracle VALUES (1,'Žąsis')",
+    "rows": [],
+    "ready": "T",
+    "commands": [
+      "INSERT 0 1"
+    ]
+  },
+  {
+    "name": "commit",
+    "sql": "COMMIT",
+    "rows": [],
+    "ready": "I",
+    "commands": [
+      "COMMIT"
+    ]
+  },
+  {
+    "name": "begin-rollback",
+    "sql": "BEGIN",
+    "rows": [],
+    "ready": "T",
+    "commands": [
+      "BEGIN"
+    ]
+  },
+  {
+    "name": "insert-rollback",
+    "sql": "INSERT INTO npgsql_oracle VALUES (2,'rollback')",
+    "rows": [],
+    "ready": "T",
+    "commands": [
+      "INSERT 0 1"
+    ]
+  },
+  {
+    "name": "rollback",
+    "sql": "ROLLBACK",
+    "rows": [],
+    "ready": "I",
+    "commands": [
+      "ROLLBACK"
+    ]
+  },
+  {
+    "name": "persisted-commit",
+    "sql": "SELECT id::text, note FROM npgsql_oracle ORDER BY id",
+    "rows": [
+      [
+        "1",
+        "Žąsis"
+      ]
+    ],
+    "ready": "I",
+    "commands": [
+      "SELECT 1"
+    ]
+  },
+  {
+    "name": "unique-error",
+    "sql": "INSERT INTO npgsql_oracle VALUES (1,'duplicate')",
+    "rows": [],
+    "ready": "I",
+    "commands": [],
+    "error": "23505"
+  },
+  {
+    "name": "error-recovery",
+    "sql": "SELECT 42::text",
+    "rows": [
+      [
+        "42"
+      ]
+    ],
+    "ready": "I",
+    "commands": [
+      "SELECT 1"
+    ]
+  },
+  {
+    "name": "syntax-error",
+    "sql": "BAD QUERY",
+    "rows": [],
+    "ready": "I",
+    "commands": [],
+    "error": "42601"
+  },
+  {
+    "name": "syntax-recovery",
+    "sql": "SELECT count(*)::text FROM npgsql_oracle",
+    "rows": [
+      [
+        "1"
+      ]
+    ],
+    "ready": "I",
+    "commands": [
+      "SELECT 1"
+    ]
+  },
+  {
+    "name": "prepared-create",
+    "sql": "PREPARE npgsql_oracle_prepared(integer) AS SELECT ($1 + 1)::text",
+    "rows": [],
+    "ready": "I",
+    "commands": [
+      "PREPARE"
+    ]
+  },
+  {
+    "name": "prepared-first",
+    "sql": "EXECUTE npgsql_oracle_prepared(7)",
+    "rows": [
+      [
+        "8"
+      ]
+    ],
+    "ready": "I",
+    "commands": [
+      "SELECT 1"
+    ]
+  },
+  {
+    "name": "prepared-second",
+    "sql": "EXECUTE npgsql_oracle_prepared(41)",
+    "rows": [
+      [
+        "42"
+      ]
+    ],
+    "ready": "I",
+    "commands": [
+      "SELECT 1"
+    ]
+  },
+  {
+    "name": "prepared-drop",
+    "sql": "DEALLOCATE npgsql_oracle_prepared",
+    "rows": [],
+    "ready": "I",
+    "commands": [
+      "DEALLOCATE"
+    ]
+  }
+]

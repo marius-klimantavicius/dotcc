@@ -139,10 +139,16 @@ internal sealed class EmbeddedStream(PgliteWorker worker, Action onClosed) : Str
         try
         {
             if (_disposed) return;
-            Worker.Dispose();
-            _disposed = true;
-            lock (_readLock) { _responses.Clear(); _pending = []; SignalChanged(); }
-            onClosed();
+            try { Worker.Dispose(); }
+            finally
+            {
+                _disposed = true;
+                lock (_readLock) { _responses.Clear(); _pending = []; SignalChanged(); }
+                // Managed extension/storage cleanup can fail after the engine
+                // closed successfully. Release only with that actual proof;
+                // genuine engine shutdown failures retain the exclusion lease.
+                if (Worker.Closed) onClosed();
+            }
         }
         finally { _writeLock.Release(); }
         base.Dispose(disposing);

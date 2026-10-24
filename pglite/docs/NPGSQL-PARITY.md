@@ -50,3 +50,27 @@ does not make a native server a product dependency or qualify the network mode.
 
 The embedded hook changes only the Npgsql-owned worker session. The original
 Managed.PGlite API retains its separate buffered COPY contract.
+
+## Type qualification boundary
+
+The acceptance cases cover `bool`, `short`, `int`, `long`, `float`, `double`,
+`decimal`, `string`, `byte[]`, `Guid`, `DateOnly`, `TimeOnly`, unspecified
+`DateTime` for timestamp, UTC `DateTime` for timestamptz, and month-free
+`TimeSpan` intervals. All sixty upstream decimal vectors retain exact decimal
+bits; overflow rejects without losing the following field. Array cases cover
+integer, nullable integer, Boolean and text values, empty arrays, NULL elements
+and multidimensional shape. Large values cross Npgsql's normal 8 KiB buffers.
+
+Retaining other upstream converters does not qualify every conversion variant.
+BigInteger, temporal infinities/out-of-range dates, timetz/DateTimeOffset,
+month-bearing interval structures, JSON/XML, network/geometric/range types,
+arbitrary enum/composite mapping and optional plugins are outside the tested
+type matrix. Dynamic JSON/POCO/composite profiles are not enabled by this
+factory. These omissions do not replace the original Npgsql codecs with a
+homegrown conversion layer.
+
+Tracing with an `ActivityListener` requesting all data is covered, using an
+embedded tag and actual database metadata without network endpoint/PID tags.
+Type reload rejects cancellation or a busy connection before changing the
+working codec catalog. Managed extension cleanup failures are reported after
+logical connection cleanup; only proven engine closure releases the lease.
