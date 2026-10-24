@@ -3,6 +3,30 @@ import hashlib
 import os
 from pathlib import Path
 import stat
+import shutil
+
+
+def require_storage_reserve(paths, minimum_bytes=2 * 2**30):
+    """Check every actual allocation filesystem before creating build outputs."""
+    if minimum_bytes < 2 * 2**30:
+        raise ValueError("Managed builds require at least the normal 2GiB reserve")
+    devices = {}
+    for value in paths:
+        path = Path(value)
+        ancestor = path
+        while not ancestor.exists():
+            ancestor = ancestor.parent
+        if not ancestor.is_dir():
+            raise RuntimeError("Storage allocation ancestor is not a directory")
+        device, free = ancestor.stat().st_dev, shutil.disk_usage(ancestor).free
+        row = devices.setdefault(device, dict(device=device, paths=[], free_bytes=free,
+                                             minimum_free_bytes=minimum_bytes))
+        row["paths"].append(str(path))
+        row["free_bytes"] = min(row["free_bytes"], free)
+    rows = [dict(row, passed=row["free_bytes"] >= minimum_bytes) for _, row in sorted(devices.items())]
+    if not all(row["passed"] for row in rows):
+        raise RuntimeError("Managed build allocation is below the 2GiB reserve: " + str(rows))
+    return rows
 
 
 def validate_output_root(value, *, protected_roots=()):
@@ -42,6 +66,40 @@ def verify_files(expected):
         with path.open("rb") as stream:
             if hashlib.file_digest(stream, "sha256").hexdigest() != digest:
                 raise RuntimeError("Evidence file changed: " + str(path))
+
+
+def audit_build_caches(expected, cleanup, *, required):
+    """Distinguish explicitly removed build inputs from preserved execution files.
+
+    Cleanup entries are evidence supplied by the caller's bound receipt, not an
+    exception for missing runtime/source files. Existing files still verify even
+    under a retired directory; a rebuilt cache never inherits a historical hash.
+    """
+    verify_files(required)
+    retired_roots = []
+    for row in cleanup:
+        path = Path(row["path"])
+        if ("retained" in row or "rebuildable_bytes_removed" not in row
+                or row["rebuildable_bytes_removed"] < 0):
+            continue
+        if not path.is_absolute() or path != path.resolve():
+            raise RuntimeError("Cache cleanup path traverses a symlink or is relative")
+        retired_roots.append(path)
+    present, retired = {}, {}
+    for value, digest in expected.items():
+        path = Path(value)
+        if (not path.is_absolute() or path != path.resolve()):
+            raise RuntimeError("Build input path traverses a symlink or is relative")
+        if path.exists():
+            verify_files({value: digest})
+            present[value] = digest
+        elif value not in required and any(path.is_relative_to(root) and path != root for root in retired_roots):
+            retired[value] = digest
+        else:
+            raise RuntimeError("Missing build input without explicit cache retirement: " + value)
+    return dict(status="verified-with-retired-caches" if retired else "verified",
+                present_sha256=present, retired_sha256=retired,
+                scope="Retired hashes describe historical build inputs; their bytes are absent")
 
 
 def optional_storage(operation, *, verify):
