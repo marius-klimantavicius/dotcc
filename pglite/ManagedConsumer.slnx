@@ -2,6 +2,8 @@
   <Project Path="generated/TranslatedPGlite/TranslatedPGlite.csproj" />
   <Project Path="generated/TranslatedInitdb/TranslatedInitdb.csproj" />
   <Project Path="src/Api/PGlite.csproj" />
+  <Project Path="src/Npgsql/Npgsql.csproj" />
   <Project Path="samples/ManagedConsumer/ManagedConsumer.csproj" />
   <Project Path="samples/ApiExample/ApiExample.csproj" />
+  <Project Path="samples/NpgsqlExample/NpgsqlExample.csproj" />
 </Solution>

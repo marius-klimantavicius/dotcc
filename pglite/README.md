@@ -14,9 +14,18 @@ and a dedicated-thread async worker. [API-USAGE.md](docs/API-USAGE.md) provides
 examples; [API-PARITY.md](docs/API-PARITY.md) maps every exported surface and
 records platform adaptations, including unavailable contrib modules.
 
+An additional [copied Npgsql source library](src/Npgsql/Npgsql.csproj) provides
+the familiar Npgsql command, reader, parameter and transaction APIs through an
+embedded connector. It consumes the same translated engine. See
+[NPGSQL-USAGE.md](docs/NPGSQL-USAGE.md) for the separate sample, assembly identity,
+single-session contract and explicit streaming COPY/cancellation exclusions.
+Its implementation plan and qualification are separate from the original API
+results below.
+
 The repaired compiler regenerated all 928 selected backend and 73 initializer
 units. All four raw/processed JIT/normally trimmed NativeAOT rows pass the original
-36 plus 391 API assertions each. All 17 selected suites, the ordinary five-project
+36 plus 391 API assertions each. The original API qualification passed all 17
+selected suites, its ordinary five-project
 solution build, no-argument Debug run, and normal/published API example pass.
 [VALIDATION.md](docs/VALIDATION.md) links current evidence and historical lineage.
 
@@ -57,6 +66,7 @@ Build and run the canonical consumer against existing generated products:
 dotnet build pglite/ManagedConsumer.slnx -c Release
 dotnet run --project pglite/samples/ManagedConsumer/ManagedConsumer.csproj -c Release
 dotnet run --project pglite/samples/ApiExample/ApiExample.csproj -c Release
+dotnet run --project pglite/samples/NpgsqlExample/NpgsqlExample.csproj -c Release
 ```
 
 Ordinary builds and publishes copy the selected backend's complete

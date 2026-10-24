@@ -1,0 +1,21 @@
+Managed dependencies of the embedded Npgsql source fork
+
+Microsoft.Extensions.Logging.Abstractions 10.0.0
+Microsoft.Extensions.DependencyInjection.Abstractions 10.0.0 (transitive)
+Copyright (c) .NET Foundation and Contributors
+Copyright (c) Microsoft Corporation
+License: MIT
+
+Package metadata records the source repository as:
+https://github.com/dotnet/dotnet
+Commit: b0f34d51fccc69fd334253924abd8d6853fad7aa
+
+MICROSOFT-MIT-LICENSE.txt is copied from LICENSE.TXT at that commit.
+MICROSOFT-LOGGING-THIRD-PARTY-NOTICES.txt and
+MICROSOFT-DI-THIRD-PARTY-NOTICES.txt are copied from their respective 10.0.0
+NuGet packages. Preserve these notice files when redistributing.
+
+The Npgsql connection-string source generator has separate build-time
+dependencies (Roslyn and Scriban). They are not runtime dependencies of the
+delivered library. See SourceGenerators/Npgsql.SourceGenerators.csproj and the
+qualification source/dependency manifest for their exact selection.

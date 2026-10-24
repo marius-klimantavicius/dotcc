@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk"
+         TreatAsLocalProperty="PublishAot;PublishTrimmed;SelfContained;RuntimeIdentifier;RuntimeIdentifiers">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <!-- This is a compiler plugin, even when a consumer publishes NativeAOT.
+         Restore's static graph propagates global properties independently of
+         ProjectReference build metadata, so override them in this project. -->
+    <PublishAot>false</PublishAot>
+    <PublishTrimmed>false</PublishTrimmed>
+    <SelfContained>false</SelfContained>
+    <RuntimeIdentifier></RuntimeIdentifier>
+    <RuntimeIdentifiers></RuntimeIdentifiers>
+    <NoWarn>1591;RS1036;RS2008</NoWarn>
+    <GetTargetPathDependsOn>$(GetTargetPathDependsOn);GetDependencyTargetPaths</GetTargetPathDependsOn>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.0.0" PrivateAssets="all" />
+    <PackageReference Include="Scriban.Signed" Version="7.2.1" GeneratePathProperty="true" PrivateAssets="all" />
+    <EmbeddedResource Include="NpgsqlConnectionStringBuilder.snbtxt" />
+  </ItemGroup>
+  <Target Name="GetDependencyTargetPaths">
+    <ItemGroup>
+      <TargetPathWithTargetPlatformMoniker Include="$(PKGScriban_Signed)/lib/netstandard2.0/Scriban.Signed.dll"
+                                         IncludeRuntimeDependency="false" />
+    </ItemGroup>
+  </Target>
+</Project>

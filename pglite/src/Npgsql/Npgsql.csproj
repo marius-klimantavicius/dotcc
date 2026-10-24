@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <AssemblyName>Managed.PGlite.Npgsql</AssemblyName>
+    <PackageId>Managed.PGlite.Npgsql</PackageId>
+    <RootNamespace>Npgsql</RootNamespace>
+    <Version>10.0.1</Version>
+    <Authors>The Npgsql Development Team; Managed.PGlite contributors</Authors>
+    <PackageLicenseExpression>PostgreSQL</PackageLicenseExpression>
+    <Description>Copied-source Npgsql adaptation for the translated Managed.PGlite embedded engine.</Description>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+    <NoWarn>$(NoWarn);NPG9001;NPG9002;NPG9003;CA2017</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="SourceGenerators/**/*.cs" />
+    <EmbeddedResource Remove="SourceGenerators/**" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
+    <ProjectReference Include="SourceGenerators/Npgsql.SourceGenerators.csproj"
+                      OutputItemType="Analyzer" ReferenceOutputAssembly="false"
+                      GlobalPropertiesToRemove="PublishAot;RuntimeIdentifier;SelfContained;PublishTrimmed" />
+    <ProjectReference Include="../Api/PGlite.csproj" Condition="'$(PgliteApiAssembly)' == ''" />
+    <!-- Private focused probes can use already built engine/API artifacts.
+         Ordinary consumer builds always use the real project reference above. -->
+    <Reference Include="Managed.PGlite" Condition="'$(PgliteApiAssembly)' != ''">
+      <HintPath>$(PgliteApiAssembly)</HintPath>
+    </Reference>
+    <Reference Include="TranslatedPGlite" Condition="'$(PgliteApiAssembly)' != ''">
+      <HintPath>$(PgliteBackendAssembly)</HintPath>
+    </Reference>
+    <Content Include="Notices/*.txt" CopyToOutputDirectory="PreserveNewest"
+             CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>
