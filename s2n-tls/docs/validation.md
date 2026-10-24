@@ -470,3 +470,23 @@ independent-store separation from every pristine inode pass at
 Only the remaining exact reviewed inventory is authorized; its completion and
 delivery admission are not inferred. No result receives qualification credit
 from sharing, and failed historical statuses remain unchanged.
+
+Renewed phase2 review now covers the exact v2 revision and199 retained files,
+including82 actual closed raw/processed source/project/metadata files. The
+revision preserves only the exact complete original import bundle and rejects
+altered, redirected, partial, extra, symlinked or nonregular metadata without
+mutation. Only `raw_metadata_imports` and the pre-copy snapshot source check
+differ from v1. The31 recorded roundtrip controls and independent metadata
+controls pass at
+`artifacts/managed-contract/external-newraw-phase2-v2-supervisor-review.json`.
+This supersedes the v1 rollout hold only for the conditional first215×4 case;
+actual linking/build/assertion proof is still pending, and current retained
+batches continue unchanged. Latest reported current C checkpoint is40/0/217.
+
+Five completed current raw/JIT Python family source roots are separately
+reviewed for storage only, with38,325 pinned source paths and43,682 protected
+files rehashed. Exact leaf hashes match the sole current matrix's passed rows
+and current CLI manifest; running source roots are excluded. Only a three-group
+trial is authorized initially:
+`artifacts/managed-contract/final-ec-closed-python-source-supervisor-review.json`.
+No full72-leaf pass or storage completion is inferred from this review.

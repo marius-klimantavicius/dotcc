@@ -27,7 +27,7 @@
     }
   ],
   "shared_build_owner": "supervisor",
-  "next": "Current C retained batches continue unchanged; phase2 candidate rollout HELD for exact existing-metadata roundtrip revision and renewed review. Python72 runs. Complete exact historical-source sharing then fresh fixedguard ADMIT delivery on same controller.",
+  "next": "Current C retained005..006 continue unchanged; exactv2 phase2 metadata roundtrip reviewed for conditional first215x4 after natural007 stop, no general rollout yet. Python72 runs; finish reviewed historical-source storage then samecontroller fixedguard ADMIT delivery.",
   "completed_tasks": [
     {
       "package": "inputs-native",
@@ -159,10 +159,10 @@
     "post_asn1_abi": "artifacts/campaign/20261024-001718-6f72b210/receipt.json",
     "provider_controller_pid": 2082892,
     "final_provider_current_c_counts": {
-      "passed": 32,
+      "passed": 40,
       "failed": 0,
-      "unrun": 225,
-      "scope": "Final EC202209f4/CBCc0aa38f7;128 actual original executions. Same durable2082892 batch004; stop before007."
+      "unrun": 217,
+      "scope": "Latest provider-reported final EC checkpoint,160 actual original executions. Same2082892 batch005; natural stop before007."
     },
     "final_provider_cli": "build/managed-upstream/python-endpoints-final-rsa-stdio.json",
     "final_provider_cli_audit": "artifacts/managed-contract/final-asn1-cli-eight-supervisor-audit.json",
@@ -234,7 +234,9 @@
     "current_CLI_main_storage_postflight": "artifacts/managed-contract/current-CLI-main-storage-supervisor-postflight.json",
     "external_newraw_phase2_hold": "artifacts/managed-contract/external-newraw-phase2-review-hold.json",
     "closed_tool_storage_postflight": "artifacts/managed-contract/closed-historical-tool-storage-0155/postflight.json",
-    "historical_python_source_bounded_review": "artifacts/managed-contract/historical-python-tests-bounded-supervisor-review.json"
+    "historical_python_source_bounded_review": "artifacts/managed-contract/historical-python-tests-bounded-supervisor-review.json",
+    "external_newraw_phase2_v2_review": "artifacts/managed-contract/external-newraw-phase2-v2-supervisor-review.json",
+    "final_ec_closed_python_source_review": "artifacts/managed-contract/final-ec-closed-python-source-supervisor-review.json"
   },
   "discovery_correction": {
     "original": "artifacts/managed/full-owning-matrix/report.json",
