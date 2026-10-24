@@ -27,7 +27,7 @@
     }
   ],
   "shared_build_owner": "supervisor",
-  "next": "Complete owned storage recovery under exact review, admit detached API jobs with reserve, continue fresh257 C all4 and final application/Python gates.",
+  "next": "Finish exact reviewed storage recovery, admit single detached API controller above3091202048-byte threshold, then resume same C epoch when combined reserve permits.",
   "completed_tasks": [
     {
       "package": "inputs-native",
@@ -125,7 +125,7 @@
     "4ff33f368",
     "322d75bc1"
   ],
-  "current_attempt": "20261023-223542-f7e7054e (passed175/raw+processed; new actual qualification with base64 repair08796c070)",
+  "current_attempt": "20261023-223542-f7e7054e (closed175/raw+processed; final EC202209f4 authored provider and CBC fixturec0aa38f7 qualification)",
   "last_complete_link": "20261023-223542-f7e7054e",
   "p2_receipt": "artifacts/campaign/20261023-210200-74eee32f/receipt.json",
   "workloads": {
@@ -148,12 +148,12 @@
     "final48_provider": "artifacts/provider/final48-asn1-211648/receipt.json",
     "post_asn1_api": "artifacts/managed-contract/api-r4-final-provider-progress.json",
     "post_asn1_abi": "artifacts/campaign/20261024-001718-6f72b210/receipt.json",
-    "provider_controller_pid": 1840035,
+    "provider_controller_pid": null,
     "final_provider_current_c_counts": {
-      "passed": 26,
+      "passed": 16,
       "failed": 0,
-      "unrun": 231,
-      "scope": "Paused naturally after batch002, old f80 epoch; pending EC/source freeze."
+      "unrun": 241,
+      "scope": "Final EC202209f4 plus CBC fixturec0aa38f7; all4 each. Naturally paused after batch001 for shared storage/API admission."
     },
     "final_provider_cli": "build/managed-upstream/python-endpoints-final-rsa-stdio.json",
     "final_provider_cli_audit": "artifacts/managed-contract/final-asn1-cli-eight-supervisor-audit.json",
@@ -202,7 +202,10 @@
     "ec_runtime_review": "artifacts/managed-contract/ec-runtime-milestone-supervisor-review.json",
     "fixture_freeze": "artifacts/managed-contract/freeze-cbc-fixture-20261023T2357Z/receipt.json",
     "api_current_plan": "artifacts/managed-contract/final-ec-cbc-r6/plan.json",
-    "api_admission": "artifacts/managed-contract/final-ec-cbc-r6/admission-waiting.json"
+    "api_admission": "artifacts/managed-contract/final-ec-cbc-r6/admission-waiting.json",
+    "api_storage_review": "artifacts/managed-contract/storage-admission-review-20261024-0110/api-review.json",
+    "provider_storage_review": "artifacts/managed-contract/storage-admission-review-20261024-0110/provider-review.json",
+    "generated_storage_postflight": "artifacts/managed-contract/storage-admission-review-20261024-0110/generated-sharing-postflight.json"
   },
   "discovery_correction": {
     "original": "artifacts/managed/full-owning-matrix/report.json",
@@ -223,11 +226,9 @@
     "P6_reproduction": "233001-6f4afff7 passed warn/off two full175 regenerations/private authored edit/failed-publication; overallP6 remainsopen"
   },
   "open_gates": [
-    "Existing183 EC native state/key-role semantics repair and fresh provider boundary qualification",
-    "Current application 3DES corrupt-record expected-error mismatch diagnosis",
-    "Complete257 C and18 Python families all4 on final source",
-    "Final application/delivery refresh and sealed P6 acceptance",
-    "Recover API parent exit boundary; preserve active orphan pytest before new source reader window"
+    "Complete final-source257 original C cases and18 original Python families all4",
+    "Fresh final-source application1076/delivery12, canonical ABI all4 and ordinary-root checks",
+    "Final deep-sealed framework retained-input acceptance and P6 closure"
   ],
   "native_python_gate": "18families/22186applicable originalcases strictpassed; nine HRR original combinations explicitly inapplicable with nine separate no-HRR controls. Historical failures/skips/retries preserved.",
   "observed_provider_defect": {

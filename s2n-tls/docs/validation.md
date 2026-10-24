@@ -331,3 +331,21 @@ keeps its detached pipeline unlaunched until its disk admission threshold passes
 (2GiB reserve plus900MiB CLI headroom). Reviewed owned binary-cache retirement
 and exact-content storage sharing are proceeding; no acceptance credit follows
 from storage work. No final upstream seal has been created.
+
+
+Current final-source checkpoint is16 original C cases passed in all four modes,
+zero failures,241 cases unrun. The controller naturally paused after batch001
+for shared storage and API admission; PID1840035 is absent. Provider full50 and
+retained emitted183 ABI remain passed. API launch is authorized, but no new
+controller or application build starts below3,091,202,048 free bytes.
+
+Independent storage postflight rehashes13,747 files and9,176 source modes,
+covering126 closed qualification epochs and252 projects at
+`artifacts/managed-contract/storage-admission-review-20261024-0110/generated-sharing-postflight.json`.
+All source bytes, project metadata, actual outputs and runtime closures are
+unchanged. Separate root ABI postflight checks358 retired prepublish copies
+and881 protected files at
+`artifacts/managed-contract/root-abi-aot-prepublish-cache-0048/independent-postflight.json`.
+Exact additional inactive-copy cleanup and closed-probe binary sharing were
+reviewed under the same storage-admission review directory; their completion
+is not inferred from authorization and supplies no qualification credit.
