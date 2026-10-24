@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "scope": "isolated-original-bodies; not full original execution or canonical 257 credit",
+  "batches": [
+    [
+      "tests/unit/s2n_connection_size_test.c",
+      "tests/unit/s2n_error_lookup_test.c",
+      "tests/unit/s2n_error_type_test.c",
+      "tests/unit/s2n_mem_test.c",
+      "tests/unit/s2n_mem_testlib_test.c",
+      "tests/unit/s2n_rfc5952_test.c",
+      "tests/unit/s2n_safety_macros_test.c"
+    ],
+    [
+      "tests/unit/s2n_sequence_number_test.c",
+      "tests/unit/s2n_stacktrace_test.c",
+      "tests/unit/s2n_stuffer_hex_test.c",
+      "tests/unit/s2n_stuffer_network_order_test.c",
+      "tests/unit/s2n_stuffer_test.c",
+      "tests/unit/s2n_stuffer_text_test.c",
+      "tests/unit/s2n_utils_test.c"
+    ]
+  ],
+  "runnable": {
+    "tests/unit/s2n_connection_size_test.c": "sizeof(struct s2n_connection) only; no connection construction. The native count is startup-only (1).",
+    "tests/unit/s2n_error_lookup_test.c": "Error strings, error classes and source locations; explicit s2n_cleanup is the original compatibility no-op.",
+    "tests/unit/s2n_error_type_test.c": "Thread-local errno address and error-class bit extraction.",
+    "tests/unit/s2n_mem_test.c": "Allocation/free and callback failure/zeroing; no connection calls.",
+    "tests/unit/s2n_mem_testlib_test.c": "Allocator callback bookkeeping via ordinary stuffer storage; original testlib support only.",
+    "tests/unit/s2n_rfc5952_test.c": "IPv4/IPv6 string formatting and inet_pton; no networking.",
+    "tests/unit/s2n_safety_macros_test.c": "Generated return/error/comparison/memory macros; no algorithm calls.",
+    "tests/unit/s2n_sequence_number_test.c": "Only s2n_sequence_number_to_uint64 byte shifts, blob and stuffer conversion; no sequence-limit protocol path.",
+    "tests/unit/s2n_stacktrace_test.c": "The preserved profile has no S2N_STACKTRACE; only original startup and flag assertions execute (2). No active stacktrace claim.",
+    "tests/unit/s2n_stuffer_hex_test.c": "Hex byte/text encoding, bounds and storage.",
+    "tests/unit/s2n_stuffer_network_order_test.c": "Integer byte order, cursor bounds and reservation sizes.",
+    "tests/unit/s2n_stuffer_test.c": "Buffer allocation, validation, cursors, data copies and integer I/O.",
+    "tests/unit/s2n_stuffer_text_test.c": "Buffer text parsing, formatting, lines and tokens.",
+    "tests/unit/s2n_utils_test.c": "Stack-blob sizing and error macros."
+  },
+  "held_ordinary_candidates": {
+    "map": "s2n_map_slot calls s2n_hash_new/init/update/digest using SHA256.",
+    "map_iterator": "Setup populates the map and therefore calls the SHA256 map slot path.",
+    "mem_allocator": "Constructs credentials/config/connections and negotiates, sends and receives.",
+    "locking": "Direct libcrypto lock initialization and callbacks.",
+    "stuffer_base64": "Original body requests s2n_get_public_random_data; no entropy substitute permitted.",
+    "safety": "Original body includes PKCS1 unpadding; mixed cryptographic utility case is held intact.",
+    "safety_blinding": "Constructs connections and executes error-blinding/random delay.",
+    "events": "Configuration and connection initialization enter crypto setup.",
+    "extension_type_lists": "Protocol extension registry; depends on full protocol startup.",
+    "extension_type": "Protocol extension processing, connection setup and negotiation.",
+    "extensions": "Protocol extension processing.",
+    "examples": "Credential/configuration/connection and handshake execution.",
+    "init": "Full provider/global initialization is the subject of the original test.",
+    "io": "Ordinary POSIX EINTR/socketpair test, but original real-interrupt body forks and waits; DotCC.Libc ProcessSignalLib.cs fork and waitpid return -1/EPERM. Original loop can bypass child assertions after fork failure, so do not execute or claim it as a faithful control. Requires real child-process semantics; no success substitute or subset credit.",
+    "libcrypto": "Direct provider metadata and runtime operations.",
+    "build": "Already passed; provider identity assertions are outside this lane.",
+    "random": "Provider entropy operations.",
+    "stream_cipher_null": "Cipher API test; held as a crypto unit.",
+    "policy_writer": "Security-policy/cipher metadata and output.",
+    "protocol_preferences": "Configuration, protocol and cipher selection.",
+    "record_size": "Connection and record-layer work.",
+    "release_non_empty_buffers": "Constructs connections; crypto initialization cannot be omitted faithfully.",
+    "testlib": "The original test creates connections and negotiates.",
+    "timer": "s2n_config_new enters defaults/crypto setup; no replacement configuration constructor.",
+    "timing": "Connections, credentials and negotiation.",
+    "wildcard_hostname": "Mixed string and credential/negotiation assertions; whole original case held."
+  }
+}

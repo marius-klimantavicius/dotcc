@@ -1,0 +1,324 @@
+{
+  "schema_version": 1,
+  "status": "passed-isolated-ordinary-bodies",
+  "scope": "14 unchanged original test bodies with original assertions; isolated noncrypto startup. This is NOT full original-suite execution and does not update canonical257.",
+  "base_head_requested": "8b1477b83",
+  "head_before_owned_commit": "932129c088e4160bff9a4e76af5c21f4c5efacdf",
+  "model": "gpt-6.1-sol",
+  "reasoning_effort": "xhigh",
+  "further_delegation": false,
+  "campaign": "/home/marius/p/dotcc/s2n-tls/build/campaign/20261023-223542-f7e7054e",
+  "external_root": "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c",
+  "actual_receipt": {
+    "path": "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt3/receipt.json",
+    "sha256": "2f7212ff7bbcdec85af989c98f78a5ace4f6bda6ef151b853f015c6535f59811"
+  },
+  "read_only_review": {
+    "path": "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt3/review.json",
+    "sha256": "f58dc30436ed94408e6bd4961e1e35e4056b7f6e80dfc616a434d094fd240740",
+    "files_checked": 766,
+    "status": "passed"
+  },
+  "full257_inventory": {
+    "path": "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt3/inventory.json",
+    "sha256": "fdf8e00199526cbe4024aed6e0b06791969ea87b7f80ae2675bd74788359d612",
+    "classification_counts": {
+      "already-qualified": 62,
+      "held": 179,
+      "already-qualified-separate": 1,
+      "runnable-isolated-body": 14,
+      "held-host-gap": 1
+    },
+    "status": "read-only full257 classification; no central rewrite"
+  },
+  "historical_ledger": {
+    "path": "/home/marius/p/dotcc/s2n-tls/build/provider/required257-223542/progress.json",
+    "counts": {
+      "passed": 62,
+      "failed": 10,
+      "unrun": 185
+    },
+    "sha256": "891196be6311bf24ae20bf2ab6780d48265df174e8e41fb1828ebe39d1290eba",
+    "changed": false
+  },
+  "bounded_batches": [
+    [
+      "tests/unit/s2n_connection_size_test.c",
+      "tests/unit/s2n_error_lookup_test.c",
+      "tests/unit/s2n_error_type_test.c",
+      "tests/unit/s2n_mem_test.c",
+      "tests/unit/s2n_mem_testlib_test.c",
+      "tests/unit/s2n_rfc5952_test.c",
+      "tests/unit/s2n_safety_macros_test.c"
+    ],
+    [
+      "tests/unit/s2n_sequence_number_test.c",
+      "tests/unit/s2n_stacktrace_test.c",
+      "tests/unit/s2n_stuffer_hex_test.c",
+      "tests/unit/s2n_stuffer_network_order_test.c",
+      "tests/unit/s2n_stuffer_test.c",
+      "tests/unit/s2n_stuffer_text_test.c",
+      "tests/unit/s2n_utils_test.c"
+    ]
+  ],
+  "command_count": 132,
+  "command_and_log_inventory": "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt3/receipt.json",
+  "results": {
+    "native_isolated": 14,
+    "managed_all4": 56,
+    "failed": 0,
+    "skipped": 0,
+    "assertions_per_mode": {
+      "native-isolated": 857712,
+      "processed-aot": 857712,
+      "processed-jit": 857712,
+      "raw-aot": 857712,
+      "raw-jit": 857712
+    },
+    "managed_assertions_total": 3430848
+  },
+  "cases": [
+    {
+      "case": "tests/unit/s2n_connection_size_test.c",
+      "assertions_each_mode": 1,
+      "native_original_assertions": 1,
+      "all4_passed": true
+    },
+    {
+      "case": "tests/unit/s2n_error_lookup_test.c",
+      "assertions_each_mode": 572,
+      "native_original_assertions": 572,
+      "all4_passed": true
+    },
+    {
+      "case": "tests/unit/s2n_error_type_test.c",
+      "assertions_each_mode": 19,
+      "native_original_assertions": 19,
+      "all4_passed": true
+    },
+    {
+      "case": "tests/unit/s2n_mem_test.c",
+      "assertions_each_mode": 38,
+      "native_original_assertions": 38,
+      "all4_passed": true
+    },
+    {
+      "case": "tests/unit/s2n_mem_testlib_test.c",
+      "assertions_each_mode": 177,
+      "native_original_assertions": 177,
+      "all4_passed": true
+    },
+    {
+      "case": "tests/unit/s2n_rfc5952_test.c",
+      "assertions_each_mode": 55,
+      "native_original_assertions": 55,
+      "all4_passed": true
+    },
+    {
+      "case": "tests/unit/s2n_safety_macros_test.c",
+      "assertions_each_mode": 493,
+      "native_original_assertions": 493,
+      "all4_passed": true
+    },
+    {
+      "case": "tests/unit/s2n_sequence_number_test.c",
+      "assertions_each_mode": 20,
+      "native_original_assertions": 20,
+      "all4_passed": true
+    },
+    {
+      "case": "tests/unit/s2n_stacktrace_test.c",
+      "assertions_each_mode": 2,
+      "native_original_assertions": 2,
+      "all4_passed": true
+    },
+    {
+      "case": "tests/unit/s2n_stuffer_hex_test.c",
+      "assertions_each_mode": 265094,
+      "native_original_assertions": 265094,
+      "all4_passed": true
+    },
+    {
+      "case": "tests/unit/s2n_stuffer_network_order_test.c",
+      "assertions_each_mode": 589972,
+      "native_original_assertions": 589972,
+      "all4_passed": true
+    },
+    {
+      "case": "tests/unit/s2n_stuffer_test.c",
+      "assertions_each_mode": 1139,
+      "native_original_assertions": 1139,
+      "all4_passed": true
+    },
+    {
+      "case": "tests/unit/s2n_stuffer_text_test.c",
+      "assertions_each_mode": 124,
+      "native_original_assertions": 124,
+      "all4_passed": true
+    },
+    {
+      "case": "tests/unit/s2n_utils_test.c",
+      "assertions_each_mode": 6,
+      "native_original_assertions": 6,
+      "all4_passed": true
+    }
+  ],
+  "source_provenance": {
+    "original_bodies": "ref/s2n-tls/tests/unit, source SHA equal to native original for every selected case",
+    "core": "Fresh isolated emissions of11 unchanged staged ordinary TUs, without unused provider override metadata. All11 original product object bytes are preserved and hashed in receipt.",
+    "startup": "Original BEGIN_TEST_NO_INIT plus actual s2n_mem_init. Exact copied bodies of enable_atexit (flag only), cleanup (upstream no-op), disable_tls13_in_test (flag assignments). No atexit cleanup registration.",
+    "assertions": "Original macros unchanged except BEGIN_TEST startup; no assertion filtering, branch overrides, masks, lost-child acceptance or generated C# edits.",
+    "processed": "Original immutable campaign semantic postprocessor; private copy only.",
+    "runtime_closure": {
+      "raw": {
+        "forbidden_call_hits": [],
+        "provider_names": [],
+        "pkcs1_helper_occurrences": 1,
+        "pkcs1_helper_has_no_callers": true
+      },
+      "processed": {
+        "forbidden_call_hits": [],
+        "provider_names": [],
+        "pkcs1_helper_occurrences": 1,
+        "pkcs1_helper_has_no_callers": true
+      }
+    },
+    "native_libraries": [
+      "libc.so.6"
+    ]
+  },
+  "caveats": [
+    "connection_size has1 startup-counted assertion plus original conditional layout bound; no added sizeof equality claim.",
+    "stacktrace has2 original startup/flag assertions with S2N_STACKTRACE absent; active stacktrace behavior is not qualified.",
+    "The passed current source has a final controller exit-status correction after the assertion run; that two-line difference is covered by separate no-workload synthetic controls. The exact assertion-run script snapshot is preserved as attempt3/harness.py."
+  ],
+  "prior_attempts": [
+    {
+      "attempt": "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt1/receipt.json",
+      "sha256": "f7f2c14df0156623fdc928e333a38e2deacf4d2f745ce2b12a06aa18ab587d6c",
+      "status": "failed",
+      "error": "[Errno 2] No such file or directory: '/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt1/raw/S2nTls.csproj'",
+      "commands": 58,
+      "native_isolated_passes": 14,
+      "last_command": {
+        "argv": [
+          "dotnet",
+          "/home/marius/p/dotcc/s2n-tls/build/campaign/20261023-223542-f7e7054e/tools/DotCC/dotcc.dll",
+          "/home/marius/p/dotcc/s2n-tls/build/campaign/20261023-223542-f7e7054e/objects/029-s2n_errno.cs",
+          "/home/marius/p/dotcc/s2n-tls/build/campaign/20261023-223542-f7e7054e/objects/030-s2n_stuffer.cs",
+          "/home/marius/p/dotcc/s2n-tls/build/campaign/20261023-223542-f7e7054e/objects/032-s2n_stuffer_hex.cs",
+          "/home/marius/p/dotcc/s2n-tls/build/campaign/20261023-223542-f7e7054e/objects/033-s2n_stuffer_network_order.cs",
+          "/home/marius/p/dotcc/s2n-tls/build/campaign/20261023-223542-f7e7054e/objects/035-s2n_stuffer_text.cs",
+          "/home/marius/p/dotcc/s2n-tls/build/campaign/20261023-223542-f7e7054e/objects/162-s2n_blob.cs",
+          "/home/marius/p/dotcc/s2n-tls/build/campaign/20261023-223542-f7e7054e/objects/163-s2n_ensure.cs",
+          "/home/marius/p/dotcc/s2n-tls/build/campaign/20261023-223542-f7e7054e/objects/168-s2n_mem.cs",
+          "/home/marius/p/dotcc/s2n-tls/build/campaign/20261023-223542-f7e7054e/objects/171-s2n_safety.cs",
+          "/home/marius/p/dotcc/s2n-tls/build/campaign/20261023-223542-f7e7054e/objects/025-s2n_sequence.cs",
+          "/home/marius/p/dotcc/s2n-tls/build/campaign/20261023-223542-f7e7054e/objects/170-s2n_rfc5952.cs",
+          "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt1/bootstrap-support.cs",
+          "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt1/s2n_mem_testlib-support.cs",
+          "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt1/s2n_connection_size_test.cs",
+          "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt1/s2n_error_lookup_test.cs",
+          "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt1/s2n_error_type_test.cs",
+          "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt1/s2n_mem_test.cs",
+          "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt1/s2n_mem_testlib_test.cs",
+          "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt1/s2n_rfc5952_test.cs",
+          "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt1/s2n_safety_macros_test.cs",
+          "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt1/s2n_sequence_number_test.cs",
+          "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt1/s2n_stacktrace_test.cs",
+          "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt1/s2n_stuffer_hex_test.cs",
+          "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt1/s2n_stuffer_network_order_test.cs",
+          "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt1/s2n_stuffer_test.cs",
+          "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt1/s2n_stuffer_text_test.cs",
+          "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt1/s2n_utils_test.cs",
+          "--emit=managedlib",
+          "--nest-types",
+          "--runtime=c",
+          "--class-name",
+          "S2nTls",
+          "--namespace",
+          "Managed.Security.S2n",
+          "--split=size",
+          "--split-size=262144",
+          "--literal-pool",
+          "--deduplicate-inline",
+          "--prune-unused-inline",
+          "-o",
+          "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt1/raw"
+        ],
+        "cwd": "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt1",
+        "timeout_seconds": 600,
+        "log": "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt1/logs/057-link-ordinary.log",
+        "started_unix": 1792833622.394396,
+        "exit_code": 0,
+        "seconds": 4.875857353210449,
+        "log_sha256": "65e262384b7b0c8043640a10162b2523c6fb8dda5d873167e9431a94dcdf3ca9"
+      }
+    },
+    {
+      "attempt": "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt2/receipt.json",
+      "sha256": "56b87d5d345d6476bdf5445096d38af7d839f67760e34f7aabc013088bac889d",
+      "status": "failed",
+      "error": "Command failed; preserved /mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt2/logs/058-build-raw.log",
+      "commands": 59,
+      "native_isolated_passes": 14,
+      "last_command": {
+        "argv": [
+          "dotnet",
+          "build",
+          "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt2/raw/raw.csproj",
+          "-c",
+          "Release",
+          "-m:1",
+          "-p:UseSharedCompilation=false"
+        ],
+        "cwd": "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt2",
+        "timeout_seconds": 1200,
+        "log": "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/attempt2/logs/058-build-raw.log",
+        "started_unix": 1792833774.6382263,
+        "exit_code": 1,
+        "seconds": 8.380868434906006,
+        "log_sha256": "15952d7461bb290458c3015dcf7f6a6956e701b224db967e1ba892838ff15315"
+      }
+    }
+  ],
+  "final_exit_status_control": {
+    "path": "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/exit-status-control.json",
+    "sha256": "a94d060573342aaca427f34739a3d751fbe7b1214cc0f8abc43a25fe8560e03b",
+    "result": "failed receipt returns1; passed returns0; no workload executed"
+  },
+  "remaining_independent_ordinary_action": {
+    "case": "tests/unit/s2n_io_test.c",
+    "status": "unqualified-host-gap",
+    "why": "Original real EINTR body requires fork/waitpid; preserved ProcessSignalLib implements both as -1/EPERM. Failed fork can bypass child assertions in original loop. No execution or qualification credit.",
+    "source": "/home/marius/p/dotcc/DotCC.Libc/ProcessSignalLib.cs",
+    "source_sha256": "f1f28ff4ddf32dbfb4bf512811d6063a31a92dd01b3aadba7b50a5a2fe223213",
+    "next": "Requires faithful independent child-process/runtime support and a native comparator that accounts explicitly for signal-loop nondeterminism, followed by the unchanged full ordinary I/O body in all4 modes. Outside current owned paths; no substitution applied."
+  },
+  "held": "179 other required cases retain the provider/protocol/crypto hold. Mixed utility cases remain intact; no rejected action or private candidate was retried/applied.",
+  "reserve_bytes": 2147483648,
+  "minimum_observed_free_bytes": 16872275968,
+  "protected_input_drift": [],
+  "source_paths_owned": "/home/marius/p/dotcc/s2n-tls/tests/OrdinaryQualification",
+  "actual_entry_command": {
+    "path": "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/ordinary-c/actual-entry-command.json",
+    "sha256": "47ec57ff2314f479cd1ece50d82f206855af90bb593316d33fd525df1495d41a"
+  },
+  "final_owned_harness_sources_sha256": {
+    "/home/marius/p/dotcc/s2n-tls/tests/OrdinaryQualification/review.py": "2acf229225d80dbe19ddf5a168e8234e15be83c8fb2391d9a9a9d65e92c528d1",
+    "/home/marius/p/dotcc/s2n-tls/tests/OrdinaryQualification/qualify.py": "797521fae4cd128f7151ba14329b92e099985616ba645237cb692f3425defa92",
+    "/home/marius/p/dotcc/s2n-tls/tests/OrdinaryQualification/selection.json": "156b72483706b671c22132b35ebedfc77ce86cd306d6bdccaa3c61c5e52d5e92"
+  },
+  "already_qualified_separate_preferences": {
+    "path": "/mnt/storage/dotcc-s2n-qualification-20261024/root-braced-string-compiler/original-preferences/all4-20261024/actual-assertions-all4-independent-audit.json",
+    "sha256": "ba9ca6f738076214518e3132fcb229a947d22e2f5b4b08f6e5ee01e8e20492e7",
+    "assertions_each": 132,
+    "variants": [
+      "raw-jit",
+      "raw-aot",
+      "processed-jit",
+      "processed-aot"
+    ],
+    "status": "existing independent passed receipt; not rerun or adopted"
+  }
+}
