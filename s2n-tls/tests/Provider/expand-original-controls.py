@@ -22,6 +22,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT.parent / "Scripts"))
 from campaigns.delivery import ignore_build_caches, source_files
 from campaigns.translation import relocate_project
+from managed_test_storage import optional_storage, validate_output_root, verify_files
 sys.path.insert(0, str(ROOT / "tests/Managed"))
 from execution_identity import authored_sources, capture, hashes
 from native_profile import validate_profile
@@ -78,6 +79,8 @@ class Expansion:
     def __init__(self, args):
         self.args = args
         self.work_root = validate_work_root(args.work_root) if args.work_root else None
+        self.dependency_output_roots = tuple(validate_output_root(p, protected_roots=(ROOT.parent,))
+                                             for p in (args.dependency_output_root or []))
         self.output = args.output.resolve()
         self.output.parent.mkdir(parents=True, exist_ok=True)
         self.input = json.loads(args.executables.read_text())
@@ -104,6 +107,9 @@ class Expansion:
             self.entries[case] = rows[0]
         if args.resume:
             self.report = json.loads(self.output.read_text())
+            if args.dependency_output_root is None:
+                self.dependency_output_roots = tuple(validate_output_root(p, protected_roots=(ROOT.parent,))
+                    for p in self.report.get("dependency_output_roots", []))
             if self.report["input_manifest_sha256"] != digest(args.executables):
                 raise RuntimeError("Expansion input manifest changed")
             if self.report.get("case_set", "selected16") != args.case_set or {r["case"] for r in self.report["executables"]} != set(self.cases):
@@ -163,6 +169,7 @@ class Expansion:
         self.artifacts.mkdir(parents=True, exist_ok=True)
         self.report["artifacts"] = str(self.artifacts)
         self.report.setdefault("qualifications", {})
+        self.report["dependency_output_roots"] = [str(p) for p in self.dependency_output_roots]
         self.report.setdefault("case_failures", {})
         self.report.setdefault("cache_cleanup", {})
         self.report["refresh_provider"] = args.refresh_provider
@@ -583,11 +590,34 @@ class Expansion:
         if digest(qualified["receipt"]) != qualified["sha256"]:
             raise RuntimeError("Closed qualification changed before dependency storage cleanup")
         receipt = self.artifacts / (Path(case).stem + "-dependencies-" + uuid.uuid4().hex[:8] + ".json")
-        storage = deduplicate_qualified_case(rows, qualified["receipt"], receipt, work_root=self.work_root)
+        detail = receipt.with_name(receipt.stem + "-operation.json")
+
+        def verify():
+            self.verify_immutable()
+            verify_files({qualified["receipt"]: qualified["sha256"]})
+            for row in rows:
+                identity_path = Path(row["application_execution_receipt"])
+                verify_files({str(identity_path): row["application_execution_receipt_sha256"]})
+                identity = json.loads(identity_path.read_text())
+                for files in (row["execution_sha256"], identity["output_sha256"], identity["runtime_closure_sha256"]):
+                    verify_files(files)
+                if tree_hashes(Path(row["project"]).parent) != row["source_sha256"]:
+                    raise RuntimeError("Application source changed during optional dependency storage")
+
+        storage = optional_storage(lambda: deduplicate_qualified_case(rows, qualified["receipt"], detail,
+            work_root=self.work_root, output_roots=self.dependency_output_roots), verify=verify)
+        storage.update(case=case, qualification=qualified["receipt"], qualification_sha256=qualified["sha256"],
+                       scope="Optional storage only; completed assertion evidence independently reverified",
+                       runner_sha256=digest(Path(__file__)))
+        if detail.exists():
+            storage.update(operation_receipt=str(detail), operation_receipt_sha256=digest(detail))
+        with receipt.open("x") as output:
+            json.dump(storage, output, indent=2); output.write("\n")
         with self.lock:
             self.report.setdefault("dependency_storage", {}).setdefault(case, []).append({
                 "receipt": str(receipt), "sha256": digest(receipt), "status": storage["status"],
-                "allocated_bytes_released": storage["allocated_bytes_released"]})
+                "optional_optimization": True, "qualification_preserved": True,
+                "allocated_bytes_released": storage.get("allocated_bytes_released")})
             self.save()
 
     def run(self):
@@ -650,6 +680,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--executables", type=Path, required=True)
     parser.add_argument("--work-root", type=Path, help="Private future build root replacing ROOT/build; existing resumed work remains at its recorded path")
+    parser.add_argument("--dependency-output-root", type=Path, action="append",
+                        help="Additional private external output scope for optional dependency sharing (repeatable)")
     parser.add_argument("--min-free-gib", type=float, default=2, help="Reserve on each metadata/work filesystem before allocation or resume")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--native-report", type=Path)

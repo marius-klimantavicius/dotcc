@@ -17,11 +17,15 @@ import shutil
 import signal
 import stat
 import subprocess
+import sys
 import time
 import uuid
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT.parent / "Scripts"))
+from managed_test_storage import contained_output, validate_output_root
+
 STORE = ROOT / "build/provider/immutable-dependencies"
 DLL = "BouncyCastle.Cryptography.dll"
 LOCKS = ("packages.lock.json", "packages.linux-x64.lock.json",
@@ -60,14 +64,22 @@ def storage_reserves(paths, minimum_bytes):
     return [dict(row, passed=row["free_bytes"] >= minimum_bytes) for _, row in sorted(devices.items())]
 
 
-def dependency_store(target, work_root=None):
+def dependency_store(target, work_root=None, *, output_roots=()):
     """Keep legacy stores and explicitly scoped external case stores separate."""
+    target = Path(target)
+    if not target.is_absolute() or target != target.resolve():
+        raise RuntimeError("Dependency target cannot traverse a symlink")
     if target.is_relative_to(ROOT / "build/provider") or target.is_relative_to(ROOT / "build/managed-upstream"):
         return STORE
     if work_root is not None:
         root = validate_work_root(work_root)
         if target.is_relative_to(root / "provider/original16-expanded") or target.is_relative_to(root / "managed-upstream"):
             return root / "provider/immutable-dependencies"
+    for value in output_roots:
+        root = validate_output_root(value, protected_roots=(ROOT.parent,))
+        if target.is_relative_to(root):
+            contained_output(target, root)
+            return root / "immutable-dependencies"
     raise RuntimeError("Dependency target is outside owned original-C execution outputs")
 
 
@@ -128,12 +140,19 @@ def pinned_package():
 
 
 def store_member(source, expected, *, store=STORE):
-    store.mkdir(parents=True, exist_ok=True)
+    store = Path(store)
     if store.absolute() != store.resolve():
         raise RuntimeError("Immutable dependency store cannot traverse a symlink")
+    contained_output(store / "store.lock", store)
+    directory = store / "sha256" / expected
+    contained_output(directory / DLL, store)
+    reserves = storage_reserves([ROOT, store], 2 * 2**30)
+    if not all(row["passed"] for row in reserves):
+        raise RuntimeError("Dependency store allocation is below the 2GiB reserve: " + json.dumps(reserves))
+    store.mkdir(parents=True, exist_ok=True)
     with (store / "store.lock").open("a+") as lease:
         fcntl.flock(lease, fcntl.LOCK_EX)
-        directory = store / "sha256" / expected
+        contained_output(directory / DLL, store)
         directory.mkdir(parents=True, exist_ok=True)
         target = directory / DLL
         created = False
@@ -234,7 +253,7 @@ def replace_identical(target, canonical, expected):
                 allocated_bytes_released=before.st_blocks * 512 if before.st_nlink == 1 else 0)
 
 
-def deduplicate_qualified_case(rows, qualification, receipt, *, work_root=None):
+def deduplicate_qualified_case(rows, qualification, receipt, *, work_root=None, output_roots=()):
     """Keep every actual path/hash while sharing one immutable pinned DLL inode."""
     qualification, receipt = Path(qualification), Path(receipt)
     observed = json.loads(qualification.read_text())
@@ -267,7 +286,7 @@ def deduplicate_qualified_case(rows, qualification, receipt, *, work_root=None):
     if len(set(targets)) != 2 or any(expected_files[str(p)] != expected for p in targets):
         raise RuntimeError("Actual JIT dependency differs from the pinned archive member")
     for target in targets:
-        dependency_store(target, work_root)
+        dependency_store(target, work_root, output_roots=output_roots)
         regular(target)
     before = {p: sha(p) for p in expected_files}
     if before != expected_files:
@@ -284,7 +303,7 @@ def deduplicate_qualified_case(rows, qualification, receipt, *, work_root=None):
             stores = {}
             report["replacements"] = []
             for target in targets:
-                selected = dependency_store(target, work_root)
+                selected = dependency_store(target, work_root, output_roots=output_roots)
                 if selected not in stores:
                     canonical, created = store_member(source, expected, store=selected)
                     stores[selected] = {"path": str(canonical), "sha256": expected,
@@ -292,7 +311,7 @@ def deduplicate_qualified_case(rows, qualification, receipt, *, work_root=None):
                         "created": created, "created_allocated_bytes": canonical.stat().st_blocks * 512 if created else 0}
                 report["replacements"].append(replace_identical(target, Path(stores[selected]["path"]), expected))
             report["store"] = next(iter(stores.values()))
-            if work_root is not None:
+            if work_root is not None or output_roots:
                 report["stores"] = list(stores.values())
             report["status"] = "passed"
         after = {p: sha(p) for p in expected_files}
@@ -315,8 +334,17 @@ def main():
     parser.add_argument("--executables", type=Path, required=True)
     parser.add_argument("--case", action="append", default=[])
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--work-root", type=Path, help="Recorded external build root; defaults to the manifest's work_root")
+    parser.add_argument("--dependency-output-root", type=Path, action="append",
+                        help="Explicit private external output scope (repeatable); defaults to recorded scopes")
     args = parser.parse_args()
     manifest = json.loads(args.executables.read_text())
+    work_root = args.work_root or manifest.get("work_root")
+    output_roots = [validate_output_root(p, protected_roots=(ROOT.parent,))
+                    for p in (args.dependency_output_root if args.dependency_output_root is not None
+                              else manifest.get("dependency_output_roots", []))]
+    if work_root is not None:
+        work_root = validate_work_root(work_root)
     selected = args.case or list(manifest["qualifications"])
     if not selected or set(selected) - set(manifest["qualifications"]):
         raise RuntimeError("Only already qualified cases can be selected")
@@ -327,7 +355,8 @@ def main():
         if sha(qualified["receipt"]) != qualified["sha256"]:
             raise RuntimeError("Original qualification receipt changed")
         receipt = args.output / (Path(case).stem + ".json")
-        report = deduplicate_qualified_case([r for r in manifest["executables"] if r["case"] == case], qualified["receipt"], receipt)
+        report = deduplicate_qualified_case([r for r in manifest["executables"] if r["case"] == case],
+                                           qualified["receipt"], receipt, work_root=work_root, output_roots=output_roots)
         results.append({"case": case, "receipt": str(receipt.resolve()), "sha256": sha(receipt), "status": report["status"],
                         "allocated_bytes_released": report["allocated_bytes_released"]})
     summary = {"status": "bounded-passed", "scope": "Only explicitly selected already-qualified cases; no test gate is newly passed",
