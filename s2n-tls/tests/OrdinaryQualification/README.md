@@ -113,3 +113,11 @@ timeouts, bounded command timeouts/CPU/file sizes, no core dumps, two .NET
 processors and private outputs/temp directories. No shared tool build, cache
 restoration, shared-runner edit, central-ledger edit, provider/candidate apply,
 protocol/Python suite, delegation or push is part of this harness.
+
+Future attempts reject symlink output traversal and insufficient reserve before
+creating their output directory. `--audit-only` returns `inventory-audited` with
+execution explicitly unrun. An execution can pass only with exactly one native
+and all four managed results for every selected case. Administrative document
+hashes are context; changes are recorded separately from source/evidence drift.
+Eight no-workload receipt/admission controls cover these follow-up guards; the
+original 70 execution records and their archived harness remain unchanged.

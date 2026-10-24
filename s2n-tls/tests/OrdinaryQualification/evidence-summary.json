@@ -320,5 +320,18 @@
       "processed-aot"
     ],
     "status": "existing independent passed receipt; not rerun or adopted"
+  },
+  "followup_receipt_guards": {
+    "receipt": "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/integration/ordinary-receipt-guards.json",
+    "sha256": "8368913d7e31fe3c07e62de291e2f06128bbf6ed8d80c614091cb91b365470a9",
+    "status": "passed-no-workload-controls",
+    "tests": 8,
+    "workload_repeated": false,
+    "source_sha256": {
+      "/home/marius/p/dotcc/s2n-tls/tests/OrdinaryQualification/qualify.py": "879325a8ec24243a0ef12c0eb9c11339dd24c3a24601fb85c4c61a19019e1872",
+      "/home/marius/p/dotcc/s2n-tls/tests/OrdinaryQualification/test_receipt_guards.py": "e419c92799ba8731a537f1dd0b6e04469ed341409270b8f5f08b9eb01e0e3750",
+      "/home/marius/p/dotcc/s2n-tls/tests/OrdinaryQualification/README.md": "911d759cc63bc4ee9b604e4646cb51781f26aec9b67da4911fbb594183db274a"
+    },
+    "prior_final_owned_harness_sources_sha256_scope": "Source hashes at original qualified fb3d550e2 milestone; archived execution script remains exact"
   }
 }

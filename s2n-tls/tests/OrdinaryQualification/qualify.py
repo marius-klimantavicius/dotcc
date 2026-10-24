@@ -17,14 +17,19 @@ import resource
 import shlex
 import shutil
 import subprocess
+import sys
 import time
 import xml.etree.ElementTree as ET
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 REPO = ROOT.parent
+sys.path.insert(0, str(REPO / 'Scripts'))
+from managed_test_storage import require_storage_reserve, validate_output_root
+
 POLICY = json.loads((HERE / 'selection.json').read_text())
 RESERVE = 2 * 1024**3
+MODES = ('native-isolated', 'raw-jit', 'raw-aot', 'processed-jit', 'processed-aot')
 CORE = ['029-s2n_errno', '030-s2n_stuffer', '032-s2n_stuffer_hex',
         '033-s2n_stuffer_network_order', '035-s2n_stuffer_text', '162-s2n_blob',
         '163-s2n_ensure', '168-s2n_mem', '171-s2n_safety', '025-s2n_sequence',
@@ -56,9 +61,10 @@ def limits():
 class Run:
     def __init__(self, args):
         self.args = args
-        self.work = args.output.resolve()
-        if self.work.is_symlink() or not self.work.is_relative_to(Path('/mnt/storage')):
+        self.work = validate_output_root(args.output, protected_roots=(REPO,))
+        if self.work == Path('/mnt/storage') or not self.work.is_relative_to(Path('/mnt/storage')):
             raise RuntimeError('Use a real private external directory under /mnt/storage')
+        require_storage_reserve((REPO, self.work))
         self.work.mkdir(parents=True, exist_ok=False)
         (self.work / 'logs').mkdir()
         (self.work / 'tmp').mkdir()
@@ -74,14 +80,15 @@ class Run:
         self.report = {'schema_version': 1, 'status': 'running',
                        'scope': POLICY['scope'], 'canonical_credit': False,
                        'commands': [], 'results': [], 'inputs_sha256': {},
+                       'context_inputs_sha256': {str(ROOT / 'docs' / n): sha(ROOT / 'docs' / n)
+                           for n in ('PLAN.md', 'validation.md', 'blockers.md', 'orchestration.json')},
                        'limits': {'serial': True, 'reserve_bytes': RESERVE,
                                   'cpu_seconds_per_command': 1200, 'max_file_bytes': 2 * 1024**3,
                                   'runtime_timeout_seconds': 90, 'dotnet_processor_count': 2}}
         shutil.copyfile(HERE / 'qualify.py', self.work / 'harness.py')
         shutil.copyfile(HERE / 'selection.json', self.work / 'selection.json')
         self.protect([self.ledger, self.native_report, ROOT / 'config/upstream-tests.json',
-                      self.compiler, self.postprocessor, self.work / 'harness.py', self.work / 'selection.json',
-                      *[ROOT / 'docs' / n for n in ('PLAN.md', 'validation.md', 'blockers.md', 'orchestration.json')]])
+                      self.compiler, self.postprocessor, self.work / 'harness.py', self.work / 'selection.json'])
 
     def protect(self, paths):
         self.report['inputs_sha256'].update({str(p): sha(p) for p in paths})
@@ -326,7 +333,17 @@ class Run:
         self.report['result_counts'] = dict(Counter(r['status'] for r in self.report['results']))
         self.report['actual_assertion_counts_by_mode'] = dict(Counter({mode: sum(r['actual_assertions'] or 0 for r in self.report['results'] if r['mode'] == mode)
             for mode in sorted({r['mode'] for r in self.report['results']})}))
-        self.report['status'] = 'passed' if not changed and all(r['status'] == 'passed' for r in self.report['results']) else 'failed'
+        self.report['context_input_drift'] = [p for p, h in self.report.get('context_inputs_sha256', {}).items()
+                                               if not Path(p).is_file() or sha(p) != h]
+        if self.args.audit_only:
+            self.report['execution'] = 'unrun-audit-only'
+            self.report['status'] = 'inventory-audited' if not self.report['results'] else 'failed'
+        else:
+            expected = Counter((case, mode) for case in self.args.case for mode in MODES)
+            observed = Counter((row['case'], row['mode']) for row in self.report['results'])
+            complete = bool(expected) and expected == observed and self.report.get('selected_cases') == self.args.case
+            self.report['complete_selected_matrix'] = complete
+            self.report['status'] = 'passed' if complete and all(r['status'] == 'passed' for r in self.report['results']) else 'failed'
         self.save()
 
 
@@ -343,7 +360,7 @@ def main():
         if not args.audit_only:
             run.execute()
         run.finish()
-        return 0 if run.report['status'] == 'passed' else 1
+        return 0 if run.report['status'] in ('passed', 'inventory-audited') else 1
     except Exception as error:
         run.report.update(status='failed', error=str(error))
         run.save()
