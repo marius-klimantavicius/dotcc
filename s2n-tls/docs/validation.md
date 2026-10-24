@@ -419,3 +419,32 @@ reset and no original C emission/link invocation. Actual PID/start ticks/session
 and detached launch proof are retained at
 `artifacts/provider/external-retained-resume-0234/actual-resume-proof.json`.
 The retained-only guard still stops before new raw construction at batch007.
+
+The subsequent source/runtime checkpoint captures32 passed C cases, zero
+failed and225 unrun (128 original executions). It rechecks3,567 retained
+source/project/output/runtime files and exact native assertion logs:
+`artifacts/provider/external-retained-checkpoint-32/receipt.json`.
+Batch004 continues under the same controller. No broader qualification is
+inferred from this checkpoint.
+
+The artifact-only phase2 private placement derivation is reviewed conditionally
+at `artifacts/managed-contract/external-newraw-phase2-supervisor-review.json`.
+Root rechecks113 files, unchanged compiler/support algorithm ASTs and emission/
+link command ASTs, plus current-provider acceptance and wrong/missing source
+identity rejection. Only after the current controller naturally stops before
+batch007 may the exact three Provider helpers be applied under its exclusive
+lease. One original supported-versions case must then pass all4 with215 exact
+native assertions and actual metadata/device/source/runtime closure review
+before adoption or general new-raw continuation. The frozen canonical Upstream
+builder and API89 inputs remain unchanged; the private derivation adds no
+qualification credit by itself.
+
+Current CLI and raw/processed main closed dependency copies were shared without
+changing any path, byte or mode. Root independently verifies all six sharing
+journals and the exact32-object-cache cleanup journal, all5,183 protected file
+hashes/modes, and absence of only the32 authorized cache paths at
+`artifacts/managed-contract/current-CLI-main-storage-supervisor-postflight.json`.
+Sharing released619,540,480 allocated bytes and unreferenced caches released
+296,083,456 bytes. Original receipts and actual execution/build/runtime paths
+remain intact. Storage accounting is not a test result or an admission promise;
+delivery still needs a fresh check against its fixed3,091,202,048-byte guard.

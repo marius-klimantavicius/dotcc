@@ -27,7 +27,7 @@
     }
   ],
   "shared_build_owner": "supervisor",
-  "next": "Continue external retainedC sameepoch through006 and review laterrawbuilder placement. API Python72 runs; fresh delivery12 waits fixed disk guard. Review exact closed-source storage capacity without changing bytes or actual qualification.",
+  "next": "Continue same C controller through retained006; after natural007 stop apply reviewed phase2 only for one bounded215x4 proof. Python72 continues; delivery12 waits unchanged disk guard. Review closed historical Python source sharing inventory for headroom.",
   "completed_tasks": [
     {
       "package": "inputs-native",
@@ -159,10 +159,10 @@
     "post_asn1_abi": "artifacts/campaign/20261024-001718-6f72b210/receipt.json",
     "provider_controller_pid": 2082892,
     "final_provider_current_c_counts": {
-      "passed": 24,
+      "passed": 32,
       "failed": 0,
-      "unrun": 233,
-      "scope": "Final EC202209f4/CBCc0aa38f7;96 actual original executions. Durable sameepoch controller uses external retained expansion, batch003 active; stop before newraw007."
+      "unrun": 225,
+      "scope": "Final EC202209f4/CBCc0aa38f7;128 actual original executions. Same durable2082892 batch004; stop before007."
     },
     "final_provider_cli": "build/managed-upstream/python-endpoints-final-rsa-stdio.json",
     "final_provider_cli_audit": "artifacts/managed-contract/final-asn1-cli-eight-supervisor-audit.json",
@@ -228,7 +228,10 @@
     "external_retained_firstcase": "artifacts/provider/external-retained-firstcase-0216/expanded-executables.json",
     "api_cli_current": "build/managed-upstream/python-endpoints-final-ec-cbc-r6.json",
     "api_cli_current_review": "artifacts/managed-contract/final-ec-cbc-r6/cli-eight-supervisor-review.json",
-    "provider_controller_proof": "artifacts/provider/external-retained-resume-0234/actual-resume-proof.json"
+    "provider_controller_proof": "artifacts/provider/external-retained-resume-0234/actual-resume-proof.json",
+    "provider_checkpoint32": "artifacts/provider/external-retained-checkpoint-32/receipt.json",
+    "external_newraw_phase2_review": "artifacts/managed-contract/external-newraw-phase2-supervisor-review.json",
+    "current_CLI_main_storage_postflight": "artifacts/managed-contract/current-CLI-main-storage-supervisor-postflight.json"
   },
   "discovery_correction": {
     "original": "artifacts/managed/full-owning-matrix/report.json",
@@ -250,7 +253,7 @@
   },
   "open_gates": [
     "Complete final-source257 original C cases and18 original Python families all4",
-    "Fresh final-source application1076/delivery12, canonical ABI all4 and ordinary-root checks",
+    "Fresh final-source copied/rooted delivery12; main1076, canonical ABI all4 and ordinary-root checks already passed",
     "Final deep-sealed framework retained-input acceptance and P6 closure"
   ],
   "native_python_gate": "18families/22186applicable originalcases strictpassed; nine HRR original combinations explicitly inapplicable with nine separate no-HRR controls. Historical failures/skips/retries preserved.",

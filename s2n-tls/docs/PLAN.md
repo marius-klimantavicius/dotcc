@@ -378,10 +378,13 @@ build or an SSLv3 test that skips RC4 cannot close acceptance.
 [upstream-api]: https://github.com/aws/s2n-tls/blob/6459002cd61e4bf3bbc53db23f068b21da9ff6bd/api/s2n.h
 
 
-Current boundary follow-up: existing183 EC APIs have measured public-state and
-key-role discrepancies (private1080-row baseline,576 differences). The delivered
-RSA freeze remains unchanged while one private repair is qualified and source
-readers are coordinated. Fresh RSA+stdio raw/JIT cross468 passes; current main has
-one bad-padding-3des expected-error mismatch under native-fixture diagnosis.
-Required-C captured count is10/257 cases all4, with no failed current C cases.
-No final provider or P6 claim follows from the scoped49-group/ABI passes.
+Current boundary follow-up: the EC repair is frozen at202209f4 and committed;
+full50 provider groups and retained emitted183 ABI checks pass JIT/AOT. The
+deterministic CBC fixture is separately frozen atc0aa38f7. Fresh application
+main1076/1076 passes all four variants, including120 lifecycle executions.
+Copied/rooted delivery remains queued behind its unchanged disk-admission
+guard; original Python72 qualification continues. Required-C captured count
+is32/257 cases all4, with no failed current cases. Retained linked projects
+continue through batch006; a reviewed private placement derivation requires
+one bounded original215-assertion case before general new-raw continuation.
+Complete original C/Python and sealed P6 framework acceptance remain open.
