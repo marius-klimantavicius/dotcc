@@ -27,7 +27,7 @@
     }
   ],
   "shared_build_owner": "supervisor",
-  "next": "Preserve resource-stopped C62/10/185:four actual original failures and six fresh RAW/JIT built cases awaiting all4. Continue existing Python; review natural family checkpoint/external future evidence plan without source edits or existing path moves. Root preferences original build held by2GiB guard; default CA private proof and observed ECC test-surface work remain isolated.",
+  "next": "Preserve stopped C resource-limit62/10/185 and byte-identical Python13passed/1running/58unrun plus separately completed2588-case leaf. No replacement/source apply until root storage guards and coordinated private CA/EC proof. Continue private EC discriminator; full51 is50/1 both, not passed. Original preferences managed132 proof remains held; no duplicate emit/link.",
   "completed_tasks": [
     {
       "package": "inputs-native",
@@ -158,12 +158,12 @@
     "final48_provider": "artifacts/provider/final48-asn1-211648/receipt.json",
     "post_asn1_api": "artifacts/managed-contract/api-r4-final-provider-progress.json",
     "post_asn1_abi": "artifacts/campaign/20261024-001718-6f72b210/receipt.json",
-    "provider_controller_pid": 2335343,
+    "provider_controller_pid": null,
     "final_provider_current_c_counts": {
-      "passed": 40,
-      "failed": 0,
-      "unrun": 217,
-      "scope": "Latest provider-reported final EC checkpoint,160 actual original executions. Same2082892 batch005; natural stop before007."
+      "passed": 62,
+      "failed": 10,
+      "unrun": 185,
+      "scope": "Original resource-limit ledger retained; four actual failures and six fresh built rawJIT cases awaiting all4; no active controller."
     },
     "final_provider_cli": "build/managed-upstream/python-endpoints-final-rsa-stdio.json",
     "final_provider_cli_audit": "artifacts/managed-contract/final-asn1-cli-eight-supervisor-audit.json",
@@ -216,7 +216,7 @@
     "api_storage_review": "artifacts/managed-contract/storage-admission-review-20261024-0110/api-review.json",
     "provider_storage_review": "artifacts/managed-contract/storage-admission-review-20261024-0110/provider-review.json",
     "generated_storage_postflight": "artifacts/managed-contract/storage-admission-review-20261024-0110/generated-sharing-postflight.json",
-    "api_controller_pid": 1971187,
+    "api_controller_pid": null,
     "api_controller_proof": "artifacts/managed-contract/final-ec-cbc-r6/post-launch-proof.json",
     "api_controller_progress": "artifacts/managed-contract/final-ec-cbc-r6/progress.json",
     "ordinary_root_ec": "artifacts/managed-contract/ordinary-solution-final-ec/report.json",
@@ -254,13 +254,17 @@
       "detail": "Config default CA; preferences braced strings; connection_test braced strings; ECC seven undefined canonical test APIs. Six resource-failed case rows are not semantic assertion failures. Original ledger statuses retained."
     },
     "translated_python_checkpoint": {
-      "passed": 9,
+      "passed": 13,
       "failed": 0,
       "running": 1,
-      "unrun": 62,
-      "scope": "Partial observation only; OCSP running at capture"
+      "unrun": 58,
+      "scope": "Old matrix verbatim after reviewed retirement; separate signature-algorithms leaf2588 actualPASS/drained is not retagged in matrix."
     },
-    "delivery_storage_bounded_review": "artifacts/managed-contract/current-delivery-binary-bounded-supervisor-review.json"
+    "delivery_storage_bounded_review": "artifacts/managed-contract/current-delivery-binary-bounded-supervisor-review.json",
+    "api_retirement_actual": "artifacts/managed-contract/api-r6-python-external-checkpoint-plan/stage5-retirement/receipt.json",
+    "api_retirement_normalized_lease": "artifacts/managed-contract/api-r6-python-external-checkpoint-plan/stage5-retirement/normalized-lease-postflight.json",
+    "private_ca_full51_failed": "/mnt/storage/dotcc-s2n-qualification-20261024/required-c-work/provider/default-ca-permanent-private/20261024T031710Z-full51/receipt-full-matrix.json",
+    "obsolete_emission_cache_postflight": "/mnt/storage/dotcc-s2n-qualification-20261024/root-capacity-audit/obsolete257-emission-only-cache/retirement/independent-postflight.json"
   },
   "discovery_correction": {
     "original": "artifacts/managed/full-owning-matrix/report.json",
@@ -281,8 +285,9 @@
     "P6_reproduction": "233001-6f4afff7 passed warn/off two full175 regenerations/private authored edit/failed-publication; overallP6 remainsopen"
   },
   "open_gates": [
-    "Complete final-source257 original C cases and18 original Python families all4; captured C62passed/2failed/193unrun, Python5passed/1running/66unrun",
-    "Resolve original connection-preferences compiler failure and config default-CA provider discrepancy with exact original/native comparisons; frozen production unchanged pending proof/coordination",
+    "Complete final-source257 original C\u00d74 and18 original Python\u00d74; C62/10/185 resource-stopped, Python old13passed/1running/58unrun verbatim plus separate completed2588-case leaf",
+    "Resolve config/defaultCA and newly measured EC offcurve semantics in private; compiler original preferences/connection and ECC test-surface caller proofs remain required; no frozen production mutation",
+    "Recover capacity without changing fixed guards; retain all sources/actual execution/evidence, exact obsolete cache retirement ledger available",
     "Final deep-sealed framework retained-input acceptance and P6 closure"
   ],
   "native_python_gate": "18families/22186applicable originalcases strictpassed; nine HRR original combinations explicitly inapplicable with nine separate no-HRR controls. Historical failures/skips/retries preserved.",
@@ -307,7 +312,8 @@
     "private_rollup": "artifacts/provider/ec-public-contract-private/20261023T234026Z-e2965f58/receipt.json",
     "private_permanent": "artifacts/provider/ec-regression-private/20261023T234346Z-86f9b5dd/receipt.json",
     "supervisor_review": "artifacts/managed-contract/ec-private-permanent-supervisor-review.json",
-    "pause_marker": "artifacts/provider/ec-pause-after-batch-20261023T234522Z/receipt.json"
+    "pause_marker": "artifacts/provider/ec-pause-after-batch-20261023T234522Z/receipt.json",
+    "new_unresolved_boundary": "Fresh private full51 fixtures expose four P256 offcurve peer rows119/123/299/303; deterministic630-row discriminator retains220 native/current differences. Prior full50 samples remain actual passes, not blanket malformed-point equivalence. No new production candidate applied."
   },
   "observed_initializer_defect": {
     "case": "tests/unit/s2n_connection_preferences_test.c",
@@ -320,6 +326,6 @@
     "assertion": 721,
     "native_assertions": 3898,
     "proof": "artifacts/provider/observed-config-default-ca-0233/receipt.json",
-    "state": "Original all4 failures retained; private native/provider default CA and borrowed-stack investigation only, live production25 unchanged."
+    "state": "Private Store candidate native56 matches JIT+AOT; prospective full51 actually50/1 BOTH due four existing EC offcurve-state discrepancies. Live25 unchanged; original config3898/all4 retry and production apply held."
   }
 }

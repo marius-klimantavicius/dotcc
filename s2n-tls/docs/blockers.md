@@ -95,3 +95,42 @@ happy-path parameter evidence totals about883MB, providing one measured ROOT
 allocation source. No complete attribution for all concurrent capacity loss
 is made. Future external evidence and a natural family checkpoint are being
 planned; no existing report is moved or source/API freeze changed.
+
+
+2026-10-24 03:31Z checkpoint: both C and API test controllers are stopped,
+with no replacement launched. C retains the original resource-limit ledger
+62/10/185: four actual failures and six built RAW/JIT cases awaiting all4.
+The old Python matrix remains byte-identical at13 passed/1 running/58 unrun.
+Its last original signature-algorithms leaf actually completed2,588 cases,
+exit0/drained, while the scheduler was stopped; this does not rewrite the
+old matrix row. The reviewed parent retirement reaped only that stopped
+scheduler with returncode−9 and retained the failed terminal parent status.
+Actual retirement and normalized kernel-lease proof are in
+`artifacts/managed-contract/api-r6-python-external-checkpoint-plan/stage5-retirement/`.
+No new source-apply window follows from retirement alone.
+
+The private default-CA candidate matches56 native rows in JIT and AOT.
+However prospective full51 is honestly50 passed/1 failed in BOTH runtimes:
+four existing P256 EC offcurve-state rows disagree after a rejected setter.
+CA56 and the other49 groups pass; full51 is NOT passed. The source25/API89
+remain unchanged, and no original config retry or production apply occurred.
+The retained external full-matrix receipt is
+`/mnt/storage/dotcc-s2n-qualification-20261024/required-c-work/provider/default-ca-permanent-private/20261024T031710Z-full51/receipt-full-matrix.json`
+(SHA4fe842ba630dc8aa5a88b42a629115e604a02942c63c51cd813c0acbd63697e0).
+The separate private ECC seven-API boundary passes28 native rows per mode,
+but original ECC618/all4 and a policy entry remain unqualified.
+
+Capacity recovery retired only257 obsolete214654 emission-only serialized IR
+cache copies after independent external byte/mode archives, no downstream
+consumer references, fresh activity checks and exclusive kernel leases.
+Current223542257 test objects,175 product objects/tools, sources, original
+manifests/statuses and actual outputs remain intact. The explicit retirement
+ledger preserves restoration paths; it gives no assertion credit. The
+external independent postflight at
+`/mnt/storage/dotcc-s2n-qualification-20261024/root-capacity-audit/obsolete257-emission-only-cache/retirement/independent-postflight.json`
+checks10,487 protected files,257 archives and all514 chained journal records.
+Exactly1,165,295,616 allocated bytes were released; ROOT remains below the
+unchanged2GiB reserve. Private-source sharing is released only for a reviewed
+three-group trial; its completion is not inferred. All20 delivery object-cache
+proof-reference holds remain. No build/controller is admitted below its guard.
+Complete1028 C executions,72 Python leaves and sealed P6 remain open.
