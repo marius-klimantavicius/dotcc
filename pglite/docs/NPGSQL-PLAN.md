@@ -97,3 +97,10 @@ suite passes 5,144 assertions in 41 cases. A separate process probe exercises
 response-limit quarantine through public options/SQL; it deliberately retains
 the failed owner and PGDATA rather than permitting a false successful close.
 Full native matrix acceptance is still required.
+
+The second independent review found a failed-open attempt lease that prevented
+retry after a competing owner closed. The attempt now releases only its own
+logical lease after cleanup; actual engine quarantine remains in the original
+API owner. Independent retry and quarantine probes pass, and the expanded
+processed JIT suite passes 5,151 assertions in 42 cases. The final matrix is
+being rebuilt against this repaired snapshot.

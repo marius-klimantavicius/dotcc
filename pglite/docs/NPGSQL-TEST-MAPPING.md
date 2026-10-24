@@ -96,6 +96,9 @@ values rather than accepting whichever value the implementation produces.
 - A managed extension close callback failure propagates its original exception,
   leaves the connection Closed, releases the lease, preserves committed data and
   permits the same data source to reopen and persist additional writes.
+- A second data source rejected while a different core is active can retry on
+  that same source after the owner closes. It reads the existing persistent
+  cluster, commits a Unicode row and opens another lease that reads the row.
 - Closing an active transaction rolls back. Reopening on the same data source,
   then a new data source, preserves committed Unicode data while resetting temp
   tables, prepared statements, application_name and transaction state. New writes
@@ -120,11 +123,13 @@ bash /path/to/dotcc/pglite/scripts/npgsql-test.sh \
 The default specialist row is processed/JIT; the default private output root is
 created through the host temporary-directory API. `--configuration Debug` also
 exercises ordinary default project settings. Every process runs from an unrelated
-working directory and relies on copied bootstrap assets. `--skip-build` reruns
-previously built outputs with new database/work directories. Independently run
+working directory and relies on copied bootstrap assets. Independently executed
 rows can be combined using `--collect-only --form all --mode all` with the same
 work root; this revalidates current source snapshots, executable/report hashes
-and matching assertion counts without rerunning passing processes. `--no-restore` is
+and matching assertion counts without rerunning passing processes. Runtime DLLs,
+deps/runtimeconfig files and the entry executable are hashed alongside each row.
+Every ordinary invocation builds; there is no option to relabel an existing
+unbuilt executable with current source hashes. `--no-restore` is
 available after matching restores. Every row writes command/build/run logs,
 SHA-256 hashes, semantic assertion/case counts and a JSON receipt. Attempt-specific
 logs and reports preserve earlier failures. The executed case inventory must

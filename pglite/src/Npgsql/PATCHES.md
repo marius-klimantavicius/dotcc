@@ -51,6 +51,11 @@ after actual engine closure releases the lease; genuine failed shutdown retains
 quarantine and continues to reject close/open retries. ReloadTypesAsync rejects
 unsupported cancellation before any catalog mutation.
 
+A failed physical open releases only its own logical attempt lease after worker
+cleanup/drain, allowing retry after another owner closes. This does not release
+the PGlite API's actual process-owner exclusion: failed-startup quarantine remains
+owned there. Established connections retain their stricter proven-close rule.
+
 ## Build and identity
 
 Assembly/package: `Managed.PGlite.Npgsql`; namespace: `Npgsql`. This is a distinct

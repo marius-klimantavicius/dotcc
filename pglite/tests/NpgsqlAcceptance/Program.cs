@@ -166,6 +166,38 @@ internal static class AcceptanceProgram
                 }
                 check.Equal(2, Volatile.Read(ref closes), "fresh lifetime closes normally");
             }), check, results);
+            await Run(new AcceptanceCase("lifetime.failed-open-retry-same-datasource", async () =>
+            {
+                var ownerOptions = options with
+                {
+                    DataDirectory = Path.Combine(root, "retry-owner-data"),
+                    WorkDirectory = Path.Combine(root, "retry-owner-work")
+                };
+                await using var ownerSource = NpgsqlEmbeddedDataSource.Create(ownerOptions);
+                await using var retrySource = NpgsqlEmbeddedDataSource.Create(options, create: false);
+                await using (var activeOwner = await ownerSource.OpenConnectionAsync())
+                {
+                    await check.ThrowsAsync<InvalidOperationException>(async () => { await using var rejected = await retrySource.OpenConnectionAsync(); }, "second source busy open rejects before owning a core");
+                    using var query = new NpgsqlCommand("SELECT 42", activeOwner) { CommandTimeout = 0 };
+                    check.Equal<object?>(42, await query.ExecuteScalarAsync(), "active owner survives other source failed open");
+                }
+                await using (var retried = await retrySource.OpenConnectionAsync())
+                {
+                    using var query = new NpgsqlCommand("SELECT 42", retried) { CommandTimeout = 0 };
+                    check.Equal<object?>(42, await query.ExecuteScalarAsync(), "same rejected datasource opens after prior owner closes");
+                    query.CommandText = "SELECT count(*) FROM npgsql_persistent";
+                    check.Equal<object?>(2L, await query.ExecuteScalarAsync(), "retry opens original persisted cluster");
+                    query.CommandText = "INSERT INTO npgsql_persistent VALUES (4, 'retry-Žąsis')";
+                    check.Equal(1, await query.ExecuteNonQueryAsync(), "same rejected datasource can commit a new row");
+                }
+                await using (var repeated = await retrySource.OpenConnectionAsync())
+                {
+                    using var query = new NpgsqlCommand("SELECT note FROM npgsql_persistent WHERE id=4", repeated) { CommandTimeout = 0 };
+                    check.Equal<object?>("retry-Žąsis", await query.ExecuteScalarAsync(), "second successful lease preserves retry write");
+                    query.CommandText = "SELECT 42";
+                    check.Equal<object?>(42, await query.ExecuteScalarAsync(), "same datasource remains reusable across another lease");
+                }
+            }), check, results);
         }
         catch (Exception exception)
         {

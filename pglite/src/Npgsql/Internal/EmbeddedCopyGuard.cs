@@ -29,7 +29,7 @@ internal static unsafe class EmbeddedCopyGuard
         if (statement->utilityStmt != null && statement->utilityStmt->type == NodeTag.T_CopyStmt &&
             ((CopyStmt*)statement->utilityStmt)->filename == null)
         {
-            if ((int)Backend.errstart(21, null) != 0)
+            if ((int)Backend.errstart(Backend.ERROR, null) != 0)
             {
                 Backend.errcode(Backend.ERRCODE_FEATURE_NOT_SUPPORTED);
                 fixed (byte* message = "Embedded Npgsql does not support streaming COPY STDIN/STDOUT"u8)

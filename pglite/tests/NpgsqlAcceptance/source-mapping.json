@@ -578,6 +578,11 @@
       "id": "lifetime.extension-close-failure",
       "sources": [],
       "kind": "embedded-profile-regression"
+    },
+    {
+      "id": "lifetime.failed-open-retry-same-datasource",
+      "sources": [],
+      "kind": "embedded-profile-regression"
     }
   ],
   "commit": "12d792ac2163596385152dcea5c68ba99769731f"

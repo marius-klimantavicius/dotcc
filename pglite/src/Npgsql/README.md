@@ -42,6 +42,9 @@ not survive close. Use persistent storage for repeated opens; the API's temporar
 storage descriptor deletes its cluster on successful close. Disposing a data
 source with an active connection prevents future opens; that connection owns its
 engine until it closes. Failed engine shutdown retains its quarantine/lease.
+A rejected open releases its own logical attempt lease after cleanup, so the
+same source can retry once a competing owner closes. This does not release any
+actual process-owner quarantine retained by the PGlite API after failed startup.
 
 Startup reads actual `current_setting` values and `session_user`; Npgsql then
 performs its original PostgreSQL catalog/type bootstrap over raw protocol bytes.

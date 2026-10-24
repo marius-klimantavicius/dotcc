@@ -360,7 +360,7 @@
     },
     "README.md": {
       "reason": "Document embedded factory, distinct identity/conflict with stock Npgsql, real startup/type bootstrap, supported lifetime and explicit exclusions; retain original upstream README below.",
-      "sha256": "9edb4c77d449fbcf24c0e29f2e2846aa5752836d1922778ca93a843931ef168f"
+      "sha256": "5839201a811ce2fcfafe4455236b146e619bf946734cd2752cfcb1a2de8144b7"
     },
     "SourceGenerators/Npgsql.SourceGenerators.csproj": {
       "reason": "Standalone copied build-time analyzer project with explicit package versions; Scriban.Signed6.5.1 deliberately upgraded to7.2.1 to address restore advisories; generator source/template unchanged and not shipped as runtime dependencies. Treat NativeAOT/publish/runtime properties as local and explicitly disable them so static-graph restore cannot native-publish the netstandard compiler plugin.",
@@ -381,7 +381,8 @@
     "Internal/EmbeddedStream.cs",
     "Internal/EmbeddedPolicy.cs",
     "Internal/EmbeddedCopyGuard.cs",
-    "PATCHES.md"
+    "PATCHES.md",
+    ".gitattributes"
   ],
   "source_generator": {
     "upstream_path": "src/Npgsql.SourceGenerators",
@@ -398,6 +399,7 @@
     "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.0 (transitive)"
   },
   "authored_behavior_notes": [
-    "The embedded connector enables real BeginReportingGUCOptions after remote attachment; subsequent SET/RESET reports flow through original raw protocol bytes. Initial startup values still come from actual current_setting/session_user queries."
+    "The embedded connector enables real BeginReportingGUCOptions after remote attachment; subsequent SET/RESET reports flow through original raw protocol bytes. Initial startup values still come from actual current_setting/session_user queries.",
+    "A failed physical open clears only its identity-matched logical attempt lease after worker cleanup; actual PGlite process-owner quarantine is unchanged. Established connection leases release only after proven engine closure."
   ]
 }

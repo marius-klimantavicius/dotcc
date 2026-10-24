@@ -14,7 +14,7 @@ public sealed class NpgsqlEmbeddedDataSource : NpgsqlDataSource
 {
     readonly PgliteOptions _options;
     readonly object _leaseLock = new();
-    sealed class Lease { internal bool Started, Closed; }
+    sealed class Lease { }
     Lease? _lease;
     bool _create;
 
@@ -58,7 +58,6 @@ public sealed class NpgsqlEmbeddedDataSource : NpgsqlDataSource
         lock (_leaseLock)
         {
             lease = _lease ?? throw new InvalidOperationException("No embedded lease is active.");
-            lease.Started = true;
         }
         var worker = _create ? PgliteWorker.Create(_options) : PgliteWorker.Open(_options);
         try
@@ -72,7 +71,6 @@ public sealed class NpgsqlEmbeddedDataSource : NpgsqlDataSource
             // Drain/close before releasing exclusivity. Failed core shutdown
             // keeps the underlying process owner quarantined in Managed.PGlite.
             await worker.CloseAsync().ConfigureAwait(false);
-            lease.Closed = true;
             throw;
         }
     }
@@ -95,8 +93,13 @@ public sealed class NpgsqlEmbeddedDataSource : NpgsqlDataSource
         }
         catch
         {
+            // No logical connection was returned. Release only this failed
+            // attempt's lease, after Open has drained/cleaned up its worker.
+            // Actual failed-startup quarantine belongs to PGlite's process
+            // owner and remains intact. An established connection still releases
+            // its lease only through EmbeddedStream's proven-close callback.
             lock (_leaseLock)
-                if (_lease == lease && (!lease.Started || lease.Closed)) _lease = null;
+                if (_lease == lease) _lease = null;
             throw;
         }
     }
@@ -104,7 +107,6 @@ public sealed class NpgsqlEmbeddedDataSource : NpgsqlDataSource
     {
         lock (_leaseLock)
         {
-            lease.Closed = true;
             if (_lease == lease) _lease = null;
         }
     }
