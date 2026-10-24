@@ -27,7 +27,7 @@
     }
   ],
   "shared_build_owner": "supervisor",
-  "next": "Continue same C controller through retained006; after natural007 stop apply reviewed phase2 only for one bounded215x4 proof. Python72 continues; delivery12 waits unchanged disk guard. Review closed historical Python source sharing inventory for headroom.",
+  "next": "Current C retained batches continue unchanged; phase2 candidate rollout HELD for exact existing-metadata roundtrip revision and renewed review. Python72 runs. Complete exact historical-source sharing then fresh fixedguard ADMIT delivery on same controller.",
   "completed_tasks": [
     {
       "package": "inputs-native",
@@ -231,7 +231,10 @@
     "provider_controller_proof": "artifacts/provider/external-retained-resume-0234/actual-resume-proof.json",
     "provider_checkpoint32": "artifacts/provider/external-retained-checkpoint-32/receipt.json",
     "external_newraw_phase2_review": "artifacts/managed-contract/external-newraw-phase2-supervisor-review.json",
-    "current_CLI_main_storage_postflight": "artifacts/managed-contract/current-CLI-main-storage-supervisor-postflight.json"
+    "current_CLI_main_storage_postflight": "artifacts/managed-contract/current-CLI-main-storage-supervisor-postflight.json",
+    "external_newraw_phase2_hold": "artifacts/managed-contract/external-newraw-phase2-review-hold.json",
+    "closed_tool_storage_postflight": "artifacts/managed-contract/closed-historical-tool-storage-0155/postflight.json",
+    "historical_python_source_bounded_review": "artifacts/managed-contract/historical-python-tests-bounded-supervisor-review.json"
   },
   "discovery_correction": {
     "original": "artifacts/managed/full-owning-matrix/report.json",

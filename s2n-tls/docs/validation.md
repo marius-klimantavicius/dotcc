@@ -448,3 +448,25 @@ Sharing released619,540,480 allocated bytes and unreferenced caches released
 296,083,456 bytes. Original receipts and actual execution/build/runtime paths
 remain intact. Storage accounting is not a test result or an admission promise;
 delivery still needs a fresh check against its fixed3,091,202,048-byte guard.
+
+A subsequent no-build new-raw-to-expander roundtrip exposed an integration gap
+in the phase2 candidate: the builder's explicit metadata imports already exist
+when the expander tries to create them. The conditional rollout is held, with
+no candidate applied, pending an exact-byte/regular-file preservation revision
+and renewed review. Prior113-file/49-control evidence remains scoped source
+evidence, not a successful combined roundtrip:
+`artifacts/managed-contract/external-newraw-phase2-review-hold.json`.
+
+Closed historical tool dependency copies were separately shared after terminal
+producer/tool-SHA checks, excluding the entire current223542 tool snapshot.
+All66 original paths and5,461 protected tool/source/runtime/receipt hashes and
+modes remain exact; measured net recovery is577,875,968 allocated bytes.
+Both guarded phases and journal chains are independently checked at
+`artifacts/managed-contract/closed-historical-tool-storage-0155/postflight.json`.
+The14 terminal/drained historical Python test-source roots pass an independent
+pinned-archive and119,905-file review. Their three-group2,170-path trial and
+independent-store separation from every pristine inode pass at
+`artifacts/managed-contract/historical-python-tests-bounded-supervisor-review.json`.
+Only the remaining exact reviewed inventory is authorized; its completion and
+delivery admission are not inferred. No result receives qualification credit
+from sharing, and failed historical statuses remain unchanged.

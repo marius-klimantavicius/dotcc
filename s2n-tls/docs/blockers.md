@@ -52,3 +52,9 @@ at `artifacts/managed-contract/external-newraw-phase2-supervisor-review.json`.
 Current retained batches continue unchanged through006. Natural stop, exclusive
 lease, exact three-helper apply and one original215-assertion case all4 must
 precede broader continuation. No candidate-only qualification is counted.
+
+The subsequent combined metadata roundtrip found an unapplied phase2 integration
+gap: the expander rejects the builder's already-identical import scaffolding.
+Conditional rollout is held for narrow exact-byte regular-file preservation
+and renewed controls/review. Current retained batches continue unchanged; no
+failed candidate is applied or counted as an original assertion execution.
