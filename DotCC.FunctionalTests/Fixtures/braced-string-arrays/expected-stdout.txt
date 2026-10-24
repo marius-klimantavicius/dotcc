@@ -1,0 +1,1 @@
+braced strings: bytes, extents, ownership, persistence, pointer arrays

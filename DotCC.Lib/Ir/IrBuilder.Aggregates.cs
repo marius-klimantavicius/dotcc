@@ -257,7 +257,7 @@ internal sealed partial class IrBuilder
                     => DotCC.EmitHelpers.StringU32Values(text.Segments),
                 _ => throw new IrUnsupportedException("string literal is incompatible with inline array element type"),
             };
-            var count = array.Count!.Value;
+            var count = array.Count ?? checked(characters.Count + 1);
             // C allows an exact-size character array without the terminator;
             // every actual character must still fit. Shorter literals include
             // their terminator and zero-fill the remaining inline storage.
@@ -426,6 +426,14 @@ internal sealed partial class IrBuilder
     /// (<c>[]</c>) or non-constant.</param>
     private List<CExpr> BuildArrayElems(CType elem, IReadOnlyList<int>? dims, IReadOnlyList<Init> items)
     {
+        // Braces do not turn a string initializer into one scalar element.
+        // Complete an omitted character-array bound from its encoded code
+        // units plus the terminator, before declaring the array's symbol.
+        // Pointer arrays keep the ordinary scalar initializer path.
+        if (dims is null
+            && elem.Unqualified is CType.Prim { Name: "char" or "signed char" or "unsigned char" or "char8_t" or "char16_t" or "wchar_t" or "char32_t" }
+            && TryInlineStringInitializer(new CType.Array(elem, null), new InitGroup(items), out var inferredString))
+            return inferredString;
         if (items.Any(i => i is InitAt))
         {
             if (dims is { Count: > 1 }) return MultidimensionalDesignatedArrayValues(elem, items, dims);
