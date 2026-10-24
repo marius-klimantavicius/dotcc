@@ -10,15 +10,7 @@
     "model": "gpt-6.1-sol",
     "reasoningEffort": "xhigh"
   },
-  "active_tasks": [
-    {
-      "package": "api-qualification",
-      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Athread-send%3Aapi-r6-final-ec-launch-release-20261024",
-      "backing_thread": "thread:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-api-r6-receipt-process-coordination-20261024",
-      "verified_model": "gpt-6.1-sol",
-      "verified_reasoningEffort": "xhigh"
-    }
-  ],
+  "active_tasks": [],
   "shared_build_owner": "supervisor",
   "next": "Preserve stopped C resource-limit62/10/185 and historical Python13passed/1running/58unrun plus separately completed2588 leaf. No campaign/source apply/replacement admission. Root original preferences compiler repair has actual132 assertions in all4 modes, independently audited1908files; standard expander stays incomplete after optional storage sharing rejected root-specific raw placement. No canonical adoption. Remaining connection compiler case and final upstream/P6 gates open. Provider delegated action remains terminal content-flagged and is not retried.",
   "completed_tasks": [
@@ -79,6 +71,19 @@
       "verified_model": "gpt-6.1-sol",
       "verified_reasoningEffort": "xhigh",
       "terminal_status": "failed-content-flag; no pending child runs; outputs/source unchanged, no retry/replacement launched"
+    },
+    {
+      "package": "api-qualification",
+      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Athread-send%3Aapi-r6-final-ec-launch-release-20261024",
+      "backing_thread": "thread:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-api-r6-receipt-process-coordination-20261024",
+      "verified_model": "gpt-6.1-sol",
+      "verified_reasoningEffort": "xhigh",
+      "terminal_status": "completed exact storage scope; no pending child runs/questions/approvals; all workload/replacement/source holds preserved",
+      "storage_net_bytes_recovered": 175779840,
+      "protected_files_verified": 11308,
+      "paths_shared": 374,
+      "independent_root_postflight": "/mnt/storage/dotcc-s2n-qualification-20261024/root-capacity-audit/old-aot-runtime-full-postflight/report.json",
+      "independent_root_postflight_sha256": "695559001f3463e8ef1d055d3881af59ef9b1d078aa37edc10771a338a6751dd"
     }
   ],
   "commits": [
@@ -272,7 +277,8 @@
     "delivery20_retirement_postflight": "/mnt/storage/dotcc-s2n-qualification-20261024/root-capacity-audit/delivery20-retirement-postflight/report.json",
     "old_aot_runtime_full_postflight": "/mnt/storage/dotcc-s2n-qualification-20261024/root-capacity-audit/old-aot-runtime-full-postflight/report.json",
     "original_preferences_raw_jit_132": "/mnt/storage/dotcc-s2n-qualification-20261024/root-braced-string-compiler/original-preferences/raw-jit-resume-20261024-attempt2/progress.json",
-    "original_preferences_actual_all4_audit": "/mnt/storage/dotcc-s2n-qualification-20261024/root-braced-string-compiler/original-preferences/all4-20261024/actual-assertions-all4-independent-audit.json"
+    "original_preferences_actual_all4_audit": "/mnt/storage/dotcc-s2n-qualification-20261024/root-braced-string-compiler/original-preferences/all4-20261024/actual-assertions-all4-independent-audit.json",
+    "delegated_task_closeout": "/mnt/storage/dotcc-s2n-qualification-20261024/root-capacity-audit/delegated-task-closeout-20261024/receipt.json"
   },
   "discovery_correction": {
     "original": "artifacts/managed/full-owning-matrix/report.json",
