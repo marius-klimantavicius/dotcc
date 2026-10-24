@@ -28,6 +28,49 @@ LOCKS = ("packages.lock.json", "packages.linux-x64.lock.json",
          "packages.aot.lock.json", "packages.aot.linux-x64.lock.json")
 
 
+def validate_work_root(value):
+    """Validate an explicit private allocation root without creating it."""
+    path = Path(value)
+    if not path.is_absolute() or path != path.resolve():
+        raise RuntimeError("Work root must be absolute and cannot traverse a symlink")
+    if path == ROOT or ROOT.is_relative_to(path) or (path.is_relative_to(ROOT) and path != ROOT / "build"):
+        raise RuntimeError("Work root overlaps authored/canonical inputs")
+    ancestor = path
+    while not ancestor.exists():
+        ancestor = ancestor.parent
+    if not ancestor.is_dir() or ancestor.stat().st_uid != os.getuid() or not os.access(ancestor, os.W_OK | os.X_OK):
+        raise RuntimeError("Work root needs a private writable directory owned by the current user")
+    return path
+
+
+def storage_reserves(paths, minimum_bytes):
+    """Observe each actual filesystem once; no directories or files are made."""
+    devices = {}
+    for value in paths:
+        path = Path(value)
+        ancestor = path
+        while not ancestor.exists():
+            ancestor = ancestor.parent
+        if not ancestor.is_dir():
+            raise RuntimeError("Storage allocation ancestor is not a directory")
+        device, free = ancestor.stat().st_dev, shutil.disk_usage(ancestor).free
+        row = devices.setdefault(device, {"device": device, "paths": [], "free_bytes": free,
+                                         "minimum_free_bytes": minimum_bytes})
+        row["paths"].append(str(path)); row["free_bytes"] = min(row["free_bytes"], free)
+    return [dict(row, passed=row["free_bytes"] >= minimum_bytes) for _, row in sorted(devices.items())]
+
+
+def dependency_store(target, work_root=None):
+    """Keep legacy stores and explicitly scoped external case stores separate."""
+    if target.is_relative_to(ROOT / "build/provider") or target.is_relative_to(ROOT / "build/managed-upstream"):
+        return STORE
+    if work_root is not None:
+        root = validate_work_root(work_root)
+        if target.is_relative_to(root / "provider/original16-expanded"):
+            return root / "provider/immutable-dependencies"
+    raise RuntimeError("Dependency target is outside owned original-C execution outputs")
+
+
 def sha(path):
     with Path(path).open("rb") as stream:
         return hashlib.file_digest(stream, "sha256").hexdigest()
@@ -84,13 +127,13 @@ def pinned_package():
                                                  "stdout": verified.stdout, "stderr": verified.stderr}, "inputs_sha256": inputs}
 
 
-def store_member(source, expected):
-    STORE.mkdir(parents=True, exist_ok=True)
-    if STORE.absolute() != STORE.resolve():
+def store_member(source, expected, *, store=STORE):
+    store.mkdir(parents=True, exist_ok=True)
+    if store.absolute() != store.resolve():
         raise RuntimeError("Immutable dependency store cannot traverse a symlink")
-    with (STORE / "store.lock").open("a+") as lease:
+    with (store / "store.lock").open("a+") as lease:
         fcntl.flock(lease, fcntl.LOCK_EX)
-        directory = STORE / "sha256" / expected
+        directory = store / "sha256" / expected
         directory.mkdir(parents=True, exist_ok=True)
         target = directory / DLL
         created = False
@@ -191,7 +234,7 @@ def replace_identical(target, canonical, expected):
                 allocated_bytes_released=before.st_blocks * 512 if before.st_nlink == 1 else 0)
 
 
-def deduplicate_qualified_case(rows, qualification, receipt):
+def deduplicate_qualified_case(rows, qualification, receipt, *, work_root=None):
     """Keep every actual path/hash while sharing one immutable pinned DLL inode."""
     qualification, receipt = Path(qualification), Path(receipt)
     observed = json.loads(qualification.read_text())
@@ -224,8 +267,7 @@ def deduplicate_qualified_case(rows, qualification, receipt):
     if len(set(targets)) != 2 or any(expected_files[str(p)] != expected for p in targets):
         raise RuntimeError("Actual JIT dependency differs from the pinned archive member")
     for target in targets:
-        if not (target.is_relative_to(ROOT / "build/provider") or target.is_relative_to(ROOT / "build/managed-upstream")):
-            raise RuntimeError("Dependency target is outside owned original-C execution outputs")
+        dependency_store(target, work_root)
         regular(target)
     before = {p: sha(p) for p in expected_files}
     if before != expected_files:
@@ -239,11 +281,19 @@ def deduplicate_qualified_case(rows, qualification, receipt):
         if observation["readers"]:
             report.update(status="retained-busy", replacements=[])
         else:
-            canonical, created = store_member(source, expected)
-            report["store"] = {"path": str(canonical), "sha256": expected,
-                               "role": "private immutable pinned dependency store; never modify this inode",
-                               "created": created, "created_allocated_bytes": canonical.stat().st_blocks * 512 if created else 0}
-            report["replacements"] = [replace_identical(target, canonical, expected) for target in targets]
+            stores = {}
+            report["replacements"] = []
+            for target in targets:
+                selected = dependency_store(target, work_root)
+                if selected not in stores:
+                    canonical, created = store_member(source, expected, store=selected)
+                    stores[selected] = {"path": str(canonical), "sha256": expected,
+                        "role": "private immutable pinned dependency store; never modify this inode",
+                        "created": created, "created_allocated_bytes": canonical.stat().st_blocks * 512 if created else 0}
+                report["replacements"].append(replace_identical(target, Path(stores[selected]["path"]), expected))
+            report["store"] = next(iter(stores.values()))
+            if work_root is not None:
+                report["stores"] = list(stores.values())
             report["status"] = "passed"
         after = {p: sha(p) for p in expected_files}
         if after != before or any(sha(p) != h for p, h in package["inputs_sha256"].items()):

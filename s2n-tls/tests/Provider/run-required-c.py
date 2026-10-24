@@ -20,16 +20,22 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts"))
 from translation_evidence import read_closed
 from required_c_receipt import _verify_test_provider_snapshot, require_passed_native
+from qualified_dependencies import storage_reserves, validate_work_root
 
 
 def read(path):
     return json.loads(Path(path).read_text())
 
 
+class RetainedRawRequired(RuntimeError):
+    """A deliberate placement boundary; no new raw builder was launched."""
+
+
 class Pipeline:
     def __init__(self, args):
         self.args = args
         self.output = args.output.resolve(); self.output.mkdir(parents=True, exist_ok=True)
+        self.work_root = validate_work_root(args.work_root) if args.work_root else None
         self.lease = (self.output / "controller.lock").open("a+")
         fcntl.flock(self.lease, fcntl.LOCK_EX | fcntl.LOCK_NB)
         self.progress_path = self.output / "progress.json"
@@ -244,6 +250,8 @@ class Pipeline:
         if not raw.exists() and row.get("provider_refresh_from_raw_manifest"):
             self.retained_raw_manifest(row, requested, raw)
             row["raw_manifest"] = str(raw); self.save()
+        if not raw.exists() and self.args.retained_raw_only:
+            raise RetainedRawRequired("Retained raw provenance exhausted; review external raw-builder allocation before continuing")
         if not raw.exists():
             argv = [sys.executable, "-B", ROOT / "tests/Upstream/build.py", "--campaign-run", self.campaign,
                     "--reuse-emission", self.args.emission_manifest.resolve(), "--form", "raw", "--mode", "jit", "--output", raw]
@@ -304,6 +312,8 @@ class Pipeline:
             argv = [sys.executable, "-B", ROOT / "tests/Provider/expand-original-controls.py", "--executables", raw,
                     "--output", expanded, "--native-report", self.args.native_report.resolve(),
                     "--case-set", "required-c", "--jobs", self.args.jobs]
+            if self.work_root is not None:
+                argv += ["--work-root", self.work_root, "--min-free-gib", self.args.min_free_gib]
             if self.args.native_equivalence:
                 argv += ["--native-equivalence", self.args.native_equivalence.resolve()]
             if row.get("provider_refresh_from_raw_manifest"):
@@ -461,11 +471,24 @@ class Pipeline:
         for row in self.progress["batches"]:
             if row["status"] == "passed" or (row["status"] == "failed" and not self.args.retry_failed):
                 continue
-            if shutil.disk_usage(self.output).free < self.args.min_free_gib * 2**30:
+            locations = [self.output]
+            if self.work_root is not None:
+                locations.append(self.work_root)
+            if row.get("expanded_manifest") and Path(row["expanded_manifest"]).is_file():
+                locations.append(Path(read(row["expanded_manifest"])["work"]))
+            reserves = storage_reserves(locations, self.args.min_free_gib * 2**30)
+            self.progress.setdefault("storage_reserve_observations", []).append({"batch": row["index"], "checks": reserves,
+                "future_work_root": str(self.work_root) if self.work_root is not None else None})
+            if not all(check["passed"] for check in reserves):
                 self.progress.update(status="resource-limit", resource_error="Free storage is below the recorded batch reserve; actual execution closures retained")
                 self.save(); return 1
             try:
                 self.batch(row)
+            except RetainedRawRequired as error:
+                self.progress.update(status="awaiting-retained-raw", placement_error=str(error))
+                row.update(status="awaiting-retained-raw", placement_error=str(error)); self.save()
+                print("STOPPED before new raw builder; retained qualification/progress preserved", flush=True)
+                return 1
             except Exception as error:
                 self.progress.update(status="controller-error", controller_error=str(error))
                 row.update(status="controller-error", error=str(error)); self.save()
@@ -483,6 +506,8 @@ class Pipeline:
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--campaign-run", type=Path, required=True)
+    parser.add_argument("--work-root", type=Path, help="Private future expansion root replacing ROOT/build; canonical builder and old results stay unchanged")
+    parser.add_argument("--retained-raw-only", action="store_true", help="Stop before launching any new raw builder once retained linked provenance is exhausted")
     parser.add_argument("--emission-manifest", type=Path, required=True)
     parser.add_argument("--native-report", type=Path, required=True)
     parser.add_argument("--native-equivalence", type=Path,

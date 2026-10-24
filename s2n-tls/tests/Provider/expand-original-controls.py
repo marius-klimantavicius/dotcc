@@ -9,6 +9,7 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 import hashlib
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -28,7 +29,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from translation_evidence import read_closed
 sys.path.insert(0, str(ROOT / "tests/Provider/UpstreamSurface"))
 from provider_snapshot import snapshot_provider
-from qualified_dependencies import deduplicate_qualified_case
+from qualified_dependencies import deduplicate_qualified_case, storage_reserves, validate_work_root
 
 
 def digest(path):
@@ -39,9 +40,30 @@ def tree_hashes(directory):
     return {p.relative_to(directory).as_posix(): digest(p) for p in source_files(directory)}
 
 
+def raw_metadata_imports(directory):
+    """Restore original inherited settings only in a new private external tree."""
+    created = []
+    for name in ("Directory.Build.props", "Directory.Build.targets", "Directory.Packages.props"):
+        original = next((root / name for root in (ROOT, ROOT.parent) if (root / name).is_file()), None)
+        if original is None:
+            continue
+        target = directory / name
+        if target.exists():
+            raise RuntimeError("Retain existing raw metadata; do not overwrite it during external allocation")
+        tree = ET.Element("Project")
+        ET.SubElement(tree, "Import", Project=str(original))
+        ET.indent(tree)
+        with target.open("x") as stream:
+            stream.write(ET.tostring(tree, encoding="unicode") + "\n")
+        created.append({"path": str(target), "sha256": digest(target),
+                        "import": str(original), "import_sha256": digest(original)})
+    return created
+
+
 class Expansion:
     def __init__(self, args):
         self.args = args
+        self.work_root = validate_work_root(args.work_root) if args.work_root else None
         self.output = args.output.resolve()
         self.output.parent.mkdir(parents=True, exist_ok=True)
         self.input = json.loads(args.executables.read_text())
@@ -79,8 +101,11 @@ class Expansion:
             if self.output.exists():
                 raise RuntimeError("Output exists; use --resume to retain completed builds")
             run = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ") + "-" + uuid.uuid4().hex[:8]
-            self.work = ROOT / "build/provider/original16-expanded" / run
-            self.work.mkdir(parents=True)
+            self.work = (self.work_root or ROOT / "build") / "provider/original16-expanded" / run
+            reserve = storage_reserves([self.output.parent, self.work], args.min_free_gib * 2**30)
+            if not all(row["passed"] for row in reserve):
+                raise RuntimeError("External/metadata filesystem is below the recorded expansion reserve: " + json.dumps(reserve))
+            self.work.mkdir(parents=True, mode=0o700)
             receipt_path, receipt = self.campaign_receipt_path, self.campaign_receipt
             tools = hashes(p for p in (self.campaign / "tools").rglob("*") if p.is_file() and p.suffix in (".dll", ".json"))
             self.report = {"status": "running", "scope": "Bounded original C harness expansion; whole upstream gate remains open",
@@ -95,9 +120,21 @@ class Expansion:
                 "helper_sha256": digest(Path(__file__)), "snapshots": [], "commands": [],
                 "executables": [dict(self.entries[case], form=form, mode=mode, status="unrun")
                     for case in self.cases for form in ("raw", "processed") for mode in ("jit", "aot")]}
+            if self.work_root is not None:
+                self.report.update(work_root=str(self.work_root), work_device=self.work.stat().st_dev,
+                                   storage_reserves_at_allocation=reserve)
             if len(self.report["product_objects_sha256"]) != 175 or len(self.report["product_staged_sources_sha256"]) != 175:
                 raise RuntimeError("Expansion requires the complete 175-unit product")
         self.postprocessor = self.campaign / "tools/DotCC.PostProcess/dotcc-postprocess.dll"
+        if args.resume:
+            # Existing absolute placement remains authoritative, even when a
+            # later controller selects another root for future batches.
+            self.work_root = Path(self.report["work_root"]) if self.report.get("work_root") else None
+            if self.work_root is not None:
+                validate_work_root(self.work_root)
+            reserve = storage_reserves([self.output.parent, self.work], args.min_free_gib * 2**30)
+            if not all(row["passed"] for row in reserve):
+                raise RuntimeError("Recorded expansion filesystem is below reserve: " + json.dumps(reserve))
         self.native_report = (args.native_report or Path(self.report.get("native_report", ""))).resolve()
         if not self.native_report.is_file():
             raise RuntimeError("Provide the exact matching-profile --native-report")
@@ -144,6 +181,8 @@ class Expansion:
         self.save()
 
     def verify_immutable(self):
+        if "work_device" in self.report and self.work.stat().st_dev != self.report["work_device"]:
+            raise RuntimeError("Recorded external work filesystem changed; preserve existing absolute paths")
         if digest(self.campaign_receipt_path) != self.report["campaign_receipt_sha256"]:
             raise RuntimeError("Closed translation receipt changed during expansion")
         for key in ("tool_sha256", "product_objects_sha256", "product_staged_sources_sha256", "override_inputs_sha256"):
@@ -293,6 +332,7 @@ class Expansion:
             ET.SubElement(group, "Compile", Include=str(identity), Link="ExecutionIdentity.cs")
         ET.indent(tree)
         tree.write(project, encoding="unicode")
+        metadata = raw_metadata_imports(raw) if self.work_root is not None else []
         refreshed = self.refresh_project_provider(case, project) if self.args.refresh_provider else None
         # Project XML is the sole authored change; all generated C# stays exact.
         for name, expected in before.items():
@@ -301,6 +341,8 @@ class Expansion:
         row = {"case": case, "original_raw_project": str(origin / "S2nTls.csproj"),
                "original_raw_source_sha256": before, "raw_project": str(project),
                "raw_source_sha256": tree_hashes(raw)}
+        if metadata:
+            row["raw_metadata_imports"] = metadata
         if refreshed:
             row["provider_refresh"] = refreshed
         with self.lock:
@@ -520,7 +562,7 @@ class Expansion:
         if digest(qualified["receipt"]) != qualified["sha256"]:
             raise RuntimeError("Closed qualification changed before dependency storage cleanup")
         receipt = self.artifacts / (Path(case).stem + "-dependencies-" + uuid.uuid4().hex[:8] + ".json")
-        storage = deduplicate_qualified_case(rows, qualified["receipt"], receipt)
+        storage = deduplicate_qualified_case(rows, qualified["receipt"], receipt, work_root=self.work_root)
         with self.lock:
             self.report.setdefault("dependency_storage", {}).setdefault(case, []).append({
                 "receipt": str(receipt), "sha256": digest(receipt), "status": storage["status"],
@@ -586,6 +628,8 @@ class Expansion:
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--executables", type=Path, required=True)
+    parser.add_argument("--work-root", type=Path, help="Private future build root replacing ROOT/build; existing resumed work remains at its recorded path")
+    parser.add_argument("--min-free-gib", type=float, default=2, help="Reserve on each metadata/work filesystem before allocation or resume")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--native-report", type=Path)
     parser.add_argument("--native-equivalence", type=Path)
