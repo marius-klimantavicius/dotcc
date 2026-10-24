@@ -56,9 +56,41 @@ allocation and net savings. Staged files remain labelled unexecuted package
 copies. `passed-preserved-evidence` supplies no fresh runtime or canonical case
 credit; original incomplete/failure statuses are retained verbatim.
 
+## Controller output-scope plumbing
+
+Future independently authorized invocations of
+`tests/Provider/run-required-c.py` accept repeatable
+`--dependency-output-root /absolute/external/output` arguments. Supply the exact
+caller-owned raw/output directories needed by dependency storage. The controller
+validates them with the existing output-root helper and forwards each scope to
+the expander; it never infers a broader scope from a campaign or manifest path.
+Relative paths, symlink traversal and roots overlapping the repository (including
+its ancestors) fail before workload commands.
+
+New controller progress records the ordered scope list. On resume, omitting the
+option reuses that list; an explicit list must match exactly, including order.
+Existing batch reports must agree with the controller scopes before resuming.
+Legacy progress without a scope field retains an empty list and the original
+child arguments. Adding scopes to such a run requires a fresh, separately
+authorized progress destination. No original progress is migrated by this change.
+
+Batch reserve checks include metadata, future work, every explicit output scope
+and any recorded existing batch work directory. `--min-free-gib` must be finite
+and at least 2; higher caller reserves also reach the expander when no alternate
+work root is selected. Dependency-store allocation retains its existing 2GiB
+guard.
+
+This integration is validated only with synthetic parser/configuration,
+filesystem guards and command capture. No controller is constructed or run, and
+no builder, provider or application subprocess is launched by the new tests.
+The original C62/10/185 progress is unchanged. Actual controller workload
+integration and the provider/protocol/C/Python qualification gates remain held;
+the new plumbing supplies no qualification or adoption credit.
+
 Focused regression commands, with `TMPDIR` placed externally:
 
 ```bash
 python3 -B -m unittest discover -s Scripts/production_tests -p test_external_source_build.py -v
 python3 -B -m unittest discover -s Scripts/production_tests -p test_managed_test_storage.py -v
+python3 -B -m unittest discover -s Scripts/production_tests -p test_required_c_output_scopes.py -v
 ```

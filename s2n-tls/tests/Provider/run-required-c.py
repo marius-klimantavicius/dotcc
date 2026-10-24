@@ -8,6 +8,7 @@ import argparse
 import copy
 import fcntl
 import json
+import math
 from pathlib import Path
 import shutil
 import subprocess
@@ -21,10 +22,34 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from translation_evidence import read_closed
 from required_c_receipt import _verify_test_provider_snapshot, require_passed_native
 from qualified_dependencies import storage_reserves, validate_work_root
+from managed_test_storage import validate_output_root
 
 
 def read(path):
     return json.loads(Path(path).read_text())
+
+
+def resolve_dependency_output_roots(requested, recorded=None):
+    """Retain exact caller scopes; a legacy record has no additional roots."""
+    def validate(values):
+        if not isinstance(values, (list, tuple)):
+            raise RuntimeError("Dependency output roots must be an explicit list")
+        return tuple(validate_output_root(p, protected_roots=(ROOT.parent,)) for p in values)
+
+    roots = validate(requested) if requested is not None else None
+    if recorded is not None:
+        previous = validate(recorded.get("dependency_output_roots", []))
+        if roots is not None and roots != previous:
+            raise RuntimeError("Resume cannot change the recorded dependency output roots")
+        return previous
+    return roots or ()
+
+
+def minimum_free_gib(value):
+    minimum = float(value)
+    if not math.isfinite(minimum) or minimum < 2:
+        raise argparse.ArgumentTypeError("Storage reserve must be finite and at least 2GiB")
+    return minimum
 
 
 class RetainedRawRequired(RuntimeError):
@@ -34,6 +59,7 @@ class RetainedRawRequired(RuntimeError):
 class Pipeline:
     def __init__(self, args):
         self.args = args
+        self.dependency_output_roots = resolve_dependency_output_roots(args.dependency_output_root)
         self.output = args.output.resolve(); self.output.mkdir(parents=True, exist_ok=True)
         self.work_root = validate_work_root(args.work_root) if args.work_root else None
         self.upstream_builder = args.upstream_builder.resolve() if args.upstream_builder else None
@@ -57,6 +83,7 @@ class Pipeline:
             if not args.resume:
                 raise RuntimeError("Persistent progress exists; use --resume")
             self.progress = read(self.progress_path)
+            self.configure_dependency_output_roots(resume=True)
             if (self.progress["emission_manifest_sha256"] != sha(args.emission_manifest)
                 or Path(self.progress["campaign_run"]) != self.campaign):
                 raise RuntimeError("Resume cannot change the immutable campaign/emission inputs")
@@ -67,6 +94,7 @@ class Pipeline:
                 "emission_manifest": str(args.emission_manifest.resolve()), "emission_manifest_sha256": sha(args.emission_manifest),
                 "native_profile_match": match, "commands": [], "cases": {case: {"status": "unrun"} for case in self.required},
                 "batches": [{"index": index, "cases": cases, "status": "unrun"} for index, cases in enumerate(batches)]}
+            self.configure_dependency_output_roots(resume=False)
         self.support = self.output / "support-reuse.json"
         self.provider_freeze = None
         if args.provider_freeze:
@@ -90,6 +118,49 @@ class Pipeline:
         self.progress.setdefault("campaign_receipt_sha256", sha(self.translation_path))
         self.verify_emissions()
         self.save()
+
+    def configure_dependency_output_roots(self, *, resume):
+        self.dependency_output_roots = resolve_dependency_output_roots(
+            self.args.dependency_output_root, self.progress if resume else None)
+        if self.dependency_output_roots or "dependency_output_roots" in self.progress:
+            self.progress["dependency_output_roots"] = [str(p) for p in self.dependency_output_roots]
+
+    def batch_storage_reserves(self, row):
+        roots = resolve_dependency_output_roots(self.dependency_output_roots, self.progress)
+        locations = [self.output, *roots]
+        if self.work_root is not None:
+            locations.append(self.work_root)
+        if row.get("expanded_manifest") and Path(row["expanded_manifest"]).is_file():
+            expanded = read(row["expanded_manifest"])
+            resolve_dependency_output_roots(roots, expanded)
+            locations.append(Path(expanded["work"]))
+        return storage_reserves(locations, self.args.min_free_gib * 2**30)
+
+    def expansion_argv(self, raw, expanded, row, built):
+        """Plan a child command without launching a builder or application."""
+        roots = resolve_dependency_output_roots(self.dependency_output_roots, self.progress)
+        if expanded.exists():
+            resolve_dependency_output_roots(roots, read(expanded))
+        argv = [sys.executable, "-B", ROOT / "tests/Provider/expand-original-controls.py", "--executables", raw,
+                "--output", expanded, "--native-report", self.args.native_report.resolve(),
+                "--case-set", "required-c", "--jobs", self.args.jobs]
+        if self.work_root is not None:
+            argv += ["--work-root", self.work_root]
+        if self.work_root is not None or self.args.min_free_gib != 2:
+            argv += ["--min-free-gib", self.args.min_free_gib]
+        for root in roots:
+            argv += ["--dependency-output-root", root]
+        if self.args.native_equivalence:
+            argv += ["--native-equivalence", self.args.native_equivalence.resolve()]
+        if self.provider_freeze:
+            argv += ["--provider-freeze", self.provider_freeze["receipt"]]
+        if row.get("provider_refresh_from_raw_manifest"):
+            argv += ["--refresh-provider"]
+        if expanded.exists():
+            argv.append("--resume")
+        for case in built:
+            argv += ["--case", case]
+        return argv
 
     def verify_emissions(self):
         if sha(self.translation_path) != self.progress["campaign_receipt_sha256"]:
@@ -341,21 +412,7 @@ class Pipeline:
                     error=found[0].get("error", "Missing exact built harness") if len(found) == 1 else "Missing/duplicate raw harness")
         if built:
             expanded = directory / "expanded-executables.json"
-            argv = [sys.executable, "-B", ROOT / "tests/Provider/expand-original-controls.py", "--executables", raw,
-                    "--output", expanded, "--native-report", self.args.native_report.resolve(),
-                    "--case-set", "required-c", "--jobs", self.args.jobs]
-            if self.work_root is not None:
-                argv += ["--work-root", self.work_root, "--min-free-gib", self.args.min_free_gib]
-            if self.args.native_equivalence:
-                argv += ["--native-equivalence", self.args.native_equivalence.resolve()]
-            if self.provider_freeze:
-                argv += ["--provider-freeze", self.provider_freeze["receipt"]]
-            if row.get("provider_refresh_from_raw_manifest"):
-                argv += ["--refresh-provider"]
-            if expanded.exists():
-                argv.append("--resume")
-            for case in built:
-                argv += ["--case", case]
+            argv = self.expansion_argv(raw, expanded, row, built)
             row.update(status="expanding-and-executing", expanded_manifest=str(expanded)); self.save()
             self.command(argv, directory, "all4")
             evidence = read(expanded) if expanded.exists() else {"qualifications": {}, "executables": []}
@@ -505,12 +562,7 @@ class Pipeline:
         for row in self.progress["batches"]:
             if row["status"] == "passed" or (row["status"] == "failed" and not self.args.retry_failed):
                 continue
-            locations = [self.output]
-            if self.work_root is not None:
-                locations.append(self.work_root)
-            if row.get("expanded_manifest") and Path(row["expanded_manifest"]).is_file():
-                locations.append(Path(read(row["expanded_manifest"])["work"]))
-            reserves = storage_reserves(locations, self.args.min_free_gib * 2**30)
+            reserves = self.batch_storage_reserves(row)
             self.progress.setdefault("storage_reserve_observations", []).append({"batch": row["index"], "checks": reserves,
                 "future_work_root": str(self.work_root) if self.work_root is not None else None})
             if not all(check["passed"] for check in reserves):
@@ -537,11 +589,13 @@ class Pipeline:
         return 0 if self.progress["status"] == "passed" else 1
 
 
-def main():
+def parse_args(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--campaign-run", type=Path, required=True)
     parser.add_argument("--upstream-builder", type=Path, help="Explicit immutable reviewed private placement derivation; default remains canonical")
     parser.add_argument("--work-root", type=Path, help="Private future expansion root replacing ROOT/build; canonical builder and old results stay unchanged")
+    parser.add_argument("--dependency-output-root", type=Path, action="append",
+                        help="Exact external dependency output scope (repeatable); resume retains recorded scopes and rejects changes")
     parser.add_argument("--retained-raw-only", action="store_true", help="Stop before launching any new raw builder once retained linked provenance is exhausted")
     parser.add_argument("--emission-manifest", type=Path, required=True)
     parser.add_argument("--native-report", type=Path, required=True)
@@ -560,9 +614,13 @@ def main():
     parser.add_argument("--jobs", type=int, choices=range(1, 5), default=2)
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--retry-failed", action="store_true", help="Create new private attempts for failed cases while preserving prior actual execution closures")
-    parser.add_argument("--min-free-gib", type=float, default=2)
+    parser.add_argument("--min-free-gib", type=minimum_free_gib, default=2)
     parser.add_argument("--validate-only", action="store_true")
-    return Pipeline(parser.parse_args()).run()
+    return parser.parse_args(argv)
+
+
+def main():
+    return Pipeline(parse_args()).run()
 
 
 if __name__ == "__main__":
