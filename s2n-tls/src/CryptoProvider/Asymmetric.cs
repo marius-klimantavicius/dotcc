@@ -238,6 +238,15 @@ public sealed class EcKeyExchange : IDisposable
         });
         return key.DeriveRawSecretAgreement(other.PublicKey);
     }
+    internal bool TryDeriveX25519(ReadOnlySpan<byte> peer,Span<byte> output)
+    {
+        ObjectDisposedException.ThrowIf(x25519 is null,this);
+        if(peer.Length!=32||output.Length<32)throw new CryptographicException("Invalid X25519 key or output length.");
+        try{x25519.GenerateSecret(new X25519PublicKeyParameters(peer),output);return true;}
+        // The pinned BC method writes its calculated secret before this
+        // documented exception for an all-zero agreement result.
+        catch(InvalidOperationException){return false;}
+    }
     public void Dispose() { key?.Dispose(); key = null; x25519 = null; }
 }
 

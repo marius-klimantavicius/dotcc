@@ -187,6 +187,7 @@ Test("certificate/pem-der-spki-chain",()=>
 Base64Checks.Run(Test,p=>Oracle(p));
 Asn1StringChecks.Run(Test,p=>Oracle(p));
 RsaPrivateChecks.Run(Test,p=>Oracle(p),artifacts,args[2]);
+EcPublicChecks.Run(Test,p=>Oracle(p),artifacts,args[2]);
 AbiChecks.Run(Test,p=>Oracle(p),artifacts);
 CertificateChecks.Run(Test,p=>Oracle(p),artifacts);
 if(cases.Count==0)throw new ArgumentException("Case filter selected no tests.");
