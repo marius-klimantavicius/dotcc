@@ -1,5 +1,18 @@
 # Current validation
 
+2026-10-24 bounded continuation: current authorization is limited to ordinary
+compiler semantics and managed build/cache placement, plus truthful evidence
+integration. Two independent `gpt-6.1-sol`/`xhigh` agents were launched under the
+`gpt-6.1-sol`/`high` supervisor. Protocol/provider qualification and private CA/EC
+candidate application remain held following the prior automated provider content
+rejection; no stopped C/Python controller is restarted. P6 remains incomplete.
+Cleanup recovered about2.30GiB from the explicitly recorded inactive caches and
+scratch files; it resolves capacity shortage only. Historical cache hash closures
+do not establish that intentionally deleted caches still exist. Sources, actual
+execution receipts and bin/publish outputs were preserved. Current task identities
+and resources are recorded in `orchestration.json`; older checkpoints below are
+historical, including their active-controller and low-capacity statements.
+
 Implementation remains in progress through P6. Boundary, translation and current
 delivery, native and reproduction gates pass for the recorded provider snapshot.
 The complete upstream C/Python gates remain open. Original certificate assertions
@@ -8,6 +21,32 @@ qualification now pass for captured0158 bytes. A later private-RSA mismatch
 requires another provider freeze and fresh downstream qualification. No build-only, emission-only,
 skipped, retried or interrupted workload is counted as a strict protocol pass.
 Paths below are relative to this campaign.
+
+## Independent connection compiler check (2026-10-24)
+
+Existing compiler repair `260387e88` resolves both original connection-test
+CS0266 diagnostics (`byte*` assigned to a `byte` element by a braced string
+initializer). No further compiler source change is needed. A fresh single-TU
+emission, link with the original immutable223542 linker and175 core objects,
+and RAW C# build pass with zero errors and two existing warnings. The object
+delta is exactly two18-byte initializers and one unused literal removal; no
+emitted C# was edited. The original failure and stopped62/10/185 ledger remain
+unchanged; original connection runtime/all4 assertions are UNRUN by scope.
+
+The small uint8_t/typedef language reduction reproduces CS0266 with the old
+tool and matches native output in fixed JIT/NativeAOT. Focused regressions pass
+65 unit and8 ordinary functional rows;10 optional MSVC/WSL oracle rows were
+skipped. An initial nonexistent-project MSB1009 harness failure is retained
+alongside the corrected reproduction command. All19 command/results are retained.
+
+Receipt: `/mnt/storage/dotcc-s2n-qualification-20261024/independent-infrastructure-20261024/compiler-connection/receipt.json`
+(SHA256 `dcf2788a3f455b008d58739fae4ce443c40fe32732068a98fd6862ab6c192893`).
+The separate `supervisor-review.json` beside it verifies2,042 new evidence files,
+750 protected inputs,19 command/log pairs, generated and build outputs. Evidence
+uses218MiB externally and leaves about16.1GiB free on root. This checks current
+bounded evidence only; historical cache closures remain subject to the explicit
+cleanup receipts. No protocol/provider test, canonical257 adoption or P6 closure
+follows from this build result.
 
 ## Final ASN.1 provider freeze
 
