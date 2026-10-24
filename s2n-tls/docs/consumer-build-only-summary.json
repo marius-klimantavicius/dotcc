@@ -1,0 +1,151 @@
+{
+  "P4_P5_P6_runtime_credit": false,
+  "base_commit": "d83e1a0b0fc2dc482c3fe5307fa8280a81928715",
+  "build_placement": {
+    "ArtifactsPath": "Distinct private artifacts/raw-jit, processed-jit, raw-aot, processed-aot; explicit global CLI property",
+    "DOTNET_PROCESSOR_COUNT": 2,
+    "PublishAot": true,
+    "PublishTrimmed": true,
+    "UseAppHost": false,
+    "UseAppHost_reason": "JIT framework-dependent DLL; NativeAOT emits its own executable; avoids unrelated managed apphost package",
+    "UseArtifactsOutput": "true on every build, restore, MSBuild graph/reference evaluation, including original API/provider",
+    "jobs": 2,
+    "private_TMP_CLIHOME_NUGET": true,
+    "reserve_bytes": 2147483648,
+    "resource_postflight": {
+      "/home/marius/p/dotcc": 14719066112,
+      "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/consumer-build-only": 374026473472
+    },
+    "symlinks": 0,
+    "whole_library_rooting": false
+  },
+  "canonical_adoption": false,
+  "central_ledgers_modified": false,
+  "compiler_repair": "260387e88",
+  "dependencies": {
+    "AOT_SDK_declared_downloads": [
+      "Microsoft.AspNetCore.App.Runtime.linux-x64 10.0.12",
+      "Microsoft.NETCore.App.Runtime.linux-x64 10.0.12",
+      "Microsoft.NETCore.App.Runtime.NativeAOT.linux-x64 10.0.12",
+      "runtime.linux-x64.Microsoft.DotNet.ILCompiler 10.0.12"
+    ],
+    "AOT_implicit_build_package": "Microsoft.DotNet.ILCompiler 10.0.12",
+    "JIT_implicit_build_package": "Microsoft.NET.ILLink.Tasks 10.0.12",
+    "JIT_runtime_package": "BouncyCastle.Cryptography 2.7.0",
+    "framework": "net10.0; Microsoft.NETCore.App reference/runtime 10.0.12",
+    "locks": "Original provider packages.lock.json / packages.aot.linux-x64.lock.json preserved and restored locked; sample/API have no own lockfiles and none were created; exact SDK implicit dependencies recorded in graph/assets",
+    "msbuild": "18.0.11+95017c711",
+    "network_package_fetches": 0,
+    "package_copies": 7,
+    "package_source_files_verified": 987,
+    "package_sources": "Private NUGET_PACKAGES plus installed /usr/lib/dotnet/library-packs only; NuGet.Config clears remote sources",
+    "sdk": "10.0.112",
+    "signed_content_proof": "BC uses exact-archive-bound retained NuGet signature/content proof; four signed SDK runtime/compiler archives freshly pass dotnet nuget verify --all with offline revocation; unsigned SDK compiler/ILLink raw archive hashes match locked content hashes; all extracted package files compared to archives"
+  },
+  "evidence": {
+    "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/consumer-build-only/commands.json": "94d3d0ee2cbed3fd2bb0e668f2704ab280b302c661ef195858279c7fdaab51d1",
+    "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/consumer-build-only/compile-inputs.json": "537c34fc03f4c9ea28cfc91cb0ff4affcc277ede4f913475ceb998f1f12fde4f",
+    "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/consumer-build-only/declared-package-selection.json": "3579a3686b1e46ad3b67a4ae8c1956706848a58e39574cc00eebdbd8a801ee31",
+    "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/consumer-build-only/driver.py": "8396b81404195496c78cb688d9f229034b0cee388cc67fd7c7b81530693acafc",
+    "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/consumer-build-only/fullsource-after.json": "01c493baa9225960caad56bec0218bc94d2ca35355379c9716b0c0b1df2e91cd",
+    "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/consumer-build-only/fullsource-before.json": "01c493baa9225960caad56bec0218bc94d2ca35355379c9716b0c0b1df2e91cd",
+    "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/consumer-build-only/harness-events.json": "7c765036f654834f7618dcc84074ecddb9697792c6c4766f79aba364c60ea6d4",
+    "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/consumer-build-only/native-output-metadata.json": "e94d966df7d9b4ddc643b76e9b246ce98d651b9e37998633defabd50c2b94b6e",
+    "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/consumer-build-only/package-bindings.json": "c0c8cf982a22ca43a141799c14dd049ed613d0bf7f151905498fa16cf24d345c",
+    "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/consumer-build-only/protected-after.json": "b942f8cf2d030cb3a5d910a0b1091895f3f18a4a7af766f3353d0fd65c1b728b",
+    "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/consumer-build-only/protected-before.json": "b942f8cf2d030cb3a5d910a0b1091895f3f18a4a7af766f3353d0fd65c1b728b",
+    "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/consumer-build-only/reference-inputs.json": "6480741be6c7522800a5122c8804e1b4b574b8cb5e78f6980acbfb9da9d05174",
+    "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/consumer-build-only/separate-verifier.json": "cf3e1ac08c8635bf7c5a78a6dbf7a658e5bf939bc3fb80cac8388a306f29e052",
+    "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/consumer-build-only/source-copies.json": "470246ce9d2b720dde86cb589067ce4b1c07bebe7b14e21b834e2bd694dceebc",
+    "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/consumer-build-only/verify.py": "59c3e34b4e010adb8c5c868b85f72e30293896e1c4d8f2f8e5446b38008766f1"
+  },
+  "new_C_emissions": 0,
+  "new_C_links": 0,
+  "original_owning_api": "/home/marius/p/dotcc/s2n-tls/src/Managed.S2nTls/Managed.S2nTls.csproj",
+  "original_sample": "/home/marius/p/dotcc/s2n-tls/samples/ManagedConsumer/ManagedConsumer.csproj",
+  "outputs": [
+    {
+      "build_seconds": 18.893847533036023,
+      "bytes": 55296,
+      "form": "raw",
+      "mode": "jit",
+      "output": "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/consumer-build-only/artifacts/raw-jit/bin/ManagedConsumer/release/ManagedConsumer.dll",
+      "output_files": 44,
+      "receipt": "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/consumer-build-only/results/raw-jit.json",
+      "receipt_sha256": "96b459a469630a272cca8a9cba25eb247783b2dad5066ec65f72ef845b85a29a",
+      "sha256": "59f0b2c5a8afd7ca39d0903fee32753f7862e1f3253f3260624a3b0e9f40ec7b"
+    },
+    {
+      "build_seconds": 29.755356693058275,
+      "bytes": 9608056,
+      "form": "raw",
+      "mode": "aot",
+      "output": "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/consumer-build-only/publish/raw-aot/ManagedConsumer",
+      "output_files": 244,
+      "receipt": "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/consumer-build-only/results/raw-aot.json",
+      "receipt_sha256": "c7e754ee9954c06f085b4eb650b7838175cced071d4c4107622f5939e04842dd",
+      "sha256": "e40b9f7c4ded2d9bdbc1d06147e054c3e348ba7087efde7611a01d022ab3f708"
+    },
+    {
+      "build_seconds": 18.10860529099591,
+      "bytes": 55296,
+      "form": "processed",
+      "mode": "jit",
+      "output": "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/consumer-build-only/artifacts/processed-jit/bin/ManagedConsumer/release/ManagedConsumer.dll",
+      "output_files": 44,
+      "receipt": "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/consumer-build-only/results/processed-jit.json",
+      "receipt_sha256": "68db42d70ca37ef87af00dfdf304192769acb48af56e12803c3f12b513d788d1",
+      "sha256": "2daef525f749e49c78a7f0068eae1981f9c1853488fdad4549801ca0295ec736"
+    },
+    {
+      "build_seconds": 27.508484511985444,
+      "bytes": 9558888,
+      "form": "processed",
+      "mode": "aot",
+      "output": "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/consumer-build-only/publish/processed-aot/ManagedConsumer",
+      "output_files": 244,
+      "receipt": "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/consumer-build-only/results/processed-aot.json",
+      "receipt_sha256": "268e869942ff1c970082fee5ae2c1d70b5a0d708210aa8877d7f44c727739d49",
+      "sha256": "852de581cd1505a0d29e6954f424c50dce2bbfc30e9bbefe342196e98bc85745"
+    }
+  ],
+  "private_root": "/mnt/storage/dotcc-s2n-qualification-20261024/unaffected-continuation-20261024/consumer-build-only",
+  "remaining_gates": [
+    "Required original C/Python qualification and held provider/protocol work",
+    "New-source ordinary consumer runtime/delivery acceptance",
+    "Whole-library AOT execution remains the prior captured snapshot only",
+    "Integrated source-specific P6 and canonical adoption"
+  ],
+  "runtime_executions": 0,
+  "scope": "Original ManagedConsumer and owning API through unchanged authored references to copied refreshed full175 raw/processed sources; ordinary JIT builds and trimmed linux-x64 NativeAOT publishes; applications never launched",
+  "shared_tools_built": false,
+  "source_identity": {
+    "assembly_reference_inputs_hashed": 180,
+    "authored_source_edits": false,
+    "compile_inputs_hashed": 116,
+    "fullsource_tree_additions": 0,
+    "fullsource_tree_files_unchanged": 9191,
+    "new_original_source_tree_files": 0,
+    "original_cache_changed_paths": [],
+    "private_metadata_changes": [
+      "TranslatedS2nTls.csproj authored-reference relocation and ProjectReference AdditionalProperties",
+      "Directory.Build.props ArtifactsPath, RestoreConfigFile and editorconfig output path"
+    ],
+    "processed_CSharp_files_unchanged": 36,
+    "protected_files_unchanged": 37798,
+    "raw_CSharp_files_unchanged": 36
+  },
+  "status": "passed-all-four-build-only",
+  "tests_executed": 0,
+  "unsupported_test_host_fork": "Outside this compile-only chain; no fork experiment or test-host execution",
+  "validation": {
+    "build_commands": 2,
+    "prior_fullsource_failures": "All three fullsource failures and original provider obj cache placement deviation remain unchanged; no cache cleanup or restoration claimed",
+    "publish_commands": 2,
+    "reference_evaluations": 16,
+    "result": "Separate verifier process passed; parent independent review remains separate",
+    "retained_helper_errors": "Two receipt-helper issues recorded in harness-events.json; corrected package proof selection and path spelling collection; no JIT/native compilation repeated",
+    "successful_commands": 32,
+    "warnings": "Each build/publish has two existing CS0649 VectorIoEntry Base/Length warnings; zero build errors"
+  }
+}
