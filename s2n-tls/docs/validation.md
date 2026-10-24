@@ -571,3 +571,61 @@ unchanged2GiB reserve. Private-source sharing is released only for a reviewed
 three-group trial; its completion is not inferred. All20 delivery object-cache
 proof-reference holds remain. No build/controller is admitted below its guard.
 Complete1028 C executions,72 Python leaves and sealed P6 remain open.
+
+
+Subsequent bounded storage postflight verifies1,224 private generated-source
+aliases/142 independent private donors, all9,269 protected hashes/modes,60
+original execution receipts and2,590 journal records. Exact file-net recovery
+is403,550,208 bytes; no assertion credit or source-byte change follows.
+The independent review is external at
+`/mnt/storage/dotcc-s2n-qualification-20261024/root-capacity-audit/private-generated-full-postflight/report.json`.
+The exact20 inactive delivery obj caches now have an approved explicit
+administrative-retirement ledger, without superseding any actual execution,
+source or runtime protection. Exact20 independent archives and guarded removals
+completed; the applied ledger is09697cbe9275c269733e5192a7e752a3c945319e05055e7d8b3e3767126cb47f.
+All10,470 retained paths and actual execution closures remain unchanged.
+Old administrative snapshots require this explicit ledger for future checks.
+Workload thresholds and replacement/source application holds remain.
+
+The provider continuation subsequently ended with an automated content flag.
+Its reported private630/native and full51 JIT/AOT adapter proofs are retained;
+no live apply, permanent-regression completion, or repeated delegated action is
+claimed. The supervisor continues the independent storage/compiler work.
+
+The original connection-preferences compiler repair now passes all132 native
+assertions in RAW/JIT. Only its corrected single emission and original223542
+link were reused; no C regeneration/link was repeated during this build.
+The first restore failed NU1403 before compilation because an isolated cache
+selected a different same-version ILLink package. The successful separate
+attempt used independently copied exact locked packages, with locks/hash
+validation and original failed evidence retained. Actual proof:
+`/mnt/storage/dotcc-s2n-qualification-20261024/root-braced-string-compiler/original-preferences/raw-jit-resume-20261024-attempt2/progress.json`.
+All-four-mode validation is a separate bounded attempt, not canonical257
+progress credit. Its initial NativeAOT restore stopped before compilation
+because the private cache lacked two installed runtime packages; that attempt
+is archived and explicit same-output resume preserves its failed command/log.
+No production source, current175 product object or historical result changed.
+
+Exact old failed-certificate copied runtime sharing is now closed:374 paths
+across187 existing independent private donors saved175,779,840 file bytes,
+with zero new copies. All11,308 protected hashes/modes, original four failed
+outcomes/five historical source mismatches,12 excluded files and748 journal
+records independently reverified. Review:
+`/mnt/storage/dotcc-s2n-qualification-20261024/root-capacity-audit/old-aot-runtime-full-postflight/report.json`.
+No workload admission or source application follows from this storage result.
+
+The bounded original preferences assertion runs have now completed successfully
+in raw/processed JIT/AOT, each132 native-matched assertions. Independent audit
+`/mnt/storage/dotcc-s2n-qualification-20261024/root-braced-string-compiler/original-preferences/all4-20261024/actual-assertions-all4-independent-audit.json`
+(SHA256ba9ca6f738076214518e3132fcb229a947d22e2f5b4b08f6e5ee01e8e20492e7)
+checks1,908 source/tool/project/executable/runtime/proof files. All generated
+raw bytes and original175 core identities remain exact; processed trees came
+from the immutable original postprocessor. RAW/JIT was reused with actual
+identity and the corrected single-emission compiler provenance retained.
+The standard expander report remains INCOMPLETE: after the four real passes,
+its optional dependency-sharing step rejected the root-specific raw output
+placement. This failure is preserved; no retry or canonical case adoption
+followed. The independent assertion proof does not change stopped62/10/185
+or claim the full upstream gate. Actual runtime/output closures are intact;
+388 removed managed build-cache entries are explicitly bounded by the
+unchanged expander cache-cleanup ledger. No source/layout guard was weakened.

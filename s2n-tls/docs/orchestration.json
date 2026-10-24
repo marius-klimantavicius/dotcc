@@ -12,13 +12,6 @@
   },
   "active_tasks": [
     {
-      "package": "provider",
-      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Athread-send%3Aprovider-r2-external-final-c-retained-resume-20261024",
-      "backing_thread": "thread:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-provider-r2-recovery-20261023",
-      "verified_model": "gpt-6.1-sol",
-      "verified_reasoningEffort": "xhigh"
-    },
-    {
       "package": "api-qualification",
       "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Athread-send%3Aapi-r6-final-ec-launch-release-20261024",
       "backing_thread": "thread:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-api-r6-receipt-process-coordination-20261024",
@@ -27,7 +20,7 @@
     }
   ],
   "shared_build_owner": "supervisor",
-  "next": "Preserve stopped C resource-limit62/10/185 and byte-identical Python13passed/1running/58unrun plus separately completed2588-case leaf. No replacement/source apply until root storage guards and coordinated private CA/EC proof. Continue private EC discriminator; full51 is50/1 both, not passed. Original preferences managed132 proof remains held; no duplicate emit/link.",
+  "next": "Preserve stopped C resource-limit62/10/185 and historical Python13passed/1running/58unrun plus separately completed2588 leaf. No campaign/source apply/replacement admission. Root original preferences compiler repair has actual132 assertions in all4 modes, independently audited1908files; standard expander stays incomplete after optional storage sharing rejected root-specific raw placement. No canonical adoption. Remaining connection compiler case and final upstream/P6 gates open. Provider delegated action remains terminal content-flagged and is not retried.",
   "completed_tasks": [
     {
       "package": "inputs-native",
@@ -78,6 +71,14 @@
       "package": "provider-r2-external-retained-bounded-milestone",
       "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Athread-send%3Aprovider-r2-rsa-final-c-continuation-20261024",
       "terminal_status": "completed bounded3helper/583assertionsx4 proof; immediately continued sameconversation through requiredCgate"
+    },
+    {
+      "package": "provider",
+      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Athread-send%3Aprovider-r2-external-final-c-retained-resume-20261024",
+      "backing_thread": "thread:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-provider-r2-recovery-20261023",
+      "verified_model": "gpt-6.1-sol",
+      "verified_reasoningEffort": "xhigh",
+      "terminal_status": "failed-content-flag; no pending child runs; outputs/source unchanged, no retry/replacement launched"
     }
   ],
   "commits": [
@@ -264,7 +265,14 @@
     "api_retirement_actual": "artifacts/managed-contract/api-r6-python-external-checkpoint-plan/stage5-retirement/receipt.json",
     "api_retirement_normalized_lease": "artifacts/managed-contract/api-r6-python-external-checkpoint-plan/stage5-retirement/normalized-lease-postflight.json",
     "private_ca_full51_failed": "/mnt/storage/dotcc-s2n-qualification-20261024/required-c-work/provider/default-ca-permanent-private/20261024T031710Z-full51/receipt-full-matrix.json",
-    "obsolete_emission_cache_postflight": "/mnt/storage/dotcc-s2n-qualification-20261024/root-capacity-audit/obsolete257-emission-only-cache/retirement/independent-postflight.json"
+    "obsolete_emission_cache_postflight": "/mnt/storage/dotcc-s2n-qualification-20261024/root-capacity-audit/obsolete257-emission-only-cache/retirement/independent-postflight.json",
+    "private_generated_source_full_postflight": "/mnt/storage/dotcc-s2n-qualification-20261024/root-capacity-audit/private-generated-full-postflight/report.json",
+    "delivery20_administrative_review": "/mnt/storage/dotcc-s2n-qualification-20261024/root-capacity-audit/delivery20-administrative-review/review.json",
+    "private_adapter_qualification_reported": "/mnt/storage/dotcc-s2n-qualification-20261024/required-c-work/provider/ec-offcurve-private/20261024T033129Z-candidate/qualification-receipt.json",
+    "delivery20_retirement_postflight": "/mnt/storage/dotcc-s2n-qualification-20261024/root-capacity-audit/delivery20-retirement-postflight/report.json",
+    "old_aot_runtime_full_postflight": "/mnt/storage/dotcc-s2n-qualification-20261024/root-capacity-audit/old-aot-runtime-full-postflight/report.json",
+    "original_preferences_raw_jit_132": "/mnt/storage/dotcc-s2n-qualification-20261024/root-braced-string-compiler/original-preferences/raw-jit-resume-20261024-attempt2/progress.json",
+    "original_preferences_actual_all4_audit": "/mnt/storage/dotcc-s2n-qualification-20261024/root-braced-string-compiler/original-preferences/all4-20261024/actual-assertions-all4-independent-audit.json"
   },
   "discovery_correction": {
     "original": "artifacts/managed/full-owning-matrix/report.json",
@@ -313,13 +321,22 @@
     "private_permanent": "artifacts/provider/ec-regression-private/20261023T234346Z-86f9b5dd/receipt.json",
     "supervisor_review": "artifacts/managed-contract/ec-private-permanent-supervisor-review.json",
     "pause_marker": "artifacts/provider/ec-pause-after-batch-20261023T234522Z/receipt.json",
-    "new_unresolved_boundary": "Fresh private full51 fixtures expose four P256 offcurve peer rows119/123/299/303; deterministic630-row discriminator retains220 native/current differences. Prior full50 samples remain actual passes, not blanket malformed-point equivalence. No new production candidate applied."
+    "new_unresolved_boundary": "Fresh private full51 fixtures expose four P256 offcurve peer rows119/123/299/303; deterministic630-row discriminator retains220 native/current differences. Prior full50 samples remain actual passes, not blanket malformed-point equivalence. No new production candidate applied.",
+    "private_candidate_reported": "Focused630/native and full51 JIT+AOT pass reported in bc9d64b8...; live25 unchanged. Independent source application review and permanent deterministic regression pending. Provider task subsequently failed automated content flag; no repeated delegated action or live apply."
   },
   "observed_initializer_defect": {
     "case": "tests/unit/s2n_connection_preferences_test.c",
     "native_assertions": 132,
     "proof": "artifacts/provider/observed-connection-preferences-compile-0229/receipt-v2.json",
-    "state": "Compiler fix committed260387e88:54related unit+7functional pass; native/JIT/AOT fixture matches. Exactly one original test re-emitted with new immutable frontend; resulting object differs only initializer bytes and unused pool literal, original223542 linker+175objects link succeeds. Original managed build/assertions remainUNRUN at2GiB resource guard."
+    "state": "Compiler fix committed260387e88:54related unit+7functional pass; native/JIT/AOT fixture matches. Exactly one original test re-emitted with new immutable frontend; resulting object differs only initializer bytes and unused pool literal, original223542 linker+175objects link succeeds. Original managed build/assertions remainUNRUN at2GiB resource guard.",
+    "bounded_original_actual_proof": {
+      "status": "all4-original-assertions-passed-independent-audit; standardexpander-incomplete-storage-step",
+      "assertions_each": 132,
+      "files_checked": 1908,
+      "receipt": "/mnt/storage/dotcc-s2n-qualification-20261024/root-braced-string-compiler/original-preferences/all4-20261024/actual-assertions-all4-independent-audit.json",
+      "sha256": "ba9ca6f738076214518e3132fcb229a947d22e2f5b4b08f6e5ee01e8e20492e7",
+      "canonical_adoption": false
+    }
   },
   "observed_default_ca_defect": {
     "case": "tests/unit/s2n_config_test.c",
