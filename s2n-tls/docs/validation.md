@@ -399,3 +399,23 @@ plan inputs at
 The detached main and Python jobs are active. Current partial observations
 include raw JIT269/269 with lifecycle30/30 and one original Python family
 passed; no complete main, delivery or72-leaf Python acceptance is inferred.
+
+
+The fresh final EC/CBC main matrix is now actually passed1076/1076,
+zero failed/unrun, across eight private application builds. Per variant:
+consumer1, compatibility82, interop156 and lifecycle30. Root independently
+rechecks3,556 retained files and all1,076 passed rows in
+`artifacts/managed-contract/final-ec-cbc-r6/main-supervisor-review.json`.
+The exact report SHA is
+0771d2253ccc7bb258e0876d8c9fcb32985395829079095f28c6254517893e1b.
+This does not qualify original C/Python families or copied/rooted delivery.
+Delivery remains queued behind its fixed disk guard; Python continues.
+
+Durable C controller2082892 has the sole canonical flock and resumes the same
+source epoch with external work placement. It adopts only the new583×4 case,
+then qualifies the remaining batch002 cases freshly: current captured count
+24passed/0failed/233unrun. Old16 records remain unchanged, no source epoch
+reset and no original C emission/link invocation. Actual PID/start ticks/session
+and detached launch proof are retained at
+`artifacts/provider/external-retained-resume-0234/actual-resume-proof.json`.
+The retained-only guard still stops before new raw construction at batch007.

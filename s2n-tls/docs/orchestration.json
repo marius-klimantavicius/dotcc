@@ -27,7 +27,7 @@
     }
   ],
   "shared_build_owner": "supervisor",
-  "next": "API detached controller1971187 continues final main/Python then delivery after fixed admission. Provider has authority for freshguarded sameepoch C adoption/resume on external work through retained006; stop before unimplemented newraw007.",
+  "next": "Continue external retainedC sameepoch through006 and review laterrawbuilder placement. API Python72 runs; fresh delivery12 waits fixed disk guard. Review exact closed-source storage capacity without changing bytes or actual qualification.",
   "completed_tasks": [
     {
       "package": "inputs-native",
@@ -157,18 +157,18 @@
     "final48_provider": "artifacts/provider/final48-asn1-211648/receipt.json",
     "post_asn1_api": "artifacts/managed-contract/api-r4-final-provider-progress.json",
     "post_asn1_abi": "artifacts/campaign/20261024-001718-6f72b210/receipt.json",
-    "provider_controller_pid": null,
+    "provider_controller_pid": 2082892,
     "final_provider_current_c_counts": {
-      "passed": 16,
+      "passed": 24,
       "failed": 0,
-      "unrun": 241,
-      "scope": "Final EC202209f4 plus CBC fixturec0aa38f7; all4 each. Naturally paused after batch001 for shared storage/API admission."
+      "unrun": 233,
+      "scope": "Final EC202209f4/CBCc0aa38f7;96 actual original executions. Durable sameepoch controller uses external retained expansion, batch003 active; stop before newraw007."
     },
     "final_provider_cli": "build/managed-upstream/python-endpoints-final-rsa-stdio.json",
     "final_provider_cli_audit": "artifacts/managed-contract/final-asn1-cli-eight-supervisor-audit.json",
     "post_asn1_main": "artifacts/managed/final-provider-asn1-main",
     "post_asn1_companion": "artifacts/managed-contract/api-r4-final-provider-companion-progress.json",
-    "final_applications_supervisor_audit": "artifacts/managed-contract/final-asn1-main-delivery-supervisor-audit.json",
+    "final_applications_supervisor_audit": "artifacts/managed-contract/final-ec-cbc-r6/main-supervisor-review.json",
     "native_python_supervisor_audit": "artifacts/managed-contract/native-eighteen-supervisor-audit.json",
     "final_provider_python": "artifacts/managed-contract/final-rsa-stdio/progress-v2.json",
     "retained_input_seal_controls": "artifacts/managed-contract/retained-input-seal-contract/report.json",
@@ -227,7 +227,8 @@
     "external_retained_review": "artifacts/managed-contract/external-retained-firstcase-supervisor-review.json",
     "external_retained_firstcase": "artifacts/provider/external-retained-firstcase-0216/expanded-executables.json",
     "api_cli_current": "build/managed-upstream/python-endpoints-final-ec-cbc-r6.json",
-    "api_cli_current_review": "artifacts/managed-contract/final-ec-cbc-r6/cli-eight-supervisor-review.json"
+    "api_cli_current_review": "artifacts/managed-contract/final-ec-cbc-r6/cli-eight-supervisor-review.json",
+    "provider_controller_proof": "artifacts/provider/external-retained-resume-0234/actual-resume-proof.json"
   },
   "discovery_correction": {
     "original": "artifacts/managed/full-owning-matrix/report.json",
@@ -242,8 +243,8 @@
   "passed_scoped_gates": {
     "P0": "174upstream+1adapter/36suites/14SSLv3/78pairs",
     "P2": "223542raw+processed175/183bindings",
-    "P3": "Final ASN1 0158d36c main1076/1076 all4, independent combined5023fileaudit",
-    "P5": "Final ASN1 0158d36c delivery12/12 all4copied/rooted, independent combined5023fileaudit",
+    "P3": "Final EC202209f4/CBCc0aa38f7 main1076/1076 all4;3556-file independent supervisor review.",
+    "P5": "Historical0158 delivery12 passed; fresh EC delivery queued pending unchanged disk admission guard.",
     "P1": "EC freeze202209f4/full50JIT+AOT/retainedemitted183ABIboth. Full original caller gates remainP4.",
     "P6_reproduction": "233001-6f4afff7 passed warn/off two full175 regenerations/private authored edit/failed-publication; overallP6 remainsopen"
   },
