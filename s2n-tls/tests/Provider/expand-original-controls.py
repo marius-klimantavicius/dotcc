@@ -41,24 +41,38 @@ def tree_hashes(directory):
 
 
 def raw_metadata_imports(directory):
-    """Restore original inherited settings only in a new private external tree."""
-    created = []
+    """Create or preserve only the exact original metadata import bundle."""
+    planned = []
     for name in ("Directory.Build.props", "Directory.Build.targets", "Directory.Packages.props"):
         original = next((root / name for root in (ROOT, ROOT.parent) if (root / name).is_file()), None)
-        if original is None:
-            continue
         target = directory / name
-        if target.exists():
-            raise RuntimeError("Retain existing raw metadata; do not overwrite it during external allocation")
+        if target.is_symlink() or target.exists() and not target.is_file():
+            raise RuntimeError("Private raw metadata must be a regular file without symlinks")
+        if original is None:
+            if target.exists():
+                raise RuntimeError("Private raw metadata has no matching original import")
+            continue
         tree = ET.Element("Project")
         ET.SubElement(tree, "Import", Project=str(original))
         ET.indent(tree)
-        with target.open("x") as stream:
-            stream.write(ET.tostring(tree, encoding="unicode") + "\n")
-        created.append({"path": str(target), "sha256": digest(target),
-                        "import": str(original), "import_sha256": digest(original)})
-    return created
-
+        expected = (ET.tostring(tree, encoding="unicode") + "\n").encode("utf-8")
+        planned.append((target, original, expected))
+    present = [target.exists() for target, _, _ in planned]
+    if any(present) and not all(present):
+        raise RuntimeError("Private raw metadata import bundle is incomplete")
+    # Validate every existing file before creating anything. In particular,
+    # never overwrite unknown properties/targets or repair altered input bytes.
+    for target, original, expected in planned:
+        if target.exists() and target.read_bytes() != expected:
+            raise RuntimeError("Private raw metadata differs from its exact original import XML")
+    result = []
+    for target, original, expected in planned:
+        if not target.exists():
+            with target.open("xb") as stream:
+                stream.write(expected)
+        result.append({"path": str(target), "sha256": digest(target),
+                       "import": str(original), "import_sha256": digest(original)})
+    return result
 
 class Expansion:
     def __init__(self, args):
@@ -152,9 +166,9 @@ class Expansion:
         self.report.setdefault("case_failures", {})
         self.report.setdefault("cache_cleanup", {})
         self.report["refresh_provider"] = args.refresh_provider
-        if args.refresh_provider:
-            if not args.provider_freeze:
-                raise RuntimeError("Provider refresh needs an explicit reviewed --provider-freeze source receipt")
+        if args.refresh_provider and not args.provider_freeze:
+            raise RuntimeError("Provider refresh needs its explicit reviewed source freeze")
+        if args.provider_freeze:
             freeze_path = args.provider_freeze.resolve()
             freeze = json.loads(freeze_path.read_text())
             identity = {"receipt": str(freeze_path), "sha256": digest(freeze_path), "after_sha256": freeze["after_sha256"]}
@@ -290,6 +304,8 @@ class Expansion:
             origin = next(iter(projects)) if projects else source.parent / Path(case).stem / "raw/S2nTls"
         if not (origin / "S2nTls.csproj").is_file():
             raise RuntimeError("Existing linked raw harness project missing: " + str(origin))
+        if entry.get("source_sha256") and tree_hashes(origin) != entry["source_sha256"]:
+            raise RuntimeError("Actual raw application source/project/metadata no longer matches its build receipt")
         raw = self.work / Path(case).stem / "raw/S2nTls"
         recorded = next((r for r in self.report["snapshots"] if r["case"] == case), None)
         if recorded:
@@ -436,6 +452,11 @@ class Expansion:
                 identity = json.loads(Path(identity_path).read_text())
                 if identity["actual_runtime"]["kind"] != "actual-runtime-identity" or hashes(identity["output_sha256"]) != identity["output_sha256"]:
                     raise RuntimeError("Existing raw JIT actual execution identity is invalid")
+                freeze = self.report.get("provider_source_freeze")
+                if freeze and (identity["product_snapshot"].get("provider_source_freeze") != freeze
+                    or any(identity["authored_source_sha256"].get(p) != value for p, value in freeze["after_sha256"].items()
+                           if Path(p).is_relative_to(ROOT / "src/CryptoProvider") and Path(p).suffix in (".cs", ".csproj", ".json"))):
+                    raise RuntimeError("New raw application lacks the exact current provider identity")
                 snapshot = next(r for r in self.report["snapshots"] if r["case"] == case)
                 origin = Path(snapshot["original_raw_project"])
                 original_tree = ET.parse(origin)

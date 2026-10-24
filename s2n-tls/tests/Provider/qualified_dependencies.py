@@ -66,7 +66,7 @@ def dependency_store(target, work_root=None):
         return STORE
     if work_root is not None:
         root = validate_work_root(work_root)
-        if target.is_relative_to(root / "provider/original16-expanded"):
+        if target.is_relative_to(root / "provider/original16-expanded") or target.is_relative_to(root / "managed-upstream"):
             return root / "provider/immutable-dependencies"
     raise RuntimeError("Dependency target is outside owned original-C execution outputs")
 

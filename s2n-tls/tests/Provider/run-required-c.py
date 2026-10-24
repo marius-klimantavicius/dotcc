@@ -36,6 +36,8 @@ class Pipeline:
         self.args = args
         self.output = args.output.resolve(); self.output.mkdir(parents=True, exist_ok=True)
         self.work_root = validate_work_root(args.work_root) if args.work_root else None
+        self.upstream_builder = args.upstream_builder.resolve() if args.upstream_builder else None
+        self.upstream_builder_inputs = self.validate_upstream_builder() if self.upstream_builder else None
         self.lease = (self.output / "controller.lock").open("a+")
         fcntl.flock(self.lease, fcntl.LOCK_EX | fcntl.LOCK_NB)
         self.progress_path = self.output / "progress.json"
@@ -117,6 +119,24 @@ class Pipeline:
         self.progress["updated_unix"] = time.time()
         temporary = self.progress_path.with_suffix(".json.tmp")
         temporary.write_text(json.dumps(self.progress, indent=2) + "\n"); temporary.replace(self.progress_path)
+
+    def validate_upstream_builder(self):
+        """Accept only an explicitly selected, preserved placement derivation."""
+        path = self.upstream_builder
+        if self.work_root is None or path.name != "build.py" or path == ROOT / "tests/Upstream/build.py" or path.is_symlink():
+            raise RuntimeError("A private derived builder needs its explicit external work root")
+        receipt = path.with_name("derivation.json")
+        data = read(receipt)
+        if data.get("schema") != "dotcc-private-upstream-placement-v1" or data["canonical_builder"] != str(ROOT / "tests/Upstream/build.py"):
+            raise RuntimeError("Unrecognized private builder derivation")
+        expected = dict(data["inputs_sha256"])
+        expected[str(receipt)] = sha(receipt)
+        if expected.get(str(path)) != sha(path) or sha(data["canonical_builder"]) != data["canonical_builder_sha256"]:
+            raise RuntimeError("Private builder differs from its reviewed source derivation")
+        for source, value in expected.items():
+            if sha(source) != value:
+                raise RuntimeError("Private builder dependency changed: " + source)
+        return expected
 
     def command(self, command, directory, label):
         log = directory / (label + ".log")
@@ -253,8 +273,18 @@ class Pipeline:
         if not raw.exists() and self.args.retained_raw_only:
             raise RetainedRawRequired("Retained raw provenance exhausted; review external raw-builder allocation before continuing")
         if not raw.exists():
-            argv = [sys.executable, "-B", ROOT / "tests/Upstream/build.py", "--campaign-run", self.campaign,
+            if self.work_root is not None and self.upstream_builder is None:
+                raise RetainedRawRequired("External newraw allocation needs the explicit reviewed private builder")
+            builder = self.upstream_builder or ROOT / "tests/Upstream/build.py"
+            argv = [sys.executable, "-B", builder, "--campaign-run", self.campaign,
                     "--reuse-emission", self.args.emission_manifest.resolve(), "--form", "raw", "--mode", "jit", "--output", raw]
+            if self.upstream_builder is not None:
+                if self.validate_upstream_builder() != self.upstream_builder_inputs:
+                    raise RuntimeError("Private builder identity changed since controller admission")
+                argv += ["--work-root", self.work_root, "--min-free-gib", self.args.min_free_gib]
+                if self.provider_freeze:
+                    argv += ["--provider-freeze", self.provider_freeze["receipt"]]
+                row["private_build_driver_inputs_sha256"] = self.upstream_builder_inputs
             if self.support.exists():
                 argv += ["--reuse-support-manifest", self.support]
             if self.args.provider_policy:
@@ -278,6 +308,8 @@ class Pipeline:
                 argv += ["--case", case]
             row.update(status="building-raw", raw_manifest=str(raw)); self.save()
             self.command(argv, directory, "raw-build")
+            if self.upstream_builder is not None and self.validate_upstream_builder() != self.upstream_builder_inputs:
+                raise RuntimeError("Private builder closure changed during raw build")
             if self.args.provider_policy:
                 policy = row["provider_policy"]
                 policy_observation["after_sha256"] = sha(source_policy)
@@ -316,8 +348,10 @@ class Pipeline:
                 argv += ["--work-root", self.work_root, "--min-free-gib", self.args.min_free_gib]
             if self.args.native_equivalence:
                 argv += ["--native-equivalence", self.args.native_equivalence.resolve()]
+            if self.provider_freeze:
+                argv += ["--provider-freeze", self.provider_freeze["receipt"]]
             if row.get("provider_refresh_from_raw_manifest"):
-                argv += ["--refresh-provider", "--provider-freeze", self.provider_freeze["receipt"]]
+                argv += ["--refresh-provider"]
             if expanded.exists():
                 argv.append("--resume")
             for case in built:
@@ -506,6 +540,7 @@ class Pipeline:
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--campaign-run", type=Path, required=True)
+    parser.add_argument("--upstream-builder", type=Path, help="Explicit immutable reviewed private placement derivation; default remains canonical")
     parser.add_argument("--work-root", type=Path, help="Private future expansion root replacing ROOT/build; canonical builder and old results stay unchanged")
     parser.add_argument("--retained-raw-only", action="store_true", help="Stop before launching any new raw builder once retained linked provenance is exhausted")
     parser.add_argument("--emission-manifest", type=Path, required=True)
