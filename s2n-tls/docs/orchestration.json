@@ -13,7 +13,7 @@
   "active_tasks": [
     {
       "package": "provider",
-      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Athread-send%3Aprovider-r2-rsa-final-c-continuation-20261024",
+      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Athread-send%3Aprovider-r2-external-final-c-retained-resume-20261024",
       "backing_thread": "thread:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-provider-r2-recovery-20261023",
       "verified_model": "gpt-6.1-sol",
       "verified_reasoningEffort": "xhigh"
@@ -27,7 +27,7 @@
     }
   ],
   "shared_build_owner": "supervisor",
-  "next": "Detached API controller1971187 builds freshCLI8 then application/Python/delivery gates. C remains storagepaused16/0/241 pending combinedreserve/future-work placement coordination.",
+  "next": "API detached controller1971187 continues final main/Python then delivery after fixed admission. Provider has authority for freshguarded sameepoch C adoption/resume on external work through retained006; stop before unimplemented newraw007.",
   "completed_tasks": [
     {
       "package": "inputs-native",
@@ -73,6 +73,11 @@
       "verified_model": "gpt-6.1-sol",
       "verified_reasoningEffort": "xhigh",
       "terminal_status": "failed-content-flag; later turns cancelled; artifacts preserved; sole r6 receipt/process coordinator replaces ownership"
+    },
+    {
+      "package": "provider-r2-external-retained-bounded-milestone",
+      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Athread-send%3Aprovider-r2-rsa-final-c-continuation-20261024",
+      "terminal_status": "completed bounded3helper/583assertionsx4 proof; immediately continued sameconversation through requiredCgate"
     }
   ],
   "commits": [
@@ -123,15 +128,19 @@
     "9ba2632ec",
     "f581ee4c1",
     "4ff33f368",
-    "322d75bc1"
+    "322d75bc1",
+    "d7069ad85",
+    "4317f8d4b",
+    "8d6cf122e",
+    "e2e671460"
   ],
   "current_attempt": "20261023-223542-f7e7054e (closed175/raw+processed; final EC202209f4 authored provider and CBC fixturec0aa38f7 qualification)",
   "last_complete_link": "20261023-223542-f7e7054e",
   "p2_receipt": "artifacts/campaign/20261023-210200-74eee32f/receipt.json",
   "workloads": {
     "provider_selected16": "build/provider/original16-retry/executables.json",
-    "final_current_matrix": "artifacts/managed/final-provider-rsa-stdio-main/report.json",
-    "current_delivery": "artifacts/managed/final-provider-rsa-stdio-delivery/report.json",
+    "final_current_matrix": "artifacts/managed/final-provider-ec-cbc-r6-main",
+    "current_delivery": "artifacts/managed/final-provider-ec-cbc-r6-delivery",
     "native_profile_all257": "artifacts/native-profile-upstream/all-required-214654-ktls-guards/report.json",
     "native_python18": "artifacts/native-python/final-eighteen-strict-comparator.json",
     "translated_python17": "artifacts/managed-upstream/python-current-223542-base64/controller-progress.json",
@@ -142,7 +151,7 @@
     "native_equivalence": "artifacts/provider/native-equivalence/214654-to-223542.json",
     "final_native": "artifacts/native/final-callsite-profile/report.json",
     "reproduction": "artifacts/campaign/20261023-233001-6f4afff7/reproduction.json",
-    "translated_python_all18": "artifacts/managed-upstream/final-provider-rsa-stdio/all18-all4-matrix.json",
+    "translated_python_all18": "artifacts/managed-upstream/final-provider-ec-cbc-r6/all18-all4-matrix.json",
     "native_happy_retry": "artifacts/native-python/retry-investigation-r4/happy-repaired-matrix.json",
     "final_provider_freeze": "artifacts/provider/freeze-ec-20261023T235817Z/receipt.json",
     "final48_provider": "artifacts/provider/final48-asn1-211648/receipt.json",
@@ -214,7 +223,11 @@
     "ec_framework_abi": "artifacts/campaign/20261024-034758-e9c2e39b/receipt.json",
     "ec_framework_abi_audit": "artifacts/managed-contract/shared-abi-final-ec/independent-audit.json",
     "probe_runtime_storage_postflight": "artifacts/managed-contract/storage-admission-review-20261024-0110/probe-runtime-sharing-postflight.json",
-    "api_cache_storage_postflight": "artifacts/managed-contract/storage-admission-review-20261024-0110/api-cleanup-postflight.json"
+    "api_cache_storage_postflight": "artifacts/managed-contract/storage-admission-review-20261024-0110/api-cleanup-postflight.json",
+    "external_retained_review": "artifacts/managed-contract/external-retained-firstcase-supervisor-review.json",
+    "external_retained_firstcase": "artifacts/provider/external-retained-firstcase-0216/expanded-executables.json",
+    "api_cli_current": "build/managed-upstream/python-endpoints-final-ec-cbc-r6.json",
+    "api_cli_current_review": "artifacts/managed-contract/final-ec-cbc-r6/cli-eight-supervisor-review.json"
   },
   "discovery_correction": {
     "original": "artifacts/managed/full-owning-matrix/report.json",

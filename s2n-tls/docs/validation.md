@@ -377,3 +377,25 @@ checks1,020 retained tool/source/report/output files and all four identical
 Its first collector attempt assumed a string status for the core report's
 integer exit-code schema; that collector failure is retained and no tests
 were rerun to correct it.
+
+
+Optional external work placement is committed as e2e671460 after46 no-build
+controls and one actual pending original C case in all four modes. The unchanged
+cert_chain_and_key test reports583 native-matched assertions per execution.
+Root rehashes991 source/project/output/runtime/proof files, checks unchanged
+37 raw and37 processed C# files, metadata inheritance and same-filesystem
+private dependency storage at
+`artifacts/managed-contract/external-retained-firstcase-supervisor-review.json`.
+Only the three Provider helpers change; canonical Upstream builder, API89,
+production25 and native_profile remain unchanged. The same-epoch controller
+may adopt that qualified case and continue retained linked inputs through
+batch006 after both filesystem reserves pass. It must stop before launching
+a new raw builder. Existing16 cases remain qualified; no old source epoch is
+reset or adopted. Complete257 qualification remains open.
+
+Fresh CLI8 build/identity review checks1,590 actual retained files and all89
+plan inputs at
+`artifacts/managed-contract/final-ec-cbc-r6/cli-eight-supervisor-review.json`.
+The detached main and Python jobs are active. Current partial observations
+include raw JIT269/269 with lifecycle30/30 and one original Python family
+passed; no complete main, delivery or72-leaf Python acceptance is inferred.
