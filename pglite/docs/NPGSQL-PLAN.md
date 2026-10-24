@@ -73,7 +73,9 @@ Counts, commands, source/tool hashes, limitations and current outcomes belong in
 the final validation receipt. Historical API receipts remain historical evidence,
 not substitutes for acceptance of changed artifacts.
 
-## Working library milestone
+## Working library milestones (historical)
+
+These notes record intermediate outcomes; the final status is under Completion.
 
 The copied library and ordinary solution/sample now build and execute against
 the real translated engine. The sample passes typed insertion, commit/rollback,
@@ -104,3 +106,21 @@ logical lease after cleanup; actual engine quarantine remains in the original
 API owner. Independent retry and quarantine probes pass, and the expanded
 processed JIT suite passes 5,151 assertions in 42 cases. The final matrix is
 being rebuilt against this repaired snapshot.
+
+## Completion
+
+All selected gates passed against the repaired source: four raw/processed ×
+JIT/normally trimmed NativeAOT rows, each with 5,151 assertions in 42 cases;
+105 native differential assertions in 26 cases; 89 source-contract checks;
+and the preserved original four-row 36 + 391 API matrix. Protocol contracts
+passed 185 assertions in each execution mode, codecs 237 in each mode and
+host/path contracts 34. Ordinary Release/Debug builds, default sample and
+published sample passed from unrelated working directories. Two independent
+review rounds have no unresolved findings after repairs, including safe
+failed-open retry and genuine engine quarantine.
+
+The [qualification notes](NPGSQL-QUALIFICATION.md) and
+[validation receipt](../../docs/validation/pglite-npgsql-20261024.json) distinguish
+current results from milestone history, raw-original NativeAOT trim-equivalent
+reuse and unrerun engine suites. The exclusions in this plan remain explicit;
+full PostgreSQL delivery remains research only.

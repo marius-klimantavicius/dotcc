@@ -6,8 +6,9 @@ machinery. New embedded files provide session leasing, worker transport and
 engine policy. [NPGSQL-PLAN.md](NPGSQL-PLAN.md) records the agreed scope;
 [NPGSQL-USAGE.md](NPGSQL-USAGE.md) describes consumption.
 
-Qualification is in progress. The table defines the intended acceptance
-surface; completed results must be read from the final validation receipt.
+Qualification passed Linux x64 raw/processed JIT and normally trimmed NativeAOT:
+5,151 assertions in 42 cases per row. The table defines the qualified acceptance
+surface; commands and hashes are recorded in the final validation receipt.
 Retained upstream source alone does not qualify every public member.
 
 | Surface | Embedded contract and acceptance |
@@ -74,3 +75,7 @@ embedded tag and actual database metadata without network endpoint/PID tags.
 Type reload rejects cancellation or a busy connection before changing the
 working codec catalog. Managed extension cleanup failures are reported after
 logical connection cleanup; only proven engine closure releases the lease.
+
+Reproduction commands, review repairs and current matrix evidence are recorded
+in [NPGSQL-QUALIFICATION.md](NPGSQL-QUALIFICATION.md) and the
+[validation receipt](../../docs/validation/pglite-npgsql-20261024.json).

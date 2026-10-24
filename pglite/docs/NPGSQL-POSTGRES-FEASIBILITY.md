@@ -12,6 +12,16 @@ qualification evidence must be assessed separately from this original research.
 Full upstream PostgreSQL translation remains research only and is not authorized
 by the Npgsql implementation request.
 
+The implemented copy is Npgsql v10.0.1 at
+`12d792ac2163596385152dcea5c68ba99769731f`, under
+[`src/Npgsql`](../src/Npgsql/Npgsql.csproj), with the distinct assembly identity
+`Managed.PGlite.Npgsql`. It executes through the actual translated engine.
+[Qualification](NPGSQL-QUALIFICATION.md) and the
+[validation receipt](../../docs/validation/pglite-npgsql-20261024.json) record the
+completed Linux x64 raw/processed JIT/NativeAOT matrix and explicit exclusions.
+These later execution results do not change the research status of the original
+upstream PostgreSQL assessment below.
+
 ## Sources inspected
 
 - Npgsql commit `54053259ef2b1bc531f8c4c937c33a9eaa57b0a6`, resolved from upstream

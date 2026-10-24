@@ -1,0 +1,1037 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "completed_utc": "2026-10-24T15:45:18.423170+00:00",
+  "target": {
+    "rid": "linux-x64",
+    "abi": "LP64 little-endian",
+    "os": "Linux-6.8.0-138-generic-x86_64-with-glibc2.39",
+    "framework": ".NET 10",
+    "sdk": "10.0.112",
+    "nativeaot_runtime_ilcompiler": "10.0.12",
+    "npgsql_native_linker": "clang 22",
+    "tool_hashes": {
+      "dotnet": {
+        "path": "/usr/lib/dotnet/dotnet",
+        "sha256": "3c1b7fbe2bf2e3ae0952dfe9fb569f1facd81ddc965ece687294bab073095e76"
+      },
+      "clang22": {
+        "path": "/usr/lib/llvm-22/bin/clang",
+        "sha256": "ebced28c19b0f18b7cea5c1c8b05ad2e47ec45a138cecacab9a25a85003574d1"
+      },
+      "ilc": {
+        "path": "/home/marius/.nuget/packages/runtime.linux-x64.microsoft.dotnet.ilcompiler/10.0.12/tools/ilc",
+        "sha256": "aff0fc8b87141f4e6f0db736bff841b18ce03a7a85a6fa171c7d0dc3ee001b99"
+      },
+      "csc": {
+        "path": "/usr/lib/dotnet/sdk/10.0.112/Roslyn/bincore/csc.dll",
+        "sha256": "66fe274d5d4a4bafb60c51594e847cdd81c37de78804d21ed3cdefaaf247a0ab"
+      },
+      "dotnet-info-current": {
+        "path": "pglite/artifacts/npgsql-20261024/dotnet-info-current.log",
+        "sha256": "3fe90a1bed55a6e53ce54d2616f9f3204f6611e50356b620fef360314cefd03d"
+      },
+      "clang-info-current": {
+        "path": "pglite/artifacts/npgsql-20261024/clang-info-current.log",
+        "sha256": "e586736662607bcbff1e9ebcffc49456e9c0702dd28e1df3c0da52ed0b5e3bca"
+      }
+    }
+  },
+  "product": {
+    "project": "pglite/src/Npgsql/Npgsql.csproj",
+    "sample": "pglite/samples/NpgsqlExample/Program.cs",
+    "solution": "pglite/ManagedConsumer.slnx",
+    "assembly_package": "Managed.PGlite.Npgsql",
+    "public_namespace": "Npgsql",
+    "factory": "NpgsqlEmbeddedDataSource.Create(PgliteOptions, bool create=true)",
+    "engine": "actual translated PGlite backend/initdb, worker-owned raw protocol",
+    "product_native_postgresql_js_wasm_socket_proxy_dependencies": false,
+    "source_acquisition_on_build": false,
+    "data_lifetime": "Close resets the session; committed caller PGDATA persists."
+  },
+  "source": {
+    "npgsql_release": "v10.0.1",
+    "npgsql_revision": "12d792ac2163596385152dcea5c68ba99769731f",
+    "archive_sha256": "51e22b0bfee244b6440cab910340c38c3db17be8e9fef3cde91ecf54863b82f0",
+    "engine_revision": "29b6424aa312ec3556247db069939006dd27f878",
+    "manifest": {
+      "path": "pglite/config/npgsql-source.json",
+      "sha256": "b6517b4be8e76ab5b95b88ca3a429dd5628ad50fb703b81ff3950fdcf1cf8c1d"
+    },
+    "audit": {
+      "path": "pglite/artifacts/npgsql-20261024/source-final-delivery.json",
+      "sha256": "ede0de4b4be1adbf4266837226774b49f227248b36c55dab58a2574e7daa4d89"
+    },
+    "original_fingerprints": 309,
+    "byte_identical_upstream_files": 296,
+    "adapted_upstream_files": 13,
+    "patches": {
+      "path": "pglite/src/Npgsql/PATCHES.md",
+      "sha256": "6edcffa5dbf84198133a06d0b1bb156e70b4b339e500a83686b9c7d2875ec678"
+    },
+    "archives": [
+      {
+        "path": "pglite/artifacts/npgsql-20261024/source-archives/npgsql-12d792ac2163596385152dcea5c68ba99769731f.tar.gz",
+        "sha256": "51e22b0bfee244b6440cab910340c38c3db17be8e9fef3cde91ecf54863b82f0"
+      },
+      {
+        "path": "pglite/artifacts/npgsql-20261024/source-archives/npgsql-v10.0.1-tests.tar.gz",
+        "sha256": "c4b1213bd847c387d9ed404027444803f2257008f71ceeee81235958cac19174"
+      }
+    ],
+    "implementation_commits": [
+      "3748bff0e2c7d13fd4e2f51d7f03bd937da93228",
+      "d26f7593a40b9e1161dc0684530fd8b129614d46",
+      "4281c8c3ccc786bc83478c03b14b40a204ab43f7"
+    ]
+  },
+  "npgsql_matrix": {
+    "schema": 1,
+    "status": "passed",
+    "core_pin": "29b6424aa312ec3556247db069939006dd27f878",
+    "npgsql_release": "v10.0.1",
+    "npgsql_commit": "12d792ac2163596385152dcea5c68ba99769731f",
+    "source_mapping_sha256": "423e4f2df21d13ff9e3520ddce828b0dfae594c7abb8c9dc27314a2da36903f6",
+    "work": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial",
+    "assertions_per_row": 5151,
+    "cases_per_row": 42,
+    "evidence": "Independently executed current rows; source snapshots, reports and executable hashes revalidated.",
+    "rows": [
+      {
+        "form": "raw",
+        "mode": "jit",
+        "status": "passed",
+        "assertions": 5151,
+        "cases": 42,
+        "report": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/raw-jit/acceptance-1792854906959382651.json",
+        "report_sha256": "cb473495c826bd69f8999940c77e7470754209738b7c1d1993dfd7bb96468f88",
+        "executable": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/raw-jit/artifacts/bin/NpgsqlAcceptance/release/NpgsqlAcceptance.dll",
+        "executable_sha256": "e60ae4f7dec679195381a1e14b63e13c611f646a5111eaa2b8d8096ac9b90067",
+        "input_manifest": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/raw-jit/inputs-1792854906959382651.json",
+        "input_manifest_sha256": "de112c33a11c7b433b640d299f4ab2d208bf985cc1d5977f8656ae026c313565",
+        "runtime_artifact_hashes": {
+          "Managed.PGlite.Npgsql.dll": "6cc085c4cd4f87d5c083d31efac126205bc100db67f91abcee991209dfcb2406",
+          "Managed.PGlite.dll": "37c42b157eabcdf0a5c39ab3deba9eaa6702aba229333360968ce8ee29ab1fa3",
+          "Microsoft.Extensions.DependencyInjection.Abstractions.dll": "7c97c4463fe0fc11d1f22f4d160b2bd2288981adf1de2717a6ff3fb993ddf294",
+          "Microsoft.Extensions.Logging.Abstractions.dll": "a76a735b63e6ef3b0bf41ff92423cbd16103b8952e8306140a9bd650346034dc",
+          "NpgsqlAcceptance.deps.json": "7e196ff7669e075905ddad494fb0529f8465f30d0c230dedd5f30b4957e3a406",
+          "NpgsqlAcceptance.dll": "e60ae4f7dec679195381a1e14b63e13c611f646a5111eaa2b8d8096ac9b90067",
+          "NpgsqlAcceptance.runtimeconfig.json": "9950d4583cfc9a106857c0d5b8a75b53e8774852b57b80bc3823a74d44a4d87f",
+          "TranslatedPGlite.dll": "5779ae06a8fa0ef6799c7fe4a0e93615f4ba1eb8bbde6cbe89569f46cf30f9fd",
+          "frontend.dll": "5b357cccd5cbebb1a54acfe6e277b9ceccc597527a15fd698c1a512b4eb83ea7"
+        },
+        "runtime_artifact_hash_phase": "unchanged before and after row execution",
+        "row_receipt": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/matrix-1792854906959382651.json",
+        "row_receipt_sha256": "04d522016418d8b7814ae945183391d5afc414dddefafccb08c49c6e08050b2b"
+      },
+      {
+        "form": "raw",
+        "mode": "aot",
+        "status": "passed",
+        "assertions": 5151,
+        "cases": 42,
+        "report": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/raw-aot/acceptance-1792855197034118847.json",
+        "report_sha256": "4c63879603bcf024cb1b1a49ede59a61f72ea0baa813f295d582c785bca860f6",
+        "executable": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/raw-aot/publish/NpgsqlAcceptance",
+        "executable_sha256": "c5e2af777e9b14b78e9235867ee7118b2041b8fba95aea247e73709359a6db2d",
+        "input_manifest": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/raw-aot/inputs-1792855197034118847.json",
+        "input_manifest_sha256": "de112c33a11c7b433b640d299f4ab2d208bf985cc1d5977f8656ae026c313565",
+        "runtime_artifact_hashes": {
+          "NpgsqlAcceptance": "c5e2af777e9b14b78e9235867ee7118b2041b8fba95aea247e73709359a6db2d"
+        },
+        "runtime_artifact_hash_phase": "unchanged before and after row execution",
+        "row_receipt": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/matrix-1792855197034118847.json",
+        "row_receipt_sha256": "71782fbe6b539027681a7d591610230a12a3503b2081b1e8d961142ac7f84f78"
+      },
+      {
+        "form": "processed",
+        "mode": "jit",
+        "status": "passed",
+        "assertions": 5151,
+        "cases": 42,
+        "report": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/processed-jit/acceptance-1792854882607928539.json",
+        "report_sha256": "d7f7a77f4b3530a821ccf2b0bcd9e2bbdf32701337ceeef63db0ded2cb9f3119",
+        "executable": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/processed-jit/artifacts/bin/NpgsqlAcceptance/release/NpgsqlAcceptance.dll",
+        "executable_sha256": "479ab537bfbf7e0beb4f541b02b8b4db035af88ef167f997ea679ad541c4cabc",
+        "input_manifest": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/processed-jit/inputs-1792854882607928539.json",
+        "input_manifest_sha256": "8b5263f6f200ebd16a44c424cda01900cc41d6defaafc195869358115cd7bb2d",
+        "runtime_artifact_hashes": {
+          "Managed.PGlite.Npgsql.dll": "42d0cb6f54a924303f57c41d86b43a0c6c2bdcf8b2789a725ae920d7dda02414",
+          "Managed.PGlite.dll": "1c167391aa883a113e6b14ce593827f328ca137feef21736b8ff326241b54422",
+          "Microsoft.Extensions.DependencyInjection.Abstractions.dll": "7c97c4463fe0fc11d1f22f4d160b2bd2288981adf1de2717a6ff3fb993ddf294",
+          "Microsoft.Extensions.Logging.Abstractions.dll": "a76a735b63e6ef3b0bf41ff92423cbd16103b8952e8306140a9bd650346034dc",
+          "NpgsqlAcceptance.deps.json": "7e196ff7669e075905ddad494fb0529f8465f30d0c230dedd5f30b4957e3a406",
+          "NpgsqlAcceptance.dll": "479ab537bfbf7e0beb4f541b02b8b4db035af88ef167f997ea679ad541c4cabc",
+          "NpgsqlAcceptance.runtimeconfig.json": "9950d4583cfc9a106857c0d5b8a75b53e8774852b57b80bc3823a74d44a4d87f",
+          "TranslatedPGlite.dll": "a5762d2cc5b45e706fdd1765e065ffd8c5e6a56fd1a09067d0802dac2bb63d79",
+          "frontend.dll": "92e3adee2c03025cefd8c7b9b075e594fd27ef503db7041e81b28ed9a2789469"
+        },
+        "runtime_artifact_hash_phase": "unchanged before and after row execution",
+        "row_receipt": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/matrix-1792854882607928539.json",
+        "row_receipt_sha256": "ccaecde6f7882019ed570cfe85dc23d78fd4060104cf2b04dd48c1bdc513ad6a"
+      },
+      {
+        "form": "processed",
+        "mode": "aot",
+        "status": "passed",
+        "assertions": 5151,
+        "cases": 42,
+        "report": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/processed-aot/acceptance-1792855197033565614.json",
+        "report_sha256": "5c17f356b94dd0e559001fa7050e0f03b72280e6f73207e48ea71eb0e547d037",
+        "executable": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/processed-aot/publish/NpgsqlAcceptance",
+        "executable_sha256": "faff5e25651ea27116932a231be192446cf049372993da1a2b862efd87ed61a2",
+        "input_manifest": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/processed-aot/inputs-1792855197033565614.json",
+        "input_manifest_sha256": "8b5263f6f200ebd16a44c424cda01900cc41d6defaafc195869358115cd7bb2d",
+        "runtime_artifact_hashes": {
+          "NpgsqlAcceptance": "faff5e25651ea27116932a231be192446cf049372993da1a2b862efd87ed61a2"
+        },
+        "runtime_artifact_hash_phase": "unchanged before and after row execution",
+        "row_receipt": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/matrix-1792855197033565614.json",
+        "row_receipt_sha256": "d8108fb7de69d8b13d1a8a247d1347af2dd96d4b794d42db16959540208b0ed6"
+      }
+    ],
+    "commands": [
+      {
+        "command": [
+          "dotnet",
+          "build",
+          "/home/marius/p/dotcc/pglite/tests/NpgsqlAcceptance/NpgsqlAcceptance.csproj",
+          "-c",
+          "Release",
+          "--artifacts-path",
+          "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/raw-jit/artifacts",
+          "-m:1",
+          "-p:UseSharedCompilation=false",
+          "-p:TranslatedProject=/home/marius/p/dotcc/pglite/generated/TranslatedPGlite.Raw/TranslatedPGlite.csproj",
+          "-p:InitdbTranslatedProject=/home/marius/p/dotcc/pglite/generated/TranslatedInitdb.Raw/TranslatedInitdb.csproj"
+        ],
+        "cwd": "/home/marius/p/dotcc",
+        "log": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/raw-jit/build-1792854906959382651.log",
+        "exit_code": 0,
+        "elapsed_seconds": 147.719,
+        "log_sha256": "1c62ae2d68a26a745f9132acdc64a9f0c932a117869bb2ca13b2b036978eefa4"
+      },
+      {
+        "command": [
+          "dotnet",
+          "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/raw-jit/artifacts/bin/NpgsqlAcceptance/release/NpgsqlAcceptance.dll",
+          "--work",
+          "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/raw-jit/run-1792855054950985127",
+          "--report",
+          "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/raw-jit/acceptance-1792854906959382651.json"
+        ],
+        "cwd": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/raw-jit/unrelated-cwd",
+        "log": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/raw-jit/run-1792854906959382651.log",
+        "exit_code": 0,
+        "elapsed_seconds": 92.593,
+        "log_sha256": "e5d24316bb822462cf0e99d67adf83f4f6411c99a1b78af2411742c0a92cd553"
+      },
+      {
+        "command": [
+          "dotnet",
+          "publish",
+          "/home/marius/p/dotcc/pglite/tests/NpgsqlAcceptance/NpgsqlAcceptance.csproj",
+          "-c",
+          "Release",
+          "--artifacts-path",
+          "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/raw-aot/artifacts",
+          "-m:1",
+          "-p:UseSharedCompilation=false",
+          "-p:TranslatedProject=/home/marius/p/dotcc/pglite/generated/TranslatedPGlite.Raw/TranslatedPGlite.csproj",
+          "-p:InitdbTranslatedProject=/home/marius/p/dotcc/pglite/generated/TranslatedInitdb.Raw/TranslatedInitdb.csproj",
+          "-r",
+          "linux-x64",
+          "-p:PublishAot=true",
+          "-o",
+          "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/raw-aot/publish",
+          "-p:CppCompilerAndLinker=/usr/bin/clang-22"
+        ],
+        "cwd": "/home/marius/p/dotcc",
+        "log": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/raw-aot/build-1792855197034118847.log",
+        "exit_code": 0,
+        "elapsed_seconds": 1348.244,
+        "log_sha256": "48b0f6a93189a3d9f18a7055374ae92a4b1d3655c40592abdec8e6bd689bc729"
+      },
+      {
+        "command": [
+          "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/raw-aot/publish/NpgsqlAcceptance",
+          "--work",
+          "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/raw-aot/run-1792856545549239245",
+          "--report",
+          "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/raw-aot/acceptance-1792855197034118847.json"
+        ],
+        "cwd": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/raw-aot/unrelated-cwd",
+        "log": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/raw-aot/run-1792855197034118847.log",
+        "exit_code": 0,
+        "elapsed_seconds": 90.444,
+        "log_sha256": "45dc765a800a22a1c478113a06f0159d1dd69ace0871f8ea9670817b814ecb37"
+      },
+      {
+        "command": [
+          "dotnet",
+          "build",
+          "/home/marius/p/dotcc/pglite/tests/NpgsqlAcceptance/NpgsqlAcceptance.csproj",
+          "-c",
+          "Release",
+          "--artifacts-path",
+          "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/processed-jit/artifacts",
+          "-m:1",
+          "-p:UseSharedCompilation=false",
+          "-p:TranslatedProject=/home/marius/p/dotcc/pglite/generated/TranslatedPGlite/TranslatedPGlite.csproj",
+          "-p:InitdbTranslatedProject=/home/marius/p/dotcc/pglite/generated/TranslatedInitdb/TranslatedInitdb.csproj"
+        ],
+        "cwd": "/home/marius/p/dotcc",
+        "log": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/processed-jit/build-1792854882607928539.log",
+        "exit_code": 0,
+        "elapsed_seconds": 120.555,
+        "log_sha256": "444d88b7d46b7ef88ccf2c22b0dde30c23d6d87b62d1150b8f4740478f0de98f"
+      },
+      {
+        "command": [
+          "dotnet",
+          "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/processed-jit/artifacts/bin/NpgsqlAcceptance/release/NpgsqlAcceptance.dll",
+          "--work",
+          "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/processed-jit/run-1792855003453336520",
+          "--report",
+          "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/processed-jit/acceptance-1792854882607928539.json"
+        ],
+        "cwd": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/processed-jit/unrelated-cwd",
+        "log": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/processed-jit/run-1792854882607928539.log",
+        "exit_code": 0,
+        "elapsed_seconds": 94.065,
+        "log_sha256": "f80ec78e3966d7a2571dc6f32cf943240cad8c4f35d2c29bab56255fafd27762"
+      },
+      {
+        "command": [
+          "dotnet",
+          "publish",
+          "/home/marius/p/dotcc/pglite/tests/NpgsqlAcceptance/NpgsqlAcceptance.csproj",
+          "-c",
+          "Release",
+          "--artifacts-path",
+          "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/processed-aot/artifacts",
+          "-m:1",
+          "-p:UseSharedCompilation=false",
+          "-p:TranslatedProject=/home/marius/p/dotcc/pglite/generated/TranslatedPGlite/TranslatedPGlite.csproj",
+          "-p:InitdbTranslatedProject=/home/marius/p/dotcc/pglite/generated/TranslatedInitdb/TranslatedInitdb.csproj",
+          "-r",
+          "linux-x64",
+          "-p:PublishAot=true",
+          "-o",
+          "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/processed-aot/publish",
+          "-p:CppCompilerAndLinker=/usr/bin/clang-22"
+        ],
+        "cwd": "/home/marius/p/dotcc",
+        "log": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/processed-aot/build-1792855197033565614.log",
+        "exit_code": 0,
+        "elapsed_seconds": 1320.678,
+        "log_sha256": "d67deb00734fc67119b607ac5de0e042ec0a6bab00e7669f22997ff2a1ffd45f"
+      },
+      {
+        "command": [
+          "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/processed-aot/publish/NpgsqlAcceptance",
+          "--work",
+          "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/processed-aot/run-1792856517985205800",
+          "--report",
+          "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/processed-aot/acceptance-1792855197033565614.json"
+        ],
+        "cwd": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/processed-aot/unrelated-cwd",
+        "log": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/processed-aot/run-1792855197033565614.log",
+        "exit_code": 0,
+        "elapsed_seconds": 90.005,
+        "log_sha256": "d66c3657617483981139b29a6abda73da41615e1e9af0e126f582fcb503783c0"
+      }
+    ]
+  },
+  "nativeaot_profile": {
+    "normally_trimmed": true,
+    "whole_assembly_rooting": false,
+    "properties": {
+      "Properties": {
+        "PublishAot": "true",
+        "PublishTrimmed": "true",
+        "SelfContained": "true",
+        "IsAotCompatible": "true"
+      }
+    },
+    "property_evaluation_command": [
+      "dotnet",
+      "msbuild",
+      "pglite/tests/NpgsqlAcceptance/NpgsqlAcceptance.csproj",
+      "-p:PublishAot=true",
+      "-p:RuntimeIdentifier=linux-x64",
+      "-p:_IsPublishing=true",
+      "-getProperty:PublishAot,PublishTrimmed,SelfContained,IsAotCompatible"
+    ],
+    "properties_receipt": {
+      "path": "pglite/artifacts/npgsql-20261024/npgsql-aot-properties.json",
+      "sha256": "fe6aeadd77ae3bb9949c4a41a418f4ad838edfffb66892e71f2a15e635f5933c"
+    },
+    "ilc_responses": {
+      "raw": {
+        "response_file": "pglite/artifacts/npgsql-20261024/npgsql-raw-aot.ilc.rsp",
+        "sha256": "79a34f7de41c675bf418271bc821cfb1255466faccb3e7903201f6a9d2c7aafa",
+        "whole_assembly_rooting": false,
+        "root_arguments": []
+      },
+      "processed": {
+        "response_file": "pglite/artifacts/npgsql-20261024/npgsql-processed-aot.ilc.rsp",
+        "sha256": "302878ab93ae4a1a43aebfab35cc1ba8b29c404175c39f6236eb47cca251fb84",
+        "whole_assembly_rooting": false,
+        "root_arguments": []
+      }
+    }
+  },
+  "source_mapping": {
+    "status": "passed",
+    "assertions": 89,
+    "upstream_source_files": 16,
+    "mapped_cases": 42,
+    "exact_numeric_vectors": 60,
+    "receipt": {
+      "path": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/source-check-final.json",
+      "sha256": "18d6a337a02de96e0dad19b93c55bbe0b537682d6976d6bc561f2329ddd92d0a"
+    },
+    "mapping": {
+      "path": "pglite/tests/NpgsqlAcceptance/source-mapping.json",
+      "sha256": "423e4f2df21d13ff9e3520ddce828b0dfae594c7abb8c9dc27314a2da36903f6"
+    }
+  },
+  "native_differential": {
+    "status": "passed",
+    "assertions": 105,
+    "cases": 26,
+    "role": "same-pin embedding-native oracle only; no product dependency",
+    "comparison": [
+      "exact rows and NULL",
+      "command tags",
+      "SQLSTATE",
+      "ReadyForQuery transaction state"
+    ],
+    "negative_control": "wrong row rejected",
+    "receipt": {
+      "path": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/native-oracle-final-verified/native-oracle.json",
+      "sha256": "53f71cce46f1f6743085055d19d671eb4c0b91f500175ac14b9b094c979c6e8b"
+    },
+    "native_source_manifest_sha256": "5c9425f502907e17db25be472d804b057ca31666217dc27ac992d41ea2ddd2c5",
+    "control_sha256": "6375cd0fddecdfa1e85df5225f87814851e864dd21e633c3664d014c37e9fdc2",
+    "commands": [
+      {
+        "command": [
+          "/home/marius/p/dotcc/pglite/build/native-control/14abb02f16cfb8013f7c/install/bin/initdb-control",
+          "-D",
+          "/mnt/secondary/dotcc-npgsql-20261024/acceptance/native-oracle-final-verified/data",
+          "-L",
+          "/home/marius/p/dotcc/pglite/build/native-control/14abb02f16cfb8013f7c/install/share/postgresql",
+          "--no-locale",
+          "--encoding=UTF8",
+          "--auth=trust",
+          "-U",
+          "postgres",
+          "--no-sync"
+        ],
+        "exit_code": 0,
+        "log": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/native-oracle-final-verified/initdb.log",
+        "log_sha256": "b99c463bff513b80c91f3d66f0bb27a652c8ffa59211a645d8a1ee2d8a0c116a"
+      },
+      {
+        "command": [
+          "/home/marius/p/dotcc/pglite/build/native-control/runs/20261022-163448-222180a4/native-control/embedding-control",
+          "/home/marius/p/dotcc/pglite/build/native-control/14abb02f16cfb8013f7c/install/bin/postgres",
+          "/mnt/secondary/dotcc-npgsql-20261024/acceptance/native-oracle-final-verified/data",
+          "/mnt/secondary/dotcc-npgsql-20261024/acceptance/native-oracle-final-verified/queries.sql",
+          "/mnt/secondary/dotcc-npgsql-20261024/acceptance/native-oracle-final-verified/responses"
+        ],
+        "exit_code": 0,
+        "log": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/native-oracle-final-verified/engine.log",
+        "log_sha256": "02046c57f07884c0c3f552b94c31d5119a2f47f313ae15f1ea0b20d973d10d53"
+      }
+    ]
+  },
+  "original_api_regressions": {
+    "status": "passed",
+    "receipt": {
+      "path": "pglite/artifacts/npgsql-20261024/original-matrix.json",
+      "sha256": "6cc892d673c1600190009123ad9525295d444a612801a3dd9f85d37335061780"
+    },
+    "assertions_per_row": {
+      "original": 36,
+      "api": 391
+    },
+    "rows": [
+      {
+        "form": "raw",
+        "execution": "jit",
+        "status": "passed",
+        "build_command": [
+          "dotnet",
+          "build",
+          "/home/marius/p/dotcc/pglite/samples/ManagedConsumer/ManagedConsumer.csproj",
+          "-c",
+          "Release",
+          "--artifacts-path",
+          "/mnt/secondary/dotcc-npgsql-20261024/regression/raw",
+          "-m:1",
+          "-p:UseSharedCompilation=false",
+          "-p:TranslatedProject=/home/marius/p/dotcc/pglite/generated/TranslatedPGlite.Raw/TranslatedPGlite.csproj",
+          "-p:InitdbTranslatedProject=/home/marius/p/dotcc/pglite/generated/TranslatedInitdb.Raw/TranslatedInitdb.csproj"
+        ],
+        "build_log": "/home/marius/p/dotcc/pglite/artifacts/npgsql-20261024/original-raw-jit-build.log",
+        "build_log_sha256": "dd8e0b0a5d6e817fde1ca1d9cc9e3b874082673c86977418da848b1db56ff28a",
+        "run_command": [
+          "dotnet",
+          "/mnt/secondary/dotcc-npgsql-20261024/regression/raw/bin/ManagedConsumer/release/ManagedConsumer.dll",
+          "--work",
+          "/mnt/secondary/dotcc-npgsql-20261024/regression/raw-jit-database"
+        ],
+        "run_log": "/home/marius/p/dotcc/pglite/artifacts/npgsql-20261024/original-raw-jit-run.log",
+        "run_log_sha256": "f3fb799893ef3806fd6a9ea224013a9a56cc81d162ef9b8567e2e4eab981c998",
+        "executable_sha256": "6a84721c26169688cf86ed704e081617b0c117b966f7801b2bb15bf738494815"
+      },
+      {
+        "form": "raw",
+        "execution": "aot",
+        "status": "passed",
+        "build_command": [
+          "dotnet",
+          "publish",
+          "/home/marius/p/dotcc/pglite/samples/ManagedConsumer/ManagedConsumer.csproj",
+          "-c",
+          "Release",
+          "--artifacts-path",
+          "/mnt/secondary/dotcc-npgsql-20261024/regression/raw",
+          "-m:1",
+          "-p:UseSharedCompilation=false",
+          "-p:TranslatedProject=/home/marius/p/dotcc/pglite/generated/TranslatedPGlite.Raw/TranslatedPGlite.csproj",
+          "-p:InitdbTranslatedProject=/home/marius/p/dotcc/pglite/generated/TranslatedInitdb.Raw/TranslatedInitdb.csproj",
+          "-r",
+          "linux-x64",
+          "-p:PublishAot=true",
+          "-o",
+          "/mnt/secondary/dotcc-npgsql-20261024/regression/raw-publish"
+        ],
+        "build_log": "/home/marius/p/dotcc/pglite/artifacts/npgsql-20261024/original-raw-aot-build.log",
+        "build_log_sha256": "fb03f53980960dd4fb27cc997ee49446ed884f770b1f806fef8ac88dda8b9929",
+        "run_command": [
+          "/mnt/secondary/dotcc-npgsql-20261024/regression/raw-publish/ManagedConsumer",
+          "--work",
+          "/mnt/secondary/dotcc-npgsql-20261024/regression/raw-aot-database"
+        ],
+        "run_log": "/home/marius/p/dotcc/pglite/artifacts/npgsql-20261024/original-raw-aot-run.log",
+        "run_log_sha256": "159808d57538bac829a05546979b5f102b9355db8d790773f4e7e3d19d143f06",
+        "executable_sha256": "41488a4585701cea54ad3dd199aec3c7c8ee493638e05e6d8fa32f43bcb9a49d"
+      },
+      {
+        "form": "processed",
+        "execution": "jit",
+        "status": "passed",
+        "build_command": [
+          "dotnet",
+          "build",
+          "/home/marius/p/dotcc/pglite/samples/ManagedConsumer/ManagedConsumer.csproj",
+          "-c",
+          "Release",
+          "--artifacts-path",
+          "/mnt/secondary/dotcc-npgsql-20261024/regression/processed",
+          "-m:1",
+          "-p:UseSharedCompilation=false",
+          "-p:TranslatedProject=/home/marius/p/dotcc/pglite/generated/TranslatedPGlite/TranslatedPGlite.csproj",
+          "-p:InitdbTranslatedProject=/home/marius/p/dotcc/pglite/generated/TranslatedInitdb/TranslatedInitdb.csproj"
+        ],
+        "build_log": "/home/marius/p/dotcc/pglite/artifacts/npgsql-20261024/original-processed-jit-build.log",
+        "build_log_sha256": "44b31c3ff1d621b00423cdf5ebc92e095f3ab1e15789991b5c9ebe775d1dfb1d",
+        "run_command": [
+          "dotnet",
+          "/mnt/secondary/dotcc-npgsql-20261024/regression/processed/bin/ManagedConsumer/release/ManagedConsumer.dll",
+          "--work",
+          "/mnt/secondary/dotcc-npgsql-20261024/regression/processed-jit-database"
+        ],
+        "run_log": "/home/marius/p/dotcc/pglite/artifacts/npgsql-20261024/original-processed-jit-run.log",
+        "run_log_sha256": "644be210569a66c05834e5ee26de7f587f021a24ed605b2b4051036672f5683f",
+        "executable_sha256": "be7deb0f91a03e09c0792e8c94b30af1efff7cd3e6647f0a649e5567ce70612f"
+      },
+      {
+        "form": "processed",
+        "execution": "aot",
+        "status": "passed",
+        "build_command": [
+          "dotnet",
+          "publish",
+          "/home/marius/p/dotcc/pglite/samples/ManagedConsumer/ManagedConsumer.csproj",
+          "-c",
+          "Release",
+          "--artifacts-path",
+          "/mnt/secondary/dotcc-npgsql-20261024/regression/processed",
+          "-m:1",
+          "-p:UseSharedCompilation=false",
+          "-p:TranslatedProject=/home/marius/p/dotcc/pglite/generated/TranslatedPGlite/TranslatedPGlite.csproj",
+          "-p:InitdbTranslatedProject=/home/marius/p/dotcc/pglite/generated/TranslatedInitdb/TranslatedInitdb.csproj",
+          "-r",
+          "linux-x64",
+          "-p:PublishAot=true",
+          "-o",
+          "/mnt/secondary/dotcc-npgsql-20261024/regression/processed-publish"
+        ],
+        "build_log": "/home/marius/p/dotcc/pglite/artifacts/npgsql-20261024/original-processed-aot-build.log",
+        "build_log_sha256": "11dbccb51ca296d0144c063b2f12dc70b2ed5658e1ba2d2f745212b222cb7dc7",
+        "run_command": [
+          "/mnt/secondary/dotcc-npgsql-20261024/regression/processed-publish/ManagedConsumer",
+          "--work",
+          "/mnt/secondary/dotcc-npgsql-20261024/regression/processed-aot-database"
+        ],
+        "run_log": "/home/marius/p/dotcc/pglite/artifacts/npgsql-20261024/original-processed-aot-run.log",
+        "run_log_sha256": "bb3a57d1864f49aef7f8f960581a1f990127d0621c8da3bb61afb0af6bcc3fab",
+        "executable_sha256": "71d581729cc58f47f541a3851c9a6604451f8d5177d4b386f3b1d997fc4b4ad3"
+      }
+    ],
+    "contracts": [
+      {
+        "component": "protocol",
+        "execution": "jit",
+        "status": "passed",
+        "assertions": 185,
+        "build_command": [
+          "dotnet",
+          "build",
+          "/home/marius/p/dotcc/pglite/tests/ApiProtocol/ApiProtocol.csproj",
+          "-c",
+          "Release",
+          "--artifacts-path",
+          "/mnt/secondary/dotcc-npgsql-20261024/regression/contracts-protocol",
+          "-m:1",
+          "-p:UseSharedCompilation=false"
+        ],
+        "build_log": "/home/marius/p/dotcc/pglite/artifacts/npgsql-20261024/original-contracts-protocol-jit-build.log",
+        "build_log_sha256": "f62bb6f1bdcf1825ff1be816903e4ea3d0685d047a0b5eacbade66fca4792622",
+        "run_command": [
+          "dotnet",
+          "/mnt/secondary/dotcc-npgsql-20261024/regression/contracts-protocol/bin/ApiProtocol/release/ApiProtocol.dll"
+        ],
+        "run_log": "/home/marius/p/dotcc/pglite/artifacts/npgsql-20261024/original-contracts-protocol-jit-run.log",
+        "run_log_sha256": "610e4f0105d23e9fea828e7b0e97ee895a636b6a0c4d66d430b1f8caeaa5b8b0"
+      },
+      {
+        "component": "protocol",
+        "execution": "aot",
+        "status": "passed",
+        "assertions": 185,
+        "build_command": [
+          "dotnet",
+          "publish",
+          "/home/marius/p/dotcc/pglite/tests/ApiProtocol/ApiProtocol.csproj",
+          "-c",
+          "Release",
+          "--artifacts-path",
+          "/mnt/secondary/dotcc-npgsql-20261024/regression/contracts-protocol",
+          "-m:1",
+          "-p:UseSharedCompilation=false",
+          "-r",
+          "linux-x64",
+          "-p:PublishAot=true",
+          "-o",
+          "/mnt/secondary/dotcc-npgsql-20261024/regression/contracts-protocol-publish"
+        ],
+        "build_log": "/home/marius/p/dotcc/pglite/artifacts/npgsql-20261024/original-contracts-protocol-aot-build.log",
+        "build_log_sha256": "0a140b3647978f1228c001f1dd20e9faf63df4bad8c383b37c18d144320c25d7",
+        "run_command": [
+          "/mnt/secondary/dotcc-npgsql-20261024/regression/contracts-protocol-publish/ApiProtocol"
+        ],
+        "run_log": "/home/marius/p/dotcc/pglite/artifacts/npgsql-20261024/original-contracts-protocol-aot-run.log",
+        "run_log_sha256": "610e4f0105d23e9fea828e7b0e97ee895a636b6a0c4d66d430b1f8caeaa5b8b0"
+      },
+      {
+        "component": "codecs",
+        "execution": "jit",
+        "status": "passed",
+        "assertions": 237,
+        "build_command": [
+          "dotnet",
+          "build",
+          "/home/marius/p/dotcc/pglite/tests/ApiCodecs/Contracts/ApiCodecs.Contracts.csproj",
+          "-c",
+          "Release",
+          "--artifacts-path",
+          "/mnt/secondary/dotcc-npgsql-20261024/regression/contracts-codecs",
+          "-m:1",
+          "-p:UseSharedCompilation=false"
+        ],
+        "build_log": "/home/marius/p/dotcc/pglite/artifacts/npgsql-20261024/original-contracts-codecs-jit-build.log",
+        "build_log_sha256": "f5e552d3c5a902d6f0ab547af02102c797afd15e32c0a8532843bb5a0acada8f",
+        "run_command": [
+          "dotnet",
+          "/mnt/secondary/dotcc-npgsql-20261024/regression/contracts-codecs/bin/ApiCodecs.Contracts/release/ApiCodecs.Contracts.dll"
+        ],
+        "run_log": "/home/marius/p/dotcc/pglite/artifacts/npgsql-20261024/original-contracts-codecs-jit-run.log",
+        "run_log_sha256": "8522f485846530d378ecd3048cd2d0f0cbadd39a85b1dcb51e67a86c4c73d458"
+      },
+      {
+        "component": "codecs",
+        "execution": "aot",
+        "status": "passed",
+        "assertions": 237,
+        "build_command": [
+          "dotnet",
+          "publish",
+          "/home/marius/p/dotcc/pglite/tests/ApiCodecs/Contracts/ApiCodecs.Contracts.csproj",
+          "-c",
+          "Release",
+          "--artifacts-path",
+          "/mnt/secondary/dotcc-npgsql-20261024/regression/contracts-codecs",
+          "-m:1",
+          "-p:UseSharedCompilation=false",
+          "-r",
+          "linux-x64",
+          "-p:PublishAot=true",
+          "-o",
+          "/mnt/secondary/dotcc-npgsql-20261024/regression/contracts-codecs-publish"
+        ],
+        "build_log": "/home/marius/p/dotcc/pglite/artifacts/npgsql-20261024/original-contracts-codecs-aot-build.log",
+        "build_log_sha256": "9a259a5306184756f4b0a4a9909d95ab394684185d9d53565a7528b29842e555",
+        "run_command": [
+          "/mnt/secondary/dotcc-npgsql-20261024/regression/contracts-codecs-publish/ApiCodecs.Contracts"
+        ],
+        "run_log": "/home/marius/p/dotcc/pglite/artifacts/npgsql-20261024/original-contracts-codecs-aot-run.log",
+        "run_log_sha256": "8522f485846530d378ecd3048cd2d0f0cbadd39a85b1dcb51e67a86c4c73d458"
+      },
+      {
+        "component": "host",
+        "execution": "jit",
+        "status": "passed",
+        "assertions": 34,
+        "build_command": [
+          "dotnet",
+          "build",
+          "/home/marius/p/dotcc/pglite/tests/Product/ApiContracts.csproj",
+          "-c",
+          "Release",
+          "--artifacts-path",
+          "/mnt/secondary/dotcc-npgsql-20261024/regression/processed",
+          "-m:1",
+          "-p:UseSharedCompilation=false",
+          "-p:TranslatedProject=/home/marius/p/dotcc/pglite/generated/TranslatedPGlite/TranslatedPGlite.csproj",
+          "-p:InitdbTranslatedProject=/home/marius/p/dotcc/pglite/generated/TranslatedInitdb/TranslatedInitdb.csproj"
+        ],
+        "build_log": "/home/marius/p/dotcc/pglite/artifacts/npgsql-20261024/original-contracts-host-jit-build.log",
+        "build_log_sha256": "7a51aaa7424611f43ffc2f0cbff43cb3d0d8f08852c733a30d78a39e69787bc9",
+        "run_command": [
+          "dotnet",
+          "/mnt/secondary/dotcc-npgsql-20261024/regression/processed/bin/ApiContracts/release/ApiContracts.dll"
+        ],
+        "run_log": "/home/marius/p/dotcc/pglite/artifacts/npgsql-20261024/original-contracts-host-jit-run.log",
+        "run_log_sha256": "bd9f62cfaa1e033daf25c3c87aef72afc12702b9b9adce2763b98ce1ff815484"
+      }
+    ],
+    "raw_nativeaot_reuse": {
+      "proof": {
+        "path": "pglite/artifacts/npgsql-20261024/original-raw-aot-trim-equivalence.json",
+        "sha256": "7d6303f4f82c9de9e1be6fe2cdd7e2bed365b295b196b6e2ac8e26f3a74fb64e"
+      },
+      "note": "Fresh execution of the explicitly older private-bridge input. All other API IL is identical, and unused InvokeBackend was trimmed. This is not claimed as a later-source native rebuild."
+    }
+  },
+  "ordinary_delivery": {
+    "status": "passed",
+    "release_solution_build": {
+      "command": [
+        "dotnet",
+        "build",
+        "pglite/ManagedConsumer.slnx",
+        "-c",
+        "Release"
+      ],
+      "log": {
+        "path": "pglite/artifacts/npgsql-20261024/ordinary-solution-release-current.log",
+        "sha256": "d368f50759958b63e9063c7f71244fe8c4d4333f3d7cab076600c2bee2ac4674"
+      },
+      "exit_code": 0,
+      "warnings": "16 existing generated/nullable/obsolete API warnings; zero errors"
+    },
+    "commands": [
+      {
+        "label": "ordinary-example-release-current-run",
+        "command": [
+          "dotnet",
+          "run",
+          "--project",
+          "/home/marius/p/dotcc/pglite/samples/NpgsqlExample/NpgsqlExample.csproj",
+          "-c",
+          "Release",
+          "--no-build"
+        ],
+        "cwd": "/tmp",
+        "log": "pglite/artifacts/npgsql-20261024/ordinary-example-release-current-run.log",
+        "log_sha256": "d433ea3ec25c27080f2146f6fa9fb2ab24890e979b745f9bd79171adb03740c5",
+        "exit_code": 0,
+        "seconds": 35.385
+      },
+      {
+        "label": "ordinary-example-publish-current",
+        "command": [
+          "dotnet",
+          "publish",
+          "/home/marius/p/dotcc/pglite/samples/NpgsqlExample/NpgsqlExample.csproj",
+          "-c",
+          "Release",
+          "--no-restore",
+          "-o",
+          "/mnt/secondary/dotcc-npgsql-20261024/supervisor/ordinary-publish-current"
+        ],
+        "cwd": "/home/marius/p/dotcc",
+        "log": "pglite/artifacts/npgsql-20261024/ordinary-example-publish-current.log",
+        "log_sha256": "8f185cf56b7e7a51790c322ab95909a9d49478dd6b319140c61d3373a7736b93",
+        "exit_code": 0,
+        "seconds": 7.353
+      },
+      {
+        "label": "ordinary-example-published-current-run",
+        "command": [
+          "dotnet",
+          "/mnt/secondary/dotcc-npgsql-20261024/supervisor/ordinary-publish-current/NpgsqlExample.dll"
+        ],
+        "cwd": "/tmp",
+        "log": "pglite/artifacts/npgsql-20261024/ordinary-example-published-current-run.log",
+        "log_sha256": "d433ea3ec25c27080f2146f6fa9fb2ab24890e979b745f9bd79171adb03740c5",
+        "exit_code": 0,
+        "seconds": 35.396
+      },
+      {
+        "label": "ordinary-solution-debug-current",
+        "command": [
+          "dotnet",
+          "build",
+          "pglite/ManagedConsumer.slnx",
+          "-c",
+          "Debug"
+        ],
+        "cwd": "/home/marius/p/dotcc",
+        "log": "pglite/artifacts/npgsql-20261024/ordinary-solution-debug-current.log",
+        "log_sha256": "67818aa0bd1066e878bd270dffc7390c3e688708832c9e841752e488ff52c92b",
+        "exit_code": 0,
+        "seconds": 102.502
+      },
+      {
+        "label": "ordinary-example-debug-current-run",
+        "command": [
+          "dotnet",
+          "run",
+          "--project",
+          "/home/marius/p/dotcc/pglite/samples/NpgsqlExample/NpgsqlExample.csproj",
+          "--no-build"
+        ],
+        "cwd": "/tmp",
+        "log": "pglite/artifacts/npgsql-20261024/ordinary-example-debug-current-run.log",
+        "log_sha256": "d433ea3ec25c27080f2146f6fa9fb2ab24890e979b745f9bd79171adb03740c5",
+        "exit_code": 0,
+        "seconds": 41.65
+      }
+    ],
+    "asset_audit": {
+      "path": "pglite/artifacts/npgsql-20261024/delivery-final.json",
+      "sha256": "476ecab75e2f737baaee16c37eca53e6ce43b0dd20fd59bd84dc56f9490dd912"
+    },
+    "outputs": {
+      "raw-jit": {
+        "output": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/raw-jit/artifacts/bin/NpgsqlAcceptance/release",
+        "bootstrap_files": 659,
+        "npgsql_notice_files": 5,
+        "bootstrap_modes": {
+          "bin/postgres": "0o700",
+          "bin/initdb": "0o700"
+        },
+        "issues": []
+      },
+      "raw-aot": {
+        "output": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/raw-aot/publish",
+        "bootstrap_files": 659,
+        "npgsql_notice_files": 5,
+        "bootstrap_modes": {
+          "bin/postgres": "0o700",
+          "bin/initdb": "0o700"
+        },
+        "issues": [],
+        "native_file": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/raw-aot/publish/NpgsqlAcceptance: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=7f0759c6f3109dc544d5ccf982549e3680ee1379, for GNU/Linux 3.2.0, stripped",
+        "native_dependencies": "linux-vdso.so.1 (0x00007ffd2e726000)\n\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x000079b3e5117000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x000079b3e4e00000)\n\t/lib64/ld-linux-x86-64.so.2 (0x000079b3e7bba000)",
+        "dotnet_runtime_notices": {
+          "notices/LICENSE.TXT": "cfc21f5e8bd655ae997eec916138b707b1d290b83272c02a95c9f821b8c87310",
+          "notices/THIRD-PARTY-NOTICES.TXT": "66f1d4e44973185519bb4aa8a9718eb22fc7af2cc532e3ae9cfc4c127ee7fc54",
+          "notices/DOTNET-NATIVEAOT.txt": "77b981031a1248cefe3737f80976880dab7b1f640e545927e30591763e191cb7"
+        }
+      },
+      "processed-jit": {
+        "output": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/processed-jit/artifacts/bin/NpgsqlAcceptance/release",
+        "bootstrap_files": 659,
+        "npgsql_notice_files": 5,
+        "bootstrap_modes": {
+          "bin/postgres": "0o700",
+          "bin/initdb": "0o700"
+        },
+        "issues": []
+      },
+      "processed-aot": {
+        "output": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/processed-aot/publish",
+        "bootstrap_files": 659,
+        "npgsql_notice_files": 5,
+        "bootstrap_modes": {
+          "bin/postgres": "0o700",
+          "bin/initdb": "0o700"
+        },
+        "issues": [],
+        "native_file": "/mnt/secondary/dotcc-npgsql-20261024/acceptance/qualification-initial/processed-aot/publish/NpgsqlAcceptance: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=d5f0912d1253b2a8c8f935c4ac5cb21765970681, for GNU/Linux 3.2.0, stripped",
+        "native_dependencies": "linux-vdso.so.1 (0x00007ffc67ca7000)\n\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x000075f25e917000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x000075f25e600000)\n\t/lib64/ld-linux-x86-64.so.2 (0x000075f261304000)",
+        "dotnet_runtime_notices": {
+          "notices/LICENSE.TXT": "cfc21f5e8bd655ae997eec916138b707b1d290b83272c02a95c9f821b8c87310",
+          "notices/THIRD-PARTY-NOTICES.TXT": "66f1d4e44973185519bb4aa8a9718eb22fc7af2cc532e3ae9cfc4c127ee7fc54",
+          "notices/DOTNET-NATIVEAOT.txt": "77b981031a1248cefe3737f80976880dab7b1f640e545927e30591763e191cb7"
+        }
+      },
+      "ordinary-release": {
+        "output": "/home/marius/p/dotcc/pglite/samples/NpgsqlExample/bin/Release/net10.0",
+        "bootstrap_files": 659,
+        "npgsql_notice_files": 5,
+        "bootstrap_modes": {
+          "bin/postgres": "0o700",
+          "bin/initdb": "0o700"
+        },
+        "issues": []
+      },
+      "ordinary-debug": {
+        "output": "/home/marius/p/dotcc/pglite/samples/NpgsqlExample/bin/Debug/net10.0",
+        "bootstrap_files": 659,
+        "npgsql_notice_files": 5,
+        "bootstrap_modes": {
+          "bin/postgres": "0o700",
+          "bin/initdb": "0o700"
+        },
+        "issues": []
+      },
+      "ordinary-publish": {
+        "output": "/mnt/secondary/dotcc-npgsql-20261024/supervisor/ordinary-publish-current",
+        "bootstrap_files": 659,
+        "npgsql_notice_files": 5,
+        "bootstrap_modes": {
+          "bin/postgres": "0o700",
+          "bin/initdb": "0o700"
+        },
+        "issues": []
+      }
+    },
+    "framework_layout": {
+      "path": "pglite/artifacts/npgsql-20261024/layout-final.log",
+      "sha256": "c6eb23488a81e1d34a603dda0e1f1dcb7bed64c11dcf4c4b00ec49b48238bfdc"
+    },
+    "acceptance_harness_no_argument_debug": {
+      "status": "passed",
+      "assertions": 5151,
+      "cases": 42,
+      "archive_directory": "pglite/artifacts/npgsql-20261024/acceptance-final/default-debug",
+      "note": "Additional ordinary Debug harness execution; distinct from the four Release matrix rows."
+    }
+  },
+  "independent_reviews": {
+    "configuration": {
+      "supervisor": "gpt-6.1-sol high",
+      "delegated_implementation_test_review": "gpt-6.1-sol xhigh",
+      "orchestrator": "T3 delegate_task, explicit target.options.reasoningEffort"
+    },
+    "rounds": [
+      {
+        "report": {
+          "path": "pglite/artifacts/npgsql-20261024/review-round1/review-round1.json",
+          "sha256": "6d3277a035c3f5e30e7397064ba417d67a44b78359cd12371c06d9c4abe5b41c"
+        },
+        "status": "completed",
+        "unresolved_findings": []
+      },
+      {
+        "report": {
+          "path": "pglite/artifacts/npgsql-20261024/review-round2/review-round2.json",
+          "sha256": "7c70dd70ae0e358e6b5be3d9c0b3b4a44146e45db31301b0dbdbedde58c3db79"
+        },
+        "status": "completed",
+        "unresolved_findings": []
+      }
+    ],
+    "repairs": [
+      "real GUC reporting preserves named-parameter parsing and TimeZone",
+      "embedded tracing handles absent network endpoint",
+      "cleanup failures surface after logical close; only proven closed engine releases established lease",
+      "type reload checks ownership/token before catalog mutation",
+      "failed-open attempts release only their own logical lease for safe retry"
+    ],
+    "quarantine": {
+      "status": "passed",
+      "checks": 12,
+      "mode": "processed JIT, separate process",
+      "public_fixture": "pglite/tests/NpgsqlQuarantine",
+      "log": {
+        "path": "pglite/artifacts/npgsql-20261024/quarantine-repro-current.log",
+        "sha256": "06f4d0f4db6344809eeb6ca7edd1049fa18e1bb94cc02011e5bcf78fefcd542e"
+      },
+      "independent_after_fix_log": {
+        "path": "pglite/artifacts/npgsql-20261024/review-round2/quarantine-after-fix-run.log",
+        "sha256": "76b228dddfb323eb4ad8e92c11a8636671395c02deb1821bc0056110b51440d1"
+      },
+      "behavior": "Oversized response causes failure; repeated Close/Open and another source reject; caller PGDATA remains."
+    }
+  },
+  "explicit_exclusions": {
+    "simultaneous_sessions": "Second active lease rejects; sources do not represent independent concurrent databases.",
+    "pooling_multiplexing": "Disabled and inconsistent embedded options reject.",
+    "streaming_copy_apis": "Immediate NotSupportedException before state acquisition.",
+    "sql_copy_stdin_stdout": "Actual PostgreSQL utility hook rejects with PostgresException SQLSTATE 0A000, including dynamic/stored SQL; ordinary file COPY remains.",
+    "running_cancellation": "Cancel rejects; no cancellation socket or concurrent close. Pre-cancelled tokens cancel before entry; live cancellable command/reader tokens reject.",
+    "client_timeout": "Zero only, nonzero command/batch timeout rejects.",
+    "notification_wait": "Wait/WaitAsync reject.",
+    "connection_reconfiguration": "ChangeDatabase, ConnectionString mutation and CloneWith reject; ordinary Clone retains embedded source.",
+    "distributed_enlistment": "Disabled; local transactions qualified.",
+    "backpressure": "Responses buffered to configured MaximumResponseBytes; SequentialAccess is not bounded-memory database streaming.",
+    "additional_profiles": "Dynamic/custom type mapping, JSON/POCO/composite plugins, unlisted codec variants, EF Core and Dapper are unqualified.",
+    "platforms": "Only Linux x64 LP64 .NET 10 qualified."
+  },
+  "boundary": {
+    "full_upstream_postgresql_port": "Research only; not implemented or authorized.",
+    "generated_engine_initializer_compiler_host_changes": false,
+    "original_14_engine_suites": "Historical unchanged-pin qualification; not represented as a fresh rerun.",
+    "additional_unrelated_campaigns": "Not rerun.",
+    "s2n_tls": {
+      "protected_file_count": 38,
+      "changed": [],
+      "initial_hashes": {
+        "path": "pglite/artifacts/npgsql-20261024/protected-s2n-start.json",
+        "sha256": "a038fb43c52c0a7b0f5267d189619aa9535184d6a8836865ff2a27f52d22c1e2"
+      }
+    },
+    "push": false,
+    "pull_request": false
+  },
+  "reproduction": {
+    "usage": "pglite/docs/NPGSQL-USAGE.md",
+    "qualification": "pglite/docs/NPGSQL-QUALIFICATION.md",
+    "matrix": [
+      "bash",
+      "pglite/scripts/npgsql-test.sh",
+      "--form",
+      "all",
+      "--mode",
+      "all",
+      "--rid",
+      "linux-x64",
+      "--work-root",
+      "/absolute/private/npgsql-qualification"
+    ],
+    "original_api_receipt": "docs/validation/pglite-api-port-20261023.json",
+    "artifact_retention": "Raw logs, manifests, reports, source archives and private native outputs retained locally under pglite/artifacts/npgsql-20261024 and /mnt/secondary/dotcc-npgsql-20261024; artifacts are intentionally ignored by git."
+  },
+  "retained_acceptance_evidence": {
+    "matrix": {
+      "path": "pglite/artifacts/npgsql-20261024/acceptance-final/matrix-final.json",
+      "sha256": "debd7ecf03233a741290fa222fbd87962d6e0ce08511c675583069d3ca0e0522"
+    },
+    "checksum_index": {
+      "path": "pglite/artifacts/npgsql-20261024/acceptance-final/SHA256.json",
+      "sha256": "99432a910e3a58493b6a6ec0dd70e137d618e76ba392b37f98879be0d2cc6223"
+    },
+    "verified_archived_files": 56,
+    "status": "passed"
+  }
+}

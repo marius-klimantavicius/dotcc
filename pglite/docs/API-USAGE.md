@@ -6,6 +6,11 @@ through the campaign first. The public namespace is `Managed.PGlite`.
 The qualified target is Linux x64 LP64. Current four-row API matrix and ordinary
 workflow evidence are recorded in [API-PARITY.md](API-PARITY.md).
 
+For Npgsql/ADO.NET command, reader and transaction APIs, use the separate
+[copied Npgsql source fork](NPGSQL-USAGE.md). It consumes this same translated
+engine with its own qualified surface and explicit single-session,
+streaming-COPY and cancellation policy.
+
 ## Run the separate example
 
 [ApiExample](../samples/ApiExample/Program.cs) demonstrates a dedicated worker,

@@ -19,8 +19,9 @@ the familiar Npgsql command, reader, parameter and transaction APIs through an
 embedded connector. It consumes the same translated engine. See
 [NPGSQL-USAGE.md](docs/NPGSQL-USAGE.md) for the separate sample, assembly identity,
 single-session contract and explicit streaming COPY/cancellation exclusions.
-Its implementation plan and qualification are separate from the original API
-results below.
+Its [qualification](docs/NPGSQL-QUALIFICATION.md) and
+[validation receipt](../docs/validation/pglite-npgsql-20261024.json) are separate
+from the original API results below.
 
 The repaired compiler regenerated all 928 selected backend and 73 initializer
 units. All four raw/processed JIT/normally trimmed NativeAOT rows pass the original

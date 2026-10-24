@@ -86,5 +86,5 @@ with the acceptance results; do not
 infer support from untested upstream APIs retained in the copied source.
 
 This document describes the delivery interface. Current test results and
-limitations belong to the campaign qualification receipt; code presence alone
-does not establish acceptance.
+limitations are recorded in [NPGSQL-QUALIFICATION.md](NPGSQL-QUALIFICATION.md)
+and the [validation receipt](../../docs/validation/pglite-npgsql-20261024.json).
