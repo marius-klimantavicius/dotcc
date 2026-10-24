@@ -8,11 +8,12 @@ Provider tests, emitted ABI checks and product TLS qualification remain separate
 gates; this document does not pass the campaign.
 
 The current production runtime freeze is
-`artifacts/provider/freeze-rsa-20261023T224649Z/receipt.json`. All 49 provider
+`artifacts/provider/freeze-ec-20261023T235817Z/receipt.json`. All 50 provider
 groups pass in JIT and NativeAOT with its exact sources; the actual emitted
 183-binding ABI probe also passes both modes. The 25 production inputs,
 including `config/provider.json`, remain byte frozen. Prior application results
-under the ASN.1-only freeze remain historical until fresh source-aware execution.
+under the ASN.1-only and RSA freezes remain historical until fresh source-aware
+execution against this EC repair and the owning API's final fixture freeze.
 
 The declaration reference is `openssl-legacy` in `config/inputs.json`: actual
 OpenSSL 1.1.1w headers. Its `OPENSSL_VERSION_NUMBER` describes those declarations.
@@ -528,10 +529,10 @@ Those results require fresh raw JIT and all four executions against the new
 freeze. C builds were held until the owning API host repair also froze; the
 retained 257 C emissions and linked projects remain available for reuse.
 
-After the host freeze, the unchanged original `s2n_client_psk_extension_test`
-passes all four executions with exactly 1021 native assertions each, using the
+Under the RSA and host freezes, the unchanged original `s2n_client_psk_extension_test`
+passed all four executions with exactly 1021 native assertions each, using the
 retained original policy testlib unit selected by the corrected support decoder.
-The unchanged original `s2n_client_key_exchange_test` also passes all four with
+The unchanged original `s2n_client_key_exchange_test` also passed all four with
 exactly 23229 assertions each. Its additional public RSA APIs use real BC/BCL
 operations in the isolated test assembly; the canonical typed wrappers have a
 separate 277-row native differential in both runtimes. Only after original all4
@@ -544,6 +545,59 @@ byte preserved; only project XML selected a frozen provider/binding snapshot.
 `repair-linked-control.py` records the failed command, input manifest and fresh
 raw JIT identity before the four-mode expansion. No C emission was repeated.
 These two cases close neither the required 257-case C gate nor other P6 gates.
+Their RSA-source executions are historical until the EC-source refresh qualifies
+them again.
+
+## EC public state and private roles
+
+Generated and decoded EC keys now support the selected signing and derivation
+operations with the same private material. Generated keys use the existing BCL
+key export/import and signing operations; decoded private keys use the existing
+BCL PKCS8 import and ECDH operation. Public verification reads the current public
+point. Explicit public mutation retains NIST private material, so signing still
+validates with the original public key while verification and peer derivation
+observe the replacement. `EC_KEY_check_key` checks private/public consistency.
+
+The selected TLS point setter follows the pinned native controls for compressed,
+uncompressed, hybrid and infinity encodings. Prefix, length and field-range
+failures retain an existing public point. For an initially absent point, the
+native allocation can leave infinity even when parsing fails. An in-range
+off-curve affine assignment returns
+failure after changing the public point, as native does. Compressed-coordinate
+recovery clears the prior error queue; other tested early failures preserve it.
+The getter returns the current uncompressed encoding, including the single zero
+byte for infinity. Empty-key output pointers and error behavior are checked
+separately. Acquired EC views retain the key and have stable borrowed view/group
+identities across repeated acquisition and release.
+
+X25519's native setter replaces the key with public-only state. Existing
+contexts observe that change; an own-key derivation or size query then fails
+without overwriting output or length. Low-order peer derivation copies the
+actual zero agreement result produced by BC's existing span operation before
+returning failure, preserving length and adding no error. NIST derivation
+supports the native truncated output contract, including a zero-capacity
+failure without a new error.
+
+The permanent 50th group compares 1223 native rows in each runtime. It covers
+the generated/decoded roles, 22 point forms on all three selected NIST curves,
+output guards and lengths, two seeded prior errors, empty keys, stable aliases,
+retained owners and X25519 replacement/low-order behavior. Complete native and
+synthetic managed numeric queues remain separate evidence; comparison uses
+their documented error-presence and retention behavior. The private baseline,
+private repair and permanent production-project checks retain every attempt.
+
+The final runtime evidence is
+`artifacts/provider/final50-ec-235817/receipt.json` and
+`artifacts/provider/emitted-probe-ec-235817/receipt.json`. The ABI run rebuilds
+JIT and NativeAOT against retained actual emitted C# and its project, verifies
+their bytes before and after, and reruns the pinned native comparator. It does
+not regenerate C or edit generated sources. The exact five-file milestone is
+`artifacts/provider/milestone-ec-runtime-235817/manifest.json`.
+
+The old RSA-source controller naturally drained batch002 at 26 passing cases.
+The same exclusive controller then reset all 257 cases for mandatory fresh raw
+JIT and all four executions against the EC/fixture epoch. Historical assertions
+and linked sources remain preserved; none count as final EC-source passes.
 
 ## Qualified dependency storage
 
