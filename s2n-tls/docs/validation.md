@@ -490,3 +490,34 @@ and current CLI manifest; running source roots are excluded. Only a three-group
 trial is authorized initially:
 `artifacts/managed-contract/final-ec-closed-python-source-supervisor-review.json`.
 No full72-leaf pass or storage completion is inferred from this review.
+
+
+2026-10-24 current-source checkpoint: the exact phase2 helpers are committed
+in a900cc5b9 after actual original supported-versions215 assertions in each
+of four variants and independent844/6195-file reviews. Same-epoch C controller
+2335343 adopted only that bounded case, continued batch007, and published
+62 passed /2 failed /193 unrun. The failures remain visible: connection
+preferences fails C# compilation for `char no_curve[] = { "NONE" };`
+(native132), and config fails assertion721 while default CA loading ignores
+SSL_CERT_FILE (native3898). The compiler owner is proving a lowered-string
+fix; the provider owner is preparing a private native differential. No live
+provider/API source or immutable223542 objects/tools changed for these findings.
+
+Current EC/CBC delivery actually passes12/12, with six app identities and
+1717 retained files independently checked. Current main remains1076/1076 and
+CLI8 passed. Closed historical/current-five Python source sharing preserves
+145635 aliases and7380 independent private donors; supervisor postflight checks
+174831 distinct paths and all four journal chains at
+`artifacts/managed-contract/closed-python-source-sharing-supervisor-postflight/report.json`.
+Sharing gives no test credit. Original Python72 remains5 passed,1 running,
+66 unrun at this capture. Full257 C/all72 Python and sealed P6 stay open.
+
+Compiler braced-string bound fix260387e88 passes54 related unit tests and7
+functional tests, plus native/JIT/NativeAOT execution of a code-unit/extent/
+ownership/persistence/pointer-array fixture. The single corrected original
+preferences emission differs only in the five explicit initializer bytes and
+its now-unused literal pool entry. It links with the old immutable223542
+compiler and original175 objects. Its raw managed build and132 original
+assertions remain UNRUN because the unchanged2GiB root reserve rejected
+admission before the build command. No original failure is retagged.
+Proof: `artifacts/managed-contract/braced-string-compiler-repair/receipt.json`.

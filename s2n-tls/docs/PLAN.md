@@ -388,3 +388,24 @@ is32/257 cases all4, with no failed current cases. Retained linked projects
 continue through batch006; a reviewed private placement derivation requires
 one bounded original215-assertion case before general new-raw continuation.
 Complete original C/Python and sealed P6 framework acceptance remain open.
+
+
+2026-10-24 current-source checkpoint: the exact phase2 helpers are committed
+in a900cc5b9 after actual original supported-versions215 assertions in each
+of four variants and independent844/6195-file reviews. Same-epoch C controller
+2335343 adopted only that bounded case, continued batch007, and published
+62 passed /2 failed /193 unrun. The failures remain visible: connection
+preferences fails C# compilation for `char no_curve[] = { "NONE" };`
+(native132), and config fails assertion721 while default CA loading ignores
+SSL_CERT_FILE (native3898). The compiler owner is proving a lowered-string
+fix; the provider owner is preparing a private native differential. No live
+provider/API source or immutable223542 objects/tools changed for these findings.
+
+Current EC/CBC delivery actually passes12/12, with six app identities and
+1717 retained files independently checked. Current main remains1076/1076 and
+CLI8 passed. Closed historical/current-five Python source sharing preserves
+145635 aliases and7380 independent private donors; supervisor postflight checks
+174831 distinct paths and all four journal chains at
+`artifacts/managed-contract/closed-python-source-sharing-supervisor-postflight/report.json`.
+Sharing gives no test credit. Original Python72 remains5 passed,1 running,
+66 unrun at this capture. Full257 C/all72 Python and sealed P6 stay open.

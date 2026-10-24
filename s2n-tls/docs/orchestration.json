@@ -27,7 +27,7 @@
     }
   ],
   "shared_build_owner": "supervisor",
-  "next": "Current C retained005..006 continue unchanged; exactv2 phase2 metadata roundtrip reviewed for conditional first215x4 after natural007 stop, no general rollout yet. Python72 runs; finish reviewed historical-source storage then samecontroller fixedguard ADMIT delivery.",
+  "next": "Continue sole final-source C controller and sole Python72 matrix. Current C captured62/2/193: compiler braced-string initializer repair under reduced proof; provider default CA path discrepancy under private native differential only. CLI8/main1076/delivery12 passed on unchanged current source; full C/Python and sealed P6 remain open.",
   "completed_tasks": [
     {
       "package": "inputs-native",
@@ -132,7 +132,8 @@
     "d7069ad85",
     "4317f8d4b",
     "8d6cf122e",
-    "e2e671460"
+    "e2e671460",
+    "260387e88"
   ],
   "current_attempt": "20261023-223542-f7e7054e (closed175/raw+processed; final EC202209f4 authored provider and CBC fixturec0aa38f7 qualification)",
   "last_complete_link": "20261023-223542-f7e7054e",
@@ -140,7 +141,7 @@
   "workloads": {
     "provider_selected16": "build/provider/original16-retry/executables.json",
     "final_current_matrix": "artifacts/managed/final-provider-ec-cbc-r6-main",
-    "current_delivery": "artifacts/managed/final-provider-ec-cbc-r6-delivery",
+    "current_delivery": "artifacts/managed/final-provider-ec-cbc-r6-delivery/report.json",
     "native_profile_all257": "artifacts/native-profile-upstream/all-required-214654-ktls-guards/report.json",
     "native_python18": "artifacts/native-python/final-eighteen-strict-comparator.json",
     "translated_python17": "artifacts/managed-upstream/python-current-223542-base64/controller-progress.json",
@@ -157,7 +158,7 @@
     "final48_provider": "artifacts/provider/final48-asn1-211648/receipt.json",
     "post_asn1_api": "artifacts/managed-contract/api-r4-final-provider-progress.json",
     "post_asn1_abi": "artifacts/campaign/20261024-001718-6f72b210/receipt.json",
-    "provider_controller_pid": 2082892,
+    "provider_controller_pid": 2335343,
     "final_provider_current_c_counts": {
       "passed": 40,
       "failed": 0,
@@ -228,7 +229,7 @@
     "external_retained_firstcase": "artifacts/provider/external-retained-firstcase-0216/expanded-executables.json",
     "api_cli_current": "build/managed-upstream/python-endpoints-final-ec-cbc-r6.json",
     "api_cli_current_review": "artifacts/managed-contract/final-ec-cbc-r6/cli-eight-supervisor-review.json",
-    "provider_controller_proof": "artifacts/provider/external-retained-resume-0234/actual-resume-proof.json",
+    "provider_controller_proof": "artifacts/provider/external-newraw-resume-0225/actual-resume-proof.json",
     "provider_checkpoint32": "artifacts/provider/external-retained-checkpoint-32/receipt.json",
     "external_newraw_phase2_review": "artifacts/managed-contract/external-newraw-phase2-supervisor-review.json",
     "current_CLI_main_storage_postflight": "artifacts/managed-contract/current-CLI-main-storage-supervisor-postflight.json",
@@ -236,7 +237,11 @@
     "closed_tool_storage_postflight": "artifacts/managed-contract/closed-historical-tool-storage-0155/postflight.json",
     "historical_python_source_bounded_review": "artifacts/managed-contract/historical-python-tests-bounded-supervisor-review.json",
     "external_newraw_phase2_v2_review": "artifacts/managed-contract/external-newraw-phase2-v2-supervisor-review.json",
-    "final_ec_closed_python_source_review": "artifacts/managed-contract/final-ec-closed-python-source-supervisor-review.json"
+    "final_ec_closed_python_source_review": "artifacts/managed-contract/final-ec-closed-python-source-supervisor-review.json",
+    "current_delivery_review": "artifacts/managed-contract/closed-python-source-sharing-supervisor-postflight/report.json",
+    "closed_python_source_storage_postflight": "artifacts/managed-contract/closed-python-source-sharing-supervisor-postflight/report.json",
+    "external_newraw_bounded_review": "artifacts/managed-contract/external-newraw-v2-bounded-supervisor-review.json",
+    "braced_string_repair": "artifacts/managed-contract/braced-string-compiler-repair/receipt.json"
   },
   "discovery_correction": {
     "original": "artifacts/managed/full-owning-matrix/report.json",
@@ -252,13 +257,13 @@
     "P0": "174upstream+1adapter/36suites/14SSLv3/78pairs",
     "P2": "223542raw+processed175/183bindings",
     "P3": "Final EC202209f4/CBCc0aa38f7 main1076/1076 all4;3556-file independent supervisor review.",
-    "P5": "Historical0158 delivery12 passed; fresh EC delivery queued pending unchanged disk admission guard.",
+    "P5": "Current EC202209f4/CBCc0aa38f7 copied/rooted delivery12/12 passed; six actual application identities and1717 files independently rehashed.",
     "P1": "EC freeze202209f4/full50JIT+AOT/retainedemitted183ABIboth. Full original caller gates remainP4.",
     "P6_reproduction": "233001-6f4afff7 passed warn/off two full175 regenerations/private authored edit/failed-publication; overallP6 remainsopen"
   },
   "open_gates": [
-    "Complete final-source257 original C cases and18 original Python families all4",
-    "Fresh final-source copied/rooted delivery12; main1076, canonical ABI all4 and ordinary-root checks already passed",
+    "Complete final-source257 original C cases and18 original Python families all4; captured C62passed/2failed/193unrun, Python5passed/1running/66unrun",
+    "Resolve original connection-preferences compiler failure and config default-CA provider discrepancy with exact original/native comparisons; frozen production unchanged pending proof/coordination",
     "Final deep-sealed framework retained-input acceptance and P6 closure"
   ],
   "native_python_gate": "18families/22186applicable originalcases strictpassed; nine HRR original combinations explicitly inapplicable with nine separate no-HRR controls. Historical failures/skips/retries preserved.",
@@ -284,5 +289,18 @@
     "private_permanent": "artifacts/provider/ec-regression-private/20261023T234346Z-86f9b5dd/receipt.json",
     "supervisor_review": "artifacts/managed-contract/ec-private-permanent-supervisor-review.json",
     "pause_marker": "artifacts/provider/ec-pause-after-batch-20261023T234522Z/receipt.json"
+  },
+  "observed_initializer_defect": {
+    "case": "tests/unit/s2n_connection_preferences_test.c",
+    "native_assertions": 132,
+    "proof": "artifacts/provider/observed-connection-preferences-compile-0229/receipt-v2.json",
+    "state": "Compiler fix committed260387e88:54related unit+7functional pass; native/JIT/AOT fixture matches. Exactly one original test re-emitted with new immutable frontend; resulting object differs only initializer bytes and unused pool literal, original223542 linker+175objects link succeeds. Original managed build/assertions remainUNRUN at2GiB resource guard."
+  },
+  "observed_default_ca_defect": {
+    "case": "tests/unit/s2n_config_test.c",
+    "assertion": 721,
+    "native_assertions": 3898,
+    "proof": "artifacts/provider/observed-config-default-ca-0233/receipt.json",
+    "state": "Original all4 failures retained; private native/provider default CA and borrowed-stack investigation only, live production25 unchanged."
   }
 }
