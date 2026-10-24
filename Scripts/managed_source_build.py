@@ -24,6 +24,19 @@ def digest(path):
         return hashlib.file_digest(stream, "sha256").hexdigest()
 
 
+def build_environment(output_root):
+    """Keep ambient credentials usable without copying them into receipts."""
+    declared = dict(DOTNET_CLI_TELEMETRY_OPTOUT="1", DOTNET_SKIP_FIRST_TIME_EXPERIENCE="1",
+                    DOTNET_GENERATE_ASPNET_CERTIFICATE="false", DOTNET_NOLOGO="1",
+                    DOTNET_ADD_GLOBAL_TOOLS_TO_PATH="false",
+                    DOTNET_CLI_HOME=str(output_root / "dotnet-home"),
+                    NUGET_PACKAGES=str(output_root / "nuget/packages"),
+                    NUGET_HTTP_CACHE_PATH=str(output_root / "nuget/http"),
+                    DOTNET_BUNDLE_EXTRACT_BASE_DIR=str(output_root / "bundles"),
+                    TMPDIR=str(output_root / "tmp"), TEMP=str(output_root / "tmp"), TMP=str(output_root / "tmp"))
+    return dict(os.environ, **declared), declared
+
+
 def source_inputs(project, references=()):
     project = Path(project)
     manifest = project.parent / "Dotcc.SourceFiles.txt"
@@ -103,22 +116,14 @@ def reconstruct(project, output_root, references=(), notices=()):
 
     def build(directory, label):
         require_storage_reserve([REPO, output_root])
-        environment = dict(os.environ, DOTNET_CLI_TELEMETRY_OPTOUT="1", DOTNET_SKIP_FIRST_TIME_EXPERIENCE="1",
-                           DOTNET_GENERATE_ASPNET_CERTIFICATE="false", DOTNET_NOLOGO="1",
-                           DOTNET_ADD_GLOBAL_TOOLS_TO_PATH="false",
-                           DOTNET_CLI_HOME=str(output_root / "dotnet-home"),
-                           NUGET_PACKAGES=str(output_root / "nuget/packages"),
-                           NUGET_HTTP_CACHE_PATH=str(output_root / "nuget/http"),
-                           DOTNET_BUNDLE_EXTRACT_BASE_DIR=str(output_root / "bundles"),
-                           TMPDIR=str(output_root / "tmp"), TEMP=str(output_root / "tmp"), TMP=str(output_root / "tmp"))
+        environment, declared_environment = build_environment(output_root)
         project = directory / "Reconstructed.csproj"
         artifacts = output_root / (label + "-artifacts")
         command = ["dotnet", "build", str(project), "-c", "Release", "--artifacts-path", str(artifacts),
                    "--configfile", str(directory / "NuGet.Config"), "-p:ImportDirectoryBuildProps=false",
                    "-p:ImportDirectoryBuildTargets=false", "-p:NuGetAudit=false"]
         log = output_root / (label + ".log")
-        row = dict(command=command, cwd=str(directory), environment={k: v for k, v in environment.items()
-                   if k.startswith(("DOTNET_", "NUGET_")) or k in ("TMPDIR", "TEMP", "TMP")},
+        row = dict(command=command, cwd=str(directory), environment=declared_environment,
                    started_unix=time.time(), log=str(log))
         row["actual_command"] = locked_command(command, env=environment)
         report["commands"].append(row)

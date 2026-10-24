@@ -10,7 +10,7 @@ from unittest.mock import patch
 
 SCRIPTS = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(SCRIPTS))
-from managed_source_build import source_inputs, write_project
+from managed_source_build import build_environment, source_inputs, write_project
 from managed_test_storage import audit_build_caches, require_storage_reserve
 
 spec = importlib.util.spec_from_file_location("preserved_build_audit", SCRIPTS.parent / "s2n-tls/scripts/audit-preserved-build.py")
@@ -48,6 +48,16 @@ class ExternalSourceBuildTests(unittest.TestCase):
         self.assertEqual(tree.findtext("PropertyGroup/EnableDefaultCompileItems"), "false")
         self.assertEqual(tree.findtext("PropertyGroup/TargetFramework"), "net10.0")
         self.assertEqual(original[str(self.source)], sha(self.source))
+
+    def test_ambient_build_credentials_never_enter_receipt_environment(self):
+        with patch.dict('os.environ', {'NUGET_AUTH_TOKEN': 'ambient-test-marker',
+                                       'DOTNET_CLI_HOME': 'ambient-home'}):
+            actual, recorded = build_environment(self.root)
+        self.assertEqual(actual['NUGET_AUTH_TOKEN'], 'ambient-test-marker')
+        self.assertNotIn('NUGET_AUTH_TOKEN', recorded)
+        self.assertNotIn('ambient-test-marker', json.dumps(recorded))
+        self.assertEqual(recorded['DOTNET_CLI_HOME'], str(self.root / 'dotnet-home'))
+        self.assertEqual(actual['DOTNET_CLI_HOME'], recorded['DOTNET_CLI_HOME'])
 
     def test_undeclared_source_cannot_disappear_during_reconstruction(self):
         (self.root / "Unlisted.cs").write_text("// must not silently drop this source")
