@@ -349,3 +349,31 @@ and881 protected files at
 Exact additional inactive-copy cleanup and closed-probe binary sharing were
 reviewed under the same storage-admission review directory; their completion
 is not inferred from authorization and supplies no qualification credit.
+
+
+Detached API controller1971187 actually launched after fresh admission passed;
+PID/start ticks/session, private standard descriptors and its sole kernel flock
+are recorded at
+`artifacts/managed-contract/final-ec-cbc-r6/post-launch-proof.json`.
+No passing application or upstream result follows from launch alone. C remains
+paused at16/0/241 while independent work placement and reserves are coordinated.
+
+Current EC ordinary default-project solution build and the three forced TLS
+loopbacks pass, using isolated persistent outputs on `/mnt/storage`. Exact
+25 frozen provider inputs,85 canonical/authored inputs and289 actual output,
+runtime, build and authored files were checked in
+`artifacts/managed-contract/ordinary-solution-final-ec/independent-audit.json`.
+This qualifies the ordinary processed JIT reference path; other application
+forms remain the dedicated matrix's responsibility.
+
+The actual shared framework Context and recipe ABI suite passes11 commands,
+including core/provider JIT/AOT and canonical raw/processed × JIT/AOT product
+checks: `artifacts/campaign/20261024-034758-e9c2e39b/receipt.json`.
+Only the private work directory was placed on the persistent external volume;
+no shared framework or canonical product bytes changed. Independent audit
+checks1,020 retained tool/source/report/output files and all four identical
+37-observation product/native results at
+`artifacts/managed-contract/shared-abi-final-ec/independent-audit.json`.
+Its first collector attempt assumed a string status for the core report's
+integer exit-code schema; that collector failure is retained and no tests
+were rerun to correct it.

@@ -27,7 +27,7 @@
     }
   ],
   "shared_build_owner": "supervisor",
-  "next": "Finish exact reviewed storage recovery, admit single detached API controller above3091202048-byte threshold, then resume same C epoch when combined reserve permits.",
+  "next": "Detached API controller1971187 builds freshCLI8 then application/Python/delivery gates. C remains storagepaused16/0/241 pending combinedreserve/future-work placement coordination.",
   "completed_tasks": [
     {
       "package": "inputs-native",
@@ -205,7 +205,16 @@
     "api_admission": "artifacts/managed-contract/final-ec-cbc-r6/admission-waiting.json",
     "api_storage_review": "artifacts/managed-contract/storage-admission-review-20261024-0110/api-review.json",
     "provider_storage_review": "artifacts/managed-contract/storage-admission-review-20261024-0110/provider-review.json",
-    "generated_storage_postflight": "artifacts/managed-contract/storage-admission-review-20261024-0110/generated-sharing-postflight.json"
+    "generated_storage_postflight": "artifacts/managed-contract/storage-admission-review-20261024-0110/generated-sharing-postflight.json",
+    "api_controller_pid": 1971187,
+    "api_controller_proof": "artifacts/managed-contract/final-ec-cbc-r6/post-launch-proof.json",
+    "api_controller_progress": "artifacts/managed-contract/final-ec-cbc-r6/progress.json",
+    "ordinary_root_ec": "artifacts/managed-contract/ordinary-solution-final-ec/report.json",
+    "ordinary_root_ec_audit": "artifacts/managed-contract/ordinary-solution-final-ec/independent-audit.json",
+    "ec_framework_abi": "artifacts/campaign/20261024-034758-e9c2e39b/receipt.json",
+    "ec_framework_abi_audit": "artifacts/managed-contract/shared-abi-final-ec/independent-audit.json",
+    "probe_runtime_storage_postflight": "artifacts/managed-contract/storage-admission-review-20261024-0110/probe-runtime-sharing-postflight.json",
+    "api_cache_storage_postflight": "artifacts/managed-contract/storage-admission-review-20261024-0110/api-cleanup-postflight.json"
   },
   "discovery_correction": {
     "original": "artifacts/managed/full-owning-matrix/report.json",
