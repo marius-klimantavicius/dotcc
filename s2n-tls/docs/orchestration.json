@@ -20,14 +20,14 @@
     },
     {
       "package": "api-qualification",
-      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-api-r6-receipt-process-coordination-20261024",
+      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Athread-send%3Aapi-r6-final-ec-launch-release-20261024",
       "backing_thread": "thread:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-api-r6-receipt-process-coordination-20261024",
       "verified_model": "gpt-6.1-sol",
       "verified_reasoningEffort": "xhigh"
     }
   ],
   "shared_build_owner": "supervisor",
-  "next": "Privately qualify rolled-up existing183 EC repair; preserve live f80 jobs, diagnose native corruption expectation, then coordinate source-reader window and fresh final C/API/Python gates.",
+  "next": "Complete owned storage recovery under exact review, admit detached API jobs with reserve, continue fresh257 C all4 and final application/Python gates.",
   "completed_tasks": [
     {
       "package": "inputs-native",
@@ -118,7 +118,12 @@
     "4803dbdbb",
     "818ec2ef4",
     "0ef318df7",
-    "6455150b4"
+    "6455150b4",
+    "af07810d5",
+    "9ba2632ec",
+    "f581ee4c1",
+    "4ff33f368",
+    "322d75bc1"
   ],
   "current_attempt": "20261023-223542-f7e7054e (passed175/raw+processed; new actual qualification with base64 repair08796c070)",
   "last_complete_link": "20261023-223542-f7e7054e",
@@ -139,11 +144,11 @@
     "reproduction": "artifacts/campaign/20261023-233001-6f4afff7/reproduction.json",
     "translated_python_all18": "artifacts/managed-upstream/final-provider-rsa-stdio/all18-all4-matrix.json",
     "native_happy_retry": "artifacts/native-python/retry-investigation-r4/happy-repaired-matrix.json",
-    "final_provider_freeze": "artifacts/provider/freeze-rsa-20261023T224649Z/receipt.json",
+    "final_provider_freeze": "artifacts/provider/freeze-ec-20261023T235817Z/receipt.json",
     "final48_provider": "artifacts/provider/final48-asn1-211648/receipt.json",
     "post_asn1_api": "artifacts/managed-contract/api-r4-final-provider-progress.json",
     "post_asn1_abi": "artifacts/campaign/20261024-001718-6f72b210/receipt.json",
-    "provider_controller_pid": null,
+    "provider_controller_pid": 1840035,
     "final_provider_current_c_counts": {
       "passed": 26,
       "failed": 0,
@@ -191,7 +196,13 @@
     },
     "api_recovery_receipt": "artifacts/managed-contract/api-r5-recovery-20261023T2341Z/receipt.json",
     "ec_private_permanent_review": "artifacts/managed-contract/ec-private-permanent-supervisor-review.json",
-    "cbc_fixture_review": "artifacts/managed-contract/deterministic-cbc-fixture-supervisor-review.json"
+    "cbc_fixture_review": "artifacts/managed-contract/deterministic-cbc-fixture-supervisor-review.json",
+    "final50_provider": "artifacts/provider/final50-ec-235817/receipt.json",
+    "ec_emitted_abi": "artifacts/provider/emitted-probe-ec-235817/receipt.json",
+    "ec_runtime_review": "artifacts/managed-contract/ec-runtime-milestone-supervisor-review.json",
+    "fixture_freeze": "artifacts/managed-contract/freeze-cbc-fixture-20261023T2357Z/receipt.json",
+    "api_current_plan": "artifacts/managed-contract/final-ec-cbc-r6/plan.json",
+    "api_admission": "artifacts/managed-contract/final-ec-cbc-r6/admission-waiting.json"
   },
   "discovery_correction": {
     "original": "artifacts/managed/full-owning-matrix/report.json",
@@ -208,7 +219,7 @@
     "P2": "223542raw+processed175/183bindings",
     "P3": "Final ASN1 0158d36c main1076/1076 all4, independent combined5023fileaudit",
     "P5": "Final ASN1 0158d36c delivery12/12 all4copied/rooted, independent combined5023fileaudit",
-    "P1": "RSA freeze f80f4238/full49JIT+AOT/emitted183ABI both; original caller gates remainP4",
+    "P1": "EC freeze202209f4/full50JIT+AOT/retainedemitted183ABIboth. Full original caller gates remainP4.",
     "P6_reproduction": "233001-6f4afff7 passed warn/off two full175 regenerations/private authored edit/failed-publication; overallP6 remainsopen"
   },
   "open_gates": [
@@ -235,7 +246,7 @@
     "freeze": "artifacts/provider/freeze-rsa-20261023T224649Z/receipt.json"
   },
   "observed_ec_defect": {
-    "state": "Private two-file rollup and prospective50th production-project group each1223native comparisons JIT+AOT passed; root514/539-file reviews passed. Exact five-file application authorized only after C002 natural drain/exclusive lease and actual API source-reader window. Live f80 unchanged at capture.",
+    "state": "Repaired/frozen202209f4; full50JIT+AOT and retained emitted183ABI both pass; exact5 committed322d75bc1. All source-specific downstream gates require fresh execution.",
     "proof": "artifacts/provider/ec-public-contract-private/20261023T233124Z-f06a1d30/receipt.json",
     "private_rollup": "artifacts/provider/ec-public-contract-private/20261023T234026Z-e2965f58/receipt.json",
     "private_permanent": "artifacts/provider/ec-regression-private/20261023T234346Z-86f9b5dd/receipt.json",

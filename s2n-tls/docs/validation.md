@@ -314,3 +314,20 @@ asserted and encrypted before/after bytes retained in report.json. New-source
 managed lifecycle execution remains pending; old failed main/diagnostic receipts
 are not relabelled. The CBC relation changes plaintext padding length2 to130;
 24−20−131 underflows before MAC verification, removing the prior random outcome.
+
+
+EC repair322d75bc1 is applied in freeze202209f4. Full50 groups pass JIT and
+NativeAOT (zero unselected) at artifacts/provider/final50-ec-235817/receipt.json.
+Fresh retained emitted183 ABI passes both modes with capability255/live delta0
+at artifacts/provider/emitted-probe-ec-235817/receipt.json. Root independently
+checks the five-file milestone and279 actual files at
+artifacts/managed-contract/ec-runtime-milestone-supervisor-review.json.
+No C regeneration or generated-source edit occurred. All earlier source epochs
+remain historical; fresh whole-campaign qualification is open.
+
+Same C controller resumes PID1840035 with all257 cases reset for this freeze;
+old26/0/231 checkpoint is archived. API r6 received explicit launch release but
+keeps its detached pipeline unlaunched until its disk admission threshold passes
+(2GiB reserve plus900MiB CLI headroom). Reviewed owned binary-cache retirement
+and exact-content storage sharing are proceeding; no acceptance credit follows
+from storage work. No final upstream seal has been created.
