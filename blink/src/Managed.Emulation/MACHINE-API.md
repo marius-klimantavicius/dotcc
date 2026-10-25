@@ -1,7 +1,7 @@
 # Machine API source contract
 
 This API passes the selected Linux x64 P6 qualification under JIT and NativeAOT
-in both execution modes. The public fixture covers ten normal cases per mode;
+in both execution modes. The public fixture covers eleven normal cases per mode;
 the actual Kestrel and console/folder samples pass separately. See
 [the validation ledger](../../docs/VALIDATION.md) for exact receipts and limits.
 
@@ -26,6 +26,71 @@ MachineRunResult result = await machine.ExecuteAsync(new ExecutionOptions
 The executable resolves directly from the mounted guest namespace; no image
 import or separate registration is required. `ImportImage` remains optional for
 private in-memory content.
+
+Service defaults apply to `new BlinkMachine()`, `new MachineOptions()` and both
+execution modes. The resource quotas are ceilings, not startup reservations.
+
+| Option | Previous default | Service default |
+| --- | --- | --- |
+| `MemoryLimit` | 64 MiB | 256 MiB (`268435456` bytes) |
+| `WritableStorageLimit` | 16 MiB | 512 MiB (`536870912` bytes) |
+| `FileNodeLimit` | 1,024 | 8,192 |
+| `DescriptorLimit` | 128 | 1,024, including stdin/stdout/stderr |
+| `ThreadLimit` | 16 | 64 concurrently owned guest worker slots, including the main thread |
+| `InstructionLimit` | 100,000,000 | `null` (signed 64-bit counter ceiling) |
+| `ExecutionDeadline` | `null` | `null` |
+| `ConsoleOptions.OutputLimit` | 1 MiB | `long.MaxValue`, combined stdout/stderr lifetime bytes per run |
+| `ConsoleOptions.CaptureBytes` | 64 KiB | 64 KiB, combined retained stdout/stderr |
+| `ConsoleOptions.BufferBytes` | 64 KiB | 64 KiB per console queue |
+
+Capture can truncate while the service continues writing to attached or redirected
+streams. A larger lifetime output ceiling does not retain more logs in memory.
+Pipes retain their separate 64 KiB per-pipe capacity, 1 MiB aggregate storage and
+128 pending-operation defaults. Filesystem stores retain their 256 KiB aggregate
+UTF-8 path-name budget and 4,096-byte path bound; long names can exhaust that
+budget before the node ceiling. `ThreadLimit` bounds concurrently owned guest
+workers. A child slot becomes reusable after its Machine and bindings are released,
+its host thread is joined, and its synchronization resources are disposed. Clear-TID
+alone does not release the slot; a clone during remaining cleanup can still return
+`EAGAIN`. The main slot stays occupied through run teardown. Completed thread
+results remain in history without retaining the retired workers' host resources.
+
+Memory stays within the supported 256 MiB cap, shared by the execution owner and
+its C backing allocator. It limits guest address-space/backing accounting, including
+owner metadata, rather than reserving 256 MiB at startup. Storage, nodes,
+descriptors and thread slots are also allocated as used. Existing validation and
+explicit smaller values remain effective; for example:
+
+```csharp
+var bounded = new MachineOptions
+{
+    MemoryLimit = 64L << 20,
+    WritableStorageLimit = 16L << 20,
+    FileNodeLimit = 1024,
+    DescriptorLimit = 128,
+    ThreadLimit = 16,
+    InstructionLimit = 100_000_000,
+    ExecutionDeadline = TimeSpan.FromMinutes(1)
+};
+var boundedConsole = new ConsoleOptions { OutputLimit = 1L << 20 };
+```
+
+`ProcessMachineRun` serializes all resource values in `start-v1`, including the
+nullable instruction budget and the 64-bit output ceiling. `MachineWorkerHost`
+validates those values again, builds the private host filesystem with the same
+storage/node/descriptor quotas, and uses the same `InProcessMachineRun` owner.
+That owner passes memory, thread and descriptor values explicitly, without using
+the older low-level constructor defaults. The earlier `BlinkInstance`/
+`InstanceOptions` demonstration protocol retains its separate bounded profile;
+it is not the protocol used by `BlinkMachine` separate-process execution.
+
+Focused [default contract tests](../../tests/MachineDefaults/README.md) exercise
+options, source-generated framing, host quotas and console construction without
+executing a translated guest. Raising quotas does not extend guest compatibility:
+the selected profile remains static Linux x86-64 ELF, including the pinned musl
+NativeAOT Kestrel service, with explicitly granted numeric IPv4 TCP. Dynamic ELF,
+CoreCLR, general Linux userspace, ambient DNS, UDP and IPv6 remain outside this
+profile. Fresh full-product qualification is separate from these host tests.
 
 Create a fresh run on the same machine to reuse its private filesystem. Machine
 configuration and mount changes are allowed only while idle. Independent machines
@@ -72,6 +137,11 @@ it never changes live grants or silently refreshes a COW import. Exports select 
 private store and never overwrite existing destination files. Import/export errors
 may leave a partial destination and report failure. Separate-process private stores
 use machine-owned directories so acknowledged writes survive worker termination.
+An unlinked or replaced open inode retains its bytes and node quota once across
+independent opens. Duplicated descriptors share one open description; the last
+description's final close releases the retained storage. Open-file metadata and
+identity remain available after unlink/replacement, with zero links, and descriptor
+chmod/time/write/truncate operations continue to update that inode.
 
 Host directory grants use cross-platform System.IO, with conservative path and
 reparse-point checks. They are not atomic containment against hostile concurrent

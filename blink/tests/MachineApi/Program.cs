@@ -37,6 +37,13 @@ async Task<MachineRunResult> Execute(BlinkMachine machine, ExecutionOptions opti
         "console mismatch for " + string.Join(' ', options.Arguments));
     return result;
 }
+await using (var machine = Create(new MachineOptions { ExecutionMode = mode }))
+{
+    var result = await Execute(machine, Command("service-defaults"), new string('Z', 65536));
+    Check(result.OutputBytes == 20L * 65536 && result.CaptureTruncated,
+        "service defaults must allow cumulative output above 1 MiB while retaining 64 KiB");
+    evidence.Add("service-default-memory-descriptors-output");
+}
 await using (var machine = Create())
 {
     Check(machine.ExecutionMode == mode, "mode changed");

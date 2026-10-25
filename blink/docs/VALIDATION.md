@@ -3,6 +3,66 @@
 All observed executions below are Linux x64. Windows execution has not run.
 Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 
+## Targeted service corrections (2026-10-25)
+
+Strict shared verification passed at
+`artifacts/campaign/20261025-042309-dda77155/receipt.json`, using:
+
+```sh
+dotnet build dotcc.sln -c Release -p:UseLocalLalrCc=false
+bash blink/scripts/verify.sh --tools reuse --fetch never --hashes strict --jobs 4
+```
+
+All 108 selected product objects were freshly emitted with zero reuse. Raw,
+processed and final direct-source builds passed, followed by 35 source-input
+controls, host files/sockets/instance I/O, the consumer build/help matrix, native
+GuestThreads witnesses and four actual managed GuestThreads executions. Public
+machine receipt `artifacts/machine-api/attempt-kxrp2udj/receipt.json` passed twelve
+native controls and eleven cases in each of JIT/NativeAOT and both execution
+modes (44 case comparisons). Its added default-options guest maps/touches
+64 MiB, opens 140 descriptors and writes 1.25 MiB while retaining 64 KiB output;
+the explicit low-limit cases still pass.
+
+The focused post-delivery commands and hashed receipt links are indexed at
+`artifacts/service-fixes/attempt-6wiy0sgk/receipt.json`:
+
+- Anonymous private DONTNEED, unsupported shared mmap recovery and bounded futex
+  wake pass both delivery forms under JIT/NativeAOT: twelve guest executions at
+  `generated/guest-memory-futex-managed/attempt-c6ug2_kc/receipt.json` (processed)
+  and `attempt-l0lx1bez/receipt.json` (raw).
+- Thread churn, cap rejection/recovery, main-first exit and three ordinary
+  cancellation scenarios pass both forms under JIT/NativeAOT: 24 managed
+  executions at `artifacts/guest-thread-churn/attempt-an0tf9ju/receipt.json`
+  and `attempt-l2nz_6m_/receipt.json`. Each form also runs three native witnesses.
+- The same valid signal ELF passes Linux and all four managed forms at
+  `artifacts/guest-signals/attempt-8oao8yfi/receipt.json` and
+  `artifacts/guest-signals-managed/attempt-fx66o7z3/receipt.json`.
+- The actually published public sample passes `--run` and `--run-process` under
+  JIT and NativeAOT, executing the native-tested static guest with exact output.
+
+Host filesystem identity/quota/metadata regressions pass native basic witnesses
+and managed JIT/NativeAOT at `artifacts/host-mounts/attempt-zw8g4s1s/receipt.json`.
+Console regressions pass JIT/NativeAOT at
+`artifacts/host-console/attempt-mi9e1gdi/receipt.json`. Host-only defaults/framing
+contracts pass both forms, with logs and verified input identities at
+`artifacts/machine-defaults/attempt-Xdehaa/`. These host checks are distinguished
+from the fresh C-producer guest runs above.
+
+The initial strict attempt `artifacts/campaign/20261025-041741-f3833731/receipt.json`
+remains a raw-build failure after successful 108-object emission/link. It exposed
+an authored locale-runtime namespace-shadowing defect, corrected with explicit
+global framework names. Two direct/object-linked instance-library regressions
+reproduced failure before correction and passed afterward. The rebuilt toolchain
+then produced the successful fresh delivery above. Ninety shared campaign
+framework tests and actual recursive snapshots of both tools also passed.
+
+This is targeted regression evidence. Shared mmap, file-backed DONTNEED,
+dynamic ELF/CoreCLR, broader futex/robust-list behavior, Windows, full CPU corpus,
+Kestrel-specific and performance qualification are not established by these runs.
+The migrated committed-revision clean-worktree runner was contract-tested;
+its full execution requires committing the new runner and was not claimed for
+this uncommitted workspace. Existing historical evidence remains unchanged.
+
 ## Translation inputs and variadic deduplication (2026-09-26)
 
 The pipeline no longer uses historical whole-file compatibility hashes for

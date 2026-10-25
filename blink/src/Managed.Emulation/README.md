@@ -1,18 +1,29 @@
-# Owning managed controller
+# Owning managed APIs
 
-This library implements the process/controller part of the proposed Blink API.
-Its disposable subprocess fixtures pass JIT and NativeAOT. The translated service
-worker is not yet qualified; this library alone does not implement P5 or execute
-an ELF. Partial Embedding/worker files are excluded from committed delivery after
-an automated review stopped their implementation.
+Use `BlinkMachine` for the current persistent namespace and execution API. Its
+[machine contract](MACHINE-API.md) covers in-process and separate-process runs.
+Defaults are 256 MiB memory, 512 MiB private storage, 8,192 nodes, 1,024 descriptors
+and 64 guest thread slots per run, with null instruction budget/deadline and a
+`long.MaxValue` lifetime output ceiling. Capture remains 64 KiB combined, and
+console queues remain 64 KiB each. Explicit limits remain supported; larger quotas
+do not preallocate their full capacity or broaden static ELF/NativeAOT compatibility.
+
+## Earlier explicit worker controller
+
+`BlinkInstance` and `InstanceOptions` retain the earlier explicit worker protocol
+and its independent bounded defaults. Their original disposable subprocess
+fixtures do not execute an ELF; actual translated service qualification is tracked
+in the [validation ledger](../../docs/VALIDATION.md). The current `BlinkMachine`
+separate-process implementation uses `MachineOptions` and `MachineWorkerHost`,
+not this older profile.
 
 `BlinkInstance.StartAsync(WorkerLaunch, InstanceOptions)` starts one explicit
 managed worker command with shell expansion disabled. Inputs include image files,
 executable/argv/environment/cwd, memory/descriptor/output/instruction/deadline
 limits and explicit guest ports. Arguments exclude argv[0]; the worker prepends
-the executable. Image input is bounded to1MiB for the initial protocol. Options
+the executable. Image input is bounded to 16 MiB. Options
 are copied, validated and serialized before spawning so caller mutation cannot
-change the accepted worker configuration. The3MiB frame writer is bounded during
+change the accepted worker configuration. The 24 MiB frame writer is bounded during
 serialization; incoming lengths are checked before allocation. JSON metadata is
 source-generated for NativeAOT.
 

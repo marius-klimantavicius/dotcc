@@ -18,6 +18,7 @@ from campaigns.model import Source
 import core_inputs
 from test_campaign_delivery import CampaignDeliveryTests
 from test_guest_threads_trace import GuestThreadsTraceTests
+from test_campaign_entrypoints import CampaignEntrypointsTests
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location('thread_stage', ROOT / 'src/UpstreamGuestThreads/stage.py')

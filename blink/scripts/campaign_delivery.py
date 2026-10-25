@@ -166,8 +166,12 @@ def load_delivery(path):
             raise RuntimeError('Current delivered files differ from producer receipt: ' + form)
         output_manifests[form] = actual
     tools = ROOT / receipt['staging'] / 'tools'
-    current_tools = {name: validate_tool_closure(tools / name / executable)
-                     for name, executable in [('DotCC', 'dotcc.dll'), ('DotCC.PostProcess', 'dotcc-postprocess.dll')]}
+    current_tools = {}
+    for name, fallback in [('DotCC', 'dotcc.dll'), ('DotCC.PostProcess', 'dotcc-postprocess.dll')]:
+        executable = receipt.get('tool_snapshots', {}).get(name, {}).get('executable', fallback)
+        if not executable or Path(executable).name != executable:
+            raise RuntimeError('Invalid selected tool executable: ' + name)
+        current_tools[name] = validate_tool_closure(tools / name / executable)
     if receipt.get('hash_policy') != 'off' and current_tools != receipt['tools']:
         raise RuntimeError('Current tools differ from producer receipt')
     object_compiler, object_tools, roles = current_tools['DotCC'], tools / 'DotCC', None
@@ -197,3 +201,50 @@ def load_delivery(path):
 
 def tool_directory(delivery, category, fallback):
     return Path(delivery.get('tool_directories', {}).get(category, fallback))
+
+
+def load_clean_delivery(pointer):
+    """Validate a completed, wholly fresh shared delivery inside this checkout."""
+    from campaigns.recipes import helper
+
+    def owned(value):
+        path = Path(value).resolve()
+        if not path.is_relative_to(ROOT.resolve()):
+            raise RuntimeError('Clean delivery artifact escaped checkout: ' + str(path))
+        return path
+
+    reference = json.loads(Path(pointer).read_text())
+    path = owned(reference['receipt'])
+    receipt = json.loads(path.read_text())
+    if (receipt.get('schema_version') != 1 or receipt.get('status') != 'passed'
+            or receipt.get('hash_policy') != 'strict' or receipt.get('object_relink')):
+        raise RuntimeError('Clean delivery requires a completed strict shared producer')
+    delivery = load_delivery(path)
+    profile = owned(delivery['profile'])
+    inputs_path = owned(profile / 'inputs.json')
+    inputs = json.loads(inputs_path.read_text())
+    assembly_path = owned(delivery['assembly']['path'])
+    assembly = json.loads(assembly_path.read_text())
+    entries = helper(ROOT / 'scripts/core_inputs.py').profile_sources(profile, ROOT, inputs)
+    expected = [entry['path'] for entry in entries]
+    if (not expected or len(expected) != len(set(expected)) or not assembly.get('linked')
+            or assembly.get('failures') or assembly.get('diagnostic_replay')
+            or assembly.get('reused_objects') != 0 or assembly.get('selected') != expected
+            or set(assembly.get('objects', {})) != set(expected)
+            or assembly['identity']['profile_inputs_sha256'] != sha(inputs_path)
+            or assembly['identity']['compiler_sha256'] != delivery['compiler']):
+        raise RuntimeError('Incomplete or reused clean selected-source assembly')
+    for entry in entries:
+        row = assembly['objects'][entry['path']]
+        source = owned(ROOT / entry['staged_path'])
+        if (sha(source) != entry['sha256'] or row['source_sha256'] != entry['sha256']
+                or sha(owned(row['object_path'])) != row['object_sha256']
+                or owned(row['producing_profile']) != profile):
+            raise RuntimeError('Clean source/object producer differs: ' + entry['path'])
+        owned(row['receipt'])
+    for name in ('raw_snapshot', 'stable_output'):
+        owned(delivery[name])
+    for directory in delivery['tool_directories'].values():
+        owned(directory)
+    delivery['selected_count'] = len(expected)
+    return path, delivery

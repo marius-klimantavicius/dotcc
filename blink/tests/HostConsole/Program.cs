@@ -72,6 +72,15 @@ using (var console = new HostConsole(4, outputLimit: 12, captureLimit: 3, captur
     Check((await console.WriteOutputAsync(false, new byte[1])).Error == GuestError.NoSpace && console.OutputLimitReached, "explicit output exhaustion");
     Check(console.CaptureTruncated && console.OutputBytes == 12 && console.CapturedOutput.StandardOutput.Length == 3, "capture truncation differs from output limit");
 }
+using (var console = new HostConsole(captureOnly: true))
+{
+    byte[] chunk = new byte[65536];
+    for (int i = 0; i < 20; ++i) Check(Value(await console.WriteOutputAsync(i % 2 != 0, chunk)) == chunk.Length,
+        "default lifetime output continues beyond former 1 MiB ceiling");
+    Check(console.OutputBytes == 20L * chunk.Length && !console.OutputLimitReached && console.CaptureTruncated &&
+        console.CapturedOutput.StandardOutput.Length + console.CapturedOutput.StandardError.Length == 65536,
+        "default output remains bounded in retained capture");
+}
 using (var console = new HostConsole(4))
 {
     await using var io = new InstanceIo(new Dictionary<string, ReadOnlyMemory<byte>>(), console: console);

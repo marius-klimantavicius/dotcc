@@ -8,6 +8,7 @@ import copy
 import subprocess
 import sys
 from contextlib import ExitStack
+from types import SimpleNamespace
 
 import campaign_delivery as delivery
 
@@ -74,6 +75,21 @@ class CampaignDeliveryTests(unittest.TestCase):
     def test_warn_validates_recorded_delivery(self):
         self.assertEqual(self.load()['final_files'], self.receipt['outputs']['processed']['hashes'])
 
+    def test_selected_tool_executable_names_are_preserved(self):
+        snapshots = {}
+        for folder, original, selected in [('DotCC', 'dotcc', 'custom-driver'),
+                                             ('DotCC.PostProcess', 'dotcc-postprocess', 'custom-process')]:
+            directory = self.root / 'work/tools' / folder
+            for suffix in ('.dll', '.deps.json', '.runtimeconfig.json', '.pdb'):
+                (directory / (original + suffix)).rename(directory / (selected + suffix))
+            snapshots[folder] = {'executable': selected + '.dll'}
+            self.receipt['tools'][folder] = delivery.validate_tool_closure(directory / (selected + '.dll'))
+        self.receipt['tool_snapshots'] = snapshots
+        inputs = json.loads((self.root / 'profile/inputs.json').read_text())
+        inputs['compiler'] = self.receipt['tools']['DotCC']
+        self.write('profile/inputs.json', inputs)
+        self.assertEqual(self.load()['compiler'], self.receipt['tools']['DotCC'])
+
     def test_off_derives_current_manifests(self):
         result = self.load(off=True)
         self.assertEqual(set(result['final_files']), {'Product.csproj', '.campaign-files.json'})
@@ -98,6 +114,50 @@ class CampaignDeliveryTests(unittest.TestCase):
         self.receipt['commands'][-1]['status'] = 'failed'
         with self.assertRaisesRegex(RuntimeError, 'delivery command did not pass'):
             self.load(off=True)
+
+    def clean_fixture(self):
+        self.receipt.update(status='passed', hash_policy='strict')
+        inputs = json.loads((self.root / 'profile/inputs.json').read_text())
+        entries, objects = [], {}
+        for index in range(2):
+            name = f'unit{index}.c'
+            source = self.write('profile/' + name, 'int value;')
+            obj = self.write('objects/' + name + '.cs', 'object')
+            per_object = self.write('objects/' + name + '.json', {})
+            entries.append(dict(path=name, staged_path=str(source), sha256=delivery.sha(source)))
+            objects[name] = dict(source_sha256=delivery.sha(source), object_path=str(obj),
+                object_sha256=delivery.sha(obj), producing_profile=str(self.root / 'profile'), receipt=str(per_object))
+        self.write('assembly.json', dict(linked=True, failures={}, reused_objects=0,
+            selected=[entry['path'] for entry in entries], objects=objects,
+            identity=dict(profile_inputs_sha256=delivery.sha(self.root / 'profile/inputs.json'),
+                          compiler_sha256=inputs['compiler'])))
+        receipt = self.write('receipt.json', self.receipt)
+        pointer = self.write('current-threaded.json', {'receipt': str(receipt)})
+        return pointer, SimpleNamespace(profile_sources=lambda *args: entries)
+
+    def test_clean_delivery_uses_current_shared_pointer_and_manifest_selection(self):
+        pointer, core = self.clean_fixture()
+        with patch('campaigns.recipes.helper', return_value=core):
+            path, result = delivery.load_clean_delivery(pointer)
+        self.assertEqual(path, self.root / 'receipt.json')
+        self.assertEqual(result['selected_count'], 2)
+
+    def test_clean_delivery_rejects_reused_objects(self):
+        pointer, core = self.clean_fixture()
+        path = self.root / 'assembly.json'
+        assembly = json.loads(path.read_text()); assembly['reused_objects'] = 1
+        path.write_text(json.dumps(assembly))
+        with patch('campaigns.recipes.helper', return_value=core), self.assertRaisesRegex(RuntimeError, 'reused'):
+            delivery.load_clean_delivery(pointer)
+
+    def test_clean_delivery_rejects_object_outside_checkout(self):
+        pointer, core = self.clean_fixture()
+        path = self.root / 'assembly.json'
+        assembly = json.loads(path.read_text())
+        assembly['objects']['unit0.c']['object_path'] = str(self.root.parent / 'external.cs')
+        path.write_text(json.dumps(assembly))
+        with patch('campaigns.recipes.helper', return_value=core), self.assertRaisesRegex(RuntimeError, 'escaped'):
+            delivery.load_clean_delivery(pointer)
 
     def relink(self):
         """108 tiny fake objects; no repository producer or executable is run."""

@@ -55,6 +55,28 @@ See [the machine API](src/Managed.Emulation/MACHINE-API.md) and
 [current progress](docs/PROGRESS.md) for final receipts and limits.
 Windows and the separate P7 qualification/performance campaign remain unrun.
 
+`BlinkMachine` service defaults are 256 MiB guest memory (the supported cap),
+512 MiB private writable storage, 8,192 file nodes, 1,024 descriptors and 64
+concurrently owned guest thread slots, including the main thread. Child slots become
+reusable after Machine/binding cleanup, host-thread join and resource disposal;
+completed results remain in history. The main slot stays occupied through teardown.
+Previously these were 64 MiB, 16 MiB, 1,024, 128 and 16.
+The instruction budget now defaults to `null` instead of 100 million; the deadline
+remains `null`. Combined lifetime stdout/stderr now defaults to `long.MaxValue`
+instead of 1 MiB. Retained capture stays at 64 KiB total and console queues stay
+at 64 KiB each, so long-running output does not grow captured logs. Both execution
+modes receive these values, and explicit smaller limits remain effective. See the
+[exact limits and checks](src/Managed.Emulation/MACHINE-API.md).
+These defaults do not extend the selected static ELF/NativeAOT guest profile to
+dynamic ELF, CoreCLR or general Linux userspace. Network grants remain numeric
+IPv4 TCP, with no ambient DNS access.
+
+Anonymous private `MADV_DONTNEED` discards guest page contents while preserving
+mapping permissions. Shared mmap and file-backed `MADV_DONTNEED` remain unsupported
+and return guest `ENOTSUP`; other unimplemented semantic advice returns `EINVAL`.
+See the [memory/futex regression scope](tests/GuestMemoryFutex/README.md), including
+the retained zero-count futex-wake difference and unsupported broader operations.
+
 Optional [IMDSv2 simulation](src/Managed.Emulation/IMDSV2.md) supplies private
 instance metadata and explicit role credentials at guest `169.254.169.254:80`.
 It uses a small BCL listener and works with ordinary AWS SDK credential providers

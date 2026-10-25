@@ -41,7 +41,7 @@ CASES = {
     'live-rw-ro-cow-export-reset', 'concurrent-independent-machines-same-machine-exclusion',
     'wait-cancel-stop-or-kill-acknowledged-write-restart', 'natural-deadline', 'instruction-bound',
     'concurrent-stop-run-and-machine-dispose', 'owned-console-stream-disposal',
-    'normal-memory-descriptor-storage-limits'
+    'normal-memory-descriptor-storage-limits', 'service-default-memory-descriptors-output'
 }
 
 
@@ -310,6 +310,7 @@ def main():
         if errors or b'INTERP' in elf or b'(NEEDED)' in elf or b'EXEC (Executable file)' not in elf or b'Advanced Micro Devices X86-64' not in elf:
             raise RuntimeError('Native fixture is not the expected static Linux x86-64 ELF')
         receipt['guest'] = dict(path=str(guest), sha256=sha(guest), static_elf_verified=True)
+        native('service-defaults', ['service-defaults', 'default-fds'], b'Z' * (20 * 65536))
         native('mkdir', ['mkdir', 'work'], b'mkdir-ok\n')
         native('inspect', ['inspect', 'argument with spaces'],
             ('cwd=' + str(native_work / 'work') + '\narg=/bin/probe\narg=inspect\narg=argument with spaces\nenv=FOO=run\nenv=EXTRA=seen\n').encode(),

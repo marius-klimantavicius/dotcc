@@ -19,7 +19,7 @@ public sealed class HostConsole : IDisposable
     private readonly CancellationTokenSource stopped = new();
     private readonly SemaphoreSlim outputWriter = new(1, 1), errorWriter = new(1, 1);
 
-    public HostConsole(int bufferBytes = 65536, long outputLimit = 1048576,
+    public HostConsole(int bufferBytes = 65536, long outputLimit = long.MaxValue,
         int captureLimit = 65536, bool captureOnly = false, byte[]? outputMarker = null)
     {
         if (bufferBytes is < 1 or > 1048576 || outputLimit < 0 || captureLimit is < 0 or > 1048576)

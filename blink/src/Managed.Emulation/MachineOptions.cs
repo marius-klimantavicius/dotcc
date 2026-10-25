@@ -38,15 +38,15 @@ public sealed record NetworkPolicy
 public sealed record MachineOptions
 {
     public ExecutionMode ExecutionMode { get; init; } = ExecutionMode.InProcess;
-    public long MemoryLimit { get; init; } = 64L * 1024 * 1024;
-    public long WritableStorageLimit { get; init; } = 16L * 1024 * 1024;
-    public int FileNodeLimit { get; init; } = 1024;
-    public int DescriptorLimit { get; init; } = 128;
-    public int ThreadLimit { get; init; } = 16;
+    public long MemoryLimit { get; init; } = 256L * 1024 * 1024;
+    public long WritableStorageLimit { get; init; } = 512L * 1024 * 1024;
+    public int FileNodeLimit { get; init; } = 8192;
+    public int DescriptorLimit { get; init; } = 1024;
+    public int ThreadLimit { get; init; } = 64;
     public int PipeBufferBytes { get; init; } = 65536;
     public long PipeStorageLimit { get; init; } = 1048576;
     public int PendingPipeOperations { get; init; } = 128;
-    public long? InstructionLimit { get; init; } = 100_000_000;
+    public long? InstructionLimit { get; init; }
     public TimeSpan? ExecutionDeadline { get; init; }
     public IReadOnlyDictionary<string, string> Environment { get; init; } = new Dictionary<string, string>();
     public NetworkPolicy Network { get; init; } = NetworkPolicy.Isolated;
@@ -88,7 +88,7 @@ public sealed record ConsoleOptions
     public bool RedirectOutput { get; init; }
     public int BufferBytes { get; init; } = 65536;
     public int CaptureBytes { get; init; } = 65536;
-    public long OutputLimit { get; init; } = 1048576;
+    public long OutputLimit { get; init; } = long.MaxValue;
     public TimeSpan DrainTimeout { get; init; } = TimeSpan.FromSeconds(1);
     public ConsoleInterruptPolicy InterruptPolicy { get; init; }
     public static ConsoleOptions AttachCurrent(bool leaveOpen = true, ConsoleInterruptPolicy interrupt = ConsoleInterruptPolicy.Stop)

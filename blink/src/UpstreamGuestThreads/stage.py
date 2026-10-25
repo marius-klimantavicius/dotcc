@@ -38,6 +38,7 @@ OLD_GUARD = '''#if !defined(DISABLE_THREADS) || !defined(NOLINEAR) || !defined(D
 
 '''
 sha = lambda value: hashlib.sha256(value).hexdigest()
+AUTHORED = ("memory-advice.inc", "futex-wake.inc", "futex-wait.inc")
 
 
 def replace_once(source, before, after):
@@ -53,6 +54,41 @@ def function(source, marker):
     return source[start:source.index("\n}", start) + 3]
 
 
+def adapt_memory_and_futex(source, memory):
+    """Shared authored correction for product staging and the native oracle.
+
+    The oracle retains native thread launch/exit; only these corrected guest
+    algorithms are shared. The product predecessor hash gates manual edits.
+    """
+    source = replace_once(source, function(source, "static int SysMadvise("),
+        "int BlinkGuestMadvise(struct Machine *, i64, u64, int);\n\n"
+        "static int SysMadvise(struct Machine *m, i64 addr, u64 len, int advice) {\n"
+        "  return BlinkGuestMadvise(m, addr, len, advice);\n}\n")
+    # Reject unsupported sharing before CleanseMemory, MAP_FIXED removal,
+    # page-table changes or the host mmap adapter can fail irreversibly.
+    source = replace_once(source,
+        "  if (flags & MAP_GROWSDOWN_LINUX) return enotsup();\n",
+        "  if ((flags & MAP_TYPE_LINUX) == MAP_SHARED_LINUX ||\n"
+        "      (flags & MAP_TYPE_LINUX) == (MAP_SHARED_LINUX | MAP_PRIVATE_LINUX)) {\n"
+        "    return enotsup();\n"
+        "  }\n"
+        "  if ((flags & MAP_TYPE_LINUX) != MAP_PRIVATE_LINUX) return einval();\n"
+        "  if (flags & MAP_GROWSDOWN_LINUX) return enotsup();\n")
+    for name, marker in (("futex-wake.inc", "static int SysFutexWake("),
+                         ("futex-wait.inc", "static int SysFutexWait(")):
+        source = replace_once(source, function(source, marker), (HERE / name).read_text())
+    source = replace_once(source, "static void ClearChildTid(struct Machine *m) {\n",
+        "static void ClearChildTid(struct Machine *m) {\n"
+        "  BlinkGuestFutexCleanup(m);\n")
+    memory = replace_once(memory,
+        "  // determine memory protection\n",
+        "  // The authored host has no shared backing. Reject before RemoveVirtual.\n"
+        "  if (shared) return enotsup();\n\n"
+        "  // determine memory protection\n")
+    memory += "\n" + (HERE / "memory-advice.inc").read_text()
+    return source, memory
+
+
 def adapt(predecessor, memory, signal):
     if sha(predecessor) != PREDECESSOR_PIN or sha(signal) != SIGNAL_PIN:
         raise ValueError("Reviewed source identity differs")
@@ -60,6 +96,7 @@ def adapt(predecessor, memory, signal):
     # Keep header declarations before every newly introduced call. The old
     # single-thread contract is replaced only in this separately staged file.
     source = GUARD + replace_once(source, OLD_GUARD, "")
+    source, allocation = adapt_memory_and_futex(source, GUARD + memory.decode())
     source = replace_once(source, "static void ClearChildTid(struct Machine *m)",
                           "void ClearChildTid(struct Machine *m)")
     source = replace_once(source, function(source, "static void *OnSpawn("), "")
@@ -92,7 +129,6 @@ def adapt(predecessor, memory, signal):
     # Whole-function ownership boundaries retain their original C bytes. The
     # threaded compiler profile selects typed managedMethod replacements from
     # their pinned upstream header declarations (managed-boundaries.json).
-    allocation = GUARD + memory.decode()
     signals = GUARD + signal.decode()
     signals = replace_once(signals, "struct SignalFrame {",
         "/* Authored bridge uses these pinned guest ABI offsets, never host siginfo. */\n"
@@ -184,6 +220,8 @@ def main():
         return loaded
 
     stage_hash = sha(read(Path(__file__)))
+    for name in AUTHORED:
+        read(HERE / name)
     original = read(ROOT / "ref" / ("blink-" + REVISION) / "blink/syscall.c")
     memory = read(ROOT / "ref" / ("blink-" + REVISION) / "blink/memorymalloc.c")
     signal = read(ROOT / "ref" / ("blink-" + REVISION) / "blink/signal.c")

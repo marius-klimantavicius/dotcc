@@ -16,18 +16,18 @@ def run_product_gate(ctx, suite):
     directory = {'machine-api': 'MachineApi', 'consumer-delivery': 'ManagedConsumerDelivery',
                  'guest-threads': 'GuestThreads'}[suite.name]
     args = []
+    producer = Path(json_file(ctx.artifacts.parent / 'current-threaded.json')['receipt'])
+    if producer == ctx.artifacts / 'receipt.json':
+        # Verification keeps appending command results. Preserve the exact
+        # completed delivery evidence before a specialist pins that receipt.
+        frozen = ctx.artifacts / 'product-delivery-receipt.json'
+        if not frozen.exists():
+            shutil.copy2(producer, frozen)
+        ctx.receipt['product_delivery_snapshot'] = dict(source=str(producer), receipt=str(frozen), sha256=digest(frozen))
+        ctx.save()
+        producer = frozen
+    helper(ctx.root / 'scripts/campaign_delivery.py').load_delivery(producer)
     if suite.name != 'guest-threads':
-        producer = Path(json_file(ctx.artifacts.parent / 'current-threaded.json')['receipt'])
-        if producer == ctx.artifacts / 'receipt.json':
-            # Verification keeps appending command results. Preserve the exact
-            # completed delivery evidence before a specialist pins that receipt.
-            frozen = ctx.artifacts / 'product-delivery-receipt.json'
-            if not frozen.exists():
-                shutil.copy2(producer, frozen)
-            ctx.receipt['product_delivery_snapshot'] = dict(source=str(producer), receipt=str(frozen), sha256=digest(frozen))
-            ctx.save()
-            producer = frozen
-        helper(ctx.root / 'scripts/campaign_delivery.py').load_delivery(producer)
         args += ['--delivery-receipt', producer, '--delivery-sha256', digest(producer)]
     if suite.name == 'consumer-delivery':
         import json
@@ -52,12 +52,33 @@ def run_product_gate(ctx, suite):
                  '--native-sha256', digest(native), '--profile-receipt', profile, '--profile-sha256', digest(profile)]
     transcript = ctx.run([sys.executable, ctx.root / 'tests' / directory / 'run.py', *args],
                          suite.name, timeout=suite.timeout)
+    if suite.name == 'guest-threads':
+        # The native witness is a prerequisite, never a substitute for running
+        # the actual delivered C# product with the same ELF.
+        reports = [Path(line.strip()) / 'receipt.json' for line in transcript.splitlines()
+                   if line.startswith(str(ctx.root / 'artifacts') + '/')]
+        reports = [path for path in reports if path.is_file()]
+        if len(reports) != 1 or json_file(reports[0]).get('passed') is not True:
+            raise RuntimeError('Passing native GuestThreads receipt required')
+        native = reports[0]
+        ctx.receipt.setdefault('product_gate_reports', {})['guest-threads-native'] = str(native)
+        ctx.save()
+        transcript = ctx.run([sys.executable, ctx.root / 'tests/GuestThreads/run-managed.py',
+                              '--delivery-receipt', producer, '--delivery-sha256', digest(producer),
+                              '--native-receipt', native, '--native-sha256', digest(native)],
+                             'guest-threads-managed', timeout=suite.timeout)
+    report_found = False
     for line in transcript.splitlines():
         if line.startswith(str(ctx.root / 'artifacts') + '/'):
             report = Path(line.strip()) / 'receipt.json'
             if report.is_file():
+                if json_file(report).get('passed') is not True:
+                    raise RuntimeError('Product gate report did not pass: ' + suite.name)
                 ctx.receipt.setdefault('product_gate_reports', {})[suite.name] = str(report)
                 ctx.save()
+                report_found = True
+    if not report_found:
+        raise RuntimeError('Product gate did not publish its report: ' + suite.name)
 
 
 def sources(root):
@@ -95,7 +116,7 @@ def translate(ctx):
     inputs = json_file(profile / "inputs.json")
     core = helper(root / "scripts/core_inputs.py")
     entries = core.profile_sources(profile, root, inputs)
-    options = ["--profile", profile, "--jobs", str(1), "--timeout", str(ctx.options.timeout)]
+    options = ["--profile", profile, "--jobs", str(ctx.options.jobs), "--timeout", str(ctx.options.timeout)]
     if ctx.options.action == "probe":
         options += ["--emit-only"]
         if ctx.options.unit:
@@ -169,13 +190,19 @@ def translate(ctx):
     deliver(ctx, raw, finish=finish)
 
 
+def validate_options(options):
+    if not 1 <= options.jobs <= 4:
+        raise ValueError('Blink --jobs must be 1..4 (bounded source emission concurrency)')
+
+
 recipe = Recipe("blink", "TranslatedBlink", ("threaded", "single-thread"),
                 ("src/Managed.Emulation.Host/Managed.Emulation.Host.csproj",
                  "src/Managed.Emulation.ThreadedExecution/Managed.Emulation.ThreadedExecution.csproj",
                  "src/Managed.Emulation/Managed.Emulation.csproj",
                  "src/Managed.Emulation.Worker/Managed.Emulation.Worker.csproj",
                  "samples/ManagedConsumer/ManagedConsumer.csproj"), sources, translate=translate,
-                suites=(Suite("consumer", ("consumer",), matrix=True, profiles=("threaded",)),
+                suites=(Suite("consumer", ("consumer",), matrix=True, profiles=("threaded",),
+                              scope="public consumer build/help smoke matrix; no guest execution"),
                         Suite("source-inputs", ("script", "test-source-inputs.py")),
                         Suite("host-files", ("script", "test-host-files.sh")),
                         Suite("host-sockets", ("script", "test-host-sockets.sh")),
@@ -185,9 +212,14 @@ recipe = Recipe("blink", "TranslatedBlink", ("threaded", "single-thread"),
                           for name in ("sqlite-regression", "picotls-regression", "msquic-regression",
                                        "language-regressions", "wat-regression", "zig-regression")),
                         *(Suite(name, (), 7200, run=run_product_gate,
-                                platforms=("linux",), profiles=("threaded",))
+                                platforms=("linux",), profiles=("threaded",),
+                                scope={"machine-api": "delivery-bound public machine execution, JIT/AOT in both execution modes",
+                                       "guest-threads": "native witnesses then delivery-bound raw/processed JIT/AOT guest threading",
+                                       "consumer-delivery": "delivery-bound Kestrel consumer; Docker guest prerequisite"}[name])
                           for name, directory in (("machine-api", "MachineApi"),
                                                   ("consumer-delivery", "ManagedConsumerDelivery"),
                                                   ("guest-threads", "GuestThreads")))),
                 legacy_owned=("Sources/*.cs",), supports_fast=True, consumer=Consumer(property="BlinkProject", arguments=("--help",)),
-                default_suites=("consumer",), verify_suites=("source-inputs", "host-files", "host-sockets", "instance-io", "consumer"))
+                default_suites=("consumer",),
+                verify_suites=("source-inputs", "host-files", "host-sockets", "instance-io", "consumer",
+                               "guest-threads", "machine-api"), validate_options=validate_options)

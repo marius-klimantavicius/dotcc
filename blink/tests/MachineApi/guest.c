@@ -33,6 +33,28 @@ long guest_main(long *stack) {
   long argc = stack[0]; char **argv = (char **)(stack + 1);
   char **env = argv + argc + 1;
   if (argc < 2) return 2;
+  if (equal(argv[1], "service-defaults")) {
+    const long size = 64L * 1024 * 1024;
+    long address = call(9, 0, size, 3, 0x22, -1, 0);
+    if (address < 0 && address >= -4095) return error(address);
+    ((volatile char *)address)[0] = 17;
+    ((volatile char *)address)[size - 1] = 29;
+    long result = call(11, address, size, 0, 0, 0, 0);
+    if (result < 0) return error(result);
+    long descriptors[140];
+    for (long i = 0; i < 140; ++i) {
+      descriptors[i] = call(257, -100, (long)(argc >= 3 ? argv[2] : "/default-fds"), 2 | 64, 0600, 0, 0);
+      if (descriptors[i] < 0) return error(descriptors[i]);
+    }
+    for (long i = 0; i < 140; ++i) {
+      result = call(3, descriptors[i], 0, 0, 0, 0, 0);
+      if (result < 0) return error(result);
+    }
+    static char output[65536];
+    for (long i = 0; i < (long)sizeof(output); ++i) output[i] = 'Z';
+    for (long i = 0; i < 20; ++i) if (put(1, output, sizeof(output))) return 3;
+    return 0;
+  }
   if (equal(argv[1], "memory-cap")) {
     const long bytes = 64L * 1024 * 1024;
     long address = call(9, 0, bytes, 3, 0x22, -1, 0);

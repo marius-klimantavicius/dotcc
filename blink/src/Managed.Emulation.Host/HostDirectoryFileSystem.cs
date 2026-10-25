@@ -8,13 +8,25 @@ namespace Managed.Emulation.Host;
 /// and special files. This is guest mediation, not a hostile-host sandbox.</summary>
 public sealed class HostDirectoryFileSystem : IGuestFileSystem
 {
-    private sealed class Description(string path, FileStream? stream, FileAccessMode access, bool append, ulong inode)
+    private sealed class InodeState(string path, ulong number)
     {
         internal string Path = path;
+        internal readonly ulong Number = number;
+        internal bool Linked = true;
+        internal readonly HashSet<Description> OpenDescriptions = new();
+        internal long ChangeTicks;
+        internal VirtualFileStat DetachedMetadata;
+    }
+    private sealed class Description(InodeState node, FileStream? stream, FileAccessMode access, bool append)
+    {
+        internal readonly InodeState Node = node;
+        internal string Path => Node.Path;
+        internal ulong Inode => Node.Number;
+        internal bool Linked => Node.Linked;
         internal readonly FileStream? Stream = stream;
         internal readonly FileAccessMode Access = access;
-        internal readonly ulong Inode = inode;
-        internal bool Append = append, Linked = true;
+        internal bool Append = append;
+        internal int References;
         internal long Position;
     }
     private sealed class FsError(GuestError error) : IOException { internal GuestError Error => error; }
@@ -24,7 +36,8 @@ public sealed class HostDirectoryFileSystem : IGuestFileSystem
     private readonly int descriptorLimit, nodeLimit;
     private readonly long writableLimit, pathBytesLimit;
     private readonly Dictionary<int, Description> descriptions = new();
-    private readonly Dictionary<string, ulong> inodes = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, InodeState> inodes = new(StringComparer.Ordinal);
+    private readonly HashSet<InodeState> detachedInodes = new();
     private ulong nextInode = 1;
     private bool disposed;
     public static bool SupportsPersistentUnixModes => !OperatingSystem.IsWindows();
@@ -67,9 +80,21 @@ public sealed class HostDirectoryFileSystem : IGuestFileSystem
     }
     private void Writable() => Require(!readOnly, GuestError.ReadOnly);
     private Description Get(int fd) => descriptions.TryGetValue(fd, out var d) ? d : throw new FsError(GuestError.BadDescriptor);
-    private int Add(Description description) { int fd = 3; while (descriptions.ContainsKey(fd)) ++fd; descriptions.Add(fd, description); return fd; }
-    private ulong Inode(string path)
-    { if (!inodes.TryGetValue(path, out var id)) inodes.Add(path, id = nextInode++); return id; }
+    private int Add(Description description)
+    {
+        int fd = 3; while (descriptions.ContainsKey(fd)) ++fd;
+        descriptions.Add(fd, description);
+        if (description.References++ == 0) description.Node.OpenDescriptions.Add(description);
+        return fd;
+    }
+    private InodeState Inode(string path)
+    { if (!inodes.TryGetValue(path, out var node)) inodes.Add(path, node = new(path, nextInode++)); return node; }
+    private void Detach(InodeState node, VirtualFileStat metadata)
+    {
+        node.Linked = false; node.ChangeTicks = DateTime.UtcNow.Ticks;
+        node.DetachedMetadata = metadata with { Links = 0, ChangeTicks = node.ChangeTicks };
+        if (node.OpenDescriptions.Count != 0) detachedInodes.Add(node);
+    }
     private static string Parent(string path) => path[..Math.Max(1, path.LastIndexOf('/'))];
     private static FileAttributes Attributes(string path)
     {
@@ -127,12 +152,27 @@ public sealed class HostDirectoryFileSystem : IGuestFileSystem
         else permission = directory ? 0x1edu : 0x180u;
         return (directory ? 0x4000u : 0x8000u) | permission;
     }
-    private VirtualFileStat Metadata(string path, FileStream? stream = null, ulong? inode = null)
+    private VirtualFileStat Metadata(string path)
     {
         string host = HostPath(path); var attributes = Attributes(host); bool directory = (attributes & FileAttributes.Directory) != 0;
-        return new(directory ? 0 : stream == null ? new FileInfo(host).Length : stream.Length,
-            readOnly || (attributes & FileAttributes.ReadOnly) != 0, directory, inode ?? Inode(path), Mode(path, directory),
-            File.GetLastAccessTimeUtc(host).Ticks, File.GetLastWriteTimeUtc(host).Ticks, File.GetCreationTimeUtc(host).Ticks);
+        var node = Inode(path);
+        return new(directory ? 0 : new FileInfo(host).Length,
+            readOnly || (attributes & FileAttributes.ReadOnly) != 0, directory, node.Number, Mode(path, directory),
+            File.GetLastAccessTimeUtc(host).Ticks, File.GetLastWriteTimeUtc(host).Ticks,
+            node.ChangeTicks != 0 ? node.ChangeTicks : File.GetCreationTimeUtc(host).Ticks);
+    }
+    private VirtualFileStat Metadata(Description description)
+    {
+        var node = description.Node;
+        if (description.Stream == null) return node.Linked ? Metadata(node.Path) : node.DetachedMetadata with { ChangeTicks = node.ChangeTicks };
+        // Query the open file, including after unlink/replacement. Path-based
+        // queries would observe a new file subsequently created at the old name.
+        var handle = description.Stream.SafeFileHandle;
+        uint permissions = OperatingSystem.IsWindows() ? 0x180u : (uint)File.GetUnixFileMode(handle) & 0x1ff;
+        return new(description.Stream.Length, readOnly || (File.GetAttributes(handle) & FileAttributes.ReadOnly) != 0,
+            false, node.Number, 0x8000u | permissions,
+            File.GetLastAccessTimeUtc(handle).Ticks, File.GetLastWriteTimeUtc(handle).Ticks,
+            node.ChangeTicks != 0 ? node.ChangeTicks : File.GetCreationTimeUtc(handle).Ticks, node.Linked ? 1u : 0u);
     }
     public int OpenDescriptors { get { lock (gate) return descriptions.Count; } }
     public long WritableBytes { get { lock (gate) return Inventory().Bytes; } }
@@ -156,8 +196,13 @@ public sealed class HostDirectoryFileSystem : IGuestFileSystem
                 else { bytes = checked(bytes + new FileInfo(host).Length); Require(bytes <= writableLimit, GuestError.NoSpace); }
             }
         }
-        foreach (var d in descriptions.Values.Distinct().Where(d => !d.Linked && d.Stream != null))
-        { bytes = checked(bytes + d.Stream!.Length); ++nodes; }
+        foreach (var node in detachedInodes)
+        {
+            // Independent opens own different descriptions, but retain one
+            // inode's storage. Duplicates keep their description alive too.
+            var d = node.OpenDescriptions.First();
+            bytes = checked(bytes + (d.Stream?.Length ?? 0)); ++nodes;
+        }
         Require(bytes <= writableLimit && nodes <= nodeLimit, GuestError.NoSpace);
         return (bytes, nodes, pathBytes);
     }
@@ -174,7 +219,7 @@ public sealed class HostDirectoryFileSystem : IGuestFileSystem
         if (directory)
         {
             Require(allowDirectory && access == FileAccessMode.Read && !create && !truncate && !append, GuestError.IsDirectory);
-            return Ok(Add(new(canonical, null, access, false, Inode(canonical))));
+            return Ok(Add(new(Inode(canonical), null, access, false)));
         }
         Require(!requireDirectory, exists ? GuestError.NotDirectory : GuestError.NoEntry);
         if (!exists)
@@ -192,8 +237,9 @@ public sealed class HostDirectoryFileSystem : IGuestFileSystem
             // check/open race under hostile host namespace mutation.
             Resolve(path, cwd);
             if (!exists && SupportsPersistentUnixModes) ApplyMode(canonical, creationMode);
-            if (truncate) stream.SetLength(0);
-            return Ok(Add(new(canonical, stream, access, append, Inode(canonical))));
+            var node = Inode(canonical);
+            if (truncate) { stream.SetLength(0); node.ChangeTicks = DateTime.UtcNow.Ticks; }
+            return Ok(Add(new(node, stream, access, append)));
         }
         catch { stream.Dispose(); throw; }
     });
@@ -229,6 +275,7 @@ public sealed class HostDirectoryFileSystem : IGuestFileSystem
                 long available = position <= length ? Math.Min(long.MaxValue - (length - position), allowance) + length - position : allowance - (position - length);
                 int count = (int)Math.Min(bytes.Length, Math.Max(0, available)); Require(count != 0 || bytes.Length == 0, GuestError.NoSpace);
                 RandomAccess.Write(d.Stream.SafeFileHandle, bytes[..count], position);
+                if (count != 0) d.Node.ChangeTicks = DateTime.UtcNow.Ticks;
                 if (offset == null) d.Position = position + count; return Ok(count);
             }
             catch (Exception error) when (error is IOException or UnauthorizedAccessException or ArgumentException or OverflowException) { return Fail<int>(Error(error)); }
@@ -242,16 +289,20 @@ public sealed class HostDirectoryFileSystem : IGuestFileSystem
         long next = checked(start + offset); Require(next >= 0, GuestError.Invalid); d.Position = next; return Ok(next);
     });
     public HostResult<int> Close(int descriptor) => Guard(() =>
-    { var d = Get(descriptor); descriptions.Remove(descriptor); if (!descriptions.Values.Contains(d)) { locks.Remove(d); d.Stream?.Dispose(); } return Ok(0); });
+    {
+        var d = Get(descriptor); descriptions.Remove(descriptor);
+        if (--d.References == 0)
+        {
+            locks.Remove(d); d.Stream?.Dispose();
+            d.Node.OpenDescriptions.Remove(d);
+            if (d.Node.OpenDescriptions.Count == 0) detachedInodes.Remove(d.Node);
+        }
+        return Ok(0);
+    });
     public HostResult<int> Duplicate(int descriptor) => Guard(() => { var d = Get(descriptor); Require(descriptions.Count < descriptorLimit, GuestError.TooManyFiles); return Ok(Add(d)); });
     public HostResult<int> SetAppend(int descriptor, bool append) => Guard(() => { var d = Get(descriptor); Require(d.Stream != null || !append, GuestError.Unsupported); d.Append = append; return Ok(0); });
     public HostResult<VirtualFileStat> Stat(string path, string cwd = "/") => Guard(() => Ok(Metadata(Resolve(path, cwd))));
-    public HostResult<VirtualFileStat> FStat(int descriptor) => Guard(() =>
-    {
-        var d = Get(descriptor);
-        if (d.Linked) return Ok(Metadata(d.Path, d.Stream, d.Inode));
-        return Ok(new VirtualFileStat(d.Stream?.Length ?? 0, readOnly, d.Stream == null, d.Inode, d.Stream == null ? 0x41edu : 0x8180u, Links: 0));
-    });
+    public HostResult<VirtualFileStat> FStat(int descriptor) => Guard(() => Ok(Metadata(Get(descriptor))));
     public HostResult<string> CanonicalPath(string path, string cwd = "/", bool requireDirectory = false) => Guard(() =>
     { string p = Resolve(path, cwd); Require(!requireDirectory || Directory.Exists(HostPath(p)), GuestError.NotDirectory); return Ok(p); });
     public HostResult<string> DirectoryPath(int descriptor) => Guard(() => { var d = Get(descriptor); Require(d.Stream == null, GuestError.NotDirectory); Require(d.Linked, GuestError.NoEntry); return Ok(d.Path); });
@@ -259,41 +310,78 @@ public sealed class HostDirectoryFileSystem : IGuestFileSystem
     {
         var d = Get(descriptor); Require(d.Stream == null, GuestError.NotDirectory); Require(d.Linked, GuestError.NoEntry);
         Require(entryLimit >= 2 && nameBytesLimit >= 5, GuestError.NoMemory); Resolve(d.Path, "/");
-        var entries = new List<VirtualDirectoryEntry> { new(".", d.Inode, 4), new("..", Inode(Parent(d.Path)), 4) }; int bytes = 5;
+        var entries = new List<VirtualDirectoryEntry> { new(".", d.Inode, 4), new("..", Inode(Parent(d.Path)).Number, 4) }; int bytes = 5;
         foreach (string host in Directory.EnumerateFileSystemEntries(HostPath(d.Path)))
         {
             string name = Path.GetFileName(host); int size = new UTF8Encoding(false, true).GetByteCount(name);
             Require(size <= 255, GuestError.NameTooLong); Require(entries.Count < entryLimit && size + 1 <= nameBytesLimit - bytes, GuestError.NoMemory);
             var attr = Attributes(host); string path = d.Path.TrimEnd('/') + "/" + name; bytes += size + 1;
-            entries.Add(new(name, Inode(path), (attr & FileAttributes.Directory) != 0 ? (byte)4 : (byte)8));
+            entries.Add(new(name, Inode(path).Number, (attr & FileAttributes.Directory) != 0 ? (byte)4 : (byte)8));
         }
         return Ok(entries.OrderBy(e => e.Name == "." ? 0 : e.Name == ".." ? 1 : 2).ThenBy(e => e.Name, StringComparer.Ordinal).ToArray());
     });
     public HostResult<int> Truncate(int descriptor, long length) => Guard(() =>
-    { Writable(); var d = Get(descriptor); Require(d.Access.HasFlag(FileAccessMode.Write), GuestError.BadDescriptor); Require(d.Stream != null && length >= 0, GuestError.Invalid); var i = Inventory(); Require(length <= d.Stream!.Length || length - d.Stream.Length <= writableLimit - i.Bytes, GuestError.NoSpace); d.Stream.SetLength(length); return Ok(0); });
+    { Writable(); var d = Get(descriptor); Require(d.Access.HasFlag(FileAccessMode.Write), GuestError.BadDescriptor); Require(d.Stream != null && length >= 0, GuestError.Invalid); var i = Inventory(); Require(length <= d.Stream!.Length || length - d.Stream.Length <= writableLimit - i.Bytes, GuestError.NoSpace); d.Stream.SetLength(length); d.Node.ChangeTicks = DateTime.UtcNow.Ticks; return Ok(0); });
     private HostResult<int> OpenAction(string path, string cwd, FileAccessMode access, Func<int, HostResult<int>> action)
     { var fd = Open(path, access, cwd: cwd, allowDirectory: true); if (!fd.Succeeded) return fd; try { return action(fd.Value); } finally { Close(fd.Value); } }
     public HostResult<int> Truncate(string path, long length, string cwd = "/") => OpenAction(path, cwd, FileAccessMode.Write, fd => Truncate(fd, length));
     public HostResult<int> Synchronize(int descriptor) => Guard(() => { var d = Get(descriptor); Require(d.Stream != null, GuestError.Unsupported); d.Stream!.Flush(true); return Ok(0); });
     private void ApplyMode(string path, uint mode)
-    { Require((mode & ~0x1ffu) == 0 && SupportsPersistentUnixModes, GuestError.Unsupported); Resolve(path, "/"); File.SetUnixFileMode(HostPath(path), (UnixFileMode)mode); }
-    public HostResult<int> ChangeMode(int descriptor, uint mode) => Guard(() => { Writable(); var d = Get(descriptor); Require(d.Linked, GuestError.Unsupported); ApplyMode(d.Path, mode); return Ok(0); });
-    public HostResult<int> ChangeMode(string path, uint mode, string cwd = "/") => Guard(() => { Writable(); ApplyMode(Resolve(path, cwd), mode); return Ok(0); });
+    {
+        Require((mode & ~0x1ffu) == 0, GuestError.Unsupported);
+        if (OperatingSystem.IsWindows()) throw new FsError(GuestError.Unsupported);
+        Resolve(path, "/"); File.SetUnixFileMode(HostPath(path), (UnixFileMode)mode);
+    }
+    public HostResult<int> ChangeMode(int descriptor, uint mode) => Guard(() =>
+    {
+        Writable(); var d = Get(descriptor);
+        Require((mode & ~0x1ffu) == 0, GuestError.Unsupported);
+        if (OperatingSystem.IsWindows()) return Fail<int>(GuestError.Unsupported);
+        if (d.Stream != null) File.SetUnixFileMode(d.Stream.SafeFileHandle, (UnixFileMode)mode);
+        else if (d.Linked) ApplyMode(d.Path, mode);
+        else d.Node.DetachedMetadata = d.Node.DetachedMetadata with { Mode = 0x4000u | mode };
+        d.Node.ChangeTicks = DateTime.UtcNow.Ticks;
+        return Ok(0);
+    });
+    public HostResult<int> ChangeMode(string path, uint mode, string cwd = "/") => Guard(() =>
+    { Writable(); string p = Resolve(path, cwd); ApplyMode(p, mode); Inode(p).ChangeTicks = DateTime.UtcNow.Ticks; return Ok(0); });
     public HostResult<int> ChangeOwner(int descriptor, uint user, uint group) => Guard(() =>
     { Writable(); Get(descriptor); Require((user is 0 or uint.MaxValue) && (group is 0 or uint.MaxValue), (GuestError)1); return Ok(0); });
     public HostResult<int> ChangeOwner(string path, uint user, uint group, string cwd = "/") => Guard(() =>
     { Writable(); Resolve(path, cwd); Require((user is 0 or uint.MaxValue) && (group is 0 or uint.MaxValue), (GuestError)1); return Ok(0); });
     public HostResult<int> SetTimes(int descriptor, VirtualFileTimeUpdate access, VirtualFileTimeUpdate modify) => Guard(() =>
-    { var d = Get(descriptor); Require(d.Linked, GuestError.Unsupported); return SetTimes(d.Path, access, modify); });
-    public HostResult<int> SetTimes(string path, VirtualFileTimeUpdate access, VirtualFileTimeUpdate modify, string cwd = "/") => Guard(() =>
     {
-        Require(access.IsValid && modify.IsValid, GuestError.Invalid); string p = Resolve(path, cwd);
-        Require((access.Selection != FileTimeSelection.Explicit || access.Time.Subtick == 0) &&
-            (modify.Selection != FileTimeSelection.Explicit || modify.Time.Subtick == 0), GuestError.Unsupported);
+        var d = Get(descriptor); ValidateTimes(access, modify);
         if (access.Selection == FileTimeSelection.Omit && modify.Selection == FileTimeSelection.Omit) return Ok(0);
         Writable(); DateTime now = DateTime.UtcNow;
-        if (access.Selection != FileTimeSelection.Omit) File.SetLastAccessTimeUtc(HostPath(p), access.Selection == FileTimeSelection.Now ? now : new DateTime(access.Time.Ticks, DateTimeKind.Utc));
-        if (modify.Selection != FileTimeSelection.Omit) File.SetLastWriteTimeUtc(HostPath(p), modify.Selection == FileTimeSelection.Now ? now : new DateTime(modify.Time.Ticks, DateTimeKind.Utc));
+        if (d.Stream != null)
+        {
+            if (access.Selection != FileTimeSelection.Omit) File.SetLastAccessTimeUtc(d.Stream.SafeFileHandle, SelectedTime(access, now));
+            if (modify.Selection != FileTimeSelection.Omit) File.SetLastWriteTimeUtc(d.Stream.SafeFileHandle, SelectedTime(modify, now));
+        }
+        else if (d.Linked) return SetTimes(d.Path, access, modify);
+        else d.Node.DetachedMetadata = d.Node.DetachedMetadata with {
+            AccessTicks = access.Selection == FileTimeSelection.Omit ? d.Node.DetachedMetadata.AccessTicks : SelectedTime(access, now).Ticks,
+            ModifyTicks = modify.Selection == FileTimeSelection.Omit ? d.Node.DetachedMetadata.ModifyTicks : SelectedTime(modify, now).Ticks };
+        d.Node.ChangeTicks = now.Ticks;
+        return Ok(0);
+    });
+    private static DateTime SelectedTime(VirtualFileTimeUpdate update, DateTime now)
+        => update.Selection == FileTimeSelection.Now ? now : new DateTime(update.Time.Ticks, DateTimeKind.Utc);
+    private static void ValidateTimes(VirtualFileTimeUpdate access, VirtualFileTimeUpdate modify)
+    {
+        Require(access.IsValid && modify.IsValid, GuestError.Invalid);
+        Require((access.Selection != FileTimeSelection.Explicit || access.Time.Subtick == 0) &&
+            (modify.Selection != FileTimeSelection.Explicit || modify.Time.Subtick == 0), GuestError.Unsupported);
+    }
+    public HostResult<int> SetTimes(string path, VirtualFileTimeUpdate access, VirtualFileTimeUpdate modify, string cwd = "/") => Guard(() =>
+    {
+        ValidateTimes(access, modify); string p = Resolve(path, cwd);
+        if (access.Selection == FileTimeSelection.Omit && modify.Selection == FileTimeSelection.Omit) return Ok(0);
+        Writable(); DateTime now = DateTime.UtcNow;
+        if (access.Selection != FileTimeSelection.Omit) File.SetLastAccessTimeUtc(HostPath(p), SelectedTime(access, now));
+        if (modify.Selection != FileTimeSelection.Omit) File.SetLastWriteTimeUtc(HostPath(p), SelectedTime(modify, now));
+        Inode(p).ChangeTicks = now.Ticks;
         return Ok(0);
     });
     private readonly Dictionary<Description, int> locks = new();
@@ -318,8 +406,9 @@ public sealed class HostDirectoryFileSystem : IGuestFileSystem
     {
         Writable(); FinalComponent(path); string p = Resolve(path, cwd); Require(p != "/" && p != protectedCwd, GuestError.Busy);
         bool directory = Directory.Exists(HostPath(p)); Require(directory == removeDirectory, directory ? GuestError.IsDirectory : GuestError.NotDirectory);
+        var node = Inode(p); var metadata = node.OpenDescriptions.Count == 0 ? default : Metadata(p);
         if (directory) Directory.Delete(HostPath(p)); else File.Delete(HostPath(p));
-        foreach (var d in descriptions.Values.Where(d => d.Path == p)) d.Linked = false;
+        Detach(node, metadata);
         inodes.Remove(p); return Ok(0);
     });
     public HostResult<string> Rename(string oldPath, string newPath, string oldCwd = "/", string newCwd = "/", string protectedCwd = "/") => Guard(() =>
@@ -331,6 +420,8 @@ public sealed class HostDirectoryFileSystem : IGuestFileSystem
         bool directory = Directory.Exists(HostPath(from)); Require(!directory || !to.StartsWith(from + "/", StringComparison.Ordinal), GuestError.Invalid);
         var i = Inventory(); long growth = Math.Max(0, Encoding.UTF8.GetByteCount(to) - Encoding.UTF8.GetByteCount(from));
         Require(growth == 0 || growth <= (pathBytesLimit - i.PathBytes) / i.Nodes, GuestError.NoSpace);
+        inodes.TryGetValue(to, out var replaced);
+        var replacedMetadata = replaced?.OpenDescriptions.Count > 0 ? Metadata(to) : default;
         if (directory)
         {
             // BCL has no cross-platform atomic replacement of an existing
@@ -339,13 +430,11 @@ public sealed class HostDirectoryFileSystem : IGuestFileSystem
             Directory.Move(HostPath(from), HostPath(to));
         }
         else { Require(!Directory.Exists(HostPath(to)), GuestError.IsDirectory); File.Move(HostPath(from), HostPath(to), true); }
-        foreach (var d in descriptions.Values.Distinct())
-        {
-            if (d.Path == to) d.Linked = false;
-            if (d.Path == from || d.Path.StartsWith(from + "/", StringComparison.Ordinal)) d.Path = to + d.Path[from.Length..];
-        }
+        if (replaced != null) Detach(replaced, replacedMetadata);
+        inodes.Remove(to);
         foreach (var pair in inodes.Where(p => p.Key == from || p.Key.StartsWith(from + "/", StringComparison.Ordinal)).ToArray())
-        { inodes.Remove(pair.Key); inodes[to + pair.Key[from.Length..]] = pair.Value; }
+        { inodes.Remove(pair.Key); pair.Value.Path = to + pair.Key[from.Length..]; inodes[pair.Value.Path] = pair.Value; }
+        Inode(to).ChangeTicks = DateTime.UtcNow.Ticks;
         return Ok(protectedCwd == from || protectedCwd.StartsWith(from + "/", StringComparison.Ordinal) ? to + protectedCwd[from.Length..] : protectedCwd);
     });
     public HostResult<int> RejectSpecialNode(string path, string cwd = "/") => Guard(() =>
@@ -354,5 +443,5 @@ public sealed class HostDirectoryFileSystem : IGuestFileSystem
     { Resolve(path, cwd); var i = Inventory(); return Ok(new VirtualFileSystemCapacity((ulong)writableLimit, (ulong)(writableLimit - i.Bytes), (ulong)nodeLimit, (ulong)(nodeLimit - i.Nodes))); });
     public HostResult<VirtualFileSystemCapacity> Capacity(int descriptor) => Guard(() => { Get(descriptor); return Capacity("/"); });
     public void Dispose()
-    { lock (gate) { if (disposed) return; disposed = true; foreach (var d in descriptions.Values.Distinct()) d.Stream?.Dispose(); descriptions.Clear(); locks.Clear(); } }
+    { lock (gate) { if (disposed) return; disposed = true; foreach (var d in descriptions.Values.Distinct()) d.Stream?.Dispose(); descriptions.Clear(); locks.Clear(); detachedInodes.Clear(); inodes.Clear(); } }
 }

@@ -50,13 +50,13 @@ only when the existing assembler verifies full emission identity and object
 hash; producing profiles and receipts are retained explicitly. It never treats
 an older compiler's objects as compatible merely because a filename matches.
 
-The whole raw source/project/host bundle is preserved separately under
-`blink/generated/translation-delivery/attempt-*/raw/`. Raw files/directories
-are read-only and their hashes are checked after processing. To inspect a raw
-build, copy that bundle to a writable scratch directory; the script never runs
-MSBuild or the postprocessor inside the raw snapshot. A separate candidate is
-restored and built, processed by the existing semantic postprocessor, and built
-again. These builds do not execute guest code or custom failure tests.
+The shared framework builds the raw project, processes a separate candidate,
+and builds both published forms. Raw output is published at
+`blink/generated/TranslatedBlink.Raw/`, with processed output at
+`blink/generated/TranslatedBlink/`. Both link current authored sources and carry
+source ownership/hash inventories. These are buildable deliveries, not read-only
+archival directories. Existing older immutable snapshots remain untouched.
+Translation builds execute no guest code or custom failure tests.
 
 Only a validated postprocessed source bundle replaces the stable directory.
 Old output is archived under the new attempt's `previous-output/`; failure in
@@ -66,16 +66,27 @@ finish active consumer builds before regenerating the stable path. Temporary
 build caches are discarded before publication; the final direct-source build
 may create fresh bin/obj output, excluded from the source manifest.
 
-`blink/artifacts/translation/attempt-*/receipt.json` records compiler,
-postprocessor, script, profile, object, raw/final source and build-log identities.
-`latest.json` points to the last successful delivery. After this publication
-commits, interruption of stdout reporting cannot rewrite its successful receipt.
-Failed attempts before publication retain
-logs and `passed: false`; the source archive and older snapshots are preserved.
-Each attempt has a dedicated temporary directory. Timed-out command groups are
-terminated and drained. SIGTERM is forwarded through that cleanup path; an outer
-runner must allow more than its three-second child grace before escalating.
-This does not promise bounded cleanup of kernel-unkillable processes.
+`blink/artifacts/campaign/<run-id>/receipt.json` records recursive tool snapshots,
+frozen profile/object identities, source inventories and actual command results.
+`artifacts/campaign/current-threaded.json` points to the published threaded
+producer. Completed runs have `status: passed`; failed attempts retain their logs.
+Specialist gates validate that receipt and pin a completed delivery snapshot
+before verification appends new command results. Hash policy does not relax
+source selection, executable dependency availability or behavioral comparisons.
+
+`bash blink/scripts/verify.sh --tools reuse --fetch never` translates and runs
+source-input controls, independent host files/sockets/I/O checks, the consumer
+build/help matrix, native plus four-mode managed GuestThreads, and the actual
+public machine API in JIT/NativeAOT with both execution modes. Linux x64,
+GCC/binutils, make, `strace`, .NET 10 and NativeAOT prerequisites are required;
+missing prerequisites fail explicitly. `test.sh` alone defaults to the consumer
+build/help smoke test. `test.sh --suite guest-threads` and `--suite machine-api`
+select maintained runtime qualification against the published delivery without
+retranslating. These specialist gates have their own fixed runtime matrices;
+`--mode`/`--form` selects the generic consumer matrix only. The Kestrel service
+`consumer-delivery` suite remains explicit and additionally requires Docker and
+its pinned NativeAOT guest build. Runtime qualification is finite static-ELF
+coverage; increased resource limits do not provide dynamic ELF/runtime support.
 
 This gate establishes translation, semantic postprocessing and buildability of
 the selected core. Runtime qualification, service startup, sample lifecycle,

@@ -134,7 +134,7 @@ public static unsafe partial class Libc
         private readonly FileStream errorStream = error;
         // Drain independently of stdout so neither OS pipe can deadlock the
         // other. No runtime binding or borrowed FILE crosses to this worker.
-        private readonly System.Threading.Tasks.Task<byte[]> errors = System.Threading.Tasks.Task.Run(() =>
+        private readonly global::System.Threading.Tasks.Task<byte[]> errors = global::System.Threading.Tasks.Task.Run(() =>
         {
             using var bytes = new MemoryStream();
             error.CopyTo(bytes);
@@ -230,7 +230,7 @@ public static unsafe partial class Libc
             for (int i = 0; result == 0 && i < 2; i++) result = LocaleActionsClose(&actions, errors[i]);
             if (result != 0) { errno = result; return null; }
             var environment = new List<string>();
-            foreach (System.Collections.DictionaryEntry item in Environment.GetEnvironmentVariables())
+            foreach (global::System.Collections.DictionaryEntry item in Environment.GetEnvironmentVariables())
                 environment.Add((string)item.Key + "=" + item.Value);
             using var argv = new LocaleArguments([executable, "-a"]);
             using var envp = new LocaleArguments(environment.ToArray());
@@ -238,11 +238,11 @@ public static unsafe partial class Libc
             if (result != 0) { errno = result; pid = 0; return null; }
             LocaleClose(output[1]); output[1] = -1;
             LocaleClose(errors[1]); errors[1] = -1;
-            var stdoutHandle = new Microsoft.Win32.SafeHandles.SafeFileHandle((nint)output[0], true);
+            var stdoutHandle = new global::Microsoft.Win32.SafeHandles.SafeFileHandle((nint)output[0], true);
             output[0] = -1;
             try { stdoutStream = new FileStream(stdoutHandle, FileAccess.Read); }
             catch { stdoutHandle.Dispose(); throw; }
-            var stderrHandle = new Microsoft.Win32.SafeHandles.SafeFileHandle((nint)errors[0], true);
+            var stderrHandle = new global::Microsoft.Win32.SafeHandles.SafeFileHandle((nint)errors[0], true);
             errors[0] = -1;
             try { stderrStream = new FileStream(stderrHandle, FileAccess.Read); }
             catch { stderrHandle.Dispose(); throw; }

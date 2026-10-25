@@ -12,6 +12,66 @@ namespace DotCC.FunctionalTests;
 public sealed partial class ManagedLibraryTests
 {
     [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Nested_instance_C_runtime_compiles_with_framework_named_records(bool objects)
+    {
+        var directory = Path.Combine(Path.GetTempPath(), "dotcc-instance-framework-names-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(directory);
+        try
+        {
+            var source = Path.Combine(directory, "source.c");
+            File.WriteAllText(source, """
+                struct System { int value; };
+                struct Microsoft { int value; };
+                static int calls;
+                int inspect(struct System *system, struct Microsoft *microsoft) {
+                    return system->value + microsoft->value + calls++;
+                }
+                """);
+            var options = new CSharpOutputOptions(NestTypes: true, Runtime: RuntimeProfile.C, InstanceMethods: true);
+            var input = source;
+            if (objects)
+            {
+                input = Path.ChangeExtension(source, ".o");
+                File.WriteAllText(input, Compiler.EmitObject(source, outputOptions: new(InstanceMethods: true)));
+            }
+            var files = objects
+                ? Compiler.LinkObjectFiles(new[] { input }, emit: EmitMode.ManagedLib, className: "Api", namespaceName: "Managed.Emulation",
+                    split: SourceSplit.Size, splitSize: 102400, outputOptions: options)
+                : Compiler.EmitCSharpFiles(new[] { input }, emit: EmitMode.ManagedLib, className: "Api", namespaceName: "Managed.Emulation",
+                    outputOptions: options);
+            var references = RuntimeReferences();
+            var compilation = CSharpCompilation.Create("InstanceFrameworkLibrary_" + Guid.NewGuid().ToString("N"),
+                files.Select(f => ParseSource(f.Value, path: f.Key, cancellationToken: TestContext.Current.CancellationToken)), references,
+                new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, allowUnsafe: true));
+            using var image = new MemoryStream();
+            var result = compilation.Emit(image, cancellationToken: TestContext.Current.CancellationToken);
+            result.Success.ShouldBeTrue(string.Join("\n", result.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error)));
+            references.Add(MetadataReference.CreateFromImage(image.ToArray()));
+            var consumer = Compile("InstanceFrameworkConsumer_" + Guid.NewGuid().ToString("N"), """
+                public static unsafe class Consumer {
+                    public static int Run() {
+                        using var first = new Managed.Emulation.Api();
+                        using var second = new Managed.Emulation.Api();
+                        Managed.Emulation.Api.System system = new() { value = 30 };
+                        Managed.Emulation.Api.Microsoft microsoft = new() { value = 12 };
+                        if (first.inspect(&system, &microsoft) != 42) return 1;
+                        if (first.inspect(&system, &microsoft) != 43) return 2;
+                        if (second.inspect(&system, &microsoft) != 42) return 3;
+                        return 0;
+                    }
+                }
+                """, references);
+            var context = new AssemblyLoadContext("instance-framework-names-" + Guid.NewGuid(), isCollectible: false);
+            image.Position = 0;
+            context.LoadFromStream(image);
+            context.LoadFromStream(new MemoryStream(consumer)).GetType("Consumer")!.GetMethod("Run")!.Invoke(null, null).ShouldBe(0);
+        }
+        finally { Directory.Delete(directory, true); }
+    }
+
+    [Theory]
     [InlineData(false, SourceSplit.None, RuntimeProfile.C)]
     [InlineData(true, SourceSplit.Function, RuntimeProfile.C)]
     [InlineData(false, SourceSplit.Size, RuntimeProfile.All)]

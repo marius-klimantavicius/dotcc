@@ -4,6 +4,24 @@
 argv/environment/cwd, file and lifecycle scenarios. It uses real guest syscalls
 and also runs natively; it does not substitute for the pinned Kestrel guest.
 
+The current runner adds `service-default-memory-descriptors-output`: a machine
+using the public defaults must map and touch 64 MiB, open 140 descriptors and
+write 1.25 MiB, with exactly 64 KiB retained output and successful completion.
+It runs in JIT/NativeAOT and both execution modes, and preserves the explicit
+32 MiB memory/8-descriptor/16-byte storage low-limit case. A native Linux run
+of the same ELF supplies the successful behavior reference. Host-only defaults
+and protocol contracts are separately checked by `tests/MachineDefaults`.
+
+The fresh targeted run at `artifacts/machine-api/attempt-kxrp2udj/receipt.json`
+passed all eleven cases in each of the four forms (44 comparisons) and twelve
+native controls. It uses strict producer
+`artifacts/campaign/20261025-042309-dda77155/receipt.json`, with all 108 objects
+freshly emitted and zero reuse. The public defaults case and explicit low-limit
+case both passed. Documentation/count updates followed this run; compiled
+implementation and fixture inputs are unchanged.
+
+The historical results below precede that additional case.
+
 The actual fixture passes all four JIT/NativeAOT × in-process/separate-process
 forms at `artifacts/machine-api/attempt-b074atpe/receipt.json` (SHA-256
 `5841d3b0e8d487e60a1dd685fd5fabf369c4a5bc6d65efef8b979cea343c2be7`).
@@ -28,7 +46,7 @@ releases the serial build/execution slot:
 
 ```sh
 python3 blink/tests/MachineApi/run.py \
-  --delivery-receipt /absolute/path/to/translation/receipt.json \
+  --delivery-receipt /absolute/path/to/artifacts/campaign/<run-id>/receipt.json \
   --delivery-sha256 EXACT_SHA256
 ```
 
@@ -43,7 +61,7 @@ sources and source membership remain frozen.
 The runner first checks the delivery SHA, all 108 object calling conventions,
 typed semantic reports, compiler identities, final/raw product manifests and
 the actual consumer source/import closure. It builds this valid static ELF and
-runs eleven finite Linux native witnesses for argv/env/cwd, file operations and
+runs twelve finite Linux native witnesses for argv/env/cwd, file operations and
 binary console/EOF. It then builds the ordinary solution and Probe project,
 preserves the complete JIT consumer and automatically deployed worker, and
 qualifies InProcess and SeparateProcess in separate attempt directories. AOT
@@ -68,7 +86,7 @@ unrelated current repository package versions cannot redefine that old ELF:
 
 ```sh
 python3 blink/tests/MachineApi/run-kestrel.py \
-  --delivery-receipt /absolute/path/to/translation/receipt.json \
+  --delivery-receipt /absolute/path/to/artifacts/campaign/<run-id>/receipt.json \
   --delivery-sha256 EXACT_SHA256 \
   --guest /absolute/path/to/KestrelService \
   --native-receipt /absolute/path/to/native/receipt.json \

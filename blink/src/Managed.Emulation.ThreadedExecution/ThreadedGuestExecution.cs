@@ -29,6 +29,9 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
     private readonly ulong memoryLimitBytes;
     private readonly object gate = new();
     private readonly List<Worker> workers = new();
+    // Only owned workers retain host synchronization/resources. Completed
+    // results keep creation order without retaining a Thread or its bindings.
+    private readonly List<GuestThreadResult?> threadResults = new();
     private readonly ThreadLocal<Worker?> current = new();
     private HostVariables? variables;
     private HostDirectories? directories;
@@ -37,9 +40,9 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
     private readonly HostIdentity identity = new();
     private Blink.System* system;
     private ulong memoryToken, instructionBudget;
-    private long issued, completed, exitSequence;
+    private long issued, completed;
     private bool closing, groupExited;
-    private int groupStatus;
+    private int groupStatus, lastExitStatus;
     private HostExecutionStopReason? executionOutcome;
     private Action<ThreadedSyscallObservation>? trace;
     private readonly int maximumWorkers;
@@ -60,8 +63,8 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         public int ThreadId, GuestId, Signal, Status, Halt;
         public string Termination = "None";
         public ulong Instructions, Ip;
-        public bool Main, Attached, Bound, Released, Finished, Joined, TidCleared;
-        public long ExitSequence;
+        public bool Main, Attached, Bound, Released, Finished, Joined, TidCleared, StartPublished, Reaping, ResourcesDisposed;
+        public int ResultIndex;
         public Exception? Error;
         public string? FirstTrap;
         public Blink.Libc.RuntimeBinding ContextBinding;
@@ -103,6 +106,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         variables = new HostVariables(); directories = new HostDirectories(io); barrier = new HostProcessMemoryBarrier();
         var main = NewWorker(true, null);
         workers.Add(main);
+        threadResults.Add(null);
         List<nint> strings = new();
         bool processState = false, exitState = false, memoryReleased = false, joined = false;
         ulong retainedBytes = 0, retainedMappings = 0;
@@ -192,7 +196,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
                             workers.All(w => w.Termination == "ThreadExit"))
                         {
                             groupExited = true;
-                            groupStatus = workers.MaxBy(w => w.ExitSequence)!.Status;
+                            groupStatus = lastExitStatus;
                         }
                         if (failure == null && groupExited && outcome == HostExecutionStopReason.None && exitState)
                             Cleanup(() => Require(program!.BlinkHostExitCallbacksRun() == 0, "Run shared exit callbacks"));
@@ -215,14 +219,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
                     foreach (nint pointer in strings) Marshal.FreeCoTaskMem(pointer);
                     Cleanup(() => directories.Dispose()); Cleanup(() => variables.Dispose()); Cleanup(() => barrier.Dispose());
                     foreach (Worker worker in workers)
-                    {
-                        Cleanup(() =>
-                        {
-                            worker.Wake.Dispose();
-                            if (worker.Wake.NotificationFailure is { } error) throw error;
-                        });
-                        Cleanup(worker.Sleep.Dispose); Cleanup(worker.Stop.Dispose); Cleanup(worker.SpawnReady.Dispose);
-                    }
+                        Cleanup(() => DisposeWorkerResources(worker));
                     current.Dispose();
                     IsQuiescent = true;
                 }
@@ -239,9 +236,9 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         if (IsQuiescent) Cleanup(program.Dispose);
         if (stop.NotificationFailure != null) failure ??= stop.NotificationFailure;
         if (failure != null) ExceptionDispatchInfo.Capture(failure).Throw();
+        foreach (Worker worker in workers) threadResults[worker.ResultIndex] = Result(worker);
         return new(groupExited, groupStatus, InstructionsCompleted, outcome, joined, memoryReleased,
-            retainedBytes, retainedMappings, workers.Select(w => new GuestThreadResult(w.GuestId, w.Instructions,
-                w.Ip, w.Termination, w.Status, w.Halt, w.Signal, w.Released) { FirstTrap = w.FirstTrap }).ToArray());
+            retainedBytes, retainedMappings, threadResults.Select(result => result!).ToArray());
     }
 
     private Worker NewWorker(bool main, Blink.Machine* machine) => new()
@@ -361,6 +358,9 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
                 Worker child = worker.PendingStarts[index];
                 worker.PendingStarts.RemoveAt(index);
                 child.SpawnReady.Set();
+                // Wait may return before Set itself has finished. A different
+                // parent must not reap/dispose SpawnReady during that Set.
+                lock (gate) child.StartPublished = true;
             }
             if (observation != null)
             {
@@ -423,15 +423,19 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         Worker parent = RequireCurrent();
         var child = (Blink.Machine*)pointer;
         if (child == null || child->blink_host_system != system) return 22;
+        ReapCompletedChildren();
         lock (gate)
         {
-            if (closing || stop.Reason != HostExecutionStopReason.None || workers.Count == maximumWorkers) return 11;
+            if (closing || stop.Reason != HostExecutionStopReason.None || workers.Count >= maximumWorkers) return 11;
             Worker? worker = null;
+            bool historyAdded = false;
             try
             {
                 worker = NewWorker(false, child);
+                worker.ResultIndex = threadResults.Count;
                 worker.Thread = new Thread(() => ChildMain(worker)) { IsBackground = true, Name = "translated-guest-child" };
                 workers.Add(worker);
+                threadResults.Add(null); historyAdded = true;
                 parent.PendingStarts.Add(worker);
                 worker.Thread.Start();
                 return 0; // No throwing work may follow successful Start.
@@ -441,6 +445,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
                 if (worker != null)
                 {
                     parent.PendingStarts.Remove(worker); workers.Remove(worker);
+                    if (historyAdded) threadResults.RemoveAt(worker.ResultIndex);
                     worker.Wake.Dispose(); worker.Sleep.Dispose(); worker.Stop.Dispose(); worker.SpawnReady.Dispose();
                 }
                 return 11;
@@ -471,7 +476,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         lock (gate)
         {
             worker.Status = status; worker.Termination = group ? "GroupExit" : "ThreadExit";
-            worker.ExitSequence = Interlocked.Increment(ref exitSequence);
+            lastExitStatus = status;
             if (group && !groupExited) { groupExited = true; groupStatus = status; }
             // Freeze the execution outcome at the actual group exit, or the
             // last ordinary thread exit. Later teardown time is not guest time.
@@ -569,6 +574,61 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         lock (gate) { closing = true; snapshot = workers.ToArray(); }
         foreach (Worker worker in snapshot) worker.Stop.RequestStop();
     }
+    private static GuestThreadResult Result(Worker worker) => new(worker.GuestId, worker.Instructions,
+        worker.Ip, worker.Termination, worker.Status, worker.Halt, worker.Signal, worker.Released)
+        { FirstTrap = worker.FirstTrap };
+
+    private static void DisposeWorkerResources(Worker worker)
+    {
+        if (worker.ResourcesDisposed) return;
+        List<Exception> errors = new();
+        void Dispose(Action action) { try { action(); } catch (Exception error) { errors.Add(error); } }
+        Dispose(worker.Wake.Dispose); Dispose(worker.Sleep.Dispose);
+        Dispose(worker.Stop.Dispose); Dispose(worker.SpawnReady.Dispose);
+        if (worker.Wake.NotificationFailure is { } wakeError) errors.Add(wakeError);
+        if (worker.Stop.NotificationFailure is { } stopError) errors.Add(stopError);
+        if (errors.Count != 0) throw new AggregateException("Worker resource cleanup failed.", errors);
+        worker.ResourcesDisposed = true;
+    }
+
+    private void ReapCompletedChildren()
+    {
+        Worker[] snapshot;
+        lock (gate)
+        {
+            snapshot = workers.Where(w => !w.Main && w.Finished && w.StartPublished && !w.Reaping && w.Error == null &&
+                w.Released && !w.Attached && !w.Bound && w.Unbind.Count == 0 && w.PendingStarts.Count == 0 &&
+                w.Termination == "ThreadExit").ToArray();
+            foreach (Worker worker in snapshot) worker.Reaping = true;
+        }
+        foreach (Worker worker in snapshot)
+        {
+            try
+            {
+                // Finished is published inside ChildMain's finally, before the
+                // host Thread exits. Never wait for it while in a guest syscall:
+                // a clear-TID wake alone does not establish reusable capacity.
+                if (!worker.Thread!.Join(0)) continue;
+                lock (gate) worker.Joined = true;
+                // Disposal can drain callbacks. Hold neither gate nor a slot
+                // reservation for a new worker until all cleanup has succeeded.
+                DisposeWorkerResources(worker);
+                lock (gate)
+                {
+                    threadResults[worker.ResultIndex] = Result(worker);
+                    workers.Remove(worker);
+                }
+            }
+            catch (Exception error)
+            {
+                // Keep failed cleanup owned and stop admission; final teardown
+                // observes the error and preserves the usual quarantine rules.
+                lock (gate) worker.Error = error;
+                StopGroup();
+            }
+            finally { lock (gate) worker.Reaping = false; }
+        }
+    }
     private bool JoinChildren()
     {
         while (true)
@@ -579,11 +639,11 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
             foreach (Worker worker in snapshot)
             {
                 if (stop.Reason != HostExecutionStopReason.None) StopGroup();
-                if (worker.Thread!.Join(TimeSpan.FromMilliseconds(100))) { worker.Joined = true; continue; }
+                if (worker.Thread!.Join(TimeSpan.FromMilliseconds(100))) { lock (gate) worker.Joined = true; continue; }
                 if (closing)
                 {
                     if (!worker.Thread.Join(TimeSpan.FromSeconds(5))) return false;
-                    worker.Joined = true;
+                    lock (gate) worker.Joined = true;
                 }
             }
         }

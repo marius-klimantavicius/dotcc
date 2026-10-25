@@ -165,16 +165,17 @@ class Context:
                 source, executable = selected.parent, selected.name
             if not (source / executable).is_file():
                 raise RuntimeError(f"Missing tool: {source / executable}; use --tools build")
+            from production_support import snapshot_tool
             destination = self.work / "tools" / project
-            destination.mkdir(parents=True, exist_ok=True)
-            paths = [path for path in source.iterdir() if path.suffix in (".dll", ".json")]
-            for path in paths:
-                shutil.copy2(path, destination / path.name)
-            self.receipt.setdefault("tools", {})[project] = self.policy.manifest(paths, source)
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            selected, binding = snapshot_tool(source / executable, destination)
+            self.receipt.setdefault("tools", {})[project] = self.policy.manifest(
+                destination.rglob("*"), destination)
+            self.receipt.setdefault("tool_snapshots", {})[project] = binding
             if project == "DotCC":
-                self.compiler = destination / executable
+                self.compiler = selected
             else:
-                self.postprocessor = destination / executable
+                self.postprocessor = selected
         self.save()
 
     def task(self, name, action):

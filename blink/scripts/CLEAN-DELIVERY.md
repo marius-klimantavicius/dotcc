@@ -1,11 +1,8 @@
-# Clean delivery and sample reproduction
+# Clean delivery and public sample reproduction
 
-`test-clean-delivery.py` checks the final public workflow at a committed revision
-in a new detached worktree. Commit the translation pipeline, sample and this
-runner before running it. The runner checks that its own bytes match the chosen
-commit; uncommitted delivery code is never copied into the new checkout.
-
-From the repository root on Linux x64:
+`test-clean-delivery.py` checks a committed revision in a new detached worktree.
+Commit the pipeline, public sample and runner before running it: the runner
+requires its own bytes to match the chosen commit, and copies no uncommitted code.
 
 ```bash
 python3 blink/scripts/test-clean-delivery.py \
@@ -13,46 +10,50 @@ python3 blink/scripts/test-clean-delivery.py \
   --worktree-parent <writable-directory>
 ```
 
-This command starts the whole reproduction. Schedule it after other shared
-compiler work and performance measurements. It preserves a unique attempt
-receipt and stdout/stderr logs under `blink/artifacts/clean-delivery/`. It also
-preserves its detached worktree on success or failure; retry with a new worktree
-instead of reusing partial output. It makes no source changes or commits.
+Run on Linux x64 with .NET 10, GCC/binutils, make and NativeAOT prerequisites.
+The runner preserves its worktree and attempt-specific receipt/logs under
+`blink/artifacts/clean-delivery/` on either success or failure. It creates no
+commits. Schedule it after other shared compiler work.
 
-The checkout begins with clean tracked files and no `bin`/`obj`, native build,
-generated or artifact directories. The only copied asset is the exact Blink
-archive pinned in that revision's source manifest. The runner then performs:
+The checkout starts clean, with no `bin`/`obj`, native build, generated or artifact
+directories. The only copied asset is the manifest-verified Blink source archive.
+Inherited selected-tool paths are removed from child environments so origin
+binaries cannot replace the fresh checkout's compiler or postprocessor.
 
-1. A fresh Release `dotcc.sln` build with `UseLocalLalrCc=false`.
-2. `blink/scripts/translate.sh --offline`, requiring all 109 selected objects to
-   be freshly produced with zero reuse, plus passing pinned upstream native tests.
-3. Verification of the separate read-only raw snapshot and final post-processed
-   project's complete source manifests.
-4. `dotnet build blink/ManagedConsumer.slnx -c Release` and the actual JIT sample.
-5. A Linux x64 NativeAOT sample publication and actual execution.
+The runner builds `dotcc.sln` with `UseLocalLalrCc=false`, then invokes
+`translate.sh --offline --hashes strict --jobs 4`. It reads the current shared
+`artifacts/campaign/current-threaded.json` pointer and validates its completed
+receipt, delivery builds, recursive tool identities and original authored sources.
+The expected product selection comes from the frozen profile's current manifest
+and authored binding list (currently 108 units). Every selected source/object must
+match its recorded bytes and be produced in this checkout's new profile, with
+zero reused objects. No historical 109-unit schema or translation pointer is used.
 
-Both sample transcripts must exactly match a freshly executed native core
-reference for normal arithmetic, memory, bounded execution and guest exit rows.
-The ABI line uses a separately compiled profile-layout reference because the
-managed signal-jump record intentionally differs from the native one. The final
-ownership accounting line must report nonnegative retained mappings and bytes
-within the driver's 64 MiB bound. These numbers describe caches before driver
-teardown; they do not by themselves prove absence of leaks.
+Raw and processed delivered source inventories are checked before and after
+consumer execution. The current shared framework publishes both as buildable
+projects; this check verifies byte stability and does not claim those directories
+have read-only filesystem permissions.
 
-Receipts record the Git revision, runner/source/archive identities, exact
-commands, installed tools, produced compiler dependencies, NuGet asset files,
-native upstream revision/test paths, delivery producers and before/after sample
-binary hashes. Raw/final source identities, compiler identities and clean final
-Git status are checked again after execution. Each command runs in its own
-process group; a timeout or interruption terminates that group and preserves the
-failed phase and logs. An isolated `TMPDIR` belongs to each attempt.
+A normal static ELF is compiled from `tests/MachineApi/guest.c` and run natively.
+The actual public sample is built through `ManagedConsumer.slnx`, published as
+Linux x64 NativeAOT, and invoked with `--run` and `--run-process` in both JIT and
+NativeAOT forms. Its `memory-cap` guest maps/unmaps 64 MiB and must print exactly
+the native `memory-available` result with exit zero and no diagnostics. This
+exercises the current mounted-executable workflow, public owner and deployed
+worker. It does not substitute a no-argument usage response for guest execution.
 
-This is a clean source/output reproduction using installed SDK/native tools and
-normal NuGet cache/restore, not a hermetic build. Offline applies to Blink's
-pinned archive acquisition. The gate qualifies the normal core showcase; it
-does not execute an HTTP service, translated worker, Windows runtime, custom
-fault-injection or invalid-ELF tests, or the separate complete dependency audit.
-No prior campaign result substitutes for execution in this checkout.
+The receipt binds the commit, source/archive/runner, recursive fresh compiler
+closure, tools, exact commands, NuGet assets, native tests, producer selection and
+before/after consumer binaries. Each command owns a process group; timeout or
+interruption terminates it and preserves the failed phase. Final source manifests,
+compiler identities, guest bytes, HEAD and clean Git status are rechecked.
+
+Installed tools and normal NuGet restore/cache are reused; this is not hermetic.
+Offline restricts Blink archive acquisition. No HTTP service, Windows, custom
+fault injection, malformed ELF or complete dependency-audit qualification is
+claimed. Run the maintained `verify` suites for broader runtime qualification.
+
+## Historical result from the former core sample
 
 Observed clean pass: committed `f38de7f`, receipt
 `artifacts/clean-delivery/attempt-0gfaz9m3/receipt.json` (SHA256

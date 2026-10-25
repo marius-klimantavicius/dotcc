@@ -102,6 +102,101 @@ Value(live.Rename("/normal", "/renamed")); Value(live.Unlink("/renamed"));
 Check(Value(live.ReadAt(opened, pair, 0)) == 2 && Encoding.ASCII.GetString(pair) == "XY", "unlinked open description");
 Value(live.Close(opened)); Value(live.Close(duplicate));
 Check(live.OpenDescriptors == 0, "all descriptions closed");
+
+// Each independent open retains the same inode once; dup retains its open
+// description (and offset) until the last duplicate closes.
+foreach (bool mountedRoot in new[] { false, true })
+{
+    string retainedPath = Directory.CreateDirectory(Path.Combine(scratch, mountedRoot ? "retained-mounted" : "retained")).FullName;
+    var retainedStore = HostDirectoryFileSystem.OpenRoot(retainedPath, writableLimit: 100, nodeLimit: 4);
+    using IGuestFileSystem retained = mountedRoot
+        ? new MountedFileSystem(retainedStore, ownsRoot: true, privateWritableLimit: 100, privateNodeLimit: 4)
+        : retainedStore;
+    int first = Value(retained.Open("/file", FileAccessMode.Read | FileAccessMode.Write, create: true));
+    Check(Value(retained.Write(first, new byte[60])) == 60, "initial retained bytes");
+    int second = Value(retained.Open("/file", FileAccessMode.Read | FileAccessMode.Write));
+    int dup = Value(retained.Duplicate(first));
+    Check(Value(retained.Seek(second, 0, SeekOrigin.Current)) == 0 && Value(retained.Seek(dup, 0, SeekOrigin.Current)) == 60,
+        "separate open offsets differ from dup offset");
+    if (HostDirectoryFileSystem.SupportsPersistentUnixModes) Value(retained.ChangeMode(first, 0x1a4)); // 0644
+    var access = new VirtualFileTimeUpdate(FileTimeSelection.Explicit, new(1700000000, 0));
+    var modify = new VirtualFileTimeUpdate(FileTimeSelection.Explicit, new(1700000010, 0));
+    Value(retained.SetTimes(first, access, modify));
+    var before = Value(retained.FStat(first));
+    Check(before.Inode == Value(retained.FStat(second)).Inode && before.Links == 1, "independent opens share linked inode");
+    Value(retained.Unlink("/file"));
+    var after = Value(retained.FStat(second));
+    Check(after.Inode == before.Inode && after.Mode == before.Mode && after.Immutable == before.Immutable &&
+        after.AccessTicks == before.AccessTicks && after.ModifyTicks == before.ModifyTicks &&
+        after.ChangeTicks >= before.ChangeTicks && after.Links == 0 && after.Length == 60,
+        "unlink preserves inode metadata and removes link");
+    var capacity = Value(retained.Capacity(second));
+    Check(retained.WritableBytes == 60 && retained.NodeCount == 2 && capacity.FreeBytes == 40 && capacity.FreeNodes == 2,
+        "retained inode is charged once across independent opens and dup");
+    Check(Value(retained.WriteAt(second, "x"u8, 0)) == 1, "detached overwrite within quota");
+    var written = Value(retained.FStat(dup));
+    Check(written.ModifyTicks > before.ModifyTicks && written.ChangeTicks >= after.ChangeTicks, "detached write updates metadata across descriptions");
+    Value(retained.Truncate(dup, 70));
+    Check(Value(retained.FStat(second)).Length == 70 && retained.WritableBytes == 70, "detached truncate is visible to all opens");
+    if (HostDirectoryFileSystem.SupportsPersistentUnixModes)
+    {
+        Value(retained.ChangeMode(second, 0x180));
+        Check(Value(retained.FStat(dup)).Mode == 0x8180, "detached chmod updates shared inode");
+    }
+    Value(retained.SetTimes(second, access, modify));
+    var updated = Value(retained.FStat(dup));
+    Check(updated.AccessTicks == access.Time.Ticks && updated.ModifyTicks == modify.Time.Ticks && updated.Links == 0,
+        "detached descriptor times are preserved across independent opens");
+    Write(retained, "/file", "new");
+    Check(Value(retained.Stat("/file")).Inode != before.Inode && Value(retained.FStat(first)).Length == 70,
+        "recreated path has independent identity and contents");
+    Value(retained.Rename("/file", "/fresh")); Value(retained.Unlink("/fresh"));
+    Check(Value(retained.FStat(second)).Inode == before.Inode && Value(retained.FStat(second)).Length == 70,
+        "later path rename and unlink cannot retarget detached inode");
+    Value(retained.Close(first));
+    Check(retained.WritableBytes == 70 && retained.NodeCount == 2, "dup still retains original description");
+    Value(retained.Close(dup));
+    Check(retained.WritableBytes == 70 && retained.NodeCount == 2, "independent description retains storage after last dup");
+    Value(retained.Close(second));
+    Check(retained.WritableBytes == 0 && retained.NodeCount == 1 && Value(retained.Capacity("/")).FreeBytes == 100,
+        "final independent close releases retained bytes and node");
+
+    Write(retained, "/source", "source"); Write(retained, "/target", "target-old");
+    int source = Value(retained.Open("/source", FileAccessMode.Read));
+    int target = Value(retained.Open("/target", FileAccessMode.Read | FileAccessMode.Write));
+    int otherTarget = Value(retained.Open("/target", FileAccessMode.Read));
+    int targetDup = Value(retained.Duplicate(target));
+    Value(retained.SetTimes(target, access, modify));
+    var oldTarget = Value(retained.FStat(target)); var oldSource = Value(retained.FStat(source));
+    Value(retained.Rename("/source", "/target"));
+    var replaced = Value(retained.FStat(otherTarget)); var replacement = Value(retained.Stat("/target"));
+    Check(replaced.Inode == oldTarget.Inode && replaced.Mode == oldTarget.Mode && replaced.ModifyTicks == oldTarget.ModifyTicks &&
+        replaced.AccessTicks == oldTarget.AccessTicks && replaced.Links == 0 && replaced.Length == 10,
+        "replacement preserves old target inode metadata");
+    Check(replacement.Inode == oldSource.Inode && Value(retained.FStat(source)).Links == 1 &&
+        Read(retained, "/target") == "source", "replacement moves source inode and path");
+    Check(retained.WritableBytes == 16 && retained.NodeCount == 3 && Value(retained.Capacity("/")).FreeBytes == 84,
+        "replacement charges detached target once");
+    Check(Value(retained.WriteAt(target, "!"u8, 0)) == 1 && Read(retained, "/target") == "source",
+        "writing replaced inode does not alter replacement");
+    Value(retained.Close(target)); Value(retained.Close(otherTarget));
+    Check(retained.WritableBytes == 16, "duplicate retains replaced inode");
+    Value(retained.Close(targetDup));
+    Check(retained.WritableBytes == 6 && retained.NodeCount == 2, "final replacement close releases old target");
+    Value(retained.Close(source)); Value(retained.Unlink("/target"));
+
+    Value(retained.MakeDirectory("/directory", 0x1ed));
+    int directory = Value(retained.Open("/directory", FileAccessMode.Read, allowDirectory: true));
+    int otherDirectory = Value(retained.Open("/directory", FileAccessMode.Read, allowDirectory: true));
+    Value(retained.SetTimes(directory, access, modify)); var directoryBefore = Value(retained.FStat(directory));
+    Value(retained.Unlink("/directory", removeDirectory: true));
+    var detachedDirectory = Value(retained.FStat(otherDirectory));
+    Check(detachedDirectory.Directory && detachedDirectory.Inode == directoryBefore.Inode && detachedDirectory.Mode == directoryBefore.Mode &&
+        detachedDirectory.ModifyTicks == directoryBefore.ModifyTicks && detachedDirectory.Links == 0 && retained.NodeCount == 2,
+        "open removed directory preserves metadata and retains one node");
+    Value(retained.Close(directory)); Check(retained.NodeCount == 2, "other directory open retains node");
+    Value(retained.Close(otherDirectory)); Check(retained.NodeCount == 1, "final directory close releases node");
+}
 if (!OperatingSystem.IsWindows())
 {
     // Ordinary policy denial, not invalid access or fault injection.

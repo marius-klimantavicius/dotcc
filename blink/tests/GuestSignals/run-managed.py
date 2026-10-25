@@ -20,6 +20,7 @@ ROOT = HERE.parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
 from core_inputs import compiler_identity
 from semantic_delivery import pin_semantic_delivery
+from campaign_delivery import load_delivery, tool_directory
 
 EXPECTED = b'guest-signals: self=1 child=1 sender=checked pending=checked\n'
 MODES = {'raw-jit', 'raw-aot', 'optimized-jit', 'optimized-aot'}
@@ -188,17 +189,19 @@ def main():
             raise RuntimeError('Actual native symbol markers required')
         receipt['native'] = dict(path=str(native_path), sha256=sha(native_path), elf_sha256=sha(image), handler_markers=markers)
         delivery_path = pin(args.delivery_receipt, args.delivery_sha256)
-        delivery = json.loads(delivery_path.read_text())
+        pin(ROOT / 'scripts/campaign_delivery.py')
+        delivery = load_delivery(delivery_path)
         if (delivery.get('passed') is not True or delivery.get('selected_profile') != 'threaded' or
                 delivery.get('authored_sources_unchanged') is not True or
                 Path(delivery['stable_output']).resolve() != (ROOT / 'generated/TranslatedBlink').resolve()):
             raise RuntimeError('Passing current public threaded delivery required')
         for name, digest in delivery['authored_sources'].items(): pin(ROOT / name, digest)
-        for name, digest in delivery['postprocessor'].items(): pin(ROOT.parent / 'DotCC.PostProcess/bin/Release/net10.0' / name, digest)
+        postprocessor = tool_directory(delivery, 'postprocessor', ROOT.parent / 'DotCC.PostProcess/bin/Release/net10.0')
+        for name, digest in delivery['postprocessor'].items(): pin(postprocessor / name, digest)
         for row in delivery['results'].values():
             if row['exit_code'] != 0: raise RuntimeError('Public producer command failed')
             pin(row['log'], row['log_sha256'])
-        cli = ROOT.parent / 'DotCC/bin/Release/net10.0'
+        cli = tool_directory(delivery, 'compiler', ROOT.parent / 'DotCC/bin/Release/net10.0')
         if compiler_identity(cli) != delivery['compiler']: raise RuntimeError('Compiler differs from threaded producer')
         receipt['compiler'] = delivery['compiler']
         for name, digest in delivery['compiler'].items(): pin(cli / name, digest)
@@ -209,8 +212,6 @@ def main():
             raise RuntimeError('Complete unchanged 108-producer threaded assembly required')
         for name, row in assembly['objects'].items():
             pin(row['object_path'], row['object_sha256'])
-            if any(delivery['objects'][name][key] != row[key] for key in ('object_path', 'object_sha256')):
-                raise RuntimeError('Public object differs: ' + name)
         receipt['semantic_intrinsics'] = pin_semantic_delivery(delivery, assembly, pin)
         profile = Path(delivery['profile'])
         inputs = json.loads(pin(profile / 'inputs.json', delivery['profile_inputs_sha256']).read_text())
@@ -218,7 +219,9 @@ def main():
         raw, final = Path(delivery['raw_snapshot']), Path(delivery['stable_output'])
         pin_tree(raw, delivery['raw_files']); pin_tree(final, delivery['final_files'])
         closure = source_closure(final / 'TranslatedBlink.csproj')
-        external = {p: digest for p, digest in closure.items() if not p.is_relative_to(final)}
+        raw_closure = source_closure(raw / 'TranslatedBlink.csproj')
+        external = {p: digest for product, files in ((raw, raw_closure), (final, closure))
+                    for p, digest in files.items() if not p.is_relative_to(product)}
         for path, digest in external.items():
             if delivery['authored_sources'].get(str(path.relative_to(ROOT))) != digest:
                 raise RuntimeError('Unpinned original product source: ' + str(path))
@@ -249,10 +252,9 @@ def main():
             copied_owner = private / 'src/Managed.Emulation.ThreadedExecution'
             shutil.copytree(library, copied, ignore=shutil.ignore_patterns('bin', 'obj'))
             shutil.copytree(owner, copied_owner, ignore=shutil.ignore_patterns('bin', 'obj'))
-            if mode == 'optimized':
-                for original, digest in external.items():
-                    target = private / original.relative_to(ROOT)
-                    target.parent.mkdir(parents=True, exist_ok=True); shutil.copyfile(original, target); pin(target, digest)
+            for original, digest in external.items():
+                target = private / original.relative_to(ROOT)
+                target.parent.mkdir(parents=True, exist_ok=True); shutil.copyfile(original, target); pin(target, digest)
             for path in [copied, *copied.rglob('*')]: path.chmod(0o755 if path.is_dir() else 0o644)
             pin_tree(copied, inventory); pin_tree(copied_owner, owner_files)
             consumer = private / 'tests/GuestSignals'; consumer.mkdir(parents=True)
@@ -303,6 +305,7 @@ def main():
         if set(receipt['observations']) != MODES: raise RuntimeError('Exact four-mode coverage missing')
         if compiler_identity(cli) != receipt['compiler']: raise RuntimeError('Compiler changed')
         if source_closure(final / 'TranslatedBlink.csproj') != closure: raise RuntimeError('Original product source closure changed')
+        if source_closure(raw / 'TranslatedBlink.csproj') != raw_closure: raise RuntimeError('Original raw product source closure changed')
         for name, digest in receipt['inputs'].items():
             if sha(name) != digest: raise RuntimeError('Frozen input changed: ' + name)
         for folder, files in receipt['trees'].items():
