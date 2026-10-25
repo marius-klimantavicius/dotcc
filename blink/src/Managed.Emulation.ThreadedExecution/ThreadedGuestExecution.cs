@@ -22,11 +22,12 @@ public sealed record ThreadedSyscallObservation(int GuestThreadId, ulong Instruc
 /// <summary>One guest process, one dedicated C# worker per upstream Machine.
 /// Run is blocking and must itself run on a dedicated caller thread. The caller
 /// owns IO/stop until IsQuiescent; failure to quiesce retains the owner and backing for quarantine.</summary>
-public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
+public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
 {
     private readonly InstanceIo io;
     private readonly HostExecutionStop stop;
     private readonly ulong memoryLimitBytes;
+    private readonly ulong? virtualMemoryLimitBytes;
     private readonly object gate = new();
     private readonly List<Worker> workers = new();
     // Only owned workers retain host synchronization/resources. Completed
@@ -78,13 +79,18 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
     private sealed class GuestSignal : Exception { }
 
     public ThreadedGuestExecution(InstanceIo io, HostExecutionStop stop,
-        ulong memoryLimitBytes = 64UL * 1024 * 1024, int maximumWorkers = 16)
+        ulong memoryLimitBytes = 64UL * 1024 * 1024, int maximumWorkers = 16,
+        ulong? virtualMemoryLimitBytes = null)
     {
         ArgumentNullException.ThrowIfNull(io); ArgumentNullException.ThrowIfNull(stop);
         if (memoryLimitBytes < 8192 || memoryLimitBytes > 256UL * 1024 * 1024 || memoryLimitBytes % 4096 != 0)
             throw new ArgumentOutOfRangeException(nameof(memoryLimitBytes), "Guest backing requires a page-aligned limit from 8 KiB through 256 MiB.");
         if (maximumWorkers is < 1 or > 256) throw new ArgumentOutOfRangeException(nameof(maximumWorkers));
+        if (virtualMemoryLimitBytes is ulong virtualBytes && (virtualBytes < memoryLimitBytes ||
+            virtualBytes > 4UL * 1024 * 1024 * 1024 || virtualBytes % 4096 != 0))
+            throw new ArgumentOutOfRangeException(nameof(virtualMemoryLimitBytes));
         this.io = io; this.stop = stop; this.memoryLimitBytes = memoryLimitBytes;
+        this.virtualMemoryLimitBytes = virtualMemoryLimitBytes;
         this.maximumWorkers = maximumWorkers;
     }
 
@@ -142,7 +148,9 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
             Require(program!.SetOverlays(Text(""), false) == 0, "Initialize overlays");
             system = program!.NewSystem(new Blink.XedMachineMode { omode = 2, genmode = 1 });
             Require(system != null, "NewSystem");
-            Require(program!.BlinkHostInitializeBoundResourceLimits(system) == 0, "Initialize guest limits");
+            Require((virtualMemoryLimitBytes is ulong virtualBytes
+                ? program!.BlinkHostInitializeBoundResourceLimitsWithVirtual(system, virtualBytes)
+                : program!.BlinkHostInitializeBoundResourceLimits(system)) == 0, "Initialize guest limits");
             main.Machine = program!.NewMachine(system, null);
             Require(main.Machine != null, "NewMachine");
             main.GuestId = main.Machine->tid;
@@ -263,6 +271,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         BindOne(() => Blink.BindHostGuestSignals(OnSignal), Blink.UnbindHostGuestSignals);
         BindOne(() => Blink.BindHostExecutionStop(worker.Stop), Blink.UnbindHostExecutionStop);
         BindOne(() => Blink.BindHostIo(io, worker.Stop.Token, worker.Wake), Blink.UnbindHostIo);
+        BindOne(() => Blink.BindHostProcessMaps(SnapshotProcessMaps, (ulong)Blink.kStackSize), Blink.UnbindHostProcessMaps);
         BindOne(() => Blink.BindHostSleep(worker.Sleep, worker.Stop.Token, worker.Wake), Blink.UnbindHostSleep);
         BindOne(() => Blink.BindHostDirectories(directories!), Blink.UnbindHostDirectories);
         BindOne(() => Blink.BindHostVariables(variables!), Blink.UnbindHostVariables);
@@ -570,6 +579,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
     private void OnSignal(nint pointer, int signal, int code)
     {
         Worker worker = RequireCurrent(); Require((nint)worker.Machine == pointer, "Signal owner");
+        worker.FirstTrap ??= $"ip=0x{worker.Machine->ip:x} address=0x{worker.Machine->faultaddr:x} signal={signal} code={code}";
         worker.Signal = signal; throw new GuestSignal();
     }
     private void StopGroup()

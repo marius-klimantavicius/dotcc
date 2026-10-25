@@ -7,6 +7,8 @@ It never modifies the immutable upstream tree or rewrites generated C#.
 import argparse,hashlib,json,shutil,sys
 from pathlib import Path
 import memory_bindings
+import signal_bindings
+import cpu_bindings
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'src/Host/scripts'))
 import stage_elf_entry
@@ -24,7 +26,7 @@ shutil.copyfile(Path(__file__),profile/'stage-host-bindings.py')
 authored=profile/'authored';authored.mkdir(exist_ok=True)
 managed=profile/'managed';managed.mkdir(exist_ok=True)
 inputs={}
-for relative in memory_bindings.INPUTS:
+for relative in (*memory_bindings.INPUTS, *signal_bindings.INPUTS, *cpu_bindings.INPUTS):
     original=ROOT/relative
     inputs[relative]=sha(original)
     shutil.copyfile(original,profile/original.name)
@@ -78,6 +80,8 @@ for entry in entries:
     if entry['path']=='blink/argv.c':
         content=stage_elf_entry.adapt(content)
     content=memory_bindings.adapt(entry['path'],content)
+    content=signal_bindings.adapt(entry['path'],content)
+    content=cpu_bindings.adapt(entry['path'],content)
     target.parent.mkdir(exist_ok=True)
     target.write_bytes(b'#include "host-bindings.h"\n'+content)
     overrides[entry['path']]=dict(staged_path=str(target.relative_to(ROOT)),sha256=sha(target),original_sha256=entry['sha256'])

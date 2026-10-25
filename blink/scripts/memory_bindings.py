@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 INPUTS = ('scripts/memory_bindings.py', 'src/Host/guest-private-mapping.inc',
-          'config/private-mapping-adaptations.json')
+          'config/private-mapping-adaptations.json', 'src/Host/guest-memfd.inc')
 
 
 def replace_once(source, before, after):
@@ -20,7 +20,15 @@ def replace_once(source, before, after):
 
 def adapt(path, content):
     source = content.decode()
-    if path == 'blink/memorymalloc.c':
+    if path == 'blink/elf.c':
+        # GNU ld may emit an unused, empty PT_LOAD at address zero when a
+        # valid static executable has no writable data. It contributes no
+        # address range; Linux executes the remaining nonempty load segments.
+        source = replace_once(source,
+            '      if (Read32(phdr->type) == PT_LOAD_) {\n',
+            '      if (Read32(phdr->type) == PT_LOAD_ &&\n'
+            '          (Read64(phdr->memsz) || Read64(phdr->filesz))) {\n')
+    elif path == 'blink/memorymalloc.c':
         marker = 'i64 ReserveVirtual('
         if source.count(marker) != 1:
             raise ValueError('ReserveVirtual boundary differs')
@@ -34,6 +42,19 @@ def adapt(path, content):
         if hashlib.sha256(normalized.encode()).hexdigest() != pins['ReserveVirtual_sha256']:
             raise ValueError('Reviewed ReserveVirtual source identity differs')
         source = replace_once(source, original, (ROOT / INPUTS[1]).read_text())
+        # An absent table entry covers only the remainder of its span from
+        # this address. A full-span stride can skip an occupied next entry
+        # when an mmap hint starts partway through the absent subtree.
+        source = replace_once(source,
+            '    got += (u64)1 << i;\n',
+            '    got += ((u64)1 << i) - (((u64)virt + got) & (((u64)1 << i) - 1));\n')
+        source = replace_once(source,
+            '  for (end = virt + size; virt < end; virt += (u64)1 << i) {\n',
+            '  for (end = virt + size; virt < end;\n'
+            '       virt += ((u64)1 << i) - ((u64)virt & (((u64)1 << i) - 1))) {\n')
+        source = replace_once(source, '  key = SetProtection(prot);\n',
+            '  if (BlinkGuestFileProtection(s, virt, size, prot)) return -1;\n'
+            '  key = SetProtection(prot);\n')
     elif path == 'blink/memory.c':
         source = replace_once(source,
             '  if ((entry & PAGE_RSRV) && !(entry = HandlePageFault(m, pslot, entry))) {',
@@ -63,7 +84,49 @@ def adapt(path, content):
             '                          SIGBUS_LINUX : SIGSEGV_LINUX,\n'
             '                          m->segvcode == -BUS_ADRERR_LINUX ? BUS_ADRERR_LINUX :\n'
             '                          m->segvcode ? m->segvcode : SEGV_MAPERR_LINUX);')
+    elif path == 'blink/open.c':
+        source = replace_once(source,
+            '  RESTARTABLE(fildes = VfsOpen(GetDirFildes(dirfildes), path, sysflags, mode));\n'
+            '  if (fildes != -1) {\n',
+            '  RESTARTABLE(fildes = VfsOpen(GetDirFildes(dirfildes), path, sysflags, mode));\n'
+            '  if (fildes != -1) {\n'
+            '    if (oflags & O_TRUNC_LINUX) InvalidateSystem(m->system, true, true);\n')
     elif path == 'blink/syscall.c':
+        source = replace_once(source,
+            '  rc = VfsFtruncate(fd, length);\n  VfsClose(fd);\n  return rc;\n',
+            '  rc = VfsFtruncate(fd, length);\n  VfsClose(fd);\n'
+            '  if (!rc) InvalidateSystem(m->system, true, true);\n  return rc;\n')
+        source = replace_once(source,
+            '  RESTARTABLE(rc = VfsFtruncate(fildes, length));\n'
+            '  return rc;\n',
+            '  RESTARTABLE(rc = VfsFtruncate(fildes, length));\n'
+            '  /* Shared memfd EOF changes must also retire cached codehost pointers. */\n'
+            '  if (!rc) InvalidateSystem(m->system, true, true);\n'
+            '  return rc;\n')
+        # The thread-stage predecessor rejects shared mappings. Replace only
+        # that exact authored guard; base single-thread staging has no guard.
+        shared_guard = (
+            '  if ((flags & MAP_TYPE_LINUX) == MAP_SHARED_LINUX ||\n'
+            '      (flags & MAP_TYPE_LINUX) == (MAP_SHARED_LINUX | MAP_PRIVATE_LINUX)) {\n'
+            '    return enotsup();\n'
+            '  }\n'
+            '  if ((flags & MAP_TYPE_LINUX) != MAP_PRIVATE_LINUX) return einval();\n')
+        if shared_guard in source:
+            source = replace_once(source, shared_guard,
+                '  if ((flags & MAP_TYPE_LINUX) == (MAP_SHARED_LINUX | MAP_PRIVATE_LINUX))\n'
+                '    return enotsup();\n'
+                '  if ((flags & MAP_TYPE_LINUX) != MAP_PRIVATE_LINUX &&\n'
+                '      (flags & MAP_TYPE_LINUX) != MAP_SHARED_LINUX) return einval();\n'
+                '  if ((flags & MAP_TYPE_LINUX) == MAP_SHARED_LINUX &&\n'
+                '      (flags & MAP_ANONYMOUS_LINUX)) return enotsup();\n')
+        source = replace_once(source,
+            'static int SysSocket(struct Machine *m, i32 family, i32 type, i32 protocol) {',
+            (ROOT / INPUTS[3]).read_text() + '\n'
+            'static int SysSocket(struct Machine *m, i32 family, i32 type, i32 protocol) {')
+        source = replace_once(source,
+            '    SYSCALL(3, 0x13E, "getrandom", SysGetrandom, STRACE_GETRANDOM);',
+            '    SYSCALL(3, 0x13E, "getrandom", SysGetrandom, STRACE_GETRANDOM);\n'
+            '    SYSCALL(2, 0x13F, "memfd_create", SysMemfdCreate, STRACE_2);')
         source = replace_once(source,
             '  i64 newautomap;\n  if (!IsValidAddrSize(virt, size)) return einval();',
             '  i64 newautomap;\n'

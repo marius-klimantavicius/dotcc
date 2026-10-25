@@ -35,6 +35,7 @@ static int AddWaiters(struct Machine *m, struct Futex *f) {
     if (!w) return 1;
     w->machine = m;
     w->futex = f;
+    w->mask = 0xffffffffu;
     w->next = g_blink_futex_waiters;
     g_blink_futex_waiters = w;
   }
@@ -71,6 +72,22 @@ int main(void) {
   CHECK(!g_blink_futex_waiters && !bus.futexes.active && !f->waiters);
   CHECK(!AddWaiters(&m, f));
   CHECK(SysFutexWake(&m, 4096, 0x7fffffff) == 3);
+  BlinkGuestFutexCleanup(&m);
+  CHECK(!g_blink_futex_waiters && !bus.futexes.active && !f->waiters);
+  CHECK(!AddWaiters(&m, f));
+  selected = 0;
+  for (w = g_blink_futex_waiters; w; w = w->next) w->mask = 1u << selected++;
+  CHECK(BlinkFutexWake(&m, 4096, 2, 8) == 0);
+  CHECK(BlinkFutexWake(&m, 4096, 2, 2) == 1);
+  CHECK(BlinkFutexWake(&m, 4096, 2, 2) == 0);
+  CHECK(BlinkFutexWake(&m, 4096, 1, 5) == 1);
+  CHECK(SysFutexWake(&m, 4096, 3) == 1);
+  CHECK(BlinkFutexWake(&m, 4096, 3, 0xffffffffu) == 0);
+  BlinkGuestFutexCleanup(&m);
+  CHECK(!g_blink_futex_waiters && !bus.futexes.active && !f->waiters);
+  CHECK(!AddWaiters(&m, f));
+  for (w = g_blink_futex_waiters; w; w = w->next) w->departing = true;
+  CHECK(SysFutexWake(&m, 4096, 3) == 0);
   BlinkGuestFutexCleanup(&m);
   CHECK(!g_blink_futex_waiters && !bus.futexes.active && !f->waiters);
   CHECK(!pthread_cond_destroy(&f->cond));

@@ -15,6 +15,8 @@ import sys
 
 from core_inputs import compiler_directory, compiler_identity, emission_identity, profile_sources, stage_managed_boundaries
 import memory_bindings
+import signal_bindings
+import cpu_bindings
 
 ROOT = Path(__file__).resolve().parents[1]
 REPO = ROOT.parent
@@ -326,6 +328,8 @@ def main():
             if name == 'blink/argv.c':
                 expected_body = stage_elf_entry.adapt(expected_body)
             expected_body = memory_bindings.adapt(name, expected_body)
+            expected_body = signal_bindings.adapt(name, expected_body)
+            expected_body = cpu_bindings.adapt(name, expected_body)
             if (digest(original) != old_row['pre_binding_sha256'] or old_bound != PREFIX + expected_body
                     or old_row['original_sha256'] != pins[name] or old_row['staged_sha256'] != entry['sha256']):
                 raise RuntimeError('Exact base preamble/source chain differs: ' + name)
@@ -339,8 +343,10 @@ def main():
                 previous = dict(staged_path=str(adapted_path.relative_to(ROOT)),
                                 sha256=digest(content), original_sha256=pins[name])
                 # Thread/mremap derivation starts from its reviewed upstream
-                # chain. Reapply the host mapping correction to that new body.
+                # chain. Reapply host mapping, signal, and CPU corrections.
                 content = memory_bindings.adapt(name, content)
+                content = signal_bindings.adapt(name, content)
+                content = cpu_bindings.adapt(name, content)
             else:
                 content = old_bound[len(PREFIX):]
                 previous = old_row['previous_adaptation']

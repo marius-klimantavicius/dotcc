@@ -165,8 +165,9 @@ def main():
                     shutil.copyfile(original, copied_library / name); pin(copied_library / name, sha(original))
                     ref = ET.SubElement(items, 'Reference', Include=Path(name).stem)
                     ET.SubElement(ref, 'HintPath').text = str(copied_library / name)
-                original = pin(owner / 'ThreadedGuestExecution.cs')
-                shutil.copyfile(original, private / original.name); pin(private / original.name, sha(original))
+                for original in sorted(owner.glob('*.cs')):
+                    pin(original)
+                    shutil.copyfile(original, private / original.name); pin(private / original.name, sha(original))
             else:
                 sys.path.insert(0, str(ROOT / 'scripts'))
                 from campaign_delivery import load_clean_delivery
@@ -213,9 +214,10 @@ def main():
             receipt['inputs'].pop(str(private / 'Program.cs'))
             pin(consumer / 'Program.cs')
             if args.host_library:
-                (private / 'ThreadedGuestExecution.cs').rename(consumer / 'ThreadedGuestExecution.cs')
-                receipt['inputs'].pop(str(private / 'ThreadedGuestExecution.cs'))
-                pin(consumer / 'ThreadedGuestExecution.cs')
+                for source in sorted(owner.glob('*.cs')):
+                    (private / source.name).rename(consumer / source.name)
+                    receipt['inputs'].pop(str(private / source.name))
+                    pin(consumer / source.name)
             csproj = consumer / csproj.name
             ET.ElementTree(project).write(csproj, encoding='unicode'); pin(csproj)
             run('build', ['dotnet', 'build', csproj, '-c', 'Release', '--disable-build-servers', '-p:UseSharedCompilation=false'], 600)

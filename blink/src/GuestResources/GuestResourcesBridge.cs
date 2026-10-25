@@ -16,4 +16,15 @@ public partial class Blink
         if (!capacity.Succeeded) { Libc.errno = (int)capacity.Error; return -1; }
         return BlinkHostInitializeResourceLimits(system, (ulong)capacity.Value);
     }
+#if DOTCC_INSTANCE_FOR_HOST
+    public unsafe int BlinkHostInitializeBoundResourceLimitsWithVirtual(System* system, ulong virtualBytes)
+#else
+    public static unsafe int BlinkHostInitializeBoundResourceLimitsWithVirtual(System* system, ulong virtualBytes)
+#endif
+    {
+        if (io == null) { Libc.errno = 19; return -1; }
+        var capacity = io.DescriptorCapacity();
+        if (!capacity.Succeeded) { Libc.errno = (int)capacity.Error; return -1; }
+        return BlinkHostInitializeResourceLimitsWithVirtual(system, (ulong)capacity.Value, virtualBytes);
+    }
 }

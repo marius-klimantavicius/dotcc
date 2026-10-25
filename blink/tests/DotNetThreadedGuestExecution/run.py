@@ -242,7 +242,9 @@ def main():
         if sdk_selection.is_file(): shutil.copyfile(verify(sdk_selection), attempt / "global.json")
         for name in ("Directory.Build.props", "Directory.Packages.props", "nuget.config"):
             shutil.copyfile(verify(REPO / name), attempt / name)
-        shutil.copyfile(verify(ROOT / "src/Managed.Emulation.ThreadedExecution/ThreadedGuestExecution.cs"), attempt / "ThreadedGuestExecution.cs")
+        owner_sources = sorted((ROOT / "src/Managed.Emulation.ThreadedExecution").glob("*.cs"))
+        for source in owner_sources:
+            shutil.copyfile(verify(source), attempt / source.name)
         shutil.copyfile(verify(Path(__file__).with_name("Program.cs")), attempt / "Program.cs")
         image = attempt / "image"
         image.mkdir()
@@ -286,7 +288,7 @@ def main():
             private = attempt / "modes" / source_mode if args.all_modes else attempt
             private.mkdir(parents=True, exist_ok=True)
             if args.all_modes:
-                for name in ("Program.cs", "ThreadedGuestExecution.cs"):
+                for name in ("Program.cs", *[source.name for source in owner_sources]):
                     shutil.copyfile(attempt / name, private / name)
                     verify(private / name, sha(attempt / name))
             library = private / "library/TranslatedBlink.csproj"
@@ -295,7 +297,7 @@ def main():
             project(library, "TranslatedBlink", "Library", [attempt / source_mode / "Sources/**/*.cs",
                     attempt / source_mode / "Bridges/*.cs"],
                     [attempt / source_mode / "Host/Managed.Emulation.Host.csproj"], "BLINK_FULL_CORE")
-            project(execution, "Managed.Emulation.ThreadedExecution", "Library", [private / "ThreadedGuestExecution.cs"], [library])
+            project(execution, "Managed.Emulation.ThreadedExecution", "Library", [private / source.name for source in owner_sources], [library])
             project(consumer, "DotNetThreadedGuestExecution", "Exe", [private / "Program.cs"], [execution])
             consumers[source_mode] = consumer
         receipt["prepared_files"] = {str(p.relative_to(attempt)): sha(p) for p in attempt.rglob("*") if p.is_file()}

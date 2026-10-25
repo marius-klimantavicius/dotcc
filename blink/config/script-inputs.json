@@ -57,7 +57,7 @@
   "src/UpstreamMremap/stage.py": {
     "BLOCK_PIN": "1ac9b2d866051b6ae2d2554ab8ebdf0f5992474df744d76ea67cd62188034f97",
     "ORIGINAL_PIN": "4eb3f54173ba37341b300e7668cc4ba3650578cc3d23d713573ffa486ae0e2c3",
-    "PREDECESSOR_PIN": "59654a81a70d3dbde3b1d46fb5b0f47e2ee9ffc5e25ac541fab1e8ea35351e69",
+    "PREDECESSOR_PIN": "5398586b5c3693d20edde89249dd4e463ace6b890e38820dce82f3cfc1b49cd9",
     "SIGNAL_PIN": "e4a1a44787a5e99022a5d8224165e0c551275b4706b9f689f4f826e4f0b95c5a"
   },
   "tests/CpuConformance/selection.py": {

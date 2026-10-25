@@ -7,12 +7,15 @@ namespace Managed.Emulation.Host;
 /// standard streams. No guest instruction execution or C pointer marshalling.</summary>
 public sealed partial class InstanceIo : IAsyncDisposable
 {
-    private enum Kind { Input, Output, Error, File, Socket, Pipe, Epoll }
+    private enum Kind { Input, Output, Error, File, MemoryFile, Socket, Pipe, Epoll }
     private sealed class Description(Kind kind, int handle = -1, int statusFlags = 0)
     {
         internal readonly Kind Kind = kind;
         internal readonly int Handle = handle;
         internal readonly EpollState? Epoll = kind == Kind.Epoll ? new() : null;
+        internal MemoryFile? MemoryFile;
+        internal bool ProcessSnapshot;
+        internal long Position;
         internal int References = 1;
         internal int StatusFlags = kind is Kind.Output or Kind.Error ? 1 : kind is Kind.Socket or Kind.Epoll ? 2 : statusFlags;
     }
@@ -71,7 +74,7 @@ public sealed partial class InstanceIo : IAsyncDisposable
     public HostResult<int> OpenFile(string path, FileAccessMode access, bool create = false,
         bool exclusive = false, bool truncate = false, bool append = false, string? cwd = null,
         bool closeOnExecFlag = false, bool allowDirectory = false, bool requireDirectory = false, bool noFollow = false,
-        uint creationMode = 0x180)
+        uint creationMode = 0x180, bool nonBlocking = false)
     {
         lock (sync)
         {
@@ -79,23 +82,30 @@ public sealed partial class InstanceIo : IAsyncDisposable
             if (create && (creationMode & ~0x1ffu) != 0) return Fail<int>(GuestError.Unsupported);
             int fd = Allocate();
             if (fd < 0) return Fail<int>(GuestError.TooManyFiles);
+            MemoryFile? truncated = null;
+            if (truncate && regularSharedFiles.Count != 0)
+            {
+                var stat = files.Stat(path, cwd ?? currentDirectory);
+                if (stat.Succeeded) truncated = RegularSharedFile(stat.Value);
+            }
             var result = files.Open(path, access, create, exclusive, truncate, append, cwd ?? currentDirectory, allowDirectory, requireDirectory, ApplyCreationMask(creationMode));
             if (!result.Succeeded) return result;
+            if (truncated != null) TruncateMemoryFile(truncated, 0);
             int mode = access == FileAccessMode.Read ? 0 : access == FileAccessMode.Write ? 1 : 2;
-            descriptors.Add(fd, new(Kind.File, result.Value, mode | (append ? 1024 : 0) | (requireDirectory ? 65536 : 0) | (noFollow ? 131072 : 0)));
+            descriptors.Add(fd, new(Kind.File, result.Value, mode | (append ? 1024 : 0) | (nonBlocking ? 2048 : 0) | (requireDirectory ? 65536 : 0) | (noFollow ? 131072 : 0)));
             if (closeOnExecFlag) closeOnExec.Add(fd);
             return HostResult<int>.Success(fd);
         }
     }
     public HostResult<int> OpenFileAt(int directoryFd, string path, FileAccessMode access, bool create = false,
         bool exclusive = false, bool truncate = false, bool append = false, bool closeOnExecFlag = false,
-        bool requireDirectory = false, bool noFollow = false, uint creationMode = 0x180)
+        bool requireDirectory = false, bool noFollow = false, uint creationMode = 0x180, bool nonBlocking = false)
     {
         lock (sync)
         {
             var directory = ResolveDirectory(directoryFd, path);
             return directory.Succeeded ? OpenFile(path, access, create, exclusive, truncate, append, directory.Value,
-                closeOnExecFlag, true, requireDirectory, noFollow, creationMode) : Fail<int>(directory.Error);
+                closeOnExecFlag, true, requireDirectory, noFollow, creationMode, nonBlocking) : Fail<int>(directory.Error);
         }
     }
     public HostResult<VirtualFileStat> Stat(string path, string? cwd = null)
@@ -115,7 +125,8 @@ public sealed partial class InstanceIo : IAsyncDisposable
         lock (sync)
         {
             if (!Find(fd, out var description)) return Fail<long>(GuestError.BadDescriptor);
-            return description.Kind == Kind.File ? files.Seek(description.Handle, offset, origin) : Fail<long>(GuestError.IllegalSeek);
+            return description.Kind == Kind.MemoryFile ? SeekMemoryFile(description, offset, origin)
+                : description.Kind == Kind.File ? files.Seek(description.Handle, offset, origin) : Fail<long>(GuestError.IllegalSeek);
         }
     }
     public HostResult<VirtualFileStat> FStat(int fd)
@@ -123,7 +134,10 @@ public sealed partial class InstanceIo : IAsyncDisposable
         lock (sync)
         {
             if (!Find(fd, out var description)) return Fail<VirtualFileStat>(GuestError.BadDescriptor);
-            return description.Kind == Kind.File ? files.FStat(description.Handle)
+            return description.Kind == Kind.MemoryFile ? HostResult<VirtualFileStat>.Success(description.ProcessSnapshot
+                    ? MemoryFileStat(description.MemoryFile!) with { Immutable = true, Mode = 0x8124 }
+                    : MemoryFileStat(description.MemoryFile!))
+                : description.Kind == Kind.File ? files.FStat(description.Handle)
                 : description.Kind == Kind.Pipe ? pipes.Stat(description.Handle) : Fail<VirtualFileStat>(GuestError.Unsupported);
         }
     }
@@ -191,16 +205,18 @@ public sealed partial class InstanceIo : IAsyncDisposable
                 return result;
             }
             // Access and retained lookup flags are not mutable with F_SETFL.
-            // Nonblocking, async, direct and synchronous modes need real host contracts.
-            if ((flags & ~(3 | 1024 | 65536 | 131072)) != 0) return Fail<int>(GuestError.Unsupported);
+            // Linux retains O_NONBLOCK on ordinary files/directories without changing
+            // their I/O behavior. Streams keep their separate blocking contracts above.
+            int mutableFlags = 1024 | (description.Kind == Kind.File ? 2048 : 0);
+            if ((flags & ~(3 | mutableFlags | 65536 | 131072)) != 0) return Fail<int>(GuestError.Unsupported);
             bool append = (flags & 1024) != 0;
             if (description.Kind == Kind.File)
             {
                 var result = files.SetAppend(description.Handle, append);
                 if (!result.Succeeded) return result;
             }
-            else if (append) return Fail<int>(GuestError.Unsupported);
-            description.StatusFlags = (description.StatusFlags & ~1024) | (append ? 1024 : 0);
+            else if (append && description.Kind != Kind.MemoryFile) return Fail<int>(GuestError.Unsupported);
+            description.StatusFlags = (description.StatusFlags & ~mutableFlags) | (flags & mutableFlags);
             return HostResult<int>.Success(0);
         }
     }
@@ -227,18 +243,24 @@ public sealed partial class InstanceIo : IAsyncDisposable
         {
             if (!descriptors.Remove(fd, out var description)) return Fail<int>(GuestError.BadDescriptor);
             closeOnExec.Remove(fd);
-            if (--description.References != 0) return HostResult<int>.Success(0);
-            RemoveEpollDescription(description);
-            CloseConsoleDescription(description);
-            return description.Kind switch
-            {
-                Kind.File => files.Close(description.Handle),
-                Kind.Socket => network.Close(description.Handle),
-                Kind.Pipe => pipes.Close(description.Handle),
-                Kind.Epoll => CloseEpoll(description.Epoll!),
-                _ => HostResult<int>.Success(0)
-            };
+            return ReleaseDescription(description);
         }
+    }
+    // Caller holds sync. Internal mapping references share the same final close.
+    private HostResult<int> ReleaseDescription(Description description)
+    {
+        if (--description.References != 0) return HostResult<int>.Success(0);
+        RemoveEpollDescription(description);
+        CloseConsoleDescription(description);
+        return description.Kind switch
+        {
+            Kind.File => files.Close(description.Handle),
+            Kind.MemoryFile => CloseMemoryFile(description.MemoryFile!),
+            Kind.Socket => network.Close(description.Handle),
+            Kind.Pipe => pipes.Close(description.Handle),
+            Kind.Epoll => CloseEpoll(description.Epoll!),
+            _ => HostResult<int>.Success(0)
+        };
     }
     public Task<HostResult<int>> ReadAsync(int fd, Memory<byte> destination, CancellationToken cancellation = default)
     {
@@ -250,7 +272,12 @@ public sealed partial class InstanceIo : IAsyncDisposable
             if (description.Kind == Kind.Pipe) return pipes.ReadAsync(description.Handle, destination, (description.StatusFlags & 2048) != 0, cancellation);
             if (description.Kind == Kind.Epoll) return Task.FromResult(Fail<int>(GuestError.Invalid));
             HostResult<int> result;
-            if (description.Kind == Kind.File) result = files.Read(description.Handle, destination.Span);
+            if (description.Kind == Kind.MemoryFile)
+            {
+                result = ReadMemoryFile(description.MemoryFile!, destination.Span, description.Position);
+                if (result.Succeeded) description.Position += result.Value;
+            }
+            else if (description.Kind == Kind.File) result = files.Read(description.Handle, destination.Span);
             else if (description.Kind == Kind.Input)
             {
                 if (console != null) return RunConsole(token => console.ReadInputAsync(destination, token, (description.StatusFlags & 2048) != 0), cancellation);
@@ -267,7 +294,8 @@ public sealed partial class InstanceIo : IAsyncDisposable
         lock (sync)
         {
             if (!Find(fd, out var description)) return Fail<int>(GuestError.BadDescriptor);
-            return description.Kind == Kind.File ? files.ReadAt(description.Handle, destination, offset) : Fail<int>(GuestError.IllegalSeek);
+            return description.Kind == Kind.MemoryFile ? ReadMemoryFile(description.MemoryFile!, destination, offset)
+                : description.Kind == Kind.File ? files.ReadAt(description.Handle, destination, offset) : Fail<int>(GuestError.IllegalSeek);
         }
     }
     public HostResult<long> ReadAtLength(int fd)
@@ -275,7 +303,8 @@ public sealed partial class InstanceIo : IAsyncDisposable
         lock (sync)
         {
             if (!Find(fd, out var description)) return Fail<long>(GuestError.BadDescriptor);
-            return description.Kind == Kind.File ? files.ReadAtLength(description.Handle) : Fail<long>(GuestError.Unsupported);
+            return description.Kind == Kind.MemoryFile ? HostResult<long>.Success(description.MemoryFile!.Length)
+                : description.Kind == Kind.File ? files.ReadAtLength(description.Handle) : Fail<long>(GuestError.Unsupported);
         }
     }
     public Task<HostResult<int>> WriteAsync(int fd, ReadOnlyMemory<byte> source, CancellationToken cancellation = default)
@@ -288,7 +317,14 @@ public sealed partial class InstanceIo : IAsyncDisposable
             if (description.Kind == Kind.Pipe) return pipes.WriteAsync(description.Handle, source, (description.StatusFlags & 2048) != 0, cancellation);
             if (description.Kind == Kind.Epoll) return Task.FromResult(Fail<int>(GuestError.Invalid));
             HostResult<int> result;
-            if (description.Kind == Kind.File) result = files.Write(description.Handle, source.Span);
+            if (description.Kind == Kind.MemoryFile)
+            {
+                if (description.ProcessSnapshot) return Task.FromResult(Fail<int>(GuestError.BadDescriptor));
+                long position = (description.StatusFlags & 1024) != 0 ? description.MemoryFile!.Length : description.Position;
+                result = WriteMemoryFile(description.MemoryFile!, source.Span, position);
+                if (result.Succeeded) description.Position = position + result.Value;
+            }
+            else if (description.Kind == Kind.File) result = WriteRegularFile(description, source.Span, null);
             else if (description.Kind is Kind.Output or Kind.Error)
             {
                 if (console != null) return RunConsole(token => console.WriteOutputAsync(description.Kind == Kind.Error, source, token, (description.StatusFlags & 2048) != 0), cancellation);
@@ -392,10 +428,13 @@ public sealed partial class InstanceIo : IAsyncDisposable
             if (owner)
             {
                 disposed = true;
+                DisposeMappingTransactions();
+                DisposeRegularSharedReaders();
                 foreach (var description in descriptors.Values)
                     if (description.Epoll is { } epoll) CloseEpoll(epoll);
                 foreach (var description in descriptors.Values.Distinct())
                     if (description.Kind == Kind.File) files.Close(description.Handle);
+                    else if (description.Kind == Kind.MemoryFile) CloseMemoryFile(description.MemoryFile!);
                 descriptors.Clear(); closeOnExec.Clear(); input = []; inputPosition = 0; accepting = pending.ToArray();
             }
         }

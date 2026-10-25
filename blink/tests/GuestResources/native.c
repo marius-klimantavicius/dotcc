@@ -20,6 +20,16 @@ int main(void) {
   CHECK(BlinkHostInitializeResourceLimits(s, 19) == -1 && errno == EBUSY);
   FreeSystem(s);
   CHECK(BlinkHostMemoryEnd() == 0);
+  CHECK(BlinkHostMemoryBegin(32 * 1024 * 1024) == 0);
+  s = NewSystem(XED_MACHINE_MODE_LONG);
+  CHECK(s);
+  CHECK(BlinkHostInitializeResourceLimitsWithVirtual(s, 19, 1024UL * 1024 * 1024) == 0);
+  CHECK(GetMaxVss(s) == 262144 && GetMaxRss(s) == 262144);
+  CHECK(Read64(s->rlim[RLIMIT_DATA_LINUX].max) == 32 * 1024 * 1024);
+  CHECK(BlinkHostMemoryLimit() == 32 * 1024 * 1024);
+  CHECK(BlinkHostInitializeResourceLimitsWithVirtual(s, 19, 1024UL * 1024 * 1024) == -1 && errno == EBUSY);
+  FreeSystem(s);
+  CHECK(BlinkHostMemoryEnd() == 0);
   puts("actual NewSystem and limit consumers: PASS");
   return 0;
 }

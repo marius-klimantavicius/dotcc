@@ -80,6 +80,7 @@
   ],
   "managedSources": [
     "src/Host/HostIoBridge.cs",
+    "src/Host/HostFileMappingBridge.cs",
     "src/Host/HostNetworkBridge.cs",
     "src/Host/HostReadinessBridge.cs",
     "src/Host/HostFileMetadataBridge.cs",

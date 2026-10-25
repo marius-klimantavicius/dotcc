@@ -30,7 +30,8 @@ internal sealed class InProcessMachineRun : MachineRun
             pipeOperationLimit: options.PendingPipeOperations, console: Console,
             networkPolicy: new GuestNetworkPolicy(options.Network.Publications.Select(p => new GuestPortGrant(p.GuestPort, p.HostAddress, p.HostPort)),
                 options.Network.OutboundDestinations.Select(p => new GuestOutboundGrant(p.Address, p.Port)), options.Metadata));
-        owner = new(io, stop, (ulong)options.MemoryLimit, options.ThreadLimit);
+        owner = new(io, stop, (ulong)options.MemoryLimit, options.ThreadLimit,
+            options.VirtualMemoryLimit is long virtualBytes ? (ulong)virtualBytes : null);
         string[] argv = [execution.Executable, .. execution.Arguments];
         string[] env = environment.Select(p => p.Key + "=" + p.Value).ToArray();
         thread = new Thread(() =>

@@ -19,7 +19,9 @@ def main():
     pin, run = evidence.pin, evidence.run
     try:
         for path in (Path(__file__), HERE / 'evidence.py', HERE / 'entry.S', HERE / 'baseline.S', HERE / 'runtime.c',
-                     HERE / 'library.c', HERE / 'entry-register.c', HERE.parent / 'GuestFileMapping/workload.c'):
+                     HERE / 'library.c', HERE / 'entry-register.c', HERE.parent / 'GuestFileMapping/workload.c',
+                     HERE.parent / 'GuestMappingHints/fixture.c', HERE.parent / 'GuestFutexBitset/fixture.S',
+                     HERE.parent / 'GuestThreads/fixture.ld'):
             pin(path)
         cc, readelf, objdump = [pin(shutil.which(name)) for name in ('cc', 'readelf', 'objdump')]
         run('cc-version', [cc, '--version'])
@@ -47,6 +49,9 @@ def main():
             '-o', libraries / 'libelf-runtime.so'])
         builds = [('baseline-static', ['-nostdlib', '-static', '-no-pie'], 'baseline.S'),
                   ('mapping-static', ['-static', '-fno-pie', '-no-pie'], HERE.parent / 'GuestFileMapping/workload.c'),
+                  ('mapping-hints', ['-static', '-fno-pie', '-no-pie'], HERE.parent / 'GuestMappingHints/fixture.c'),
+                  ('futex-bitset', ['-nostdlib', '-static', '-no-pie', '-Wl,--build-id=none', '-Wl,-z,max-page-size=4096',
+                      '-Wl,-T,' + str(HERE.parent / 'GuestThreads/fixture.ld')], HERE.parent / 'GuestFutexBitset/fixture.S'),
                   ('entry-static', ['-nostdlib', '-static', '-no-pie'], 'entry.S'),
                   ('entry-static-pie', ['-nostdlib', '-static-pie'], 'entry.S'),
                   ('glibc-static', ['-static', '-fno-pie', '-no-pie'], 'runtime.c'),
@@ -95,7 +100,9 @@ def main():
             work = evidence.directory / ('work-' + name); work.mkdir(); (work / 'input.txt').write_bytes(b'input')
             stdout, stderr = run(name + '-native', command, cwd=work, timeout=15)
             expected = (b'guest-private-mapping OK bytes tails protection bss fixed noreplace discard close\n'
-                if name == 'mapping-static' else b'elf-baseline OK\n' if name == 'baseline-static'
+                if name == 'mapping-static' else b'mapping hints passed\n' if name == 'mapping-hints'
+                else b'' if name == 'futex-bitset'
+                else b'elf-baseline OK\n' if name == 'baseline-static'
                 else b'elf-entry OK\n' if name.startswith('entry-') else (
                 'elf-runtime tls=13 tls-bss=17 data=43 bss=OK file=input dso=' + ('61' if dynamic else '0') +
                 '\nelf-atexit OK\nelf-destructor OK\n').encode())

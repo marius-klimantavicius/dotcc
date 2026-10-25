@@ -8,6 +8,29 @@ struct BlinkPreparedMappingPage {
   u64 entry;
 };
 
+/* ProtectVirtual otherwise updates guest PTEs even after a host-side failure.
+ * Preflight the whole range so immutable shared files cannot become writable,
+ * and a later rejected leaf cannot partially change earlier permissions. */
+static int BlinkGuestFileProtection(struct System *s, i64 virt, i64 size, int prot) {
+  i64 address;
+  if (!(prot & PROT_WRITE)) return 0;
+  for (address = virt; address < virt + size; address += 4096) {
+    u64 entry = s->cr3;
+    unsigned level;
+    for (level = 39;; level -= 9) {
+      entry = LoadPte(GetPageAddress(s, entry, level == 39) +
+                      (((u64)address >> level) & 511) * 8);
+      if (!(entry & PAGE_V) || level == 12 || (entry & PAGE_PS)) break;
+    }
+    if (level == 12 && (entry & PAGE_MUG) &&
+        !BlinkHostMemoryFilePageWritable(FindHostPage(entry))) {
+      errno = EACCES;
+      return -1;
+    }
+  }
+  return 0;
+}
+
 i64 ReserveVirtual(struct System *s, i64 virt, i64 size, u64 flags, int fd,
                    i64 offset, bool shared, bool fixedmap) {
   struct BlinkPreparedMappingPage *prepared;
@@ -15,12 +38,13 @@ i64 ReserveVirtual(struct System *s, i64 virt, i64 size, u64 flags, int fd,
   size_t scratch_size;
   int error;
   bool executable_changed = false;
+  bool file_pinned = false;
   long rss_delta = 0;
   (void)fixedmap;  /* guest callers select/check their address under mmap_lock */
   unassert(!HasLinearMapping());
   unassert(s->mode.omode == XED_MODE_LONG);
   unassert(!(flags & (PAGE_TA | PAGE_MAP | PAGE_HOST | PAGE_RSRV)));
-  if (shared) return enotsup();
+  if (shared && fd == -1) return enotsup();
   if (virt < -0x800000000000ll || virt >= 0x800000000000ll ||
       !IsValidAddrSize(virt, size)) return einval();
   size = ROUNDUP(size, 4096);
@@ -35,6 +59,10 @@ i64 ReserveVirtual(struct System *s, i64 virt, i64 size, u64 flags, int fd,
   prepared = blink_host_mmap(0, scratch_size, PROT_READ | PROT_WRITE,
                             MAP_PRIVATE | MAP_ANONYMOUS_, -1, 0);
   if (prepared == MAP_FAILED) return -1;
+  if (fd != -1) {
+    if (BlinkHostFileMappingBegin(fd)) goto Rollback;
+    file_pinned = true;
+  }
   for (index = 0, address = virt; index < count; ++index, address += 4096) {
     u64 table = s->cr3;
     unsigned level;
@@ -53,8 +81,12 @@ i64 ReserveVirtual(struct System *s, i64 virt, i64 size, u64 flags, int fd,
     }
     prepared[index].entry = flags | PAGE_V | PAGE_RSRV;
     if (fd != -1) {
-      u8 *backing = blink_host_mmap(0, 4096, PROT_READ | PROT_WRITE,
-                                   MAP_PRIVATE, fd, offset + index * 4096);
+      /* Immutable shared images must remain read-only. Mutable memfd backing
+       * is physically RW/NX regardless of the independently enforced guest PTE. */
+      int backing_prot = shared ? GetProtection(flags) & ~PROT_EXEC : PROT_READ | PROT_WRITE;
+      u8 *backing = blink_host_mmap(0, 4096, backing_prot,
+                                   shared ? MAP_SHARED : MAP_PRIVATE,
+                                   fd, offset + index * 4096);
       if (backing == MAP_FAILED) goto Rollback;
       prepared[index].backing = backing;
       prepared[index].entry |= PAGE_HOST | PAGE_MAP | PAGE_MUG | PAGE_FILE;
@@ -86,6 +118,7 @@ i64 ReserveVirtual(struct System *s, i64 virt, i64 size, u64 flags, int fd,
   /* Also invalidate when replacing a reserved file PTE: neither old nor new
    * need have resident backing, but stale cached translation must disappear. */
   InvalidateSystem(s, true, executable_changed);
+  if (file_pinned) unassert(!BlinkHostFileMappingEnd());
   unassert(!blink_host_munmap(prepared, scratch_size));
   return virt;
 Rollback:
@@ -104,6 +137,7 @@ Rollback:
       }
     }
   }
+  if (file_pinned) unassert(!BlinkHostFileMappingEnd());
   unassert(!blink_host_munmap(prepared, scratch_size));
   errno = error;
   return -1;

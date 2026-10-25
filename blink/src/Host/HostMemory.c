@@ -19,6 +19,13 @@ struct MemoryOwner {
   size_t mappings;
   BlinkHostMemoryReadAt read_at;
   BlinkHostMemoryReadLength read_length;
+  BlinkHostMemoryAcquireShared acquire_shared;
+  BlinkHostMemoryReleaseShared release_shared;
+  BlinkHostMemorySharedAvailable shared_available;
+  BlinkHostMemorySharedReadOnly shared_readonly;
+  uint64_t file_budget;
+  BlinkHostMemoryAccountBudget account_budget;
+  BlinkHostMemoryReleaseBudget release_budget;
 };
 #ifdef BLINK_MANAGED_GUEST_THREADS
 #include <pthread.h>
@@ -39,12 +46,16 @@ static _Thread_local struct SharedMemoryOwner *shared_memory_owner;
  * serialize complete operations, including synchronous file callbacks. */
 #define MEMORY_LOCAL static
 #define BlinkHostMemoryProtection MemoryImplProtection
+#define BlinkHostMemoryFilePageShared MemoryImplFilePageShared
 #define BlinkHostMemoryFilePageAvailable MemoryImplFilePageAvailable
+#define BlinkHostMemoryFilePageWritable MemoryImplFilePageWritable
 #define BlinkHostMemoryBegin MemoryImplBegin
 #define BlinkHostMemoryLimit MemoryImplLimit
 #define BlinkHostMemoryBytes MemoryImplBytes
 #define BlinkHostMemoryMappings MemoryImplMappings
 #define BlinkHostMemorySetFileReader MemoryImplSetFileReader
+#define BlinkHostMemorySetSharedFiles MemoryImplSetSharedFiles
+#define BlinkHostMemorySetFileBudget MemoryImplSetFileBudget
 #define BlinkHostMemoryContains MemoryImplContains
 #define BlinkHostMemoryEnd MemoryImplEnd
 #define BlinkHostMemoryDisposeWorker MemoryImplDisposeWorker
@@ -62,6 +73,16 @@ long BlinkHostMemoryPageSize(void) { return 4096; }
 int BlinkHostMemoryAddressBits(void) { return 47; }
 
 static int Fail(int error) { errno = error; return -1; }
+static int AccountBudget(struct MemoryOwner *memory, size_t bytes) {
+  return memory->file_budget ? memory->account_budget(memory->file_budget, bytes) : 0;
+}
+static int ReleaseBudget(struct MemoryOwner *memory) {
+  if (memory->file_budget && memory->release_budget(memory->file_budget)) return -1;
+  memory->file_budget = 0;
+  memory->account_budget = 0;
+  memory->release_budget = 0;
+  return 0;
+}
 static size_t RoundLength(size_t length) {
   if (!length || length > SIZE_MAX - 4095) return 0;
   return (length + 4095) & ~(size_t)4095;
@@ -76,6 +97,21 @@ static unsigned char *Protections(struct OwnedMapping *record) {
 /* Kept alongside protection metadata, but never cleared by mprotect. Host
  * storage stays RW/NX; the guest page walk rejects these absent file pages. */
 #define FILE_PAGE_ABSENT 128
+#define FILE_PAGE_SHARED 64
+#define FILE_PAGE_READONLY_SHARED 32
+#define FILE_PAGE_METADATA (FILE_PAGE_ABSENT | FILE_PAGE_SHARED | FILE_PAGE_READONLY_SHARED)
+/* Preserve the existing private record size/accounting. Only shared records
+ * carry a lease after their protection bytes; memcpy handles its alignment. */
+static uint64_t SharedLease(struct OwnedMapping *record) {
+  uint64_t lease = 0;
+  if (Protections(record)[0] & FILE_PAGE_SHARED)
+    memcpy(&lease, Protections(record) + record->length / 4096, sizeof(lease));
+  return lease;
+}
+static size_t MappingMetadataSize(struct OwnedMapping *record) {
+  return MetadataSize(record->length) +
+         ((Protections(record)[0] & FILE_PAGE_SHARED) ? sizeof(uint64_t) : 0);
+}
 static int ValidProtection(int prot) {
   if (prot & ~(PROT_READ | PROT_WRITE | PROT_EXEC)) return Fail(EINVAL);
   if (prot & PROT_EXEC) return Fail(ENOTSUP);
@@ -88,18 +124,44 @@ MEMORY_LOCAL int BlinkHostMemoryProtection(const void *pointer) {
   while (record) {
     uintptr_t base = (uintptr_t)record->address;
     if (address >= base && address - base < record->length)
-      return Protections(record)[(address - base) / 4096] & ~FILE_PAGE_ABSENT;
+      return Protections(record)[(address - base) / 4096] & ~FILE_PAGE_METADATA;
     record = record->next;
   }
   return -1;
+}
+MEMORY_LOCAL int BlinkHostMemoryFilePageShared(const void *pointer) {
+  uintptr_t address = (uintptr_t)pointer;
+  struct OwnedMapping *record = owner.head;
+  while (record) {
+    uintptr_t base = (uintptr_t)record->address;
+    if (address >= base && address - base < record->length)
+      return !!(Protections(record)[(address - base) / 4096] &
+                (FILE_PAGE_SHARED | FILE_PAGE_READONLY_SHARED));
+    record = record->next;
+  }
+  return 0;
 }
 MEMORY_LOCAL int BlinkHostMemoryFilePageAvailable(const void *pointer) {
   uintptr_t address = (uintptr_t)pointer;
   struct OwnedMapping *record = owner.head;
   while (record) {
     uintptr_t base = (uintptr_t)record->address;
-    if (address >= base && address - base < record->length)
+    if (address >= base && address - base < record->length) {
+      if (Protections(record)[0] & FILE_PAGE_SHARED)
+        return owner.shared_available(SharedLease(record));
       return !(Protections(record)[(address - base) / 4096] & FILE_PAGE_ABSENT);
+    }
+    record = record->next;
+  }
+  return 0;
+}
+MEMORY_LOCAL int BlinkHostMemoryFilePageWritable(const void *pointer) {
+  uintptr_t address = (uintptr_t)pointer;
+  struct OwnedMapping *record = owner.head;
+  while (record) {
+    uintptr_t base = (uintptr_t)record->address;
+    if (address >= base && address - base < record->length)
+      return !(Protections(record)[(address - base) / 4096] & FILE_PAGE_READONLY_SHARED);
     record = record->next;
   }
   return 0;
@@ -125,6 +187,36 @@ MEMORY_LOCAL int BlinkHostMemorySetFileReader(BlinkHostMemoryReadAt read_at,
   owner.read_length = read_length;
   return 0;
 }
+MEMORY_LOCAL int BlinkHostMemorySetSharedFiles(BlinkHostMemoryAcquireShared acquire,
+                                  BlinkHostMemoryReleaseShared release,
+                                  BlinkHostMemorySharedAvailable available,
+                                  BlinkHostMemorySharedReadOnly readonly_file) {
+  if (!owner.limit) return Fail(ENODEV);
+  if (!acquire || !release || !available || !readonly_file) return Fail(EINVAL);
+  if (owner.acquire_shared && (owner.acquire_shared != acquire ||
+      owner.release_shared != release || owner.shared_available != available ||
+      owner.shared_readonly != readonly_file))
+    return Fail(EBUSY);
+  owner.acquire_shared = acquire;
+  owner.release_shared = release;
+  owner.shared_available = available;
+  owner.shared_readonly = readonly_file;
+  return 0;
+}
+MEMORY_LOCAL int BlinkHostMemorySetFileBudget(BlinkHostMemoryBindBudget bind,
+                                  BlinkHostMemoryAccountBudget account,
+                                  BlinkHostMemoryReleaseBudget release) {
+  uint64_t token;
+  if (!owner.limit) return Fail(ENODEV);
+  if (!bind || !account || !release) return Fail(EINVAL);
+  if (owner.file_budget)
+    return owner.account_budget == account && owner.release_budget == release ? 0 : Fail(EBUSY);
+  if (bind(owner.limit, owner.bytes, &token)) return -1;
+  owner.file_budget = token;
+  owner.account_budget = account;
+  owner.release_budget = release;
+  return 0;
+}
 MEMORY_LOCAL int BlinkHostMemoryContains(const void *pointer, size_t length) {
   uintptr_t start = (uintptr_t)pointer;
   struct OwnedMapping *record = owner.head;
@@ -140,9 +232,14 @@ MEMORY_LOCAL int BlinkHostMemoryContains(const void *pointer, size_t length) {
 MEMORY_LOCAL int BlinkHostMemoryEnd(void) {
   if (!owner.limit) return Fail(ENODEV);
   if (owner.head) return Fail(EBUSY);
+  if (ReleaseBudget(&owner)) return -1;
   owner.limit = 0;
   owner.read_at = 0;
   owner.read_length = 0;
+  owner.acquire_shared = 0;
+  owner.release_shared = 0;
+  owner.shared_available = 0;
+  owner.shared_readonly = 0;
   return 0;
 }
 
@@ -152,8 +249,11 @@ MEMORY_LOCAL void *blink_host_mmap(void *address, size_t length, int prot, int f
   void *allocation;
   int error;
   size_t rounded;
+  size_t metadata_size;
   size_t file_bytes = 0;
   size_t available = 0;
+  uint64_t shared_lease = 0;
+  int readonly_shared = 0;
   if (!owner.limit) { Fail(ENODEV); return MAP_FAILED; }
   if (!(rounded = RoundLength(length))) { Fail(EINVAL); return MAP_FAILED; }
   if (ValidProtection(prot)) return MAP_FAILED;
@@ -163,27 +263,50 @@ MEMORY_LOCAL void *blink_host_mmap(void *address, size_t length, int prot, int f
   }
   if (flags == (MAP_PRIVATE | MAP_ANONYMOUS)) {
     if (fd != -1 || offset != 0) { Fail(ENOTSUP); return MAP_FAILED; }
-  } else if (flags == MAP_PRIVATE) {
+  } else if (flags == MAP_PRIVATE || flags == MAP_SHARED) {
     off_t file_length;
-    if (!owner.read_at || !owner.read_length) { Fail(ENOTSUP); return MAP_FAILED; }
     if (offset < 0 || (offset & 4095)) { Fail(EINVAL); return MAP_FAILED; }
-    if (owner.read_length(fd, &file_length)) return MAP_FAILED;
-    if (file_length < 0) { Fail(EIO); return MAP_FAILED; }
-    if (offset < file_length) {
-      off_t remaining = file_length - offset;
-      file_bytes = remaining < (off_t)rounded ? (size_t)remaining : rounded;
+    if (flags == MAP_SHARED) {
+      if (rounded != 4096 || !owner.acquire_shared) { Fail(ENOTSUP); return MAP_FAILED; }
+      if ((readonly_shared = owner.shared_readonly(fd)) < 0) return MAP_FAILED;
+      if (readonly_shared && (prot & PROT_WRITE)) { Fail(EACCES); return MAP_FAILED; }
     }
-    available = file_bytes ? RoundLength(file_bytes) : 0;
+    if (flags == MAP_PRIVATE || readonly_shared == 1) {
+      if (!owner.read_at || !owner.read_length) { Fail(ENOTSUP); return MAP_FAILED; }
+      if (owner.read_length(fd, &file_length)) return MAP_FAILED;
+      if (file_length < 0) { Fail(EIO); return MAP_FAILED; }
+      if (offset < file_length) {
+        off_t remaining = file_length - offset;
+        file_bytes = remaining < (off_t)rounded ? (size_t)remaining : rounded;
+      }
+      available = file_bytes ? RoundLength(file_bytes) : 0;
+    }
   } else { Fail(ENOTSUP); return MAP_FAILED; }
+  metadata_size = MetadataSize(rounded) + (flags == MAP_SHARED && readonly_shared != 1 ? sizeof(uint64_t) : 0);
   if (rounded > owner.limit - owner.bytes ||
-      MetadataSize(rounded) > owner.limit - owner.bytes - rounded) {
+      metadata_size > owner.limit - owner.bytes - rounded) {
     Fail(ENOMEM);
     return MAP_FAILED;
   }
-  if (!(record = malloc(MetadataSize(rounded)))) { Fail(ENOMEM); return MAP_FAILED; }
-  error = posix_memalign(&allocation, 4096, rounded);
-  if (error) { free(record); Fail(error); return MAP_FAILED; }
-  memset(allocation, 0, rounded);
+  if (AccountBudget(&owner, owner.bytes + rounded + metadata_size)) return MAP_FAILED;
+  if (!(record = malloc(metadata_size))) {
+    AccountBudget(&owner, owner.bytes); Fail(ENOMEM); return MAP_FAILED;
+  }
+  if (flags == MAP_SHARED && readonly_shared != 1) {
+    if (owner.acquire_shared(fd, offset, &allocation, &shared_lease)) {
+      error = errno;
+      free(record);
+      AccountBudget(&owner, owner.bytes);
+      Fail(error);
+      return MAP_FAILED;
+    }
+  } else {
+    error = posix_memalign(&allocation, 4096, rounded);
+    if (error) {
+      free(record); AccountBudget(&owner, owner.bytes); Fail(error); return MAP_FAILED;
+    }
+    memset(allocation, 0, rounded);
+  }
   for (size_t copied = 0; copied < file_bytes;) {
     size_t request = file_bytes - copied;
     if (request > 65536) request = 65536;
@@ -193,21 +316,27 @@ MEMORY_LOCAL void *blink_host_mmap(void *address, size_t length, int prot, int f
       error = count < 0 ? errno : EIO;
       free(allocation);
       free(record);
+      AccountBudget(&owner, owner.bytes);
       Fail(error);
       return MAP_FAILED;
     }
     copied += count;
   }
   memset(Protections(record), prot, rounded / 4096);
-  if (flags == MAP_PRIVATE) {
+  if (flags == MAP_PRIVATE || readonly_shared == 1) {
     for (size_t page = available / 4096; page < rounded / 4096; ++page)
       Protections(record)[page] |= FILE_PAGE_ABSENT;
   }
+  if (readonly_shared) Protections(record)[0] |= FILE_PAGE_READONLY_SHARED;
   record->address = allocation;
   record->length = rounded;
+  if (shared_lease) {
+    Protections(record)[0] |= FILE_PAGE_SHARED;
+    memcpy(Protections(record) + rounded / 4096, &shared_lease, sizeof(shared_lease));
+  }
   record->next = owner.head;
   owner.head = record;
-  owner.bytes += rounded + MetadataSize(rounded);
+  owner.bytes += rounded + metadata_size;
   ++owner.mappings;
   return allocation;
 }
@@ -221,11 +350,14 @@ MEMORY_LOCAL int blink_host_munmap(void *address, size_t length) {
   while (record) {
     if (record->address == address) {
       if (record->length != rounded) return Fail(EINVAL);
+      uint64_t lease = SharedLease(record);
+      if (lease && owner.release_shared(lease)) return -1;
       if (previous) previous->next = record->next;
       else owner.head = record->next;
-      owner.bytes -= record->length + MetadataSize(record->length);
+      owner.bytes -= record->length + MappingMetadataSize(record);
+      AccountBudget(&owner, owner.bytes);
       --owner.mappings;
-      free(record->address);
+      if (!lease) free(record->address);
       free(record);
       return 0;
     }
@@ -247,12 +379,14 @@ MEMORY_LOCAL int blink_host_mprotect(void *address, size_t length, int prot) {
     uintptr_t base = (uintptr_t)record->address;
     if (start >= base && rounded <= record->length &&
         start - base <= record->length - rounded) {
+      if ((prot & PROT_WRITE) && (Protections(record)[0] & FILE_PAGE_READONLY_SHARED))
+        return Fail(EACCES);
       /* Pure software bookkeeping for owned private backing. Raw C memory
        * remains RW; upstream guest PTEs enforce guest access permissions. */
       for (size_t page = (start - base) / 4096;
            page < (start - base + rounded) / 4096; ++page)
         Protections(record)[page] =
-            (Protections(record)[page] & FILE_PAGE_ABSENT) | prot;
+            (Protections(record)[page] & FILE_PAGE_METADATA) | prot;
       return 0;
     }
     record = record->next;
@@ -266,26 +400,41 @@ int blink_host_msync(void *address, size_t length, int flags) {
 MEMORY_LOCAL void BlinkHostMemoryDisposeWorker(void) {
   struct OwnedMapping *record;
   while ((record = owner.head)) {
+    uint64_t lease = SharedLease(record);
+    if (lease) {
+      if (owner.release_shared(lease)) return;
+    } else free(record->address);
     owner.head = record->next;
-    free(record->address);
+    owner.bytes -= record->length + MappingMetadataSize(record);
+    AccountBudget(&owner, owner.bytes);
+    --owner.mappings;
     free(record);
   }
   owner.bytes = 0;
   owner.mappings = 0;
+  if (ReleaseBudget(&owner)) return;
   owner.limit = 0;
   owner.read_at = 0;
   owner.read_length = 0;
+  owner.acquire_shared = 0;
+  owner.release_shared = 0;
+  owner.shared_available = 0;
+  owner.shared_readonly = 0;
 }
 
 #undef MEMORY_LOCAL
 #ifdef BLINK_MANAGED_GUEST_THREADS
 #undef BlinkHostMemoryProtection
+#undef BlinkHostMemoryFilePageShared
 #undef BlinkHostMemoryFilePageAvailable
+#undef BlinkHostMemoryFilePageWritable
 #undef BlinkHostMemoryBegin
 #undef BlinkHostMemoryLimit
 #undef BlinkHostMemoryBytes
 #undef BlinkHostMemoryMappings
 #undef BlinkHostMemorySetFileReader
+#undef BlinkHostMemorySetSharedFiles
+#undef BlinkHostMemorySetFileBudget
 #undef BlinkHostMemoryContains
 #undef BlinkHostMemoryEnd
 #undef BlinkHostMemoryDisposeWorker
@@ -381,15 +530,24 @@ int BlinkHostMemoryDestroyShared(uint64_t token) {
     SharedMemoryUnlock(); return Fail(EPERM);
   }
   if (record->attachments) { SharedMemoryUnlock(); return Fail(EBUSY); }
-  if (previous) previous->next = record->next;
-  else shared_memory_owners = record->next;
   /* Caller has joined all workers and discarded every upstream pointer before
    * this final retained-pool release. Attachments alone do not prove joins. */
   while ((mapping = record->memory.head)) {
+    uint64_t lease = SharedLease(mapping);
+    if (lease) {
+      if (record->memory.release_shared(lease)) {
+        SharedMemoryUnlock(); return -1;
+      }
+    } else free(mapping->address);
     record->memory.head = mapping->next;
-    free(mapping->address);
+    record->memory.bytes -= mapping->length + MappingMetadataSize(mapping);
+    AccountBudget(&record->memory, record->memory.bytes);
+    --record->memory.mappings;
     free(mapping);
   }
+  if (ReleaseBudget(&record->memory)) { SharedMemoryUnlock(); return -1; }
+  if (previous) previous->next = record->next;
+  else shared_memory_owners = record->next;
   free(record);
   SharedMemoryUnlock();
   return 0;
@@ -422,13 +580,24 @@ MEMORY_WRAPPER(size_t, BlinkHostMemoryBytes, MemoryImplBytes, (void), (), 0)
 MEMORY_WRAPPER(size_t, BlinkHostMemoryMappings, MemoryImplMappings, (void), (), 0)
 MEMORY_WRAPPER(int, BlinkHostMemoryProtection, MemoryImplProtection,
                (const void *pointer), (pointer), -1)
+MEMORY_WRAPPER(int, BlinkHostMemoryFilePageShared, MemoryImplFilePageShared,
+               (const void *pointer), (pointer), 0)
 MEMORY_WRAPPER(int, BlinkHostMemoryFilePageAvailable, MemoryImplFilePageAvailable,
+               (const void *pointer), (pointer), 0)
+MEMORY_WRAPPER(int, BlinkHostMemoryFilePageWritable, MemoryImplFilePageWritable,
                (const void *pointer), (pointer), 0)
 MEMORY_WRAPPER(int, BlinkHostMemoryContains, MemoryImplContains,
                (const void *pointer, size_t length), (pointer, length), 0)
 MEMORY_WRAPPER(int, BlinkHostMemorySetFileReader, MemoryImplSetFileReader,
                (BlinkHostMemoryReadAt read_at, BlinkHostMemoryReadLength read_length),
                (read_at, read_length), -1)
+MEMORY_WRAPPER(int, BlinkHostMemorySetSharedFiles, MemoryImplSetSharedFiles,
+               (BlinkHostMemoryAcquireShared acquire, BlinkHostMemoryReleaseShared release,
+                BlinkHostMemorySharedAvailable available, BlinkHostMemorySharedReadOnly readonly_file),
+                (acquire, release, available, readonly_file), -1)
+MEMORY_WRAPPER(int, BlinkHostMemorySetFileBudget, MemoryImplSetFileBudget,
+               (BlinkHostMemoryBindBudget bind, BlinkHostMemoryAccountBudget account,
+                BlinkHostMemoryReleaseBudget release), (bind, account, release), -1)
 MEMORY_WRAPPER(void *, blink_host_mmap, MemoryImplMmap,
                (void *address, size_t length, int prot, int flags, int fd, off_t offset),
                (address, length, prot, flags, fd, offset), MAP_FAILED)

@@ -20,6 +20,12 @@ public static partial class Blink
         limit = 0;
         if (ResourceOwner(out var descriptors) != 0) return -1;
         if ((uint)resource >= 16) return ResourceError(22);
+        if (resource == 3)
+        {
+            // Bound from the generated loader's fixed main-stack reservation.
+            limit = processStackLimit;
+            return limit != 0 ? 0 : ResourceError(95);
+        }
         if (resource == 7) { limit = descriptors; return 0; }
         if (resource is 2 or 9)
         {

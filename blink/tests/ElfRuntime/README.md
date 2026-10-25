@@ -6,13 +6,22 @@ using the translated upstream loader and the actual supplied guest glibc
 interpreter/libc. It does not establish CoreCLR, general .NET, arbitrary distro
 userspace, Windows, or broader ISA compatibility.
 
-`build.py` builds and natively runs seven ordinary fixtures:
+`build.py` builds and natively runs nine ordinary fixtures:
 
 - Static `ET_EXEC` and static PIE entry probes check Linux RDX, initial argc,
   initialized data, zero-filled BSS and actual memory writes.
 - The [private mapping workload](../GuestFileMapping/README.md) checks file
   tails, protection changes, BSS replacement, fixed/no-replace mappings,
   anonymous discard and descriptor-close lifetime through the public API too.
+- The ordinary mapping-hint workload preserves occupied neighboring mappings
+  when nonfixed hints cross 2 MiB, 1 GiB and 512 GiB table boundaries. The
+  [focused source check](../GuestMappingHints/README.md) covers the associated
+  `FindVirtual` and `IsFullyUnmapped` traversal correction.
+- The ordinary futex bitset workload checks absolute realtime/monotonic
+  deadlines, selective wake masks, normal wait/wake interoperability and
+  thread completion through the translated product. Its separate native Blink
+  oracle has an intermittent native-emulator failure under investigation;
+  native Linux and actual managed-product results are recorded separately.
 - A static baseline instruction guest checks real advertised FPU/MMX, x87
   load/add/store/FWAIT, selected FXSAVE/FXRSTOR round trips, MMX packed
   addition/shifts, EMMS and subsequent x87 use. Upstream stores x87 values as

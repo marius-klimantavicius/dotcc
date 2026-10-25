@@ -72,6 +72,7 @@ execution modes. The resource quotas are ceilings, not startup reservations.
 | Option | Previous default | Service default |
 | --- | --- | --- |
 | `MemoryLimit` | 64 MiB | 256 MiB (`268435456` bytes) |
+| `VirtualMemoryLimit` | Not separately selectable | `null`: uses `MemoryLimit`; explicit page-aligned values through 4 GiB must be at least `MemoryLimit` |
 | `WritableStorageLimit` | 16 MiB | 512 MiB (`536870912` bytes) |
 | `FileNodeLimit` | 1,024 | 8,192 |
 | `DescriptorLimit` | 128 | 1,024, including stdin/stdout/stderr |
@@ -94,9 +95,11 @@ alone does not release the slot; a clone during remaining cleanup can still retu
 `EAGAIN`. The main slot stays occupied through run teardown. Completed thread
 results remain in history without retaining the retired workers' host resources.
 
-Memory stays within the supported 256 MiB cap, shared by the execution owner and
-its C backing allocator. It limits guest address-space/backing accounting, including
-owner metadata, rather than reserving 256 MiB at startup. Storage, nodes,
+Backing stays within the supported 256 MiB cap, shared by the execution owner and
+its C backing allocator, including owner metadata. By default the same budget
+also limits guest virtual address space. `VirtualMemoryLimit` can explicitly
+permit larger sparse reservations, up to 4 GiB, without raising the backing cap.
+Neither budget reserves its full capacity at startup. Storage, nodes,
 descriptors and thread slots are also allocated as used. Existing validation and
 explicit smaller values remain effective; for example:
 

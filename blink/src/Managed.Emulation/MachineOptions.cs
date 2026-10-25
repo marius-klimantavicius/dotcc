@@ -39,6 +39,9 @@ public sealed record MachineOptions
 {
     public ExecutionMode ExecutionMode { get; init; } = ExecutionMode.InProcess;
     public long MemoryLimit { get; init; } = 256L * 1024 * 1024;
+    /// <summary>Optional guest virtual-address reservation budget, through 4 GiB.
+    /// Null uses MemoryLimit. Backing and mapping metadata retain MemoryLimit.</summary>
+    public long? VirtualMemoryLimit { get; init; }
     public long WritableStorageLimit { get; init; } = 512L * 1024 * 1024;
     public int FileNodeLimit { get; init; } = 8192;
     public int DescriptorLimit { get; init; } = 1024;
@@ -57,6 +60,8 @@ public sealed record MachineOptions
     internal MachineOptions Freeze()
     {
         if (!Enum.IsDefined(ExecutionMode) || MemoryLimit is < 8192 or > 268435456 || MemoryLimit % 4096 != 0 ||
+            VirtualMemoryLimit is long virtualBytes && (virtualBytes < MemoryLimit ||
+                virtualBytes > 4294967296L || virtualBytes % 4096 != 0) ||
             WritableStorageLimit is < 0 or > int.MaxValue || FileNodeLimit is < 1 or > 65536 || DescriptorLimit is < 3 or > 4096 ||
             ThreadLimit is < 1 or > 256 || PipeBufferBytes is < 1 or > 1048576 || PipeStorageLimit < PipeBufferBytes ||
             PendingPipeOperations is < 1 or > 4096 || InstructionLimit is < 1 || ExecutionDeadline is { } deadline && deadline <= TimeSpan.Zero)

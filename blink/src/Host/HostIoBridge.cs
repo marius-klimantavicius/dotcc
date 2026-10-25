@@ -17,6 +17,17 @@ public static partial class Blink
     [ThreadStatic] private static InstanceIo? io;
     [ThreadStatic] private static CancellationToken ioCancellation;
     [ThreadStatic] private static HostSignalWake? ioSignalWake;
+    [ThreadStatic] private static Func<byte[]>? processMaps;
+    [ThreadStatic] private static ulong processStackLimit;
+    public static void BindHostProcessMaps(Func<byte[]> snapshot, ulong stackLimit)
+    {
+        ArgumentNullException.ThrowIfNull(snapshot);
+        if (io == null || processMaps != null || stackLimit == 0)
+            throw new InvalidOperationException("Process maps require an exclusively bound I/O worker.");
+        processMaps = snapshot;
+        processStackLimit = stackLimit;
+    }
+    public static void UnbindHostProcessMaps() { processMaps = null; processStackLimit = 0; }
     private const int IoChunk = 65536, IoVectorLimit = 1024, PathLimit = 4096;
     private static readonly UTF8Encoding PathEncoding = new(false, true);
     public static void BindHostIo(InstanceIo value) => BindHostIo(value, default);
@@ -31,6 +42,7 @@ public static partial class Blink
     }
     public static void UnbindHostIo()
     {
+        UnbindHostProcessMaps();
         io = null;
         ioCancellation = default;
         ioSignalWake = null;
@@ -54,7 +66,7 @@ public static partial class Blink
         {
             if (io == null) return IoError(19);
             if (path == null) return IoError(14);
-            const int supported = 3 | 64 | 128 | 256 | 512 | 1024 | 65536 | 131072 | 524288;
+            const int supported = 3 | 64 | 128 | 256 | 512 | 1024 | 2048 | 65536 | 131072 | 524288;
             if ((flags & ~supported) != 0) return IoError(95);
             if ((flags & 3) == 3) return IoError(22);
             if ((flags & (64 | 65536)) == (64 | 65536)) return IoError(22);
@@ -64,9 +76,18 @@ public static partial class Blink
             string name;
             try { name = PathEncoding.GetString(new ReadOnlySpan<byte>(path, length)); }
             catch (DecoderFallbackException) { return IoError(22); }
+            if (name == "/proc/self/maps" && processMaps != null)
+            {
+                if ((flags & 3) != 0 || (flags & (64 | 128 | 512)) != 0) return IoError(13);
+                if ((flags & 65536) != 0) return IoError(20);
+                // Snapshot before taking InstanceIo's gate: mapping writers take
+                // mmap_lock -> memory owner -> I/O, never the reverse order.
+                byte[] snapshot = processMaps();
+                return (int)IoResult(io.OpenProcessMaps(snapshot, (flags & 524288) != 0, ioCancellation));
+            }
             return (int)IoResult(io.OpenFileAt(directoryFd, name, (flags & 3) == 0 ? FileAccessMode.Read : (flags & 3) == 1 ? FileAccessMode.Write : FileAccessMode.Read | FileAccessMode.Write,
                 (flags & 64) != 0, (flags & 128) != 0, (flags & 512) != 0, (flags & 1024) != 0,
-                (flags & 524288) != 0, (flags & 65536) != 0, (flags & 131072) != 0, mode));
+                (flags & 524288) != 0, (flags & 65536) != 0, (flags & 131072) != 0, mode, (flags & 2048) != 0));
         }
         catch (Exception error) { return IoException(error); }
     }

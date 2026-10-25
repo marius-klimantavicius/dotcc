@@ -145,7 +145,8 @@ def main():
         report['native_intrinsic_scope'] = 'Declaration-only GCC support; FILE is pointer-only in measured closure, no native calls through managed libc declarations'
         for name in ('native-intrinsics.h', 'probe.c', 'native-main.c', 'header-order.c', 'Program.cs', 'rows.json'):
             copy(ROOT / 'tests/ThreadedLayout' / name, source / name)
-        freeze(ROOT / 'src/Managed.Emulation.ThreadedExecution/ThreadedGuestExecution.cs')
+        for path in sorted((ROOT / 'src/Managed.Emulation.ThreadedExecution').glob('*.cs')):
+            freeze(path)
         for path in (REPO / 'DotCC.Lib/include').rglob('*'):
             if path.is_file(): copy(path, source / 'generic' / path.relative_to(REPO / 'DotCC.Lib/include'))
         (source / 'header-signal.c').write_bytes(b'#define THREAD_SIGNAL_FIRST 1\n' + (source / 'header-order.c').read_bytes())

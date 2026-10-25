@@ -35,6 +35,7 @@ def run(cmd,name,timeout=180):
 try:
     for name in ['probe.c','Program.cs']:shutil.copyfile(ROOT/'tests/HostFileMapping'/name,a/name)
     shutil.copyfile(ROOT/'src/Host/HostFileMetadataBridge.cs',a/'HostFileMetadataBridge.cs')
+    shutil.copyfile(ROOT/'src/Host/HostFileMappingBridge.cs',a/'HostFileMappingBridge.cs')
     for name in ['HostMemory.c','HostMemory.h','HostFileMapping.c','HostFileMapping.h']:
         source=ROOT/'src/Host'/('include' if name.endswith('.h') else '')/name
         shutil.copyfile(source,a/name)
@@ -68,7 +69,7 @@ try:
         r['rawGenerated']={p.name:sha(p)for p in raw.glob('*.cs')};shutil.copytree(raw,opt)
         for label,generated in [('raw',raw),('optimized',opt)]:
             consumer=a/(label+'-consumer');consumer.mkdir()
-            for name in ['Program.cs','HostFileMetadataBridge.cs','HostIoBridge.cs']:shutil.copyfile(a/name,consumer/name)
+            for name in ['Program.cs','HostFileMetadataBridge.cs','HostFileMappingBridge.cs','HostIoBridge.cs']:shutil.copyfile(a/name,consumer/name)
             xml=ET.Element('Project',Sdk='Microsoft.NET.Sdk');props=ET.SubElement(xml,'PropertyGroup')
             for key,value in [('TargetFramework','net10.0'),('OutputType','Exe'),('AllowUnsafeBlocks','true'),('Nullable','enable'),('AssemblyName','HostFileMappingProbe'),('WarningsAsErrors','CS8500')]:ET.SubElement(props,key).text=value
             items=ET.SubElement(xml,'ItemGroup');ET.SubElement(items,'Compile',Include=str(generated/'*.cs'))

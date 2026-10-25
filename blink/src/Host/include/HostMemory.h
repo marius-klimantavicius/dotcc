@@ -1,6 +1,7 @@
 #ifndef BLINK_HOST_MEMORY_H
 #define BLINK_HOST_MEMORY_H
 #include <stddef.h>
+#include <stdint.h>
 #include <sys/types.h>
 #ifdef BLINK_MANAGED_GUEST_THREADS
 #include <stdint.h>
@@ -35,6 +36,31 @@ typedef int (*BlinkHostMemoryReadLength)(int, off_t *);
 /* Explicit per-owner callbacks; anonymous mappings need no file binding.
  * Callbacks borrow host buffers synchronously and must preserve fd position. */
 int BlinkHostMemorySetFileReader(BlinkHostMemoryReadAt, BlinkHostMemoryReadLength);
+/* Per-page shared guest-file leases. Acquire returns RW/NX backing and an opaque
+ * generation token. Release/available must work after worker I/O is unbound.
+ * Mutable shared backing is limited to guest memfds; immutable guest files
+ * use read-only owned bytes. Other descriptors fail explicitly.
+ * Callbacks must not reenter this memory owner; lock order remains owner -> I/O. */
+typedef int (*BlinkHostMemoryAcquireShared)(int, off_t, void **, uint64_t *);
+typedef int (*BlinkHostMemoryReleaseShared)(uint64_t);
+typedef int (*BlinkHostMemorySharedAvailable)(uint64_t);
+/* 0 = mutable memfd; 1 = immutable regular guest file; -1 = unsupported/error. */
+typedef int (*BlinkHostMemorySharedReadOnly)(int);
+/* SharedReadOnly: 0 = writable leased memory file, 1 = immutable snapshot,
+ * 2 = mutable regular file with read-only leased coherent pages. */
+int BlinkHostMemorySetSharedFiles(BlinkHostMemoryAcquireShared,
+                                BlinkHostMemoryReleaseShared,
+                                BlinkHostMemorySharedAvailable,
+                                BlinkHostMemorySharedReadOnly);
+/* Aggregate C-owned memory and sparse memfd storage under one owner limit.
+ * Reserve callbacks may fail before allocation/publication; decreasing charges
+ * and releasing the ledger must work after worker I/O unbinding. */
+typedef int (*BlinkHostMemoryBindBudget)(size_t, size_t, uint64_t *);
+typedef int (*BlinkHostMemoryAccountBudget)(uint64_t, size_t);
+typedef int (*BlinkHostMemoryReleaseBudget)(uint64_t);
+int BlinkHostMemorySetFileBudget(BlinkHostMemoryBindBudget,
+                               BlinkHostMemoryAccountBudget,
+                               BlinkHostMemoryReleaseBudget);
 /* Configured mapping-owner budget; zero means no active owner. This is not
  * total process address space or an accounting of generic malloc allocations. */
 size_t BlinkHostMemoryLimit(void);
@@ -47,11 +73,19 @@ int BlinkHostMemoryContains(const void *, size_t);
  * Modes NONE/READ/WRITE/RW never change raw backing's RW accessibility.
  * Guest page tables, not this metadata, enforce guest permissions. */
 int BlinkHostMemoryProtection(const void *);
-/* Snapshot page availability, independent of protection. Whole file pages
+/* Read-only sharing metadata query. Both mutable and immutable shared file
+ * pages return 1; private or unowned pages return 0. Does not probe backing. */
+int BlinkHostMemoryFilePageShared(const void *);
+/* File page availability, independent of protection. Private files use their
+ * snapshot EOF; shared memfds use their current length, including after close.
+ * Whole file pages
  * beyond EOF return 0 and must never be exposed through guest translation.
  * Partial final file pages return 1 and contain a zero-filled tail. Unowned
  * pointers return 0. This query does not dereference backing or change errno. */
 int BlinkHostMemoryFilePageAvailable(const void *);
+/* Query used before guest mprotect mutates any PTE. Private snapshots may be
+ * writable; shared immutable images cannot gain write permission. */
+int BlinkHostMemoryFilePageWritable(const void *);
 /* mprotect supports aligned ranges within one owned mapping, rounded upward
  * to pages. No zero lengths, cross-mapping ranges, hardware protection or EXEC. */
 int BlinkHostMemoryEnd(void);

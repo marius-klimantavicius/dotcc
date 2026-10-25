@@ -2,4 +2,5 @@
 /generated/
 /build/
 /artifacts/
+/tests/**/.artifacts/
 __pycache__/

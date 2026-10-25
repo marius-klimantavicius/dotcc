@@ -74,9 +74,30 @@ def adapt_memory_and_futex(source, memory):
         "  }\n"
         "  if ((flags & MAP_TYPE_LINUX) != MAP_PRIVATE_LINUX) return einval();\n"
         "  if (flags & MAP_GROWSDOWN_LINUX) return enotsup();\n")
+    source = replace_once(source, function(source, "static struct Futex *FindFutex("), "")
     for name, marker in (("futex-wake.inc", "static int SysFutexWake("),
                          ("futex-wait.inc", "static int SysFutexWait(")):
         source = replace_once(source, function(source, marker), (HERE / name).read_text())
+    source = replace_once(source,
+        "      return SysFutexWait(m, uaddr, op, val, timeout_addr);\n",
+        "      return SysFutexWait(m, uaddr, op, val, timeout_addr, 0xffffffffu);\n")
+    source = replace_once(source,
+        "      // will be supported soon\n"
+        "      // avoid logging when cosmo feature checks this\n"
+        "      if (!m->system->iscosmo) goto DefaultCase;\n"
+        "      return einval();\n",
+        "      return SysFutexWait(m, uaddr, op, val, timeout_addr, val3);\n"
+        "    case 10:  // FUTEX_WAKE_BITSET (not named by the pinned linux.h)\n"
+        "      if (!val3) return einval();\n"
+        "      return BlinkFutexWakeOp(m, uaddr, op, val, val3);\n")
+    dispatch = function(source, "static int SysFutex(")
+    modified = replace_once(dispatch, "    DefaultCase:\n", "")
+    modified = replace_once(modified,
+        "  op &= ~FUTEX_PRIVATE_FLAG_LINUX;\n  switch (op) {\n",
+        "  switch (op & ~FUTEX_PRIVATE_FLAG_LINUX) {\n")
+    modified = replace_once(modified, "      return SysFutexWake(m, uaddr, val);\n",
+        "      return BlinkFutexWakeOp(m, uaddr, op, val, 0xffffffffu);\n")
+    source = replace_once(source, dispatch, modified)
     source = replace_once(source, "static void ClearChildTid(struct Machine *m) {\n",
         "static void ClearChildTid(struct Machine *m) {\n"
         "  BlinkGuestFutexCleanup(m);\n")

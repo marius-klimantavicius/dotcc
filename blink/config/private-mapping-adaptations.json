@@ -1,4 +1,4 @@
 {
-  "scope": "Whole-function identity for reviewed managed nonlinear private mapping transaction",
+  "scope": "Whole-function identity for reviewed managed nonlinear private snapshot and shared memfd mapping transaction",
   "ReserveVirtual_sha256": "f7a099c542b2708458bd8db27bcea978afb1eb823960cf93cec8bd2541df01c6"
 }

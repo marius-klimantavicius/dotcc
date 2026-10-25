@@ -11,6 +11,13 @@ explicitly permits ELF interpreter loading from the supplied guest filesystem;
 the default remains static-only. See the machine contract for packaging and
 the finite loader/libc qualification scope.
 
+`MachineOptions.VirtualMemoryLimit` optionally gives sparse guest reservations a
+separate virtual-address budget, up to 4 GiB. Null preserves the existing policy
+of using `MemoryLimit` for both budgets. An explicit value must be page-aligned
+and at least `MemoryLimit`; it does not increase the backing-memory cap. The
+CoreCLR fixture uses this option because its native runtime reserves gigabytes
+of address space while using much less backing memory.
+
 ## Earlier explicit worker controller
 
 `BlinkInstance` and `InstanceOptions` retain the earlier explicit worker protocol

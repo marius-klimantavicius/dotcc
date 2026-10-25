@@ -18,6 +18,16 @@ limits using unchanged upstream `Write64`:
 | `RLIMIT_DATA_LINUX` | Same byte budget | Queryable/settable guest record; no separate DATA enforcement consumer in the pinned source |
 | `RLIMIT_NOFILE_LINUX` | Descriptor-table capacity including standard streams | `GetFileDescriptorLimit`, used by open, pipe, duplication and socket paths |
 
+An embedding may instead call
+`BlinkHostInitializeResourceLimitsWithVirtual(s, descriptorCapacity, virtualBytes)`
+or its bound managed counterpart. This requires a page-aligned virtual budget
+at least as large as the backing budget and no larger than 4 GiB. It changes
+only the initial AS record; DATA and the actual backing owner retain their
+existing byte budget. All fresh-System checks and atomic publication remain.
+The original entry keeps its exact equal-budget behavior, including byte units.
+Upstream `GetMaxRss` also reads AS; the independent HostMemory/shared-file owner
+still enforces the backing budget before allocations.
+
 The capacity is a limit, not the number of currently unused descriptors. AS is
 not remaining memory, and records preserve exact byte units, including a
 non-page-aligned budget. Rounded mappings and ownership bookkeeping can exhaust

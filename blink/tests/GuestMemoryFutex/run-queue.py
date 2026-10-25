@@ -14,7 +14,7 @@ sha = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
 
 
 def main():
-    base = ROOT / 'generated/guest-memory-futex-queue'
+    base = ROOT / 'artifacts/guest-memory-futex-queue'
     base.mkdir(parents=True, exist_ok=True)
     attempt = Path(tempfile.mkdtemp(prefix='attempt-', dir=base))
     print(attempt, flush=True)
