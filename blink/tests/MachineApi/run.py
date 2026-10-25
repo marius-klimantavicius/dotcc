@@ -131,7 +131,9 @@ def verify_delivery(args, receipt, pin, tree):
         raise RuntimeError('Profile does not select the explicit instance ABI')
     assembly_path = pin(delivery['assembly']['path'], delivery['assembly']['sha256'])
     assembly = json.loads(assembly_path.read_text())
-    if (not assembly['linked'] or assembly['failures'] or len(assembly['objects']) != 108
+    if (not assembly['linked'] or assembly['failures'] or not assembly['objects']
+            or set(assembly['objects']) != set(assembly['selected'])
+            or len(assembly['selected']) != len(set(assembly['selected']))
             or assembly['identity']['profile_inputs_sha256'] != sha(inputs_path)
             or assembly['identity']['compiler_sha256'] != delivery['compiler']
             or inputs['compiler'] != delivery['compiler']

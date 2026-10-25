@@ -4,9 +4,12 @@
 Runs only while constructing a new profile, before inputs.json is finalized.
 It never modifies the immutable upstream tree or rewrites generated C#.
 """
-import argparse,hashlib,json,shutil
+import argparse,hashlib,json,shutil,sys
 from pathlib import Path
+import memory_bindings
 ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT/'src/Host/scripts'))
+import stage_elf_entry
 p=argparse.ArgumentParser(description=__doc__)
 p.add_argument('--profile',required=True,type=Path)
 p.add_argument('--overrides',required=True,type=Path,help='temporary original/staged source override map')
@@ -21,6 +24,13 @@ shutil.copyfile(Path(__file__),profile/'stage-host-bindings.py')
 authored=profile/'authored';authored.mkdir(exist_ok=True)
 managed=profile/'managed';managed.mkdir(exist_ok=True)
 inputs={}
+for relative in memory_bindings.INPUTS:
+    original=ROOT/relative
+    inputs[relative]=sha(original)
+    shutil.copyfile(original,profile/original.name)
+entry_helper=ROOT/'src/Host/scripts/stage_elf_entry.py'
+shutil.copyfile(entry_helper,profile/'stage_elf_entry.py')
+inputs[str(entry_helper.relative_to(ROOT))]=sha(entry_helper)
 for category,target in [('headers',authored),('cSources',authored),('managedSources',managed)]:
     for relative in manifest[category]:
         original=ROOT/relative; destination=target/original.name
@@ -65,11 +75,20 @@ for entry in entries:
     expected=before['sha256'] if before else entry['sha256']
     if sha(source)!=expected:raise SystemExit('pre-binding source changed: '+entry['path'])
     content=source.read_bytes(); target=profile/'bound'/Path(entry['path']).name
+    if entry['path']=='blink/argv.c':
+        content=stage_elf_entry.adapt(content)
+    content=memory_bindings.adapt(entry['path'],content)
     target.parent.mkdir(exist_ok=True)
     target.write_bytes(b'#include "host-bindings.h"\n'+content)
     overrides[entry['path']]=dict(staged_path=str(target.relative_to(ROOT)),sha256=sha(target),original_sha256=entry['sha256'])
     rows.append(dict(source=entry['path'],original_sha256=entry['sha256'],pre_binding_sha256=expected,
                      previous_adaptation=before,staged_sha256=sha(target)))
+    if entry['path']=='blink/argv.c':
+        rows[-1]['elf_entry_register_correction']=dict(
+            issue='upstream LoadArgv applies APE program-string RDX to Linux rtld_fini',
+            helper_sha256=sha(entry_helper),linux_rdx=0,ape_rdx='upstream program string',
+            flat_binary_rdx='upstream program string',
+            evidence='tests/ElfRuntime/README.md')
 a.overrides.write_text(json.dumps(overrides,indent=2)+'\n')
 (profile/'binding-sources.json').write_text(json.dumps(dict(
     authored_c=['authored/HostSignals.c','authored/HostMemory.c']

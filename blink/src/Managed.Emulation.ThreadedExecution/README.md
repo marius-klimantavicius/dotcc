@@ -1,18 +1,26 @@
-# Threaded execution owner — implementation under qualification
+# Threaded execution owner
 
 This authored C# API consumes the stable translated interpreter library at
 `generated/TranslatedBlink/TranslatedBlink.csproj`. The raw-socket NativeAOT
-service and actual worker lifecycle have qualified execution receipts;
-ASP.NET Core/Kestrel remains under qualification. See the campaign progress
+service, ASP.NET Core/Kestrel and actual worker lifecycle have selected-profile
+execution receipts. See the campaign progress
 ledger for the exact frozen inputs and result boundaries.
 
-The constructor's optional `memoryLimitBytes` selects 64 MiB (the unchanged
-default) or 128 MiB. The owner passes that value to shared backing creation;
+The constructor's optional `memoryLimitBytes` accepts page-aligned limits from
+8 KiB through 256 MiB; its low-level default remains 64 MiB. The public
+`BlinkMachine` passes its own 256 MiB default explicitly. The owner passes that value to shared backing creation;
 existing resource initialization sets guest RLIMIT_AS/DATA to the same limit.
 Thus reserved guest addresses count toward admission even before physical pages
-are touched. The 128 MiB Kestrel profile is prepared after an observed ordinary
-thread-stack reservation exceeded the 64 MiB address-space ceiling; its actual
-execution is still pending. Neither value is a measurement of process RSS.
+are touched. This is not a measurement of process RSS.
+
+`Run(..., allowElfInterpreter: true)` enables the translated upstream ELF
+interpreter handoff; the default is false. Public callers set
+`ExecutionOptions.AllowElfInterpreter` instead. The interpreter and its libraries
+must exist in the supplied guest filesystem. The preflight checks PT_INTERP
+policy and interpreter availability; upstream loading and guest `ld.so` perform
+the actual loading and relocations. See [the public contract](../Managed.Emulation/MACHINE-API.md)
+and [ELF qualification](../../tests/ElfRuntime/README.md). This policy is not a
+security boundary: explicitly executing a loader ELF is still possible.
 
 The staged upstream clone path retains flag validation, Machine allocation,
 register/TLS/stack setup and TID writes. Its narrow callback transfers an existing
@@ -27,19 +35,19 @@ joined, preventing last-Machine system teardown under an active child. Final
 exit callbacks, host contexts and backing disposal occur afterward. Errors in
 cancellation notification or binding cleanup prevent successful completion.
 
-The current finite profile caps **16 total created workers per process**, not16
-simultaneously live workers. The instruction budget is shared; stopped syscall
-state is checked before cleanup. Both single/threaded APIs share the same
-process-use guard. After Run, the process must be discarded; static upstream
-caches and bounded process-wide pthread handle registries are not reusable.
+The owner limits concurrently owned workers, including main, to
+`maximumWorkers` (16 by default; the public API supplies 64). A child slot is
+reused only after Machine/binding cleanup, host-thread join and synchronization
+resource disposal. Completed results remain in history. The instruction budget
+is shared, and stopped syscall state is checked before cleanup. Each owner runs
+once and creates a private translated program context. A later public run uses
+a fresh owner/context while retaining the machine's guest filesystem.
 
 The caller borrows IO and external stop until `IsQuiescent` is true. If a worker
 cannot join or upstream ownership fails to release, shared backing is retained
 and the caller must discard the containing worker process before releasing those
 borrowed resources. No concurrent forced free or native host signal is used.
-Private `raise` follows the existing explicit unsupported asynchronous-signal
-policy; it never raises a native host signal. Nonzero internal pthread signal
-notifications and the retained uncoordinated
-`KillOtherThreads` export are explicitly unsupported in this initial profile;
-ordinary group shutdown follows the managed callback path. Pinned robust-list
+Guest signals use the translated signal machinery and managed worker
+notifications; they never raise a native host signal. Ordinary group shutdown
+follows the managed callback path. Pinned robust-list
 cleanup remains upstream's existing no-op and is not newly qualified.

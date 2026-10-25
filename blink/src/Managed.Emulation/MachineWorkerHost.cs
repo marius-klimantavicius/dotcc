@@ -39,6 +39,7 @@ public static class MachineWorkerHost
             var options = request.Options.Freeze();
             if (options.ExecutionMode != ExecutionMode.InProcess || options.Worker != null) throw new InvalidDataException("Recursive workers are forbidden.");
             var execution = new ExecutionOptions { Executable = request.Execution.Executable, Arguments = request.Execution.Arguments,
+                AllowElfInterpreter = request.Execution.AllowElfInterpreter,
                 WorkingDirectory = request.Execution.WorkingDirectory, Readiness = request.Execution.Readiness,
                 Console = new() { RedirectInput = true, RedirectOutput = true, BufferBytes = request.Execution.BufferBytes,
                     CaptureBytes = request.Execution.CaptureBytes, OutputLimit = request.Execution.OutputLimit,

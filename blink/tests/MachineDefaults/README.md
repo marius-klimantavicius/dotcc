@@ -10,6 +10,8 @@ It checks the exact service defaults (256 MiB memory, 512 MiB private storage,
 8,192 nodes, 1,024 descriptors, 64 concurrently owned guest thread slots, null instruction
 budget/deadline), both execution-mode option selections, full `start-v1` framing
 with nullable limits and `long.MaxValue` output, explicit low limits and validation,
+the static-only `ExecutionOptions.AllowElfInterpreter` default, explicit opt-in
+after freeze and both boolean values surviving source-generated worker framing,
 descriptor/node counts above the former defaults, small storage/descriptor caps,
 and output beyond 1 MiB with only 64 KiB retained capture. Creating the private
 filesystem with the 512 MiB quota must allocate less than 1 MiB. Incomplete raw
@@ -36,15 +38,16 @@ dotnet publish "$defaults_work/blink/tests/MachineDefaults/Probe.csproj" -c Rele
 
 Each execution prints `machine default contracts: PASS (no translated guest execution)`.
 Linux x64 is the exercised host; Windows and other hosts need their own runs.
-Both forms passed using the isolated snapshot
+The earlier default-only versions of both forms passed using the isolated snapshot
 `generated/machine-defaults/attempt-Xdehaa/`, with build/execution logs and verified
 input hashes in `artifacts/machine-defaults/attempt-Xdehaa/`. JIT compilation
 reported zero warnings and errors. The executed DLL SHA-256 was
 `6b2d9e825168094a02ec7f66d917b251bf9c160fa92469f6bbb573d38d570614`;
 the NativeAOT binary SHA-256 was
 `a800d850e6ebd3d9f6e7aebe9bdf415047807324765c5617a82de25d56c1400e`.
-This README was added after the executable fixture was frozen; the tested
-program, project and linked implementation sources have not changed.
+Those receipts predate the added interpreter-option checks. A fresh execution
+is required to qualify the updated program and linked protocol sources; the
+historical binaries do not establish those new assertions.
 
 The production propagation audit is separate source evidence:
 
@@ -82,6 +85,8 @@ The production propagation audit is separate source evidence:
 
 The remaining 256 KiB per-store path-name budget and 4,096-byte path bound still
 apply. Network grants remain explicit numeric IPv4 TCP, and the selected guest
-profile remains static Linux x86-64 ELF/NativeAOT. Fresh translated-product tests
+default profile remains static Linux x86-64 ELF/NativeAOT; explicit interpreter
+execution requires the separate [ELF runtime suite](../ElfRuntime/README.md).
+Fresh translated-product tests
 are needed to establish guest execution after any staged C changes; these
 host-only checks provide no evidence for a stale translated DLL.

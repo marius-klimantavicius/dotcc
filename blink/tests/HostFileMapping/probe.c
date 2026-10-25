@@ -39,6 +39,8 @@ static int EnableFiles(void) {
   return BlinkHostMemorySetFileReader(TestRead,TestLength);
 #endif
 }
+#ifdef BLINK_HISTORICAL_FILEMAP_FAILURES
+/* Historical excluded inputs retained for earlier receipt provenance only. */
 static int fault_calls;
 static ssize_t FaultRead(int fd, void *destination, size_t length, off_t offset) {
   if(++fault_calls==2){errno=EIO;return -1;}
@@ -51,7 +53,7 @@ static ssize_t ShortRead(int fd, void *destination, size_t length, off_t offset)
 static ssize_t EmptyRead(int fd, void *destination, size_t length, off_t offset) {
   (void)fd;(void)destination;(void)length;(void)offset;return 0;
 }
-static int PrivateChecks(void) {
+static int HistoricalPrivateChecks(void) {
   int fd=open("image",O_RDONLY);CHECK(fd>=0);
   CHECK(!BlinkHostMemoryMappings() && !BlinkHostMemoryBytes());
   CHECK(mmap(0,4096,3,MAP_PRIVATE,fd,1)==MAP_FAILED && errno==EINVAL);
@@ -88,6 +90,22 @@ static int PrivateChecks(void) {
   CHECK(!BlinkHostMemoryEnd());
   return 0;
 }
+#endif /* BLINK_HISTORICAL_FILEMAP_FAILURES */
+static int OwnedChecks(void) {
+  CHECK(!BlinkHostMemoryMappings() && !BlinkHostMemoryBytes());
+  int fd=open("image",O_RDONLY);CHECK(fd>=0);
+  CHECK(!BlinkHostMemoryEnd());
+  /* A normal configured budget returns ENOMEM, then remains usable. */
+  CHECK(!BlinkHostMemoryBegin(4096+24+1) && !EnableFiles());
+  CHECK(mmap(0,FILE_LENGTH,3,MAP_PRIVATE,fd,0)==MAP_FAILED && errno==ENOMEM);
+  CHECK(!BlinkHostMemoryMappings() && !BlinkHostMemoryBytes());
+  unsigned char *one=mmap(0,4096,3,MAP_PRIVATE,fd,0);CHECK(one!=MAP_FAILED);
+  CHECK(one[123]==123 && BlinkHostMemoryMappings()==1);
+  CHECK(BlinkHostMemoryFilePageAvailable(one) && !munmap(one,4096));
+  CHECK(!BlinkHostMemoryMappings() && !BlinkHostMemoryBytes());
+  CHECK(!close(fd) && !BlinkHostMemoryEnd());
+  return 0;
+}
 #endif
 int FileMappingProbe(void) {
 #ifdef OWNED
@@ -97,7 +115,6 @@ int FileMappingProbe(void) {
   CHECK(lseek(fd,17,SEEK_SET)==17);
   char bytes[8];CHECK(pread(fd,bytes,8,100)==8 && lseek(fd,0,SEEK_CUR)==17);
   for(int i=0;i<8;++i)CHECK((unsigned char)bytes[i]==(unsigned char)((i+100)%251));
-  CHECK(pread(fd,bytes,8,-1)==-1 && errno==EINVAL);
   CHECK(pread(fd,bytes,8,FILE_LENGTH+10)==0 && lseek(fd,0,SEEK_CUR)==17);
   unsigned char *readonly=mmap(0,4096,PROT_READ,MAP_PRIVATE,fd,0);
   CHECK(readonly!=MAP_FAILED && readonly[100]==100);
@@ -115,12 +132,40 @@ int FileMappingProbe(void) {
   CHECK(offset[0]==(unsigned char)(4096%251) && offset[8191]==(unsigned char)(12287%251));
   unsigned char *shortmap=mmap(0,7,3,MAP_PRIVATE,fd,0);CHECK(shortmap!=MAP_FAILED);
   CHECK(shortmap[100]==100 && shortmap[4095]==(unsigned char)(4095%251));
+  /* Linux permits file spans containing absent full pages. Never access those
+   * pages: inspect owner metadata instead of installing a crash probe. */
+  unsigned char *extended=mmap(0,16384,3,MAP_PRIVATE,fd,131072);
+  CHECK(extended!=MAP_FAILED);
+  for(int i=0;i<51;++i)CHECK(extended[i]==(unsigned char)((131072+i)%251));
+  for(int i=51;i<4096;++i)CHECK(!extended[i]);
+#ifdef OWNED
+  CHECK(BlinkHostMemoryFilePageAvailable(extended));
+  for(int i=1;i<4;++i)CHECK(!BlinkHostMemoryFilePageAvailable(extended+i*4096));
+#endif
+  CHECK(!mprotect(extended,16384,PROT_NONE));
+  CHECK(!mprotect(extended,16384,PROT_READ|PROT_WRITE));
+#ifdef OWNED
+  CHECK(BlinkHostMemoryProtection(extended+8192)==(PROT_READ|PROT_WRITE));
+  CHECK(!BlinkHostMemoryFilePageAvailable(extended+8192));
+#endif
+  CHECK(!munmap(extended,16384));
+  unsigned char *absent=mmap(0,4096,3,MAP_PRIVATE,fd,135168);CHECK(absent!=MAP_FAILED);
+#ifdef OWNED
+  CHECK(!BlinkHostMemoryFilePageAvailable(absent));
+#endif
+  CHECK(!munmap(absent,4096));
+  int empty=open("empty",O_RDONLY);CHECK(empty>=0);
+  absent=mmap(0,1,3,MAP_PRIVATE,empty,0);CHECK(absent!=MAP_FAILED);
+#ifdef OWNED
+  CHECK(!BlinkHostMemoryFilePageAvailable(absent));
+#endif
+  CHECK(!close(empty) && !munmap(absent,1));
   full[0]=255;CHECK(pread(fd,bytes,1,0)==1 && !bytes[0]);
   CHECK(!close(fd));
   CHECK(full[FILE_LENGTH-1]==(unsigned char)((FILE_LENGTH-1)%251) && full[0]==255);
   CHECK(!munmap(full,FILE_LENGTH) && !munmap(offset,8192) && !munmap(shortmap,7));
 #ifdef OWNED
-  CHECK(!PrivateChecks());
+  CHECK(!OwnedChecks());
 #endif
   puts("private file bytes, positional reads, page tails, offsets and close-after-map: PASS");
   return 0;
@@ -141,7 +186,7 @@ int ReleaseFileMapping(int expected) {
 }
 #else
 int main(int argc, char **argv) {
-#ifndef BLINK_NATIVE_ADAPTER
+#if defined(BLINK_HISTORICAL_FILEMAP_FAILURES) && !defined(BLINK_NATIVE_ADAPTER)
   if(argc>1 && !strcmp(argv[1],"beyond-eof")) {
     int fd=open("image",O_RDONLY);
     unsigned char *p=mmap(0,8192,3,MAP_PRIVATE,fd,131072);

@@ -8,12 +8,14 @@ _CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().par
                       if (parent / "config/source-manifest.json").is_file())
 _CAMPAIGN_SOURCE = _campaign_json.loads((_CAMPAIGN_ROOT / "config/source-manifest.json").read_text())["upstream"]
 
-import difflib, hashlib, json, os
+import difflib, hashlib, json, os, sys
 from pathlib import Path
-import shutil, subprocess, tempfile, time
+import shutil, tempfile, time
 import xml.etree.ElementTree as ET
 ROOT=Path(__file__).resolve().parents[2]
 REPO=ROOT.parent
+sys.path.insert(0, str(REPO / 'Scripts'))
+from production_support import subprocess
 BASE=ROOT/'generated/host-cpu'; BASE.mkdir(parents=True,exist_ok=True)
 ATTEMPT=Path(tempfile.mkdtemp(prefix='attempt-',dir=BASE))
 OUT=ROOT/'artifacts/host-cpu'/ATTEMPT.name; OUT.mkdir(parents=True)
@@ -65,7 +67,8 @@ try:
         disabled={}
         for index,name in enumerate(['DISABLE_X87','DISABLE_MMX','DISABLE_BMI2']):
             disabled[name]=bool(flags & (1<<index))
-            if not disabled[name]: config=config.replace('#define '+name+' 1\n','')
+            config=config.replace('#define '+name+' 1\n','')
+            if disabled[name]: config=config.replace('#endif', '#define '+name+' 1\n#endif')
         (profile/'config.h').write_text(config)
         shutil.copyfile(ROOT/'config/target-storage.h',profile/'target-storage.h')
         outputs={}
@@ -103,7 +106,10 @@ try:
         if ((after[(7,0)][1]>>8)&1)!=expected_bmi or ((after[(7,0)][1]>>19)&1)!=expected_bmi:
             raise RuntimeError('BMI2/ADX advertisements disagree with exclusions')
         receipt['nativeConfigurations'].append({'disabled':disabled,'deltas':deltas}); save()
-        if flags==7: expected=outputs['staged']
+        active=(ROOT/'config/core-config.h').read_text()
+        active_flags=sum(1<<i for i,name in enumerate(['DISABLE_X87','DISABLE_MMX','DISABLE_BMI2'])
+                         if '#define '+name+' 1' in active)
+        if flags==active_flags: expected=outputs['staged']
     native=ROOT/'build/native/source'
     archive=native/'o/blink/blink.a'
     receipt['nativeArchiveSha256']=sha(archive)
@@ -143,5 +149,5 @@ try:
     receipt['binaries']={str(p.relative_to(ATTEMPT)):sha(p) for p in [ATTEMPT/'native-instructions',ATTEMPT/'raw-aot/HostCpuConsumer',ATTEMPT/'optimized-aot/HostCpuConsumer']}
     receipt['passed']=True; receipt['outputRows']=len(expected.splitlines()); save()
     (ROOT/'artifacts/host-cpu/latest.json').write_text(json.dumps({'receipt':str((OUT/'receipt.json').relative_to(ROOT))},indent=2)+'\n')
-    print(str(receipt['outputRows'])+' CPUID rows match staged native in raw/optimized JIT/AOT; eight native flag combinations and seven actual handler probes passed')
+    print(str(receipt['outputRows'])+' CPUID rows match staged native in raw/optimized JIT/AOT; eight native flag combinations and five normal handler probes passed')
 finally: save()

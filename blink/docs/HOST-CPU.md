@@ -1,6 +1,36 @@
 # CPUID capability selection
 
-The configured interpreter disabled x87 and MMX execution but still advertised
+The current ELF runtime profile selects the pinned upstream x87 and MMX handlers
+so that the supplied glibc loader can require the x86-64 baseline honestly.
+`core-config.h` and native configure arguments both enable these handlers. The
+existing CPUID exclusion guards remain in place; no feature bit is forced on
+independently of its implementation. Unsupported optional advertisements remain
+clear. Full regeneration is required: `MachineFpu` gains upstream state fields,
+and the source closure must retain `fpu.c`, `mmx.c` and `ldbl.c` rather than
+preserving a historical object count.
+
+The [ElfRuntime suite](../tests/ElfRuntime/README.md) includes a normal finite
+guest checking CPUID's FPU/MMX/FXSR/SSE/SSE2 prerequisites, x87 initialization,
+load/add/store/FWAIT, selected x87 save/restore, MMX packed addition/shifts,
+MMX save/restore, EMMS and subsequent x87 use. Its native reference and actual
+public raw/processed JIT/AOT results are recorded per executed matrix. These
+checks do not establish full instruction-family or FXSAVE image-format fidelity.
+The pinned upstream x87 algorithm stores binary64 values and converts 80-bit
+memory values through `ldbl.c`; it does not reproduce hardware's extended
+precision. The real handlers are used without replacing their algorithms.
+
+The generic managed C math surface now supplies `logb`, `ilogb` and IEEE
+`remainder`, needed by the selected upstream FPU implementation. The BCL supplies
+binary exponents and IEEE remainder; the runtime preserves their documented
+special values/errno and does not model floating exception flags. In particular,
+`logb(0)` returns negative infinity without changing errno, as the native Linux
+libc control does; its `FE_DIVBYZERO` flag is not modeled. Focused
+`MathExponentTests` and the native-comparable functional fixture
+`math-exponent-remainder` cover this addition. These are compiler/runtime
+prerequisites, not a blanket CPU compatibility claim.
+
+The audit and receipts below are historical for the earlier disabled-x87/MMX
+profile. The earlier configured interpreter disabled x87 and MMX execution but still advertised
 MMX in both feature leaves and FPU in the extended feature leaf. The staged
 `src/Host/scripts/stage-cpuid.py` adds the corresponding existing exclusion guards to
 those three assignments. It checks the complete immutable `cpuid.c` SHA-256

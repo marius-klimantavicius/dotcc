@@ -90,7 +90,8 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
 
     public ThreadedGuestExecutionResult Run(string imagePath, IReadOnlyList<string> argv,
         IReadOnlyList<string> env, ulong instructionBudget,
-        Action<ThreadedSyscallObservation>? syscallTrace = null, string? workingDirectory = null, Action? started = null)
+        Action<ThreadedSyscallObservation>? syscallTrace = null, string? workingDirectory = null, Action? started = null,
+        bool allowElfInterpreter = false)
     {
         ArgumentException.ThrowIfNullOrEmpty(imagePath);
         ArgumentNullException.ThrowIfNull(argv); ArgumentNullException.ThrowIfNull(env);
@@ -133,6 +134,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
             Require(memoryToken != 0, "Create shared memory");
             Bind(main);
             if (workingDirectory != null) Require(io.ChangeDirectory(workingDirectory).Succeeded, "Resolve guest working directory");
+            GuestElfPolicy.Validate(io, imagePath, allowElfInterpreter);
             Require(program!.BlinkHostSignalActionsBegin() == 0, "Begin shared signal actions"); processState = true;
             Require(program!.BlinkHostExitCallbacksBegin() == 0, "Begin shared exit callbacks"); exitState = true;
             Require(program!.BlinkHostMemoryEnablePrivateFiles() == 0, "Bind private mapped files");
@@ -149,7 +151,9 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
             system->trapexit = true;
             byte* path = Text(imagePath);
             program!.LoadProgram(main.Machine, path, path, Vector(argv), Vector(env), null);
-            Require((int)system->loaded != 0 && system->elf.interpreter == null, "Load static image");
+            Require((int)system->loaded != 0, "Load guest image");
+            if (!allowElfInterpreter && system->elf.interpreter != null)
+                throw new InvalidOperationException("ELF PT_INTERP requires ExecutionOptions.AllowElfInterpreter=true; no guest instructions executed.");
             for (int fd = 0; fd < 3; ++fd) program!.AddStdFd(&system->fds, fd);
             started?.Invoke();
             Execute(main, false);

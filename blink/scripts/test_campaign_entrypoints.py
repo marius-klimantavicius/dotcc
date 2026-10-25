@@ -26,8 +26,8 @@ class CampaignEntrypointsTests(unittest.TestCase):
         self.assertNotIn('consumer-delivery', suites)  # Docker service remains explicit.
 
     def test_supported_concurrency_reaches_assembler(self):
-        for jobs in (1, 2, 4):
-            with self.subTest(jobs=jobs), tempfile.TemporaryDirectory() as directory:
+        for jobs, fresh in ((1, False), (2, False), (4, False), (4, True)):
+            with self.subTest(jobs=jobs, fresh=fresh), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)
                 profile = root / 'generated/core-profile/fresh'
                 profile.mkdir(parents=True)
@@ -40,10 +40,12 @@ class CampaignEntrypointsTests(unittest.TestCase):
                     profile='single-thread', options=SimpleNamespace(fast=True, action='probe', unit=[],
                     jobs=jobs, timeout=12), script=script)
                 with patch('production_support.production_sources', return_value={}), patch.object(
-                        campaign, 'helper', return_value=SimpleNamespace(profile_sources=lambda *args: [])):
+                        campaign, 'helper', return_value=SimpleNamespace(profile_sources=lambda *args: [])), patch.dict(
+                        campaign.os.environ, {'DOTCC_BLINK_FRESH_OBJECTS': '1' if fresh else '0'}):
                     campaign.translate(ctx)
                 arguments = next(args for name, args in calls if name == 'assemble-core.py')
                 self.assertEqual(arguments[arguments.index('--jobs') + 1], str(jobs))
+                self.assertEqual('--fresh' in arguments, fresh)
         with self.assertRaisesRegex(ValueError, '1..4'):
             options_for(parser().parse_args(['translate', 'blink', '--jobs', '8']), recipe)
 

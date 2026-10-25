@@ -57,6 +57,12 @@ double log(double x);   float logf(float x);
 double log1p(double x); float log1pf(float x);
 double log10(double x); float log10f(float x);
 double log2(double x);  float log2f(float x);
+/* Binary exponent, including subnormal inputs. Exceptional ilogb results
+   follow the Linux int ABI selected by this runtime. */
+#define FP_ILOGB0 (-2147483647 - 1)
+#define FP_ILOGBNAN (-2147483647 - 1)
+double logb(double x);
+int ilogb(double x);
 
 /* Power and roots. */
 double pow(double x, double y); float powf(float x, float y);
@@ -85,6 +91,7 @@ double trunc(double x); float truncf(float x);
 double fabs(double x);          float fabsf(float x);
 long double fabsl(long double x);
 double fmod(double x, double y); float fmodf(float x, float y);
+double remainder(double x, double y);
 double fmin(double x, double y); float fminf(float x, float y);
 double fmax(double x, double y); float fmaxf(float x, float y);
 double copysign(double x, double y);

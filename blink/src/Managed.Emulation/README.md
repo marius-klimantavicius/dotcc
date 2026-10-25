@@ -6,7 +6,10 @@ Defaults are 256 MiB memory, 512 MiB private storage, 8,192 nodes, 1,024 descrip
 and 64 guest thread slots per run, with null instruction budget/deadline and a
 `long.MaxValue` lifetime output ceiling. Capture remains 64 KiB combined, and
 console queues remain 64 KiB each. Explicit limits remain supported; larger quotas
-do not preallocate their full capacity or broaden static ELF/NativeAOT compatibility.
+do not preallocate their full capacity. `ExecutionOptions.AllowElfInterpreter`
+explicitly permits ELF interpreter loading from the supplied guest filesystem;
+the default remains static-only. See the machine contract for packaging and
+the finite loader/libc qualification scope.
 
 ## Earlier explicit worker controller
 

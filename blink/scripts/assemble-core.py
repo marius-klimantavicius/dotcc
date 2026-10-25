@@ -23,6 +23,7 @@ parser.add_argument('--profile', type=Path, required=True)
 parser.add_argument('--jobs', type=int, choices=range(1, 5), default=2)
 parser.add_argument('--timeout', type=float, default=180)
 parser.add_argument('--emit-only', action='store_true')
+parser.add_argument('--fresh', action='store_true', help='Emit every selected object without consulting prior emission receipts')
 parser.add_argument('--sources', nargs='+', help='selected filenames for bounded diagnosis; implies --emit-only')
 args = parser.parse_args()
 profile = args.profile.resolve()
@@ -66,7 +67,7 @@ selected = {entry['path']:entry for entry in entries}
 expected_emission = {entry['path']:emission_identity(profile, ROOT, inputs, entry) for entry in entries}
 objects = {}
 for receipt_path in (sorted((ROOT / 'artifacts/core').glob('isolate-*/result.json'))
-                     if os.environ.get('DOTCC_CAMPAIGN_HASHES') != 'off' else []):
+                     if not args.fresh and os.environ.get('DOTCC_CAMPAIGN_HASHES') != 'off' else []):
     try:
         receipt = json.loads(receipt_path.read_text())
         for row in receipt['rows']:
@@ -79,6 +80,7 @@ for receipt_path in (sorted((ROOT / 'artifacts/core').glob('isolate-*/result.jso
         continue  # incomplete active diagnostic receipts are not reusable
 report = dict(kind='frozen-core-object-set-not-managed-execution', identity=identity,
               profile=str(profile), key=key, selected=list(selected), reused_objects=len(objects),
+              reuse_policy='forced-fresh' if args.fresh else 'identity-checked',
               assembly_script_sha256=sha(Path(__file__)), objects=objects, failures={}, linked=False)
 def save():
     temporary = cache / 'receipt.tmp'

@@ -47,6 +47,11 @@ int BlinkHostMemoryContains(const void *, size_t);
  * Modes NONE/READ/WRITE/RW never change raw backing's RW accessibility.
  * Guest page tables, not this metadata, enforce guest permissions. */
 int BlinkHostMemoryProtection(const void *);
+/* Snapshot page availability, independent of protection. Whole file pages
+ * beyond EOF return 0 and must never be exposed through guest translation.
+ * Partial final file pages return 1 and contain a zero-filled tail. Unowned
+ * pointers return 0. This query does not dereference backing or change errno. */
+int BlinkHostMemoryFilePageAvailable(const void *);
 /* mprotect supports aligned ranges within one owned mapping, rounded upward
  * to pages. No zero lengths, cross-mapping ranges, hardware protection or EXEC. */
 int BlinkHostMemoryEnd(void);

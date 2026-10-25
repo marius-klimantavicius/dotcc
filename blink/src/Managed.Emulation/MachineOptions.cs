@@ -107,6 +107,9 @@ public sealed record ConsoleOptions
 public sealed record ExecutionOptions
 {
     public required string Executable { get; init; }
+    /// <summary>Opt in to PT_INTERP loading from this machine's guest filesystem.
+    /// The guest interpreter executes under Blink; this never runs a native host loader.</summary>
+    public bool AllowElfInterpreter { get; init; }
     /// <summary>Arguments after argv[0]. The executable path is supplied once.</summary>
     public string[] Arguments { get; init; } = [];
     public string WorkingDirectory { get; init; } = "/";

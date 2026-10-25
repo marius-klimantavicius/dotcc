@@ -23,10 +23,30 @@ readiness, cooperative stop, process-only kill and quiescent disposal.
 
 Opt-in compiler instance mode supplies real instance methods, pinned per-instance
 globals/TLS and pointer-wide callbacks with explicit origin arguments. Shared
-libc callbacks retain that origin. The product uses all 108 instance-v1 objects,
+libc callbacks retain that origin. The product uses all 110 instance-v1 objects,
 literal pooling, inline deduplication, six endian intrinsics and 14 typed managed
 boundary selections. Authored sources remain linked directly from `src`; no
 CoreProbe/test main/C execution frontend enters the product.
+
+## ELF runtime extension (2026-10-25)
+
+The public threaded owner and worker now support explicit per-run
+`ExecutionOptions.AllowElfInterpreter`, with static-only behavior by default.
+The supplied guest filesystem owns interpreter and dependency resolution.
+Linux entry RDX is corrected while preserving APE startup, and private file
+mapping spans support loader protection/BSS replacement without exposing full
+pages beyond EOF as zeros. Allocation preparation rolls back on failure.
+
+Strict producer `20261025-092144-2bee3a12` freshly emits 110 objects with zero
+reuse. Real upstream x87/MMX and their `ldbl.c`/`mmx.c` dependencies are selected
+for glibc's CPU baseline; optional unqualified advertisements stay clear.
+The public ELF suite passes 88 cases across both source forms, JIT/NativeAOT,
+and both execution modes, including genuine static/static-PIE/dynamic glibc,
+actual TLS/relocations, mapping workloads and policy/dependency omissions.
+See [validation](VALIDATION.md#linux-elf-entry-private-mapping-and-interpreter-qualification-2026-10-25)
+and [reproduction](../tests/ElfRuntime/README.md). These finite loader/libc
+results do not establish CoreCLR, arbitrary distro userspace, Windows, full
+hardware x87 precision or a dynamically linked .NET NativeAOT application.
 
 ## Translation refresh (2026-09-26)
 

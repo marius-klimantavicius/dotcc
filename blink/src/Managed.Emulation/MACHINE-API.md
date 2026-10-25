@@ -27,6 +27,45 @@ The executable resolves directly from the mounted guest namespace; no image
 import or separate registration is required. `ImportImage` remains optional for
 private in-memory content.
 
+Linux ELF with `PT_INTERP` is opt-in per execution. The default remains static
+ELF (including static PIE). Supply the executable, its named interpreter and
+the required libraries in the guest namespace, then set `AllowElfInterpreter`:
+
+```csharp
+await using var dynamicMachine = new BlinkMachine(new MachineOptions
+{
+    ExecutionMode = ExecutionMode.SeparateProcess // InProcess uses the same option
+});
+dynamicMachine.MountDirectory("/bin", "./guest-root/bin", MountAccess.ReadOnly);
+dynamicMachine.MountDirectory("/lib64", "./guest-root/lib64", MountAccess.ReadOnly);
+dynamicMachine.MountDirectory("/lib", "./guest-root/lib", MountAccess.ReadOnly);
+var dynamicResult = await dynamicMachine.ExecuteAsync(new ExecutionOptions
+{
+    Executable = "/bin/app",
+    AllowElfInterpreter = true,
+    Environment = new Dictionary<string, string?> { ["LD_LIBRARY_PATH"] = "/lib" }
+});
+```
+
+The option survives frozen execution configuration and `start-v1` worker
+framing. `ThreadedGuestExecution.Run(..., allowElfInterpreter: true)` exposes
+the same opt-in on the lower-level execution owner. Upstream `LoadProgram` and
+`LoadElf` load the executable and interpreter; the guest `ld.so` executes through
+the translated CPU and performs dynamic relocation and library/TLS startup.
+All file resolution uses the explicitly supplied guest filesystem. There is no
+ambient host-root or native-loader fallback.
+
+Without opt-in, a raw ELF `PT_INTERP` receives `ExecutionFailure`, zero executed
+instructions and a diagnostic naming `AllowElfInterpreter=true`. With opt-in,
+an absent or non-file interpreter receives a guest-filesystem diagnostic before
+execution. Missing shared libraries are reported by the executing guest loader
+through its normal stderr and exit status. Owning resources must be released in
+each case. The preflight reads only ELF interpreter metadata; upstream still
+owns ELF parsing/loading. This finite opt-in is not a general Linux, CoreCLR or
+.NET runtime compatibility claim. See [the ELF runtime suite](../../tests/ElfRuntime/README.md)
+for genuine glibc shutdown, relative/dynamic relocations, actual TLS/data/BSS
+access, native comparisons and the exact selected execution matrix.
+
 Service defaults apply to `new BlinkMachine()`, `new MachineOptions()` and both
 execution modes. The resource quotas are ceilings, not startup reservations.
 
@@ -87,10 +126,12 @@ it is not the protocol used by `BlinkMachine` separate-process execution.
 Focused [default contract tests](../../tests/MachineDefaults/README.md) exercise
 options, source-generated framing, host quotas and console construction without
 executing a translated guest. Raising quotas does not extend guest compatibility:
-the selected profile remains static Linux x86-64 ELF, including the pinned musl
-NativeAOT Kestrel service, with explicitly granted numeric IPv4 TCP. Dynamic ELF,
-CoreCLR, general Linux userspace, ambient DNS, UDP and IPv6 remain outside this
-profile. Fresh full-product qualification is separate from these host tests.
+the default remains static Linux x86-64 ELF, including the pinned musl NativeAOT
+Kestrel service, with explicitly granted numeric IPv4 TCP. Explicit dynamic ELF
+execution requires the finite guest loader/libc qualification described above
+and in its actual suite receipts. CoreCLR, general Linux userspace, ambient DNS, UDP and
+IPv6 remain outside this profile. Fresh full-product qualification is separate
+from these host tests.
 
 Create a fresh run on the same machine to reuse its private filesystem. Machine
 configuration and mount changes are allowed only while idle. Independent machines

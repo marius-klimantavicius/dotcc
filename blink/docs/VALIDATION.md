@@ -3,6 +3,79 @@
 All observed executions below are Linux x64. Windows execution has not run.
 Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 
+## Linux ELF entry, private mapping and interpreter qualification (2026-10-25)
+
+Fresh strict producer `artifacts/campaign/20261025-092144-2bee3a12/receipt.json`
+emitted all 110 selected sources with zero reuse. Raw, processed and final
+direct-source builds passed. Real upstream x87/MMX handlers are now selected,
+including `ldbl.c` and `mmx.c`; CPUID remains tied to the selected handlers.
+Upstream x87 uses binary64 internally, so hardware extended precision and full
+instruction-family fidelity are not implied.
+
+`artifacts/elf-runtime/managed-all-jit-aot/attempt-_zkql1l9/receipt.json` passes
+88 public executions: seven successful fixtures plus four ordinary dynamic
+policy/dependency scenarios in each raw/processed × JIT/NativeAOT ×
+InProcess/SeparateProcess combination. All require released resources and exited
+workers. The exact native reference is
+`artifacts/elf-runtime/native/attempt-bgvwb7_w/receipt.json`.
+
+- Linux ELF entry RDX is zero, while the actual adapted upstream `LoadArgv`
+  body preserves APE's program-string convention. Static glibc and static PIE
+  complete real stdio, `atexit`, destructors and shutdown.
+- Private file spans can cover EOF, preserving the partial-page zero tail and
+  marking full absent pages unavailable. The ordinary mapping guest exercises
+  protection, file/anonymous fixed replacement, BSS, no-replace overlap,
+  anonymous discard and descriptor-close lifetime. Native PTE invariants check
+  absence, accounting and allocation rollback; SIGBUS routing and permission
+  precedence are source-reviewed, without custom invalid-access probes.
+- `ExecutionOptions.AllowElfInterpreter` defaults to false and survives frozen
+  options and worker serialization. Denied or unavailable interpreters execute
+  zero instructions. Missing libc exits through guest `ld.so`; host libc is not
+  supplied implicitly.
+- The real guest interpreter/libc/fixture DSO execute relative and dynamic
+  relocations, actual volatile initialized/zero TLS and data/BSS accesses,
+  file I/O and shutdown. CPU baseline admission required enabling existing
+  handlers, rather than advertising disabled FPU/MMX.
+
+Reproduce with `DOTCC_BLINK_FRESH_OBJECTS=1 bash blink/scripts/translate.sh --tools reuse --fetch never
+--hashes strict --jobs 4`, then `bash blink/scripts/test.sh --suite elf-runtime
+--form all --mode all`. Rebuild the compiler/postprocessor first when their
+sources change. The [suite README](../tests/ElfRuntime/README.md) gives standalone
+commands and guest packaging; the [public API contract](../src/Managed.Emulation/MACHINE-API.md)
+gives exact opt-in usage.
+
+The combined evidence, preceding failures, compiler identities and selected
+regressions are indexed in `artifacts/elf-loading-fixes/attempt-a2oygphx/index.json`.
+On that final producer, GuestThreads passes four managed forms, memory/futex
+passes twelve executions, churn/cap/exit/cancellation passes 24, signals passes
+four, and MachineApi passes 44 comparisons: 88 additional managed executions.
+Their receipts are respectively `guest-threads-managed/attempt-f7hv6y9r`,
+`generated/guest-memory-futex-managed/attempt-5w442hyr` and `attempt-zicwdtrr`,
+`guest-thread-churn/attempt-uhs1tfdd` and `attempt-8zz73h6g`,
+`guest-signals-managed/attempt-niatlw6c`, and `machine-api/attempt-ytn7v5s8`.
+All artifact paths are under `artifacts/` except the explicitly named generated
+memory/futex receipts. Native references, host memory/file/CPU four-form gates,
+options/framing and console JIT/NativeAOT, and ordinary native mapping ASan also
+pass; the index pins their exact paths and hashes. Source-input controls pass
+35 tests, including explicit fresh-object forwarding.
+
+The initial fresh 108-source producer passed builds but exposed glibc's honest
+CPU baseline rejection after the mapping fix; it is not the qualified final
+producer. Native math comparison also caught and corrected an incorrect
+`logb(0)` errno assumption. The final native math fixture, translated functional
+fixture and 60 math unit cases pass.
+An intermediate identity-valid delivery reused 109 objects and was correctly
+rejected by the strict ELF gate. `DOTCC_BLINK_FRESH_OBJECTS=1` now requests full
+emission without deleting prior evidence. Final review also narrowed zero RDX
+to Linux ELF, preserving flat-binary startup alongside APE; all affected guest
+gates were rerun against the final producer above.
+
+These are finite Linux x64 loader/libc results. Shared mmap and file-backed
+DONTNEED remain unsupported. File snapshots do not follow later truncation, and
+successful mapping churn retains the inherited page-identity high-water registry.
+No dynamically linked .NET NativeAOT application, CoreCLR, general distro
+userspace, Windows or service/performance certification is claimed here.
+
 ## Targeted service corrections (2026-10-25)
 
 Strict shared verification passed at

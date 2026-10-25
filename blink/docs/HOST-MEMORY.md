@@ -2,9 +2,10 @@
 
 `src/Host/HostMemory.c` supplies bounded private anonymous host allocations for the
 interpreter's explicit guest address translation, plus explicitly enabled
-[private file snapshots](HOST-FILE-MAPPING.md). It does not implement guest
-page tables, guest mmap algorithms, host page protection, or JIT memory.
-Those remain upstream code or separate unsupported host operations.
+[private file snapshots](HOST-FILE-MAPPING.md). It supplies backing and metadata while retained upstream code owns guest
+translation and retirement. The reviewed staged nonlinear reservation transaction
+and EOF-access changes are detailed in [HOST-FILE-MAPPING.md](HOST-FILE-MAPPING.md).
+Hardware host page protection and JIT memory remain unsupported.
 
 ## Reached calls and source boundary
 
@@ -53,18 +54,21 @@ table. Payload bytes start at zero and addresses are aligned to 4096.
 Without file-reader registration, only a null-address, private anonymous,
 request with fd=-1 and offset=0 is supported; tracked protection modes are
 NONE, READ, WRITE and READ|WRITE. An explicitly enabled
-owner can also copy existing private file pages under the separate file-mapping
-contract. Fixed addresses, shared mappings and executable protection return
+owner can also snapshot private file spans under the separate file-mapping
+contract, with unavailable metadata for whole pages beyond EOF. Fixed addresses, shared mappings and executable protection return
 MAP_FAILED with ENOTSUP; unknown protection bits return EINVAL.
 Zero/overflowing lengths return EINVAL; exceeding the owner's budget returns
 ENOMEM without changing its live state. msync remains ENOTSUP.
 
 Protection is **software metadata only**. Raw backing is ordinary RW C memory;
 these bytes do not enforce pointer access, install OS page protections or create
-hardware-executable memory. Unchanged upstream guest PTE checks remain the
-permission enforcement mechanism. `BlinkHostMemoryProtection(address)` returns
+hardware-executable memory. Guest PTE permission checks and the staged EOF availability check remain the
+permission and file-absence enforcement mechanisms. `BlinkHostMemoryProtection(address)` returns
 the current page's recorded mode, or -1 for an unowned address, without changing
-errno. Ownership-only `BlinkHostMemoryContains` intentionally ignores mode.
+errno. `BlinkHostMemoryFilePageAvailable` separately reports whether a snapshot
+page exists, with zero for an unowned or wholly beyond-EOF page. Protection
+updates preserve this availability state. Ownership-only
+`BlinkHostMemoryContains` intentionally ignores both mode and availability.
 
 `mprotect` accepts a nonnull page-aligned address and a positive length rounded
 up safely to pages, wholly within one mapping belonging to the current worker.
@@ -76,9 +80,15 @@ Invalid requests leave every page mode, payload byte and charge unchanged.
 This bounded contract intentionally does not implement native zero-length or
 multi-mapping protection semantics.
 
-This supports the normal non-linear loader's private READ backing and its
-READ-to-RW-to-READ tail-zeroing transitions. It does not itself qualify managed
-LoadProgram execution. Page metadata shares one allocation with the ownership
+This supports the nonlinear loader's private READ backing and its
+READ-to-RW-to-READ tail-zeroing transitions. The guest transaction prepares
+fallible allocation and file reads before replacing existing leaves. Scratch
+transaction storage is charged to the same owner and released after commit or
+rollback; new empty intermediate tables are detached on failure. Retained slab
+cache storage can remain charged until final owner disposal. Host file backing
+is deliberately prepared page by page so existing per-page retirement retains
+exact ownership without introducing host partial-unmap semantics. Boundary
+checks alone do not qualify managed LoadProgram execution. Page metadata shares one allocation with the ownership
 record; allocation rollback, exact unmap and worker disposal release and
 subtract that metadata together with the payload.
 
@@ -106,7 +116,21 @@ complete owning generated core state or add a separately reviewed upstream
 cache cleanup seam before it can reinitialize that state. This adapter does
 not claim that instance teardown integration is complete.
 
-## Evidence
+## Current scope and historical evidence
+
+The current ordinary mapping suites are `tests/HostMemory`,
+`tests/HostFileMapping`, and `tests/GuestFileMapping`. The last suite inspects real
+staged guest PTE availability, reservation and replacement accounting without
+accessing absent pages. Signal routing and permission precedence are covered by
+source/invariant review, without custom guest fault probes. New producer and
+runtime qualification receipts must identify the actual current sources.
+Inherited host page identity storage remains a high-water registry under
+successful mapping churn; its CLR storage and generic malloc allocations are
+outside the mapping payload/record quota. It is discarded with the owning core.
+
+The following receipts describe earlier boundary versions. Historical invalid
+access, custom fault injection and resource-exhaustion cases remain excluded
+from current execution and are not newly claimed passes.
 
 Run `python3 blink/tests/HostMemory/run.py`. Each attempt snapshots source,
 headers, capabilities and compiler identity. It verifies eleven mman constants

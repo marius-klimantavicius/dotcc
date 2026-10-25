@@ -87,6 +87,26 @@ def sources(root):
                  pin["directory"], pin["sha256"], ("blink/machine.h",))
 
 
+def run_elf_runtime_gate(ctx, suite):
+    """Consume a completed strict producer; preserve the fixture's full receipt."""
+    import sys
+    pointer = ctx.artifacts.parent / 'current-threaded.json'
+    if Path(json_file(pointer)['receipt']).resolve() == (ctx.artifacts / 'receipt.json').resolve():
+        raise ValueError('elf-runtime requires a completed strict producer: run translate, then test --suite elf-runtime')
+    helper(ctx.root / 'scripts/campaign_delivery.py').load_clean_delivery(pointer)
+    arguments = ['--clean-delivery', pointer, '--form', ctx.options.form]
+    if ctx.options.mode != 'jit':
+        arguments.append('--aot')  # This specialist includes JIT alongside AOT.
+    output = ctx.run([sys.executable, ctx.root / 'tests/ElfRuntime/run.py', *arguments],
+                     suite.name, timeout=suite.timeout)
+    reports = [Path(line.split('receipt=', 1)[1]) for line in output.splitlines()
+               if line.startswith('passed=True receipt=')]
+    if len(reports) != 1 or not json_file(reports[0]).get('passed'):
+        raise RuntimeError('ELF runtime gate did not publish a passing receipt')
+    ctx.receipt.setdefault('product_gate_reports', {})[suite.name] = str(reports[0])
+    ctx.save()
+
+
 def translate(ctx):
     from production_support import production_sources
     ctx.receipt["production_inputs"] = production_sources(ctx.root)
@@ -117,6 +137,9 @@ def translate(ctx):
     core = helper(root / "scripts/core_inputs.py")
     entries = core.profile_sources(profile, root, inputs)
     options = ["--profile", profile, "--jobs", str(ctx.options.jobs), "--timeout", str(ctx.options.timeout)]
+    if os.environ.get('DOTCC_BLINK_FRESH_OBJECTS') == '1':
+        options.append('--fresh')
+        ctx.receipt['fresh_objects_requested'] = True
     if ctx.options.action == "probe":
         options += ["--emit-only"]
         if ctx.options.unit:
@@ -207,6 +230,9 @@ recipe = Recipe("blink", "TranslatedBlink", ("threaded", "single-thread"),
                         Suite("host-files", ("script", "test-host-files.sh")),
                         Suite("host-sockets", ("script", "test-host-sockets.sh")),
                         Suite("instance-io", ("script", "test-instance-io.sh")),
+                        Suite("elf-runtime", (), 10800, run=run_elf_runtime_gate,
+                              platforms=("linux",), profiles=("threaded",),
+                              scope="completed strict producer; valid ELF/glibc in both public execution modes; AOT includes JIT"),
                         *(Suite(name, ("script", "test-" + name + ".py"), 14400, platforms=("linux",),
                                 scope="opt-in specialist regression; prepares its own test artifacts")
                           for name in ("sqlite-regression", "picotls-regression", "msquic-regression",

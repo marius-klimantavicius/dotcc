@@ -49,6 +49,10 @@ emission/link, and a delivery link with size splitting. Object reuse is allowed
 only when the existing assembler verifies full emission identity and object
 hash; producing profiles and receipts are retained explicitly. It never treats
 an older compiler's objects as compatible merely because a filename matches.
+Set `DOTCC_BLINK_FRESH_OBJECTS=1` on translate/verify to pass `--fresh` to the
+assembler and emit every selected object, retaining prior cache/evidence files.
+The strict ELF qualification gate additionally requires zero reused objects;
+strict hash checking alone permits valid identity-checked object reuse.
 
 The shared framework builds the raw project, processes a separate candidate,
 and builds both published forms. Raw output is published at
@@ -85,8 +89,10 @@ select maintained runtime qualification against the published delivery without
 retranslating. These specialist gates have their own fixed runtime matrices;
 `--mode`/`--form` selects the generic consumer matrix only. The Kestrel service
 `consumer-delivery` suite remains explicit and additionally requires Docker and
-its pinned NativeAOT guest build. Runtime qualification is finite static-ELF
-coverage; increased resource limits do not provide dynamic ELF/runtime support.
+its pinned NativeAOT guest build. The [ELF runtime suite](../tests/ElfRuntime/README.md)
+separately qualifies finite static/static-PIE and explicitly enabled guest-glibc
+loading. Resource limits alone do not enable ELF interpreters or establish
+general runtime support.
 
 This gate establishes translation, semantic postprocessing and buildability of
 the selected core. Runtime qualification, service startup, sample lifecycle,

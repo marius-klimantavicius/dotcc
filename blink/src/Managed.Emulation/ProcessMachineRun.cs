@@ -61,7 +61,8 @@ internal sealed class ProcessMachineRun : MachineRun
         }
         var request = new MachineStart(options with { ExecutionMode = ExecutionMode.InProcess, Worker = null },
             new(execution.Executable, execution.Arguments, execution.WorkingDirectory, new(environment), execution.Readiness,
-                execution.Console.BufferBytes, execution.Console.OutputLimit, execution.Console.CaptureBytes, execution.Console.DrainTimeout), storage);
+                execution.Console.BufferBytes, execution.Console.OutputLimit, execution.Console.CaptureBytes, execution.Console.DrainTimeout,
+                execution.AllowElfInterpreter), storage);
         _ = ObserveAsync(request);
     }
     public override ExecutionMode ExecutionMode => ExecutionMode.SeparateProcess;

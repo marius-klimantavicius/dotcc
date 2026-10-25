@@ -3,7 +3,7 @@
 Build orchestration uses the [shared campaign helpers](../docs/campaigns.md).
 
 The selected Blink interpreter executes Linux x86-64 instructions as translated
-C# on Linux x64. The qualified delivery translates all 108 selected product sources through
+C# on Linux x64. The current delivery translates all 110 selected product sources through
 `blink/scripts/translate.sh`, which publishes the post-processed project at
 `blink/generated/TranslatedBlink/TranslatedBlink.csproj` and preserves a separate
 immutable raw snapshot. Authored Host/bridge sources are linked directly from
@@ -67,8 +67,15 @@ instead of 1 MiB. Retained capture stays at 64 KiB total and console queues stay
 at 64 KiB each, so long-running output does not grow captured logs. Both execution
 modes receive these values, and explicit smaller limits remain effective. See the
 [exact limits and checks](src/Managed.Emulation/MACHINE-API.md).
-These defaults do not extend the selected static ELF/NativeAOT guest profile to
-dynamic ELF, CoreCLR or general Linux userspace. Network grants remain numeric
+These defaults do not enable ELF interpreters. `ExecutionOptions.AllowElfInterpreter`
+is an explicit per-run opt-in, propagated to both public execution modes. The
+executable, its named interpreter and dependencies must be supplied in the guest
+filesystem. The translated upstream loader and guest `ld.so` perform loading and
+relocation; no host loader fallback is used. See the
+[ELF runtime suite](tests/ElfRuntime/README.md) for the finite static, static PIE,
+glibc and dynamic TLS qualification scope. This option is an execution policy,
+not a security sandbox. CoreCLR and general Linux userspace remain unqualified.
+Network grants remain numeric
 IPv4 TCP, with no ambient DNS access.
 
 Anonymous private `MADV_DONTNEED` discards guest page contents while preserving
@@ -82,7 +89,7 @@ instance metadata and explicit role credentials at guest `169.254.169.254:80`.
 It uses a small BCL listener and works with ordinary AWS SDK credential providers
 in both execution modes. See the [NativeAOT AWS SDK example](tests/ImdsMachine/README.md).
 
-The P3 pass is finite selected-profile coverage. Broader ISA, dynamic ELF/TLS
+The P3 pass is finite selected-profile coverage. Broader ISA, arbitrary ELF/TLS
 and unrelated runtime compatibility are not implied. See [progress](docs/PROGRESS.md),
 [validation](docs/VALIDATION.md), [blockers](docs/BLOCKERS.md) and the
 [implementation plan](docs/PLAN.md) for evidence and remaining gates.
@@ -149,6 +156,9 @@ Additional harnesses (consult the ledger for current versus historical evidence)
   reviewed staged native, and four managed forms; original failures are retained.
 - [Valid ELF loading](tests/ElfLoading/README.md): pinned bytes, BSS, page
   permissions, initial stack and cleanup; no service instructions execute.
+- [ELF runtime execution](tests/ElfRuntime/README.md): Linux entry registers,
+  real glibc startup/shutdown, static PIE and dynamic relocations, TLS, private
+  file mappings, explicit interpreter policy and both public execution modes.
 - [Valid TLS startup](tests/TlsLoading/README.md): fixed static template, loaded
   program header, explicit runtime initialization and FS-relative access.
 - [Core ABI](tests/CoreAbi/README.md): 236 actual layout/register measurements.

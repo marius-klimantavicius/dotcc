@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework><OutputType>Exe</OutputType>
+    <ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+  <ItemGroup><ProjectReference Include="../../src/Managed.Emulation/Managed.Emulation.csproj" /></ItemGroup>
+  <Import Project="../../src/Managed.Emulation/Managed.Emulation.Consumer.targets" />
+</Project>

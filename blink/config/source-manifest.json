@@ -43,10 +43,8 @@
   "nativeProfile": {
     "configureArguments": [
       "--disable-jit",
-      "--disable-x87",
       "--disable-threads",
       "--disable-fork",
-      "--disable-mmx",
       "--disable-bmi2",
       "--disable-metal",
       "--disable-bcd",

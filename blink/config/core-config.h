@@ -8,11 +8,11 @@
 /* Valid only with the staged map.c capability boundary and HostMemory owner. */
 #define HAVE_MAP_ANONYMOUS 1
 #define DISABLE_JIT 1
-#define DISABLE_X87 1
+/* Real upstream x87/MMX handlers are selected for the guest glibc baseline.
+ * x87 retains upstream's binary64 implementation; see docs/HOST-CPU.md. */
 #define DISABLE_THREADS 1
 #define DISABLE_VFS 1
 #define DISABLE_METAL 1
-#define DISABLE_MMX 1
 #define DISABLE_BCD 1
 #define DISABLE_ROM 1
 #define DISABLE_BMI2 1

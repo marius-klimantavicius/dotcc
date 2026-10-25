@@ -238,7 +238,9 @@ def main():
         assembly = json.loads(assembly_path.read_text())
         profile_inputs = pin(Path(delivery['profile']) / 'inputs.json', delivery['profile_inputs_sha256'])
         translation_inputs = json.loads(profile_inputs.read_text())
-        if (not assembly['linked'] or assembly['failures'] or len(assembly['objects']) != 108 or
+        if (not assembly['linked'] or assembly['failures'] or not assembly['objects'] or
+                set(assembly['objects']) != set(assembly['selected']) or
+                len(assembly['selected']) != len(set(assembly['selected'])) or
                 assembly['identity']['profile_inputs_sha256'] != sha(profile_inputs) or
                 translation_inputs['compiler'] != delivery['compiler']):
             raise RuntimeError('Public translation producer identity differs')

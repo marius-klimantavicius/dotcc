@@ -201,8 +201,10 @@ def main():
         receipt['delivery'] = dict(path=str(delivery_path), sha256=sha(delivery_path), assembly=delivery['assembly'])
         assembly_path = pin(delivery['assembly']['path'], delivery['assembly']['sha256'])
         assembly = json.loads(assembly_path.read_text())
-        if assembly['failures'] or not assembly['linked'] or len(assembly['selected']) != 108:
-            raise RuntimeError('Complete 108-producer threaded assembly required')
+        if (assembly['failures'] or not assembly['linked'] or not assembly['selected']
+                or len(assembly['selected']) != len(set(assembly['selected']))
+                or set(assembly['objects']) != set(assembly['selected'])):
+            raise RuntimeError('Complete selected threaded assembly required')
         for row in assembly['objects'].values(): pin(row['object_path'], row['object_sha256'])
         profile = Path(delivery['profile'])
         profile_inputs = pin(profile / 'inputs.json', delivery.get('profile_inputs_sha256'))

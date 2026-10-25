@@ -14,9 +14,12 @@ import subprocess
 import sys
 
 from core_inputs import compiler_directory, compiler_identity, emission_identity, profile_sources, stage_managed_boundaries
+import memory_bindings
 
 ROOT = Path(__file__).resolve().parents[1]
 REPO = ROOT.parent
+sys.path.insert(0, str(ROOT / 'src/Host/scripts'))
+import stage_elf_entry
 PREFIX = b'#include "host-bindings.h"\n'
 AUTHORED_PREFIX = b'#include "config.h"\n'
 THREAD_HEADER = 'src/Host/include/host-guest-threads.h'
@@ -115,8 +118,8 @@ def main():
             if track(base / relative_file(name)) != expected:
                 raise RuntimeError('Base snapshot changed: ' + name)
         base_entries = profile_sources(base, ROOT, inputs)
-        if len(base_entries) != 108:
-            raise RuntimeError('Expected exactly 108 reviewed base producers')
+        if not base_entries or len({entry['path'] for entry in base_entries}) != len(base_entries):
+            raise RuntimeError('Expected the complete unique reviewed base producer selection')
         for entry in base_entries:
             if track(ROOT / entry['staged_path']) != entry['sha256']:
                 raise RuntimeError('Base selected source changed: ' + entry['path'])
@@ -317,7 +320,13 @@ def main():
             name = entry['path']
             old_row = old_rows[name]
             old_bound = (ROOT / entry['staged_path']).read_bytes()
-            if (not old_bound.startswith(PREFIX) or digest(old_bound[len(PREFIX):]) != old_row['pre_binding_sha256']
+            predecessor = old_row['previous_adaptation']
+            original = (ROOT / predecessor['staged_path'] if predecessor else upstream / name).read_bytes()
+            expected_body = original
+            if name == 'blink/argv.c':
+                expected_body = stage_elf_entry.adapt(expected_body)
+            expected_body = memory_bindings.adapt(name, expected_body)
+            if (digest(original) != old_row['pre_binding_sha256'] or old_bound != PREFIX + expected_body
                     or old_row['original_sha256'] != pins[name] or old_row['staged_sha256'] != entry['sha256']):
                 raise RuntimeError('Exact base preamble/source chain differs: ' + name)
             filename = Path(name).name
@@ -329,6 +338,9 @@ def main():
                     raise RuntimeError('Thread replacement source identity differs: ' + name)
                 previous = dict(staged_path=str(adapted_path.relative_to(ROOT)),
                                 sha256=digest(content), original_sha256=pins[name])
+                # Thread/mremap derivation starts from its reviewed upstream
+                # chain. Reapply the host mapping correction to that new body.
+                content = memory_bindings.adapt(name, content)
             else:
                 content = old_bound[len(PREFIX):]
                 previous = old_row['previous_adaptation']
@@ -339,6 +351,8 @@ def main():
             rows.append(dict(source=name, original_sha256=pins[name], pre_binding_sha256=digest(content),
                              previous_adaptation=previous, staged_sha256=sha(target),
                              base_bound_sha256=entry['sha256']))
+            if 'elf_entry_register_correction' in old_row:
+                rows[-1]['elf_entry_register_correction'] = old_row['elf_entry_register_correction']
         if set(boundary['sources']) != {'syscall.c', 'memorymalloc.c', 'signal.c'}:
             raise RuntimeError('Unexpected thread stage replacement set')
         write_json(profile / 'binding-overrides.json', overrides)
@@ -374,8 +388,8 @@ def main():
             staged_headers={str(path.relative_to(profile)): sha(path) for path in profile.rglob('*') if path.is_file()})
         write_json(profile / 'inputs.json', derived_inputs)
         entries = profile_sources(profile, ROOT, derived_inputs)
-        if len(entries) != 108 or len({entry['path'] for entry in entries}) != 108:
-            raise RuntimeError('Derived profile must resolve exactly 108 unique producers')
+        if len(entries) != len(base_entries) or {entry['path'] for entry in entries} != {entry['path'] for entry in base_entries}:
+            raise RuntimeError('Derived profile must preserve every unique base producer')
         for entry in entries:
             path = ROOT / entry['staged_path']
             if sha(path) != entry['sha256'] or not path.resolve().is_relative_to(profile):

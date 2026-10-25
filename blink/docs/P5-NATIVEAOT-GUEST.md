@@ -1,5 +1,13 @@
 # P5 NativeAOT guest qualification
 
+The sections below preserve historical producer and SDK findings. The later
+selected static-musl public service qualification is recorded in
+[VALIDATION.md](VALIDATION.md). The 2026-10-25 ELF extension fixes the old private
+mapping failure and qualifies supplied glibc with ordinary C executables through
+the current public API. The historical dynamically linked NativeAOT service
+below has not been rerun by that loader/libc gate; its earlier failure is not
+relabelled as a .NET runtime pass. See the [ELF suite](../tests/ElfRuntime/README.md).
+
 The required guest is a genuine C# HTTP service published to native machine
 code and executed by translated Blink. Publishing the emulator host with AOT
 does not satisfy this requirement. The existing C service remains a separate

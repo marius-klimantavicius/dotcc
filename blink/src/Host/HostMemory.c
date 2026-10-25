@@ -39,6 +39,7 @@ static _Thread_local struct SharedMemoryOwner *shared_memory_owner;
  * serialize complete operations, including synchronous file callbacks. */
 #define MEMORY_LOCAL static
 #define BlinkHostMemoryProtection MemoryImplProtection
+#define BlinkHostMemoryFilePageAvailable MemoryImplFilePageAvailable
 #define BlinkHostMemoryBegin MemoryImplBegin
 #define BlinkHostMemoryLimit MemoryImplLimit
 #define BlinkHostMemoryBytes MemoryImplBytes
@@ -72,6 +73,9 @@ static size_t MetadataSize(size_t rounded) {
 static unsigned char *Protections(struct OwnedMapping *record) {
   return (unsigned char *)(record + 1);
 }
+/* Kept alongside protection metadata, but never cleared by mprotect. Host
+ * storage stays RW/NX; the guest page walk rejects these absent file pages. */
+#define FILE_PAGE_ABSENT 128
 static int ValidProtection(int prot) {
   if (prot & ~(PROT_READ | PROT_WRITE | PROT_EXEC)) return Fail(EINVAL);
   if (prot & PROT_EXEC) return Fail(ENOTSUP);
@@ -84,10 +88,21 @@ MEMORY_LOCAL int BlinkHostMemoryProtection(const void *pointer) {
   while (record) {
     uintptr_t base = (uintptr_t)record->address;
     if (address >= base && address - base < record->length)
-      return Protections(record)[(address - base) / 4096];
+      return Protections(record)[(address - base) / 4096] & ~FILE_PAGE_ABSENT;
     record = record->next;
   }
   return -1;
+}
+MEMORY_LOCAL int BlinkHostMemoryFilePageAvailable(const void *pointer) {
+  uintptr_t address = (uintptr_t)pointer;
+  struct OwnedMapping *record = owner.head;
+  while (record) {
+    uintptr_t base = (uintptr_t)record->address;
+    if (address >= base && address - base < record->length)
+      return !(Protections(record)[(address - base) / 4096] & FILE_PAGE_ABSENT);
+    record = record->next;
+  }
+  return 0;
 }
 
 MEMORY_LOCAL int BlinkHostMemoryBegin(size_t limit) {
@@ -138,6 +153,7 @@ MEMORY_LOCAL void *blink_host_mmap(void *address, size_t length, int prot, int f
   int error;
   size_t rounded;
   size_t file_bytes = 0;
+  size_t available = 0;
   if (!owner.limit) { Fail(ENODEV); return MAP_FAILED; }
   if (!(rounded = RoundLength(length))) { Fail(EINVAL); return MAP_FAILED; }
   if (ValidProtection(prot)) return MAP_FAILED;
@@ -153,14 +169,11 @@ MEMORY_LOCAL void *blink_host_mmap(void *address, size_t length, int prot, int f
     if (offset < 0 || (offset & 4095)) { Fail(EINVAL); return MAP_FAILED; }
     if (owner.read_length(fd, &file_length)) return MAP_FAILED;
     if (file_length < 0) { Fail(EIO); return MAP_FAILED; }
-    /* Only the existing file pages are supported. Whole pages at/beyond EOF
-     * require SIGBUS on access; silently making them readable would be wrong. */
-    if (offset >= file_length) { Fail(ENOTSUP); return MAP_FAILED; }
-    file_bytes = (size_t)(file_length - offset);
-    if (rounded > file_bytes && rounded - file_bytes >= 4096) {
-      Fail(ENOTSUP); return MAP_FAILED;
+    if (offset < file_length) {
+      off_t remaining = file_length - offset;
+      file_bytes = remaining < (off_t)rounded ? (size_t)remaining : rounded;
     }
-    if (file_bytes > rounded) file_bytes = rounded;
+    available = file_bytes ? RoundLength(file_bytes) : 0;
   } else { Fail(ENOTSUP); return MAP_FAILED; }
   if (rounded > owner.limit - owner.bytes ||
       MetadataSize(rounded) > owner.limit - owner.bytes - rounded) {
@@ -186,6 +199,10 @@ MEMORY_LOCAL void *blink_host_mmap(void *address, size_t length, int prot, int f
     copied += count;
   }
   memset(Protections(record), prot, rounded / 4096);
+  if (flags == MAP_PRIVATE) {
+    for (size_t page = available / 4096; page < rounded / 4096; ++page)
+      Protections(record)[page] |= FILE_PAGE_ABSENT;
+  }
   record->address = allocation;
   record->length = rounded;
   record->next = owner.head;
@@ -232,7 +249,10 @@ MEMORY_LOCAL int blink_host_mprotect(void *address, size_t length, int prot) {
         start - base <= record->length - rounded) {
       /* Pure software bookkeeping for owned private backing. Raw C memory
        * remains RW; upstream guest PTEs enforce guest access permissions. */
-      memset(Protections(record) + (start - base) / 4096, prot, rounded / 4096);
+      for (size_t page = (start - base) / 4096;
+           page < (start - base + rounded) / 4096; ++page)
+        Protections(record)[page] =
+            (Protections(record)[page] & FILE_PAGE_ABSENT) | prot;
       return 0;
     }
     record = record->next;
@@ -260,6 +280,7 @@ MEMORY_LOCAL void BlinkHostMemoryDisposeWorker(void) {
 #undef MEMORY_LOCAL
 #ifdef BLINK_MANAGED_GUEST_THREADS
 #undef BlinkHostMemoryProtection
+#undef BlinkHostMemoryFilePageAvailable
 #undef BlinkHostMemoryBegin
 #undef BlinkHostMemoryLimit
 #undef BlinkHostMemoryBytes
@@ -401,6 +422,8 @@ MEMORY_WRAPPER(size_t, BlinkHostMemoryBytes, MemoryImplBytes, (void), (), 0)
 MEMORY_WRAPPER(size_t, BlinkHostMemoryMappings, MemoryImplMappings, (void), (), 0)
 MEMORY_WRAPPER(int, BlinkHostMemoryProtection, MemoryImplProtection,
                (const void *pointer), (pointer), -1)
+MEMORY_WRAPPER(int, BlinkHostMemoryFilePageAvailable, MemoryImplFilePageAvailable,
+               (const void *pointer), (pointer), 0)
 MEMORY_WRAPPER(int, BlinkHostMemoryContains, MemoryImplContains,
                (const void *pointer, size_t length), (pointer, length), 0)
 MEMORY_WRAPPER(int, BlinkHostMemorySetFileReader, MemoryImplSetFileReader,

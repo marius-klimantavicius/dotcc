@@ -18,13 +18,14 @@ static void Defaults(MachineOptions options)
     Check(options.PipeBufferBytes == 65536 && options.PipeStorageLimit == 1048576 && options.PendingPipeOperations == 128,
         "bounded pipe defaults");
 }
-static async Task<MachineStart> RoundTrip(MachineOptions options, ConsoleOptions console)
+static async Task<MachineStart> RoundTrip(MachineOptions options, ConsoleOptions console, bool allowElfInterpreter = false)
 {
     options = options.Freeze(); console = console.Freeze();
     // ProcessMachineRun converts the mode to InProcess for the worker; all
     // resource values travel in this same source-generated start-v1 frame.
     var start = new MachineStart(options with { ExecutionMode = ExecutionMode.InProcess, Worker = null },
-        new("/bin/service", [], "/", [], new(), console.BufferBytes, console.OutputLimit, console.CaptureBytes, console.DrainTimeout),
+        new("/bin/service", [], "/", [], new(), console.BufferBytes, console.OutputLimit, console.CaptureBytes, console.DrainTimeout,
+            allowElfInterpreter),
         new("/private-root", []));
     using var wire = new MemoryStream();
     await InstanceProtocol.WriteAsync(wire, new MachineFrame("start-v1", Start: start), MachineJson.Default.MachineFrame);
@@ -41,10 +42,15 @@ Invalid(() => JsonSerializer.Deserialize("{}", MachineJson.Default.MachineOption
 foreach (var mode in new[] { ExecutionMode.InProcess, ExecutionMode.SeparateProcess })
 {
     var options = new MachineOptions { ExecutionMode = mode }.Freeze(); Defaults(options);
-    var console = new ExecutionOptions { Executable = "/bin/service" }.Freeze().Console;
+    var execution = new ExecutionOptions { Executable = "/bin/service" }.Freeze();
+    Check(!execution.AllowElfInterpreter, "ELF interpreter defaults to disabled after freeze");
+    Check((execution with { AllowElfInterpreter = true }).Freeze().AllowElfInterpreter, "explicit ELF interpreter opt-in survives freeze");
+    var console = execution.Console;
     Check(console.OutputLimit == long.MaxValue && console.CaptureBytes == 65536 && console.BufferBytes == 65536,
         "bounded console retention with lifetime counter ceiling");
     var start = await RoundTrip(options, console); Defaults(start.Options.Freeze());
+    Check(!start.Execution.AllowElfInterpreter, "worker default remains static-only");
+    Check((await RoundTrip(options, console, true)).Execution.AllowElfInterpreter, "worker framing retains explicit interpreter opt-in");
     Check(start.Execution.OutputLimit == long.MaxValue && start.Execution.CaptureBytes == 65536 && start.Execution.BufferBytes == 65536,
         "worker console defaults survive source-generated framing");
 }

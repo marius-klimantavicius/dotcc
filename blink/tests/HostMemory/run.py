@@ -8,12 +8,14 @@ _CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().par
                       if (parent / "config/source-manifest.json").is_file())
 _CAMPAIGN_SOURCE = _campaign_json.loads((_CAMPAIGN_ROOT / "config/source-manifest.json").read_text())["upstream"]
 
-import difflib, hashlib, json, os
+import difflib, hashlib, json, os, sys
 from pathlib import Path
-import shutil, subprocess, tempfile, time
+import shutil, tempfile, time
 import xml.etree.ElementTree as ET
 ROOT=Path(__file__).resolve().parents[2]
 REPO=ROOT.parent
+sys.path.insert(0, str(REPO / 'Scripts'))
+from production_support import subprocess
 BASE=ROOT/'generated/host-memory'; BASE.mkdir(parents=True,exist_ok=True)
 ATTEMPT=Path(tempfile.mkdtemp(prefix='attempt-',dir=BASE))
 OUT=ROOT/'artifacts/host-memory'/ATTEMPT.name; OUT.mkdir(parents=True)

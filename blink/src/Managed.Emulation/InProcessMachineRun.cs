@@ -36,7 +36,8 @@ internal sealed class InProcessMachineRun : MachineRun
         thread = new Thread(() =>
         {
             try { result = owner.Run(execution.Executable, argv, env, (ulong)(options.InstructionLimit ?? long.MaxValue),
-                workingDirectory: execution.WorkingDirectory, started: () => Volatile.Write(ref loaded, 1)); }
+                workingDirectory: execution.WorkingDirectory, started: () => Volatile.Write(ref loaded, 1),
+                allowElfInterpreter: execution.AllowElfInterpreter); }
             catch (Exception error) { failure = error; }
             finally { returned.TrySetResult(); }
         }) { IsBackground = true, Name = "Blink guest" };

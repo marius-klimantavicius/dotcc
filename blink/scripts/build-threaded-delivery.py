@@ -144,8 +144,8 @@ def main():
             raise RuntimeError('Explicit reviewed threaded profile required')
         entries = profile_sources(profile, ROOT, inputs)
         names = [row['path'] for row in entries]
-        if len(names) != 108 or assembly['selected'] != names or set(assembly['objects']) != set(names):
-            raise RuntimeError('Exact 108-producer product closure required')
+        if not names or len(names) != len(set(names)) or assembly['selected'] != names or set(assembly['objects']) != set(names):
+            raise RuntimeError('Exact complete selected producer closure required')
         for row in entries:
             freeze(ROOT / row['staged_path'], row['sha256'])
             produced = assembly['objects'][row['path']]

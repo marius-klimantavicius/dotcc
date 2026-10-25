@@ -53,8 +53,8 @@ def pin_semantic_delivery(delivery, assembly, pin):
         if rule != dict(original, declarationFile=str(header)):
             raise RuntimeError('Semantic rule differs from its pinned physical declaration selector')
     objects, coverage = assembly['objects'], summary['coverage']
-    if len(objects) != 108 or set(coverage) != set(objects):
-        raise RuntimeError('Semantic coverage does not contain exactly the 108 producer objects')
+    if not objects or set(objects) != set(assembly['selected']) or set(coverage) != set(objects):
+        raise RuntimeError('Semantic coverage does not contain every selected producer object')
     required = set(spec['required_units'])
     if not {'blink/machine.c', 'blink/syscall.c', 'blink/loader.c', 'blink/ssefloat.c'} <= required <= set(objects):
         raise RuntimeError('Required core semantic units differ')
@@ -88,7 +88,7 @@ def pin_semantic_delivery(delivery, assembly, pin):
             if (event['matches'] != '1' or event['signature'] != signature or
                     event['declarationFile'] != str(header) or event['translationUnit'] != str(canonical)):
                 raise RuntimeError('Typed endian declaration provenance differs: ' + source)
-    if summary['selected_units'] != selected_count or summary['absent_units'] != 108 - selected_count:
+    if summary['selected_units'] != selected_count or summary['absent_units'] != len(objects) - selected_count:
         raise RuntimeError('Semantic selected/absent unit counts differ')
     return summary
 
@@ -165,7 +165,7 @@ def pin_managed_boundaries(delivery, assembly, pin, inputs, all_bound):
                 or bound[name] != (dict(rule, declarationFile=str(upstream / header)) if header else rule)):
             raise RuntimeError('Managed boundary rule contract differs: ' + name)
     objects, coverage = assembly['objects'], summary['coverage']
-    if len(objects) != 108 or set(coverage) != set(objects):
+    if not objects or set(objects) != set(assembly['selected']) or set(coverage) != set(objects):
         raise RuntimeError('Managed boundary producer coverage differs')
     required = spec['required_units']
     expected_required = {'blink/syscall.c': ['SignalActor', 'SysExitGroup', 'SysExit'], 'blink/memorymalloc.c': ['KillOtherThreads']}
@@ -211,6 +211,6 @@ def pin_managed_boundaries(delivery, assembly, pin, inputs, all_bound):
                     or event.get('passInstance', 'false') != str(instance).lower()
                     or event['translationUnit'] != str(canonical)):
                 raise RuntimeError('Managed boundary typed provenance differs: ' + source)
-    if summary['selected_units'] != selected_count or summary['absent_units'] != 108 - selected_count:
+    if summary['selected_units'] != selected_count or summary['absent_units'] != len(objects) - selected_count:
         raise RuntimeError('Managed boundary selected/absent counts differ')
     return set(targets)
