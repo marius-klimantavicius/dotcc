@@ -195,7 +195,7 @@ def main():
         raw = work / "raw"
         run("translate", [dotnet, cli, "-std=c17", "-DBLINK_TEST_MANAGED",
                           "-DBLINK_MANAGED_GUEST_THREADS", "-DHAVE_THREADS", "-DNOLINEAR", "-DDISABLE_JIT",
-                          "-I", inputs / "headers", "-I", inputs, "-I", profile,
+                          "-I", profile, "-I", inputs, "-I", inputs / "headers",
                           inputs / "probe.c", inputs / "HostMemory.c", "--runtime=c", "--emit=managedlib", "--nest-types",
                           "--class-name", "Blink", "--namespace", "Managed.Emulation", "-o", raw])
         receipt["raw_generated"] = files(raw)

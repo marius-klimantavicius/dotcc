@@ -36,6 +36,10 @@ public static unsafe partial class Libc
         internal long NextThread;
         internal readonly object Objects = new();
         internal readonly Dictionary<int, PthreadMutex> Mutexes = new();
+        // Stable IDs are never reused. Cache only a bounded set of this runtime's
+        // states; each operation still checks Destroyed under the state lock.
+        internal readonly PthreadMutex?[] MutexCache = new PthreadMutex?[64];
+        internal bool MutexCacheEnabled = true;
         internal readonly Dictionary<int, PthreadCondition> Conditions = new();
         internal int NextMutex, NextCondition;
         internal readonly ConcurrentDictionary<int, IntPtr> Keys = new();
@@ -106,6 +110,7 @@ public static unsafe partial class Libc
                 foreach (var item in FunctionArrays) item.Handle.Free();
                 FunctionArrays.Clear(); ArrayRoots.Clear();
                 Threads.Clear(); Mutexes.Clear(); Conditions.Clear(); Keys.Clear();
+                Array.Clear(MutexCache);
                 foreach (var state in threadStates) state.Value.Resolver?.Dispose();
                 threadStates.Clear();
             }

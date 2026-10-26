@@ -42,9 +42,13 @@ public sealed class HostExecutionStop : IDisposable
 
     private void RefreshDeadline(bool schedule = false)
     {
+        // The timeout is immutable. Workers without their own deadline still
+        // observe cancellation through the latched reason, without taking the
+        // deadline gate at every instruction boundary.
+        if (timeout == null) return;
         lock (sync)
         {
-            if (disposed || reason != 0 || timeout == null) return;
+            if (disposed || reason != 0) return;
             TimeSpan remaining = timeout.Value - Stopwatch.GetElapsedTime(started);
             if (remaining > TimeSpan.Zero)
             {

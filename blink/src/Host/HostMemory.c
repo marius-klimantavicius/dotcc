@@ -8,12 +8,14 @@
 #include <sys/mman.h>
 
 struct OwnedMapping {
-  struct OwnedMapping *next;
+  struct OwnedMapping *left;
+  struct OwnedMapping *right;
   void *address;
   size_t length;
+  int height;
 };
 struct MemoryOwner {
-  struct OwnedMapping *head;
+  struct OwnedMapping *root;
   size_t limit;
   size_t bytes;
   size_t mappings;
@@ -91,6 +93,111 @@ static size_t RoundLength(size_t length) {
 static size_t MetadataSize(size_t rounded) {
   return sizeof(struct OwnedMapping) + rounded / 4096;
 }
+
+/* Intrusive AVL index: every link/height is included in MetadataSize(), and
+ * the owner root replaces the old list head. No uncharged cache or allocation.
+ * Live host allocations are disjoint, except shared leases can return the same
+ * single page. Insert equal bases to the right; rotations preserve their
+ * publication order in-order, so the predecessor is the newest alias, just as
+ * in the former head-first list. Never cache protection or lease availability.
+ * Shared-profile callers hold shared_memory_gate for the entire operation. */
+static int MappingHeight(struct OwnedMapping *record) {
+  return record ? record->height : 0;
+}
+static void UpdateMappingHeight(struct OwnedMapping *record) {
+  int left = MappingHeight(record->left);
+  int right = MappingHeight(record->right);
+  record->height = 1 + (left > right ? left : right);
+}
+static struct OwnedMapping *RotateMappingLeft(struct OwnedMapping *record) {
+  struct OwnedMapping *right = record->right;
+  record->right = right->left;
+  right->left = record;
+  UpdateMappingHeight(record);
+  UpdateMappingHeight(right);
+  return right;
+}
+static struct OwnedMapping *RotateMappingRight(struct OwnedMapping *record) {
+  struct OwnedMapping *left = record->left;
+  record->left = left->right;
+  left->right = record;
+  UpdateMappingHeight(record);
+  UpdateMappingHeight(left);
+  return left;
+}
+static struct OwnedMapping *BalanceMapping(struct OwnedMapping *record) {
+  int balance;
+  if (!record) return 0;
+  UpdateMappingHeight(record);
+  balance = MappingHeight(record->left) - MappingHeight(record->right);
+  if (balance > 1) {
+    if (MappingHeight(record->left->left) < MappingHeight(record->left->right))
+      record->left = RotateMappingLeft(record->left);
+    return RotateMappingRight(record);
+  }
+  if (balance < -1) {
+    if (MappingHeight(record->right->right) < MappingHeight(record->right->left))
+      record->right = RotateMappingRight(record->right);
+    return RotateMappingLeft(record);
+  }
+  return record;
+}
+static struct OwnedMapping *InsertMapping(struct OwnedMapping *root,
+                                          struct OwnedMapping *record) {
+  if (!root) return record;
+  if ((uintptr_t)record->address < (uintptr_t)root->address)
+    root->left = InsertMapping(root->left, record);
+  else
+    root->right = InsertMapping(root->right, record);
+  return BalanceMapping(root);
+}
+static struct OwnedMapping *DetachFirstMapping(struct OwnedMapping *root,
+                                               struct OwnedMapping **first) {
+  if (!root->left) {
+    *first = root;
+    return root->right;
+  }
+  root->left = DetachFirstMapping(root->left, first);
+  return BalanceMapping(root);
+}
+static struct OwnedMapping *RemoveMappingRoot(struct OwnedMapping *root) {
+  struct OwnedMapping *replacement;
+  struct OwnedMapping *right;
+  if (!root->right) return root->left;
+  right = DetachFirstMapping(root->right, &replacement);
+  replacement->left = root->left;
+  replacement->right = right;
+  return BalanceMapping(replacement);
+}
+/* Remove the rightmost equal base, retaining older same-address leases. */
+static struct OwnedMapping *RemoveMapping(struct OwnedMapping *root,
+                                          uintptr_t address,
+                                          struct OwnedMapping **removed) {
+  if (!root) return 0;
+  if (address < (uintptr_t)root->address) {
+    root->left = RemoveMapping(root->left, address, removed);
+  } else {
+    root->right = RemoveMapping(root->right, address, removed);
+    if (!*removed && address == (uintptr_t)root->address) {
+      *removed = root;
+      return RemoveMappingRoot(root);
+    }
+  }
+  return BalanceMapping(root);
+}
+static inline struct OwnedMapping *FindMapping(uintptr_t address) {
+  struct OwnedMapping *record = owner.root;
+  struct OwnedMapping *found = 0;
+  while (record) {
+    if (address < (uintptr_t)record->address) {
+      record = record->left;
+    } else {
+      found = record;
+      record = record->right;
+    }
+  }
+  return found && address - (uintptr_t)found->address < found->length ? found : 0;
+}
 static unsigned char *Protections(struct OwnedMapping *record) {
   return (unsigned char *)(record + 1);
 }
@@ -100,8 +207,8 @@ static unsigned char *Protections(struct OwnedMapping *record) {
 #define FILE_PAGE_SHARED 64
 #define FILE_PAGE_READONLY_SHARED 32
 #define FILE_PAGE_METADATA (FILE_PAGE_ABSENT | FILE_PAGE_SHARED | FILE_PAGE_READONLY_SHARED)
-/* Preserve the existing private record size/accounting. Only shared records
- * carry a lease after their protection bytes; memcpy handles its alignment. */
+/* Only shared records carry a lease after their protection bytes; memcpy
+ * handles its alignment. Index metadata is charged for every mapping. */
 static uint64_t SharedLease(struct OwnedMapping *record) {
   uint64_t lease = 0;
   if (Protections(record)[0] & FILE_PAGE_SHARED)
@@ -119,51 +226,39 @@ static int ValidProtection(int prot) {
 }
 MEMORY_LOCAL int BlinkHostMemoryProtection(const void *pointer) {
   uintptr_t address = (uintptr_t)pointer;
-  struct OwnedMapping *record = owner.head;
+  struct OwnedMapping *record;
   if (!owner.limit || !address) return -1;
-  while (record) {
-    uintptr_t base = (uintptr_t)record->address;
-    if (address >= base && address - base < record->length)
-      return Protections(record)[(address - base) / 4096] & ~FILE_PAGE_METADATA;
-    record = record->next;
-  }
+  record = FindMapping(address);
+  if (record)
+    return Protections(record)[(address - (uintptr_t)record->address) / 4096] &
+           ~FILE_PAGE_METADATA;
   return -1;
 }
 MEMORY_LOCAL int BlinkHostMemoryFilePageShared(const void *pointer) {
   uintptr_t address = (uintptr_t)pointer;
-  struct OwnedMapping *record = owner.head;
-  while (record) {
-    uintptr_t base = (uintptr_t)record->address;
-    if (address >= base && address - base < record->length)
-      return !!(Protections(record)[(address - base) / 4096] &
-                (FILE_PAGE_SHARED | FILE_PAGE_READONLY_SHARED));
-    record = record->next;
-  }
+  struct OwnedMapping *record = FindMapping(address);
+  if (record)
+    return !!(Protections(record)[(address - (uintptr_t)record->address) / 4096] &
+              (FILE_PAGE_SHARED | FILE_PAGE_READONLY_SHARED));
   return 0;
 }
 MEMORY_LOCAL int BlinkHostMemoryFilePageAvailable(const void *pointer) {
   uintptr_t address = (uintptr_t)pointer;
-  struct OwnedMapping *record = owner.head;
-  while (record) {
-    uintptr_t base = (uintptr_t)record->address;
-    if (address >= base && address - base < record->length) {
-      if (Protections(record)[0] & FILE_PAGE_SHARED)
-        return owner.shared_available(SharedLease(record));
-      return !(Protections(record)[(address - base) / 4096] & FILE_PAGE_ABSENT);
-    }
-    record = record->next;
+  struct OwnedMapping *record = FindMapping(address);
+  if (record) {
+    if (Protections(record)[0] & FILE_PAGE_SHARED)
+      return owner.shared_available(SharedLease(record));
+    return !(Protections(record)[(address - (uintptr_t)record->address) / 4096] &
+             FILE_PAGE_ABSENT);
   }
   return 0;
 }
 MEMORY_LOCAL int BlinkHostMemoryFilePageWritable(const void *pointer) {
   uintptr_t address = (uintptr_t)pointer;
-  struct OwnedMapping *record = owner.head;
-  while (record) {
-    uintptr_t base = (uintptr_t)record->address;
-    if (address >= base && address - base < record->length)
-      return !(Protections(record)[(address - base) / 4096] & FILE_PAGE_READONLY_SHARED);
-    record = record->next;
-  }
+  struct OwnedMapping *record = FindMapping(address);
+  if (record)
+    return !(Protections(record)[(address - (uintptr_t)record->address) / 4096] &
+             FILE_PAGE_READONLY_SHARED);
   return 0;
 }
 
@@ -219,19 +314,15 @@ MEMORY_LOCAL int BlinkHostMemorySetFileBudget(BlinkHostMemoryBindBudget bind,
 }
 MEMORY_LOCAL int BlinkHostMemoryContains(const void *pointer, size_t length) {
   uintptr_t start = (uintptr_t)pointer;
-  struct OwnedMapping *record = owner.head;
+  struct OwnedMapping *record;
   if (!owner.limit || !start || !length || length > UINTPTR_MAX - start) return 0;
-  while (record) {
-    uintptr_t base = (uintptr_t)record->address;
-    if (start >= base && length <= record->length &&
-        start - base <= record->length - length) return 1;
-    record = record->next;
-  }
-  return 0;
+  record = FindMapping(start);
+  return record && length <= record->length &&
+         start - (uintptr_t)record->address <= record->length - length;
 }
 MEMORY_LOCAL int BlinkHostMemoryEnd(void) {
   if (!owner.limit) return Fail(ENODEV);
-  if (owner.head) return Fail(EBUSY);
+  if (owner.root) return Fail(EBUSY);
   if (ReleaseBudget(&owner)) return -1;
   owner.limit = 0;
   owner.read_at = 0;
@@ -334,35 +425,34 @@ MEMORY_LOCAL void *blink_host_mmap(void *address, size_t length, int prot, int f
     Protections(record)[0] |= FILE_PAGE_SHARED;
     memcpy(Protections(record) + rounded / 4096, &shared_lease, sizeof(shared_lease));
   }
-  record->next = owner.head;
-  owner.head = record;
+  record->left = 0;
+  record->right = 0;
+  record->height = 1;
+  owner.root = InsertMapping(owner.root, record);
   owner.bytes += rounded + metadata_size;
   ++owner.mappings;
   return allocation;
 }
 
 MEMORY_LOCAL int blink_host_munmap(void *address, size_t length) {
-  struct OwnedMapping *previous = 0;
-  struct OwnedMapping *record = owner.head;
+  struct OwnedMapping *record;
+  struct OwnedMapping *removed = 0;
   size_t rounded = RoundLength(length);
   if (!owner.limit) return Fail(ENODEV);
   if (!address || !rounded) return Fail(EINVAL);
-  while (record) {
-    if (record->address == address) {
-      if (record->length != rounded) return Fail(EINVAL);
-      uint64_t lease = SharedLease(record);
-      if (lease && owner.release_shared(lease)) return -1;
-      if (previous) previous->next = record->next;
-      else owner.head = record->next;
-      owner.bytes -= record->length + MappingMetadataSize(record);
-      AccountBudget(&owner, owner.bytes);
-      --owner.mappings;
-      if (!lease) free(record->address);
-      free(record);
-      return 0;
-    }
-    previous = record;
-    record = record->next;
+  record = FindMapping((uintptr_t)address);
+  if (record && record->address == address) {
+    uint64_t lease;
+    if (record->length != rounded) return Fail(EINVAL);
+    lease = SharedLease(record);
+    if (lease && owner.release_shared(lease)) return -1;
+    owner.root = RemoveMapping(owner.root, (uintptr_t)address, &removed);
+    owner.bytes -= record->length + MappingMetadataSize(record);
+    AccountBudget(&owner, owner.bytes);
+    --owner.mappings;
+    if (!lease) free(record->address);
+    free(record);
+    return 0;
   }
   return Fail(EINVAL);
 }
@@ -370,12 +460,13 @@ MEMORY_LOCAL int blink_host_munmap(void *address, size_t length) {
 MEMORY_LOCAL int blink_host_mprotect(void *address, size_t length, int prot) {
   uintptr_t start = (uintptr_t)address;
   size_t rounded;
-  struct OwnedMapping *record = owner.head;
+  struct OwnedMapping *record;
   if (!owner.limit) return Fail(ENODEV);
   if (!start || (start & 4095) || !(rounded = RoundLength(length)) ||
       rounded > UINTPTR_MAX - start) return Fail(EINVAL);
   if (ValidProtection(prot)) return -1;
-  while (record) {
+  record = FindMapping(start);
+  if (record) {
     uintptr_t base = (uintptr_t)record->address;
     if (start >= base && rounded <= record->length &&
         start - base <= record->length - rounded) {
@@ -389,7 +480,6 @@ MEMORY_LOCAL int blink_host_mprotect(void *address, size_t length, int prot) {
             (Protections(record)[page] & FILE_PAGE_METADATA) | prot;
       return 0;
     }
-    record = record->next;
   }
   return Fail(ENOMEM);
 }
@@ -399,12 +489,12 @@ int blink_host_msync(void *address, size_t length, int flags) {
 }
 MEMORY_LOCAL void BlinkHostMemoryDisposeWorker(void) {
   struct OwnedMapping *record;
-  while ((record = owner.head)) {
+  while ((record = owner.root)) {
     uint64_t lease = SharedLease(record);
     if (lease) {
       if (owner.release_shared(lease)) return;
     } else free(record->address);
-    owner.head = record->next;
+    owner.root = RemoveMappingRoot(record);
     owner.bytes -= record->length + MappingMetadataSize(record);
     AccountBudget(&owner, owner.bytes);
     --owner.mappings;
@@ -532,14 +622,14 @@ int BlinkHostMemoryDestroyShared(uint64_t token) {
   if (record->attachments) { SharedMemoryUnlock(); return Fail(EBUSY); }
   /* Caller has joined all workers and discarded every upstream pointer before
    * this final retained-pool release. Attachments alone do not prove joins. */
-  while ((mapping = record->memory.head)) {
+  while ((mapping = record->memory.root)) {
     uint64_t lease = SharedLease(mapping);
     if (lease) {
       if (record->memory.release_shared(lease)) {
         SharedMemoryUnlock(); return -1;
       }
     } else free(mapping->address);
-    record->memory.head = mapping->next;
+    record->memory.root = RemoveMappingRoot(mapping);
     record->memory.bytes -= mapping->length + MappingMetadataSize(mapping);
     AccountBudget(&record->memory, record->memory.bytes);
     --record->memory.mappings;

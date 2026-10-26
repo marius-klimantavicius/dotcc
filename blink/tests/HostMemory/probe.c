@@ -45,7 +45,7 @@ int MemorySelfTest(void) {
   p = Map(4097);
   Require(p != MAP_FAILED && !((uintptr_t)p & 4095));
   for (int i = 0; i < 8192; ++i) Require(p[i] == 0);
-  Require(BlinkHostMemoryMappings() == 1 && BlinkHostMemoryBytes() == 8192 + 24 + 2);
+  Require(BlinkHostMemoryMappings() == 1 && BlinkHostMemoryBytes() == 8192 + 40 + 2);
   for (int i = 0; i < 64; ++i) source[i] = (unsigned char)(i * 7 + 3);
   memcpy(p + 4096 - 31, source, sizeof(source));
   memcpy(copy, p + 4096 - 31, sizeof(copy));
@@ -64,7 +64,7 @@ int MemorySelfTest(void) {
   growth[0] = 17; growth[3 * 4096-1] = 71;
   Require(p[0] == 19 && p[8191] == 31);
   Require(!Munmap(growth, 3 * 4096));
-  Require(BlinkHostMemoryMappings() == 1 && BlinkHostMemoryBytes() == 8192+24+2);
+  Require(BlinkHostMemoryMappings() == 1 && BlinkHostMemoryBytes() == 8192+40+2);
   Require(!Munmap(p, 4097));
   Require(!BlinkHostMemoryBytes() && !BlinkHostMemoryMappings());
   puts("normal aligned zeroed cross-page copy protection growth unmap");

@@ -77,11 +77,11 @@ static int HistoricalPrivateChecks(void) {
   CHECK(!BlinkHostMemoryBytes() && !BlinkHostMemoryMappings());
   CHECK(!BlinkHostMemorySetFileReader(ShortRead,TestLength));
   unsigned char *p=mmap(0,FILE_LENGTH,3,MAP_PRIVATE,fd,0);CHECK(p!=MAP_FAILED);
-  CHECK(BlinkHostMemoryBytes()==135168+24+33 && BlinkHostMemoryMappings()==1);
+  CHECK(BlinkHostMemoryBytes()==135168+40+33 && BlinkHostMemoryMappings()==1);
   CHECK(BlinkHostMemoryContains(p,135168) && !BlinkHostMemoryContains(p+135167,2));
   for(int i=0;i<FILE_LENGTH;++i)CHECK(p[i]==(unsigned char)(i%251));
   CHECK(!munmap(p,FILE_LENGTH) && !BlinkHostMemoryEnd());
-  CHECK(!BlinkHostMemoryBegin(4096+24+1) && !EnableFiles());
+  CHECK(!BlinkHostMemoryBegin(4096+40+1) && !EnableFiles());
   CHECK(mmap(0,FILE_LENGTH,3,MAP_PRIVATE,fd,0)==MAP_FAILED && errno==ENOMEM);
   CHECK(!BlinkHostMemoryBytes() && !BlinkHostMemoryMappings() && !close(fd));
   CHECK(!BlinkHostMemoryEnd() && !BlinkHostMemoryBegin(1024*1024));
@@ -96,7 +96,7 @@ static int OwnedChecks(void) {
   int fd=open("image",O_RDONLY);CHECK(fd>=0);
   CHECK(!BlinkHostMemoryEnd());
   /* A normal configured budget returns ENOMEM, then remains usable. */
-  CHECK(!BlinkHostMemoryBegin(4096+24+1) && !EnableFiles());
+  CHECK(!BlinkHostMemoryBegin(4096+40+1) && !EnableFiles());
   CHECK(mmap(0,FILE_LENGTH,3,MAP_PRIVATE,fd,0)==MAP_FAILED && errno==ENOMEM);
   CHECK(!BlinkHostMemoryMappings() && !BlinkHostMemoryBytes());
   unsigned char *one=mmap(0,4096,3,MAP_PRIVATE,fd,0);CHECK(one!=MAP_FAILED);

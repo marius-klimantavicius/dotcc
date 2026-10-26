@@ -207,9 +207,11 @@ public static unsafe partial class Libc
         throw new PthreadExitException { Result = (IntPtr)result };
     }
 
-    internal sealed class PthreadMutex
+    internal sealed class PthreadMutex(int id, int type = 0)
     {
-        public int Type, Owner, Depth, Waiters, ConditionWaiters;
+        public readonly int Id = id;
+        public int Type = type;
+        public int Owner, Depth, Waiters, ConditionWaiters;
         public bool Destroyed;
     }
     internal sealed class PthreadWaiter { public bool Signaled; }
@@ -220,9 +222,7 @@ public static unsafe partial class Libc
         public int MutexId;
     }
     private static object _pthreadObjects => RuntimeState.Objects;
-    private static Dictionary<int, PthreadMutex> _pthreadMutexes => RuntimeState.Mutexes;
     private static Dictionary<int, PthreadCondition> _pthreadConditions => RuntimeState.Conditions;
-    private static ref int _nextPthreadMutex => ref RuntimeState.NextMutex;
     private static ref int _nextPthreadCondition => ref RuntimeState.NextCondition;
 
     public static int pthread_mutexattr_init(int* attr) { if (attr == null) return EINVAL; *attr = 0; return 0; }
@@ -241,33 +241,68 @@ public static unsafe partial class Libc
     {
         error = EINVAL;
         if (mutex == null) return null;
+        RuntimeContext context = RuntimeState;
+        if (Volatile.Read(ref context.MutexCacheEnabled))
+        {
+            int cachedId = Volatile.Read(ref *mutex);
+            if (cachedId > 0)
+            {
+                var cached = Volatile.Read(ref context.MutexCache[cachedId & (context.MutexCache.Length - 1)]);
+                // A destroy racing this read is resolved by the existing state
+                // lock and Destroyed check. Never cache addresses or reuse IDs.
+                if (cached != null && cached.Id == cachedId) return cached;
+            }
+        }
         try
         {
-            lock (_pthreadObjects)
+            lock (context.Objects)
             {
-                if (*mutex == 0) // PTHREAD_MUTEX_INITIALIZER, initialized once under the registry gate
+                int id = *mutex;
+                PthreadMutex? state;
+                if (id == 0) // PTHREAD_MUTEX_INITIALIZER, initialized once under the registry gate
                 {
-                    var state = new PthreadMutex();
-                    int id = checked(++_nextPthreadMutex);
-                    _pthreadMutexes.Add(id, state); *mutex = id;
-                    return state;
+                    id = checked(++context.NextMutex);
+                    state = new PthreadMutex(id);
+                    context.Mutexes.Add(id, state);
+                    PthreadCheckMutexCacheCapacity(context);
+                    Volatile.Write(ref *mutex, id);
                 }
-                return _pthreadMutexes.GetValueOrDefault(*mutex);
+                else state = context.Mutexes.GetValueOrDefault(id);
+                // Publish under the registry gate so a miss cannot republish a
+                // destroyed state after destroy has removed its cache reference.
+                if (state != null && context.MutexCacheEnabled)
+                    Volatile.Write(ref context.MutexCache[id & (context.MutexCache.Length - 1)], state);
+                return state;
             }
         }
         catch (OutOfMemoryException) { error = ENOMEM; return null; }
         catch (OverflowException) { error = EAGAIN; return null; }
     }
+    // Called under Objects after insertion. Beyond capacity, preserve the
+    // registry path without shared cache reads/publications on each lookup.
+    private static void PthreadCheckMutexCacheCapacity(RuntimeContext context)
+    {
+        if (context.Mutexes.Count == context.MutexCache.Length + 1)
+        {
+            Volatile.Write(ref context.MutexCacheEnabled, false);
+            Array.Clear(context.MutexCache);
+        }
+    }
     public static int pthread_mutex_init(int* mutex, int* attr)
     {
         if (mutex == null || (attr != null && (*attr < 0 || *attr > 2))) return EINVAL;
+        RuntimeContext context = RuntimeState;
         try
         {
-            lock (_pthreadObjects)
+            lock (context.Objects)
             {
-                int id = checked(++_nextPthreadMutex);
-                _pthreadMutexes.Add(id, new PthreadMutex { Type = attr == null ? 0 : *attr });
-                *mutex = id;
+                int id = checked(++context.NextMutex);
+                var state = new PthreadMutex(id, attr == null ? 0 : *attr);
+                context.Mutexes.Add(id, state);
+                PthreadCheckMutexCacheCapacity(context);
+                if (context.MutexCacheEnabled)
+                    Volatile.Write(ref context.MutexCache[id & (context.MutexCache.Length - 1)], state);
+                Volatile.Write(ref *mutex, id);
             }
             return 0;
         }
@@ -277,15 +312,29 @@ public static unsafe partial class Libc
     public static int pthread_mutex_destroy(int* mutex)
     {
         if (mutex == null) return EINVAL;
-        lock (_pthreadObjects)
+        RuntimeContext context = RuntimeState;
+        lock (context.Objects)
         {
-            if (*mutex == 0) { *mutex = -1; return 0; }
-            if (!_pthreadMutexes.TryGetValue(*mutex, out var state)) return EINVAL;
+            int id = *mutex;
+            if (id == 0) { Volatile.Write(ref *mutex, -1); return 0; }
+            if (!context.Mutexes.TryGetValue(id, out var state)) return EINVAL;
             lock (state)
             {
                 if (state.Owner != 0 || state.Waiters != 0 || state.ConditionWaiters != 0) return EBUSY;
                 state.Destroyed = true;
-                _pthreadMutexes.Remove(*mutex); *mutex = -1;
+                context.Mutexes.Remove(id);
+                ref var cached = ref context.MutexCache[id & (context.MutexCache.Length - 1)];
+                if (ReferenceEquals(Volatile.Read(ref cached), state)) Volatile.Write(ref cached, null);
+                if (!context.MutexCacheEnabled && context.Mutexes.Count <= context.MutexCache.Length)
+                {
+                    // Bounded lifecycle work; publish the populated cache before
+                    // permitting lock-free reads again. Objects excludes misses
+                    // and registry mutations throughout this transition.
+                    foreach (var entry in context.Mutexes)
+                        Volatile.Write(ref context.MutexCache[entry.Key & (context.MutexCache.Length - 1)], entry.Value);
+                    Volatile.Write(ref context.MutexCacheEnabled, true);
+                }
+                Volatile.Write(ref *mutex, -1);
             }
         }
         return 0;
