@@ -12,6 +12,18 @@ from campaigns.testing import forms, modes
 from campaigns.translation import check_product
 
 
+def emission_options(profile):
+    """C# initializers are baked into objects, before the final library link."""
+    if profile not in ("default", "aggregate-data"):
+        raise ValueError("Unknown Zydis emission profile: " + profile)
+    return ["--aggregate-data"] if profile == "aggregate-data" else []
+
+
+def emission_identity(profile):
+    return dict(profile=profile, aggregate_data=profile == "aggregate-data",
+                aggregate_data_threshold=1024, object_flags=emission_options(profile))
+
+
 def sources(root):
     pins = json_file(root / "config/inputs.json")
     inventory = json_file(root / "config/source-inventory.json")["inputs"]
@@ -89,6 +101,7 @@ def prepare(ctx):
     if policy["adaptations"]:
         raise RuntimeError("No guarded Zydis source adaptation has been implemented")
     ctx.receipt["zydis_selection"] = {
+        "emission": emission_identity(ctx.profile),
         "configuration": str(ctx.root / "config/translation.json"),
         "source_inventory": str(ctx.root / "config/source-inventory.json"),
         "sources": {name: str(path) for name, path in selected["sources"].items()},
@@ -99,7 +112,8 @@ def prepare(ctx):
     }
     return Translation(
         [Unit(path) for path in selected["units"]],
-        [*selected["flags"], *(part for pattern in policy["emitDefines"]
+        [*selected["flags"], *emission_options(ctx.profile),
+         *(part for pattern in policy["emitDefines"]
                                for part in ("--emit-define", pattern))],
         [*link_flags(policy["className"], policy["namespace"]),
          *(part for pattern in policy["exportEnums"] for part in ("--export-enum", pattern))],
@@ -138,6 +152,8 @@ def configure(ctx, project, form):
         notices.append(target)
     ET.indent(tree, space="  ")
     tree.write(project, encoding="unicode")
+    (project.parent / "zydis-emission-profile.json").write_text(
+        json.dumps(emission_identity(ctx.profile), indent=2) + "\n")
     ctx.receipt.setdefault("zydis_delivery", {})[form] = {
         "authored_sources": [str(path.relative_to(ctx.root)) for path in api],
         "licenses": notices,
@@ -216,7 +232,7 @@ def run_managed_boundary(ctx, suite):
 
 
 recipe = Recipe(
-    "zydis", "TranslatedZydis", ("default",),
+    "zydis", "TranslatedZydis", ("default", "aggregate-data"),
     ("samples/ManagedConsumer/ManagedConsumer.csproj",), sources, prepare,
     consumer=Consumer(property="TranslatedProject"),
     suites=(

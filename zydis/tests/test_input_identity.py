@@ -31,6 +31,22 @@ class InputIdentityTests(unittest.TestCase):
             self.assertNotEqual(original, changed)
             self.assertIn("zydis/src/Generated/DecoderTables.inc", changed)
 
+    def test_optional_emission_profile_cannot_reuse_default_companion(self):
+        runner = helper(ROOT / "scripts/qualification.py")
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for name in ("tests/qualification.c", "tests/harness.py", "config/translation.json"):
+                path = root / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("fixture\n")
+            selected = {"sources": {}}
+            default = runner._inputs(SimpleNamespace(root=root, profile="default"), selected)
+            optimized = runner._inputs(SimpleNamespace(root=root, profile="aggregate-data"), selected)
+            self.assertNotEqual(default, optimized)
+            self.assertNotIn("campaign/emission", default)
+            self.assertIn("campaign/emission", optimized)
+            self.assertEqual(default, {key: value for key, value in optimized.items() if key != "campaign/emission"})
+
 
 if __name__ == "__main__":
     unittest.main()

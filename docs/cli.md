@@ -20,6 +20,7 @@
 | `--namespace <name>` | Place generated functions, aggregate types and embedded runtime in a dotted C# namespace. Default: global namespace. Supported by C# executable/library output and object linking; rejected with preprocessing, WAT and object emission. Specify at link time for objects. |
 | `--nest-types` | Place translated types, globals/cache helpers and embedded runtime inside the library wrapper. Supports managed/shared libraries and object linking. Split output uses file-local aliases so differently named translations can share a consumer namespace. |
 | `--runtime=all\|c\|auto` | Select embedded runtime modules. `all` (default) retains everything; `c` excludes Zig-only modules and requires known C-only inputs; `auto` uses source/object language provenance (unknown old objects retain all). Set at link time for objects. |
+| `--aggregate-data` | Opt in to immutable byte payloads for fully constant aggregates of at least 1024 bytes in the LP64 little-endian C# target layout. Default off; unproved cases retain ordinary initialization. Set during source/object emission; linking existing objects with this option is rejected. See [usage and fallback](#aggregate-byte-data). |
 | `--deduplicate-inline` | Merge provably equivalent static inline definitions and redirect their bound calls. Set at link time for objects. C function addresses and distinct static dependencies prevent merging. |
 | `--deduplicate-static` | Merge provably equivalent static definitions, including inline functions, using the same conservative proof. Opt-in; set at link time for objects and regenerate older fragments. |
 | `--prune-unused-inline` | Remove static inline helper bodies that have no path from a retained function, address use or explicit inline export. Opt-in; set at link time for objects. This avoids imposing imports from unused header helpers. |
@@ -51,6 +52,40 @@
 **Predefined macros** (seeded every compile, plus any `-D`): `__STDC__`=`1`, `__STDC_HOSTED__`=`1`, `__STDC_VERSION__`=per-`-std=` value (undefined under `c90`), `__dotcc__`=`1` (compiler id, like `__clang__`), and the **LP64 data-model trio** `__LP64__`=`1`, `__SIZEOF_POINTER__`=`8`, `__SIZEOF_LONG__`=`8` — dotcc IS an LP64 compiler (`long` → C# `long`, 8-byte pointers), and portable C (chibi-scheme's `SEXP_64_BIT`) decides pointer-tagging strategy from exactly these macros; without them it would mis-configure for 32-bit and miscompute at runtime.
 
 **Library mode (`-shared`) emit shape:** user functions land in `internal static class DotCcLib` so inter-function calls resolve as direct C# invocations (`[UnmanagedCallersOnly]` prohibits managed call sites). Each non-static C function gets a `public static` wrapper in `public static class DotCcExports` annotated `[UnmanagedCallersOnly]`; NativeAOT inlines the trampoline. C `static` functions stay internal (no wrapper). Varargs functions are skipped from exports (`params object[]` isn't a valid `UnmanagedCallersOnly` signature).
+
+## Aggregate byte data
+
+```sh
+dotcc tables.c --emit=managedlib --aggregate-data -o TranslatedTables
+dotcc tables.c --emit=obj --aggregate-data -o tables.cs
+dotcc tables.cs --emit=managedlib -o TranslatedTables
+```
+
+The library equivalent is `new CSharpOutputOptions(AggregateData: true)`, passed
+as `outputOptions` to source emission (`Compiler.EmitCSharp`, `EmitCSharpFiles`,
+or `EmitObject`). Leave `AggregateData` false when linking: object fragments
+already contain their initializer C#. `LinkObjects`/`LinkObjectFiles` and CLI
+object linking reject an attempt to apply it retroactively. Preprocessing and
+WAT output reject the option.
+
+Candidates include static aggregate objects and aggregate-element arrays with
+at least 1024 layout bytes. The compiler proves the complete initializer using
+typed constants and target layout: field offsets, array stride, union selection,
+packed bitfields and zero fill. It copies bounded immutable byte spans into the
+existing C destination; separate declarations keep independent addresses and
+writable storage. Payload records can be shared without sharing C objects.
+
+Small candidates, pointers/relocations, runtime reads or side effects,
+volatile/atomic storage, flexible tails, unproved `constexpr` references,
+nonfinite floating values and unsupported layouts or scalar representations
+fall back to the ordinary typed initializer. Unions require one normalized
+selected member; ambiguous overlapping writes retain ordinary lowering. Emitted byte copies
+require the LP64 little-endian layout and check endianness and element size at
+runtime. The default aggregate lowering remains unchanged. Payload bytes add
+immutable assembly data alongside the existing writable C storage, replacing
+many scalar initializer instructions. The optional Zydis campaign profile
+and its full qualification/paired measurements are documented
+[here](../zydis/docs/AGGREGATE-DATA.md).
 
 ## Generated namespaces
 

@@ -1,6 +1,8 @@
 # Translate Zydis with DotCC
 
 Status: P0–P6 accepted for Linux x64. Current evidence: [ACCEPTANCE.md](ACCEPTANCE.md).
+Optional aggregate-data extension: implemented and qualified on Linux x64,
+including the complete execution matrix and paired measurements. See [its independent gates and commands](AGGREGATE-DATA.md).
 Campaign: `zydis/`. Updated: 2026-10-27.
 
 This plan adopts [translation baseline v4](../../docs/plans/translation-baseline.md)

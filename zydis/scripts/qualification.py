@@ -63,6 +63,14 @@ def _inputs(ctx, selected):
     for path in (ctx.root / "tests/qualification.c", ctx.root / "tests/harness.py",
                  ctx.root / "config/translation.json"):
         result["authored/" + path.relative_to(ctx.root).as_posix()] = _digest(path)
+    # This is a current artifact identity, not an optional provenance check.
+    # Reject a copied companion from a different C# emission profile even with
+    # --hashes off. Keep the historical default identity byte-for-byte: its
+    # absent emission key already means ordinary emission.
+    profile = getattr(ctx, "profile", "default")
+    if profile != "default":
+        recipe = helper(ROOT / "scripts/campaign.py")
+        result["campaign/emission"] = json.dumps(recipe.emission_identity(profile), sort_keys=True)
     return result
 
 
@@ -73,6 +81,7 @@ def companions(ctx):
     core objects instead of independently selecting/replacing library code.
     """
     selected = _configuration(ctx)
+    emission = helper(ctx.root / "scripts/campaign.py").emission_options(ctx.profile)
     units = _harness(ctx).test_units(ctx, ctx.sources["zydis"])
     core = [ctx.work / "objects" / f"{i:03d}-{path.stem}.cs" for i, path in enumerate(selected["units"])]
     if not all(path.is_file() for path in core):
@@ -85,7 +94,7 @@ def companions(ctx):
         label = f"qualification-emit-{i:03d}-{unit.path.stem}"
         output = objects / (label + ".cs")
         report = ctx.artifacts / (label + "-overrides.jsonl")
-        ctx.run(["dotnet", ctx.compiler, *object_report_flags([*selected["flags"], *unit.flags], report),
+        ctx.run(["dotnet", ctx.compiler, *object_report_flags([*selected["flags"], *emission, *unit.flags], report),
                  unit.path, "--emit=obj", "-o", output], label, timeout=ctx.options.timeout)
         if not output.is_file():
             raise RuntimeError("Missing qualification object: " + str(unit.path))
@@ -112,6 +121,7 @@ def companions(ctx):
     (raw / "zydis-test-inputs.json").write_text(json.dumps(_inputs(ctx, selected), indent=2) + "\n")
     ctx.receipt["zydis_qualification_companion"] = dict(
         product=COMPANION, core_objects=[str(path) for path in core],
+        emission=helper(ctx.root / "scripts/campaign.py").emission_identity(ctx.profile),
         test_units=[str(unit.path) for unit in units],
         fixture_inventory=str(ctx.work / "zydis-qualification-fixtures/inventory.json"))
     ctx.save()

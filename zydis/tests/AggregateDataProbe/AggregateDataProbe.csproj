@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <AssemblyName>Zydis.AggregateDataProbe</AssemblyName>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <IsAotCompatible>true</IsAotCompatible>
+    <TranslatedProject Condition="'$(TranslatedProject)' == ''">product/TranslatedZydis.csproj</TranslatedProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <ProjectReference Include="$(TranslatedProject)" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(RootTranslatedLibrary)' == 'true'">
+    <TrimmerRootAssembly Include="TranslatedZydis" />
+  </ItemGroup>
+</Project>

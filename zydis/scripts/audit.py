@@ -113,8 +113,21 @@ def _inventory(ctx, policy):
         zycore_compiled_units=[], scope="current source policy and content; hashes identify this audit, not historical provenance")
 
 
+def _check_emission_profile(ctx, project):
+    recipe = helper(ctx.root / "scripts/campaign.py")
+    profile = getattr(ctx, "profile", recipe.recipe.default_profile)
+    emission = recipe.emission_identity(profile)
+    identity = project.parent / "zydis-emission-profile.json"
+    # Historical default products predate the explicit profile stamp. The
+    # optional profile always requires it, independent of provenance policy.
+    if identity.is_file() or profile != recipe.recipe.default_profile:
+        _require(identity.is_file() and _json(identity) == emission,
+                 "Product emission profile differs from selected campaign profile")
+
+
 def _project(ctx, project, selected, policy):
     validate_emission(project.parent, policy["product"])
+    _check_emission_profile(ctx, project)
     tree = ET.parse(project)
     _require(tree.findtext(".//OutputType") == "Library", "Product OutputType must be Library")
     _require(tree.findtext(".//AssemblyName") == policy["product"], "Unexpected product assembly name")
@@ -510,9 +523,10 @@ def main():
     parser.add_argument("--preliminary-project", required=True, type=Path)
     parser.add_argument("--emission-receipt", type=Path)
     parser.add_argument("--artifacts", required=True, type=Path)
+    parser.add_argument("--profile", choices=("default", "aggregate-data"), default="default")
     args = parser.parse_args()
     args.artifacts.mkdir(parents=True, exist_ok=True)
-    ctx = SimpleNamespace(root=ROOT, sources={}, artifacts=args.artifacts.resolve(),
+    ctx = SimpleNamespace(root=ROOT, sources={}, artifacts=args.artifacts.resolve(), profile=args.profile,
                           receipt={"status": "preliminary", "scope": "private source audit only; no builds or delivery"})
     ctx.save = lambda: write_json(ctx.artifacts / "receipt.json", ctx.receipt)
     report = _audit(ctx, {"raw": args.preliminary_project}, preliminary=True, emission_receipt=args.emission_receipt)

@@ -8,6 +8,12 @@ instruction tables are translated from C. The product has no native Zydis backen
 P0–P6 acceptance passes on Linux x64, including raw/processed JIT/NativeAOT.
 See [acceptance and receipts](docs/ACCEPTANCE.md) and [the plan](docs/PLAN.md).
 
+An optional `--profile aggregate-data` emits large constant aggregates through
+the compiler's byte-data path. Default output and acceptance gates are preserved;
+the optional profile passes the same full Linux x64 execution matrix. Paired
+build/init measurements and exact native table-byte comparisons also pass.
+See [usage, fallback and measurement commands](docs/AGGREGATE-DATA.md).
+
 Requires .NET 10 SDK, Python 3.11+ and Bash. Initial execution qualification is
 Linux x64. Native differential tests additionally require a C compiler; NativeAOT
 requires its normal native toolchain. Source acquisition and NuGet restore have

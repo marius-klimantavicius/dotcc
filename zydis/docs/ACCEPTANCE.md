@@ -1,5 +1,11 @@
 # Zydis campaign acceptance
 
+This acceptance applies to the default emission profile. The optional
+[`aggregate-data` profile](AGGREGATE-DATA.md) retains these gates and requires its
+own fresh evidence. It is qualified separately, including paired measurements.
+The linked report records fresh final-tool verification of both profiles; the
+historical default campaign evidence below is preserved.
+
 P0–P6 passed on 2026-10-27 for Linux x64. The complete Zydis 4.1.1 library's
 18 C units remain translated: decoder, encoder, formatter/tokenizer, disassembler,
 metadata, segment/address and NOP utilities, including AVX512/KNC. Required Zycore

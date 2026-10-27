@@ -872,6 +872,19 @@ these rewrites and offers in-place fixes and Fix All through IDE suggestions.
 
 ## Generated source layout
 
+The optional C# `--aggregate-data` flag (`CSharpOutputOptions.AggregateData`,
+default false) uses immutable bytes for fully constant aggregate initializers
+of at least 1024 bytes when the LP64 little-endian target layout is proved.
+Structs/unions, fixed arrays and packed bitfields retain target offsets, zero
+fill and independent writable C destination storage. Pointers/relocations,
+runtime expressions/effects, volatile/atomic members, flexible tails, unproved
+`constexpr` references and unsupported representations keep ordinary initialization. This adds no C syntax
+or language-support exemption. Set the option during source/object emission;
+existing objects must be regenerated. See [usage and constraints](cli.md#aggregate-byte-data).
+The optional [Zydis profile](../zydis/docs/AGGREGATE-DATA.md) retains all full-library
+acceptance gates; its validation report records the full execution matrix and
+paired measurements.
+
 Canonical function-pointer properties are emitted only for functions used as
 addresses in translated code or selected by the override profile's
 `stableFunctionPointers` list. Host glue can opt in using original function names;

@@ -25,6 +25,20 @@ All oracles skip cleanly when the host toolchain isn't present. A fixture opts o
 
 ## Run discipline
 
+The optional aggregate byte-data path has a separate full-library Zydis profile
+and a compile/initialization probe. Its [validation guide](../zydis/docs/AGGREGATE-DATA.md)
+records the fresh default-versus-optimized commands, all unchanged campaign gates,
+source/payload accounting and exact native/emitted comparison of all 70,281 encoder
+table bytes. The standalone probe retains raw/processed × JIT/NativeAOT samples
+under identical settings; timings include noise and have no performance acceptance
+threshold. The report records completed profile validation, scalar/layout and
+storage regressions, actual PE RVA checks, and a supplemental context/TLS probe
+executed under JIT and NativeAOT. Helper-only checks require no managed builds:
+
+```bash
+python3 -B -m unittest discover -s zydis/tests -p 'test_*.py'
+```
+
 - Build once, then run suites **serially** (`--no-build` after a full build) — never two test processes in parallel (a parallel restore/build deadlocks arm64 MSBuild).
 - After any `.lalr.yaml` grammar edit, a FULL build of the consuming project before testing — `--no-build` runs a stale generated parse table and makes a correct grammar change look broken.
 - A test that fails then passes on re-run is a bug to root-cause (usually shared state), never to dismiss.

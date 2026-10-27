@@ -60,6 +60,22 @@ The generated `DotCC.C` / `DotCC.Zig` partial classes (from the `.lalr.yaml` gra
 
 **Self-contained emit, no inlining duplication.** Every emitted file pulls in the `DotCC.Libc` runtime via the single block `BuildShell` splices from embedded resources (see `LoadRuntimeBlock` above) — `using static Libc;` then surfaces every method by bare name.
 
+**Optional aggregate byte data.** `CSharpOutputOptions.AggregateData` (CLI
+`--aggregate-data`, default false) selects a structural proof in
+`CSharpBackend.AggregateData.cs`/`AggregateConstants.cs` while typed initializers
+are available. Constant aggregate objects/aggregate-element arrays of at least
+1024 bytes use the existing target layout model for strides, offsets, packing,
+bitfield positions and zero fill. The proof is all-or-nothing; pointer members,
+relocations, effects, unproved `constexpr` references, volatile/atomic or unsupported storage keep the ordinary
+initializer. Proven bytes become bounded `LiteralPool` payload records and span
+copies into independently allocated C storage; immutable payload deduplication
+does not merge destination identity. Runtime guards check little endian and
+element size for the LP64 target contract. Object emission applies this option
+before C# is baked into fragments; final linking carries/deduplicates the data
+records and rejects setting `AggregateData` itself. This is independent of the
+string-pool and source-splitting options. See [usage](cli.md#aggregate-byte-data)
+and [Zydis qualification/measurements](../zydis/docs/AGGREGATE-DATA.md).
+
 The single-source-of-truth design intent: **the same `.c` file should compile under both `dotcc` and `clang -std=c99` and produce equivalent observable behavior** — keep the grammar a strict subset of real C, and keep the emitter's output semantics aligned with the C abstract machine.
 
 **Types are structural, not incidental.** Every IR expression node carries a `CType` (`DotCC.Lib/Ir/CType.cs` — primitives, `Pointer`/`Array`/`Named`/`Enum`/`Func`, plus the Zig-side `Slice`/`Optional`/`ErrorUnion`/`Allocator`/`ZigList`/`Tuple`), synthesized during binding. That type spine powers: real C# `enum` lowering (decay enum operands to `(int)` for C's plain-int arithmetic, re-cast only at typed sinks); `sizeof expr` (notably the `sizeof(a)/sizeof(a[0])` array-length idiom — arrays lower to pointers, so `sizeof(arr)` folds via the layout model); `_Generic` selection; the comptime interpreter's typing; and the same-function `malloc`/`free` → stack-value peephole (`IrBuilder.MallocPromote` — a two-pass IR analysis: pass 1 records per-`(function,var)` usage, pass 2 promotes when ref-counts balance and the var never escapes). Recognition is **structural** (IR nodes + ref-counts), never text-matching on emitted output. Done features and their fixtures/gaps are tracked in `C-SUPPORT.md`.

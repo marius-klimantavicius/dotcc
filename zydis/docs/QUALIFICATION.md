@@ -1,5 +1,11 @@
 # Zydis qualification
 
+The optional [`aggregate-data` profile](AGGREGATE-DATA.md) uses the same complete
+source selection, suites and transcript comparisons as `default`. Its fresh
+raw/processed × JIT/NativeAOT qualification passes with final rebuilt tools. A separate measurement
+probe checks every native/emitted encoder-table byte and measures equivalent
+build/initialization workloads without changing these acceptance transcripts.
+
 Status (2026-10-27): P0–P6 accepted for Linux x64. The clean final
 [verify receipt](../artifacts/campaign/20261027-072757-6171e6fa/receipt.json)
 passes every declared suite with hashes off, rebuilt tools, both forms and both
