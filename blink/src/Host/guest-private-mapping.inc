@@ -49,6 +49,11 @@ i64 ReserveVirtual(struct System *s, i64 virt, i64 size, u64 flags, int fd,
       !IsValidAddrSize(virt, size)) return einval();
   size = ROUNDUP(size, 4096);
   if (!IsValidAddrSize(virt, size)) return einval();
+#ifdef BLINK_MANAGED_GUEST_THREADS
+  /* Drain and permanently revoke old identities before table publication,
+   * replacement or retirement. No gate spans preparation or file callbacks. */
+  blink_host_guest_mapping_revoke(virt, size);
+#endif
   if (fd != -1 && (offset < 0 || (offset & 4095))) return einval();
   if (fd != -1 && offset > 0x7fffffffffffffffll - size) return eoverflow();
   count = size / 4096;

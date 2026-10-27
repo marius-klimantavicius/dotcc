@@ -7,6 +7,7 @@ namespace Managed.Emulation;
 public partial class BlinkCore
 {
     [ThreadStatic] private static IHostGuestThreads? guestThreads;
+    [ThreadStatic] private static IHostGuestCodeRevocation? guestCodeRevocation;
     // The threaded upstream profile declares g_machine as TLS. Keep access to
     // generated storage inside this assembly; lifecycle remains in the C# API.
 #if DOTCC_INSTANCE_FOR_HOST
@@ -22,14 +23,17 @@ public partial class BlinkCore
         if (!ReferenceEquals(guestProgram, program)) throw new InvalidOperationException("Guest callback program is not bound to its owning worker.");
         return GuestThreadOwner;
     }
-    public static void BindHostGuestThreads(IHostGuestThreads owner, BlinkCore program)
+    public static void BindHostGuestThreads(IHostGuestThreads owner, BlinkCore program,
+        IHostGuestCodeRevocation? codeRevocation = null)
 #else
-    public static void BindHostGuestThreads(IHostGuestThreads owner)
+    public static void BindHostGuestThreads(IHostGuestThreads owner,
+        IHostGuestCodeRevocation? codeRevocation = null)
 #endif
     {
         ArgumentNullException.ThrowIfNull(owner);
         if (guestThreads != null) throw new InvalidOperationException("Guest thread owner already bound.");
         guestThreads = owner;
+        guestCodeRevocation = codeRevocation;
 #if DOTCC_INSTANCE_FOR_HOST
         guestProgram = program;
 #endif
@@ -37,9 +41,49 @@ public partial class BlinkCore
     public static void UnbindHostGuestThreads()
     {
         guestThreads = null;
+        guestCodeRevocation = null;
 #if DOTCC_INSTANCE_FOR_HOST
         guestProgram = null;
 #endif
+    }
+#if DOTCC_INSTANCE_FOR_HOST
+    public static void blink_host_guest_code_revoke(BlinkCore program, long address, long size)
+#else
+    public static void blink_host_guest_code_revoke(long address, long size)
+#endif
+    {
+        // Interpreter-only bindings pay one TLS null check. This is an ordinary
+        // managed call from translated C, with no native reverse interop frame.
+        var revocation = guestCodeRevocation;
+        if (revocation == null || !GuestRevocationRange(ref address, ref size)) return;
+#if DOTCC_INSTANCE_FOR_HOST
+        _ = GuestOwner(program);
+#endif
+        revocation.Revoke(address, size);
+    }
+    private static bool GuestRevocationRange(ref long address, ref long size)
+    {
+        if (size <= 0) return false;
+        // FreeHostPages removes [-2^47, 2^47). Intersect with the lower
+        // user half before the owner's unsigned interval checks. Adding a
+        // positive size to a negative address cannot overflow signed long.
+        if (address < 0) { size += address; address = 0; }
+        if (size <= 0 || address >= 0x800000000000L) return false;
+        size = Math.Min(size, 0x800000000000L - address);
+        return true;
+    }
+#if DOTCC_INSTANCE_FOR_HOST
+    public static void blink_host_guest_mapping_revoke(BlinkCore program, long address, long size)
+#else
+    public static void blink_host_guest_mapping_revoke(long address, long size)
+#endif
+    {
+        var revocation = guestCodeRevocation;
+        if (revocation == null || !GuestRevocationRange(ref address, ref size)) return;
+#if DOTCC_INSTANCE_FOR_HOST
+        _ = GuestOwner(program);
+#endif
+        revocation.RevokeMapping(address, size);
     }
 #if DOTCC_INSTANCE_FOR_HOST
     public static unsafe int blink_host_guest_thread_start(BlinkCore program, Machine* child)

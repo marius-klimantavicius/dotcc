@@ -4,6 +4,7 @@
 This does not emit managed code. Run the resulting workload-static ELF through
 the coordinator's fresh product consumer for actual translated qualification.
 """
+import argparse
 import hashlib
 import json
 import os
@@ -18,7 +19,10 @@ sys.path[:0] = [str(ROOT / 'scripts'), str(ROOT.parent / 'Scripts')]
 import memory_bindings
 from production_support import locked_command
 
-out = ROOT / 'artifacts/guest-file-mapping'
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--output-root', type=Path, help='Parent directory for native scratch and receipts')
+args = parser.parse_args()
+out = args.output_root.resolve() if args.output_root else ROOT / 'artifacts/guest-file-mapping'
 out.mkdir(parents=True, exist_ok=True)
 attempt = Path(tempfile.mkdtemp(prefix='native-', dir=out))
 source = ROOT / 'build/native/source'
@@ -66,7 +70,7 @@ try:
     for name in ('memorymalloc.c', 'memory.c', 'throw.c'):
         original = source / 'blink' / name
         receipt['inputs']['native/' + name] = sha(original)
-        (attempt / name).write_bytes(b'#include "HostMemory.h"\n' +
+        (attempt / name).write_bytes(b'#include "HostMemory.h"\n#include "HostFileMapping.h"\n' +
                                     memory_bindings.adapt('blink/' + name, original.read_bytes()))
     # Durable source assertions cover access ordering and signal translation
     # without executing an excluded invalid-access/fault workload.

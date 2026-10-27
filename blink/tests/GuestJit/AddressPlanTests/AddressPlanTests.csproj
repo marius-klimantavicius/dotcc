@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+    <DefineConstants>$(DefineConstants);ADDRESS_PLAN_TESTS</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../../src/Managed.Emulation.ThreadedExecution/Jit/JitContracts.cs" Link="JitContracts.cs" />
+    <Compile Include="../../../src/Managed.Emulation.ThreadedExecution/Jit/JitValueEffects.cs" Link="JitValueEffects.cs" />
+    <Compile Include="../../../src/Managed.Emulation.ThreadedExecution/Jit/JitAddressPlan.cs" Link="JitAddressPlan.cs" />
+  </ItemGroup>
+</Project>

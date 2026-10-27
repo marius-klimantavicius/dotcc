@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.Net;
 using Managed.Emulation.Host;
+using Managed.Emulation.Execution;
 
 namespace Managed.Emulation;
 
@@ -51,6 +52,9 @@ public sealed record MachineOptions
     public int PendingPipeOperations { get; init; } = 128;
     public long? InstructionLimit { get; init; }
     public TimeSpan? ExecutionDeadline { get; init; }
+    /// <summary>Explicit experimental guest native JIT. The interpreter remains
+    /// the default and the fallback for unsupported blocks or host capabilities.</summary>
+    public GuestJitOptions GuestJit { get; init; } = new();
     public IReadOnlyDictionary<string, string> Environment { get; init; } = new Dictionary<string, string>();
     public NetworkPolicy Network { get; init; } = NetworkPolicy.Isolated;
     /// <summary>Optional private IMDSv2 endpoint at guest 169.254.169.254:80.</summary>
@@ -66,7 +70,8 @@ public sealed record MachineOptions
             ThreadLimit is < 1 or > 256 || PipeBufferBytes is < 1 or > 1048576 || PipeStorageLimit < PipeBufferBytes ||
             PendingPipeOperations is < 1 or > 4096 || InstructionLimit is < 1 || ExecutionDeadline is { } deadline && deadline <= TimeSpan.Zero)
             throw new ArgumentException("A requested resource limit is outside the supported range.");
-        if (Environment == null || Network == null) throw new ArgumentException("Machine configuration is incomplete.");
+        if (Environment == null || Network == null || GuestJit == null) throw new ArgumentException("Machine configuration is incomplete.");
+        GuestJit.Validate();
         var environment = new Dictionary<string, string>(StringComparer.Ordinal);
         foreach (var pair in Environment) { GuestText.EnvironmentEntry(pair.Key, pair.Value); environment.Add(pair.Key, pair.Value); }
         GuestText.EnvironmentSize(environment);
@@ -115,6 +120,8 @@ public sealed record ExecutionOptions
     /// <summary>Opt in to PT_INTERP loading from this machine's guest filesystem.
     /// The guest interpreter executes under Blink; this never runs a native host loader.</summary>
     public bool AllowElfInterpreter { get; init; }
+    /// <summary>Optional per-run override of MachineOptions.GuestJit.</summary>
+    public GuestJitOptions? GuestJit { get; init; }
     /// <summary>Arguments after argv[0]. The executable path is supplied once.</summary>
     public string[] Arguments { get; init; } = [];
     public string WorkingDirectory { get; init; } = "/";
@@ -123,6 +130,7 @@ public sealed record ExecutionOptions
     public ReadinessOptions Readiness { get; init; } = new();
     internal ExecutionOptions Freeze()
     {
+        GuestJit?.Validate();
         GuestText.Path(Executable); GuestText.Path(WorkingDirectory);
         if (Arguments == null || Arguments.Length > 256 || Environment == null || Console == null || Readiness == null)
             throw new ArgumentException("Execution configuration is incomplete.");
@@ -139,7 +147,10 @@ public sealed record ExecutionOptions
 }
 public sealed record MachineRunResult(RunExitReason Reason, int ExitCode, int Signal, int Halt,
     long Instructions, byte[] StandardOutput, byte[] StandardError, bool CaptureTruncated,
-    long OutputBytes, bool ResourcesReleased, string? Diagnostic);
+    long OutputBytes, bool ResourcesReleased, string? Diagnostic)
+{
+    public GuestJitStatistics? JitStatistics { get; init; }
+}
 public sealed class MachineStopTimeoutException(string message) : TimeoutException(message);
 
 internal static class GuestText

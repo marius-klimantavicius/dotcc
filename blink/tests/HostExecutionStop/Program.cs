@@ -2,6 +2,24 @@ using System.Diagnostics;
 using Managed.Emulation.Host;
 
 static void Require(bool condition) { if (!condition) throw new Exception("Stop-state contract differs"); }
+unsafe
+{
+    using var stop = new HostExecutionStop();
+    using var poll = stop.AcquireNativePoll();
+    Require(*poll.Pointer == 0);
+    bool checkedInCallback = false;
+    using var callback = stop.Token.Register(() =>
+    {
+        // A native executor sees the stop before managed token callbacks can
+        // delay propagation. No polling pointer refers to a movable GC field.
+        Require(*poll.Pointer == 1 && stop.Reason == HostExecutionStopReason.Requested);
+        checkedInCallback = true;
+    });
+    Require(stop.RequestStop() && checkedInCallback && *poll.Pointer == 1);
+    using var late = stop.AcquireNativePoll();
+    Require(*late.Pointer == 1);
+    late.Dispose(); late.Dispose();
+}
 using (var cancellation = new CancellationTokenSource())
 using (var stop = new HostExecutionStop(cancellation: cancellation.Token))
 {

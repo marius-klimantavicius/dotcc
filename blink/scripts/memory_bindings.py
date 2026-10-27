@@ -53,9 +53,74 @@ def adapt(path, content):
             '  for (end = virt + size; virt < end;\n'
             '       virt += ((u64)1 << i) - ((u64)virt & (((u64)1 << i) - 1))) {\n')
         source = replace_once(source, '  key = SetProtection(prot);\n',
+            '#ifdef BLINK_MANAGED_GUEST_THREADS\n'
+            '  blink_host_guest_mapping_revoke(virt, size);\n'
+            '#endif\n'
             '  if (BlinkGuestFileProtection(s, virt, size, prot)) return -1;\n'
             '  key = SetProtection(prot);\n')
+        source = replace_once(source,
+            '  MEM_LOGF("RemoveVirtual(%#" PRIx64 ", %#" PRIx64 ")", virt, size);\n',
+            '#ifdef BLINK_MANAGED_GUEST_THREADS\n'
+            '  blink_host_guest_mapping_revoke(virt, size);\n'
+            '#endif\n'
+            '  MEM_LOGF("RemoveVirtual(%#" PRIx64 ", %#" PRIx64 ")", virt, size);\n')
+        source = replace_once(source,
+            'static void FreeHostPages(struct System *s) {\n',
+            'static void FreeHostPages(struct System *s) {\n'
+            '#ifdef BLINK_MANAGED_GUEST_THREADS\n'
+            '  blink_host_guest_mapping_revoke(0, 0x800000000000l);\n'
+            '#endif\n')
+        # The threaded predecessor appends this reviewed advice implementation.
+        # Keep the new protocol in the host adaptation, after that derivation,
+        # without rewriting its independently pinned thread/mremap patch.
+        if 'int BlinkGuestMadvise(' in source:
+            source = replace_once(source,
+                '  /* Check backing before changing any page. DONTNEED on file mappings needs\n',
+                '#ifdef BLINK_MANAGED_GUEST_THREADS\n'
+                '  blink_host_guest_mapping_revoke(addr, len);\n'
+                '#endif\n'
+                '  /* Check backing before changing any page. DONTNEED on file mappings needs\n')
     elif path == 'blink/memory.c':
+        # AllocateAnonymousPage returns a PAGE_HOST registry identity. A lost
+        # publication CAS must recycle its resolved host page, never that index.
+        source = replace_once(source,
+            '        FreeAnonymousPage(m->system, (u8 *)(uintptr_t)(page & PAGE_TA));\n',
+            '        FreeAnonymousPage(m->system, FindHostPage(page));\n')
+        source = replace_once(source,
+            'u8 *LookupAddress2(struct Machine *m, i64 virt, u64 mask, u64 need) {\n',
+            '#ifdef BLINK_MANAGED_GUEST_THREADS\n'
+            '/* Callable producer capability: all revocation anchors must stage\n'
+            ' * successfully before this profile can be emitted. */\n'
+            'int BlinkGuestCodeRevocationProtocol(void) { return 1; }\n'
+            'int BlinkGuestMappingRevocationProtocol(void) { return 1; }\n'
+            '#endif\n\n'
+            'u8 *LookupAddress2(struct Machine *m, i64 virt, u64 mask, u64 need) {\n')
+        source = replace_once(source,
+            '  u8 *host;\n  u64 entry;\n',
+            '  u8 *host;\n  u64 entry;\n'
+            '#ifdef BLINK_MANAGED_GUEST_THREADS\n'
+            '  /* Only instruction fetch is allowed to borrow an enrolled page.\n'
+            '   * Revoke before every data lookup, including unchecked writers\n'
+            '   * and benign reads, before a pointer or stash can escape. */\n'
+            '  if (mask != PAGE_XD || need)\n'
+            '    blink_host_guest_code_revoke(virt & -4096, 4096);\n'
+            '#endif\n')
+        # CopyToUser and CopyToUserWrite both reach VirtualCopy, including
+        # syscall outputs with no separate IsValidMemory check (e.g. uname).
+        # Check each destination page at the actual lookup, before memcpy;
+        # access bookkeeping after the copy does not enforce permissions.
+        # Keep CopyFromUser and non-user-mode lookup behavior unchanged.
+        source = replace_once(source,
+            'int VirtualCopy(struct Machine *m, i64 v, char *r, u64 n, bool d) {\n'
+            '  u8 *p;\n'
+            '  u64 k;\n',
+            'int VirtualCopy(struct Machine *m, i64 v, char *r, u64 n, bool d) {\n'
+            '  u8 *p;\n'
+            '  u64 k, need;\n'
+            '  need = Cpl(m) == 3 ? PAGE_U | (d ? 0 : PAGE_RW) : 0;\n')
+        source = replace_once(source,
+            '    if (!(p = LookupAddress(m, v))) return -1;\n',
+            '    if (!(p = LookupAddress2(m, v, need, need))) return -1;\n')
         source = replace_once(source,
             '  if ((entry & PAGE_RSRV) && !(entry = HandlePageFault(m, pslot, entry))) {',
             '  /* Never commit or cache a whole file page beyond snapshot EOF. */\n'
@@ -76,6 +141,14 @@ def adapt(path, content):
             '    if ((pte & mask) != need) {\n',
             '    if ((pte & mask) != need || ((pte & PAGE_MUG) &&\n'
             '        !BlinkHostMemoryFilePageAvailable(FindHostPage(pte)))) {\n')
+    elif path == 'blink/loader.c':
+        source = replace_once(source,
+            '  elf = &m->system->elf;\n',
+            '#ifdef BLINK_MANAGED_GUEST_THREADS\n'
+            '  /* A subsequent LoadProgram replaces the root table directly. */\n'
+            '  blink_host_guest_mapping_revoke(0, 0x800000000000l);\n'
+            '#endif\n'
+            '  elf = &m->system->elf;\n')
     elif path == 'blink/throw.c':
         source = replace_once(source,
             '      DeliverSignalToUser(m, SIGSEGV_LINUX,\n'

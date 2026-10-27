@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework><OutputType>Exe</OutputType>
+    <ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks><IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="ContractTests/**/*.cs;AddressPlanTests/**/*.cs;EmitterAllocationTests/**/*.cs" />
+    <ProjectReference Include="../../src/Managed.Emulation/Managed.Emulation.csproj" />
+  </ItemGroup>
+  <Import Project="../../src/Managed.Emulation/Managed.Emulation.Consumer.targets" />
+</Project>

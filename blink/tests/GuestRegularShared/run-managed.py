@@ -32,11 +32,12 @@ def main():
     parser.add_argument('--form', action='append', choices=('raw', 'processed'))
     parser.add_argument('--mode', action='append', choices=('InProcess', 'SeparateProcess'))
     parser.add_argument('--aot', action='store_true')
+    parser.add_argument('--output-root', type=Path, help='Parent directory for this run and its private builds')
     parser.add_argument('--runs', type=int, default=1, choices=range(1, 4))
     args = parser.parse_args()
     evidence_path = ROOT / 'tests/CoreClrRuntime/evidence.py'
     evidence = module(evidence_path, 'regular_shared_evidence')
-    evidence.ARTIFACTS = HERE / '.artifacts'
+    evidence.ARTIFACTS = args.output_root.resolve() if args.output_root else HERE / '.artifacts'
     ev = evidence.Evidence('managed')
     sha = evidence.sha
     receipt, attempt = ev.value, ev.directory

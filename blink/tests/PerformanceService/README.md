@@ -56,3 +56,11 @@ Public readiness observes listening-port publication, and includes import/start
 in its elapsed value. The lower-level `../Performance` timing harness separates
 import and samples the service's stdout readiness marker. Keep these observations
 distinct. Neither consumer traces instructions or changes interpreter dispatch.
+
+An optional final `guest-jit` argument after seconds and budget enables the
+experimental hybrid guest backend and reports its native/fallback counters.
+Omit it for the default interpreter. This does not change the guest publish mode.
+
+An optional integer after `guest-jit` selects the existing public
+`HotBlockThreshold` option for the same admission experiment. The default is 16;
+controller and worker must still use the same frozen source closure.

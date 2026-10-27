@@ -201,3 +201,15 @@ are independent. A null instruction limit uses the owner's signed 64-bit counter
 ceiling, terminating there rather than allowing overflow. A null deadline means no
 deadline. In-process limits govern guest resources, not an OS process-wide hard
 memory or CPU sandbox.
+
+## Experimental guest native JIT
+
+The default remains interpreted execution. `MachineOptions.GuestJit = new() {
+Enabled = true }` opts into the bounded x64 native backend; optional
+`ExecutionOptions.GuestJit` overrides it per run. Unsupported instructions,
+capabilities and difficult paths interpret and later supported blocks can resume
+native execution. `MachineRunResult.JitStatistics` reports actual native guest
+instructions, compiled blocks, cache use and fallback decisions in both process
+modes. See [experimental architecture, coverage and qualification](../../docs/EXPERIMENTAL-GUEST-JIT.md).
+Windows native emission remains unverified and requires the separate explicit
+`AllowUnverifiedWindows` test opt-in; denied policies still interpret.

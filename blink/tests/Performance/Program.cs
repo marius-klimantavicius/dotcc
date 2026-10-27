@@ -57,7 +57,9 @@ for (int trial = 0; trial < trials; ++trial)
     await using var io = new InstanceIo(fs, descriptorLimit: 1024, outputLimit: 65536);
     using var stop = new HostExecutionStop(TimeSpan.FromSeconds(seconds));
     var owner = new ThreadedGuestExecution(io, stop, mode == "loop" ? 32UL << 20 : 256UL << 20,
-        maximumWorkers: 64, virtualMemoryLimitBytes: mode == "loop" ? null : 4UL << 30);
+        maximumWorkers: 64, virtualMemoryLimitBytes: mode == "loop" ? null : 4UL << 30,
+        jitOptions: new() { Enabled = args.Length > 6 && args[6] == "guest-jit", AllowUnverifiedWindows = true,
+            HotBlockThreshold = args.Length > 7 ? int.Parse(args[7]) : 16 });
     row.ImportMs = import.Elapsed.TotalMilliseconds;
     ulong budget = mode == "prefix" ? 2_000_000UL : mode == "service" ? serviceBudget : 40_000_000UL;
     long allocated = GC.GetTotalAllocatedBytes(true);
@@ -83,6 +85,7 @@ for (int trial = 0; trial < trials; ++trial)
                 await Task.Delay(10, stop.Token);
             }
             row.ReadinessInstructions = owner.InstructionsCompleted;
+            row.ReadinessJitStatistics = owner.JitStatistics;
             row.ReadinessMs = wall.Elapsed.TotalMilliseconds;
             row.ReadinessCpuMs = (process.TotalProcessorTime - cpu).TotalMilliseconds;
             IPEndPoint? endpoint = null;
@@ -100,6 +103,8 @@ for (int trial = 0; trial < trials; ++trial)
                 ("POST", "/stop", "", "STOP OK\n") })
             {
                 ulong startInstructions = owner.InstructionsCompleted;
+                var startJit = owner.JitStatistics;
+                long startAllocated = GC.GetTotalAllocatedBytes(false);
                 var requestTime = Stopwatch.StartNew(); var requestCpu = process.TotalProcessorTime;
                 using var client = new HttpClient(new SocketsHttpHandler { UseProxy = false }) { Timeout = TimeSpan.FromSeconds(seconds) };
                 using var message = new HttpRequestMessage(new HttpMethod(request.Item1), $"http://{endpoint.Address}:{endpoint.Port}{request.Item2}")
@@ -107,8 +112,12 @@ for (int trial = 0; trial < trials; ++trial)
                 using var response = await client.SendAsync(message, stop.Token);
                 string body = await response.Content.ReadAsStringAsync(stop.Token);
                 if (response.StatusCode != HttpStatusCode.OK || body != request.Item4) throw new IOException("HTTP semantics differ");
+                var endJit = owner.JitStatistics;
                 row.Requests.Add(new(request.Item2, requestTime.Elapsed.TotalMilliseconds,
-                    (process.TotalProcessorTime - requestCpu).TotalMilliseconds, owner.InstructionsCompleted - startInstructions, body));
+                    (process.TotalProcessorTime - requestCpu).TotalMilliseconds, owner.InstructionsCompleted - startInstructions, body,
+                    endJit.GuestInstructions - startJit.GuestInstructions, endJit.NativeEntries - startJit.NativeEntries,
+                    endJit.CompiledBlocks - startJit.CompiledBlocks, endJit.CompileMilliseconds - startJit.CompileMilliseconds,
+                    GC.GetTotalAllocatedBytes(false) - startAllocated));
             }
         }
     }
@@ -130,6 +139,7 @@ for (int trial = 0; trial < trials; ++trial)
     row.AllocatedBytes = GC.GetTotalAllocatedBytes(true) - allocated;
     row.PeakWorkingSet = process.PeakWorkingSet64;
     row.Instructions = result?.Instructions ?? 0;
+    row.JitStatistics = owner.JitStatistics;
     row.StopReason = result?.StopReason.ToString();
     row.RetainedBytes = result?.RetainedBytesBeforeRelease ?? 0;
     row.RetainedMappings = result?.RetainedMappingsBeforeRelease ?? 0;
@@ -156,6 +166,8 @@ return 0;
 
 internal sealed class Measurement
 {
+    public GuestJitStatistics? JitStatistics { get; set; }
+    public GuestJitStatistics? ReadinessJitStatistics { get; set; }
     public string Mode { get; set; } = "";
     public int Trial { get; set; }
     public bool Warmup { get; set; }
@@ -182,7 +194,8 @@ internal sealed class Measurement
     public List<RequestMeasurement> Requests { get; set; } = [];
     public List<ThreadMeasurement> Threads { get; set; } = [];
 }
-internal sealed record RequestMeasurement(string Path, double WallMs, double CpuMs, ulong Instructions, string Body);
+internal sealed record RequestMeasurement(string Path, double WallMs, double CpuMs, ulong Instructions, string Body,
+    long NativeInstructions, long NativeEntries, long CompiledBlocks, double CompileMs, long AllocatedBytes);
 internal sealed record ThreadMeasurement(int Id, string Termination, int Status, int Halt, int Signal, ulong IP, string? FirstTrap);
 [JsonSerializable(typeof(List<Measurement>))]
 internal partial class BenchJson : JsonSerializerContext;

@@ -9,13 +9,13 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Managed.Emulation;
 
-if (args.Length is not (8 or 9) || !Enum.TryParse<ExecutionMode>(args[0], out var mode))
+if (args.Length is not (8 or 9 or 10) || !Enum.TryParse<ExecutionMode>(args[0], out var mode))
     throw new ArgumentException("Probe InProcess|SeparateProcess closure.json host|smoke|workload|service|memfd budget seconds memoryMiB wx-default|diagnostic-no-wx report.json");
 var closure = JsonSerializer.Deserialize(File.ReadAllText(args[1]), EvidenceJson.Default.Closure)!;
 string scenario = args[2], output = Path.GetFullPath(args[7]);
 if (scenario is not ("host" or "smoke" or "workload" or "service" or "memfd")) throw new ArgumentException("scenario");
 long budget = long.Parse(args[3]); int seconds = int.Parse(args[4]), memory = int.Parse(args[5]);
-int virtualMemory = args.Length == 9 ? int.Parse(args[8]) : 0;
+int virtualMemory = args.Length >= 9 ? int.Parse(args[8]) : 0;
 bool diagnosticNoWx = args[6] switch { "wx-default" => false, "diagnostic-no-wx" => true, _ => throw new ArgumentException("WX policy") };
 var report = new Report { Mode = mode.ToString(), Scenario = scenario, DiagnosticNoWx = diagnosticNoWx,
     MemoryMiB = memory, VirtualMemoryMiB = virtualMemory };
@@ -28,6 +28,7 @@ try
     machine = new(new MachineOptions { ExecutionMode = mode, MemoryLimit = memory * 1024L * 1024,
         VirtualMemoryLimit = virtualMemory == 0 ? null : virtualMemory * 1024L * 1024,
         InstructionLimit = budget, ExecutionDeadline = TimeSpan.FromSeconds(seconds), Environment = environment,
+        GuestJit = new() { Enabled = args.Length > 9 && args[9] == "guest-jit", AllowUnverifiedWindows = true },
         Network = scenario == "service" ? new NetworkPolicy { Publications = [new(8080)] } : NetworkPolicy.Isolated });
     machine.ImportImage(closure.Files.Select(file =>
     {

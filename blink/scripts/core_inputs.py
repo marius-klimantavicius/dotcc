@@ -89,6 +89,9 @@ def stage_managed_boundaries(campaign: Path, profile: Path, instance_methods: bo
     if instance_methods:
         spec['headers'].append('blink/signal.h')
         spec['required_units']['blink/signal.c'] = ['TerminateSignal']
+        spec['required_units']['blink/memory.c'] = ['blink_host_guest_code_revoke']
+        spec['required_units']['blink/memorymalloc.c'].append('blink_host_guest_mapping_revoke')
+        spec['required_units']['blink/loader.c'] = ['blink_host_guest_mapping_revoke']
     upstream = campaign / ("ref/" + _CAMPAIGN_SOURCE["directory"])
     # Record this build's inputs; typed overrides do not require historical bytes.
     for category in ('headers', 'implementations'):
@@ -105,6 +108,8 @@ def stage_managed_boundaries(campaign: Path, profile: Path, instance_methods: bo
             requireMatch=False))
         for name, result, parameters in [
             ('blink_host_guest_thread_start', 'int', ['struct Machine *']),
+            ('blink_host_guest_code_revoke', 'void', ['long', 'long']),
+            ('blink_host_guest_mapping_revoke', 'void', ['long', 'long']),
             ('blink_host_guest_signal_checkpoint', 'void', ['struct Machine *']),
             ('blink_host_guest_signal_wake', 'int', ['struct Machine *']),
             ('blink_host_guest_signal_enqueue_info', 'void', ['struct Machine *', 'int', 'int', 'unsigned int']),

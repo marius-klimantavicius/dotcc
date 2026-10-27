@@ -10,11 +10,16 @@ public sealed record GuestThreadResult(int GuestThreadId, ulong Instructions, ul
     string Termination, int Status, int Halt, int Signal, bool MachineReleased)
 {
     public string? FirstTrap { get; init; }
+    public GuestCpuState? FinalState { get; init; }
 }
 public sealed record ThreadedGuestExecutionResult(bool Exited, int ExitStatus, ulong Instructions,
     HostExecutionStopReason StopReason, bool AllWorkersJoined, bool MemoryReleased,
     ulong RetainedBytesBeforeRelease, ulong RetainedMappingsBeforeRelease,
-    IReadOnlyList<GuestThreadResult> Threads);
+    IReadOnlyList<GuestThreadResult> Threads)
+{
+    public GuestJitStatistics JitStatistics { get; init; } = new();
+    public ulong IssuedInstructions { get; init; }
+}
 public sealed record ThreadedSyscallObservation(int GuestThreadId, ulong InstructionPointer, ulong Number,
     ulong Argument1, ulong Argument2, ulong Argument3, ulong Argument4,
     ulong Argument5, ulong Argument6, ulong? ReturnValue);
@@ -51,6 +56,7 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
     private int runStarted;
     public bool IsQuiescent { get; private set; }
     public ulong InstructionsCompleted => (ulong)Volatile.Read(ref completed);
+    public ulong InstructionsIssued => (ulong)Volatile.Read(ref issued);
 
     private sealed class Worker
     {
@@ -68,6 +74,15 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
         public int ResultIndex;
         public Exception? Error;
         public string? FirstTrap;
+        public GuestCpuState? FinalState;
+        public HostExecutionStop.NativePoll? NativePoll;
+        public bool JitBlockEntry = true;
+        public int JitStraightLine, JitNegativeInstructions;
+        public JitNegativeHint[]? JitNegatives;
+        public JitEntryHint[]? JitEntries;
+        public ulong JitNegativeIp;
+        public long JitNegativeUntil;
+        public long JitObservedEntries, JitNegativeSkips, JitColdEntries, JitHintCollisions;
         public Blink.Libc.RuntimeBinding ContextBinding;
         public Stack<Action> Unbind = new();
         public ManualResetEventSlim SpawnReady = new(false);
@@ -80,7 +95,7 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
 
     public ThreadedGuestExecution(InstanceIo io, HostExecutionStop stop,
         ulong memoryLimitBytes = 64UL * 1024 * 1024, int maximumWorkers = 16,
-        ulong? virtualMemoryLimitBytes = null)
+        ulong? virtualMemoryLimitBytes = null, GuestJitOptions? jitOptions = null)
     {
         ArgumentNullException.ThrowIfNull(io); ArgumentNullException.ThrowIfNull(stop);
         if (memoryLimitBytes < 8192 || memoryLimitBytes > 256UL * 1024 * 1024 || memoryLimitBytes % 4096 != 0)
@@ -92,6 +107,7 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
         this.io = io; this.stop = stop; this.memoryLimitBytes = memoryLimitBytes;
         this.virtualMemoryLimitBytes = virtualMemoryLimitBytes;
         this.maximumWorkers = maximumWorkers;
+        this.jitOptions = (jitOptions ?? new GuestJitOptions()).Validate();
     }
 
     public ThreadedGuestExecutionResult Run(string imagePath, IReadOnlyList<string> argv,
@@ -136,6 +152,11 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
         }
         try
         {
+            if (jitOptions.Enabled)
+            {
+                guestJit = new GuestBlockJit(this, jitOptions);
+                guestJitActive = guestJit.CanEnter(trace != null);
+            }
             memoryToken = program!.BlinkHostMemoryCreateShared(memoryLimitBytes);
             Require(memoryToken != 0, "Create shared memory");
             Bind(main);
@@ -162,6 +183,7 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
             Require((int)system->loaded != 0, "Load guest image");
             if (!allowElfInterpreter && system->elf.interpreter != null)
                 throw new InvalidOperationException("ELF PT_INTERP requires ExecutionOptions.AllowElfInterpreter=true; no guest instructions executed.");
+            guestJit?.EnrollStaticCode(program!, main.Machine);
             for (int fd = 0; fd < 3; ++fd) program!.AddStdFd(&system->fds, fd);
             started?.Invoke();
             Execute(main, false);
@@ -183,6 +205,7 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
                     new InvalidOperationException("Borrowed resources remain live; retain this execution owner until its workers quiesce."));
             if (joined)
             {
+                Cleanup(() => guestJit?.Dispose());
                 lock (gate) outcome = executionOutcome ?? stop.Reason;
                 foreach (Worker child in workers.Where(w => !w.Main))
                     if (child.Error != null) failure = failure == null ? child.Error : new AggregateException(failure, child.Error);
@@ -250,7 +273,8 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
         if (failure != null) ExceptionDispatchInfo.Capture(failure).Throw();
         foreach (Worker worker in workers) threadResults[worker.ResultIndex] = Result(worker);
         return new(groupExited, groupStatus, InstructionsCompleted, outcome, joined, memoryReleased,
-            retainedBytes, retainedMappings, threadResults.Select(result => result!).ToArray());
+            retainedBytes, retainedMappings, threadResults.Select(result => result!).ToArray())
+            { JitStatistics = JitStatistics, IssuedInstructions = InstructionsIssued };
     }
 
     private Worker NewWorker(bool main, Blink.Machine* machine) => new()
@@ -260,6 +284,8 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
     };
     private void Bind(Worker worker)
     {
+        if (guestJit != null) worker.JitEntries ??= guestJit.NegativeHintSlots == 0 ? Array.Empty<JitEntryHint>() : new JitEntryHint[16];
+        if (guestJit != null) worker.JitNegatives ??= guestJit.NegativeHintSlots == 0 ? Array.Empty<JitNegativeHint>() : new JitNegativeHint[guestJit.NegativeHintSlots];
         worker.ContextBinding = program!.__DotCcEnter();
         worker.ThreadId = Environment.CurrentManagedThreadId;
         worker.HostIdentity = Blink.Libc.pthread_self();
@@ -267,7 +293,7 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
         void BindOne(Action bind, Action unbind) { bind(); worker.Unbind.Push(unbind); }
         barrier!.AttachCurrentThread(); worker.Unbind.Push(barrier.DetachCurrentThread);
         BindOne(() => Blink.BindHostMembarrier(barrier), Blink.UnbindHostMembarrier);
-        BindOne(() => Blink.BindHostGuestThreads(this, program!), Blink.UnbindHostGuestThreads);
+        BindOne(() => Blink.BindHostGuestThreads(this, program!, guestJit), Blink.UnbindHostGuestThreads);
         BindOne(() => Blink.BindHostGuestSignals(OnSignal), Blink.UnbindHostGuestSignals);
         BindOne(() => Blink.BindHostExecutionStop(worker.Stop), Blink.UnbindHostExecutionStop);
         BindOne(() => Blink.BindHostIo(io, worker.Stop.Token, worker.Wake), Blink.UnbindHostIo);
@@ -315,6 +341,27 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
                     while (worker.Stop.Reason == HostExecutionStopReason.None)
                     {
                         if ((int)Blink.Atomic.Load(ref machine->attention) != 0) { program!.CheckForSignals(machine); continue; }
+                        if (guestJitActive && ShouldProbeGuestJit(worker) && TryExecuteGuestBlock(worker)) continue;
+                        if (guestJitActive && worker.JitNegativeInstructions > 0)
+                        {
+                            // A known-negative entry selects at most 256 ordinary
+                            // interpreter instructions in its 64-byte area. No
+                            // JIT gate or mapping mutex is held. Every iteration
+                            // retains the normal stop, attention and issue checks.
+                            int remaining = worker.JitNegativeInstructions;
+                            ulong start = worker.JitNegativeIp;
+                            worker.JitNegativeInstructions = 0;
+                            do
+                            {
+                                if (worker.Stop.Reason != HostExecutionStopReason.None ||
+                                    (int)Blink.Atomic.Load(ref machine->attention) != 0) break;
+                                if (!ExecuteOne(worker, observeJit: false)) break;
+                            }
+                            while (--remaining > 0 && unchecked(machine->ip - start) < 64);
+                            worker.JitBlockEntry = true;
+                            worker.JitStraightLine = 0;
+                            continue;
+                        }
                         if (!ExecuteOne(worker)) break;
                     }
                 }
@@ -341,12 +388,17 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
         catch (Blink.Libc.JumpBufferException jump) when (jump.Identity == jumpIdentity)
         { worker.Halt = jump.Value; worker.Termination = "Halt"; StopGroup(); }
         catch (Exception error) { worker.Error = error; worker.Termination = "Failure"; StopGroup(); }
-        finally { worker.Ip = machine->ip; ClearExecution(worker); }
+        finally
+        {
+            worker.Ip = machine->ip;
+            try { if (jitOptions.CaptureFinalState) worker.FinalState = CaptureCpuState(machine); }
+            finally { ClearExecution(worker); }
+        }
     }
     // Normal execution and recursive upstream signal delivery share this exact
     // instruction reservation, trace and completion path. Handler work cannot
     // escape the process-wide budget or the worker's monotonic stop token.
-    private bool ExecuteOne(Worker worker)
+    private bool ExecuteOne(Worker worker, bool observeJit = true)
     {
         if (worker.Stop.Reason != HostExecutionStopReason.None) return false;
         if ((ulong)Interlocked.Increment(ref issued) > instructionBudget)
@@ -381,6 +433,7 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
                 lock (gate) trace!(item);
             }
         }
+        if (observeJit && guestJitActive) ObserveJitBlockEntry(worker, instructionPointer);
         ++worker.Instructions; Interlocked.Increment(ref completed);
         return true;
     }
@@ -436,6 +489,10 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
         Worker parent = RequireCurrent();
         var child = (Blink.Machine*)pointer;
         if (child == null || child->blink_host_system != system) return 22;
+        // Start is reached through an interpreted syscall. Restrict native
+        // admission to initially enrolled, unrevoked code before publication.
+        guestJit?.DisableForWorkers();
+        guestJitActive = guestJit?.IsActive == true;
         ReapCompletedChildren();
         lock (gate)
         {
@@ -590,13 +647,14 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
     }
     private static GuestThreadResult Result(Worker worker) => new(worker.GuestId, worker.Instructions,
         worker.Ip, worker.Termination, worker.Status, worker.Halt, worker.Signal, worker.Released)
-        { FirstTrap = worker.FirstTrap };
+        { FirstTrap = worker.FirstTrap, FinalState = worker.FinalState };
 
     private static void DisposeWorkerResources(Worker worker)
     {
         if (worker.ResourcesDisposed) return;
         List<Exception> errors = new();
         void Dispose(Action action) { try { action(); } catch (Exception error) { errors.Add(error); } }
+        if (worker.NativePoll != null) Dispose(worker.NativePoll.Dispose);
         Dispose(worker.Wake.Dispose); Dispose(worker.Sleep.Dispose);
         Dispose(worker.Stop.Dispose); Dispose(worker.SpawnReady.Dispose);
         if (worker.Wake.NotificationFailure is { } wakeError) errors.Add(wakeError);
@@ -630,6 +688,9 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
                 lock (gate)
                 {
                     threadResults[worker.ResultIndex] = Result(worker);
+                    reapedJitBlockEntries += worker.JitObservedEntries;
+                    reapedJitNegativeSkips += worker.JitNegativeSkips;
+                    reapedJitColdEntries += worker.JitColdEntries; reapedJitHintCollisions += worker.JitHintCollisions;
                     workers.Remove(worker);
                 }
             }

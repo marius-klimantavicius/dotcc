@@ -31,7 +31,8 @@ internal sealed class InProcessMachineRun : MachineRun
             networkPolicy: new GuestNetworkPolicy(options.Network.Publications.Select(p => new GuestPortGrant(p.GuestPort, p.HostAddress, p.HostPort)),
                 options.Network.OutboundDestinations.Select(p => new GuestOutboundGrant(p.Address, p.Port)), options.Metadata));
         owner = new(io, stop, (ulong)options.MemoryLimit, options.ThreadLimit,
-            options.VirtualMemoryLimit is long virtualBytes ? (ulong)virtualBytes : null);
+            options.VirtualMemoryLimit is long virtualBytes ? (ulong)virtualBytes : null,
+            jitOptions: execution.GuestJit ?? options.GuestJit);
         string[] argv = [execution.Executable, .. execution.Arguments];
         string[] env = environment.Select(p => p.Key + "=" + p.Value).ToArray();
         thread = new Thread(() =>
@@ -127,7 +128,7 @@ internal sealed class InProcessMachineRun : MachineRun
                 $"tid={t.GuestThreadId} {t.Termination} instructions={t.Instructions} ip=0x{t.InstructionPointer:x} halt={t.Halt} signal={t.Signal} first-trap=({t.FirstTrap})")));
         await FinishAsync(new(reason, result?.ExitStatus ?? 0, outcome?.Signal ?? 0, outcome?.Halt ?? 0,
             (long)(result?.Instructions ?? owner.InstructionsCompleted), [], [], false, 0, released,
-            diagnostic)).ConfigureAwait(false);
+            diagnostic) { JitStatistics = owner.JitStatistics }).ConfigureAwait(false);
     }
     protected override ValueTask DisposeExecutionAsync() => ValueTask.CompletedTask;
 }

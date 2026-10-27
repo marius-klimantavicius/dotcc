@@ -6,6 +6,15 @@ struct Machine;
 struct System;
 struct siginfo_linux;
 
+/* Before any non-fetch guest pointer escapes, or a mapping identity changes,
+ * synchronously drain native execution and permanently revoke this range.
+ * No lock is retained across the subsequent operation. The sole exemption is
+ * LookupAddress2(PAGE_XD, 0), used only by read-only instruction fetch/copy. */
+void blink_host_guest_code_revoke(long address, long size);
+/* Mapping revocation also retires initial data descriptors, before any
+ * permission change, publication, replacement, free or allocator reuse. */
+void blink_host_guest_mapping_revoke(long address, long size);
+
 /* Zero transfers this already-created Machine to a managed owning worker.
  * Nonzero promises no worker started: SysSpawn retains rollback ownership.
  * The callback must not throw after starting a worker. */

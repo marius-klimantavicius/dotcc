@@ -80,3 +80,21 @@ requested/budget/deadline state. Its optional `--measure` prints isolated
 null-timeout Reason-read wall/CPU samples; `StopSource` can select a frozen
 baseline source for a matched A/B. Whole guest budget, cancellation and recursive
 signal checks remain separate execution-owner gates.
+
+For the experimental native guest backend, append explicit service bounds and
+`guest-jit` after the trial count, for example `prefix closure.json result.json 6
+60 150000000 guest-jit`. Omit it or use `off` for the matched interpreter control.
+`JitStatistics` records generated-code work and fallback; host compilation mode
+is independent of this guest setting. See `docs/EXPERIMENTAL-GUEST-JIT.md`.
+
+Service rows also retain readiness JIT statistics and per-request native
+instructions, entries, compilation and allocation deltas. These are sampled
+phase observations across all guest workers. A nonzero delta proves native work
+in that phase; it does not establish CPU benefit. Compare fresh processes in
+serial alternating pairs, separate trial-zero cold hosts from warm-host fresh
+guests, and retain the same hashed guest closure for both settings.
+
+For a bounded admission experiment, append `guest-jit 8` after seconds and budget
+to select `HotBlockThreshold=8`. Omitting the numeric override retains 16. Report
+the chosen configuration with its measurements; lower thresholds alone do not
+establish acceleration.

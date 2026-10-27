@@ -7,7 +7,8 @@ internal sealed record MachineMount(string GuestPath, string HostPath, MountAcce
 internal sealed record MachineStorage(string Root, MachineMount[] Mounts);
 internal sealed record MachineExecution(string Executable, string[] Arguments, string WorkingDirectory,
     Dictionary<string, string> Environment, ReadinessOptions Readiness, int BufferBytes, long OutputLimit,
-    int CaptureBytes, TimeSpan DrainTimeout, bool AllowElfInterpreter = false);
+    int CaptureBytes, TimeSpan DrainTimeout, bool AllowElfInterpreter = false,
+    Managed.Emulation.Execution.GuestJitOptions? GuestJit = null);
 internal sealed record MachineStart(MachineOptions Options, MachineExecution Execution, MachineStorage Storage);
 internal sealed record MachineFrame(string Kind, int Channel = 0, byte[]? Bytes = null,
     MachineStart? Start = null, MachineRunResult? Result = null, PublishedEndpoint[]? Endpoints = null);

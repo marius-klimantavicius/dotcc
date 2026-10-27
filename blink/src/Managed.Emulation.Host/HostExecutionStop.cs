@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace Managed.Emulation.Host;
 
@@ -18,6 +19,7 @@ public sealed class HostExecutionStop : IDisposable
     private int reason, notifying;
     private bool disposed;
     private AggregateException? notificationFailure;
+    private List<NativePoll>? nativePolls;
 
     public HostExecutionStop(TimeSpan? timeout = null, CancellationToken cancellation = default)
     {
@@ -39,6 +41,46 @@ public sealed class HostExecutionStop : IDisposable
     public AggregateException? NotificationFailure => Volatile.Read(ref notificationFailure);
     public bool RequestStop() => Latch(HostExecutionStopReason.Requested);
     public bool RequestBudgetStop() => Latch(HostExecutionStopReason.Budget);
+
+    /// <summary>Optional native instruction-boundary stop cell. Its caller must
+    /// finish every native invocation before disposing the cell or this owner.
+    /// The cell is latched before Reason, without cancellation callback delay.</summary>
+    public unsafe NativePoll AcquireNativePoll()
+    {
+        lock (sync)
+        {
+            ObjectDisposedException.ThrowIf(disposed, this);
+            var poll = new NativePoll(this, reason != 0);
+            try { (nativePolls ??= new()).Add(poll); }
+            catch { poll.Free(); throw; }
+            return poll;
+        }
+    }
+
+    public unsafe sealed class NativePoll : IDisposable
+    {
+        private readonly HostExecutionStop owner;
+        private int* pointer;
+        internal NativePoll(HostExecutionStop owner, bool stopped)
+        {
+            this.owner = owner;
+            pointer = (int*)NativeMemory.AllocZeroed((nuint)sizeof(int));
+            if (pointer == null) throw new OutOfMemoryException();
+            *pointer = stopped ? 1 : 0;
+        }
+        public int* Pointer => pointer != null ? pointer : throw new ObjectDisposedException(nameof(NativePoll));
+        internal void Latch() => Volatile.Write(ref *pointer, 1);
+        internal void Free() { NativeMemory.Free(pointer); pointer = null; }
+        public void Dispose()
+        {
+            lock (owner.sync)
+            {
+                if (pointer == null) return;
+                owner.nativePolls!.Remove(this);
+                Free();
+            }
+        }
+    }
 
     private void RefreshDeadline(bool schedule = false)
     {
@@ -68,6 +110,8 @@ public sealed class HostExecutionStop : IDisposable
         lock (sync)
         {
             if (disposed || reason != 0) return false;
+            if (nativePolls != null)
+                foreach (NativePoll poll in nativePolls) poll.Latch();
             Volatile.Write(ref reason, (int)value);
             ++notifying;
         }

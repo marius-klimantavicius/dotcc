@@ -1,5 +1,6 @@
 #define _GNU_SOURCE 1
 #include "HostMemory.h"
+#include "HostFileMapping.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
@@ -18,12 +19,30 @@ void TerminateSignal(struct Machine *m, int signal, int code) {
   (void)m; (void)signal; (void)code;
   abort();  /* ordinary metadata workload must never enter a signal path */
 }
+/* Native counterpart of the product's mapping-description lease. The
+ * invariants caller supplies ordinary host fds; pin one across preparation. */
+static int mapping_fd = -1, mapping_original = -1;
+int BlinkHostFileMappingBegin(int fd) {
+  if (mapping_fd != -1) { errno = EBUSY; return -1; }
+  mapping_fd = fcntl(fd, F_DUPFD_CLOEXEC, 0);
+  if (mapping_fd == -1) return -1;
+  mapping_original = fd;
+  return 0;
+}
+int BlinkHostFileMappingEnd(void) {
+  int fd = mapping_fd;
+  mapping_fd = mapping_original = -1;
+  return fd == -1 ? 0 : close(fd);
+}
+static int MappingFd(int fd) {
+  return mapping_fd != -1 && mapping_original == fd ? mapping_fd : fd;
+}
 static ssize_t ReadAt(int fd, void *data, size_t count, off_t offset) {
-  return pread(fd, data, count, offset);
+  return pread(MappingFd(fd), data, count, offset);
 }
 static int ReadLength(int fd, off_t *length) {
   struct stat st;
-  if (fstat(fd, &st)) return -1;
+  if (fstat(MappingFd(fd), &st)) return -1;
   *length = st.st_size;
   return 0;
 }

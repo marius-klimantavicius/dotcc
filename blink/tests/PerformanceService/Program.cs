@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json;
 using Managed.Emulation;
 
-if (args.Length is < 3 or > 5 || !Enum.TryParse<ExecutionMode>(args[0], out var mode))
+if (args.Length is < 3 or > 7 || !Enum.TryParse<ExecutionMode>(args[0], out var mode))
     throw new ArgumentException("ServiceProbe InProcess|SeparateProcess closure.json report.json [seconds] [budget]");
 int seconds = args.Length > 3 ? int.Parse(args[3]) : 180;
 long budget = args.Length > 4 ? long.Parse(args[4]) : 150_000_000;
@@ -28,6 +28,8 @@ try
     machine = new(new MachineOptions { ExecutionMode = mode, MemoryLimit = 256L << 20,
         VirtualMemoryLimit = 4L << 30, InstructionLimit = budget,
         ExecutionDeadline = TimeSpan.FromSeconds(seconds), Environment = environment,
+        GuestJit = new() { Enabled = args.Length > 5 && args[5] == "guest-jit", AllowUnverifiedWindows = true,
+            HotBlockThreshold = args.Length > 6 ? int.Parse(args[6]) : 16 },
         Network = new NetworkPolicy { Publications = [new(8080)] } });
     machine.ImportImage(root.GetProperty("Files").EnumerateArray().Select(file =>
     {
@@ -87,6 +89,19 @@ finally
     json.WriteString("mode", mode.ToString()); json.WriteBoolean("host_dynamic_code", RuntimeFeature.IsDynamicCodeCompiled);
     json.WriteNumber("ready_ms", readyMs); json.WriteNumber("total_ms", time.Elapsed.TotalMilliseconds);
     json.WriteNumber("instructions", result?.Instructions ?? 0); json.WriteBoolean("resources_released", result?.ResourcesReleased == true);
+    json.WriteStartObject("jit");
+    json.WriteString("capability", result?.JitStatistics?.Capability);
+    json.WriteNumber("compiled_blocks", result?.JitStatistics?.CompiledBlocks ?? 0);
+    json.WriteNumber("native_entries", result?.JitStatistics?.NativeEntries ?? 0);
+    json.WriteNumber("first_child_instructions", result?.JitStatistics?.FirstChildInstructions ?? -1);
+    json.WriteNumber("native_at_first_child", result?.JitStatistics?.NativeInstructionsAtFirstChild ?? 0);
+    json.WriteNumber("native_after_first_child", result?.JitStatistics is { FirstChildInstructions: >= 0 } stats
+        ? stats.GuestInstructions - stats.NativeInstructionsAtFirstChild : 0);
+    json.WriteNumber("guest_instructions", result?.JitStatistics?.GuestInstructions ?? 0);
+    json.WriteNumber("interpreted_instructions", result?.JitStatistics?.InterpreterInstructions ?? 0);
+    json.WriteNumber("peak_cache_bytes", result?.JitStatistics?.PeakCacheBytes ?? 0);
+    json.WriteNumber("cache_bytes_after_release", result?.JitStatistics?.CacheBytes ?? 0);
+    json.WriteEndObject();
     json.WriteString("reason", result?.Reason.ToString()); json.WriteString("stdout", result == null ? null : Encoding.UTF8.GetString(result.StandardOutput));
     json.WriteString("stderr", result == null ? null : Encoding.UTF8.GetString(result.StandardError));
     if (worker is int id) json.WriteNumber("worker", id); else json.WriteNull("worker");
