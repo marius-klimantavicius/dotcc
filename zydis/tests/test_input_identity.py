@@ -1,9 +1,11 @@
 """Qualification identity must include data consumed by upstream C includes."""
+import json
 from pathlib import Path
 import sys
 import tempfile
 from types import SimpleNamespace
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT.parent / "Scripts"))
@@ -31,7 +33,7 @@ class InputIdentityTests(unittest.TestCase):
             self.assertNotEqual(original, changed)
             self.assertIn("zydis/src/Generated/DecoderTables.inc", changed)
 
-    def test_optional_emission_profile_cannot_reuse_default_companion(self):
+    def test_every_profile_records_current_emission_identity(self):
         runner = helper(ROOT / "scripts/qualification.py")
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -43,9 +45,35 @@ class InputIdentityTests(unittest.TestCase):
             default = runner._inputs(SimpleNamespace(root=root, profile="default"), selected)
             optimized = runner._inputs(SimpleNamespace(root=root, profile="aggregate-data"), selected)
             self.assertNotEqual(default, optimized)
-            self.assertNotIn("campaign/emission", default)
-            self.assertIn("campaign/emission", optimized)
-            self.assertEqual(default, {key: value for key, value in optimized.items() if key != "campaign/emission"})
+            typed = runner._inputs(SimpleNamespace(root=root, profile="typed"), selected)
+            for identity in (default, optimized, typed):
+                self.assertIn("campaign/emission", identity)
+            self.assertTrue(json.loads(default["campaign/emission"])["aggregate_data"])
+            self.assertTrue(json.loads(optimized["campaign/emission"])["aggregate_data"])
+            self.assertFalse(json.loads(typed["campaign/emission"])["aggregate_data"])
+            self.assertEqual({k: v for k, v in default.items() if k != "campaign/emission"},
+                             {k: v for k, v in typed.items() if k != "campaign/emission"})
+
+    def test_stale_default_companion_rejected_with_hashes_off(self):
+        runner = helper(ROOT / "scripts/qualification.py")
+        recipe = helper(ROOT / "scripts/campaign.py")
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            product = root / "generated/TranslatedZydisQualification/TranslatedZydisQualification.csproj"
+            product.parent.mkdir(parents=True)
+            product.touch()
+            context = SimpleNamespace(root=root, profile="default", recipe=recipe.recipe,
+                                      options=SimpleNamespace(hashes="off"))
+            current = {"campaign/emission": json.dumps(recipe.emission_identity("default"), sort_keys=True)}
+            old = recipe.emission_identity("default")
+            old.update(aggregate_data=False, object_flags=[])
+            for stale in ({}, {"campaign/emission": json.dumps(old, sort_keys=True)}):
+                (product.parent / "zydis-test-inputs.json").write_text(json.dumps(stale))
+                with (patch.object(runner, "check_product"),
+                      patch.object(runner, "_configuration", return_value={}),
+                      patch.object(runner, "_inputs", return_value=current)):
+                    with self.assertRaisesRegex(RuntimeError, "regenerate"):
+                        runner._managed(context, "processed", "jit")
 
 
 if __name__ == "__main__":

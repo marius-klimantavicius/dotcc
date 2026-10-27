@@ -14,13 +14,13 @@ from campaigns.translation import check_product
 
 def emission_options(profile):
     """C# initializers are baked into objects, before the final library link."""
-    if profile not in ("default", "aggregate-data"):
+    if profile not in ("default", "aggregate-data", "typed"):
         raise ValueError("Unknown Zydis emission profile: " + profile)
-    return ["--aggregate-data"] if profile == "aggregate-data" else []
+    return [] if profile == "typed" else ["--aggregate-data"]
 
 
 def emission_identity(profile):
-    return dict(profile=profile, aggregate_data=profile == "aggregate-data",
+    return dict(profile=profile, aggregate_data=bool(emission_options(profile)),
                 aggregate_data_threshold=1024, object_flags=emission_options(profile))
 
 
@@ -232,7 +232,7 @@ def run_managed_boundary(ctx, suite):
 
 
 recipe = Recipe(
-    "zydis", "TranslatedZydis", ("default", "aggregate-data"),
+    "zydis", "TranslatedZydis", ("default", "aggregate-data", "typed"),
     ("samples/ManagedConsumer/ManagedConsumer.csproj",), sources, prepare,
     consumer=Consumer(property="TranslatedProject"),
     suites=(

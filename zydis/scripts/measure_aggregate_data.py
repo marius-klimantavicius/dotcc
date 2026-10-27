@@ -28,7 +28,7 @@ from campaigns.process import execute
 from campaigns.recipes import helper
 from campaigns.translation import relocate_project
 
-PROFILES = ("default", "aggregate-data")
+PROFILES = ("default", "aggregate-data", "typed")
 TABLE_BYTES = 7809 * 9
 _FIELD_STORE = re.compile(rb"\bencoder_instructions_destination\[\d+\]\.[^\n]* = ")
 _ENCODER_COPY = re.compile(
@@ -144,7 +144,23 @@ def _tool_identity(receipt):
             for name, snapshot in snapshots.items()}
 
 
-def _object_commands(receipt, profile):
+def _recorded_emission(receipt):
+    """Read emission policy from the receipt, including historical defaults."""
+    profile = receipt.get("profile")
+    emission = receipt.get("zydis_selection", {}).get("emission")
+    if not isinstance(emission, dict) or type(emission.get("aggregate_data")) is not bool:
+        raise RuntimeError("Receipt lacks explicit aggregate-data emission selection")
+    optimized = emission["aggregate_data"]
+    expected = dict(profile=profile, aggregate_data=optimized, aggregate_data_threshold=1024,
+                    object_flags=["--aggregate-data"] if optimized else [])
+    if (emission != expected or profile not in PROFILES
+            or (profile == "typed" and optimized) or (profile == "aggregate-data" and not optimized)):
+        raise RuntimeError("Inconsistent recorded aggregate-data emission selection")
+    return emission
+
+
+def _object_commands(receipt, emission):
+    optimized = emission["aggregate_data"]
     commands = sorted((row for row in receipt["commands"] if re.fullmatch(r"\d{3}-.+", row["label"])),
                       key=lambda row: row["label"])
     if len(commands) != 18:
@@ -152,7 +168,7 @@ def _object_commands(receipt, profile):
     flags = []
     for row in commands:
         command = row.get("requested_command", row["command"])
-        if row["status"] != "passed" or command.count("--aggregate-data") != int(profile == "aggregate-data"):
+        if row["status"] != "passed" or command.count("--aggregate-data") != int(optimized):
             raise RuntimeError("Wrong/missing object-stage aggregate-data flag: " + row["label"])
         # Discard per-run tool/report/output paths and the one intended option.
         values = command[2:]
@@ -186,31 +202,46 @@ def _link_command(receipt):
     return result
 
 
-def paired_inputs(default_path, aggregate_path, forms):
+def paired_inputs(baseline_path, optimized_path, forms):
     recipes = helper(ROOT / "scripts/campaign.py")
     qualification = helper(ROOT / "scripts/qualification.py")
     selected = recipes.native_configuration(ROOT)
     receipts, products, identities = {}, {}, {}
-    for profile, path in zip(PROFILES, (default_path, aggregate_path)):
+    for optimized, path in zip((False, True), (baseline_path, optimized_path)):
         receipt = read_json(path)
-        if (receipt.get("project") != "zydis" or receipt.get("profile") != profile
+        profile = receipt.get("profile")
+        if (receipt.get("project") != "zydis" or profile not in PROFILES
                 or receipt.get("status") != "passed" or not receipt.get("outputs")):
-            raise RuntimeError("Expected successful fresh Zydis translation/verify receipt for " + profile)
-        if receipt.get("zydis_selection", {}).get("emission") != recipes.emission_identity(profile):
-            raise RuntimeError("Receipt predates explicit aggregate-data emission selection; regenerate " + profile)
+            raise RuntimeError("Expected successful fresh Zydis translation/verify receipt")
+        emission = _recorded_emission(receipt)
+        if emission["aggregate_data"] != optimized:
+            role = "Optimized" if optimized else "Baseline"
+            flags = "--aggregate-data" if optimized else "no --aggregate-data; use typed for current campaigns"
+            kind = "optimized" if optimized else "unoptimized"
+            raise RuntimeError(f"{role} receipt must record {kind} emission ({flags})")
+        if profile in receipts:
+            raise RuntimeError("Paired receipts must have distinct profile names")
         receipts[profile] = receipt
-        identities[profile] = dict(tools=_tool_identity(receipt), objects=_object_commands(receipt, profile),
+        identities[profile] = dict(tools=_tool_identity(receipt), objects=_object_commands(receipt, emission),
                                    link=_link_command(receipt),
                                    sdk=receipt["dotnet_sdk"], selection=receipt["zydis_selection"].copy())
         identities[profile]["selection"].pop("emission")
         current = qualification._inputs(type("Context", (), {"root": ROOT, "profile": profile})(), selected)
+        # The current campaign may assign a different policy to "default".
+        # Source bytes must still be current, but emission follows this receipt.
+        current["campaign/emission"] = json.dumps(emission, sort_keys=True)
         for form in forms:
             entry = receipt["outputs"][form]
             product = Path(entry["project"]).resolve()
-            if read_json(product.parent / "zydis-emission-profile.json") != recipes.emission_identity(profile):
+            if read_json(product.parent / "zydis-emission-profile.json") != emission:
                 raise RuntimeError("Current product profile stamp differs from receipt")
             companion = Path(entry["companions"]["TranslatedZydisQualification"]["project"])
-            if read_json(companion.parent / "zydis-test-inputs.json") != current:
+            companion_inputs = read_json(companion.parent / "zydis-test-inputs.json")
+            expected_inputs = current.copy()
+            if profile == "default" and not optimized and "campaign/emission" not in companion_inputs:
+                # Historical unoptimized default companions omitted this key.
+                expected_inputs.pop("campaign/emission")
+            if companion_inputs != expected_inputs:
                 raise RuntimeError("Companion inputs/profile differ from current source bytes; regenerate " + profile)
             # Hashes may be disabled in the campaign. Record actual current bytes
             # here, but never infer output identity from an empty hash manifest.
@@ -218,9 +249,10 @@ def paired_inputs(default_path, aggregate_path, forms):
                 if digest(product.parent / name) != expected:
                     raise RuntimeError("Current measured output differs from supplied receipt: " + name)
             products[profile, form] = product
-    if identities["default"] != identities["aggregate-data"]:
+    baseline_profile, optimized_profile = receipts
+    if identities[baseline_profile] != identities[optimized_profile]:
         raise RuntimeError("Paired receipts differ in tools, SDK, source selection or object flags beyond --aggregate-data")
-    return receipts, products, identities["default"]
+    return receipts, products, identities[baseline_profile]
 
 
 def native_table(report):
@@ -297,17 +329,23 @@ def compare(args):
         raise RuntimeError("Current native/emitted table measurement requires execution on linux-x64")
     forms = ("raw", "processed") if args.form == "all" else (args.form,)
     modes = ("jit", "aot") if args.mode == "all" else (args.mode,)
-    receipts, products, identity = paired_inputs(args.default_receipt, args.aggregate_receipt, forms)
+    receipts, products, identity = paired_inputs(args.baseline_receipt, args.optimized_receipt, forms)
+    profiles = tuple(receipts)
+    baseline_profile, optimized_profile = profiles
     output = args.output.resolve()
     # Never delete or reuse an earlier measurement's intermediate caches.
     output.mkdir(parents=True, exist_ok=False)
-    report = dict(schema_version=1, status="running", output=str(output), commands=[], cells=[],
+    report = dict(schema_version=2, status="running", output=str(output), commands=[], cells=[],
                   utc=datetime.now(timezone.utc).isoformat(),
                   receipts={profile: file_record(path) for profile, path in
-                            zip(PROFILES, (args.default_receipt, args.aggregate_receipt))},
+                            zip(profiles, (args.baseline_receipt, args.optimized_receipt))},
+                  comparison=dict(baseline=baseline_profile, optimized=optimized_profile,
+                                  emissions={profile: receipts[profile]["zydis_selection"]["emission"]
+                                             for profile in profiles},
+                                  difference="optimized minus baseline"),
                   qualification={profile: {key: receipts[profile].get(key) for key in
                                             ("zydis_audit", "zydis_qualification_reports", "zydis_managed_boundary_report")}
-                                 for profile in PROFILES},
+                                 for profile in profiles},
                   equivalent_emission=identity, build_samples=args.build_samples, init_samples=args.init_samples,
                   host=dict(platform=platform.platform(), machine=platform.machine(), cpu_count=os.cpu_count()),
                   environment={name: os.environ.get(name) for name in
@@ -334,9 +372,9 @@ def compare(args):
         run(report, ["dotnet", "--info"], output, "dotnet-info")
         expected = native_table(report)
         report["sources"] = {profile: {form: source_metrics(products[profile, form]) for form in forms}
-                             for profile in PROFILES}
+                             for profile in profiles}
         for form in forms:
-            optimized = report["sources"]["aggregate-data"][form]
+            optimized = report["sources"][optimized_profile][form]
             cursor = 0
             for copy in optimized["encoder_copies"]:
                 if copy["offset"] != cursor or not 0 < copy["bytes"] <= 4096:
@@ -345,17 +383,17 @@ def compare(args):
             if cursor != TABLE_BYTES or optimized["encoder_field_store_lines"] != 0:
                 raise RuntimeError("Actual encoder table did not select the byte-data path")
         report["source_differences"] = {
-            form: {name: report["sources"]["aggregate-data"][form][name] - report["sources"]["default"][form][name]
+            form: {name: report["sources"][optimized_profile][form][name] - report["sources"][baseline_profile][form][name]
                    for name in ("source_bytes", "encoder_field_store_lines", "encoder_field_store_source_bytes",
                                 "payload_bytes", "aggregate_initialized_bytes", "encoder_payload_copy_bytes")}
             for form in forms}
         for form in forms:
             for mode in modes:
-                cells = {profile: dict(profile=profile, form=form, mode=mode, samples=[]) for profile in PROFILES}
+                cells = {profile: dict(profile=profile, form=form, mode=mode, samples=[]) for profile in profiles}
                 report["cells"].extend(cells.values())
                 for index in range(args.build_samples):
                     # Alternate who runs first to make simple temporal bias visible.
-                    for profile in PROFILES if index % 2 == 0 else PROFILES[::-1]:
+                    for profile in profiles if index % 2 == 0 else profiles[::-1]:
                         label = f"{form}-{mode}-{profile}-{index:02d}"
                         destination = output / "work" / form / mode / profile / f"sample-{index:02d}"
                         cells[profile]["samples"].append(sample(report, products[profile, form], destination,
@@ -369,8 +407,8 @@ def compare(args):
             for mode in modes:
                 cells = {cell["profile"]: cell for cell in report["cells"] if cell["form"] == form and cell["mode"] == mode}
                 report["median_differences"].append(dict(
-                    form=form, mode=mode, aggregate_minus_default={
-                        name: cells["aggregate-data"][name]["median"] - cells["default"][name]["median"]
+                    form=form, mode=mode, optimized_minus_baseline={
+                        name: cells[optimized_profile][name]["median"] - cells[baseline_profile][name]["median"]
                         for name in ("build_seconds", "init_seconds", "process_seconds")}))
         report["status"] = "passed"
     except BaseException as error:
@@ -388,8 +426,10 @@ def main():
     sources.add_argument("--project", type=Path, required=True)
     sources.add_argument("--output", type=Path, required=True)
     paired = commands.add_parser("compare", help="supervisor-only paired managed builds and fresh-process table/init probes")
-    paired.add_argument("--default-receipt", type=Path, required=True)
-    paired.add_argument("--aggregate-receipt", type=Path, required=True)
+    paired.add_argument("--baseline-receipt", "--default-receipt", type=Path, required=True,
+                        help="unoptimized typed receipt, or historical unoptimized default receipt")
+    paired.add_argument("--optimized-receipt", "--aggregate-receipt", type=Path, required=True,
+                        help="optimized default or aggregate-data receipt")
     paired.add_argument("--output", type=Path, required=True, help="new directory; existing directories are rejected")
     paired.add_argument("--form", choices=("raw", "processed", "all"), default="all")
     paired.add_argument("--mode", choices=("jit", "aot", "all"), default="all")

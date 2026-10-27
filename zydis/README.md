@@ -5,14 +5,19 @@ Intel/AT&T/MASM formatting, tokenization, disassembly, instruction/register
 metadata, segment and address utilities. The upstream algorithms and generated
 instruction tables are translated from C. The product has no native Zydis backend.
 
-P0–P6 acceptance passes on Linux x64, including raw/processed JIT/NativeAOT.
-See [acceptance and receipts](docs/ACCEPTANCE.md) and [the plan](docs/PLAN.md).
+The Zydis campaign's `default` profile now emits large constant aggregates with
+`--aggregate-data` at the canonical output paths. `--profile aggregate-data`
+remains an explicit alias for that emission policy, with separate profile outputs.
+Use `--profile typed` for the unoptimized typed-initializer comparison. The
+standalone compiler still requires an explicit `--aggregate-data` opt-in.
 
-An optional `--profile aggregate-data` emits large constant aggregates through
-the compiler's byte-data path. Default output and acceptance gates are preserved;
-the optional profile passes the same full Linux x64 execution matrix. Paired
-build/init measurements and exact native table-byte comparisons also pass.
-See [usage, fallback and measurement commands](docs/AGGREGATE-DATA.md).
+The optimized canonical default passes the full Linux x64 raw/processed ×
+JIT/NativeAOT matrix, rooted AOT, managed boundaries, consumers and audit.
+The root solution and plain sample run pass against the regenerated canonical
+product. Earlier paired build/init measurements and exact native table-byte
+comparisons retain their original profile names and provenance.
+See [acceptance and receipts](docs/ACCEPTANCE.md), [the plan](docs/PLAN.md) and
+[profile usage, fallback and measurement commands](docs/AGGREGATE-DATA.md).
 
 Requires .NET 10 SDK, Python 3.11+ and Bash. Initial execution qualification is
 Linux x64. Native differential tests additionally require a C compiler; NativeAOT
@@ -34,9 +39,12 @@ output, acquired sources and execution evidence are ignored; scripts reproduce
 them. `build.sh` rebuilds existing output; it does not translate sources.
 
 Applications reference `generated/TranslatedZydis/TranslatedZydis.csproj` normally.
-The sample uses the `TranslatedProject` MSBuild property to select the raw library
-when testing it. Authored API sources stay linked from `src/Api`, so rebuilding
-picks up edits without regeneration. Both upstream MIT license texts accompany
+The root solution and sample keep that canonical reference. The sample uses the
+`TranslatedProject` MSBuild property to select raw or alternate-profile libraries
+explicitly when testing them. Regenerate older canonical output to obtain the new
+default; `build.sh` alone does not change its emission policy.
+Authored API sources stay linked from `src/Api`, so rebuilding picks up edits
+without regeneration. Both upstream MIT license texts accompany
 the product. The release tag is 4.1.1; its original API version constant reports
 4.1.0.0 and is preserved.
 

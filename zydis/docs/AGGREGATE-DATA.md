@@ -1,20 +1,35 @@
-# Optional aggregate byte-data profile
+# Aggregate byte-data emission and comparison profiles
 
-Status: **passed on Linux x64, 2026-10-27**, including all 18 product units,
-raw/processed × JIT/NativeAOT, rooted AOT, managed boundaries, consumers and audit.
-The [accepted default campaign](ACCEPTANCE.md) remains the default. Both profiles
-were freshly verified with the final rebuilt tools. Paired measurements and exact
-native table-byte comparisons passed; their scope and noise are recorded below.
+Current policy: the Zydis campaign's `default` profile uses `--aggregate-data`.
+`aggregate-data` remains an explicit alias for the same optimized emission policy;
+`typed` selects the unoptimized typed-initializer comparison. **The optimized
+canonical default passed fresh full qualification on Linux x64, 2026-10-27.**
+See [current acceptance and receipt](ACCEPTANCE.md).
 
-`default` remains the first/default recipe profile, with ordinary typed
-initialization and its existing canonical paths, consumer and acceptance gates.
-`aggregate-data` requests the compiler's `--aggregate-data` option while emitting
-**every one of the same 18 product objects**. It also selects that option for
-new test-only objects. The companion reuses the exact product objects; neither
-product link command receives the option because initializers are already baked
-into object fragments. Native C flags and upstream feature selection are identical.
+Earlier typed-default and optional aggregate-data runs **passed on Linux x64,
+2026-10-27**, including all 18 product units, raw/processed × JIT/NativeAOT,
+rooted AOT, managed boundaries, consumers and audit. Paired measurements and exact
+native table-byte comparisons passed. Those receipts and benchmark labels retain
+their original meanings: historical `default`/`Default` means typed initialization;
+historical `aggregate-data`/`Aggregate` means byte-data emission. They do not
+substitute for the new canonical-default receipt.
 
-The optional outputs are:
+## Current profiles and output paths
+
+- `default` is still the first/default recipe profile. It enables
+  `--aggregate-data` and publishes the canonical products at
+  `generated/TranslatedZydis/TranslatedZydis.csproj` and
+  `generated/TranslatedZydis.Raw/TranslatedZydis.csproj`, with qualification
+  companions alongside them.
+- `aggregate-data` enables the same option and retains its existing alternate
+  paths below. It aliases the emission policy, while remaining an independently
+  selected, stamped and published profile.
+- `typed` omits `--aggregate-data`. Its products and companions have the same
+  names under `generated/profiles/typed/`, including
+  `generated/profiles/typed/TranslatedZydis/TranslatedZydis.csproj` and
+  `generated/profiles/typed/TranslatedZydis.Raw/TranslatedZydis.csproj`.
+
+The retained `aggregate-data` outputs are:
 
 ```text
 generated/profiles/aggregate-data/TranslatedZydis.Raw/TranslatedZydis.csproj
@@ -23,21 +38,33 @@ generated/profiles/aggregate-data/TranslatedZydisQualification.Raw/TranslatedZyd
 generated/profiles/aggregate-data/TranslatedZydisQualification/TranslatedZydisQualification.csproj
 ```
 
+Both optimized profiles request the option while emitting **every one of the
+same 18 product objects** and new test-only objects. The typed profile selects
+ordinary initialization for those same objects. The companion reuses the exact
+product objects; product link commands do not receive the option because
+initializers are already baked into object fragments. Native C flags, upstream
+features, public APIs and acceptance gates are identical. Raw/processed form
+selection is independent of initializer policy; all profiles require both forms.
+
 The framework stages, postprocesses, builds and transactionally publishes each
-profile independently. New product trees have `zydis-emission-profile.json`.
-Nondefault companion input identities include the profile/option/1024-byte
-threshold even under `--hashes off`; copying a default companion into the optional
-profile is rejected. Historical default companion identities remain compatible.
-The root solution and ordinary sample's default reference retain the default
-product. Select an alternate product explicitly with `TranslatedProject`.
+profile independently. Product trees have `zydis-emission-profile.json`, and
+all companion input identities include the profile/option/1024-byte threshold,
+including the default and even under `--hashes off`. Missing or mismatched
+identities require regeneration. An old typed-default tree is not a current
+optimized default, and copying a companion between profiles is rejected.
+`build.sh` only rebuilds existing output; use translate or verify to change
+emission policy. The root solution and ordinary sample keep their canonical
+default reference. Select an alternate product explicitly with `TranslatedProject`.
 
 ## Compiler contract and fallback
 
 CLI usage and the library equivalent are documented in
 [the flag reference](../../docs/cli.md#aggregate-byte-data).
-The default is off. Fully constant aggregate storage of at least 1024 bytes can
-use immutable byte spans and bounded copies into each C object's independently
-allocated writable storage. Serialization uses the LP64 little-endian target
+The standalone compiler default remains **off**; Zydis explicitly enables the
+option in its recipe for `default` and `aggregate-data`. Fully constant aggregate
+storage of at least 1024 bytes can use immutable byte spans and bounded copies
+into each C object's independently allocated writable storage. Serialization
+uses the LP64 little-endian target
 layout, including packing, bitfield positions, array strides and zero fill.
 This changes initializer representation, not C object identity, allocation,
 addresses, public types or callable APIs.
@@ -55,9 +82,9 @@ deduplicates identical payload records and preserves their bounded spans.
 ## Fresh qualification commands
 
 The supervisor builds final tools once, then runs these commands **serially**
-from the repository root. Reusing those tools gives both profiles the same
-compiler/postprocessor binaries. Both commands regenerate all objects and execute
-the same complete nine suites; no reduced feature profile is used.
+from the repository root. Reusing those tools gives all three profiles the same
+compiler/postprocessor binaries. Each verification regenerates all objects and
+executes the same complete nine suites; no reduced feature profile is used.
 
 ```bash
 dotnet build dotcc.sln -c Release -m:1 -p:UseLocalLalrCc=false
@@ -65,38 +92,55 @@ bash zydis/scripts/verify.sh --profile default --fetch never --tools reuse \
   --restore normal --hashes off --form all --mode all --rid linux-x64 --jobs 4
 bash zydis/scripts/verify.sh --profile aggregate-data --fetch never --tools reuse \
   --restore normal --hashes off --form all --mode all --rid linux-x64 --jobs 4
+bash zydis/scripts/verify.sh --profile typed --fetch never --tools reuse \
+  --restore normal --hashes off --form all --mode all --rid linux-x64 --jobs 4
 ```
 
-Retain each printed `artifacts/campaign/<run-id>/receipt.json`. Required gates
-remain inventory, native, ABI, qualification, all 385 retained upstream cases,
-whole-library rooted companion AOT, delivered-product managed boundaries,
+Omitting `--profile` selects the same optimized `default` profile. Retain each
+printed `zydis/artifacts/campaign/<run-id>/receipt.json`. The new canonical-default
+run is [20261027-095741-6051ba79](../artifacts/campaign/20261027-095741-6051ba79/receipt.json).
+Its [acceptance evidence](../artifacts/campaign/20261027-095741-6051ba79/optimized-default-acceptance.json)
+records source counts, identities, suites and canonical consumer checks.
+Alternate-profile commands above are available for independent qualification;
+this default-selection follow-up reran the default matrix.
+Required gates remain inventory, native, ABI, qualification, all 385 retained
+upstream cases, whole-library rooted companion AOT, delivered-product managed boundaries,
 ordinary normally trimmed consumer and dependency audit. Both raw and processed
 forms must execute under JIT and NativeAOT. Existing transcript comparisons,
 case counts, deliberate failure controls and zero-required-skip rules remain.
 
-An ordinary consumer can reference the optimized product explicitly:
+The ordinary consumer uses the optimized canonical default without an override.
+Use `TranslatedProject` explicitly only when selecting an alternate product, for
+example the typed comparison:
 
 ```bash
+dotnet build zydis/ManagedConsumer.slnx -c Release -m:1
+dotnet run --project zydis/samples/ManagedConsumer -c Release
 dotnet run --project zydis/samples/ManagedConsumer -c Release \
-  -p:TranslatedProject="$PWD/zydis/generated/profiles/aggregate-data/TranslatedZydis/TranslatedZydis.csproj"
+  -p:TranslatedProject="$PWD/zydis/generated/profiles/typed/TranslatedZydis/TranslatedZydis.csproj"
 ```
 
 ## Source accounting and exact table bytes
 
-The original canonical baseline is retained at
+The original typed canonical baseline is retained at
 `artifacts/aggregate-byte-data/baseline.json` at repository root. Its shared raw
 `Zydis.cs` is **61,719,465 bytes**. It contains **109,326 encoder field-store
 lines totaling 15,148,770 bytes**. These refer to the shared source file, rather
 than the sum of all split function files. A read-only accounting check reproduced
-those values, including the file hash; all raw generated C# totals 62,692,420 bytes.
+those values, including the file hash; all raw generated C# totaled 62,692,420 bytes.
+These are historical measurements, not the expected source size of the promoted
+canonical default. The original [source-default-raw.json](../../artifacts/aggregate-byte-data/source-default-raw.json)
+describes typed emission, and [source-aggregate-raw.json](../../artifacts/aggregate-byte-data/source-aggregate-raw.json)
+describes the then-optional optimized profile. Current accounting uses the typed
+alternate and optimized canonical output and writes new reports:
 
 ```bash
 python3 -B zydis/scripts/measure_aggregate_data.py sources \
-  --project zydis/generated/TranslatedZydis.Raw/TranslatedZydis.csproj \
-  --output artifacts/aggregate-byte-data/source-default-raw.json
+  --project zydis/generated/profiles/typed/TranslatedZydis.Raw/TranslatedZydis.csproj \
+  --output artifacts/aggregate-byte-data/source-typed-raw-current.json
 python3 -B zydis/scripts/measure_aggregate_data.py sources \
-  --project zydis/generated/profiles/aggregate-data/TranslatedZydis.Raw/TranslatedZydis.csproj \
-  --output artifacts/aggregate-byte-data/source-aggregate-raw.json
+  --project zydis/generated/TranslatedZydis.Raw/TranslatedZydis.csproj \
+  --output artifacts/aggregate-byte-data/source-default-raw-current.json
 ```
 
 Reports count source bytes, exact `encoder_instructions` field-store lines/bytes,
@@ -122,14 +166,20 @@ this historical digest does not block deliberately edited usable source trees.
 
 ## Paired compile and initialization measurements
 
-After both fresh verification commands pass, substitute their actual receipt
-paths below and choose a **new** output directory:
+For a new comparison, first pass fresh `typed` and optimized `default` (or
+`aggregate-data`) verification with the same tool snapshots. Set `TYPED_RECEIPT`
+and `OPTIMIZED_RECEIPT` to those actual receipt paths and choose a **new** output
+directory. `--baseline-receipt` takes the unoptimized receipt (now normally
+`typed`), and `--optimized-receipt` takes the optimized receipt (now normally
+`default`). The historical flags `--default-receipt` and `--aggregate-receipt`
+remain aliases for those respective comparison roles. Optimized `default` and
+optimized `aggregate-data` cannot serve as an off/on comparison.
 
 ```bash
 python3 -B zydis/scripts/measure_aggregate_data.py compare \
-  --default-receipt zydis/artifacts/campaign/20261027-083204-8d2d9de2/receipt.json \
-  --aggregate-receipt zydis/artifacts/campaign/20261027-084057-63b89e8a/receipt.json \
-  --output artifacts/aggregate-byte-data/paired-repeat \
+  --baseline-receipt "$TYPED_RECEIPT" \
+  --optimized-receipt "$OPTIMIZED_RECEIPT" \
+  --output artifacts/aggregate-byte-data/paired-current \
   --form all --mode all --rid linux-x64 --build-samples 3 --init-samples 5
 ```
 
@@ -138,7 +188,10 @@ build schedule. It does not rebuild tools, translate, publish canonical products
 or reuse older measurements. It rejects receipts lacking explicit emission
 selection, unequal tool snapshots/SDK/native selection/link flags, missing core
 objects, or object flags differing beyond `--aggregate-data`. It checks current
-companion input identities even when campaign provenance hashing is off.
+companion input identities even when campaign provenance hashing is off. The
+recorded emission selection determines which side is optimized; profile names
+alone are insufficient. Original historical receipts remain typed-default and
+aggregate-data evidence and must not be relabeled as new profile runs.
 
 Each build sample copies the current generated project to private staging,
 relocates authored links, and uses fresh output/intermediate paths. Both profiles
@@ -148,8 +201,9 @@ and full translated-library rooting for NativeAOT. Restore and staging are outsi
 the timed build/publish interval. Profile order alternates between build samples.
 The JSON retains SDK/host/settings, original receipts, commands, logs, all output
 binary sizes/hashes, source statistics, samples, median/min/max/mean/deviation,
-and optimized-minus-default differences. No performance threshold is an
-acceptance gate.
+and optimized-minus-unoptimized differences using the actual receipt profile
+names. Historical reports retain their original optimized-minus-default labels.
+No performance threshold is an acceptance gate.
 
 Initialization uses a fresh process for every sample and explicitly times
 `RuntimeHelpers.RunClassConstructor(typeof(Zydis).TypeHandle)`. It includes
@@ -160,7 +214,13 @@ retain individual samples and avoid treating a small median change as a proven
 speedup. Whole-library rooted probe binary size is distinct from ordinary trimmed
 consumer size; both qualification contracts remain required.
 
-## Final qualification and evidence
+## Historical qualification and evidence before default promotion
+
+The evidence and measurements in this and the following sections were captured
+before the campaign default changed. `default` is the original typed profile;
+`aggregate-data` is the then-optional byte-data profile. Names, timings, sizes,
+receipts and measured/final source identities below are preserved with that
+provenance. New default-promotion evidence belongs in [ACCEPTANCE.md](ACCEPTANCE.md).
 
 - [Final default receipt](../artifacts/campaign/20261027-083204-8d2d9de2/receipt.json).
 - [Final aggregate-data receipt](../artifacts/campaign/20261027-084057-63b89e8a/receipt.json).
@@ -179,8 +239,8 @@ and the ordinary normally trimmed consumer passes **four** workflows. There are
 zero failed or skipped required rows. Audits retain the complete public API,
 authored links/notices, original input identities and native dependency policy.
 
-The final default shared `Zydis.cs` remains byte-for-byte identical to the
-pre-edit 61,719,465-byte baseline. All 18 optional object-emission commands carry
+The historical final default shared `Zydis.cs` was byte-for-byte identical to the
+pre-edit 61,719,465-byte baseline. All 18 then-optional object-emission commands carry
 `--aggregate-data`; neither product link applies the flag retroactively.
 The optional raw and processed products actually use **18** encoder-table copies
 (maximum 4096 bytes each), totaling **70,281 bytes**, with **zero** per-field
@@ -198,7 +258,7 @@ every measured generated C# file and authored API input is byte-identical to
 the final qualified products. Benchmark binaries belong to that controlled
 paired run; canonical build sizes are not mixed into its comparisons.
 
-## Measured output and timings
+## Historical measured output and timings
 
 Generated C# totals include the shared source, all split methods and embedded
 runtime. Immutable payload sizes count data bytes, excluding PE padding and
@@ -217,7 +277,8 @@ string-pool storage.
 
 Nineteen aggregate initializers serialize 396,173 destination bytes. Separate
 C allocations remain; payload deduplication does not pool their addresses.
-The default shared source shrinks by 90.87% for this input and selection.
+Relative to that historical typed default, the shared source shrinks by 90.87%
+for this input and selection.
 
 The following sizes come from identical paired probe builds. JIT rows describe
 `TranslatedZydis.dll`; AOT rows describe the whole-library rooted probe executable.
@@ -249,7 +310,7 @@ common build properties, equivalent object/link flags and tool closure. Cache,
 scheduling and clock noise remain, especially for sub-millisecond AOT init.
 No performance threshold is an acceptance gate.
 
-## Shared regressions, review and repairs
+## Historical shared regressions, review and repairs
 
 - **3,490 unit tests** pass, including 14 new option/threshold/fallback cases.
 - **40 focused execution cases** pass: 36 source/object/state/operator/storage/

@@ -118,11 +118,9 @@ def _check_emission_profile(ctx, project):
     profile = getattr(ctx, "profile", recipe.recipe.default_profile)
     emission = recipe.emission_identity(profile)
     identity = project.parent / "zydis-emission-profile.json"
-    # Historical default products predate the explicit profile stamp. The
-    # optional profile always requires it, independent of provenance policy.
-    if identity.is_file() or profile != recipe.recipe.default_profile:
-        _require(identity.is_file() and _json(identity) == emission,
-                 "Product emission profile differs from selected campaign profile")
+    # Current emission identity is required independently of provenance policy.
+    _require(identity.is_file() and _json(identity) == emission,
+             "Product emission profile missing or differs from selected campaign profile; regenerate")
 
 
 def _project(ctx, project, selected, policy):
@@ -378,7 +376,7 @@ def _evidence(ctx, form, product, policy, kind):
         current_inputs = qualification._inputs(ctx, selected)
         manifest = translated.parent / "zydis-test-inputs.json"
         _require(manifest.is_file() and _json(manifest) == current_inputs,
-                 "Qualification companion source/config/fixture identity differs from current inputs")
+                 "Qualification companion source/config/fixture identity differs from current inputs; regenerate")
         _require(_property(command, settings["rootProperty"]) == "true", "Qualification AOT library was not rooted")
         roots = list(tree.iter("TrimmerRootAssembly"))
         _require(any(n.get("Include") == settings["rootAssembly"] for n in roots), "Rooted qualification assembly missing")

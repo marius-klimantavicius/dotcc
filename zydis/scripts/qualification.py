@@ -65,12 +65,10 @@ def _inputs(ctx, selected):
         result["authored/" + path.relative_to(ctx.root).as_posix()] = _digest(path)
     # This is a current artifact identity, not an optional provenance check.
     # Reject a copied companion from a different C# emission profile even with
-    # --hashes off. Keep the historical default identity byte-for-byte: its
-    # absent emission key already means ordinary emission.
+    # --hashes off, including historical unoptimized default companions.
     profile = getattr(ctx, "profile", "default")
-    if profile != "default":
-        recipe = helper(ROOT / "scripts/campaign.py")
-        result["campaign/emission"] = json.dumps(recipe.emission_identity(profile), sort_keys=True)
+    recipe = helper(ROOT / "scripts/campaign.py")
+    result["campaign/emission"] = json.dumps(recipe.emission_identity(profile), sort_keys=True)
     return result
 
 

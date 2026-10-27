@@ -1,8 +1,11 @@
 # Translate Zydis with DotCC
 
-Status: P0–P6 accepted for Linux x64. Current evidence: [ACCEPTANCE.md](ACCEPTANCE.md).
-Optional aggregate-data extension: implemented and qualified on Linux x64,
-including the complete execution matrix and paired measurements. See [its independent gates and commands](AGGREGATE-DATA.md).
+Status: original P0–P6 and the aggregate-data extension passed on Linux x64.
+The campaign now promotes `--aggregate-data` to `default`, retains the
+`aggregate-data` alias and adds an explicit unoptimized `typed` comparison profile.
+The regenerated canonical default passed all nine suites and the root solution
+and plain sample checks; see the current receipt in acceptance. See [acceptance and historical evidence](ACCEPTANCE.md) and
+[current profile commands and historical measurements](AGGREGATE-DATA.md).
 Campaign: `zydis/`. Updated: 2026-10-27.
 
 This plan adopts [translation baseline v4](../../docs/plans/translation-baseline.md)
@@ -46,7 +49,7 @@ or converts encoder requests, emits machine code and decodes the result.
 | Required | Full library profile: decoder, encoder, formatter, instruction/register metadata, disassembly, address and NOP utilities; 16/32/64-bit modes; ordinary invalid-input/buffer errors; formatter callbacks and tokens |
 | Excluded | Upstream command-line tools/examples as delivered applications; these remain controls/fixtures. Zycore OS/thread/process APIs unused by Zydis are outside dependency closure. No native Zydis backend |
 | Later extensions | Additional host OS/architectures, performance campaigns and externally supplied fuzz corpora |
-| Baseline departures | None planned. Whole-library rooted qualification and normally trimmed ordinary consumer are distinct gates |
+| Baseline departures | Zydis additionally enables `--aggregate-data` during default object emission; standalone compiler defaults are unchanged. Whole-library rooted qualification and normally trimmed ordinary consumer remain distinct gates |
 
 ## Decisions and feasibility work
 
@@ -57,9 +60,9 @@ or converts encoder requests, emits machine code and decodes the result.
 | D3 | ABI/encoding | Initial executed target Linux x64, LP64 little endian; fixed-width instruction bytes and ASCII formatter text; native C ABI controls compared to actual emitted storage | Decided; P1 verification |
 | D4 | Dependencies/host | Shared DotCC C runtime and managed BCL only for product; translated required Zycore source. Native compiler/CMake only for controls. No native disassembly/encoding imports | Decided; P2 import audit |
 | D5 | State/lifecycle | Caller-owned decoder/formatter/request structs; immutable library tables; owning facade copies outputs and pins buffers only for synchronous calls. Independent calls may run concurrently; no blocking service/cancellation protocol | Decided; P3/P4 probes |
-| D6 | Delivery | Class Zydis, namespace Managed.Zydis, product TranslatedZydis. Authored API linked from src; shared link_flags 256 KB splitting/literal pool/inline deduplication | Decided; P2 |
+| D6 | Delivery | Class Zydis, namespace Managed.Zydis, product TranslatedZydis. Authored API linked from src; shared link_flags 256 KB splitting/literal pool/inline deduplication. Default object emission uses `--aggregate-data`; `aggregate-data` aliases that policy and `typed` omits it | Passed; canonical default regenerated and validated |
 | D7 | Controls | Exact-source native library and asserted C probes; applicable upstream cases inventoried and exercised through translated implementation | Decided; P0/P4 |
-| D8 | Execution | Linux x64 default profile, raw/processed × JIT/NativeAOT execution. Root full low-level library in qualification; ordinary consumer trims normally | Decided; P4–P6 |
+| D8 | Execution | Linux x64, raw/processed × JIT/NativeAOT execution with unchanged gates for default, aggregate-data and typed profiles. Root full low-level library in qualification; ordinary consumer trims normally | Default promotion passed; prior alternate-profile evidence remains historical |
 | D9 | Testing | Native/emitted ABI, callbacks/context, full feature families, upstream fixtures, errors, repeated/concurrent owning calls. No custom prolonged stress/fuzz/performance requirement | Decided; P4 |
 
 Provenance defaults to `--hashes warn`; `off` is supported. Strict hashing is an
@@ -96,13 +99,31 @@ algorithm replacement is prohibited.
 
 ## Framework integration and deliverables
 
-Recipe: `scripts/campaign.py`, exporting `Recipe("zydis", ...)`. Default profile
-is `default`. Canonical products are
+Recipe: `scripts/campaign.py`, exporting `Recipe("zydis", ...)`. The first/default
+profile remains named `default` and now uses `--aggregate-data`. The standalone
+DotCC compiler option remains opt-in. Canonical products are
 `generated/TranslatedZydis/TranslatedZydis.csproj` and
 `generated/TranslatedZydis.Raw/TranslatedZydis.csproj`. The root solution is
 `ManagedConsumer.slnx`; separate sample is `samples/ManagedConsumer`, selecting
 the library with `TranslatedProject`. Original API sources remain under `src`.
 Fixed probes and test entrypoints stay under `tests`, outside the product.
+
+`aggregate-data` retains the same optimized emission policy at
+`generated/profiles/aggregate-data/`; `typed` uses ordinary typed initializers at
+`generated/profiles/typed/`. Both alternate trees contain raw/processed products
+and qualification companions with the same names as the default. They are
+explicit selections, not replacements for the sample's canonical reference.
+All 18 product objects and new test-only objects receive the selected emission
+option before linking; companions reuse the exact product objects. Native flags,
+source closure, features, APIs and acceptance gates remain identical. Raw and
+processed forms are required for every profile; `typed` selects initializer
+representation independently of postprocessing.
+
+Product stamps and companion identities must match the current emission policy,
+including under `--hashes off`. An older typed-default tree or a copied alternate
+profile requires regeneration; its historical receipt does not qualify the
+promoted default. The shared publisher continues to preserve the last valid
+outputs on failure.
 
 Shared wrappers/framework own acquisition, process/log execution, private tool
 snapshots, raw/processed builds, semantic postprocessing and publication. No
@@ -113,6 +134,13 @@ Prerequisites: Python 3.11+, .NET 10 SDK/NativeAOT toolchain and C compiler/CMak
 for native controls. NuGet restore is separate from `--fetch never`.
 
 ## Milestones and evidence
+
+The table records the original completed campaign, whose `default` profile used
+typed initialization. The later byte-data qualification and benchmark evidence
+retain their original profile names in [AGGREGATE-DATA.md](AGGREGATE-DATA.md).
+They establish prior behavior. The default-promotion follow-up passed fresh full
+default-profile validation and canonical solution/consumer checks in receipt
+`20261027-095741-6051ba79`; the standalone compiler was unchanged.
 
 Commit significant milestones after their required checks pass; stage only
 campaign-owned hunks/files. Never include preexisting changes. No push/PR.
@@ -160,15 +188,33 @@ bash zydis/scripts/fetch.sh --fetch missing
 bash zydis/scripts/translate.sh --fetch never
 dotnet build zydis/ManagedConsumer.slnx -c Release -m:1
 bash zydis/scripts/test.sh --suite consumer --form all --mode all --rid linux-x64
-bash zydis/scripts/verify.sh --fetch never --rid linux-x64 --form all --mode all
+bash zydis/scripts/verify.sh --fetch never --tools build \
+  --rid linux-x64 --form all --mode all
+bash zydis/scripts/verify.sh --profile aggregate-data --fetch never --tools reuse \
+  --rid linux-x64 --form all --mode all
+bash zydis/scripts/verify.sh --profile typed --fetch never --tools reuse \
+  --rid linux-x64 --form all --mode all
 ```
+
+Run managed builds and verification serially. The commands without `--profile`
+select the optimized canonical default. `build.sh` only rebuilds existing output;
+translate or verify must regenerate an older typed-default product. The alias
+and typed runs reuse the default run's tools for comparable qualification.
 
 Acceptance includes a second full generation into private campaign outputs,
 unrelated-working-directory invocation, preservation of authored inputs,
 offline source reuse and warn/off provenance behavior. Ordinary scripts must
-not delete unrelated files. Current receipts are under `artifacts/campaign`,
-with specialist reports attached by the recipe. P0–P6 pass for the selected
-Linux x64 product. Additional OS/architecture and prolonged fuzz/
-performance work are optional future qualification.
+not delete unrelated files. From the repository root, current receipts are under
+`zydis/artifacts/campaign`, with specialist reports attached by the recipe.
+Original Linux x64 P0–P6 and
+byte-data extension receipts remain historical evidence. The optimized canonical
+default passed all nine suites: 393 native rows, 1,572 core matrix rows, 786 rooted
+AOT rows, 20 managed boundary rows and four consumer workflows, with no required
+failures/skips. The root solution build and plain sample run pass. Nineteen Python
+profile/identity/measurement tests pass, including typed fallback and stale
+default rejection. See [the current acceptance](ACCEPTANCE.md) for receipt and
+source counts. No compiler suite or benchmark rerun was needed for this recipe
+selection change. Additional OS/architecture,
+prolonged fuzzing and performance work are optional future qualification.
 
 Final acceptance and workspace observations: [ACCEPTANCE.md](ACCEPTANCE.md).

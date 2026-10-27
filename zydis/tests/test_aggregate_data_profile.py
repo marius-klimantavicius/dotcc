@@ -14,14 +14,14 @@ from campaigns.recipes import helper
 
 
 class AggregateProfileTests(unittest.TestCase):
-    def test_product_audit_retains_legacy_default_and_rejects_profile_substitution(self):
+    def test_product_audit_requires_current_identity_for_default(self):
         audit = helper(ROOT / "scripts/audit.py")
         recipe = helper(ROOT / "scripts/campaign.py")
         with tempfile.TemporaryDirectory() as directory:
             project = Path(directory) / "TranslatedZydis.csproj"
-            # The standalone historical preliminary audit has no recipe/profile.
             context = SimpleNamespace(root=ROOT)
-            audit._check_emission_profile(context, project)
+            with self.assertRaisesRegex(RuntimeError, "regenerate"):
+                audit._check_emission_profile(context, project)
             context.profile = "aggregate-data"
             with self.assertRaises(RuntimeError):
                 audit._check_emission_profile(context, project)
@@ -29,25 +29,33 @@ class AggregateProfileTests(unittest.TestCase):
                 json.dumps(recipe.emission_identity("aggregate-data")))
             audit._check_emission_profile(context, project)
             context.profile = "default"
-            with self.assertRaises(RuntimeError):
+            with self.assertRaisesRegex(RuntimeError, "regenerate"):
+                audit._check_emission_profile(context, project)
+            identity = recipe.emission_identity("default")
+            (project.parent / "zydis-emission-profile.json").write_text(json.dumps(identity))
+            audit._check_emission_profile(context, project)
+            identity.update(aggregate_data=False, object_flags=[])
+            (project.parent / "zydis-emission-profile.json").write_text(json.dumps(identity))
+            with self.assertRaisesRegex(RuntimeError, "regenerate"):
                 audit._check_emission_profile(context, project)
 
     def test_complete_product_selects_option_at_object_emission_only(self):
         recipe = helper(ROOT / "scripts/campaign.py")
         source_paths = {source.name: source.directory for source in recipe.sources(ROOT)}
         baseline = None
-        for profile in ("default", "aggregate-data"):
+        for profile in ("default", "aggregate-data", "typed"):
             ctx = SimpleNamespace(root=ROOT, sources=source_paths, receipt={}, profile=profile)
             spec = recipe.prepare(ctx)
             self.assertEqual(18, len(spec.units))
-            self.assertEqual(profile == "aggregate-data", "--aggregate-data" in spec.flags)
+            self.assertEqual(profile != "typed", "--aggregate-data" in spec.flags)
             self.assertNotIn("--aggregate-data", spec.link_flags)
             self.assertNotIn("--aggregate-data", ctx.receipt["zydis_selection"]["native_flags"])
             if baseline is None:
                 baseline = spec
             else:
                 self.assertEqual(baseline.units, spec.units)
-                self.assertEqual(baseline.flags, [flag for flag in spec.flags if flag != "--aggregate-data"])
+                self.assertEqual([flag for flag in baseline.flags if flag != "--aggregate-data"],
+                                 [flag for flag in spec.flags if flag != "--aggregate-data"])
                 self.assertEqual(baseline.link_flags, spec.link_flags)
         self.assertEqual("default", recipe.recipe.default_profile)
         layout = Layout(ROOT, "TranslatedZydisQualification", "default")
@@ -55,19 +63,22 @@ class AggregateProfileTests(unittest.TestCase):
 
     def test_wrong_or_partial_object_emission_cannot_be_measured(self):
         measure = helper(ROOT / "scripts/measure_aggregate_data.py")
+        recipe = helper(ROOT / "scripts/campaign.py")
+        optimized = recipe.emission_identity("default")
+        typed = recipe.emission_identity("typed")
         receipt = {"commands": [dict(label=f"{i:03d}-unit", status="passed", command=[
             "dotnet", "/tools/dotcc.dll", "--aggregate-data", f"unit-{i}.c", "--emit=obj", "-o", f"{i}.cs"
         ]) for i in range(18)]}
-        self.assertEqual(18, len(measure._object_commands(receipt, "aggregate-data")))
+        self.assertEqual(18, len(measure._object_commands(receipt, optimized)))
         with self.assertRaises(RuntimeError):
-            measure._object_commands(receipt, "default")
+            measure._object_commands(receipt, typed)
         missing_flag = copy.deepcopy(receipt)
         missing_flag["commands"][7]["command"].remove("--aggregate-data")
         with self.assertRaises(RuntimeError):
-            measure._object_commands(missing_flag, "aggregate-data")
+            measure._object_commands(missing_flag, optimized)
         receipt["commands"].pop()
         with self.assertRaises(RuntimeError):
-            measure._object_commands(receipt, "aggregate-data")
+            measure._object_commands(receipt, optimized)
 
     def test_source_metrics_separate_field_stores_from_payload_bytes(self):
         measure = helper(ROOT / "scripts/measure_aggregate_data.py")
