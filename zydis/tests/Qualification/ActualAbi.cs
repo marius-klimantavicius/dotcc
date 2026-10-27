@@ -66,7 +66,7 @@ internal static unsafe class ActualAbi
         Field("ZydisFormatterBuffer.string", ref buffer, ref buffer.@string);
         Field("ZydisFormatterToken.next", ref token, ref token.next);
         Field("ZydisDisassembledInstruction.operands", ref simple, ref simple.operands);
-        Field("ZydisDisassembledInstruction.text", ref simple, ref simple.text);
+        values.Add($"offset:ZydisDisassembledInstruction.text:{(byte*)simple.text - (byte*)&simple}");
 
         operand.type = Raw.ZydisOperandType_.ZYDIS_OPERAND_TYPE_IMMEDIATE;
         operand.imm.is_signed = 1; operand.imm.is_relative = 1; operand.imm.value.u = 0xFEDCBA9876543210;

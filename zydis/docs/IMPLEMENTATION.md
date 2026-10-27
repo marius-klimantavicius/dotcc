@@ -72,6 +72,28 @@ Terminal.c's unsupported-platform preprocessing diagnostic in the preceding
 attempt; no source adaptation. Final regeneration after test harness freeze
 remains required.
 
+## Integrated publication and final verification
+
+`8ef927e6c` commits the pinned full-library campaign and native control milestone.
+It contains only campaign-owned files. An independent Blink commit landed in the
+shared checkout between our two milestones; it is not campaign-owned work.
+All 32 initial tracked dirty-file contents still match the initial patch target
+hashes (`artifacts/supervisor-probe/preexisting-preservation.json`).
+
+Publication receipt `artifacts/campaign/20261027-070328-dbe36a45/receipt.json`
+passed raw/processed builds, postprocessing and final-path builds for both the
+full product and separate qualification companion. Later ABI probe improvements
+require regeneration before runtime qualification, so publication is not P4/P6.
+
+Affected compiler functional sweep passes 83/83 with no skips
+(`affected-functional-suite.log`). The normal owning raw JIT workflow passes.
+Final `verify.sh --fetch never --tools build --form all --mode all --rid linux-x64
+--jobs 4` is running after native source freeze; its driver log is
+`artifacts/supervisor-probe/verify-full.log`. This uses clean private staging and
+fresh final tools, then runs inventory/native/ABI/feature/upstream/rooted-AOT,
+delivered managed boundary, ordinary consumer and audit suites. Required managed
+rows are still pending at this entry.
+
 ZY-001 downstream validation: new and existing aggregate-dimension execution
 fixtures pass 2/2; full compiler unit suite passes 3489/3489. Full canonical
 source retry `20261027-065728-f4b894b4` emits/links all 18 units and reaches raw
@@ -85,3 +107,37 @@ because Zycore needs an architecture macro. Configuration now explicitly selects
 `__x86_64__` once, shared with the native configuration. No upstream text patch.
 Inventory suite and canonical layout pass; inventory receipt:
 `artifacts/campaign/20261027-065942-193fb9e8/receipt.json`.
+
+### ZY-H001: direct CLR fixed-buffer offset (harness)
+
+Final regeneration `20261027-070941-0c596a34` passed the complete raw/processed
+product and companion build/publish gate, then external `ActualAbi.cs` failed
+CS1510 when passing the emitted fixed text buffer by ref. The authored probe now
+measures its actual pointer offset directly. No compiler/generated/product
+changes were necessary, so current regenerated libraries remain the test inputs.
+
+Full declared suite run `20261027-071458-a957ffa0` is underway against those
+libraries. Its raw JIT actual C/CLR size/alignment/offset/storage comparison and
+assertion failure control pass; raw NativeAOT publication is next. All remaining
+cells remain open until their reports pass.
+
+Core matrix now passes in `20261027-071458-a957ffa0`: ABI 4/4 cells,
+qualification 7 declared feature groups × 4 = 28, upstream 385 × 4 = 1540,
+and rooted companion AOT 393 × 2 = 786 additional declared cases. Zero failed or
+skipped cases. ABI output contains 46 layout/offset/storage observations, checked
+both through translated C accessors and actual emitted CLR types. Delivered
+managed boundary and ordinary consumer matrix plus final audit are next.
+
+All suites in `20261027-071458-a957ffa0` now pass. Delivered managed boundary:
+5 cases × 4 = 20 passed, including full-product rooted AOT. Ordinary consumer:
+four useful workflows pass with normal trimming for AOT. Final `zydis-audit.json`
+is passed, delivered and qualified, with no failures: both forms expose all 43
+public functions/66 public types, retain original API links and both licenses,
+have no native Zydis backend/stubs, and bind current rooted/ordinary AOT evidence
+to inspected ELF dependencies. Root solution Release build also passes.
+
+P1–P5 are complete. P6 repeats the complete source-to-matrix verification with
+hashes off, from an unrelated working directory, with clean framework staging.
+Authored inputs are captured immediately before this final reproduction for
+byte-preservation checks. Earlier capture differs only by the intentionally
+added conditional PublishTrimmed declaration in the consumer project.

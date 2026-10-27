@@ -122,20 +122,25 @@
     "helper": "scripts/qualification.py",
     "suiteEntrypoint": "run",
     "requiredSuites": [
+      "inventory",
       "native",
       "abi",
       "qualification",
       "upstream",
+      "rooted-aot",
+      "managed-boundary",
+      "consumer",
       "audit"
     ],
     "productIncludesTestAdapters": false,
-    "companionIntegration": "Parent/tests own Translation.companions integration; native_configuration exposes the exact effective units/flags."
+    "companionIntegration": "scripts/qualification.py:companions reuses the exact current 18 product objects plus separately emitted original-C test Units; shared publisher promotes all four related forms transactionally."
   },
   "target": {
     "initialExecution": "linux-x64",
     "dataModel": "LP64",
     "endianness": "little",
     "architectureDefine": "__x86_64__",
-    "reason": "Zycore requires explicit architecture selection because DotCC does not seed host architecture macros; this matches the initial native/emitted ABI target."
+    "reason": "Explicit x64/Linux target macros select the qualified LP64 little-endian ABI; test-only original Terminal.c uses the POSIX platform branch. No platform backend is autodetected into the product.",
+    "platformDefine": "__linux"
   }
 }

@@ -118,11 +118,11 @@ campaign-owned hunks/files. Never include preexisting changes. No push/PR.
 | Phase | Exit gate | Status | Evidence |
 | --- | --- | --- | --- |
 | P0 | Pinned closure, recipe/layout, asserted native control and first full translation attempt | Passed | config/recipe-checks.json; native controls-05 393/393; canonical 18-unit emit/link; ledger receipts |
-| P1 | Actual emitted/native ABI, table storage and callback ownership probes | Planned | Pending |
-| P2 | Every selected unit emits/links; raw and processed canonical builds; import audit | Planned | Pending |
-| P3 | Useful owning decode/format/encode workflow with clean lifetimes | Planned | Pending |
-| P4 | Full feature/error cases and applicable upstream inventory across required matrix | Planned | Pending |
-| P5 | Root solution and ordinary project-reference consumer JIT/AOT execution | Planned | Pending |
+| P1 | Actual emitted/native ABI, table storage and callback ownership probes | Passed | Four ABI/feature cells plus rooted AOT companion; direct CLR storage, 46 ABI observations; 20261027-071458-a957ffa0 |
+| P2 | Every selected unit emits/links; raw and processed canonical builds; import audit | Passed | All 18 units, four product/companion forms; 43-function/66-type final qualified audit |
+| P3 | Useful owning decode/format/encode workflow with clean lifetimes | Passed | Four ordinary consumer cells; exact errors/ownership and concurrent workload |
+| P4 | Full feature/error cases and applicable upstream inventory across required matrix | Passed | 4 ABI + 28 feature groups + 1540 upstream cases; rooted AOT adds 786 declared cases; 20 delivered boundary cases; zero failures/skips |
+| P5 | Root solution and ordinary project-reference consumer JIT/AOT execution | Passed | Root solution Release build and four ordinary trimmed consumer cells; 20261027-071458-a957ffa0 |
 | P6 | Final-tool full regeneration, matrix rerun, affected regressions, reproduction and dependency audit | Planned | Pending |
 
 Dependencies: P0 → P1 → P2 → P3 → P4/P5 → P6. API design/native harness proceed
@@ -143,8 +143,8 @@ records defects, commands, receipts and milestone commits.
 | Shared regression | Focused compiler/functional regressions for observed fixes, relevant downstream campaigns | According to affected behavior | Required when shared code changes |
 
 Default suite: consumer. Verification suites: inventory, native, abi,
-qualification, upstream, rooted-aot, consumer and audit. An additional managed
-callback boundary suite is being integrated. Compare deterministic statuses/bytes/text/layouts
+qualification, upstream, rooted-aot, managed-boundary, consumer and audit.
+Compare deterministic statuses/bytes/text/layouts
 exactly. Mask only documented undefined/pointer-address observations; retain raw
 transcripts. Keep exclusions/unrun cases distinct from passes. No performance
 thresholds or independent protocol peers apply to this instruction library.

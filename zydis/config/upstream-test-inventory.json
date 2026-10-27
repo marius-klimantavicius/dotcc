@@ -1,0 +1,6543 @@
+{
+  "schemaVersion": 1,
+  "description": "Reviewable retained-case inventory derived by importing tests/harness.py through campaigns.recipes.helper and using scripts/campaign.py:native_configuration. Paths are relative to each named upstream source root; resolve roots from config/inputs.json or the live campaign receipt. This file records selection and final native controls, not managed acceptance.",
+  "derivation": {
+    "harness": "tests/harness.py",
+    "entrypoint": "inventory(source)",
+    "recipe": "scripts/campaign.py",
+    "configuration": "config/translation.json",
+    "sourceMetadata": "config/inputs.json",
+    "sourceInventory": "config/source-inventory.json",
+    "ordering": "info by sorted .in filename; encoder and reencoder by zero-based JSON index; absolute program last"
+  },
+  "upstream": {
+    "zydis": {
+      "repository": "https://github.com/zyantific/zydis",
+      "release": "v4.1.1",
+      "revision": "a2278f1d254e492f6a6b39f6cb5d1f5d515659dc",
+      "sha256": "efbca210596ef954241ef40732376d50be5b6b7ca7d63a3834ef0c71f3471f36"
+    },
+    "zycore": {
+      "repository": "https://github.com/zyantific/zycore-c",
+      "revision": "0b2432ced0884fd152b471d97ecf0258ff4d859f",
+      "sha256": "698e4623e661db312eb9da327519f53f0a9dd7fbbfacf02159687bca62369467"
+    }
+  },
+  "apiVersion": {
+    "macro": "ZYDIS_VERSION",
+    "value": "0x0004000100000000",
+    "components": [
+      4,
+      1,
+      0,
+      0
+    ],
+    "reason": "Upstream release v4.1.1 retains the 4.1.0.0 API version macro; no local patch."
+  },
+  "counts": {
+    "upstreamCases": 385,
+    "byKind": {
+      "info": 210,
+      "encoder": 52,
+      "reencoder": 122,
+      "absolute": 1
+    },
+    "infoInputFiles": 210,
+    "infoExpectedFiles": 210,
+    "infoNonemptySnapshots": 207,
+    "infoExpectedRejections": 3,
+    "encoderJsonFiles": 1,
+    "reencoderJsonFiles": 1,
+    "fixtureDataFiles": 422,
+    "absolutePrograms": 1,
+    "authoredAndAbiCaseRows": 8,
+    "nativeReportCaseRows": 393,
+    "nativeFailed": 0,
+    "nativeSkipped": 0,
+    "directEncoderOutcomes": {
+      "success": 10,
+      "rejection": 42,
+      "status32Counts": {
+        "0x00100000": 10,
+        "0x80100004": 7,
+        "0x8020000C": 35
+      }
+    },
+    "abiObservations": {
+      "typeSizeAlignmentPairs": 18,
+      "fieldOffsets": 26,
+      "initializedStorageImages": 2
+    }
+  },
+  "comparison": {
+    "info": "Snapshot bytes after CRLF-to-LF only. Require native C return low byte to equal original CLI exit; nonzero returns require empty snapshot and failure bit. Three independent original CLI controls establish exits/stderr. Full native-vs-managed transcript comparison retains exact signed C return/status.",
+    "encoder": "Original fuzz target must return 0 and consume all sizeof(actual ZydisEncoderRequest) input. Direct encode status and successful bytes are recorded and compared with native; direct encode rejection is not a skipped/failed fuzz case.",
+    "reencoder": "Original target must return 0 and consume complete payload assembled from actual machine-mode/stack-width enum objects and fixture bytes; original C decode/re-encode checks remain.",
+    "absolute": "One original executable case with its full branch, RIP/EIP-relative and range loops; return 0 and compare complete native transcript, including legitimate NOT ENCODABLE combinations.",
+    "managedDifferential": "Exact complete stdout transcript bytes, without normalization, for each native/managed group; exact stderr bytes (concatenated original rejection stderr only for info, otherwise empty).",
+    "caseIntegrity": "Exact ordered case IDs; reject missing/duplicate/incomplete markers, missing CASE PASS summaries, CHECK FAILED, nonzero group exit, signals, unexpected stderr or changed companion input identity."
+  },
+  "nativeEvidence": {
+    "report": "build/native-agent/controls-final/logs/zydis-native-report.json",
+    "receipt": "build/native-agent/controls-final/logs/receipt.json",
+    "status": "passed",
+    "originalRejectionControls": [
+      {
+        "id": "info/mvex_025",
+        "exit_code": 1,
+        "stderr": "Could not decode instruction: DECODING_ERROR [0x80200001]\n"
+      },
+      {
+        "id": "info/vexc4_026",
+        "exit_code": 3,
+        "stderr": "Could not decode instruction: BAD_REGISTER [0x80200003]\n"
+      },
+      {
+        "id": "info/vexc4_027",
+        "exit_code": 3,
+        "stderr": "Could not decode instruction: BAD_REGISTER [0x80200003]\n"
+      }
+    ],
+    "failureControl": {
+      "group": 5,
+      "expectedProcessExit": 1,
+      "requiredStdout": [
+        "CHECK FAILED",
+        "deliberate failure control"
+      ],
+      "countedAsPassingCase": false
+    }
+  },
+  "managedEvidence": {
+    "status": "pending-parent-validation",
+    "fullVerifyLog": "artifacts/supervisor-probe/verify-full.log",
+    "receipt": "artifacts/campaign/20261027-070941-0c596a34/receipt.json",
+    "reason": "Full verify was live at writing. Native evidence is not a managed-matrix acceptance claim."
+  },
+  "testOnlyDependency": {
+    "source": "zycore",
+    "path": "src/API/Terminal.c",
+    "reason": "Original CLI TTY/color handling only. Product has zero out-of-line Zycore units."
+  },
+  "upstreamFilesOutsideFixtureRows": [
+    {
+      "source": "zydis",
+      "path": "examples/Disassemble.c",
+      "disposition": "excluded-example",
+      "reason": "Usage demonstration, not a retained behavioral regression suite. Full-library APIs are covered by original fixtures and authored controls; this example is not delivered or counted as a passing case."
+    },
+    {
+      "source": "zydis",
+      "path": "examples/DisassembleSimple.c",
+      "disposition": "excluded-example",
+      "reason": "Usage demonstration, not a retained behavioral regression suite. Full-library APIs are covered by original fixtures and authored controls; this example is not delivered or counted as a passing case."
+    },
+    {
+      "source": "zydis",
+      "path": "examples/EncodeFromScratch.c",
+      "disposition": "excluded-example",
+      "reason": "Usage demonstration, not a retained behavioral regression suite. Full-library APIs are covered by original fixtures and authored controls; this example is not delivered or counted as a passing case."
+    },
+    {
+      "source": "zydis",
+      "path": "examples/EncodeMov.c",
+      "disposition": "excluded-example",
+      "reason": "Usage demonstration, not a retained behavioral regression suite. Full-library APIs are covered by original fixtures and authored controls; this example is not delivered or counted as a passing case."
+    },
+    {
+      "source": "zydis",
+      "path": "examples/Formatter01.c",
+      "disposition": "excluded-example",
+      "reason": "Usage demonstration, not a retained behavioral regression suite. Full-library APIs are covered by original fixtures and authored controls; this example is not delivered or counted as a passing case."
+    },
+    {
+      "source": "zydis",
+      "path": "examples/Formatter02.c",
+      "disposition": "excluded-example",
+      "reason": "Usage demonstration, not a retained behavioral regression suite. Full-library APIs are covered by original fixtures and authored controls; this example is not delivered or counted as a passing case."
+    },
+    {
+      "source": "zydis",
+      "path": "examples/Formatter03.c",
+      "disposition": "excluded-example",
+      "reason": "Usage demonstration, not a retained behavioral regression suite. Full-library APIs are covered by original fixtures and authored controls; this example is not delivered or counted as a passing case."
+    },
+    {
+      "source": "zydis",
+      "path": "examples/README.md",
+      "disposition": "example-documentation",
+      "reason": "Example documentation, not an executable behavioral test."
+    },
+    {
+      "source": "zydis",
+      "path": "examples/RewriteCode.c",
+      "disposition": "excluded-example",
+      "reason": "Usage demonstration, not a retained behavioral regression suite. Full-library APIs are covered by original fixtures and authored controls; this example is not delivered or counted as a passing case."
+    },
+    {
+      "source": "zydis",
+      "path": "examples/ZydisPerfTest.c",
+      "disposition": "excluded-example",
+      "reason": "Throughput benchmark example, not a correctness regression with a retained expected result. No performance qualification is claimed."
+    },
+    {
+      "source": "zydis",
+      "path": "examples/ZydisWinKernel.c",
+      "disposition": "excluded-example",
+      "reason": "Windows kernel integration example, outside the linux-x64 execution target and not a retained behavioral regression suite."
+    },
+    {
+      "source": "zydis",
+      "path": "examples/meson.build",
+      "disposition": "build-description",
+      "reason": "Build-system declaration, not an executable behavioral test. The recipe selects the full library and the harness selects original test units explicitly."
+    },
+    {
+      "source": "zydis",
+      "path": "tests/binary_reader.py",
+      "disposition": "conversion-helper-not-executed",
+      "reason": "Python fixture serialization/crash conversion support, not an independent library behavioral suite. The harness constructs actual upstream C types and enum objects instead of relying on Python ABI layout constants."
+    },
+    {
+      "source": "zydis",
+      "path": "tests/binary_writer.py",
+      "disposition": "conversion-helper-not-executed",
+      "reason": "Python fixture serialization/crash conversion support, not an independent library behavioral suite. The harness constructs actual upstream C types and enum objects instead of relying on Python ABI layout constants."
+    },
+    {
+      "source": "zydis",
+      "path": "tests/crash_tool.py",
+      "disposition": "conversion-helper-not-executed",
+      "reason": "Python fixture serialization/crash conversion support, not an independent library behavioral suite. The harness constructs actual upstream C types and enum objects instead of relying on Python ABI layout constants."
+    },
+    {
+      "source": "zydis",
+      "path": "tests/meson.build",
+      "disposition": "build-description",
+      "reason": "Build-system declaration, not an executable behavioral test. The recipe selects the full library and the harness selects original test units explicitly."
+    },
+    {
+      "source": "zydis",
+      "path": "tests/regression.py",
+      "disposition": "covered-driver-not-executed",
+      "reason": "Behavioral regression driver. All its retained cases/programs are selected by tests/harness.py; campaigns execute the original C with stricter status/stderr/inventory controls instead of invoking this subprocess driver."
+    },
+    {
+      "source": "zydis",
+      "path": "tests/regression_encoder.py",
+      "disposition": "covered-driver-not-executed",
+      "reason": "Behavioral regression driver. All its retained cases/programs are selected by tests/harness.py; campaigns execute the original C with stricter status/stderr/inventory controls instead of invoking this subprocess driver."
+    },
+    {
+      "source": "zydis",
+      "path": "tests/zydis_encoder_types.py",
+      "disposition": "conversion-helper-not-executed",
+      "reason": "Python fixture serialization/crash conversion support, not an independent library behavioral suite. The harness constructs actual upstream C types and enum objects instead of relying on Python ABI layout constants."
+    },
+    {
+      "source": "zydis",
+      "path": "tools/ZydisDisasm.c",
+      "disposition": "excluded-cli",
+      "reason": "Streaming command-line disassembler application, not a retained regression suite with its own fixtures. Its CLI delivery is outside the full-library product scope; decoder/formatter/disassembly APIs are exercised separately."
+    },
+    {
+      "source": "zydis",
+      "path": "tools/ZydisFuzzDecoder.c",
+      "disposition": "excluded-fuzz-target",
+      "reason": "Standalone arbitrary-input decoder fuzz target; the archive supplies no separate retained corpus for this target. No continuous fuzzing claim. All 210 retained decoder snapshots are executed through original ZydisInfo."
+    },
+    {
+      "source": "zydis",
+      "path": "tools/ZydisFuzzEncoder.c",
+      "disposition": "selected-test-code",
+      "reason": "Original C program or support dependency executed through the separate native/translated qualification harness; never part of the delivered product."
+    },
+    {
+      "source": "zydis",
+      "path": "tools/ZydisFuzzReEncoding.c",
+      "disposition": "selected-test-code",
+      "reason": "Original C program or support dependency executed through the separate native/translated qualification harness; never part of the delivered product."
+    },
+    {
+      "source": "zydis",
+      "path": "tools/ZydisFuzzShared.c",
+      "disposition": "selected-test-code",
+      "reason": "Original C program or support dependency executed through the separate native/translated qualification harness; never part of the delivered product."
+    },
+    {
+      "source": "zydis",
+      "path": "tools/ZydisFuzzShared.h",
+      "disposition": "selected-test-code",
+      "reason": "Header used by the selected original C test code; not a separate executable case."
+    },
+    {
+      "source": "zydis",
+      "path": "tools/ZydisInfo.c",
+      "disposition": "selected-test-code",
+      "reason": "Original C program or support dependency executed through the separate native/translated qualification harness; never part of the delivered product."
+    },
+    {
+      "source": "zydis",
+      "path": "tools/ZydisTestEncoderAbsolute.c",
+      "disposition": "selected-test-code",
+      "reason": "Original C program or support dependency executed through the separate native/translated qualification harness; never part of the delivered product."
+    },
+    {
+      "source": "zydis",
+      "path": "tools/ZydisToolsShared.c",
+      "disposition": "selected-test-code",
+      "reason": "Original C program or support dependency executed through the separate native/translated qualification harness; never part of the delivered product."
+    },
+    {
+      "source": "zydis",
+      "path": "tools/ZydisToolsShared.h",
+      "disposition": "selected-test-code",
+      "reason": "Header used by the selected original C test code; not a separate executable case."
+    },
+    {
+      "source": "zydis",
+      "path": "tools/meson.build",
+      "disposition": "build-description",
+      "reason": "Build-system declaration, not an executable behavioral test. The recipe selects the full library and the harness selects original test units explicitly."
+    },
+    {
+      "source": "zycore",
+      "path": "examples/String.c",
+      "disposition": "excluded-example",
+      "reason": "Usage example for an out-of-line Zycore implementation outside the selected dependency closure; not a retained Zydis behavioral regression suite."
+    },
+    {
+      "source": "zycore",
+      "path": "examples/Vector.c",
+      "disposition": "excluded-example",
+      "reason": "Usage example for an out-of-line Zycore implementation outside the selected dependency closure; not a retained Zydis behavioral regression suite."
+    },
+    {
+      "source": "zycore",
+      "path": "examples/meson.build",
+      "disposition": "build-description",
+      "reason": "Build-system declaration, not an executable behavioral test. The recipe selects the full library and the harness selects original test units explicitly."
+    },
+    {
+      "source": "zycore",
+      "path": "tests/ArgParse.cpp",
+      "disposition": "excluded-dependency-suite",
+      "reason": "Real C++ behavioral tests for out-of-line Zycore ArgParse/String/Vector implementations, none of which belongs to the product closure. They are not counted as passing Zydis cases; the test-only Terminal.c dependency is exercised by the original CLI."
+    },
+    {
+      "source": "zycore",
+      "path": "tests/String.cpp",
+      "disposition": "excluded-dependency-suite",
+      "reason": "Real C++ behavioral tests for out-of-line Zycore ArgParse/String/Vector implementations, none of which belongs to the product closure. They are not counted as passing Zydis cases; the test-only Terminal.c dependency is exercised by the original CLI."
+    },
+    {
+      "source": "zycore",
+      "path": "tests/Vector.cpp",
+      "disposition": "excluded-dependency-suite",
+      "reason": "Real C++ behavioral tests for out-of-line Zycore ArgParse/String/Vector implementations, none of which belongs to the product closure. They are not counted as passing Zydis cases; the test-only Terminal.c dependency is exercised by the original CLI."
+    },
+    {
+      "source": "zycore",
+      "path": "tests/meson.build",
+      "disposition": "build-description",
+      "reason": "Build-system declaration, not an executable behavioral test. The recipe selects the full library and the harness selects original test units explicitly."
+    }
+  ],
+  "cases": [
+    {
+      "id": "info/3dnow_000",
+      "kind": "info",
+      "input": "tests/cases/3dnow_000.in",
+      "expected": "tests/cases/3dnow_000.out",
+      "arguments": [
+        "-64",
+        "0f0f3797"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/3dnow_000.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/3dnow_001",
+      "kind": "info",
+      "input": "tests/cases/3dnow_001.in",
+      "expected": "tests/cases/3dnow_001.out",
+      "arguments": [
+        "-64",
+        "0f0f93b3ee99f190"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/3dnow_001.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/3dnow_002",
+      "kind": "info",
+      "input": "tests/cases/3dnow_002.in",
+      "expected": "tests/cases/3dnow_002.out",
+      "arguments": [
+        "-64",
+        "0f0f12a0"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/3dnow_002.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/3dnow_003",
+      "kind": "info",
+      "input": "tests/cases/3dnow_003.in",
+      "expected": "tests/cases/3dnow_003.out",
+      "arguments": [
+        "-64",
+        "0f0fe2a4"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/3dnow_003.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/3dnow_004",
+      "kind": "info",
+      "input": "tests/cases/3dnow_004.in",
+      "expected": "tests/cases/3dnow_004.out",
+      "arguments": [
+        "-64",
+        "4f0f0f6f7ab7"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/3dnow_004.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/3dnow_005",
+      "kind": "info",
+      "input": "tests/cases/3dnow_005.in",
+      "expected": "tests/cases/3dnow_005.out",
+      "arguments": [
+        "-64",
+        "0f0fcdb7"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/3dnow_005.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/3dnow_006",
+      "kind": "info",
+      "input": "tests/cases/3dnow_006.in",
+      "expected": "tests/cases/3dnow_006.out",
+      "arguments": [
+        "-64",
+        "0f0ff590"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/3dnow_006.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/3dnow_007",
+      "kind": "info",
+      "input": "tests/cases/3dnow_007.in",
+      "expected": "tests/cases/3dnow_007.out",
+      "arguments": [
+        "-64",
+        "0f0fe996"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/3dnow_007.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/3dnow_008",
+      "kind": "info",
+      "input": "tests/cases/3dnow_008.in",
+      "expected": "tests/cases/3dnow_008.out",
+      "arguments": [
+        "-64",
+        "650f0fa84cc3abbf0d"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/3dnow_008.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/3dnow_009",
+      "kind": "info",
+      "input": "tests/cases/3dnow_009.in",
+      "expected": "tests/cases/3dnow_009.out",
+      "arguments": [
+        "-64",
+        "0f0fe1b4"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/3dnow_009.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/3dnow_010",
+      "kind": "info",
+      "input": "tests/cases/3dnow_010.in",
+      "expected": "tests/cases/3dnow_010.out",
+      "arguments": [
+        "-64",
+        "4df20f0f66c5b6"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/3dnow_010.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/3dnow_011",
+      "kind": "info",
+      "input": "tests/cases/3dnow_011.in",
+      "expected": "tests/cases/3dnow_011.out",
+      "arguments": [
+        "-64",
+        "0f0faa0dfb21518a"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/3dnow_011.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/3dnow_012",
+      "kind": "info",
+      "input": "tests/cases/3dnow_012.in",
+      "expected": "tests/cases/3dnow_012.out",
+      "arguments": [
+        "-64",
+        "0f0fb79a3e9b15a4"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/3dnow_012.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/3dnow_013",
+      "kind": "info",
+      "input": "tests/cases/3dnow_013.in",
+      "expected": "tests/cases/3dnow_013.out",
+      "arguments": [
+        "-64",
+        "0f0f028e"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/3dnow_013.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/3dnow_014",
+      "kind": "info",
+      "input": "tests/cases/3dnow_014.in",
+      "expected": "tests/cases/3dnow_014.out",
+      "arguments": [
+        "-64",
+        "0f0f7866b0"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/3dnow_014.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/3dnow_015",
+      "kind": "info",
+      "input": "tests/cases/3dnow_015.in",
+      "expected": "tests/cases/3dnow_015.out",
+      "arguments": [
+        "-64",
+        "0f0f843181bcf6369a"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/3dnow_015.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/3dnow_016",
+      "kind": "info",
+      "input": "tests/cases/3dnow_016.in",
+      "expected": "tests/cases/3dnow_016.out",
+      "arguments": [
+        "-64",
+        "0f0f03bf"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/3dnow_016.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/3dnow_017",
+      "kind": "info",
+      "input": "tests/cases/3dnow_017.in",
+      "expected": "tests/cases/3dnow_017.out",
+      "arguments": [
+        "-64",
+        "0f0f1390"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/3dnow_017.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/3dnow_018",
+      "kind": "info",
+      "input": "tests/cases/3dnow_018.in",
+      "expected": "tests/cases/3dnow_018.out",
+      "arguments": [
+        "-64",
+        "f3410f0f17b6"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/3dnow_018.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/3dnow_019",
+      "kind": "info",
+      "input": "tests/cases/3dnow_019.in",
+      "expected": "tests/cases/3dnow_019.out",
+      "arguments": [
+        "-64",
+        "0f0fbbdf7cb74394"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/3dnow_019.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/3dnow_020",
+      "kind": "info",
+      "input": "tests/cases/3dnow_020.in",
+      "expected": "tests/cases/3dnow_020.out",
+      "arguments": [
+        "-64",
+        "0f0f8fc1bb4c8f96"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/3dnow_020.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/3dnow_021",
+      "kind": "info",
+      "input": "tests/cases/3dnow_021.in",
+      "expected": "tests/cases/3dnow_021.out",
+      "arguments": [
+        "-64",
+        "0f0f97d4fd148aa6"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/3dnow_021.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/3dnow_022",
+      "kind": "info",
+      "input": "tests/cases/3dnow_022.in",
+      "expected": "tests/cases/3dnow_022.out",
+      "arguments": [
+        "-64",
+        "0f0feca0"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/3dnow_022.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/3dnow_023",
+      "kind": "info",
+      "input": "tests/cases/3dnow_023.in",
+      "expected": "tests/cases/3dnow_023.out",
+      "arguments": [
+        "-64",
+        "0f0f92bac8415e1c"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/3dnow_023.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/3dnow_024",
+      "kind": "info",
+      "input": "tests/cases/3dnow_024.in",
+      "expected": "tests/cases/3dnow_024.out",
+      "arguments": [
+        "-64",
+        "0f0fac4a7fe31afeaa"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/3dnow_024.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_000",
+      "kind": "info",
+      "input": "tests/cases/default_000.in",
+      "expected": "tests/cases/default_000.out",
+      "arguments": [
+        "-64",
+        "26c9"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_000.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_001",
+      "kind": "info",
+      "input": "tests/cases/default_001.in",
+      "expected": "tests/cases/default_001.out",
+      "arguments": [
+        "-64",
+        "a9a1ef165e"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_001.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_002",
+      "kind": "info",
+      "input": "tests/cases/default_002.in",
+      "expected": "tests/cases/default_002.out",
+      "arguments": [
+        "-64",
+        "3139"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_002.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_003",
+      "kind": "info",
+      "input": "tests/cases/default_003.in",
+      "expected": "tests/cases/default_003.out",
+      "arguments": [
+        "-64",
+        "b7a7"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_003.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_004",
+      "kind": "info",
+      "input": "tests/cases/default_004.in",
+      "expected": "tests/cases/default_004.out",
+      "arguments": [
+        "-64",
+        "753e"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_004.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_005",
+      "kind": "info",
+      "input": "tests/cases/default_005.in",
+      "expected": "tests/cases/default_005.out",
+      "arguments": [
+        "-64",
+        "e396"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_005.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_006",
+      "kind": "info",
+      "input": "tests/cases/default_006.in",
+      "expected": "tests/cases/default_006.out",
+      "arguments": [
+        "-64",
+        "ba811a2f42"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_006.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_007",
+      "kind": "info",
+      "input": "tests/cases/default_007.in",
+      "expected": "tests/cases/default_007.out",
+      "arguments": [
+        "-64",
+        "af"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_007.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_008",
+      "kind": "info",
+      "input": "tests/cases/default_008.in",
+      "expected": "tests/cases/default_008.out",
+      "arguments": [
+        "-64",
+        "e16c"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_008.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_009",
+      "kind": "info",
+      "input": "tests/cases/default_009.in",
+      "expected": "tests/cases/default_009.out",
+      "arguments": [
+        "-64",
+        "5c"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_009.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_010",
+      "kind": "info",
+      "input": "tests/cases/default_010.in",
+      "expected": "tests/cases/default_010.out",
+      "arguments": [
+        "-64",
+        "4f92"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_010.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_011",
+      "kind": "info",
+      "input": "tests/cases/default_011.in",
+      "expected": "tests/cases/default_011.out",
+      "arguments": [
+        "-64",
+        "7414"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_011.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_012",
+      "kind": "info",
+      "input": "tests/cases/default_012.in",
+      "expected": "tests/cases/default_012.out",
+      "arguments": [
+        "-64",
+        "c2e95d"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_012.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_013",
+      "kind": "info",
+      "input": "tests/cases/default_013.in",
+      "expected": "tests/cases/default_013.out",
+      "arguments": [
+        "-64",
+        "7463"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_013.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_014",
+      "kind": "info",
+      "input": "tests/cases/default_014.in",
+      "expected": "tests/cases/default_014.out",
+      "arguments": [
+        "-64",
+        "0219"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_014.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_015",
+      "kind": "info",
+      "input": "tests/cases/default_015.in",
+      "expected": "tests/cases/default_015.out",
+      "arguments": [
+        "-64",
+        "26df17"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_015.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_016",
+      "kind": "info",
+      "input": "tests/cases/default_016.in",
+      "expected": "tests/cases/default_016.out",
+      "arguments": [
+        "-64",
+        "d7"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_016.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_017",
+      "kind": "info",
+      "input": "tests/cases/default_017.in",
+      "expected": "tests/cases/default_017.out",
+      "arguments": [
+        "-64",
+        "50"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_017.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_018",
+      "kind": "info",
+      "input": "tests/cases/default_018.in",
+      "expected": "tests/cases/default_018.out",
+      "arguments": [
+        "-64",
+        "09a76fe3101b"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_018.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_019",
+      "kind": "info",
+      "input": "tests/cases/default_019.in",
+      "expected": "tests/cases/default_019.out",
+      "arguments": [
+        "-64",
+        "bb0110f111"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_019.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_020",
+      "kind": "info",
+      "input": "tests/cases/default_020.in",
+      "expected": "tests/cases/default_020.out",
+      "arguments": [
+        "-64",
+        "5f"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_020.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_021",
+      "kind": "info",
+      "input": "tests/cases/default_021.in",
+      "expected": "tests/cases/default_021.out",
+      "arguments": [
+        "-64",
+        "a37b10a8c6e97a880f"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_021.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_022",
+      "kind": "info",
+      "input": "tests/cases/default_022.in",
+      "expected": "tests/cases/default_022.out",
+      "arguments": [
+        "-64",
+        "74b8"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_022.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_023",
+      "kind": "info",
+      "input": "tests/cases/default_023.in",
+      "expected": "tests/cases/default_023.out",
+      "arguments": [
+        "-64",
+        "9b"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_023.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_024",
+      "kind": "info",
+      "input": "tests/cases/default_024.in",
+      "expected": "tests/cases/default_024.out",
+      "arguments": [
+        "-64",
+        "51"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_024.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_025",
+      "kind": "info",
+      "input": "tests/cases/default_025.in",
+      "expected": "tests/cases/default_025.out",
+      "arguments": [
+        "-32",
+        "A077777777"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_025.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_026",
+      "kind": "info",
+      "input": "tests/cases/default_026.in",
+      "expected": "tests/cases/default_026.out",
+      "arguments": [
+        "-32",
+        "A088888888"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_026.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_027",
+      "kind": "info",
+      "input": "tests/cases/default_027.in",
+      "expected": "tests/cases/default_027.out",
+      "arguments": [
+        "-64",
+        "A07777777777777777"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_027.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_028",
+      "kind": "info",
+      "input": "tests/cases/default_028.in",
+      "expected": "tests/cases/default_028.out",
+      "arguments": [
+        "-64",
+        "A08888888888888888"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_028.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_029",
+      "kind": "info",
+      "input": "tests/cases/default_029.in",
+      "expected": "tests/cases/default_029.out",
+      "arguments": [
+        "-32",
+        "8B0D77777777"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_029.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_030",
+      "kind": "info",
+      "input": "tests/cases/default_030.in",
+      "expected": "tests/cases/default_030.out",
+      "arguments": [
+        "-32",
+        "8B0D88888888"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_030.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_031",
+      "kind": "info",
+      "input": "tests/cases/default_031.in",
+      "expected": "tests/cases/default_031.out",
+      "arguments": [
+        "-64",
+        "488B0D88888888"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_031.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_032",
+      "kind": "info",
+      "input": "tests/cases/default_032.in",
+      "expected": "tests/cases/default_032.out",
+      "arguments": [
+        "-64",
+        "488B0D88888888"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_032.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_033",
+      "kind": "info",
+      "input": "tests/cases/default_033.in",
+      "expected": "tests/cases/default_033.out",
+      "arguments": [
+        "-32",
+        "8B8877777777"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_033.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_034",
+      "kind": "info",
+      "input": "tests/cases/default_034.in",
+      "expected": "tests/cases/default_034.out",
+      "arguments": [
+        "-32",
+        "8B8888888888"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_034.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_035",
+      "kind": "info",
+      "input": "tests/cases/default_035.in",
+      "expected": "tests/cases/default_035.out",
+      "arguments": [
+        "-64",
+        "0F1A844337133713"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_035.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_036",
+      "kind": "info",
+      "input": "tests/cases/default_036.in",
+      "expected": "tests/cases/default_036.out",
+      "arguments": [
+        "-32",
+        "6674FC"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_036.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_037",
+      "kind": "info",
+      "input": "tests/cases/default_037.in",
+      "expected": "tests/cases/default_037.out",
+      "arguments": [
+        "-32",
+        "66C7F8FAFF"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_037.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_038",
+      "kind": "info",
+      "input": "tests/cases/default_038.in",
+      "expected": "tests/cases/default_038.out",
+      "arguments": [
+        "-64",
+        "3eff10"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_038.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_039",
+      "kind": "info",
+      "input": "tests/cases/default_039.in",
+      "expected": "tests/cases/default_039.out",
+      "arguments": [
+        "-64",
+        "3e2eff10"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_039.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_040",
+      "kind": "info",
+      "input": "tests/cases/default_040.in",
+      "expected": "tests/cases/default_040.out",
+      "arguments": [
+        "-64",
+        "2e3eff10"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_040.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_041",
+      "kind": "info",
+      "input": "tests/cases/default_041.in",
+      "expected": "tests/cases/default_041.out",
+      "arguments": [
+        "-32",
+        "3eff10"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_041.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_042",
+      "kind": "info",
+      "input": "tests/cases/default_042.in",
+      "expected": "tests/cases/default_042.out",
+      "arguments": [
+        "-32",
+        "3e2eff10"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_042.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_043",
+      "kind": "info",
+      "input": "tests/cases/default_043.in",
+      "expected": "tests/cases/default_043.out",
+      "arguments": [
+        "-32",
+        "2e3eff10"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_043.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_044",
+      "kind": "info",
+      "input": "tests/cases/default_044.in",
+      "expected": "tests/cases/default_044.out",
+      "arguments": [
+        "-32",
+        "64263EFF10"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_044.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_045",
+      "kind": "info",
+      "input": "tests/cases/default_045.in",
+      "expected": "tests/cases/default_045.out",
+      "arguments": [
+        "-32",
+        "3E6426FF10"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_045.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_046",
+      "kind": "info",
+      "input": "tests/cases/default_046.in",
+      "expected": "tests/cases/default_046.out",
+      "arguments": [
+        "-64",
+        "64263EFF10"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_046.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_047",
+      "kind": "info",
+      "input": "tests/cases/default_047.in",
+      "expected": "tests/cases/default_047.out",
+      "arguments": [
+        "-64",
+        "3E6426FF10"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_047.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/default_048",
+      "kind": "info",
+      "input": "tests/cases/default_048.in",
+      "expected": "tests/cases/default_048.out",
+      "arguments": [
+        "-64",
+        "3E7D00"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/default_048.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/evex_000",
+      "kind": "info",
+      "input": "tests/cases/evex_000.in",
+      "expected": "tests/cases/evex_000.out",
+      "arguments": [
+        "-64",
+        "62d2cd2b147b4f"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/evex_000.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/evex_001",
+      "kind": "info",
+      "input": "tests/cases/evex_001.in",
+      "expected": "tests/cases/evex_001.out",
+      "arguments": [
+        "-64",
+        "6223cd4f3a55e34f"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/evex_001.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/evex_002",
+      "kind": "info",
+      "input": "tests/cases/evex_002.in",
+      "expected": "tests/cases/evex_002.out",
+      "arguments": [
+        "-64",
+        "6211e55ffb3cb0"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/evex_002.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/evex_003",
+      "kind": "info",
+      "input": "tests/cases/evex_003.in",
+      "expected": "tests/cases/evex_003.out",
+      "arguments": [
+        "-64",
+        "6202dd140d7c8fe4"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/evex_003.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/evex_004",
+      "kind": "info",
+      "input": "tests/cases/evex_004.in",
+      "expected": "tests/cases/evex_004.out",
+      "arguments": [
+        "-64",
+        "62d29d432c16"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/evex_004.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/evex_005",
+      "kind": "info",
+      "input": "tests/cases/evex_005.in",
+      "expected": "tests/cases/evex_005.out",
+      "arguments": [
+        "-64",
+        "6292fd48aed6"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/evex_005.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/evex_006",
+      "kind": "info",
+      "input": "tests/cases/evex_006.in",
+      "expected": "tests/cases/evex_006.out",
+      "arguments": [
+        "-64",
+        "62b12541747806"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/evex_006.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/evex_007",
+      "kind": "info",
+      "input": "tests/cases/evex_007.in",
+      "expected": "tests/cases/evex_007.out",
+      "arguments": [
+        "-64",
+        "62b1b5dbc62227"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/evex_007.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/evex_008",
+      "kind": "info",
+      "input": "tests/cases/evex_008.in",
+      "expected": "tests/cases/evex_008.out",
+      "arguments": [
+        "-64",
+        "6201758ed57993"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/evex_008.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/evex_009",
+      "kind": "info",
+      "input": "tests/cases/evex_009.in",
+      "expected": "tests/cases/evex_009.out",
+      "arguments": [
+        "-64",
+        "62a2c50343c7"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/evex_009.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/evex_010",
+      "kind": "info",
+      "input": "tests/cases/evex_010.in",
+      "expected": "tests/cases/evex_010.out",
+      "arguments": [
+        "-64",
+        "62b28dc99eaf3d073e05"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/evex_010.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/evex_011",
+      "kind": "info",
+      "input": "tests/cases/evex_011.in",
+      "expected": "tests/cases/evex_011.out",
+      "arguments": [
+        "-64",
+        "62526513452b"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/evex_011.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/evex_012",
+      "kind": "info",
+      "input": "tests/cases/evex_012.in",
+      "expected": "tests/cases/evex_012.out",
+      "arguments": [
+        "-64",
+        "62416d82687291"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/evex_012.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/evex_013",
+      "kind": "info",
+      "input": "tests/cases/evex_013.in",
+      "expected": "tests/cases/evex_013.out",
+      "arguments": [
+        "-64",
+        "62016dc2e15cd55e"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/evex_013.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/evex_014",
+      "kind": "info",
+      "input": "tests/cases/evex_014.in",
+      "expected": "tests/cases/evex_014.out",
+      "arguments": [
+        "-64",
+        "62821d1c9bd3"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/evex_014.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/evex_015",
+      "kind": "info",
+      "input": "tests/cases/evex_015.in",
+      "expected": "tests/cases/evex_015.out",
+      "arguments": [
+        "-64",
+        "62e20545764136"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/evex_015.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/evex_016",
+      "kind": "info",
+      "input": "tests/cases/evex_016.in",
+      "expected": "tests/cases/evex_016.out",
+      "arguments": [
+        "-64",
+        "62f1751e76a5df8f5c88"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/evex_016.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/evex_017",
+      "kind": "info",
+      "input": "tests/cases/evex_017.in",
+      "expected": "tests/cases/evex_017.out",
+      "arguments": [
+        "-64",
+        "6251b54167c7"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/evex_017.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/evex_018",
+      "kind": "info",
+      "input": "tests/cases/evex_018.in",
+      "expected": "tests/cases/evex_018.out",
+      "arguments": [
+        "-64",
+        "62627ecc11e9"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/evex_018.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/evex_019",
+      "kind": "info",
+      "input": "tests/cases/evex_019.in",
+      "expected": "tests/cases/evex_019.out",
+      "arguments": [
+        "-64",
+        "62413da1608e355e7a8e"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/evex_019.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/evex_020",
+      "kind": "info",
+      "input": "tests/cases/evex_020.in",
+      "expected": "tests/cases/evex_020.out",
+      "arguments": [
+        "-64",
+        "621155bddbb112f8157b"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/evex_020.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/evex_021",
+      "kind": "info",
+      "input": "tests/cases/evex_021.in",
+      "expected": "tests/cases/evex_021.out",
+      "arguments": [
+        "-64",
+        "6253cda150f078"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/evex_021.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/evex_022",
+      "kind": "info",
+      "input": "tests/cases/evex_022.in",
+      "expected": "tests/cases/evex_022.out",
+      "arguments": [
+        "-64",
+        "62420dba7722"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/evex_022.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/evex_023",
+      "kind": "info",
+      "input": "tests/cases/evex_023.in",
+      "expected": "tests/cases/evex_023.out",
+      "arguments": [
+        "-64",
+        "62b1cf4758eb"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/evex_023.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/evex_024",
+      "kind": "info",
+      "input": "tests/cases/evex_024.in",
+      "expected": "tests/cases/evex_024.out",
+      "arguments": [
+        "-64",
+        "6233558a0a614788"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/evex_024.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/evex_025",
+      "kind": "info",
+      "input": "tests/cases/evex_025.in",
+      "expected": "tests/cases/evex_025.out",
+      "arguments": [
+        "-64",
+        "62F17C182FC1"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/evex_025.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/evex_026",
+      "kind": "info",
+      "input": "tests/cases/evex_026.in",
+      "expected": "tests/cases/evex_026.out",
+      "arguments": [
+        "-64",
+        "62E30D1B0AD3A5"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/evex_026.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/evex_027",
+      "kind": "info",
+      "input": "tests/cases/evex_027.in",
+      "expected": "tests/cases/evex_027.out",
+      "arguments": [
+        "-64",
+        "6256565656BF9C010000"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/evex_027.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/evex_028",
+      "kind": "info",
+      "input": "tests/cases/evex_028.in",
+      "expected": "tests/cases/evex_028.out",
+      "arguments": [
+        "-64",
+        "62257D3E5B7373"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/evex_028.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/jmp_far_16",
+      "kind": "info",
+      "input": "tests/cases/jmp_far_16.in",
+      "expected": "tests/cases/jmp_far_16.out",
+      "arguments": [
+        "-32",
+        "669AADE44E6D"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/jmp_far_16.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/jmp_far_32",
+      "kind": "info",
+      "input": "tests/cases/jmp_far_32.in",
+      "expected": "tests/cases/jmp_far_32.out",
+      "arguments": [
+        "-32",
+        "9AADEADDE44E6D"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/jmp_far_32.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/mvex_000",
+      "kind": "info",
+      "input": "tests/cases/mvex_000.in",
+      "expected": "tests/cases/mvex_000.out",
+      "arguments": [
+        "-64",
+        "627271ac45cf"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/mvex_000.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/mvex_001",
+      "kind": "info",
+      "input": "tests/cases/mvex_001.in",
+      "expected": "tests/cases/mvex_001.out",
+      "arguments": [
+        "-64",
+        "62c2e9159a19"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/mvex_001.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/mvex_002",
+      "kind": "info",
+      "input": "tests/cases/mvex_002.in",
+      "expected": "tests/cases/mvex_002.out",
+      "arguments": [
+        "-64",
+        "6262191eb530"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/mvex_002.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/mvex_003",
+      "kind": "info",
+      "input": "tests/cases/mvex_003.in",
+      "expected": "tests/cases/mvex_003.out",
+      "arguments": [
+        "-64",
+        "6251680c59f4"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/mvex_003.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/mvex_004",
+      "kind": "info",
+      "input": "tests/cases/mvex_004.in",
+      "expected": "tests/cases/mvex_004.out",
+      "arguments": [
+        "-64",
+        "6202719d9a528f"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/mvex_004.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/mvex_005",
+      "kind": "info",
+      "input": "tests/cases/mvex_005.in",
+      "expected": "tests/cases/mvex_005.out",
+      "arguments": [
+        "-64",
+        "62a149fadb8ce932280891"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/mvex_005.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/mvex_006",
+      "kind": "info",
+      "input": "tests/cases/mvex_006.in",
+      "expected": "tests/cases/mvex_006.out",
+      "arguments": [
+        "-64",
+        "6272891fbcf5"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/mvex_006.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/mvex_007",
+      "kind": "info",
+      "input": "tests/cases/mvex_007.in",
+      "expected": "tests/cases/mvex_007.out",
+      "arguments": [
+        "-64",
+        "620241c46530"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/mvex_007.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/mvex_008",
+      "kind": "info",
+      "input": "tests/cases/mvex_008.in",
+      "expected": "tests/cases/mvex_008.out",
+      "arguments": [
+        "-64",
+        "6222794b3f56a7"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/mvex_008.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/mvex_009",
+      "kind": "info",
+      "input": "tests/cases/mvex_009.in",
+      "expected": "tests/cases/mvex_009.out",
+      "arguments": [
+        "-64",
+        "6272593eae37"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/mvex_009.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/mvex_010",
+      "kind": "info",
+      "input": "tests/cases/mvex_010.in",
+      "expected": "tests/cases/mvex_010.out",
+      "arguments": [
+        "-64",
+        "62e16126fa457b"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/mvex_010.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/mvex_011",
+      "kind": "info",
+      "input": "tests/cases/mvex_011.in",
+      "expected": "tests/cases/mvex_011.out",
+      "arguments": [
+        "-64",
+        "6202b120526c83be"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/mvex_011.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/mvex_012",
+      "kind": "info",
+      "input": "tests/cases/mvex_012.in",
+      "expected": "tests/cases/mvex_012.out",
+      "arguments": [
+        "-64",
+        "6202013ecc7ec5"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/mvex_012.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/mvex_013",
+      "kind": "info",
+      "input": "tests/cases/mvex_013.in",
+      "expected": "tests/cases/mvex_013.out",
+      "arguments": [
+        "-64",
+        "62c2392d3b83c176fcab"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/mvex_013.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/mvex_014",
+      "kind": "info",
+      "input": "tests/cases/mvex_014.in",
+      "expected": "tests/cases/mvex_014.out",
+      "arguments": [
+        "-64",
+        "62d261b2b5fe"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/mvex_014.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/mvex_015",
+      "kind": "info",
+      "input": "tests/cases/mvex_015.in",
+      "expected": "tests/cases/mvex_015.out",
+      "arguments": [
+        "-64",
+        "625201719ae0"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/mvex_015.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/mvex_016",
+      "kind": "info",
+      "input": "tests/cases/mvex_016.in",
+      "expected": "tests/cases/mvex_016.out",
+      "arguments": [
+        "-64",
+        "629168cfc2a34446843069"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/mvex_016.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/mvex_017",
+      "kind": "info",
+      "input": "tests/cases/mvex_017.in",
+      "expected": "tests/cases/mvex_017.out",
+      "arguments": [
+        "-64",
+        "62f2f12dbe6f9e"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/mvex_017.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/mvex_018",
+      "kind": "info",
+      "input": "tests/cases/mvex_018.in",
+      "expected": "tests/cases/mvex_018.out",
+      "arguments": [
+        "-64",
+        "43656212414dcc14e0"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/mvex_018.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/mvex_019",
+      "kind": "info",
+      "input": "tests/cases/mvex_019.in",
+      "expected": "tests/cases/mvex_019.out",
+      "arguments": [
+        "-64",
+        "62d261b2b4f8"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/mvex_019.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/mvex_020",
+      "kind": "info",
+      "input": "tests/cases/mvex_020.in",
+      "expected": "tests/cases/mvex_020.out",
+      "arguments": [
+        "-64",
+        "6262c1a1b880716ff709"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/mvex_020.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/mvex_021",
+      "kind": "info",
+      "input": "tests/cases/mvex_021.in",
+      "expected": "tests/cases/mvex_021.out",
+      "arguments": [
+        "-64",
+        "62c2690f3d81bbade34d"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/mvex_021.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/mvex_022",
+      "kind": "info",
+      "input": "tests/cases/mvex_022.in",
+      "expected": "tests/cases/mvex_022.out",
+      "arguments": [
+        "-64",
+        "62e23915cdf2"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/mvex_022.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/mvex_023",
+      "kind": "info",
+      "input": "tests/cases/mvex_023.in",
+      "expected": "tests/cases/mvex_023.out",
+      "arguments": [
+        "-64",
+        "628279f065a7701808b4"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/mvex_023.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/mvex_024",
+      "kind": "info",
+      "input": "tests/cases/mvex_024.in",
+      "expected": "tests/cases/mvex_024.out",
+      "arguments": [
+        "-64",
+        "62e1612bdbd3"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/mvex_024.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/mvex_025",
+      "kind": "info",
+      "input": "tests/cases/mvex_025.in",
+      "expected": "tests/cases/mvex_025.out",
+      "arguments": [
+        "-64",
+        "62F279585000"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": -2145386495,
+        "stdoutFixture": "tests/cases/mvex_025.out",
+        "processExit": 1,
+        "status32": "0x80200001",
+        "stderr": "Could not decode instruction: DECODING_ERROR [0x80200001]\n",
+        "outcome": "rejected-input",
+        "independentControl": "original-unrenamed-ZydisInfo"
+      }
+    },
+    {
+      "id": "info/mvex_026",
+      "kind": "info",
+      "input": "tests/cases/mvex_026.in",
+      "expected": "tests/cases/mvex_026.out",
+      "arguments": [
+        "-64",
+        "62F271E950C2"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/mvex_026.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc4_000",
+      "kind": "info",
+      "input": "tests/cases/vexc4_000.in",
+      "expected": "tests/cases/vexc4_000.out",
+      "arguments": [
+        "-64",
+        "c46259cf4f5d"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc4_000.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc4_001",
+      "kind": "info",
+      "input": "tests/cases/vexc4_001.in",
+      "expected": "tests/cases/vexc4_001.out",
+      "arguments": [
+        "-64",
+        "c4c1057466fd"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc4_001.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc4_002",
+      "kind": "info",
+      "input": "tests/cases/vexc4_002.in",
+      "expected": "tests/cases/vexc4_002.out",
+      "arguments": [
+        "-64",
+        "c4a3057c33e5"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc4_002.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc4_003",
+      "kind": "info",
+      "input": "tests/cases/vexc4_003.in",
+      "expected": "tests/cases/vexc4_003.out",
+      "arguments": [
+        "-64",
+        "c483b57b08f7"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc4_003.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc4_004",
+      "kind": "info",
+      "input": "tests/cases/vexc4_004.in",
+      "expected": "tests/cases/vexc4_004.out",
+      "arguments": [
+        "-64",
+        "c44189dc4ee8"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc4_004.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc4_005",
+      "kind": "info",
+      "input": "tests/cases/vexc4_005.in",
+      "expected": "tests/cases/vexc4_005.out",
+      "arguments": [
+        "-64",
+        "c4022d3b556a"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc4_005.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc4_006",
+      "kind": "info",
+      "input": "tests/cases/vexc4_006.in",
+      "expected": "tests/cases/vexc4_006.out",
+      "arguments": [
+        "-64",
+        "c4423d9b80c446bea0"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc4_006.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc4_007",
+      "kind": "info",
+      "input": "tests/cases/vexc4_007.in",
+      "expected": "tests/cases/vexc4_007.out",
+      "arguments": [
+        "-64",
+        "c421f56d1cfdfdc6fcd7"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc4_007.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc4_008",
+      "kind": "info",
+      "input": "tests/cases/vexc4_008.in",
+      "expected": "tests/cases/vexc4_008.out",
+      "arguments": [
+        "-64",
+        "c4e2c9aa38"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc4_008.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc4_009",
+      "kind": "info",
+      "input": "tests/cases/vexc4_009.in",
+      "expected": "tests/cases/vexc4_009.out",
+      "arguments": [
+        "-64",
+        "c4214d624562"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc4_009.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc4_010",
+      "kind": "info",
+      "input": "tests/cases/vexc4_010.in",
+      "expected": "tests/cases/vexc4_010.out",
+      "arguments": [
+        "-64",
+        "c443fd09263e"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc4_010.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc4_011",
+      "kind": "info",
+      "input": "tests/cases/vexc4_011.in",
+      "expected": "tests/cases/vexc4_011.out",
+      "arguments": [
+        "-64",
+        "c482192e54e0b7"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc4_011.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc4_012",
+      "kind": "info",
+      "input": "tests/cases/vexc4_012.in",
+      "expected": "tests/cases/vexc4_012.out",
+      "arguments": [
+        "-64",
+        "c44175572490"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc4_012.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc4_013",
+      "kind": "info",
+      "input": "tests/cases/vexc4_013.in",
+      "expected": "tests/cases/vexc4_013.out",
+      "arguments": [
+        "-64",
+        "c481a0124058"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc4_013.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc4_014",
+      "kind": "info",
+      "input": "tests/cases/vexc4_014.in",
+      "expected": "tests/cases/vexc4_014.out",
+      "arguments": [
+        "-64",
+        "c4825d977a50"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc4_014.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc4_015",
+      "kind": "info",
+      "input": "tests/cases/vexc4_015.in",
+      "expected": "tests/cases/vexc4_015.out",
+      "arguments": [
+        "-64",
+        "c441b1e995c8ff9af7"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc4_015.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc4_016",
+      "kind": "info",
+      "input": "tests/cases/vexc4_016.in",
+      "expected": "tests/cases/vexc4_016.out",
+      "arguments": [
+        "-64",
+        "c4c171ebd3"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc4_016.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc4_017",
+      "kind": "info",
+      "input": "tests/cases/vexc4_017.in",
+      "expected": "tests/cases/vexc4_017.out",
+      "arguments": [
+        "-64",
+        "c4a161667910"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc4_017.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc4_018",
+      "kind": "info",
+      "input": "tests/cases/vexc4_018.in",
+      "expected": "tests/cases/vexc4_018.out",
+      "arguments": [
+        "-64",
+        "c423590be6ae"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc4_018.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc4_019",
+      "kind": "info",
+      "input": "tests/cases/vexc4_019.in",
+      "expected": "tests/cases/vexc4_019.out",
+      "arguments": [
+        "-64",
+        "c4c18a527ea2"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc4_019.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc4_020",
+      "kind": "info",
+      "input": "tests/cases/vexc4_020.in",
+      "expected": "tests/cases/vexc4_020.out",
+      "arguments": [
+        "-64",
+        "c4a2f3f6f8"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc4_020.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc4_021",
+      "kind": "info",
+      "input": "tests/cases/vexc4_021.in",
+      "expected": "tests/cases/vexc4_021.out",
+      "arguments": [
+        "-64",
+        "c42109fe07"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc4_021.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc4_022",
+      "kind": "info",
+      "input": "tests/cases/vexc4_022.in",
+      "expected": "tests/cases/vexc4_022.out",
+      "arguments": [
+        "-64",
+        "c482a2f7cc"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc4_022.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc4_023",
+      "kind": "info",
+      "input": "tests/cases/vexc4_023.in",
+      "expected": "tests/cases/vexc4_023.out",
+      "arguments": [
+        "-64",
+        "c461ed5dc3"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc4_023.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc4_024",
+      "kind": "info",
+      "input": "tests/cases/vexc4_024.in",
+      "expected": "tests/cases/vexc4_024.out",
+      "arguments": [
+        "-64",
+        "c4a121e4c1"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc4_024.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc4_025",
+      "kind": "info",
+      "input": "tests/cases/vexc4_025.in",
+      "expected": "tests/cases/vexc4_025.out",
+      "arguments": [
+        "-64",
+        "C4E25A5EDE"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc4_025.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc4_026",
+      "kind": "info",
+      "input": "tests/cases/vexc4_026.in",
+      "expected": "tests/cases/vexc4_026.out",
+      "arguments": [
+        "-64",
+        "C4E24A5EDE"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": -2145386493,
+        "stdoutFixture": "tests/cases/vexc4_026.out",
+        "processExit": 3,
+        "status32": "0x80200003",
+        "stderr": "Could not decode instruction: BAD_REGISTER [0x80200003]\n",
+        "outcome": "rejected-input",
+        "independentControl": "original-unrenamed-ZydisInfo"
+      }
+    },
+    {
+      "id": "info/vexc4_027",
+      "kind": "info",
+      "input": "tests/cases/vexc4_027.in",
+      "expected": "tests/cases/vexc4_027.out",
+      "arguments": [
+        "-64",
+        "C4E25A5EF6"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": -2145386493,
+        "stdoutFixture": "tests/cases/vexc4_027.out",
+        "processExit": 3,
+        "status32": "0x80200003",
+        "stderr": "Could not decode instruction: BAD_REGISTER [0x80200003]\n",
+        "outcome": "rejected-input",
+        "independentControl": "original-unrenamed-ZydisInfo"
+      }
+    },
+    {
+      "id": "info/vexc5_000",
+      "kind": "info",
+      "input": "tests/cases/vexc5_000.in",
+      "expected": "tests/cases/vexc5_000.out",
+      "arguments": [
+        "-64",
+        "c535f4c0"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc5_000.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc5_001",
+      "kind": "info",
+      "input": "tests/cases/vexc5_001.in",
+      "expected": "tests/cases/vexc5_001.out",
+      "arguments": [
+        "-64",
+        "c539e5f7"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc5_001.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc5_002",
+      "kind": "info",
+      "input": "tests/cases/vexc5_002.in",
+      "expected": "tests/cases/vexc5_002.out",
+      "arguments": [
+        "-64",
+        "c57e2ce0"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc5_002.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc5_003",
+      "kind": "info",
+      "input": "tests/cases/vexc5_003.in",
+      "expected": "tests/cases/vexc5_003.out",
+      "arguments": [
+        "-64",
+        "c5fe53759e"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc5_003.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc5_004",
+      "kind": "info",
+      "input": "tests/cases/vexc5_004.in",
+      "expected": "tests/cases/vexc5_004.out",
+      "arguments": [
+        "-64",
+        "c561debc1366d60000"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc5_004.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc5_005",
+      "kind": "info",
+      "input": "tests/cases/vexc5_005.in",
+      "expected": "tests/cases/vexc5_005.out",
+      "arguments": [
+        "-64",
+        "c5b012b8511784b0"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc5_005.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc5_006",
+      "kind": "info",
+      "input": "tests/cases/vexc5_006.in",
+      "expected": "tests/cases/vexc5_006.out",
+      "arguments": [
+        "-64",
+        "c57e10878f5dad3f"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc5_006.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc5_007",
+      "kind": "info",
+      "input": "tests/cases/vexc5_007.in",
+      "expected": "tests/cases/vexc5_007.out",
+      "arguments": [
+        "-64",
+        "c541c475aa5d"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc5_007.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc5_008",
+      "kind": "info",
+      "input": "tests/cases/vexc5_008.in",
+      "expected": "tests/cases/vexc5_008.out",
+      "arguments": [
+        "-64",
+        "c559dc0d3aa20f89"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc5_008.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc5_009",
+      "kind": "info",
+      "input": "tests/cases/vexc5_009.in",
+      "expected": "tests/cases/vexc5_009.out",
+      "arguments": [
+        "-64",
+        "c595f26b43"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc5_009.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc5_010",
+      "kind": "info",
+      "input": "tests/cases/vexc5_010.in",
+      "expected": "tests/cases/vexc5_010.out",
+      "arguments": [
+        "-64",
+        "c5162a983cb6831e"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc5_010.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc5_011",
+      "kind": "info",
+      "input": "tests/cases/vexc5_011.in",
+      "expected": "tests/cases/vexc5_011.out",
+      "arguments": [
+        "-64",
+        "65c5e884e37cfe42"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc5_011.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc5_012",
+      "kind": "info",
+      "input": "tests/cases/vexc5_012.in",
+      "expected": "tests/cases/vexc5_012.out",
+      "arguments": [
+        "-64",
+        "c565d9b17c549235"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc5_012.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc5_013",
+      "kind": "info",
+      "input": "tests/cases/vexc5_013.in",
+      "expected": "tests/cases/vexc5_013.out",
+      "arguments": [
+        "-64",
+        "c5457436"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc5_013.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc5_014",
+      "kind": "info",
+      "input": "tests/cases/vexc5_014.in",
+      "expected": "tests/cases/vexc5_014.out",
+      "arguments": [
+        "-64",
+        "c5ec14913042ae34"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc5_014.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc5_015",
+      "kind": "info",
+      "input": "tests/cases/vexc5_015.in",
+      "expected": "tests/cases/vexc5_015.out",
+      "arguments": [
+        "-64",
+        "c5e45f18"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc5_015.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc5_016",
+      "kind": "info",
+      "input": "tests/cases/vexc5_016.in",
+      "expected": "tests/cases/vexc5_016.out",
+      "arguments": [
+        "-64",
+        "c5a9dd3a"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc5_016.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc5_017",
+      "kind": "info",
+      "input": "tests/cases/vexc5_017.in",
+      "expected": "tests/cases/vexc5_017.out",
+      "arguments": [
+        "-64",
+        "c513589b8db5b5fd"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc5_017.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc5_018",
+      "kind": "info",
+      "input": "tests/cases/vexc5_018.in",
+      "expected": "tests/cases/vexc5_018.out",
+      "arguments": [
+        "-64",
+        "c50dd5e6"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc5_018.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc5_019",
+      "kind": "info",
+      "input": "tests/cases/vexc5_019.in",
+      "expected": "tests/cases/vexc5_019.out",
+      "arguments": [
+        "-64",
+        "c5c5db6d07"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc5_019.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc5_020",
+      "kind": "info",
+      "input": "tests/cases/vexc5_020.in",
+      "expected": "tests/cases/vexc5_020.out",
+      "arguments": [
+        "-64",
+        "c531eb1a"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc5_020.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc5_021",
+      "kind": "info",
+      "input": "tests/cases/vexc5_021.in",
+      "expected": "tests/cases/vexc5_021.out",
+      "arguments": [
+        "-64",
+        "c54962760c"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc5_021.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc5_022",
+      "kind": "info",
+      "input": "tests/cases/vexc5_022.in",
+      "expected": "tests/cases/vexc5_022.out",
+      "arguments": [
+        "-64",
+        "c549fdd8"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc5_022.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc5_023",
+      "kind": "info",
+      "input": "tests/cases/vexc5_023.in",
+      "expected": "tests/cases/vexc5_023.out",
+      "arguments": [
+        "-64",
+        "c5eb590411"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc5_023.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/vexc5_024",
+      "kind": "info",
+      "input": "tests/cases/vexc5_024.in",
+      "expected": "tests/cases/vexc5_024.out",
+      "arguments": [
+        "-64",
+        "c5d45eaeebda88be"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/vexc5_024.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/xop_000",
+      "kind": "info",
+      "input": "tests/cases/xop_000.in",
+      "expected": "tests/cases/xop_000.out",
+      "arguments": [
+        "-64",
+        "8fe860ef4e3dc0"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/xop_000.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/xop_001",
+      "kind": "info",
+      "input": "tests/cases/xop_001.in",
+      "expected": "tests/cases/xop_001.out",
+      "arguments": [
+        "-64",
+        "8f49889500"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/xop_001.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/xop_002",
+      "kind": "info",
+      "input": "tests/cases/xop_002.in",
+      "expected": "tests/cases/xop_002.out",
+      "arguments": [
+        "-64",
+        "8f69d89919"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/xop_002.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/xop_003",
+      "kind": "info",
+      "input": "tests/cases/xop_003.in",
+      "expected": "tests/cases/xop_003.out",
+      "arguments": [
+        "-64",
+        "8f0868a6c023"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/xop_003.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/xop_004",
+      "kind": "info",
+      "input": "tests/cases/xop_004.in",
+      "expected": "tests/cases/xop_004.out",
+      "arguments": [
+        "-64",
+        "8f68589f761c1a"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/xop_004.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/xop_005",
+      "kind": "info",
+      "input": "tests/cases/xop_005.in",
+      "expected": "tests/cases/xop_005.out",
+      "arguments": [
+        "-64",
+        "8f8828a2125a"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/xop_005.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/xop_006",
+      "kind": "info",
+      "input": "tests/cases/xop_006.in",
+      "expected": "tests/cases/xop_006.out",
+      "arguments": [
+        "-64",
+        "8f08408eb34ece0a0d0d"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/xop_006.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/xop_007",
+      "kind": "info",
+      "input": "tests/cases/xop_007.in",
+      "expected": "tests/cases/xop_007.out",
+      "arguments": [
+        "-64",
+        "8f88008ef1d3"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/xop_007.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/xop_008",
+      "kind": "info",
+      "input": "tests/cases/xop_008.in",
+      "expected": "tests/cases/xop_008.out",
+      "arguments": [
+        "-64",
+        "8f69d8952c30"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/xop_008.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/xop_009",
+      "kind": "info",
+      "input": "tests/cases/xop_009.in",
+      "expected": "tests/cases/xop_009.out",
+      "arguments": [
+        "-64",
+        "8f49089b5dd5"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/xop_009.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/xop_010",
+      "kind": "info",
+      "input": "tests/cases/xop_010.in",
+      "expected": "tests/cases/xop_010.out",
+      "arguments": [
+        "-64",
+        "8fa9f89bf3"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/xop_010.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/xop_011",
+      "kind": "info",
+      "input": "tests/cases/xop_011.in",
+      "expected": "tests/cases/xop_011.out",
+      "arguments": [
+        "-64",
+        "8f8878c2868031ee390a"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/xop_011.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/xop_012",
+      "kind": "info",
+      "input": "tests/cases/xop_012.in",
+      "expected": "tests/cases/xop_012.out",
+      "arguments": [
+        "-64",
+        "8fa870ce822f3a96fb93"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/xop_012.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/xop_013",
+      "kind": "info",
+      "input": "tests/cases/xop_013.in",
+      "expected": "tests/cases/xop_013.out",
+      "arguments": [
+        "-64",
+        "8fa9789a764c"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/xop_013.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/xop_014",
+      "kind": "info",
+      "input": "tests/cases/xop_014.in",
+      "expected": "tests/cases/xop_014.out",
+      "arguments": [
+        "-64",
+        "8f6850cfa16cb87f15c1"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/xop_014.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/xop_015",
+      "kind": "info",
+      "input": "tests/cases/xop_015.in",
+      "expected": "tests/cases/xop_015.out",
+      "arguments": [
+        "-64",
+        "8f096895255f5c16c9"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/xop_015.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/xop_016",
+      "kind": "info",
+      "input": "tests/cases/xop_016.in",
+      "expected": "tests/cases/xop_016.out",
+      "arguments": [
+        "-64",
+        "8fa9f89126"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/xop_016.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/xop_017",
+      "kind": "info",
+      "input": "tests/cases/xop_017.in",
+      "expected": "tests/cases/xop_017.out",
+      "arguments": [
+        "-64",
+        "8fc840ce3113"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/xop_017.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/xop_018",
+      "kind": "info",
+      "input": "tests/cases/xop_018.in",
+      "expected": "tests/cases/xop_018.out",
+      "arguments": [
+        "-64",
+        "8f0830ed09ec"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/xop_018.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/xop_019",
+      "kind": "info",
+      "input": "tests/cases/xop_019.in",
+      "expected": "tests/cases/xop_019.out",
+      "arguments": [
+        "-64",
+        "8f293892e1"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/xop_019.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/xop_020",
+      "kind": "info",
+      "input": "tests/cases/xop_020.in",
+      "expected": "tests/cases/xop_020.out",
+      "arguments": [
+        "-64",
+        "8fe8308f26ed"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/xop_020.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/xop_021",
+      "kind": "info",
+      "input": "tests/cases/xop_021.in",
+      "expected": "tests/cases/xop_021.out",
+      "arguments": [
+        "-64",
+        "8f2800eeb2f0060149fa"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/xop_021.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/xop_022",
+      "kind": "info",
+      "input": "tests/cases/xop_022.in",
+      "expected": "tests/cases/xop_022.out",
+      "arguments": [
+        "-64",
+        "8f498899e7"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/xop_022.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/xop_023",
+      "kind": "info",
+      "input": "tests/cases/xop_023.in",
+      "expected": "tests/cases/xop_023.out",
+      "arguments": [
+        "-64",
+        "8f8870eebea16e55a6d3"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/xop_023.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "info/xop_024",
+      "kind": "info",
+      "input": "tests/cases/xop_024.in",
+      "expected": "tests/cases/xop_024.out",
+      "arguments": [
+        "-64",
+        "8f68308f3c0998"
+      ],
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "stdoutFixture": "tests/cases/xop_024.out",
+        "processExit": 0,
+        "status32": "0x00000000",
+        "stderr": "",
+        "outcome": "successful-info"
+      }
+    },
+    {
+      "id": "encoder/000",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 0,
+      "description": "ZYDIS_MNEMONIC_TILESTORED",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/001",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 1,
+      "description": "ZYDIS_MNEMONIC_VPMOVZXBW",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/002",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 2,
+      "description": "ZYDIS_MNEMONIC_SYSRET",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/003",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 3,
+      "description": "ZYDIS_MNEMONIC_NOP",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/004",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 4,
+      "description": "ZYDIS_MNEMONIC_MOV",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/005",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 5,
+      "description": "ZYDIS_MNEMONIC_SHL",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/006",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 6,
+      "description": "ZYDIS_MNEMONIC_VGETEXPSS",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/007",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 7,
+      "description": "ZYDIS_MNEMONIC_INVALID",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x80100004",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/008",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 8,
+      "description": "ZYDIS_MNEMONIC_SUBSD",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/009",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 9,
+      "description": "ZYDIS_MNEMONIC_XSHA256",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x00100000",
+        "directEncodeOutcome": "success",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/010",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 10,
+      "description": "ZYDIS_MNEMONIC_SUB",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/011",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 11,
+      "description": "ZYDIS_MNEMONIC_MOV",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x00100000",
+        "directEncodeOutcome": "success",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/012",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 12,
+      "description": "ZYDIS_MNEMONIC_SUB",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/013",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 13,
+      "description": "ZYDIS_MNEMONIC_BNDMOV",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/014",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 14,
+      "description": "ZYDIS_MNEMONIC_BLSIC",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/015",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 15,
+      "description": "ZYDIS_MNEMONIC_VFCMADDCPH",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/016",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 16,
+      "description": "ZYDIS_MNEMONIC_MOV",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/017",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 17,
+      "description": "ZYDIS_MNEMONIC_T1MSKC",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x00100000",
+        "directEncodeOutcome": "success",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/018",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 18,
+      "description": "ZYDIS_MNEMONIC_VPSHLB",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/019",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 19,
+      "description": "ZYDIS_MNEMONIC_VPCMPGTQ",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x80100004",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/020",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 20,
+      "description": "ZYDIS_MNEMONIC_VPSRLD",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x80100004",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/021",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 21,
+      "description": "ZYDIS_MNEMONIC_BNDMK",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/022",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 22,
+      "description": "ZYDIS_MNEMONIC_TILESTORED",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/023",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 23,
+      "description": "ZYDIS_MNEMONIC_VGETEXPSS",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/024",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 24,
+      "description": "ZYDIS_MNEMONIC_NOT",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/025",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 25,
+      "description": "ZYDIS_MNEMONIC_BNDCL",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/026",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 26,
+      "description": "ZYDIS_MNEMONIC_UMONITOR",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/027",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 27,
+      "description": "ZYDIS_MNEMONIC_BNDMK",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/028",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 28,
+      "description": "ZYDIS_MNEMONIC_PUSH",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x80100004",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/029",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 29,
+      "description": "ZYDIS_MNEMONIC_CRC32",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/030",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 30,
+      "description": "ZYDIS_MNEMONIC_MOV",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/031",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 31,
+      "description": "ZYDIS_MNEMONIC_JMP",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/032",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 32,
+      "description": "ZYDIS_MNEMONIC_SUB",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x00100000",
+        "directEncodeOutcome": "success",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/033",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 33,
+      "description": "ZYDIS_MNEMONIC_PUSH",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x00100000",
+        "directEncodeOutcome": "success",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/034",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 34,
+      "description": "ZYDIS_MNEMONIC_MOV",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/035",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 35,
+      "description": "ZYDIS_MNEMONIC_IMUL",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/036",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 36,
+      "description": "ZYDIS_MNEMONIC_CRC32",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/037",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 37,
+      "description": "ZYDIS_MNEMONIC_VSCATTERPF1QPD",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/038",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 38,
+      "description": "ZYDIS_MNEMONIC_MOVZX",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/039",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 39,
+      "description": "ZYDIS_MNEMONIC_VGATHERDPS",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x80100004",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/040",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 40,
+      "description": "ZYDIS_MNEMONIC_VGATHERQPS",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/041",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 41,
+      "description": "ZYDIS_MNEMONIC_TDPBSUD",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x80100004",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/042",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 42,
+      "description": "ZYDIS_MNEMONIC_TDPBSUD",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/043",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 43,
+      "description": "ZYDIS_MNEMONIC_TDPBSUD",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/044",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 44,
+      "description": "ZYDIS_MNEMONIC_JKZD",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/045",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 45,
+      "description": "ZYDIS_MNEMONIC_VMOVNRAPD",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x00100000",
+        "directEncodeOutcome": "success",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/046",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 46,
+      "description": "ZYDIS_MNEMONIC_MOVSQ",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x80100004",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/047",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 47,
+      "description": "ZYDIS_MNEMONIC_JNL",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x00100000",
+        "directEncodeOutcome": "success",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/048",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 48,
+      "description": "ZYDIS_MNEMONIC_XCHG",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x00100000",
+        "directEncodeOutcome": "success",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/049",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 49,
+      "description": "ZYDIS_MNEMONIC_MOV",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x00100000",
+        "directEncodeOutcome": "success",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/050",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 50,
+      "description": "ZYDIS_MNEMONIC_CALL",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x00100000",
+        "directEncodeOutcome": "success",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "encoder/051",
+      "kind": "encoder",
+      "input": "tests/enc_test_cases.json",
+      "index": 51,
+      "description": "ZYDIS_MNEMONIC_PUSH",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "directEncodeStatus32": "0x8020000C",
+        "directEncodeOutcome": "rejection",
+        "outcome": "upstream-fuzz-checks-return-success"
+      }
+    },
+    {
+      "id": "reencoder/000",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 0,
+      "description": "lea esi, ds:[0x0000000025022525]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/001",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 1,
+      "description": "pushf",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/002",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 2,
+      "description": "stosb",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/003",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 3,
+      "description": "vmovups xmm4, xmm15",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/004",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 4,
+      "description": "vpsubusw ymm3, ymm7, ymm1",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/005",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 5,
+      "description": "vpermil2pd xmm5, xmm15, xmmword ptr ds:[r12+r13*2+0x6C], xmm6, 0x0C",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/006",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 6,
+      "description": "bndstx ds:[eax+eax], bnd0",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/007",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 7,
+      "description": "xor r14b, byte ptr ds:[r9+0x0C]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/008",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 8,
+      "description": "ret 0xB6B6",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/009",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 9,
+      "description": "vpgatherdd ymm8 {k4}, dword ptr ss:[esp+ymm16*1]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/010",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 10,
+      "description": "lea ecx, ds:[0x0000008D]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/011",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 11,
+      "description": "call far dword ptr ss:[bp+di*1]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/012",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 12,
+      "description": "vmovq xmm4, xmm15",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/013",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 13,
+      "description": "mov al, byte ptr ds:[0x0003]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/014",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 14,
+      "description": "pop cx",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/015",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 15,
+      "description": "vmovsd xmm4, xmm8, xmm15",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/016",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 16,
+      "description": "dec dword ptr ds:[0x0CC0]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/017",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 17,
+      "description": "shl word ptr ds:[0xD300], cl",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/018",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 18,
+      "description": "add byte ptr ds:[ebx+0x100000], cl",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/019",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 19,
+      "description": "vmaxph zmm24 {k7}, zmm13, word ptr ds:[rax] {1to32}",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/020",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 20,
+      "description": "vpgatherqd xmm10, dword ptr ds:[r8d+ymm2*4-0x6F6F6F70], xmm9",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/021",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 21,
+      "description": "bndldx bnd2, fs:[rsp+rdx+0x54]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/022",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 22,
+      "description": "add byte ptr ss:[rsp-0x5B5B5B5C], ah",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/023",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 23,
+      "description": "rep xcrypt_ecb",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/024",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 24,
+      "description": "vfnmsubsd xmm7, xmm0, xmm15, xmm7",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/025",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 25,
+      "description": "sub dh, byte ptr ds:[rcx*8-0x32323233]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/026",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 26,
+      "description": "movsxd r11, edi",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/027",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 27,
+      "description": "vpmadcswd xmm0, xmm7, xmmword ptr ds:[eax], xmm0",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/028",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 28,
+      "description": "vpscatterdq qword ptr ss:[rsp+xmm20*4+0x6262253E] {k6}, xmm28",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/029",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 29,
+      "description": "jmp rdx",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/030",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 30,
+      "description": "xor ch, byte ptr cs:[esi]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/031",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 31,
+      "description": "crc32 ecx, word ptr ds:[di]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/032",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 32,
+      "description": "vbroadcasti32x4 zmm27 {k2}, dword ptr ds:[r10+0x168] {sint8}",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/033",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 33,
+      "description": "xor ch, byte ptr ds:[rsi]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/034",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 34,
+      "description": "vcmpss xmm7, xmm7, dword ptr ds:[bp-0x3D3E], 0xC2",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/035",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 35,
+      "description": "blsfill r15d, dword ptr ds:[r8]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/036",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 36,
+      "description": "call 0x00000005",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/037",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 37,
+      "description": "xchg eax, eax",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/038",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 38,
+      "description": "vpmaxsd zmm31 {k5}, zmm8, xmmword ptr ds:[0x000000003D3D8847] {sint8} {eh}",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/039",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 39,
+      "description": "add byte ptr ss:[bp], bl",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/040",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 40,
+      "description": "sysret",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/041",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 41,
+      "description": "vpaddusw zmm27 {k4}, zmm4, zmm21",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/042",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 42,
+      "description": "lahf",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/043",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 43,
+      "description": "add dword ptr ds:[rbx+0x830A83], 0x00",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/044",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 44,
+      "description": "idiv byte ptr ds:[0x00000000F6F6F701]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/045",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 45,
+      "description": "kmovq k4, qword ptr ds:[eax]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/046",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 46,
+      "description": "push 0x7E3E4E3E",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/047",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 47,
+      "description": "or al, 0x7A",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/048",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 48,
+      "description": "lea esi, ds:[0x00008D8D]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/049",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 49,
+      "description": "mov r8b, 0x47",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/050",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 50,
+      "description": "jknzd k4, 0x000000000000001D",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/051",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 51,
+      "description": "xchg ax, ax",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/052",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 52,
+      "description": "add byte ptr ds:[ebx-0x08], ch",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/053",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 53,
+      "description": "vpgatherdd zmm4 {k7}, dword ptr ds:[eax+zmm0*1]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/054",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 54,
+      "description": "vpscatterdd byte ptr ds:[zmm6*1+0x66622D05] {k2} {uint8}, zmm12",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/055",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 55,
+      "description": "frstor ds:[esi+0x66]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/056",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 56,
+      "description": "lea bx, ds:[ecx+0x349B2D9A]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/057",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 57,
+      "description": "mov ecx, 0x2000A",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/058",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 58,
+      "description": "call word ptr ds:[bx+si*1-0x01]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/059",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 59,
+      "description": "vfmaddcph zmm15 {k6}, zmm21, dword ptr ds:[r15+0x19C] {1to16}",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/060",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 60,
+      "description": "vpsllvd zmm24 {k5}, zmm9, xmmword ptr ds:[rdi-0x10] {uint8} {eh}",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/061",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 61,
+      "description": "vgatherdpd zmm29, qword ptr ds:[rax+zmm16*1]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/062",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 62,
+      "description": "vcvttph2qq ymm28 {k5}, word ptr ds:[0x000000006767E70A] {1to4}",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/063",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 63,
+      "description": "enter 0xC8C8, 0xC8",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/064",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 64,
+      "description": "mov eax, dword ptr ds:[0xFFFFFFFFF2CD3262]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/065",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 65,
+      "description": "vmovsd xmm4, xmm0, xmm15",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/066",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 66,
+      "description": "vpmaxud zmm31 {k6}, zmm11, dword ptr ss:[rbp+rbx*4] {1to16} {eh}",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/067",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 67,
+      "description": "mov edi, 0xC7C7C7C7",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/068",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 68,
+      "description": "bndstx ds:[0x00000000], bnd0",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/069",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 69,
+      "description": "add byte ptr ds:[rax], cl",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/070",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 70,
+      "description": "xbegin 0x0000000000640F08",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/071",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 71,
+      "description": "vscatterqpd qword ptr ds:[rcx+ymm3*1+0x25242400] {k6}, ymm27",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/072",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 72,
+      "description": "mov word ptr ds:[0xC82D], fs",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/073",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 73,
+      "description": "push rbp",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/074",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 74,
+      "description": "push 0x4A",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/075",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 75,
+      "description": "call far 0x0000:0x00000000",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/076",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 76,
+      "description": "vpmadd231d zmm7, zmm15, zmm7",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/077",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 77,
+      "description": "vcvtps2pd xmm19 {k3}, qword ptr ds:[r11+0xA0]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/078",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 78,
+      "description": "jno 0xFFFFFFFFFFFFFF90",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/079",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 79,
+      "description": "vpmovb2m k1, xmm5",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/080",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 80,
+      "description": "vcvtpd2dq xmm0, ymmword ptr cs:[bx+si*1]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/081",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 81,
+      "description": "rol dword ptr ds:[rax], 0x01",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/082",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 82,
+      "description": "mov esp, 0x3E3E3E00",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/083",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 83,
+      "description": "vscalefpd xmm3 {k5} {z}, xmm4, qword ptr ds:[si-0x01] {1to2}",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/084",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 84,
+      "description": "vprefetch1 byte ptr ds:[r9]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/085",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 85,
+      "description": "vfmsub132pd xmm27 {k2} {z}, xmm6, qword ptr ds:[rdx-0x01] {1to2}",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/086",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 86,
+      "description": "jle 0x000000000000006F",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/087",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 87,
+      "description": "pf2id mm1, qword ptr fs:[r15]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/088",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 88,
+      "description": "vpcmpistri xmm1, xmmword ptr ds:[rcx+0x30], 0x86",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/089",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 89,
+      "description": "ret",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/090",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 90,
+      "description": "bndstx ds:[0x0000], bnd0",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/091",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 91,
+      "description": "vfnmadd132ss xmm28 {k3}, xmm31, dword ptr ds:[rbx-0x04]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/092",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 92,
+      "description": "add byte ptr ds:[rax+0x80], 0x00",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/093",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 93,
+      "description": "call qword ptr ds:[rcx]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/094",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 94,
+      "description": "mov al, byte ptr ds:[0x00000000A0A0A0A0]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/095",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 95,
+      "description": "and al, 0xE8",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/096",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 96,
+      "description": "lea eax, ds:[rax]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/097",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 97,
+      "description": "vprotd xmm2, xmm7, xmmword ptr ds:[edx-0x6D6D6D6E]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/098",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 98,
+      "description": "push ebx",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/099",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 99,
+      "description": "mov r15, 0xFFFFFFFFC7C7C7C7",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/100",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 100,
+      "description": "vcvtpd2ps xmm24 {k3}, ymmword ptr ds:[r8]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/101",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 101,
+      "description": "or r12b, byte ptr ds:[r12+0xA4A4A4]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/102",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 102,
+      "description": "vpermt2d xmm25 {k1}, xmm22, xmmword ptr ds:[rdx]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/103",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 103,
+      "description": "vgatherqps xmm11, dword ptr ss:[rsp+xmm15*1+0x3D3D3D3D], xmm9",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/104",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 104,
+      "description": "vcvtph2dq ymm30 {k6}, word ptr ds:[rbx+0xE6] {1to8}",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/105",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 105,
+      "description": "vfnmadd132ps zmm27 {k4}, zmm15, zmmword ptr ss:[rsp+rbx*4-0x63636364]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/106",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 106,
+      "description": "mov eax, dword ptr ds:[0xFFFFFFFFFFFFFF05]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/107",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 107,
+      "description": "rol dword ptr ds:[r13], cl",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/108",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 108,
+      "description": "sgdt tbyte ptr ds:[rax]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/109",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 109,
+      "description": "add byte ptr ds:[0x0000], al",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/110",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 110,
+      "description": "sysret",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/111",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 111,
+      "description": "loop 0x0000003B",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/112",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 112,
+      "description": "vfmaddsub213ph ymm16 {k3} {z}, ymm7, word ptr ss:[rbp+0x8A] {1to16}",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/113",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 113,
+      "description": "mov byte ptr ds:[rax], al",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/114",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 114,
+      "description": "vpermt2d xmm31, xmm31, xmm7",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/115",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 115,
+      "description": "mov r15, 0x30",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/116",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 116,
+      "description": "shl dword ptr ds:[edi+edi*8], cl",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/117",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 117,
+      "description": "ret far 0xCACA",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/118",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 118,
+      "description": "add byte ptr ds:[0xFFFFFF00], bh",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/119",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 119,
+      "description": "add byte ptr ds:[0xFF00], bh",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/120",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 120,
+      "description": "mov word ptr ds:[0xE5E5E5E5], cs",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "reencoder/121",
+      "kind": "reencoder",
+      "input": "tests/re_enc_test_cases.json",
+      "index": 121,
+      "description": "vpshufb zmm5 {k7}, zmm0, zmmword ptr ds:[0x00020000]",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    },
+    {
+      "id": "absolute/original",
+      "kind": "absolute",
+      "input": "tools/ZydisTestEncoderAbsolute.c",
+      "source": "zydis",
+      "expectation": {
+        "cReturn": 0,
+        "outcome": "original-program-returns-success"
+      }
+    }
+  ]
+}

@@ -5,6 +5,7 @@
     <AssemblyName>ZydisManagedConsumer</AssemblyName>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <PublishTrimmed Condition="'$(PublishAot)' == 'true'">true</PublishTrimmed>
     <TranslatedProject Condition="'$(TranslatedProject)' == ''">../../generated/TranslatedZydis/TranslatedZydis.csproj</TranslatedProject>
   </PropertyGroup>
   <ItemGroup>

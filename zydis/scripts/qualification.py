@@ -318,38 +318,9 @@ def _managed(ctx, form, mode, rooted=False):
     return cache[key]
 
 
-def _audit(ctx):
-    rows = []
-    failures = []
-    for form in forms(ctx):
-        project = check_product(ctx, form)
-        manifest = project.parent / "Dotcc.SourceFiles.txt"
-        if not manifest.is_file():
-            raise RuntimeError("Missing emitted source ownership manifest: " + str(manifest))
-        files = [project.parent / name for name in manifest.read_text().splitlines() if name.endswith(".cs")]
-        if not files or any(not path.is_file() for path in files):
-            raise RuntimeError("Missing/empty emitted source inventory")
-        source = "\n".join(path.read_text() for path in files)
-        banned = re.findall(r"\b(?:DllImport|LibraryImport|NativeLibrary\s*\.|NotImplementedException|ZqRun|ZqInfoMain|ZydisFuzzTarget)\b", source)
-        # Native declarations would be an unresolved import rather than a
-        # translated implementation. The allowed shared runtime is managed C.
-        externs = re.findall(r"\bextern\s+[^;{}]+;", source)
-        if banned or externs:
-            failures.append(dict(form=form, banned=banned, externs=externs))
-        rows.append(dict(form=form, project=str(project), generated_files=len(files),
-                         native_imports=externs, prohibited_dependencies=banned,
-                         status="failed" if banned or externs else "passed"))
-    report = ctx.artifacts / "zydis-audit.json"
-    report.write_text(json.dumps(dict(status="failed" if failures else "passed", results=rows), indent=2) + "\n")
-    ctx.receipt["zydis_audit"] = str(report)
-    ctx.save()
-    if failures:
-        raise RuntimeError("Product includes unresolved/native/test dependencies: " + str(report))
-
-
 def run(ctx, suite):
     if suite.name == "audit":
-        return _audit(ctx)
+        return helper(ctx.root / "scripts/audit.py").run(ctx, suite)
     _, expected, report = native(ctx)
     if suite.name == "native":
         return

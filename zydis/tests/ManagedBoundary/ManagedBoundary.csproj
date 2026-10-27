@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <AssemblyName>Zydis.ManagedBoundary</AssemblyName>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsAotCompatible>true</IsAotCompatible>
+    <TranslatedProject Condition="'$(TranslatedProject)' == ''">../../generated/TranslatedZydis/TranslatedZydis.csproj</TranslatedProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(TranslatedProject)" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(RootTranslatedLibrary)' == 'true'">
+    <TrimmerRootAssembly Include="TranslatedZydis" />
+  </ItemGroup>
+</Project>

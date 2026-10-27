@@ -1,0 +1,335 @@
+{
+  "schemaVersion": 1,
+  "scope": "Full raw and processed managed Zydis product, separate rooted AOT qualification companion and ordinary trimmed API consumer. Static evidence alone never qualifies delivery.",
+  "product": "TranslatedZydis",
+  "companion": "TranslatedZydisQualification",
+  "requiredForms": [
+    "raw",
+    "processed"
+  ],
+  "publicVersion": {
+    "components": [
+      4,
+      1,
+      0,
+      0
+    ],
+    "value": "0x0004000100000000",
+    "evidence": "include/Zydis/Zydis.h ZYDIS_VERSION and src/Zydis.c ZydisGetVersion; tag v4.1.1 keeps public version 4.1.0.0."
+  },
+  "sourceUnitCount": 18,
+  "publicFunctions": [
+    "ZydisCalcAbsoluteAddress",
+    "ZydisCalcAbsoluteAddressEx",
+    "ZydisCategoryGetString",
+    "ZydisDecoderDecodeFull",
+    "ZydisDecoderDecodeInstruction",
+    "ZydisDecoderDecodeOperands",
+    "ZydisDecoderEnableMode",
+    "ZydisDecoderInit",
+    "ZydisDisassembleATT",
+    "ZydisDisassembleIntel",
+    "ZydisEncoderDecodedInstructionToEncoderRequest",
+    "ZydisEncoderEncodeInstruction",
+    "ZydisEncoderEncodeInstructionAbsolute",
+    "ZydisEncoderNopFill",
+    "ZydisFormatterBufferAppend",
+    "ZydisFormatterBufferGetString",
+    "ZydisFormatterBufferGetToken",
+    "ZydisFormatterBufferRemember",
+    "ZydisFormatterBufferRestore",
+    "ZydisFormatterFormatInstruction",
+    "ZydisFormatterFormatOperand",
+    "ZydisFormatterInit",
+    "ZydisFormatterSetHook",
+    "ZydisFormatterSetProperty",
+    "ZydisFormatterTokenGetValue",
+    "ZydisFormatterTokenNext",
+    "ZydisFormatterTokenizeInstruction",
+    "ZydisFormatterTokenizeOperand",
+    "ZydisGetInstructionSegments",
+    "ZydisGetVersion",
+    "ZydisISAExtGetString",
+    "ZydisISASetGetString",
+    "ZydisIsFeatureEnabled",
+    "ZydisMnemonicGetString",
+    "ZydisMnemonicGetStringWrapped",
+    "ZydisRegisterClassGetWidth",
+    "ZydisRegisterEncode",
+    "ZydisRegisterGetClass",
+    "ZydisRegisterGetId",
+    "ZydisRegisterGetLargestEnclosing",
+    "ZydisRegisterGetString",
+    "ZydisRegisterGetStringWrapped",
+    "ZydisRegisterGetWidth"
+  ],
+  "runtimeImports": {
+    "CalendarTimezoneLib.cs": {
+      "libc": [
+        "localtime_r",
+        "mktime",
+        "strftime"
+      ]
+    },
+    "LocaleProcessLib.cs": {
+      "libc": [
+        "close",
+        "gnu_get_libc_version",
+        "kill",
+        "pipe2",
+        "posix_spawn",
+        "posix_spawn_file_actions_addclose",
+        "posix_spawn_file_actions_adddup2",
+        "posix_spawn_file_actions_addopen",
+        "posix_spawn_file_actions_destroy",
+        "posix_spawn_file_actions_init",
+        "waitpid"
+      ]
+    },
+    "MathIeeeLib.cs": {
+      "libm.so.6": [
+        "erf",
+        "erfc"
+      ]
+    },
+    "MemoryMappingLib.cs": {
+      "libc": [
+        "madvise",
+        "mlock",
+        "mmap",
+        "munlock",
+        "munmap"
+      ]
+    },
+    "PasswdLib.cs": {
+      "libc": [
+        "getegid",
+        "geteuid",
+        "getgid",
+        "getpwnam_r",
+        "getpwuid_r",
+        "getuid"
+      ]
+    },
+    "PgliteBackendDiagnosticsLib.cs": {
+      "libc": [
+        "backtrace",
+        "backtrace_symbols",
+        "free"
+      ]
+    },
+    "PgliteBackendDirectoryLib.cs": {
+      "libc": [
+        "fstat",
+        "fsync",
+        "lseek"
+      ]
+    },
+    "PgliteBackendMathLib.cs": {
+      "libm.so.6": [
+        "lgamma_r",
+        "tgamma"
+      ]
+    },
+    "PgliteBackendNetworkLib.cs": {
+      "libc": [
+        "freeifaddrs",
+        "getifaddrs"
+      ]
+    },
+    "PgliteBackendProcessLib.cs": {
+      "libc": [
+        "getrlimit"
+      ]
+    },
+    "PgliteBackendStorageLib.cs": {
+      "libc": [
+        "chmod",
+        "close",
+        "copy_file_range",
+        "fchmod",
+        "fdatasync",
+        "mkdir",
+        "posix_fallocate"
+      ]
+    },
+    "PgliteBackendTextLib.cs": {
+      "libc": [
+        "strtof_l"
+      ]
+    },
+    "PglitePosixHostLib.cs": {
+      "libc": [
+        "shm_open",
+        "shm_unlink",
+        "tcgetattr",
+        "tcsetattr"
+      ]
+    },
+    "PglitePosixIoLib.cs": {
+      "libc": [
+        "pread",
+        "preadv",
+        "pwrite",
+        "pwritev",
+        "sync_file_range",
+        "syncfs"
+      ]
+    },
+    "PosixFsLib.cs": {
+      "libc": [
+        "chown",
+        "closedir",
+        "ftruncate",
+        "link",
+        "mkfifo",
+        "open",
+        "opendir",
+        "readdir",
+        "readlink",
+        "symlink"
+      ],
+      "kernel32.dll": [
+        "CreateHardLinkW"
+      ]
+    },
+    "PosixLib.cs": {
+      "libc": [
+        "fstat",
+        "getrusage",
+        "lstat",
+        "stat"
+      ],
+      "kernel32.dll": [
+        "GetCurrentProcess",
+        "GetProcessTimes"
+      ],
+      "psapi.dll": [
+        "GetProcessMemoryInfo"
+      ]
+    },
+    "PosixLocaleLib.cs": {
+      "libc": [
+        "freelocale",
+        "iswctype_l",
+        "newlocale",
+        "towctrans_l",
+        "wctrans_l",
+        "wctype_l"
+      ]
+    },
+    "PosixSemaphoreLib.cs": {
+      "libc": [
+        "sem_destroy",
+        "sem_getvalue",
+        "sem_init",
+        "sem_post",
+        "sem_trywait",
+        "sem_wait"
+      ]
+    },
+    "PosixTimestampLib.cs": {
+      "libc": [
+        "utime"
+      ]
+    },
+    "ProcessSignalLib.cs": {
+      "libc": [
+        "getppid",
+        "kill",
+        "raise",
+        "sigaction"
+      ],
+      "kernel32.dll": [
+        "CloseHandle",
+        "CreateToolhelp32Snapshot",
+        "GetCurrentProcessId",
+        "OpenProcess",
+        "Process32FirstW",
+        "Process32NextW",
+        "TerminateProcess"
+      ]
+    },
+    "ProcessTimesLib.cs": {
+      "libc": [
+        "sysconf",
+        "times"
+      ]
+    },
+    "RecordLockLib.cs": {
+      "libc": [
+        "fcntl",
+        "flock",
+        "lseek"
+      ]
+    },
+    "ResolverLib.cs": {
+      "libc": [
+        "__errno_location",
+        "freeaddrinfo",
+        "getaddrinfo",
+        "gethostbyname_r",
+        "getnameinfo"
+      ]
+    },
+    "SocketPairLib.cs": {
+      "libc": [
+        "close",
+        "socketpair"
+      ]
+    }
+  },
+  "runtimeEvidence": "Observed embedded DotCC.Libc module markers and DllImport declarations in build/campaign/20261027-065728-f4b894b4/raw/TranslatedZydis/Zydis.cs. These are platform system services, not native Zydis implementations. Unlisted imports fail for review.",
+  "runtimeDynamicModules": [
+    "DlfcnLib.cs",
+    "NativeImports.cs"
+  ],
+  "prohibitedProductIdentifiers": [
+    "Zq",
+    "zq_",
+    "ZydisInfo",
+    "ZydisTest",
+    "ZydisFuzz",
+    "ZydisTools",
+    "DotCcImports",
+    "DotCcStaticImports"
+  ],
+  "constantBodyExceptions": [
+    "ZydisGetVersion"
+  ],
+  "constantBodyEvidence": "ZydisGetVersion intentionally returns the upstream version constant. Other public exports perform work or validate inputs; a single constant/default return or an empty body is unsupported by the current sources.",
+  "qualification": {
+    "project": "tests/Qualification/Qualification.csproj",
+    "rootProperty": "RootQualificationLibrary",
+    "rootAssembly": "TranslatedZydisQualification",
+    "report": "zydis-rooted-aot-report.json",
+    "groups": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "consumer": {
+    "project": "samples/ManagedConsumer/ManagedConsumer.csproj",
+    "successMarker": "PASS: decode 16/32/64, Intel/ATT, metadata/operands, encode/mutate/roundtrip, addresses, NOPs, errors, ownership, concurrency"
+  },
+  "elfNeededPatterns": [
+    "lib(?:c|m|dl|pthread|rt|gcc_s|stdc\\+\\+)\\.so(?:\\.[0-9]+)*",
+    "ld-linux[^/]*\\.so(?:\\.[0-9]+)*"
+  ],
+  "behavioralChecks": [
+    "Public version equals 4.1.0.0, including emitted ZYDIS_VERSION and ZydisGetVersion.",
+    "Reject empty, unconditional constant-return and explicit unimplemented public export bodies, except upstream constant ZydisGetVersion.",
+    "Qualification reports must contain all five original-C groups with exact native transcript equality, zero failures/skips and a demonstrated assertion failure exit.",
+    "Ordinary consumer must run its existing API workflow after a trimmed AOT publish; no duplicate behavioral implementation is introduced.",
+    "Rooted group 2 preserves the exact concatenated stderr from recorded independently compiled original CLI rejection controls; all other groups require empty stderr. Native rejection exits remain nonzero and diagnostic bytes are never stripped."
+  ],
+  "prohibitedProductStrings": [
+    "CASE PASS ",
+    "CHECK FAILED",
+    "@@ZQ CASE",
+    "deliberate failure control"
+  ]
+}

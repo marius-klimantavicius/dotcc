@@ -8,6 +8,8 @@ import xml.etree.ElementTree as ET
 
 from campaigns.model import Consumer, Recipe, Source, Suite, Translation, Unit
 from campaigns.recipes import flags, helper, json_file, link_flags
+from campaigns.testing import forms, modes
+from campaigns.translation import check_product
 
 
 def sources(root):
@@ -168,6 +170,51 @@ def qualification_companions(ctx):
     return helper(ctx.root / "scripts/qualification.py").companions(ctx)
 
 
+def run_managed_boundary(ctx, suite):
+    """Qualify callbacks and owning spans on the delivered product itself."""
+    expected = ["formatter-intel", "formatter-att", "formatter-status-failure",
+                "formatter-contained-exception", "owning-snapshots-and-slices"]
+    rows = []
+    report = ctx.artifacts / "zydis-managed-boundary-report.json"
+    summary = {"status": "running", "cells": rows}
+    try:
+        for form in forms(ctx):
+            product = check_product(ctx, form)
+            for mode in modes(ctx):
+                label = f"managed-boundary-{form}-{mode}"
+                output = ctx.work / label
+                project = ctx.root / "tests/ManagedBoundary/ManagedBoundary.csproj"
+                args = ["-p:TranslatedProject=" + str(product), "-m:1",
+                        "--artifacts-path", output / "artifacts", "-o", output / "bin"]
+                if mode == "aot":
+                    ctx.managed("publish", project, label + "-publish", *args,
+                                "-r", ctx.options.rid, "-p:PublishAot=true",
+                                "-p:RootTranslatedLibrary=true", timeout=3600)
+                    command = [output / "bin/Zydis.ManagedBoundary"]
+                else:
+                    ctx.managed("build", project, label + "-build", *args, timeout=1800)
+                    command = ["dotnet", output / "bin/Zydis.ManagedBoundary.dll"]
+                transcript = ctx.run(command, label + "-run", separate=True)
+                actual = [line[5:] for line in transcript.splitlines() if line.startswith("PASS ")]
+                if actual != [*expected, "managed-boundary cases=5"]:
+                    raise RuntimeError("Incomplete managed boundary assertions: " + repr(actual))
+                stderr = ctx.artifacts / (label + "-run.stderr")
+                if stderr.read_bytes():
+                    raise RuntimeError("Unexpected managed boundary stderr: " + str(stderr))
+                rows.append(dict(form=form, mode=mode, product=str(product),
+                                 rooted=mode == "aot", status="passed", passed=5,
+                                 failed=0, skipped=0,
+                                 transcript=str(ctx.artifacts / (label + "-run.log"))))
+        summary["status"] = "passed"
+    except BaseException as error:
+        summary.update(status="failed", error=str(error))
+        raise
+    finally:
+        report.write_text(json.dumps(summary, indent=2) + "\n")
+        ctx.receipt["zydis_managed_boundary_report"] = str(report)
+        ctx.save()
+
+
 recipe = Recipe(
     "zydis", "TranslatedZydis", ("default",),
     ("samples/ManagedConsumer/ManagedConsumer.csproj",), sources, prepare,
@@ -181,9 +228,11 @@ recipe = Recipe(
               scope="same-profile native assertions, actual ABI and differential reference transcripts"),
         *(Suite(name, (), run=run_qualification, matrix=True, platforms=("linux",))
           for name in ("abi", "qualification", "upstream", "rooted-aot")),
+        Suite("managed-boundary", (), run=run_managed_boundary, matrix=True, platforms=("linux",),
+              scope="actual delivered-product managed callbacks, rooting, exception containment and owning slices"),
         Suite("audit", (), run=run_qualification,
               scope="actual artifact dependency closure and exclusion of native Zydis backends/test adapters"),
     ),
     default_suites=("consumer",),
-    verify_suites=("inventory", "native", "abi", "qualification", "upstream", "rooted-aot", "consumer", "audit"),
+    verify_suites=("inventory", "native", "abi", "qualification", "upstream", "rooted-aot", "managed-boundary", "consumer", "audit"),
 )

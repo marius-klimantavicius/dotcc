@@ -1,5 +1,5 @@
 {
-  "status": "recipe-ready-for-parent-integration",
+  "status": "P1-P5-qualified-P6-reproduction-pending",
   "sourceMetadata": "config/inputs.json",
   "acquiredInputs": {
     "zydis": "ref/zydis-4.1.1",
@@ -16,9 +16,7 @@
     "Zycore extracted separately because upstream archive contains an empty dependencies/zycore submodule directory; no upstream tree was overwritten."
   ],
   "pending": [
-    "Parent integrates separately linked TranslatedZydisQualification companion with tests/harness.py:test_units(ctx, zydis_source), additional test-only closure, and full-library rooting for qualification.",
-    "API agent resolves actual generated-name diagnostics from parent-owned first raw build.",
-    "Parent completes managed/raw/processed/JIT/AOT, native, upstream, dependency and reproduction gates; recipe checks establish no runtime acceptance."
+    "Final clean full verification from unrelated working directory with hashes off and authored-source preservation check."
   ],
   "configuration": "config/translation.json",
   "sourceInventory": "config/source-inventory.json",
@@ -65,5 +63,6 @@
   ],
   "validations": "config/recipe-checks.json",
   "noBuildsRunByRecipeAgent": true,
-  "noGeneratedCSharpEdits": true
+  "noGeneratedCSharpEdits": true,
+  "qualifiedReceipt": "artifacts/campaign/20261027-071458-a957ffa0/receipt.json"
 }
