@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-27",
+  "status": "passed-no-build-recipe-checks",
+  "scope": "Recipe/acquisition/configuration/layout only; no translation, managed/tool/native build, runtime acceptance, commit, push or PR performed by this worker.",
+  "checks": [
+    {
+      "check": "Python ast.parse of scripts/campaign.py; json.loads of config/*.json",
+      "result": "passed"
+    },
+    {
+      "check": "campaigns.recipes.load(repo, 'zydis'); native_configuration(root, acquired); recipe.prepare(ctx)",
+      "result": "passed for HashPolicy off, warn and strict with acquire(source, policy, 'never')",
+      "assertions": [
+        "All 636 pinned regular files pass strict per-file provenance verification; both cached archives pass SHA-256 verification.",
+        "18 unique product Units exactly match recursive upstream src/*.c and the CMake library source declarations.",
+        "Full library headers/generated tables and the 10 required Zycore headers exist.",
+        "__x86_64__ appears exactly once in defines/effective flags.",
+        "Shared split-size=262144, literal-pool and deduplicate-inline link defaults are retained.",
+        "--emit-define is applied during source/object emission; --export-enum is applied during link.",
+        "No test or upstream tool Units enter the delivered product.",
+        "Consumer property is TranslatedProject; every verification suite name is declared.",
+        "No checksum/revision literals occur in scripts/campaign.py."
+      ]
+    },
+    {
+      "check": "configure(ctx, temporary_project, form) twice for each raw/processed form, followed by campaigns.translation.relocate_project",
+      "result": "passed",
+      "assertions": [
+        "Four current authored API files link to their original src/Api paths with Authored/Api links.",
+        "Repeated configuration adds no duplicate Compile entries.",
+        "Both copied license texts equal their acquired originals.",
+        "Original authored links resolve after simulated publication relocation."
+      ]
+    },
+    {
+      "check": "validate_source_manifest with a temporary configuration omitting one required C Unit",
+      "result": "passed: incomplete full-feature selection rejected"
+    },
+    {
+      "command": "bash -n zydis/scripts/common.sh zydis/scripts/fetch.sh zydis/scripts/translate.sh zydis/scripts/build.sh zydis/scripts/test.sh zydis/scripts/verify.sh zydis/scripts/probe.sh",
+      "result": "passed"
+    },
+    {
+      "command": "bash Scripts/campaign.sh list zydis --suites",
+      "result": "passed: discovery and all seven suites listed"
+    },
+    {
+      "command": "bash Scripts/campaign.sh layout zydis --write",
+      "result": "passed: standard canonical scaffolding; existing authored files preserved"
+    },
+    {
+      "command": "bash Scripts/campaign.sh layout zydis --check",
+      "result": "passed: zydis layout OK"
+    },
+    {
+      "cwd": "/tmp",
+      "command": "bash /home/marius/p/dotcc/zydis/scripts/fetch.sh --help",
+      "result": "passed: shared Bash/Python dispatch from unrelated working directory"
+    },
+    {
+      "cwd": "/tmp",
+      "command": "bash /home/marius/p/dotcc/zydis/scripts/fetch.sh --fetch never --hashes warn --dry-run",
+      "result": "passed: both canonical acquired paths, expected product, no layout issues"
+    },
+    {
+      "command": "git diff --check -- zydis",
+      "result": "passed; separate Python trailing-whitespace scan also covered every owned untracked config/recipe/wrapper/scaffolding file"
+    }
+  ],
+  "remainingIntegration": [
+    "Parent/test agent integrates the separate qualification companion and its test-only dependencies.",
+    "Parent owns all real managed translation/build/execution and combined acceptance checks.",
+    "API agent reconciles authored API names against the actual generated low-level surface."
+  ]
+}

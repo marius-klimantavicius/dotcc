@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "profile": "default",
+  "dialect": "c11",
+  "className": "Zydis",
+  "namespace": "Managed.Zydis",
+  "product": "TranslatedZydis",
+  "defines": [
+    "ZYDIS_STATIC_BUILD",
+    "ZYCORE_STATIC_BUILD",
+    "NDEBUG",
+    "_CRT_SECURE_NO_WARNINGS",
+    "__x86_64__",
+    "__linux"
+  ],
+  "undefines": [
+    "ZYDIS_MINIMAL_MODE",
+    "ZYDIS_DISABLE_DECODER",
+    "ZYDIS_DISABLE_ENCODER",
+    "ZYDIS_DISABLE_FORMATTER",
+    "ZYDIS_DISABLE_AVX512",
+    "ZYDIS_DISABLE_KNC",
+    "ZYDIS_DISABLE_SEGMENT",
+    "ZYAN_NO_LIBC",
+    "ZYAN_CUSTOM_LIBC"
+  ],
+  "includeDirectories": [
+    {
+      "source": "zydis",
+      "path": "include"
+    },
+    {
+      "source": "zydis",
+      "path": "src"
+    },
+    {
+      "source": "zycore",
+      "path": "include"
+    }
+  ],
+  "features": {
+    "minimalMode": false,
+    "decoder": true,
+    "encoder": true,
+    "formatter": true,
+    "avx512": true,
+    "knc": true,
+    "segment": true,
+    "disassembler": true,
+    "utilities": true
+  },
+  "units": {
+    "zydis": [
+      "src/MetaInfo.c",
+      "src/Mnemonic.c",
+      "src/Register.c",
+      "src/Segment.c",
+      "src/SharedData.c",
+      "src/String.c",
+      "src/Utils.c",
+      "src/Zydis.c",
+      "src/Decoder.c",
+      "src/DecoderData.c",
+      "src/Encoder.c",
+      "src/EncoderData.c",
+      "src/Disassembler.c",
+      "src/Formatter.c",
+      "src/FormatterBuffer.c",
+      "src/FormatterATT.c",
+      "src/FormatterBase.c",
+      "src/FormatterIntel.c"
+    ],
+    "zycore": []
+  },
+  "zycoreClosure": {
+    "headers": [
+      "include/Zycore/Allocator.h",
+      "include/Zycore/Comparison.h",
+      "include/Zycore/Defines.h",
+      "include/Zycore/Format.h",
+      "include/Zycore/LibC.h",
+      "include/Zycore/Object.h",
+      "include/Zycore/Status.h",
+      "include/Zycore/String.h",
+      "include/Zycore/Types.h",
+      "include/Zycore/Vector.h"
+    ],
+    "compiledUnits": [],
+    "reason": "The complete Zydis library calls only the Zycore header-defined static inline ZyanAbsI64; string/vector/format types and macros come from headers. No out-of-line Zycore unit is needed by this release. Do not add OS/thread/process or allocator backends by CMake autodetection.",
+    "evidence": [
+      "zydis:assets/amalgamate.py merges only zydis src/*.c and recursively includes Zycore headers.",
+      "zycore:include/Zycore/Format.h defines ZyanAbsI64 static inline.",
+      "zydis:include/Zydis/Internal/String.h implements fixed-buffer string operations over Zycore types."
+    ]
+  },
+  "emitDefines": [
+    "ZYDIS_MAX_*",
+    "ZYDIS_ENCODER_MAX_OPERANDS",
+    "ZYAN_STATUS_*",
+    "ZYDIS_VERSION"
+  ],
+  "exportEnums": [
+    "ZYDIS_*"
+  ],
+  "authoredCompileGlobs": [
+    "src/Api/*.cs"
+  ],
+  "notices": [
+    {
+      "source": "zydis",
+      "path": "LICENSE",
+      "target": "Zydis.LICENSE"
+    },
+    {
+      "source": "zycore",
+      "path": "LICENSE",
+      "target": "Zycore.LICENSE"
+    }
+  ],
+  "adaptations": [],
+  "tests": {
+    "helper": "scripts/qualification.py",
+    "suiteEntrypoint": "run",
+    "requiredSuites": [
+      "native",
+      "abi",
+      "qualification",
+      "upstream",
+      "audit"
+    ],
+    "productIncludesTestAdapters": false,
+    "companionIntegration": "Parent/tests own Translation.companions integration; native_configuration exposes the exact effective units/flags."
+  },
+  "target": {
+    "initialExecution": "linux-x64",
+    "dataModel": "LP64",
+    "endianness": "little",
+    "architectureDefine": "__x86_64__",
+    "reason": "Zycore requires explicit architecture selection because DotCC does not seed host architecture macros; this matches the initial native/emitted ABI target."
+  }
+}

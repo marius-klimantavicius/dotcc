@@ -1,0 +1,69 @@
+{
+  "status": "recipe-ready-for-parent-integration",
+  "sourceMetadata": "config/inputs.json",
+  "acquiredInputs": {
+    "zydis": "ref/zydis-4.1.1",
+    "zycore": "ref/zycore-0b2432ced0884fd152b471d97ecf0258ff4d859f"
+  },
+  "generatedClass": "Zydis",
+  "generatedNamespace": "Managed.Zydis",
+  "product": "TranslatedZydis",
+  "consumerProperty": "TranslatedProject",
+  "defaultFeatureProfile": "full decoder, encoder, formatter (Intel/ATT/MASM), segment, AVX512, KNC, utilities; minimal mode disabled",
+  "coordination": "Parent owns plan/docs/README, all shared managed/tool builds and translation. API agent owns src and consumer. Tests agent owns tests and qualification helper. Recipe agent only prepares configuration, acquisition, recipe and shell wrappers.",
+  "acquisitionNotes": [
+    "Zydis archive Meson subprojects symlink is recorded and excluded with shared safe-extraction selectors; full real dependencies, tests, licenses and sources retained.",
+    "Zycore extracted separately because upstream archive contains an empty dependencies/zycore submodule directory; no upstream tree was overwritten."
+  ],
+  "pending": [
+    "Parent integrates separately linked TranslatedZydisQualification companion with tests/harness.py:test_units(ctx, zydis_source), additional test-only closure, and full-library rooting for qualification.",
+    "API agent resolves actual generated-name diagnostics from parent-owned first raw build.",
+    "Parent completes managed/raw/processed/JIT/AOT, native, upstream, dependency and reproduction gates; recipe checks establish no runtime acceptance."
+  ],
+  "configuration": "config/translation.json",
+  "sourceInventory": "config/source-inventory.json",
+  "sourceUnitCount": 18,
+  "zycoreCompiledUnits": [],
+  "zycoreHeaderCount": 10,
+  "apiCoordination": [
+    "Authored src/Api/*.cs will be linked from original paths into both forms.",
+    "CLI macro selection is --emit-define at C/object emission, not --export-macro. Enum selection is --export-enum at link time.",
+    "Do not force --emit-define ZYDIS_STATUS_*: it also selects the empty ZYDIS_STATUS_H include guard. Zydis status macros are otherwise automatically discovered."
+  ],
+  "recipe": "scripts/campaign.py",
+  "nativeHook": {
+    "call": "campaign.native_configuration(root, source_paths=None)",
+    "keys": [
+      "profile",
+      "sources",
+      "units",
+      "flags",
+      "includes",
+      "defines",
+      "undefines",
+      "adaptations"
+    ],
+    "semantics": "Returns exact effective full-library inputs and native-compatible flags without building or translating; source_paths accepts ctx.sources."
+  },
+  "qualificationHook": {
+    "call": "scripts/qualification.py:run(ctx, suite)",
+    "declaredSuites": [
+      "native",
+      "abi",
+      "qualification",
+      "upstream",
+      "audit"
+    ],
+    "status": "Parent/tests own implementation and separate Translation.companions wiring. Test C and upstream tools never enter the 18-unit product."
+  },
+  "findings": [
+    "Full default Zydis library has exactly 18 C units, matching upstream CMake and recursive src inventory; no adaptation required.",
+    "Required Zycore product closure is 10 headers, including inline ZyanAbsI64; zero out-of-line Zycore C units are needed. Out-of-line test-tool needs stay separate.",
+    "Upstream ZydisToolsShared.c calls ZyanTerminalIsTTY and ZyanTerminalEnableVT100: test-only companion/native tool closure needs Zycore src/API/Terminal.c or an explicitly reviewed test binding, plus consistent platform detection. Do not add it to product closure.",
+    "Package release is v4.1.1 but upstream include/Zydis/Zydis.h reports ZYDIS_VERSION 0x0004000100000000ULL (4.1.0.0). Preserve the actual upstream API value.",
+    "Explicit __x86_64__ retained exactly once after concurrent parent/recipe insertion; initial ABI target is Linux x64 LP64 little endian."
+  ],
+  "validations": "config/recipe-checks.json",
+  "noBuildsRunByRecipeAgent": true,
+  "noGeneratedCSharpEdits": true
+}

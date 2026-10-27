@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "zydis": {
+    "repository": "https://github.com/zyantific/zydis",
+    "release": "v4.1.1",
+    "releaseUrl": "https://github.com/zyantific/zydis/releases/tag/v4.1.1",
+    "revision": "a2278f1d254e492f6a6b39f6cb5d1f5d515659dc",
+    "url": "https://codeload.github.com/zyantific/zydis/tar.gz/a2278f1d254e492f6a6b39f6cb5d1f5d515659dc",
+    "archive": "zydis-a2278f1d254e492f6a6b39f6cb5d1f5d515659dc.tar.gz",
+    "directory": "zydis-4.1.1",
+    "prefix": "zydis-a2278f1d254e492f6a6b39f6cb5d1f5d515659dc",
+    "group": "product",
+    "required": [
+      "CMakeLists.txt",
+      "LICENSE",
+      "include/Zydis/Zydis.h",
+      "src/Decoder.c",
+      "src/Encoder.c",
+      "src/Formatter.c",
+      "tests/regression.py"
+    ],
+    "archivePaths": [
+      ".gitattributes",
+      ".github/",
+      ".gitignore",
+      ".gitmodules",
+      "CMakeLists.txt",
+      "Doxyfile",
+      "Doxyfile.meson.in",
+      "LICENSE",
+      "Makefile",
+      "README.md",
+      "SECURITY.md",
+      "assets/",
+      "cmake/",
+      "dependencies/",
+      "examples/",
+      "files.dox",
+      "include/",
+      "man/",
+      "meson.build",
+      "meson_options.txt",
+      "msvc/",
+      "resources/",
+      "src/",
+      "tests/",
+      "tools/"
+    ],
+    "omittedArchiveEntries": [
+      {
+        "path": "subprojects",
+        "kind": "symlink",
+        "target": "dependencies/",
+        "reason": "Meson alias; select original dependencies tree for portable extraction without symlinks."
+      }
+    ],
+    "sha256": "efbca210596ef954241ef40732376d50be5b6b7ca7d63a3834ef0c71f3471f36"
+  },
+  "zycore": {
+    "repository": "https://github.com/zyantific/zycore-c",
+    "revision": "0b2432ced0884fd152b471d97ecf0258ff4d859f",
+    "parentGitlink": "dependencies/zycore",
+    "url": "https://codeload.github.com/zyantific/zycore-c/tar.gz/0b2432ced0884fd152b471d97ecf0258ff4d859f",
+    "archive": "zycore-0b2432ced0884fd152b471d97ecf0258ff4d859f.tar.gz",
+    "directory": "zycore-0b2432ced0884fd152b471d97ecf0258ff4d859f",
+    "prefix": "zycore-c-0b2432ced0884fd152b471d97ecf0258ff4d859f",
+    "group": "product",
+    "required": [
+      "CMakeLists.txt",
+      "LICENSE",
+      "include/Zycore/Types.h",
+      "src/Format.c",
+      "src/String.c"
+    ],
+    "layoutReason": "Separate extracted tree preserves the upstream archive empty submodule directory and permits shared non-overwriting acquisition.",
+    "sha256": "698e4623e661db312eb9da327519f53f0a9dd7fbbfacf02159687bca62369467",
+    "version": "1.5.2.0",
+    "gitlinkEvidenceUrl": "https://api.github.com/repos/zyantific/zydis/contents/dependencies/zycore?ref=a2278f1d254e492f6a6b39f6cb5d1f5d515659dc"
+  }
+}
