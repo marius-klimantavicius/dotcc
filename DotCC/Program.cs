@@ -59,6 +59,7 @@ internal static class Program
         var instanceMethodsOpt = new Option<bool>("--instance-methods") { Description = "Emit an instance managed library with explicit-context function pointers; set at object emission and link." };
         var stateContextOpt = new Option<bool>("--state-context") { Description = "Emit explicitly bound, disposable C program state for independent managed-library instances (--runtime=c). Link-time option." };
         var literalPoolOpt = new Option<bool>("--literal-pool") { Description = "Copy translated literals into rooted pinned storage with short names and usage comments (default: Libc.L). Set at link time for objects." };
+        var aggregateDataOpt = new Option<bool>("--aggregate-data") { Description = "Copy fully constant aggregates of at least 1024 bytes from immutable byte data (LP64 little-endian). Set during source/object emission; link objects without this option." };
         var runtimeOpt = new Option<RuntimeProfile>("--runtime") { Description = "Embedded runtime: all (default), c, or auto (source/object languages).", DefaultValueFactory = _ => RuntimeProfile.All };
         var splitOpt = new Option<SourceSplit>("--split")
         {
@@ -174,7 +175,7 @@ internal static class Program
         };
         var root = new RootCommand("dotcc — a C compiler frontend that transpiles to .NET 10 / C# 14.")
         {
-            inputArg, outOpt, emitOpt, emitDefineOpt, typeNameOpt, overrideOpt, overridesFileOpt, overrideReportOpt, classNameOpt, namespaceOpt, nestTypesOpt, literalPoolOpt, stateContextOpt, instanceMethodsOpt, runtimeOpt, deduplicateInlineOpt, pruneUnusedInlineOpt, deduplicateStaticOpt, exportInlineOpt, exportEnumOpt, splitOpt, splitSizeOpt, targetOpt, preprocessOpt, includeOpt, defineOpt, undefineOpt, compileOpt, sharedOpt, stdOpt,
+            inputArg, outOpt, emitOpt, emitDefineOpt, typeNameOpt, overrideOpt, overridesFileOpt, overrideReportOpt, classNameOpt, namespaceOpt, nestTypesOpt, literalPoolOpt, aggregateDataOpt, stateContextOpt, instanceMethodsOpt, runtimeOpt, deduplicateInlineOpt, pruneUnusedInlineOpt, deduplicateStaticOpt, exportInlineOpt, exportEnumOpt, splitOpt, splitSizeOpt, targetOpt, preprocessOpt, includeOpt, defineOpt, undefineOpt, compileOpt, sharedOpt, stdOpt,
             pedanticOpt, pedanticErrorsOpt, wconversionOpt, wnoDiscardedQualifiersOpt, wimplicitFallthroughOpt, sanitizeOpt, mdOpt, mmdOpt, mfOpt, mtOpt, linkOpt, libDirOpt,
         };
         // Accept-and-ignore unknown flags (-Wall, -O2, -g, -f*, -m*, …) instead
@@ -309,7 +310,7 @@ internal static class Program
             return Run(inputs, output, emit, target, preprocessOnly, includes, defines.ToArray(), sharedFlag, dialect,
                        mdFlag, mmdFlag, depFile, depTargets, debugHeapFlag, imports, warnings,
                        buildManaged: compileFlag && emit == EmitKind.ManagedLib, className: parse.GetValue(classNameOpt),
-                       split: parse.GetValue(splitOpt), splitSize: parse.GetValue(splitSizeOpt), namespaceName: parse.GetValue(namespaceOpt), preprocessing: preprocessing, outputOptions: new CSharpOutputOptions(NestTypes: parse.GetValue(nestTypesOpt), Runtime: parse.GetValue(runtimeOpt), DeduplicateInline: parse.GetValue(deduplicateInlineOpt), PruneUnusedInline: parse.GetValue(pruneUnusedInlineOpt), DeduplicateStatic: parse.GetValue(deduplicateStaticOpt), ExportInline: parse.GetValue(exportInlineOpt), ExportEnum: parse.GetValue(exportEnumOpt), LiteralPool: parse.GetValue(literalPoolOpt), StateContext: parse.GetValue(stateContextOpt), InstanceMethods: parse.GetValue(instanceMethodsOpt)));
+                       split: parse.GetValue(splitOpt), splitSize: parse.GetValue(splitSizeOpt), namespaceName: parse.GetValue(namespaceOpt), preprocessing: preprocessing, outputOptions: new CSharpOutputOptions(NestTypes: parse.GetValue(nestTypesOpt), Runtime: parse.GetValue(runtimeOpt), DeduplicateInline: parse.GetValue(deduplicateInlineOpt), PruneUnusedInline: parse.GetValue(pruneUnusedInlineOpt), DeduplicateStatic: parse.GetValue(deduplicateStaticOpt), ExportInline: parse.GetValue(exportInlineOpt), ExportEnum: parse.GetValue(exportEnumOpt), LiteralPool: parse.GetValue(literalPoolOpt), AggregateData: parse.GetValue(aggregateDataOpt), StateContext: parse.GetValue(stateContextOpt), InstanceMethods: parse.GetValue(instanceMethodsOpt)));
             }
             catch (Exception ex) when (ex is CompileException or IOException or UnauthorizedAccessException)
             {
@@ -369,8 +370,8 @@ internal static class Program
         WarningFlags warnings = WarningFlags.Default,
         bool buildManaged = false, string? className = null, SourceSplit split = SourceSplit.None, int? splitSize = null, string? namespaceName = null, CPreprocessingOptions? preprocessing = null, CSharpOutputOptions? outputOptions = null)
     {
-        if ((preprocessOnly || string.Equals(target, "wat", StringComparison.OrdinalIgnoreCase)) && outputOptions is { } layout && (layout.NestTypes || layout.Runtime != RuntimeProfile.All || layout.DeduplicateInline || layout.PruneUnusedInline || layout.DeduplicateStatic || layout.ExportInline is { Count: > 0 } || layout.ExportEnum is { Count: > 0 } || layout.LiteralPool || layout.StateContext || layout.InstanceMethods))
-            throw new CompileException("--nest-types, --runtime, --deduplicate-inline, --deduplicate-static, --export-inline, --export-enum and --literal-pool require C# output");
+        if ((preprocessOnly || string.Equals(target, "wat", StringComparison.OrdinalIgnoreCase)) && outputOptions is { } layout && (layout.NestTypes || layout.Runtime != RuntimeProfile.All || layout.DeduplicateInline || layout.PruneUnusedInline || layout.DeduplicateStatic || layout.ExportInline is { Count: > 0 } || layout.ExportEnum is { Count: > 0 } || layout.LiteralPool || layout.AggregateData || layout.StateContext || layout.InstanceMethods))
+            throw new CompileException("--nest-types, --runtime, --deduplicate-inline, --deduplicate-static, --export-inline, --export-enum, --literal-pool and --aggregate-data require C# output");
         if ((splitSize.HasValue && (split != SourceSplit.Size || splitSize <= 0))
             || (split != SourceSplit.None && (preprocessOnly || emit is EmitKind.File or EmitKind.Obj
                 || (target != null && !target.Equals("cs", StringComparison.OrdinalIgnoreCase)))))
@@ -475,6 +476,8 @@ internal static class Program
         {
             var sourceGroup = inputPaths.Where(p => p.EndsWith(".c", StringComparison.OrdinalIgnoreCase) || p.EndsWith(".zig", StringComparison.OrdinalIgnoreCase)).ToArray();
             var objectGroup = inputPaths.Except(sourceGroup).ToArray();
+            if (objectGroup.Length != 0 && outputOptions?.AggregateData == true)
+                throw new CompileException("--aggregate-data requires source emission; rebuild objects with --aggregate-data, then link without it");
             if (sourceGroup.Length != 0 && objectGroup.Length != 0)
             {
                 var fragment = Compiler.EmitCSharp(sourceGroup, includeDirs, defines, EmitMode.Object, dialect,

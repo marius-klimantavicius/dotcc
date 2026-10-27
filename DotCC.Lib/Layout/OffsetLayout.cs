@@ -49,6 +49,7 @@ internal sealed class OffsetLayoutException : Exception
 /// storage units, not a promise that every host C compiler uses that packing.</summary>
 internal sealed class OffsetLayoutModel
 {
+    internal const string Abi = "lp64-le-dotcc-v1";
     private readonly Func<string, LayoutAggregate> resolve;
     private readonly Dictionary<string, LayoutInfo> cache = new Dictionary<string, LayoutInfo>(StringComparer.Ordinal);
     private readonly HashSet<string> active = new HashSet<string>(StringComparer.Ordinal);
@@ -337,7 +338,7 @@ internal sealed class OffsetDocument
     private static string Decode(string value) => Encoding.UTF8.GetString(Convert.FromBase64String(value));
     public string Serialize()
     {
-        var text = new StringBuilder(Start).Append("abi\tlp64-le-dotcc-v1\n");
+        var text = new StringBuilder(Start).Append("abi\t").Append(OffsetLayoutModel.Abi).Append('\n');
         foreach (var pair in Aggregates.OrderBy(p => p.Key, StringComparer.Ordinal))
         {
             var aggregate = pair.Value;
@@ -362,7 +363,7 @@ internal sealed class OffsetDocument
             var document = new OffsetDocument();
             LayoutAggregate? aggregate = null;
             var lines = source.Substring(cursor, end - cursor).Split('\n');
-            if (lines.Length == 0 || lines[0] != "abi\tlp64-le-dotcc-v1")
+            if (lines.Length == 0 || lines[0] != "abi\t" + OffsetLayoutModel.Abi)
                 throw new OffsetLayoutException("Unsupported dotcc offsetof ABI");
             foreach (var line in lines.Skip(1))
             {

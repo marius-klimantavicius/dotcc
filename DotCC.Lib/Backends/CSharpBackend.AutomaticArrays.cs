@@ -74,7 +74,7 @@ internal sealed partial class CSharpBackend
             .Append(";\n");
         output.Append(pad).Append("new global::System.Span<byte>((void*)").Append(array.Sym.TargetName)
             .Append(", ").Append(bytes).Append(").Clear();\n");
-        if (array.Inits is { } initializers)
+        if (array.Inits is { } initializers && !EmitAggregateDataCopies(output, array.Sym.TargetName, array.Element, initializers))
             for (var index = 0; index < initializers.Count; index++)
             {
                 if (initializers[index] is LitInt { Value: 0 }) continue;

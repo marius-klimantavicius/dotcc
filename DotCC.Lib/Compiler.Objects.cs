@@ -50,7 +50,9 @@ public static partial class Compiler
     // line 1.) Scan the first few lines for these.
     private const string MagicObject = "//!dotcc object";
 
-    /// <summary>Emit a single translation unit as a `.cs` object fragment.</summary>
+    /// <summary>Emit a single translation unit as a `.cs` object fragment.
+    /// AggregateData is applied here while typed initializers and layouts are available;
+    /// link the resulting objects with AggregateData left false.</summary>
     public static string EmitObject(
         string inputPath,
         IReadOnlyList<string>? includeDirs = null,
@@ -127,6 +129,7 @@ public static partial class Compiler
     /// Link `.cs` object fragments (from <see cref="EmitObject"/>) into one
     /// program: concatenate functions, union types/aliases/globals (deduping a
     /// shared header's declarations), then wrap in the shell + runtime.
+    /// AggregateData must be selected when emitting source/objects, not at link time.
     /// </summary>
     public static string LinkObjects(
         IReadOnlyList<string> objectPaths, EmitMode emit = EmitMode.File, bool debugHeap = false,
@@ -138,6 +141,8 @@ public static partial class Compiler
         IReadOnlyList<string> objectPaths, EmitMode emit = EmitMode.File, bool debugHeap = false,
         ImportOptions? imports = null, string? className = null, SourceSplit split = SourceSplit.None, int splitSize = 262144, string? namespaceName = null, TextWriter? overrideReport = null, CSharpOutputOptions? outputOptions = null)
     {
+        if (outputOptions?.AggregateData == true)
+            throw new CompileException("--aggregate-data requires source emission; set AggregateData at EmitObject and rebuild objects, then link without --aggregate-data");
         ValidateOutputOptions(outputOptions, emit);
         bool nested = outputOptions?.NestTypes == true;
         bool? usesZig = false;

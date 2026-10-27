@@ -1,0 +1,10 @@
+GCC 13.3.0, x86_64 Linux, little endian LP64:
+  cc -std=c17 -Wall -Wextra -O0 main.c -o /tmp/aggregate-fallback
+  /tmp/aggregate-fallback | cmp expected-stdout.txt -
+  cc -std=c17 -Wall -Wextra -O2 main.c -o /tmp/aggregate-fallback-o2
+  /tmp/aggregate-fallback-o2 | cmp expected-stdout.txt -
+
+The tables exceed 1024 bytes but require typed fallback because they contain
+pointer relocations, omitted pointer members, a 128-bit integer representation,
+or effectful runtime initializers. Only the selected conditional initializer may
+execute, and each next() call must execute exactly once.

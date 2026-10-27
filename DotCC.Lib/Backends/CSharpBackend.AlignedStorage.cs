@@ -64,7 +64,7 @@ internal sealed partial class CSharpBackend
         sb.Append(pad).Append(type).Append("* ").Append(name).Append(" = (").Append(type)
             .Append("*)(((nuint)").Append(storage).Append("_bytes + ").Append(alignment - 1)
             .Append(") & ~(nuint)").Append(alignment - 1).Append(");\n");
-        if (array.Inits is { } values)
+        if (array.Inits is { } values && !EmitAggregateDataCopies(sb, name, array.Element, values))
             for (var index = 0; index < values.Count; index++)
                 sb.Append(pad).Append(name).Append('[').Append(index).Append("] = ")
                     .Append(Coerced(values[index], array.Element)).Append(";\n");

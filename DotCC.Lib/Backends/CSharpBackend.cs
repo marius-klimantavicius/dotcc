@@ -52,6 +52,7 @@ internal sealed partial class CSharpBackend
     /// C#-specific one.</summary>
     private ITarget _target = new CSharpTarget();
     private bool _instanceMethods;
+    private bool _aggregateData;
     private readonly DotCC.LiteralPool _literals = new();
     private global::System.Func<CExpr, CExpr?> _foldConstant = null!;
     private global::System.Func<CExpr, CType, ulong?> _foldFloatingPayloadBits = null!;
@@ -72,10 +73,10 @@ internal sealed partial class CSharpBackend
     /// spelling — replaces the type model's old baked-in <c>CsType</c> property.</summary>
     private string Cs(CType t) => _target.RenderType(t);
 
-    public static CSharpBackendResult Run(IrBuilder unit, DotCC.ConversionGate? convGate = null, bool publicTypes = false, bool relocatable = false, string pointerClass = "DotCcProgramFunctionPointers", bool inlineMetadata = false, bool instanceMethods = false, IReadOnlyList<string>? stableFunctionPointers = null, bool aggregateTokens = false)
+    public static CSharpBackendResult Run(IrBuilder unit, DotCC.ConversionGate? convGate = null, bool publicTypes = false, bool relocatable = false, string pointerClass = "DotCcProgramFunctionPointers", bool inlineMetadata = false, bool instanceMethods = false, IReadOnlyList<string>? stableFunctionPointers = null, bool aggregateTokens = false, bool aggregateData = false)
     {
         VaListLifetimeValidator.Validate(unit);
-        var cg = new CSharpBackend { _convGate = convGate, _publicTypes = publicTypes, _relocatable = relocatable, _pointerClass = pointerClass, _inlineMetadata = inlineMetadata, _instanceMethods = instanceMethods, _target = new CSharpTarget(instanceMethods,
+        var cg = new CSharpBackend { _convGate = convGate, _publicTypes = publicTypes, _relocatable = relocatable, _pointerClass = pointerClass, _inlineMetadata = inlineMetadata, _instanceMethods = instanceMethods, _aggregateData = aggregateData, _target = new CSharpTarget(instanceMethods,
             aggregateTokens ? unit.Types.Select(t => t.Name).Concat(unit.Enums.Select(e => e.Name))
                 .ToDictionary(name => name, AggregateIdentities.Token, StringComparer.Ordinal) : null) };
         cg._foldConstant = unit.FoldMacroConstant;
@@ -923,6 +924,13 @@ internal sealed partial class CSharpBackend
                     var elemCs = Cs(row?.FlatElement ?? a.Element);
                     if (a.Inits is { } inits)
                     {
+                        if (TryAggregateBytes(a.Element, inits, out var aggregateBytes))
+                        {
+                            sb.Append(pad).Append(elemCs).Append("* ").Append(a.Sym.TargetName)
+                                .Append(" = stackalloc ").Append(elemCs).Append('[').Append(inits.Count).Append("];\n");
+                            AppendAggregateDataCopies(sb, a.Sym.TargetName, a.Element, aggregateBytes);
+                            break;
+                        }
                         // Coerce each element to the array's element type — a no-op
                         // for byte/int arrays (constant fits), but a char16_t array's
                         // `char` elements need the explicit (char) cast C# requires.

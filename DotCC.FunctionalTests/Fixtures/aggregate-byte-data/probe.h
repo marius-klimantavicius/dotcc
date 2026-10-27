@@ -1,0 +1,15 @@
+unsigned long aggregate_address(void);
+int aggregate_first(void);
+int aggregate_mutate(void);
+int aggregate_values(void);
+int aggregate_count(void);
+int aggregate_row_size(int table);
+int aggregate_rows(int table);
+unsigned char *aggregate_bytes(int table);
+int aggregate_zero_gaps(void);
+int aggregate_wide_store(void);
+int aggregate_local(void);
+int aggregate_aligned_global(void);
+int aggregate_aligned_local(void);
+int aggregate_tls_step(void);
+unsigned long aggregate_tls_address(void);

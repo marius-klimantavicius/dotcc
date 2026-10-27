@@ -15,6 +15,9 @@ using DotCC.Ir;
 /// </summary>
 internal sealed class CSharpTarget(bool instanceMethods = false, IReadOnlyDictionary<string, string>? aggregateNames = null) : ITarget
 {
+    // Aggregate bytes may only use the explicitly qualified layout profile.
+    internal string StorageAbi => DotCC.Layout.OffsetLayoutModel.Abi;
+
     public string RenderType(CType t) => t switch
     {
         CType.Prim p => RenderPrim(p),

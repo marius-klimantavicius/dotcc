@@ -25,6 +25,7 @@ internal sealed partial class CSharpBackend
     private void EmitArrayStores(StringBuilder output, string alias, CType element,
         System.Collections.Generic.IReadOnlyList<CExpr> values, bool compactRows = false)
     {
+        if (EmitAggregateDataCopies(output, alias, element, values)) return;
         if (EmitPrimitiveCopies(output, alias, element, values, zeroed: true)) return;
         for (int index = 0; index < values.Count; index++)
         {

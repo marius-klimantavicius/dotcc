@@ -1,0 +1,1 @@
+GNU packed and mixed-type bitfield allocation, LP64, and unsigned-char object bytes are compared against GCC. MSVC uses a different aggregate ABI and does not accept these GNU attributes.

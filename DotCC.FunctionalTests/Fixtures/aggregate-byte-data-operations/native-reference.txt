@@ -1,0 +1,34 @@
+Reference generated on x86_64 Linux, little endian LP64, with GCC 13.3.0
+(Ubuntu 13.3.0-6ubuntu2~24.04.1), target x86_64-linux-gnu.
+
+Run from this fixture directory, with native outputs in a private directory:
+  native_dir=$(mktemp -d)
+  gcc -std=c17 -pedantic-errors -Wall -Wextra -Wno-sign-compare -O0 main.c -o "$native_dir/operations-O0"
+  "$native_dir/operations-O0" > "$native_dir/O0.txt"
+  gcc -std=c17 -pedantic-errors -Wall -Wextra -Wno-sign-compare -O2 main.c -o "$native_dir/operations-O2"
+  "$native_dir/operations-O2" > "$native_dir/O2.txt"
+  cmp "$native_dir/O0.txt" "$native_dir/O2.txt"
+  cmp expected-stdout.txt "$native_dir/O0.txt"
+
+Both native programs exited 0 and emitted identical stdout. The comparison
+warnings are disabled because mixed signedness comparisons are deliberate.
+expected-stdout.txt SHA-256:
+  0fb8efd50c623db002eeb9b8310fdfa929c4350165d8539d67e4c98ae62c5a61
+
+The sole initialized aggregate table is 8 records * 248 bytes = 1984 bytes.
+Every byte is printed, including the five omitted zero rows and final designated
+record. Value lines exercise typed loads and signed/unsigned printf conversions.
+The float checks distinguish rounding after each float operation from carrying
+double intermediates; float division is also stored as a double so its rounded
+binary32 result remains observable. The double checks straddle the 2^53 precision
+boundary. Raw bytes additionally pin both negative float zeros.
+
+Short-circuit and conditional branches contain calls, increments and assignments
+only in unevaluated subexpressions, as permitted in C17 constant expressions.
+The effect counter must remain zero. Live logical operands cover both true and
+false results. All expressions avoid signed overflow and invalid shifts.
+
+AggregateDataOperationTests executes source/object emission with AggregateData
+off/on. Enabled cases require exactly one "// aggregate-data: 1984 bytes" marker;
+fallback for this table is a failure. Ordinary FixtureTests also discovers this
+fixture and checks default emission against the same native transcript.

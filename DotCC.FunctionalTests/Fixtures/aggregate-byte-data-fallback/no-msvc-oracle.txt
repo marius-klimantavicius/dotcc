@@ -1,0 +1,1 @@
+The unsupported-representation fallback deliberately uses GNU unsigned __int128, which MSVC does not support.

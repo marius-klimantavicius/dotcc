@@ -1,0 +1,17 @@
+Reference generated on x86_64 Linux, little endian LP64, with GCC 13.3.0:
+  cc -std=c17 -Wall -Wextra -O0 data.c main.c -o /tmp/aggregate-probe
+  /tmp/aggregate-probe > expected-stdout.txt
+  cc -std=c17 -Wall -Wextra -O2 data.c main.c -o /tmp/aggregate-probe-o2
+  /tmp/aggregate-probe-o2 | cmp expected-stdout.txt -
+
+The override-init warnings are deliberate: replacing an enclosing designated
+initializer and switching active union members must discard the old values.
+Each line prints every byte of the first two and last records, including padding.
+aggregate_zero_gaps checks EVERY omitted byte between those records is zero.
+Together these checks cover each complete static table byte for byte.
+The last line also checks typed values, nine-byte bitfield stores, and mutable
+storage independence between two objects initialized from identical payloads.
+Constant automatic arrays and aligned locals are reinitialized on repeated calls;
+both global and local requested 64-byte alignment are checked by address modulo.
+TLS initialization is checked here on the main thread. The emitted state test
+also checks two simultaneously live worker threads and independent owners.

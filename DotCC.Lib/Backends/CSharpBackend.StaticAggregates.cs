@@ -33,6 +33,15 @@ internal sealed partial class CSharpBackend
     private bool EmitLargeStaticAggregateInitializer(StringBuilder output, GlobalVar global)
     {
         if (global.Init is not StructInit aggregate) return false;
+        if (TryAggregateBytes(aggregate.Type, new[] { aggregate }, out var aggregateBytes))
+        {
+            string dataAlias = InitializerAlias(global);
+            var copies = new StringBuilder();
+            AppendAggregateDataCopies(copies, dataAlias, aggregate.Type, aggregateBytes);
+            AppendInitializerChunks(output, copies.ToString(), Cs(aggregate.Type) + "* " + dataAlias + " = &"
+                + GlobalStorageReferences.Emit(global.Sym.TargetName), pin: true);
+            return true;
+        }
         if (TryCompactRecord(aggregate, out string expression))
         {
             output.Append("        ").Append(GlobalStorageReferences.Emit(global.Sym.TargetName))

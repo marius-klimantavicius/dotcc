@@ -35,7 +35,11 @@ internal sealed partial class CSharpBackend
         var stores = new StringBuilder();
         var previous = _globalAddressBases;
         _globalAddressBases = new(previous, System.Collections.Generic.ReferenceEqualityComparer.Instance) { [global.Sym] = alias };
-        try { EmitStaticAggregateStores(stores, "(*" + alias + ")", aggregate.Type, aggregate); }
+        try
+        {
+            if (!EmitAggregateDataCopies(stores, alias, aggregate.Type, new[] { aggregate }))
+                EmitStaticAggregateStores(stores, "(*" + alias + ")", aggregate.Type, aggregate);
+        }
         finally { _globalAddressBases = previous; }
         string type = Cs(aggregate.Type);
         EmitThreadStorage(output, global, type, type, "1", alias, stores.ToString(), record: true);
