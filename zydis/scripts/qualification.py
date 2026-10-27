@@ -55,7 +55,10 @@ def _inputs(ctx, selected):
     for name, source in selected["sources"].items():
         for directory in ("include", "src", "tests", "tools") if name == "zydis" else ("include", "src/API"):
             for path in (source / directory).rglob("*"):
-                if path.is_file() and path.suffix in (".c", ".h", ".in", ".out", ".json"):
+                # Include generated .inc lookup tables and any other regular
+                # dependency here. A suffix allowlist can miss bytes consumed
+                # by #include and falsely accept stale translated tables.
+                if path.is_file():
                     result[name + "/" + path.relative_to(source).as_posix()] = _digest(path)
     for path in (ctx.root / "tests/qualification.c", ctx.root / "tests/harness.py",
                  ctx.root / "config/translation.json"):

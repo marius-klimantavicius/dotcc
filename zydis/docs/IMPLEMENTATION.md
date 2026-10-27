@@ -141,3 +141,23 @@ hashes off, from an unrelated working directory, with clean framework staging.
 Authored inputs are captured immediately before this final reproduction for
 byte-preservation checks. Earlier capture differs only by the intentionally
 added conditional PublishTrimmed declaration in the consumer project.
+
+### ZY-H002: generated table identity (evidence guard)
+
+Final evidence review found `_inputs` omitted generated `.inc` tables by filtering
+file suffixes. A reduced unittest demonstrated that editing an included table
+did not change companion identity (`input-identity-before.log`, failed). The
+guard now hashes every regular file in its selected input directories; all 15
+generated `.inc` files are present. The regression passes
+(`input-identity-after.log`). This fixes freshness evidence, without changing
+upstream algorithms or emitted C#. The active reproduction began before this
+guard change and is expected to reject its stale companion identity when the
+next suite reloads the helper. Fresh full regeneration is required after that
+expected rejection. API final read-only review had no findings.
+
+The in-flight pre-repair reproduction `20261027-072129-bb1b5716` subsequently
+failed exactly at the next suite's freshness check: `Qualification companion
+source/config/fixture identity differs from current native oracle; regenerate`.
+This is the intended rejection, not an algorithm/ABI failure. A complete fresh
+`verify` with rebuilt tools, hashes off, all forms/modes, invoked from `/tmp`,
+is now running with the repaired identity guard (`reproduction-final.log`).

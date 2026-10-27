@@ -365,8 +365,8 @@ set -euo pipefail
 ZYDIS_REPRO_SOURCE="$(pwd)"
 ZYDIS_REPRO_STAGE="$(mktemp -d "${TMPDIR:-/tmp}/zydis-repro.XXXXXXXX")"
 export ZYDIS_REPRO_SOURCE ZYDIS_REPRO_STAGE
-export DOTCC_COMPILER="$ZYDIS_REPRO_SOURCE/DotCC/bin/Release/net10.0/DotCC.dll"
-export DOTCC_POSTPROCESSOR="$ZYDIS_REPRO_SOURCE/DotCC.PostProcess/bin/Release/net10.0/DotCC.PostProcess.dll"
+export DOTCC_COMPILER="$ZYDIS_REPRO_SOURCE/DotCC/bin/Release/net10.0/dotcc.dll"
+export DOTCC_POSTPROCESSOR="$ZYDIS_REPRO_SOURCE/DotCC.PostProcess/bin/Release/net10.0/dotcc-postprocess.dll"
 python3 -B - <<'PY'
 import json, os, shutil, subprocess
 from pathlib import Path
