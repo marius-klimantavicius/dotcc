@@ -1,0 +1,17 @@
+Native reference: GCC 13.3.0, x86_64 Linux, little endian LP64.
+From this directory, both commands exit zero and match expected-stdout.txt:
+  cc -std=c17 -Wall -Wextra -O0 data.c main.c -o /tmp/aggregate-storage-o0
+  /tmp/aggregate-storage-o0 | cmp expected-stdout.txt -
+  cc -std=c17 -Wall -Wextra -O2 data.c main.c -o /tmp/aggregate-storage-o2
+  /tmp/aggregate-storage-o2 | cmp expected-stdout.txt -
+
+The transcript pins standalone-record sizes and representative bytes. Native
+check functions traverse every ordinary field/array element and all bitfields,
+including omitted elements, and verify aligned storage and recursive loop
+re-entry. The managed execution tests additionally compare complete expected
+immutable payloads and exercise independent contexts and simultaneous TLS workers.
+
+The static record is the only non-TLS global and uses special aligned storage.
+Its nonzero initialization must still execute when no ordinary globals struct
+is emitted. This reproduces the former shell constructor-omission defect with
+the aggregate-data option disabled as well as enabled.

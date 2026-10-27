@@ -187,6 +187,16 @@ public static partial class Compiler
             {{initialization.Members}}
             """)}}
             """;
+        // Aligned globals can need initialization without any ordinary global fields.
+        if (globals.Fields.Length == 0 && globals.Initializers.Length > 0)
+        {
+            globalOwnerMembers = $$"""
+                static DotCcProgram()
+                {
+            {{initialization.Calls}}    }
+            {{initialization.Members}}
+            """;
+        }
         var globalsDeclaration = globals.Fields.Length == 0 ? "" : $$"""
             internal unsafe struct {{globalsType}}
             {
@@ -466,6 +476,16 @@ public static partial class Compiler
             {{initialization.Members}}
             """)}}
             """;
+        // Aligned globals can need initialization without any ordinary global fields.
+        if (globals.Fields.Length == 0 && globals.Initializers.Length > 0)
+        {
+            globalOwnerMembers = $$"""
+                static unsafe {{libraryClass}}()
+                {
+            {{initialization.Calls}}    }
+            {{initialization.Members}}
+            """;
+        }
         var globalsDeclaration = globals.Fields.Length == 0 ? "" : $$"""
             {{(managedLibrary ? "public" : "internal")}} unsafe struct {{globalsType}}
             {
