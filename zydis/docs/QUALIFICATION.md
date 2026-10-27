@@ -1,11 +1,10 @@
 # Zydis qualification
 
-Status (2026-10-27): all declared behavioral/delivery/audit suites pass in
-[qualification receipt](../artifacts/campaign/20261027-071458-a957ffa0/receipt.json).
-Final clean reproduction is pending. The earlier fresh full generation succeeded;
-its first external ABI harness compile error was repaired before the passing
-suite run. Current progress and final receipt pointers are in the
-[implementation ledger](IMPLEMENTATION.md).
+Status (2026-10-27): P0–P6 accepted for Linux x64. The clean final
+[verify receipt](../artifacts/campaign/20261027-072757-6171e6fa/receipt.json)
+passes every declared suite with hashes off, rebuilt tools, both forms and both
+execution modes. See [ACCEPTANCE.md](ACCEPTANCE.md) for exact totals, preserved
+inputs, known baseline test findings and the workspace observation.
 
 This document describes the current tests, not a promise of exhaustive x86
 coverage. The [plan](PLAN.md) and [implementation ledger](IMPLEMENTATION.md) remain
@@ -284,14 +283,14 @@ processed/JIT, raw/AOT and processed/AOT on linux-x64.
 | Gate | Executed scope required | Status |
 | --- | --- | --- |
 | Native | 393 rows, independent rejection controls and failure control | Passed; final independent native receipts above |
-| `abi` | Group 0 in all four cells, including actual CLR storage checks | Passed; 20261027-071458-a957ffa0 |
-| `qualification` | Group 1 in all four cells, including companion managed hooks | Passed; 20261027-071458-a957ffa0 |
-| `upstream` | Groups 2/3/4: 385 rows in each of four cells | Passed; 20261027-071458-a957ffa0 |
-| `rooted-aot` | Groups 0–4 in both forms; root `TranslatedZydisQualification` with `RootQualificationLibrary=true` | Passed; 20261027-071458-a957ffa0 |
-| `managed-boundary` | Five delivered-product cases in all four cells; AOT roots `TranslatedZydis` with `RootTranslatedLibrary=true` | Passed; 20261027-071458-a957ffa0 |
-| `consumer` | Ordinary useful workflow in all four cells; normal trimming | Passed; 20261027-071458-a957ffa0 |
-| `audit` | Both current delivered forms, exports/imports/dependencies/notices, exact current qualification/consumer evidence and AOT binaries | Passed; 20261027-071458-a957ffa0 |
-| Private reproduction | Fresh generation/matrix from current authored inputs and final tools, preserved inputs | Final run pending |
+| `abi` | Group 0 in all four cells, including actual CLR storage checks | Passed; 20261027-072757-6171e6fa |
+| `qualification` | Group 1 in all four cells, including companion managed hooks | Passed; 20261027-072757-6171e6fa |
+| `upstream` | Groups 2/3/4: 385 rows in each of four cells | Passed; 20261027-072757-6171e6fa |
+| `rooted-aot` | Groups 0–4 in both forms; root `TranslatedZydisQualification` with `RootQualificationLibrary=true` | Passed; 20261027-072757-6171e6fa |
+| `managed-boundary` | Five delivered-product cases in all four cells; AOT roots `TranslatedZydis` with `RootTranslatedLibrary=true` | Passed; 20261027-072757-6171e6fa |
+| `consumer` | Ordinary useful workflow in all four cells; normal trimming | Passed; 20261027-072757-6171e6fa |
+| `audit` | Both current delivered forms, exports/imports/dependencies/notices, exact current qualification/consumer evidence and AOT binaries | Passed; 20261027-072757-6171e6fa |
+| Private reproduction | Fresh generation/matrix from current authored inputs and final tools, preserved inputs | Passed; 20261027-072757-6171e6fa |
 
 Rooted companion and rooted delivered-product gates establish different
 closures; neither substitutes for the normally trimmed ordinary consumer.
@@ -421,4 +420,5 @@ work is under `build/campaign/<run-id>`. Expected attachments include
 `zydis-audit.json`. Consumer success/output and rooted-vs-ordinary AOT command
 properties live in the same receipt/logs. Parent acceptance requires the full
 current receipt, exact counts/comparisons, artifact audit and private reproduction
-to pass before closing the final reproduction row.
+passed in the current final receipt. The optional ordinary-copy stage above is
+a documented alternative; the accepted run used clean framework staging from /tmp.

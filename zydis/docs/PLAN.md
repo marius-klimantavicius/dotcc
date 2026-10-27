@@ -1,6 +1,6 @@
 # Translate Zydis with DotCC
 
-Status: implementation in progress; P0–P6 acceptance remains open.
+Status: P0–P6 accepted for Linux x64. Current evidence: [ACCEPTANCE.md](ACCEPTANCE.md).
 Campaign: `zydis/`. Updated: 2026-10-27.
 
 This plan adopts [translation baseline v4](../../docs/plans/translation-baseline.md)
@@ -123,7 +123,7 @@ campaign-owned hunks/files. Never include preexisting changes. No push/PR.
 | P3 | Useful owning decode/format/encode workflow with clean lifetimes | Passed | Four ordinary consumer cells; exact errors/ownership and concurrent workload |
 | P4 | Full feature/error cases and applicable upstream inventory across required matrix | Passed | 4 ABI + 28 feature groups + 1540 upstream cases; rooted AOT adds 786 declared cases; 20 delivered boundary cases; zero failures/skips |
 | P5 | Root solution and ordinary project-reference consumer JIT/AOT execution | Passed | Root solution Release build and four ordinary trimmed consumer cells; 20261027-071458-a957ffa0 |
-| P6 | Final-tool full regeneration, matrix rerun, affected regressions, reproduction and dependency audit | Planned | Pending |
+| P6 | Final-tool full regeneration, matrix rerun, affected regressions, reproduction and dependency audit | Passed | Final verify 20261027-072757-6171e6fa, invoked from /tmp with hashes off; all suites/audit pass and authored inputs preserved |
 
 Dependencies: P0 → P1 → P2 → P3 → P4/P5 → P6. API design/native harness proceed
 in parallel with source acquisition. The [implementation ledger](IMPLEMENTATION.md)
@@ -165,6 +165,8 @@ Acceptance includes a second full generation into private campaign outputs,
 unrelated-working-directory invocation, preservation of authored inputs,
 offline source reuse and warn/off provenance behavior. Ordinary scripts must
 not delete unrelated files. Current receipts are under `artifacts/campaign`,
-with specialist reports attached by the recipe. P0 passes; remaining unexecuted
-rows remain open. Additional OS/architecture and prolonged fuzz/
+with specialist reports attached by the recipe. P0–P6 pass for the selected
+Linux x64 product. Additional OS/architecture and prolonged fuzz/
 performance work are optional future qualification.
+
+Final acceptance and workspace observations: [ACCEPTANCE.md](ACCEPTANCE.md).

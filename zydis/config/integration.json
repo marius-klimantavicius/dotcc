@@ -1,5 +1,5 @@
 {
-  "status": "P1-P5-qualified-P6-reproduction-pending",
+  "status": "P0-P6-accepted-linux-x64",
   "sourceMetadata": "config/inputs.json",
   "acquiredInputs": {
     "zydis": "ref/zydis-4.1.1",
@@ -15,9 +15,7 @@
     "Zydis archive Meson subprojects symlink is recorded and excluded with shared safe-extraction selectors; full real dependencies, tests, licenses and sources retained.",
     "Zycore extracted separately because upstream archive contains an empty dependencies/zycore submodule directory; no upstream tree was overwritten."
   ],
-  "pending": [
-    "Final clean full verification from unrelated working directory with hashes off and authored-source preservation check."
-  ],
+  "pending": [],
   "configuration": "config/translation.json",
   "sourceInventory": "config/source-inventory.json",
   "sourceUnitCount": 18,
@@ -64,5 +62,6 @@
   "validations": "config/recipe-checks.json",
   "noBuildsRunByRecipeAgent": true,
   "noGeneratedCSharpEdits": true,
-  "qualifiedReceipt": "artifacts/campaign/20261027-071458-a957ffa0/receipt.json"
+  "qualifiedReceipt": "artifacts/campaign/20261027-072757-6171e6fa/receipt.json",
+  "acceptance": "docs/ACCEPTANCE.md"
 }

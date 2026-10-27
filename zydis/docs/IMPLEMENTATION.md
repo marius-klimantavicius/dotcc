@@ -161,3 +161,31 @@ source/config/fixture identity differs from current native oracle; regenerate`.
 This is the intended rejection, not an algorithm/ABI failure. A complete fresh
 `verify` with rebuilt tools, hashes off, all forms/modes, invoked from `/tmp`,
 is now running with the repaired identity guard (`reproduction-final.log`).
+
+## P6 accepted
+
+Final `20261027-072757-6171e6fa/receipt.json` passes the complete `verify` action:
+fresh final tools, full source emission/linking, raw/processed product+companion
+builds/postprocessing/publication and every declared suite. Invoked from `/tmp`,
+`--fetch never --hashes off --form all --mode all --rid linux-x64 --jobs 4`.
+Native 393, core matrix 1572, rooted companion 786, managed boundaries 20 and
+four ordinary consumer workflows pass with no required failures/skips. Final
+audit is delivered/qualified/passed, with zero failures. Both final source
+identities include all 15 generated table files. Root solution final Release
+build passes; all 22 captured authored API/consumer/test files remain unchanged.
+See [ACCEPTANCE.md](ACCEPTANCE.md), its linked current receipts and
+`artifacts/supervisor-probe/acceptance.json` for the closing evidence.
+
+Closing workspace audit found that nine initial compiler/CLI/docs edits had
+returned to HEAD concurrently at 07:24, before the final tool rebuild. The earlier
+preservation check matched all 32 initial tracked contents; the closing check
+matches 23 and records all nine differences separately. Campaign commands did
+not edit/reset those paths, and no unrelated content was restored/overwritten.
+Initial status/HEAD/tracked patch are retained in the workspace-baseline artifact
+directory. Closing inspection also records 41 initial untracked paths now absent
+(the runtime-selection tests and sandbox-xed authored files); the tracked patch
+does not contain those untracked contents. Campaign commands did not remove them.
+Current-source compiler/CLI rebuilds have identical method bodies,
+constants and resources to qualified tools; only revision/debug metadata differs.
+This is documented rather than falsely claiming the whole shared tree remained
+byte-identical. No push or PR was performed.

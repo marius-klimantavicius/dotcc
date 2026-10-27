@@ -5,8 +5,8 @@ Intel/AT&T/MASM formatting, tokenization, disassembly, instruction/register
 metadata, segment and address utilities. The upstream algorithms and generated
 instruction tables are translated from C. The product has no native Zydis backend.
 
-Campaign acceptance is in progress. See [the plan](docs/PLAN.md) and
-[current evidence](docs/IMPLEMENTATION.md) for passed and pending gates.
+P0–P6 acceptance passes on Linux x64, including raw/processed JIT/NativeAOT.
+See [acceptance and receipts](docs/ACCEPTANCE.md) and [the plan](docs/PLAN.md).
 
 Requires .NET 10 SDK, Python 3.11+ and Bash. Initial execution qualification is
 Linux x64. Native differential tests additionally require a C compiler; NativeAOT
