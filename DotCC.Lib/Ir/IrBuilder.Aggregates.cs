@@ -760,8 +760,9 @@ internal sealed partial class IrBuilder
             throw new IrUnsupportedException("inferred outer array extent requires positive constant inner dimensions");
         if (items.Count == 0)
             throw new IrUnsupportedException("inferred multidimensional array requires a nonempty initializer");
-        if (elem.Unqualified is CType.Named aggregate && _structFields.ContainsKey(aggregate.Name))
-            throw new IrUnsupportedException("inferred multidimensional arrays of struct/union elements are not supported");
+        // Extents count array elements, independently of whether each element
+        // is scalar or an aggregate. BuildArrayElems interprets the completed
+        // target shape (including struct/union rows and their zero fill).
         var rowSize = inner.Aggregate(1, (left, right) => checked(left * right));
         if (items.Any(item => item is InitAt))
         {

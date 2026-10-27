@@ -1,0 +1,5 @@
+table 48 24 2 0 6
+cube 64 12 14 0
+designated 48 18 0 16
+union 16 0 20 21
+local 32 0 29 saved 32 33 copied 32 23 0
