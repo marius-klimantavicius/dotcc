@@ -578,6 +578,9 @@ productions:
       # function emit, which would violate C#'s top-level-statements-before-
       # type-declarations rule.
       - { lhs: Fn, rhs: ['struct', ID, '{', MemberList, '}', ';'], action: structDef }
+      # Inline tagged definitions and postfix attributes already reduce through
+      # Type. Complete that path for an aggregate declaration without an object.
+      - { lhs: Fn, rhs: [Type, ';'], action: aggregateTypeDeclaration }
       # Forward struct/union declarations (no body). Required for
       # self-referential types declared across translation-unit boundaries
       # and for circular references between sibling types. Emits nothing
@@ -864,6 +867,20 @@ productions:
       # markers; semantic validation still rejects incompatible base types.
       - { lhs: Type, rhs: [Type, TYPE_NAME], action: typeAttributedSpecifierName }
       - { lhs: Type, rhs: [Type, TypeSpecList], action: typeAttributedSpecifierRun }
+      # Storage is part of the declaration-specifier sequence. Keep it in the
+      # syntax tree when alignment/qualifiers precede it; declaration binders
+      # consume it separately from the object's type and alignment.
+      # Keep the terminals here rather than reducing a StorageTypeSpec helper:
+      # declaration-prefix rules must be able to shift the same keyword before
+      # deciding whether it wraps a declaration or belongs to this Type spine.
+      - { lhs: Type, rhs: ['static', Type], action: typeStoragePre }
+      - { lhs: Type, rhs: [Type, 'static'], action: typeStoragePost }
+      - { lhs: Type, rhs: ['extern', Type], action: typeStoragePre }
+      - { lhs: Type, rhs: [Type, 'extern'], action: typeStoragePost }
+      - { lhs: Type, rhs: ['auto', Type], action: typeStoragePre }
+      - { lhs: Type, rhs: [Type, 'auto'], action: typeStoragePost }
+      - { lhs: Type, rhs: ['register', Type], action: typeStoragePre }
+      - { lhs: Type, rhs: [Type, 'register'], action: typeStoragePost }
       # Pointer qualifiers after `*` — `int * const p`, `int *restrict p`,
       # `int * volatile p`. No C# equivalent (no readonly locals, no aliasing
       # model), so they parse and are DROPPED: the pointer type is unchanged.
@@ -947,14 +964,12 @@ productions:
       - { lhs: Type, rhs: ['_Atomic', Type], action: typeAtomic }
       - { lhs: Type, rhs: ['_Atomic', '(', Type, ')'], action: typeAtomicParen }
       # `_Alignas(Type) T` / `_Alignas(constexpr) T` (C11 §6.7.5) — alignment
-      # specifier, leading-Type-prefix shape like `_Atomic`. ACCEPTED + IGNORED
-      # (a C# field/local has no controllable alignment — the same no-op
-      # treatment as Zig's `align(N)` decl modifier); gated C11. The `( Type )`
+      # specifier, retained as an object-alignment request; gated C11. The `( Type )`
       # vs `( E )` operand split is the cast rule's TYPE_NAME disambiguation.
-      # V1: leading position only (`int _Alignas(16) x;` interleaved among the
-      # specifiers is deferred).
       - { lhs: Type, rhs: ['_Alignas', '(', Type, ')', Type], action: typeAlignasType }
       - { lhs: Type, rhs: ['_Alignas', '(', E, ')', Type],    action: typeAlignasExpr }
+      - { lhs: Type, rhs: [Type, '_Alignas', '(', Type, ')'], action: typeAlignasTypePost }
+      - { lhs: Type, rhs: [Type, '_Alignas', '(', E, ')'],    action: typeAlignasExprPost }
       # `enum ID` as a type reference. Lowers to plain `int` in C# since
       # enumerators are emitted as `const int` constants (not a C# enum).
       - { lhs: Type, rhs: ['enum', ID], action: typeEnum }
@@ -1162,6 +1177,7 @@ productions:
       # the shift/reduce the file-scope pair already resolves. (Combined def+decl
       # `struct Tag { … } v;` is not supported here, matching file scope.)
       - { lhs: Stmt, rhs: ['struct', ID, '{', MemberList, '}', ';'],            action: stmtStructDef }
+      - { lhs: Stmt, rhs: [Type, ';'], action: stmtAggregateTypeDeclaration }
       - { lhs: Stmt, rhs: ['union', ID, '{', MemberList, '}', ';'],             action: stmtUnionDef }
       - { lhs: Stmt, rhs: ['enum', ID, '{', EnumList, '}', ';'],                action: stmtEnumDef }
       - { lhs: Stmt, rhs: ['enum', '{', EnumList, '}', ';'], action: stmtEnumDefAnonymous }

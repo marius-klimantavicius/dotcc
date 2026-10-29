@@ -360,6 +360,7 @@ internal sealed partial class IrBuilder
             or C.GlobalStaticU32CharArrStr or C.GlobalStaticU32CharArrStrSized
             or C.GlobalStaticU8CharArrStr or C.GlobalStaticU8CharArrStrSized
             or C.GlobalStaticStructInit or C.GlobalStaticStructDesignated;
+        if (TryBuildOrderedGlobalDeclaration(fn)) return;
         switch (fn.Content)
         {
             // C23 `[[attr]]` prepending a file-scope declaration — gate C23,
@@ -406,32 +407,6 @@ internal sealed partial class IrBuilder
             case C.ExternFnDef d: BuildFuncDef(d.Arg1, d.Arg2); break;
             case C.FuncProto p: RegisterProto(p.Arg0); break;
             case C.ExternFnProto p: RegisterProto(p.Arg1); break;
-            // A header-defined file-scope variable (chibi sexp.h's `static const
-            // unsigned char sexp_uvector_sizes[] = {…};`) re-arrives once per TU
-            // that includes the header. An identical re-definition is the same
-            // object — the first build's field + file-scope binding serve every
-            // TU, so skip it (mirrors BuildFuncDef's static-inline dedup; see
-            // AlreadySeenTopLevel for the per-TU-state caveat).
-            case C.GlobalStaticDeclList when AlreadySeenScalarGlobalInAnotherUnit(fn):
-                break;
-            case C.GlobalArr or C.GlobalStaticArr
-                or C.GlobalArrInit or C.GlobalStaticArrInit
-                or C.GlobalArrInitImplicit or C.GlobalStaticArrInitImplicit
-                or C.GlobalArrInitOuterImplicit or C.GlobalStaticArrInitOuterImplicit
-                or C.GlobalFnPtrArray or C.GlobalStaticFnPtrArray
-                or C.GlobalFnPtrArrayInit or C.GlobalStaticFnPtrArrayInit
-                or C.GlobalCharArrStr or C.GlobalCharArrStrSized
-                or C.GlobalStaticCharArrStr or C.GlobalStaticCharArrStrSized
-                or C.GlobalU16CharArrStr or C.GlobalU16CharArrStrSized
-                or C.GlobalStaticU16CharArrStr or C.GlobalStaticU16CharArrStrSized
-                or C.GlobalWCharArrStr or C.GlobalWCharArrStrSized
-                or C.GlobalStaticWCharArrStr or C.GlobalStaticWCharArrStrSized
-                or C.GlobalU32CharArrStr or C.GlobalU32CharArrStrSized
-                or C.GlobalStaticU32CharArrStr or C.GlobalStaticU32CharArrStrSized
-                or C.GlobalU8CharArrStr or C.GlobalU8CharArrStrSized
-                or C.GlobalStaticU8CharArrStr or C.GlobalStaticU8CharArrStrSized
-                or C.GlobalStructInit or C.GlobalStaticStructInit when AlreadySeenScalarGlobalInAnotherUnit(fn):
-                break;
             case C.GlobalDeclList g: BuildGlobalDecls(g.Arg0, g.Arg1, Storage.Static); break;
             case C.GlobalStaticDeclList g: BuildGlobalDecls(g.Arg1, g.Arg2, Storage.Static, isStatic: true); break;
             case C.GlobalAttributedStaticDeclList g: BuildGlobalDecls(g.Arg2, g.Arg3, Storage.Static, isStatic: true, alignment: GnuObjectAlignment(g.Arg1)); break;
@@ -509,6 +484,7 @@ internal sealed partial class IrBuilder
             case C.TypedefAttributedUnion s: BuildAggregateTypedef(Tok(s.Arg3), s.Arg5, s.Arg7, true, GnuAggregateAlignment(s.Arg2), pack: GnuAggregatePack(s.Arg2, fn), pragmaPack: SourcePacking.Of(fn)); break;
             case C.AttributedStruct s: BuildStructDef(Tok(s.Arg2), s.Arg4, null, false, GnuAggregateAlignment(s.Arg1), pack: GnuAggregatePack(s.Arg1, fn), pragmaPack: SourcePacking.Of(fn)); break;
             case C.AttributedUnion s: BuildStructDef(Tok(s.Arg2), s.Arg4, null, true, GnuAggregateAlignment(s.Arg1), pack: GnuAggregatePack(s.Arg1, fn), pragmaPack: SourcePacking.Of(fn)); break;
+            case C.AggregateTypeDeclaration d: BuildAggregateTypeDeclaration(d.Arg0, fn); break;
             case C.StructDef s: BuildStructDef(Tok(s.Arg1), s.Arg3, null, isUnion: false, pack: SourcePacking.Of(fn)); break;
             case C.UnionDef s: BuildStructDef(Tok(s.Arg1), s.Arg3, null, isUnion: true, pack: SourcePacking.Of(fn)); break;
             case C.TypedefStruct s: BuildAggregateTypedef(Tok(s.Arg2), s.Arg4, s.Arg6, false, pack: SourcePacking.Of(fn)); break;
@@ -532,19 +508,6 @@ internal sealed partial class IrBuilder
             default: throw new IrUnsupportedException(TypeName(fn.Content));
         }
     }
-
-    // Structural fingerprints of every file-scope variable definition built so
-    // far — the global-side twin of _fnDefSites (which needs per-site symbols;
-    // globals don't, because their file-scope binding persists across TUs).
-    private readonly HashSet<string> _seenTopLevelDefs = new(StringComparer.Ordinal);
-
-    /// <summary>True when an identical file-scope variable definition was already
-    /// built (same position-free structural dump = same post-expansion tokens,
-    /// i.e. the same header re-included by another TU). Caveat: C would give each
-    /// TU its OWN copy of a header-defined MUTABLE <c>static</c> variable; dotcc
-    /// merges them into one field. For the idiom that actually occurs (header
-    /// <c>static const</c> tables) the two are indistinguishable.</summary>
-    private bool AlreadySeenTopLevel(Item fn) => !_seenTopLevelDefs.Add(SyntaxIdentity.Of(fn));
 
     /// <summary>File-scope variable declaration. Each declarator becomes a
     /// generated globals-struct field;
@@ -1102,7 +1065,9 @@ internal sealed partial class IrBuilder
 
     private readonly record struct FnSig(CType Return, string Name, List<ParamInfo> Params, bool Variadic, bool IsStatic, bool MacroGenerated = false);
 
-    private FnSig ExtractFnSig(Item it) => it.Content switch
+    private FnSig ExtractFnSig(Item it) => ApplyOrderedFunctionStorage(it, ExtractFnSigCore(it));
+
+    private FnSig ExtractFnSigCore(Item it) => it.Content switch
     {
         C.FnSig n => new(ResolveType(n.Arg0), Tok(n.Arg1), BuildParams(n.Arg3, out var v0), v0, false, FunctionMacroOrigin.Contains(n.Arg1)),
         C.FnSigNoArgs n => new(ResolveType(n.Arg0), Tok(n.Arg1), new(), false, false, FunctionMacroOrigin.Contains(n.Arg1)),
@@ -1721,6 +1686,8 @@ internal sealed partial class IrBuilder
 
     private CType ResolveType(Item it) => it.Content switch
     {
+        C.TypeStoragePre t => ResolveType(t.Arg1),
+        C.TypeStoragePost t => ResolveType(t.Arg0),
         C.TypeFromSpec t => ResolveSpecs(CollectSpecs(t.Arg0), SrcPos.From(it)),
         C.TypePtr t => PointerType(ResolveType(t.Arg0)),
         C.TypeGnuAttributes t => ResolveGnuAttributedType(t.Arg0, t.Arg1),
@@ -1748,6 +1715,8 @@ internal sealed partial class IrBuilder
         // it on fields/symbols for shared layout and aligned storage emission.
         C.TypeAlignasType t => AlignasType(t.Arg2, t.Arg4, it),
         C.TypeAlignasExpr t => AlignasExpr(t.Arg2, t.Arg4, it),
+        C.TypeAlignasTypePost t => AlignasType(t.Arg3, t.Arg0, it),
+        C.TypeAlignasExprPost t => AlignasExpr(t.Arg3, t.Arg0, it),
         C.TypePtrQualRestrict t => PointerType(ResolveType(t.Arg0)),
         C.TypeName t => ResolveTypeName(Tok(t.Arg0)),
         // `enum Tag` as a type — the registered real C# enum, or plain int if the
@@ -1803,6 +1772,8 @@ internal sealed partial class IrBuilder
     {
         switch (inner.Content)
         {
+            case C.TypeStoragePre storage: return AttributedDeclarationSpecs(storage.Arg1);
+            case C.TypeStoragePost storage: return AttributedDeclarationSpecs(storage.Arg0);
             case C.TypeGnuAttributes attributes:
                 ValidateGnuSignatureAttributes(attributes.Arg1);
                 return AttributedDeclarationSpecs(attributes.Arg0);
@@ -1815,6 +1786,8 @@ internal sealed partial class IrBuilder
             case C.TypeAtomic q: return QualifiedSpecs(q.Arg1, "_Atomic");
             case C.TypeAlignasExpr q: Gate(2011, "_Alignas", inner); return AttributedDeclarationSpecs(q.Arg4);
             case C.TypeAlignasType q: Gate(2011, "_Alignas", inner); return AttributedDeclarationSpecs(q.Arg4);
+            case C.TypeAlignasExprPost q: Gate(2011, "_Alignas", inner); return AttributedDeclarationSpecs(q.Arg0);
+            case C.TypeAlignasTypePost q: Gate(2011, "_Alignas", inner); return AttributedDeclarationSpecs(q.Arg0);
             case C.TypeAttributedSpecifierRun continuation:
                 var specs = AttributedDeclarationSpecs(continuation.Arg0);
                 specs.AddRange(CollectSpecs(continuation.Arg1));
@@ -2107,8 +2080,12 @@ internal sealed partial class IrBuilder
 
     private int RequestedDeclarationAlignment(Item type) => type.Content switch
     {
+        C.TypeStoragePre s => RequestedDeclarationAlignment(s.Arg1),
+        C.TypeStoragePost s => RequestedDeclarationAlignment(s.Arg0),
         C.TypeAlignasExpr a => Math.Max(CheckedAlignment(ConstEval(BuildExpr(a.Arg2)) ?? 0), RequestedDeclarationAlignment(a.Arg4)),
         C.TypeAlignasType a => Math.Max(AlignOfConst(ResolveType(a.Arg2)), RequestedDeclarationAlignment(a.Arg4)),
+        C.TypeAlignasExprPost a => Math.Max(CheckedAlignment(ConstEval(BuildExpr(a.Arg3)) ?? 0), RequestedDeclarationAlignment(a.Arg0)),
+        C.TypeAlignasTypePost a => Math.Max(AlignOfConst(ResolveType(a.Arg3)), RequestedDeclarationAlignment(a.Arg0)),
         C.TypePtr p => RequestedDeclarationAlignment(p.Arg0),
         C.TypeGnuAttributes p => RequestedDeclarationAlignment(p.Arg0),
         C.TypeAttributedSpecifierRun p => RequestedDeclarationAlignment(p.Arg0),
@@ -2383,6 +2360,7 @@ internal sealed partial class IrBuilder
             // file-scope definition) and the statement emits nothing.
             case C.StmtStructDef s: BuildStructDef(Tok(s.Arg1), s.Arg3, null, isUnion: false, pack: SourcePacking.Of(it)); return EmptyStmt(pos);
             case C.StmtUnionDef s: BuildStructDef(Tok(s.Arg1), s.Arg3, null, isUnion: true, pack: SourcePacking.Of(it)); return EmptyStmt(pos);
+            case C.StmtAggregateTypeDeclaration d: BuildAggregateTypeDeclaration(d.Arg0, it); return EmptyStmt(pos);
             // Block-scope `_Static_assert(expr[, "msg"]);` — compile-time only,
             // evaluated exactly like the file-scope forms; a holding assertion
             // emits nothing. The message-less arity gates C23.
@@ -2779,7 +2757,7 @@ internal sealed partial class IrBuilder
     /// <summary>A declaration in statement position. The grammar wraps the
     /// concrete declaration kind (plain, array, fn-ptr, …) inside
     /// <c>StmtDecl.Arg0</c>; dispatch on it.</summary>
-    private CStmt BuildDeclStmt(Item it) => it.Content switch
+    private CStmt BuildDeclStmt(Item it) => BuildOrderedLocalDeclaration(it) ?? (it.Content switch
     {
         C.Decl => BuildDecl(it),
         // `auto x = E;` (C23 type inference) and `auto Type x …` (redundant
@@ -2824,7 +2802,7 @@ internal sealed partial class IrBuilder
         C.DeclCallbackInit d => BuildLocalCallback(d.Arg0, d.Arg2),
         C.DeclCallbackArrayInit d => BuildLocalCallback(d.Arg0, d.Arg3, braces: true),
         _ => throw new IrUnsupportedException(TypeName(it.Content)),
-    };
+    });
 
     /// <summary>Per-translation-unit counter giving each function-scope
     /// <c>static</c> local a program-unique backing-field name. The CS0136
@@ -2837,10 +2815,12 @@ internal sealed partial class IrBuilder
     /// field of the generated globals struct (a <see cref="GlobalVar"/> with a mangled,
     /// program-unique name); references resolve to that field via an alias symbol
     /// in the function's scope. The statement itself emits nothing.</summary>
-    private CStmt BuildStmtStaticDecl(C.StmtStaticDecl n)
+    private CStmt BuildStmtStaticDecl(C.StmtStaticDecl n) => BuildStaticLocalDecls(n.Arg1, n.Arg2);
+
+    private CStmt BuildStaticLocalDecls(Item typeItem, Item declarators)
     {
         _sawThreadLocalSpec = false;
-        WalkDeclList(n.Arg1, n.Arg2, (name, initItem, type) =>
+        WalkDeclList(typeItem, declarators, (name, initItem, type) =>
         {
             if (type.Unqualified is CType.Array array)
             {
@@ -2857,12 +2837,12 @@ internal sealed partial class IrBuilder
                 var initializer = initItem is { } values
                     ? new PinnedArray(element, BuildArrayElems(element, dimensions, ParseInitList(values)), null) { Type = new CType.Pointer(element) }
                     : new PinnedArray(element, null, new LitInt(total.ToString(System.Globalization.CultureInfo.InvariantCulture), total) { Type = CType.Int }) { Type = new CType.Pointer(element) };
-                AddGlobalArray(name, type, initializer, $"{_symbols.Escape(name)}__s{_staticLocalSeq++}", DeclarationAlignment(n.Arg1, type), _sawThreadLocalSpec);
+                AddGlobalArray(name, type, initializer, $"{_symbols.Escape(name)}__s{_staticLocalSeq++}", DeclarationAlignment(typeItem, type), _sawThreadLocalSpec);
                 return;
             }
             var sym = new Symbol
             {
-                Name = name, Kind = SymKind.Var, Type = type, Alignment = DeclarationAlignment(n.Arg1, type),
+                Name = name, Kind = SymKind.Var, Type = type, Alignment = DeclarationAlignment(typeItem, type),
                 Storage = Storage.Static, IsGlobal = true, IsThreadLocal = _sawThreadLocalSpec,
                 TargetName = $"{_symbols.Escape(name)}__s{_staticLocalSeq++}",
             };
@@ -2911,6 +2891,7 @@ internal sealed partial class IrBuilder
         var sym = new Symbol
         {
             Name = Tok(nameItem), Kind = SymKind.Var, Type = type,
+            Alignment = DeclarationAlignment(typeItem, type),
             Storage = Storage.Static, IsGlobal = true, IsThreadLocal = threadLocal,
             TargetName = $"{_symbols.Escape(Tok(nameItem))}__s{_staticLocalSeq++}",
         };
@@ -2953,14 +2934,16 @@ internal sealed partial class IrBuilder
             var candidate = new Symbol { Name = name, Kind = SymKind.Var, Type = type,
                 Storage = Storage.Extern, IsGlobal = true, IsThreadLocal = _sawThreadLocalSpec,
                 Alignment = DeclarationAlignment(typeItem, type), TargetName = _symbols.Escape(name) };
-            if (_scalarGlobals.TryGetValue(name, out var declaration))
+            var key = ScalarGlobalKey(name, Storage.Extern);
+            if (_scalarGlobals.TryGetValue(key, out var declaration))
             {
                 if (!CompatibleGlobalTypes(declaration.Symbol.Type, type)
                     || declaration.Symbol.IsThreadLocal != candidate.IsThreadLocal)
                     throw new IrUnsupportedException("conflicting types or storage for block-scope extern object '" + name + "'");
+                declaration.Symbol.Alignment = Math.Max(declaration.Symbol.Alignment, candidate.Alignment);
                 _symbols.DeclareAlias(declaration.Symbol);
             }
-            else if (visible is { Kind: SymKind.Var, IsGlobal: true })
+            else if (visible is { Kind: SymKind.Var, IsGlobal: true } && !_internalGlobals.Contains(visible))
             {
                 // Array/other global declarations may use a different storage
                 // registry. Preserve the visible object's identity and linkage.
@@ -2974,7 +2957,8 @@ internal sealed partial class IrBuilder
                 // or defining any storage. DeclareAlias deliberately skips local
                 // shadow renaming, so separate object fragments refer to the same
                 // external name even when an automatic variable hides it here.
-                _scalarGlobals.Add(name, new ScalarGlobalDeclaration(candidate));
+                NameRegisteredGlobal(candidate, key);
+                _scalarGlobals.Add(key, new ScalarGlobalDeclaration(candidate));
                 _symbols.DeclareAlias(candidate);
             }
         }, staticLocal: true); // permits explicit extern _Thread_local storage
@@ -2989,7 +2973,7 @@ internal sealed partial class IrBuilder
         return new Seq(System.Array.Empty<CStmt>());
     }
 
-    private (Item ReturnType, Item Name, CType Type) CallbackDeclarator(Item declarator)
+    private (Item ReturnType, Item Name, CType Type) CallbackDeclarator(Item declarator, bool staticLocal = false)
     {
         var (returnType, arrayName, parameters) = declarator.Content switch
         {
@@ -2997,7 +2981,8 @@ internal sealed partial class IrBuilder
             C.FnPtrArrayDeclaratorNoArgs d => (d.Arg0, d.Arg3, (Item?)null),
             _ => throw new IrUnsupportedException(TypeName(declarator.Content)),
         };
-        var (name, type) = QualifyPointerDeclarator(arrayName, FnPtrType(returnType, parameters));
+        var resolvedReturn = staticLocal ? ResolveStaticLocalType(returnType) : ResolveType(returnType);
+        var (name, type) = QualifyPointerDeclarator(arrayName, FnPtrType(resolvedReturn, parameters));
         return (returnType, name, type);
     }
 
@@ -3040,7 +3025,7 @@ internal sealed partial class IrBuilder
                 throw new IrUnsupportedException("brace initializer for a scalar function pointer");
             var declaration = RegisterScalarGlobal(new Symbol {
                 Name = Tok(scalar.Arg0), Kind = SymKind.Var, Storage = isExtern ? Storage.Extern : Storage.Static,
-                IsGlobal = true, Type = callback,
+                IsGlobal = true, IsThreadLocal = _sawThreadLocalSpec, Type = callback,
                 Alignment = DeclarationAlignment(returnType, callback),
             }, SrcPos.From(declarator));
             if (declaration != null && !isExtern)
@@ -3405,6 +3390,12 @@ internal sealed partial class IrBuilder
                 case C.TypeConstPost t: it = t.Arg0; break;
                 case C.TypeVolatile t: it = t.Arg1; break;
                 case C.TypeVolatilePost t: it = t.Arg0; break;
+                case C.TypeStoragePre t: it = t.Arg1; break;
+                case C.TypeStoragePost t: it = t.Arg0; break;
+                case C.TypeAlignasExpr t: it = t.Arg4; break;
+                case C.TypeAlignasType t: it = t.Arg4; break;
+                case C.TypeAlignasExprPost t: it = t.Arg0; break;
+                case C.TypeAlignasTypePost t: it = t.Arg0; break;
                 default: return n;
             }
         }

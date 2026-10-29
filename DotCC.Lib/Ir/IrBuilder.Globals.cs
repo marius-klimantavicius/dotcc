@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using Item = global::LALR.CC.LexicalGrammar.Item;
 
 namespace DotCC.Ir;
 
@@ -17,30 +16,57 @@ internal sealed partial class IrBuilder
         public bool HasInitializer { get; set; }
     }
 
-    private readonly Dictionary<string, ScalarGlobalDeclaration> _scalarGlobals = new(StringComparer.Ordinal);
-    private readonly Dictionary<string, string> _scalarDefinitionUnits = new(StringComparer.Ordinal);
+    // External linkage is shared; internal linkage belongs to the containing
+    // translation unit, including declarations originating in a shared header.
+    private readonly Dictionary<(string Unit, string Name), ScalarGlobalDeclaration> _scalarGlobals = new();
+    private readonly Dictionary<string, (string Unit, Symbol Symbol)> _scalarGlobalTargetOwners = new(StringComparer.Ordinal);
     private readonly HashSet<Symbol> _internalGlobals = new(ReferenceEqualityComparer.Instance);
     internal IReadOnlyCollection<Symbol> InternalGlobals => _internalGlobals;
     private bool _declaringInternalGlobal;
 
-    // Preserve the existing cross-TU identical-header-definition behavior, but
-    // never suppress declarations in the same TU: two initialized definitions
-    // there are an error even when their token text is identical.
-    private bool AlreadySeenScalarGlobalInAnotherUnit(Item declaration)
+    private (string Unit, string Name) ScalarGlobalKey(string name, Storage semanticStorage)
     {
-        var fingerprint = SyntaxIdentity.Of(declaration);
-        if (_scalarDefinitionUnits.TryGetValue(fingerprint, out var firstFile)) return firstFile != _file;
-        _scalarDefinitionUnits.Add(fingerprint, _file);
-        return false;
+        var internalKey = (FunctionUnitIdentity, name);
+        if (semanticStorage == Storage.Static) return internalKey;
+        // An extern declaration inherits the linkage of a visible file-scope
+        // static. A local automatic object can hide that declaration instead.
+        if (_scalarGlobals.TryGetValue(internalKey, out var local)
+            && ReferenceEquals(_symbols.Resolve(name), local.Symbol)) return internalKey;
+        return ("", name);
+    }
+
+    private string InternalGlobalTargetName((string Unit, string Name) key)
+        => _symbols.Escape(key.Name) + "__tu_" + Convert.ToHexString(
+            System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(key.Unit)));
+
+    private void NameRegisteredGlobal(Symbol candidate, (string Unit, string Name) key)
+    {
+        candidate.TargetName = _symbols.Escape(candidate.Name);
+        if (_scalarGlobalTargetOwners.TryGetValue(candidate.Name, out var previous))
+        {
+            // Keep existing single-TU spellings. Once another object needs the
+            // name, rename private symbols themselves so earlier references,
+            // including address expressions, retain the same storage identity.
+            if (previous.Unit.Length != 0)
+                previous.Symbol.TargetName = InternalGlobalTargetName((previous.Unit, candidate.Name));
+            if (key.Unit.Length != 0) candidate.TargetName = InternalGlobalTargetName(key);
+        }
+        else _scalarGlobalTargetOwners.Add(candidate.Name, (key.Unit, candidate));
     }
 
     private ScalarGlobalDeclaration? RegisterScalarGlobal(Symbol candidate, SrcPos position)
     {
-        if (!_scalarGlobals.TryGetValue(candidate.Name, out var declaration))
+        // Storage.Static is also the legacy representation of external global
+        // definitions. The declaration's semantic linkage is tracked separately.
+        var semanticStorage = _declaringInternalGlobal ? Storage.Static : Storage.Extern;
+        var key = ScalarGlobalKey(candidate.Name, semanticStorage);
+        if (!_scalarGlobals.TryGetValue(key, out var declaration))
         {
-            declaration = new ScalarGlobalDeclaration(_symbols.Declare(candidate));
-            _scalarGlobals.Add(candidate.Name, declaration);
-            if (_declaringInternalGlobal) _internalGlobals.Add(declaration.Symbol);
+            _symbols.Declare(candidate);
+            NameRegisteredGlobal(candidate, key);
+            declaration = new ScalarGlobalDeclaration(candidate);
+            _scalarGlobals.Add(key, declaration);
+            if (key.Unit.Length != 0) _internalGlobals.Add(declaration.Symbol);
             return declaration;
         }
         if (!CompatibleGlobalTypes(declaration.Symbol.Type, candidate.Type))
@@ -56,7 +82,7 @@ internal sealed partial class IrBuilder
             return null;
         }
         declaration.Symbol.Alignment = Math.Max(declaration.Symbol.Alignment, candidate.Alignment);
-        if (_declaringInternalGlobal) _internalGlobals.Add(declaration.Symbol);
+        if (key.Unit.Length != 0) _internalGlobals.Add(declaration.Symbol);
         _symbols.DeclareAlias(declaration.Symbol);
         return declaration;
     }
@@ -70,7 +96,7 @@ internal sealed partial class IrBuilder
                 $"redefinition of global '{symbol.Name}'", position, _file));
             return;
         }
-        _definedGlobalNames.Add(symbol.Name);
+        if (!_internalGlobals.Contains(symbol)) _definedGlobalNames.Add(symbol.Name);
         if (declaration.StorageIndex < 0)
         {
             declaration.StorageIndex = Globals.Count;
