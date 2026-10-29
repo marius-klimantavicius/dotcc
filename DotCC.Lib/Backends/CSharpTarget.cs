@@ -39,7 +39,8 @@ internal sealed class CSharpTarget(bool instanceMethods = false, IReadOnlyDictio
             + string.Join(", ", f.Params.Select(RenderType)
                 .Concat(f.Variadic && !f.IsNativeCallConv ? new[] { "global::System.ReadOnlySpan<VaArg>" } : global::System.Array.Empty<string>())
                 .Append(RenderType(f.Return))) + ">",
-        CType.Named n => aggregateNames?.GetValueOrDefault(n.Name, n.Name) ?? n.Name,
+        CType.Named { IsExternal: true } n => n.Name,
+        CType.Named n => aggregateNames?.GetValueOrDefault(n.Name, EmitHelpers.Id(n.Name)) ?? EmitHelpers.Id(n.Name),
         CType.Enum e => aggregateNames?.GetValueOrDefault(e.Name, EmitHelpers.Id(e.Name)) ?? EmitHelpers.Id(e.Name),
         CType.ComplexType => "global::System.Numerics.Complex",
         CType.Float128Type => "Float128",

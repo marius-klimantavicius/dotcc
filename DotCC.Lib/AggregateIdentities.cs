@@ -397,8 +397,8 @@ internal static class AggregateIdentities
     internal static string Relocate(string source, IReadOnlyList<AggregateIdentity> graph,
         IReadOnlyDictionary<string, string> variants)
     {
-        var names = graph.ToDictionary(n => Token(n.Name), n => n.IsEnum
-            ? EmitHelpers.Id(variants.GetValueOrDefault(n.Name, n.Name)) : variants.GetValueOrDefault(n.Name, n.Name), StringComparer.Ordinal);
+        var names = graph.ToDictionary(n => Token(n.Name),
+            n => EmitHelpers.Id(variants.GetValueOrDefault(n.Name, n.Name)), StringComparer.Ordinal);
         // Enum references use type-only aliases to survive C tag/ordinary-name
         // shadowing. Their exact encoded aliases and semantic marker payloads
         // must follow the same validated identity plan as the type tokens.

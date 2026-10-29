@@ -25,7 +25,7 @@ public sealed partial class CPreprocessingOptions
         var result = new Dictionary<string, ExternalTypeOverride>(StringComparer.Ordinal);
         foreach (var type in types ?? Array.Empty<ExternalTypeOverride>())
         {
-            if (type is null || type.Name is null || !Identifier(type.Name) || EmitHelpers.Id(type.Name) != type.Name
+            if (type is null || type.Name is null || !Identifier(type.Name) || EmitHelpers.EscapeKeyword(type.Name) != type.Name
                 || type.Name.StartsWith("__", StringComparison.Ordinal)
                 || type.Name is "null" or "default" or "var" or "dynamic" or "nint" or "nuint" or "record" or "required" or "file" or "scoped"
                 || Compiler.PredefinedTypeNames.Contains(type.Name, StringComparer.Ordinal)

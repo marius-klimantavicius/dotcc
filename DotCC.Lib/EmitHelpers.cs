@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace DotCC;
@@ -69,8 +70,28 @@ internal static class EmitHelpers
     /// never be C identifiers, so the rule fires only for the C#-only reserved
     /// words like <c>new</c>/<c>lock</c>/<c>string</c>.)
     /// </summary>
-    internal static string Id(string name) =>
-        _csReservedKeywords.Contains(name) ? "@" + name : name;
+    internal static string Id(string name)
+    {
+        // Metadata names have a UTF-8 byte limit, even though C# accepts much
+        // longer identifiers. Keep room for generated owners/suffixes. Hash the
+        // complete source spelling, never just the retained readable prefix;
+        // source bindings and object identity metadata keep their original names.
+        if (Encoding.UTF8.GetByteCount(name) > 256)
+        {
+            int characters = 0, bytes = 0;
+            foreach (var rune in name.EnumerateRunes())
+            {
+                if (bytes + rune.Utf8SequenceLength > 160) break;
+                bytes += rune.Utf8SequenceLength;
+                characters += rune.Utf16SequenceLength;
+            }
+            name = name[..characters] + "__" + Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(name)));
+        }
+        return EscapeKeyword(name);
+    }
+
+    // Authored CLR names are validated/used as supplied, not translated names.
+    internal static string EscapeKeyword(string name) => _csReservedKeywords.Contains(name) ? "@" + name : name;
 
     // ---- C string/char escape decoding ----------------------------------
     // One element of a decoded body: either a literal source character (to be
