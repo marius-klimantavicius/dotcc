@@ -34,27 +34,37 @@ public sealed unsafe class Terminal : IDisposable
     {
         ArgumentOutOfRangeException.ThrowIfZero(columns);
         ArgumentOutOfRangeException.ThrowIfZero(rows);
+        // Allocate the finalizable owner before acquiring an engine resource.
+        handle = new TerminalHandle();
         void* value = null;
-        Check(Core.dotcc_ghostty_new(&value, columns, rows));
-        if (value == null) throw new InvalidOperationException("libghostty-vt returned an empty terminal.");
-        handle = new TerminalHandle(value);
+        try
+        {
+            var status = Core.dotcc_ghostty_new(&value, columns, rows);
+            handle.Initialize(value);
+            value = null; // Ownership has transferred, including a malformed failure result.
+            Check(status);
+            if (handle.IsInvalid) throw new InvalidOperationException("libghostty-vt returned an empty terminal.");
+        }
+        catch
+        {
+            if (value != null) Core.dotcc_ghostty_free(value);
+            handle.Dispose();
+            throw;
+        }
     }
 
-    private void* Value
+    private HandleLease Acquire()
     {
-        get
-        {
-            ObjectDisposedException.ThrowIf(handle.IsClosed, this);
-            return (void*)handle.DangerousGetHandle();
-        }
+        ObjectDisposedException.ThrowIf(handle.IsClosed, this);
+        return new HandleLease(handle);
     }
 
     public void Write(ReadOnlySpan<byte> utf8)
     {
         lock (gate)
         {
-            var value = Value;
-            fixed (byte* bytes = utf8) Core.dotcc_ghostty_write(value, bytes, (ulong)utf8.Length);
+            using var lease = Acquire();
+            fixed (byte* bytes = utf8) Core.dotcc_ghostty_write(lease.Value, bytes, (ulong)utf8.Length);
         }
     }
 
@@ -70,8 +80,9 @@ public sealed unsafe class Terminal : IDisposable
         {
             lock (gate)
             {
+                using var lease = Acquire();
                 ushort columns, rows, x, y;
-                Check(Core.dotcc_ghostty_position(Value, &columns, &rows, &x, &y));
+                Check(Core.dotcc_ghostty_position(lease.Value, &columns, &rows, &x, &y));
                 return new(columns, rows, x, y);
             }
         }
@@ -83,8 +94,9 @@ public sealed unsafe class Terminal : IDisposable
         {
             lock (gate)
             {
+                using var lease = Acquire();
                 int screen;
-                Check(Core.dotcc_ghostty_screen(Value, &screen));
+                Check(Core.dotcc_ghostty_screen(lease.Value, &screen));
                 return screen;
             }
         }
@@ -96,8 +108,9 @@ public sealed unsafe class Terminal : IDisposable
         ArgumentOutOfRangeException.ThrowIfGreaterThan(number, (ushort)32767);
         lock (gate)
         {
+            using var lease = Acquire();
             int enabled;
-            Check(Core.dotcc_ghostty_mode(Value, number, ansi ? 1 : 0, &enabled));
+            Check(Core.dotcc_ghostty_mode(lease.Value, number, ansi ? 1 : 0, &enabled));
             return enabled != 0;
         }
     }
@@ -107,9 +120,10 @@ public sealed unsafe class Terminal : IDisposable
     {
         lock (gate)
         {
+            using var lease = Acquire();
             uint codepoint, rgb;
             int flags, underline, palette;
-            Check(Core.dotcc_ghostty_cell(Value, x, y, &codepoint, &flags, &underline, &palette, &rgb));
+            Check(Core.dotcc_ghostty_cell(lease.Value, x, y, &codepoint, &flags, &underline, &palette, &rgb));
             return new(codepoint, (TerminalTextStyle)flags, underline,
                 palette < 0 ? null : checked((byte)palette), rgb == uint.MaxValue ? null : rgb);
         }
@@ -120,14 +134,14 @@ public sealed unsafe class Terminal : IDisposable
     {
         lock (gate)
         {
-            var value = Value;
+            using var lease = Acquire();
             ulong required = 0;
-            var status = Core.dotcc_ghostty_snapshot(value, null, 0, &required);
+            var status = Core.dotcc_ghostty_snapshot(lease.Value, null, 0, &required);
             if (status != Core.dotcc_ghostty_out_of_space()) Check(status);
             if (required == 0) return string.Empty;
             var bytes = new byte[checked((int)required)];
             fixed (byte* destination = bytes)
-                Check(Core.dotcc_ghostty_snapshot(value, destination, (ulong)bytes.Length, &required));
+                Check(Core.dotcc_ghostty_snapshot(lease.Value, destination, (ulong)bytes.Length, &required));
             return Encoding.UTF8.GetString(bytes.AsSpan(0, checked((int)required)));
         }
     }
@@ -136,12 +150,20 @@ public sealed unsafe class Terminal : IDisposable
     {
         ArgumentOutOfRangeException.ThrowIfZero(columns);
         ArgumentOutOfRangeException.ThrowIfZero(rows);
-        lock (gate) Check(Core.dotcc_ghostty_resize(Value, columns, rows));
+        lock (gate)
+        {
+            using var lease = Acquire();
+            Check(Core.dotcc_ghostty_resize(lease.Value, columns, rows));
+        }
     }
 
     public void Reset()
     {
-        lock (gate) Core.dotcc_ghostty_reset(Value);
+        lock (gate)
+        {
+            using var lease = Acquire();
+            Core.dotcc_ghostty_reset(lease.Value);
+        }
     }
 
     public void Dispose()
@@ -156,12 +178,39 @@ public sealed unsafe class Terminal : IDisposable
 
     private sealed class TerminalHandle : SafeHandle
     {
-        internal TerminalHandle(void* value) : base(IntPtr.Zero, ownsHandle: true) => SetHandle((nint)value);
+        internal TerminalHandle() : base(IntPtr.Zero, ownsHandle: true) { }
+        internal void Initialize(void* value) => SetHandle((nint)value);
         public override bool IsInvalid => handle == IntPtr.Zero;
         protected override bool ReleaseHandle()
         {
             Core.dotcc_ghostty_free((void*)handle);
             return true;
         }
+    }
+
+    // Explicit pointer calls do not receive SafeHandle's interop marshalling
+    // lifetime guarantee. Hold a reference until the complete operation ends.
+    private readonly ref struct HandleLease
+    {
+        private readonly TerminalHandle owner;
+        internal void* Value { get; }
+
+        internal HandleLease(TerminalHandle owner)
+        {
+            bool acquired = false;
+            try
+            {
+                owner.DangerousAddRef(ref acquired);
+                this.owner = owner;
+                Value = (void*)owner.DangerousGetHandle();
+            }
+            catch
+            {
+                if (acquired) owner.DangerousRelease();
+                throw;
+            }
+        }
+
+        public void Dispose() => owner.DangerousRelease();
     }
 }
