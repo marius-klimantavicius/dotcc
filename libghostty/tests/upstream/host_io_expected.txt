@@ -1,0 +1,1 @@
+PASS host-io directory, positional binary reads, EOF, errors and resource cleanup

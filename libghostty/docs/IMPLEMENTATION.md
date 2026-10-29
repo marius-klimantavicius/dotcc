@@ -103,6 +103,27 @@ full-reset test expecting glyph registration despite the disabled glyph feature.
 This auxiliary run is not a passing campaign gate. Remaining applicable core
 test groups are being classified; no full upstream qualification is claimed.
 
+The canonical read-only corpus host-service control passes native and actual
+emitted JIT execution, including nested directory traversal, short-name retry,
+positional binary reads, EOF, ordinary errors and complete handle cleanup.
+Secure entropy uses the native OS provider and shared BCL cryptographic provider;
+the control checks statuses and freshness invariants, never exact random bytes.
+Current integrated receipt:
+`artifacts/campaign/20261029-163238-847ff3ba/receipt.json` (the report's entropy
+description was added afterward; the actual entropy checks already passed).
+This test service does not replace any terminal algorithm. Its full core
+raw/processed JIT/AOT exercise remains required.
+
+The first combined core original-native run executed all 2573 discovered
+candidates: 2564 passed, nine skipped, zero failed and no live allocations.
+Nine exact scope/placeholder exclusions are being recorded; the 2564 active
+required cases remain required. The auxiliary genuine C run compiled 455 MB
+of unchanged test/engine C and reported 2559 pass, 10 skip, four failures of
+2573. Four failures require the real secure entropy service just implemented;
+the additional skip requires hosted C-allocator capability in the test product.
+Neither auxiliary result is a passing final core gate. No required assertion is
+removed in resolving these host services.
+
 No translated terminal engine product or raw/processed JIT/NativeAOT runtime
 gate is accepted yet. Pins and downloaded references are available locally;
 native control and direct Zig translation work are running independently.

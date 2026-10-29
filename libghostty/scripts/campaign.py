@@ -124,12 +124,18 @@ def run_audit(ctx, suite):
     return helper(ctx.root / "tests/audit.py").run(ctx, suite)
 
 
+def run_host_io(ctx, suite):
+    return helper(ctx.root / "tests/upstream/host_io_probe.py").run(ctx, suite)
+
+
 recipe = Recipe(
     "libghostty", "TranslatedGhosttyVt", ("scalar", "qualification", "upstream-render"),
     ("src/Managed.GhosttyVt/Managed.GhosttyVt.csproj", "samples/ManagedConsumer/ManagedConsumer.csproj"),
     sources, prepare,
     consumer=Consumer(property="TranslatedProject"),
-    suites=(Suite("native", (), run=run_native, timeout=3600,
+    suites=(Suite("host-io", (), run=run_host_io,
+                  scope="native/emitted-JIT read-only corpus directory, positional binary I/O, errors and cleanup"),
+            Suite("native", (), run=run_native, timeout=3600,
                   scope="pinned Zig native and genuine whole-engine C, 16 exact assertion cases"),
             Suite("consumer", ("consumer",), matrix=True,
                   scope="owning translated terminal transcript, split UTF-8, screens, resize/reset, independent instances"),
@@ -146,5 +152,5 @@ recipe = Recipe(
     default_suites=("consumer",),
     # Expanded qualification declarations are added with their actual harnesses;
     # this current selection does not establish P4/P6 acceptance by itself.
-    verify_suites=("native", "consumer", "qualification", "upstream-native", "upstream", "audit"),
+    verify_suites=("host-io", "native", "consumer", "qualification", "upstream-native", "upstream", "audit"),
 )
