@@ -26,7 +26,7 @@ internal sealed partial class IrBuilder
         .Concat(Enums.Select(e => (e.Name, Shape: AggregateIdentities.EnumShape(e))))
         .ToDictionary(p => p.Name, p => p.Shape, StringComparer.Ordinal);
 
-    internal IReadOnlyList<AggregateIdentity> AggregateIdentityGraph()
+    internal IReadOnlyList<AggregateIdentity> AggregateIdentityGraph(IReadOnlySet<string>? usedFunctionAddresses = null)
     {
         var definitions = Types.ToDictionary(t => t.Name, StringComparer.Ordinal);
         var enums = Enums.ToDictionary(e => e.Name, StringComparer.Ordinal);
@@ -38,10 +38,17 @@ internal sealed partial class IrBuilder
             foreach (var field in type.Fields)
                 foreach (var dependency in AggregateIdentities.References(field.Type)) Expose(dependency);
         }
-        // This is C linkage, not the overloaded historical Storage.Static flag
-        // on global data. Include declarations as well as definitions, including
-        // extern arrays and callback-valued objects.
-        var symbols = FunctionPointerCandidates.Where(s => s.Storage != Storage.Static)
+        // Object emission supplies the backend's actual function-address uses.
+        // A prototype used only by typeof does not bind that external symbol;
+        // its types still belong to this translation unit. Keep definitions,
+        // direct calls (including variadic/runtime calls), and address uses as
+        // linkage roots. Earlier discovery passes remain conservative until
+        // address-use information is available. All global declarations retain
+        // their contracts, including extern arrays and callback-valued objects.
+        var definedFunctions = Functions.Select(f => f.Sym).ToHashSet();
+        var symbols = FunctionPointerCandidates.Where(s => s.Storage != Storage.Static
+                && (usedFunctionAddresses == null || definedFunctions.Contains(s)
+                    || _referencedFuncs.Contains(s.Name) || usedFunctionAddresses.Contains(s.TargetName)))
             .Concat(Globals.Select(g => g.Sym).Where(s => !_internalGlobals.Contains(s)))
             .Concat(_symbols.FileScopeSymbols.Where(s => s.Kind == SymKind.Var && !_internalGlobals.Contains(s)))
             .DistinctBy(s => s.TargetName).ToArray();
