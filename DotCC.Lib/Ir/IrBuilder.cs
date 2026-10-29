@@ -1534,12 +1534,6 @@ internal sealed partial class IrBuilder
                 case C.StructFnPtrMember sm:
                     fields.Add(BuildCallbackMember(sm.Arg0));
                     break;
-                case C.StructFnPtrStorageMember sm:
-                    fields.Add(AlignedField(sm.Arg0, sm.Arg4, new CType.Pointer(FnPtrType(sm.Arg0, sm.Arg7))));
-                    break;
-                case C.StructFnPtrStorageMemberNoArgs sm:
-                    fields.Add(AlignedField(sm.Arg0, sm.Arg4, new CType.Pointer(FnPtrType(sm.Arg0, null))));
-                    break;
                 case C.StructFnPtrReturningFnPtr sm:
                     fields.Add(AlignedField(sm.Arg0, sm.Arg5, FnPtrType(FnPtrType(sm.Arg0, sm.Arg12), sm.Arg8)));
                     break;
@@ -1780,9 +1774,9 @@ internal sealed partial class IrBuilder
         C.TypeFnPtr t => FnPtrType(t.Arg0, t.Arg5),
         C.TypeFnPtrNoArgs t => FnPtrType(t.Arg0, null),
         C.TypeFnPtrVoid t => FnPtrType(t.Arg0, null),
-        C.TypeFnPtrStorage t => new CType.Pointer(FnPtrType(t.Arg0, t.Arg6)),
-        C.TypeFnPtrStorageNoArgs t => new CType.Pointer(FnPtrType(t.Arg0, null)),
-        C.TypeFnPtrStorageVoid t => new CType.Pointer(FnPtrType(t.Arg0, null)),
+        C.TypeQualifiedFnPtr t => QualifiedFnPtrType(t.Arg0, t.Arg6, t.Arg3),
+        C.TypeQualifiedFnPtrNoArgs t => QualifiedFnPtrType(t.Arg0, null, t.Arg3),
+        C.TypeQualifiedFnPtrVoid t => QualifiedFnPtrType(t.Arg0, null, t.Arg3),
         _ => throw new IrUnsupportedException(TypeName(it.Content)),
     };
 
@@ -2813,10 +2807,6 @@ internal sealed partial class IrBuilder
         C.DeclCallback d => BuildLocalCallback(d.Arg0, null),
         C.DeclCallbackInit d => BuildLocalCallback(d.Arg0, d.Arg2),
         C.DeclCallbackArrayInit d => BuildLocalCallback(d.Arg0, d.Arg3, braces: true),
-        C.DeclFnPtrStorage d => BuildFnPtrLocal(d.Arg0, d.Arg4, d.Arg7, null, pointerLevels: 1),
-        C.DeclFnPtrStorageNoArgs d => BuildFnPtrLocal(d.Arg0, d.Arg4, null, null, pointerLevels: 1),
-        C.DeclFnPtrStorageInit d => BuildFnPtrLocal(d.Arg0, d.Arg4, d.Arg7, d.Arg10, pointerLevels: 1),
-        C.DeclFnPtrStorageNoArgsInit d => BuildFnPtrLocal(d.Arg0, d.Arg4, null, d.Arg9, pointerLevels: 1),
         _ => throw new IrUnsupportedException(TypeName(it.Content)),
     };
 
@@ -2983,7 +2973,7 @@ internal sealed partial class IrBuilder
         return new Seq(System.Array.Empty<CStmt>());
     }
 
-    private (Item ReturnType, Item Name, Item? Parameters, TypeQual Quals) CallbackDeclarator(Item declarator)
+    private (Item ReturnType, Item Name, CType Type) CallbackDeclarator(Item declarator)
     {
         var (returnType, arrayName, parameters) = declarator.Content switch
         {
@@ -2991,8 +2981,19 @@ internal sealed partial class IrBuilder
             C.FnPtrArrayDeclaratorNoArgs d => (d.Arg0, d.Arg3, (Item?)null),
             _ => throw new IrUnsupportedException(TypeName(declarator.Content)),
         };
-        var (name, quals) = QualifiedCallbackName(arrayName);
-        return (returnType, name, parameters, quals);
+        CType type = FnPtrType(returnType, parameters);
+        while (true)
+        {
+            switch (arrayName.Content)
+            {
+                case C.FnPtrArrayNameConst q: type = type.WithQuals(TypeQual.Const); arrayName = q.Arg1; continue;
+                case C.FnPtrArrayNameVolatile q: type = type.WithQuals(TypeQual.Volatile); arrayName = q.Arg1; continue;
+                case C.FnPtrArrayNameRestrict q: type = type.WithQuals(TypeQual.Restrict); arrayName = q.Arg1; continue;
+                case C.FnPtrArrayNamePointer p: type = new CType.Pointer(type); arrayName = p.Arg1; continue;
+            }
+            break;
+        }
+        return (returnType, arrayName, type);
     }
 
     private static (Item Name, TypeQual Quals) QualifiedCallbackName(Item arrayName)
@@ -3012,8 +3013,7 @@ internal sealed partial class IrBuilder
 
     private StructField BuildCallbackMember(Item declarator)
     {
-        var (returnType, name, parameters, quals) = CallbackDeclarator(declarator);
-        var callback = FnPtrType(returnType, parameters).WithQuals(quals);
+        var (returnType, name, callback) = CallbackDeclarator(declarator);
         var (identifier, type) = name.Content switch
         {
             C.FnPtrScalarName scalar => (scalar.Arg0, callback),
@@ -3028,15 +3028,15 @@ internal sealed partial class IrBuilder
     private void BuildGlobalFnPtrArray(Item declarator, Item? initItem, bool scalarInitializer = false, bool isExtern = false)
     {
         _sawThreadLocalSpec = false;
-        var (returnType, arrayName, parameters, quals) = CallbackDeclarator(declarator);
+        var (returnType, arrayName, callback) = CallbackDeclarator(declarator);
         if (arrayName.Content is C.FnPtrScalarName scalar)
         {
             if (initItem != null && !scalarInitializer)
                 throw new IrUnsupportedException("brace initializer for a scalar function pointer");
             var declaration = RegisterScalarGlobal(new Symbol {
                 Name = Tok(scalar.Arg0), Kind = SymKind.Var, Storage = isExtern ? Storage.Extern : Storage.Static,
-                IsGlobal = true, Type = FnPtrType(returnType, parameters).WithQuals(quals),
-                Alignment = DeclarationAlignment(returnType, FnPtrType(returnType, parameters)),
+                IsGlobal = true, Type = callback,
+                Alignment = DeclarationAlignment(returnType, callback),
             }, SrcPos.From(declarator));
             if (declaration != null && !isExtern)
             {
@@ -3054,7 +3054,7 @@ internal sealed partial class IrBuilder
             C.FnPtrArrayNameSized a => (a.Arg0, (Item?)a.Arg1),
             _ => throw new IrUnsupportedException(TypeName(arrayName.Content)),
         };
-        var element = FnPtrType(returnType, parameters).WithQuals(quals);
+        var element = callback;
         var threadLocal = _sawThreadLocalSpec;
         var alignment = DeclarationAlignment(returnType, element);
         var inferOuter = arrayName.Content is C.FnPtrArrayNameImplicitOuter;
@@ -3065,11 +3065,11 @@ internal sealed partial class IrBuilder
 
     private CStmt BuildLocalCallback(Item declarator, Item? initializer, bool braces = false)
     {
-        var (returnType, name, parameters, qualifiers) = CallbackDeclarator(declarator);
+        var (returnType, name, callback) = CallbackDeclarator(declarator);
         if (name.Content is C.FnPtrScalarName scalar)
         {
             if (braces) throw new IrUnsupportedException("braced scalar callback initializer");
-            return BuildFnPtrLocal(returnType, scalar.Arg0, parameters, initializer, qualifiers: qualifiers);
+            return BuildFnPtrLocal(returnType, scalar.Arg0, callback, initializer);
         }
         if (initializer is not null && !braces)
             throw new IrUnsupportedException("callback array initializer requires braces");
@@ -3083,26 +3083,25 @@ internal sealed partial class IrBuilder
         var inferOuter = name.Content is C.FnPtrArrayNameImplicitOuter;
         if ((dimensions is null || inferOuter) && initializer is null)
             throw new IrUnsupportedException("local callback array requires complete bounds or an initializer");
-        var element = FnPtrType(returnType, parameters).WithQuals(qualifiers);
+        var element = callback;
         return BuildArrDecl(element, identifier, dimensions, initializer, dimensions is null || inferOuter, inferOuter: inferOuter,
             alignment: DeclarationAlignment(returnType, element));
     }
 
-    private DeclStmt BuildFnPtrLocal(Item retItem, Item nameItem, Item? paramsItem, Item? initItem, int pointerLevels = 0, TypeQual qualifiers = TypeQual.None)
+    private DeclStmt BuildFnPtrLocal(Item retItem, Item nameItem, CType type, Item? initItem)
     {
-        CType.Func type = FnPtrType(retItem, paramsItem) with { Quals = qualifiers };
         var init = initItem is { } ii ? BuildExpr(ii) : null;
         // Propagate a dlsym-sourced native calling-convention marker from the
         // initializer onto the declared fn-ptr type, so the canonical idiom
         //     int (*fn)(int) = (int(*)(int))dlsym(h, "add");  fn(5);
         // calls `fn` through delegate* unmanaged[Cdecl]. Calls render unchanged —
         // C# picks the calli convention from the variable's (now-native) type.
-        if (init?.Type is CType.Func { IsNativeCallConv: true } && !type.IsNativeCallConv)
+        if (init?.Type is CType.Func { IsNativeCallConv: true } && type is CType.Func { IsNativeCallConv: false } function)
         {
-            type = type with { IsNativeCallConv = true };
+            type = function with { IsNativeCallConv = true };
         }
-        var sym = _symbols.Declare(new Symbol { Name = Tok(nameItem), Kind = SymKind.Var, Type = WrapPtr(type, pointerLevels), Storage = Storage.Auto,
-            Alignment = DeclarationAlignment(retItem, WrapPtr(type, pointerLevels)) });
+        var sym = _symbols.Declare(new Symbol { Name = Tok(nameItem), Kind = SymKind.Var, Type = type, Storage = Storage.Auto,
+            Alignment = DeclarationAlignment(retItem, type) });
         return new DeclStmt(new[] { new LocalDecl(sym, init) });
     }
 

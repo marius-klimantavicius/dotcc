@@ -494,6 +494,7 @@ symbols:
   - U32StringArrayInitializer
   - U8StringArrayInitializer
   - ArrayDesignators
+  - FnPtrAbstractTail
 
 productions:
   # The parser's augmented start has one production. Put the empty-unit
@@ -882,10 +883,9 @@ productions:
       - { lhs: Type, rhs: [Type, '(', '*', ')', '(', ParamList, ')'], action: typeFnPtr }
       - { lhs: Type, rhs: [Type, '(', '*', ')', '(', ')'],            action: typeFnPtrNoArgs }
       - { lhs: Type, rhs: [Type, '(', '*', ')', '(', 'void', ')'],    action: typeFnPtrVoid }
-      # Abstract pointer to callback storage, e.g. `(void (**)(void))p`.
-      - { lhs: Type, rhs: [Type, '(', '*', '*', ')', '(', ParamList, ')'], action: typeFnPtrStorage }
-      - { lhs: Type, rhs: [Type, '(', '*', '*', ')', '(', ')'], action: typeFnPtrStorageNoArgs }
-      - { lhs: Type, rhs: [Type, '(', '*', '*', ')', '(', 'void', ')'], action: typeFnPtrStorageVoid }
+      - { lhs: Type, rhs: [Type, '(', '*', FnPtrAbstractTail, ')', '(', ParamList, ')'], action: typeQualifiedFnPtr }
+      - { lhs: Type, rhs: [Type, '(', '*', FnPtrAbstractTail, ')', '(', ')'], action: typeQualifiedFnPtrNoArgs }
+      - { lhs: Type, rhs: [Type, '(', '*', FnPtrAbstractTail, ')', '(', 'void', ')'], action: typeQualifiedFnPtrVoid }
       - { lhs: Type, rhs: [TypeSpecList], action: typeFromSpec }
       # `struct ID` as a type reference — used in declarations, parameters,
       # casts, sizeof. The visitor emits just `ID` since C# doesn't require
@@ -1242,8 +1242,6 @@ productions:
       # retains pointer const/volatile and fixed callback-array bounds.
       - { lhs: Member, rhs: [FnPtrArrayDeclarator, GnuFormatAttr, ';'], action: structFnPtrFormatMember }
       - { lhs: Member, rhs: [FnPtrArrayDeclarator, ';'], action: structFnPtrMember }
-      - { lhs: Member, rhs: [Type, '(', '*', '*', ID, ')', '(', ParamList, ')', ';'], action: structFnPtrStorageMember }
-      - { lhs: Member, rhs: [Type, '(', '*', '*', ID, ')', '(', ')', ';'], action: structFnPtrStorageMemberNoArgs }
       # A callback may itself return a function pointer (SQLite's xDlSym).
       # Keep both signatures instead of flattening the returned pointer to void*.
       - { lhs: Member, rhs: [Type, '(', '*', '(', '*', ID, ')', '(', ParamList, ')', ')', '(', ParamList, ')', ';'], action: structFnPtrReturningFnPtr }
@@ -1409,12 +1407,6 @@ productions:
       - { lhs: Decl, rhs: [FnPtrArrayDeclarator], action: declCallback }
       - { lhs: Decl, rhs: [FnPtrArrayDeclarator, '=', E], action: declCallbackInit }
       - { lhs: Decl, rhs: [FnPtrArrayDeclarator, '=', '{', InitList, '}'], action: declCallbackArrayInit }
-      # A pointer to a callback slot/table composes the same function type
-      # with one ordinary data-pointer level.
-      - { lhs: Decl, rhs: [Type, '(', '*', '*', ID, ')', '(', ParamList, ')'], action: declFnPtrStorage }
-      - { lhs: Decl, rhs: [Type, '(', '*', '*', ID, ')', '(', ')'], action: declFnPtrStorageNoArgs }
-      - { lhs: Decl, rhs: [Type, '(', '*', '*', ID, ')', '(', ParamList, ')', '=', E], action: declFnPtrStorageInit }
-      - { lhs: Decl, rhs: [Type, '(', '*', '*', ID, ')', '(', ')', '=', E], action: declFnPtrStorageNoArgsInit }
       # Pointer-to-array declarator: `int (*p)[3] [= E];` — p is a pointer to an
       # array of 3 (e.g. a row pointer into a 2-D array). Same `( * ID )` shape as
       # the fn-ptr declarator but with `[dims]` instead of `(params)` after the
@@ -1445,6 +1437,18 @@ productions:
       - { lhs: FnPtrArrayName, rhs: [ID, ArrDims], action: fnPtrArrayNameSized }
       - { lhs: FnPtrArrayName, rhs: ['const', FnPtrArrayName], action: fnPtrArrayNameConst }
       - { lhs: FnPtrArrayName, rhs: ['volatile', FnPtrArrayName], action: fnPtrArrayNameVolatile }
+      - { lhs: FnPtrArrayName, rhs: ['restrict', FnPtrArrayName], action: fnPtrArrayNameRestrict }
+      # Each extra star adds a data pointer around the callback slot. Keeping
+      # qualifiers between stars preserves the qualified pointee at that level.
+      - { lhs: FnPtrArrayName, rhs: ['*', FnPtrArrayName], action: fnPtrArrayNamePointer }
+      - { lhs: FnPtrAbstractTail, rhs: ['const', FnPtrAbstractTail], action: abstractFnPtrConst }
+      - { lhs: FnPtrAbstractTail, rhs: ['volatile', FnPtrAbstractTail], action: abstractFnPtrVolatile }
+      - { lhs: FnPtrAbstractTail, rhs: ['restrict', FnPtrAbstractTail], action: abstractFnPtrRestrict }
+      - { lhs: FnPtrAbstractTail, rhs: ['*', FnPtrAbstractTail], action: abstractFnPtrPointer }
+      - { lhs: FnPtrAbstractTail, rhs: ['const'], action: abstractFnPtrConstOne }
+      - { lhs: FnPtrAbstractTail, rhs: ['volatile'], action: abstractFnPtrVolatileOne }
+      - { lhs: FnPtrAbstractTail, rhs: ['restrict'], action: abstractFnPtrRestrictOne }
+      - { lhs: FnPtrAbstractTail, rhs: ['*'], action: abstractFnPtrPointerOne }
 
   # ArrDims — one or more `[ E ]` array dimensions, left-recursive.
   - derivation: leftmost
