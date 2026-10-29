@@ -13,6 +13,14 @@ public static unsafe partial class Libc
         return unchecked((int)product);
     }
 
+    /// <summary>Compiler-rt signed multiplication: low 64 bits plus a 0/1 overflow flag.</summary>
+    public static long __mulodi4(long lhs, long rhs, int* overflow)
+    {
+        Int128 product = (Int128)lhs * rhs;
+        *overflow = product < long.MinValue || product > long.MaxValue ? 1 : 0;
+        return unchecked((long)product);
+    }
+
     /// <summary>Low 128 bits of the product, independent of signed overflow.</summary>
     public static Int128 __multi3(Int128 lhs, Int128 rhs) => unchecked(lhs * rhs);
     public static UInt128 __udivti3(UInt128 lhs, UInt128 rhs) => lhs / rhs;

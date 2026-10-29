@@ -26,6 +26,81 @@ public sealed unsafe class CompilerRtArithmeticTests
         overflow.ShouldBe(flag);
     }
 
+    [Theory]
+    [InlineData(0L, long.MinValue, 0L, 0)]
+    [InlineData(long.MinValue, 0L, 0L, 0)]
+    [InlineData(long.MinValue, 1L, long.MinValue, 0)]
+    [InlineData(1L, long.MinValue, long.MinValue, 0)]
+    [InlineData(long.MinValue, -1L, long.MinValue, 1)]
+    [InlineData(-1L, long.MinValue, long.MinValue, 1)]
+    [InlineData(long.MaxValue, 1L, long.MaxValue, 0)]
+    [InlineData(long.MaxValue, -1L, -long.MaxValue, 0)]
+    [InlineData(long.MaxValue, 2L, -2L, 1)]
+    [InlineData(long.MinValue, 2L, 0L, 1)]
+    [InlineData(long.MinValue, long.MinValue, 0L, 1)]
+    [InlineData(long.MaxValue, long.MaxValue, 1L, 1)]
+    [InlineData(-1L, -1L, 1L, 0)]
+    [InlineData(-3L, 7L, -21L, 0)]
+    [InlineData(3037000499L, 3037000499L, 9223372030926249001L, 0)]
+    [InlineData(3037000500L, 3037000500L, -9223372036709301616L, 1)]
+    [InlineData(-3037000500L, 3037000500L, 9223372036709301616L, 1)]
+    [InlineData(-4611686018427387904L, 2L, long.MinValue, 0)]
+    [InlineData(-4611686018427387905L, 2L, 9223372036854775806L, 1)]
+    public void Signed_64_bit_product_returns_low_bits_and_overwrites_only_the_int_flag(
+        long lhs, long rhs, long result, int flag)
+    {
+        int* flags = stackalloc int[3];
+        flags[0] = 0x12345678;
+        flags[2] = 0x76543210;
+        foreach (int initial in new[] { 73, -73, 1 - flag })
+        {
+            flags[1] = initial;
+            __mulodi4(lhs, rhs, flags + 1).ShouldBe(result);
+            flags[1].ShouldBe(flag);
+            flags[0].ShouldBe(0x12345678);
+            flags[2].ShouldBe(0x76543210);
+        }
+    }
+
+    [Fact]
+    public void Signed_64_bit_product_and_overflow_match_BigInteger_at_signed_boundaries()
+    {
+        long[] values = [long.MinValue, long.MinValue + 1, -4611686018427387905L, -4611686018427387904L,
+            -4294967296L, -3037000500L, -3037000499L, -3, -2, -1, 0, 1, 2, 3,
+            3037000499L, 3037000500L, 4294967296L, 4611686018427387903L, 4611686018427387904L,
+            long.MaxValue - 1, long.MaxValue];
+        foreach (long lhs in values)
+        foreach (long rhs in values)
+            AssertSigned64Product(lhs, rhs);
+    }
+
+    [Fact]
+    public void Signed_64_bit_product_and_overflow_match_BigInteger_for_seeded_random_operands()
+    {
+        var random = new Random(0x4d554c);
+        Span<byte> bytes = stackalloc byte[16];
+        for (int i = 0; i < 4096; ++i)
+        {
+            random.NextBytes(bytes);
+            long lhs = BitConverter.ToInt64(bytes[..8]);
+            long rhs = BitConverter.ToInt64(bytes[8..]);
+            AssertSigned64Product(lhs, rhs);
+            // Also exercise representable products and both sides of a random
+            // overflow boundary; full-width random products almost always overflow.
+            AssertSigned64Product(unchecked((int)lhs), unchecked((int)rhs));
+            long divisor = (long)unchecked((int)rhs);
+            if (divisor == 0) divisor = 1;
+            long boundary = long.MaxValue / divisor;
+            AssertSigned64Product(boundary, divisor);
+            if (boundary != long.MinValue && boundary != long.MaxValue)
+                AssertSigned64Product(boundary + (boundary < 0 ? -1 : 1), divisor);
+            boundary = divisor == -1 ? long.MaxValue : long.MinValue / divisor;
+            AssertSigned64Product(boundary, divisor);
+            if (boundary != long.MinValue && boundary != long.MaxValue)
+                AssertSigned64Product(boundary + (boundary < 0 ? -1 : 1), divisor);
+        }
+    }
+
     [Fact]
     public void Signed_128_bit_division_and_remainder_match_independent_BigInteger_magnitudes()
     {
@@ -104,6 +179,18 @@ public sealed unsafe class CompilerRtArithmeticTests
     {
         Should.Throw<NotSupportedException>(() => __multi3(1UL, 2UL));
         Should.Throw<NotSupportedException>(() => __udivti3(1UL, 2UL));
+    }
+
+    private static void AssertSigned64Product(long lhs, long rhs)
+    {
+        BigInteger product = (BigInteger)lhs * rhs;
+        BigInteger modulus = BigInteger.One << 64;
+        BigInteger low = product & (modulus - 1);
+        if (low > long.MaxValue) low -= modulus;
+        int expectedFlag = product < long.MinValue || product > long.MaxValue ? 1 : 0;
+        int overflow = 73;
+        __mulodi4(lhs, rhs, &overflow).ShouldBe((long)low);
+        overflow.ShouldBe(expectedFlag);
     }
 
     private static Int128 SignedLowBits(BigInteger value)
