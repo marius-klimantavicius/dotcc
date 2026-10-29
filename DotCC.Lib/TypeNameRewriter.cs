@@ -57,6 +57,7 @@ internal sealed partial class TypeNameRewriter : RewritingTokenStream
     private readonly int _structSymbol;
     private readonly int _unionSymbol;
     private readonly int _enumSymbol;
+    private readonly int _attributeSymbol;
     private readonly int _dotSymbol;
     private readonly int _arrowSymbol;
     private readonly HashSet<int> _pointerQualifiers;
@@ -80,16 +81,9 @@ internal sealed partial class TypeNameRewriter : RewritingTokenStream
     private readonly Stack<ParenthesisScope> _parenthesisScopes = new();
     private HashSet<string>? _pendingParameterShadows;
 
-    // True when the previous token forwarded through ProcessToken was a
-    // `struct` / `union` / `enum` keyword — so the NEXT ID is a tag, not a
-    // typedef-name, and must not be promoted to TYPE_NAME. C keeps tags in a
-    // separate namespace, so a tag may legally collide with a typedef-name (the
-    // `typedef struct lua_State lua_State;` idiom). Reset across the typedef
-    // path (its body is consumed wholesale, ending at `;`).
-    private bool _afterTagKeyword;
+    private readonly TagHeadContext _tagHead = new();
     private int _previousSymbol = -1;
     private bool _afterDeclarationType;
-    private bool _aggregateHead;
 
     /// <summary>
     /// Construct a rewriter over <paramref name="inner"/>, optionally
@@ -130,6 +124,7 @@ internal sealed partial class TypeNameRewriter : RewritingTokenStream
         _structSymbol = map["struct"];
         _unionSymbol = map["union"];
         _enumSymbol = map["enum"];
+        _attributeSymbol = map["__attribute__"];
         _dotSymbol = map["."];
         _arrowSymbol = map["->"];
         _commaSymbol = map[","];
@@ -164,7 +159,7 @@ internal sealed partial class TypeNameRewriter : RewritingTokenStream
         {
             _scopeTypeNames.Push(new HashSet<string>(StringComparer.Ordinal));
             _scopeShadowedTypeNames.Push(new HashSet<string>(StringComparer.Ordinal));
-            _aggregateScopes.Push(_aggregateHead);
+            _aggregateScopes.Push(_tagHead.AggregateHead);
             if (_pendingParameterShadows is { } parameters)
             {
                 foreach (var parameter in parameters)
@@ -196,13 +191,7 @@ internal sealed partial class TypeNameRewriter : RewritingTokenStream
             foreach (var parameter in _pendingParameterShadows) _typeNames.Add(parameter);
         }
 
-        // Did a struct/union/enum keyword just go by? Snapshot it, then update
-        // the flag for the next token from THIS token's identity.
-        var afterTag = _afterTagKeyword;
-        _afterTagKeyword = token.ID == _structSymbol
-            || token.ID == _unionSymbol
-            || token.ID == _enumSymbol;
-        _aggregateHead = _afterTagKeyword || (afterTag && token.ID == _idSymbol);
+        var afterTag = AdvanceTagHead(token, _tagHead);
 
         // Promote a known typedef-name ID to TYPE_NAME so the parser routes it
         // through `Type -> TYPE_NAME`. The original ID's content (the
@@ -321,12 +310,12 @@ internal sealed partial class TypeNameRewriter : RewritingTokenStream
         declarationContexts.Push(new DeclarationContext());
         var parenthesizedTypes = new Stack<bool>();
         var aggregateScopes = new Stack<bool>();
-        var aggregateHead = false;
+        var tagHead = new TagHeadContext();
         for (var i = 0; i < body.Count; i++)
         {
             var t = body[i];
             var closesAggregate = false;
-            if (t.ID == _openBraceSymbol) aggregateScopes.Push(aggregateHead);
+            if (t.ID == _openBraceSymbol) aggregateScopes.Push(tagHead.AggregateHead);
             else if (t.ID == _closeBraceSymbol && aggregateScopes.Count > 0)
                 closesAggregate = aggregateScopes.Pop();
             var closesParenthesizedType = false;
@@ -334,15 +323,8 @@ internal sealed partial class TypeNameRewriter : RewritingTokenStream
                 parenthesizedTypes.Push(_parenthesizedTypeOperators.Contains(_previousSymbol));
             else if (t.ID == _closeParenSymbol && parenthesizedTypes.Count > 0)
                 closesParenthesizedType = parenthesizedTypes.Pop();
-            // Same tag rule as ProcessToken: an ID right after struct/union/enum
-            // is a tag, never a typedef-name — don't promote it (covers e.g.
-            // `typedef struct PriorAlias NewName;`).
-            var afterTag = i > 0 && (body[i - 1].ID == _structSymbol
-                || body[i - 1].ID == _unionSymbol
-                || body[i - 1].ID == _enumSymbol);
+            var afterTag = AdvanceTagHead(t, tagHead);
             var declarationComma = AdvanceDeclarationContext(t, declarationContexts, afterDeclarationType, afterTag);
-            aggregateHead = t.ID == _structSymbol || t.ID == _unionSymbol || t.ID == _enumSymbol
-                || (afterTag && t.ID == _idSymbol);
             if (!aliasIndices.Contains(i)
                 && t.ID == _idSymbol
                 && !afterTag
@@ -374,9 +356,8 @@ internal sealed partial class TypeNameRewriter : RewritingTokenStream
 
         // The typedef body was consumed wholesale (it ended at `;`), so the next
         // ProcessToken token is not after a tag keyword.
-        _afterTagKeyword = false;
+        _tagHead.Reset();
         _afterDeclarationType = false;
-        _aggregateHead = false;
         _declarations.Peek().Active = false;
     }
 
@@ -461,10 +442,9 @@ internal sealed partial class TypeNameRewriter : RewritingTokenStream
         _parenthesisScopes.Clear();
         _pendingParameterShadows = null;
         foreach (var name in _seedTypeNames) { _typeNames.Add(name); }
-        _afterTagKeyword = false;
+        _tagHead.Reset();
         _previousSymbol = -1;
         _afterDeclarationType = false;
-        _aggregateHead = false;
         base.Reset();
     }
 }

@@ -27,7 +27,7 @@ internal sealed partial class TypeNameRewriter
     // calls, array bounds, initializers and parameter lists cannot start another
     // declarator using the enclosing declaration's type.
     private bool AdvanceDeclarationContext(Item token) =>
-        AdvanceDeclarationContext(token, _declarations, _afterDeclarationType, _afterTagKeyword);
+        AdvanceDeclarationContext(token, _declarations, _afterDeclarationType, _tagHead.AfterKeyword);
 
     private bool AdvanceDeclarationContext(Item token, Stack<DeclarationContext> contexts,
         bool afterType, bool afterTag)
