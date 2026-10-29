@@ -62,8 +62,11 @@ public abstract partial record CType
         : this is Array array ? array with { Quals = Quals | add, Element = array.Element.WithQuals(add) }
         : this with { Quals = Quals | add };
 
-    /// <summary>Drop all qualifiers (the unqualified shape, for comparisons/casts).</summary>
-    public CType Unqualified => Quals == TypeQual.None ? this : this with { Quals = TypeQual.None };
+    /// <summary>Drop top-level qualifiers and GNU typedef alignment for
+    /// compatible-type comparisons and value conversions. Layout queries use
+    /// the original type so its alignment override remains observable.</summary>
+    public CType Unqualified => Quals == TypeQual.None && AlignmentOverride == 0 ? this
+        : this with { Quals = TypeQual.None, AlignmentOverride = 0 };
 
     /// <summary>A human-readable source-C spelling of this type, for diagnostics.
     /// Target-neutral — built from the type's own canonical names, NOT from any

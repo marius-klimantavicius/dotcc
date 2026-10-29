@@ -5,13 +5,18 @@ namespace DotCC.Ir;
 
 internal sealed partial class IrBuilder
 {
-    private void BuildTypedefList(Item typeItem, Item names, bool local = false)
+    private void BuildTypedefList(Item typeItem, Item names, bool local = false, Item? attributes = null)
     {
         // The generic typedef production can also consume an anonymous enum.
         // Retain its real enum identity under the first alias, as the dedicated
         // enum-typedef production does, rather than reducing it to plain int.
         var first = typeItem.Content is C.TypeAnonymousEnum anonymous
             ? RegisterEnum(null, null, anonymous.Arg2, FirstTypedefName(names)) : ResolveType(typeItem);
+        if (attributes is not null)
+        {
+            if (TryGnuScalarAlignment(attributes, out var alignment)) first = WithScalarAlignment(first, alignment);
+            else ValidateGnuSignatureAttributes(attributes);
+        }
         var element = first;
         for (var i = 0; i < CountLiteralStars(typeItem); i++)
             element = element.Unqualified switch
@@ -86,9 +91,9 @@ internal sealed partial class IrBuilder
         BindTypedefNames(names, type, type);
     }
 
-    private CStmt BuildLocalTypedefList(Item type, Item names)
+    private CStmt BuildLocalTypedefList(Item type, Item names, Item? attributes = null)
     {
-        BuildTypedefList(type, names, local: true);
+        BuildTypedefList(type, names, local: true, attributes: attributes);
         return new Seq(Array.Empty<CStmt>());
     }
 }

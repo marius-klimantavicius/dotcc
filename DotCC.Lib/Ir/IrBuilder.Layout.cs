@@ -11,10 +11,11 @@ internal sealed partial class IrBuilder
     private readonly System.Collections.Generic.Dictionary<string, OffsetRequest> _constantOffsetRequests = new(StringComparer.Ordinal);
     internal static string LayoutType(CType type) => type.Unqualified switch
     {
-        CType.Prim primitive => $"p:{primitive.Bytes}:{primitive.Bytes}",
+        CType.Prim primitive => $"p:{primitive.Bytes}:{(type.AlignmentOverride != 0 ? type.AlignmentOverride : primitive.Bytes)}",
         CType.Func { IsFunctionType: true } => "unsupported:function-type",
-        CType.Pointer or CType.Func => "p:8:8",
-        CType.Enum enumeration => LayoutType(enumeration.Underlying),
+        CType.Pointer or CType.Func => $"p:8:{(type.AlignmentOverride != 0 ? type.AlignmentOverride : 8)}",
+        CType.Enum enumeration => LayoutType(type.AlignmentOverride != 0
+            ? enumeration.Underlying with { AlignmentOverride = type.AlignmentOverride } : enumeration.Underlying),
         CType.Array array => "a:" + (array.Count ?? 0).ToString(CultureInfo.InvariantCulture) + ":" + LayoutType(array.Element),
         CType.Named { IsExternal: true, ExternalLayout: { } layout } => $"p:{layout.Size}:{layout.Alignment}",
         CType.Named { IsExternal: true } named => throw new IrUnsupportedException("external type '" + named.Name + "' requires layout metadata (size and alignment) for this operation"),

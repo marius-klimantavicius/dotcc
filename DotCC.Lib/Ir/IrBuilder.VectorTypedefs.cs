@@ -6,6 +6,11 @@ internal sealed partial class IrBuilder
 {
     private void BuildAttributedTypedef(Item typeItem, Item nameItem, Item attributeItem)
     {
+        if (TryGnuScalarAlignment(attributeItem, out var alignment))
+        {
+            _typedefs[UserTypedefName(Tok(nameItem))] = WithScalarAlignment(ResolveType(typeItem), alignment);
+            return;
+        }
         if (attributeItem.Content is not C.GnuFunctionAttrs attributes ||
             attributes.Arg3.Content is not C.AttrCall attribute ||
             Tok(attribute.Arg0).Trim('_') != "vector_size")

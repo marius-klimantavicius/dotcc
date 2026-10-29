@@ -21,7 +21,19 @@ in preexisting untracked `blink/scripts/full_jit_copy_bindings.py`. Original log
 | --- | --- | --- | --- | --- |
 | Z1 | Compiler grammar | Pinned `src/lib_vt.zig`, line 187: valid trailing argument comma in multiline `@export`; parser rejects it. | Frontend agent implementing shared grammar support and native-valid reduction. | Pending; original log `artifacts/zig-frontend-probes/initial-lib-vt.log`. |
 | C1 | Support-header compatibility | Original `zig.h:6177` expands symbol assembler labels; DotCC parser rejects `__asm`. | Exact typed forwarding macro policy, plus removal of labels only on unused Windows intrinsic declarations; see ADAPTATIONS.md. | Advances to C2. |
-| C2 | Shared compiler grammar/layout | Genuine freestanding generated `engine.c:7853`, `typedef __attribute__((aligned(1))) uint64_t aligned__1_u64_9;` rejected. | Shared scalar typedef alignment repair and real native/managed layout/access regression underway. No annotation erased. | First canonical translation receipt below; full retry pending fix. |
+| C2 | Shared compiler grammar/layout | Genuine freestanding generated `engine.c:7853`, `typedef __attribute__((aligned(1))) uint64_t aligned__1_u64_9;` rejected. | Scalar typedef alignment metadata and prefix/suffix grammar; actual explicit storage/layout, compatibility and aligned locals/globals. Native/emitted direct and object-link fixtures match, including actual record size 10. No annotation erased. | Actual full C retry advances to C3. |
+| C3 | Shared C lexer | Generated `engine.c:15909` contains valid `"\?"`; string lexer rejected it although decoding already supports it. | Accept escaped question marks; native/emitted literal bytes agree. | Actual full C retry advances to C4. |
+| C4 | Shared declarators | Generated `engine.c:19664` needs pointer-to-const-function-pointer local storage. | Native reduction and generic declarator work in progress. | Not passed. |
+
+Shared C2/C3 validation: **3504/3504 DotCC unit tests**, 89 focused alignment/GNU
+unit tests, and **6/6 focused functional tests** (three Zig execution cases,
+direct/object-link actual scalar alignment/storage, escaped-question execution)
+pass. Logs: `artifacts/zig-frontend-probes/all-unit-tests-after-alignment.log`,
+`scalar-alignment-functional.log`; full-input retry logs:
+`engine-after-alignment.log`, `engine-after-question-escape.log`.
+
+Milestone commits so far: `89e9bb534` (P0 campaign/native controls),
+`a19c47f2d` (generic Zig expression/import repairs and regressions).
 
 ## P0 validation
 

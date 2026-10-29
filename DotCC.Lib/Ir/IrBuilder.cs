@@ -495,6 +495,7 @@ internal sealed partial class IrBuilder
             // Bind each typedef declarator, preserving pointer and array shape.
             // ResolveType's TypeName case sees through each alias everywhere.
             case C.TypedefAlias t: BuildTypedefList(t.Arg1, t.Arg2); break;
+            case C.TypedefPreAttributedAlias t: BuildTypedefList(t.Arg2, t.Arg3, attributes: t.Arg1); break;
             case C.TypedefAttributedAlias t: BuildAttributedTypedef(t.Arg1, t.Arg2, t.Arg3); break;
             // enum definitions — register a real C# enum (tagged/typedef'd) or, for
             // an anonymous un-typedef'd enum, plain int constants.
@@ -1847,6 +1848,8 @@ internal sealed partial class IrBuilder
     private CType ResolveGnuAttributedType(Item inner, Item attributes)
     {
         var type = ResolveType(inner);
+        if (TryGnuScalarAlignment(attributes, out var alignment))
+            return WithScalarAlignment(type, alignment);
         ValidateGnuSignatureAttributes(attributes);
         return type;
     }
@@ -2093,7 +2096,7 @@ internal sealed partial class IrBuilder
         var requested = RequestedDeclarationAlignment(type);
         if (requested != 0)
             CheckAlignasStrictEnough(requested, declaredType ?? ResolveType(type), type);
-        return requested;
+        return Math.Max(requested, (declaredType ?? ResolveType(type)).AlignmentOverride);
     }
 
     private int RequestedDeclarationAlignment(Item type) => type.Content switch
@@ -2779,6 +2782,7 @@ internal sealed partial class IrBuilder
         C.DeclExternObject d => BuildBlockExternObjects(d.Arg1, d.Arg2),
         C.DeclLocalTypedefFunction d => BuildLocalFunctionTypedef(d.Arg1),
         C.DeclLocalTypedefAlias d => BuildLocalTypedefList(d.Arg1, d.Arg2),
+        C.DeclLocalTypedefPreAttributedAlias d => BuildLocalTypedefList(d.Arg2, d.Arg3, d.Arg1),
         C.DeclLocalTypedefFnPtr d => BuildLocalTypedef(d.Arg4, FnPtrType(d.Arg1, d.Arg7)),
         C.DeclLocalTypedefFnPtrNoArgs d => BuildLocalTypedef(d.Arg4, FnPtrType(d.Arg1, null)),
         // `char s[] = "hi";` (implicit size) / `char buf[N] = "hi";` (explicit, zero-padded).

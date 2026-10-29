@@ -609,6 +609,7 @@ productions:
       # C# already infers usage from the underlying type and the lexer hack
       # has done its job at parse time.
       - { lhs: Fn, rhs: ['typedef', Type, TypedefNameList, ';'], action: typedefAlias }
+      - { lhs: Fn, rhs: ['typedef', GnuFormatAttr, Type, TypedefNameList, ';'], action: typedefPreAttributedAlias }
       - { lhs: Fn, rhs: ['typedef', Type, ID, GnuFormatAttr, ';'], action: typedefAttributedAlias }
       # `typedef T Name[N];` — a typedef of an ARRAY type (C89). The alias
       # denotes `T[N]`: a variable of the alias type declares an array, a
@@ -1343,6 +1344,7 @@ productions:
       # Block-scoped aliases use the same resolved types as file-scope typedefs.
       - { lhs: Decl, rhs: ['typedef', FnSig], action: declLocalTypedefFunction }
       - { lhs: Decl, rhs: ['typedef', Type, TypedefNameList], action: declLocalTypedefAlias }
+      - { lhs: Decl, rhs: ['typedef', GnuFormatAttr, Type, TypedefNameList], action: declLocalTypedefPreAttributedAlias }
       - { lhs: Decl, rhs: ['typedef', Type, '(', '*', ID, ')', '(', ParamList, ')'], action: declLocalTypedefFnPtr }
       - { lhs: Decl, rhs: ['typedef', Type, '(', '*', ID, ')', '(', ')'], action: declLocalTypedefFnPtrNoArgs }
       # Stack-allocated array: `int arr[N]`. Lowers to `int* arr = stackalloc int[N]`
@@ -2216,7 +2218,7 @@ lexer:
     # Listed before STRING; longest-match prefers `L"…"` over `L` + `"…"` (an
     # identifier `L` can never be immediately followed by `"` in valid C).
     - { symbol: WSTRING, match: 'L"(\\["\\nrtbf0v''/aex0-9]|[^"\\])*"' }
-    - { symbol: STRING, match: '"(\\["\\nrtbf0v''/aex0-9]|[^"\\])*"' }
+    - { symbol: STRING, match: '"(\\["\\nrtbf0v''/aex0-9?]|[^"\\])*"' }
     # C23 char8_t char constant `u8'x'` — the five CHAR forms with a `u8` prefix.
     # Listed before the `u'x'` rules (longest-match; `u'…'` can't match `u8'…'`).
     - { symbol: U8CHAR, match: 'u8''\\x[0-9a-fA-F]+''' }
