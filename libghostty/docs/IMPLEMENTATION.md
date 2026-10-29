@@ -25,7 +25,8 @@ in preexisting untracked `blink/scripts/full_jit_copy_bindings.py`. Original log
 | C3 | Shared C lexer | Generated `engine.c:15909` contains valid `"\?"`; string lexer rejected it although decoding already supports it. | Accept escaped question marks; native/emitted literal bytes agree. | Actual full C retry advances to C4. |
 | C4 | Shared declarators | Generated `engine.c:19664` needs pointer-to-const-function-pointer local storage; retry at 19716 also needs the corresponding abstract cast. | Compose pointer levels/qualifiers structurally for named callbacks and abstract callback types. Native and direct/object-link execution all produce `callbacks 41 42 7`; read-only diagnostics preserved. | Actual full C retry reaches C5. |
 | C5 | Shared expressions | Generated `engine.c:25395` uses `(struct T){{...}}.array[index]`; direct compound-literal postfix access rejected. | Place C99 compound literals in the postfix expression tier. Native and direct/object-link reductions produce `postfix 42 7`; 3510 unit cases pass. | Current accessor engine advances to line 447923, C6. |
-| C6 | Shared callback parameters | Accessor engine line 447923 declares a named const callback parameter `void (*const a1)(...)`. | Native reduction established; generic parameter construction work in progress. | Not passed. |
+| C6 | Shared callback parameters | Accessor engine line 447923 declares a named const callback parameter `void (*const a1)(...)`. | Share structural named declarator construction across callbacks and array-pointer parameters. Native/direct/object-link reductions produce `parameters 42 41`; all 3516 unit tests and six affected functional cases pass. | The complete 530948-line accessor engine now parses. Semantic C7 is first failure. |
+| C7 | Source ABI | Full source semantic check fails its line-28 assertion requiring `sizeof(long double)==16` and alignment 16; the existing DotCC default models long double as 8 bytes. | Investigating explicit source-ABI storage support with loud rejection of unsupported numerical operations. Assertions remain enabled; no engine values use this type at this pin. | Not passed. |
 
 Shared C2/C3 validation: **3504/3504 DotCC unit tests**, 89 focused alignment/GNU
 unit tests, and **6/6 focused functional tests** (three Zig execution cases,
@@ -76,6 +77,31 @@ native/emitted execution reductions pass; direct root semantic/export support
 remains incomplete. The complete product proceeds through the genuine C route.
 
 ## Acceptance evidence
+
+Current typed-address ABI integration preserves all **93 upstream exports**:
+`artifacts/abi-export-inventory.json` records identical native-C export inventories
+before/after the staged accessor extension. The current full native suite passes
+16 oracle plus two boundary cases:
+`artifacts/campaign/20261029-160333-22351e10/receipt.json`. New independent physical
+ABI probes measure six public aggregates using actual storage sizes and field
+address differences; native/emitted JIT transcripts match exactly at
+`artifacts/abi-layout-managed.stdout` versus `tests/native/abi-expected.txt`.
+These public header probes do not substitute for actual emitted-engine execution.
+
+The applicable upstream render control passes **58/58**, zero failures/skips and
+zero live allocator blocks, with exact original-Zig/native-C transcripts:
+`build/native-tools/upstream-context-r3/artifacts/receipt.json` and
+`upstream-render.json`. The loaded render inventory contains 61 named tests;
+three Kitty graphics tests are explicitly excluded because graphics was excluded
+from the agreed product before testing. Exact accepted output is retained in
+`tests/upstream/expected.txt`. The new diagnostic managed profile is unrun.
+
+An auxiliary broad native Debug test attempt reports C-API superset
+3403 pass / 155 skip / 2 fail of 3560, and Zig module 2928 pass / 105 skip /
+2 fail of 3035. The failures are an out-of-product TinyIo OS path case and a
+full-reset test expecting glyph registration despite the disabled glyph feature.
+This auxiliary run is not a passing campaign gate. Remaining applicable core
+test groups are being classified; no full upstream qualification is claimed.
 
 No translated terminal engine product or raw/processed JIT/NativeAOT runtime
 gate is accepted yet. Pins and downloaded references are available locally;

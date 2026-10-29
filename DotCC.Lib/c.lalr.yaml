@@ -814,16 +814,15 @@ productions:
       - { lhs: Param, rhs: [Type, '[', E, ']'], action: paramUnnamedArraySized }
       - { lhs: Param, rhs: [Type, '[', ']', ArrDims], action: paramUnnamedArrayRowsUnsized }
       - { lhs: Param, rhs: [Type, '[', E, ']', ArrDims], action: paramUnnamedArrayRowsSized }
-      - { lhs: Param, rhs: [Type, '(', '*', ID, ')', ArrDims], action: paramPointerToArray }
+      - { lhs: Param, rhs: [Type, '(', '*', FnPtrArrayName, ')', ArrDims], action: paramPointerToArray }
       - { lhs: Param, rhs: [Type, '(', '*', ')', ArrDims], action: paramUnnamedPointerToArray }
-      - { lhs: Param, rhs: [Type, '(', '*', ID, ')', '[', ']'], action: paramPointerToIncompleteArray }
+      - { lhs: Param, rhs: [Type, '(', '*', FnPtrArrayName, ')', '[', ']'], action: paramPointerToIncompleteArray }
       - { lhs: Param, rhs: [Type, '(', '*', ')', '[', ']'], action: paramUnnamedPointerToIncompleteArray }
       # Function-pointer parameter — `void qsort(…, int (*cmp)(const void*, const void*))`.
       # Same `( * ID ) ( … )` shape as the local fn-ptr declarator; lowers to a
       # `delegate*<args…, ret>` parameter. (The typedef'd form `Comparator cmp`
       # also works.) Disambiguated from `Type ID …` by the `(` after Type.
-      - { lhs: Param, rhs: [Type, '(', '*', ID, ')', '(', ParamList, ')'], action: paramFnPtr }
-      - { lhs: Param, rhs: [Type, '(', '*', ID, ')', '(', ')'],            action: paramFnPtrNoArgs }
+      - { lhs: Param, rhs: [FnPtrArrayDeclarator], action: paramCallback }
       # Function-form parameters adjust to function pointers (C17 6.7.6.3p8),
       # e.g. `int dispatch(int callback(int), int value)`.
       - { lhs: Param, rhs: [Type, ID, '(', ParamList, ')'], action: paramFunction }
@@ -831,9 +830,6 @@ productions:
       # Grouping a function-form parameter name does not change its adjustment.
       - { lhs: Param, rhs: [Type, '(', ID, ')', '(', ParamList, ')'], action: paramFunctionParen }
       - { lhs: Param, rhs: [Type, '(', ID, ')', '(', ')'], action: paramFunctionParenNoArgs }
-      # Pointer to callback storage: xFindFunction writes through **pxFunc.
-      - { lhs: Param, rhs: [Type, '(', '*', '*', ID, ')', '(', ParamList, ')'], action: paramFnPtrOutput }
-      - { lhs: Param, rhs: [Type, '(', '*', '*', ID, ')', '(', ')'], action: paramFnPtrOutputNoArgs }
 
   # Inline tagged definitions bind before the shorter `struct Tag` type.
   # Otherwise Type's leftmost group reduces the tag reference before `{`.

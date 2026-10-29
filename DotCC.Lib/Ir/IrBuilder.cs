@@ -1181,19 +1181,31 @@ internal sealed partial class IrBuilder
                 case C.ParamUnnamedArraySized p: acc.Add(new(new CType.Pointer(ResolveType(p.Arg0)), "_p" + unnamed++)); break;
                 case C.ParamUnnamedArrayRowsUnsized p: acc.Add(new(ArrayRowParameter(p.Arg0, p.Arg3), "_p" + unnamed++)); break;
                 case C.ParamUnnamedArrayRowsSized p: acc.Add(new(ArrayRowParameter(p.Arg0, p.Arg4), "_p" + unnamed++)); break;
-                case C.ParamPointerToArray p: acc.Add(new(ArrayRowParameter(p.Arg0, p.Arg5), Tok(p.Arg3))); break;
+                case C.ParamPointerToArray p:
+                {
+                    var (name, type) = NamedArrayPointerParameter(p.Arg0, p.Arg3, p.Arg5);
+                    acc.Add(new(type, name));
+                    break;
+                }
                 case C.ParamUnnamedPointerToArray p: acc.Add(new(ArrayRowParameter(p.Arg0, p.Arg4), "_p" + unnamed++)); break;
-                case C.ParamPointerToIncompleteArray p: acc.Add(new(new CType.Pointer(new CType.Array(ResolveType(p.Arg0), null)), Tok(p.Arg3))); break;
+                case C.ParamPointerToIncompleteArray p:
+                {
+                    var (name, type) = NamedArrayPointerParameter(p.Arg0, p.Arg3, null);
+                    acc.Add(new(type, name));
+                    break;
+                }
                 case C.ParamUnnamedPointerToIncompleteArray p: acc.Add(new(new CType.Pointer(new CType.Array(ResolveType(p.Arg0), null)), "_p" + unnamed++)); break;
                 // Function-pointer parameter: `Ret (*name)(paramTypes)`.
-                case C.ParamFnPtr p: acc.Add(new(FnPtrType(p.Arg0, p.Arg6), Tok(p.Arg3))); break;
-                case C.ParamFnPtrNoArgs p: acc.Add(new(FnPtrType(p.Arg0, null), Tok(p.Arg3))); break;
+                case C.ParamCallback p:
+                {
+                    var (name, type) = CallbackParameter(p.Arg0);
+                    acc.Add(new(type, Tok(name)));
+                    break;
+                }
                 case C.ParamFunction p: acc.Add(new(FnPtrType(p.Arg0, p.Arg3), Tok(p.Arg1))); break;
                 case C.ParamFunctionNoArgs p: acc.Add(new(FnPtrType(p.Arg0, null), Tok(p.Arg1))); break;
                 case C.ParamFunctionParen p: acc.Add(new(FnPtrType(p.Arg0, p.Arg5), Tok(p.Arg2))); break;
                 case C.ParamFunctionParenNoArgs p: acc.Add(new(FnPtrType(p.Arg0, null), Tok(p.Arg2))); break;
-                case C.ParamFnPtrOutput p: acc.Add(new(new CType.Pointer(FnPtrType(p.Arg0, p.Arg7)), Tok(p.Arg4))); break;
-                case C.ParamFnPtrOutputNoArgs p: acc.Add(new(new CType.Pointer(FnPtrType(p.Arg0, null)), Tok(p.Arg4))); break;
                 default: throw new IrUnsupportedException(TypeName(it.Content));
             }
         }
@@ -2981,19 +2993,8 @@ internal sealed partial class IrBuilder
             C.FnPtrArrayDeclaratorNoArgs d => (d.Arg0, d.Arg3, (Item?)null),
             _ => throw new IrUnsupportedException(TypeName(declarator.Content)),
         };
-        CType type = FnPtrType(returnType, parameters);
-        while (true)
-        {
-            switch (arrayName.Content)
-            {
-                case C.FnPtrArrayNameConst q: type = type.WithQuals(TypeQual.Const); arrayName = q.Arg1; continue;
-                case C.FnPtrArrayNameVolatile q: type = type.WithQuals(TypeQual.Volatile); arrayName = q.Arg1; continue;
-                case C.FnPtrArrayNameRestrict q: type = type.WithQuals(TypeQual.Restrict); arrayName = q.Arg1; continue;
-                case C.FnPtrArrayNamePointer p: type = new CType.Pointer(type); arrayName = p.Arg1; continue;
-            }
-            break;
-        }
-        return (returnType, arrayName, type);
+        var (name, type) = QualifyPointerDeclarator(arrayName, FnPtrType(returnType, parameters));
+        return (returnType, name, type);
     }
 
     private static (Item Name, TypeQual Quals) QualifiedCallbackName(Item arrayName)
