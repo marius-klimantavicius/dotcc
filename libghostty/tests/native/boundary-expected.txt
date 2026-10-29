@@ -1,0 +1,3 @@
+PASS boundary-abi pointer=8 formatter-options=56 allocator=16 vtable=32
+PASS boundary-workflow cycles=2 utf8=wide snapshot=sized alternate=restored reset=preserves-resize independent=1
+RESULT boundary-cases=2 passed=2 failed=0

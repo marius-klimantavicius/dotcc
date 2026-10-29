@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "macroOverrides": [
+    {
+      "name": "zig_expand_import_0",
+      "signature": {
+        "kind": "function",
+        "parameters": ["Type", "fn_name", "libc_name", "sig_args", "call_args"],
+        "variadic": false
+      },
+      "match": {"exact": "zig_import(Type, fn_name, libc_name, sig_args, call_args)"},
+      "replacement": "zig_import_builtin(Type, fn_name, libc_name, sig_args, call_args)",
+      "requireMatch": true
+    },
+    {
+      "name": "zig_mangled",
+      "signature": {
+        "kind": "function",
+        "parameters": ["mangled", "unmangled"],
+        "variadic": false
+      },
+      "match": {"exact": "__asm(zig_mangle_c(unmangled))"},
+      "replacement": "",
+      "requireMatch": true
+    }
+  ]
+}

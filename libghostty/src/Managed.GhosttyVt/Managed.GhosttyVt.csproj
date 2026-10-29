@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+    <TranslatedProject Condition="'$(TranslatedProject)' == ''">../../generated/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj</TranslatedProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(TranslatedProject)" />
+  </ItemGroup>
+</Project>

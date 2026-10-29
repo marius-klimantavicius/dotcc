@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>GhosttyVt.Consumer</AssemblyName>
+    <IsAotCompatible>true</IsAotCompatible>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <TranslatedProject Condition="'$(TranslatedProject)' == ''">../../generated/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj</TranslatedProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/Managed.GhosttyVt/Managed.GhosttyVt.csproj" AdditionalProperties="TranslatedProject=$(TranslatedProject)" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,30 @@
+{
+  "profile": "scalar",
+  "zig_root": "src/lib_vt.zig",
+  "c_abi_root": "src/terminal/c/main.zig",
+  "bridge": "src/Boundary/ghostty_boundary.c",
+  "dialect": "c17",
+  "native_build_arguments": [
+    "-Demit-lib-vt=true",
+    "-Doptimize=ReleaseFast",
+    "-Dsimd=false",
+    "-Dvt-features=-all,+formatter,+render-state,+grid-introspection"
+  ],
+  "features": [
+    "formatter",
+    "render_state",
+    "grid_introspection"
+  ],
+  "excluded_features": [
+    "snapshot",
+    "selection",
+    "search",
+    "input_encode",
+    "color",
+    "kitty_graphics",
+    "tmux"
+  ],
+  "implementation": "actual upstream Zig engine compiled by pinned Zig C backend, then translated by DotCC",
+  "adaptations": [],
+  "c_target": "x86_64-freestanding-none"
+}

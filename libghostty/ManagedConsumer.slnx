@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="generated/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj" />
+  <Project Path="src/Managed.GhosttyVt/Managed.GhosttyVt.csproj" />
+  <Project Path="samples/ManagedConsumer/ManagedConsumer.csproj" />
+</Solution>
