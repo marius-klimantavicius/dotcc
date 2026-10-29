@@ -13,6 +13,9 @@ void dotcc_ghostty_reset(void *terminal);
 int dotcc_ghostty_resize(void *terminal, uint16_t columns, uint16_t rows);
 int dotcc_ghostty_position(void *terminal, uint16_t *columns, uint16_t *rows, uint16_t *x, uint16_t *y);
 int dotcc_ghostty_screen(void *terminal, int *screen);
+int dotcc_ghostty_mode(void *terminal, uint16_t number, int ansi, int *enabled);
+int dotcc_ghostty_cell(void *terminal, uint16_t x, uint16_t y, uint32_t *codepoint,
+                     int *flags, int *underline, int *foreground_palette, uint32_t *foreground_rgb);
 int dotcc_ghostty_snapshot(void *terminal, uint8_t *bytes, size_t capacity, size_t *written);
 int dotcc_ghostty_out_of_space(void);
 size_t dotcc_ghostty_pointer_size(void);
@@ -59,6 +62,17 @@ int main(void) {
         uint16_t cols, rows, x, y;
         OK(dotcc_ghostty_position(t, &cols, &rows, &x, &y));
         CHECK(cols == 10 && rows == 4 && x == 2 && y == 1);
+        int enabled;
+        feed(t, "\x1b[?25l"); OK(dotcc_ghostty_mode(t, 25, 0, &enabled)); CHECK(enabled == 0);
+        feed(t, "\x1b[?25h"); OK(dotcc_ghostty_mode(t, 25, 0, &enabled)); CHECK(enabled == 1);
+        uint32_t cp, rgb; int flags, underline, palette;
+        OK(dotcc_ghostty_cell(t, 0, 1, &cp, &flags, &underline, &palette, &rgb));
+        CHECK(cp == 0x4e2d && flags == 0 && palette == -1 && rgb == UINT32_MAX);
+        feed(t, "\x1b[1;31mR\x1b[0m");
+        OK(dotcc_ghostty_cell(t, 2, 1, &cp, &flags, &underline, &palette, &rgb));
+        CHECK(cp == 'R' && flags == 1 && palette == 1 && rgb == UINT32_MAX);
+        /* Keep the subsequent snapshot expectations unchanged. */
+        feed(t, "\x1b[2;3H\x1b[K");
         feed(other, "second"); snapshot(other, "second");
         feed(t, "\x1b[?1049h\x1b[HALT");
         int screen = -1; OK(dotcc_ghostty_screen(t, &screen));

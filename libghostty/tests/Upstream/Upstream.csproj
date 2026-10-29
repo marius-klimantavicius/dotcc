@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>GhosttyVt.Upstream</AssemblyName>
+    <IsAotCompatible>true</IsAotCompatible>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <UpstreamProject Condition="'$(UpstreamProject)' == ''">../../generated/profiles/upstream-render/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj</UpstreamProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(UpstreamProject)" />
+    <TrimmerRootAssembly Include="TranslatedGhosttyVt" Condition="'$(PublishAot)' == 'true'" />
+  </ItemGroup>
+</Project>

@@ -103,6 +103,10 @@ native-valid reductions and execution checks plus full-source retries.
 - Recipe: `scripts/campaign.py`, `Recipe("libghostty", ...)`, scalar default profile.
 - Final projects: `generated/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj` and
   `generated/TranslatedGhosttyVt.Raw/TranslatedGhosttyVt.csproj`.
+- Diagnostic profiles: `qualification` contains the native differential and
+  physical layout harnesses; `upstream-render` contains 58 applicable unchanged
+  upstream render cases. Both use canonical `generated/profiles/<profile>/`
+  raw/processed paths. Their test entrypoints stay outside the scalar product.
 - Root solution: `ManagedConsumer.slnx` with original authored API and sample.
 - Sample: `samples/ManagedConsumer/ManagedConsumer.csproj`, translated project
   selected with `TranslatedProject`; deterministic transcript workflow above.
@@ -124,10 +128,10 @@ unrelated directory and preserve authored source edits across regeneration.
 | Phase | Concrete exit gate | Status | Evidence/remaining work |
 | --- | --- | --- | --- |
 | P0 — Scope/native baseline | Pinned inventory, recipe/layout, working native workflow and actual first translation attempt. | Passed | Offline shared native suite passes 16 assertions; original and genuine C engine transcripts match. Shared recipe first complete attempt reaches generated engine underaligned typedef error. Layout and offline acquisition pass, including unrelated working directory. See implementation ledger. |
-| P1 — Boundary feasibility | Actual emitted/native ABI, allocator, borrow and independent-owner probes. | Unrun | Requires actual engine emission. |
-| P2 — Complete translation | Entire selected implementation builds raw/processed at canonical paths, no manual repair or unresolved required imports. | Unrun | Frontend repair and complete-source retry underway. |
+| P1 — Boundary feasibility | Actual emitted/native ABI, allocator, borrow and independent-owner probes. | In progress | Six real public-ABI storage probes match native/emitted code. Native original/accessor-engine boundary controls pass. Actual emitted engine execution remains required. |
+| P2 — Complete translation | Entire selected implementation builds raw/processed at canonical paths, no manual repair or unresolved required imports. | In progress | Complete current source parsing advances through line 447923 of approximately 531000; no managed product published. |
 | P3 — Useful execution | Chunked UTF-8/control transcript, observation, resize/reset and cleanup through translated engine. | Unrun | Owning API acceptance requires engine. |
-| P4 — Feature qualification | Required features, ordinary errors/lifetimes and applicable upstream case inventory pass matrix. | Unrun | Preserve original transcripts and exact comparisons. |
+| P4 — Feature qualification | Required features, ordinary errors/lifetimes and applicable upstream case inventory pass matrix. | In progress | Native original/C 58 applicable render cases pass; 3 Kitty-only cases explicitly excluded under existing scope. Remaining applicable upstream groups and managed matrix stay open. |
 | P5 — Consumer delivery | Root solution and owning sample run JIT/AOT for both forms, plus full rooting. | Unrun | No runtime acceptance inferred from scaffolding. |
 | P6 — Reproduction/acceptance | Final-tool regeneration, full required suites, local reuse/hash modes, authored preservation, dependency audit and affected regressions. | Unrun | Campaign remains incomplete until all required gates pass. |
 
@@ -140,18 +144,20 @@ milestones receive focused commits; no push or PR is authorized. Blocker ledger:
 
 | Behavior/gate | Suite and assertions | Matrix | Selection |
 | --- | --- | --- | --- |
-| ABI/ownership | `abi`: actual widths/layout/queries and allocator/borrow probes. | Both forms, JIT/AOT, Linux x64. | Required. |
+| ABI/ownership | `qualification`: six physical layout/field-address cases and two allocator/delivery-boundary cases. | Both forms, JIT/AOT, Linux x64. | Required. |
 | Useful workflow | `consumer`: transcript feed, snapshot, cursor, resize/reset, dispose. | Both forms, JIT/AOT. | Required. |
-| Terminal behavior | `behavior`: controls, chunking, Unicode, styles, scrolling/reflow, alternate screen; native differential. | Both forms, JIT/AOT. | Required. |
-| Errors/lifetimes | `lifecycle`: ordinary rejection/status behavior, repeated cycles, independent instances, disposed access. | Both forms, JIT/AOT. | Required. |
-| Upstream cases | `upstream`: applicable pinned tests with pass/fail/exclusion counts. | Selected scalar profile. | Required. |
+| Terminal behavior | `qualification`: 16-case exact native differential covers controls, chunking, Unicode, styles, scrolling/reflow, alternate screen and callback replies. | Both forms, JIT/AOT. | Required. |
+| Errors/lifetimes | `qualification` and `consumer`: ordinary rejection/status behavior, allocation failure, 32 balanced cycles, independent instances and disposed access. | Both forms, JIT/AOT. | Required. |
+| Upstream cases | `upstream-native` and `upstream`: 58 selected render cases with exact case transcripts, allocator checks and 3 recorded graphics exclusions. Other applicable groups remain open. | Both forms, JIT/AOT for the managed diagnostic profile. | Required; remaining selection inventory pending. |
 | Native oracle | `native`: native assertions and case inventory. | Linux x64 native. | Required. |
 | Closure | `audit`: complete implementation inputs, dependency and unresolved-import inventory, rooted AOT. | Both forms. | Required. |
 | Shared regressions | Focused Zig grammar/frontend/native oracle execution, affected compiler/runtime tests and downstream campaigns selected by changed semantics. | Relevant targets. | Required after shared fixes. |
 
-Intended default suite: `consumer`. Intended verification suites: `native`, `abi`,
-`consumer`, `behavior`, `lifecycle`, `upstream`, `audit`; declarations and actual
-coverage must agree before qualification. Deterministic bytes, dimensions,
+Default suite: `consumer`. Current verification suites: `native`, `consumer`,
+`qualification`, `upstream-native`, `upstream`, `audit`. The single 24-case
+qualification harness covers ABI, behavior and lifecycle without rerunning
+identical cases under different suite names. Additional required upstream
+selection remains open and must be declared before acceptance. Deterministic bytes, dimensions,
 cursor coordinates, statuses and cell/style values compare exactly. Any
 normalization requires a documented invariant and retained original transcript.
 No external protocol peer applies to an in-process terminal state product.

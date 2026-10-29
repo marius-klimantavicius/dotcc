@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>GhosttyVt.Qualification</AssemblyName>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <QualificationProject Condition="'$(QualificationProject)' == ''">../../generated/profiles/qualification/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj</QualificationProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(QualificationProject)" />
+    <TrimmerRootAssembly Include="TranslatedGhosttyVt" Condition="'$(PublishAot)' == 'true'" />
+  </ItemGroup>
+</Project>

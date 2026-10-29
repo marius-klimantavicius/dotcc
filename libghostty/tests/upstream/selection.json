@@ -1,0 +1,107 @@
+{
+  "profile": "upstream-render",
+  "description": "Diagnostic test product containing unchanged named upstream C render-state assertions",
+  "optimization": "Debug",
+  "test_filter": "terminal.c.render.test.",
+  "expected_cases": 58,
+  "target": "x86_64-freestanding-none",
+  "selected_modules": [
+    "terminal.c.render"
+  ],
+  "scaffolding": "Anonymous declaration/root tests included by Zig's filter are inventory entries, not named render assertion cases",
+  "exclusions": [
+    {
+      "prefixes": [
+        "config.",
+        "font.",
+        "renderer."
+      ],
+      "reason": "GUI/configuration/font/rendering components outside the terminal-core product"
+    },
+    {
+      "prefixes": [
+        "input.",
+        "terminal.c.key",
+        "terminal.c.mouse",
+        "terminal.c.paste",
+        "terminal.c.focus",
+        "terminal.focus",
+        "terminal.paste"
+      ],
+      "reason": "Input-event encoding exports disabled in the scalar product"
+    },
+    {
+      "prefixes": [
+        "terminal.snapshot",
+        "terminal.c.snapshot"
+      ],
+      "reason": "Binary snapshot persistence disabled in the scalar product"
+    },
+    {
+      "prefixes": [
+        "terminal.search",
+        "terminal.c.search"
+      ],
+      "reason": "Search disabled in the scalar product"
+    },
+    {
+      "prefixes": [
+        "terminal.Selection",
+        "terminal.c.selection"
+      ],
+      "reason": "Selection/selection gestures disabled in the scalar product"
+    },
+    {
+      "prefixes": [
+        "terminal.apc.glyph",
+        "terminal.kitty.graphics",
+        "terminal.c.kitty_graphics"
+      ],
+      "reason": "Glyph registration and Kitty image features disabled in the scalar product"
+    },
+    {
+      "prefixes": [
+        "terminal.c.color."
+      ],
+      "reason": "Standalone color utility exports disabled; internal VT palette/style tests remain applicable"
+    },
+    {
+      "prefixes": [
+        "lib.TinyIo",
+        "lib.tinyio",
+        "os."
+      ],
+      "reason": "Native OS service implementations are not the freestanding product host boundary"
+    },
+    {
+      "prefixes": [
+        "datastruct.split_tree.",
+        "datastruct.blocking_queue."
+      ],
+      "reason": "GUI pane trees and application thread message queue, outside the freestanding terminal-core product"
+    },
+    {
+      "prefixes": [
+        "crc32c."
+      ],
+      "reason": "Checksum implementation referenced by disabled binary-snapshot record format"
+    }
+  ],
+  "other_applicable": "Remaining loaded test cases remain inventoried as applicable but outside this focused render diagnostic; this profile does not claim their execution or campaign completion",
+  "discovered_cases": 61,
+  "excluded_case_count": 3,
+  "excluded_cases": [
+    {
+      "name": "terminal.c.render.test.render: image iterator kitty virtual placement",
+      "reason": "Upstream case requires Kitty graphics, disabled in the agreed scalar terminal-core product"
+    },
+    {
+      "name": "terminal.c.render.test.render: image iterator kitty fixed placement",
+      "reason": "Upstream case requires Kitty graphics, disabled in the agreed scalar terminal-core product"
+    },
+    {
+      "name": "terminal.c.render.test.render: image iterator fixed placement above the viewport",
+      "reason": "Upstream case requires Kitty graphics, disabled in the agreed scalar terminal-core product"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "source_revision": "93967b7f9478e94dcbb42125c8a90f34feb40d75",
+  "scope": "auxiliary unfiltered scalar Debug upstream native suite; not a passing qualification gate",
+  "optimization": "Debug",
+  "zig_module": {
+    "total": 3035,
+    "passed": 2928,
+    "skipped": 105,
+    "failed": 2
+  },
+  "c_api_superset": {
+    "total": 3560,
+    "passed": 3403,
+    "skipped": 155,
+    "failed": 2
+  },
+  "failures": [
+    {
+      "name": "terminal.stream_terminal.test.full reset",
+      "classification": "upstream test/profile mismatch",
+      "observed": "asserts glyph glossary contains registered glyph while glyph_protocol feature disabled",
+      "required_core_reset_coverage": "remains required; this mixed feature test does not establish failure of reset with enabled features"
+    },
+    {
+      "name": "lib.tinyio.test.test.dirRealPathFile edge cases",
+      "classification": "native host service outside freestanding product",
+      "observed": "expected NameTooLong from native filesystem edge case"
+    }
+  ],
+  "logs": [
+    "build/native-tools/upstream/native-tests.log",
+    "build/native-tools/upstream/native-tests-debug.log"
+  ],
+  "selected_render_observation": {
+    "total": 61,
+    "passed": 58,
+    "skipped": 3,
+    "failed": 0,
+    "live": 0,
+    "native_equals_c": true,
+    "logs": [
+      "build/native-tools/upstream-context-r2/artifacts/upstream-render-original-run.log",
+      "build/native-tools/upstream-context-r2/artifacts/upstream-render-c-run.log"
+    ]
+  }
+}

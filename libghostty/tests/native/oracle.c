@@ -5,6 +5,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifdef DOTCC_GHOSTTY_INDIRECT_ABI
+#include "dotcc_ghostty_abi.h"
+#endif
 
 #define CHECK(c) do { if (!(c)) { \
     fprintf(stderr, "FAIL %s:%d: %s\n", __FILE__, __LINE__, #c); exit(1); \

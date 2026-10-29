@@ -33,7 +33,23 @@ def sources(root):
 
 def prepare(ctx):
     policy = json_file(ctx.root / "config/translation.json")
+    if ctx.profile == "upstream-render":
+        tests = helper(ctx.root / "tests/upstream/run.py").prepare_tests(ctx)
+        ctx.receipt["upstream_test_closure"] = {
+            "source": str(tests["source"]), "argv": tests["argv"],
+            "case_count": tests["case_count"], "host": str(tests["host"]),
+        }
+        return Translation([
+            Unit(tests["source"], ("--overrides-file", str(ctx.root / "config/zig-c-overrides.json"))),
+            Unit(tests["host"], ("-DDOTCC_UPSTREAM_HOST_NO_MAIN=1",))],
+            ["-std=" + policy["dialect"], *flags(includes=tests["includes"])],
+            [*link_flags("GhosttyVt", "Managed.GhosttyVt.Native"), "--prune-unused-inline"],
+            objects=True, configure=configure)
     engine = helper(ctx.root / "tests/native/run.py").prepare_engine(ctx)
+    contents = engine["source"].read_text(encoding="utf-8")
+    forbidden_aliases = ("zig_mangled", "zig_e_zig_windows_teb", "zig_e_zig_windows_peb")
+    if any(name in contents for name in forbidden_aliases):
+        raise RuntimeError("Generated engine now requires a suppressed support-header symbol alias")
     profile = ctx.root / "config/zig-c-overrides.json"
     ctx.receipt["libghostty_selection"] = {
         "policy": str(ctx.root / "config/translation.json"),
@@ -45,7 +61,20 @@ def prepare(ctx):
     # Every engine algorithm is in the genuine Zig-produced C unit. The second
     # unit adapts only the ABI and supplies the public allocator extension point.
     units = [Unit(engine["source"], ("--overrides-file", str(profile))),
-             Unit(ctx.root / policy["bridge"])]
+             Unit(ctx.root / policy["bridge"], ("-DDOTCC_GHOSTTY_INDIRECT_ABI=1",))]
+    if ctx.profile == "qualification":
+        staged = ctx.work / "qualification-sources"
+        staged.mkdir()
+        for filename, entry in (("oracle.c", "dotcc_oracle_main"),
+                                ("boundary_control.c", "dotcc_boundary_main"),
+                                ("abi_layout.c", "dotcc_abi_main")):
+            text = (ctx.root / "tests/native" / filename).read_text(encoding="utf-8")
+            anchor = "int main(void)"
+            if text.count(anchor) != 1:
+                raise RuntimeError("Ambiguous qualification entrypoint: " + filename)
+            target = staged / filename
+            target.write_text(text.replace(anchor, "int " + entry + "(void)"), encoding="utf-8")
+            units.append(Unit(target, ("-DDOTCC_GHOSTTY_INDIRECT_ABI=1",)))
     return Translation(units, ["-std=" + policy["dialect"], *flags(includes=engine["includes"])],
                        [*link_flags("GhosttyVt", "Managed.GhosttyVt.Native"), "--prune-unused-inline",
                         "--export-enum", "DOTCC_STYLE_*"],
@@ -79,17 +108,43 @@ def run_native(ctx, suite):
     return helper(ctx.root / "tests/native/run.py").run(ctx, suite)
 
 
+def run_qualification(ctx, suite):
+    return helper(ctx.root / "tests/qualification.py").run(ctx, suite)
+
+
+def run_upstream(ctx, suite):
+    return helper(ctx.root / "tests/qualification.py").run_upstream(ctx, suite)
+
+
+def run_upstream_native(ctx, suite):
+    return helper(ctx.root / "tests/upstream/run.py").run(ctx, suite)
+
+
+def run_audit(ctx, suite):
+    return helper(ctx.root / "tests/audit.py").run(ctx, suite)
+
+
 recipe = Recipe(
-    "libghostty", "TranslatedGhosttyVt", ("scalar",),
+    "libghostty", "TranslatedGhosttyVt", ("scalar", "qualification", "upstream-render"),
     ("src/Managed.GhosttyVt/Managed.GhosttyVt.csproj", "samples/ManagedConsumer/ManagedConsumer.csproj"),
     sources, prepare,
     consumer=Consumer(property="TranslatedProject"),
     suites=(Suite("native", (), run=run_native, timeout=3600,
                   scope="pinned Zig native and genuine whole-engine C, 16 exact assertion cases"),
             Suite("consumer", ("consumer",), matrix=True,
-                  scope="owning translated terminal transcript, split UTF-8, screens, resize/reset, independent instances")),
+                  scope="owning translated terminal transcript, split UTF-8, screens, resize/reset, independent instances"),
+            Suite("qualification", (), run=run_qualification, matrix=True,
+                  required_profiles=("qualification",),
+                  scope="24 native differential, physical ABI layout and allocator boundary cases, rooted AOT"),
+            Suite("upstream-native", (), run=run_upstream_native, timeout=3600,
+                  scope="applicable unchanged upstream render assertions, original native vs genuine C, with allocator checks"),
+            Suite("upstream", (), run=run_upstream, matrix=True,
+                  required_profiles=("upstream-render",),
+                  scope="applicable unchanged upstream render assertions, raw/processed JIT/rooted-AOT"),
+            Suite("audit", (), run=run_audit, profiles=("scalar",),
+                  scope="retained upstream export inventory, native-backend exclusion, notices and delivery boundaries")),
     default_suites=("consumer",),
     # Expanded qualification declarations are added with their actual harnesses;
     # this current selection does not establish P4/P6 acceptance by itself.
-    verify_suites=("native", "consumer"),
+    verify_suites=("native", "consumer", "qualification", "upstream-native", "upstream", "audit"),
 )

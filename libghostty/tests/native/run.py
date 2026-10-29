@@ -87,7 +87,9 @@ def _prepare_native(ctx):
         # integrations preserves the selected upstream scalar feature profile.
         cmd += ["--system", source / "zig-pkg"]
         cmd += ["-fno-sys=" + name for name in pin["build_system_integrations"]]
-    env = {"ZIG_GLOBAL_CACHE_DIR": str(ctx.root / "build/native-tools/zig-global-cache")}
+    global_cache = (work / "zig-global-cache" if ctx.options.hashes == "off"
+                    else ctx.root / "build/native-tools/zig-global-cache")
+    env = {"ZIG_GLOBAL_CACHE_DIR": str(global_cache)}
     log = ctx.run(cmd, "native-upstream-build", timeout=1800, cwd=source, env=env)
     argv = _engine_command(log, zig, source)
     libraries = list((prefix / "lib").glob("libghostty-vt.a"))
@@ -113,6 +115,9 @@ def prepare_engine(ctx):
     config = _json(ctx.root / "config/translation.json")
     output = native["work"] / "engine.c"
     argv = [a for a in native["argv"] if not a.startswith("-femit-bin=")]
+    from campaigns.recipes import helper
+    entry, adapter = helper(ctx.root / "scripts/abi.py").stage_root(ctx.root, native["upstream"], native["work"])
+    argv = ["-Mroot=" + str(entry) if a.startswith("-Mroot=") else a for a in argv]
     target = config.get("c_target", "x86_64-freestanding-none")
     if target:
         # Target/optimization switches apply to the module which follows them.
@@ -128,7 +133,8 @@ def prepare_engine(ctx):
     contents = output.read_text(encoding="utf-8")
     if target and target.endswith("freestanding-none") and "__asm" in contents:
         raise RuntimeError("Freestanding C output unexpectedly retains inline assembly")
-    result = dict(native, source=output, argv=argv, target=target)
+    result = dict(native, source=output, argv=argv, target=target, adapter=adapter,
+                  includes=(*native["includes"], adapter))
     _write(native["work"] / "engine-closure.json", {
         "source": str(output), "target": target,
         "includes": list(map(str, result["includes"])), "command": argv,
@@ -147,6 +153,12 @@ def run(ctx, suite):
         raise RuntimeError("The native oracle needs a host GNU-compatible C compiler (CC or cc)")
     suffix = ".exe" if os.name == "nt" else ""
     work, source = native["work"], native["upstream"]
+    layout = work / ("abi-layout" + suffix)
+    ctx.run([*cc, "-std=c11", "-Wall", "-Wextra", "-Werror", "-I", source / "include",
+             ctx.root / "tests/native/abi_layout.c", "-o", layout], "native-abi-layout-compile")
+    layout_text = ctx.run([layout], "native-abi-layout-run")
+    if layout_text != (ctx.root / "tests/native/abi-expected.txt").read_text(encoding="utf-8"):
+        raise RuntimeError("Actual public ABI layout differs from native baseline")
     oracle_obj, engine_obj = work / "oracle.o", work / "engine.o"
     ctx.run([*cc, "-std=c11", "-Wall", "-Wextra", "-Werror", "-I", source / "include",
              "-c", ctx.root / "tests/native/oracle.c", "-o", oracle_obj], "native-oracle-compile")
@@ -154,7 +166,11 @@ def run(ctx, suite):
     boundary = ctx.root / "src/Boundary/ghostty_boundary.c"
     if boundary.is_file():
         ctx.run([*cc, "-std=c11", "-Wall", "-Wextra", "-Werror", "-I", source / "include",
+                 "-I", native["adapter"], "-DDOTCC_GHOSTTY_INDIRECT_ABI=1",
                  "-c", boundary, "-o", work / "boundary.o"], "native-boundary-compile")
+        ctx.run([*cc, "-std=c11", "-Wall", "-Wextra", "-Werror", "-I", source / "include",
+                 "-c", native["adapter"] / "native_ghostty_api.c", "-o", work / "native_abi.o"],
+                "native-abi-accessor-compile")
     original = work / ("oracle-native" + suffix)
     ctx.run([*cc, oracle_obj, native["native_library"], "-lm", "-o", original], "native-oracle-link")
     original_text = ctx.run([original], "native-oracle-run", timeout=suite.timeout)
@@ -176,7 +192,8 @@ def run(ctx, suite):
         boundary_expected = (ctx.root / "tests/native/boundary-expected.txt").read_text(encoding="utf-8")
         for label, library in (("native", native["native_library"]), ("c", engine_obj)):
             control = work / ("boundary-" + label + suffix)
-            ctx.run([*cc, boundary_control, work / "boundary.o", library, "-lm", "-o", control],
+            accessor = [work / "native_abi.o"] if label == "native" else []
+            ctx.run([*cc, boundary_control, work / "boundary.o", *accessor, library, "-lm", "-o", control],
                     "native-boundary-" + label + "-link")
             transcript = ctx.run([control], "native-boundary-" + label + "-run", timeout=suite.timeout)
             if transcript != boundary_expected:
@@ -185,6 +202,7 @@ def run(ctx, suite):
     _write(ctx.artifacts / "native-oracle.json", {
         "cases": 16, "passed": 16, "failed": 0, "original_equals_c": True,
         "boundary_cases": boundary_passed, "boundary_passed": boundary_passed,
+        "layout_cases": 6, "layout_passed": 6,
         "source": str(native["source"]), "target": native["target"],
         "expected": str(ctx.root / "tests/native/expected.txt"),
         "native_log": "native-oracle-run.log", "c_log": "native-c-oracle-run.log",

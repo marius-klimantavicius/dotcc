@@ -41,5 +41,21 @@
       "sha256": "b607e9b9234790a008116ae5bdb71c6243b84b9fb42a53a9e70fde41c06c536a"
     }
   },
-  "default_host": "x86_64-linux"
+  "default_host": "x86_64-linux",
+  "test_adaptations": [
+    {
+      "file": "std/Thread.zig",
+      "anchor": "pub fn getCpuCount() CpuCountError!usize {\n    return try Impl.getCpuCount();\n}",
+      "replacement": "extern fn dotcc_upstream_host_cpu_count() usize;\npub fn getCpuCount() CpuCountError!usize {\n    const count = dotcc_upstream_host_cpu_count();\n    if (count == 0) return error.Unsupported;\n    return count;\n}",
+      "reason": "Test-only freestanding CPU-count service used by unchanged std.testing.SafeAllocator; delegate actual count to host, no terminal/test/assertion changes"
+    }
+  ],
+  "core_test_adaptations": [
+    {
+      "file": "std/testing.zig",
+      "anchor": "pub const io = if (builtin.is_test) io_instance.io() else @compileError(\"not testing\");",
+      "replacement": "pub const io = if (builtin.is_test) (if (@hasDecl(@import(\"root\"), \"dotcc_upstream_test_io\")) @import(\"root\").dotcc_upstream_test_io else io_instance.io()) else @compileError(\"not testing\");",
+      "reason": "Test-only typed Io service extension for unchanged core test functions: native uses real Threaded Io, freestanding initially uses explicit failing Io until fixture services are implemented"
+    }
+  ]
 }

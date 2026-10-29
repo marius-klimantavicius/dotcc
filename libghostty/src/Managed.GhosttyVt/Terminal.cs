@@ -90,6 +90,18 @@ public sealed unsafe class Terminal : IDisposable
         }
     }
 
+    /// <summary>Queries an ANSI mode or, by default, a DEC private mode.</summary>
+    public bool GetMode(ushort number, bool ansi = false)
+    {
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(number, (ushort)32767);
+        lock (gate)
+        {
+            int enabled;
+            Check(Core.dotcc_ghostty_mode(Value, number, ansi ? 1 : 0, &enabled));
+            return enabled != 0;
+        }
+    }
+
     /// <summary>Copies the active cell's primary codepoint and text styling.</summary>
     public TerminalCell GetCell(ushort x, ushort y)
     {

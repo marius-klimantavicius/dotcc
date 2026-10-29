@@ -35,3 +35,32 @@ final runtime qualification remains open:
 No alignment annotation is removed. The observed underaligned scalar typedef
 failure is being repaired in the shared C frontend, with actual layout and
 unaligned-access regressions. No runtime gate is claimed by a parse-only probe.
+
+## Public C ABI versus generated Zig-private types
+
+The C backend correctly emits private Zig struct names in the concrete function
+definitions, while the public C headers expose opaque handles and separate ABI
+struct names. Native C can link these ABI signatures. Directly concatenating
+independently emitted C# calls from the header and private definitions does not
+typecheck. A reduced feasibility probe retained in
+`artifacts/abi-cross-unit.log` demonstrates this distinction; it is not a working
+terminal or an accepted runtime result.
+
+The selected boundary uses a tiny Zig address accessor generated from
+`config/abi.json`. The private, staged copy of `src/lib_vt.zig` appends one import
+for this accessor; every original upstream export and algorithm remains intact.
+The original source tree is unchanged. The generated C includes the accessor
+and its actual function addresses. The authored C adapter makes calls through
+typed pointers obtained from this primitive `(int) -> void*` entrypoint. Their
+types come from unevaluated `__typeof__` expressions over the real public header
+declarations. No handwritten mirror engine/type or native terminal import is
+needed, and no generated C# is edited.
+
+Native tests use a test-only C implementation of the address accessor pointing
+at the original native library. This verifies the public ABI independently of
+the generated accessor. The original/native-C 16-case oracle and two boundary
+cases pass with the accessor, including by-value formatter options, callbacks,
+allocation, cell/style queries, modes, resize/reset and instance independence.
+Their managed runtime acceptance remains required. Diagnostic C qualification
+tests live in a separate `qualification` profile; test entrypoints and fixed
+transcripts are absent from the scalar delivered library.

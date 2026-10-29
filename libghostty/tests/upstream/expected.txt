@@ -1,0 +1,59 @@
+PASS terminal.c.render.test.render: new/free
+PASS terminal.c.render.test.render: free null
+PASS terminal.c.render.test.render: update invalid value
+PASS terminal.c.render.test.render: begin/end update invalid value
+PASS terminal.c.render.test.render: begin/end update
+PASS terminal.c.render.test.render: get invalid value
+PASS terminal.c.render.test.render: get invalid data
+PASS terminal.c.render.test.render: aggregate get invalid value
+PASS terminal.c.render.test.render: get/set dirty invalid value
+PASS terminal.c.render.test.render: get/set dirty
+PASS terminal.c.render.test.render: clean
+PASS terminal.c.render.test.render: set null value
+PASS terminal.c.render.test.render: row iterator get invalid value
+PASS terminal.c.render.test.render: row iterator new/free
+PASS terminal.c.render.test.render: row iterator free null
+PASS terminal.c.render.test.render: row iterator next null
+PASS terminal.c.render.test.render: row get null
+PASS terminal.c.render.test.render: row get invalid data
+PASS terminal.c.render.test.render: row set null
+PASS terminal.c.render.test.render: row set before iteration
+PASS terminal.c.render.test.render: row get before iteration
+PASS terminal.c.render.test.render: row get/set dirty
+PASS terminal.c.render.test.render: row get selection
+PASS terminal.c.render.test.render: row get cells_raw
+PASS terminal.c.render.test.render: row cells get selected
+PASS terminal.c.render.test.render: row cells get has_styling
+PASS terminal.c.render.test.render: row cells get graphemes utf8
+PASS terminal.c.render.test.render: row iterator next
+PASS terminal.c.render.test.render: row iterator next dirty
+PASS terminal.c.render.test.render: update
+PASS terminal.c.render.test.render: colors data get
+PASS terminal.c.render.test.render: cursor data get matches scalar getters
+PASS terminal.c.render.test.render: cursor data get without viewport
+PASS terminal.c.render.test.render: cursor data get supports truncated sized struct
+PASS terminal.c.render.test.render: row cells bg_color no background
+PASS terminal.c.render.test.render: row cells bg_color from style
+PASS terminal.c.render.test.render: row cells bg_color from content tag
+PASS terminal.c.render.test.render: row cells fg_color no foreground
+PASS terminal.c.render.test.render: row cells fg_color from style
+PASS terminal.c.render.test.render: colors data get supports truncated sized struct
+PASS terminal.c.render.test.render: get_multi success
+PASS terminal.c.render.test.render: get_multi null returns invalid_value
+PASS terminal.c.render.test.render: row_get_multi success
+PASS terminal.c.render.test.render: row_get_multi null returns invalid_value
+PASS terminal.c.render.test.render: row_cells_get_multi success
+PASS terminal.c.render.test.render: row_cells_get_multi null returns invalid_value
+PASS terminal.c.render.test.render: overscan request applies on the next update
+PASS terminal.c.render.test.render: overscan option roundtrip
+PASS terminal.c.render.test.render: overscan clamps to existing rows
+PASS terminal.c.render.test.render: row iterator unchanged without overscan
+PASS terminal.c.render.test.render: row iterator covers overscan
+PASS terminal.c.render.test.render: row iterator overscan at the bottom
+PASS terminal.c.render.test.render: row ids stable across scroll
+PASS terminal.c.render.test.render: row id without overscan
+PASS terminal.c.render.test.render: overscan invalid values
+PASS terminal.c.render.test.render: overscan get_multi and row_get_multi
+PASS terminal.c.render.test.render: image iterator new/free
+PASS terminal.c.render.test.render: image placements generation
+RESULT upstream-cases=58 passed=58 skipped=0 failed=0 live=0

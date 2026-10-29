@@ -1,0 +1,145 @@
+{
+  "calling_convention": "C ABI through typed function pointers; managed in the translated product",
+  "operations": [
+    {
+      "id": 0,
+      "name": "ghostty_terminal_new",
+      "zig_member": "terminal_new"
+    },
+    {
+      "id": 1,
+      "name": "ghostty_terminal_free",
+      "zig_member": "terminal_free"
+    },
+    {
+      "id": 2,
+      "name": "ghostty_terminal_vt_write",
+      "zig_member": "terminal_vt_write"
+    },
+    {
+      "id": 3,
+      "name": "ghostty_terminal_reset",
+      "zig_member": "terminal_reset"
+    },
+    {
+      "id": 4,
+      "name": "ghostty_terminal_resize",
+      "zig_member": "terminal_resize"
+    },
+    {
+      "id": 5,
+      "name": "ghostty_terminal_get",
+      "zig_member": "terminal_get"
+    },
+    {
+      "id": 6,
+      "name": "ghostty_formatter_terminal_new",
+      "zig_member": "formatter_terminal_new"
+    },
+    {
+      "id": 7,
+      "name": "ghostty_formatter_format_buf",
+      "zig_member": "formatter_format_buf"
+    },
+    {
+      "id": 8,
+      "name": "ghostty_formatter_free",
+      "zig_member": "formatter_free"
+    },
+    {
+      "id": 9,
+      "name": "ghostty_terminal_grid_ref",
+      "zig_member": "terminal_grid_ref"
+    },
+    {
+      "id": 10,
+      "name": "ghostty_grid_ref_cell",
+      "zig_member": "grid_ref_cell"
+    },
+    {
+      "id": 11,
+      "name": "ghostty_cell_get",
+      "zig_member": "cell_get"
+    },
+    {
+      "id": 12,
+      "name": "ghostty_grid_ref_style",
+      "zig_member": "grid_ref_style"
+    },
+    {
+      "id": 13,
+      "name": "ghostty_formatter_format_alloc",
+      "zig_member": "formatter_format_alloc"
+    },
+    {
+      "id": 14,
+      "name": "ghostty_free",
+      "zig_member": "alloc_free"
+    },
+    {
+      "id": 15,
+      "name": "ghostty_render_state_free",
+      "zig_member": "render_state_free"
+    },
+    {
+      "id": 16,
+      "name": "ghostty_render_state_get",
+      "zig_member": "render_state_get"
+    },
+    {
+      "id": 17,
+      "name": "ghostty_render_state_new",
+      "zig_member": "render_state_new"
+    },
+    {
+      "id": 18,
+      "name": "ghostty_render_state_row_cells_free",
+      "zig_member": "render_state_row_cells_free"
+    },
+    {
+      "id": 19,
+      "name": "ghostty_render_state_row_cells_get",
+      "zig_member": "render_state_row_cells_get"
+    },
+    {
+      "id": 20,
+      "name": "ghostty_render_state_row_cells_new",
+      "zig_member": "render_state_row_cells_new"
+    },
+    {
+      "id": 21,
+      "name": "ghostty_render_state_row_cells_select",
+      "zig_member": "render_state_row_cells_select"
+    },
+    {
+      "id": 22,
+      "name": "ghostty_render_state_row_get",
+      "zig_member": "render_state_row_get"
+    },
+    {
+      "id": 23,
+      "name": "ghostty_render_state_row_iterator_free",
+      "zig_member": "render_state_row_iterator_free"
+    },
+    {
+      "id": 24,
+      "name": "ghostty_render_state_row_iterator_new",
+      "zig_member": "render_state_row_iterator_new"
+    },
+    {
+      "id": 25,
+      "name": "ghostty_render_state_row_iterator_next",
+      "zig_member": "render_state_row_iterator_next"
+    },
+    {
+      "id": 26,
+      "name": "ghostty_render_state_update",
+      "zig_member": "render_state_update"
+    },
+    {
+      "id": 27,
+      "name": "ghostty_terminal_set",
+      "zig_member": "terminal_set"
+    }
+  ]
+}

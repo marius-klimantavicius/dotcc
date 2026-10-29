@@ -14,6 +14,10 @@ Equal("Hello\nworld", terminal.Snapshot(), "styled transcript");
 Equal(new TerminalPosition(20, 5, 5, 1), terminal.Position, "cursor");
 Equal((uint)'w', terminal.GetCell(0, 1).Codepoint, "cell codepoint");
 Equal((byte?)1, terminal.GetCell(0, 1).ForegroundPalette, "cell ANSI foreground");
+terminal.Write("\u001b[?25l");
+Equal(false, terminal.GetMode(25), "cursor visibility mode");
+terminal.Write("\u001b[?25h");
+Equal(true, terminal.GetMode(25), "cursor visibility restored");
 var unicode = Encoding.UTF8.GetBytes(" λ界");
 foreach (var value in unicode) terminal.Write(new byte[] { value });
 Equal("Hello\nworld λ界", terminal.Snapshot(), "split UTF-8");
@@ -41,4 +45,16 @@ try
     throw new InvalidOperationException("disposed owner accepted input");
 }
 catch (ObjectDisposedException) { }
-Console.WriteLine("PASS owning terminal transcript, UTF-8 chunking, screens, resize/reset, isolation and disposal");
+
+using var rendezvous = new Barrier(2);
+Task RunIndependent(string text) => Task.Factory.StartNew(() =>
+{
+    using var owner = new Terminal(20, 3);
+    if (!rendezvous.SignalAndWait(TimeSpan.FromSeconds(15)))
+        throw new InvalidOperationException("Independent terminal workers did not rendezvous.");
+    owner.Write("\u001b[1;32m" + text + "\u001b[0m");
+    Equal(text, owner.Snapshot(), "concurrent owner content");
+    Equal((byte?)2, owner.GetCell(0, 0).ForegroundPalette, "concurrent owner style");
+}, CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+Task.WaitAll(RunIndependent("first λ"), RunIndependent("second 界"));
+Console.WriteLine("PASS owning terminal transcript, UTF-8 chunking, screens, resize/reset, concurrent isolation and disposal");

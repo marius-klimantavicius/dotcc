@@ -5,6 +5,10 @@
 #include <ghostty/vt/terminal.h>
 #include <ghostty/vt/formatter.h>
 #include <ghostty/vt/grid_ref.h>
+#include <ghostty/vt/modes.h>
+#ifdef DOTCC_GHOSTTY_INDIRECT_ABI
+#include "dotcc_ghostty_abi.h"
+#endif
 
 /* Adapter observation flags, not an upstream packed-cell layout. */
 enum DotccGhosttyTextStyle {
@@ -91,6 +95,15 @@ int dotcc_ghostty_screen(void *terminal, int *screen) {
     GhosttyResult result = ghostty_terminal_get(
         terminal, GHOSTTY_TERMINAL_DATA_ACTIVE_SCREEN, &value);
     if (result == GHOSTTY_SUCCESS) *screen = (int)value;
+    return result;
+}
+
+int dotcc_ghostty_mode(void *terminal, uint16_t number, int ansi, int *enabled) {
+    if (number > 32767) return GHOSTTY_INVALID_VALUE;
+    GhosttyTerminalModeConfig config = {0};
+    config.mode = ghostty_mode_new(number, ansi != 0);
+    GhosttyResult result = ghostty_terminal_get(terminal, GHOSTTY_TERMINAL_DATA_MODE, &config);
+    if (result == GHOSTTY_SUCCESS) *enabled = config.value ? 1 : 0;
     return result;
 }
 
