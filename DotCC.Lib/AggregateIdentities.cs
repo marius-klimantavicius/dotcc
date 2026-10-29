@@ -180,9 +180,16 @@ internal static class AggregateIdentities
             || line.StartsWith("enum ", StringComparison.Ordinal))))
             throw new CompileException("object lacks enum identity metadata; regenerate older objects before linking");
         // Version 3 can drop unused struct/union declarations too. Its missing
-        // roots cannot certify compatibility, even when no enum was emitted.
+        // roots cannot certify compatibility for a nonempty graph. An empty
+        // graph has no typed declarations to prove and can keep linked checks
+        // active for the other units, provided it contains no root records.
         if (!currentLinkage && lines.Contains(EnumLinkageVersion, StringComparer.Ordinal))
-            throw new CompileException("object lacks aggregate declaration metadata; regenerate older objects before linking");
+        {
+            if (result.Count != 0 || lines.Any(line => line.StartsWith(LinkagePrefix, StringComparison.Ordinal)
+                || line.StartsWith(DeclarationPrefix, StringComparison.Ordinal)))
+                throw new CompileException("object lacks aggregate declaration metadata; regenerate older objects before linking");
+            return new AggregateIdentitySet([], []);
+        }
         if (!currentLinkage && !lines.Contains(ArrayLinkageVersion, StringComparer.Ordinal)
             && !lines.Contains(LegacyLinkageVersion, StringComparer.Ordinal))
         {
