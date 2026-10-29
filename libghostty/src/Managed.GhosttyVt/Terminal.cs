@@ -1,8 +1,8 @@
 using System.Runtime.InteropServices;
 using System.Text;
-using Core = Managed.GhosttyVt.Native.GhosttyVt;
+using Core = Managed.GhosttyVt;
 
-namespace Managed.GhosttyVt;
+namespace Managed;
 
 public readonly record struct TerminalPosition(ushort Columns, ushort Rows, ushort X, ushort Y);
 

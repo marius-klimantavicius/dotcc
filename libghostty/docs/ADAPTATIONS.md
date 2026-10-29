@@ -16,9 +16,9 @@ Native controls execute the same boundary and confirm matching snapshots,
 dimensions, independent instances and cleanup against both original and
 freestanding C engines.
 
-`config/zig-c-overrides.json` contains two exact, signature-checked macro rules
-for Zig's support header. Both are currently translation feasibility policy;
-final runtime qualification remains open:
+`config/zig-c-overrides.json` contains five exact, signature-checked macro rules
+for Zig's support header. Their selected C-route runtime acceptance passes in
+`20261030-001153-ab4e8deb`; see [the evidence](C-ROUTE-ACCEPTANCE.md):
 
 - `zig_expand_import_0` selects the header's own `zig_import_builtin` forwarding
   implementation. This expresses the same C symbol call as the assembler-label
@@ -32,9 +32,25 @@ final runtime qualification remains open:
   retain that invariant and fail if an affected name becomes reachable. A
   required use would need real symbol alias support instead.
 
-No alignment annotation is removed. The observed underaligned scalar typedef
-failure is being repaired in the shared C frontend, with actual layout and
-unaligned-access regressions. No runtime gate is claimed by a parse-only probe.
+- `zig_unreachable` selects the compiler's existing `__builtin_unreachable()`
+  lowering when the support header chooses its empty unknown-compiler fallback.
+  The exact zero-argument/empty-body match is required. This preserves the real
+  terminating trap for impossible control-flow paths, instead of losing it while
+  lowering C into C#. No return value or successful execution is synthesized.
+
+- `zig_cmpxchg_strong` and `zig_cmpxchg_weak` preserve Zig's independent
+  success/failure ordering through the selected C11 support-header implementation.
+  They strengthen success to sequential consistency while retaining failure
+  order and evaluating the original success expression once. This makes the
+  real Zig arena allocator's release/acquire combination compatible with the
+  stricter C11 compare-exchange contract. Object/expected/desired/failure values
+  still flow through the real atomic operation. Shared atomic validation stays
+  intact. Native/original-policy and emitted controls pass, followed by the
+  current four-row product qualification.
+
+No alignment annotation is removed. Shared C frontend repairs pass actual
+native/direct/object layout and unaligned-access regressions. Parse-only probes
+remain distinct from execution evidence.
 
 ## Public C ABI versus generated Zig-private types
 
@@ -61,6 +77,11 @@ at the original native library. This verifies the public ABI independently of
 the generated accessor. The original/native-C 16-case oracle and two boundary
 cases pass with the accessor, including by-value formatter options, callbacks,
 allocation, cell/style queries, modes, resize/reset and instance independence.
-Their managed runtime acceptance remains required. Diagnostic C qualification
+Their current managed runtime acceptance passes all four rows. Diagnostic C qualification
 tests live in a separate `qualification` profile; test entrypoints and fixed
 transcripts are absent from the scalar delivered library.
+
+The source ABI profile also explicitly selects 16-byte x87 `long double` storage
+with 16-byte source alignment. This preserves Zig's actual ABI assertions. It
+supports raw storage and copying only; it does not implement x87 arithmetic.
+Default compiler requests retain their established 8-byte representation.

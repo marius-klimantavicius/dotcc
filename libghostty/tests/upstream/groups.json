@@ -3,11 +3,12 @@
   "native_superset_count": 3560,
   "scope_counts": {
     "scaffolding": 40,
-    "excluded-product-feature": 888,
-    "applicable-not-selected": 2571,
+    "excluded-product-feature": 896,
+    "applicable-not-selected": 2562,
     "selected-render": 58,
     "required-profile-mismatch": 1,
     "required-fixture": 1,
+    "upstream-placeholder": 1,
     "excluded-additional-stress": 1
   },
   "groups": [
@@ -316,14 +317,13 @@
     {
       "id": "parser-stream",
       "title": "Parser, sequence decoding and stream execution",
-      "case_count": 678,
+      "case_count": 675,
       "modules": {
         "terminal.Parser": 25,
         "terminal.UTF8Decoder": 3,
         "terminal.apc": 11,
-        "terminal.dcs": 10,
+        "terminal.dcs": 9,
         "terminal.osc": 6,
-        "terminal.osc.Command.ProgressReport": 1,
         "terminal.osc.kitty_metadata": 2,
         "terminal.osc.parsers.change_window_icon": 1,
         "terminal.osc.parsers.change_window_title": 7,
@@ -331,7 +331,7 @@
         "terminal.osc.parsers.color": 13,
         "terminal.osc.parsers.hierarchical_context": 20,
         "terminal.osc.parsers.hyperlink": 8,
-        "terminal.osc.parsers.iterm2": 19,
+        "terminal.osc.parsers.iterm2": 18,
         "terminal.osc.parsers.kitty_clipboard_protocol": 27,
         "terminal.osc.parsers.kitty_color": 5,
         "terminal.osc.parsers.kitty_desktop_notification": 58,
@@ -549,7 +549,6 @@
         "terminal.stream_terminal.test.paste: mode 5522 without entropy fails and records no grant",
         "terminal.stream_terminal.test.paste: mode 5522 DECRQM requires clipboard read effect",
         "terminal.stream_terminal.test.full reset drops kitty clipboard grants",
-        "terminal.osc.Command.ProgressReport.test.ghostty.h Command.ProgressReport.State",
         "terminal.stream.test.stream: print",
         "terminal.stream.test.simd: print invalid utf-8",
         "terminal.stream.test.simd: complete incomplete utf-8",
@@ -980,7 +979,6 @@
         "terminal.osc.parsers.iterm2.test.OSC: 1337: test Copy with empty value",
         "terminal.osc.parsers.iterm2.test.OSC: 1337: test Copy with only prefix colon",
         "terminal.osc.parsers.iterm2.test.OSC: 1337: test Copy with question mark",
-        "terminal.osc.parsers.iterm2.test.OSC: 1337: test Copy with non-empty value that is invalid base64",
         "terminal.osc.parsers.iterm2.test.OSC: 1337: test Copy with non-empty value that is valid base64 but not prefixed with a colon",
         "terminal.osc.parsers.iterm2.test.OSC: 1337: test Copy with non-empty value that is valid base64",
         "terminal.osc.parsers.iterm2.test.OSC: 1337: test CurrentDir with no value",
@@ -1027,14 +1025,13 @@
         "terminal.dcs.test.DECRQSS command",
         "terminal.dcs.test.DECRQSS invalid command",
         "terminal.dcs.test.DECRQSS response encoding",
-        "terminal.dcs.test.DECRQSS largest response fits fixed buffer",
-        "terminal.dcs.test.tmux enter and implicit exit"
+        "terminal.dcs.test.DECRQSS largest response fits fixed buffer"
       ]
     },
     {
       "id": "storage",
       "title": "Screen, page storage and compression",
-      "case_count": 647,
+      "case_count": 646,
       "modules": {
         "terminal.PageList": 293,
         "terminal.Screen": 227,
@@ -1043,7 +1040,7 @@
         "terminal.compress.lz4": 12,
         "terminal.compress.lz4_differential": 1,
         "terminal.hash_map": 27,
-        "terminal.mem": 4,
+        "terminal.mem": 3,
         "terminal.page": 52,
         "terminal.ref_counted_set": 2
       },
@@ -1680,7 +1677,6 @@
         "terminal.compress.Page.test.compressed Page can retry after malformed encoded data",
         "terminal.mem.test.decommit with zero fallback clears the dirty prefix",
         "terminal.mem.test.strict decommit retains the mapping for recommit",
-        "terminal.mem.test.FreeBSD decommit releases pages and reads back zeros",
         "terminal.mem.test.test builds can reclaim retained mappings",
         "terminal.compress.lz4.test.compressBound",
         "terminal.compress.lz4.test.literal-only compatibility vectors",
@@ -2367,9 +2363,8 @@
     {
       "id": "protocol-state",
       "title": "Modes, styles, colors and extension protocol state",
-      "case_count": 239,
+      "case_count": 235,
       "modules": {
-        "terminal.StringMap": 3,
         "terminal.Tabstops": 7,
         "terminal.build_options.Options.Features": 1,
         "terminal.color": 24,
@@ -2390,7 +2385,6 @@
         "terminal.modes": 14,
         "terminal.modes.ModeTag": 1,
         "terminal.mouse": 1,
-        "terminal.mouse.Shape": 1,
         "terminal.size": 5,
         "terminal.size_report": 6,
         "terminal.style": 38,
@@ -2408,7 +2402,6 @@
         "terminal.size.test.Offset ptr structural",
         "terminal.size.test.getOffset bytes",
         "terminal.size.test.getOffset structs",
-        "terminal.mouse.Shape.test.ghostty.h MouseShape",
         "terminal.color.test.parsePaletteEntry",
         "terminal.color.test.palette: default",
         "terminal.color.test.RGB.parse",
@@ -2634,16 +2627,13 @@
         "terminal.kitty.clipboard_grants.test.generateOtp: no entropy is an error, never a weak password",
         "terminal.kitty.clipboard_grants.test.generateOtp: sys override supplies entropy without an Io source",
         "terminal.sys.test.randomSecure: override is preferred over the Io",
-        "terminal.StringMap.test.StringMap searchIterator",
-        "terminal.StringMap.test.StringMap searchIterator URL detection",
-        "terminal.StringMap.test.StringMap searchIterator URL with click position",
         "terminal.build_options.Options.Features.test.parse"
       ]
     },
     {
       "id": "algorithms",
       "title": "Supporting algorithms and scalar text helpers",
-      "case_count": 118,
+      "case_count": 117,
       "modules": {
         "datastruct.circ_buf": 23,
         "datastruct.comparison": 24,
@@ -2663,7 +2653,7 @@
         "simd.base64": 7,
         "simd.codepoint_width": 1,
         "simd.index_of": 1,
-        "simd.vt": 20,
+        "simd.vt": 19,
         "terminfo.Source": 2,
         "terminfo.ghostty": 1,
         "tripwire": 3
@@ -2752,7 +2742,6 @@
         "datastruct.untouched_pool.test.UntouchedPool: release frees immediately",
         "datastruct.segmented_list.test.basic usage",
         "datastruct.segmented_list.test.clearRetainingCapacity",
-        "simd.vt.test.decode simd matches scalar",
         "simd.vt.test.decode no escape",
         "simd.vt.test.decode ASCII to escape",
         "simd.vt.test.decode immediate esc sequence",
@@ -2796,5 +2785,5 @@
       "status": "required core reset behavior mixed with unconditional disabled-glyph assertion; preserve as unresolved profile mismatch"
     }
   ],
-  "required_remaining": 2573
+  "required_remaining": 2564
 }

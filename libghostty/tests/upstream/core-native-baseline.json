@@ -1,0 +1,88 @@
+{
+  "discovered": 2573,
+  "passed": 2564,
+  "skipped": 9,
+  "failed": 0,
+  "live_allocations": 0,
+  "mode": "Debug",
+  "source": "original upstream source and Zig standard library",
+  "features": "scalar terminal/render/grid/formatter + diagnostic glyph_protocol for unchanged mixed full reset test",
+  "case_exclusions": [
+    {
+      "name": "terminal.mouse.Shape.test.ghostty.h MouseShape",
+      "source": "src/terminal/mouse.zig",
+      "line": 94,
+      "source_condition": "build_options.artifact == .lib",
+      "reason": "GUI ghostty.h enum compatibility check; deliberately skipped for libghostty-vt"
+    },
+    {
+      "name": "terminal.osc.Command.ProgressReport.test.ghostty.h Command.ProgressReport.State",
+      "source": "src/terminal/osc.zig",
+      "line": 296,
+      "source_condition": "build_options.artifact == .lib",
+      "reason": "GUI ghostty.h enum compatibility check; deliberately skipped for libghostty-vt"
+    },
+    {
+      "name": "simd.vt.test.decode simd matches scalar",
+      "source": "src/simd/vt.zig",
+      "line": 157,
+      "source_condition": "!options.simd",
+      "reason": "SIMD comparison requires the excluded SIMD backend; scalar decoder tests remain required"
+    },
+    {
+      "name": "terminal.osc.parsers.iterm2.test.OSC: 1337: test Copy with non-empty value that is invalid base64",
+      "source": "src/terminal/osc/parsers/iterm2.zig",
+      "line": 357,
+      "source_condition": "unconditional return error.SkipZigTest; every assertion is commented out",
+      "reason": "Upstream placeholder has no active assertions; upstream explicitly does not validate this base64 for performance"
+    },
+    {
+      "name": "terminal.mem.test.FreeBSD decommit releases pages and reads back zeros",
+      "source": "src/terminal/mem.zig",
+      "line": 404,
+      "source_condition": "builtin.target.os.tag != .freebsd",
+      "reason": "FreeBSD-specific native decommit implementation outside initial Linux/freestanding host scope"
+    },
+    {
+      "name": "terminal.dcs.test.tmux enter and implicit exit",
+      "source": "src/terminal/dcs.zig",
+      "line": 549,
+      "source_condition": "!build_options.tmux_control_mode",
+      "reason": "Tmux control mode is excluded from the agreed product"
+    },
+    {
+      "name": "terminal.StringMap.test.StringMap searchIterator",
+      "source": "src/terminal/StringMap.zig",
+      "line": 119,
+      "source_condition": "!build_options.oniguruma",
+      "reason": "Regex search iterator requires excluded Oniguruma"
+    },
+    {
+      "name": "terminal.StringMap.test.StringMap searchIterator URL detection",
+      "source": "src/terminal/StringMap.zig",
+      "line": 174,
+      "source_condition": "!build_options.oniguruma",
+      "reason": "Regex search iterator requires excluded Oniguruma"
+    },
+    {
+      "name": "terminal.StringMap.test.StringMap searchIterator URL with click position",
+      "source": "src/terminal/StringMap.zig",
+      "line": 233,
+      "source_condition": "!build_options.oniguruma",
+      "reason": "Regex search iterator requires excluded Oniguruma"
+    }
+  ],
+  "receipt": "build/native-tools/upstream-core-native/artifacts/receipt.json",
+  "stdout": "build/native-tools/upstream-core-native/artifacts/core-original-run.log",
+  "c_control": {
+    "discovered": 2573,
+    "passed": 2559,
+    "skipped": 10,
+    "failed": 4,
+    "tracked_live_allocations": 0,
+    "receipt": "build/native-tools/upstream-core-c/artifacts/receipt.json",
+    "compile_seconds": 338.0,
+    "execution_seconds": 14.8,
+    "failure_classification": "four missing secure entropy failures; one extra C allocator capability skip on unhosted freestanding target; final controls add actual services and retain required cases"
+  }
+}

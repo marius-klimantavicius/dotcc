@@ -1,5 +1,6 @@
 """Pinned libghostty-vt: genuine whole-engine Zig C emission into DotCC."""
 import os
+from pathlib import Path
 import platform
 import shutil
 import xml.etree.ElementTree as ET
@@ -31,19 +32,32 @@ def sources(root):
                  ("zig.exe" if os.name == "nt" else "zig", "lib/zig.h"))
 
 
+def core_partitions(root):
+    return helper(root / "tests/upstream/core.py").partitions(root)
+
+
 def prepare(ctx):
     policy = json_file(ctx.root / "config/translation.json")
-    if ctx.profile == "upstream-render":
-        tests = helper(ctx.root / "tests/upstream/run.py").prepare_tests(ctx)
+    if not isinstance(policy.get("aggregate_data", False), bool):
+        raise RuntimeError("translation.aggregate_data must be Boolean")
+    compile_options = ["--aggregate-data"] if policy.get("aggregate_data", False) else []
+    if ctx.profile == "upstream-render" or ctx.profile.startswith("upstream-core"):
+        core = ctx.profile != "upstream-render"
+        module = helper(ctx.root / ("tests/upstream/core.py" if core else "tests/upstream/run.py"))
+        partition = ctx.profile.removeprefix("upstream-core-") if ctx.profile.startswith("upstream-core-") else None
+        tests = module.prepare_core(ctx, partition) if core else module.prepare_tests(ctx)
         ctx.receipt["upstream_test_closure"] = {
             "source": str(tests["source"]), "argv": tests["argv"],
             "case_count": tests["case_count"], "host": str(tests["host"]),
         }
-        return Translation([
+        units = [
             Unit(tests["source"], ("--overrides-file", str(ctx.root / "config/zig-c-overrides.json"))),
-            Unit(tests["host"], ("-DDOTCC_UPSTREAM_HOST_NO_MAIN=1",))],
-            ["-std=" + policy["dialect"], *flags(includes=tests["includes"])],
-            [*link_flags("GhosttyVt", "Managed.GhosttyVt.Native"), "--prune-unused-inline"],
+            Unit(tests["host"], ("-DDOTCC_UPSTREAM_HOST_NO_MAIN=1",))]
+        if core:
+            units.append(Unit(tests["host_io"]))
+        return Translation(units,
+            ["-std=" + policy["dialect"], *compile_options, *flags(includes=tests["includes"])],
+            [*link_flags("GhosttyVt", "Managed"), "--prune-unused-inline"],
             objects=True, configure=configure)
     engine = helper(ctx.root / "tests/native/run.py").prepare_engine(ctx)
     contents = engine["source"].read_text(encoding="utf-8")
@@ -75,8 +89,8 @@ def prepare(ctx):
             target = staged / filename
             target.write_text(text.replace(anchor, "int " + entry + "(void)"), encoding="utf-8")
             units.append(Unit(target, ("-DDOTCC_GHOSTTY_INDIRECT_ABI=1",)))
-    return Translation(units, ["-std=" + policy["dialect"], *flags(includes=engine["includes"])],
-                       [*link_flags("GhosttyVt", "Managed.GhosttyVt.Native"), "--prune-unused-inline",
+    return Translation(units, ["-std=" + policy["dialect"], *compile_options, *flags(includes=engine["includes"])],
+                       [*link_flags("GhosttyVt", "Managed"), "--prune-unused-inline",
                         "--export-enum", "DOTCC_STYLE_*"],
                        objects=True, configure=configure)
 
@@ -87,8 +101,9 @@ def configure(ctx, project, form):
     for item in pin["license_inputs"]:
         if not item.get("distribute"):
             continue
-        source = (ctx.sources["zig"] / item["toolchain_path"] if "toolchain_path" in item
-                  else ctx.sources[item.get("source", "product")] / item["path"])
+        source = (ctx.repo / item["repository_path"] if "repository_path" in item else
+                  ctx.sources["zig"] / item["toolchain_path"] if "toolchain_path" in item else
+                  ctx.sources[item.get("source", "product")] / item["path"])
         notices.append(item["name"] + "\n" + source.read_text(encoding="utf-8"))
     name = "THIRD-PARTY-NOTICES"
     (project.parent / name).write_text("\n\n".join(notices) + "\n", encoding="utf-8")
@@ -120,6 +135,23 @@ def run_upstream_native(ctx, suite):
     return helper(ctx.root / "tests/upstream/run.py").run(ctx, suite)
 
 
+def run_upstream_core_native(ctx, suite):
+    module = helper(ctx.root / "tests/upstream/core.py")
+    parts = module.partitions(ctx.root)
+    if ctx.profile.startswith("upstream-core-"):
+        parts = tuple(part for part in parts if part["profile"] == ctx.profile)
+    for part in parts:
+        module.run(ctx, suite, part["id"])
+
+
+def run_upstream_core(ctx, suite):
+    return helper(ctx.root / "tests/qualification.py").run_upstream_core(ctx, suite)
+
+
+def run_factory_allocation(ctx, suite):
+    return helper(ctx.root / "tests/factory_allocation.py").run(ctx, suite)
+
+
 def run_audit(ctx, suite):
     return helper(ctx.root / "tests/audit.py").run(ctx, suite)
 
@@ -128,8 +160,14 @@ def run_host_io(ctx, suite):
     return helper(ctx.root / "tests/upstream/host_io_probe.py").run(ctx, suite)
 
 
+_core_profiles = tuple(part["profile"] for part in core_partitions(Path(__file__).resolve().parents[1]))
+_verification = json_file(Path(__file__).resolve().parents[1] / "config/verification.json")
+if _verification.get("schema_version") != 1:
+    raise RuntimeError("Unsupported libghostty verification policy schema")
+
+
 recipe = Recipe(
-    "libghostty", "TranslatedGhosttyVt", ("scalar", "qualification", "upstream-render"),
+    "libghostty", "TranslatedGhosttyVt", ("scalar", "qualification", "upstream-render", "upstream-core", *_core_profiles),
     ("src/Managed.GhosttyVt/Managed.GhosttyVt.csproj", "samples/ManagedConsumer/ManagedConsumer.csproj"),
     sources, prepare,
     consumer=Consumer(property="TranslatedProject"),
@@ -147,10 +185,19 @@ recipe = Recipe(
             Suite("upstream", (), run=run_upstream, matrix=True,
                   required_profiles=("upstream-render",),
                   scope="applicable unchanged upstream render assertions, raw/processed JIT/rooted-AOT"),
+            Suite("upstream-core-native", (), run=run_upstream_core_native, timeout=3600,
+                  scope="2564 applicable unchanged upstream core assertions, native/genuine-C, fixture I/O and entropy"),
+            Suite("upstream-core", (), run=run_upstream_core, matrix=True, timeout=3600,
+                  verify_profiles=_core_profiles,
+                  scope="2564 applicable unchanged upstream core cases, raw/processed JIT/rooted-AOT, zero skips"),
+            Suite("factory-allocation", (), run=run_factory_allocation, matrix=True,
+                  profiles=("scalar",), timeout=3600,
+                  scope="current PE RVA/IL and exact canonical-source getter/factory zero managed allocations, JIT/rooted-AOT"),
             Suite("audit", (), run=run_audit, profiles=("scalar",),
                   scope="retained upstream export inventory, native-backend exclusion, notices and delivery boundaries")),
     default_suites=("consumer",),
-    # Expanded qualification declarations are added with their actual harnesses;
-    # this current selection does not establish P4/P6 acceptance by itself.
-    verify_suites=("host-io", "native", "consumer", "qualification", "upstream-native", "upstream", "audit"),
+    # The user deferred upstream case matrices to the direct Zig phase on
+    # 2026-10-30. Keep their explicit suites and profile inventories runnable;
+    # ordinary C-route verification prepares only product qualification.
+    verify_suites=tuple(_verification["verify_suites"]),
 )

@@ -21,8 +21,8 @@ fn selectedTest(index: usize) std.builtin.TestFn {
     unreachable;
 }
 
-extern fn dotcc_upstream_host_alloc(usize, u8) ?[*]u8;
-extern fn dotcc_upstream_host_free([*]u8, usize, u8) void;
+extern fn dotcc_upstream_host_alloc(usize, u8) ?*anyopaque;
+extern fn dotcc_upstream_host_free(?*anyopaque, usize, u8) void;
 extern fn dotcc_upstream_host_report([*]const u8, usize, c_int, [*]const u8, usize) void;
 extern fn dotcc_upstream_host_finish(usize) c_int;
 extern fn dotcc_upstream_host_log([*]const u8, usize) void;
@@ -60,7 +60,7 @@ fn panicImpl(msg: []const u8, ra: ?usize) noreturn {
 
 fn alloc(ctx: *anyopaque, len: usize, alignment: std.mem.Alignment, ra: usize) ?[*]u8 {
     _ = ctx; _ = ra;
-    return dotcc_upstream_host_alloc(len, @backingInt(alignment));
+    return @ptrCast(dotcc_upstream_host_alloc(len, @backingInt(alignment)));
 }
 fn resize(ctx: *anyopaque, mem: []u8, alignment: std.mem.Alignment, len: usize, ra: usize) bool {
     _ = ctx; _ = mem; _ = alignment; _ = len; _ = ra;
@@ -72,7 +72,7 @@ fn remap(ctx: *anyopaque, mem: []u8, alignment: std.mem.Alignment, len: usize, r
 }
 fn free(ctx: *anyopaque, mem: []u8, alignment: std.mem.Alignment, ra: usize) void {
     _ = ctx; _ = ra;
-    dotcc_upstream_host_free(mem.ptr, mem.len, @backingInt(alignment));
+    dotcc_upstream_host_free(@ptrCast(mem.ptr), mem.len, @backingInt(alignment));
 }
 const vtable: std.mem.Allocator.VTable = .{ .alloc = alloc, .resize = resize, .remap = remap, .free = free };
 var context: u8 = 0;

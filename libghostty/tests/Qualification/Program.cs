@@ -1,4 +1,4 @@
-using Core = Managed.GhosttyVt.Native.GhosttyVt;
+using Core = Managed.GhosttyVt;
 
 // Tests are in a separate nondefault profile; the scalar delivered library
 // contains no test entrypoints or fixed transcripts.

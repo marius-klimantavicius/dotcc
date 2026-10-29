@@ -1,7 +1,8 @@
 # Translate libghostty-vt with DotCC
 
-Status: implementation in progress; acceptance incomplete.
-Campaign: `libghostty/`. Updated: 2026-10-29.
+Status: C route accepted with the explicit user upstream-test deferral;
+direct Zig phase not yet qualified. See [acceptance evidence](C-ROUTE-ACCEPTANCE.md).
+Campaign: `libghostty/`. Updated: 2026-10-30.
 
 This plan instantiates the [project template](../../docs/plans/translation-template.md)
 and adopts [translation baseline v4](../../docs/plans/translation-baseline.md)
@@ -28,6 +29,20 @@ Those changes are preserved and excluded from campaign commits. No applicable
 root/ancestor AGENTS.md was found. Campaign milestone commits are authorized
 after validation; pushing and creating a PR are outside this authorization.
 
+## Authorized route sequence
+
+The user authorized this order on 2026-10-29 and explicitly changed the test
+scope on 2026-10-30: "Let's skip upstream tests (we'll come to them eventually
+when we start working od direct zig translation)". The later instruction
+supersedes the earlier upstream-matrix prerequisite for the C-route commit.
+
+1. Finish the current genuine Zig → C → DotCC campaign through the remaining C-route P6 gates: final regeneration, actual native engine/boundary controls, both forms/JIT/NativeAOT consumer, all 24 differential/physical ABI/rooted qualification cases in every row, factory-allocation matrix, audit, ordinary root solution, offline warn/off reproduction/authored preservation and affected shared regressions. Upstream test suites and their 2,622-case matrix are deferred to the direct Zig phase and are not counted as passes. Earlier builds or consumer passes alone do not complete the retained gates.
+2. Commit the accepted C-route campaign and focused shared fixes, preserving unrelated staged and unstaged work. Report its completion commit and evidence, and retain this reproducible route as an independent baseline. No push or PR is authorized.
+3. After that completion commit, integrate the relevant Zig/compiler dependencies from true upstream `sebgod/dotcc`, reviewed at `d3678b5c50f86bf65d831ee4efda6134a7894116` (`refs/remotes/sebgod-review/main`; review evidence under `build/upstream-dotcc-review`). Do not merge unrelated features. No upstream integration or direct-route implementation starts before the accepted C route is committed.
+4. Continue without another user prompt to actual pinned libghostty-vt Zig → DotCC → `Managed.GhosttyVt`, with no C intermediate for the direct route. Preserve the selected functionality, owning API, namespace, data/factory requirements and native/C-route controls. Fix the demonstrated `noreturn`, top-level comptime/`@export`, type-returning `Enum`/`anytype`, and `Result`/import gaps; upstream alone does not close them. Resume the retained 2,622-case upstream inventory, native/C controls and all four managed rows in this phase. Require full export, execution and reproduction acceptance before closing the direct route.
+
+The supervisor retains implementation, integration and validation ownership through both routes; required bounded parallel agents and coordinated shared builds continue.
+
 ## Outcome and scope
 
 Translate the actual Zig libghostty-vt terminal engine, including its parser,
@@ -52,13 +67,13 @@ or native wrapper cannot satisfy any runtime gate.
 | --- | --- | --- | --- |
 | D1 | Source version | Ghostty `1.4.1-dev`, commit `93967b7f9478e94dcbb42125c8a90f34feb40d75`; source and native toolchain pins in JSON. | Decided; `config/source.json`, `config/toolchain.json`. |
 | D2 | Configuration | Root `src/lib_vt.zig`, C ABI implementation `src/terminal/c/main.zig`; scalar `simd=false`; formatter, render-state and grid-introspection enabled, other optional feature gates disabled. Unicode dependency/generator closure retained in actual upstream command. | Decided; `config/translation.json`, `docs/UPSTREAM.md`; native parity passes. |
-| D3 | ABI/text | First target Linux x64, little endian LP64; C enum/int widths and actual layouts measured natively and from emitted code; UTF-8 stream and Unicode cells. | Provisional until emitted P1 probes. |
-| D4 | Host/dependencies | Freestanding x64 C emission, explicit public allocator callbacks using shared `posix_memalign/free`; no product filesystem/OS services, native terminal dependency, graphics or regex provider. | Selected; native control passes; managed import audit P2/P6 pending. |
-| D5 | Ownership | Each owner exclusively owns one upstream terminal and subordinate formatter/render handles; deterministic dispose, no use after dispose, synchronous serialized entry per owner; two owners must retain independent state. | Decided contract; P1/P3 lifecycle acceptance pending. |
-| D6 | Delivery | Actual engine emitted to C by pinned Zig, then DotCC object linking with authored ABI adapter. Class `GhosttyVt`, namespace `Managed.GhosttyVt.Native`; original owning API under `src/Managed.GhosttyVt`; shared `link_flags` defaults (256 KB splitting, literal pool, inline deduplication), plus unused inline pruning. | Decided route; native whole-engine C transcript equals original. No managed product accepted yet. |
-| D7 | Controls | Native library from the same pinned source, scalar feature configuration and ABI; assertion-based harness with exact deterministic observations. | In progress; native oracle must pass before transcript is accepted. |
-| D8 | Matrix | Linux x64, scalar profile, raw/processed × JIT/NativeAOT, owning sample plus whole-library rooting qualification. | Required P4/P6; no rows passed yet. |
-| D9 | Tests | Required behaviors and ordinary API errors/lifetimes plus applicable upstream terminal/C API tests; inventory and exclusion reasons retained. No additional performance target or long fuzz/stress campaign selected. | Required P4; inventory pending. |
+| D3 | ABI/text | First target Linux x64, little endian LP64; C enum/int widths and actual layouts measured natively and from emitted code; UTF-8 stream and Unicode cells. | Passed actual emitted/native physical layout probes in all four qualification rows; explicit x87 long-double storage is not a numeric ABI promise. |
+| D4 | Host/dependencies | Freestanding x64 C emission, explicit public allocator callbacks using shared `posix_memalign/free`; no product filesystem/OS services, native terminal dependency, graphics or regex provider. | Selected; native control and actual managed workflow pass. Final dependency/import audit passes in `001153-ab4e8deb`. |
+| D5 | Ownership | Each owner exclusively owns one upstream terminal and subordinate formatter/render handles; deterministic dispose, no use after dispose, synchronous serialized entry per owner; two owners must retain independent state. | Passed lifecycle, independent-instance and concurrent-owner controls in both forms/JIT/AOT. |
+| D6 | Delivery | Actual engine emitted to C by pinned Zig, then DotCC object linking with authored ABI adapter. Class `GhosttyVt`, namespace `Managed` (full class `Managed.GhosttyVt`); owning API types also use namespace `Managed`; original owning API under `src/Managed.GhosttyVt`; shared `link_flags` defaults (256 KB splitting, literal pool, inline deduplication), plus unused inline pruning and metadata-selected `--aggregate-data` during object emission. | Canonical raw/processed projects published; owning consumer passes both forms/JIT/AOT. Final C-route acceptance passes; upstream test work is deferred. |
+| D7 | Controls | Native library from the same pinned source, scalar feature configuration and ABI; assertion-based harness with exact deterministic observations. | Native original and generated-C oracle controls pass; exact transcripts are retained. |
+| D8 | Matrix | Linux x64, scalar profile, raw/processed × JIT/NativeAOT, owning sample plus whole-library rooting qualification. | Owning consumer and 24-case differential/rooted qualification pass all four rows; current final retained gates pass. Upstream rows are deferred to direct Zig. |
+| D9 | Tests | C-route product behaviors, ordinary errors/lifetimes, native controls and 24-case qualification remain required. Retain applicable upstream terminal/C API inventory and exclusions for direct Zig. No additional performance target or long fuzz/stress campaign selected. | User-deferred: 58 render and 2,564 core cases, plus upstream-only host-I/O service probes. No deferred row counts as passed. Policy: `config/verification.json`. |
 
 Source and toolchain metadata live under `config/`. Revision/checksum literals
 belong there, not executable scripts. Default `--hashes warn` and supported `off`
@@ -86,7 +101,7 @@ available and document any fallback constants against these headers.
 | Optional providers | Upstream feature selection excludes graphics/regex. | No replacement algorithms. | Configuration and unresolved-import audit. |
 
 Allowed adaptations: upstream build options, explicit allocator extension point,
-and two exact support-header macro rules documented in [ADAPTATIONS.md](ADAPTATIONS.md).
+and five exact support-header macro rules documented in [ADAPTATIONS.md](ADAPTATIONS.md).
 No engine source is edited. Grammar/lowering defects are repaired in the
 shared compiler, not hidden by editing emitted C#. Generic frontend fixes need
 native-valid reductions and execution checks plus full-source retries.
@@ -105,7 +120,7 @@ native-valid reductions and execution checks plus full-source retries.
   `generated/TranslatedGhosttyVt.Raw/TranslatedGhosttyVt.csproj`.
 - Diagnostic profiles: `qualification` contains the native differential and
   physical layout harnesses; `upstream-render` contains 58 applicable unchanged
-  upstream render cases. Both use canonical `generated/profiles/<profile>/`
+  upstream render cases and `upstream-core` selects 2,564 further applicable cases. These use canonical `generated/profiles/<profile>/`
   raw/processed paths. Their test entrypoints stay outside the scalar product.
 - Root solution: `ManagedConsumer.slnx` with original authored API and sample.
 - Sample: `samples/ManagedConsumer/ManagedConsumer.csproj`, translated project
@@ -128,12 +143,12 @@ unrelated directory and preserve authored source edits across regeneration.
 | Phase | Concrete exit gate | Status | Evidence/remaining work |
 | --- | --- | --- | --- |
 | P0 — Scope/native baseline | Pinned inventory, recipe/layout, working native workflow and actual first translation attempt. | Passed | Offline shared native suite passes 16 assertions; original and genuine C engine transcripts match. Shared recipe first complete attempt reaches generated engine underaligned typedef error. Layout and offline acquisition pass, including unrelated working directory. See implementation ledger. |
-| P1 — Boundary feasibility | Actual emitted/native ABI, allocator, borrow and independent-owner probes. | In progress | Six real public-ABI storage probes match native/emitted code. Native original/accessor-engine boundary controls pass. Actual emitted engine execution remains required. |
-| P2 — Complete translation | Entire selected implementation builds raw/processed at canonical paths, no manual repair or unresolved required imports. | In progress | Complete current source parsing advances through line 447923 of approximately 531000; no managed product published. |
-| P3 — Useful execution | Chunked UTF-8/control transcript, observation, resize/reset and cleanup through translated engine. | Unrun | Owning API acceptance requires engine. |
-| P4 — Feature qualification | Required features, ordinary errors/lifetimes and applicable upstream case inventory pass matrix. | In progress | Native original/C 58 applicable render cases pass; 3 Kitty-only cases explicitly excluded under existing scope. Remaining applicable upstream groups and managed matrix stay open. |
-| P5 — Consumer delivery | Root solution and owning sample run JIT/AOT for both forms, plus full rooting. | Unrun | No runtime acceptance inferred from scaffolding. |
-| P6 — Reproduction/acceptance | Final-tool regeneration, full required suites, local reuse/hash modes, authored preservation, dependency audit and affected regressions. | Unrun | Campaign remains incomplete until all required gates pass. |
+| P1 — Boundary feasibility | Actual emitted/native ABI, allocator, borrow and independent-owner probes. | Passed | Actual engine differential qualification passes all 24 cases in both forms/JIT/AOT, including six physical ABI layouts and allocator/lifetime controls (`172036-a1c40c5a`). |
+| P2 — Complete translation | Entire selected implementation builds raw/processed at canonical paths, no manual repair or unresolved required imports. | Passed | Normal scalar run `170255-7d3e0289` emits/links the complete engine and boundary, builds raw, postprocesses/builds processed and publishes both canonical projects after final builds. Final retained behavioral/P6 gates pass in `001153-ab4e8deb`. |
+| P3 — Useful execution | Chunked UTF-8/control transcript, observation, resize/reset and cleanup through translated engine. | Passed | Canonical scalar owning consumer passes raw/processed JIT and NativeAOT (receipts `171252-f8cfacd0`, `171340-0c043e6e`), including split UTF-8, observation, screens, resize/reset, concurrency and disposal. |
+| P4 — Feature qualification | C-route required features and ordinary errors/lifetimes pass native and 24-case qualification matrices. | Passed for retained C scope | Final `001153-ab4e8deb` passes native controls and all 24 cases in four rows with zero failures/skips. Upstream tests are user-deferred, not passed; inventories and partial/cancelled evidence remain. |
+| P5 — Consumer delivery | Root solution and owning sample run JIT/AOT for both forms, plus full rooting. | Passed | Root solution builds; actual owning sample passes all four rows and differential qualification passes whole-library-rooted AOT for both forms. |
+| P6 — Reproduction/acceptance | Final-tool regeneration, retained C suites, warn/off local reuse, preservation, audit and affected regressions. | Passed with user-authorized upstream deferral | WARN `001153-ab4e8deb` and OFF `205950-b1f45aae` pass; final original-reference rebuild passes in 22.907 s. All 89 current facts are preserved. See `C-ROUTE-ACCEPTANCE.md`. Direct Zig and its upstream matrix remain future work. |
 
 Dependencies: P0 → P1 → P2 → P3 → P4/P5 → P6. Native controls, API design and
 generic frontend reductions can progress independently. Significant validated
@@ -148,16 +163,20 @@ milestones receive focused commits; no push or PR is authorized. Blocker ledger:
 | Useful workflow | `consumer`: transcript feed, snapshot, cursor, resize/reset, dispose. | Both forms, JIT/AOT. | Required. |
 | Terminal behavior | `qualification`: 16-case exact native differential covers controls, chunking, Unicode, styles, scrolling/reflow, alternate screen and callback replies. | Both forms, JIT/AOT. | Required. |
 | Errors/lifetimes | `qualification` and `consumer`: ordinary rejection/status behavior, allocation failure, 32 balanced cycles, independent instances and disposed access. | Both forms, JIT/AOT. | Required. |
-| Upstream cases | `upstream-native` and `upstream`: 58 selected render cases with exact case transcripts, allocator checks and 3 recorded graphics exclusions. Other applicable groups remain open. | Both forms, JIT/AOT for the managed diagnostic profile. | Required; remaining selection inventory pending. |
+| Upstream cases | `upstream-native` and `upstream`: 58 render cases; core selection retains 2,564 cases in 20 bounded products. All case names, exclusions, helpers and prior evidence remain. | Both forms, JIT/rooted AOT when resumed in direct Zig phase. | Deferred by user for current C route; 2,622 cases are not counted as passed. |
 | Native oracle | `native`: native assertions and case inventory. | Linux x64 native. | Required. |
 | Closure | `audit`: complete implementation inputs, dependency and unresolved-import inventory, rooted AOT. | Both forms. | Required. |
+| Factory data/allocations | `factory-allocation`: current Release PE RVA/IL, strict warmed managed allocation checks with positive controls for every immutable getter/zero-argument value factory, exact canonical-source private executables. Argument-taking factories retain IL and separate consumer coverage. | Both forms, JIT/whole-rooted NativeAOT. | Required user output gate. |
 | Shared regressions | Focused Zig grammar/frontend/native oracle execution, affected compiler/runtime tests and downstream campaigns selected by changed semantics. | Relevant targets. | Required after shared fixes. |
 
-Default suite: `consumer`. Current verification suites: `native`, `consumer`,
-`qualification`, `upstream-native`, `upstream`, `audit`. The single 24-case
+Default suite: `consumer`. Current C-route verification suites: `native`,
+`consumer`, `qualification`, `factory-allocation`, `audit`, selected by
+`config/verification.json`. Explicit upstream specialists and the upstream-only
+`host-io` probe remain runnable, but ordinary C-route verify does not select or
+prepare them. The single 24-case
 qualification harness covers ABI, behavior and lifecycle without rerunning
-identical cases under different suite names. Additional required upstream
-selection remains open and must be declared before acceptance. Deterministic bytes, dimensions,
+identical cases under different suite names. The deferred upstream selection
+remains fixed at 2,622 cases for the direct Zig phase. Deterministic bytes, dimensions,
 cursor coordinates, statuses and cell/style values compare exactly. Any
 normalization requires a documented invariant and retained original transcript.
 No external protocol peer applies to an in-process terminal state product.
@@ -165,8 +184,7 @@ Optional extended fuzzing, stress and performance campaigns are excluded.
 
 ## Reproduction commands and acceptance
 
-The following canonical commands are required once recipe/delivery is ready;
-they are acceptance instructions, not claims of successful execution:
+The following canonical commands reproduce the retained C-route checks:
 
 ```bash
 bash Scripts/campaign.sh layout libghostty --write
@@ -184,3 +202,14 @@ ledger. Repeat ordinary local reuse with `warn` and `off`, then fresh campaign
 outputs without deleting unrelated work. Restore is controlled separately from
 fetch. No required runtime, platform or reproduction row has passed at plan
 creation. A smaller validated subset cannot close this campaign.
+
+User output choices (2026-10-29): the generated type is `Managed.GhosttyVt`.
+The authored owning types share namespace `Managed`; assembly/project/folder
+names remain unchanged. `config/translation.json:aggregate_data=true` enables
+`--aggregate-data` in source/object emission for every profile, retaining the
+shared literal-pool link default. Output sizes and payload/fallback behavior
+are measured against `artifacts/user-output-options-baseline.json`; reduction
+is not assumed. Both forms and the execution matrices must be regenerated and
+revalidated after these choices.
+
+Large aggregate expression factories now use immutable span payloads for constant primitive and proven record tables, copied into owned inline storage; runtime values use typed value argument packs. Canonical regeneration `181517-e418fbb7` retains `Managed.GhosttyVt`, with a maximum factory/helper arity of two. Native and emitted sequencing/floating-width regressions pass. Current PE audits and private executables compiling exact canonical sources execute 3,277 getters and 92 zero-argument factories per form with zero warmed managed allocations in JIT and whole-rooted NativeAOT; positive controls allocate. Argument-taking factories retain IL and separate functional/consumer coverage. See `tests/FactoryAllocation/RESULTS.md`; final retained C P4/P6 acceptance is recorded in `C-ROUTE-ACCEPTANCE.md`; direct Zig remains unqualified.

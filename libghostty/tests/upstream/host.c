@@ -1,4 +1,5 @@
 /* Test services only. Upstream tests and assertions are in the emitted C unit. */
+#include "host.h"
 #include <stdint.h>
 #include <stddef.h>
 #include <stdio.h>

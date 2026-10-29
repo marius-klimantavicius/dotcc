@@ -26,5 +26,7 @@
   ],
   "implementation": "actual upstream Zig engine compiled by pinned Zig C backend, then translated by DotCC",
   "adaptations": [],
-  "c_target": "x86_64-freestanding-none"
+  "c_target": "x86_64-freestanding-none",
+  "aggregate_data": true,
+  "maximum_factory_parameters": 2
 }

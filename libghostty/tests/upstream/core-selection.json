@@ -1,6 +1,6 @@
 {
   "profile": "upstream-core",
-  "expected_cases": 2573,
+  "expected_cases": 2564,
   "optimization": "Debug",
   "target": "x86_64-freestanding-none",
   "case_names": [
@@ -343,7 +343,7 @@
     "terminal.Terminal.test.Terminal: VS16 repeated with mode 2027",
     "terminal.Terminal.test.Terminal: print invalid VS16 grapheme",
     "terminal.Terminal.test.Terminal: print invalid VS16 with second char",
-    "terminal.Terminal.test.Terminal: print grapheme o\u0300 (o with nonspacing mark) should be narrow",
+    "terminal.Terminal.test.Terminal: print grapheme ò (o with nonspacing mark) should be narrow",
     "terminal.Terminal.test.Terminal: print Devanagari grapheme should be wide",
     "terminal.Terminal.test.Terminal: print Devanagari grapheme should be wide on next line",
     "terminal.Terminal.test.Terminal: print Devanagari grapheme should be wide on next page",
@@ -1508,7 +1508,6 @@
     "terminal.compress.Page.test.compressed Page can retry after malformed encoded data",
     "terminal.mem.test.decommit with zero fallback clears the dirty prefix",
     "terminal.mem.test.strict decommit retains the mapping for recommit",
-    "terminal.mem.test.FreeBSD decommit releases pages and reads back zeros",
     "terminal.mem.test.test builds can reclaim retained mappings",
     "terminal.compress.lz4.test.compressBound",
     "terminal.compress.lz4.test.literal-only compatibility vectors",
@@ -1577,7 +1576,6 @@
     "terminal.osc.parsers.program_status.test.OSC 7501: empty text is absent",
     "terminal.osc.parsers.program_status.test.OSC 7501: discarded reports",
     "terminal.osc.parsers.program_status.test.OSC 7501: no allocator",
-    "terminal.osc.Command.ProgressReport.test.ghostty.h Command.ProgressReport.State",
     "terminal.stream.test.stream: print",
     "terminal.stream.test.simd: print invalid utf-8",
     "terminal.stream.test.simd: complete incomplete utf-8",
@@ -2008,7 +2006,6 @@
     "terminal.osc.parsers.iterm2.test.OSC: 1337: test Copy with empty value",
     "terminal.osc.parsers.iterm2.test.OSC: 1337: test Copy with only prefix colon",
     "terminal.osc.parsers.iterm2.test.OSC: 1337: test Copy with question mark",
-    "terminal.osc.parsers.iterm2.test.OSC: 1337: test Copy with non-empty value that is invalid base64",
     "terminal.osc.parsers.iterm2.test.OSC: 1337: test Copy with non-empty value that is valid base64 but not prefixed with a colon",
     "terminal.osc.parsers.iterm2.test.OSC: 1337: test Copy with non-empty value that is valid base64",
     "terminal.osc.parsers.iterm2.test.OSC: 1337: test CurrentDir with no value",
@@ -2056,7 +2053,6 @@
     "terminal.dcs.test.DECRQSS invalid command",
     "terminal.dcs.test.DECRQSS response encoding",
     "terminal.dcs.test.DECRQSS largest response fits fixed buffer",
-    "terminal.dcs.test.tmux enter and implicit exit",
     "terminal.formatter.test.Page plain single line",
     "terminal.formatter.test.Page plain single line soft-wrapped unwrapped",
     "terminal.formatter.test.Page plain single wide char",
@@ -2220,7 +2216,6 @@
     "unicode.grapheme.test.grapheme width: spacing marks can widen narrow clusters",
     "unicode.grapheme.test.grapheme width: segmentation",
     "unicode.grapheme.test.grapheme width: u32 invalid codepoints stand alone",
-    "simd.vt.test.decode simd matches scalar",
     "simd.vt.test.decode no escape",
     "simd.vt.test.decode ASCII to escape",
     "simd.vt.test.decode immediate esc sequence",
@@ -2258,7 +2253,6 @@
     "terminal.size.test.Offset ptr structural",
     "terminal.size.test.getOffset bytes",
     "terminal.size.test.getOffset structs",
-    "terminal.mouse.Shape.test.ghostty.h MouseShape",
     "terminal.color.test.parsePaletteEntry",
     "terminal.color.test.palette: default",
     "terminal.color.test.RGB.parse",
@@ -2484,9 +2478,6 @@
     "terminal.kitty.clipboard_grants.test.generateOtp: no entropy is an error, never a weak password",
     "terminal.kitty.clipboard_grants.test.generateOtp: sys override supplies entropy without an Io source",
     "terminal.sys.test.randomSecure: override is preferred over the Io",
-    "terminal.StringMap.test.StringMap searchIterator",
-    "terminal.StringMap.test.StringMap searchIterator URL detection",
-    "terminal.StringMap.test.StringMap searchIterator URL with click position",
     "terminal.build_options.Options.Features.test.parse",
     "lib.enum.test.zig",
     "lib.enum.test.c",
@@ -2589,5 +2580,89 @@
     "terminal.stream.test.stream: nextSliceUntil differential on the fuzz corpus"
   ],
   "separate_from_render_cases": 58,
-  "status": "feasibility investigation; no native/C/managed pass claimed"
+  "status": "canonical selection qualified only after final native/C zero-skip execution; auxiliary2573 native passed2564/skipped9/failed0",
+  "discovered_cases": 2573,
+  "excluded_case_count": 9,
+  "excluded_cases": [
+    {
+      "name": "terminal.mouse.Shape.test.ghostty.h MouseShape",
+      "source": "src/terminal/mouse.zig",
+      "line": 94,
+      "source_condition": "build_options.artifact == .lib",
+      "reason": "GUI ghostty.h enum compatibility check; deliberately skipped for libghostty-vt"
+    },
+    {
+      "name": "terminal.osc.Command.ProgressReport.test.ghostty.h Command.ProgressReport.State",
+      "source": "src/terminal/osc.zig",
+      "line": 296,
+      "source_condition": "build_options.artifact == .lib",
+      "reason": "GUI ghostty.h enum compatibility check; deliberately skipped for libghostty-vt"
+    },
+    {
+      "name": "simd.vt.test.decode simd matches scalar",
+      "source": "src/simd/vt.zig",
+      "line": 157,
+      "source_condition": "!options.simd",
+      "reason": "SIMD comparison requires the excluded SIMD backend; scalar decoder tests remain required"
+    },
+    {
+      "name": "terminal.osc.parsers.iterm2.test.OSC: 1337: test Copy with non-empty value that is invalid base64",
+      "source": "src/terminal/osc/parsers/iterm2.zig",
+      "line": 357,
+      "source_condition": "unconditional return error.SkipZigTest; every assertion is commented out",
+      "reason": "Upstream placeholder has no active assertions; upstream explicitly does not validate this base64 for performance"
+    },
+    {
+      "name": "terminal.mem.test.FreeBSD decommit releases pages and reads back zeros",
+      "source": "src/terminal/mem.zig",
+      "line": 404,
+      "source_condition": "builtin.target.os.tag != .freebsd",
+      "reason": "FreeBSD-specific native decommit implementation outside initial Linux/freestanding host scope"
+    },
+    {
+      "name": "terminal.dcs.test.tmux enter and implicit exit",
+      "source": "src/terminal/dcs.zig",
+      "line": 549,
+      "source_condition": "!build_options.tmux_control_mode",
+      "reason": "Tmux control mode is excluded from the agreed product"
+    },
+    {
+      "name": "terminal.StringMap.test.StringMap searchIterator",
+      "source": "src/terminal/StringMap.zig",
+      "line": 119,
+      "source_condition": "!build_options.oniguruma",
+      "reason": "Regex search iterator requires excluded Oniguruma"
+    },
+    {
+      "name": "terminal.StringMap.test.StringMap searchIterator URL detection",
+      "source": "src/terminal/StringMap.zig",
+      "line": 174,
+      "source_condition": "!build_options.oniguruma",
+      "reason": "Regex search iterator requires excluded Oniguruma"
+    },
+    {
+      "name": "terminal.StringMap.test.StringMap searchIterator URL with click position",
+      "source": "src/terminal/StringMap.zig",
+      "line": 233,
+      "source_condition": "!build_options.oniguruma",
+      "reason": "Regex search iterator requires excluded Oniguruma"
+    }
+  ],
+  "host_capabilities": [
+    "tracked aligned allocation/free",
+    "zeroed aligned page allocation/free",
+    "read-only corpus filesystem",
+    "secure cryptographic entropy",
+    "hosted C allocator (-lc)"
+  ],
+  "compiler_output_mode": "test-obj for freestanding C; normal test executable for original native",
+  "fixture": {
+    "path": "test/fuzz-libghostty/corpus/stream-cmin",
+    "observed_files": 3271,
+    "observed_total_bytes": 414015,
+    "observed_max_file_bytes": 418,
+    "observed_max_name_bytes": 93,
+    "native_cwd": "upstream source root",
+    "assertions": "processed files > 1000; filtered error-log corpus entries < processed files / 10"
+  }
 }

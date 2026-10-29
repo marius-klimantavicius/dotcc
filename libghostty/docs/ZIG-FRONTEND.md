@@ -1,15 +1,36 @@
 # Direct Zig frontend evidence
 
-Updated 2026-10-29. These are compiler feasibility findings, not a completed
-libghostty translation. Product source is the pin in `config/source.json`:
+Status updated 2026-10-30; the detailed compiler observations below are historical
+2026-10-29 feasibility evidence, not a completed direct Zig translation. Product
+source is the pin in `config/source.json`:
 `93967b7f9478e94dcbb42125c8a90f34feb40d75`. The actual product root is
 `src/lib_vt.zig`; `src/terminal/c/main.zig` re-exports its complete terminal C API.
 Neither attempt uses C declarations or a substitute terminal implementation.
 
 DotCC's Zig frontend performs semantic lowering into typed IR, with lazy source
 imports, generics and comptime support. Its supported subset does not yet lower
-the selected complete module. The campaign also investigates upstream Zig's
-whole-engine C backend followed by DotCC; that route is tracked by the supervisor.
+the selected complete module. The active C route uses upstream Zig's genuine
+whole-engine C backend followed by DotCC and is tracked by the supervisor.
+
+## Current phase and deferred upstream testing
+
+On 2026-10-30, the user deferred upstream test suites, their 2,622-case matrix
+and the upstream-only host-I/O probe to the direct Zig phase. All case names,
+20 core partitions, specialist definitions, historical subset passes and the
+cancelled expanded C-route attempt are retained in
+[upstream test qualification](UPSTREAM-TESTS.md). Deferred work is not passed.
+
+The C-route completion commit still follows final native whole-engine/boundary
+controls, the four consumer rows, 24-case qualification in all four rows with
+rooted NativeAOT, four factory-allocation rows, audit, the original root solution,
+local warn/off reproduction with authored preservation, and affected shared and
+downstream regressions. These retained gates now pass; see [C-route acceptance](C-ROUTE-ACCEPTANCE.md). After the completion commit, work
+continues automatically with relevant true-upstream DotCC integration, then
+actual pinned libghostty-vt Zig → DotCC translation without a C intermediate.
+No upstream integration or direct-route implementation has begun. The direct
+phase must establish complete exports and bodies, the full 2,622-case upstream
+matrix in all four managed rows with native/C controls, and reproduction; the
+small regressions and historical C-route subset passes below do not close it.
 
 ## Observed failures and repairs
 
@@ -82,7 +103,11 @@ is translated using the supervised policy `config/zig-c-overrides.json`.
 | C2 | C lexer: `engine-freestanding.c:15909`, valid C `"\?"` escape rejected | Add escaped question mark to STRING lexer; decoder already supported it. Native/managed byte regression prints `??= 63 63 61` | Advances to C3 |
 | C3 | C parser: `engine-freestanding.c:19664`, `struct errunion_usize_15 (*const *t13)(...);`, followed by its qualified abstract cast at line 19716 | Compose callback pointer stars and const/volatile/restrict at their respective pointer levels; use the same construction for abstract casts. Retain the existing plain abstract callback parameter parse | Advances to C4 |
 | C4 | C parser: `engine-freestanding.c:25395`, `(struct arr_3_usize_389366){{...}}.array[t6]` rejected at `.` | Move compound literals into the C postfix-expression level; existing typed initializer and temporary-array-member storage lowering now compose directly | Current authored-accessor engine advances to C5 |
-| C5 | C parser: `build/abi-engine-all/engine.c:447923`, named callback parameter `void (*const a1)(...)` rejected at its name | Open; reuse qualified named callback declarators in parameter position | Latest whole-engine attempt remains incomplete |
+| C5 | C parser: `build/abi-engine-all/engine.c:447923`, named callback parameter `void (*const a1)(...)` rejected at its name | Reuse qualified callback declarators for parameters and share the named pointer-to-array reduction to preserve existing parameter syntax | Complete 530,948-line engine parses; semantic binding reaches C6 |
+| C6 | Semantic ABI assertion: `engine.c:28`, source `sizeof(long double)==16 && _Alignof(long double)==16` disagrees with the existing default 8-byte model | Explicit per-request `sourceAbi.longDouble: x87-storage16`; actual 16-byte representation, alignment and byte copies. Numeric operations fail explicitly; default remains unchanged | All source assertions retained and passed; backend reaches C7 |
+| C7 | C# backend: `array member of a temporary aggregate requires a hoistable storage context` | Supervisor extended the existing lazy-effect classification to temporary aggregate array members. Selected branches use the existing statement lowering | Canonical scalar route emits the complete engine object; final scalar link/build/publication gates now pass |
+| C8 | Canonical raw build: 57 CS0161 errors after the support header selected its empty `zig_unreachable()` fallback | Supervisor added a strict zero-argument, exact-empty macro rule selecting already-supported `__builtin_unreachable()`. Its existing IR/backend lowering emits a real C# throw | All 57 termination diagnostics resolved in canonical attempt `20261029-165535-e1751380` |
+| C9 | Next raw build: 20 CS7013 errors from generated source names exceeding .NET metadata limits | Generic UTF-8 bounded target identifiers retain a readable prefix plus SHA256 of the complete spelling. Aggregate relocation uses the same map; semantic object identities retain raw source names | Canonical attempt `20261029-170255-7d3e0289` passes raw and processed-context builds; publication remains supervised |
 
 The C1 regression first exposed a real emitted-storage mismatch: static layout
 queries reported 10 bytes while actual managed `sizeof(record)` was 24. Keeping
@@ -141,3 +166,157 @@ supervisor's primitive ABI address getter) was retried using the same header
 override policy. Evidence: `all-unit-tests-after-postfix.log`,
 `compound-postfix-functional.log`, `compound-postfix-native.stdout`, and
 `abi-engine-after-postfix.log` under `artifacts/zig-frontend-probes/`.
+
+C5 validation: **3516 unit cases and six related functional cases pass**. The
+native callback parameter fixture prints `parameters 42 41`; both direct and
+object-linked managed execution agree. Read-only callback parameters, callback
+slot pointees, array parameters and prior pointer-to-array forms are covered.
+
+## Explicit source storage ABI
+
+The CLI accepts this strict version-1 override-profile setting, and the public
+compiler API accepts the equivalent immutable `CSourceAbi` through
+`CPreprocessingOptions`:
+
+```json
+{"version": 1, "sourceAbi": {"longDouble": "x87-storage16"}}
+```
+
+The default remains `binary64`. No global `CType.LongDouble` mutation occurs:
+each frontend builder, including its speculative macro evaluator, receives the
+request's model. Unknown public enum values are rejected. Profile identity and
+`WithoutReport()` preserve the setting. Concurrent alternating default/storage
+requests are tested.
+
+`LongDouble80Storage` occupies sixteen real unmanaged bytes. Existing aligned
+object and aggregate layout machinery gives locals, globals, containing records
+and arrays sixteen-byte alignment. This supports raw storage and byte copies,
+**not x87 numeric operations**: arithmetic, comparisons, conversions, truth tests
+and long-double complex use fail with an explicit unsupported diagnostic.
+The selected emitted engine names extended floating types only in its primitive
+ABI assertions; this does not qualify extended floating arithmetic.
+
+Native and managed direct/object execution agree exactly:
+
+```text
+abi 16 16 48 16 32
+storage 0 0 0 0 stride 16 bytes 1 1 1 1 1
+```
+
+The byte checks retain all sixteen bytes across `memcpy`; a C value assignment
+compares the significant ten bytes because native x87 padding is unspecified.
+All **3537 unit cases pass**, including 21 source-ABI cases and concurrent
+request isolation; both source-storage functional cases pass. The native
+control is `tests/translation/source-abi-storage.c`. Evidence under
+`artifacts/zig-frontend-probes/`: `all-unit-tests-after-source-abi.log`,
+`source-abi-functional.log`, `source-abi-native.stdout`,
+`source-abi-managed-build.log`, and `abi-engine-after-source-abi.log`.
+
+The full engine retry uses a private copy of the supervised header profile plus
+this setting, at `build/zig-frontend-probes/zig-c-source-abi-overrides.json`.
+Required macro matches remain enforced. The original upstream source and all
+ABI assertions remain intact. Campaign configuration integration is supervised.
+
+## Conditional compound-literal lifetime regression
+
+`tests/translation/conditional-compound-lifetime.c` is native-established and has
+matching direct/object test cases in
+`DotCC.FunctionalTests/ConditionalCompoundLifetimeExecutionTests.cs`. The native
+program and both actual managed executables print exactly:
+
+```text
+conditional 40 2 42 7 1 41 8 0 1
+```
+
+The cases begin with assignment statements, exercise unselected initializer
+effects and short-circuit `&&`/`||`, retain an array pointer after another
+conditional, and revisit the same compound-literal occurrence through `goto`.
+That last check verifies both stable object identity and reinitialization of the
+saved pointer's contents within the enclosing C block.
+
+Focused verification used the immutable compiler at
+`build/campaign/20261029-164601-fc693464/tools/DotCC/dotcc.dll`. It emitted and
+built only private regression projects; no root compiler build or duplicate full
+engine attempt occurred. Both managed paths exited zero and their complete
+stdout matches native exactly. Evidence under `artifacts/zig-frontend-probes/`:
+`conditional-lifetime-native.stdout`, `conditional-lifetime-managed.stdout`,
+`conditional-lifetime-object.stdout`, and their emission/link/build logs.
+The repository test cases are authored for subsequent focused suite execution.
+
+The supervisor's **normal canonical scalar pipeline** emitted the complete
+42 MB engine object at
+`build/campaign/20261029-164601-fc693464/objects/000-engine.cs`. This establishes
+complete lowering/emission for that selected source attempt, not P2 completion:
+engine/bridge linking, raw/processed builds and canonical publication are still
+supervised acceptance gates. No separate review project is a campaign deliverable.
+
+Native x87 scalar calling convention and numerical variadic use are unqualified
+by the storage-only source ABI. Additional fail-loud boundary guards are deferred
+until after the priority default-product attempt; no extended arithmetic support
+is claimed.
+
+## Support-header termination and bounded target names
+
+The actual pinned `zig.h:336-341` selects an empty `zig_unreachable()` fallback
+when the preprocessor does not advertise `__has_builtin`. No compiler identity
+macro was forged. The strict campaign rule selects the implemented GNU builtin
+only for that exact empty function-like definition; upstream algorithms and
+source assertions remain intact.
+
+A small program including the real pinned header reproduces CS0161 before the
+rule and emits a literal `throw new System.Diagnostics.UnreachableException`
+after it. Native C, direct translation and object translation all return zero
+on valid branches. Deliberately reaching the impossible branch in both managed
+executables terminates with `UnreachableException`, exit -6. Native undefined
+behavior on that branch was not executed. Evidence:
+`artifacts/zig-frontend-probes/zig-unreachable-execution.json`, the adjacent
+before/after profiles, override report and build logs. Object emission used the
+immutable `20261029-164959-22fd99b5` tool; relinking with the subsequent immutable
+`20261029-165535-e1751380` runtime supplied the separately repaired arithmetic
+helpers. No generated source was edited.
+
+`tests/translation/long-target-identifiers.c` establishes native output
+`long names 42 41` for identifiers exceeding 4 KB, including two functions that
+differ only after their long common prefix. Five focused naming unit cases and
+both direct/object execution cases pass. An additional immutable-tool probe
+makes both functions static and exercises their direct calls and cached function
+addresses after object-specific suffixing; both builds and executables pass
+with identical native output. Evidence:
+`artifacts/zig-frontend-probes/long-static-target-execution.json` and adjacent
+emission/link/build logs. The repository functional regression now includes
+both external and static function variants for subsequent focused execution.
+
+Naming changes are owned by this frontend/compiler worker in `EmitHelpers.cs`,
+`Backends/CSharpTarget.cs`, `AggregateIdentities.cs`, and the external-type
+validator. Source names and raw aggregate identity metadata remain complete;
+authored external CLR type spellings are preserved. Immediate before copies and
+the exact naming-only patch are retained in `build/target-names-before/`, so the
+prior SourceABI addition in `CSharpTarget.cs` can be isolated for commits. No
+index mutation or compiler build was performed by this worker for these fixes.
+
+## True upstream DotCC review
+
+The parent reviewed `sebgod/dotcc` (the GitHub parent of the user fork), pinned
+review revision `d3678b5c50f86bf65d831ee4efda6134a7894116`. Its untouched source
+builds in the isolated `build/upstream-dotcc-review/source` directory; root
+compiler outputs and the campaign inputs were preserved. Its default branch has
+substantial later Zig import, generic and comptime work, requiring wider AST/IR
+and LALR changes rather than an unreviewed merge during qualification.
+
+Real probes still fail the Ghostty root at a type-returning `Enum` function and
+the C API module at `Result`. Native Zig accepts the reduced `noreturn` case,
+while upstream DotCC rejects it. More importantly, executable reductions show
+upstream drops top-level comptime blocks: it accepts a required `@compileError`
+and omits the name requested by `@export`, while native controls fail/export as
+expected. It cannot establish direct Ghostty translation by replacing the tool.
+The working genuine Zig C-backend route remains the campaign implementation.
+
+Useful direct-Zig followup references include `5357dc3f3bfb` (reexports resolve
+the owning module), `f3f520e46bd0` (cross-module generics), `2796ff2cc537`
+(comptime type-returning bodies), `002f1ec9b3aa` (void/block values),
+`cd3c9f03f874` (switch operand grammar), and `77c073eda` (lazy Zig conditional
+hoists). These are reviewed implementation references, not integrated fixes or
+qualification claims. Local shared fixes and the selected engine remain intact.
+Evidence: `build/upstream-dotcc-review/probe-results.json`,
+`native-controls.json`, and `build.log`; the initial CLI syntax mismatch is
+retained separately from corrected probes.

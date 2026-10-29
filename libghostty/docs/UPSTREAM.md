@@ -9,6 +9,14 @@ committed on 2026-10-29, identifying itself as `1.4.1-dev`. Its archive SHA-256 
 The native library version is explicitly `0.1.0`, and the compiler is official
 Zig `0.17.0`. Scripts read these values from metadata.
 
+Under the user's 2026-10-30 scope change, the actual 16-case whole-engine native
+oracle and two delivery-boundary controls below remain C-route requirements.
+Upstream assertion suites, their full 2,622-case matrix and the upstream-only
+host-I/O probe are deferred to direct Zig translation. Their inventories,
+20 core partitions, specialist commands, historical subsets and cancelled
+expanded attempt are retained in [upstream test qualification](UPSTREAM-TESTS.md).
+No deferred result is counted as passed; retained C-route P6 acceptance is recorded in [C-ROUTE-ACCEPTANCE.md](C-ROUTE-ACCEPTANCE.md).
+
 ## Useful terminal-core scope
 
 The workflow is to feed a VT byte recording into an independently owned terminal,
@@ -179,7 +187,8 @@ cc <oracle.o> <engine.o> -lm -o <C oracle>
 ## License and notice closure
 
 Distribute the original Ghostty MIT `LICENSE`, uucode MIT `LICENSE.md`, the
-Unicode license, the Hoehrmann UTF-8 decoder license, and the Zig MIT `LICENSE`
+Unicode license, the Hoehrmann UTF-8 decoder license, the Zig MIT `LICENSE`,
+and this repository's MIT `LICENSE` for the embedded DotCC shared runtime
 with both emitted forms. The pinned uucode package omits its referenced
 `licenses/` directory from Zig package exports. `license_sources` therefore
 declares a separate exact-commit codeload archive selecting `LICENSE.md` and

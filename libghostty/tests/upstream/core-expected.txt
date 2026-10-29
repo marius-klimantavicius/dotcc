@@ -1,0 +1,2565 @@
+PASS lib.enum.test.zig
+PASS lib.enum.test.c
+PASS lib.enum.test.stable values when removing a key
+PASS lib.enum.test.zig backing integer includes trailing holes
+PASS lib.enum.test.zig values remain stable across multiple holes
+PASS terminal.kitty.key.test.FlagStack: push pop
+PASS terminal.kitty.key.test.FlagStack: pop big number
+PASS terminal.kitty.key.test.FlagStack: set
+PASS terminal.mouse.test.cursor shape from string
+PASS unicode.main.test.codepointWidth
+PASS unicode.grapheme.test.grapheme break: emoji modifier
+PASS unicode.grapheme.test.long emoji zwj sequences
+PASS unicode.grapheme.test.grapheme width: variation selectors
+PASS unicode.grapheme.test.grapheme width: emoji sequences
+PASS unicode.grapheme.test.grapheme width: spacing marks can widen narrow clusters
+PASS unicode.grapheme.test.grapheme width: segmentation
+PASS unicode.grapheme.test.grapheme width: u32 invalid codepoints stand alone
+PASS terminal.size.test.Offset
+PASS terminal.size.test.Offset ptr u8
+PASS terminal.size.test.Offset ptr structural
+PASS terminal.size.test.getOffset bytes
+PASS terminal.size.test.getOffset structs
+PASS terminal.c.allocator.test.alloc returns non-null
+PASS terminal.c.allocator.test.alloc with null allocator
+PASS terminal.c.allocator.test.alloc zero length
+PASS terminal.c.allocator.test.free null pointer
+PASS terminal.c.allocator.test.free allocated memory
+PASS terminal.c.allocator.test.free with null allocator
+PASS terminal.c.build_info.test.get simd
+PASS terminal.c.build_info.test.get kitty_graphics
+PASS terminal.c.build_info.test.get tmux_control_mode
+PASS terminal.c.build_info.test.get optimize
+PASS terminal.c.build_info.test.get version_string
+PASS terminal.c.build_info.test.get version_major
+PASS terminal.c.build_info.test.get version_minor
+PASS terminal.c.build_info.test.get version_patch
+PASS terminal.c.build_info.test.get version_pre
+PASS terminal.c.build_info.test.get version_build
+PASS terminal.c.build_info.test.get invalid
+PASS terminal.c.cell.test.get codepoint
+PASS terminal.c.cell.test.get has_text
+PASS terminal.c.cell.test.get empty cell
+PASS terminal.c.cell.test.get wide
+PASS terminal.c.cell.test.get_multi success
+PASS terminal.c.cell.test.get_multi error sets out_written
+PASS terminal.c.cell.test.get_multi null keys returns invalid_value
+PASS terminal.c.cell.test.get_multi null values returns invalid_value
+PASS terminal.c.color_scheme.test.encode color scheme report dark
+PASS terminal.c.color_scheme.test.encode color scheme report light
+PASS terminal.c.color_scheme.test.encode color scheme report with null buffer
+PASS terminal.c.color_scheme.test.encode color scheme report with insufficient buffer
+PASS terminal.c.color_scheme.test.encode color scheme report with exact buffer
+PASS terminal.c.grid_ref.test.grid_ref_cell null node
+PASS terminal.c.grid_ref.test.grid_ref_row null node
+PASS terminal.c.grid_ref.test.grid_ref_cell null out
+PASS terminal.c.grid_ref.test.grid_ref_row null out
+PASS terminal.c.grid_ref.test.grid_ref_graphemes null node
+PASS terminal.c.grid_ref.test.grid_ref_graphemes null buf returns out_of_space
+PASS terminal.c.grid_ref.test.grid_ref_style null node
+PASS terminal.c.grid_ref.test.grid_ref_style null out
+PASS terminal.c.grid_ref.test.grid_ref_hyperlink_uri null node
+PASS terminal.c.grid_ref.test.grid_ref_hyperlink_uri no hyperlink
+PASS terminal.c.grid_ref.test.grid_ref_hyperlink_uri with hyperlink
+PASS terminal.c.grid_ref_tracked.test.tracked_grid_ref snapshots after terminal scroll
+PASS terminal.c.grid_ref_tracked.test.tracked_grid_ref reports no value after reset
+PASS terminal.c.grid_ref_tracked.test.tracked_grid_ref reports no value after alternate screen reset
+PASS terminal.c.grid_ref_tracked.test.tracked_grid_ref reports no value after terminal free
+PASS terminal.c.io.test.C reader and writer layouts keep callback first
+PASS terminal.c.io.test.ReaderAdapter supports short reads and permanent EOF
+PASS terminal.c.io.test.ReaderAdapter peek reads only the requested byte
+PASS terminal.c.io.test.ReaderAdapter distinguishes callback failure and invalid length
+PASS terminal.c.io.test.ReaderAdapter rejects a null callback
+PASS terminal.c.io.test.WriterAdapter writes vectors and splats
+PASS terminal.c.io.test.WriterAdapter buffered batches small writes
+PASS terminal.c.io.test.WriterAdapter buffered splats and large writes
+PASS terminal.c.io.test.WriterAdapter makes callback failure sticky
+PASS terminal.c.io.test.WriterAdapter rejects a null callback
+PASS terminal.c.io.test.ReaderAdapter streams into an unbuffered WriterAdapter
+PASS terminal.c.row.test.get wrap
+PASS terminal.c.row.test.get semantic_prompt
+PASS terminal.c.row.test.get dirty
+PASS terminal.c.row.test.get_multi success
+PASS terminal.c.row.test.get_multi error sets out_written
+PASS terminal.c.row.test.get_multi null keys returns invalid_value
+PASS terminal.c.formatter.test.terminal_new/free
+PASS terminal.c.formatter.test.terminal_new invalid_value on null terminal
+PASS terminal.c.formatter.test.free null
+PASS terminal.c.formatter.test.format_alloc empty output
+PASS terminal.c.formatter.test.format plain
+PASS terminal.c.formatter.test.format streams to writer
+PASS terminal.c.formatter.test.format writer errors
+PASS terminal.c.formatter.test.format reflects terminal changes
+PASS terminal.c.formatter.test.format null returns required size
+PASS terminal.c.formatter.test.format buffer too small
+PASS terminal.c.formatter.test.format null formatter
+PASS terminal.c.formatter.test.format vt
+PASS terminal.c.formatter.test.format plain with selection
+PASS terminal.c.formatter.test.format html
+PASS terminal.c.modes.test.encode DEC mode set
+PASS terminal.c.modes.test.encode DEC mode reset
+PASS terminal.c.modes.test.encode ANSI mode
+PASS terminal.c.modes.test.encode not recognized
+PASS terminal.c.modes.test.encode with insufficient buffer
+PASS terminal.c.modes.test.encode with invalid state
+PASS terminal.c.modes.test.encode with null buffer
+PASS terminal.c.osc.test.alloc
+PASS terminal.c.osc.test.command type null
+PASS terminal.c.osc.test.command data null
+PASS terminal.c.osc.test.change window title
+PASS terminal.c.osc.test.unknown
+PASS terminal.c.sgr.test.alloc
+PASS terminal.c.sgr.test.simple params, no seps
+PASS terminal.c.size_report.test.encode mode 2048
+PASS terminal.c.size_report.test.encode csi 14 t
+PASS terminal.c.size_report.test.encode with insufficient buffer
+PASS terminal.c.size_report.test.encode with null buffer
+PASS terminal.c.style.test.default style
+PASS terminal.c.style.test.convert style with colors
+PASS terminal.c.sys.test.set decode_png with null clears
+PASS terminal.c.sys.test.set decode_png installs wrapper
+PASS terminal.c.sys.test.decode_png output is zeroed before the callback
+PASS terminal.c.sys.test.set log with null clears
+PASS terminal.c.sys.test.set log installs callback
+PASS terminal.c.sys.test.logFn small message single chunk
+PASS terminal.c.sys.test.logFn message exceeding chunk size is split
+PASS terminal.c.sys.test.logFn message exactly at chunk boundary
+PASS terminal.c.sys.test.logFn message exactly double chunk size
+PASS terminal.c.sys.test.set userdata
+PASS terminal.c.terminal.test.new/free
+PASS terminal.c.terminal.test.new invalid value
+PASS terminal.c.terminal.test.continuation option and data
+PASS terminal.c.terminal.test.continuation buffer and allocator export exact suffix
+PASS terminal.c.terminal.test.continuation export tracks split UTF-8
+PASS terminal.c.terminal.test.continuation callback writer reports success and failure
+PASS terminal.c.terminal.test.continuation runtime reconfiguration recovers safely
+PASS terminal.c.terminal.test.continuation internal allocation and restoration
+PASS terminal.c.terminal.test.set scrollback limits
+PASS terminal.c.terminal.test.free null
+PASS terminal.c.terminal.test.scroll_viewport
+PASS terminal.c.terminal.test.scroll_viewport row
+PASS terminal.c.terminal.test.scroll_viewport row alt screen
+PASS terminal.c.terminal.test.scroll_viewport delta_prompt
+PASS terminal.c.terminal.test.scroll_viewport delta_prompt continuation
+PASS terminal.c.terminal.test.scroll_viewport delta_prompt final continuation snaps to active
+PASS terminal.c.terminal.test.scroll_viewport delta_prompt no markers and alternate screen
+PASS terminal.c.terminal.test.get memory_usage
+PASS terminal.c.terminal.test.get memory_usage size rule
+PASS terminal.c.terminal.test.scroll_viewport null
+PASS terminal.c.terminal.test.compression invalid arguments
+PASS terminal.c.terminal.test.compression activity and incremental scheduling
+PASS terminal.c.terminal.test.reset
+PASS terminal.c.terminal.test.reset null
+PASS terminal.c.terminal.test.resize
+PASS terminal.c.terminal.test.resize null
+PASS terminal.c.terminal.test.resize invalid value
+PASS terminal.c.terminal.test.resize shrinks both axes with cursor at bottom
+PASS terminal.c.terminal.test.set and get mode
+PASS terminal.c.terminal.test.set mode default updates current and reset value
+PASS terminal.c.terminal.test.set mode default validates configuration
+PASS terminal.c.terminal.test.set and get mode null
+PASS terminal.c.terminal.test.set and get mode validate configuration
+PASS terminal.c.terminal.test.vt_write
+PASS terminal.c.terminal.test.vt_write_until ground stops at the first ground byte
+PASS terminal.c.terminal.test.vt_write_until ground handles UTF-8 and abort boundaries
+PASS terminal.c.terminal.test.vt_write_until invokes effects only for consumed input
+PASS terminal.c.terminal.test.vt_write_until result contract
+PASS terminal.c.terminal.test.vt_write_until kitty apc start and end
+PASS terminal.c.terminal.test.vt_write_until split introducer
+PASS terminal.c.terminal.test.vt_write_until c1 introducer
+PASS terminal.c.terminal.test.vt_write_until string end that reaches ground
+PASS terminal.c.terminal.test.vt_write_until sos and pm report as apc
+PASS terminal.c.terminal.test.vt_write_until osc start and bel end
+PASS terminal.c.terminal.test.vt_write_until dcs start and end
+PASS terminal.c.terminal.test.vt_write_until string end that is also a string start
+PASS terminal.c.terminal.test.vt_write split escape sequence
+PASS terminal.c.terminal.test.vt_write split combining mark after base at right edge
+PASS terminal.c.terminal.test.get cols and rows
+PASS terminal.c.terminal.test.get cursor position
+PASS terminal.c.terminal.test.get vt_processing_error
+PASS terminal.c.terminal.test.get null
+PASS terminal.c.terminal.test.get cursor_visible
+PASS terminal.c.terminal.test.get cursor_at_prompt
+PASS terminal.c.terminal.test.get active_screen
+PASS terminal.c.terminal.test.get kitty_keyboard_flags
+PASS terminal.c.terminal.test.get mouse_tracking
+PASS terminal.c.terminal.test.get total_rows
+PASS terminal.c.terminal.test.get scrollback_rows
+PASS terminal.c.terminal.test.get configured scrollback limits
+PASS terminal.c.terminal.test.get invalid
+PASS terminal.c.terminal.test.set default cursor style and blink
+PASS terminal.c.terminal.test.set resize pull scrollback
+PASS terminal.c.terminal.test.set and get selection
+PASS terminal.c.terminal.test.selection derivation helpers
+PASS terminal.c.terminal.test.selection_adjust mutates snapshot end
+PASS terminal.c.terminal.test.selection_order and selection_ordered
+PASS terminal.c.terminal.test.selection_contains
+PASS terminal.c.terminal.test.selection_equal
+PASS terminal.c.terminal.test.selection_order invalid values
+PASS terminal.c.terminal.test.grid_ref
+PASS terminal.c.terminal.test.grid_ref null terminal
+PASS terminal.c.terminal.test.point_from_grid_ref roundtrip active
+PASS terminal.c.terminal.test.point_from_grid_ref roundtrip viewport
+PASS terminal.c.terminal.test.point_from_grid_ref history ref to active returns no_value
+PASS terminal.c.terminal.test.point_from_grid_ref null terminal
+PASS terminal.c.terminal.test.point_from_grid_ref null node
+PASS terminal.c.terminal.test.set write_pty callback DECRQM
+PASS terminal.c.terminal.test.write_pty receives DECRQSS response
+PASS terminal.c.terminal.test.write_pty receives OSC color query response
+PASS terminal.c.terminal.test.set write_pty without callback ignores queries
+PASS terminal.c.terminal.test.set write_pty null clears callback
+PASS terminal.c.terminal.test.set bell callback
+PASS terminal.c.terminal.test.bell without callback is silent
+PASS terminal.c.terminal.test.set enquiry callback
+PASS terminal.c.terminal.test.enquiry without callback is silent
+PASS terminal.c.terminal.test.set xtversion callback
+PASS terminal.c.terminal.test.xtversion without callback reports default
+PASS terminal.c.terminal.test.set terminfo_name option
+PASS terminal.c.terminal.test.set title_changed callback
+PASS terminal.c.terminal.test.set render_hold callback
+PASS terminal.c.terminal.test.title_changed without callback is silent
+PASS terminal.c.terminal.test.set desktop_notification callback
+PASS terminal.c.terminal.test.set resize_window callback
+PASS terminal.c.terminal.test.set progress_report callback
+PASS terminal.c.terminal.test.set program_status callback
+PASS terminal.c.terminal.test.set semantic_prompt callback
+PASS terminal.c.terminal.test.set reset callback
+PASS terminal.c.terminal.test.set unknown_sequence callback
+PASS terminal.c.terminal.test.set pwd_changed callback
+PASS terminal.c.terminal.test.set clipboard_write callback
+PASS terminal.c.terminal.test.clipboard_write without callback is unsupported and silent
+PASS terminal.c.terminal.test.kitty clipboard write via C effects
+PASS terminal.c.terminal.test.set clipboard write max bytes
+PASS terminal.c.terminal.test.set clipboard_read callback
+PASS terminal.c.terminal.test.pwd_changed without callback is silent
+PASS terminal.c.terminal.test.set size callback
+PASS terminal.c.terminal.test.size without callback is silent
+PASS terminal.c.terminal.test.mode 2048 enable and disable use C callbacks
+PASS terminal.c.terminal.test.mode 2048 enable tolerates missing C callbacks
+PASS terminal.c.terminal.test.set device_attributes callback primary
+PASS terminal.c.terminal.test.set device_attributes callback secondary
+PASS terminal.c.terminal.test.set device_attributes callback tertiary
+PASS terminal.c.terminal.test.device_attributes without callback uses default
+PASS terminal.c.terminal.test.device_attributes callback returns false uses default
+PASS terminal.c.terminal.test.set and get title
+PASS terminal.c.terminal.test.set and get pwd
+PASS terminal.c.terminal.test.get title set via vt_write
+PASS terminal.c.terminal.test.title report requires explicit opt in
+PASS terminal.c.terminal.test.checksum report requires explicit opt in
+PASS terminal.c.terminal.test.checksum extension survives resets
+PASS terminal.c.terminal.test.resize updates pixel dimensions
+PASS terminal.c.terminal.test.resize pixel overflow saturates
+PASS terminal.c.terminal.test.resize disables synchronized output
+PASS terminal.c.terminal.test.resize sends in-band size report
+PASS terminal.c.terminal.test.resize no size report without mode 2048
+PASS terminal.c.terminal.test.resize in-band report without write_pty callback
+PASS terminal.c.terminal.test.resize null terminal
+PASS terminal.c.terminal.test.resize zero cols
+PASS terminal.c.terminal.test.resize zero rows
+PASS terminal.c.terminal.test.grid_ref out of bounds
+PASS terminal.c.terminal.test.set and get color_foreground
+PASS terminal.c.terminal.test.set and get color_background
+PASS terminal.c.terminal.test.set and get color_cursor
+PASS terminal.c.terminal.test.set and get color_palette
+PASS terminal.c.terminal.test.get color default vs effective with override
+PASS terminal.c.terminal.test.get color default returns no_value when unset
+PASS terminal.c.terminal.test.get color_palette_default vs current
+PASS terminal.c.terminal.test.set color sets dirty flag
+PASS terminal.c.terminal.test.get_multi success
+PASS terminal.c.terminal.test.get_multi error sets out_written
+PASS terminal.c.terminal.test.get_multi null keys returns invalid_value
+PASS terminal.c.terminal.test.get mouse_shape
+PASS terminal.c.types.test.manifest parses and is versioned
+PASS terminal.c.types.test.manifest describes enums, arrays, and tagged unions
+PASS terminal.c.types.test.manifest describes render state overscan types
+PASS terminal.c.types.test.manifest describes the complete packed cell layout
+PASS terminal.c.types.test.manifest packed cell layouts decode real values
+PASS terminal.c.types.test.manifest uses public enum names
+PASS terminal.c.types.test.manifest named references resolve
+PASS terminal.c.unicode.test.codepoint_width narrow
+PASS terminal.c.unicode.test.codepoint_width wide
+PASS terminal.c.unicode.test.codepoint_width zero
+PASS terminal.c.unicode.test.codepoint_width out of range
+PASS terminal.c.unicode.test.grapheme_width empty
+PASS terminal.c.unicode.test.grapheme_width null width
+PASS terminal.c.unicode.test.grapheme_width out of range
+PASS terminal.c.unicode.test.grapheme_width emoji sequence
+PASS lib.allocator.test.c allocator
+PASS lib.allocator.test.fba allocator
+PASS lib.types.test.String.init empty output
+PASS lib.packed.test.Packed: reflected fields and nested tagged union
+PASS lib.parse_int.test.protocol integer parsing
+PASS lib.struct.test.sizedFieldFits boundary checks
+PASS lib.struct.test.sizedFieldFits respects alignment padding
+PASS lib.struct.test.packed struct converts to extern with full-size bools
+PASS lib.union.test.TaggedUnion: matching size
+PASS lib.union.test.TaggedUnion: padded size
+PASS lib.union.test.TaggedUnion: c conversion
+PASS lib.union.test.TaggedUnion: custom C value fields
+PASS terminal.color.test.parsePaletteEntry
+PASS terminal.color.test.palette: default
+PASS terminal.color.test.RGB.parse
+PASS terminal.color.test.RGB.parse rejects digit separators
+PASS terminal.color.test.RGB: encode
+PASS terminal.color.test.DynamicPalette: init
+PASS terminal.color.test.DynamicPalette: set
+PASS terminal.color.test.DynamicPalette: reset
+PASS terminal.color.test.DynamicPalette: resetAll
+PASS terminal.color.test.DynamicPalette: changeDefault with no changes
+PASS terminal.color.test.DynamicPalette: changeDefault shares the built-in default
+PASS terminal.color.test.DynamicPalette: changeDefault preserves changes
+PASS terminal.color.test.DynamicPalette: changeDefault with multiple changes
+PASS terminal.color.test.LAB.fromRgb
+PASS terminal.color.test.generate256Color: base16 preserved
+PASS terminal.color.test.generate256Color: cube corners match base colors
+PASS terminal.color.test.generate256Color: cube corners black/white with harmonious=false
+PASS terminal.color.test.generate256Color: light theme cube corners with harmonious=true
+PASS terminal.color.test.generate256Color: grayscale ramp monotonic luminance
+PASS terminal.color.test.generate256Color: skip mask preserves original colors
+PASS terminal.color.test.generate256Color: dark theme harmonious has no effect
+PASS terminal.color.test.generate256Color: light theme harmonious skips inversion
+PASS terminal.color.test.generate256Color: light theme harmonious grayscale ramp
+PASS terminal.color.test.LAB.toRgb
+PASS terminal.sgr.test.sgr: Attribute C compat
+PASS terminal.sgr.test.sgr: Parser
+PASS terminal.sgr.test.sgr: Parser multiple
+PASS terminal.sgr.test.sgr: unsupported with colon
+PASS terminal.sgr.test.sgr: unsupported with multiple colon
+PASS terminal.sgr.test.sgr: bold
+PASS terminal.sgr.test.sgr: italic
+PASS terminal.sgr.test.sgr: underline
+PASS terminal.sgr.test.sgr: underline styles
+PASS terminal.sgr.test.sgr: underline style with more
+PASS terminal.sgr.test.sgr: underline style with too many colons
+PASS terminal.sgr.test.sgr: blink
+PASS terminal.sgr.test.sgr: inverse
+PASS terminal.sgr.test.sgr: strikethrough
+PASS terminal.sgr.test.sgr: 8 color
+PASS terminal.sgr.test.sgr: 256 color
+PASS terminal.sgr.test.sgr: 256 color underline
+PASS terminal.sgr.test.sgr: 24-bit bg color
+PASS terminal.sgr.test.sgr: underline color
+PASS terminal.sgr.test.sgr: reset underline color
+PASS terminal.sgr.test.sgr: invisible
+PASS terminal.sgr.test.sgr: underline, bg, and fg
+PASS terminal.sgr.test.sgr: direct color fg missing color
+PASS terminal.sgr.test.sgr: direct color bg missing color
+PASS terminal.sgr.test.sgr: direct fg/bg/underline ignore optional color space
+PASS terminal.sgr.test.sgr: direct fg colon with too many colons
+PASS terminal.sgr.test.sgr: direct fg colon with colorspace and extra param
+PASS terminal.sgr.test.sgr: direct fg colon no colorspace and extra param
+PASS terminal.sgr.test.sgr: kakoune input
+PASS terminal.sgr.test.sgr: kakoune input issue underline, fg, and bg
+PASS terminal.sgr.test.sgr: underline colon with trailing separator and short slice
+PASS terminal.size_report.test.encode mode 2048
+PASS terminal.size_report.test.encode csi 14 t
+PASS terminal.size_report.test.encode csi 16 t
+PASS terminal.size_report.test.encode csi 18 t
+PASS terminal.size_report.test.encode csi 19 t
+PASS terminal.size_report.test.encode max values for all fields
+PASS terminal.PageList.test.PageList Builder transfers mixed-width pages
+PASS terminal.PageList.test.PageList Builder validates the finished list
+PASS terminal.PageList.test.PageList Builder finish is transactional on allocation failure
+PASS terminal.PageList.test.PageList PageAllocation finalizes pages and preserves live state
+PASS terminal.PageList.test.PageList PageAllocation compresses prepended pages unless visible
+PASS terminal.PageList.test.PageList PageAllocation stays detached until finalize
+PASS terminal.PageList.test.PageList PageAllocation rejects limits before modifying the destination
+PASS terminal.PageList.test.PageList PageAllocation allocation failure leaves list unchanged
+PASS terminal.PageList.test.PageList Pin row movement clamps across mixed-width pages
+PASS terminal.PageList.test.PageList Pin wrapping crosses mixed-width pages
+PASS terminal.PageList.test.PageList Pin rejects columns beyond mixed-width page bounds
+PASS terminal.PageList.test.PageList Pin rightWrap exact row multiple
+PASS terminal.PageList.test.PageList Pin leftWrap exact row multiple
+PASS terminal.PageList.test.PageList Pin rightWrap maximum distance
+PASS terminal.PageList.test.PageList Pin leftWrap maximum distance
+PASS terminal.PageList.test.PageList incremental compression skips visible history
+PASS terminal.PageList.test.PageList owns incremental compression state
+PASS terminal.PageList.test.PageList replacements preserve compression continuation and mark activity
+PASS terminal.PageList.test.PageList incremental compression bounds inspected pages
+PASS terminal.PageList.test.PageList incremental compression advances after failure
+PASS terminal.PageList.test.PageList incremental compression advances after allocation failure
+PASS terminal.PageList.test.PageList incremental compression advances after decommit failure
+PASS terminal.PageList.test.PageList incremental compression restarts after replacement
+PASS terminal.PageList.test.PageList incremental compression restarts after reset
+PASS terminal.PageList.test.PageList incremental compression restarts after active boundary resize
+PASS terminal.PageList.test.PageList incremental compression restarts after prune reuse
+PASS terminal.PageList.test.PageList bounded pruning after partial erase preserves live serials
+PASS terminal.PageList.test.PageList partial erase restarts compression before continuation
+PASS terminal.PageList.test.PageList bounded pruning after split invalidation preserves live serials
+PASS terminal.PageList.test.PageList repeated bounded pruning after split preserves live serials
+PASS terminal.PageList.test.PageList bounded pruning after front replacement preserves live serials
+PASS terminal.PageList.test.PageList bounded pruning after middle replacement preserves live serials
+PASS terminal.PageList.test.PageList incremental compression restarts after earlier replacement
+PASS terminal.PageList.test.PageList incremental compression keeps progress after tail growth
+PASS terminal.PageList.test.PageList memory usage
+PASS terminal.PageList.test.PageList memory stats do not restore compressed pages
+PASS terminal.PageList.test.PageList preserved page keeps compressed storage
+PASS terminal.PageList.test.PageList memory stats include unused pool backing
+PASS terminal.PageList.test.PageList does not compress the mixed history and active page
+PASS terminal.PageList.test.PageList compresses only complete cold history pages
+PASS terminal.PageList.test.PageList lazily restores compressed history made active by resize
+PASS terminal.PageList.test.PageList full and incremental compression skip a spanning viewport
+PASS terminal.PageList.test.PageList cold compression continues after an incompressible page
+PASS terminal.PageList.test.PageList compression restores through page access
+PASS terminal.PageList.test.PageList compression uses temporary scratch for oversized pages
+PASS terminal.PageList.test.PageList compression leaves incompressible pages resident
+PASS terminal.PageList.test.PageList reset discards malformed compressed data
+PASS terminal.PageList.test.PageList deinit discards malformed compressed data
+PASS terminal.PageList.test.PageList prune reuses malformed compressed page memory
+PASS terminal.PageList.test.PageList
+PASS terminal.PageList.test.PageList init error
+PASS terminal.PageList.test.PageList init rows across two pages
+PASS terminal.PageList.test.PageList init more than max cols
+PASS terminal.PageList.test.PageList pointFromPin active no history
+PASS terminal.PageList.test.PageList pointFromPin active with history
+PASS terminal.PageList.test.PageList pointFromPin active from prior page
+PASS terminal.PageList.test.PageList pointFromPin traverse pages
+PASS terminal.PageList.test.PageList pointFromPin rejects overflowing screen coordinate
+PASS terminal.PageList.test.PageList active after grow
+PASS terminal.PageList.test.PageList grow allows exceeding max size for active area
+PASS terminal.PageList.test.PageList grow prune required with a single page
+PASS terminal.PageList.test.PageList scrollbar with max_size 0 after grow
+PASS terminal.PageList.test.PageList scroll with max_size 0 no history
+PASS terminal.PageList.test.PageList scroll top
+PASS terminal.PageList.test.PageList scroll delta row back
+PASS terminal.PageList.test.PageList scroll delta row back overflow
+PASS terminal.PageList.test.PageList scroll minimum row delta
+PASS terminal.PageList.test.PageList scroll delta row forward
+PASS terminal.PageList.test.PageList scroll delta row forward into active
+PASS terminal.PageList.test.PageList scroll delta row back without space preserves active
+PASS terminal.PageList.test.PageList scroll to pin
+PASS terminal.PageList.test.PageList scroll to pin in active
+PASS terminal.PageList.test.PageList scroll to pin at top
+PASS terminal.PageList.test.PageList scroll to row 0
+PASS terminal.PageList.test.PageList scroll to row in scrollback
+PASS terminal.PageList.test.PageList scroll to row in middle
+PASS terminal.PageList.test.PageList scroll to row at active boundary
+PASS terminal.PageList.test.PageList scroll to row beyond active
+PASS terminal.PageList.test.PageList scroll to row without scrollback
+PASS terminal.PageList.test.PageList scroll to row then delta
+PASS terminal.PageList.test.PageList scroll to row with cache fast path down
+PASS terminal.PageList.test.PageList scroll to row with cache fast path up
+PASS terminal.PageList.test.PageList scroll clear
+PASS terminal.PageList.test.PageList: jump zero prompts
+PASS terminal.PageList.test.PageList: jump minimum prompt delta
+PASS terminal.PageList.test.Screen: jump back one prompt
+PASS terminal.PageList.test.Screen: jump forward prompt skips multiline continuation
+PASS terminal.PageList.test.PageList grow fit in capacity
+PASS terminal.PageList.test.PageList grow allocate
+PASS terminal.PageList.test.PageList Cell screenPoint supports long scrollback
+PASS terminal.PageList.test.PageList set max bytes prunes immediately and can be raised
+PASS terminal.PageList.test.PageList set max bytes zero preserves active boundary
+PASS terminal.PageList.test.PageList set max lines prunes immediately and can be raised
+PASS terminal.PageList.test.PageList set max limits remain independent
+PASS terminal.PageList.test.PageList max lines uses one-page minimum
+PASS terminal.PageList.test.PageList max lines does not round larger limits
+PASS terminal.PageList.test.PageList max lines and max size enforce the smaller limit
+PASS terminal.PageList.test.PageList max lines applies to resize and clone
+PASS terminal.PageList.test.PageList grow prune scrollback
+PASS terminal.PageList.test.PageList grow prune scrollback with viewport pin not in pruned page
+PASS terminal.PageList.test.PageList eraseRows invalidates viewport offset cache
+PASS terminal.PageList.test.PageList eraseRow invalidates viewport offset cache
+PASS terminal.PageList.test.PageList eraseRowBounded invalidates viewport offset cache
+PASS terminal.PageList.test.PageList row erasure renews affected page generations
+PASS terminal.PageList.test.PageList trailing row truncation renews page generation
+PASS terminal.PageList.test.PageList eraseRowBounded multi-page invalidates viewport offset cache
+PASS terminal.PageList.test.PageList eraseRowBounded full page shift invalidates viewport offset cache
+PASS terminal.PageList.test.PageList eraseRowBounded exhausts pages invalidates viewport offset cache
+PASS terminal.PageList.test.PageList increaseCapacity to increase styles
+PASS terminal.PageList.test.PageList increaseCapacity styles projects capacity from page density
+PASS terminal.PageList.test.PageList increaseCapacity to increase graphemes
+PASS terminal.PageList.test.PageList increaseCapacity graphemes projects capacity from page density
+PASS terminal.PageList.test.PageList increaseCapacity to increase hyperlinks
+PASS terminal.PageList.test.PageList increaseCapacity to increase string_bytes
+PASS terminal.PageList.test.PageList increaseCapacity tracked pins
+PASS terminal.PageList.test.PageList increaseCapacity returns OutOfSpace at max capacity
+PASS terminal.PageList.test.PageList increaseCapacity after col shrink
+PASS terminal.PageList.test.PageList increaseCapacity multi-page
+PASS terminal.PageList.test.PageList increaseCapacity preserves dirty flag
+PASS terminal.PageList.test.PageList pageIterator single page
+PASS terminal.PageList.test.PageList pageIterator two pages
+PASS terminal.PageList.test.PageList pageIterator history two pages
+PASS terminal.PageList.test.PageList pageIterator reverse single page
+PASS terminal.PageList.test.PageList pageIterator reverse two pages
+PASS terminal.PageList.test.PageList pageIterator reverse history two pages
+PASS terminal.PageList.test.PageList PageIterator reverse count includes row zero
+PASS terminal.PageList.test.PageList PageIterator count crosses page boundaries
+PASS terminal.PageList.test.PageList cellIterator
+PASS terminal.PageList.test.PageList cellIterator reverse
+PASS terminal.PageList.test.PageList promptIterator left_up
+PASS terminal.PageList.test.PageList promptIterator right_down
+PASS terminal.PageList.test.PageList promptIterator right_down continuation at start
+PASS terminal.PageList.test.PageList promptIterator right_down with prompt before continuation
+PASS terminal.PageList.test.PageList promptIterator right_down limit inclusive
+PASS terminal.PageList.test.PageList promptIterator left_up limit inclusive
+PASS terminal.PageList.test.PageList highlightSemanticContent prompt
+PASS terminal.PageList.test.PageList highlightSemanticContent prompt with output
+PASS terminal.PageList.test.PageList highlightSemanticContent prompt multiline
+PASS terminal.PageList.test.PageList highlightSemanticContent prompt only
+PASS terminal.PageList.test.PageList highlightSemanticContent prompt to end of screen
+PASS terminal.PageList.test.PageList highlightSemanticContent input basic
+PASS terminal.PageList.test.PageList highlightSemanticContent input with output
+PASS terminal.PageList.test.PageList highlightSemanticContent input multiline with continuation
+PASS terminal.PageList.test.PageList highlightSemanticContent input no input returns null
+PASS terminal.PageList.test.PageList highlightSemanticContent input to end of screen
+PASS terminal.PageList.test.PageList highlightSemanticContent input prompt only returns null
+PASS terminal.PageList.test.PageList highlightSemanticContent output basic
+PASS terminal.PageList.test.PageList highlightSemanticContent output multiline
+PASS terminal.PageList.test.PageList highlightSemanticContent output stops at next prompt
+PASS terminal.PageList.test.PageList highlightSemanticContent output to end of screen
+PASS terminal.PageList.test.PageList highlightSemanticContent output no output returns null
+PASS terminal.PageList.test.PageList highlightSemanticContent output skips empty cells
+PASS terminal.PageList.test.PageList erase
+PASS terminal.PageList.test.PageList erase reaccounts page size
+PASS terminal.PageList.test.PageList erase row with tracked pin resets to top-left
+PASS terminal.PageList.test.PageList eraseHistory marks pins in erased rows as garbage
+PASS terminal.PageList.test.PageList erase row with tracked pin shifts
+PASS terminal.PageList.test.PageList erase row with tracked pin is erased
+PASS terminal.PageList.test.PageList erase resets viewport to active if moves within active
+PASS terminal.PageList.test.PageList erase resets viewport if inside erased page but not active
+PASS terminal.PageList.test.PageList erase resets viewport to active if top is inside active
+PASS terminal.PageList.test.PageList erase active regrows automatically
+PASS terminal.PageList.test.PageList erase a one-row active
+PASS terminal.PageList.test.PageList eraseRowBounded less than full row
+PASS terminal.PageList.test.PageList eraseRowBounded with pin at top
+PASS terminal.PageList.test.PageList eraseRowBounded full rows single page
+PASS terminal.PageList.test.PageList eraseRowBounded full rows two pages
+PASS terminal.PageList.test.PageList eraseRow hyperlink-dense row crosses page boundary
+PASS terminal.PageList.test.PageList eraseRowBounded hyperlink-dense row crosses page boundary
+PASS terminal.PageList.test.PageList clone
+PASS terminal.PageList.test.PageList clone partial trimmed right
+PASS terminal.PageList.test.PageList clone partial trimmed left
+PASS terminal.PageList.test.PageList clone partial trimmed left reclaims styles
+PASS terminal.PageList.test.PageList clone partial trimmed both
+PASS terminal.PageList.test.PageList clone less than active
+PASS terminal.PageList.test.PageList clone remap tracked pin
+PASS terminal.PageList.test.PageList clone remap tracked pin not in cloned area
+PASS terminal.PageList.test.PageList clone full dirty
+PASS terminal.PageList.test.PageList resize (no reflow) more rows
+PASS terminal.PageList.test.PageList resize (no reflow) more rows with history
+PASS terminal.PageList.test.PageList resize (no reflow) less rows
+PASS terminal.PageList.test.PageList resize (no reflow) one rows
+PASS terminal.PageList.test.PageList resize (no reflow) less rows cursor on bottom
+PASS terminal.PageList.test.PageList resize (no reflow) less rows cursor in scrollback
+PASS terminal.PageList.test.PageList resize (no reflow) less rows trims blank lines
+PASS terminal.PageList.test.PageList resize (no reflow) less rows trims blank lines cursor in blank line
+PASS terminal.PageList.test.PageList resize (no reflow) less rows trims blank lines erases pages
+PASS terminal.PageList.test.PageList resize (no reflow) more rows extends blank lines
+PASS terminal.PageList.test.PageList resize (no reflow) more rows contains viewport
+PASS terminal.PageList.test.PageList resize (no reflow) less cols
+PASS terminal.PageList.test.PageList resize (no reflow) less cols pin in trimmed cols
+PASS terminal.PageList.test.PageList resize (no reflow) less cols clears graphemes
+PASS terminal.PageList.test.PageList resize (no reflow) more cols
+PASS terminal.PageList.test.PageList resize (no reflow) more cols with spacer head
+PASS terminal.PageList.test.PageList resize (no reflow) grow cols fast path with spacer head
+PASS terminal.PageList.test.PageList resize (no reflow) more cols forces less rows per page
+PASS terminal.PageList.test.PageList resize (no reflow) less cols then more cols
+PASS terminal.PageList.test.PageList resize (no reflow) less rows and cols
+PASS terminal.PageList.test.PageList resize less rows and cols cursor at bottom
+PASS terminal.PageList.test.PageList resize less rows and cols cursor near top pushed to scrollback
+PASS terminal.PageList.test.PageList resize (no reflow) more rows and less cols
+PASS terminal.PageList.test.PageList resize more rows and cols doesn't fit in single std page
+PASS terminal.PageList.test.PageList resize (no reflow) empty screen
+PASS terminal.PageList.test.PageList resize (no reflow) more cols forces smaller cap
+PASS terminal.PageList.test.PageList resize (no reflow) more rows adds blank rows if cursor at bottom
+PASS terminal.PageList.test.PageList resize reflow from max cols to narrow
+PASS terminal.PageList.test.PageList resize reflow more cols no wrapped rows
+PASS terminal.PageList.test.PageList resize reflow more cols wrapped rows
+PASS terminal.PageList.test.PageList resize reflow invalidates viewport offset cache
+PASS terminal.PageList.test.PageList resize reflow more cols creates multiple pages
+PASS terminal.PageList.test.PageList resize reflow more cols wrap across page boundary
+PASS terminal.PageList.test.PageList resize reflow more cols wrap across page boundary cursor in second page
+PASS terminal.PageList.test.PageList resize reflow less cols wrap across page boundary cursor in second page
+PASS terminal.PageList.test.PageList resize reflow more cols cursor in wrapped row
+PASS terminal.PageList.test.PageList resize reflow more cols cursor in not wrapped row
+PASS terminal.PageList.test.PageList resize reflow more cols cursor in wrapped row that isn't unwrapped
+PASS terminal.PageList.test.PageList resize reflow more cols no reflow preserves semantic prompt
+PASS terminal.PageList.test.PageList resize reflow exceeds hyperlink memory forcing capacity increase
+PASS terminal.PageList.test.PageList resize reflow hyperlink dupe string alloc chunk rounding
+PASS terminal.PageList.test.PageList resize reflow exceeds grapheme memory forcing capacity increase
+PASS terminal.PageList.test.PageList resize reflow exceeds style memory forcing capacity increase
+PASS terminal.PageList.test.PageList resize reflow more cols unwrap wide spacer head
+PASS terminal.PageList.test.PageList resize reflow more cols unwrap wide spacer head across two rows
+PASS terminal.PageList.test.PageList resize reflow more cols unwrap still requires wide spacer head
+PASS terminal.PageList.test.PageList resize reflow less cols no reflow preserves semantic prompt
+PASS terminal.PageList.test.PageList resize reflow less cols no reflow preserves semantic prompt on first line
+PASS terminal.PageList.test.PageList resize reflow less cols wrap preserves semantic prompt
+PASS terminal.PageList.test.PageList resize reflow less cols no wrapped rows
+PASS terminal.PageList.test.PageList resize reflow less cols wrapped rows
+PASS terminal.PageList.test.PageList resize reflow less cols wrapped rows with graphemes
+PASS terminal.PageList.test.PageList resize reflow less cols cursor in wrapped row
+PASS terminal.PageList.test.PageList resize reflow less cols wraps spacer head
+PASS terminal.PageList.test.PageList resize reflow less cols cursor goes to scrollback
+PASS terminal.PageList.test.PageList resize reflow less cols cursor in unchanged row
+PASS terminal.PageList.test.PageList resize reflow less cols cursor in blank cell
+PASS terminal.PageList.test.PageList resize reflow less cols cursor in final blank cell
+PASS terminal.PageList.test.PageList resize reflow pin in blank cells after line break
+PASS terminal.PageList.test.PageList resize reflow less cols cursor in wrapped blank cell
+PASS terminal.PageList.test.PageList resize reflow less cols blank lines
+PASS terminal.PageList.test.PageList resize reflow less cols blank lines between
+PASS terminal.PageList.test.PageList resize reflow less cols blank lines between no scrollback
+PASS terminal.PageList.test.PageList resize reflow less cols cursor not on last line preserves location
+PASS terminal.PageList.test.PageList resize reflow less cols no scrollback pull blank active
+PASS terminal.PageList.test.PageList resize reflow less cols copy style
+PASS terminal.PageList.test.PageList resize reflow less cols to eliminate a wide char
+PASS terminal.PageList.test.PageList resize reflow less cols to wrap a wide char
+PASS terminal.PageList.test.PageList resize reflow less cols wide char bulk run
+PASS terminal.PageList.test.PageList resize reflow less cols wide char bulk run odd cols spacer head
+PASS terminal.PageList.test.PageList resize reflow less cols wide char bulk run mixed narrow round trip
+PASS terminal.PageList.test.PageList resize reflow less cols wide char bulk run styled
+PASS terminal.PageList.test.PageList resize reflow less cols wide char bulk run degenerate spacer tail style
+PASS terminal.PageList.test.PageList resize reflow less cols to wrap a multi-codepoint grapheme with a spacer head
+PASS terminal.PageList.test.PageList reset
+PASS terminal.PageList.test.PageList reset invalidates stale untracked refs even if node memory is reused
+PASS terminal.PageList.test.PageList reset across two pages
+PASS terminal.PageList.test.PageList reset moves tracked pins and marks them as garbage
+PASS terminal.PageList.test.PageList clears history
+PASS terminal.PageList.test.PageList resize reflow grapheme map capacity exceeded
+PASS terminal.PageList.test.PageList resize grow cols with unwrap fixes viewport pin
+PASS terminal.PageList.test.PageList grow reuses non-standard page without leak
+PASS terminal.PageList.test.PageList grow non-standard page prune protection
+PASS terminal.PageList.test.PageList resize (no reflow) more cols remaps pins in backfill path
+PASS terminal.PageList.test.PageList compact pool page produces exact-size heap page
+PASS terminal.PageList.test.PageList compact then grow allocates new page
+PASS terminal.PageList.test.PageList compact then reset frees heap pages
+PASS terminal.PageList.test.PageList compact then clone
+PASS terminal.PageList.test.PageList compact oversized page
+PASS terminal.PageList.test.PageList destroyed pool page reuse is zeroed
+PASS terminal.PageList.test.PageList increaseCapacity from zero-capacity dimensions
+PASS terminal.PageList.test.PageList compact after increaseCapacity
+PASS terminal.PageList.test.PageList split at middle row
+PASS terminal.PageList.test.PageList split at row 0 is no-op
+PASS terminal.PageList.test.PageList split at last row
+PASS terminal.PageList.test.PageList split single row page returns OutOfSpace
+PASS terminal.PageList.test.PageList split moves tracked pins
+PASS terminal.PageList.test.PageList split tracked pin before split point unchanged
+PASS terminal.PageList.test.PageList split tracked pin at split point moves to new page
+PASS terminal.PageList.test.PageList split multiple tracked pins across regions
+PASS terminal.PageList.test.PageList split tracked viewport_pin in split region moves correctly
+PASS terminal.PageList.test.PageList split middle page preserves linked list order
+PASS terminal.PageList.test.PageList split last page makes new page the last
+PASS terminal.PageList.test.PageList split first page keeps original as first
+PASS terminal.PageList.test.PageList split preserves wrap flags
+PASS terminal.PageList.test.PageList split preserves styled cells
+PASS terminal.PageList.test.PageList split preserves grapheme clusters
+PASS terminal.PageList.test.PageList split preserves hyperlinks
+PASS terminal.PageList.test.PageList eraseRow recycled row has default metadata
+PASS terminal.PageList.test.PageList eraseRowBounded recycled row has default metadata
+PASS terminal.PageList.test.PageList eraseActive regrown rows have default metadata
+PASS terminal.PageList.test.PageList split retired rows have default state
+PASS terminal.PageList.test.PageList resize trimmed rows have default state
+PASS terminal.PageList.test.PageList memory pool never touches idle page memory
+PASS terminal.PageList.test.PageList memory pool fast path does not allocate
+PASS terminal.Terminal.test.Terminal forwards optional scrollback limits
+PASS terminal.Terminal.test.Terminal setScrollbackMaxBytes
+PASS terminal.Terminal.test.Terminal setScrollbackMaxLines
+PASS terminal.Terminal.test.Terminal: linefeed on single row screen prunes cursor page
+PASS terminal.Terminal.test.Terminal setScrollback only affects primary screen
+PASS terminal.Terminal.test.Terminal: resize resets synchronized output
+PASS terminal.Terminal.test.Terminal: resize rejects zero dimensions before mutation
+PASS terminal.Terminal.test.Terminal: init rejects zero dimensions
+PASS terminal.Terminal.test.Terminal: resize preserves pixel dimensions when omitted
+PASS terminal.Terminal.test.Terminal: resize updates pixels without changing cell dimensions
+PASS terminal.Terminal.test.Terminal: resize pixel dimensions saturate
+PASS terminal.Terminal.test.Terminal: resize preserves tabstops on allocation failure
+PASS terminal.Terminal.test.Terminal: resize failure paths preserve consistent state
+PASS terminal.Terminal.test.Terminal: alternate resize failure replaces active alternate screen
+PASS terminal.Terminal.test.Terminal: alternate resize replacement failure falls back to primary
+PASS terminal.Terminal.test.Terminal: setPwd preserves a sentinel on allocation failure
+PASS terminal.Terminal.test.Terminal: setPwd accepts its current value
+PASS terminal.Terminal.test.Terminal: setTitle preserves a sentinel on allocation failure
+PASS terminal.Terminal.test.Terminal: setTitle accepts its current value
+PASS terminal.Terminal.test.Terminal: setCursorPos saturates overflowing origin offsets
+PASS terminal.Terminal.test.Terminal: setCursorRow and setCursorCol in origin mode
+PASS terminal.Terminal.test.Terminal: cursorRowRelative and cursorColRelative in origin mode
+PASS terminal.Terminal.test.Terminal: cursorRowRelative and cursorColRelative stop at screen edge
+PASS terminal.Terminal.test.Terminal: input with no control characters
+PASS terminal.Terminal.test.Terminal: input with basic wraparound
+PASS terminal.Terminal.test.Terminal: input with basic wraparound dirty
+PASS terminal.Terminal.test.Terminal: input that forces scroll
+PASS terminal.Terminal.test.Terminal: input unique style per cell
+PASS terminal.Terminal.test.Terminal: input glitch text
+PASS terminal.Terminal.test.Terminal: zero-width character at start
+PASS terminal.Terminal.test.Terminal: zero-width character attaches to pending wrap cell
+PASS terminal.Terminal.test.Terminal: caps zero-width codepoints attached to one cell
+PASS terminal.Terminal.test.Terminal: print single very long line
+PASS terminal.Terminal.test.Terminal: print wide char
+PASS terminal.Terminal.test.Terminal: print wide char at edge creates spacer head
+PASS terminal.Terminal.test.Terminal: print wide char with 1-column width
+PASS terminal.Terminal.test.Terminal: print wide char in single-width terminal
+PASS terminal.Terminal.test.Terminal: print over wide char at 0,0
+PASS terminal.Terminal.test.Terminal: print over wide char at col 0 corrupts previous row
+PASS terminal.Terminal.test.Terminal: print over wide spacer tail
+PASS terminal.Terminal.test.Terminal: print over wide char with bold
+PASS terminal.Terminal.test.Terminal: print over wide char with bg color
+PASS terminal.Terminal.test.Terminal: print multicodepoint grapheme, disabled mode 2027
+PASS terminal.Terminal.test.Terminal: enabling grapheme mode handles stored breaks
+PASS terminal.Terminal.test.Terminal: graphemeWidth parity
+PASS terminal.Terminal.test.Terminal: VS16 doesn't make character with 2027 disabled
+PASS terminal.Terminal.test.Terminal: ignored VS16 doesn't mark dirty
+PASS terminal.Terminal.test.Terminal: print invalid VS16 non-grapheme
+PASS terminal.Terminal.test.Terminal: invalid VS16 doesn't mark dirty
+PASS terminal.Terminal.test.Terminal: variation selectors apply to preceding codepoint
+PASS terminal.Terminal.test.Terminal: print multicodepoint grapheme, mode 2027
+PASS terminal.Terminal.test.Terminal: keypad sequence VS15
+PASS terminal.Terminal.test.Terminal: keypad sequence VS16
+PASS terminal.Terminal.test.Terminal: Fitzpatrick skin tone next valid base
+PASS terminal.Terminal.test.Terminal: Fitzpatrick skin tone next to non-base
+PASS terminal.Terminal.test.Terminal: multicodepoint grapheme marks dirty on every codepoint
+PASS terminal.Terminal.test.Terminal: VS15 to make narrow character
+PASS terminal.Terminal.test.Terminal: VS15 on already narrow emoji
+PASS terminal.Terminal.test.Terminal: print invalid VS15 following emoji is wide
+PASS terminal.Terminal.test.Terminal: print invalid VS15 in emoji ZWJ sequence
+PASS terminal.Terminal.test.Terminal: VS15 to make narrow character with pending wrap
+PASS terminal.Terminal.test.Terminal: VS15 narrows wide cell under cursor with wraparound disabled
+PASS terminal.Terminal.test.Terminal: VS15 narrows wide cell under restored pending cursor
+PASS terminal.Terminal.test.Terminal: VS16 to make wide character on next line
+PASS terminal.Terminal.test.Terminal: VS16 to make wide character on next line with hyperlink
+PASS terminal.Terminal.test.Terminal: VS16 widening when the spacer tail grows the page
+PASS terminal.Terminal.test.Terminal: grapheme transfer when widening wraps to the next line
+PASS terminal.Terminal.test.Terminal: grapheme transfer when widening wraps below the scroll region
+PASS terminal.Terminal.test.Terminal: grapheme transfer when widening scrolls a single row
+PASS terminal.Terminal.test.Terminal: grapheme transfer when widening wraps to a page without grapheme capacity
+PASS terminal.Terminal.test.Terminal: VS16 to make wide character with pending wrap
+PASS terminal.Terminal.test.Terminal: VS16 to make wide character with mode 2027
+PASS terminal.Terminal.test.Terminal: VS16 repeated with mode 2027
+PASS terminal.Terminal.test.Terminal: print invalid VS16 grapheme
+PASS terminal.Terminal.test.Terminal: print invalid VS16 with second char
+PASS terminal.Terminal.test.Terminal: print grapheme ò (o with nonspacing mark) should be narrow
+PASS terminal.Terminal.test.Terminal: print Devanagari grapheme should be wide
+PASS terminal.Terminal.test.Terminal: print Devanagari grapheme should be wide on next line
+PASS terminal.Terminal.test.Terminal: print Devanagari grapheme should be wide on next page
+PASS terminal.Terminal.test.Terminal: print invalid VS16 with second char (combining)
+PASS terminal.Terminal.test.Terminal: overwrite grapheme should clear grapheme data
+PASS terminal.Terminal.test.Terminal: overwrite multicodepoint grapheme clears grapheme data
+PASS terminal.Terminal.test.Terminal: overwrite multicodepoint grapheme tail clears grapheme data
+PASS terminal.Terminal.test.Terminal: print breaks valid grapheme cluster with Prepend + ASCII for speed
+PASS terminal.Terminal.test.Terminal: print writes to bottom if scrolled
+PASS terminal.Terminal.test.Terminal: print charset
+PASS terminal.Terminal.test.Terminal: print charset outside of ASCII
+PASS terminal.Terminal.test.Terminal: print wide codepoint in a charset prints it unmapped
+PASS terminal.Terminal.test.Terminal: print single shift is used up by a combining character
+PASS terminal.Terminal.test.Terminal: VS16 moving a character to the next line keeps it unmapped
+PASS terminal.Terminal.test.Terminal: print invoke charset
+PASS terminal.Terminal.test.Terminal: print invoke charset single
+PASS terminal.Terminal.test.Terminal: soft wrap
+PASS terminal.Terminal.test.Terminal: soft wrap with semantic prompt
+PASS terminal.Terminal.test.Terminal: disabled wraparound with wide char and one space
+PASS terminal.Terminal.test.Terminal: disabled wraparound with wide char and no space
+PASS terminal.Terminal.test.Terminal: disabled wraparound with wide grapheme and half space
+PASS terminal.Terminal.test.Terminal: print with wraparound disabled clears pending wrap after CBT
+PASS terminal.Terminal.test.Terminal: print right margin wrap
+PASS terminal.Terminal.test.Terminal: print right margin wrap dirty tracking
+PASS terminal.Terminal.test.Terminal: print right margin outside
+PASS terminal.Terminal.test.Terminal: print right margin outside wrap
+PASS terminal.Terminal.test.Terminal: print wide char at right margin does not create spacer head
+PASS terminal.Terminal.test.Terminal: print with hyperlink
+PASS terminal.Terminal.test.Terminal: print over cell with same hyperlink
+PASS terminal.Terminal.test.Terminal: print and end hyperlink
+PASS terminal.Terminal.test.Terminal: print and change hyperlink
+PASS terminal.Terminal.test.Terminal: overwrite hyperlink
+PASS terminal.Terminal.test.Terminal: print wide char at right edge with hyperlink
+PASS terminal.Terminal.test.Terminal: scrollClear across pages keeps cursor hyperlink refs page-local
+PASS terminal.Terminal.test.Terminal: linefeed and carriage return
+PASS terminal.Terminal.test.Terminal: linefeed unsets pending wrap
+PASS terminal.Terminal.test.Terminal: linefeed mode automatic carriage return
+PASS terminal.Terminal.test.Terminal: carriage return unsets pending wrap
+PASS terminal.Terminal.test.Terminal: carriage return origin mode moves to left margin
+PASS terminal.Terminal.test.Terminal: carriage return left of left margin moves to zero
+PASS terminal.Terminal.test.Terminal: carriage return right of left margin moves to left margin
+PASS terminal.Terminal.test.Terminal: backspace
+PASS terminal.Terminal.test.Terminal: horizontal tabs
+PASS terminal.Terminal.test.Terminal: horizontal tabs starting on tabstop
+PASS terminal.Terminal.test.Terminal: horizontal tabs with right margin
+PASS terminal.Terminal.test.Terminal: horizontal tabs back
+PASS terminal.Terminal.test.Terminal: horizontal tabs back starting on tabstop
+PASS terminal.Terminal.test.Terminal: horizontal tabs with left margin in origin mode
+PASS terminal.Terminal.test.Terminal: horizontal tab back with cursor before left margin
+PASS terminal.Terminal.test.Terminal: cursorPos resets wrap
+PASS terminal.Terminal.test.Terminal: cursorPos off the screen
+PASS terminal.Terminal.test.Terminal: cursorPos relative to origin
+PASS terminal.Terminal.test.Terminal: cursorPos relative to origin with left/right
+PASS terminal.Terminal.test.Terminal: cursorPos limits with full scroll region
+PASS terminal.Terminal.test.Terminal: setCursorPos (original test)
+PASS terminal.Terminal.test.Terminal: setTopAndBottomMargin simple
+PASS terminal.Terminal.test.Terminal: setTopAndBottomMargin top only
+PASS terminal.Terminal.test.Terminal: setTopAndBottomMargin top and bottom
+PASS terminal.Terminal.test.Terminal: setTopAndBottomMargin top equal to bottom
+PASS terminal.Terminal.test.Terminal: setLeftAndRightMargin simple
+PASS terminal.Terminal.test.Terminal: setLeftAndRightMargin left only
+PASS terminal.Terminal.test.Terminal: setLeftAndRightMargin left and right
+PASS terminal.Terminal.test.Terminal: setLeftAndRightMargin left equal right
+PASS terminal.Terminal.test.Terminal: setLeftAndRightMargin mode 69 unset
+PASS terminal.Terminal.test.Terminal: insertLines simple
+PASS terminal.Terminal.test.Terminal: insertLines colors with bg color
+PASS terminal.Terminal.test.Terminal: insertLines handles style refs
+PASS terminal.Terminal.test.Terminal: insertLines outside of scroll region
+PASS terminal.Terminal.test.Terminal: insertLines top/bottom scroll region
+PASS terminal.Terminal.test.Terminal: insertLines across page boundary marks all shifted rows dirty
+PASS terminal.Terminal.test.Terminal: insertLines hyperlink-dense row crosses page boundary
+PASS terminal.Terminal.test.Terminal: insertLines (legacy test)
+PASS terminal.Terminal.test.Terminal: insertLines zero
+PASS terminal.Terminal.test.Terminal: insertLines with scroll region
+PASS terminal.Terminal.test.Terminal: insertLines more than remaining
+PASS terminal.Terminal.test.Terminal: insertLines resets pending wrap
+PASS terminal.Terminal.test.Terminal: insertLines resets wrap
+PASS terminal.Terminal.test.Terminal: insertLines multi-codepoint graphemes
+PASS terminal.Terminal.test.Terminal: insertLines left/right scroll region
+PASS terminal.Terminal.test.Terminal: scrollUp simple
+PASS terminal.Terminal.test.Terminal: scrollUp moves hyperlink
+PASS terminal.Terminal.test.Terminal: scrollUp clears hyperlink
+PASS terminal.Terminal.test.Terminal: scrollUp top/bottom scroll region
+PASS terminal.Terminal.test.Terminal: scrollUp left/right scroll region
+PASS terminal.Terminal.test.Terminal: scrollUp left/right scroll region hyperlink
+PASS terminal.Terminal.test.Terminal: scrollUp preserves pending wrap
+PASS terminal.Terminal.test.Terminal: scrollUp full top/bottom region
+PASS terminal.Terminal.test.Terminal: scrollUp full top/bottomleft/right scroll region
+PASS terminal.Terminal.test.Terminal: scrollUp creates scrollback in primary screen
+PASS terminal.Terminal.test.Terminal: scrollUp with max_scrollback_bytes zero
+PASS terminal.Terminal.test.Terminal: scrollUp with max_scrollback_bytes zero and top margin
+PASS terminal.Terminal.test.Terminal: scrollUp with max_scrollback_bytes zero and left/right margin
+PASS terminal.Terminal.test.Terminal: scrollDown simple
+PASS terminal.Terminal.test.Terminal: scrollDown hyperlink moves
+PASS terminal.Terminal.test.Terminal: scrollDown outside of scroll region
+PASS terminal.Terminal.test.Terminal: scrollDown left/right scroll region
+PASS terminal.Terminal.test.Terminal: scrollDown left/right scroll region hyperlink
+PASS terminal.Terminal.test.Terminal: scrollDown outside of left/right scroll region
+PASS terminal.Terminal.test.Terminal: scrollDown preserves pending wrap
+PASS terminal.Terminal.test.Terminal: eraseChars simple operation
+PASS terminal.Terminal.test.Terminal: eraseChars minimum one
+PASS terminal.Terminal.test.Terminal: eraseChars beyond screen edge
+PASS terminal.Terminal.test.Terminal: eraseChars wide character
+PASS terminal.Terminal.test.Terminal: eraseChars resets pending wrap
+PASS terminal.Terminal.test.Terminal: eraseChars resets wrap
+PASS terminal.Terminal.test.Terminal: eraseChars preserves background sgr
+PASS terminal.Terminal.test.Terminal: eraseChars handles refcounted styles
+PASS terminal.Terminal.test.Terminal: eraseChars protected attributes respected with iso
+PASS terminal.Terminal.test.Terminal: eraseChars protected attributes ignored with dec most recent
+PASS terminal.Terminal.test.Terminal: eraseChars protected attributes ignored with dec set
+PASS terminal.Terminal.test.Terminal: eraseChars wide char boundary conditions
+PASS terminal.Terminal.test.Terminal: eraseChars wide char splits proper cell boundaries
+PASS terminal.Terminal.test.Terminal: eraseChars wide char wrap boundary conditions
+PASS terminal.Terminal.test.Terminal: eraseChars clearing wrapped wide char marks spacer head row dirty
+PASS terminal.Terminal.test.Terminal: reverseIndex
+PASS terminal.Terminal.test.Terminal: reverseIndex from the top
+PASS terminal.Terminal.test.Terminal: reverseIndex top of scrolling region
+PASS terminal.Terminal.test.Terminal: reverseIndex top of screen
+PASS terminal.Terminal.test.Terminal: reverseIndex not top of screen
+PASS terminal.Terminal.test.Terminal: reverseIndex top/bottom margins
+PASS terminal.Terminal.test.Terminal: reverseIndex outside top/bottom margins
+PASS terminal.Terminal.test.Terminal: reverseIndex left/right margins
+PASS terminal.Terminal.test.Terminal: reverseIndex outside left/right margins
+PASS terminal.Terminal.test.Terminal: index
+PASS terminal.Terminal.test.Terminal: index from the bottom
+PASS terminal.Terminal.test.Terminal: index scrolling with hyperlink
+PASS terminal.Terminal.test.Terminal: index outside of scrolling region
+PASS terminal.Terminal.test.Terminal: index from the bottom outside of scroll region
+PASS terminal.Terminal.test.Terminal: index no scroll region, top of screen
+PASS terminal.Terminal.test.Terminal: index bottom of primary screen
+PASS terminal.Terminal.test.Terminal: index bottom of primary screen background sgr
+PASS terminal.Terminal.test.Terminal: index inside scroll region
+PASS terminal.Terminal.test.Terminal: index bottom of scroll region with hyperlinks
+PASS terminal.Terminal.test.Terminal: index bottom of scroll region clear hyperlinks
+PASS terminal.Terminal.test.Terminal: index bottom of scroll region with background SGR
+PASS terminal.Terminal.test.Terminal: index bottom of primary screen with scroll region
+PASS terminal.Terminal.test.Terminal: index outside left/right margin
+PASS terminal.Terminal.test.Terminal: index inside left/right margin
+PASS terminal.Terminal.test.Terminal: index bottom of scroll region creates scrollback
+PASS terminal.Terminal.test.Terminal: index bottom of scroll region no scrollback
+PASS terminal.Terminal.test.Terminal: index bottom of scroll region blank line preserves SGR
+PASS terminal.Terminal.test.Terminal: index bottom of scroll region with top margin and background SGR
+PASS terminal.Terminal.test.Terminal: index bottom of alt screen full region
+PASS terminal.Terminal.test.Terminal: index bottom of alt screen top region
+PASS terminal.Terminal.test.Terminal: scrollUp top region no scrollback
+PASS terminal.Terminal.test.Terminal: cursorUp basic
+PASS terminal.Terminal.test.Terminal: cursorUp below top scroll margin
+PASS terminal.Terminal.test.Terminal: cursorUp above top scroll margin
+PASS terminal.Terminal.test.Terminal: cursorUp resets wrap
+PASS terminal.Terminal.test.Terminal: cursorLeft no wrap
+PASS terminal.Terminal.test.Terminal: cursorLeft stops at left margin
+PASS terminal.Terminal.test.Terminal: cursorLeft left of left margin
+PASS terminal.Terminal.test.Terminal: backspace at left margin
+PASS terminal.Terminal.test.Terminal: cursorLeft unsets pending wrap state
+PASS terminal.Terminal.test.Terminal: cursorLeft unsets pending wrap state with longer jump
+PASS terminal.Terminal.test.Terminal: cursorLeft reverse wrap with pending wrap state
+PASS terminal.Terminal.test.Terminal: cursorLeft reverse wrap with pending wrap above top margin
+PASS terminal.Terminal.test.Terminal: cursorLeft reverse wrap extended with pending wrap state
+PASS terminal.Terminal.test.Terminal: cursorLeft reverse wrap
+PASS terminal.Terminal.test.Terminal: cursorLeft reverse wrap with no soft wrap
+PASS terminal.Terminal.test.Terminal: cursorLeft reverse wrap before left margin
+PASS terminal.Terminal.test.Terminal: cursorLeft extended reverse wrap
+PASS terminal.Terminal.test.Terminal: cursorLeft extended reverse wrap bottom wraparound
+PASS terminal.Terminal.test.Terminal: cursorLeft extended reverse wrap is priority if both set
+PASS terminal.Terminal.test.Terminal: cursorLeft extended reverse wrap above top scroll region
+PASS terminal.Terminal.test.Terminal: cursorLeft reverse wrap on first row
+PASS terminal.Terminal.test.Terminal: cursorDown basic
+PASS terminal.Terminal.test.Terminal: cursorDown above bottom scroll margin
+PASS terminal.Terminal.test.Terminal: cursorDown below bottom scroll margin
+PASS terminal.Terminal.test.Terminal: cursorDown resets wrap
+PASS terminal.Terminal.test.Terminal: cursorRight resets wrap
+PASS terminal.Terminal.test.Terminal: cursorRight to the edge of screen
+PASS terminal.Terminal.test.Terminal: cursorRight left of right margin
+PASS terminal.Terminal.test.Terminal: cursorRight right of right margin
+PASS terminal.Terminal.test.Terminal: deleteLines simple
+PASS terminal.Terminal.test.Terminal: deleteLines colors with bg color
+PASS terminal.Terminal.test.Terminal: deleteLines across page boundary marks all shifted rows dirty
+PASS terminal.Terminal.test.Terminal: deleteLines hyperlink-dense row crosses page boundary
+PASS terminal.Terminal.test.Terminal: deleteLines (legacy)
+PASS terminal.Terminal.test.Terminal: deleteLines with scroll region
+PASS terminal.Terminal.test.Terminal: deleteLines with scroll region, large count
+PASS terminal.Terminal.test.Terminal: deleteLines with scroll region, cursor outside of region
+PASS terminal.Terminal.test.Terminal: deleteLines resets pending wrap
+PASS terminal.Terminal.test.Terminal: deleteLines resets wrap
+PASS terminal.Terminal.test.Terminal: deleteLines left/right scroll region
+PASS terminal.Terminal.test.Terminal: deleteLines left/right scroll region from top
+PASS terminal.Terminal.test.Terminal: deleteLines left/right scroll region high count
+PASS terminal.Terminal.test.Terminal: deleteLines wide character spacer head
+PASS terminal.Terminal.test.Terminal: deleteLines wide character spacer head left scroll margin
+PASS terminal.Terminal.test.Terminal: deleteLines wide character spacer head right scroll margin
+PASS terminal.Terminal.test.Terminal: deleteLines wide character spacer head left and right scroll margin
+PASS terminal.Terminal.test.Terminal: deleteLines wide character spacer head left (< 2) and right scroll margin
+PASS terminal.Terminal.test.Terminal: deleteLines wide characters split by left/right scroll region boundaries
+PASS terminal.Terminal.test.Terminal: deleteLines zero
+PASS terminal.Terminal.test.Terminal: default style is empty
+PASS terminal.Terminal.test.Terminal: bold style
+PASS terminal.Terminal.test.Terminal: garbage collect overwritten
+PASS terminal.Terminal.test.Terminal: do not garbage collect old styles in use
+PASS terminal.Terminal.test.Terminal: print with style marks the row as styled
+PASS terminal.Terminal.test.Terminal: DECALN
+PASS terminal.Terminal.test.Terminal: decaln reset margins
+PASS terminal.Terminal.test.Terminal: decaln preserves color
+PASS terminal.Terminal.test.Terminal: DECALN resets graphemes with protected mode
+PASS terminal.Terminal.test.Terminal: insertBlanks zero
+PASS terminal.Terminal.test.Terminal: insertBlanks
+PASS terminal.Terminal.test.Terminal: insertBlanks pushes off end
+PASS terminal.Terminal.test.Terminal: insertBlanks more than size
+PASS terminal.Terminal.test.Terminal: insertBlanks no scroll region, fits
+PASS terminal.Terminal.test.Terminal: insertBlanks preserves background sgr
+PASS terminal.Terminal.test.Terminal: insertBlanks shift off screen
+PASS terminal.Terminal.test.Terminal: insertBlanks split multi-cell character
+PASS terminal.Terminal.test.Terminal: insertBlanks inside left/right scroll region
+PASS terminal.Terminal.test.Terminal: insertBlanks outside left/right scroll region
+PASS terminal.Terminal.test.Terminal: insertBlanks left/right scroll region large count
+PASS terminal.Terminal.test.Terminal: insertBlanks deleting graphemes
+PASS terminal.Terminal.test.Terminal: insertBlanks shift graphemes
+PASS terminal.Terminal.test.Terminal: insertBlanks split multi-cell character from tail
+PASS terminal.Terminal.test.Terminal: insertBlanks shifts hyperlinks
+PASS terminal.Terminal.test.Terminal: insertBlanks pushes hyperlink off end completely
+PASS terminal.Terminal.test.Terminal: insertBlanks wide char straddling right margin
+PASS terminal.Terminal.test.Terminal: insertBlanks wide char spacer_tail orphaned beyond right margin
+PASS terminal.Terminal.test.Terminal: insert mode with space
+PASS terminal.Terminal.test.Terminal: insert mode doesn't wrap pushed characters
+PASS terminal.Terminal.test.Terminal: insert mode does nothing at the end of the line
+PASS terminal.Terminal.test.Terminal: insert mode with wide characters
+PASS terminal.Terminal.test.Terminal: insert mode with wide characters at end
+PASS terminal.Terminal.test.Terminal: insert mode pushing off wide character
+PASS terminal.Terminal.test.Terminal: deleteChars
+PASS terminal.Terminal.test.Terminal: deleteChars zero count
+PASS terminal.Terminal.test.Terminal: deleteChars more than half
+PASS terminal.Terminal.test.Terminal: deleteChars more than line width
+PASS terminal.Terminal.test.Terminal: deleteChars should shift left
+PASS terminal.Terminal.test.Terminal: deleteChars resets pending wrap
+PASS terminal.Terminal.test.Terminal: deleteChars resets wrap
+PASS terminal.Terminal.test.Terminal: deleteChars simple operation
+PASS terminal.Terminal.test.Terminal: deleteChars preserves background sgr
+PASS terminal.Terminal.test.Terminal: deleteChars outside scroll region
+PASS terminal.Terminal.test.Terminal: deleteChars inside scroll region
+PASS terminal.Terminal.test.Terminal: deleteChars split wide character from spacer tail
+PASS terminal.Terminal.test.Terminal: deleteChars split wide character from wide
+PASS terminal.Terminal.test.Terminal: deleteChars split wide character from end
+PASS terminal.Terminal.test.Terminal: deleteChars with a spacer head at the end
+PASS terminal.Terminal.test.Terminal: deleteChars split wide character tail
+PASS terminal.Terminal.test.Terminal: deleteChars wide char boundary conditions
+PASS terminal.Terminal.test.Terminal: deleteChars wide char wrap boundary conditions
+PASS terminal.Terminal.test.Terminal: deleteChars wide char across right margin
+PASS terminal.Terminal.test.Terminal: insertColumns
+PASS terminal.Terminal.test.Terminal: insertColumns with margins
+PASS terminal.Terminal.test.Terminal: insertColumns outside scrolling region
+PASS terminal.Terminal.test.Terminal: deleteColumns
+PASS terminal.Terminal.test.Terminal: deleteColumns with margins
+PASS terminal.Terminal.test.Terminal: backIndex moves cursor left
+PASS terminal.Terminal.test.Terminal: backIndex scrolls at left margin
+PASS terminal.Terminal.test.Terminal: forwardIndex moves cursor right
+PASS terminal.Terminal.test.Terminal: forwardIndex scrolls at right margin
+PASS terminal.Terminal.test.Terminal: forwardIndex scrolls whole screen at right edge
+PASS terminal.Terminal.test.Terminal: saveCursor
+PASS terminal.Terminal.test.Terminal: saveCursor position
+PASS terminal.Terminal.test.Terminal: saveCursor pending wrap state
+PASS terminal.Terminal.test.Terminal: saveCursor origin mode
+PASS terminal.Terminal.test.Terminal: saveCursor resize
+PASS terminal.Terminal.test.Terminal: saveCursor protected pen
+PASS terminal.Terminal.test.Terminal: saveCursor doesn't modify hyperlink state
+PASS terminal.Terminal.test.Terminal: restoreCursor uses default style on OutOfSpace
+PASS terminal.Terminal.test.Terminal: setProtectedMode
+PASS terminal.Terminal.test.Terminal: eraseLine simple erase right
+PASS terminal.Terminal.test.Terminal: eraseLine resets pending wrap
+PASS terminal.Terminal.test.Terminal: eraseLine resets wrap
+PASS terminal.Terminal.test.Terminal: eraseLine right preserves background sgr
+PASS terminal.Terminal.test.Terminal: eraseLine right wide character
+PASS terminal.Terminal.test.Terminal: eraseLine right protected attributes respected with iso
+PASS terminal.Terminal.test.Terminal: eraseLine right protected attributes ignored with dec most recent
+PASS terminal.Terminal.test.Terminal: eraseLine right protected attributes ignored with dec set
+PASS terminal.Terminal.test.Terminal: eraseLine right protected requested
+PASS terminal.Terminal.test.Terminal: eraseLine simple erase left
+PASS terminal.Terminal.test.Terminal: eraseLine left resets wrap
+PASS terminal.Terminal.test.Terminal: eraseLine left preserves background sgr
+PASS terminal.Terminal.test.Terminal: eraseLine left wide character
+PASS terminal.Terminal.test.Terminal: eraseLine left protected attributes respected with iso
+PASS terminal.Terminal.test.Terminal: eraseLine left protected attributes ignored with dec most recent
+PASS terminal.Terminal.test.Terminal: eraseLine left protected attributes ignored with dec set
+PASS terminal.Terminal.test.Terminal: eraseLine left protected requested
+PASS terminal.Terminal.test.Terminal: eraseLine complete preserves background sgr
+PASS terminal.Terminal.test.Terminal: eraseLine complete resets wrap
+PASS terminal.Terminal.test.Terminal: eraseLine complete protected attributes respected with iso
+PASS terminal.Terminal.test.Terminal: eraseLine complete protected attributes ignored with dec most recent
+PASS terminal.Terminal.test.Terminal: eraseLine complete protected attributes ignored with dec set
+PASS terminal.Terminal.test.Terminal: eraseLine complete protected requested
+PASS terminal.Terminal.test.Terminal: tabClear single
+PASS terminal.Terminal.test.Terminal: tabClear all
+PASS terminal.Terminal.test.Terminal: printRepeat simple
+PASS terminal.Terminal.test.Terminal: printRepeat wrap
+PASS terminal.Terminal.test.Terminal: printRepeat no previous character
+PASS terminal.Terminal.test.Terminal: printSlice simple ascii
+PASS terminal.Terminal.test.Terminal: printSlice charset batched fill
+PASS terminal.Terminal.test.Terminal: printSlice charset matches scalar printing
+PASS terminal.Terminal.test.Terminal: printSlice charset single shift and repeat
+PASS terminal.Terminal.test.Terminal: printSlice wraps and scrolls
+PASS terminal.Terminal.test.Terminal: printSlice pending wrap state
+PASS terminal.Terminal.test.Terminal: printSlice differential fuzz vs print
+PASS terminal.Terminal.test.Terminal: printAttributes
+PASS terminal.Terminal.test.Terminal: eraseDisplay simple erase below
+PASS terminal.Terminal.test.Terminal: eraseDisplay erase below preserves SGR bg
+PASS terminal.Terminal.test.Terminal: eraseDisplay below split multi-cell
+PASS terminal.Terminal.test.Terminal: eraseDisplay below protected attributes respected with iso
+PASS terminal.Terminal.test.Terminal: eraseDisplay below protected attributes ignored with dec most recent
+PASS terminal.Terminal.test.Terminal: eraseDisplay below protected attributes ignored with dec set
+PASS terminal.Terminal.test.Terminal: eraseDisplay below protected attributes respected with force
+PASS terminal.Terminal.test.Terminal: eraseDisplay simple erase above
+PASS terminal.Terminal.test.Terminal: eraseDisplay erase above preserves SGR bg
+PASS terminal.Terminal.test.Terminal: eraseDisplay above split multi-cell
+PASS terminal.Terminal.test.Terminal: eraseDisplay above protected attributes respected with iso
+PASS terminal.Terminal.test.Terminal: eraseDisplay above protected attributes ignored with dec most recent
+PASS terminal.Terminal.test.Terminal: eraseDisplay above protected attributes ignored with dec set
+PASS terminal.Terminal.test.Terminal: eraseDisplay above protected attributes respected with force
+PASS terminal.Terminal.test.Terminal: eraseDisplay protected complete
+PASS terminal.Terminal.test.Terminal: eraseDisplay protected below
+PASS terminal.Terminal.test.Terminal: eraseDisplay scroll complete
+PASS terminal.Terminal.test.Terminal: eraseDisplay protected above
+PASS terminal.Terminal.test.Terminal: eraseDisplay complete preserves cursor
+PASS terminal.Terminal.test.Terminal: semantic prompt
+PASS terminal.Terminal.test.Terminal: semantic prompt continuations
+PASS terminal.Terminal.test.Terminal: index in prompt mode marks new row as prompt continuation
+PASS terminal.Terminal.test.Terminal: index in input mode does not mark new row as prompt
+PASS terminal.Terminal.test.Terminal: index in output mode does not mark new row as prompt
+PASS terminal.Terminal.test.Terminal: OSC133C at x=0 on prompt row clears prompt mark
+PASS terminal.Terminal.test.Terminal: OSC133C at x>0 on prompt row does not clear prompt mark
+PASS terminal.Terminal.test.Terminal: multiple newlines in prompt mode marks all rows
+PASS terminal.Terminal.test.Terminal: OSC133A click_events=1 sets click to click_events
+PASS terminal.Terminal.test.Terminal: OSC133A click_events=2 sets click to click_events (relative)
+PASS terminal.Terminal.test.Terminal: OSC133A click_events=0 does not set click_events
+PASS terminal.Terminal.test.Terminal: OSC133A cl option sets click to cl value
+PASS terminal.Terminal.test.Terminal: OSC133A cl=line sets click to line
+PASS terminal.Terminal.test.Terminal: OSC133A click_events=1 takes priority over cl
+PASS terminal.Terminal.test.Terminal: OSC133A click_events=0 falls back to cl
+PASS terminal.Terminal.test.Terminal: OSC133A no click options leaves click as none
+PASS terminal.Terminal.test.Terminal: cursorIsAtPrompt
+PASS terminal.Terminal.test.Terminal: cursorIsAtPrompt alternate screen
+PASS terminal.Terminal.test.Terminal: cursor defaults update current default cursor
+PASS terminal.Terminal.test.Terminal: cursor defaults do not override explicit cursor
+PASS terminal.Terminal.test.Terminal: fullReset with a non-empty pen
+PASS terminal.Terminal.test.Terminal: fullReset hyperlink
+PASS terminal.Terminal.test.Terminal: fullReset with a non-empty saved cursor
+PASS terminal.Terminal.test.Terminal: fullReset origin mode
+PASS terminal.Terminal.test.Terminal: fullReset status display
+PASS terminal.Terminal.test.Terminal: fullReset clears alt screen kitty keyboard state
+PASS terminal.Terminal.test.Terminal: fullReset default modes
+PASS terminal.Terminal.test.Terminal: fullReset tracked pins
+PASS terminal.Terminal.test.Terminal: default xt checksum survives resets
+PASS terminal.Terminal.test.Terminal: softReset modes
+PASS terminal.Terminal.test.Terminal: softReset margins
+PASS terminal.Terminal.test.Terminal: softReset keeps the cursor and screen
+PASS terminal.Terminal.test.Terminal: softReset saved cursor
+PASS terminal.Terminal.test.Terminal: softReset pen, protection, and charsets
+PASS terminal.Terminal.test.Terminal: softReset ends ISO protection for erase
+PASS terminal.Terminal.test.Terminal: softReset status display and checksum
+PASS terminal.Terminal.test.Terminal: softReset palette
+PASS terminal.Terminal.test.Terminal: resize less cols with wide char then print
+PASS terminal.Terminal.test.Terminal: resize less cols without reflow cutting wide char tail
+PASS terminal.Terminal.test.Terminal: resize with left and right margin set
+PASS terminal.Terminal.test.Terminal: resize without scrollback pull
+PASS terminal.Terminal.test.Terminal: resize with wraparound off
+PASS terminal.Terminal.test.Terminal: resize with wraparound on
+PASS terminal.Terminal.test.Terminal: resize with high unique style per cell
+PASS terminal.Terminal.test.Terminal: resize with high unique style per cell with wrapping
+PASS terminal.Terminal.test.Terminal: resize with reflow and saved cursor
+PASS terminal.Terminal.test.Terminal: resize with reflow and saved cursor pending wrap
+PASS terminal.Terminal.test.Terminal: saved cursor survives repeated widening
+PASS terminal.Terminal.test.Terminal: resize pending wrap live and saved cursors
+PASS terminal.Terminal.test.Terminal: DECCOLM without DEC mode 40
+PASS terminal.Terminal.test.Terminal: DECCOLM unset
+PASS terminal.Terminal.test.Terminal: DECCOLM resets pending wrap
+PASS terminal.Terminal.test.Terminal: DECCOLM preserves SGR bg
+PASS terminal.Terminal.test.Terminal: DECCOLM resets scroll region
+PASS terminal.Terminal.test.Terminal: mode 47 alt screen plain
+PASS terminal.Terminal.test.Terminal: mode 47 copies cursor both directions
+PASS terminal.Terminal.test.Terminal: mode 1047 alt screen plain
+PASS terminal.Terminal.test.Terminal: mode 1047 copies cursor both directions
+PASS terminal.Terminal.test.Terminal: mode 1049 alt screen plain
+PASS terminal.Terminal.test.Terminal: deleteLines wide char at right margin with full clear
+PASS terminal.Terminal.test.Terminal: scroll region linefeed recycled row has default metadata
+PASS terminal.Terminal.test.Terminal: alt screen scroll up recycled row has default metadata
+PASS terminal.Terminal.test.Terminal: insertLines count over region blanks row metadata
+PASS terminal.Terminal.test.Terminal: deleteLines count over region blanks row metadata
+PASS terminal.Terminal.test.Terminal: deleteLines blank row does not retain semantic prompt
+PASS terminal.Terminal.test.Terminal: eraseDisplay complete ignores stale prompt on recycled row
+PASS terminal.Terminal.test.Terminal: eraseDisplay complete at prompt not on last row scrolls
+PASS terminal.osc.test.Parser end with CAN or SUB cancels the command
+PASS terminal.osc.test.Parser allocating captures have a hard limit
+PASS terminal.osc.test.Parser nextSlice allocating captures have a hard limit
+PASS terminal.osc.test.Parser nextSlice overflowing slice is truncated at the limit
+PASS terminal.osc.test.Parser nextSlice matches per-byte parsing
+PASS terminal.osc.test.Parser allocating capture limit includes parser-added bytes
+PASS terminal.device_status.test.encode color scheme report dark
+PASS terminal.device_status.test.encode color scheme report light
+PASS terminal.device_status.test.encode visibility report
+PASS terminal.formatter.test.Page plain single line
+PASS terminal.formatter.test.Page plain single line soft-wrapped unwrapped
+PASS terminal.formatter.test.Page plain single wide char
+PASS terminal.formatter.test.Page plain single wide char soft-wrapped unwrapped
+PASS terminal.formatter.test.Page plain multiline
+PASS terminal.formatter.test.Page plain multiline rectangle
+PASS terminal.formatter.test.Page plain multi blank lines
+PASS terminal.formatter.test.Page plain trailing blank lines
+PASS terminal.formatter.test.Page plain trailing whitespace
+PASS terminal.formatter.test.Page plain trailing whitespace no trim
+PASS terminal.formatter.test.Page plain with prior trailing state rows
+PASS terminal.formatter.test.Page plain with prior trailing state cells no wrapped line
+PASS terminal.formatter.test.Page plain with prior trailing state cells with wrap continuation
+PASS terminal.formatter.test.Page plain soft-wrapped without unwrap
+PASS terminal.formatter.test.Page plain soft-wrapped with unwrap
+PASS terminal.formatter.test.Page plain soft-wrapped 3 lines without unwrap
+PASS terminal.formatter.test.Page plain soft-wrapped 3 lines with unwrap
+PASS terminal.formatter.test.Page plain start_y subset
+PASS terminal.formatter.test.Page plain end_y subset
+PASS terminal.formatter.test.Page plain start_y and end_y range
+PASS terminal.formatter.test.Page plain start_y out of bounds
+PASS terminal.formatter.test.Page plain end_y greater than rows
+PASS terminal.formatter.test.Page plain end_y less than start_y
+PASS terminal.formatter.test.Page plain start_x on first row only
+PASS terminal.formatter.test.Page plain end_x on last row only
+PASS terminal.formatter.test.Page plain start_x and end_x multiline
+PASS terminal.formatter.test.Page plain start_x out of bounds
+PASS terminal.formatter.test.Page plain end_x greater than cols
+PASS terminal.formatter.test.Page plain end_x less than start_x single row
+PASS terminal.formatter.test.Page plain start_y non-zero ignores trailing state
+PASS terminal.formatter.test.Page plain start_x non-zero ignores trailing state
+PASS terminal.formatter.test.Page plain start_y and start_x zero uses trailing state
+PASS terminal.formatter.test.Page plain single line with styling
+PASS terminal.formatter.test.Page VT single line plain text
+PASS terminal.formatter.test.Page VT single line with bold
+PASS terminal.formatter.test.Page VT multiple styles
+PASS terminal.formatter.test.Page VT with foreground color
+PASS terminal.formatter.test.Page VT with background and foreground colors
+PASS terminal.formatter.test.Page VT multi-line with styles
+PASS terminal.formatter.test.Page VT duplicate style not emitted twice
+PASS terminal.formatter.test.PageList plain single line
+PASS terminal.formatter.test.PageList plain spanning two pages
+PASS terminal.formatter.test.PageList soft-wrapped line spanning two pages without unwrap
+PASS terminal.formatter.test.PageList soft-wrapped line spanning two pages with unwrap
+PASS terminal.formatter.test.PageList selection ending on spacer head
+PASS terminal.formatter.test.PageList VT spanning two pages
+PASS terminal.formatter.test.PageList plain with x offset on single page
+PASS terminal.formatter.test.PageList plain with x offset spanning two pages
+PASS terminal.formatter.test.PageList plain with start_x only
+PASS terminal.formatter.test.PageList plain with end_x only
+PASS terminal.formatter.test.PageList VT without trim keeps trailing blank rows
+PASS terminal.formatter.test.PageList VT without trim keeps a blank screen
+PASS terminal.formatter.test.PageList VT without trim keeps trailing blank rows across pages
+PASS terminal.formatter.test.PageList plain rectangle basic
+PASS terminal.formatter.test.PageList plain rectangle with EOL
+PASS terminal.formatter.test.PageList plain rectangle more complex with breaks
+PASS terminal.formatter.test.TerminalFormatter plain no selection
+PASS terminal.formatter.test.TerminalFormatter vt with palette
+PASS terminal.formatter.test.TerminalFormatter with selection
+PASS terminal.formatter.test.TerminalFormatter plain with pin_map
+PASS terminal.formatter.test.TerminalFormatter plain multiline with pin_map
+PASS terminal.formatter.test.TerminalFormatter vt with palette and pin_map
+PASS terminal.formatter.test.TerminalFormatter with selection and pin_map
+PASS terminal.formatter.test.Screen plain single line
+PASS terminal.formatter.test.Screen plain multiline
+PASS terminal.formatter.test.Screen plain with selection
+PASS terminal.formatter.test.Screen vt with cursor position
+PASS terminal.formatter.test.Terminal vt cursor preserves pending wrap
+PASS terminal.formatter.test.Terminal vt cursor preserves pending wrap over a blank cell
+PASS terminal.formatter.test.Terminal vt cursor preserves pending wrap after a wide character
+PASS terminal.formatter.test.Screen vt with style
+PASS terminal.formatter.test.Screen vt with hyperlink
+PASS terminal.formatter.test.Page VT with hyperlinks
+PASS terminal.formatter.test.Page VT with explicit hyperlink id
+PASS terminal.formatter.test.Page VT with hyperlink across rows
+PASS terminal.formatter.test.Page VT steps over blank cells in a hyperlink
+PASS terminal.formatter.test.Page VT unwrap closes a hyperlink before blank cells
+PASS terminal.formatter.test.Page VT switches between hyperlinks without closing
+PASS terminal.formatter.test.Page VT closes a hyperlink on a row without hyperlinks
+PASS terminal.formatter.test.Terminal vt restores hyperlinks of cells
+PASS terminal.formatter.test.Screen vt with protection
+PASS terminal.formatter.test.Screen vt with kitty keyboard
+PASS terminal.formatter.test.Screen vt with charsets
+PASS terminal.formatter.test.Terminal vt without trim keeps blank rows at the bottom
+PASS terminal.formatter.test.Terminal vt with scrolling region
+PASS terminal.formatter.test.Terminal vt with cursor in origin mode
+PASS terminal.formatter.test.Terminal vt with cursor in origin mode without the region
+PASS terminal.formatter.test.Terminal vt with modes
+PASS terminal.formatter.test.Terminal vt with tabstops
+PASS terminal.formatter.test.Terminal vt with keyboard modes
+PASS terminal.formatter.test.Terminal vt with pwd
+PASS terminal.formatter.test.Page html with multiple styles
+PASS terminal.formatter.test.Page html plain text
+PASS terminal.formatter.test.Page html with colors
+PASS terminal.formatter.test.TerminalFormatter html with palette
+PASS terminal.formatter.test.Page html with background and foreground colors
+PASS terminal.formatter.test.Page html with escaping
+PASS terminal.formatter.test.Page html with unicode as numeric entities
+PASS terminal.formatter.test.Page html trailing blank lines
+PASS terminal.formatter.test.Page html ascii characters unchanged
+PASS terminal.formatter.test.Page html mixed ascii and unicode
+PASS terminal.formatter.test.Page VT with palette option emits RGB
+PASS terminal.formatter.test.Page html with palette option emits RGB
+PASS terminal.formatter.test.Page VT style reset properly closes styles
+PASS terminal.formatter.test.Page codepoint_map single replacement
+PASS terminal.formatter.test.Page codepoint_map conflicting replacement prefers last
+PASS terminal.formatter.test.Page codepoint_map replace with string
+PASS terminal.formatter.test.Page codepoint_map range replacement
+PASS terminal.formatter.test.Page codepoint_map multiple ranges
+PASS terminal.formatter.test.Page codepoint_map unicode replacement
+PASS terminal.formatter.test.Page codepoint_map with styled formats
+PASS terminal.formatter.test.Page codepoint_map empty map
+PASS terminal.formatter.test.Page VT background color on trailing blank cells
+PASS terminal.formatter.test.Page VT steps over a gap
+PASS terminal.formatter.test.Page VT erases cells that only have a background
+PASS terminal.formatter.test.Page VT keeps rows that only have a background
+PASS terminal.formatter.test.Page VT unwrap writes blanks before a wrapped wide character
+PASS terminal.formatter.test.Terminal vt restores gaps and cells that only have a background
+PASS terminal.formatter.test.Page HTML with hyperlinks
+PASS terminal.formatter.test.Page HTML with multiple hyperlinks
+PASS terminal.formatter.test.Page HTML with hyperlink escaping
+PASS terminal.formatter.test.Page HTML with styled hyperlink
+PASS terminal.formatter.test.Page HTML hyperlink closes style before anchor
+PASS terminal.formatter.test.Page HTML hyperlink point map maps closing to previous cell
+PASS terminal.render.test.styled
+PASS terminal.render.test.basic text
+PASS terminal.render.test.styled text
+PASS terminal.render.test.incremental updates match full rebuild
+PASS terminal.render.test.incremental updates match full rebuild with overscan
+PASS terminal.render.test.begin and end update
+PASS terminal.render.test.endUpdate skips unchanged style runs
+PASS terminal.render.test.bg color cells
+PASS terminal.render.test.grapheme
+PASS terminal.render.test.cursor state in viewport
+PASS terminal.render.test.cursor state out of viewport
+PASS terminal.render.test.dirty state
+PASS terminal.render.test.colors
+PASS terminal.render.test.selection single line
+PASS terminal.render.test.selection multiple lines
+PASS terminal.render.test.selection starting on wide char spacer tail
+PASS terminal.render.test.selection ending on wide char spacer head
+PASS terminal.render.test.linkCells
+PASS terminal.render.test.string
+PASS terminal.render.test.linkCells with scrollback spanning pages
+PASS terminal.render.test.linkCells with invalid viewport point
+PASS terminal.render.test.flattened highlights require matching page serial
+PASS terminal.render.test.dirty row resets highlights
+PASS terminal.render.test.overscan zero request unchanged
+PASS terminal.render.test.overscan row_data layout
+PASS terminal.render.test.overscan request change forces redraw
+PASS terminal.render.test.overscan row ids stable
+PASS terminal.render.test.overscan row ids and dirty on in-place rewrite
+PASS terminal.render.test.overscan cursor in overscan row
+PASS terminal.render.test.overscan selection on overscan rows
+PASS terminal.render.test.placements_generation: zero without images
+PASS terminal.modes.test.modeFromInt matches entries exhaustively
+PASS terminal.modes.test.ModeState set default updates current and reset value
+PASS terminal.modes.test.default configurable modes
+PASS terminal.modes.test.getReport known DEC mode
+PASS terminal.modes.test.getReport known ANSI mode
+PASS terminal.modes.test.getReport DECECM permanently reset
+PASS terminal.modes.test.getReport unsupported ANSI modes permanently reset
+PASS terminal.modes.test.getReport unknown mode
+PASS terminal.modes.test.Report.encode DEC mode set
+PASS terminal.modes.test.Report.encode DEC mode reset
+PASS terminal.modes.test.Report.encode ANSI mode
+PASS terminal.modes.test.Report.encode not recognized
+PASS terminal.modes.test.getReport large unknown modes
+PASS terminal.modes.test.Report.encode maximum size
+PASS terminal.osc.parsers.program_status.test.OSC 7501: query
+PASS terminal.osc.parsers.program_status.test.OSC 7501: query reply lists every state and kind
+PASS terminal.osc.parsers.program_status.test.OSC 7501: minimal report
+PASS terminal.osc.parsers.program_status.test.OSC 7501: all keys
+PASS terminal.osc.parsers.program_status.test.OSC 7501: base64 padding is optional
+PASS terminal.osc.parsers.program_status.test.OSC 7501: whitespace around keys and values
+PASS terminal.osc.parsers.program_status.test.OSC 7501: last value wins
+PASS terminal.osc.parsers.program_status.test.OSC 7501: malformed pairs and unknown keys are skipped
+PASS terminal.osc.parsers.program_status.test.OSC 7501: kind and progress only apply to some states
+PASS terminal.osc.parsers.program_status.test.OSC 7501: out of range progress is absent
+PASS terminal.osc.parsers.program_status.test.OSC 7501: invalid app is ignored
+PASS terminal.osc.parsers.program_status.test.OSC 7501: ids
+PASS terminal.osc.parsers.program_status.test.OSC 7501: limits apply to values with disallowed bytes
+PASS terminal.osc.parsers.program_status.test.OSC 7501: text must decode to safe UTF-8
+PASS terminal.osc.parsers.program_status.test.OSC 7501: empty text is absent
+PASS terminal.osc.parsers.program_status.test.OSC 7501: discarded reports
+PASS terminal.osc.parsers.program_status.test.OSC 7501: no allocator
+PASS terminal.stream_terminal.test.render hold effect fires on synchronized output transitions only
+PASS terminal.stream_terminal.test.render hold effect can snapshot the frame when the hold begins
+PASS terminal.stream_terminal.test.resize clears synchronized output on unchanged cell dimensions
+PASS terminal.stream_terminal.test.unknown APC effect callback
+PASS terminal.stream_terminal.test.unknown OSC effect callback
+PASS terminal.stream_terminal.test.resize reports mode 2048 geometry
+PASS terminal.stream_terminal.test.resize suppresses mode 2048 reports
+PASS terminal.stream_terminal.test.resize failure preserves terminal state and does not write
+PASS terminal.stream_terminal.test.resize effects do not change canonical terminal state
+PASS terminal.stream_terminal.test.basic print
+PASS terminal.stream_terminal.test.semantic failure is sticky while processing continues
+PASS terminal.stream_terminal.test.cursor movement
+PASS terminal.stream_terminal.test.erase operations
+PASS terminal.stream_terminal.test.tabs
+PASS terminal.stream_terminal.test.modes
+PASS terminal.stream_terminal.test.scrolling regions
+PASS terminal.stream_terminal.test.charsets
+PASS terminal.stream_terminal.test.alt screen
+PASS terminal.stream_terminal.test.cursor save and restore
+PASS terminal.stream_terminal.test.attributes
+PASS terminal.stream_terminal.test.DECRQSS responses
+PASS terminal.stream_terminal.test.DECRQSS without write effect is ignored
+PASS terminal.stream_terminal.test.XTGETTCAP responses
+PASS terminal.stream_terminal.test.XTGETTCAP without write effect is ignored
+PASS terminal.stream_terminal.test.XTGETTCAP TN responses
+PASS terminal.stream_terminal.test.DCS command memory is released
+PASS terminal.stream_terminal.test.DECALN screen alignment
+PASS terminal.stream_terminal.test.full reset
+PASS terminal.stream_terminal.test.ignores query actions
+PASS terminal.stream_terminal.test.OSC 4 set and reset palette
+PASS terminal.stream_terminal.test.OSC 104 reset all palette colors
+PASS terminal.stream_terminal.test.OSC 10 set and reset foreground color
+PASS terminal.stream_terminal.test.OSC 11 set and reset background color
+PASS terminal.stream_terminal.test.OSC 12 set and reset cursor color
+PASS terminal.stream_terminal.test.OSC color query responses
+PASS terminal.stream_terminal.test.kitty color protocol set palette
+PASS terminal.stream_terminal.test.kitty color protocol reset palette
+PASS terminal.stream_terminal.test.kitty color protocol set foreground
+PASS terminal.stream_terminal.test.kitty color protocol set background
+PASS terminal.stream_terminal.test.kitty color protocol set cursor
+PASS terminal.stream_terminal.test.kitty color protocol reset foreground
+PASS terminal.stream_terminal.test.kitty color protocol query responses
+PASS terminal.stream_terminal.test.palette dirty flag set on color change
+PASS terminal.stream_terminal.test.semantic prompt fresh line
+PASS terminal.stream_terminal.test.semantic prompt fresh line new prompt
+PASS terminal.stream_terminal.test.semantic prompt end of input, then start output
+PASS terminal.stream_terminal.test.semantic prompt prompt_start
+PASS terminal.stream_terminal.test.semantic prompt new_command
+PASS terminal.stream_terminal.test.semantic prompt new_command at column zero
+PASS terminal.stream_terminal.test.semantic prompt end_prompt_start_input_terminate_eol clears on linefeed
+PASS terminal.stream_terminal.test.bell effect callback
+PASS terminal.stream_terminal.test.desktop_notification effect callback
+PASS terminal.stream_terminal.test.resize_window effect callback
+PASS terminal.stream_terminal.test.resize_window without effect
+PASS terminal.stream_terminal.test.progress_report effect callback
+PASS terminal.stream_terminal.test.program_status effect callback
+PASS terminal.stream_terminal.test.semantic_prompt effect callback
+PASS terminal.stream_terminal.test.reset effect callback
+PASS terminal.stream_terminal.test.clipboard_write effect callback
+PASS terminal.stream_terminal.test.clipboard_read effect callback
+PASS terminal.stream_terminal.test.clipboard_write allocation failure is ignored
+PASS terminal.stream_terminal.test.kitty clipboard write transaction round trip
+PASS terminal.stream_terminal.test.kitty clipboard write result maps to response status
+PASS terminal.stream_terminal.test.kitty clipboard write without clipboard effect responds ENOSYS
+PASS terminal.stream_terminal.test.kitty clipboard read without effect is denied with EPERM
+PASS terminal.stream_terminal.test.kitty clipboard read round trip
+PASS terminal.stream_terminal.test.kitty clipboard read result maps to response status
+PASS terminal.stream_terminal.test.kitty clipboard read caps requested types
+PASS terminal.stream_terminal.test.kitty clipboard read password grants
+PASS terminal.stream_terminal.test.kitty clipboard read targets-only never consumes a one-time grant
+PASS terminal.stream_terminal.test.kitty clipboard write password grants
+PASS terminal.stream_terminal.test.kitty clipboard malformed packets are silently dropped
+PASS terminal.stream_terminal.test.kitty clipboard new write replaces in-flight transaction
+PASS terminal.stream_terminal.test.kitty clipboard invalid write packets abort with EINVAL
+PASS terminal.stream_terminal.test.kitty clipboard invalid read text does not abort a write
+PASS terminal.stream_terminal.test.kitty clipboard oversized text write aborts with EFBIG
+PASS terminal.stream_terminal.test.kitty clipboard invalid wdata chunk aborts with EINVAL
+PASS terminal.stream_terminal.test.kitty clipboard wdata chunks split one base64 stream
+PASS terminal.stream_terminal.test.kitty clipboard unpadded wdata stream aborts at commit
+PASS terminal.stream_terminal.test.kitty clipboard in-flight transaction is freed on deinit
+PASS terminal.stream_terminal.test.kitty clipboard allocation failure is ignored
+PASS terminal.stream_terminal.test.kitty clipboard without write_pty still commits writes
+PASS terminal.stream_terminal.test.request mode DECRQM with write_pty callback
+PASS terminal.stream_terminal.test.request mode DECRQM ANSI responses
+PASS terminal.stream_terminal.test.stream: CSI W with intermediate but no params
+PASS terminal.stream_terminal.test.window_title effect is called
+PASS terminal.stream_terminal.test.window_title effect not called without callback
+PASS terminal.stream_terminal.test.window_title effect with empty title
+PASS terminal.stream_terminal.test.window_title not changed by cancelled OSC
+PASS terminal.stream_terminal.test.kitty_keyboard_query
+PASS terminal.stream_terminal.test.xtversion default
+PASS terminal.stream_terminal.test.xtversion with effect
+PASS terminal.stream_terminal.test.xtversion with empty string effect
+PASS terminal.stream_terminal.test.size report csi_14_t with effect
+PASS terminal.stream_terminal.test.mode 2048 enable reports current geometry and disable is silent
+PASS terminal.stream_terminal.test.mode 2048 enable tolerates missing effects
+PASS terminal.stream_terminal.test.size report csi_16_t with effect
+PASS terminal.stream_terminal.test.size report csi_18_t with effect
+PASS terminal.stream_terminal.test.size report csi_19_t with effect
+PASS terminal.stream_terminal.test.size report no effect callback
+PASS terminal.stream_terminal.test.size report csi_21_t title disabled by default
+PASS terminal.stream_terminal.test.size report csi_21_t title enabled
+PASS terminal.stream_terminal.test.DECRQCRA disabled
+PASS terminal.stream_terminal.test.DECRQCRA enabled
+PASS terminal.stream_terminal.test.XTCHECKSUM ignored without xt checksum report
+PASS terminal.stream_terminal.test.enquiry no effect
+PASS terminal.stream_terminal.test.enquiry with effect
+PASS terminal.stream_terminal.test.enquiry with empty response
+PASS terminal.stream_terminal.test.device status: operating status
+PASS terminal.stream_terminal.test.device status: cursor position
+PASS terminal.stream_terminal.test.device status: cursor position with origin mode
+PASS terminal.stream_terminal.test.device status: extended cursor position
+PASS terminal.stream_terminal.test.device status: extended cursor position with origin mode
+PASS terminal.stream_terminal.test.device status: color scheme dark
+PASS terminal.stream_terminal.test.device status: color scheme light
+PASS terminal.stream_terminal.test.device status: color scheme without callback
+PASS terminal.stream_terminal.test.visibility reports
+PASS terminal.stream_terminal.test.device status: readonly ignores all
+PASS terminal.stream_terminal.test.device attributes: primary DA
+PASS terminal.stream_terminal.test.device attributes: secondary DA
+PASS terminal.stream_terminal.test.device attributes: tertiary DA
+PASS terminal.stream_terminal.test.device attributes: readonly ignores
+PASS terminal.stream_terminal.test.device attributes: custom response
+PASS terminal.stream_terminal.test.continuation reconstructs standard stream without duplicate effects
+PASS terminal.stream_terminal.test.kitty dnd: query response
+PASS terminal.stream_terminal.test.kitty dnd: register, drop, and serve data
+PASS terminal.stream_terminal.test.kitty dnd: state updates work without write_pty effect
+PASS terminal.stream_terminal.test.kitty dnd: registration survives terminal reset
+PASS terminal.stream_terminal.test.kitty dnd: effect reports registration, acceptance, and conclusion
+PASS terminal.stream_terminal.test.paste: no write_pty effect is an error
+PASS terminal.stream_terminal.test.paste: plain text converts newlines and strips unsafe bytes
+PASS terminal.stream_terminal.test.paste: unsafe text is refused unless allowed
+PASS terminal.stream_terminal.test.paste: bracketed paste frames the text
+PASS terminal.stream_terminal.test.paste: no text representation writes nothing
+PASS terminal.stream_terminal.test.paste: large text streams to the pty in chunks
+PASS terminal.stream_terminal.test.paste: reader contents are read on demand
+PASS terminal.stream_terminal.test.paste: reader failure writes nothing
+PASS terminal.stream_terminal.test.paste: mode 5522 sends an event the program can read with
+PASS terminal.stream_terminal.test.paste: mode 5522 reports the selection as primary
+PASS terminal.stream_terminal.test.paste: mode 5522 without clipboard_read pastes text
+PASS terminal.stream_terminal.test.paste: text source never becomes an event
+PASS terminal.stream_terminal.test.paste: mode 5522 without entropy fails and records no grant
+PASS terminal.stream_terminal.test.paste: mode 5522 DECRQM requires clipboard read effect
+PASS terminal.stream_terminal.test.full reset drops kitty clipboard grants
+PASS terminal.ScreenSet.test.ScreenSet generations
+PASS terminal.stream.test.stream: print
+PASS terminal.stream.test.simd: print invalid utf-8
+PASS terminal.stream.test.simd: complete incomplete utf-8
+PASS terminal.stream.test.stream: ground state C0 controls are executed, not printed
+PASS terminal.stream.test.stream: ground state UTF-8-decoded C1 controls are ignored
+PASS terminal.stream.test.stream: cursor right (CUF)
+PASS terminal.stream.test.stream: dec set mode (SM) and reset mode (RM)
+PASS terminal.stream.test.stream: ansi set mode (SM) and reset mode (RM)
+PASS terminal.stream.test.stream: DECSTR dispatch
+PASS terminal.stream.test.stream: DECRQCRA dispatch
+PASS terminal.stream.test.stream: XTCHECKSUM dispatch
+PASS terminal.stream.test.stream: DECRQM dispatch
+PASS terminal.stream.test.stream: ansi set mode (SM) and reset mode (RM) with unknown value
+PASS terminal.stream.test.stream: restore mode
+PASS terminal.stream.test.stream: pop kitty keyboard with no params defaults to 1
+PASS terminal.stream.test.stream: DECSCA
+PASS terminal.stream.test.stream: DECED, DECSED
+PASS terminal.stream.test.stream: DECEL, DECSEL
+PASS terminal.stream.test.stream: DECSCUSR
+PASS terminal.stream.test.stream: DECSCUSR without space
+PASS terminal.stream.test.stream: XTSHIFTESCAPE
+PASS terminal.stream.test.stream: change window title with invalid utf-8
+PASS terminal.stream.test.stream: osc 52 large payload in chunks
+PASS terminal.stream.test.stream: osc bulk path matches per-byte path
+PASS terminal.stream.test.stream: insert characters
+PASS terminal.stream.test.stream: insert characters explicit zero clamps to 1
+PASS terminal.stream.test.stream: DECIC and DECDC
+PASS terminal.stream.test.stream: DECBI and DECFI
+PASS terminal.stream.test.stream: SCOSC
+PASS terminal.stream.test.stream: SCORC
+PASS terminal.stream.test.stream: too many csi params
+PASS terminal.stream.test.stream: csi param too long
+PASS terminal.stream.test.stream: send report with CSI t
+PASS terminal.stream.test.stream: CSI 8 t resize window
+PASS terminal.stream.test.stream: invalid CSI t
+PASS terminal.stream.test.stream: CSI t push title
+PASS terminal.stream.test.stream: CSI t push title with explicit window
+PASS terminal.stream.test.stream: CSI t push title with explicit icon
+PASS terminal.stream.test.stream: CSI t push title with index
+PASS terminal.stream.test.stream: CSI t pop title
+PASS terminal.stream.test.stream: CSI t pop title with explicit window
+PASS terminal.stream.test.stream: CSI t pop title with explicit icon
+PASS terminal.stream.test.stream: CSI t pop title with index
+PASS terminal.stream.test.stream CSI W clear tab stops
+PASS terminal.stream.test.stream CSI W tab set
+PASS terminal.stream.test.stream CSI ? W reset tab stops
+PASS terminal.stream.test.stream: SGR with 17+ parameters for underline color
+PASS terminal.stream.test.stream: tab clear with no param clears the current stop
+PASS terminal.stream.test.stream: tab clear with overflowing param
+PASS terminal.stream.test.stream: apc bulk slice
+PASS terminal.stream.test.stream: apc bulk slice C1 ST
+PASS terminal.stream.test.stream: apc bulk slice split across inputs
+PASS terminal.stream.test.stream: apc bulk slice keeps C0 bytes as data
+PASS terminal.stream.test.stream: apc aborted by CAN
+PASS terminal.stream.test.stream: apc scalar path matches
+PASS terminal.stream.test.stream: apc vector boundaries match scalar path
+PASS terminal.stream.test.stream: nextSliceUntil ground stops at the earliest boundary
+PASS terminal.stream.test.stream: nextSliceUntil ground consumes all input without a boundary
+PASS terminal.stream.test.stream: nextSliceUntil ground handles UTF-8 boundaries
+PASS terminal.stream.test.stream: nextSliceUntil ground handles aborts and bulk strings
+PASS terminal.stream.test.stream: nextSliceUntil ground tracks only the consumed prefix
+PASS terminal.stream.test.stream: nextSliceUntil every apc exit
+PASS terminal.stream.test.stream: nextSliceUntil every apc exit through the scalar path
+PASS terminal.stream.test.stream: nextSliceUntil apc st_esc leaves the next byte for the next call
+PASS terminal.stream.test.stream: nextSliceUntil apc introducers
+PASS terminal.stream.test.stream: nextSliceUntil stops do not depend on the split
+PASS terminal.stream.test.stream: nextSliceUntil C1 introducer inside an apc is dropped
+PASS terminal.stream.test.stream: nextSliceUntil combined ground and apc end
+PASS terminal.stream.test.stream: nextSliceUntil apc start with ground requested
+PASS terminal.stream.test.stream: nextSliceUntil every osc exit
+PASS terminal.stream.test.stream: nextSliceUntil every osc exit through the scalar path
+PASS terminal.stream.test.stream: nextSliceUntil osc end without a dispatch
+PASS terminal.stream.test.stream: nextSliceUntil osc st_esc leaves the next byte for the next call
+PASS terminal.stream.test.stream: nextSliceUntil every dcs exit
+PASS terminal.stream.test.stream: nextSliceUntil every dcs exit through the scalar path
+PASS terminal.stream.test.stream: nextSliceUntil dcs header restart is not a boundary
+PASS terminal.stream.test.stream: nextSliceUntil dcs and osc introducers
+PASS terminal.stream.test.stream: nextSliceUntil osc stops do not depend on the split
+PASS terminal.stream.test.stream: nextSliceUntil dcs stops do not depend on the split
+PASS terminal.stream.test.stream: nextSliceUntil string end that is also a string start
+PASS terminal.stream.test.stream: nextSliceUntil combined ground and osc end
+PASS terminal.stream.test.stream: nextSliceUntil differential on generated streams
+PASS terminal.stream.test.stream: nextSliceUntil differential on the fuzz corpus
+PASS terminal.stream.test.stream: continuation lifecycle
+PASS terminal.stream.test.stream: continuation suffixes are replay safe
+PASS terminal.stream.test.stream: continuation reconstructs every unfinished VT state
+PASS terminal.stream.test.stream: continuation is chunking-independent and idempotent
+PASS terminal.stream.test.stream: continuation rebuilds APC handler input
+PASS terminal.stream.test.stream: continuation cap and recovery
+PASS terminal.stream.test.stream: continuation spans multiple bulk feeds
+PASS terminal.stream.test.stream: continuation exact cap and large unfinished string
+PASS terminal.stream.test.stream: continuation allocation failure recovers
+PASS terminal.stream.test.stream: continuation every-byte cuts preserve future behavior
+PASS terminal.page.test.Mask
+PASS terminal.page.test.Mask nested field path
+PASS terminal.page.test.Page.layout can take a maxed capacity
+PASS terminal.page.test.Cell is zero by default
+PASS terminal.page.test.Page capacity adjust cols down
+PASS terminal.page.test.Page capacity adjust cols down to 1
+PASS terminal.page.test.Page capacity adjust cols up
+PASS terminal.page.test.Page capacity adjust cols sweep
+PASS terminal.page.test.Page capacity adjust cols too high
+PASS terminal.page.test.Capacity maxCols basic
+PASS terminal.page.test.Capacity maxCols preserves total size
+PASS terminal.page.test.Capacity maxCols with 1 row exactly
+PASS terminal.page.test.Capacity adjust clamps rows to CellCountInt
+PASS terminal.page.test.Page init
+PASS terminal.page.test.Page read and write cells
+PASS terminal.page.test.Page appendGrapheme small
+PASS terminal.page.test.Page appendGrapheme larger than chunk
+PASS terminal.page.test.Page appendGrapheme caps codepoints per cell
+PASS terminal.page.test.Page setGraphemes caps codepoints per cell
+PASS terminal.page.test.Page clearGrapheme not all cells
+PASS terminal.page.test.Page clone
+PASS terminal.page.test.Page clone graphemes
+PASS terminal.page.test.Page clone styles
+PASS terminal.page.test.Page cloneFrom
+PASS terminal.page.test.Page cloneFrom shrink columns
+PASS terminal.page.test.Page cloneFrom partial
+PASS terminal.page.test.Page cloneFrom hyperlinks exact capacity
+PASS terminal.page.test.Page cloneFrom graphemes
+PASS terminal.page.test.Page cloneFrom frees dst graphemes
+PASS terminal.page.test.Page cloneRowFrom partial
+PASS terminal.page.test.Page cloneRowFrom partial grapheme in non-copied source region
+PASS terminal.page.test.Page cloneRowFrom partial grapheme in non-copied dest region
+PASS terminal.page.test.Page cloneRowFrom partial hyperlink in same page copy
+PASS terminal.page.test.Page cloneRowFrom partial hyperlink in same page omit
+PASS terminal.page.test.Page moveCells text-only
+PASS terminal.page.test.Page moveCells graphemes
+PASS terminal.page.test.Page verifyIntegrity graphemes good
+PASS terminal.page.test.Page verifyIntegrity grapheme row not marked
+PASS terminal.page.test.Page verifyIntegrity styles good
+PASS terminal.page.test.Page verifyIntegrity styles ref count mismatch
+PASS terminal.page.test.Page verifyIntegrity zero rows
+PASS terminal.page.test.Page verifyIntegrity zero cols
+PASS terminal.page.test.Page exactRowCapacity empty rows
+PASS terminal.page.test.Page exactRowCapacity styles
+PASS terminal.page.test.Page exactRowCapacity single style clone
+PASS terminal.page.test.Page exactRowCapacity styles max single row
+PASS terminal.page.test.Page exactRowCapacity grapheme_bytes
+PASS terminal.page.test.Page exactRowCapacity grapheme_bytes larger than chunk
+PASS terminal.page.test.Page exactRowCapacity hyperlinks
+PASS terminal.page.test.Page exactRowCapacity single hyperlink clone
+PASS terminal.page.test.Page exactRowCapacity hyperlink map capacity for many cells
+PASS terminal.page.test.Page layout avoids double rounding hyperlink map capacity
+PASS terminal.style.test.Style VT formatting empty
+PASS terminal.style.test.Style VT formatting bold
+PASS terminal.style.test.Style VT formatting faint
+PASS terminal.style.test.Style VT formatting italic
+PASS terminal.style.test.Style VT formatting blink
+PASS terminal.style.test.Style VT formatting inverse
+PASS terminal.style.test.Style VT formatting invisible
+PASS terminal.style.test.Style VT formatting strikethrough
+PASS terminal.style.test.Style VT formatting overline
+PASS terminal.style.test.Style VT formatting underline single
+PASS terminal.style.test.Style VT formatting underline double
+PASS terminal.style.test.Style VT formatting underline curly
+PASS terminal.style.test.Style VT formatting underline dotted
+PASS terminal.style.test.Style VT formatting underline dashed
+PASS terminal.style.test.Style VT formatting fg palette
+PASS terminal.style.test.Style VT formatting fg rgb
+PASS terminal.style.test.Style VT formatting bg palette
+PASS terminal.style.test.Style VT formatting bg rgb
+PASS terminal.style.test.Style VT formatting underline_color palette
+PASS terminal.style.test.Style VT formatting underline_color rgb
+PASS terminal.style.test.Style VT formatting multiple flags
+PASS terminal.style.test.Style VT formatting all flags
+PASS terminal.style.test.Style VT formatting combined colors and flags
+PASS terminal.style.test.Style VT formatting all colors rgb
+PASS terminal.style.test.Style VT formatting all colors palette
+PASS terminal.style.test.Style VT formatting palette with palette set emits rgb
+PASS terminal.style.test.Style VT formatting all palette colors with palette set
+PASS terminal.style.test.Set basic usage
+PASS terminal.style.test.Set capacities
+PASS terminal.style.test.Set zero capacity
+PASS terminal.style.test.Style HTML formatting basic bold
+PASS terminal.style.test.Style HTML formatting fg color rgb
+PASS terminal.style.test.Style HTML formatting bg color palette
+PASS terminal.style.test.Style HTML formatting combined colors and flags
+PASS terminal.style.test.Style HTML formatting single decoration line
+PASS terminal.style.test.Style HTML formatting multiple decoration lines
+PASS terminal.style.test.Style HTML formatting palette with palette set emits rgb
+PASS terminal.style.test.Style HTML formatting all palette colors with palette set
+PASS datastruct.intrusive_linked_list.test.basic DoublyLinkedList test
+PASS terminal.modes.ModeTag.test.order
+PASS datastruct.comparison.test.expectApproxEqual.union(enum)
+PASS datastruct.comparison.test.expectApproxEqual nested array
+PASS datastruct.comparison.test.expectApproxEqual vector
+PASS datastruct.comparison.test.expectApproxEqual struct
+PASS datastruct.comparison.test.deepEqual void
+PASS datastruct.comparison.test.deepEqual bool
+PASS datastruct.comparison.test.deepEqual int
+PASS datastruct.comparison.test.deepEqual float
+PASS datastruct.comparison.test.deepEqual enum
+PASS datastruct.comparison.test.deepEqual []const u8
+PASS datastruct.comparison.test.deepEqual [:0]const u8
+PASS datastruct.comparison.test.deepEqual []const [:0]const u8
+PASS datastruct.comparison.test.deepEqual optional
+PASS datastruct.comparison.test.deepEqual optional nested
+PASS datastruct.comparison.test.deepEqual array
+PASS datastruct.comparison.test.deepEqual nested array
+PASS datastruct.comparison.test.deepEqual struct
+PASS datastruct.comparison.test.deepEqual struct nested
+PASS datastruct.comparison.test.deepEqual struct with equal decl
+PASS datastruct.comparison.test.deepEqual union
+PASS datastruct.comparison.test.deepEqual union with equal decl
+PASS datastruct.comparison.test.deepEqual array of structs
+PASS datastruct.comparison.test.deepEqual struct with optional field
+PASS datastruct.comparison.test.deepEqual struct with array field
+PASS datastruct.circ_buf.test.CircBuf append
+PASS datastruct.circ_buf.test.CircBuf forward iterator
+PASS datastruct.circ_buf.test.CircBuf reverse iterator
+PASS datastruct.circ_buf.test.CircBuf first/last
+PASS datastruct.circ_buf.test.CircBuf first/last empty
+PASS datastruct.circ_buf.test.CircBuf first/last empty with cap
+PASS datastruct.circ_buf.test.CircBuf append slice
+PASS datastruct.circ_buf.test.CircBuf append slice with wrap
+PASS datastruct.circ_buf.test.CircBuf getPtrSlice fits
+PASS datastruct.circ_buf.test.CircBuf getPtrSlice wraps
+PASS datastruct.circ_buf.test.CircBuf rotateToZero
+PASS datastruct.circ_buf.test.CircBuf rotateToZero offset
+PASS datastruct.circ_buf.test.CircBuf rotateToZero wraps
+PASS datastruct.circ_buf.test.CircBuf rotateToZero full no wrap
+PASS datastruct.circ_buf.test.CircBuf resize grow from zero
+PASS datastruct.circ_buf.test.CircBuf resize grow
+PASS datastruct.circ_buf.test.CircBuf resize shrink
+PASS datastruct.circ_buf.test.CircBuf resize shrink partially full
+PASS datastruct.circ_buf.test.CircBuf resize shrink to length
+PASS datastruct.circ_buf.test.CircBuf resize empty to zero
+PASS datastruct.circ_buf.test.CircBuf append empty slice
+PASS datastruct.circ_buf.test.CircBuf getPtrSlice zero length
+PASS datastruct.circ_buf.test.CircBuf deleteOldest zero
+PASS datastruct.comptime_int_set.test.ComptimeIntSet: empty
+PASS datastruct.comptime_int_set.test.ComptimeIntSet: single
+PASS datastruct.comptime_int_set.test.ComptimeIntSet: unsorted keys return original index
+PASS datastruct.comptime_int_set.test.ComptimeIntSet: exhaustive against linear scan
+PASS datastruct.comptime_int_set.test.ComptimeIntSet: signed
+PASS datastruct.limited_allocator.test.LimitedAllocator allows allocations through the limit
+PASS datastruct.limited_allocator.test.LimitedAllocator rejects allocations before the child
+PASS datastruct.limited_allocator.test.LimitedAllocator rejects oversized resize and remap
+PASS datastruct.message_data.test.MessageData init small
+PASS datastruct.message_data.test.MessageData init alloc
+PASS datastruct.message_data.test.MessageData small fits non-u8 sized data
+PASS datastruct.untouched_pool.test.UntouchedPool: create, destroy, reuse
+PASS datastruct.untouched_pool.test.UntouchedPool: create and destroy never touch items
+PASS datastruct.untouched_pool.test.UntouchedPool: destroy never allocates from the general allocator
+PASS datastruct.untouched_pool.test.UntouchedPool: reset retains at most the limit
+PASS datastruct.untouched_pool.test.UntouchedPool: release frees immediately
+PASS terminal.ref_counted_set.test.addWithId dead id resolving to an existing value
+PASS terminal.ref_counted_set.test.iterator visits live entries in ID order
+PASS terminal.bitmap_allocator.test.findFreeChunks single found
+PASS terminal.bitmap_allocator.test.findFreeChunks single not found
+PASS terminal.bitmap_allocator.test.findFreeChunks multiple found
+PASS terminal.bitmap_allocator.test.findFreeChunks exactly 64 chunks
+PASS terminal.bitmap_allocator.test.findFreeChunks larger than 64 chunks
+PASS terminal.bitmap_allocator.test.findFreeChunks larger than 64 chunks not at beginning
+PASS terminal.bitmap_allocator.test.findFreeChunks larger than 64 chunks exact
+PASS terminal.bitmap_allocator.test.BitmapAllocator layout
+PASS terminal.bitmap_allocator.test.BitmapAllocator layout chunks region matches bitmap addressable bytes
+PASS terminal.bitmap_allocator.test.BitmapAllocator layout small capacity cannot alloc out of bounds
+PASS terminal.bitmap_allocator.test.BitmapAllocator alloc sequentially
+PASS terminal.bitmap_allocator.test.BitmapAllocator alloc non-byte
+PASS terminal.bitmap_allocator.test.BitmapAllocator alloc non-byte multi-chunk
+PASS terminal.bitmap_allocator.test.BitmapAllocator alloc large
+PASS terminal.bitmap_allocator.test.BitmapAllocator alloc and free one bitmap
+PASS terminal.bitmap_allocator.test.BitmapAllocator search hint skips full words
+PASS terminal.bitmap_allocator.test.BitmapAllocator search hint does not skip partial words
+PASS terminal.bitmap_allocator.test.BitmapAllocator alloc and free half bitmap
+PASS terminal.bitmap_allocator.test.BitmapAllocator alloc and free two half bitmaps
+PASS terminal.bitmap_allocator.test.BitmapAllocator alloc and free 1.5 bitmaps
+PASS terminal.bitmap_allocator.test.BitmapAllocator alloc and free two 1.5 bitmaps
+PASS terminal.bitmap_allocator.test.BitmapAllocator alloc and free 1.5 bitmaps offset by 0.75
+PASS terminal.bitmap_allocator.test.BitmapAllocator alloc and free three 0.75 bitmaps
+PASS terminal.bitmap_allocator.test.BitmapAllocator alloc and free two 1.5 bitmaps offset 0.75
+PASS terminal.bitmap_allocator.test.BitmapAllocator bytesRequired
+PASS terminal.hash_map.test.HashMap basic usage
+PASS terminal.hash_map.test.HashMap ensureTotalCapacity
+PASS terminal.hash_map.test.HashMap ensureUnusedCapacity with removals
+PASS terminal.hash_map.test.HashMap clearRetainingCapacity
+PASS terminal.hash_map.test.HashMap ensureTotalCapacity with existing elements
+PASS terminal.hash_map.test.HashMap remove
+PASS terminal.hash_map.test.HashMap reverse removes
+PASS terminal.hash_map.test.HashMap multiple removes on same metadata
+PASS terminal.hash_map.test.HashMap put and remove loop in random order
+PASS terminal.hash_map.test.HashMap put
+PASS terminal.hash_map.test.HashMap put full load
+PASS terminal.hash_map.test.HashMap putAssumeCapacity
+PASS terminal.hash_map.test.HashMap repeat putAssumeCapacity/remove
+PASS terminal.hash_map.test.HashMap no-clobber move after remove at max load
+PASS terminal.hash_map.test.HashMap removal keeps colliding clusters findable
+PASS terminal.hash_map.test.HashMap removal from a completely full table
+PASS terminal.hash_map.test.HashMap random operations against an oracle
+PASS terminal.hash_map.test.HashMap getOrPut
+PASS terminal.hash_map.test.HashMap basic hash map usage
+PASS terminal.hash_map.test.HashMap ensureUnusedCapacity
+PASS terminal.hash_map.test.HashMap removeByPtr
+PASS terminal.hash_map.test.HashMap removeByPtr 0 sized key
+PASS terminal.hash_map.test.HashMap repeat fetchRemove
+PASS terminal.hash_map.test.OffsetHashMap basic usage
+PASS terminal.hash_map.test.OffsetHashMap remake map
+PASS terminal.hash_map.test.OffsetHashMap maximum load leaves probe headroom
+PASS terminal.hash_map.test.layoutForCapacity no overflow for large capacity
+PASS terminal.Parser.test.esc: ESC ( B
+PASS terminal.Parser.test.csi: ESC [ H
+PASS terminal.Parser.test.csi: ESC [ 1 ; 4 H
+PASS terminal.Parser.test.csi: SGR ESC [ 38 : 2 m
+PASS terminal.Parser.test.csi: SGR colon followed by semicolon
+PASS terminal.Parser.test.csi: SGR mixed colon and semicolon
+PASS terminal.Parser.test.csi: SGR ESC [ 48 : 2 m
+PASS terminal.Parser.test.csi: SGR ESC [4:3m colon
+PASS terminal.Parser.test.csi: SGR with many blank and colon
+PASS terminal.Parser.test.csi: SGR mixed colon and semicolon with blank
+PASS terminal.Parser.test.csi: SGR mixed colon and semicolon setting underline, bg, fg
+PASS terminal.Parser.test.csi: colon for non-m final
+PASS terminal.Parser.test.csi: request mode decrqm
+PASS terminal.Parser.test.csi: change cursor
+PASS terminal.Parser.test.osc: change window title
+PASS terminal.Parser.test.osc: change window title (end in esc)
+PASS terminal.Parser.test.osc: 112 incomplete sequence
+PASS terminal.Parser.test.osc: 104 empty
+PASS terminal.Parser.test.osc: 105 empty
+PASS terminal.Parser.test.csi: too many params
+PASS terminal.Parser.test.csi: sgr with up to our max parameters
+PASS terminal.Parser.test.csi: sgr beyond our max drops it
+PASS terminal.Parser.test.dcs: XTGETTCAP
+PASS terminal.Parser.test.dcs: params
+PASS terminal.Parser.test.dcs: too many params
+PASS terminal.UTF8Decoder.test.ASCII
+PASS terminal.UTF8Decoder.test.Well formed utf-8
+PASS terminal.UTF8Decoder.test.Partially invalid utf-8
+PASS terminal.stream_continuation.test.boundary scanner classifies effects and ground
+PASS terminal.stream_continuation.test.boundary scanner preserves unfinished builder actions
+PASS terminal.stream_continuation.test.boundary scanner handles UTF-8 and malformed retries
+PASS terminal.stream_continuation.test.findVTReplayStart finds the latest ESC across vector boundaries
+PASS terminal.stream_continuation.test.findUtf8ReplayStart finds the pending lead byte
+PASS terminal.stream_continuation.test.tracker retains and normalizes replay-safe bytes
+PASS terminal.stream_continuation.test.tracker restarts at a C1 introducer that aborts a string
+PASS terminal.stream_continuation.test.validate matches its documented examples
+PASS terminal.stream_continuation.test.validate rejects C1 introducers as non-canonical
+PASS terminal.stream_continuation.test.tracker cap, reset, and broken recovery
+PASS terminal.stream_continuation.test.tracker reports writer failure and defers allocation failure
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: end_input_start_output
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: end_input_start_output extra contents
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: end_input_start_output with options
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: end_input_start_output with cmdline
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: end_input_start_output with cmdline 3
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: end_input_start_output with cmdline 4
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: end_input_start_output with cmdline 5
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: end_input_start_output with cmdline 6
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: end_input_start_output with cmdline 7
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: end_input_start_output with cmdline 8
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: end_input_start_output with cmdline 9
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: end_input_start_output with cmdline_url 1
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: end_input_start_output with cmdline_url 2
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: end_input_start_output with cmdline_url 3
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: end_input_start_output with cmdline_url 4
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: end_input_start_output with cmdline_url 5
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: end_input_start_output with cmdline_url 6
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: end_input_start_output with cmdline_url 7
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: end_input_start_output with cmdline_url 8
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: fresh_line
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: fresh_line extra contents
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: fresh_line_new_prompt
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: fresh_line_new_prompt with aid
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: fresh_line_new_prompt with '=' in aid
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: fresh_line_new_prompt with cl=line
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: fresh_line_new_prompt with cl=m
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: fresh_line_new_prompt with invalid cl
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: fresh_line_new_prompt with trailing ;
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: fresh_line_new_prompt with bare key
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: fresh_line_new_prompt with multiple options
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: fresh_line_new_prompt default redraw
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: fresh_line_new_prompt with redraw=0
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: fresh_line_new_prompt with redraw=1
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: fresh_line_new_prompt with invalid redraw
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: prompt_start
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: prompt_start with k=i
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: prompt_start with k=r
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: prompt_start with k=c
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: prompt_start with k=s
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: prompt_start with invalid k
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: prompt_start extra contents
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: new_command
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: new_command with aid
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: new_command with cl=line
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: new_command with multiple options
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: new_command extra contents
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: end_prompt_start_input
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: end_prompt_start_input extra contents
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: end_prompt_start_input with options
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: end_prompt_start_input_terminate_eol
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: end_prompt_start_input_terminate_eol extra contents
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: end_prompt_start_input_terminate_eol with options
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: end_command
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: end_command extra contents
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: end_command with exit code 0
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: end_command with exit code and aid
+PASS terminal.osc.parsers.semantic_prompt.test.Option.read aid
+PASS terminal.osc.parsers.semantic_prompt.test.Option.read cl
+PASS terminal.osc.parsers.semantic_prompt.test.Option.read prompt_kind
+PASS terminal.osc.parsers.semantic_prompt.test.Option.read err
+PASS terminal.osc.parsers.semantic_prompt.test.Option.read redraw
+PASS terminal.osc.parsers.semantic_prompt.test.Option.read special_key
+PASS terminal.osc.parsers.semantic_prompt.test.Option.read click_events
+PASS terminal.osc.parsers.semantic_prompt.test.Option.read exit_code
+PASS terminal.osc.parsers.semantic_prompt.test.OSC 133: exit codes reject digit separators
+PASS terminal.kitty.color.test.OSC: kitty color indexes reject digit separators
+PASS terminal.kitty.color.test.OSC: kitty color protocol kind string
+PASS terminal.osc.parsers.kitty_text_sizing.test.OSC 66: numeric fields reject digit separators
+PASS terminal.osc.parsers.kitty_text_sizing.test.OSC 66: empty parameters
+PASS terminal.osc.parsers.kitty_text_sizing.test.OSC 66: single parameter
+PASS terminal.osc.parsers.kitty_text_sizing.test.OSC 66: multiple parameters
+PASS terminal.osc.parsers.kitty_text_sizing.test.OSC 66: scale is zero
+PASS terminal.osc.parsers.kitty_text_sizing.test.OSC 66: invalid parameters
+PASS terminal.osc.parsers.kitty_text_sizing.test.OSC 66: UTF-8
+PASS terminal.osc.parsers.kitty_text_sizing.test.OSC 66: unsafe UTF-8
+PASS terminal.osc.parsers.kitty_text_sizing.test.OSC 66: overlong UTF-8
+PASS terminal.osc.parsers.kitty_clipboard_protocol.test.OSC: 5522: empty metadata and missing payload
+PASS terminal.osc.parsers.kitty_clipboard_protocol.test.OSC: 5522: empty metadata and empty payload
+PASS terminal.osc.parsers.kitty_clipboard_protocol.test.OSC: 5522: non-empty metadata and payload
+PASS terminal.osc.parsers.kitty_clipboard_protocol.test.OSC: 5522: empty id
+PASS terminal.osc.parsers.kitty_clipboard_protocol.test.OSC: 5522: valid id
+PASS terminal.osc.parsers.kitty_clipboard_protocol.test.OSC: 5522: invalid id
+PASS terminal.osc.parsers.kitty_clipboard_protocol.test.OSC: 5522: invalid status
+PASS terminal.osc.parsers.kitty_clipboard_protocol.test.OSC: 5522: valid status
+PASS terminal.osc.parsers.kitty_clipboard_protocol.test.OSC: 5522: invalid location
+PASS terminal.osc.parsers.kitty_clipboard_protocol.test.OSC: 5522: valid location
+PASS terminal.osc.parsers.kitty_clipboard_protocol.test.OSC: 5522: password 1
+PASS terminal.osc.parsers.kitty_clipboard_protocol.test.OSC: 5522: password 2
+PASS terminal.osc.parsers.kitty_clipboard_protocol.test.OSC: 5522: example 1
+PASS terminal.osc.parsers.kitty_clipboard_protocol.test.OSC: 5522: example 2
+PASS terminal.osc.parsers.kitty_clipboard_protocol.test.OSC: 5522: example 3
+PASS terminal.osc.parsers.kitty_clipboard_protocol.test.OSC: 5522: example 4
+PASS terminal.osc.parsers.kitty_clipboard_protocol.test.OSC: 5522: example 5
+PASS terminal.osc.parsers.kitty_clipboard_protocol.test.OSC: 5522: example 6
+PASS terminal.osc.parsers.kitty_clipboard_protocol.test.OSC: 5522: example 7
+PASS terminal.osc.parsers.kitty_clipboard_protocol.test.OSC: 5522: example 8
+PASS terminal.osc.parsers.kitty_clipboard_protocol.test.OSC: 5522: example 9
+PASS terminal.osc.parsers.kitty_clipboard_protocol.test.OSC: 5522: example 10
+PASS terminal.osc.parsers.kitty_clipboard_protocol.test.OSC: 5522: example 11
+PASS terminal.osc.parsers.kitty_clipboard_protocol.test.OSC: 5522: example 12
+PASS terminal.osc.parsers.kitty_clipboard_protocol.test.OSC: 5522: example 13
+PASS terminal.osc.parsers.kitty_clipboard_protocol.test.OSC: 5522: example 14
+PASS terminal.osc.parsers.kitty_clipboard_protocol.test.OSC: 5522: example 15
+PASS terminal.osc.parsers.kitty_dnd_protocol.test.OSC 72: metadata only, no payload
+PASS terminal.osc.parsers.kitty_dnd_protocol.test.OSC 72: metadata and empty payload
+PASS terminal.osc.parsers.kitty_dnd_protocol.test.OSC 72: metadata and non-empty payload
+PASS terminal.osc.parsers.kitty_dnd_protocol.test.OSC 72: empty metadata with payload
+PASS terminal.osc.parsers.kitty_dnd_protocol.test.OSC 72: BEL terminator recorded
+PASS terminal.osc.parsers.hierarchical_context.test.OSC 3008: basic start command
+PASS terminal.osc.parsers.hierarchical_context.test.OSC 3008: basic end command
+PASS terminal.osc.parsers.hierarchical_context.test.OSC 3008: start with metadata fields
+PASS terminal.osc.parsers.hierarchical_context.test.OSC 3008: start with all common fields
+PASS terminal.osc.parsers.hierarchical_context.test.OSC 3008: end with exit metadata
+PASS terminal.osc.parsers.hierarchical_context.test.OSC 3008: end with failure exit
+PASS terminal.osc.parsers.hierarchical_context.test.OSC 3008: numeric fields reject non-digits
+PASS terminal.osc.parsers.hierarchical_context.test.OSC 3008: unknown fields are ignored
+PASS terminal.osc.parsers.hierarchical_context.test.OSC 3008: missing field returns null
+PASS terminal.osc.parsers.hierarchical_context.test.OSC 3008: invalid prefix
+PASS terminal.osc.parsers.hierarchical_context.test.OSC 3008: empty data
+PASS terminal.osc.parsers.hierarchical_context.test.OSC 3008: max length context ID
+PASS terminal.osc.parsers.hierarchical_context.test.OSC 3008: over-length context ID
+PASS terminal.osc.parsers.hierarchical_context.test.OSC 3008: context type enum coverage
+PASS terminal.osc.parsers.hierarchical_context.test.OSC 3008: exit status enum coverage
+PASS terminal.osc.parsers.hierarchical_context.test.OSC 3008: spec example - container start
+PASS terminal.osc.parsers.hierarchical_context.test.OSC 3008: spec example - context end
+PASS terminal.osc.parsers.hierarchical_context.test.OSC 3008: cwd and cmdline fields
+PASS terminal.osc.parsers.hierarchical_context.test.OSC 3008: start command with no fields
+PASS terminal.osc.parsers.hierarchical_context.test.OSC 3008: string unescaping
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: empty metadata and payload
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: empty metadata with payload
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: payload size limits
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: unknown prefix does not hide dotted identifier
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: single parameter i
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: repeated parameter i
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: multiple types
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: a 1
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: a 2
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: a 3
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: a 4
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: c 1
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: c 2
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: c 3
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: d 1
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: d 2
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: d 3
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: e 1
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: e 2
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: e 3
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: f 1
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: f 2
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: g 1
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: g 2
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: i 1
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: i 2
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: i 3
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: i 4
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: i 5
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: i 6
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: n 1
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: n 2
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: o 1
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: o 2
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: o 3
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: o 4
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: o 5
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: p 1
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: p 2
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: p 3
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: p 4
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: p 5
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: p 6
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: p 7
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: p 8
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: p 9
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: s 1
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: t 1
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: t 2
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: u 1
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: u 2
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: u 3
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: u 4
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: w 1
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: w 2
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: w 3
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: w 4
+PASS terminal.osc.parsers.kitty_desktop_notification.test.OSC 99: w 5
+PASS terminal.osc.parsers.color.test.OSC 4: empty param
+PASS terminal.osc.parsers.color.test.OSC color indexes reject digit separators
+PASS terminal.osc.parsers.color.test.OSC 4:
+PASS terminal.osc.parsers.color.test.OSC 5:
+PASS terminal.osc.parsers.color.test.OSC 4: multiple requests
+PASS terminal.osc.parsers.color.test.OSC 104:
+PASS terminal.osc.parsers.color.test.OSC 104: empty index
+PASS terminal.osc.parsers.color.test.OSC 104: invalid index
+PASS terminal.osc.parsers.color.test.OSC 104: reset all
+PASS terminal.osc.parsers.color.test.OSC 105: reset all
+PASS terminal.osc.parsers.color.test.OSC 10: OSC 11: OSC 12: OSC: 13: OSC 14: OSC 15: OSC: 16: OSC 17: OSC 18: OSC 19: dynamic
+PASS terminal.osc.parsers.color.test.OSC 10: OSC 11: OSC 12: OSC: 13: OSC 14: OSC 15: OSC: 16: OSC 17: OSC 18: OSC 19: dynamic multiple
+PASS terminal.osc.parsers.color.test.OSC 110: OSC 111: OSC 112: OSC: 113: OSC 114: OSC 115: OSC: 116: OSC 117: OSC 118: OSC 119: reset dynamic
+PASS datastruct.segmented_list.test.basic usage
+PASS datastruct.segmented_list.test.clearRetainingCapacity
+PASS terminal.color.Special.test.osc4
+PASS terminal.color.Dynamic.test.next
+PASS terminal.device_attributes.test.primary default
+PASS terminal.device_attributes.test.primary with clipboard
+PASS terminal.device_attributes.test.primary with multiple features
+PASS terminal.device_attributes.test.primary no features
+PASS terminal.device_attributes.test.secondary default
+PASS terminal.device_attributes.test.tertiary default
+PASS terminal.device_attributes.test.tertiary custom unit id
+PASS terminal.xt_checksum.test.xt_checksum: encode
+PASS terminal.xt_checksum.test.xt_checksum: selection defaults and clamping
+PASS terminal.xt_checksum.test.xt_checksum: selection origin mode
+PASS terminal.xt_checksum.test.xt_checksum: DEC trims blanks and skips undrawn cells
+PASS terminal.xt_checksum.test.xt_checksum: DEC counts a leading space
+PASS terminal.xt_checksum.test.xt_checksum: empty rectangle
+PASS terminal.xt_checksum.test.xt_checksum: rectangle bounds
+PASS terminal.xt_checksum.test.xt_checksum: attributes
+PASS terminal.xt_checksum.test.xt_checksum: extended attributes keep a space
+PASS terminal.xt_checksum.test.xt_checksum: DEC 8-bit values
+PASS terminal.xt_checksum.test.xt_checksum: wide characters
+PASS terminal.xt_checksum.test.xt_checksum: combining marks
+PASS terminal.device_status.Tag.test.order
+PASS simd.vt.test.decode no escape
+PASS simd.vt.test.decode ASCII to escape
+PASS simd.vt.test.decode immediate esc sequence
+PASS simd.vt.test.decode incomplete UTF-8
+PASS simd.vt.test.decode invalid UTF-8
+PASS simd.vt.test.decode invalid leading byte is replaced
+PASS simd.vt.test.decode invalid continuation in 3-byte sequence
+PASS simd.vt.test.decode invalid continuation in 4-byte sequence
+PASS simd.vt.test.decode multiple consecutive invalid bytes
+PASS simd.vt.test.decode unexpected continuation byte as lead
+PASS simd.vt.test.decode overlong 2-byte encoding
+PASS simd.vt.test.decode surrogate half
+PASS simd.vt.test.decode valid multibyte surrounded by invalid
+PASS simd.vt.test.decode partial UTF-8 before escape
+PASS simd.vt.test.decode invalid byte before escape
+PASS simd.vt.test.Table 3-8: non-shortest form sequences
+PASS simd.vt.test.Table 3-9: surrogate sequences
+PASS simd.vt.test.Table 3-10: other ill-formed sequences
+PASS simd.vt.test.Table 3-11: truncated sequences
+PASS terminal.parse_table.test.dcs_passthrough: high bytes are payload data
+PASS terminal.parse_table.test.dcs_ignore: high bytes are ignored payload data
+PASS terminal.parse_table.test.dcs_passthrough: ESC, CAN, and SUB still exit
+PASS simd.index_of.test.indexOf
+PASS terminal.osc.parsers.change_window_icon.test.OSC 1: change_window_icon
+PASS terminal.osc.parsers.report_pwd.test.OSC 7: report pwd
+PASS terminal.osc.parsers.report_pwd.test.OSC 7: report pwd empty
+PASS terminal.osc.parsers.hyperlink.test.OSC 8: hyperlink
+PASS terminal.osc.parsers.hyperlink.test.OSC 8: hyperlink with id set
+PASS terminal.osc.parsers.hyperlink.test.OSC 8: hyperlink with empty id
+PASS terminal.osc.parsers.hyperlink.test.OSC 8: hyperlink with incomplete key
+PASS terminal.osc.parsers.hyperlink.test.OSC 8: hyperlink with empty key
+PASS terminal.osc.parsers.hyperlink.test.OSC 8: hyperlink with empty key and id
+PASS terminal.osc.parsers.hyperlink.test.OSC 8: hyperlink with empty uri
+PASS terminal.osc.parsers.hyperlink.test.OSC 8: hyperlink end
+PASS terminal.osc.parsers.osc9.test.OSC 9: numeric fields reject digit separators
+PASS terminal.osc.parsers.osc9.test.OSC 9: show desktop notification
+PASS terminal.osc.parsers.osc9.test.OSC 9: show single character desktop notification
+PASS terminal.osc.parsers.osc9.test.OSC 9;1: ConEmu sleep
+PASS terminal.osc.parsers.osc9.test.OSC 9;1: ConEmu sleep with no value default to 100ms
+PASS terminal.osc.parsers.osc9.test.OSC 9;1: conemu sleep cannot exceed 10000ms
+PASS terminal.osc.parsers.osc9.test.OSC 9;1: conemu sleep invalid input
+PASS terminal.osc.parsers.osc9.test.OSC 9;1: conemu sleep -> desktop notification 1
+PASS terminal.osc.parsers.osc9.test.OSC 9;1: conemu sleep -> desktop notification 2
+PASS terminal.osc.parsers.osc9.test.OSC 9;2: ConEmu message box
+PASS terminal.osc.parsers.osc9.test.OSC 9;2: ConEmu message box invalid input
+PASS terminal.osc.parsers.osc9.test.OSC 9;2: ConEmu message box empty message
+PASS terminal.osc.parsers.osc9.test.OSC 9;2: ConEmu message box spaces only message
+PASS terminal.osc.parsers.osc9.test.OSC 9;2: message box -> desktop notification 1
+PASS terminal.osc.parsers.osc9.test.OSC 9;2: message box -> desktop notification 2
+PASS terminal.osc.parsers.osc9.test.OSC 9;3: ConEmu change tab title
+PASS terminal.osc.parsers.osc9.test.OSC 9;3: ConEmu change tab title reset
+PASS terminal.osc.parsers.osc9.test.OSC 9;3: ConEmu change tab title spaces only
+PASS terminal.osc.parsers.osc9.test.OSC 9;3: change tab title -> desktop notification 1
+PASS terminal.osc.parsers.osc9.test.OSC 9;3: message box -> desktop notification 2
+PASS terminal.osc.parsers.osc9.test.OSC 9;4: ConEmu progress set
+PASS terminal.osc.parsers.osc9.test.OSC 9;4: ConEmu progress set overflow
+PASS terminal.osc.parsers.osc9.test.OSC 9;4: ConEmu progress set single digit
+PASS terminal.osc.parsers.osc9.test.OSC 9;4: ConEmu progress set double digit
+PASS terminal.osc.parsers.osc9.test.OSC 9;4: ConEmu progress set extra semicolon ignored
+PASS terminal.osc.parsers.osc9.test.OSC 9;4: ConEmu progress remove with no progress
+PASS terminal.osc.parsers.osc9.test.OSC 9;4: ConEmu progress remove with double semicolon
+PASS terminal.osc.parsers.osc9.test.OSC 9;4: ConEmu progress remove ignores progress
+PASS terminal.osc.parsers.osc9.test.OSC 9;4: ConEmu progress remove extra semicolon
+PASS terminal.osc.parsers.osc9.test.OSC 9;4: ConEmu progress error
+PASS terminal.osc.parsers.osc9.test.OSC 9;4: ConEmu progress error with progress
+PASS terminal.osc.parsers.osc9.test.OSC 9;4: progress pause
+PASS terminal.osc.parsers.osc9.test.OSC 9;4: ConEmu progress pause with progress
+PASS terminal.osc.parsers.osc9.test.OSC 9;4: progress -> desktop notification 1
+PASS terminal.osc.parsers.osc9.test.OSC 9;4: progress -> desktop notification 2
+PASS terminal.osc.parsers.osc9.test.OSC 9;4: progress -> desktop notification 3
+PASS terminal.osc.parsers.osc9.test.OSC 9;4: progress -> desktop notification 4
+PASS terminal.osc.parsers.osc9.test.OSC 9;5: ConEmu wait input
+PASS terminal.osc.parsers.osc9.test.OSC 9;5: ConEmu wait ignores trailing characters
+PASS terminal.osc.parsers.osc9.test.OSC 9;6: ConEmu guimacro 1
+PASS terminal.osc.parsers.osc9.test.OSC: 9;6: ConEmu guimacro 2
+PASS terminal.osc.parsers.osc9.test.OSC: 9;6: ConEmu guimacro 3 incomplete -> desktop notification
+PASS terminal.osc.parsers.osc9.test.OSC: 9;7: ConEmu run process 1
+PASS terminal.osc.parsers.osc9.test.OSC: 9;7: ConEmu run process 2
+PASS terminal.osc.parsers.osc9.test.OSC: 9;7: ConEmu run process incomplete -> desktop notification
+PASS terminal.osc.parsers.osc9.test.OSC: 9;8: ConEmu output environment variable 1
+PASS terminal.osc.parsers.osc9.test.OSC: 9;8: ConEmu output environment variable 2
+PASS terminal.osc.parsers.osc9.test.OSC: 9;8: ConEmu output environment variable incomplete -> desktop notification
+PASS terminal.osc.parsers.osc9.test.OSC: 9;9: ConEmu set current working directory
+PASS terminal.osc.parsers.osc9.test.OSC: 9;9: ConEmu set current working directory incomplete -> desktop notification
+PASS terminal.osc.parsers.osc9.test.OSC: 9;10: ConEmu xterm keyboard and output emulation 1
+PASS terminal.osc.parsers.osc9.test.OSC: 9;10: ConEmu xterm keyboard and output emulation 2
+PASS terminal.osc.parsers.osc9.test.OSC: 9;10: ConEmu xterm keyboard and output emulation 3
+PASS terminal.osc.parsers.osc9.test.OSC: 9;10: ConEmu xterm keyboard and output emulation 4
+PASS terminal.osc.parsers.osc9.test.OSC: 9;10: ConEmu xterm keyboard and output emulation 5
+PASS terminal.osc.parsers.osc9.test.OSC: 9;10: ConEmu xterm keyboard and output emulation 6
+PASS terminal.osc.parsers.osc9.test.OSC: 9;10: ConEmu xterm keyboard and output emulation 7
+PASS terminal.osc.parsers.osc9.test.OSC: 9;10: ConEmu xterm keyboard and output emulation 8
+PASS terminal.osc.parsers.osc9.test.OSC: 9;11: ConEmu comment
+PASS terminal.osc.parsers.osc9.test.OSC: 9;11: ConEmu comment incomplete -> desktop notification
+PASS terminal.osc.parsers.osc9.test.OSC: 9;12: ConEmu mark prompt start 1
+PASS terminal.osc.parsers.osc9.test.OSC: 9;12: ConEmu mark prompt start 2
+PASS terminal.osc.parsers.kitty_color.test.OSC 21: kitty color protocol
+PASS terminal.osc.parsers.kitty_color.test.OSC 21: kitty color protocol without allocator
+PASS terminal.osc.parsers.kitty_color.test.OSC 21: kitty color protocol double reset
+PASS terminal.osc.parsers.kitty_color.test.OSC 21: kitty color protocol reset after invalid
+PASS terminal.osc.parsers.kitty_color.test.OSC 21: kitty color protocol no key
+PASS terminal.osc.parsers.mouse_shape.test.OSC 22: pointer cursor
+PASS terminal.osc.parsers.clipboard_operation.test.OSC 52: get/set clipboard
+PASS terminal.osc.parsers.clipboard_operation.test.OSC 52: get clipboard with BEL terminator
+PASS terminal.osc.parsers.clipboard_operation.test.OSC 52: get/set clipboard (optional parameter)
+PASS terminal.osc.parsers.clipboard_operation.test.OSC 52: get/set clipboard with allocator
+PASS terminal.osc.parsers.clipboard_operation.test.OSC 52: clear clipboard
+PASS terminal.osc.parsers.rxvt_extension.test.OSC: OSC 777 show desktop notification with title
+PASS terminal.osc.parsers.iterm2.test.OSC: 1337: test valid unimplemented key with no value
+PASS terminal.osc.parsers.iterm2.test.OSC: 1337: test valid unimplemented key with empty value
+PASS terminal.osc.parsers.iterm2.test.OSC: 1337: test valid unimplemented key with non-empty value
+PASS terminal.osc.parsers.iterm2.test.OSC: 1337: test valid key with lower case and with no value
+PASS terminal.osc.parsers.iterm2.test.OSC: 1337: test valid key with lower case and with empty value
+PASS terminal.osc.parsers.iterm2.test.OSC: 1337: test valid key with lower case and with non-empty value
+PASS terminal.osc.parsers.iterm2.test.OSC: 1337: test invalid key with no value
+PASS terminal.osc.parsers.iterm2.test.OSC: 1337: test invalid key with empty value
+PASS terminal.osc.parsers.iterm2.test.OSC: 1337: test invalid key with non-empty value
+PASS terminal.osc.parsers.iterm2.test.OSC: 1337: test Copy with no value
+PASS terminal.osc.parsers.iterm2.test.OSC: 1337: test Copy with empty value
+PASS terminal.osc.parsers.iterm2.test.OSC: 1337: test Copy with only prefix colon
+PASS terminal.osc.parsers.iterm2.test.OSC: 1337: test Copy with question mark
+PASS terminal.osc.parsers.iterm2.test.OSC: 1337: test Copy with non-empty value that is valid base64 but not prefixed with a colon
+PASS terminal.osc.parsers.iterm2.test.OSC: 1337: test Copy with non-empty value that is valid base64
+PASS terminal.osc.parsers.iterm2.test.OSC: 1337: test CurrentDir with no value
+PASS terminal.osc.parsers.iterm2.test.OSC: 1337: test CurrentDir with empty value
+PASS terminal.osc.parsers.iterm2.test.OSC: 1337: test CurrentDir with non-empty value
+PASS terminal.osc.parsers.unknown.test.OSC unknown: prefix state names are the bytes consumed
+PASS terminal.osc.parsers.unknown.test.OSC unknown: disabled by default
+PASS terminal.osc.parsers.unknown.test.OSC unknown: reported
+PASS terminal.osc.parsers.unknown.test.OSC unknown: supported commands are unchanged
+PASS terminal.osc.parsers.unknown.test.OSC unknown: aborted sequences are dropped
+PASS terminal.osc.parsers.unknown.test.OSC unknown: truncated at the limit
+PASS terminal.osc.parsers.unknown.test.OSC unknown: limit smaller than the identifier
+PASS terminal.osc.parsers.unknown.test.OSC unknown: fixed tier does not allocate
+PASS terminal.osc.parsers.unknown.test.OSC unknown: allocating tier
+PASS terminal.osc.parsers.unknown.test.OSC unknown: large limit without allocator uses fixed buffer
+PASS terminal.osc.parsers.unknown.test.OSC unknown: allocation failure falls back to fixed buffer
+PASS terminal.osc.parsers.unknown.test.OSC unknown: allocation failure while growing truncates
+PASS terminal.osc.parsers.unknown.test.OSC unknown: nextSlice matches per-byte parsing
+PASS terminal.osc.parsers.change_window_title.test.OSC 0: change_window_title
+PASS terminal.osc.parsers.change_window_title.test.OSC 0: longer than buffer
+PASS terminal.osc.parsers.change_window_title.test.OSC 0: one shorter than buffer length
+PASS terminal.osc.parsers.change_window_title.test.OSC 0: exactly at buffer length
+PASS terminal.osc.parsers.change_window_title.test.OSC 2: change_window_title with 2
+PASS terminal.osc.parsers.change_window_title.test.OSC 2: change_window_title with utf8
+PASS terminal.osc.parsers.change_window_title.test.OSC 2: change_window_title empty
+PASS terminal.x11_color.test.entries
+PASS terminal.osc.kitty_metadata.test.ValueIterator skips malformed and prefix-matching keys
+PASS terminal.osc.kitty_metadata.test.ValueIterator skips values containing disallowed characters
+PASS simd.base64.test.base64 maxLen
+PASS simd.base64.test.base64 empty input
+PASS simd.base64.test.base64 decode
+PASS simd.base64.test.base64 strict decode valid
+PASS simd.base64.test.base64 strict decode invalid
+PASS simd.base64.test.base64 streaming decode chunk boundaries
+PASS simd.base64.test.base64 streaming decode invalid
+PASS simd.codepoint_width.test.codepointWidth basic
+PASS terminal.Tabstops.test.Tabstops: basic
+PASS terminal.Tabstops.test.Tabstops: dynamic allocations
+PASS terminal.Tabstops.test.Tabstops: resize to existing capacity does not allocate
+PASS terminal.Tabstops.test.Tabstops: interval
+PASS terminal.Tabstops.test.Tabstops: interval with zero columns
+PASS terminal.Tabstops.test.Tabstops: count on 80
+PASS terminal.Tabstops.test.Tabstops: resize alloc failure preserves state
+PASS terminal.Screen.test.Screen forwards optional scrollback limits
+PASS terminal.Screen.test.Screen reset cursor pin is not garbage
+PASS terminal.Screen.test.Screen read and write
+PASS terminal.Screen.test.Screen read and write newline
+PASS terminal.Screen.test.Screen read and write scrollback
+PASS terminal.Screen.test.Screen read and write no scrollback small
+PASS terminal.Screen.test.Screen read and write no scrollback large
+PASS terminal.Screen.test.Screen cursorCopy x/y
+PASS terminal.Screen.test.Screen cursorCopy style deref
+PASS terminal.Screen.test.Screen cursorCopy style deref new page
+PASS terminal.Screen.test.Screen cursorCopy style copy
+PASS terminal.Screen.test.Screen cursorCopy hyperlink deref
+PASS terminal.Screen.test.Screen write regrows compacted page capacity
+PASS terminal.Screen.test.Screen scrollClear across pages migrates cursor style and hyperlink
+PASS terminal.Screen.test.Screen cursorCopy hyperlink deref new page
+PASS terminal.Screen.test.Screen cursorCopy hyperlink copy
+PASS terminal.Screen.test.Screen cursorCopy hyperlink copy disabled
+PASS terminal.Screen.test.Screen style basics
+PASS terminal.Screen.test.Screen style reset to default
+PASS terminal.Screen.test.Screen style reset with unset
+PASS terminal.Screen.test.Screen clearRows active one line
+PASS terminal.Screen.test.Screen clearRows active multi line
+PASS terminal.Screen.test.Screen clearRows active styled line
+PASS terminal.Screen.test.Screen clearCells empty range
+PASS terminal.Screen.test.Screen clearRows uses stored page width
+PASS terminal.Screen.test.Screen clearRows protected
+PASS terminal.Screen.test.Screen eraseRows history
+PASS terminal.Screen.test.Screen eraseRows history with more lines
+PASS terminal.Screen.test.Screen eraseRows active partial
+PASS terminal.Screen.test.Screen: cursorCellEndOfPrev across mixed-width pages
+PASS terminal.Screen.test.Screen: cursorDown across pages preserves style
+PASS terminal.Screen.test.Screen: cursorUp across pages preserves style
+PASS terminal.Screen.test.Screen: cursorAbsolute across pages preserves style
+PASS terminal.Screen.test.Screen: cursorAbsolute to page with insufficient capacity
+PASS terminal.Screen.test.Screen: scrolling
+PASS terminal.Screen.test.Screen: scrolling with a single-row screen no scrollback
+PASS terminal.Screen.test.Screen: scrolling with a single-row screen with scrollback
+PASS terminal.Screen.test.Screen: scrolling across pages preserves style
+PASS terminal.Screen.test.Screen: scroll down from 0
+PASS terminal.Screen.test.Screen: scrollback various cases
+PASS terminal.Screen.test.Screen: scrollback with multi-row delta
+PASS terminal.Screen.test.Screen: scrollback empty
+PASS terminal.Screen.test.Screen: scrollback doesn't move viewport if not at bottom
+PASS terminal.Screen.test.Screen: scrolling moves selection
+PASS terminal.Screen.test.Screen: cursorScrollRegionUp simple
+PASS terminal.Screen.test.Screen: cursorScrollRegionUp renews page generation
+PASS terminal.Screen.test.Screen: cursorScrollRegionUp moves selection
+PASS terminal.Screen.test.Screen: cursorScrollRegionUp region spans pages
+PASS terminal.Screen.test.Screen: cursorScrollRegionUp region spans pages with background SGR
+PASS terminal.Screen.test.Screen: cursorScrollRegionUp with styled erased row
+PASS terminal.Screen.test.Screen: scrolling moves viewport
+PASS terminal.Screen.test.Screen: scrolling when viewport is pruned
+PASS terminal.Screen.test.Screen: scroll and clear full screen
+PASS terminal.Screen.test.Screen: scroll and clear partial screen
+PASS terminal.Screen.test.Screen: scroll and clear empty screen
+PASS terminal.Screen.test.Screen: scroll and clear ignore blank lines
+PASS terminal.Screen.test.Screen: scroll above same page
+PASS terminal.Screen.test.Screen: scroll above same page but cursor on previous page
+PASS terminal.Screen.test.Screen: scroll above same page but cursor on previous page last row
+PASS terminal.Screen.test.Screen: scroll above creates new page
+PASS terminal.Screen.test.Screen: scroll above with cursor on non-final row
+PASS terminal.Screen.test.Screen: scroll above no scrollback bottom of page
+PASS terminal.Screen.test.Screen: scroll above hyperlink-dense row to fresh page
+PASS terminal.Screen.test.Screen: scroll above hyperlink-dense row to existing page
+PASS terminal.Screen.test.Screen: clone
+PASS terminal.Screen.test.Screen: clone partial
+PASS terminal.Screen.test.Screen: clone partial cursor out of bounds
+PASS terminal.Screen.test.Screen: clone contains full selection
+PASS terminal.Screen.test.Screen: clone contains none of selection
+PASS terminal.Screen.test.Screen: clone contains selection start cutoff
+PASS terminal.Screen.test.Screen: clone contains selection end cutoff
+PASS terminal.Screen.test.Screen: clone contains selection end cutoff reversed
+PASS terminal.Screen.test.Screen: clone contains subset of selection
+PASS terminal.Screen.test.Screen: clone clamps clipped selections to mixed-width pages
+PASS terminal.Screen.test.Screen: clone contains subset of rectangle selection
+PASS terminal.Screen.test.Screen: clone basic
+PASS terminal.Screen.test.Screen: clone empty viewport
+PASS terminal.Screen.test.Screen: clone one line viewport
+PASS terminal.Screen.test.Screen: clone empty active
+PASS terminal.Screen.test.Screen: clone one line active with extra space
+PASS terminal.Screen.test.Screen: clear history with no history
+PASS terminal.Screen.test.Screen: clear history
+PASS terminal.Screen.test.Screen: clear above cursor
+PASS terminal.Screen.test.Screen: clear above cursor with history
+PASS terminal.Screen.test.Screen: resize (no reflow) more rows
+PASS terminal.Screen.test.Screen: resize (no reflow) less rows
+PASS terminal.Screen.test.Screen: resize (no reflow) less rows trims blank lines
+PASS terminal.Screen.test.Screen: resize (no reflow) more rows trims blank lines
+PASS terminal.Screen.test.Screen: resize (no reflow) more cols
+PASS terminal.Screen.test.Screen: resize (no reflow) less cols
+PASS terminal.Screen.test.Screen: resize (no reflow) more rows with scrollback cursor end
+PASS terminal.Screen.test.Screen: resize (no reflow) more rows no scrollback pull
+PASS terminal.Screen.test.Screen: resize more cols no scrollback pull
+PASS terminal.Screen.test.Screen: resize more cols no scrollback pull wrap straddles scrollback
+PASS terminal.Screen.test.Screen: resize more cols and rows no scrollback pull
+PASS terminal.Screen.test.Screen: resize less cols no scrollback pull
+PASS terminal.Screen.test.Screen: resize (no reflow) less rows with scrollback
+PASS terminal.Screen.test.Screen: resize (no reflow) less rows with empty trailing
+PASS terminal.Screen.test.Screen: resize (no reflow) more rows with soft wrapping
+PASS terminal.Screen.test.Screen: resize more rows no scrollback
+PASS terminal.Screen.test.Screen: resize more rows with empty scrollback
+PASS terminal.Screen.test.Screen: resize more rows with populated scrollback
+PASS terminal.Screen.test.Screen: resize more cols no reflow
+PASS terminal.Screen.test.Screen: resize more cols perfect split
+PASS terminal.Screen.test.Screen: resize (no reflow) more cols with scrollback scrolled up
+PASS terminal.Screen.test.Screen: resize (no reflow) less cols with scrollback scrolled up
+PASS terminal.Screen.test.Screen: resize more cols no reflow preserves semantic prompt
+PASS terminal.Screen.test.Screen: resize more cols with reflow that fits full width
+PASS terminal.Screen.test.Screen: resize more cols with reflow that ends in newline
+PASS terminal.Screen.test.Screen: resize more cols with reflow that forces more wrapping
+PASS terminal.Screen.test.Screen: resize more cols with reflow that unwraps multiple times
+PASS terminal.Screen.test.Screen: resize more cols with populated scrollback
+PASS terminal.Screen.test.Screen: resize more cols bounded scrollback keeps viewport valid
+PASS terminal.Screen.test.Screen: resize more cols with reflow
+PASS terminal.Screen.test.Screen: resize errors preserve state
+PASS terminal.Screen.test.Screen: resize cursor references when node survives
+PASS terminal.Screen.test.Screen: resize cursor references when node is replaced
+PASS terminal.Screen.test.Screen: resize more rows and cols with wrapping
+PASS terminal.Screen.test.Screen: resize less rows no scrollback
+PASS terminal.Screen.test.Screen: resize less rows moving cursor
+PASS terminal.Screen.test.Screen: resize less rows with empty scrollback
+PASS terminal.Screen.test.Screen: resize less rows with populated scrollback
+PASS terminal.Screen.test.Screen: resize less rows with full scrollback
+PASS terminal.Screen.test.Screen: resize less cols no reflow
+PASS terminal.Screen.test.Screen: resize less cols with reflow but row space
+PASS terminal.Screen.test.Screen: resize less cols with reflow with trimmed rows
+PASS terminal.Screen.test.Screen: resize less cols with reflow with trimmed rows and scrollback
+PASS terminal.Screen.test.Screen: resize less cols with reflow previously wrapped
+PASS terminal.Screen.test.Screen: resize less cols with reflow and scrollback
+PASS terminal.Screen.test.Screen: resize less cols with reflow previously wrapped and scrollback
+PASS terminal.Screen.test.Screen: resize less cols with scrollback keeps cursor row
+PASS terminal.Screen.test.Screen: resize more rows, less cols with reflow with scrollback
+PASS terminal.Screen.test.Screen: resize more rows then shrink again
+PASS terminal.Screen.test.Screen: resize less cols to eliminate wide char
+PASS terminal.Screen.test.Screen: resize less cols to wrap wide char
+PASS terminal.Screen.test.Screen: resize less cols to eliminate wide char with row space
+PASS terminal.Screen.test.Screen: resize less cols reflows cursor after wrapped text
+PASS terminal.Screen.test.Screen: resize less cols reflows cursor after empty cells
+PASS terminal.Screen.test.Screen: resize more cols with wide spacer head
+PASS terminal.Screen.test.Screen: resize more cols with wide spacer head multiple lines
+PASS terminal.Screen.test.Screen: resize more cols requiring a wide spacer head
+PASS terminal.Screen.test.Screen: resize more cols with cursor at prompt
+PASS terminal.Screen.test.Screen: resize more cols with cursor not at prompt
+PASS terminal.Screen.test.Screen: resize with prompt_redraw last clears only one line
+PASS terminal.Screen.test.Screen: resize with prompt_redraw last multiline prompt clears only last line
+PASS terminal.Screen.test.Screen: select untracked
+PASS terminal.Screen.test.Screen: select replaces existing pins
+PASS terminal.Screen.test.Screen: reselecting tracked selection preserves its pins
+PASS terminal.Screen.test.Screen: selectAll
+PASS terminal.Screen.test.Screen: selectLine
+PASS terminal.Screen.test.Screen: selectLine across soft-wrap
+PASS terminal.Screen.test.Screen: selectLine across full soft-wrap
+PASS terminal.Screen.test.Screen: selectLine across soft-wrap ignores blank lines
+PASS terminal.Screen.test.Screen: selectLine disabled whitespace trimming
+PASS terminal.Screen.test.Screen: selectLine with scrollback
+PASS terminal.Screen.test.Screen: selectLine semantic prompt boundary
+PASS terminal.Screen.test.Screen: selectLine semantic boundary around unwritten cells
+PASS terminal.Screen.test.Screen: selectLine semantic prompt to input boundary
+PASS terminal.Screen.test.Screen: selectLine semantic input to output boundary
+PASS terminal.Screen.test.Screen: selectLine semantic mid-row boundary
+PASS terminal.Screen.test.Screen: selectLine semantic boundary soft-wrap with mid-row transition
+PASS terminal.Screen.test.Screen: selectLine semantic boundary disabled
+PASS terminal.Screen.test.Screen: selectLine semantic boundary first cell of row
+PASS terminal.Screen.test.Screen: selectLine semantic boundary across mixed-width pages
+PASS terminal.Screen.test.Screen: selectLine semantic all same content
+PASS terminal.Screen.test.Screen: selectWord
+PASS terminal.Screen.test.Screen: selectWord at hard line breaks
+PASS terminal.Screen.test.Screen: selectWord across soft-wrap at right edge
+PASS terminal.Screen.test.Screen: selectWord wide characters
+PASS terminal.Screen.test.Screen: selectWord across soft-wrap
+PASS terminal.Screen.test.Screen: selectWord whitespace across soft-wrap
+PASS terminal.Screen.test.Screen: selectWord with character boundary
+PASS terminal.Screen.test.Screen: selectOutput
+PASS terminal.Screen.test.Screen: selectionString basic
+PASS terminal.Screen.test.Screen: selectionString start outside of written area
+PASS terminal.Screen.test.Screen: selectionString end outside of written area
+PASS terminal.Screen.test.Screen: selectionString trim space
+PASS terminal.Screen.test.Screen: selectionString trim empty line
+PASS terminal.Screen.test.Screen: selectionString soft wrap
+PASS terminal.Screen.test.Screen: selectionString wide char
+PASS terminal.Screen.test.Screen: selectionString wide char with header
+PASS terminal.Screen.test.Screen: selectionString empty with soft wrap
+PASS terminal.Screen.test.Screen: selectionString with zero width joiner
+PASS terminal.Screen.test.Screen: selectionString, rectangle, basic
+PASS terminal.Screen.test.Screen: selectionString, rectangle, w/EOL
+PASS terminal.Screen.test.Screen: selectionString, rectangle, more complex w/breaks
+PASS terminal.Screen.test.Screen: selectionString multi-page
+PASS terminal.Screen.test.Screen: lineIterator
+PASS terminal.Screen.test.Screen: lineIterator soft wrap
+PASS terminal.Screen.test.Screen: hyperlink start/end
+PASS terminal.Screen.test.Screen: hyperlink accepts its current values
+PASS terminal.Screen.test.Screen: implicit hyperlink ID wraps
+PASS terminal.Screen.test.Screen: hyperlink reuse
+PASS terminal.Screen.test.Screen: hyperlink cursor state on resize
+PASS terminal.Screen.test.Screen: cursorSetHyperlink OOM + URI too large for string alloc
+PASS terminal.Screen.test.Screen: increaseCapacity cursor style ref count preserved
+PASS terminal.Screen.test.Screen: increaseCapacity cursor hyperlink ref count preserved
+PASS terminal.Screen.test.Screen: increaseCapacity cursor with both style and hyperlink preserved
+PASS terminal.Screen.test.Screen: increaseCapacity non-cursor page returns early
+PASS terminal.Screen.test.Screen: cursorDown to page with insufficient capacity
+PASS terminal.Screen.test.Screen setAttribute increases capacity when style map is full
+PASS terminal.Screen.test.Screen setAttribute splits page on OutOfSpace at max styles
+PASS terminal.Screen.test.Screen: promptClickMove line right basic
+PASS terminal.Screen.test.Screen: promptClickMove line right cursor not on input
+PASS terminal.Screen.test.Screen: promptClickMove line right click on same position
+PASS terminal.Screen.test.Screen: promptClickMove line right skips non-input cells
+PASS terminal.Screen.test.Screen: promptClickMove line right soft-wrapped line
+PASS terminal.Screen.test.Screen: promptClickMove disabled when click is none
+PASS terminal.Screen.test.Screen: promptClickMove line right stops at hard wrap
+PASS terminal.Screen.test.Screen: promptClickMove line right stops at non-continuation row
+PASS terminal.Screen.test.Screen: promptClickMove line left basic
+PASS terminal.Screen.test.Screen: promptClickMove line left skips non-input cells
+PASS terminal.Screen.test.Screen: promptClickMove line left soft-wrapped line
+PASS terminal.Screen.test.Screen: promptClickMove line left stops at hard wrap
+PASS terminal.Screen.test.Screen: promptClickMove click right of input same line
+PASS terminal.Screen.test.Screen: promptClickMove click right of input cursor at end
+PASS terminal.Screen.test.Screen: promptClickMove click right of input on lower line
+PASS terminal.Screen.test.Screen: promptClickMove click right of input cursor at end lower line
+PASS terminal.Screen.test.Screen: promptClickMove click right of input cursor on last char
+PASS terminal.Screen.test.Screen: cursorScrollRegionUp recycled row has default metadata
+PASS terminal.Screen.test.Screen: cursorScrollRegionUp cross-page recycled row has default metadata
+PASS terminal.Screen.test.Screen: cursorScrollAbove cross-page recycled row has default metadata
+PASS terminal.Screen.test.Screen: cursorDownScroll no scrollback recycled row has default metadata
+PASS terminal.Screen.test.Screen: cursorDownScroll single row no scrollback resets metadata
+PASS terminal.Screen.test.Screen: selectLine does not join lines across a recycled row
+PASS terminal.Screen.test.Screen: scrollClear cursor page pruned keeps per-page style id
+PASS terminal.Screen.test.Screen: scrollClear cursor page pruned keeps per-page hyperlink id
+PASS terminal.compress.Page.test.compressed Page retained mapping round trip
+PASS terminal.compress.Page.test.compressed Page requires the maximum useful scratch
+PASS terminal.compress.Page.test.compressed Page rejects a representation without savings
+PASS terminal.compress.Page.test.compressed Page can retry after malformed encoded data
+PASS terminal.kitty.dnd_command.test.Metadata: empty
+PASS terminal.kitty.dnd_command.test.Metadata: all keys
+PASS terminal.kitty.dnd_command.test.Metadata: all event types
+PASS terminal.kitty.dnd_command.test.Metadata: case-sensitive coordinate keys
+PASS terminal.kitty.dnd_command.test.Metadata: negative coordinates
+PASS terminal.kitty.dnd_command.test.Metadata: malformed inputs rejected
+PASS terminal.kitty.dnd_command.test.Metadata: trailing separator accepted
+PASS terminal.kitty.dnd_command.test.Metadata: u32 boundary accepted
+PASS terminal.kitty.dnd_command.test.Request: classification
+PASS terminal.kitty.dnd_command.test.Chunking: reassembly reuses first chunk metadata
+PASS terminal.kitty.dnd_command.test.Chunking: unchunked commands pass through
+PASS terminal.mem.test.decommit with zero fallback clears the dirty prefix
+PASS terminal.mem.test.strict decommit retains the mapping for recommit
+PASS terminal.mem.test.test builds can reclaim retained mappings
+PASS terminal.compress.lz4.test.compressBound
+PASS terminal.compress.lz4.test.literal-only compatibility vectors
+PASS terminal.compress.lz4.test.overlapping match compatibility vector
+PASS terminal.compress.lz4.test.extended overlapping match compatibility vector
+PASS terminal.compress.lz4.test.short offset compatibility vectors
+PASS terminal.compress.lz4.test.bounded wild copies are overwritten by final literals
+PASS terminal.compress.lz4.test.maximum match offset compatibility vector
+PASS terminal.compress.lz4.test.round trips boundary-sized inputs
+PASS terminal.compress.lz4.test.round trips compressible page-sized inputs
+PASS terminal.compress.lz4.test.round trips deterministic random inputs
+PASS terminal.compress.lz4.test.compress reports short output
+PASS terminal.compress.lz4.test.decompress rejects malformed blocks
+PASS tripwire.test.module as error set
+PASS tripwire.test.errorAfter
+PASS tripwire.test.errorAfter untripped error if min not reached
+PASS terminal.compress.lz4_differential.test.lz4 differential light
+PASS terminal.kitty.dnd_response.test.encode: bare message
+PASS terminal.kitty.dnd_response.test.encode: bare message with client id
+PASS terminal.kitty.dnd_response.test.encode: plain payload single chunk
+PASS terminal.kitty.dnd_response.test.encode: base64 payload chunking
+PASS terminal.kitty.dnd_response.test.encodeError: with and without description
+PASS terminal.kitty.dnd_response.test.RequestKeys: only non-zero keys written
+PASS terminal.kitty.dnd_test.test.dnd: query response
+PASS terminal.kitty.dnd_test.test.dnd: query response echoes client id
+PASS terminal.kitty.dnd_test.test.dnd: register and unregister
+PASS terminal.kitty.dnd_test.test.dnd: no state before registration
+PASS terminal.kitty.dnd_test.test.dnd: move event carries position, operations, and mime list
+PASS terminal.kitty.dnd_test.test.dnd: move event echoes registration client id
+PASS terminal.kitty.dnd_test.test.dnd: re-registration updates client id in place
+PASS terminal.kitty.dnd_test.test.dnd: mime list sent on every move
+PASS terminal.kitty.dnd_test.test.dnd: leave event
+PASS terminal.kitty.dnd_test.test.dnd: client acceptance recorded
+PASS terminal.kitty.dnd_test.test.dnd: chunked client acceptance
+PASS terminal.kitty.dnd_test.test.dnd: drop and data serving round trip
+PASS terminal.kitty.dnd_test.test.dnd: empty item served as a single end-of-data message
+PASS terminal.kitty.dnd_test.test.dnd: leave without hover sends nothing
+PASS terminal.kitty.dnd_test.test.dnd: data request with no drop
+PASS terminal.kitty.dnd_test.test.dnd: leave after drop is ignored
+PASS terminal.kitty.dnd_test.test.dnd: new drag resets held drop data
+PASS terminal.kitty.dnd_test.test.dnd: remote transfer requests refused
+PASS terminal.kitty.dnd_test.test.dnd: drag out refused
+PASS terminal.kitty.dnd_test.test.dnd: unregister frees held drop data
+PASS terminal.kitty.dnd_test.test.dnd: chunked registration reuses first chunk metadata
+PASS terminal.kitty.dnd_test.test.dnd: malformed metadata ignored
+PASS terminal.kitty.dnd_test.test.dnd: bel terminator echoed in responses
+PASS terminal.kitty.dnd_test.test.dnd: kitten 0.47 conversation replay
+PASS terminal.kitty.dnd_test.test.dnd: large data served in chunks
+PASS terminal.kitty.dnd_test.test.dnd: over-cap registration list never completes
+PASS terminal.kitty.clipboard_command.test.metadata: empty is dropped
+PASS terminal.kitty.clipboard_command.test.metadata: record without = is dropped
+PASS terminal.kitty.clipboard_command.test.metadata: missing or unknown type is dropped
+PASS terminal.kitty.clipboard_command.test.metadata: duplicate keys keep the last occurrence
+PASS terminal.kitty.clipboard_command.test.metadata: basic read
+PASS terminal.kitty.clipboard_command.test.metadata: unknown keys ignored
+PASS terminal.kitty.clipboard_command.test.metadata: loc
+PASS terminal.kitty.clipboard_command.test.metadata: id sanitized
+PASS terminal.kitty.clipboard_command.test.metadata: id truncated to max
+PASS terminal.kitty.clipboard_command.test.metadata: mime decoded
+PASS terminal.kitty.clipboard_command.test.metadata: invalid mime base64 reported
+PASS terminal.kitty.clipboard_command.test.metadata: invalid mime utf8 reported
+PASS terminal.kitty.clipboard_command.test.metadata: pw and name
+PASS terminal.kitty.clipboard_command.test.metadata: over-long name reported
+PASS terminal.kitty.clipboard_command.test.metadata: empty name
+PASS terminal.kitty.clipboard_command.test.read prompt exemption: only requests without data types
+PASS terminal.kitty.clipboard_command.test.payload: mime iterator
+PASS terminal.kitty.clipboard_command.test.payload: invalid base64
+PASS terminal.kitty.clipboard_command.test.payload: decoded text must be valid utf8
+PASS terminal.kitty.clipboard_write.test.write: basic transaction
+PASS terminal.kitty.clipboard_write.test.write: chunked data accumulates
+PASS terminal.kitty.clipboard_write.test.write: multiple mimes in order
+PASS terminal.kitty.clipboard_write.test.write: reused mime overwrites
+PASS terminal.kitty.clipboard_write.test.write: invalid base64 chunk aborts the transaction
+PASS terminal.kitty.clipboard_write.test.write: chunks split one base64 stream at arbitrary boundaries
+PASS terminal.kitty.clipboard_write.test.write: incorrectly padded stream aborts at commit
+PASS terminal.kitty.clipboard_write.test.write: incorrectly padded stream aborts at MIME switch
+PASS terminal.kitty.clipboard_write.test.write: independently padded chunks accumulate
+PASS terminal.kitty.clipboard_write.test.write: data after padding within one chunk aborts
+PASS terminal.kitty.clipboard_write.test.write: aliases resolve at commit
+PASS terminal.kitty.clipboard_write.test.write: repeated alias updates do not grow memory
+PASS terminal.kitty.clipboard_write.test.write: alias payload must be valid utf8
+PASS terminal.kitty.clipboard_write.test.write: default limit when unset
+PASS terminal.kitty.clipboard_write.test.write: text over limit rejects transaction
+PASS terminal.kitty.clipboard_write.test.write: text crossing limit across chunks rejects transaction
+PASS terminal.kitty.clipboard_write.test.write: data exactly at limit is accepted
+PASS terminal.kitty.clipboard_write.test.write: non-text under limit is unaffected
+PASS terminal.kitty.clipboard_write.test.write: non-text over limit rejects transaction
+PASS terminal.kitty.clipboard_write.test.write: total data across MIME types is limited
+PASS terminal.kitty.clipboard_write.test.write: alias without data target is dropped
+PASS terminal.kitty.clipboard_response.test.response: basic status packet
+PASS terminal.kitty.clipboard_response.test.response: id echo and terminator
+PASS terminal.kitty.clipboard_response.test.response: key order type,status,loc,id,mime,pw and payload
+PASS terminal.kitty.clipboard_response.test.read success: empty request is OK then DONE
+PASS terminal.kitty.clipboard_response.test.read success: targets listing with text
+PASS terminal.kitty.clipboard_response.test.read success: targets listing joins multiple types
+PASS terminal.kitty.clipboard_response.test.read success: empty targets listing packet still sent
+PASS terminal.kitty.clipboard_response.test.read success: data chunks under requested mime
+PASS terminal.kitty.clipboard_response.test.read success: each representation carries its own data
+PASS terminal.kitty.clipboard_response.test.read success: chunking at read_chunk_size
+PASS terminal.kitty.clipboard_response.test.read success: no data packets for empty clipboard
+PASS terminal.kitty.clipboard_response.test.read success: paste event carries pw in every packet
+PASS terminal.kitty.clipboard_response.test.paste event: pw in every packet, listing of every type
+PASS terminal.kitty.clipboard_response.test.paste event: primary is reported only on the OK packet
+PASS terminal.kitty.clipboard_response.test.paste event: empty listing packet is still sent
+PASS terminal.kitty.clipboard_grants.test.grants: basic grant and use
+PASS terminal.kitty.clipboard_grants.test.grants: one-time consumed on check
+PASS terminal.kitty.clipboard_grants.test.grants: one-time consumed even on direction mismatch
+PASS terminal.kitty.clipboard_grants.test.grants: directions are independent
+PASS terminal.kitty.clipboard_grants.test.grants: capacity evicts the oldest
+PASS terminal.kitty.clipboard_grants.test.generateOtp: length and alphabet with a real Io
+PASS terminal.kitty.clipboard_grants.test.generateOtp: no entropy is an error, never a weak password
+PASS terminal.kitty.clipboard_grants.test.generateOtp: sys override supplies entropy without an Io source
+PASS terminal.sys.test.randomSecure: override is preferred over the Io
+PASS terminal.apc.test.unknown APC command
+PASS terminal.apc.test.capture unknown APC command
+PASS terminal.apc.test.capture short unknown APC command
+PASS terminal.apc.test.disabled known APC protocol is not unknown
+PASS terminal.apc.test.identify with unrecognized command
+PASS terminal.apc.test.identify buffer overflow
+PASS terminal.apc.test.identify with no input
+PASS terminal.apc.test.identify with unknown partial input
+PASS terminal.apc.test.garbage glyph command
+PASS terminal.apc.test.feedSlice unknown APC command is ignored
+PASS terminal.apc.test.disabled glyph command is ignored
+PASS terminal.dcs.test.unknown DCS command
+PASS terminal.dcs.test.XTGETTCAP command
+PASS terminal.dcs.test.XTGETTCAP mixed case
+PASS terminal.dcs.test.XTGETTCAP command multiple keys
+PASS terminal.dcs.test.XTGETTCAP command invalid data
+PASS terminal.dcs.test.DECRQSS command
+PASS terminal.dcs.test.DECRQSS invalid command
+PASS terminal.dcs.test.DECRQSS response encoding
+PASS terminal.dcs.test.DECRQSS largest response fits fixed buffer
+PASS terminfo.ghostty.test.encode
+PASS terminfo.Source.test.xtgettcap map
+PASS terminfo.Source.test.encode
+PASS terminal.build_options.Options.Features.test.parse
+RESULT upstream-cases=2564 passed=2564 skipped=0 failed=0 live=0

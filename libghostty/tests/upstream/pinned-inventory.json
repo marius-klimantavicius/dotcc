@@ -8,11 +8,12 @@
   },
   "selection_counts": {
     "scaffolding": 40,
-    "excluded-product-feature": 888,
-    "applicable-not-selected": 2571,
+    "excluded-product-feature": 896,
+    "applicable-not-selected": 2562,
     "selected-render": 58,
     "required-profile-mismatch": 1,
     "required-fixture": 1,
+    "upstream-placeholder": 1,
     "excluded-additional-stress": 1
   },
   "cases": [
@@ -1297,8 +1298,9 @@
     {
       "name": "terminal.mouse.Shape.test.ghostty.h MouseShape",
       "module": "terminal.mouse.Shape",
-      "selection": "applicable-not-selected",
-      "reason": "Remaining loaded test cases remain inventoried as applicable but outside this focused render diagnostic; this profile does not claim their execution or campaign completion"
+      "selection": "excluded-product-feature",
+      "reason": "GUI ghostty.h enum compatibility check; deliberately skipped for libghostty-vt",
+      "source_condition": "build_options.artifact == .lib"
     },
     {
       "name": "terminal.kitty.key.FlagStack.test_0",
@@ -12289,8 +12291,9 @@
     {
       "name": "terminal.osc.Command.ProgressReport.test.ghostty.h Command.ProgressReport.State",
       "module": "terminal.osc.Command.ProgressReport",
-      "selection": "applicable-not-selected",
-      "reason": "Remaining loaded test cases remain inventoried as applicable but outside this focused render diagnostic; this profile does not claim their execution or campaign completion"
+      "selection": "excluded-product-feature",
+      "reason": "GUI ghostty.h enum compatibility check; deliberately skipped for libghostty-vt",
+      "source_condition": "build_options.artifact == .lib"
     },
     {
       "name": "terminal.ScreenSet.decltest.ScreenSet",
@@ -15877,8 +15880,9 @@
     {
       "name": "simd.vt.test.decode simd matches scalar",
       "module": "simd.vt",
-      "selection": "applicable-not-selected",
-      "reason": "Remaining loaded test cases remain inventoried as applicable but outside this focused render diagnostic; this profile does not claim their execution or campaign completion"
+      "selection": "excluded-product-feature",
+      "reason": "SIMD comparison requires the excluded SIMD backend; scalar decoder tests remain required",
+      "source_condition": "!options.simd"
     },
     {
       "name": "simd.vt.test.decode no escape",
@@ -16615,8 +16619,9 @@
     {
       "name": "terminal.osc.parsers.iterm2.test.OSC: 1337: test Copy with non-empty value that is invalid base64",
       "module": "terminal.osc.parsers.iterm2",
-      "selection": "applicable-not-selected",
-      "reason": "Remaining loaded test cases remain inventoried as applicable but outside this focused render diagnostic; this profile does not claim their execution or campaign completion"
+      "selection": "upstream-placeholder",
+      "reason": "Upstream placeholder has no active assertions; upstream explicitly does not validate this base64 for performance",
+      "source_condition": "unconditional return error.SkipZigTest; every assertion is commented out"
     },
     {
       "name": "terminal.osc.parsers.iterm2.test.OSC: 1337: test Copy with non-empty value that is valid base64 but not prefixed with a colon",
@@ -18385,8 +18390,9 @@
     {
       "name": "terminal.mem.test.FreeBSD decommit releases pages and reads back zeros",
       "module": "terminal.mem",
-      "selection": "applicable-not-selected",
-      "reason": "Remaining loaded test cases remain inventoried as applicable but outside this focused render diagnostic; this profile does not claim their execution or campaign completion"
+      "selection": "excluded-product-feature",
+      "reason": "FreeBSD-specific native decommit implementation outside initial Linux/freestanding host scope",
+      "source_condition": "builtin.target.os.tag != .freebsd"
     },
     {
       "name": "terminal.mem.test.test builds can reclaim retained mappings",
@@ -19891,8 +19897,9 @@
     {
       "name": "terminal.dcs.test.tmux enter and implicit exit",
       "module": "terminal.dcs",
-      "selection": "applicable-not-selected",
-      "reason": "Remaining loaded test cases remain inventoried as applicable but outside this focused render diagnostic; this profile does not claim their execution or campaign completion"
+      "selection": "excluded-product-feature",
+      "reason": "Tmux control mode is excluded from the agreed product",
+      "source_condition": "!build_options.tmux_control_mode"
     },
     {
       "name": "terminfo.main.test_0",
@@ -21349,20 +21356,23 @@
     {
       "name": "terminal.StringMap.test.StringMap searchIterator",
       "module": "terminal.StringMap",
-      "selection": "applicable-not-selected",
-      "reason": "Remaining loaded test cases remain inventoried as applicable but outside this focused render diagnostic; this profile does not claim their execution or campaign completion"
+      "selection": "excluded-product-feature",
+      "reason": "Regex search iterator requires excluded Oniguruma",
+      "source_condition": "!build_options.oniguruma"
     },
     {
       "name": "terminal.StringMap.test.StringMap searchIterator URL detection",
       "module": "terminal.StringMap",
-      "selection": "applicable-not-selected",
-      "reason": "Remaining loaded test cases remain inventoried as applicable but outside this focused render diagnostic; this profile does not claim their execution or campaign completion"
+      "selection": "excluded-product-feature",
+      "reason": "Regex search iterator requires excluded Oniguruma",
+      "source_condition": "!build_options.oniguruma"
     },
     {
       "name": "terminal.StringMap.test.StringMap searchIterator URL with click position",
       "module": "terminal.StringMap",
-      "selection": "applicable-not-selected",
-      "reason": "Remaining loaded test cases remain inventoried as applicable but outside this focused render diagnostic; this profile does not claim their execution or campaign completion"
+      "selection": "excluded-product-feature",
+      "reason": "Regex search iterator requires excluded Oniguruma",
+      "source_condition": "!build_options.oniguruma"
     },
     {
       "name": "terminal.build_options.test_0",

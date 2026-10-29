@@ -94,6 +94,9 @@ def prepare_tests(ctx):
         raise RuntimeError("Zig emitted no actual test C product")
     if "__asm" in output.read_text(encoding="utf-8"):
         raise RuntimeError("Freestanding upstream test C unexpectedly contains inline assembly")
+    from campaigns.recipes import helper
+    helper(ctx.root / "tests/upstream/host_contract.py").check(
+        ctx, output, (staged_std, source / "include"), "upstream-render-host-contract")
     result = {"source": output, "includes": (staged_std, source / "include"),
               "host": ctx.root / "tests/upstream/host.c", "case_count": selection["expected_cases"],
               "upstream": source, "zig": zig, "work": work, "argv": argv,

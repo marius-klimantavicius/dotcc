@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "phase": "c-route",
+  "decision_date": "2026-10-30",
+  "decision": "User explicitly deferred upstream tests until work on direct Zig translation.",
+  "verify_suites": [
+    "native",
+    "consumer",
+    "qualification",
+    "factory-allocation",
+    "audit"
+  ],
+  "deferred_phase": "direct-zig",
+  "deferred_suites": [
+    "host-io",
+    "upstream-native",
+    "upstream",
+    "upstream-core-native",
+    "upstream-core"
+  ],
+  "upstream_inventory_retained": true,
+  "deferred_is_passed": false
+}

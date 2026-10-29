@@ -78,6 +78,35 @@ Regexes use culture-invariant matching, a 100 ms timeout, no compiled/dynamic
 code, and a 16,384-character pattern limit. Regex input bodies, exact selectors and replacement templates are
 limited to 1,048,576 characters. These are character limits, not UTF-8 byte limits.
 
+## Source `long double` storage
+
+A profile can select a request-local representation for source layouts:
+
+```json
+{
+  "version": 1,
+  "sourceAbi": { "longDouble": "x87-storage16" }
+}
+```
+
+The default, `binary64`, keeps the existing eight-byte `long double` model.
+`x87-storage16` provides sixteen-byte storage with natural alignment sixteen,
+including explicit typedef alignment, member layout, arrays and raw byte copies.
+It does not implement x87 floating arithmetic. Numeric expressions, conversions,
+conditions, variadic values and `va_arg(long double)` fail explicitly.
+
+Managed fixed-signature copies and pointers to storage are supported. Native
+function-pointer calls, selected native imports and direct native exports reject
+by-value storage, including aggregates containing it. Object metadata preserves
+these restrictions across managed linking and checks them when an unresolved
+symbol is bound to a native library. A legacy object explicitly marked with this
+storage model but lacking valid proof must be regenerated before native binding;
+ordinary legacy objects retain their existing behavior.
+
+The choice belongs to each compilation request and does not change other
+concurrent requests. Select it during source/object emission; the object linker
+retains the recorded model.
+
 ## Exporting enum constants
 
 Enum constants can be selected in the same version-1 profile:

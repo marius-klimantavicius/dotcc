@@ -289,6 +289,12 @@
       "sha256": "de219cece932aad5a817bf763393d8d149d378a15d2ad5320e3331eac07626dd",
       "source": "uucode-licenses",
       "path": "licenses/LICENSE_Bjoern_Hoehrmann"
+    },
+    {
+      "name": "DotCC shared runtime",
+      "license": "MIT",
+      "repository_path": "LICENSE",
+      "distribute": true
     }
   ],
   "license_sources": [
@@ -309,5 +315,11 @@
       ],
       "sha256": "f37c4071a217853450d084cb9c12b6d4b68f887eb9cb42fe77a84f86056eacbf"
     }
+  ],
+  "allowed_host_libraries": [
+    "libc",
+    "libm.so.6",
+    "kernel32.dll",
+    "psapi.dll"
   ]
 }

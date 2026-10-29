@@ -1,0 +1,31 @@
+{
+  "toolchain": [
+    {
+      "file": "std/testing.zig",
+      "anchor": "pub const io = if (builtin.is_test) io_instance.io() else @compileError(\"not testing\");",
+      "replacement": "pub const io = if (builtin.is_test) (if (@hasDecl(@import(\"root\"), \"dotcc_upstream_test_io\")) @import(\"root\").dotcc_upstream_test_io else io_instance.io()) else @compileError(\"not testing\");",
+      "reason": "Test-only typed Io service extension for unchanged core test functions: native uses real Threaded Io, freestanding initially uses explicit failing Io until fixture services are implemented"
+    },
+    {
+      "file": "std/Io/Dir.zig",
+      "anchor": "pub const Handle = std.posix.fd_t;",
+      "replacement": "pub const Handle = if (@hasDecl(@import(\"root\"), \"dotcc_upstream_handle_type\")) @import(\"root\").dotcc_upstream_handle_type else std.posix.fd_t;",
+      "reason": "Test-only typed host handle service for unchanged corpus I/O assertions on freestanding targets"
+    },
+    {
+      "file": "std/Io/File.zig",
+      "anchor": "pub const Handle = std.posix.fd_t;",
+      "replacement": "pub const Handle = if (@hasDecl(@import(\"root\"), \"dotcc_upstream_handle_type\")) @import(\"root\").dotcc_upstream_handle_type else std.posix.fd_t;",
+      "reason": "Test-only typed host handle service for unchanged corpus I/O assertions on freestanding targets"
+    }
+  ],
+  "source": [
+    {
+      "file": "src/terminal/page.zig",
+      "anchor": "const PageAlloc = switch (builtin.target.os.tag) {",
+      "replacement": "const PageAlloc = if (@hasDecl(@import(\"root\"), \"dotcc_upstream_page_alloc\")) @import(\"root\").dotcc_upstream_page_alloc else switch (builtin.target.os.tag) {",
+      "reason": "Test-only page allocation host service: zeroed aligned allocation/free; retains every page algorithm and test assertion"
+    }
+  ],
+  "diagnostic_only": true
+}

@@ -1,5 +1,5 @@
 using System.Text;
-using Managed.GhosttyVt;
+using Managed;
 
 static void Equal<T>(T expected, T actual, string label)
 {

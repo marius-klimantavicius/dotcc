@@ -5,10 +5,18 @@
       "name": "zig_expand_import_0",
       "signature": {
         "kind": "function",
-        "parameters": ["Type", "fn_name", "libc_name", "sig_args", "call_args"],
+        "parameters": [
+          "Type",
+          "fn_name",
+          "libc_name",
+          "sig_args",
+          "call_args"
+        ],
         "variadic": false
       },
-      "match": {"exact": "zig_import(Type, fn_name, libc_name, sig_args, call_args)"},
+      "match": {
+        "exact": "zig_import(Type, fn_name, libc_name, sig_args, call_args)"
+      },
       "replacement": "zig_import_builtin(Type, fn_name, libc_name, sig_args, call_args)",
       "requireMatch": true
     },
@@ -16,12 +24,75 @@
       "name": "zig_mangled",
       "signature": {
         "kind": "function",
-        "parameters": ["mangled", "unmangled"],
+        "parameters": [
+          "mangled",
+          "unmangled"
+        ],
         "variadic": false
       },
-      "match": {"exact": "__asm(zig_mangle_c(unmangled))"},
+      "match": {
+        "exact": "__asm(zig_mangle_c(unmangled))"
+      },
       "replacement": "",
       "requireMatch": true
+    },
+    {
+      "name": "zig_unreachable",
+      "signature": {
+        "kind": "function",
+        "parameters": [],
+        "variadic": false
+      },
+      "match": {
+        "exact": ""
+      },
+      "replacement": "__builtin_unreachable()",
+      "requireMatch": true
+    },
+    {
+      "name": "zig_cmpxchg_strong",
+      "signature": {
+        "kind": "function",
+        "parameters": [
+          "obj",
+          "expected",
+          "desired",
+          "succ",
+          "fail",
+          "Type",
+          "ReprType"
+        ],
+        "variadic": false
+      },
+      "match": {
+        "exact": "atomic_compare_exchange_strong_explicit(obj, &(expected), desired, succ, fail)"
+      },
+      "replacement": "((void)(succ), atomic_compare_exchange_strong_explicit(obj, &(expected), desired, memory_order_seq_cst, fail))",
+      "requireMatch": true
+    },
+    {
+      "name": "zig_cmpxchg_weak",
+      "signature": {
+        "kind": "function",
+        "parameters": [
+          "obj",
+          "expected",
+          "desired",
+          "succ",
+          "fail",
+          "Type",
+          "ReprType"
+        ],
+        "variadic": false
+      },
+      "match": {
+        "exact": "atomic_compare_exchange_weak_explicit(obj, &(expected), desired, succ, fail)"
+      },
+      "replacement": "((void)(succ), atomic_compare_exchange_weak_explicit(obj, &(expected), desired, memory_order_seq_cst, fail))",
+      "requireMatch": true
     }
-  ]
+  ],
+  "sourceAbi": {
+    "longDouble": "x87-storage16"
+  }
 }
