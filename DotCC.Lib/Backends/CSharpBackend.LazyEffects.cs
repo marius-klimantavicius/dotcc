@@ -9,17 +9,19 @@ internal sealed partial class CSharpBackend
     {
         var comma = false;
         var addressedLocal = false;
-        var compoundArray = false;
+        var branchStorage = false;
         VaListLifetimeValidator.Walk(expression, node =>
         {
             if (node is CommaOp) comma = true;
-            if (node is StackArray) compoundArray = true;
+            if (node is StackArray or Member { Arrow: false, Type.Unqualified: CType.Array, Base.IsLValue: false })
+                branchStorage = true;
             if (node is VarRef { Sym.IsGlobal: false, Sym.AddressTaken: true }) addressedLocal = true;
         });
-        // stackalloc needs an addressable local in its selected branch. A
+        // Array literals and array members of returned/temporary aggregates need
+        // addressable storage in their selected branch. A
         // conditional's common-type inference otherwise turns it into Span<T>,
         // and hoisting both arms would also execute unselected side effects.
-        return compoundArray || comma && addressedLocal;
+        return branchStorage || comma && addressedLocal;
     }
 
     // Keep lazy comma/statement-expression effects in their original branch,
