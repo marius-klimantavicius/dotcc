@@ -62,12 +62,30 @@ internal sealed partial class ZigLowering
     /// the module without re-loading.</summary>
     private readonly Dictionary<string, ZigModule> _importModules = new(System.StringComparer.Ordinal);
 
+    // Retain const expressions so namespace/type re-exports can resolve on demand.
+    // Preparing an import must not eagerly follow every re-export in its source.
+    private readonly Dictionary<string, Item> _moduleConstExprs = new(System.StringComparer.Ordinal);
+    private readonly HashSet<string> _resolvingConstExports = new(System.StringComparer.Ordinal);
+
     /// <summary>Resolve an import bound in THIS unit by <paramref name="name"/> to its module, loading +
     /// preparing it (lazily) on first use and memoizing. Null when <paramref name="name"/> isn't a
     /// bound file import (e.g. an unconfigured <c>std</c>, or a plain value const).</summary>
     internal ZigModule? ResolveImport(string name)
     {
         if (_importModules.TryGetValue(name, out var existing)) { return existing; }
+        if (!_importSpecs.ContainsKey(name) && _moduleConstExprs.TryGetValue(name, out var alias)
+            && _resolvingConstExports.Add(name))
+        {
+            try
+            {
+                if (ResolveModulePath(alias) is { } aliased)
+                {
+                    _importModules[name] = aliased;
+                    return aliased;
+                }
+            }
+            finally { _resolvingConstExports.Remove(name); }
+        }
         if (!_importSpecs.TryGetValue(name, out var spec) || _moduleGraph is null) { return null; }
         // A SYNTHETIC module (`builtin` / `root` — road-to-zig-std S3): generated as Zig source and
         // prepared exactly like a file module, so navigation into it needs no second rule. Checked
@@ -224,8 +242,23 @@ internal sealed partial class ZigLowering
     /// the emitted C# type name; two modules declaring a same-named aggregate therefore collide, and
     /// <see cref="IrBuilder.RegisterStructType"/> throws rather than silently dropping the second.
     /// Module-qualified naming is the real fix (docs/plans/deferred.md).</para></summary>
-    internal CType? ResolveExportedType(string name) =>
-        _containerTypes.TryGetValue(name, out var t) ? t : null;
+    internal CType? ResolveExportedType(string name)
+    {
+        if (_containerTypes.TryGetValue(name, out var t) || _typeAliases.TryGetValue(name, out t)) { return t; }
+        if (_moduleConstExprs.TryGetValue(name, out var rhs) && _resolvingConstExports.Add(name))
+        {
+            try
+            {
+                if (TryTypeAliasRhs(rhs, out var alias))
+                {
+                    _typeAliases[name] = alias;
+                    return alias;
+                }
+            }
+            finally { _resolvingConstExports.Remove(name); }
+        }
+        return null;
+    }
 
     /// <summary>Lower everything this lazy module has enqueued (from each cursor onward). Runs at TOP
     /// LEVEL only. A body may reference a sibling (declaring + enqueuing it) — the cursor loops pick
@@ -790,6 +823,14 @@ internal sealed partial class ZigLowering
         // Set the lazy flag BEFORE pass 0 so `@import` binding (TryComptimeConstBinding, pass 0a) knows
         // to record a special/unmodeled import (`builtin`/`root`) as a deferred spec rather than throw.
         _lazy = lazy;
+        foreach (var decl in decls)
+        {
+            switch (Unwrap(decl).Content)
+            {
+                case Zig.ConstDecl d: _moduleConstExprs[Tok(d.Arg1)] = d.Arg3; break;
+                case Zig.ConstDeclTyped d: _moduleConstExprs[Tok(d.Arg1)] = d.Arg5; break;
+            }
+        }
 
         // Container methods (struct/enum/union), collected across pass 0 as mangled
         // `TypeName_method` free functions and declared in pass 1 (so a method body can
@@ -1315,6 +1356,7 @@ internal sealed partial class ZigLowering
                 case Zig.ParamsTrail t: stack.Push(t.Arg0); break;  // [Param, ','] trailing comma
                 case Zig.ArgsCons c:   stack.Push(c.Arg2); stack.Push(c.Arg0); break;  // [Expr, ',', ArgList]
                 case Zig.ArgsOne o:    stack.Push(o.Arg0); break;
+                case Zig.ArgsOneTrailing o: stack.Push(o.Arg0); break;
                 case Zig.ProngsCons c: stack.Push(c.Arg2); stack.Push(c.Arg0); break;  // [Prongs, ',', Prong] (left-recursive)
                 case Zig.ProngsOne o:  stack.Push(o.Arg0); break;
                 case Zig.CaseValsCons c: stack.Push(c.Arg2); stack.Push(c.Arg0); break;  // [Expr, ',', CaseVals]

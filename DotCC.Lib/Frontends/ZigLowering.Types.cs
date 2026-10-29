@@ -256,6 +256,13 @@ internal sealed partial class ZigLowering
                 type = LowerStdType(rhs);
                 return true;
 
+            // Imported type aliases and namespace re-exports share the ordinary
+            // module graph, e.g. `const Item = api.types.Item;`.
+            case Zig.Field f when ResolveModulePath(f.Arg0)?.Lowering is { } owner
+                && owner.ResolveExportedType(Tok(f.Arg2)) is { } exported:
+                type = exported;
+                return true;
+
             // A bare identifier — an alias ONLY if it names a type (guarded so a value const isn't stolen).
             case Zig.Ident id when IsTypeName(Tok(id.Arg0)):
                 type = LowerTypeName(Tok(id.Arg0));

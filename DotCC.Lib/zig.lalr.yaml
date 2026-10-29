@@ -751,13 +751,7 @@ productions:
     rules:
       - { lhs: RhsExpr, rhs: [Expr] }
       - { lhs: RhsExpr, rhs: [IfExpr] }
-      # `switch` as a VALUE (Milestone L) — same structural trick as IfExpr: a RhsExpr
-      # alternative, NOT a Primary, so it never starts an Expr-cascade sub-operand and never
-      # clashes with the statement-level `switch` (which is reached only at Stmt position; a
-      # SwitchExpr only after `=` / `return` / an init). `switch` isn't in the cascade's first
-      # set, so the alternative is conflict-free. Reuses the same `Prongs`, whose bodies may now
-      # be a bare value Expr (`v => e`) — a switch expression's prongs YIELD a value.
-      - { lhs: RhsExpr, rhs: [SwitchExpr] }
+      - { lhs: RhsExpr, rhs: ['{', '}'], action: emptyBlockExpr }
       # A labeled block as a VALUE (Milestone L, part 2) — `blk: { …; break :blk v; }`. Same
       # structural trick as IfExpr/SwitchExpr: a RhsExpr alternative, NOT a Primary, so it never
       # starts an Expr-cascade sub-operand. `blk:` is `IDENT ':'`; the RhsExpr cascade's other
@@ -1058,6 +1052,10 @@ productions:
       - { lhs: Primary, rhs: ['true'],              action: trueLit }
       - { lhs: Primary, rhs: ['false'],             action: falseLit }
       - { lhs: Primary, rhs: [CHAR],                action: charLit }
+      # A switch has a closing brace, so unlike an if-expression its boundary is
+      # unambiguous inside an operator or call argument. Share the value switch
+      # node with the full-RHS form through the ordinary expression cascade.
+      - { lhs: Primary, rhs: [SwitchExpr] }
       - { lhs: Primary, rhs: ['.', IDENT],          action: enumLit }
       # Anonymous struct literal `.{ … }` (Milestone D1). The leading `.` is the SAME token
       # as enumLit's; they split cleanly on the next symbol (`{` → struct literal, IDENT →
@@ -1088,6 +1086,7 @@ productions:
     rules:
       - { lhs: ArgList, rhs: [Expr, ',', ArgList], action: argsCons }
       - { lhs: ArgList, rhs: [Expr],                action: argsOne }
+      - { lhs: ArgList, rhs: [Expr, ','],           action: argsOneTrailing }
 
   # ===== switch prongs (Milestone C2) =====
   # LEFT-recursive prong list — the form that makes the optional trailing comma a clean
