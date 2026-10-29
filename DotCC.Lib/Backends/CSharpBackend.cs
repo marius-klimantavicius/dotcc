@@ -3159,9 +3159,9 @@ internal sealed partial class CSharpBackend
     // intercepts them by NAME and lowers onto the seq-cst Atomic.* helpers
     // (DotCC.Libc/AtomicLib.cs). arg0 is always a pointer to the atomic object —
     // `*(arg0)` is the location, and its pointee type casts the value args (C's
-    // int→uint/float conversions aren't implicit in C#). The `_explicit` variants'
-    // trailing memory_order args are ignored (every order maps to a full barrier —
-    // the safe over-approximation, same as volatile).
+    // int→uint/float conversions aren't implicit in C#). Ordered variants retain
+    // their memory_order expressions through guarded runtime calls; supported
+    // orders still map conservatively to a full barrier.
 
     /// <summary>C# numeric types Atomic.* covers with same-width Interlocked access.</summary>
     private static readonly HashSet<string> _atomicEligible = new(StringComparer.Ordinal)
@@ -3182,6 +3182,8 @@ internal sealed partial class CSharpBackend
         if (args.Count > 0 && args[0].Type.Unqualified is CType.Pointer pointer
             && pointer.Pointee.Unqualified.IsPointerLowered)
             return LowerPointerAtomicCall(c, name, pointer.Pointee.Unqualified);
+
+        if (LowerC11AtomicOrders(c, name) is { } ordered) return ordered;
 
         // Pointee C# type of arg0 (a `T*`), or null if undeterminable.
         string? Pointee() => args.Count > 0 && args[0].Type.Unqualified is CType.Pointer p

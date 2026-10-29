@@ -21,6 +21,20 @@ public static class GnuAtomic
     public static void Store<T>(ref T loc, T value, int order) where T : unmanaged
     { Order(order, store: true); Atomic.Store(ref loc, value); }
 
+    // Preserve the frontend's existing plain-access fallback (notably _Bool)
+    // while evaluating and validating its order before touching storage.
+    public static T PlainLoad<T>(ref T loc, int order) where T : unmanaged
+    { Order(order, load: true); return loc; }
+
+    public static void PlainStore<T>(ref T loc, T value, int order) where T : unmanaged
+    { Order(order, store: true); loc = value; }
+
+    public static void ThreadFence(int order)
+    { Order(order); Atomic.ThreadFence(); }
+
+    public static void SignalFence(int order)
+    { Order(order); Atomic.SignalFence(); }
+
     public static T Exchange<T>(ref T loc, T value, int order) where T : unmanaged
     { Order(order); return Atomic.Exchange(ref loc, value); }
 

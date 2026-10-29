@@ -144,8 +144,12 @@ public sealed class AtomicTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src }, emit: EmitMode.ManagedLib);
-            emitted.ShouldContain("Atomic.Load(ref *(p))");
-            emitted.ShouldContain($"Atomic.Store(ref *(p), ({csType})(value))");
+            emitted.ShouldContain(explicitOrder
+                ? "GnuAtomic.Load(ref *(p), (int)(memory_order.memory_order_seq_cst))"
+                : "Atomic.Load(ref *(p))");
+            emitted.ShouldContain(explicitOrder
+                ? $"GnuAtomic.Store(ref *(p), ({csType})(value), (int)(memory_order.memory_order_seq_cst))"
+                : $"Atomic.Store(ref *(p), ({csType})(value))");
             emitted.ShouldContain($"*(p) = ({csType})(7)");
             emitted.ShouldContain("return 1;");
         }
@@ -181,7 +185,7 @@ public sealed class AtomicTests
     }
 
     [Fact]
-    public void compare_exchange_returns_cbool_and_explicit_ignores_order()
+    public void compare_exchange_returns_cbool_and_explicit_retains_orders()
     {
         var src = WriteTemp("""
             #include <stdatomic.h>
@@ -196,8 +200,7 @@ public sealed class AtomicTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            // _explicit stripped, the two memory_order args ignored; expected is a ref.
-            emitted.ShouldContain("(CBool)Atomic.CompareExchange(ref *(&x), ref *(&e), (int)(2))");
+            emitted.ShouldContain("(CBool)GnuAtomic.CompareExchange(ref *(&x), ref *(&e), (int)(2), false, (int)(memory_order.memory_order_seq_cst), (int)(memory_order.memory_order_relaxed))");
         }
         finally { File.Delete(src); }
     }
@@ -242,7 +245,7 @@ public sealed class AtomicTests
             var emitted = Compiler.EmitCSharp(new[] { src });
             emitted.ShouldContain("(CBool)(Atomic.Exchange(ref *(&f), 1) != 0)");
             emitted.ShouldContain("Atomic.Store(ref *(&f), 0)");
-            emitted.ShouldContain("Atomic.ThreadFence()");
+            emitted.ShouldContain("GnuAtomic.ThreadFence((int)(memory_order.memory_order_seq_cst))");
         }
         finally { File.Delete(src); }
     }
