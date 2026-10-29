@@ -12,6 +12,7 @@ internal sealed partial class IrBuilder
     internal static string LayoutType(CType type) => type.Unqualified switch
     {
         CType.Prim primitive => $"p:{primitive.Bytes}:{(type.AlignmentOverride != 0 ? type.AlignmentOverride : primitive.Bytes)}",
+        CType.LongDoubleStorage16 => $"p:16:{(type.AlignmentOverride != 0 ? type.AlignmentOverride : 16)}",
         CType.Func { IsFunctionType: true } => "unsupported:function-type",
         CType.Pointer or CType.Func => $"p:8:{(type.AlignmentOverride != 0 ? type.AlignmentOverride : 8)}",
         CType.Enum enumeration => LayoutType(type.AlignmentOverride != 0

@@ -169,6 +169,7 @@ public static partial class Compiler
             throw new CompileException("managed-library output does not support native import or archive bindings");
         var asObject = emit == EmitMode.Object;
         var irBuilder = BuildIr(inputPaths, includeDirs, defines, dialect, warnings: warnings, testMode: testMode, preprocessing: preprocessing, objectMode: asObject);
+        ValidateSourceAbiBindings(irBuilder, emit);
         if (asObject) QualifyObjectInternalFunctions(irBuilder, inputPaths);
         else irBuilder.ValidateWeakFunctionReferences();
         // -Wconversion: collect narrowing-conversion warnings during codegen, then
@@ -233,7 +234,7 @@ public static partial class Compiler
                 .Concat(irBuilder.Globals.Select(g => g.Sym.Name))
                 .Distinct(StringComparer.Ordinal);
             return SingleSource(SerializeFragment(cg.Functions, cg.TypeDeclarations ?? new Dictionary<string, string>(), cg.Aliases, cg.Globals, cg.MainArity,
-                objImports, objDefs, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, cg.FunctionSources, preprocessing?.ProfileHash ?? "none", usesZig, aggregateMetadata: cg.AggregateMetadata, aggregateIdentities: irBuilder.AggregateIdentityGraph(cg.UsedFunctionAddresses), anonymousTypedefs: irBuilder.AnonymousTypedefs, inlineMetadata: cg.InlineMetadata, globalNames: irBuilder.Globals.Select(g => g.Sym.TargetName), usedFunctionAddresses: cg.UsedFunctionAddresses, functionOverrides: irBuilder.FunctionOverrideMetadata, externalTypes: preprocessing?.ExternalTypes, instanceMethods: outputOptions?.InstanceMethods == true, weakFunctions: irBuilder.Functions.Where(f => f.Sym.IsWeak).Select(f => f.Sym.TargetName), weakReferences: irBuilder.ReferencedWeakFunctionNames));
+                objImports, objDefs, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, cg.FunctionSources, preprocessing?.ProfileHash ?? "none", usesZig, aggregateMetadata: cg.AggregateMetadata, aggregateIdentities: irBuilder.AggregateIdentityGraph(cg.UsedFunctionAddresses), anonymousTypedefs: irBuilder.AnonymousTypedefs, inlineMetadata: cg.InlineMetadata, globalNames: irBuilder.Globals.Select(g => g.Sym.TargetName), usedFunctionAddresses: cg.UsedFunctionAddresses, functionOverrides: irBuilder.FunctionOverrideMetadata, externalTypes: preprocessing?.ExternalTypes, instanceMethods: outputOptions?.InstanceMethods == true, weakFunctions: irBuilder.Functions.Where(f => f.Sym.IsWeak).Select(f => f.Sym.TargetName), weakReferences: irBuilder.ReferencedWeakFunctionNames, sourceAbiForeignProof: SourceAbiObjectProof(irBuilder)));
         }
         if (UsesInlineOptions(outputOptions))
         {

@@ -30,7 +30,7 @@ internal sealed partial class IrBuilder
 
     private static CType WithScalarAlignment(CType type, int alignment)
     {
-        if (type.Unqualified is not (CType.Prim or CType.Pointer or CType.Func or CType.Enum))
+        if (type.Unqualified is not (CType.Prim or CType.LongDoubleStorage16 or CType.Pointer or CType.Func or CType.Enum))
             throw new IrUnsupportedException("GNU aligned type attribute currently requires a scalar type");
         return type with { AlignmentOverride = alignment };
     }

@@ -26,7 +26,7 @@ public sealed partial class CPreprocessingOptions
     public string? ProfilePath { get; }
     public string ProfileHash { get; }
     public TextWriter? Report { get; }
-    public bool HasOverrides => Rules.Length != 0 || FieldTypeNames.Count != 0 || FunctionOverrides.Count != 0 || ExternalTypes.Count != 0 || StableFunctionPointers.Count != 0 || EnumExports.Count != 0;
+    public bool HasOverrides => Rules.Length != 0 || FieldTypeNames.Count != 0 || FunctionOverrides.Count != 0 || ExternalTypes.Count != 0 || StableFunctionPointers.Count != 0 || EnumExports.Count != 0 || SourceAbi.LongDouble != CLongDoubleRepresentation.Binary64;
     /// <summary>Stable names for anonymous aggregate types selected through C fields.</summary>
     public IReadOnlyList<FieldTypeNameOverride> FieldTypeNames { get; }
     /// <summary>Additional macro names or glob patterns to emit as public fields.</summary>
@@ -36,8 +36,10 @@ public sealed partial class CPreprocessingOptions
     public bool HasMacroExports => EmitDefines.Count != 0;
     internal MacroExportSelector ExportSelector { get; }
 
-    public CPreprocessingOptions(IReadOnlyList<MacroOverride> macroOverrides, string? profilePath = null, TextWriter? report = null, IReadOnlyList<string>? emitDefines = null, IReadOnlyList<FieldTypeNameOverride>? fieldTypeNames = null, IReadOnlyList<FunctionOverride>? functionOverrides = null, IReadOnlyList<ExternalTypeOverride>? externalTypes = null, IReadOnlyList<string>? stableFunctionPointers = null, IReadOnlyList<string>? enumExports = null)
+    public CPreprocessingOptions(IReadOnlyList<MacroOverride> macroOverrides, string? profilePath = null, TextWriter? report = null, IReadOnlyList<string>? emitDefines = null, IReadOnlyList<FieldTypeNameOverride>? fieldTypeNames = null, IReadOnlyList<FunctionOverride>? functionOverrides = null, IReadOnlyList<ExternalTypeOverride>? externalTypes = null, IReadOnlyList<string>? stableFunctionPointers = null, IReadOnlyList<string>? enumExports = null, CSourceAbi? sourceAbi = null)
     {
+        SourceAbi = sourceAbi ?? new();
+        if (!Enum.IsDefined(SourceAbi.LongDouble)) throw new CompileException("unsupported source ABI long double representation");
         EnumExports = Array.AsReadOnly((enumExports ?? Array.Empty<string>()).ToArray());
         _ = new MacroExportSelector(EnumExports, "enumExports");
         StableFunctionPointers = ValidateStableFunctionPointers(stableFunctionPointers);
@@ -68,6 +70,7 @@ public sealed partial class CPreprocessingOptions
             }
             WriteFunctionOverridesProfile(json);
             WriteExternalTypesProfile(json);
+            WriteSourceAbiProfile(json);
             if (StableFunctionPointers.Count != 0)
             {
                 json.WriteStartObject();
@@ -89,7 +92,7 @@ public sealed partial class CPreprocessingOptions
         ProfileHash = Convert.ToHexString(SHA256.HashData(bytes.ToArray())).ToLowerInvariant();
     }
 
-    public CPreprocessingOptions WithoutReport() => new(Rules.Select(r => r.Rule).ToArray(), ProfilePath, emitDefines: EmitDefines, fieldTypeNames: FieldTypeNames, functionOverrides: FunctionOverrides, externalTypes: ExternalTypes, stableFunctionPointers: StableFunctionPointers, enumExports: EnumExports);
+    public CPreprocessingOptions WithoutReport() => new(Rules.Select(r => r.Rule).ToArray(), ProfilePath, emitDefines: EmitDefines, fieldTypeNames: FieldTypeNames, functionOverrides: FunctionOverrides, externalTypes: ExternalTypes, stableFunctionPointers: StableFunctionPointers, enumExports: EnumExports, sourceAbi: SourceAbi);
 
     /// <summary>Load strict version-1 JSON and optionally replace a name's profile rules with a literal CLI rule.</summary>
     public static CPreprocessingOptions Load(string? profilePath = null, IReadOnlyList<string>? overrides = null, TextWriter? report = null, IReadOnlyList<string>? emitDefines = null, IReadOnlyList<string>? typeNames = null)
@@ -100,13 +103,15 @@ public sealed partial class CPreprocessingOptions
         var externalTypes = new List<ExternalTypeOverride>();
         var stableFunctionPointers = Array.Empty<string>();
         var enumExports = Array.Empty<string>();
+        var sourceAbi = new CSourceAbi();
         if (profilePath is not null)
         {
             try
             {
                 using var doc = JsonDocument.Parse(File.ReadAllText(profilePath));
                 var root = doc.RootElement;
-                Fields(root, "version", "macroOverrides", "fieldTypeNames", "functionOverrides", "externalTypes", "stableFunctionPointers", "enumExports");
+                Fields(root, "version", "macroOverrides", "fieldTypeNames", "functionOverrides", "externalTypes", "stableFunctionPointers", "enumExports", "sourceAbi");
+                sourceAbi = ReadSourceAbi(root);
                 if (root.TryGetProperty("enumExports", out var enums)) enumExports = Strings(enums);
                 if (root.TryGetProperty("stableFunctionPointers", out var pointers)) stableFunctionPointers = Strings(pointers);
                 functionOverrides.AddRange(ReadFunctionOverrides(root, profilePath));
@@ -160,7 +165,7 @@ public sealed partial class CPreprocessingOptions
             rules.Add(new(name, definition[(equals + 1)..], Literal: true, Origin: "--override-macro"));
         }
         externalTypes.AddRange((typeNames ?? Array.Empty<string>()).Select(name => new ExternalTypeOverride(name)));
-        return new(rules, profilePath, report, emitDefines, fieldTypeNames, functionOverrides, externalTypes, stableFunctionPointers, enumExports);
+        return new(rules, profilePath, report, emitDefines, fieldTypeNames, functionOverrides, externalTypes, stableFunctionPointers, enumExports, sourceAbi);
     }
 
     private static void Fields(JsonElement element, params string[] allowed)

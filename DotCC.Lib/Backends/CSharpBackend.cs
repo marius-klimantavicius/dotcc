@@ -884,6 +884,7 @@ internal sealed partial class CSharpBackend
 
     private void Stmt(StringBuilder sb, CStmt s, int ind)
     {
+        SourceAbiValidation.Statement(s);
         var pad = Pad(ind);
         switch (s)
         {
@@ -1701,6 +1702,7 @@ internal sealed partial class CSharpBackend
     /// implicitly; false when the value stores as-is.</summary>
     private bool TryCoerceCast(CExpr value, CType target, out string text)
     {
+        SourceAbiValidation.Conversion(value.Type, target);
         text = "";
         var tgt = target.Unqualified;
         var src = RenderedScalarType(value);
@@ -2082,6 +2084,7 @@ internal sealed partial class CSharpBackend
     /// when their context needs them.</summary>
     private (string Text, int Prec) Render(CExpr e)
     {
+        SourceAbiValidation.Expression(e, materializing: true);
         switch (e)
         {
             case LitInt i: return (_target.RenderIntLit(i), PPrimary);

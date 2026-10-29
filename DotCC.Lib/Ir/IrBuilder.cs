@@ -2280,14 +2280,18 @@ internal sealed partial class IrBuilder
             "Float128" => CType.Float128,
             "__int128" => u > 0 ? CType.UInt128 : CType.Int128,  // signed is the default
             "float" => CType.Float,
-            "double" => lng >= 1 ? CType.LongDouble : CType.Double,
+            "double" => lng >= 1 ? SourceLongDouble : CType.Double,
             "char" => u > 0 ? CType.UChar : s > 0 ? CType.SChar : CType.Char,
             _ => sh > 0 ? (u > 0 ? CType.UShort : CType.Short)
                  : lng >= 2 ? (u > 0 ? CType.ULongLong : CType.LongLong)
                  : lng == 1 ? (u > 0 ? CType.ULong : CType.Long)
                  : (u > 0 ? CType.UInt : CType.Int),
         };
-        if (isComplex) { return CType.Complex.WithQuals(quals); }
+        if (isComplex)
+        {
+            SourceAbiValidation.NumericType(t);
+            return CType.Complex.WithQuals(quals);
+        }
         return t.WithQuals(quals);
     }
 
@@ -3694,6 +3698,7 @@ internal sealed partial class IrBuilder
             _ => throw new IrUnsupportedException(TypeName(it.Content)),
         };
         var result = e with { Pos = pos };
+        SourceAbiValidation.Expression(result);
         if (result is Assign assign && Unparen(assign.Target) is RuntimeIntrinsic)
             throw new IrUnsupportedException("runtime intrinsic result is not an lvalue");
         // Track every libc setjmp call by the FINAL (post-Pos-clone) object — the reference that
@@ -4634,7 +4639,9 @@ internal sealed partial class IrBuilder
         var raw = Tok(f.Arg0);
         if (raw.Length >= 2 && raw[0] == '0' && raw[1] is 'x' or 'X') { Gate(1999, "hex float literal", f.Arg0); }
         // §6.4.4.2: f/F suffix → float; otherwise double (long double IS double here).
-        var type = raw.Length > 0 && raw[^1] is 'f' or 'F' ? CType.Float : CType.Double;
+        var type = raw.Length > 0 && raw[^1] is 'f' or 'F' ? CType.Float
+            : raw.Length > 0 && raw[^1] is 'l' or 'L' && SourceAbi.LongDouble == CLongDoubleRepresentation.X87Storage16
+                ? SourceLongDouble : CType.Double;
         return new LitFloat(LowerFloat(raw)) { Type = type };
     }
 

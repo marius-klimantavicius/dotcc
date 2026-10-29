@@ -28,7 +28,7 @@ internal sealed partial class CSharpBackend
     {
         if (type.Unqualified is CType.Named named && !HasRequestedTypeAlignment(named.Name)) return 8;
         if (type.Unqualified is CType.Array array) return TypeAlignment(array.Element);
-        if (type.Unqualified is not (CType.Prim or CType.Pointer or CType.Func or CType.Enum or CType.Array or CType.Named)) return 0;
+        if (type.Unqualified is not (CType.Prim or CType.Pointer or CType.Func or CType.Enum or CType.Array or CType.Named or CType.LongDoubleStorage16)) return 0;
         return _offsetModel.Type(IrBuilder.LayoutType(type)).Alignment;
     }
 

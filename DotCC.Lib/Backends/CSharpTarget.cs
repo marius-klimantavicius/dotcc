@@ -44,6 +44,7 @@ internal sealed class CSharpTarget(bool instanceMethods = false, IReadOnlyDictio
         CType.Enum e => aggregateNames?.GetValueOrDefault(e.Name, EmitHelpers.Id(e.Name)) ?? EmitHelpers.Id(e.Name),
         CType.ComplexType => "global::System.Numerics.Complex",
         CType.Float128Type => "Float128",
+        CType.LongDoubleStorage16 => "LongDouble80Storage",
         // A Zig value optional `?T` → C# Nullable<T> (`T?`): null = none, `.?` = .Value,
         // `orelse` = `??`. (An optional POINTER `?*T` is a bare nullable `T*`, never this.)
         CType.Optional o => RenderType(o.Inner) + "?",

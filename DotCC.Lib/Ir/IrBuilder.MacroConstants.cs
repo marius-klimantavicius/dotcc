@@ -17,6 +17,7 @@ internal sealed partial class IrBuilder
     private IrBuilder(IrBuilder source)
     {
         _macroEvaluation = true;
+        SourceAbi = source.SourceAbi;
         _symbols = source._symbols.CopyForEvaluation();
         _embeds = source._embeds;
         _warnings = source._warnings;

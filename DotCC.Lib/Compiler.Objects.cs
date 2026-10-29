@@ -65,7 +65,7 @@ public static partial class Compiler
     private static string SerializeFragment(
         string functions, IReadOnlyDictionary<string, string> typeDecls, string aliases, IReadOnlyList<Backends.CSharpGlobalSource> globals, int mainArity,
         IReadOnlyList<(string Name, string FieldType)> importSpecs, IEnumerable<string> defNames, bool mainReturnsVoid = false,
-        bool mainReturnsErrUnion = false, bool mainErrPayloadIsVoid = false, IReadOnlyList<CSharpFunctionSource>? functionSources = null, string overrideProfile = "none", bool usesZig = false, IReadOnlyDictionary<string, ObjectAggregateMetadata>? aggregateMetadata = null, IReadOnlyList<AggregateIdentity>? aggregateIdentities = null, IReadOnlyDictionary<string, string>? anonymousTypedefs = null, IReadOnlyDictionary<string, InlineFunctionMetadata>? inlineMetadata = null, IEnumerable<string>? globalNames = null, IEnumerable<string>? usedFunctionAddresses = null, IEnumerable<FunctionOverrideMetadata>? functionOverrides = null, IReadOnlyList<ExternalTypeOverride>? externalTypes = null, bool instanceMethods = false, IEnumerable<string>? weakFunctions = null, IEnumerable<string>? weakReferences = null)
+        bool mainReturnsErrUnion = false, bool mainErrPayloadIsVoid = false, IReadOnlyList<CSharpFunctionSource>? functionSources = null, string overrideProfile = "none", bool usesZig = false, IReadOnlyDictionary<string, ObjectAggregateMetadata>? aggregateMetadata = null, IReadOnlyList<AggregateIdentity>? aggregateIdentities = null, IReadOnlyDictionary<string, string>? anonymousTypedefs = null, IReadOnlyDictionary<string, InlineFunctionMetadata>? inlineMetadata = null, IEnumerable<string>? globalNames = null, IEnumerable<string>? usedFunctionAddresses = null, IEnumerable<FunctionOverrideMetadata>? functionOverrides = null, IReadOnlyList<ExternalTypeOverride>? externalTypes = null, bool instanceMethods = false, IEnumerable<string>? weakFunctions = null, IEnumerable<string>? weakReferences = null, string? sourceAbiForeignProof = null)
     {
         var sb = new StringBuilder();
         sb.Append(MagicObject).Append(" 2 — link with `dotcc <objs> -o <out>`.\n");
@@ -74,6 +74,7 @@ public static partial class Compiler
         sb.Append("//!!dotcc-obj calling-convention:").Append(instanceMethods ? "instance-v1" : "static-v1").Append('\n');
         sb.Append("//!!dotcc-obj source-language:").Append(usesZig ? "zig" : "c").Append('\n');
         sb.Append("//!!dotcc-obj override-profile:").Append(overrideProfile).Append('\n');
+        sb.Append(sourceAbiForeignProof);
         sb.Append(SerializeFunctionOverrides(functionOverrides));
         sb.Append(SerializeExternalTypes(externalTypes));
         sb.Append(EnumConstantsVersion).Append('\n');
@@ -181,6 +182,7 @@ public static partial class Compiler
         var definedNames = new HashSet<string>(StringComparer.Ordinal);
 
         var objectTexts = objectPaths.Select(path => File.ReadAllText(path).ReplaceLineEndings("\n")).ToArray();
+        var foreignAbiProofs = objectTexts.Select((text, index) => SourceAbiForeignMetadata.Read(text, objectPaths[index])).ToArray();
         foreach (var text in objectTexts) InlineFunctionMetadata.ValidateVersion(text);
         var identityGraphs = objectTexts.Select(AggregateIdentities.Read).ToArray();
         var variantNames = AggregateIdentities.Plan(objectPaths.Select((path, index) =>
@@ -453,6 +455,8 @@ public static partial class Compiler
         // in any object — function or global — is resolved internally, not imported).
         // Without `-l`, survivors stay unresolved → the same CS0103 as a normal link.
         var importsClass = "";
+        if (imports is { HasAny: true })
+            ValidateSourceAbiObjectImports(importSpecs.Keys.Where(name => !definedNames.Contains(name)), objectTexts, objectPaths, foreignAbiProofs);
         if (imports is { LinkLibraries.Count: > 0 })
         {
             var survivors = importSpecs

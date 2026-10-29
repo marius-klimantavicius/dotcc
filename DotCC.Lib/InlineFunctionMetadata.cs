@@ -99,7 +99,7 @@ internal sealed record InlineFunctionMetadata(string OriginalName, bool IsStatic
                     if (enumeration == null) { Supported = false; break; }
                     foreach (var member in enumeration.Members) { Atom(member.Name); Atom(member.Value); }
                     break;
-                case CType.Prim or CType.VoidType or CType.Named or CType.Enum or CType.ComplexType or CType.Float128Type: break;
+                case CType.Prim or CType.VoidType or CType.Named or CType.Enum or CType.ComplexType or CType.Float128Type or CType.LongDoubleStorage16: break;
                 default: Supported = false; break;
             }
         }
@@ -147,7 +147,7 @@ internal sealed record InlineFunctionMetadata(string OriginalName, bool IsStatic
             if (type.IsVolatile || type.IsAtomic) return false;
             switch (type)
             {
-                case CType.Prim or CType.Enum or CType.ComplexType or CType.Float128Type: return true;
+                case CType.Prim or CType.Enum or CType.ComplexType or CType.Float128Type or CType.LongDoubleStorage16: return true;
                 case CType.Array a: return a.Count != null && IsConstantValueType(a.Element, visiting);
                 case CType.Named n:
                     if (!visiting.Add(n.Name)) return false;

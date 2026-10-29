@@ -24,6 +24,7 @@ public static partial class Compiler
     {
         var globalNames = new HashSet<string>(ir.Globals.Select(g => g.Sym.Name), StringComparer.Ordinal);
         var result = new List<Ir.Symbol>();
+        var sourceAbi = new SourceAbiForeignChecker(ir);
         foreach (var sym in ir.ProtoOnlyReferenced.Values.OrderBy(s => s.Name, StringComparer.Ordinal))
         {
             if (sym.Type is Ir.CType.Func { Variadic: true })
@@ -42,6 +43,7 @@ public static partial class Compiler
                     $"dotcc: warning: import candidate '{sym.Name}' collides with a defined global — skipped (the definition wins)");
                 continue;
             }
+            sourceAbi.Validate((Ir.CType.Func)sym.Type.Unqualified, sym.Name);
             result.Add(sym);
         }
         foreach (var name in ir.ExternDataReferenced)

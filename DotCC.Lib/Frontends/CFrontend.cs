@@ -143,7 +143,8 @@ internal sealed class CFrontend : IFrontend
         Ir.IrBuilder NewBuilder(IReadOnlyDictionary<string, string>? typeNames = null, bool discovery = false)
         {
             var builder = new Ir.IrBuilder(typeNames is null && !discovery ? gate : null, names ?? new Backends.CSharpNameLegalizer(), embeds, warnings)
-            { StableAnonymousNames = req.ObjectMode || naming || multiple, AnonymousTypeNames = typeNames };
+            { StableAnonymousNames = req.ObjectMode || naming || multiple, AnonymousTypeNames = typeNames,
+                SourceAbi = req.Preprocessing?.SourceAbi ?? new CSourceAbi() };
             builder.ConfigureExternalTypes(req.Preprocessing?.ExternalTypes);
             builder.ConfigureFunctionOverrides(req.Preprocessing);
             return builder;
