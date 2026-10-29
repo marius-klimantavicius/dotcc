@@ -45,15 +45,36 @@ internal sealed partial class IrBuilder
         // linkage roots. Earlier discovery passes remain conservative until
         // address-use information is available. All global declarations retain
         // their contracts, including extern arrays and callback-valued objects.
+        var functions = FunctionPointerCandidates.Where(s => s.Storage != Storage.Static).ToArray();
         var definedFunctions = Functions.Select(f => f.Sym).ToHashSet();
-        var symbols = FunctionPointerCandidates.Where(s => s.Storage != Storage.Static
-                && (usedFunctionAddresses == null || definedFunctions.Contains(s)
-                    || _referencedFuncs.Contains(s.Name) || usedFunctionAddresses.Contains(s.TargetName)))
+        var symbols = functions.Where(s => usedFunctionAddresses == null || definedFunctions.Contains(s)
+                || _referencedFuncs.Contains(s.Name) || usedFunctionAddresses.Contains(s.TargetName))
             .Concat(Globals.Select(g => g.Sym).Where(s => !_internalGlobals.Contains(s)))
             .Concat(_symbols.FileScopeSymbols.Where(s => s.Kind == SymKind.Var && !_internalGlobals.Contains(s)))
             .DistinctBy(s => s.TargetName).ToArray();
         foreach (var symbol in symbols)
             foreach (var name in AggregateIdentities.References(symbol.Type)) Expose(name);
+        // Unused prototypes do not bind their complete external signatures.
+        // Keep declaration evidence for each referenced tag instead: matching
+        // symbol/tag pairs constrain that tag and its position in the signature,
+        // while distinct private/public tags remain independent for typeof.
+        IEnumerable<string> ReferencedDeclarations(CType type)
+        {
+            var visited = new HashSet<string>(StringComparer.Ordinal);
+            void Visit(string name)
+            {
+                if (!Defined(name) || !visited.Add(name) || !definitions.TryGetValue(name, out var definition)) return;
+                foreach (var field in definition.Fields)
+                    foreach (var dependency in AggregateIdentities.References(field.Type)) Visit(dependency);
+            }
+            foreach (var name in AggregateIdentities.References(type)) Visit(name);
+            return visited.Order(StringComparer.Ordinal);
+        }
+        var declarations = functions.SelectMany(s => ReferencedDeclarations(s.Type).Select(name =>
+            AggregateIdentities.DeclarationContract(s.TargetName, s.Type, name, enums.GetValueOrDefault(name)?.Underlying)))
+            .DistinctBy(c => (c.Symbol, c.References.Single())).ToArray();
+        foreach (var declaration in declarations)
+            foreach (var name in declaration.References) Expose(name);
         var nodes = Types.Select(t => new AggregateIdentity(t.Name, GeneratedAggregateOrigins.GetValueOrDefault(t.Name, t.Name), _taggedAggregates.Contains(t.Name),
             exposed.Contains(t.Name), t.Fields.SelectMany(f => AggregateIdentities.References(f.Type))
                 .Where(Defined).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray(),
@@ -66,6 +87,6 @@ internal sealed partial class IrBuilder
             return contract with { Type = (s.Kind == SymKind.Func ? "function|" : "object|") + contract.Type,
                 References = contract.References.Where(Defined).ToArray() };
         }).Where(c => c.References.Length != 0).ToArray();
-        return new AggregateIdentitySet(nodes, roots);
+        return new AggregateIdentitySet(nodes, roots) { Declarations = declarations };
     }
 }

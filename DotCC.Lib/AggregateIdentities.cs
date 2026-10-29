@@ -22,6 +22,9 @@ internal sealed record AggregateLinkageContract(string Symbol, string Type, stri
 internal sealed record AggregateIdentitySet(IReadOnlyList<AggregateIdentity> Nodes,
     IReadOnlyList<AggregateLinkageContract> Linkage) : IReadOnlyList<AggregateIdentity>
 {
+    // Per-tag projections of external function declarations. These constrain
+    // matching tags without binding an unused function's entire signature.
+    internal IReadOnlyList<AggregateLinkageContract> Declarations { get; init; } = [];
     public int Count => Nodes.Count;
     public AggregateIdentity this[int index] => Nodes[index];
     public IEnumerator<AggregateIdentity> GetEnumerator() => Nodes.GetEnumerator();
@@ -32,10 +35,12 @@ internal static class AggregateIdentities
 {
     internal const string Version = "//!!dotcc-obj aggregate-identities:1";
     internal const string Prefix = "//!!dotcc-obj aggregate-identity:";
-    internal const string LinkageVersion = "//!!dotcc-obj aggregate-linkage:3";
+    internal const string LinkageVersion = "//!!dotcc-obj aggregate-linkage:4";
+    private const string EnumLinkageVersion = "//!!dotcc-obj aggregate-linkage:3";
     private const string ArrayLinkageVersion = "//!!dotcc-obj aggregate-linkage:2";
     private const string LegacyLinkageVersion = "//!!dotcc-obj aggregate-linkage:1";
     internal const string LinkagePrefix = "//!!dotcc-obj aggregate-linkage-root:";
+    internal const string DeclarationPrefix = "//!!dotcc-obj aggregate-declaration-root:";
     private const string TokenPrefix = "__DotCcAggregate_";
     internal static string Hash(string value) => Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(value)));
     internal static string Token(string name) => TokenPrefix + Hash(name);
@@ -71,12 +76,38 @@ internal static class AggregateIdentities
             + (n.Tagged ? "1" : "0") + " " + (n.Exposed ? "1" : "0") + " "
             + string.Join(",", n.Dependencies) + (n.IsEnum ? " 1" : "") + "\n")) + (graph is AggregateIdentitySet semantic
             ? LinkageVersion + "\n" + string.Concat(semantic.Linkage.OrderBy(c => c.Symbol, StringComparer.Ordinal)
-                .Select(c => LinkagePrefix + Encode(c.Symbol) + " " + Encode(c.Type) + " "
-                    + string.Join(",", c.References) + " "
-                    + string.Join(",", c.ArrayBounds.Select(n => n?.ToString(CultureInfo.InvariantCulture) ?? "-")) + "\n"))
+                .Select(c => SerializeContract(LinkagePrefix, c)))
+                + string.Concat(semantic.Declarations.OrderBy(c => c.Symbol, StringComparer.Ordinal)
+                    .ThenBy(c => c.References.Single(), StringComparer.Ordinal).Select(c => SerializeContract(DeclarationPrefix, c)))
             : "");
 
     private static string Encode(string value) => Convert.ToBase64String(Encoding.UTF8.GetBytes(value));
+
+    private static string SerializeContract(string prefix, AggregateLinkageContract contract) => prefix + Encode(contract.Symbol)
+        + " " + Encode(contract.Type) + " " + string.Join(",", contract.References) + " "
+        + string.Join(",", contract.ArrayBounds.Select(n => n?.ToString(CultureInfo.InvariantCulture) ?? "-")) + "\n";
+
+    internal static AggregateLinkageContract DeclarationContract(string symbol, CType type, string name, CType? enumUnderlying)
+    {
+        // Erase unrelated aggregate names, not type structure. Pointer depth,
+        // callback positions, scalar types, qualifiers and array bounds retain
+        // the same normalization as an actual linkage contract. An empty tag
+        // is an internal wildcard; no authored C tag can collide with it.
+        CType Project(CType value) => value switch
+        {
+            CType.Named n when n.Name != name => n with { Name = "" },
+            CType.Enum e when e.Name != name => new CType.Named("") { Quals = e.Quals },
+            CType.Pointer p => p with { Pointee = Project(p.Pointee) },
+            CType.Array a => a with { Element = Project(a.Element) },
+            CType.Func f => f with { Return = Project(f.Return), Params = f.Params.Select(Project).ToArray() },
+            _ => value,
+        };
+        var contract = LinkageContract(symbol, Project(type));
+        // A transitively referenced enum may not occur directly in the function
+        // type. Preserve its underlying type as well as its definition's shape.
+        return contract with { References = [name],
+            Type = (enumUnderlying == null ? "" : ObjectAggregateMetadata.Describe(enumUnderlying) + "|") + contract.Type };
+    }
 
     internal static AggregateLinkageContract LinkageContract(string symbol, CType type)
     {
@@ -110,7 +141,8 @@ internal static class AggregateIdentities
         if (!lines.Contains(Version, StringComparer.Ordinal))
         {
             if (source.Contains("struct " + TokenPrefix, StringComparison.Ordinal)
-                || lines.Any(l => l.StartsWith(Prefix, StringComparison.Ordinal) || l.StartsWith(LinkagePrefix, StringComparison.Ordinal)))
+                || lines.Any(l => l.StartsWith(Prefix, StringComparison.Ordinal) || l.StartsWith(LinkagePrefix, StringComparison.Ordinal)
+                    || l.StartsWith(DeclarationPrefix, StringComparison.Ordinal)))
                 throw new CompileException("object lacks aggregate identity metadata; regenerate objects");
             return null;
         }
@@ -144,9 +176,13 @@ internal static class AggregateIdentities
         if (result.Count != shapes.Count || result.Values.Any(n => n.Dependencies.Any(d => !result.ContainsKey(d))))
             throw new CompileException("incomplete aggregate identity graph; regenerate objects");
         bool currentLinkage = lines.Contains(LinkageVersion, StringComparer.Ordinal);
-        if (!currentLinkage && lines.Any(line => line.StartsWith("public enum ", StringComparison.Ordinal)
-            || line.StartsWith("enum ", StringComparison.Ordinal)))
+        if (!currentLinkage && (result.Values.Any(n => n.IsEnum) || lines.Any(line => line.StartsWith("public enum ", StringComparison.Ordinal)
+            || line.StartsWith("enum ", StringComparison.Ordinal))))
             throw new CompileException("object lacks enum identity metadata; regenerate older objects before linking");
+        // Version 3 can drop unused struct/union declarations too. Its missing
+        // roots cannot certify compatibility, even when no enum was emitted.
+        if (!currentLinkage && lines.Contains(EnumLinkageVersion, StringComparer.Ordinal))
+            throw new CompileException("object lacks aggregate declaration metadata; regenerate older objects before linking");
         if (!currentLinkage && !lines.Contains(ArrayLinkageVersion, StringComparer.Ordinal)
             && !lines.Contains(LegacyLinkageVersion, StringComparer.Ordinal))
         {
@@ -155,9 +191,12 @@ internal static class AggregateIdentities
             return result.Values.ToArray();
         }
         var roots = new Dictionary<string, AggregateLinkageContract>(StringComparer.Ordinal);
-        foreach (var line in lines.Where(l => l.StartsWith(LinkagePrefix, StringComparison.Ordinal)))
+        var declarations = new Dictionary<(string Symbol, string Name), AggregateLinkageContract>();
+        foreach (var line in lines.Where(l => l.StartsWith(LinkagePrefix, StringComparison.Ordinal)
+            || currentLinkage && l.StartsWith(DeclarationPrefix, StringComparison.Ordinal)))
         {
-            var p = line[LinkagePrefix.Length..].Split(' ');
+            bool declaration = line.StartsWith(DeclarationPrefix, StringComparison.Ordinal);
+            var p = line[(declaration ? DeclarationPrefix.Length : LinkagePrefix.Length)..].Split(' ');
             if (p.Length != 4) throw new CompileException("invalid aggregate linkage metadata; regenerate objects");
             try
             {
@@ -167,7 +206,9 @@ internal static class AggregateIdentities
                 var bounds = p[3].Split(',', StringSplitOptions.RemoveEmptyEntries)
                     .Select(n => n == "-" ? (int?)null : int.Parse(n, CultureInfo.InvariantCulture)).ToArray();
                 if (symbol.Length == 0 || type.Length == 0 || refs.Length == 0 || refs.Any(n => !result.ContainsKey(n))
-                    || bounds.Any(n => n < 0) || !roots.TryAdd(symbol, new(symbol, type, refs, bounds)))
+                    || bounds.Any(n => n < 0) || (declaration
+                        ? refs.Length != 1 || !declarations.TryAdd((symbol, refs[0]), new(symbol, type, refs, bounds))
+                        : !roots.TryAdd(symbol, new(symbol, type, refs, bounds))))
                     throw new CompileException("invalid aggregate linkage metadata; regenerate objects");
             }
             catch (Exception error) when (error is FormatException or OverflowException)
@@ -177,7 +218,8 @@ internal static class AggregateIdentities
         // omits enum identities and their external/field edges. Keep both under
         // the conservative exposure gate, never infer missing semantic facts
         // from another TU or from generated code.
-        return currentLinkage ? new AggregateIdentitySet(result.Values.ToArray(), roots.Values.ToArray()) : result.Values.ToArray();
+        return currentLinkage ? new AggregateIdentitySet(result.Values.ToArray(), roots.Values.ToArray())
+            { Declarations = declarations.Values.ToArray() } : result.Values.ToArray();
     }
 
     internal static IReadOnlyDictionary<string, string>[] Plan(
@@ -214,6 +256,8 @@ internal static class AggregateIdentities
 
         var contracts = graphs.SelectMany((g, unit) => g.Linkage.Select(c => (Contract: c, Unit: unit)))
             .GroupBy(p => p.Contract.Symbol, StringComparer.Ordinal).ToArray();
+        var declarations = graphs.SelectMany((g, unit) => g.Declarations.Select(c => (Contract: c, Unit: unit)))
+            .GroupBy(p => (p.Contract.Symbol, Name: p.Contract.References.Single())).ToArray();
         for (int unit = 0; unit < graphs.Length; unit++)
         {
             var nodes = graphs[unit].ToDictionary(n => n.Name, StringComparer.Ordinal);
@@ -224,12 +268,12 @@ internal static class AggregateIdentities
                     throw new CompileException("incomplete aggregate linkage graph; regenerate objects");
                 if (reachable.Add(name)) foreach (var dep in node.Dependencies) Visit(dep);
             }
-            foreach (var root in graphs[unit].Linkage)
+            foreach (var root in graphs[unit].Linkage.Concat(graphs[unit].Declarations))
                 foreach (var name in root.References) Visit(name);
             if (nodes.Values.Any(n => n.Exposed != reachable.Contains(n.Name)))
                 throw new CompileException("incomplete aggregate linkage roots in '" + units[unit].Origin + "'; regenerate objects");
         }
-        foreach (var group in contracts)
+        void CheckContracts(IEnumerable<(AggregateLinkageContract Contract, int Unit)> group, string symbol)
         {
             var first = group.First();
             var bounds = first.Contract.ArrayBounds.ToArray();
@@ -238,15 +282,17 @@ internal static class AggregateIdentities
                 if (first.Contract.Type != item.Contract.Type
                     || !first.Contract.References.SequenceEqual(item.Contract.References, StringComparer.Ordinal)
                     || bounds.Length != item.Contract.ArrayBounds.Length)
-                    ContractConflict(group.Key, first.Unit, item.Unit);
+                    ContractConflict(symbol, first.Unit, item.Unit);
                 for (int i = 0; i < bounds.Length; i++)
                 {
                     if (bounds[i] is { } known && item.Contract.ArrayBounds[i] is { } other && known != other)
-                        ContractConflict(group.Key, first.Unit, item.Unit);
+                        ContractConflict(symbol, first.Unit, item.Unit);
                     bounds[i] ??= item.Contract.ArrayBounds[i];
                 }
             }
         }
+        foreach (var group in contracts) CheckContracts(group, group.Key);
+        foreach (var group in declarations) CheckContracts(group, group.Key.Symbol);
         if (affected.Count == 0)
             return units.Select(_ => (IReadOnlyDictionary<string, string>)new Dictionary<string, string>(StringComparer.Ordinal)).ToArray();
 
@@ -298,6 +344,12 @@ internal static class AggregateIdentities
             foreach (var item in group.Skip(1))
                 foreach (string name in first.Contract.References.Where(affected.Contains))
                     Join(lookup[first.Unit][name], lookup[item.Unit][name]);
+        }
+        foreach (var group in declarations.Where(g => affected.Contains(g.Key.Name)))
+        {
+            var first = group.First();
+            foreach (var item in group.Skip(1))
+                Join(lookup[first.Unit][group.Key.Name], lookup[item.Unit][group.Key.Name]);
         }
 
         Dictionary<int, int> Colors()
