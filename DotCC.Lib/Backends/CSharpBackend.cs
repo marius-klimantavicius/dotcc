@@ -2990,47 +2990,9 @@ internal sealed partial class CSharpBackend
         return sb.Append(" }").ToString();
     }
 
-    /// <summary>Fixed buffers cannot be assigned by a C# object initializer.
-    /// Build a value through a typed factory, assigning into its own zeroed
-    /// inline storage. Arguments evaluate once at the call site; no delegate,
-    /// pointer generic argument, heap array or escaping stack pointer is needed.</summary>
-    private string StructArrayInitText(StructInit initializer)
-    {
-        var parameters = new List<string>();
-        var arguments = new List<string>();
-        var stores = new StringBuilder();
-        void Store(string destination, CType type, CExpr value)
-        {
-            var parameter = "p" + parameters.Count;
-            parameters.Add(Cs(type) + " " + parameter);
-            arguments.Add(Coerced(value, type));
-            stores.Append("        ").Append(destination).Append(" = ").Append(parameter).Append(";\n");
-        }
-        foreach (var member in initializer.Members)
-        {
-            var destination = "result." + DotCC.EmitHelpers.Id(member.Name);
-            if (member.Value is InlineArrayInit array)
-            {
-                var elementType = Cs(array.Element);
-                for (var index = 0; index < array.Elems.Count; ++index)
-                {
-                    var element = IsFixedBufferType(elementType) ? destination + "[" + index + "]"
-                        : "((" + elementType + "*)&" + destination + ")[" + index + "]";
-                    Store(element, array.Element, array.Elems[index]);
-                }
-            }
-            else Store(destination, member.FieldType, member.Value);
-        }
-        var body = "    public static unsafe " + Cs(initializer.Type) + " Create(" + string.Join(", ", parameters) + ")\n    {\n"
-            + "        " + Cs(initializer.Type) + " result = default;\n" + stores + "        return result;\n    }\n";
-        // Object fragments merge top-level declarations by name. The entire
-        // typed shape identifies a factory, so separately compiled initializers
-        // can deduplicate identical helpers without colliding with other shapes.
-        var name = "__DotccAggregateInit_" + Convert.ToHexString(
-            global::System.Security.Cryptography.SHA256.HashData(Encoding.UTF8.GetBytes(body)));
-        _aggregateFactories.TryAdd(name, "internal static class " + name + "\n{\n" + body + "}\n\n");
-        return name + ".Create(" + string.Join(", ", arguments) + ")";
-    }
+    /// <summary>Build owned inline storage through a bounded factory. Constant
+    /// arrays borrow proven RVA data; other values use a typed argument pack.</summary>
+    private string StructArrayInitText(StructInit initializer) => BoundedStructArrayInitText(initializer);
 
     // ---- comma operator --------------------------------------------------
 

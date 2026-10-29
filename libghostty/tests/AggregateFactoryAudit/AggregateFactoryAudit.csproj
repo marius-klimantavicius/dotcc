@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>GhosttyVt.AggregateFactoryAudit</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../../DotCC.FunctionalTests/AggregateFactoryAudit.cs" Link="AggregateFactoryAudit.cs" />
+  </ItemGroup>
+</Project>

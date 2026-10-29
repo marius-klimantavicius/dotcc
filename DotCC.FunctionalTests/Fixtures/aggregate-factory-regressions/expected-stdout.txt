@@ -1,0 +1,1 @@
+aggregate-regressions trace=1234 mixed=1 addressed=1 lazy=1 floating=1

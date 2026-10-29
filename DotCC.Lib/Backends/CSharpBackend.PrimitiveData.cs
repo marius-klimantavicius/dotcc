@@ -37,8 +37,10 @@ internal sealed partial class CSharpBackend
             }
             else
             {
-                if (_foldFloatingPayloadBits(values[i], physical) is not { } floating) return false;
-                bits = floating;
+                // Preserve C widths and signedness at every operation before
+                // converting to float (unsigned wrap, integer division, narrow
+                // casts). The general floating folder carries wide arithmetic.
+                if (!TryAggregateScalarBits(values[i], physical, out bits)) return false;
             }
             for (int b = 0; b < width; b++) bytes[i * width + b] = (byte)(bits >> (b * 8));
         }

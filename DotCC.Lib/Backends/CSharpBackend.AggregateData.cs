@@ -15,7 +15,8 @@ internal sealed partial class CSharpBackend
     // Prove the entire initializer before registering payloads or emitting any
     // stores. A relocation, runtime read, effect, or unsupported representation
     // sends the complete object/table through the existing typed initializer.
-    private bool TryAggregateBytes(CType element, IReadOnlyList<CExpr> values, out byte[] bytes)
+    private bool TryAggregateBytes(CType element, IReadOnlyList<CExpr> values, out byte[] bytes,
+        int minimumBytes = AggregateDataThreshold)
     {
         bytes = Array.Empty<byte>();
         if (!_aggregateData || _target is not CSharpTarget { StorageAbi: "lp64-le-dotcc-v1" }
@@ -25,7 +26,7 @@ internal sealed partial class CSharpBackend
             if (!AggregateDataLayout(element, 0)) return false;
             int stride = _offsetModel.Type(IrBuilder.LayoutType(element)).Size;
             int size = checked(stride * values.Count);
-            if (size < AggregateDataThreshold) return false;
+            if (size < minimumBytes) return false;
             var result = new byte[size];
             for (int i = 0; i < values.Count; i++)
                 if (!SerializeAggregateValue(element, values[i], result, checked(i * stride), 0)) return false;
