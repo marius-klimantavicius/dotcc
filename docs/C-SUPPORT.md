@@ -28,6 +28,24 @@ for supported expressions and omission/collision rules.
 
 ## Coverage at a glance
 
+Upstream-input regressions also cover GNU scalar typedef alignment in prefix,
+type-suffix and declarator-suffix positions. Size and compatible-type identity
+remain those of the scalar, while `_Alignof`, actual field offsets, local/global
+storage and alias chains retain the requested alignment, including weaker
+alignment. See `ScalarTypedefAlignmentTests` and
+`ScalarTypedefAlignmentExecutionTests` (direct and object-linked execution).
+Qualified callback declarations compose pointer levels and `const`/`volatile`/
+`restrict` in locals, globals, members, abstract casts and named parameters;
+callback array parameters retain C parameter adjustment. Read-only assignments
+remain errors. `QualifiedCallbackStorageTests`, `QualifiedCallbackParameterTests`
+and their functional counterparts exercise those boundaries.
+
+C99 compound literals support direct postfix member/subscript chains such as
+`(struct Row){{40,42,44}}.array[index]`, covered by
+`CompoundLiteralPostfixExecutionTests`. Ordinary string literals accept the
+standard escaped question mark (`"\?"`), with byte-level execution coverage in
+`ScalarTypedefAlignmentExecutionTests`.
+
 Bird's-eye scorecard — the detailed per-area tables below are the source of truth; this just rolls them up. **dotcc covers essentially all of C89/C99, and most of C11/C23 that maps cleanly onto .NET.** Output is always modern C# regardless of input dialect.
 
 | Area | Standing | Covered | Gaps / out of scope |

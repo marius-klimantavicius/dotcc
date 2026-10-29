@@ -49,6 +49,17 @@ program's libc call is handled. No `@cImport`, no header harvest.
 
 ## Declarations
 
+Additional upstream-input coverage accepts trailing argument commas in ordinary,
+imported and builtin calls, and brace-delimited switch expressions as boolean
+operands and call arguments. Imported namespace re-exports and their aggregate
+or primitive type aliases resolve lazily through the module graph. Parser tests
+use both generated and rebuilt tables; `ZigTranslationGrammarExecutionTests`
+and the native/emitted campaign reductions verify actual values across these
+forms. An empty RHS block (`else {}`) is accepted syntactically; this does not
+establish general block-value lowering. Complete upstream modules may still need
+unsupported semantic features; the libghostty direct-root export/comptime gaps
+remain documented in its [frontend evidence](../libghostty/docs/ZIG-FRONTEND.md).
+
 | Feature | Status | Notes |
 |---|---|---|
 | `fn name(params) Ret { … }` | ✅ | top-level function definition |
