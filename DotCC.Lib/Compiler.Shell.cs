@@ -369,6 +369,7 @@ public static partial class Compiler
             static unsafe {{(partial ? "partial " : "")}}class DotCcProgram
             {
             {{globalOwnerMembers}}
+            {{globals.AddressMembers}}
             {{threadGlobalOwnerMembers}}
             {{indentedFns}}
             }
@@ -578,6 +579,7 @@ public static partial class Compiler
             {{(managedLibrary ? "public" : "internal")}} {{(globals.InstanceMethods ? "sealed unsafe " : "static ")}}{{(partial || nested ? "partial " : "")}}class {{libraryClass}}{{(globals.InstanceMethods ? " : global::System.IDisposable, global::" + scope + "Libc.IProgramInstance" : "")}}
             {
             {{globalOwnerMembers}}
+            {{globals.AddressMembers}}
             {{threadGlobalOwnerMembers}}
             {{indentedFns}}
             {{(nested ? "" : "}")}}

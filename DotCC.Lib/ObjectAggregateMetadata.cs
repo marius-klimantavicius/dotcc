@@ -13,6 +13,9 @@ namespace DotCC;
 /// separately when its object declaration is merged.</summary>
 internal sealed record ObjectAggregateMetadata(bool IsIncomplete, bool IsUnion, string Signature)
 {
+    internal string? ZigStorageContract { get; init; }
+    internal string? ZigStorageBaseShape { get; init; }
+
     internal static ObjectAggregateMetadata From(StructTypeDef type)
     {
         var shape = new StringBuilder();
@@ -22,8 +25,12 @@ internal sealed record ObjectAggregateMetadata(bool IsIncomplete, bool IsUnion, 
             shape.Append('|').Append(Atom(field.Name)).Append(':').Append(Describe(field.Type))
                 .Append(':').Append(field.BitWidth?.ToString(CultureInfo.InvariantCulture) ?? "-")
                 .Append(':').Append(field.Alignment).Append(':').Append(field.IsAnonymousAggregate);
+        var zig = type.ZigStorage is { } storage ? ZigStorageObjectMetadata.Contract(storage)
+            : type.ZigZeroOwner is { } owner ? ZigStorageObjectMetadata.ZeroOwnerContract(owner) : null;
+        var baseShape = zig is not null ? shape.ToString() : null;
+        if (zig is not null) shape.Append("|zig-storage:1|").Append(zig);
         return new(type.IsIncomplete, type.IsUnion,
-            Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(shape.ToString()))));
+            Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(shape.ToString())))) { ZigStorageContract = zig, ZigStorageBaseShape = baseShape };
     }
 
     private static string Atom(string value) => Convert.ToBase64String(Encoding.UTF8.GetBytes(value));
@@ -31,6 +38,7 @@ internal sealed record ObjectAggregateMetadata(bool IsIncomplete, bool IsUnion, 
     {
         IrType.Prim p => $"prim({Atom(p.Name)},{p.Bytes},{p.Integer},{p.Signed})",
         IrType.VoidType => "void",
+        IrType.NoReturnType => "noreturn",
         IrType.Pointer p => "ptr(" + Describe(p.Pointee) + ")",
         IrType.Array a => "array(" + a.Count?.ToString(CultureInfo.InvariantCulture) + "," + Describe(a.Element) + ")",
         IrType.Named n => "named(" + Atom(n.Name) + ")",

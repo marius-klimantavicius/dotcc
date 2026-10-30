@@ -65,12 +65,13 @@ public static partial class Compiler
         CDialect? dialect,
         Ir.INameLegalizer? names = null,
         WarningFlags warnings = WarningFlags.Default,
-        bool testMode = false, CPreprocessingOptions? preprocessing = null, bool objectMode = false)
+        bool testMode = false, CPreprocessingOptions? preprocessing = null, bool objectMode = false, ZigCompilationOptions? zigOptions = null)
     {
         var request = new Frontends.FrontendRequest(
-            inputPaths, includeDirs, defines, dialect, names, warnings, testMode, preprocessing, objectMode);
+            inputPaths, includeDirs, defines, dialect, names, warnings, testMode, preprocessing, objectMode, zigOptions);
         var anyZig = inputPaths.Any(IsZigSource);
         var anyC = inputPaths.Any(p => !IsZigSource(p));
+        if (zigOptions is not null && !anyZig) throw new CompileException("Zig module configuration requires Zig source input");
         if (!anyC && (preprocessing is { HasOverrides: true } or { HasMacroExports: true })) throw new CompileException("C translation overrides/macro exports require C source input");
         if (anyZig && anyC) { return BuildMixedIr(request); }
         Frontends.IFrontend frontend = anyZig ? new Frontends.ZigFrontend() : new Frontends.CFrontend();
@@ -100,7 +101,7 @@ public static partial class Compiler
 
         var ir = new Frontends.CFrontend().BuildIr(request with { InputPaths = cPaths, Names = sharedNames });
         var flushed = ir.Diagnostics.Count;     // C diagnostics already flushed by CFrontend
-        Frontends.ZigFrontend.AddUnits(ir, zigPaths, sharedNames);
+        Frontends.ZigFrontend.AddUnits(ir, zigPaths, sharedNames, request.TestMode, request.ZigOptions);
 
         // Flush ONLY the diagnostics the Zig lowering added (skip the already-flushed C ones).
         var zigDiags = ir.Diagnostics.Skip(flushed).ToList();
@@ -140,8 +141,8 @@ public static partial class Compiler
         ImportOptions? imports = null,
         WarningFlags warnings = WarningFlags.Default,
         bool testMode = false,
-        string? className = null, string? namespaceName = null, CPreprocessingOptions? preprocessing = null, CSharpOutputOptions? outputOptions = null)
-        => EmitCSharpFiles(inputPaths, includeDirs, defines, emit, dialect, debugHeap, imports, warnings, testMode, className, namespaceName: namespaceName, preprocessing: preprocessing, outputOptions: outputOptions).Values.Single();
+        string? className = null, string? namespaceName = null, CPreprocessingOptions? preprocessing = null, CSharpOutputOptions? outputOptions = null, ZigCompilationOptions? zigOptions = null)
+        => EmitCSharpFiles(inputPaths, includeDirs, defines, emit, dialect, debugHeap, imports, warnings, testMode, className, namespaceName: namespaceName, preprocessing: preprocessing, outputOptions: outputOptions, zigOptions: zigOptions).Values.Single();
 
     /// <summary>Emit one or more named C# sources. Split modes require project output.
     /// Function boundaries come from the backend; shared declarations remain together.</summary>
@@ -155,7 +156,7 @@ public static partial class Compiler
         ImportOptions? imports = null,
         WarningFlags warnings = WarningFlags.Default,
         bool testMode = false,
-        string? className = null, SourceSplit split = SourceSplit.None, int splitSize = 262144, string? namespaceName = null, CPreprocessingOptions? preprocessing = null, CSharpOutputOptions? outputOptions = null)
+        string? className = null, SourceSplit split = SourceSplit.None, int splitSize = 262144, string? namespaceName = null, CPreprocessingOptions? preprocessing = null, CSharpOutputOptions? outputOptions = null, ZigCompilationOptions? zigOptions = null)
     {
         ValidateOutputOptions(outputOptions, emit);
         bool nested = outputOptions?.NestTypes == true;
@@ -168,7 +169,7 @@ public static partial class Compiler
         if (emit == EmitMode.ManagedLib && imports is { HasAny: true })
             throw new CompileException("managed-library output does not support native import or archive bindings");
         var asObject = emit == EmitMode.Object;
-        var irBuilder = BuildIr(inputPaths, includeDirs, defines, dialect, warnings: warnings, testMode: testMode, preprocessing: preprocessing, objectMode: asObject);
+        var irBuilder = BuildIr(inputPaths, includeDirs, defines, dialect, warnings: warnings, testMode: testMode, preprocessing: preprocessing, objectMode: asObject, zigOptions: zigOptions);
         ValidateSourceAbiBindings(irBuilder, emit);
         if (asObject) QualifyObjectInternalFunctions(irBuilder, inputPaths);
         else irBuilder.ValidateWeakFunctionReferences();
@@ -277,7 +278,9 @@ public static partial class Compiler
         var ownerInitializers = RenderOwnerInitializers(cg.TypeDeclarations!, literals, storage,
             instanceDefinitions, outputOptions?.InstanceMethods == true);
         var parts = cg.FunctionSources?.Select(part => part with { Text = storage.Rewrite(literals.Rewrite(ResolveInstanceCalls(part.Text))) }).ToArray();
-        var files = BuildSourceFiles(storage.Rewrite(literals.Rewrite(ResolveInstanceCalls(cg.Functions))), parts, aliases, emit, libraryClass, importsClass, importsAreStatic, split, splitSize, namespaceName, nested,
+        var functionText = storage.Rewrite(literals.Rewrite(ResolveInstanceCalls(cg.Functions)));
+        globals = storage.Complete(globals);
+        var files = BuildSourceFiles(functionText, parts, aliases, emit, libraryClass, importsClass, importsAreStatic, split, splitSize, namespaceName, nested,
             (functions, fileAliases, partial) => BuildShell(cg.MainArity, pointerResolvers.Methods + ownerInitializers + RenderMacroFields(cg.TypeDeclarations, owner, cg.FunctionSources!.Select(f => f.Name).Concat(irBuilder.Globals.Select(g => g.Sym.TargetName))) + functions, types, fileAliases, globals, emit, cg.Exports, debugHeap, importsClass, importsAreStatic, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, testMode, cg.Tests, libraryClass, partial, namespaceName, nested, includeZig), instanceMethods: outputOptions?.InstanceMethods == true);
         return AnonymousTypedefNames.Resolve(files, irBuilder.AnonymousTypedefs, cg.TypeDeclarations!.Keys,
             cg.FunctionSources!.Select(f => f.Name).Concat(irBuilder.Globals.Select(g => g.Sym.TargetName)));

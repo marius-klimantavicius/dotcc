@@ -36,7 +36,7 @@ internal sealed partial class CSharpBackend
         }
         foreach (var member in initializer.Members)
         {
-            var destination = "destination->" + EmitHelpers.Id(member.Name);
+            var destination = "destination->" + FieldTarget(initializer.Type, member.Name);
             if (member.Value is not InlineArrayInit array)
             {
                 Store(destination, member.FieldType, member.Value);

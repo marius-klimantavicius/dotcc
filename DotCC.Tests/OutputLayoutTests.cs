@@ -25,7 +25,11 @@ public sealed class OutputLayoutTests
     {
         var auto=new CSharpOutputOptions(Runtime:RuntimeProfile.Auto);
         var onlyC=new CSharpOutputOptions(Runtime:RuntimeProfile.C);
-        Compiler.EmitCSharp(new[]{c},outputOptions:auto).ShouldNotContain("// ---- Zig");
+        var cOutput = Compiler.EmitCSharp(new[]{c},outputOptions:auto);
+        cOutput.ShouldNotContain("// ---- Zig");
+        cOutput.ShouldNotContain("Pglite");
+        cOutput.ShouldNotContain("PGlite");
+        cOutput.ShouldContain("EnableGuestSignals");
         Compiler.EmitCSharp(new[]{c}).ShouldContain("// ---- Zig");
         Compiler.EmitCSharp(new[]{zig},outputOptions:auto).ShouldContain("// ---- Zig");
         Should.Throw<CompileException>(()=>Compiler.EmitCSharp(new[]{zig},outputOptions:onlyC)).Message.ShouldContain("C-only");

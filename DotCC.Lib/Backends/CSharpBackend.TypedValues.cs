@@ -91,9 +91,10 @@ internal sealed partial class CSharpBackend
             && IsBooleanRendered(value)) return BooleanIntegerText(value);
         var inner = value;
         while (inner is Paren parenthesized) inner = parenthesized.Inner;
-        // C# can parse (CBool)*p as multiplication and (Enum)-x as
-        // subtraction. Parenthesize a prefix operand after a named scalar cast.
-        return (target.Unqualified == CType.Bool || target.Unqualified is CType.Enum) && inner is Unary
+        // C# can parse (CBool)*p or (System.UInt128)*p as multiplication,
+        // and (Enum)-x as subtraction. A parenthesized prefix operand is
+        // unambiguous for named scalar types and ordinary primitive casts alike.
+        return inner is Unary
             ? $"({Expr(value)})" : Sub(value, PUnary);
     }
 }

@@ -13,7 +13,6 @@ internal sealed partial class CSharpBackend
     private bool _addressReuseAllowed;
     private Dictionary<Symbol, string> _stableAddressLocals = new(ReferenceEqualityComparer.Instance);
     private string _stableAddressDeclarations = "";
-    private bool _usesGlobalAddressCache;
 
     private string AllocateAddressLocal()
     {
@@ -30,11 +29,7 @@ internal sealed partial class CSharpBackend
         _stableAddressLocals = new(ReferenceEqualityComparer.Instance);
         foreach (var root in counts.Where(pair => pair.Value >= 2).Select(pair => pair.Key).OrderBy(root => root.TargetName, StringComparer.Ordinal))
             _stableAddressLocals.Add(root, AllocateAddressLocal());
-        _usesGlobalAddressCache |= _stableAddressLocals.Count != 0;
     }
-
-    private string StableAddressDeclarations() => string.Concat(_stableAddressLocals
-        .Select(pair => GlobalStorageReferences.AddressDeclaration(pair.Key.TargetName, AddressStorageType(pair.Key), pair.Value) + "\n"));
 
     // Pointer objects live in nint slots. Cache the slot's address, never the
     // pointer value it holds; T* itself cannot be a generic type argument.
@@ -104,8 +99,8 @@ internal sealed partial class CSharpBackend
             VaListLifetimeValidator.Walk(expression, node =>
             {
                 visit(node);
-                // A single textual use in a loop is still a repeated dynamic
-                // address calculation. Initialization remains lazy for count0.
+                // A single textual use in a loop still benefits from the
+                // shared address member selected when storage is linked.
                 if (repeated || loop) visit(node);
             });
         foreach (var child in AddressStatementChildren(statement))
@@ -192,9 +187,9 @@ internal sealed partial class CSharpBackend
                     // unmanaged pointer only at the original access, so a GC
                     // safepoint cannot leave a stale unpinned pointer in a local.
                     var storageType = AddressStorageType(root);
-                    var declaration = "ref " + storageType + " " + name + " = ref " + GlobalName(root) + ";";
-                    output.Append(Pad(level)).Append(_stableAddressLocals.ContainsKey(root)
-                        ? GlobalStorageReferences.ContextAddress(root.TargetName, declaration) : declaration).Append('\n');
+                    var declaration = Pad(level) + "ref " + storageType + " " + name + " = ref " + GlobalName(root) + ";\n";
+                    output.Append(_stableAddressLocals.ContainsKey(root)
+                        ? GlobalStorageReferences.ContextAddress(root.TargetName, declaration) : declaration);
                     _globalAddressBases.Add(root, "((" + storageType + "*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref " + name + "))");
                 }
             }

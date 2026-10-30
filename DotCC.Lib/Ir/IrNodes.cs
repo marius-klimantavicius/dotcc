@@ -48,7 +48,10 @@ public sealed record LitInt(string Digits, long? Value) : CExpr
 /// literal node; its <c>true</c>/<c>false</c> are <c>&lt;stdbool.h&gt;</c> macros → 1/0). The
 /// backend renders it as C# <c>true</c>/<c>false</c>; its <see cref="CExpr.Type"/> is
 /// <see cref="CType.Bool"/> (→ the store-normalising <c>CBool</c>, which takes a C# <c>bool</c>).</summary>
-public sealed record LitBool(bool Value) : CExpr;
+public sealed record LitBool(bool Value) : CExpr
+{
+    public bool InComptime { get; init; }
+}
 
 /// <summary>A runtime target fact; never evaluated on the compiler host.</summary>
 public enum RuntimeIntrinsicKind { IsLittleEndian }
@@ -117,6 +120,8 @@ public sealed record Call(string Callee, IReadOnlyList<CExpr> Args,
 {
     /// <summary>A bound replacement operation; retains ordinary call effects.</summary>
     public FunctionOverrideTarget? SemanticTarget { get; init; }
+    /// <summary>Resolved source calling convention; null preserves existing C/unannotated calls.</summary>
+    public CType.Func? CalleeType { get; init; }
 }
 
 /// <summary>A call through a computed function-pointer expression — <c>(*fp)(x)</c>,
@@ -133,7 +138,10 @@ public sealed record Cast(CType Target, CExpr Operand) : CExpr;
 /// <c>System.Runtime.CompilerServices.Unsafe.BitCast&lt;TFrom, TTo&gt;</c>, which is AOT-clean
 /// and verifies the size match. Zig-only (the C front-end never produces it); the wat backend,
 /// which Zig never targets, leaves it on the default throw like <c>Slice</c>/<c>ErrorUnion</c>.</summary>
-public sealed record BitCast(CType Target, CExpr Operand) : CExpr;
+public sealed record BitCast(CType Target, CExpr Operand) : CExpr
+{
+    public ZigBitcastWidthLayout? ZigLayout { get; init; }
+}
 
 /// <summary>A conditional (ternary) expression <c>c ? a : b</c>. Codegen wraps
 /// the condition in <c>Cond.B(...)</c> for C-truthy semantics.</summary>
@@ -307,6 +315,7 @@ public sealed record Paren(CExpr Inner) : CExpr;
 public sealed record ComptimeFold(CExpr Inner) : CExpr
 {
     public CExpr? Resolved { get; set; }
+    public bool Live { get; init; }
 }
 
 /// <summary>The null pointer constant (C23 <c>nullptr</c>). A typed node rather
@@ -332,7 +341,7 @@ public sealed record ErrUnionOk(CExpr? Payload) : CExpr;
 /// <c>ErrUnion&lt;T&gt;.Err(code)</c>. <see cref="Code"/> is the error's stable code in the
 /// flat global error set (non-zero). <see cref="CExpr.Type"/> is the
 /// <see cref="CType.ErrorUnion"/> the function returns. Zig-lowering / C#-target only.</summary>
-public sealed record ErrUnionErr(int Code) : CExpr;
+public sealed record ErrUnionErr(CExpr Code) : CExpr;
 
 /// <summary>A Zig <c>try e</c> — unwrap the payload of the error union <see cref="Inner"/>,
 /// or propagate its error by throwing <c>ZigErrorReturn</c> (caught at the enclosing
@@ -568,7 +577,7 @@ public sealed record DeferGuard(CStmt Body, CStmt Cleanup, bool OnErrorOnly) : C
 /// <c>errdefer</c>, the error return is routed through this throw instead, so it propagates
 /// through the errdefer <c>catch</c>(es) on the stack (and the <c>!T</c> boundary catch still
 /// converts it back to an <c>Err</c>). Flow-terminating, like a C# <c>throw</c>.</summary>
-public sealed record ZigErrorThrow(int Code) : CStmt;
+public sealed record ZigErrorThrow(CExpr Code) : CStmt;
 
 /// <summary>A C <c>switch (Subject) { … }</c>, lowered to a C# switch. The body is
 /// pre-grouped into <see cref="Sections"/> (the grammar parses <c>case E:</c> /
@@ -638,7 +647,11 @@ public enum AggregateLayout { Default, Sequential, Packed }
 /// builder's struct table so member access resolves a field's type.
 /// <see cref="Layout"/> drives an optional <c>[StructLayout]</c> attribute for a
 /// non-union aggregate (Zig <c>extern</c>/<c>packed struct</c>).</summary>
-public sealed record StructTypeDef(string Name, IReadOnlyList<StructField> Fields, bool IsUnion, AggregateLayout Layout = AggregateLayout.Default, int Alignment = 0, int Pack = 0, bool IsIncomplete = false);
+public sealed record StructTypeDef(string Name, IReadOnlyList<StructField> Fields, bool IsUnion, AggregateLayout Layout = AggregateLayout.Default, int Alignment = 0, int Pack = 0, bool IsIncomplete = false)
+{
+    public ZigStorageLayout? ZigStorage { get; init; }
+    public ZigZeroOwnerLayout? ZigZeroOwner { get; init; }
+}
 
 /// <summary>One field of a <see cref="StructTypeDef"/>. <see cref="BitWidth"/> is
 /// <c>null</c> for a normal field, or the declared width of a bit-field —
@@ -651,6 +664,9 @@ public sealed record StructTypeDef(string Name, IReadOnlyList<StructField> Field
 /// exact value semantics (modular truncation, signed sign-extension).</summary>
 public readonly record struct StructField(string Name, CType Type, int? BitWidth = null, int Alignment = 0, bool IsAnonymousAggregate = false, bool IsFlexibleArray = false)
 {
+    /// <summary>Final target spelling for a Zig member; Name remains its semantic source identity.</summary>
+    public string? TargetName { get; init; }
+
     /// <summary>True for any bit-field — named, anonymous, or zero-width.</summary>
     public bool IsBitField => BitWidth is not null;
 
@@ -667,7 +683,11 @@ public readonly record struct StructField(string Name, CType Type, int? BitWidth
 public sealed record EnumTypeDef(string Name, CType Underlying, IReadOnlyList<EnumMember> Members);
 
 /// <summary>One enumerator of an <see cref="EnumTypeDef"/>: its C name and value.</summary>
-public readonly record struct EnumMember(string Name, long Value);
+public readonly record struct EnumMember(string Name, long Value)
+{
+    /// <summary>Final target spelling for a Zig member; absent for the existing C path.</summary>
+    public string? TargetName { get; init; }
+}
 
 /// <summary>A function parameter (or function-pointer parameter): its type and
 /// name. Used while building signatures — a named record rather than a loose

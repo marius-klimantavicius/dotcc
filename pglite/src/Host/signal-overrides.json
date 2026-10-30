@@ -10,7 +10,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.PGlite.Translated.PGlite.Libc.PgliteSetitimer"
+        "method": "global::Managed.PGlite.Translated.PGlite.Libc.GuestSetitimer"
       },
       "requireMatch": false
     },

@@ -241,7 +241,7 @@ def run(ctx, suite=None):
             report["passed"].append("cooperative owned ITIMER_REAL delivery and actual fork cancellation")
             report["passed"].append("timer delivered inside emitted real-source CHECK_FOR_INTERRUPTS loop before returning to host")
         else:
-            report["blockers"].append("Selected compiler snapshot still routes public setitimer to ENOTSUP; supervisor must route it to PgliteSetitimer and rebuild")
+            report["blockers"].append("Selected compiler snapshot still routes public setitimer to ENOTSUP; supervisor must route it to GuestSetitimer and rebuild")
         report["passed"].extend([
             "repeatable owner-aware 99/100 runtime yields and real fork pgl_longjmp",
             "sigaction oldact; guest mask mechanics covered by separate runtime regressions",

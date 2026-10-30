@@ -12,7 +12,7 @@ namespace DotCC.Ir;
 /// <see cref="DotCC.CompileException"/> so callers catch the one public
 /// compile-error type regardless of whether the cause was a parse error, an
 /// invalid type, or an unsupported construct.</summary>
-public sealed class IrUnsupportedException : DotCC.CompileException
+public class IrUnsupportedException : DotCC.CompileException
 {
     public IrUnsupportedException(string node) : base($"dotcc does not yet support: {node}") { }
 }
@@ -1292,7 +1292,7 @@ internal sealed partial class IrBuilder
     /// <summary>The constant byte size of a type — the layout model for a user
     /// aggregate (so the size is exact for an array bound), else the type's own
     /// <see cref="CType.SizeOf"/>.</summary>
-    private long? SizeOfConst(CType t) => t.Unqualified switch
+    internal long? SizeOfConst(CType t) => t.Unqualified switch
     {
         CType.Named n when n.IsExternal || _structFields.ContainsKey(n.Name) => Layout(t).Size,
         CType.Array array => array.RuntimeCount is null ? SizeOfConst(array.Element) * (array.Count ?? 0) : null,
@@ -1360,8 +1360,14 @@ internal sealed partial class IrBuilder
     /// <c>struct Options {…}</c> is the way to hit this (a container type is registered under its plain
     /// source name — module-qualified naming is the real fix, see docs/plans/deferred.md); a loud error
     /// beats a silent miscompile.</summary>
+    private readonly HashSet<string> _zigAggregateRegistrations = new(StringComparer.Ordinal);
+
     internal void RegisterStructType(string name, List<StructField> fields, bool isUnion, AggregateLayout layout = AggregateLayout.Default)
     {
+        if (_structFields.ContainsKey(name)
+            && (!_zigAggregateRegistrations.Contains(name) || Types.Any(t => t.Name == name && t.Layout != layout)))
+            throw new IrUnsupportedException("conflicting Zig/C source storage origins or aggregate layouts for '" + name + "'");
+        _zigAggregateRegistrations.Add(name);
         if (_structFields.TryGetValue(name, out var already)
             && (isUnion != _structIsUnion[name] || !already.SequenceEqual(fields)))
         {

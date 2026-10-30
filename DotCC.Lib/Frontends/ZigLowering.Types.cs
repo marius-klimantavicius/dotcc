@@ -28,7 +28,15 @@ internal sealed partial class ZigLowering
     /// <c>const</c> bindings reach here. A non-<c>std</c> module errors clearly.</summary>
     private bool TryComptimeConstBinding(string name, Item rhs)
     {
-        if (rhs.Content is Zig.BuiltinCall b && Tok(b.Arg0) == "@import")
+        // `const tables = switch (DT) { u64 => &Backend64_TablesFull, … };` (std.fmt.float.render): a pointer to a container
+        // TYPE is a comptime namespace (task #85). It binds as a type alias, so `tables.T` / `tables.mulShift(…)` resolve as
+        // through the container, and it has no runtime value.
+        if (TryComptimeTypePointer(rhs) is { } pointedType)
+        {
+            _typeAliases[name] = pointedType;
+            return true;
+        }
+        if (rhs.Content is Zig.BuiltinCall { Arg2: not null } b && Tok(b.Arg0) == "@import")
         {
             var bargs = Flatten(b.Arg2);
             if (bargs.Count == 1 && bargs[0].Content is Zig.StrLit sl)
@@ -60,9 +68,14 @@ internal sealed partial class ZigLowering
                 // std.zig's own `@import("builtin")` doesn't sink its prepare. A ROOT unit keeps the loud
                 // "not modeled" rejection for a non-.zig import.
                 if (_moduleGraph is not null && _importerDir is not null
-                    && (_lazy || module.EndsWith(".zig", System.StringComparison.Ordinal)))
+                    && (_lazy || module.EndsWith(".zig", System.StringComparison.Ordinal) || _moduleGraph.HasDependency(_moduleName, module)))
                 {
                     _importSpecs[name] = module;
+                    // std's own files import their root by path (`const std = @import("std.zig");`). That
+                    // binding is the `std` namespace too, so std-internal code names a curated surface
+                    // (`mem.Allocator`, the runtime allocator `std.heap.page_allocator` produces) exactly
+                    // as user code does.
+                    if (IsStdRootSpec(module)) { _imports[name] = "std"; }
                     return true;
                 }
                 throw new IrUnsupportedException(
@@ -74,7 +87,7 @@ internal sealed partial class ZigLowering
         // Zig analyses a declaration only when something references it, so the tombstone is inert until
         // named: record the message, emit no decl, and raise at the REFERENCE (see RaiseIfPoisoned).
         // Firing here instead would make importing those modules impossible.
-        if (rhs.Content is Zig.BuiltinCall ce && Tok(ce.Arg0) == "@compileError")
+        if (rhs.Content is Zig.BuiltinCall { Arg2: not null } ce && Tok(ce.Arg0) == "@compileError")
         {
             var msgArgs = Flatten(ce.Arg2);
             _poisonedConsts[name] = msgArgs.Count == 1
@@ -92,7 +105,7 @@ internal sealed partial class ZigLowering
         // `.free(…)` lowers to a direct FBA bump over `&fba` (no vtable). A value use of `a` later
         // materializes `ZigAlloc.FbaAllocator(&fba)` (see the VarRef value path / MaterializeFba), so
         // this is an optimization, not a restriction — an escaping `a` still works, just indirectly.
-        if (rhs.Content is Zig.CallNoArgs { Arg0.Content: Zig.Field afld }
+        if (rhs.Content is Zig.CallArgs { Arg2: null, Arg0.Content: Zig.Field afld }
             && Tok(afld.Arg2) == "allocator"
             && afld.Arg0.Content is Zig.Ident fbaId
             && _symbols.Resolve(Tok(fbaId.Arg0)) is { } fbaSym
@@ -116,12 +129,6 @@ internal sealed partial class ZigLowering
             _errorSetMembers[name] = members;   // Milestone X, part 3 — for the membership checks
             return true;
         }
-        if (rhs.Content is Zig.ErrorSetEmpty)
-        {
-            _errorSets.Add(name);
-            _errorSetMembers[name] = new HashSet<string>(System.StringComparer.Ordinal);  // `error{}` — no members
-            return true;
-        }
         // `const E = A || B || …;` — an error-set MERGE (road-to-zig-std). Zig's `||` unions error sets;
         // dotcc erases the set into the flat global code space, so a merge is just another (erased) set.
         // Register E as a known set name so `E!T` / an `IsTypeName(E)` check resolve, but leave it
@@ -142,6 +149,20 @@ internal sealed partial class ZigLowering
         // `T` in a type position resolves through LowerTypeName. This serves BOTH the top-level pass-0
         // binding and the in-function `DeclOrComptime` path, so a local `const T = @TypeOf(a);` works
         // (the monomorphization-shaped case — the operand is in scope in a body).
+        // A lazy module's type-former alias that names a container declared LATER in the file (std.base64's
+        // `const decoderWithIgnoreProto = *const fn (…) Base64DecoderWithIgnore;`, task #75) cannot lower while the module is
+        // still preparing: it is deferred to its first type-position use, as a top-level type CALL is. So is a qualified path
+        // into one (std.treap's test-only `const TestNode = TestTreap.Node;` over `TestTreap = Treap(u64, std.math.order)`,
+        // task #193): zig analyses neither unless something names it.
+        if (_lazy && _currentFnName.Length == 0 && (IsTypeFormer(rhs) || rhs.Content is Zig.Field))
+        {
+            try { _ = TryTypeAliasRhs(rhs, out _); }
+            catch (IrUnsupportedException)
+            {
+                _deferredTypeCalls[name] = rhs;
+                return true;
+            }
+        }
         if (TryTypeAliasRhs(rhs, out var aliasType))
         {
             _typeAliases[name] = aliasType;
@@ -149,6 +170,11 @@ internal sealed partial class ZigLowering
             // widened it away (see _declaredIntBits). Cleared when the RHS declares none, so a
             // re-binding of the same name never inherits the previous alias's width.
             SetDeclaredIntBits(name, DeclaredBitsOfTypeArg(rhs));
+            // `const Ptr = @TypeOf(pointer);`: a pointer's spelled size class rides it the same way (task #119).
+            SetDeclaredPtrSize(name, aliasType.Unqualified is CType.Pointer ? PointerSizeOfTypeArg(rhs) : null);
+            SetDeclaredSentinel(name, aliasType.Unqualified is CType.Pointer or CType.Slice or CType.Array ? SentinelOfTypeArg(rhs) : null);
+            // A body's own alias is also what an in-function struct's methods close over (task #124).
+            if (_currentFnName.Length > 0) { _bodyTypeAliases.Add(name); }
             return true;
         }
         // `const info = @typeInfo(T);` / `const i = @typeInfo(T).int;` — a comptime reflection value
@@ -159,6 +185,15 @@ internal sealed partial class ZigLowering
         if (TryEvalTypeInfo(rhs, out var tiBinding))
         {
             _typeInfoBindings[name] = tiBinding;
+            return true;
+        }
+        // `const signedness = @typeInfo(ReturnType).int.signedness;` (std.mem.readVarInt, task #76) — a comptime enum
+        // TAG, bound for a later `@Int(signedness, …)` / `==` / `switch`, and the decl dropped: it has no runtime value.
+        // So is a pointer's `.size` where its class is known (`const s = @typeInfo(T).pointer.size;`, task #150).
+        if (rhs.Content is Zig.Field { Arg2: var tagField } && Tok(tagField) is "signedness" or "layout" or "size"
+            && TryEvalComptimeTag(rhs, out var boundTag, out _))
+        {
+            _comptimeTagBindings[name] = boundTag;
             return true;
         }
         // `const names = @typeInfo(T).@"struct".field_names;` — a comptime member LIST (S5c), bound
@@ -178,6 +213,21 @@ internal sealed partial class ZigLowering
         // for the same reason: a struct or enum constant is an ordinary runtime value too, so the decl
         // still emits and only a comptime QUESTION about it folds.
         RecordComptimeAggregateBinding(name, rhs);
+        // `const Writer = std.Io.Writer;` is a path into another module, which may name a file-as-struct
+        // TYPE (road-to-zig-std G3). Recorded unresolved; a type position resolves it on demand.
+        var inBody = _currentFnName.Length > 0;
+        if ((rhs.Content is Zig.Field || inBody && rhs.Content is Zig.Ident) && IsImportRootedPath(rhs))
+        {
+            _moduleAliasPaths[name] = rhs;
+            // In a body (`const H = std.hash.Wyhash;`, `const L = lib;`, task #181) the decl is not lazy as a top-level one
+            // is: a path that names a module or a type has no runtime value, so it is bound here and the decl dropped. A
+            // value path (`const pi = std.math.pi;`) resolves to neither and stays an ordinary local.
+            if (inBody)
+            {
+                if (TryResolveModuleTypeAlias(name, out _)) { _bodyTypeAliases.Add(name); return true; }
+                if (IsModuleAlias(name)) { return true; }
+            }
+        }
         if (EvalComptimeValue(rhs) is { } comptimeVal) { _comptimeValues[name] = comptimeVal; }
         // A comptime ARRAY literal (`const a = [_]u8{1,2};`) — record its raw element-type + element
         // items (no lowering, so safe in any pass) for a later `++`/`**` fold (see TryArrayLiteralParts).
@@ -187,6 +237,19 @@ internal sealed partial class ZigLowering
         }
         return false;
     }
+
+    /// <summary>True when a dotted path is rooted, syntactically, at a name this unit binds to an
+    /// import (<c>std.Io.Writer</c>). Resolves nothing, so it is safe while a module is being prepared.</summary>
+    private bool IsImportRootedPath(Item expr) => expr.Content switch
+    {
+        Zig.Field f => IsImportRootedPath(f.Arg0),
+        Zig.Ident id => _importSpecs.ContainsKey(Tok(id.Arg0)),
+        // `const H = @import("h.zig").H;` — rooted at an INLINE import (ResolveModulePath resolves one), in a
+        // ROOT unit only: std.zig re-exports dozens of names that way (`pub const BufMap =
+        // @import("buf_map.zig").BufMap;`), and a lazy module must not pull those modules in at prepare time.
+        Zig.BuiltinCall { Arg2: not null } b => !_lazy && Tok(b.Arg0) == "@import",
+        _ => false,
+    };
 
     /// <summary>Recognize a <c>const</c> RHS that is a TYPE expression (wall-plan W1), lowering it to
     /// the aliased <see cref="CType"/>. Two unambiguous shapes plus a guarded identifier:
@@ -200,34 +263,69 @@ internal sealed partial class ZigLowering
     /// (a value) is NOT misread as an alias and falls through to a normal const.</item>
     /// </list>
     /// Returns false for any non-type RHS (→ an ordinary value const / global).</summary>
+    /// <summary>The type a <c>switch</c> over a TYPE subject selects (see <see cref="TrySelectTypeProng"/>), when the
+    /// selected prong is an uncaptured type expression; false for anything else, so a value switch stays a value.</summary>
+    private bool TrySelectedTypeArm(Item subject, Item prongs, out CType type)
+    {
+        type = CType.Int;
+        // Over a TYPE subject, or a comptime BOOL one (`const W = switch (wide) { true => u32, false => u8 };`, task #84).
+        if (TrySelectTypeProng(subject, prongs) is { Expr: { } capturedArm, CaptureName: { } typeCapture } && typeCapture != "_")
+        {
+            // `else => |T| T` over a type (std.math.gcd's `switch (@TypeOf(a, b)) { comptime_int => …, else => |T| T }`,
+            // task #86): the capture is the subject type itself, bound as an alias while the arm resolves.
+            if (!TryTypeAliasRhs(subject, out var subjectType)) { return false; }
+            var hadPrev = _typeAliases.TryGetValue(typeCapture, out var prevAlias);
+            var prevBits = _declaredIntBits.TryGetValue(typeCapture, out var pb) ? pb : (int?)null;
+            _typeAliases[typeCapture] = subjectType;
+            SetDeclaredIntBits(typeCapture, DeclaredBitsOfTypeArg(subject));
+            try { return TryTypeAliasRhs(capturedArm, out type); }
+            finally
+            {
+                if (hadPrev && prevAlias is { } restored) { _typeAliases[typeCapture] = restored; } else { _typeAliases.Remove(typeCapture); }
+                SetDeclaredIntBits(typeCapture, prevBits);
+            }
+        }
+        return (TrySelectTypeProng(subject, prongs) ?? TrySelectBoolProng(subject, prongs)) is { Expr: { } typeArm, CaptureName: null }
+               && TryTypeAliasRhs(typeArm, out type);
+    }
+
     private bool TryTypeAliasRhs(Item rhs, out CType type)
     {
         switch (rhs.Content)
         {
             // Type-former prefixes/suffixes — unambiguously a type (no value spelling collides).
-            case Zig.TyPointer or Zig.TyPtrConst or Zig.TyCPtr or Zig.TyCPtrConst
-              or Zig.TyManyPtr or Zig.TyManyPtrConst or Zig.TySentPtr or Zig.TySentPtrConst
-              or Zig.TyOptional or Zig.TySlice or Zig.TySliceConst or Zig.TySentSlice or Zig.TySentSliceConst
-              or Zig.TyArray or Zig.TySentArray or Zig.ErrUnion or Zig.TyTuple
-              or Zig.TyFn or Zig.TyFnNoArgs or Zig.TyFnErr or Zig.TyFnNoArgsErr:
+            case var _ when IsTypeFormer(rhs):
                 type = LowerType(rhs);
                 return true;
 
+            // `const Writer = @This();` names the innermost container, which at file scope is the file
+            // itself when it has top-level fields (road-to-zig-std G3). A namespace-only file has no
+            // type to name, so the binding falls through unchanged.
+            case Zig.BuiltinCall { Arg2: null } tb when Tok(tb.Arg0) == "@This" && (_currentContainer ?? _fileContainer) is not null:
+                type = CurrentContainerType();
+                return true;
+
+            // `const M = switch (T) { f16, f32, f64 => u64, f80, f128 => u128, else => unreachable };` in a function
+            // body (std.fmt.parse_float's mantissaType, inlined): a switch over a TYPE whose selected prong names a type.
+            case Zig.SwitchExpr se when TrySelectedTypeArm(se.Arg2, se.Arg5, out var armType):
+                type = armType;
+                return true;
+
             // `@TypeOf(expr)` — the operand's synthesized type, unevaluated.
-            case Zig.BuiltinCall b when Tok(b.Arg0) == "@TypeOf":
+            case Zig.BuiltinCall { Arg2: not null } b when Tok(b.Arg0) == "@TypeOf":
                 type = TypeOfBuiltin(b.Arg2);
                 return true;
 
             // `const MaskInt = @Int(.unsigned, @bitSizeOf(T));` — a CONSTRUCTED type bound to a name
             // (road-to-zig-std S7). The width it was built with rides the binding through
             // SetDeclaredIntBits / DeclaredBitsOfTypeArg, so `@typeInfo(MaskInt).int.bits` answers.
-            case Zig.BuiltinCall rb when TryLowerReifyBuiltin(rb, out var reified):
+            case Zig.BuiltinCall { Arg2: not null } rb when TryLowerReifyBuiltin(rb, out var reified):
                 type = reified;
                 return true;
 
             // `const List = std.ArrayList(i32);` — a curated generic std type in value position; the
             // CallArgs resolves through LowerType exactly as in type position (wall-plan W0).
-            case Zig.CallArgs ca when TryResolveStdPath(ca.Arg0, out var gp) && StdGenericTypes.ContainsKey(gp):
+            case Zig.CallArgs { Arg2: not null } ca when TryResolveStdPath(ca.Arg0, out var gp) && StdGenericTypes.ContainsKey(gp):
                 type = LowerType(rhs);
                 return true;
 
@@ -235,7 +333,7 @@ internal sealed partial class ZigLowering
             // (wall-plan W4) bound to a name. Reifies the returned struct and records the alias. (At
             // top level this resolves in the pass-1.5 re-try, once the fn is declared — see
             // LowerTopLevelGlobals.)
-            case Zig.CallArgs or Zig.CallNoArgs when TryEvalTypeReturningCall(rhs, out var trt):
+            case Zig.CallArgs when TryEvalTypeReturningCall(rhs, out var trt):
                 type = trt;
                 return true;
 
@@ -249,6 +347,34 @@ internal sealed partial class ZigLowering
             // .field_types[0];` — a reflected TYPE from the member-list payloads (S5c).
             case Zig.Field or Zig.Index when TryFoldTypeInfoListType(rhs, out var tiListTy):
                 type = tiListTy;
+                return true;
+
+            // `const Hasher = switch (@typeInfo(@TypeOf(hasher))) { .pointer => |ptr| ptr.child, else => @TypeOf(hasher) };`
+            // (std.hash.autoHash): a switch over a comptime TAG whose selected prong is a type. A switch that
+            // yields a value instead is left to the value path (the type evaluation declines, loudly or not).
+            case Zig.SwitchExpr when TrySwitchTypeAlias(rhs, out var switched):
+                type = switched;
+                return true;
+
+            // `const DT = if (@bitSizeOf(T) <= 64) u64 else u128;` (std.fmt.float.render, task #77): a comptime condition
+            // choosing between two types. A runtime condition, or an arm that is not a type, is left to the value path.
+            case Zig.IfElseExpr { Arg4: null, Arg7: null } ie when TryFoldTypeIfCondition(ie.Arg2) is { } takenArm
+                                    && TryTypeAliasRhs(takenArm ? ie.Arg5 : ie.Arg8, out var ifType):
+                type = ifType;
+                return true;
+
+            // `const Api = if (is_windows) struct { … } else struct { … };` at a module or container's top level, and the
+            // mixed `if (!is_windows) noreturn else struct { … }` (std.Io.Terminal's WindowsApi, task #191): the condition
+            // folds, and a container arm reifies as the inline type it spells, as in an annotation.
+            case Zig.IfElseExpr { Arg4: null, Arg7: null } ta when HasTypeArm(ta) && TryFoldTypeIfCondition(ta.Arg2) is { } takenTypeArm
+                                    && TryTypeArmType(takenTypeArm ? ta.Arg5 : ta.Arg8, out var armsType):
+                type = armsType;
+                return true;
+
+            // `pub const Size = Unmanaged.Size;` (std.HashMap) — a container's nested type or type const,
+            // named qualified. Before the std-path case: a local container name is never a std path.
+            case Zig.Field when TryResolveQualifiedNestedType(rhs) is { } qualified:
+                type = qualified;
                 return true;
 
             // `const A = std.mem.Allocator;` — a dotted std TYPE path aliased to a name.
@@ -274,12 +400,105 @@ internal sealed partial class ZigLowering
         }
     }
 
+    /// <summary>True when an <c>if</c> arm is a container type spelled in place (<c>struct { … }</c> /
+    /// <c>enum { … }</c>, grammar <c>TypeArm</c>) rather than a value.</summary>
+    private static bool IsTypeArm(Item arm) => arm.Content is Zig.InlineEnumType or Zig.InlineEnumTypeTyped or Zig.InlineStructType;
+
+    /// <summary>True when either arm of an <c>if</c> expression is a <see cref="IsTypeArm">type arm</see>, so the
+    /// <c>if</c> chooses a type.</summary>
+    private static bool HasTypeArm(Zig.IfElseExpr e) => IsTypeArm(e.Arg5) || IsTypeArm(e.Arg8);
+
+    /// <summary>The type one arm of a type-choosing <c>if</c> names (task #191): an inline <c>struct { … }</c> /
+    /// <c>enum { … }</c> reified as the type it spells, or a type expression.</summary>
+    private bool TryTypeArmType(Item arm, out CType type)
+    {
+        switch (arm.Content)
+        {
+            case Zig.InlineStructType s:
+                type = ReifyInlineStruct(arm, s.Arg2);
+                return true;
+            case Zig.InlineEnumType e:
+                type = ReifyInlineEnum(arm, e.Arg2);
+                return true;
+            case Zig.InlineEnumTypeTyped et:
+                type = ReifyInlineEnum(arm, et.Arg5, et.Arg2);
+                return true;
+            default:
+                return TryTypeAliasRhs(arm, out type);
+        }
+    }
+
+    /// <summary>The value of an <c>if</c> condition in a type alias, when it is known at compile time (a comptime question,
+    /// anything the const folder settles: <c>@bitSizeOf(T) &lt;= 64</c>, or a call the interpreter runs); null otherwise,
+    /// including when the condition does not lower (<see cref="TryFoldRequiredComptimeCondition"/>).</summary>
+    private bool? TryFoldTypeIfCondition(Item cond)
+    {
+        try { return TryFoldRequiredComptimeCondition(cond); }
+        catch (IrUnsupportedException) { return null; }
+    }
+
+    /// <summary>A switch over a comptime tag that selects a TYPE (see <see cref="TryTypeAliasRhs"/>): its type, or
+    /// false when the subject is not a comptime tag or the selected prong is not a type.</summary>
+    private bool TrySwitchTypeAlias(Item rhs, out CType type)
+    {
+        type = CType.Int;
+        var (subject, prongs) = rhs.Content switch
+        {
+            Zig.SwitchExpr s => (s.Arg2, s.Arg5),
+            _ => (null, null),
+        };
+        if (subject is null || prongs is null || !TryEvalComptimeTag(subject, out _, out _)) { return false; }
+        try
+        {
+            type = LowerComptimeTypeSwitch("switch", subject, prongs).Type;
+            return true;
+        }
+        catch (IrUnsupportedException)
+        {
+            return false;   // a value-yielding comptime switch: not an alias
+        }
+    }
+
+    /// <summary>True for a type-FORMER node (<c>*T</c>, <c>?T</c>, <c>[]T</c>, <c>[N]T</c>, <c>E!T</c>, a fn or
+    /// tuple type, and their aligned / sentinel forms): a spelling that can only be a type, so a caller
+    /// may classify it as one before lowering anything.</summary>
+    private static bool IsTypeFormer(Item item) => item.Content
+        is Zig.TyPointer or Zig.TyPtrConst or Zig.TyPointerPointer or Zig.TyPointerPointerConst or Zig.TyCPtr or Zig.TyCPtrConst
+        or Zig.TyManyPtr or Zig.TyManyPtrConst or Zig.TySentPtr or Zig.TySentPtrConst or Zig.TySentPtrAlign or Zig.TySentPtrConstAlign
+        or Zig.TyOptional or Zig.TySlice or Zig.TySliceConst or Zig.TySentSlice or Zig.TySentSliceConst
+        or Zig.TyPointerAlign or Zig.TyPtrConstAlign or Zig.TyManyPtrAlign or Zig.TyManyPtrConstAlign
+        or Zig.TySliceAlign or Zig.TySliceConstAlign
+        or Zig.TySentSliceExpr or Zig.TySentSliceConstExpr or Zig.TySentSliceAlignExpr
+        or Zig.TySentSliceConstAlignExpr or Zig.TySentPtrExpr or Zig.TySentPtrConstExpr
+        or Zig.TyArray or Zig.TySentArray or Zig.ErrUnion or Zig.TyTuple or Zig.TyIf
+        or Zig.TyFn;
+
+    /// <summary>True when a struct MEMBER <c>const</c>'s RHS is a TYPE: a type former, a call to a
+    /// type-returning generic, a type name, or an <c>if</c> whose then-arm is one of those
+    /// (<c>pub const Slice = if (alignment) |a| ([]align(a.toByteUnits()) T) else []T;</c>). Stricter
+    /// than a type body's shape test, because a member may equally be a VALUE const
+    /// (<c>pub const max = if (c) 3 else 4;</c>), which must keep its lazy value lowering.</summary>
+    private bool IsTypeConstMember(Item rhs)
+    {
+        var cur = rhs;
+        while (cur.Content is Zig.Grouped g) { cur = g.Arg1; }
+        return cur.Content switch
+        {
+            Zig.IfElseExpr { Arg4: null, Arg7: null } ta when IsTypeArm(ta.Arg5) && IsTypeArm(ta.Arg8) => true,
+            Zig.IfElseExpr { Arg4: null, Arg7: null } mixed when HasTypeArm(mixed) => TryTypeAliasRhs(cur, out _),
+            Zig.IfElseExpr { Arg4: null, Arg7: null } ie => IsTypeConstMember(ie.Arg5),
+            Zig.IfElseExpr ic => IsTypeConstMember(ic.Arg5),
+            _ => IsTypeFormer(cur) || TryTypeAliasRhs(cur, out _),
+        };
+    }
+
     /// <summary>True when <paramref name="name"/> names a TYPE in the current lowering context — a
     /// registered container, an existing type alias, a container-scoped self-alias, an error set, or
     /// a Zig primitive (<see cref="TryLowerPrim"/>). The discriminator that keeps a bare-identifier
     /// <c>const</c> RHS (<c>const y = x;</c>) from being misread as a type alias.</summary>
     private bool IsTypeName(string name)
         => _typeAliases.ContainsKey(name)
+        || (_deferredTypeCalls.ContainsKey(name) && TryDeferredTypeAlias(name, out _))
         || _containerTypes.ContainsKey(name)
         || ResolveSelfAlias(name) is not null
         || _errorSets.Contains(name)
@@ -293,36 +512,46 @@ internal sealed partial class ZigLowering
     private CType TypeOfBuiltin(Item argList)
     {
         var args = Flatten(argList);
-        if (args.Count != 1)
+        if (args.Count == 0)
         {
-            throw new IrUnsupportedException($"zig `@TypeOf` takes exactly one operand; got {args.Count}");
+            throw new IrUnsupportedException("zig `@TypeOf` takes at least one operand");
         }
+        if (args.Count == 1) { return TypeOfOperand(args[0]).Type; }
+        // `@TypeOf(val, lower, upper)` (std.math.clamp): the PEER type of the operands. A comptime_int operand
+        // (an untyped literal) yields to a fixed-width one; among fixed-width integers the widest wins.
+        CType? peer = null;
+        foreach (var arg in args)
+        {
+            var (t, comptimeInt) = TypeOfOperand(arg);
+            if (comptimeInt) { continue; }
+            peer = peer is null || t.Unqualified.SizeOf > peer.Unqualified.SizeOf ? t : peer;
+        }
+        return peer ?? CType.ComptimeInt;
+    }
+
+    /// <summary>One <c>@TypeOf</c> operand's type, and whether it is a <c>comptime_int</c> (an untyped integer
+    /// literal, or a value of <see cref="CType.ComptimeInt"/>), which yields to a fixed-width peer.</summary>
+    private (CType Type, bool ComptimeInt) TypeOfOperand(Item arg)
+    {
         // `@TypeOf(anytypeParam)` while lowering an `anytype` generic's per-instance signature (wall-plan
         // W5): return the param's inferred concrete type directly — it is seeded at the call site but is
         // not yet an in-scope symbol, so the LowerExpr path below would fail to resolve it.
-        if (args[0].Content is Zig.Ident aid && _anytypeSeeds.TryGetValue(Tok(aid.Arg0), out var seeded))
+        if (arg.Content is Zig.Ident aid && _anytypeSeeds.TryGetValue(Tok(aid.Arg0), out var seeded))
         {
-            return seeded;
+            return (seeded, seeded.Unqualified is CType.Prim { IsComptimeInt: true });
         }
-        var savedBuf = _hoist;
-        var savedImpure = _hoistImpureSeen;
-        _hoist = new List<CStmt>();   // throwaway — @TypeOf's operand is unevaluated
-        try
-        {
-            return LowerExpr(args[0]).Type
-                ?? throw new IrUnsupportedException("zig `@TypeOf`: the operand has no statically known type");
-        }
-        finally
-        {
-            _hoist = savedBuf;
-            _hoistImpureSeen = savedImpure;
-        }
+        using var _ = EnterThrowawayHoist();   // @TypeOf's operand is unevaluated
+        var lowered = LowerExpr(arg);
+        var type = lowered.Type
+            ?? throw new IrUnsupportedException("zig `@TypeOf`: the operand has no statically known type");
+        return (type, arg.Content is Zig.IntLit || type.Unqualified is CType.Prim { IsComptimeInt: true });
     }
 
     /// <summary>Walk an <c>error{ A, B, … }</c> member list (the right-recursive <c>ErrSetList</c>)
     /// into its member names, mirroring the grammar's one / trailing-comma / cons shapes.</summary>
     private static IEnumerable<string> WalkErrSetMembers(Item list)
     {
+        if (list is null) { yield break; }   // `error{}`: the optional member list is absent
         var cur = list;
         while (true)
         {
@@ -341,7 +570,12 @@ internal sealed partial class ZigLowering
     /// name as its root (e.g. <c>"std.heap.page_allocator"</c>) regardless of the alias spelling.
     /// Works in both expression and type position (same AST shape). Returns <c>false</c> for any
     /// chain not rooted at an <see cref="_imports"/> alias.</summary>
-    private bool TryResolveStdPath(Item expr, out string path)
+    private bool TryResolveStdPath(Item expr, out string path) => TryResolveStdPath(expr, out path, MaxAliasHops);
+
+    /// <summary><see cref="TryResolveStdPath(Item, out string)"/>, following a module alias at the root
+    /// (<c>const mem = std.mem;</c> in hash_map.zig, so <c>mem.Allocator</c> is <c>std.mem.Allocator</c>)
+    /// at most <paramref name="hops"/> times.</summary>
+    private bool TryResolveStdPath(Item expr, out string path, int hops)
     {
         path = "";
         var segments = new List<string>();
@@ -351,9 +585,15 @@ internal sealed partial class ZigLowering
             segments.Add(Tok(f.Arg2));
             cur = f.Arg0;
         }
-        if (cur.Content is not Zig.Ident id || !_imports.TryGetValue(Tok(id.Arg0), out var module))
+        if (cur.Content is not Zig.Ident id) { return false; }
+        if (!_imports.TryGetValue(Tok(id.Arg0), out var module))
         {
-            return false;
+            if (hops == 0 || !_moduleAliasPaths.TryGetValue(Tok(id.Arg0), out var aliasPath)
+                || !TryResolveStdPath(aliasPath, out var aliased, hops - 1))
+            {
+                return false;
+            }
+            module = aliased;
         }
         segments.Add(module);
         segments.Reverse();
@@ -414,6 +654,8 @@ internal sealed partial class ZigLowering
     private CType LowerType(Item type) => type.Content switch
     {
         Zig.Ident id => LowerTypeName(Tok(id.Arg0)),
+        // A parenthesized type (`fn add(…) (error{Overflow}!T)` in std.math) is its inner type.
+        Zig.Grouped g => LowerType(g.Arg1),
         // `@typeInfo(T).<kind>.child` in a TYPE position (road-to-zig-std S5) — the child type of a
         // pointer / slice / optional / array kind. Checked before the std-path resolver: the base is
         // a comptime `std.builtin.Type` value, which no std path claims.
@@ -425,25 +667,36 @@ internal sealed partial class ZigLowering
         // A dotted std type (Milestone F): `std.mem.Allocator` → the runtime Allocator fat
         // pointer; `std.heap.FixedBufferAllocator` → the concrete bump allocator. Any other std
         // path in type position errors clearly (`std` is a known-paths resolver, not a real model).
+        // `Number.Mode` — a NESTED container named through its parent (qualified). Checked before the
+        // std-path resolver: a local container name is never a std path.
+        Zig.Field when TryResolveQualifiedNestedType(type) is { } qualified => qualified,
         Zig.Field => LowerStdType(type),
         // Pointer types. `*T` and the C-pointer `[*c]T` both lower to a plain
         // `T*` (the C-pointer's null/arithmetic semantics ARE C's pointer). The
         // pointee `const` rides as a TypeQual so const-correctness sees it; it
         // doesn't change the C# spelling (`[*c]const u8` and `[*c]u8` are both
         // `byte*`). `[*c]const u8` is exactly the type of printf's format param.
-        Zig.TyPointer p    => PointerTo(LowerType(p.Arg1)),
-        Zig.TyPtrConst p   => PointerTo(LowerType(p.Arg2).WithQuals(TypeQual.Const)),
+        Zig.TyVolatile => throw new CompileException(
+            "zig: `volatile` qualifies a pointer's pointee (`*volatile T`, `[]volatile T`), not a type on its own"),
+        Zig.TyPointer p    => PointerTo(LowerPointee(p.Arg1)),
+        Zig.TyPtrConst p   => PointerTo(LowerPointee(p.Arg2).WithQuals(TypeQual.Const)),
+        Zig.TyPointerPointer pp      => PointerTo(PointerTo(LowerPointee(pp.Arg1))),                         // **T
+        Zig.TyPointerPointerConst pp => PointerTo(PointerTo(LowerPointee(pp.Arg2).WithQuals(TypeQual.Const))), // **const T
         Zig.TyCPtr p       => new CType.Pointer(LowerType(p.Arg1)),
         Zig.TyCPtrConst p  => new CType.Pointer(LowerType(p.Arg2).WithQuals(TypeQual.Const)),
         // `[*]T` / `[*]const T` many-item pointers (Milestone O, part 2) — like `[*c]`,
         // a bare `T*`. They index/slice; `.len` is unavailable (a pointer has no length).
-        Zig.TyManyPtr p     => new CType.Pointer(LowerType(p.Arg1)),
-        Zig.TyManyPtrConst p => new CType.Pointer(LowerType(p.Arg2).WithQuals(TypeQual.Const)),
+        Zig.TyManyPtr p     => new CType.Pointer(LowerDataType(p.Arg1)),
+        Zig.TyManyPtrConst p => new CType.Pointer(LowerDataType(p.Arg2).WithQuals(TypeQual.Const)),
         // `?T` optional. An optional POINTER `?*T` lowers to a bare nullable `T*` (Zig's
         // own niche — null = none, zero cost; a non-optional `*T` loses its non-null
         // guarantee, a documented leniency). A `?T` over a value type lowers to C#
         // Nullable<T> via CType.Optional, so `null`/`.?`/`orelse` map to C#'s built-ins.
         Zig.TyOptional opt => LowerOptional(opt.Arg1),
+        // zig's IfTypeExpr (`value: if (is_64) u64 else u32`): the condition is comptime, so one arm is the type.
+        Zig.TyIf ti => TryFoldComptimeCondition(ti.Arg2) is { } takenArm
+            ? LowerType(takenArm ? ti.Arg4 : ti.Arg6)
+            : throw new IrUnsupportedException("zig type: an `if` in a type position needs a condition known at compile time"),
         // `E!T` error-union type → CType.ErrorUnion(T). V1 erases the error SET (Arg0, the
         // Suffix naming the set), so `anyerror!T` and a named `E!T` lower identically — the
         // payload is what the backend renders (`ErrUnion<T>`). See [[CType.ErrorUnion]].
@@ -452,22 +705,39 @@ internal sealed partial class ZigLowering
         // pointer). `[]const T` carries the `const` on the element, so the backend renders it
         // as `ConstSlice<T>` — element-only const, like the pointer forms above. See
         // [[CType.Slice]].
-        Zig.TySlice s      => new CType.Slice(LowerType(s.Arg2)),
-        Zig.TySliceConst s => new CType.Slice(LowerType(s.Arg3).WithQuals(TypeQual.Const)),
+        Zig.TySlice s      => new CType.Slice(LowerDataType(s.Arg2)),
+        Zig.TySliceConst s => new CType.Slice(LowerDataType(s.Arg3).WithQuals(TypeQual.Const)),
+        // The aligned forms (`*align(4) const T`, `[]align(a) T`): the same types. Alignment is not tracked
+        // (C# pointers carry none), so the `align(E)` operand is not even lowered.
+        Zig.TyPointerAlign p      => PointerTo(LowerPointee(p.Arg2)),
+        Zig.TyPtrConstAlign p     => PointerTo(LowerPointee(p.Arg3).WithQuals(TypeQual.Const)),
+        Zig.TyManyPtrAlign p      => new CType.Pointer(LowerDataType(p.Arg2)),
+        Zig.TyManyPtrConstAlign p => new CType.Pointer(LowerDataType(p.Arg3).WithQuals(TypeQual.Const)),
+        Zig.TySliceAlign s        => new CType.Slice(LowerDataType(s.Arg3)),
+        Zig.TySliceConstAlign s   => new CType.Slice(LowerDataType(s.Arg4).WithQuals(TypeQual.Const)),
+        // A general sentinel (`[:s]T`, `[*:null]T`), erased in the type exactly as `[:0]`'s is.
+        Zig.TySentSliceExpr s           => new CType.Slice(LowerDataType(s.Arg4)),
+        Zig.TySentSliceConstExpr s      => new CType.Slice(LowerDataType(s.Arg5).WithQuals(TypeQual.Const)),
+        Zig.TySentSliceAlignExpr s      => new CType.Slice(LowerDataType(s.Arg5)),
+        Zig.TySentSliceConstAlignExpr s => new CType.Slice(LowerDataType(s.Arg6).WithQuals(TypeQual.Const)),
+        Zig.TySentPtrExpr p             => new CType.Pointer(LowerDataType(p.Arg5)),
+        Zig.TySentPtrConstExpr p        => new CType.Pointer(LowerDataType(p.Arg6).WithQuals(TypeQual.Const)),
         // Sentinel-terminated types (Milestone O, part 3 — the C-string shape; V1 sentinel = 0).
         // `[*:0]T` is a NUL-terminated many-item pointer (C's `char*`) → a bare `T*`, like `[*]`;
         // `[:0]T` is a NUL-terminated slice → CType.Slice, like `[]T`. The sentinel is a type-level
         // annotation, not separately enforced (string literals are already NUL-terminated, so a
         // manual `while (p[n] != 0)` scan works); the auto-scan `p[0..]` on a sentinel pointer is
         // a documented cut. Const rides as a TypeQual on the element, same as the non-sentinel forms.
-        Zig.TySentPtr p      => new CType.Pointer(LowerType(p.Arg1)),
-        Zig.TySentPtrConst p => new CType.Pointer(LowerType(p.Arg2).WithQuals(TypeQual.Const)),
-        Zig.TySentSlice s      => new CType.Slice(LowerType(s.Arg1)),
-        Zig.TySentSliceConst s => new CType.Slice(LowerType(s.Arg2).WithQuals(TypeQual.Const)),
+        Zig.TySentPtr p      => new CType.Pointer(LowerDataType(p.Arg1)),
+        Zig.TySentPtrConst p => new CType.Pointer(LowerDataType(p.Arg2).WithQuals(TypeQual.Const)),
+        Zig.TySentPtrAlign p      => new CType.Pointer(LowerDataType(p.Arg2)),                            // [*:0]align(N) T
+        Zig.TySentPtrConstAlign p => new CType.Pointer(LowerDataType(p.Arg3).WithQuals(TypeQual.Const)),   // [*:0]align(N) const T
+        Zig.TySentSlice s      => new CType.Slice(LowerDataType(s.Arg1)),
+        Zig.TySentSliceConst s => new CType.Slice(LowerDataType(s.Arg2).WithQuals(TypeQual.Const)),
         // `[N]T` fixed-size array → CType.Array(element, N). N must be an integer literal
         // (a general comptime const-expr size is deferred). A `var b: [N]T` local lowers to a
         // stackalloc'd C array (see DeclOf), so slicing it (`b[lo..hi]`) yields a stack-backed slice.
-        Zig.TyArray a => new CType.Array(LowerType(a.Arg3), ConstEvalArraySize(a.Arg1)),
+        Zig.TyArray a => new CType.Array(LowerDataType(a.Arg3), ConstEvalArraySize(a.Arg1)),
         // `[N:s]T` sentinel-terminated array (Milestone O, part 4; non-zero sentinel in Milestone Z)
         // → CType.Array(element, N) — the LOGICAL length N (so `.len` / slicing exclude the sentinel,
         // like Zig). The extra trailing sentinel slot (N+1 total storage) is materialized only at the
@@ -475,7 +745,7 @@ internal sealed partial class ZigLowering
         // stays an ordinary N-element array, so a `[N:0]u8` buffer is a valid NUL-terminated C string
         // without writing the terminator. A zero sentinel rides C#'s zero-fill; a NON-ZERO sentinel is
         // written into the trailing slot explicitly (the sentinel VALUE isn't carried in the type).
-        Zig.TySentArray a => new CType.Array(LowerType(a.Arg5), ConstEvalArraySize(a.Arg1)),
+        Zig.TySentArray a => new CType.Array(LowerDataType(a.Arg5), ConstEvalArraySize(a.Arg1)),
         // Tuple TYPE `struct { T1, T2, … }` (Milestone G) → CType.Tuple → C# System.ValueTuple<…>.
         // Used as a function return type or a var/param annotation; nested tuple types compose.
         Zig.TyTuple t => LowerTupleType(t.Arg2),
@@ -488,76 +758,188 @@ internal sealed partial class ZigLowering
         // the return type is one slot further right than the pre-CallConv layout. `callconv(.c)` /
         // `(.C)` honors the C ABI via IsNativeCallConv (→ `delegate* unmanaged[Cdecl]`); every other
         // convention (and the absent/epsilon case) stays managed. See IsCCallConv.
-        Zig.TyFn f       => new CType.Func(LowerType(f.Arg5), LowerFnTypeParams(f.Arg2), Variadic: false) { IsNativeCallConv = IsCCallConv(f.Arg4) },
-        Zig.TyFnNoArgs f => new CType.Func(LowerType(f.Arg4), System.Array.Empty<CType>(), Variadic: false) { IsNativeCallConv = IsCCallConv(f.Arg3) },
-        // `!T`-returning fn-pointer types: the return is an error union `!T` (like fnDefErr). The
+        Zig.TyFn { Arg5: null } f => new CType.Func(LowerType(f.Arg6), LowerFnTypeParams(f.Arg2), Variadic: false) { IsNativeCallConv = IsCCallConv(f.Arg4) },
+        // `!T`-returning fn-pointer types: the return is an error union `!T` (like a FnDef with `!`). The
         // Func's Return carries the CType.ErrorUnion, so a bound fn-ptr's result is an ErrUnion<T>.
-        Zig.TyFnErr f       => new CType.Func(new CType.ErrorUnion(LowerType(f.Arg6)), LowerFnTypeParams(f.Arg2), Variadic: false) { IsNativeCallConv = IsCCallConv(f.Arg4) },
-        Zig.TyFnNoArgsErr f => new CType.Func(new CType.ErrorUnion(LowerType(f.Arg5)), System.Array.Empty<CType>(), Variadic: false) { IsNativeCallConv = IsCCallConv(f.Arg3) },
+        Zig.TyFn f          => new CType.Func(new CType.ErrorUnion(LowerType(f.Arg6)), LowerFnTypeParams(f.Arg2), Variadic: false) { IsNativeCallConv = IsCCallConv(f.Arg4) },   // `!T`
         // `@This()` — Zig's reflective self-type → the container currently being lowered, so
         // `self: @This()` / `self: *@This()` name the receiver without repeating the type name.
         // The `const Self = @This();` alias form (the common Zig idiom) is also supported — it
         // registers a container-scoped type alias (see RegisterContainerConsts / ResolveSelfAlias)
         // so `Self` resolves here through LowerTypeName.
-        Zig.BuiltinCallNoArgs b when Tok(b.Arg0) == "@This" => CurrentContainerType(),
+        Zig.BuiltinCall { Arg2: null } b when Tok(b.Arg0) == "@This" => CurrentContainerType(),
         // `@TypeOf(expr)` in TYPE position (wall-plan W1) — e.g. `var y: @TypeOf(x) = x;` or a
         // param/return annotation. The operand's synthesized type; unevaluated (see TypeOfBuiltin).
-        Zig.BuiltinCall b when Tok(b.Arg0) == "@TypeOf" => TypeOfBuiltin(b.Arg2),
+        Zig.BuiltinCall { Arg2: not null } b when Tok(b.Arg0) == "@TypeOf" => TypeOfBuiltin(b.Arg2),
         // A type-CONSTRUCTING builtin (road-to-zig-std S7): `@Int(.unsigned, @bitSizeOf(T))` builds an
         // integer type; the aggregate constructors of the same family are loud cuts. See
         // TryLowerReifyBuiltin — checked after @TypeOf/@This, which are their own cases above.
-        Zig.BuiltinCall rb when TryLowerReifyBuiltin(rb, out var reified) => reified,
+        Zig.BuiltinCall { Arg2: not null } rb when TryLowerReifyBuiltin(rb, out var reified) => reified,
         // A curated GENERIC std type in TYPE position (`std.ArrayList(T)`, wall-plan W0). A
         // call parses in type position via the ordinary Suffix chain (Type → ErrUnion →
         // Suffix → callArgs), so NO grammar change: resolve the callee's std path against
         // the StdGenericTypes registry and instantiate over the lowered element. A composed
         // form (`*std.ArrayList(T)`, `?std.ArrayList(T)`, a fn param/return) rides the
         // surrounding Type productions.
-        Zig.CallArgs ca when TryResolveStdPath(ca.Arg0, out var gp) && StdGenericTypes.TryGetValue(gp, out var makeGeneric)
+        Zig.CallArgs { Arg2: not null } ca when TryResolveStdPath(ca.Arg0, out var gp) && StdGenericTypes.TryGetValue(gp, out var makeGeneric)
             => makeGeneric(LowerSingleTypeArg(ca.Arg2, gp)),
         // A USER type-returning generic (wall-plan W4) in TYPE position — `Pair(i32)` / a no-arg
         // `Empty()`. Reifies (or reuses) the returned struct per resolved type argument. Checked after
         // the std generic (disjoint: a std generic has a dotted `std.…` Field callee, a user one a bare
         // identifier). A composed form (`*Pair(i32)`, `?Pair(i32)`, `[]Pair(i32)`) rides the surrounding
         // Type productions, exactly like the std generic.
-        Zig.CallArgs when TryEvalTypeReturningCall(type, out var userTy) => userTy,
-        Zig.CallNoArgs when TryEvalTypeReturningCall(type, out var userTyNoArg) => userTyNoArg,
+        Zig.CallArgs { Arg2: not null } when TryEvalTypeReturningCall(type, out var userTy) => userTy,
+        Zig.CallArgs { Arg2: null } when TryEvalTypeReturningCall(type, out var userTyNoArg) => userTyNoArg,
         // An INLINE named-field struct type (`fn f() struct { a: u8 }`, a field/param/var annotation —
         // road-to-zig-std S9, grammar #90) → a synthesized named struct type, reified once per source
         // site. See ReifyInlineStruct.
         Zig.InlineStructType ist       => ReifyInlineStruct(type, ist.Arg2),
-        Zig.InlineStructTypeEmpty      => ReifyInlineStruct(type, null),
+        Zig.InlineEnumType iet         => ReifyInlineEnum(type, iet.Arg2),
+        Zig.InlineEnumTypeTyped iett   => ReifyInlineEnum(type, iett.Arg5, iett.Arg2),
+        Zig.InlineUnion iu             => ReifyInlineUnion(type, iu.Arg0, iu.Arg2),
+        // `extern struct {…}` / `packed struct {…}` as a field type: the same reified struct with the declared layout. A
+        // backing integer (`packed struct(u8)`) is only zig's check that the fields fill it; the layout does the packing.
+        Zig.InlineLayoutStructType ils => ReifyInlineStruct(type, ils.Arg3, LayoutOf(ils.Arg0)),
+        Zig.InlineLayoutStructTypeBacked { Arg0.Content: Zig.LayoutPacked } ilb => ReifyInlineStruct(type, ilb.Arg6, AggregateLayout.Packed),
+        Zig.InlineLayoutStructTypeBacked => throw new IrUnsupportedException(
+            "zig: only a `packed struct` takes a backing integer; `extern struct(T)` is not zig"),
+        // An `extern union` / `packed union` field type overlaps its variants at offset 0, like any untagged union.
+        // A type chosen by a comptime switch in any type position (a parameter's, as well as a field's): the selected
+        // prong's type (task #73).
+        Zig.SwitchExpr => LowerSwitchType(type),
+        // A type chosen by a comptime `if` in an annotation (`old_sig_io: if (have_sig_io) posix.Sigaction else void,` in
+        // std's Io/Threaded.zig): the same fold a `const T = if (…) A else B;` alias takes. A runtime condition has no type.
+        Zig.IfElseExpr when TryTypeAliasRhs(type, out var ifType) => ifType,
+        Zig.IfElseExpr => throw new IrUnsupportedException(
+            "zig: an `if` in a type position needs a condition dotcc can fold at compile time, and a type in the arm it takes"),
+        // `info.tag_type orelse @compileError("…")` (std.meta.Tag, task #142): an optional TYPE, else the fallback.
+        Zig.OrElse optType => LowerOrElseType(optType.Arg0, optType.Arg2),
+        // A `@compileError("…")` reached in a type position fires, as it does in a value position.
+        Zig.BuiltinCall { Arg2: not null, Arg0: var ceTok } when Tok(ceTok) == "@compileError" => throw new IrUnsupportedException(
+            "internal: `@compileError` in a type position did not fire: " + LowerExpr(type).GetType().Name),
+        // A call in a type position that no case above could evaluate: name the callee and where it is
+        // written, since "CallArgs" alone gave no way to find which of a std module's calls it was.
+        Zig.CallArgs { Arg2: not null } uca => throw UnevaluatedTypeCall(uca.Arg0),
+        Zig.CallArgs { Arg2: null } ucn => throw UnevaluatedTypeCall(ucn.Arg0),
         _ => throw new IrUnsupportedException("zig type: " + (type.Content?.GetType().Name ?? "null")),
     };
 
-    /// <summary>Reify an INLINE named-field struct type (<c>fn f() struct { a: u8 }</c>, a field / param
-    /// / typed-var annotation — road-to-zig-std S9, grammar #90) into a synthesized named struct type.
-    /// A Zig struct type is nominal by its declaration SITE, so each inline <c>struct {…}</c> occurrence
-    /// is its own type: the synthesized name is memoized by the AST occurrence
-    /// (<see cref="_inlineStructNames"/>, reference-keyed), so the same site lowered across passes reifies
-    /// ONE registered type, while two distinct sites get distinct types. The field layout registers into
-    /// the shared IR aggregate table exactly like a named <c>struct {…}</c> — so a <c>.{ … }</c> literal
-    /// against this type and <c>p.field</c> access resolve through the ordinary named-struct machinery.
-    /// V1 is fields-only: a method / <c>const</c> / nested-container member is a loud cut (it needs a
-    /// named container decl — symmetric with the W2 in-fn container and the W4 returned struct).</summary>
-    private CType ReifyInlineStruct(Item occurrence, Item? fieldDecls)
+    /// <summary>Reify an anonymous struct with its source-site identity and captured comptime
+    /// environment, preserving its members and deferring method bodies until demanded.</summary>
+    private CType ReifyInlineStruct(Item occurrence, Item? fieldDecls, AggregateLayout layout = AggregateLayout.Default)
+        => ReifyDeferredInlineStruct(occurrence, fieldDecls, layout);
+
+    /// <summary>The aggregate layout a <c>ContainerLayout</c> keyword names: <c>extern</c> is the C layout (fields in
+    /// declaration order), <c>packed</c> the bit-packed one.</summary>
+    private static AggregateLayout LayoutOf(Item containerLayout) => containerLayout.Content is Zig.LayoutPacked
+        ? AggregateLayout.Packed
+        : AggregateLayout.Sequential;
+
+    /// <summary>The error for a call in a type position that is not a type-returning generic dotcc could
+    /// evaluate, naming the callee's dotted spelling and its file and line.</summary>
+    private IrUnsupportedException UnevaluatedTypeCall(Item callee)
     {
-        if (_inlineStructNames.TryGetValue(occurrence, out var existing)) { return new CType.Named(existing); }
-        var name = $"__AnonStruct{_inlineStructNames.Count}";
-        // Record the name BEFORE lowering the fields, so a self-referential field (`next: ?*Self`
-        // resolved via @This()) or a re-entrant lowering of the same site sees the in-progress type.
+        static string Spell(Item e) => e.Content switch
+        {
+            Zig.Ident id => Tok(id.Arg0),
+            Zig.Field f => Spell(f.Arg0) + "." + Tok(f.Arg2),
+            _ => e.Content?.GetType().Name ?? "?",
+        };
+        static int Line(Item e) => e.Content switch
+        {
+            Zig.Ident id => id.Arg0.Position.Line,
+            Zig.Field f => Line(f.Arg0),
+            _ => 0,
+        };
+        // A declaration the resilient parse SKIPPED is the real wall (hash_map's `Custom`, reached through
+        // `pub const HashMapUnmanaged = Custom;`): raise its parse error, in whichever module owns it.
+        switch (callee.Content)
+        {
+            case Zig.Ident id:
+                RaiseIfSkippedAlongAliases(Tok(id.Arg0));
+                break;
+            case Zig.Field f when ResolveModulePath(f.Arg0)?.Lowering is { } owner:
+                owner.RaiseIfSkippedAlongAliases(Tok(f.Arg2));
+                break;
+        }
+        return new IrUnsupportedException(
+            $"zig type: `{Spell(callee)}(…)` in a type position is not a type-returning generic dotcc could "
+            + $"evaluate ({_fileStem ?? "?"}.zig line {Line(callee)})");
+    }
+
+    /// <summary>The enum twin of <see cref="ReifyInlineStruct"/>: an anonymous <c>enum { pos, neg }</c> in a
+    /// type slot (std's <c>parseIntWithSign(…, comptime sign: enum { pos, neg })</c>) reifies ONE enum per
+    /// source site (<c>__AnonEnum&lt;n&gt;</c>, module-qualified in an imported module), memoized by the
+    /// occurrence, so every instance of a generic whose parameter spells it shares the type. Its tag type is
+    /// <paramref name="tagType"/> when the source spells one (<c>enum(u8) { … }</c>, a type arm, GH #282). Its
+    /// consts register with it, and its methods are declared now and their bodies deferred, as a reified
+    /// generic's are (<see cref="DeferReifiedMethod"/>): the reification may run from any type position. The
+    /// methods see no comptime seeds, so one that names a generic's parameter is a loud cut.</summary>
+    private CType ReifyInlineEnum(Item occurrence, Item enumFields, Item? tagType = null)
+    {
+        if (_inlineStructNames.TryGetValue(occurrence, out var existing)) { return _containerTypes[existing]; }
+        var name = QualifyTypeName($"__AnonEnum{_inlineStructNames.Count}");   // shares the per-module counter
         _inlineStructNames[occurrence] = name;
-        var (fields, methods, consts, containers) = fieldDecls is { } fd
-            ? SplitMembers(fd)
-            : (new List<Item>(), new List<Item>(), new List<Item>(), new List<Item>());
-        if (methods.Count > 0 || consts.Count > 0 || containers.Count > 0)
+        if (_currentContainer is { } enumParent) { _containerParents[name] = enumParent; }   // as an inline union's (task #193)
+        List<Item> enumMethods;
+        try
+        {
+            using (EnterContainer(name)) { enumMethods = RegisterEnumZig(name, tagType, enumFields); }
+        }
+        catch
+        {
+            // A member that cannot register (a non-constant value) leaves no type: forget the site, so the next reference
+            // raises that same error instead of finding a name with nothing behind it.
+            _inlineStructNames.Remove(occurrence);
+            throw;
+        }
+        using (EnterContainer(name))
+        {
+            foreach (var methodDef in enumMethods)
+            {
+                var me = DeclareMethod(name, methodDef);
+                _currentContainer = name;   // DeclareMethod clears it
+                if (IsFnTemplate(me.sym)) { continue; }
+                DeferReifiedMethod(new PendingReifiedMethod(me.sym, name, me.ps, me.body,
+                    System.Array.Empty<TypeSeed>(), System.Array.Empty<ValueSeed>(),
+                    System.Array.Empty<(string, bool, long, CType)>()));
+            }
+        }
+        return _containerTypes[name];
+    }
+
+    /// <summary>Reify an inline <c>union(enum) { … }</c> / <c>union { … }</c> type at its occurrence (task #104,
+    /// <c>fn f(x: union(enum) { a: u8, b: u16 })</c>): registered once per occurrence under an anonymous name, exactly as a
+    /// named <c>const U = union(enum) { … };</c> is, so a switch over it and its capture prongs resolve the same way.
+    /// Fields only, like the inline enum and struct: a method needs a named union.</summary>
+    private CType ReifyInlineUnion(Item occurrence, Item head, Item variants)
+    {
+        var (kind, tagArg) = UnionKindOf(head);
+        if (kind == UnionKind.Tagged)
         {
             throw new IrUnsupportedException(
-                "zig: an inline `struct {…}` type is fields-only (road-to-zig-std S9) — a method, `const`, or "
-                + "nested-container member needs a named container decl (`const T = struct { … };`)");
+                "zig: an inline `union(Tag) {…}` type is not supported yet (use `union(enum)`, or a named union decl)");
         }
-        RegisterStruct(name, fields);
-        return new CType.Named(name);
+        if (_inlineStructNames.TryGetValue(occurrence, out var existing)) { return _containerTypes[existing]; }
+        var name = QualifyTypeName($"__AnonUnion{_inlineStructNames.Count}");   // shares the per-module counter
+        CaptureStorageUnionSource(name, head);
+        _inlineStructNames[occurrence] = name;
+        _containerTypes[name] = new CType.Named(name);
+        // Its variant types resolve where it is written: std.Treap's `Entry { context: union(enum) { inserted_under: ?*Node,
+        // … } }` names the reified Treap's sibling `Node` (task #193), which the union's own scope reaches only through its
+        // enclosing container.
+        if (_currentContainer is { } unionParent) { _containerParents[name] = unionParent; }
+        List<Item> methods;
+        using (EnterContainer(name))
+        {
+            methods = kind == UnionKind.Enum ? RegisterUnion(name, variants, tagArg) : RegisterUnionUntagged(name, variants);
+        }
+        if (methods.Count > 0)
+        {
+            throw new IrUnsupportedException(
+                "zig: an inline `union {…}` type is fields-only; a method needs a named union decl (`const U = union(enum) { … };`)");
+        }
+        return _containerTypes[name];
     }
 
     /// <summary>Lower the single type argument of a curated generic std type
@@ -613,6 +995,26 @@ internal sealed partial class ZigLowering
         ["std.heap.c_allocator"] = AllocKind.CHeap,
     };
 
+    /// <summary>The functions each curated std NAMESPACE lowers by hand (<see cref="LowerStdMemCall"/>,
+    /// <see cref="LowerStdDebugCall"/>, <see cref="LowerStdTestingCall"/>). A namespace is not a curated
+    /// PATH the way a type is: <c>std.mem</c> also holds hundreds of functions dotcc never modeled, so only
+    /// these members claim the call; with a real std tree configured any other member falls through to
+    /// source navigation (road-to-zig-std G2, the curated-first rule applied per member).</summary>
+    private static readonly Dictionary<string, HashSet<string>> CuratedStdNamespaceFns = new(System.StringComparer.Ordinal)
+    {
+        ["std.mem"] = new(System.StringComparer.Ordinal)
+            { "eql", "copyForwards", "span", "zeroes", "asBytes", "sliceAsBytes", "bytesAsValue", "bytesToValue", "bytesAsSlice", "sliceTo" },
+        ["std.debug"] = new(System.StringComparer.Ordinal) { "print" },
+        ["std.testing"] = new(System.StringComparer.Ordinal)
+            { "expect", "expectEqual", "expectError", "expectEqualStrings", "expectEqualSlices" },
+    };
+
+    /// <summary>True when the call <c>namespace.method(…)</c> takes the curated lowering: the member is
+    /// curated, or no std source tree is configured (so the curated "not modeled" message, which lists
+    /// what IS modeled, is the most useful error). False sends it to the module graph instead.</summary>
+    private bool TakesCuratedStdCall(string ns, string method)
+        => CuratedStdNamespaceFns[ns].Contains(method) || _moduleGraph?.StdRootPath is null;
+
     /// <summary>True when a dotted expression resolves to a std path the CURATED model OWNS — a
     /// <see cref="StdTypes"/>, <see cref="StdGenericTypes"/> or <see cref="StdAllocatorValues"/> row.
     /// The discriminator that keeps real-std source navigation (road-to-zig-std S1/S2, active when a
@@ -650,9 +1052,15 @@ internal sealed partial class ZigLowering
         {
             var name = Tok(member.Arg2);
             if (navMod.Lowering?.ResolveExportedType(name) is { } navType) { return navType; }
+            // `std.Io.Writer` spelled directly: the member is itself a file-as-struct module.
+            if (ResolveModulePath(f)?.Lowering?.FileStructType is { } fileType) { return fileType; }
+            navMod.Lowering?.RaiseIfSkippedDecl(name);
             throw new IrUnsupportedException(
                 $"zig module '{System.IO.Path.GetFileName(navMod.Path)}' declares no type '{name}'");
         }
+        // `std.Target.Cpu.Arch`: a type NESTED in a container another module declares — the module prefix,
+        // then the owner's nested containers / type consts, segment by segment.
+        if (!IsCuratedStdPath(f) && TryResolveModuleNestedType(f) is { } nestedInModule) { return nestedInModule.Type; }
         if (isStdPath)
         {
             throw new IrUnsupportedException(
@@ -662,21 +1070,50 @@ internal sealed partial class ZigLowering
             $"zig type: a dotted type `{Tok(member.Arg2)}` that is not a modeled std path");
     }
 
+    /// <summary>An expression with each read of a comptime const whose initializer did not fold where it was declared
+    /// (<see cref="_unfoldedConstInits"/>: a call, <c>const ceil_bytes = comptime math.divCeil(u16, bits, 8) catch
+    /// unreachable;</c> in std.Random.int, task #117) replaced by that initializer, through arithmetic, casts and parentheses,
+    /// so a comptime position (an array extent, <c>@Int</c>'s width <c>ceil_bytes * 8</c>) can evaluate it now.</summary>
+    private CExpr InlineUnfoldedConsts(CExpr e) => e switch
+    {
+        VarRef { Sym: var sym } when _unfoldedConstInits.TryGetValue(sym, out var init) => InlineUnfoldedConsts(init),
+        Binary b => b with { Left = InlineUnfoldedConsts(b.Left), Right = InlineUnfoldedConsts(b.Right) },
+        Unary u => u with { Operand = InlineUnfoldedConsts(u.Operand) },
+        Cast c => c with { Operand = InlineUnfoldedConsts(c.Operand) },
+        Paren p => p with { Inner = InlineUnfoldedConsts(p.Inner) },
+        _ => e,
+    };
+
+    /// <summary>zig's <c>void</c> as DATA (task #114): the runtime's empty <c>Unit</c> struct, since C# has no <c>void</c>
+    /// element, generic argument or storage.</summary>
+    private static readonly CType ZigUnitType = new CType.Named("Unit");
+
+    /// <summary>Lower an element type of a slice, many-item pointer, array, optional or tuple. A <c>void</c> element
+    /// (std.StaticStringMap(void)'s <c>[*]const V</c>, a <c>?void</c> result, <c>[3]void{ {}, {}, {} }</c>, task #114) is
+    /// <see cref="ZigUnitType"/>: zig stores nothing, and C# needs a real type there. A single pointer to void stays an
+    /// opaque <c>void*</c> (see <see cref="LowerPointee"/>), as does a C pointer.</summary>
+    private CType LowerDataType(Item type)
+    {
+        var lowered = LowerType(StripVolatile(type));
+        RejectNoreturnStorage(lowered);
+        return lowered.Unqualified is CType.VoidType ? ZigUnitType : lowered;
+    }
+
     /// <summary>Lower a tuple TYPE body (the <c>T1, T2, …</c> inside <c>struct { … }</c> at a Type
     /// position) to a <see cref="CType.Tuple"/>. V1 supports arity 1..7 (an empty tuple and
     /// arity &gt; 7 — which would need ValueTuple's <c>TRest</c> nesting — are deferred with a clear
     /// error). Each element is itself a <see cref="LowerType"/>, so nested tuple types compose.</summary>
     private CType LowerTupleType(Item tupleTypes)
     {
-        var elems = Flatten(tupleTypes).Select(LowerType).ToList();
+        var elems = Flatten(tupleTypes).Select(LowerDataType).ToList();
         return new CType.Tuple(elems);
     }
 
     /// <summary>The type the enclosing container's <c>@This()</c> resolves to — the struct/enum
-    /// whose method is currently being lowered. An error outside a method (no container in
-    /// scope).</summary>
+    /// whose method is currently being lowered, else the file-as-struct type when the file has
+    /// top-level fields (road-to-zig-std G3). An error when neither is in scope.</summary>
     private CType CurrentContainerType() =>
-        _currentContainer is { } c && _containerTypes.TryGetValue(c, out var t)
+        (_currentContainer ?? _fileContainer) is { } c && _containerTypes.TryGetValue(c, out var t)
             ? t
             : throw new IrUnsupportedException("zig `@This()` is only supported inside a container method");
 
@@ -691,6 +1128,7 @@ internal sealed partial class ZigLowering
         // the reference is what zig analyses, so this is where the author's message is raised.
         RaiseIfPoisoned(name);
         if (ResolveSelfAlias(name) is { } alias) { return alias; }
+        if (ResolveContainerTypeConst(name) is { } typeConst) { return typeConst; }
         // A nested container type (`const Inner = struct {…};` inside the current container — S9 #89),
         // resolved by plain name while a method of the parent is being lowered.
         if (ResolveNestedType(name) is { } nested) { return nested; }
@@ -707,47 +1145,262 @@ internal sealed partial class ZigLowering
                 + "(use a `const Alias = SomeType;` type alias, or a `comptime` parameter once generics land)");
         }
         if (_containerTypes.TryGetValue(name, out var ct)) { return ct; }
+        // A name bound to a file-as-struct MODULE (`const Writer = std.Io.Writer;`), resolved on demand.
+        if (TryResolveModuleTypeAlias(name, out var fileType)) { return fileType; }
+        if (TryDeferredTypeAlias(name, out var deferredAlias)) { return deferredAlias; }
         // An error-set name used as a plain VALUE type — `fn f(e: E)`, `var x: E`, a non-`!T`
         // error return `fn g() E` — or the open `anyerror`. Lowers to the flat erased error code
         // (`CType.ErrorSet`, rendered `ushort`): the error VALUE itself, NOT an `E!T` error union
         // (handled separately as `Zig.ErrUnion`). Set membership stays erased at runtime; the
         // declared-set table only drives the compile-time rejection in part 3a. (Milestone X, part 3b.)
         if (name == "anyerror" || _errorSets.Contains(name)) { return CType.ErrorSet; }
+        if (TryLowerPrim(name, out var prim)) { return prim; }
+        RaiseIfSkippedDecl(name);   // a type this module declares, whose declaration did not parse
         return LowerPrim(name);
     }
 
     /// <summary>Resolve a type name that is a container-scoped self alias (<c>const Self =
     /// @This();</c>), valid only while a method of the declaring container is being lowered
     /// (<see cref="_currentContainer"/> set). Returns <c>null</c> when it is not such an alias.</summary>
-    private CType? ResolveSelfAlias(string name) =>
-        _currentContainer is { } c
-        && _selfAliases.TryGetValue(c, out var m)
-        && m.TryGetValue(name, out var t)
-            ? t : null;
+    private CType? ResolveSelfAlias(string name)
+    {
+        // Innermost first, then outward: a nested container sees its enclosing container's aliases and type
+        // consts (hash_map's `Iterator` names `Custom`'s `Size`), zig's lexical scoping.
+        for (var c = _currentContainer; c is not null; c = _containerParents.GetValueOrDefault(c))
+        {
+            if (_selfAliases.TryGetValue(c, out var m) && m.TryGetValue(name, out var t)) { return t; }
+        }
+        return null;
+    }
 
-    /// <summary>Resolve a type name that is a NESTED container decl of the container whose method is
-    /// currently being lowered (<c>const Inner = struct {…};</c> inside <c>Parent</c> — road-to-zig-std
-    /// S9, grammar #89), valid only while <see cref="_currentContainer"/> is that parent — so the plain
-    /// name <c>Inner</c> resolves inside <c>Parent</c>'s methods (signature + body) without leaking, and
-    /// two parents may nest a same-named type without colliding. <c>null</c> when not such a name.</summary>
-    private CType? ResolveNestedType(string name) =>
-        _currentContainer is { } c
-        && _nestedContainerTypes.TryGetValue(c, out var m)
-        && m.TryGetValue(name, out var t)
-            ? t : null;
+    /// <summary>Resolve a type name that is a TYPE const member of the container in scope or of one enclosing
+    /// it (hash_map's <c>const Metadata = packed struct { const FingerPrint = u7; fingerprint: FingerPrint, … }</c>),
+    /// evaluated on first use with that container current and cached as a scoped alias, so a field, a
+    /// signature or a body names it plainly. A reified instance evaluates its own type consts eagerly, while
+    /// its seeds are live; this is the lazy path for every other container. <c>null</c> when not such a name.</summary>
+    private CType? ResolveContainerTypeConst(string name)
+    {
+        for (var c = _currentContainer; c is not null; c = _containerParents.GetValueOrDefault(c))
+        {
+            if (TryContainerTypeConst(c, name) is { } resolved) { return resolved; }
+        }
+        return null;
+    }
+
+    /// <summary>The TYPE const <paramref name="name"/> of exactly <paramref name="container"/>, evaluated on
+    /// first use in that container's scope and cached as a scoped alias; null when it declares no such type
+    /// const. The one-container step of <see cref="ResolveContainerTypeConst"/>, and what a qualified
+    /// <c>Shapes.Bytes</c> asks.</summary>
+    private CType? TryContainerTypeConst(string container, string name)
+    {
+        if (_selfAliases.TryGetValue(container, out var known) && known.TryGetValue(name, out var cached)) { return cached; }
+        if (!_containerConsts.TryGetValue(container, out var consts)
+            || !consts.TryGetValue(name, out var entry)
+            || entry.Item1 is not null
+            || !_typeConstsInFlight.Add((container, name)))
+        {
+            return null;
+        }
+        try
+        {
+            CType resolved;
+            using (EnterContainer(container))
+            {
+                // The shape test inside the scope too: it may evaluate a member call (`Pair(u8)`).
+                if (!IsTypeConstMember(entry.Item2)) { return null; }
+                var (lowered, bits) = LowerComptimeTypeExpr(container, entry.Item2);
+                resolved = lowered;
+                if (bits is { } b) { _typeConstBits[(container, name)] = b; }
+            }
+            if (!_selfAliases.TryGetValue(container, out var scoped))
+            {
+                scoped = new Dictionary<string, CType>(System.StringComparer.Ordinal);
+                _selfAliases[container] = scoped;
+            }
+            scoped[name] = resolved;
+            return resolved;
+        }
+        finally { _typeConstsInFlight.Remove((container, name)); }
+    }
+
+    /// <summary>The declared integer width each container TYPE const spelled (hash_map's
+    /// <c>pub const Hash = u64;</c>, Metadata's <c>const FingerPrint = u7;</c>), keyed by (container, name), so
+    /// <c>@typeInfo(FingerPrint).int.bits</c> answers 7, not the 8 of the byte it lowers to.</summary>
+    private readonly Dictionary<(string Container, string Name), int> _typeConstBits = new();
+
+    /// <summary>The declared width of the container type const <paramref name="name"/> visible from the current
+    /// container (innermost first), or null.</summary>
+    private int? ContainerTypeConstBits(string name)
+    {
+        for (var c = _currentContainer; c is not null; c = _containerParents.GetValueOrDefault(c))
+        {
+            if (_typeConstBits.TryGetValue((c, name), out var bits)) { return bits; }
+            if (_selfAliases.TryGetValue(c, out var aliases) && aliases.ContainsKey(name)) { return null; }
+        }
+        return null;
+    }
+
+    /// <summary>The (container, name) type consts <see cref="ResolveContainerTypeConst"/> is evaluating, so a
+    /// const whose shape test names itself does not recurse.</summary>
+    private readonly HashSet<(string Container, string Name)> _typeConstsInFlight = new();
+
+    /// <summary>Resolve a type name that is a NESTED container decl of the container currently in scope
+    /// (<c>const Inner = struct {…};</c> inside <c>Parent</c> — road-to-zig-std S9, grammar #89) or of
+    /// any container enclosing it, valid only while <see cref="_currentContainer"/> is that container or
+    /// a descendant — its fields, consts, method signatures and bodies — so the plain name <c>Inner</c>
+    /// resolves without leaking, and two parents may nest a same-named type without colliding.
+    /// <c>null</c> when not such a name.</summary>
+    private CType? ResolveNestedType(string name)
+    {
+        // Innermost first, then outward through the enclosing containers — zig's lexical scoping, so a
+        // nested type's own method or field can name a sibling nested type (or an uncle) plainly.
+        for (var c = _currentContainer; c is not null; c = _containerParents.GetValueOrDefault(c))
+        {
+            if (_nestedContainerTypes.TryGetValue(c, out var m) && m.TryGetValue(name, out var t)) { return t; }
+        }
+        return null;
+    }
+
+    /// <summary>A module-qualified NESTED type (<c>std.Target.Cpu.Arch</c>): the first segment after a module is a
+    /// type that module declares, and each further one a nested container or type const of the previous, looked
+    /// up in the module that owns it. Returns the type with its owner, or null.</summary>
+    private (CType Type, ZigLowering Owner)? TryResolveModuleNestedType(Item dotted)
+    {
+        if (dotted.Content is not Zig.Field f) { return null; }
+        var name = Tok(f.Arg2);
+        if (ResolveModulePath(f.Arg0) is { Lowering: { } module } && module.ResolveExportedType(name) is { } top)
+        {
+            return (top, module);
+        }
+        if (f.Arg0.Content is not Zig.Field || TryResolveModuleNestedType(f.Arg0) is not { } outer) { return null; }
+        var outerName = outer.Type.Unqualified switch
+        {
+            CType.Named n => n.Name,
+            CType.Enum e => e.Name,
+            _ => null,
+        };
+        if (outerName is null) { return null; }
+        if (outer.Owner._nestedContainerTypes.TryGetValue(outerName, out var nested) && nested.TryGetValue(name, out var inner))
+        {
+            return (inner, outer.Owner);
+        }
+        return outer.Owner.TryContainerTypeConst(outerName, name) is { } typeConst ? (typeConst, outer.Owner) : null;
+    }
+
+    /// <summary>Resolve <c>Parent.Inner</c> (or <c>Outer.Mid.Inner</c>) to a NESTED container type, or to a
+    /// TYPE const of the parent (<c>Shapes.Bytes</c>, <c>Map.KeyIterator</c>), or null when the base is not a
+    /// container this module declares or has no such member — so the caller falls through to the std /
+    /// module-graph resolvers unchanged. The base resolves the way a
+    /// bare type name does (<see cref="TryLookupContainerType"/>, which also sees an in-scope nested
+    /// name), then each segment steps into that container's nested map.</summary>
+    private CType? TryResolveQualifiedNestedType(Item dotted)
+    {
+        if (dotted.Content is not Zig.Field f) { return null; }
+        // `h.H` with `const h = @import("h.zig");`: a type the MODULE declares (so `h.H.hash(…)` is a static
+        // call). A root unit's named import only: a lazily prepared module must not fan out into what its
+        // top-level aliases name (std.zig's `pub const BufMap = @import("buf_map.zig").BufMap;` would prepare
+        // buf_map.zig at every std import), and a std path is left to the std resolvers. Inside a function BODY a lazy
+        // module resolves the same way (no preparation is running then): std.Io.Writer.Allocating.sendFile's
+        // `File.Handle` is File.zig's `pub const Handle`, and File's own struct (platform state) never has to lower.
+        // `pub const Md5 = @import("crypto/md5.zig").Md5;` inside std.crypto's `hash` namespace: an INLINE import as the base,
+        // reached only when that container type const is resolved on demand (so preparing crypto.zig never fans out).
+        if ((f.Arg0.Content is Zig.Ident && (!_lazy || _currentFnName.Length > 0) && !TryResolveStdPath(dotted, out _)
+             || f.Arg0.Content is Zig.BuiltinCall { Arg2: not null, Arg0: var importTok } && Tok(importTok) == "@import"
+                && (!_lazy || _typeConstsInFlight.Count > 0))
+            && ResolveModulePath(f.Arg0) is { Lowering: { } moduleLowering }
+            && moduleLowering.ResolveExportedType(Tok(f.Arg2)) is { } moduleType)
+        {
+            return moduleType;
+        }
+        CType? baseType = f.Arg0.Content switch
+        {
+            Zig.Ident id when TryLookupContainerType(Tok(id.Arg0), out var ct) => ct,
+            Zig.Field => TryResolveQualifiedNestedType(f.Arg0),
+            // Through a type call: `Outer(u16, null).Managed`, `std.ArrayList(u8).Slice`-shaped.
+            Zig.CallArgs => TryEvalTypeReturningCall(f.Arg0, out var called) ? called : null,
+            _ => null,
+        };
+        var baseName = baseType?.Unqualified switch
+        {
+            CType.Named n => n.Name,
+            CType.Enum e => e.Name,
+            _ => null,
+        };
+        if (baseName is null) { return null; }
+        // The base may be a container ANOTHER module reified (`const T = std.Treap(u32, cmp);` then `T.Node`, task
+        // #193): its nested types are registered by that module.
+        var owner = _moduleGraph?.OwnerOfContainer(baseName) ?? this;
+        return owner._nestedContainerTypes.TryGetValue(baseName, out var nested) && nested.TryGetValue(Tok(f.Arg2), out var inner)
+            ? inner
+            : owner.TryContainerTypeConst(baseName, Tok(f.Arg2));
+    }
 
     /// <summary>Look up the container type named at a use site — a registered struct/enum/union
     /// name, a container-scoped self alias (<c>Self</c>) when inside that container's method, or a
     /// type ALIAS bound to one. Drives <c>Type.func()</c> / <c>EnumName.member</c> resolution (a self
     /// alias maps through to the real container type, so <c>Self.init(…)</c> binds to the same mangled
     /// method as the explicit name).</summary>
+    /// <summary>The container TYPE a comptime pointer-to-type expression names (task #85): <c>&amp;Backend64_TablesFull</c>, a
+    /// name already bound to one, or a comptime <c>if</c> / <c>switch</c> whose taken arm is one. Null for anything else,
+    /// so a caller may probe.</summary>
+    private CType? TryComptimeTypePointer(Item expr)
+    {
+        switch (expr.Content)
+        {
+            case Zig.Grouped g:
+                return TryComptimeTypePointer(g.Arg1);
+            case Zig.PreAddrOf { Arg1.Content: Zig.Ident id } when _symbols.Resolve(Tok(id.Arg0)) is null
+                                                                   && TryLookupContainerType(Tok(id.Arg0), out var named)
+                                                                   && named.Unqualified is CType.Named:
+                return named;
+            case Zig.PreAddrOf { Arg1: { Content: Zig.Field } dotted } when TryResolveQualifiedNestedType(dotted) is { Unqualified: CType.Named } nested:
+                return nested;
+            case Zig.IfElseExpr { Arg4: null, Arg7: null } ie when TryFoldComptimeCondition(ie.Arg2) is { } taken:
+                return TryComptimeTypePointer(taken ? ie.Arg5 : ie.Arg8);
+            case Zig.SwitchExpr:
+            {
+                var (subject, prongs) = expr.Content switch
+                {
+                    Zig.SwitchExpr s => (s.Arg2, s.Arg5),
+                    _ => (expr, expr),
+                };
+                // Only a switch whose EVERY non-`unreachable` arm is a type pointer: an ordinary value switch must not be
+                // selected (or lowered) here.
+                if (!Flatten(prongs).All(p => DecomposeProng(p).Expr is not { } arm || IsUnreachableItem(arm)
+                                              || LooksLikeTypePointer(arm)))
+                {
+                    return null;
+                }
+                if (SelectComptimeProng(subject, prongs, out var payload) is not { Expr: { } armItem } prong) { return null; }
+                EnterComptimeProng(prong, payload);
+                try { return TryComptimeTypePointer(armItem); }
+                finally { ExitComptimeProng(); }
+            }
+            default:
+                return null;
+        }
+    }
+
+    /// <summary>True for an expression SHAPED like a pointer to a type: <c>&amp;Name</c>, <c>&amp;a.b</c>, or a comptime
+    /// <c>if</c> / <c>switch</c> of those (checked without lowering anything).</summary>
+    private static bool LooksLikeTypePointer(Item e) => e.Content switch
+    {
+        Zig.Grouped g => LooksLikeTypePointer(g.Arg1),
+        Zig.PreAddrOf { Arg1.Content: Zig.Ident or Zig.Field } => true,
+        Zig.IfElseExpr { Arg4: null, Arg7: null } ie => LooksLikeTypePointer(ie.Arg5) && LooksLikeTypePointer(ie.Arg8),
+        _ => false,
+    };
+
     private bool TryLookupContainerType(string name, out CType type)
     {
         var alias = ResolveSelfAlias(name);
         if (alias is not null) { type = alias; return true; }
+        if (ResolveContainerTypeConst(name) is { } typeConst) { type = typeConst; return true; }
         var nested = ResolveNestedType(name);
         if (nested is not null) { type = nested; return true; }
         if (_containerTypes.TryGetValue(name, out type!)) { return true; }
+        if (!_typeAliases.ContainsKey(name) && TryResolveModuleTypeAlias(name, out type)) { return true; }
+        if (TryDeferredTypeAlias(name, out type)) { return true; }
         // A type ALIAS naming a container — `const S = Stack(u8, 4); S.init()` (road-to-zig-std G4). A
         // REIFIED type-returning generic has no source-level name of its own (its mangled name is
         // synthesized), so the alias is the only way to reach its static methods / consts; treat it
@@ -762,7 +1415,7 @@ internal sealed partial class ZigLowering
     /// is wrapped in <see cref="CType.Optional"/> (→ C# <c>T?</c>).</summary>
     private CType LowerOptional(Item innerType)
     {
-        var inner = LowerType(innerType);
+        var inner = LowerDataType(innerType);
         return inner.Unqualified is CType.Pointer or CType.Func ? inner : new CType.Optional(inner);
     }
 
@@ -773,6 +1426,31 @@ internal sealed partial class ZigLowering
     /// type — keeping every downstream call / coercion / sizeof path identical to C's.</summary>
     private static CType PointerTo(CType pointee) =>
         pointee.Unqualified is CType.Func ? pointee : new CType.Pointer(pointee);
+
+    /// <summary>Lower a single-item pointer's pointee, or <c>void</c> (an OPAQUE pointer) when the pointee
+    /// is a lazy module's container whose registration failed (road-to-zig-std G3). A pointer needs no
+    /// layout of what it points to, so a signature that merely passes one along lowers: <c>std.Io.Writer</c>'s
+    /// <c>VTable.sendFile</c> takes a <c>*File.Reader</c>, and <c>File</c> sits on the platform floor
+    /// (<c>handle: std.posix.fd_t</c>), yet a program formatting into a buffer never touches a file. A use
+    /// that needs the layout (a field access, a deref, a by-value copy) still fails loudly, on the
+    /// <c>void*</c>. Only a lazy module's container can be failed (a root unit's is an error where it
+    /// stands), so user code keeps its direct diagnostics.</summary>
+    private CType LowerPointee(Item pointee)
+    {
+        CType lowered;
+        try { lowered = LowerType(StripVolatile(pointee)); }
+        catch (ZigFailedContainerException) { return CType.Void; }
+        // A `*T` with `T = void` (std.mem.swap(void, …) in std.StaticStringMap(void), task #114) points at DATA, as a slice
+        // of void does; only `*anyopaque` is an opaque `void*`.
+        return lowered.Unqualified is CType.VoidType && !IsAnyopaqueSpelling(pointee) ? ZigUnitType : lowered;
+    }
+
+    /// <summary>A pointee without its <c>volatile</c> (<c>[]volatile T</c>, std.crypto.secureZero, task #161). C# has no
+    /// volatile pointee, and none is needed: every store dotcc emits is performed, none is elided.</summary>
+    private static Item StripVolatile(Item pointee) => pointee.Content is Zig.TyVolatile v ? v.Arg1 : pointee;
+
+    /// <summary>Is this type spelled <c>anyopaque</c>, zig's opaque pointee (a <c>void*</c>, never data)?</summary>
+    private static bool IsAnyopaqueSpelling(Item type) => type.Content is Zig.Ident id && Tok(id.Arg0) == "anyopaque";
 
     /// <summary>Lower a function-pointer type's parameter list (the reused <c>Params</c>: each a
     /// named <c>IDENT : Type</c>) to its element types — the names are irrelevant to the type. A
@@ -805,10 +1483,18 @@ internal sealed partial class ZigLowering
             {
                 Zig.FnTypeParamUnnamed u => LowerType(u.Arg0),
                 Zig.FnTypeParamNamed n   => LowerType(n.Arg2),
+                Zig.FnTypeParamComptimeUnnamed => throw new IrUnsupportedException(
+                    "a function TYPE with a `comptime` parameter is a generic function type, which has no function-pointer form"),
+                Zig.FnTypeParamVariadic => throw new IrUnsupportedException(
+                    "a C-variadic function TYPE (`fn (…, ...)`) has no function-pointer form yet"),
+                Zig.FnTypeParamComptime  => throw new IrUnsupportedException(
+                    "a function TYPE with a `comptime` parameter is a generic function type, which has no function-pointer "
+                    + "form (std.Options' `logFn`)"),
                 _ => throw new IrUnsupportedException(
                     "a function-pointer-type parameter must be a `Type` or `IDENT : Type`"),
             });
         }
+        ValidateNoreturnParameters(types);
         return types;
     }
 
@@ -845,11 +1531,16 @@ internal sealed partial class ZigLowering
     /// length (see <see cref="DeclOf"/>); the symbol's type stays the N-element array.</summary>
     private static bool IsSentinelArrayType(Item? typeItem) => typeItem?.Content is Zig.TySentArray;
 
+    /// <summary><c>comptime_int</c> <c>const</c> locals whose initializer did not fold where they were declared (a call), by
+    /// symbol, with the lowered initializer: a comptime position that names one (an array extent) runs it then.</summary>
+    private readonly Dictionary<Symbol, CExpr> _unfoldedConstInits = new();
+
     /// <summary>Const-evaluate a <c>[N]T</c> array size. A bare integer literal <c>N</c> takes a
     /// fast path through <see cref="DecodeZigInt"/> (so a radix / underscored size <c>[0x10]u8</c>
     /// is accepted with no symbol context); any other form is lowered and folded by the shared
     /// <see cref="IrBuilder.ConstEval"/> comptime interpreter (Milestone T) — so a computed size
-    /// <c>[N * 2]</c> or a container-const size <c>[SIZE]</c> now works. Throws on a non-constant size.</summary>
+    /// <c>[N * 2]</c> or a container-const size <c>[SIZE]</c> now works, and a call runs at compile time
+    /// (<c>[lenFor(u8)]u8</c>, the comptime engine's E2). Throws on a non-constant size.</summary>
     private int ConstEvalArraySize(Item sizeExpr)
     {
         if (sizeExpr.Content is Zig.IntLit i)
@@ -857,9 +1548,30 @@ internal sealed partial class ZigLowering
             return (int)(DecodeZigInt(Tok(i.Arg0)).Value
                 ?? throw new IrUnsupportedException("a `[N]T` array size literal is too large"));
         }
-        return _ir.ConstEval(LowerExpr(sizeExpr)) is { } n
+        // An extent is a comptime position, so a CALL in it runs at compile time (`[lenFor(u8)]u8`): the
+        // interpreter lowers the callee's body now if it is still pending (the comptime engine's E2).
+        CExpr size;
+        using (EnterComptime()) { size = LowerExpr(sizeExpr); }   // an extent is evaluated at compile time (task #92)
+        // A comptime_int local bound to a call (`var stack: [stack_size]Range` in std.sort.pdq) folds its initializer.
+        size = InlineUnfoldedConsts(size);
+        return (_ir.ConstEval(size) ?? (_ir.ResolveComptimeFold(size) is { } folded ? _ir.ConstEval(folded) : null)) is { } n
             ? (int)n
-            : throw new IrUnsupportedException("a `[N]T` array size must be a constant integer expression");
+            : throw new IrUnsupportedException("a `[N]T` array size must be a constant integer expression"
+                + (_ir.ComptimeMiss is { } why ? $" (the interpreter stopped at {why})" : ""));
+    }
+
+    /// <summary>An optional type with a fallback, <c>opt orelse other</c> in a type position. The one optional type dotcc
+    /// models is a union's <c>@typeInfo(U).@"union".tag_type</c>, null for an untagged union: then the fallback lowers (so
+    /// its <c>@compileError</c> fires, as zig's does); otherwise the optional type itself.</summary>
+    private CType LowerOrElseType(Item optionalType, Item fallback)
+    {
+        if (optionalType.Content is Zig.Field { Arg2: var fieldTok } tagField && Tok(fieldTok) == "tag_type"
+            && TryEvalTypeInfo(tagField.Arg0, out var info)
+            && info.Type.Unqualified is CType.Named { Name: var unionName } && !_unions.ContainsKey(unionName))
+        {
+            return LowerType(fallback);
+        }
+        return LowerType(optionalType);
     }
 
     /// <summary>Decode a Zig integer literal — decimal, <c>0x</c>/<c>0o</c>/<c>0b</c> radix, with
@@ -948,21 +1660,28 @@ internal sealed partial class ZigLowering
     /// <summary>Lower a Zig float literal: strip <c>_</c> separators, and convert a hex float
     /// (<c>0x1.8p3</c>, no C# syntax) to a round-trippable decimal via the shared
     /// <see cref="EmitHelpers.LowerHexFloat"/>. A decimal float passes through (C# accepts it
-    /// verbatim, typed <c>double</c> here). Zig has no <c>f</c>/<c>l</c> literal suffix.</summary>
+    /// verbatim, typed <c>double</c> here). Zig has no <c>f</c>/<c>l</c> literal suffix. A hex float
+    /// <c>double</c> cannot hold exactly (more than 53 significand bits, for an <c>f128</c> sink, task #214)
+    /// is spelled as its exact decimal instead, which C# and <see cref="Binary128Literal"/> each round once.</summary>
     private static string LowerZigFloat(string raw)
     {
         var t = raw.Replace("_", "");
-        return t.Length > 2 && t[0] == '0' && t[1] is 'x' or 'X' ? EmitHelpers.LowerHexFloat(t) : t;
+        if (!(t.Length > 2 && t[0] == '0' && t[1] is 'x' or 'X')) { return t; }
+        return Binary128Literal.TryParseHex(t, out var m, out var e2) && !Binary128Literal.FitsDouble(m, e2)
+            ? Binary128Literal.ExactDecimal(m, e2)
+            : EmitHelpers.LowerHexFloat(t);
     }
 
-    /// <summary>Expand Zig's <c>\u{NNNN}</c> unicode escapes in a quoted string lexeme to the
-    /// equivalent <c>\xNN</c> UTF-8 byte escapes, so the SHARED string decoder (which has no
-    /// <c>\u{…}</c> arm) handles them unchanged. Every OTHER escape (incl. a literal <c>\\</c>)
-    /// is copied verbatim, so a <c>\\u{</c> (escaped backslash then a <c>u{</c>) is not mistaken
-    /// for a unicode escape. The input/output keep the surrounding quotes.</summary>
-    private static string ExpandZigUnicodeEscapes(string quoted)
+    /// <summary>Rewrite a quoted Zig string lexeme's byte escapes for the SHARED (C) string decoder (task #134). Zig and C
+    /// disagree on <c>\x</c>: zig's is exactly two hex digits, C's consumes every hex digit that follows, so zig's
+    /// <c>"ab\x00cd"</c> handed over verbatim decoded as <c>a b 0xCD</c>, a silent miscompile. Each zig <c>\xNN</c> and
+    /// each UTF-8 byte of a <c>\u{NNNN}</c> (which the C decoder has no arm for) becomes a three-digit OCTAL escape
+    /// <c>\ooo</c>, which C ends after exactly three digits whatever follows. Every other escape (incl. a literal
+    /// <c>\\</c>) is copied verbatim, so a <c>\\x</c> (escaped backslash then an <c>x</c>) is not mistaken for one. The
+    /// input/output keep the surrounding quotes.</summary>
+    private static string NormalizeZigByteEscapes(string quoted)
     {
-        if (!quoted.Contains("\\u{", System.StringComparison.Ordinal)) { return quoted; }
+        if (!quoted.Contains('\\')) { return quoted; }
         var sb = new System.Text.StringBuilder(quoted.Length);
         var i = 0;
         while (i < quoted.Length)
@@ -972,11 +1691,17 @@ internal sealed partial class ZigLowering
                 var close = quoted.IndexOf('}', i + 3);
                 if (close < 0) { throw new IrUnsupportedException("unterminated `\\u{…}` escape in string literal"); }
                 var cp = System.Convert.ToInt32(quoted[(i + 3)..close].Replace("_", ""), 16);
-                foreach (var b in System.Text.Encoding.UTF8.GetBytes(char.ConvertFromUtf32(cp)))
-                {
-                    sb.Append("\\x").Append(b.ToString("X2"));
-                }
+                foreach (var b in System.Text.Encoding.UTF8.GetBytes(char.ConvertFromUtf32(cp))) { AppendOctalByte(sb, b); }
                 i = close + 1;
+            }
+            else if (quoted[i] == '\\' && i + 1 < quoted.Length && quoted[i + 1] == 'x')
+            {
+                if (i + 3 >= quoted.Length || !System.Uri.IsHexDigit(quoted[i + 2]) || !System.Uri.IsHexDigit(quoted[i + 3]))
+                {
+                    throw new IrUnsupportedException("zig: `\\x` in a string literal takes exactly two hex digits");
+                }
+                AppendOctalByte(sb, System.Convert.ToByte(quoted.Substring(i + 2, 2), 16));
+                i += 4;
             }
             else if (quoted[i] == '\\' && i + 1 < quoted.Length)
             {
@@ -987,6 +1712,10 @@ internal sealed partial class ZigLowering
         }
         return sb.ToString();
     }
+
+    /// <summary>Append <paramref name="b"/> as a three-digit octal escape (<c>\ooo</c>), unambiguous to the C decoder.</summary>
+    private static void AppendOctalByte(System.Text.StringBuilder sb, byte b)
+        => sb.Append('\\').Append(System.Convert.ToString(b, 8).PadLeft(3, '0'));
 
     /// <summary>Fold a Zig multiline string token (a run of <c>\\</c>-prefixed lines) into a single
     /// QUOTED lexeme whose decoded content is the raw concatenation joined by <c>\n</c>. Zig
@@ -1029,8 +1758,8 @@ internal sealed partial class ZigLowering
     /// …), unlike the earlier slice that collapsed both 8-bit forms to <c>byte</c>.
     /// <c>usize</c>/<c>isize</c> map to the LP64 64-bit <c>size_t</c>/<c>long</c>
     /// (width-correct on dotcc's target; a dedicated pointer-width type is a later
-    /// refinement). <c>comptime_int</c>/<c>comptime_float</c> and the bigger/arbitrary
-    /// <c>iN</c>/<c>uN</c> widths are deferred.</summary>
+    /// refinement). <c>comptime_int</c> is the interpreter's 128 bits; <c>comptime_float</c> is
+    /// deferred.</summary>
     private static CType LowerPrim(string name)
         => TryLowerPrim(name, out var t)
             ? t
@@ -1045,6 +1774,7 @@ internal sealed partial class ZigLowering
         CType? t = name switch
         {
             "void" => CType.Void,
+            "noreturn" => CType.NoReturn,
             // `anyopaque` (Milestone W, part 1a) — Zig's opaque type, used only behind a pointer
             // (`*anyopaque` / `?*anyopaque`) as a type-erased context. Maps to C's `void`, so `*anyopaque`
             // → `void*` and `?*anyopaque` → a nullable `void*` (the pointer niche), exactly like C.
@@ -1060,10 +1790,16 @@ internal sealed partial class ZigLowering
             "u64" => CType.ULong,
             "i128" => CType.Int128,  // → C# System.Int128
             "u128" => CType.UInt128, // → C# System.UInt128
+            // `comptime_int` (the comptime engine): only a comptime evaluation ever holds one (a `var n:
+            // comptime_int` in a function a comptime call runs), so it is the interpreter's own 128 bits.
+            "comptime_int" => CType.ComptimeInt,
             "isize" => CType.Long,   // LP64: pointer-width signed
             "usize" => CType.ULong,  // LP64: pointer-width unsigned (== size_t)
             "f32" => CType.Float,
             "f64" => CType.Double,
+            // IEEE binary128 (std.json.static's sliceToInt parses an integer spelled as a float as `f128`, task #214): the
+            // C front end's `_Float128`, backed by the runtime's software `Float128`.
+            "f128" => CType.Float128,
             // C-ABI types for `extern fn` libc FFI (LP64, matching dotcc's __LP64__ trio:
             // `c_long`/`c_ulong` are 8 bytes). These map onto the same well-known prims the
             // C frontend uses, so RenderType + the coercion tables already cover them.

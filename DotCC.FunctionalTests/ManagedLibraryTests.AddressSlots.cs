@@ -29,12 +29,13 @@ public sealed partial class ManagedLibraryTests
             var generated = link
                 ? Compiler.LinkObjects([path], emit: EmitMode.ManagedLib, className: "Api", outputOptions: options)
                 : Compiler.EmitCSharp([path], emit: EmitMode.ManagedLib, className: "Api", outputOptions: options);
-            if (contextual) generated.ShouldNotContain("__DotccGlobalAddressCache __dotcc_address");
+            generated.ShouldNotContain("__DotccGlobalAddressCache");
+            if (contextual) generated.ShouldNotContain("__dotcc_globalAddress_");
             else
             {
-                generated.ShouldContain(".Get<nint>");
-                generated.ShouldContain(".Get<int>");
-                generated.ShouldContain(".Get<CBool>");
+                generated.ShouldContain("static unsafe nint* __dotcc_globalAddress_");
+                generated.ShouldContain("static unsafe int* __dotcc_globalAddress_");
+                generated.ShouldContain("static unsafe CBool* __dotcc_globalAddress_");
             }
             var host = contextual ? """
                 public static unsafe class SlotProbe {

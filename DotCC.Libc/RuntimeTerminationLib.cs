@@ -25,39 +25,42 @@ public static unsafe partial class Libc
         { Owner = owner; Termination = termination; }
     }
 
-    /// <summary>PGlite's explicit host return transport. It neither records a
-    /// terminal request nor performs PostgreSQL error or transaction cleanup.</summary>
-    public sealed class PgliteYieldException : Exception
+    /// <summary>An explicitly intercepted exit returning to the embedding host.
+    /// It neither records a terminal request nor performs guest cleanup.</summary>
+    public sealed class RuntimeYieldException : Exception
     {
         public RuntimeContext Owner { get; }
         public int Status { get; }
-        internal PgliteYieldException(RuntimeContext owner, int status)
-            : base($"PGlite yielded ({status}).") { Owner = owner; Status = status; }
+        internal RuntimeYieldException(RuntimeContext owner, int status)
+            : base($"C program yielded ({status}).") { Owner = owner; Status = status; }
     }
 
-    [ThreadStatic] private static PgliteExitScope? pgliteExitScope;
+    [ThreadStatic] private static RuntimeExitScope? runtimeExitScope;
 
-    /// <summary>Thread- and binding-scoped interception of exit(99/100). Use
-    /// only around embedding startup/query dispatch, never around shutdown.</summary>
-    public sealed class PgliteExitScope : IDisposable
+    /// <summary>Thread- and binding-scoped interception of host-selected exit
+    /// statuses. Other exit statuses and immediate exits remain terminal.</summary>
+    public sealed class RuntimeExitScope : IDisposable
     {
         internal readonly RuntimeContext Owner;
         internal readonly long Binding;
-        private readonly PgliteExitScope? previous;
+        private readonly int[] statuses;
+        private readonly RuntimeExitScope? previous;
         private readonly int thread = Environment.CurrentManagedThreadId;
         private bool disposed;
-        internal PgliteExitScope(RuntimeContext owner)
+        internal RuntimeExitScope(RuntimeContext owner, int[] statuses)
         {
+            this.statuses = (int[])statuses.Clone();
             Owner = owner; Binding = currentRuntimeBinding;
-            previous = pgliteExitScope; pgliteExitScope = this;
+            previous = runtimeExitScope; runtimeExitScope = this;
         }
+        internal bool Intercepts(int status) => Array.IndexOf(statuses, status) >= 0;
         public void Dispose()
         {
             if (disposed) return;
-            if (thread != Environment.CurrentManagedThreadId || pgliteExitScope != this ||
+            if (thread != Environment.CurrentManagedThreadId || runtimeExitScope != this ||
                 RuntimeContext.Current != Owner || currentRuntimeBinding != Binding)
-                throw new InvalidOperationException("PGlite exit scopes must leave their original binding in stack order.");
-            pgliteExitScope = previous; disposed = true;
+                throw new InvalidOperationException("Exit scopes must leave their original binding in stack order.");
+            runtimeExitScope = previous; disposed = true;
         }
     }
 
@@ -75,18 +78,21 @@ public static unsafe partial class Libc
         /// never run synchronously in a translated worker's termination boundary.</summary>
         public global::System.Threading.Tasks.Task<RuntimeTermination> TerminationTask => terminationCompletion.Task;
 
-        public PgliteExitScope InterceptPgliteExits()
+        /// <summary>Temporarily turn the selected exit statuses into host yields.
+        /// The caller owns the status policy; no status is special by default.</summary>
+        public RuntimeExitScope InterceptExits(params int[] statuses)
         {
+            ArgumentNullException.ThrowIfNull(statuses);
             if (RuntimeContext.Current != this || Termination != null)
-                throw new InvalidOperationException("A live, explicitly bound PGlite owner is required.");
-            return new PgliteExitScope(this);
+                throw new InvalidOperationException("A live, explicitly bound owner is required.");
+            return new RuntimeExitScope(this, statuses);
         }
 
         internal RuntimeTermination RecordTermination(RuntimeTerminationKind kind, int status, Exception? fault = null)
         {
             var requested = new RuntimeTermination(kind, status, Environment.CurrentManagedThreadId, fault);
             var selected = Interlocked.CompareExchange(ref termination, requested, null) ?? requested;
-            StopPgliteSignals();
+            StopGuestSignals();
             terminationCompletion.TrySetResult(selected);
             return selected;
         }
@@ -106,10 +112,10 @@ public static unsafe partial class Libc
     {
         if (RuntimeContext.Current is { } owner)
         {
-            if (kind == RuntimeTerminationKind.Exit && (status == 99 || status == 100) &&
-                owner.Termination == null && pgliteExitScope is { } scope &&
-                scope.Owner == owner && scope.Binding == currentRuntimeBinding)
-                throw new PgliteYieldException(owner, status);
+            if (kind == RuntimeTerminationKind.Exit &&
+                owner.Termination == null && runtimeExitScope is { } scope &&
+                scope.Owner == owner && scope.Binding == currentRuntimeBinding && scope.Intercepts(status))
+                throw new RuntimeYieldException(owner, status);
             throw new RuntimeTerminationException(owner, owner.RecordTermination(kind, status));
         }
         // Preserve standalone C program behavior. Only explicitly bound owners

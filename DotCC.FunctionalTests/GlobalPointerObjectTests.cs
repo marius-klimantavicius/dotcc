@@ -23,6 +23,11 @@ public sealed class GlobalPointerObjectTests
                 """
                 int values[2] = { 20, 40 };
                 int *pointer = values;
+                int calls;
+                int *next(void) { ++calls; return values; }
+                int rows[2][2] = {{1, 2}, {3, 4}};
+                typedef int Row[2];
+                Row *row = rows;
                 int increment(int x) { return x + 1; }
                 int (*callback)(int) = increment;
                 int observe(void) { return *pointer + callback(1); }
@@ -30,6 +35,11 @@ public sealed class GlobalPointerObjectTests
                 """
                 extern int values[2];
                 extern int *pointer;
+                extern int calls;
+                int *next(void);
+                extern int rows[2][2];
+                typedef int Row[2];
+                extern Row *row;
                 extern int (*callback)(int);
                 int observe(void);
                 int doubled(int x) { return x * 2; }
@@ -44,6 +54,26 @@ public sealed class GlobalPointerObjectTests
                     int steps = 0;
                     for (; pointer != values + 2; pointer++) steps++;
                     if (steps != 2 || pointer != values + 2) return 8;
+                    ((pointer = 0));
+                    if (pointer != 0) return 9;
+                    (void)(pointer = next());
+                    if (pointer != values || calls != 1) return 10;
+                    if ((pointer = next())[1] != 40 || calls != 2) return 11;
+                    if (*(pointer += 1) != 40) return 12;
+                    pointer -= 1;
+                    if (pointer != values) return 13;
+                    if ((callback = doubled)(7) != 14) return 14;
+                    steps = 0;
+                    for (pointer = values; pointer != values + 2; pointer += 1) steps++;
+                    if (steps != 2) return 15;
+                    steps = 0;
+                    for (row = rows; row != rows + 2; row += 1) steps++;
+                    if (steps != 2) return 16;
+                    row = rows;
+                    if ((row += 1)[0][1] != 4) return 17;
+                    pointer = values, callback = doubled;
+                    int selected = (pointer = next(), *pointer);
+                    if (selected != 20 || calls != 3) return 18;
                     pointer = values + 1;
                     callback = doubled;
                     if (observe() != 42 || (*callback_address)(7) != 14) return 2;
@@ -73,6 +103,8 @@ public sealed class GlobalPointerObjectTests
                 emitted = Compiler.LinkObjects(fragments, emit: mode, className: instances ? "PointerApi" : null, outputOptions: options);
             }
             else emitted = Compiler.EmitCSharp(paths, emit: mode, className: instances ? "PointerApi" : null, outputOptions: options);
+            emitted.ShouldNotContain("_ = (int*)(");
+            emitted.ShouldNotContain("_ = (delegate*");
             if (instances) emitted += """
 
                 public static class PointerProbe {

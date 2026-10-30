@@ -111,38 +111,38 @@
         "getuid"
       ]
     },
-    "PgliteBackendDiagnosticsLib.cs": {
+    "PosixBackendDiagnosticsLib.cs": {
       "libc": [
         "backtrace",
         "backtrace_symbols",
         "free"
       ]
     },
-    "PgliteBackendDirectoryLib.cs": {
+    "PosixBackendDirectoryLib.cs": {
       "libc": [
         "fstat",
         "fsync",
         "lseek"
       ]
     },
-    "PgliteBackendMathLib.cs": {
+    "PosixBackendMathLib.cs": {
       "libm.so.6": [
         "lgamma_r",
         "tgamma"
       ]
     },
-    "PgliteBackendNetworkLib.cs": {
+    "PosixBackendNetworkLib.cs": {
       "libc": [
         "freeifaddrs",
         "getifaddrs"
       ]
     },
-    "PgliteBackendProcessLib.cs": {
+    "PosixBackendProcessLib.cs": {
       "libc": [
         "getrlimit"
       ]
     },
-    "PgliteBackendStorageLib.cs": {
+    "PosixBackendStorageLib.cs": {
       "libc": [
         "chmod",
         "close",
@@ -153,12 +153,12 @@
         "posix_fallocate"
       ]
     },
-    "PgliteBackendTextLib.cs": {
+    "PosixBackendTextLib.cs": {
       "libc": [
         "strtof_l"
       ]
     },
-    "PglitePosixHostLib.cs": {
+    "PosixHostLib.cs": {
       "libc": [
         "shm_open",
         "shm_unlink",
@@ -166,7 +166,7 @@
         "tcsetattr"
       ]
     },
-    "PglitePosixIoLib.cs": {
+    "PosixIoLib.cs": {
       "libc": [
         "pread",
         "preadv",

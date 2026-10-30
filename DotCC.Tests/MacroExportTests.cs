@@ -188,7 +188,7 @@ public sealed class MacroExportTests
             + expansion + "\n#define ANSWER 42\nint value(void) { return 0; }";
         var output = Emit(source);
         output.ShouldContain("public const int ANSWER = unchecked((int)(42));");
-        output.ShouldNotContain(" BIG =");
+        System.Text.RegularExpressions.Regex.IsMatch(output, @"(?m)^\s*public\s+const\s+\S+\s+BIG\s*=").ShouldBeFalse();
         Should.Throw<CompileException>(() => Emit(source, "BIG")).Message.ShouldContain("BIG");
     }
 

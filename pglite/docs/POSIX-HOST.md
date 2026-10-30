@@ -8,7 +8,7 @@ shared recipe or parent-owned plan is changed here.
 
 ## Runtime contracts
 
-`DotCC.Libc/PglitePosixHostLib.cs` implements `shm_open`, `shm_unlink`,
+`DotCC.Libc/PosixHostLib.cs` implements `shm_open`, `shm_unlink`,
 `tcgetattr` and `tcsetattr` for Linux x64 LP64. Other platforms return ENOTSUP
 for supported arguments. These are libc OS-service imports, with no native
 database backend or replacement SQL implementation.
@@ -200,12 +200,12 @@ assumption was likewise corrected to compare the actual NSS numeric return.
 The runtime part and both headers are embedded automatically by the existing
 resource glob on the next supervisor compiler build. No descriptor-disposal,
 mapping-disposal, recipe or initializer-owned runtime hook is needed. Existing
-PglitePosixIoLib.cs, VectorIoLib.cs, PgliteSignalTimerLib.cs, SetJmpLib.cs and
+PosixIoLib.cs, VectorIoLib.cs, GuestSignalTimerLib.cs, SetJmpLib.cs and
 setjmp.h are untouched. Preserve the parent-owned shared plans and PLAN.md.
 
 Owned changes are exactly these ten authored files:
 
-- `DotCC.Libc/PglitePosixHostLib.cs` (new) and `DotCC.Libc/PasswdLib.cs`.
+- `DotCC.Libc/PosixHostLib.cs` (new) and `DotCC.Libc/PasswdLib.cs`.
 - `DotCC.Lib/include/pwd.h` and `DotCC.Lib/include/termios.h`.
 - `DotCC.Tests/PglitePosixHostTests.cs` (new).
 - `pglite/tests/PosixHost/{posix_host.c,Program.cs,PosixHost.csproj}` (new).

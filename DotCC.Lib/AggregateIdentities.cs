@@ -232,6 +232,7 @@ internal static class AggregateIdentities
     internal static IReadOnlyDictionary<string, string>[] Plan(
         IReadOnlyList<(string Origin, IReadOnlyList<AggregateIdentity>? Graph)> units)
     {
+        units = ZigStorageObjectMetadata.ScopePrivateIdentities(units);
         // Exposure-only objects cannot prove which extern declaration connects
         // two graphs. Preserve their conservative ABI gate, including mixed
         // old/new inputs, rather than guessing from emitted C# uses.

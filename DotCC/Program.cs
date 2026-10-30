@@ -86,6 +86,7 @@ internal static class Program
             AllowMultipleArgumentsPerToken = false,
         };
         var overridesFileOpt = new Option<string?>("--overrides-file") { Description = "Version-1 JSON translation profile (macro/function overrides, external types and field type names)." };
+        var zigModulesOpt = new Option<string?>("--zig-modules-file") { Description = "Version-1 Zig module graph JSON, with module-local dependency aliases and a Zig library directory." };
         var overrideReportOpt = new Option<string?>("--override-report") { Description = "Write translation override provenance and matches as JSON Lines." };
         var targetOpt = new Option<string?>("--target")
         {
@@ -175,7 +176,7 @@ internal static class Program
         };
         var root = new RootCommand("dotcc — a C compiler frontend that transpiles to .NET 10 / C# 14.")
         {
-            inputArg, outOpt, emitOpt, emitDefineOpt, typeNameOpt, overrideOpt, overridesFileOpt, overrideReportOpt, classNameOpt, namespaceOpt, nestTypesOpt, literalPoolOpt, aggregateDataOpt, stateContextOpt, instanceMethodsOpt, runtimeOpt, deduplicateInlineOpt, pruneUnusedInlineOpt, deduplicateStaticOpt, exportInlineOpt, exportEnumOpt, splitOpt, splitSizeOpt, targetOpt, preprocessOpt, includeOpt, defineOpt, undefineOpt, compileOpt, sharedOpt, stdOpt,
+            inputArg, outOpt, emitOpt, emitDefineOpt, typeNameOpt, overrideOpt, overridesFileOpt, zigModulesOpt, overrideReportOpt, classNameOpt, namespaceOpt, nestTypesOpt, literalPoolOpt, aggregateDataOpt, stateContextOpt, instanceMethodsOpt, runtimeOpt, deduplicateInlineOpt, pruneUnusedInlineOpt, deduplicateStaticOpt, exportInlineOpt, exportEnumOpt, splitOpt, splitSizeOpt, targetOpt, preprocessOpt, includeOpt, defineOpt, undefineOpt, compileOpt, sharedOpt, stdOpt,
             pedanticOpt, pedanticErrorsOpt, wconversionOpt, wnoDiscardedQualifiersOpt, wimplicitFallthroughOpt, sanitizeOpt, mdOpt, mmdOpt, mfOpt, mtOpt, linkOpt, libDirOpt,
         };
         // Accept-and-ignore unknown flags (-Wall, -O2, -g, -f*, -m*, …) instead
@@ -307,9 +308,10 @@ internal static class Program
                 var typeNames = parse.GetValue(typeNameOpt) ?? Array.Empty<string>();
                 var preprocessing = profile != null || overrides.Length != 0 || report != null || emitDefines.Length != 0 || typeNames.Length != 0
                     ? CPreprocessingOptions.Load(profile, overrides, report, emitDefines, typeNames: typeNames) : null;
+                var zigOptions = parse.GetValue(zigModulesOpt) is { } moduleFile ? ZigCompilationOptions.Load(moduleFile) : null;
             return Run(inputs, output, emit, target, preprocessOnly, includes, defines.ToArray(), sharedFlag, dialect,
                        mdFlag, mmdFlag, depFile, depTargets, debugHeapFlag, imports, warnings,
-                       buildManaged: compileFlag && emit == EmitKind.ManagedLib, className: parse.GetValue(classNameOpt),
+                       buildManaged: compileFlag && emit == EmitKind.ManagedLib, className: parse.GetValue(classNameOpt), zigOptions: zigOptions,
                        split: parse.GetValue(splitOpt), splitSize: parse.GetValue(splitSizeOpt), namespaceName: parse.GetValue(namespaceOpt), preprocessing: preprocessing, outputOptions: new CSharpOutputOptions(NestTypes: parse.GetValue(nestTypesOpt), Runtime: parse.GetValue(runtimeOpt), DeduplicateInline: parse.GetValue(deduplicateInlineOpt), PruneUnusedInline: parse.GetValue(pruneUnusedInlineOpt), DeduplicateStatic: parse.GetValue(deduplicateStaticOpt), ExportInline: parse.GetValue(exportInlineOpt), ExportEnum: parse.GetValue(exportEnumOpt), LiteralPool: parse.GetValue(literalPoolOpt), AggregateData: parse.GetValue(aggregateDataOpt), StateContext: parse.GetValue(stateContextOpt), InstanceMethods: parse.GetValue(instanceMethodsOpt)));
             }
             catch (Exception ex) when (ex is CompileException or IOException or UnauthorizedAccessException)
@@ -368,8 +370,11 @@ internal static class Program
         bool debugHeap = false,
         ImportOptions? imports = null,
         WarningFlags warnings = WarningFlags.Default,
-        bool buildManaged = false, string? className = null, SourceSplit split = SourceSplit.None, int? splitSize = null, string? namespaceName = null, CPreprocessingOptions? preprocessing = null, CSharpOutputOptions? outputOptions = null)
+        bool buildManaged = false, string? className = null, SourceSplit split = SourceSplit.None, int? splitSize = null, string? namespaceName = null, CPreprocessingOptions? preprocessing = null, CSharpOutputOptions? outputOptions = null, ZigCompilationOptions? zigOptions = null)
     {
+        if (zigOptions is not null && (preprocessOnly || target is not null && !target.Equals("cs", StringComparison.OrdinalIgnoreCase)
+            || !inputPaths.Any(p => p.EndsWith(".zig", StringComparison.OrdinalIgnoreCase))))
+            throw new CompileException("--zig-modules-file requires Zig source emission to C#; already emitted objects retain their module choices");
         if ((preprocessOnly || string.Equals(target, "wat", StringComparison.OrdinalIgnoreCase)) && outputOptions is { } layout && (layout.NestTypes || layout.Runtime != RuntimeProfile.All || layout.DeduplicateInline || layout.PruneUnusedInline || layout.DeduplicateStatic || layout.ExportInline is { Count: > 0 } || layout.ExportEnum is { Count: > 0 } || layout.LiteralPool || layout.AggregateData || layout.StateContext || layout.InstanceMethods))
             throw new CompileException("--nest-types, --runtime, --deduplicate-inline, --deduplicate-static, --export-inline, --export-enum, --literal-pool and --aggregate-data require C# output");
         if ((splitSize.HasValue && (split != SourceSplit.Size || splitSize <= 0))
@@ -436,7 +441,7 @@ internal static class Program
             var objOut = outputPath ?? Path.ChangeExtension(Path.GetFileName(inputPaths[0]), ".cs");
             try
             {
-                var frag = Compiler.EmitObject(inputPaths[0], includeDirs, defines, dialect, warnings, preprocessing, outputOptions);
+                var frag = Compiler.EmitObject(inputPaths[0], includeDirs, defines, dialect, warnings, preprocessing, outputOptions, zigOptions);
                 File.WriteAllText(objOut, frag);
             }
             catch (CompileException ex)
@@ -481,7 +486,7 @@ internal static class Program
             if (sourceGroup.Length != 0 && objectGroup.Length != 0)
             {
                 var fragment = Compiler.EmitCSharp(sourceGroup, includeDirs, defines, EmitMode.Object, dialect,
-                    warnings: warnings, preprocessing: preprocessing);
+                    warnings: warnings, preprocessing: preprocessing, zigOptions: zigOptions);
                 var temporary = Path.GetTempFileName();
                 try
                 {
@@ -503,7 +508,7 @@ internal static class Program
                     dialect: dialect,
                     debugHeap: debugHeap,
                     imports: imports,
-                    warnings: warnings, className: className, split: split, splitSize: splitSize ?? 262144, namespaceName: namespaceName, preprocessing: preprocessing, outputOptions: outputOptions);
+                    warnings: warnings, className: className, split: split, splitSize: splitSize ?? 262144, namespaceName: namespaceName, preprocessing: preprocessing, outputOptions: outputOptions, zigOptions: zigOptions);
         }
         catch (CompileException ex)
         {

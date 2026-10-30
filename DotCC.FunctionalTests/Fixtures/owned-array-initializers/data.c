@@ -30,6 +30,10 @@ _Alignas(64) struct Root aligned_root = {
 };
 _Alignas(32) int aligned_scalar = 29;
 _Alignas(32) Callback aligned_callback = plus;
+struct FlexibleRoot { struct Root **owners; int values[]; };
+struct FlexibleRoot flexible_root = {
+    .owners = (struct Root *[]){&root, &aligned_root, &root}, .values = {23, 29}
+};
 _Thread_local struct Token per_thread[] = {{31, 65535, &root.seed, plus}};
 
 int owned_check(void) {
@@ -46,7 +50,9 @@ int owned_check(void) {
         (unsigned long)&aligned_root % 64 == 0 && aligned_root.seed == 11 &&
         aligned_root.rows[0].owner == &aligned_root.seed && *aligned_root.rows[0].owner == 11 &&
         (unsigned long)&aligned_scalar % 32 == 0 && aligned_scalar == 29 &&
-        (unsigned long)&aligned_callback % 32 == 0 && aligned_callback == plus && aligned_callback(5) == 8;
+        (unsigned long)&aligned_callback % 32 == 0 && aligned_callback == plus && aligned_callback(5) == 8 &&
+        flexible_root.owners[0] == &root && flexible_root.owners[1] == &aligned_root &&
+        flexible_root.owners[2] == &root && flexible_root.values[0] == 23 && flexible_root.values[1] == 29;
 }
 int owned_mutate(void) {
     root.rows[0].value = 99;

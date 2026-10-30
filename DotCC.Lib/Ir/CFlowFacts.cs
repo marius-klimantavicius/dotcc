@@ -14,17 +14,22 @@ internal static class CFlowFacts
             }
     }
 
-    internal static bool IsNoReturnCall(CExpr expression) => StatementValue(expression) is Call call &&
-        (call.SemanticTarget?.DoesNotReturn == true || call.CalleeSym?.IsNoReturn == true || call.CalleeSym is
-            { FromSystemHeader: true, Name: "abort" or "exit" or "_Exit" });
+    internal static bool IsNoReturnCall(CExpr expression) => StatementValue(expression) switch
+    {
+        Call { Type.Unqualified: CType.NoReturnType } or IndirectCall { Type.Unqualified: CType.NoReturnType } => true,
+        Call call => call.SemanticTarget?.DoesNotReturn == true || call.CalleeSym?.IsNoReturn == true || call.CalleeSym is
+            { FromSystemHeader: true, Name: "abort" or "exit" or "_Exit" },
+        _ => false,
+    };
 
     internal static bool TerminatesExpression(CExpr expression)
     {
         expression = StatementValue(expression);
-        return IsNoReturnCall(expression) || expression switch
+        return expression.Type.Unqualified is CType.NoReturnType || IsNoReturnCall(expression) || expression switch
         {
             Call { Callee: "__dotcc_unreachable" } => true,
             CommaOp comma => comma.Items.Any(TerminatesExpression),
+            StatementExpression { Value: null } statement => statement.Body.Stmts.Any(s => s is ExprStmt e && TerminatesExpression(e.Expr)),
             CondExpr { Type.Unqualified: CType.VoidType } conditional =>
                 TerminatesExpression(conditional.Then) && TerminatesExpression(conditional.Else),
             _ => false,

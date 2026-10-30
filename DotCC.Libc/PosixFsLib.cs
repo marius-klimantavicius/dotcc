@@ -274,7 +274,7 @@ public static unsafe partial class Libc
     public static int mkdir(byte* path, uint mode)
     {
         if (OperatingSystem.IsLinux() && RuntimeInformation.ProcessArchitecture == Architecture.X64)
-            return PgliteBackendMkdir(path, mode);
+            return BackendMkdir(path, mode);
         var p = ResolvePath(path);
         if (Directory.Exists(p) || File.Exists(p)) { errno = EEXIST; return -1; }
         try { Directory.CreateDirectory(p); TrySetUnixMode(p, (int)mode); return 0; }

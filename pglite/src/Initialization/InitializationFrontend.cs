@@ -29,7 +29,7 @@ public sealed unsafe class InitializationFrontend : IInitdbFiles, IDisposable
         {
             using var binding = context.Enter();
             runtime = Runtime.RuntimeContext.Current!;
-            runtime.EnablePgliteSignals();
+            runtime.EnableGuestSignals();
             transport = new(backendExecutable, privateDirectory, this, invoke);
         }
         catch { context.Dispose(); throw; }

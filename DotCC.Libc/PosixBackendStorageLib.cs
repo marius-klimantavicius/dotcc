@@ -64,7 +64,7 @@ public static unsafe partial class Libc
         return descriptor;
     }
 
-    private static int PgliteBackendMkdir(byte* path, uint mode)
+    private static int BackendMkdir(byte* path, uint mode)
     {
         if (path == null) { errno = EFAULT; return -1; }
         try

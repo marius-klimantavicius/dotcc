@@ -23,9 +23,8 @@ internal sealed class ZigFrontend : IFrontend
     public IrBuilder BuildIr(FrontendRequest request)
     {
         var names = request.Names ?? new Backends.CSharpNameLegalizer();
-        var ir = new IrBuilder(null, names, new Dictionary<string, byte[]>(StringComparer.Ordinal),
-                               request.Warnings);
-        AddUnits(ir, request.InputPaths, names, request.TestMode);
+        var ir = new IrBuilder(null, names, new Dictionary<string, byte[]>(StringComparer.Ordinal), request.Warnings);
+        AddUnits(ir, request.InputPaths, names, request.TestMode, request.ZigOptions);
 
         var errors = ir.Diagnostics.Where(d => d.Severity == Severity.Error).ToList();
         if (errors.Count > 0)
@@ -46,9 +45,9 @@ internal sealed class ZigFrontend : IFrontend
     /// — one shared module, one emit (the C side's structs/enums/globals preserved),
     /// cross-language calls resolving as bare-name <c>DotCcProgram</c> methods. The
     /// caller owns diagnostic flushing.</summary>
-    internal static void AddUnits(IrBuilder ir, IReadOnlyList<string> paths, INameLegalizer names, bool testMode = false)
+    internal static void AddUnits(IrBuilder ir, IReadOnlyList<string> paths, INameLegalizer names, bool testMode = false, ZigCompilationOptions? options = null)
     {
-        var lexerTable = LexerGrammar.Zig;
+        var lexerTable = Zig.BuildLexer();
         // One error-code registry shared across the build's units — a given `error.Foo`
         // name maps to one code program-wide (V1 erases the error set into a flat space).
         var errorCodes = new Dictionary<string, int>(StringComparer.Ordinal);
@@ -58,16 +57,20 @@ internal sealed class ZigFrontend : IFrontend
         // (road-to-zig-std S1). Each root unit is lowered with its own directory as the import base.
         // An optional real-std source tree (from DOTCC_ZIG_LIB_DIR — a `--zig-lib-dir` flag is the
         // eventual front door) lets a non-curated `std.<x>` navigate the real std.zig root.
-        var stdRoot = ResolveStdRoot(Environment.GetEnvironmentVariable("DOTCC_ZIG_LIB_DIR"));
-        var moduleGraph = new ZigModuleGraph(stdRoot);
+        var stdRoot = ResolveStdRoot(options?.ZigLibDir ?? Environment.GetEnvironmentVariable("DOTCC_ZIG_LIB_DIR"));
+        if (options?.ZigLibDir is not null && stdRoot is null) throw new CompileException("Zig modules: zig_lib_dir contains no std.zig");
+        if (options is not null && (paths.Count != 1 || Path.GetFullPath(paths[0]) != options.GetModule(options.RootModule).Root))
+            throw new CompileException("Zig modules: source input must match the configured root module");
+        var moduleGraph = new ZigModuleGraph(stdRoot, options);
+        ir.DemandFuncBody = moduleGraph.TryLowerBodyOnDemand;
         foreach (var path in paths)
         {
-            var source = File.ReadAllText(path);
+            var source = ZigSourceText.Read(path);
             Item root;
             try
             {
                 var parser = Zig.BuildParser(Zig.IdentityVisitor.Instance);
-                using var lexer = lexerTable.FromString(source);
+                using var lexer = BytesLexer.FromString(source, lexerTable);
                 using var tokens = new SyncLATokenIterator(lexer);
                 root = parser.ParseInput(tokens, debugger: null, trimReductions: true);
             }
@@ -83,12 +86,24 @@ internal sealed class ZigFrontend : IFrontend
             {
                 throw new CompileException($"parse failed in {Path.GetFileName(path)}: {root}");
             }
-            new ZigLowering(ir, names, errorCodes, testMode, moduleGraph, Path.GetDirectoryName(path)).Lower(root);
+            var lowering = new ZigLowering(ir, names, errorCodes, testMode, moduleGraph, Path.GetDirectoryName(path),
+                fileStem: Path.GetFileNameWithoutExtension(path), moduleName: options?.RootModule);
+            if (options is not null) moduleGraph.LoadPath(path, options.RootModule).Lowering = lowering;
+            moduleGraph.RegisterRoot(lowering);
+            lowering.Lower(root);
         }
         // Drain every lazily-imported module's referenced function bodies at top level (road-to-zig-std
         // S2). References were collected while the roots lowered; this lowers exactly those decls (and
         // their transitive references) to a fixpoint — an unreferenced std-heavy decl never lowers.
         moduleGraph.DrainAll();
+        // Then every deferred `comptime` fold of every module (Milestone T pass 3): a fold may call a
+        // function whose body only the drain lowered (a lazy module's generic instance).
+        moduleGraph.ResolveComptimeFolds(ir);
+        moduleGraph.CheckComptimeReturnsAtRuntime();
+        // A function whose signature carries a comptime-only type (task #113) ran only at comptime: the check above
+        // rejected any runtime call to it, so its runtime copy, which C# could not spell, goes.
+        ir.Functions.RemoveAll(f => ZigLowering.HasComptimeOnlySignature(f.Sym));
+        ir.DemandFuncBody = null;
         // Carry the flat error set to the backend so it can emit the `@errorName` code→name
         // table (Milestone X). Merge into any existing map (a mixed build lowers C first, but C
         // contributes no Zig error names; this also stays correct if a future C path adds some).

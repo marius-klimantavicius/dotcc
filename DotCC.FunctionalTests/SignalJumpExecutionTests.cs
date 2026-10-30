@@ -183,13 +183,13 @@ public sealed partial class ManagedLibraryTests
                             using var state = A.__DotCcCreateContext();
                             using var binding = state.Enter();
                             if (A.conditional(0) != 3 || A.actual_conditional(0) != 3) return 18;
-                            A.Libc.RuntimeContext.Current.EnablePgliteSignals();
+                            A.Libc.RuntimeContext.Current.EnableGuestSignals();
                             if (A.conditional(1) != 42 || A.actual_conditional(1) != 42) return 19;
                             if (A.operands() != 0 || A.masks(0) != 0 || A.masks(1) != 0) return 11;
                             if (A.nested() != 0 || A.patterns() != 0 || A.shadow() != 0) return 12;
                             if (A.ordinary_masks() != 0 || A.pending() != 0) return 16;
-                            A.Libc.PgliteIntervalTimer timer = new() { ValueMicroseconds = 2000 };
-                            if (A.Libc.PgliteSetitimer(0, &timer, null) != 0 || A.pending_timer() != 0) return 17;
+                            A.Libc.GuestIntervalTimer timer = new() { ValueMicroseconds = 2000 };
+                            if (A.Libc.GuestSetitimer(0, &timer, null) != 0 || A.pending_timer() != 0) return 17;
                             A.expire();
                             try { A.jump_stale(); return 13; } catch (A.Libc.JumpBufferException) { }
                             for (int save = 0; save <= 1; save++) {

@@ -45,7 +45,10 @@ internal sealed partial class ZigLowering
     /// rule on the class). One record serves both the whole union value and the payload of its active
     /// field — <c>@typeInfo(T)</c>, <c>@typeInfo(T).int</c> and the <c>|i|</c> captured by
     /// <c>.int =&gt; |i|</c> are the same folded thing, which is what lets one map bind all three.</summary>
-    private sealed record ZigTypeInfo(string Tag, CType Type, int? DeclaredBits);
+    /// <remarks>A pointer's spelled size class (<see cref="PointerSizeOfTypeArg"/>) rides in <c>PointerSize</c> the
+    /// same way, for <c>.pointer.size</c>.</remarks>
+    private sealed record ZigTypeInfo(string Tag, CType Type, int? DeclaredBits, string? PointerSize = null,
+        ZigSentinel? Sentinel = null);
 
     /// <summary>Each name bound to a folded <c>@typeInfo</c> value — a <c>const i = @typeInfo(T);</c>
     /// or <c>const i = @typeInfo(T).int;</c> (no runtime decl is emitted: the value is comptime-only),
@@ -54,6 +57,11 @@ internal sealed partial class ZigLowering
     /// leniency); the switch capture shadow-saves through <see cref="_typeInfoShadows"/> so a prong's
     /// binding does not leak past its arm.</summary>
     private readonly Dictionary<string, ZigTypeInfo> _typeInfoBindings = new(System.StringComparer.Ordinal);
+
+    /// <summary>Each name bound to a comptime enum TAG read off a <c>@typeInfo</c> payload (<c>const signedness =
+    /// @typeInfo(T).int.signedness;</c>), for <see cref="TryEvalComptimeTag"/>. Name-keyed and function-flat, like
+    /// <see cref="_typeInfoBindings"/>.</summary>
+    private readonly Dictionary<string, string> _comptimeTagBindings = new(System.StringComparer.Ordinal);
 
     /// <summary>Name → previous <see cref="_typeInfoBindings"/> entry shadowed by a folded comptime
     /// <c>switch</c> prong's <c>|i|</c> capture, restored when the arm is done — the proven W2/W3b
@@ -86,21 +94,364 @@ internal sealed partial class ZigLowering
     /// (<c>const I = u21; f(I)</c> keys and answers exactly as <c>f(u21)</c> does).</summary>
     private int? DeclaredBitsOfTypeArg(Item typeAst)
     {
+        typeAst = StripVolatile(typeAst);   // a `[]volatile u21` element is still 21 bits wide
         if (DeclaredBitsFromSpelling(typeAst) is { } spelled) { return spelled; }
         var cur = typeAst;
         while (cur.Content is Zig.Grouped g) { cur = g.Arg1; }
         // A CONSTRUCTED `@Int(.unsigned, 21)` (road-to-zig-std S7) knows its width just as exactly as
         // the spelling `u21` does — it was built from it — so the constructor's own argument is the
         // answer. Read from the site's recorded width rather than re-evaluated (see _reifiedIntBits).
-        if (cur.Content is Zig.BuiltinCall { } bc && Tok(bc.Arg0) == "@Int"
+        if (cur.Content is Zig.BuiltinCall { Arg2: not null, } bc && Tok(bc.Arg0) == "@Int"
             && _reifiedIntBits.TryGetValue(bc.Arg2, out var reified))
         {
             return reified;
         }
-        return cur.Content is Zig.Ident id && _declaredIntBits.TryGetValue(Tok(id.Arg0), out var bound)
-            ? bound
-            : null;
+        // A call to a type-returning generic (the W4 lift) — the width its body's returned type carried
+        // (`fn U(comptime n: u16) type { return @Int(.unsigned, n); }` → `U(21)` is 21 bits).
+        if (cur.Content is Zig.CallArgs && _typeCallBits.TryGetValue(cur, out var called))
+        {
+            return called;
+        }
+        // A switch over a TYPE (std.math.inf's `const RuntimeType = switch (Type) { else => Type, comptime_float => f128 };`):
+        // the selected arm's width, so `@typeInfo(RuntimeType).float.bits` still answers.
+        if (cur.Content is Zig.SwitchExpr)
+        {
+            var (switchSubject, switchProngs) = cur.Content is Zig.SwitchExpr se ? (se.Arg2, se.Arg5) : throw new System.InvalidOperationException();
+            // Or over a comptime tag (std.math.log2's `switch (int_info.signedness) { .signed => @Int(…), .unsigned => T }`,
+            // task #163).
+            var typeProng = TrySelectTypeProng(switchSubject, switchProngs) ?? SelectComptimeProng(switchSubject, switchProngs, out _);
+            return typeProng is { Expr: { } typeArm, CaptureName: null } ? DeclaredBitsOfTypeArg(typeArm) : null;
+        }
+        // A comptime `if` choosing a type (`const DT = if (@bitSizeOf(T) <= 64) u64 else u128;`): the taken arm's width.
+        if (cur.Content is Zig.IfElseExpr { Arg4: null, Arg7: null } typeIf && TryFoldTypeIfCondition(typeIf.Arg2) is { } typeIfTaken)
+        {
+            return DeclaredBitsOfTypeArg(typeIfTaken ? typeIf.Arg5 : typeIf.Arg8);
+        }
+        // An untyped enum's inferred `@typeInfo(E).@"enum".tag_type`: zig's width (`u2` for four members).
+        if (cur.Content is Zig.Field { Arg2: var tagTok } tagField && Tok(tagTok) == "tag_type" && TryEvalTypeInfo(tagField.Arg0, out var tagInfo)
+            && tagInfo.Type.Unqualified is CType.Enum tagEnum)
+        {
+            return TypeBodyEnumWidth(tagEnum.Name)
+                ?? (!_enumsWithSpelledTag.Contains(tagEnum.Name) ? InferredTagBits(tagEnum) : null);
+        }
+        // A vector's width is its LANE's (`@Vector(16, u32)`), so `@typeInfo(V).vector.child` passes it on to
+        // `@typeInfo(C).int.bits` (std.math.rotr over a vector in std.crypto.blake3, task #148).
+        if (cur.Content is Zig.BuiltinCall { Arg2: not null, } vec && Tok(vec.Arg0) == "@Vector" && Flatten(vec.Arg2) is [_, var laneType])
+        {
+            return DeclaredBitsOfTypeArg(laneType);
+        }
+        if (cur.Content is Zig.Field { Arg2: var childTok } childField && Tok(childTok) == "child"
+            && TryEvalTypeInfo(childField.Arg0, out var childInfo) && childInfo.Tag == "vector")
+        {
+            return childInfo.DeclaredBits;
+        }
+        // An error union's width is its payload's (`fn charToDigit(…) (error{InvalidCharacter}!u8)`).
+        if (cur.Content is Zig.ErrUnion eu) { return DeclaredBitsOfTypeArg(eu.Arg2); }
+        // So is an optional's (`fn cast(comptime T: type, x: anytype) ?T`), so an unwrapped payload keeps it.
+        if (cur.Content is Zig.TyOptional opt) { return DeclaredBitsOfTypeArg(opt.Arg1); }
+        // `@TypeOf(x)`: the width the VALUE `x` carries (road-to-zig-std G3 — an `anytype` parameter's, a
+        // typed local's, a `.len`'s), so `maxInt(@TypeOf(x))` in std.math.cast / sqrt has its answer.
+        if (cur.Content is Zig.BuiltinCall { Arg2: not null, } tof && Tok(tof.Arg0) == "@TypeOf" && Flatten(tof.Arg2) is { Count: 1 } tofArgs)
+        {
+            if (tofArgs[0].Content is Zig.Ident aid && _anytypeSeedBits.TryGetValue(Tok(aid.Arg0), out var seeded)) { return seeded; }
+            return DeclaredBitsOfValue(tofArgs[0]);
+        }
+        // A module-qualified alias (`std.fmt.ArgSetType`, `pub const ArgSetType = u32;`): the owning
+        // module recorded the width its alias spelled (Writer.print asks `@typeInfo(…).int.bits` of it).
+        if (cur.Content is Zig.Field qf && ResolveModulePath(qf.Arg0)?.Lowering is { } owner)
+        {
+            return owner.ExportedDeclaredBits(Tok(qf.Arg2));
+        }
+        // A container's type const named qualified (`Metadata.FingerPrint`): the width it spelled.
+        if (cur.Content is Zig.Field cf && MemberBaseType(cf.Arg0)?.Unqualified is CType.Named { Name: var baseContainer })
+        {
+            TryContainerTypeConst(baseContainer, Tok(cf.Arg2));   // evaluated (and its width recorded) on first use
+            return _typeConstBits.TryGetValue((baseContainer, Tok(cf.Arg2)), out var qualifiedBits) ? qualifiedBits : null;
+        }
+        if (cur.Content is Zig.Ident id)
+        {
+            if (_declaredIntBits.TryGetValue(Tok(id.Arg0), out var bound)) { return bound; }
+            // A container TYPE const (`pub const Hash = u64;` in hash_map) carries the width it spelled.
+            return ContainerTypeConstBits(Tok(id.Arg0));
+        }
+        return null;
     }
+
+    /// <summary>The declared integer width each VALUE symbol's type carries where the source spelled it (a
+    /// typed local, a parameter, a capture over a spelled element type), the value-level counterpart of
+    /// <see cref="_declaredIntBits"/>, so <c>@typeInfo(@TypeOf(x)).int.bits</c> is answered exactly rather
+    /// than refused. Reference-keyed by symbol; a symbol with no entry has no known spelling.</summary>
+    private readonly Dictionary<Symbol, int> _valueBits = new();
+
+    /// <summary>The declared width of the ELEMENT type of each slice / array / many-pointer VALUE symbol
+    /// (<c>buf: []const Character</c>), so an index, a slice of it, or a <c>for</c> capture over it carries one.</summary>
+    private readonly Dictionary<Symbol, int> _valueElemBits = new();
+
+    /// <summary>Each generic `anytype` parameter's declared width while its instance's SIGNATURE lowers
+    /// (the <see cref="_anytypeSeeds"/> counterpart; shadow-restored with it).</summary>
+    private readonly Dictionary<string, int> _anytypeSeedBits = new(System.StringComparer.Ordinal);
+
+    /// <summary>Each function's parameter list with raw type ASTs, so its body can give every parameter
+    /// symbol the width its type spelled (<see cref="RecordParamBits"/>).</summary>
+    private readonly Dictionary<Symbol, IReadOnlyList<ParamInfo>> _fnParamInfos = new();
+
+    /// <summary>Each generic instance's `anytype` parameter widths, read from the call site's arguments.</summary>
+    private readonly Dictionary<Symbol, Dictionary<string, int>> _instanceAnytypeBits = new();
+
+    /// <summary>Each instance's tuple-literal `anytype` arguments' per-element declared widths (see
+    /// <see cref="TupleLiteralElemBits"/>), by parameter name, recorded on the parameter as <see cref="_valueTupleElemBits"/>.</summary>
+    private readonly Dictionary<Symbol, Dictionary<string, int?[]>> _instanceAnytypeTupleBits = new();
+
+    /// <summary>A tuple-valued symbol's per-element declared widths, read through <c>t[i]</c> / <c>@field(t, "i")</c>.</summary>
+    private readonly Dictionary<Symbol, int?[]> _valueTupleElemBits = new();
+
+    /// <summary>The declared width of each element of a positional tuple literal (<c>.{ 42, @as(u21, 5) }</c>): an
+    /// element's own width, or for an untyped integer literal the width dotcc infers it at (<c>int</c>, 32 bits),
+    /// which is exact by construction. Null when the argument is not such a literal.</summary>
+    private int?[]? TupleLiteralElemBits(Item arg)
+    {
+        // A tuple VALUE passed on (`w.print(fmt, args)` inside std.fmt.bufPrint) forwards what its symbol recorded.
+        if (arg.Content is Zig.Ident { Arg0: var tupleTok } && _symbols.Resolve(Tok(tupleTok)) is { } tupleSym)
+        {
+            return _valueTupleElemBits.GetValueOrDefault(tupleSym);
+        }
+        if (arg.Content is not Zig.AnonStructInit init) { return null; }
+        var elems = Flatten(init.Arg2);
+        if (elems.Count == 0 || elems.Any(e => e.Content is not Zig.FieldInitPositional)) { return null; }
+        var bits = new int?[elems.Count];
+        for (var k = 0; k < elems.Count; k++)
+        {
+            var value = ((Zig.FieldInitPositional)elems[k].Content).Arg0;
+            if (value.Content is Zig.IntLit)
+            {
+                CExpr lit;
+                using (EnterThrowawayHoist()) { lit = LowerExpr(value); }
+                bits[k] = lit.Type?.Unqualified is CType.Prim { Integer: true, Bytes: var bytes } ? bytes * 8 : null;
+            }
+            else
+            {
+                bits[k] = DeclaredBitsOfArgument(value);
+            }
+        }
+        return bits;
+    }
+
+    /// <summary>The declared width a VALUE expression's type carries, or null when no spelling is known:
+    /// a symbol's recorded width, a slice / array <c>.len</c> (<c>usize</c>), an element of a value whose
+    /// element width is known, <c>@as(T, e)</c> / <c>@intCast</c>-free spellings.</summary>
+    private int? DeclaredBitsOfValue(Item e) => e.Content switch
+    {
+        Zig.Grouped g => DeclaredBitsOfValue(g.Arg1),
+        Zig.Ident id => _symbols.Resolve(Tok(id.Arg0)) is { } s && _valueBits.TryGetValue(s, out var b) ? b : null,
+        Zig.Field f when Tok(f.Arg2) == "len" => 64,
+        Zig.Index ix => DeclaredElemBitsOfValue(ix.Arg0),
+        Zig.BuiltinCall { Arg2: not null } bc when Tok(bc.Arg0) == "@as" && Flatten(bc.Arg2) is { Count: 2 } asArgs => DeclaredBitsOfTypeArg(asArgs[0]),
+        Zig.BuiltinCall { Arg2: not null } fb when Tok(fb.Arg0) == "@intFromBool" => 1,   // a `u1`
+        Zig.BuiltinCall { Arg2: not null } division when Tok(division.Arg0) == "@divCeil" && Flatten(division.Arg2) is [var numerator, var denominator]
+            => PeerDeclaredBits(numerator, denominator),
+        // `@clz` / `@ctz` / `@popCount` of an N-bit integer is a `std.math.Log2IntCeil(uN)`: the bits that hold N itself
+        // (a `u3`'s count is a `u2`, a `u64`'s a `u7`), so `@clz(x) * 100` over a `u3` overflows as zig says (task #102).
+        Zig.BuiltinCall { Arg2: not null } cb when Tok(cb.Arg0) is "@clz" or "@ctz" or "@popCount" && Flatten(cb.Arg2) is [var countArg]
+                                && DeclaredBitsOfValue(countArg) is { } countBits and > 0
+            => 64 - System.Numerics.BitOperations.LeadingZeroCount((ulong)countBits),
+        // Arithmetic and bitwise operators take their operands' peer type (task #132, `{d}` of `x + 1` / `i * i`): equal
+        // declared widths, or one operand an integer literal adopting the other's. Operands of different widths stay
+        // unknown (zig widens to the larger only when the signedness allows it, which this does not track), so the
+        // question stays loud rather than guessed. A shift keeps its left operand's type.
+        Zig.Add a => PeerDeclaredBits(a.Arg0, a.Arg2),
+        Zig.Sub a => PeerDeclaredBits(a.Arg0, a.Arg2),
+        Zig.Mul a => PeerDeclaredBits(a.Arg0, a.Arg2),
+        Zig.AddWrap a => PeerDeclaredBits(a.Arg0, a.Arg2),
+        Zig.SubWrap a => PeerDeclaredBits(a.Arg0, a.Arg2),
+        Zig.MulWrap a => PeerDeclaredBits(a.Arg0, a.Arg2),
+        Zig.AddSat a => PeerDeclaredBits(a.Arg0, a.Arg2),
+        Zig.SubSat a => PeerDeclaredBits(a.Arg0, a.Arg2),
+        Zig.MulSat a => PeerDeclaredBits(a.Arg0, a.Arg2),
+        Zig.DivOp a => PeerDeclaredBits(a.Arg0, a.Arg2),
+        Zig.ModOp a => PeerDeclaredBits(a.Arg0, a.Arg2),
+        Zig.BitAnd a => PeerDeclaredBits(a.Arg0, a.Arg2),
+        Zig.BitXor a => PeerDeclaredBits(a.Arg0, a.Arg2),
+        Zig.BitOr a => PeerDeclaredBits(a.Arg0, a.Arg2),
+        Zig.Shl s => DeclaredBitsOfValue(s.Arg0),
+        Zig.Shr s => DeclaredBitsOfValue(s.Arg0),
+        // Negation / complement / `try` keep their operand's type (zig has no C integer promotion).
+        Zig.PreNeg n => DeclaredBitsOfValue(n.Arg1),
+        Zig.PreBitNot n => DeclaredBitsOfValue(n.Arg1),
+        Zig.PreTry t => DeclaredBitsOfValue(t.Arg1),
+        _ => null,
+    };
+
+    /// <summary>The declared width of a binary arithmetic result from its operands' (see the operator cases of
+    /// <see cref="DeclaredBitsOfValue"/>): equal widths, or one operand an integer literal adopting the other's; else null.</summary>
+    private int? PeerDeclaredBits(Item lhs, Item rhs)
+    {
+        var l = DeclaredBitsOfValue(lhs);
+        var r = DeclaredBitsOfValue(rhs);
+        if (l is { } lb && r is { } rb) { return lb == rb ? lb : null; }
+        if (l is { } onlyL && IsIntegerLiteral(rhs)) { return onlyL; }
+        if (r is { } onlyR && IsIntegerLiteral(lhs)) { return onlyR; }
+        return null;
+    }
+
+    /// <summary>zig's integer type of an ARITHMETIC value, read off the source as <see cref="DeclaredBitsOfValue"/> reads its
+    /// width: the operands' peer type (`f / 25` over a <c>comptime f: u11</c> is a <c>u11</c>, task #163), where the lowered
+    /// expression carries C's promoted <c>int</c>. An integer literal adopts its peer's type, a shift keeps its left
+    /// operand's, and operands of one type keep it; a named value is its symbol's type. Null for anything else, including
+    /// operands of two different types, so the lowered type stands.</summary>
+    private CType? PeerTypeOfValue(Item e)
+    {
+        return e.Content switch
+        {
+            Zig.Grouped g => PeerTypeOfValue(g.Arg1),
+            // A comptime seed's read folds to an `int` literal, though `comptime n: u5` is a `u5`.
+            Zig.Ident => Operand(e),
+            Zig.Shl s => Operand(s.Arg0),
+            Zig.Shr s => Operand(s.Arg0),
+            Zig.Add a => Peer(a.Arg0, a.Arg2),
+            Zig.Sub a => Peer(a.Arg0, a.Arg2),
+            Zig.Mul a => Peer(a.Arg0, a.Arg2),
+            Zig.AddWrap a => Peer(a.Arg0, a.Arg2),
+            Zig.SubWrap a => Peer(a.Arg0, a.Arg2),
+            Zig.MulWrap a => Peer(a.Arg0, a.Arg2),
+            Zig.AddSat a => Peer(a.Arg0, a.Arg2),
+            Zig.SubSat a => Peer(a.Arg0, a.Arg2),
+            Zig.MulSat a => Peer(a.Arg0, a.Arg2),
+            Zig.DivOp a => Peer(a.Arg0, a.Arg2),
+            Zig.ModOp a => Peer(a.Arg0, a.Arg2),
+            Zig.BitAnd a => Peer(a.Arg0, a.Arg2),
+            Zig.BitXor a => Peer(a.Arg0, a.Arg2),
+            Zig.BitOr a => Peer(a.Arg0, a.Arg2),
+            _ => null,
+        };
+
+        CType? Operand(Item o) => (o.Content is Zig.Ident ? null : PeerTypeOfValue(o))
+            ?? (o.Content is Zig.Ident id && _symbols.Resolve(Tok(id.Arg0)) is { Type.Unqualified: CType.Prim { Integer: true } t } ? t : null);
+
+        CType? Peer(Item l, Item r)
+        {
+            if (IsIntegerLiteral(r)) { return Operand(l); }
+            if (IsIntegerLiteral(l)) { return Operand(r); }
+            return Operand(l) is { } lt && Operand(r) is { } rt && lt.Equals(rt) ? lt : null;
+        }
+    }
+
+    /// <summary>Is <paramref name="e"/> an integer literal (a <c>comptime_int</c> that adopts its peer's type)?</summary>
+    private static bool IsIntegerLiteral(Item e) => e.Content switch
+    {
+        Zig.Grouped g => IsIntegerLiteral(g.Arg1),
+        Zig.IntLit => true,
+        _ => false,
+    };
+
+    /// <summary>The declared width a LOWERED expression carries, for what the AST alone cannot resolve: a
+    /// call's callee (its declared return width, <see cref="_fnReturnBits"/>: <c>iterator.length()</c>,
+    /// <c>try charToDigit(…)</c>), a variable, a slice length, through <c>try</c> and parentheses.</summary>
+    private int? DeclaredBitsOfLowered(CExpr e) => e switch
+    {
+        Paren p => DeclaredBitsOfLowered(p.Inner),
+        ZigTry t => DeclaredBitsOfLowered(t.Inner),
+        VarRef v => _valueBits.TryGetValue(v.Sym, out var b) ? b : null,
+        Call { CalleeSym: { } s } => _fnReturnBits.TryGetValue(s, out var rb) ? rb : null,
+        Call { Callee: "ZigMath.DivCeil", Args: [_, _, LitInt { Value: { } width }] } when width is >= 1 and <= 128 => (int)width,
+        ComptimeFold f => DeclaredBitsOfLowered(f.Inner),
+        TupleIndex { Tuple: VarRef tv, Index: var ti } when _valueTupleElemBits.TryGetValue(tv.Sym, out var tbits) && ti < tbits.Length
+            => tbits[ti],
+        Member { Field: "Len" } => 64,
+        // A struct field read (`@field(value, f_name)` in std.Io.Writer.printValue's struct arm, task #121): its declared width.
+        Member { Base.Type: var objType, Field: var field }
+            when (objType?.Unqualified is CType.Pointer { Pointee: var pointee } ? pointee.Unqualified : objType?.Unqualified) is CType.Named owner
+                 && _structFieldBits.TryGetValue((owner.Name, field), out var fieldBits) => fieldBits,
+        Unary { Op: UnOp.Neg or UnOp.BitNot } u => DeclaredBitsOfLowered(u.Operand),
+        _ => null,
+    };
+
+    /// <summary>The width a value argument's type carries (<see cref="DeclaredBitsOfValue"/>, then, if the
+    /// AST alone does not say, the LOWERED argument's; lowered into a throwaway hoist, since this is a
+    /// question about its type and the call lowers the argument itself).</summary>
+    private int? DeclaredBitsOfArgument(Item arg)
+    {
+        if (DeclaredBitsOfValue(arg) is { } bits) { return bits; }
+        using var hoist = EnterThrowawayHoist();
+        return DeclaredBitsOfLowered(LowerExpr(arg));
+    }
+
+    /// <summary>Each function's declared RETURN width, where its return type spelled one (read per instance
+    /// with its seeds live), so a call's result carries it (<see cref="DeclaredBitsOfLowered"/>).</summary>
+    private Dictionary<Symbol, int> _fnReturnBits => _shared.FnReturnBits;
+
+    /// <summary>Each struct field's declared width (<see cref="ZigModuleGraph"/>'s shared table), so a field read carries it.</summary>
+    private Dictionary<(string Struct, string Field), int> _structFieldBits => _shared.StructFieldBits;
+
+    /// <summary>The declared width of a slice / array VALUE's ELEMENT type, or null (see
+    /// <see cref="_valueElemBits"/>): a symbol's record, carried through <c>&amp;x</c>, slicing and a value
+    /// <c>if</c> whose arms agree.</summary>
+    private int? DeclaredElemBitsOfValue(Item e) => e.Content switch
+    {
+        Zig.Grouped g => DeclaredElemBitsOfValue(g.Arg1),
+        Zig.Ident id => _symbols.Resolve(Tok(id.Arg0)) is { } s && _valueElemBits.TryGetValue(s, out var b) ? b : null,
+        Zig.PreAddrOf a => DeclaredElemBitsOfValue(a.Arg1),
+        Zig.SliceRange sr => DeclaredElemBitsOfValue(sr.Arg0),
+        Zig.SliceOpen so => DeclaredElemBitsOfValue(so.Arg0),
+        Zig.SliceRangeSentinel srs => DeclaredElemBitsOfValue(srs.Arg0),
+        Zig.SliceOpenSentinel sos => DeclaredElemBitsOfValue(sos.Arg0),
+        Zig.IfElseExpr { Arg4: null, Arg7: null } ie when DeclaredElemBitsOfValue(ie.Arg5) is { } t && DeclaredElemBitsOfValue(ie.Arg8) == t => t,
+        _ => null,
+    };
+
+    /// <summary>The declared width of the ELEMENT of a slice / array / many-pointer TYPE spelling, or null.</summary>
+    private int? ElemBitsOfTypeAst(Item typeAst) => typeAst.Content switch
+    {
+        Zig.TySlice s => DeclaredBitsOfTypeArg(s.Arg2),
+        Zig.TySliceConst s => DeclaredBitsOfTypeArg(s.Arg3),
+        Zig.TyArray a => DeclaredBitsOfTypeArg(a.Arg3),
+        Zig.TyManyPtr p => DeclaredBitsOfTypeArg(p.Arg1),
+        Zig.TyManyPtrConst p => DeclaredBitsOfTypeArg(p.Arg2),
+        _ => null,
+    };
+
+    /// <summary>Record a value symbol's declared width and element width (see <see cref="_valueBits"/>).</summary>
+    private void RecordValueBits(Symbol sym, int? bits, int? elemBits)
+    {
+        if (bits is { } b) { _valueBits[sym] = b; }
+        if (elemBits is { } eb) { _valueElemBits[sym] = eb; }
+    }
+
+    /// <summary>Give each parameter symbol of <paramref name="fn"/>'s body the width its type spelled (read
+    /// with the body's comptime seeds live, so <c>x: T</c> is <c>T</c>'s width), or, for an `anytype`
+    /// parameter of an instance, the width its call-site argument carried.</summary>
+    private void RecordParamBits(Symbol fn, IReadOnlyList<Symbol> paramSyms)
+    {
+        if (!_fnParamInfos.TryGetValue(fn, out var infos)) { return; }
+        _instanceAnytypeBits.TryGetValue(fn, out var anyBits);
+        foreach (var ps in paramSyms)
+        {
+            var at = -1;
+            for (var i = 0; i < infos.Count; i++) { if (infos[i].Name == ps.Name) { at = i; break; } }
+            if (at < 0) { continue; }
+            var info = infos[at];
+            if (info.Kind == ParamKind.AnyType)
+            {
+                if (anyBits is not null && anyBits.TryGetValue(ps.Name, out var ab)) { _valueBits[ps] = ab; }
+                if (_instanceAnytypePtrSize.TryGetValue(fn, out var anySizes) && anySizes.TryGetValue(ps.Name, out var anySize))
+                {
+                    _valuePtrSize[ps] = anySize;
+                }
+                if (_instanceAnytypeTupleBits.TryGetValue(fn, out var tupleBits) && tupleBits.TryGetValue(ps.Name, out var tb))
+                {
+                    _valueTupleElemBits[ps] = tb;
+                }
+                continue;
+            }
+            if (info.Kind != ParamKind.Runtime) { continue; }
+            RecordValueBits(ps, DeclaredBitsOfTypeArg(info.TypeAst), ElemBitsOfTypeAst(info.TypeAst));
+            if (ps.Type?.Unqualified is CType.Pointer) { RecordValuePtrSize(ps, PointerSizeOfTypeArg(info.TypeAst)); }
+        }
+    }
+
+    /// <summary>The declared integer width of this module's top-level type alias
+    /// <paramref name="name"/> (see <see cref="_declaredIntBits"/>), for an importer naming it through a
+    /// module path; null when it recorded none.</summary>
+    internal int? ExportedDeclaredBits(string name) => _declaredIntBits.TryGetValue(name, out var b) ? b : null;
 
     /// <summary>The <c>std.builtin.Type</c> union tag for a resolved type — what a
     /// <c>switch (@typeInfo(T))</c> prong matches. Tags are spelled as
@@ -113,12 +464,17 @@ internal sealed partial class ZigLowering
         // `_Bool` is an INTEGER prim in the C type model (CType.Bool == Prim("_Bool", 1, true, false)),
         // so it must be recognized before the integer arm or every `bool` would report `int`.
         CType.Prim { Name: "_Bool" } => "bool",
+        CType.Prim { IsComptimeInt: true } => "comptime_int",
         CType.Prim { Integer: true } => "int",
         CType.Prim => "float",
+        // zig's f128, the runtime's software binary128 (task #214).
+        CType.Float128Type => "float",
         CType.VoidType => "void",
+        CType.NoReturnType => "noreturn",
         CType.Pointer or CType.Slice => "pointer",
         CType.Optional => "optional",
         CType.Array => "array",
+        CType.Vector => "vector",
         CType.Enum => "enum",
         CType.Func => "fn",
         CType.ErrorUnion => "error_union",
@@ -126,6 +482,9 @@ internal sealed partial class ZigLowering
         // A named aggregate is a struct unless it was registered as a `union(enum)`; the tuple /
         // curated-runtime types (ArrayList, Allocator) are structs in zig too.
         CType.Named n when _unions.ContainsKey(n.Name) => "union",
+        // An untagged `union { … }` is an overlay struct in the IR, but a union to @typeInfo (its tag_type is null,
+        // task #142).
+        CType.Named n when _ir.StructIsUnion.GetValueOrDefault(n.Name) => "union",
         CType.Named or CType.Tuple or CType.ZigList or CType.Allocator => "struct",
         _ => throw new IrUnsupportedException(
             $"zig `@typeInfo`: no `std.builtin.Type` tag is modeled for {type.Describe()} (road-to-zig-std S5)"),
@@ -182,7 +541,7 @@ internal sealed partial class ZigLowering
                 info = bound;
                 return true;
 
-            case Zig.BuiltinCall b when Tok(b.Arg0) == "@typeInfo":
+            case Zig.BuiltinCall { Arg2: not null } b when Tok(b.Arg0) == "@typeInfo":
             {
                 var args = Flatten(b.Arg2);
                 if (args.Count != 1)
@@ -190,8 +549,27 @@ internal sealed partial class ZigLowering
                     throw new IrUnsupportedException($"zig `@typeInfo` expects (type); got {args.Count} argument(s)");
                 }
                 var t = LowerType(args[0]);
-                info = new ZigTypeInfo(TypeInfoTag(t), t, DeclaredBitsOfTypeArg(args[0]));
+                info = new ZigTypeInfo(TypeInfoTag(t), t, DeclaredBitsOfTypeArg(args[0]),
+                                       t.Unqualified is CType.Pointer ? PointerSizeOfTypeArg(args[0]) : null,
+                                       t.Unqualified is CType.Pointer or CType.Slice or CType.Array ? SentinelOfTypeArg(args[0]) : null);
                 return true;
+            }
+
+            // `switch (@typeInfo(T)) { .pointer => |p| p, else => @compileError(…) }` (std.mem.ReverseIterator, task #147):
+            // the selected prong yields its own capture, the active payload, which is the same folded record. A selected
+            // `@compileError` prong fires as it lowers.
+            case Zig.SwitchExpr:
+            {
+                var (swSubject, swProngs) = expr.Content is Zig.SwitchExpr se ? (se.Arg2, se.Arg5) : throw new System.InvalidOperationException();
+                if (!TryEvalTypeInfo(swSubject, out var switchedInfo)) { return false; }
+                if (SelectComptimeProng(swSubject, swProngs, out _) is not { Expr: { } yielded } chosen) { return false; }
+                if (chosen.CaptureName is { } capture && yielded.Content is Zig.Ident { Arg0: var yieldedTok } && Tok(yieldedTok) == capture)
+                {
+                    info = switchedInfo;
+                    return true;
+                }
+                if (yielded.Content is Zig.BuiltinCall { Arg2: not null, Arg0: var ceTok } && Tok(ceTok) == "@compileError") { LowerExpr(yielded); }
+                return false;
             }
 
             // `<info>.int` — the payload of the ACTIVE union field. Yields the same folded record (the
@@ -228,21 +606,56 @@ internal sealed partial class ZigLowering
     private bool TryFoldTypeInfoValue(Item expr, out CExpr value)
     {
         value = null!;
+        // `info.attrs.@"const"` (zig 0.17-dev's `std.builtin.Type.Pointer.Attributes`; std.json.static's
+        // `if (ptrInfo.attrs.@"const")`, task #213): the answers the older `is_const` / `is_volatile` give.
+        if (expr.Content is Zig.Field { Arg0.Content: Zig.Field { Arg2: var attrsTok } attrsField } attrField
+            && Tok(attrsTok) == "attrs" && TryEvalTypeInfo(attrsField.Arg0, out var attrInfo) && attrInfo.Tag == "pointer")
+        {
+            var attrPointee = attrInfo.Type.Unqualified switch
+            {
+                CType.Pointer p => p.Pointee,
+                CType.Slice s => s.Element,
+                _ => CType.Void,
+            };
+            value = Tok(attrField.Arg2) switch
+            {
+                "const" => new LitBool(attrPointee.IsConst) { Type = CType.Bool },
+                "volatile" => new LitBool((attrPointee.Quals & TypeQual.Volatile) != 0) { Type = CType.Bool },
+                var other => throw new IrUnsupportedException(
+                    $"zig `@typeInfo({attrInfo.Type.Describe()}).pointer.attrs.{other}` is not modeled (only `const` and `volatile`)"),
+            };
+            return true;
+        }
         if (expr.Content is not Zig.Field f || !TryEvalTypeInfo(f.Arg0, out var info)) { return false; }
         var field = Tok(f.Arg2);
+        // `@typeInfo(P).pointer` / `info.pointer` is the union's PAYLOAD step, not a value field
+        // (std.mem.AsBytesReturnType binds `const pointer = @typeInfo(P).pointer;`): not folded here.
+        if (IsTypeInfoTag(field)) { return false; }
         switch (info.Tag, field)
         {
             case ("int", "bits") or ("float", "bits"):
-                if (info.DeclaredBits is not { } bits)
+                // A float's width is its lowered type's (std.math.isInf over an `anytype` f64, task #189): f32, f64 and f128
+                // lower at their own width (C# `float` / `double`, the runtime's `Float128`, task #214), so no float is
+                // widened the way `u21` is, and nothing is lost.
+                var floatBits = info.Tag == "float" && info.Type.Unqualified is CType.Prim { Integer: false, Bytes: 4 or 8 } fp
+                    ? fp.Bytes * 8
+                    : info.Type.Unqualified is CType.Float128Type ? 128 : (int?)null;
+                if ((info.DeclaredBits ?? floatBits) is not { } bits)
                 {
                     throw new IrUnsupportedException(
-                        $"zig `@typeInfo({info.Type.Describe()}).{info.Tag}.bits`: the declared width is not known here. "
+                        $"zig `@typeInfo({info.Type.Describe()}).{info.Tag}.bits`: the declared width is not known here"
+                        + (_currentFnName.Length > 0 ? $" (in '{_currentFnName}')" : "") + ". "
                         + "It rides a type SPELLING — `@typeInfo(u21)` directly, or a `comptime T: type` / alias bound to "
                         + "one — but an `anytype` param or `@TypeOf(expr)` yields only the lowered type, and dotcc widens "
                         + "`uN`/`iN` to the smallest standard width (`u21` → a 32-bit `uint`), so reporting that width "
                         + "would disagree with zig. Spell the type, or pass it as a `comptime T: type`");
                 }
                 value = new LitInt(bits.ToString(System.Globalization.CultureInfo.InvariantCulture), bits) { Type = CType.Int };
+                return true;
+
+            // `info.is_tuple` (std.Io.Writer.printValue's struct arm, task #121): a tuple is a struct whose fields are positions.
+            case ("struct", "is_tuple"):
+                value = new LitBool(info.Type.Unqualified is CType.Tuple) { Type = CType.Bool };
                 return true;
 
             case ("pointer", "is_const"):
@@ -253,6 +666,11 @@ internal sealed partial class ZigLowering
                     _ => CType.Void,
                 };
                 value = new LitBool(pointee.IsConst) { Type = CType.Bool };
+                return true;
+
+            case ("vector", "len"):
+                var lanes = ((CType.Vector)info.Type.Unqualified).Count;
+                value = new LitInt(lanes.ToString(System.Globalization.CultureInfo.InvariantCulture), lanes) { Type = CType.Int };
                 return true;
 
             case ("array", "len"):
@@ -266,6 +684,12 @@ internal sealed partial class ZigLowering
                 // implicit CONSTANT conversion lets it land in any integer sink — a `4UL` would not
                 // assign to a `u8`/`u16` annotation (CS0266). The value always fits.
                 value = new LitInt(count.ToString(System.Globalization.CultureInfo.InvariantCulture), count) { Type = CType.Int };
+                return true;
+
+            // `field_names` as a VALUE (`std.meta.fieldNames(E)` returns it): comptime memory a zig slice may point
+            // into at runtime too, so it is the names in a pinned, program-lifetime array of string slices.
+            case (_, "field_names") when TryFoldTypeInfoList(expr, out var namesList) && namesList.Strings is { } names:
+                value = NameListSlice(names);
                 return true;
 
             // The member LISTS (road-to-zig-std S5c) fold in their own path — reaching here means one
@@ -330,6 +754,7 @@ internal sealed partial class ZigLowering
             CType.Slice s => s.Element,
             CType.Optional o => o.Inner,
             CType.Array a => a.Element,
+            CType.Vector v => v.Element,
             _ => null,
         };
         if (child is null)
@@ -353,6 +778,13 @@ internal sealed partial class ZigLowering
         tag = "";
         payload = null;
         if (expr.Content is Zig.Grouped g) { return TryEvalComptimeTag(g.Arg1, out tag, out payload); }
+        // A name bound to a comptime tag (`const signedness = @typeInfo(T).int.signedness;`).
+        if (expr.Content is Zig.Ident tagId && _symbols.Resolve(Tok(tagId.Arg0)) is null
+            && _comptimeTagBindings.TryGetValue(Tok(tagId.Arg0), out var boundTag))
+        {
+            tag = boundTag;
+            return true;
+        }
         // `<info>.signedness` — checked BEFORE the whole-value case so the field wins over the record.
         if (expr.Content is Zig.Field f && Tok(f.Arg2) == "signedness" && TryEvalTypeInfo(f.Arg0, out var sInfo))
         {
@@ -362,6 +794,45 @@ internal sealed partial class ZigLowering
                     $"zig `@typeInfo({sInfo.Type.Describe()}).{sInfo.Tag}.signedness`: only an `int` carries a signedness");
             }
             tag = sInfo.Type.Unqualified is CType.Prim { Signed: true } ? "signed" : "unsigned";
+            return true;
+        }
+        // `<info>.layout` of a struct or union (std.meta.eql's `if (info.layout == .@"packed") return a == b;`):
+        // `.auto` / `.@"extern"` / `.@"packed"`, off the layout the aggregate was registered with.
+        if (expr.Content is Zig.Field lf && Tok(lf.Arg2) == "layout" && TryEvalTypeInfo(lf.Arg0, out var lInfo))
+        {
+            if (lInfo.Tag is not ("struct" or "union"))
+            {
+                throw new IrUnsupportedException(
+                    $"zig `@typeInfo({lInfo.Type.Describe()}).{lInfo.Tag}.layout`: only a struct or union carries a layout");
+            }
+            var layout = lInfo.Type.Unqualified is CType.Named ln
+                ? _ir.Types.Find(d => d.Name == ln.Name)?.Layout ?? AggregateLayout.Default
+                : AggregateLayout.Default;
+            tag = layout switch
+            {
+                AggregateLayout.Packed => "packed",
+                AggregateLayout.Sequential => "extern",
+                _ => "auto",
+            };
+            return true;
+        }
+        // `<info>.mode` of an enum (std.enums.EnumIndexer's `if (@typeInfo(E).@"enum".mode == .nonexhaustive)`).
+        if (expr.Content is Zig.Field mf && Tok(mf.Arg2) == "mode" && TryEvalTypeInfo(mf.Arg0, out var mInfo) && mInfo.Tag == "enum")
+        {
+            tag = mInfo.Type.Unqualified is CType.Enum me && _nonExhaustiveEnums.Contains(me.Name) ? "nonexhaustive" : "exhaustive";
+            return true;
+        }
+        // `<info>.size` on a SLICE — `.slice`, the one pointer size class dotcc's lowering keeps (a slice is
+        // its own `CType.Slice`). `*T` / `[*]T` / `[*c]T` share one C pointer, so for those the size is the class
+        // the source SPELLED (task #119: std.Random.init's `@typeInfo(Ptr).pointer.size == .one`), and where no
+        // spelling gives one it stays the loud cut TryFoldTypeInfoValue raises (std.meta.Elem switches on it).
+        // A pointer to an ARRAY with no spelled class is `*[N]T` (`&arr`), `.one` (std.mem.reverseIterator(&arr), task #147).
+        if (expr.Content is Zig.Field sz && Tok(sz.Arg2) == "size" && TryEvalTypeInfo(sz.Arg0, out var zInfo)
+            && zInfo.Tag == "pointer"
+            && (zInfo.Type.Unqualified is CType.Slice ? "slice"
+                : zInfo.PointerSize ?? (zInfo.Type.Unqualified is CType.Pointer { Pointee.Unqualified: CType.Array } ? "one" : null)) is { } sizeClass)
+        {
+            tag = sizeClass;
             return true;
         }
         if (TryEvalTypeInfo(expr, out var info))
@@ -380,7 +851,110 @@ internal sealed partial class ZigLowering
             tag = aggTag;
             return true;
         }
+        // A module-level alias of one (std.crypto.keccak_p's `const mode = @import("builtin").mode;`, task #161), read
+        // through its declaration as TryFoldComptimeCondition reads a module-level bool (zig forbids a local shadowing a
+        // declaration, so the name is it).
+        if (expr.Content is Zig.Ident { Arg0: var aliasTok } && Tok(aliasTok) is var aliasName
+            && _symbols.Resolve(aliasName) is null or { IsGlobal: true }
+            && _topLevelConstRhs.TryGetValue(aliasName, out var aliasRhs) && _foldingTopLevelConsts.Add(aliasName))
+        {
+            try
+            {
+                if (TryEvalComptimeTag(aliasRhs, out tag, out payload)) { return true; }
+            }
+            finally
+            {
+                _foldingTopLevelConsts.Remove(aliasName);
+            }
+        }
+        // A comptime ENUM variable (`const signedness: Signedness = if (from < 0) .signed else .unsigned;` in
+        // std.math.IntFittingRange's type body): its value mapped back to the member's name.
+        if (expr.Content is Zig.Ident { Arg0: var enumTok } && _symbols.Resolve(Tok(enumTok)) is { } enumSym
+            && _comptimeVars.TryGetValue(enumSym, out var enumVar) && enumVar.Type.Unqualified is CType.Enum varEnum
+            && _enumMembers.TryGetValue(varEnum.Name, out var varMembers)
+            && varMembers.FirstOrDefault(m => m.Value.ConstValue == enumVar.Value).Key is { } memberName)
+        {
+            tag = memberName;
+            return true;
+        }
+        // A comptime tagged-UNION value (`comptime switch (placeholder.arg)` in std.Io.Writer.print, the
+        // Placeholder a comptime call returned): its active variant is the tag, its payload the capture.
+        if (TryEvalComptimeUnion(expr, out var unionTag, out var unionPayload))
+        {
+            tag = unionTag;
+            _comptimeUnionPayload = unionPayload;
+            return true;
+        }
+        // A method of a comptime aggregate returning an enum (`builtin.cpu.arch.endian()`, read through a module-level alias
+        // such as `native_endian`; std.hash.XxHash3's `swap` asks `native_endian == .big`, task #180): the interpreter runs the
+        // method, and its value maps back to the member, so the question folds and the untaken arm is never lowered.
+        if (expr.Content is Zig.CallArgs && IsRootedAtComptimeAggregate(expr))
+        {
+            CExpr? called = null;
+            try
+            {
+                using (EnterThrowawayHoist()) { called = LowerExpr(expr); }
+            }
+            catch (IrUnsupportedException) { }
+            if (called?.Type.Unqualified is CType.Enum calledEnum && _ir.EvalComptimeValue(called) is IrBuilder.CtInt { Value: var calledValue }
+                && _enumMembers.TryGetValue(calledEnum.Name, out var calledMembers)
+                && calledMembers.FirstOrDefault(m => (System.Int128)m.Value.ConstValue == calledValue).Key is { } calledMember)
+            {
+                tag = calledMember;
+                return true;
+            }
+        }
         return false;
+    }
+
+    /// <summary>The payload of the comptime union <see cref="TryEvalComptimeTag"/> last matched, spliced to a
+    /// literal, for the selected prong's <c>|v|</c> capture (<see cref="EnterComptimeProng"/>). Null for a void
+    /// variant.</summary>
+    private CExpr? _comptimeUnionPayload;
+
+    /// <summary>What each <see cref="EnterComptimeProng"/> bound for a comptime union's capture in
+    /// <see cref="_comptimeValues"/> (an empty name when nothing), restored by <see cref="ExitComptimeProng"/>.</summary>
+    private readonly List<(string Name, CExpr? Prev)> _unionCaptureShadows = new();
+
+    /// <summary>Read a comptime tagged-union value: <paramref name="expr"/> is rooted at a comptime aggregate
+    /// (<c>const placeholder = comptime Placeholder.parse(…)</c>, held by the interpreter), and evaluates to a
+    /// union. Yields the active variant's name and its payload spliced to a literal (null for a void variant).
+    /// Anything else is false, so the switch lowers at runtime as before.</summary>
+    private bool TryEvalComptimeUnion(Item expr, out string variant, out CExpr? payload)
+    {
+        variant = "";
+        payload = null;
+        var root = expr;
+        while (root.Content is Zig.Field or Zig.Grouped)
+        {
+            root = root.Content is Zig.Field rf ? rf.Arg0 : ((Zig.Grouped)root.Content).Arg1;
+        }
+        if (root.Content is not Zig.Ident rid || _symbols.Resolve(Tok(rid.Arg0)) is not { } rootSym
+            || !_ir.ComptimeGlobals.ContainsKey(rootSym))
+        {
+            return false;
+        }
+        CExpr lowered;
+        using (EnterThrowawayHoist()) { lowered = LowerExpr(expr); }
+        if (_ir.EvalComptimeValue(lowered) is not IrBuilder.CtStruct value
+            || value.Type.Unqualified is not CType.Named { Name: var unionName }
+            || !_unions.TryGetValue(unionName, out var info)
+            || !value.Fields.TryGetValue(info.TagFieldName, out var tagValue) || tagValue is not IrBuilder.CtInt tagInt
+            || info.TagType.Unqualified is not CType.Enum tagEnum
+            || !_enumMembers.TryGetValue(tagEnum.Name, out var members))
+        {
+            return false;
+        }
+        var match = members.FirstOrDefault(m => m.Value.ConstValue == (long)tagInt.Value);
+        if (match.Key is not { } name) { return false; }
+        variant = name;
+        if (info.Variants.GetValueOrDefault(name) is not null
+            && value.Fields.GetValueOrDefault(info.PayloadFieldName) is IrBuilder.CtStruct payloadStruct
+            && payloadStruct.Fields.TryGetValue(name, out var payloadValue))
+        {
+            payload = _ir.SpliceComptimeValue(payloadValue);
+        }
+        return true;
     }
 
     /// <summary>Fold <c>&lt;comptime tag&gt; == .name</c> / <c>!=</c> to a boolean literal — the
@@ -395,12 +969,12 @@ internal sealed partial class ZigLowering
         if (TryEvalComptimeTag(leftItem, out var lt, out _) && rightItem.Content is Zig.EnumLit rel)
         {
             tag = lt;
-            lit = Tok(rel.Arg1);
+            lit = SourceMemberName(rel.Arg1);
         }
         else if (TryEvalComptimeTag(rightItem, out var rt, out _) && leftItem.Content is Zig.EnumLit lel)
         {
             tag = rt;
-            lit = Tok(lel.Arg1);
+            lit = SourceMemberName(lel.Arg1);
         }
         if (tag is null || lit is null) { return false; }
         var equal = tag == lit;
@@ -408,30 +982,49 @@ internal sealed partial class ZigLowering
         return true;
     }
 
-    /// <summary>One decomposed <c>switch</c> prong: its case-value list, an optional payload capture,
-    /// and exactly one body form (a braced block, a bare value expression, or a <c>return</c>). The
-    /// shape the comptime fold needs in all three switch positions (statement, expression, and the
-    /// value-temp filler) without each re-deriving it from the eight capture productions.</summary>
-    private sealed record ZigProng(Item CaseVals, string? CaptureName, Item? Block, Item? Expr, Item? Return, bool ReturnsVoid);
+    /// <summary>One decomposed <c>switch</c> prong (zig's <c>SwitchCase =&gt; PtrIndexPayload? AssignExpr</c>): its case-value
+    /// list, an optional payload capture (by value or by reference, with an optional tag name), and exactly one body form: a
+    /// braced block (<see cref="Comptime"/> for <c>comptime { … }</c>), a value expression, a <c>return [v]</c>, a jump, an
+    /// or assignment. Every switch position reads prongs through this view.</summary>
+    private sealed record ZigProng(Item CaseVals, string? CaptureName, Item? Block, Item? Expr, Item? Return, bool ReturnsVoid,
+        Item? Jump = null, (Item Target, Item Op, Item Value)? Assign = null, string? Cut = null,
+        bool ByRef = false, string? TagName = null, bool Comptime = false)
+    {
+        /// <summary>True for a prong with a payload capture that binds a name (<c>|_|</c> binds none).</summary>
+        public bool Captures => CaptureName is { } c && c != "_";
+    }
 
-    /// <summary>Decompose a prong into <see cref="ZigProng"/>. A by-reference capture
-    /// (<c>|*x|</c>) is rejected: a comptime <c>@typeInfo</c> value has no storage to point at.</summary>
+    /// <summary>Decompose a prong into <see cref="ZigProng"/>; an <c>inline</c> prong decomposes as the prong it wraps.</summary>
     private static ZigProng DecomposeProng(Item prong) => prong.Content switch
     {
-        Zig.Prong p                  => new ZigProng(p.Arg0, null,         p.Arg2, null,   null,   false),
-        Zig.ProngExpr p              => new ZigProng(p.Arg0, null,         null,   p.Arg2, null,   false),
-        Zig.ProngReturn p            => new ZigProng(p.Arg0, null,         null,   null,   p.Arg3, false),
-        Zig.ProngReturnVoid p        => new ZigProng(p.Arg0, null,         null,   null,   null,   true),
-        Zig.ProngCapture p           => new ZigProng(p.Arg0, Tok(p.Arg3),  p.Arg5, null,   null,   false),
-        Zig.ProngCaptureExpr p       => new ZigProng(p.Arg0, Tok(p.Arg3),  null,   p.Arg5, null,   false),
-        Zig.ProngCaptureReturn p     => new ZigProng(p.Arg0, Tok(p.Arg3),  null,   null,   p.Arg6, false),
-        Zig.ProngCaptureReturnVoid p => new ZigProng(p.Arg0, Tok(p.Arg3),  null,   null,   null,   true),
-        Zig.ProngCaptureRef or Zig.ProngCaptureRefExpr or Zig.ProngCaptureRefReturn or Zig.ProngCaptureRefReturnVoid
-            => throw new IrUnsupportedException(
-                "zig `switch (@typeInfo(T)) { … => |*x| … }`: a comptime `std.builtin.Type` value has no storage, so it "
-                + "cannot be captured by reference"),
+        Zig.InlineProng p => DecomposeProng(p.Arg1),
+        Zig.Prong p => ProngOf(p.Arg0, p.Arg2, p.Arg3),
         _ => throw new IrUnsupportedException("zig switch prong: " + (prong.Content?.GetType().Name ?? "null")),
     };
+
+    /// <summary>The parts of an optional payload capture (zig's PtrIndexPayload): <c>|x|</c>, <c>|*x|</c>, <c>|x, i|</c>. All
+    /// null / false for no payload.</summary>
+    private static (string? Name, bool ByRef, string? Tag) PayloadParts(Item? payload) => payload?.Content is Zig.Payload pl
+        ? (Tok(pl.Arg2), pl.Arg1 is not null, pl.Arg3?.Content is Zig.PayloadTag t ? Tok(t.Arg1) : null)
+        : (null, false, null);
+
+    /// <summary>The <see cref="ZigProng"/> view of <c>caseVals =&gt; payload? body</c>, the body classified by what it is.</summary>
+    private static ZigProng ProngOf(Item caseVals, Item? payload, Item body)
+    {
+        var (capture, byRef, tag) = PayloadParts(payload);
+        var view = new ZigProng(caseVals, capture, null, null, null, false, ByRef: byRef, TagName: tag);
+        return body.Content switch
+        {
+            Zig.Block => view with { Block = body },
+            Zig.ProngComptimeBlock c => view with { Block = c.Arg1, Comptime = true },
+            Zig.ProngAssign a => view with { Assign = (a.Arg0, a.Arg1, a.Arg2) },
+            Zig.ReturnExpr { Arg1: null } => view with { ReturnsVoid = true },
+            Zig.ReturnExpr r => view with { Return = r.Arg1 },
+            Zig.FbBreak or Zig.FbBreakLabel or Zig.FbBreakLabelValue or Zig.FbBreakValue
+                or Zig.FbContinue or Zig.FbContinueLabel or Zig.FbContinueLabelValue => view with { Jump = body },
+            _ => view with { Expr = body },
+        };
+    }
 
     /// <summary>Select the prong a <c>switch</c> over a COMPTIME TAG takes, or null when the subject
     /// is not comptime-known (the caller then lowers an ordinary runtime switch). The tag is matched
@@ -440,13 +1033,88 @@ internal sealed partial class ZigLowering
     /// generic, never demand a field the type does not have, and never fail to compile. That is the
     /// whole point of the fold: <c>switch (@typeInfo(T))</c> is how std asks "which kind is T", and
     /// every non-taken arm is written for a different kind.</summary>
+    /// <summary>Is <paramref name="expr"/> <c>info.sentinel()</c> over a folded <c>@typeInfo</c> payload (see
+    /// <see cref="TryTypeInfoSentinel"/>)?</summary>
+    private bool IsTypeInfoSentinelCall(Item expr)
+    {
+        while (expr.Content is Zig.Grouped g) { expr = g.Arg1; }
+        return expr.Content is Zig.CallArgs { Arg2: null, Arg0.Content: Zig.Field { Arg2: var methodTok } receiver }
+            && Tok(methodTok) == "sentinel" && TryEvalTypeInfo(receiver.Arg0, out _);
+    }
+
+    /// <summary><c>info.sentinel()</c> over a folded <c>@typeInfo</c> pointer or array payload, as a comptime optional
+    /// (task #213): the spelled sentinel (<see cref="ZigSentinel"/>), or null for a type spelled without one. The lowered
+    /// type erases a sentinel, so a type whose spelling is not in reach (no type argument, alias or struct field spelled it)
+    /// is a loud cut rather than a guess; so is a sentinel that is not an integer.</summary>
+    private bool TryTypeInfoSentinel(Item expr, out (bool HasValue, long Value, CType Inner) info)
+    {
+        info = default;
+        if (expr.Content is not Zig.CallArgs { Arg2: null, Arg0.Content: Zig.Field { Arg2: var methodTok } receiver }
+            || Tok(methodTok) != "sentinel"
+            || !TryEvalTypeInfo(receiver.Arg0, out var typeInfo) || typeInfo.Tag is not ("pointer" or "array"))
+        {
+            return false;
+        }
+        var element = typeInfo.Type.Unqualified switch
+        {
+            CType.Pointer p => p.Pointee,
+            CType.Slice s => s.Element,
+            CType.Array a => a.Element,
+            _ => CType.Void,
+        };
+        switch (typeInfo.Sentinel)
+        {
+            case null:
+                throw new IrUnsupportedException(
+                    $"zig `@typeInfo({typeInfo.Type.Describe()}).{typeInfo.Tag}.sentinel()`: dotcc erases a sentinel in the "
+                    + "lowered type, and nothing that spelled this one is in reach (a type argument, a type alias or a struct "
+                    + "field spelled `[:0]T` or `[]T` carries it)");
+            case { HasSentinel: false }:
+                info = (false, 0, element.Unqualified);
+                return true;
+            case { Value: long sentinel }:
+                info = (true, sentinel, element.Unqualified);
+                return true;
+            default:
+                throw new IrUnsupportedException(
+                    $"zig `@typeInfo({typeInfo.Type.Describe()}).{typeInfo.Tag}.sentinel()`: a sentinel that is not an integer "
+                    + "is not modeled");
+        }
+    }
+
+    /// <summary>The tag an enum literal names: <c>.int</c>, and the keyword-named <c>.undefined</c> / <c>.null</c> (the
+    /// same record, spelled by its token); null for any other node.</summary>
+    private static string? EnumLitName(Item lit) => lit.Content is Zig.EnumLit el ? SourceMemberName(el.Arg1) : null;
+
     private ZigProng? SelectComptimeProng(Item subjectItem, Item prongsItem, out ZigTypeInfo? payload)
     {
+        _comptimeUnionPayload = null;
+        _typeSwitchSubject = null;
+        // A switch over a TYPE (std.Io.Writer.printInt's `switch (@TypeOf(value)) { isize, usize => {}, comptime_int =>
+        // …, else => … }`): prongs are types, matched by type equality (declared width included).
+        if (TrySelectTypeProng(subjectItem, prongsItem) is { } typeProng)
+        {
+            payload = null;
+            // A captured prong (`else => |U| U`) binds the subject type; EnterComptimeProng reads it.
+            if (typeProng.CaptureName is { } && TryTypeAliasRhs(subjectItem, out var capturedType))
+            {
+                _typeSwitchSubject = (capturedType, DeclaredBitsOfTypeArg(subjectItem));
+            }
+            return typeProng;
+        }
+        // A comptime BOOL subject whose prongs are `true` / `false` (`switch (wide) { true => u32, false => u8 }`, task #84).
+        if (TrySelectBoolProng(subjectItem, prongsItem) is { } boolProng) { payload = null; return boolProng; }
         if (!TryEvalComptimeTag(subjectItem, out var tag, out payload)) { return null; }
         ZigProng? elseProng = null;
         foreach (var prongItem in Flatten(prongsItem))
         {
             var prong = DecomposeProng(prongItem);
+            if (prong.ByRef)
+            {
+                throw new IrUnsupportedException(
+                    "zig `switch (@typeInfo(T)) { … => |*x| … }`: a comptime `std.builtin.Type` value has no storage, so it "
+                    + "cannot be captured by reference");
+            }
             if (prong.CaseVals.Content is Zig.CaseElse) { elseProng = prong; continue; }
             foreach (var (lo, hi) in WalkCaseValItems(prong.CaseVals))
             {
@@ -456,18 +1124,70 @@ internal sealed partial class ZigLowering
                         "zig `switch (@typeInfo(T))`: a `lo...hi` range is not a tag — prongs match `.int` / `.pointer` / "
                         + "`.@\"struct\"` literals or `else`");
                 }
-                if (lo.Content is not Zig.EnumLit el)
+                if (EnumLitName(lo) is not { } litName)
                 {
                     throw new IrUnsupportedException(
                         "zig `switch (@typeInfo(T))`: a prong's case value must be a `.tag` enum literal or `else`");
                 }
-                if (Tok(el.Arg1) == tag) { return prong; }
+                if (litName == tag) { return prong.Cut is { } cut ? throw new IrUnsupportedException(cut) : prong; }
             }
         }
-        if (elseProng is not null) { return elseProng; }
+        if (elseProng is not null) { return elseProng.Cut is { } elseCut ? throw new IrUnsupportedException(elseCut) : elseProng; }
         throw new IrUnsupportedException(
             $"zig `switch` over a comptime `.{tag}`: no prong matches it and there is no `else` "
             + "(real zig would reject the switch as non-exhaustive)");
+    }
+
+    /// <summary>The prong a switch over a comptime-known BOOL selects, when every case value is <c>true</c> / <c>false</c>
+    /// (or <c>else</c>). Null when the prongs are not bool literals or the subject is not known at compile time.</summary>
+    private ZigProng? TrySelectBoolProng(Item subjectItem, Item prongsItem)
+    {
+        // Any switch passes through here; one whose prongs a comptime fold cannot take (a `|*x|` by-reference capture) is
+        // simply not a comptime bool switch.
+        List<ZigProng> prongs;
+        try { prongs = Flatten(prongsItem).Select(DecomposeProng).ToList(); }
+        catch (IrUnsupportedException) { return null; }
+        bool? Lit(Item it) => it.Content switch
+        {
+            Zig.TrueLit => true,
+            Zig.FalseLit => false,
+            _ => null,
+        };
+        var allBool = prongs.All(p => p.CaseVals.Content is Zig.CaseElse
+            || WalkCaseValItems(p.CaseVals).All(v => v.Hi is null && Lit(v.Lo) is not null));
+        if (!allBool || prongs.All(p => p.CaseVals.Content is Zig.CaseElse)) { return null; }
+        if (TryFoldTypeIfCondition(subjectItem) is not { } value) { return null; }
+        var chosen = prongs.FirstOrDefault(p => p.CaseVals.Content is not Zig.CaseElse
+                                                && WalkCaseValItems(p.CaseVals).Any(v => Lit(v.Lo) == value))
+                     ?? prongs.FirstOrDefault(p => p.CaseVals.Content is Zig.CaseElse);
+        return chosen is { Cut: { } cut } ? throw new IrUnsupportedException(cut) : chosen;
+    }
+
+    /// <summary>The prong a switch over a TYPE subject selects: <c>@TypeOf(x)</c> or a type binding, each prong's case
+    /// values compared as types (<see cref="TryFoldTypeEquality"/>). Null when the subject is not a type, or a case
+    /// value does not answer as one.</summary>
+    private ZigProng? TrySelectTypeProng(Item subjectItem, Item prongsItem)
+    {
+        var subject = subjectItem;
+        while (subject.Content is Zig.Grouped g) { subject = g.Arg1; }
+        var isType = subject.Content is Zig.BuiltinCall { Arg2: not null, Arg0: var tb } && Tok(tb) == "@TypeOf"
+                     || subject.Content is Zig.Ident ti && _typeAliases.ContainsKey(Tok(ti.Arg0)) && _symbols.Resolve(Tok(ti.Arg0)) is null;
+        if (!isType || !TryTypeAliasRhs(subject, out _)) { return null; }
+        ZigProng? elseProng = null;
+        foreach (var prongItem in Flatten(prongsItem))
+        {
+            var prong = DecomposeProng(prongItem);
+            if (prong.CaseVals.Content is Zig.CaseElse) { elseProng = prong; continue; }
+            foreach (var (lo, hi) in WalkCaseValItems(prong.CaseVals))
+            {
+                if (hi is not null) { return null; }
+                // A case type dotcc does not lower (std.fmt.parse_float's `f16, f32, f64 => u64, f80, f128 => u128`)
+                // is not the subject's, which did lower: it cannot match, so it is passed over.
+                if (TryFoldTypeEquality(subject, lo) is true) { return prong.Cut is { } cut ? throw new IrUnsupportedException(cut) : prong; }
+            }
+        }
+        if (elseProng is not null) { return elseProng.Cut is { } elseCut ? throw new IrUnsupportedException(elseCut) : elseProng; }
+        throw new IrUnsupportedException("zig `switch` over a comptime TYPE: no prong matches it and there is no `else`");
     }
 
     /// <summary>Bind a folded prong's <c>|i|</c> capture to the switch subject's payload for the
@@ -479,7 +1199,25 @@ internal sealed partial class ZigLowering
         // An empty name is the "bound nothing" marker, so Enter/Exit always pair one-for-one whether or
         // not this prong actually captures.
         _typeInfoShadows.Add(("", null));
+        _unionCaptureShadows.Add(("", null));
+        _typeCaptureShadows.Add(("", null, null));
         if (prong.CaptureName is not { } name || name == "_") { return; }
+        // `else => |U| U` over a TYPE subject (task #86): the capture is the subject type, bound as an alias for the arm.
+        if (payload is null && _typeSwitchSubject is { } subjectType)
+        {
+            _typeCaptureShadows[^1] = (name, _typeAliases.TryGetValue(name, out var prevType) ? prevType : null,
+                                       _declaredIntBits.TryGetValue(name, out var prevBits) ? prevBits : null);
+            _typeAliases[name] = subjectType.Type;
+            SetDeclaredIntBits(name, subjectType.Bits);
+            return;
+        }
+        // A comptime union's variant payload (TryEvalComptimeUnion): the capture is that literal.
+        if (payload is null && _comptimeUnionPayload is { } unionPayload)
+        {
+            _unionCaptureShadows[^1] = (name, _comptimeValues.GetValueOrDefault(name));
+            _comptimeValues[name] = unionPayload;
+            return;
+        }
         if (payload is null)
         {
             throw new IrUnsupportedException(
@@ -489,9 +1227,29 @@ internal sealed partial class ZigLowering
         _typeInfoBindings[name] = payload;
     }
 
+    /// <summary>The subject type of the type switch <see cref="SelectComptimeProng"/> last selected a captured prong of, for
+    /// <see cref="EnterComptimeProng"/> to bind the capture to; null otherwise.</summary>
+    private (CType Type, int? Bits)? _typeSwitchSubject;
+
+    /// <summary>Type aliases a type switch's prong capture shadowed, restored by <see cref="ExitComptimeProng"/>.</summary>
+    private readonly List<(string Name, CType? Prev, int? PrevBits)> _typeCaptureShadows = new();
+
     /// <summary>Restore what <see cref="EnterComptimeProng"/> shadowed.</summary>
     private void ExitComptimeProng()
     {
+        var (typeName, typePrev, typePrevBits) = _typeCaptureShadows[^1];
+        _typeCaptureShadows.RemoveAt(_typeCaptureShadows.Count - 1);
+        if (typeName.Length > 0)
+        {
+            if (typePrev is { } tp) { _typeAliases[typeName] = tp; } else { _typeAliases.Remove(typeName); }
+            SetDeclaredIntBits(typeName, typePrevBits);
+        }
+        var (unionName, unionPrev) = _unionCaptureShadows[^1];
+        _unionCaptureShadows.RemoveAt(_unionCaptureShadows.Count - 1);
+        if (unionName.Length > 0)
+        {
+            if (unionPrev is { } up) { _comptimeValues[unionName] = up; } else { _comptimeValues.Remove(unionName); }
+        }
         var (name, prev) = _typeInfoShadows[^1];
         _typeInfoShadows.RemoveAt(_typeInfoShadows.Count - 1);
         if (name.Length == 0) { return; }

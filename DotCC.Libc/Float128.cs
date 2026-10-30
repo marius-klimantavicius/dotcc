@@ -238,6 +238,46 @@ public readonly struct Float128 : IEquatable<Float128>, IComparable<Float128>,
         return BitConverter.UInt64BitsToDouble(bits);
     }
 
+    /// <summary>Narrow binary128 directly to binary32, rounding once to nearest, ties to even.
+    /// A binary64 intermediate can erase the sticky bit that decides a binary32 midpoint.</summary>
+    public static float ToSingle(Float128 value)
+    {
+        uint sign = value.SignBit ? 0x8000_0000u : 0u;
+        int exponent = value.BiasedExponent;
+        UInt128 fraction = value.TrailingSignificand;
+        if (exponent == MaxBiasedExponent)
+        {
+            uint payload = fraction == UInt128.Zero ? 0u
+                : ((uint)(fraction >> (MantissaBits - 23)) | 0x0040_0000u);
+            return BitConverter.UInt32BitsToSingle(sign | 0x7F80_0000u | payload);
+        }
+        // Every binary128 subnormal is far below half the smallest binary32 subnormal.
+        if (exponent == 0) return BitConverter.UInt32BitsToSingle(sign);
+
+        int unbiased = exponent - ExponentBias;
+        if (unbiased > 127) return BitConverter.UInt32BitsToSingle(sign | 0x7F80_0000u);
+        if (unbiased < -150) return BitConverter.UInt32BitsToSingle(sign);
+
+        UInt128 significand = ImplicitBit | fraction;
+        // Normals retain 24 bits. Subnormals use the fixed 2^-149 quantum instead.
+        // Here dropBits is at most 113, so UInt128's shift never wraps at 128.
+        int dropBits = MantissaBits - 23 + Math.Max(0, -126 - unbiased);
+        UInt128 rounded = RoundShiftRight(significand, dropBits);
+        if (unbiased < -126)
+        {
+            // A carry to bit 23 already encodes the minimum normal's exponent field.
+            return BitConverter.UInt32BitsToSingle(sign | (uint)rounded);
+        }
+        if (rounded == (UInt128.One << 24))
+        {
+            rounded >>= 1;
+            unbiased++;
+            if (unbiased > 127) return BitConverter.UInt32BitsToSingle(sign | 0x7F80_0000u);
+        }
+        uint bits = sign | ((uint)(unbiased + 127) << 23) | ((uint)rounded & 0x007F_FFFFu);
+        return BitConverter.UInt32BitsToSingle(bits);
+    }
+
     /// <summary>
     /// Shift <paramref name="value"/> right by <paramref name="shift"/> bits with
     /// round-to-nearest, ties-to-even on the discarded low bits. The returned
@@ -717,6 +757,54 @@ public readonly struct Float128 : IEquatable<Float128>, IComparable<Float128>,
         return (long)ival;
     }
 
+    /// <summary>Exact widening from an unsigned 64-bit integer (every ulong fits in the 113-bit significand), where
+    /// the implicit conversion would go through <c>double</c>.</summary>
+    public static Float128 FromUInt64(ulong v)
+        => v == 0 ? Zero : RoundToBinary128(false, (BigInteger)v, 0, extraSticky: false);
+
+    /// <summary>From a signed 128-bit integer, rounded to nearest-even (above 2^113 not every value fits).</summary>
+    public static Float128 FromInt128(Int128 v)
+        => v == Int128.Zero ? Zero : RoundToBinary128(v < Int128.Zero, BigInteger.Abs((BigInteger)v), 0, extraSticky: false);
+
+    /// <summary>From an unsigned 128-bit integer, rounded to nearest-even.</summary>
+    public static Float128 FromUInt128(UInt128 v)
+        => v == UInt128.Zero ? Zero : RoundToBinary128(false, ToBig(v), 0, extraSticky: false);
+
+    /// <summary>The integer part (toward zero) of <paramref name="v"/> as an exact <see cref="BigInteger"/>, or
+    /// <c>null</c> for a NaN or an infinity.</summary>
+    private static BigInteger? TruncatedInteger(Float128 v)
+    {
+        if (IsNaN(v) || IsInfinity(v)) { return null; }
+        if (IsZero(v)) { return BigInteger.Zero; }
+        Decompose(v, out bool sign, out BigInteger sig, out int q);
+        BigInteger ival = q >= 0 ? sig << q : sig >> -q;
+        return sign ? -ival : ival;
+    }
+
+    /// <summary>Narrow to an unsigned 64-bit integer, truncating toward zero. NaN and a negative value give 0; an
+    /// out-of-range value or an infinity saturates (C and zig leave these cases undefined).</summary>
+    public static ulong ToUInt64(Float128 v)
+    {
+        if (TruncatedInteger(v) is not { } i) { return IsNaN(v) || v.SignBit ? 0UL : ulong.MaxValue; }
+        return i.Sign < 0 ? 0UL : i > ulong.MaxValue ? ulong.MaxValue : (ulong)i;
+    }
+
+    /// <summary>Narrow to a signed 128-bit integer, truncating toward zero. NaN gives 0; an out-of-range value or an
+    /// infinity saturates.</summary>
+    public static Int128 ToInt128(Float128 v)
+    {
+        if (TruncatedInteger(v) is not { } i) { return IsNaN(v) ? Int128.Zero : v.SignBit ? Int128.MinValue : Int128.MaxValue; }
+        return i > (BigInteger)Int128.MaxValue ? Int128.MaxValue : i < (BigInteger)Int128.MinValue ? Int128.MinValue : (Int128)i;
+    }
+
+    /// <summary>Narrow to an unsigned 128-bit integer, truncating toward zero. NaN and a negative value give 0; an
+    /// out-of-range value or an infinity saturates.</summary>
+    public static UInt128 ToUInt128(Float128 v)
+    {
+        if (TruncatedInteger(v) is not { } i) { return IsNaN(v) || v.SignBit ? UInt128.Zero : UInt128.MaxValue; }
+        return i.Sign < 0 ? UInt128.Zero : i > (BigInteger)UInt128.MaxValue ? UInt128.MaxValue : ToU128(i);
+    }
+
     // ── operators & conversions (so emitted C# `_Float128` code Just Works) ──
     public static Float128 operator +(Float128 a, Float128 b) => Add(a, b);
     public static Float128 operator -(Float128 a, Float128 b) => Subtract(a, b);
@@ -735,6 +823,7 @@ public readonly struct Float128 : IEquatable<Float128>, IComparable<Float128>,
     public static implicit operator Float128(long v) => FromInt64(v);
     public static implicit operator Float128(double d) => FromDouble(d);
     public static explicit operator double(Float128 v) => ToDouble(v);
+    public static explicit operator float(Float128 v) => ToSingle(v);
     public static explicit operator long(Float128 v) => ToInt64(v);
     public static explicit operator int(Float128 v) => (int)ToInt64(v);
 
@@ -1653,7 +1742,7 @@ public readonly struct Float128 : IEquatable<Float128>, IComparable<Float128>,
     private static bool TryConvertTo<TOther>(Float128 value, out TOther result) where TOther : INumberBase<TOther>
     {
         if (typeof(TOther) == typeof(double)) { result = (TOther)(object)ToDouble(value); return true; }
-        if (typeof(TOther) == typeof(float)) { result = (TOther)(object)(float)ToDouble(value); return true; }
+        if (typeof(TOther) == typeof(float)) { result = (TOther)(object)ToSingle(value); return true; }
         if (typeof(TOther) == typeof(long)) { result = (TOther)(object)ToInt64(value); return true; }
         if (typeof(TOther) == typeof(int)) { result = (TOther)(object)(int)ToInt64(value); return true; }
         result = default!;

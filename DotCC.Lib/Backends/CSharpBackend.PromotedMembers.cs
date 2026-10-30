@@ -20,7 +20,7 @@ internal sealed partial class CSharpBackend
             foreach (var field in aggregate.Fields)
             {
                 if (field.Name.Length == 0) continue;
-                var access = path + "." + EmitHelpers.Id(field.Name);
+                var access = path + "." + FieldTarget(field);
                 if (field.IsAnonymousAggregate)
                 {
                     if (field.Type.Unqualified is not CType.Named nested || !_aggregateDefinitions.TryGetValue(nested.Name, out var definition))
@@ -48,11 +48,11 @@ internal sealed partial class CSharpBackend
                     && !ContainsQualifiers(type, TypeQual.Const | TypeQual.Volatile | TypeQual.Atomic))
                 {
                     output.Append("    [global::System.Diagnostics.CodeAnalysis.UnscopedRef]\n")
-                        .Append("    public ref ").Append(Cs(field.Type)).Append(' ').Append(EmitHelpers.Id(field.Name))
+                        .Append("    public ref ").Append(Cs(field.Type)).Append(' ').Append(FieldTarget(field))
                         .Append(" => ref ").Append(access).Append(";\n");
                     continue;
                 }
-                output.Append("    public ").Append(Cs(field.Type)).Append(' ').Append(EmitHelpers.Id(field.Name))
+                output.Append("    public ").Append(Cs(field.Type)).Append(' ').Append(FieldTarget(field))
                     .Append("\n    {\n        get => ").Append(access).Append(";\n");
                 if (!type.IsConst && !ContainsConst(field.Type))
                     output.Append("        set => ").Append(access).Append(" = value;\n");
@@ -62,7 +62,7 @@ internal sealed partial class CSharpBackend
 
         foreach (var field in owner.Fields)
             if (field.IsAnonymousAggregate && field.Type.Unqualified is CType.Named nested && _aggregateDefinitions.TryGetValue(nested.Name, out var definition))
-                Visit(definition, "this." + EmitHelpers.Id(field.Name), field.Type.Quals);
+                Visit(definition, "this." + FieldTarget(field), field.Type.Quals);
     }
 
     private void AppendQualifiedPromotedProperty(StringBuilder output, StructTypeDef owner, StructField field, CType type, string access)
@@ -72,7 +72,7 @@ internal sealed partial class CSharpBackend
         var helper = type.IsAtomic ? "Atomic" : "global::System.Threading.Volatile";
         var read = helper + (type.IsAtomic ? ".Load" : ".Read") + "(ref " + location + ")";
         var write = helper + (type.IsAtomic ? ".Store" : ".Write") + "(ref " + location + ", (" + storageType + ")value)";
-        output.Append("    public ").Append(Cs(type)).Append(' ').Append(EmitHelpers.Id(field.Name)).Append("\n    {\n")
+        output.Append("    public ").Append(Cs(type)).Append(' ').Append(FieldTarget(field)).Append("\n    {\n")
             .Append("        get { fixed (").Append(Cs(new CType.Named(owner.Name))).Append("* __self = &this) { return (").Append(Cs(type)).Append(')').Append(read).Append("; } }\n");
         if (!type.IsConst)
             output.Append("        set { fixed (").Append(Cs(new CType.Named(owner.Name))).Append("* __self = &this) { ").Append(write).Append("; } }\n");

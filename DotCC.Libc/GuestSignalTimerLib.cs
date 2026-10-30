@@ -9,23 +9,23 @@ public static unsafe partial class Libc
     // DotCC's guest LP64 records, NOT the host libc sigaction ABI. Keep in
     // agreement with include/signal.h and include/sys/time.h.
     [StructLayout(LayoutKind.Sequential)]
-    public struct PgliteSignalAction
+    public struct GuestSignalAction
     {
         public nint Handler, Sigaction;
         public ulong Mask;
         public int Flags;
     }
     [StructLayout(LayoutKind.Sequential)]
-    public struct PgliteIntervalTimer
+    public struct GuestIntervalTimer
     {
         public long IntervalSeconds, IntervalMicroseconds, ValueSeconds, ValueMicroseconds;
     }
 
-    internal sealed class PgliteSignalState
+    internal sealed class GuestSignalState
     {
         internal readonly object Gate = new();
         internal readonly int Thread = Environment.CurrentManagedThreadId;
-        internal readonly PgliteSignalAction[] Actions = new PgliteSignalAction[64];
+        internal readonly GuestSignalAction[] Actions = new GuestSignalAction[64];
         internal ulong Mask, Pending;
         internal long Due, Interval;
         internal bool Stopped, Delivering;
@@ -33,30 +33,30 @@ public static unsafe partial class Libc
 
     public sealed partial class RuntimeContext
     {
-        internal PgliteSignalState? PgliteSignals;
+        internal GuestSignalState? GuestSignals;
 
         /// <summary>Opt into single-thread cooperative guest signals. No OS
         /// signal disposition is changed. The host must pump at safe points;
         /// this cannot interrupt a blocking or long-running translated query.</summary>
-        public void EnablePgliteSignals()
+        public void EnableGuestSignals()
         {
             if (Current != this || Termination != null)
                 throw new InvalidOperationException("A live bound owner is required.");
-            if (PgliteSignals == null) PgliteSignals = new PgliteSignalState();
-            if (PgliteSignals.Thread != Environment.CurrentManagedThreadId || PgliteSignals.Stopped)
-                throw new InvalidOperationException("PGlite signals have one execution thread and lifetime.");
+            if (GuestSignals == null) GuestSignals = new GuestSignalState();
+            if (GuestSignals.Thread != Environment.CurrentManagedThreadId || GuestSignals.Stopped)
+                throw new InvalidOperationException("Guest signals have one execution thread and lifetime.");
         }
 
-        public void PumpPgliteSignals()
+        public void PumpGuestSignals()
         {
-            if (Current != this || !TryPgliteSignals(out var state))
-                throw new InvalidOperationException("PGlite signal delivery requires its live owning thread.");
-            PumpPgliteSignalsCore(this, state);
+            if (Current != this || !TryGuestSignals(out var state))
+                throw new InvalidOperationException("Guest signal delivery requires its live owning thread.");
+            PumpGuestSignalsCore(this, state);
         }
 
-        internal void StopPgliteSignals()
+        internal void StopGuestSignals()
         {
-            var state = PgliteSignals;
+            var state = GuestSignals;
             if (state == null) return;
             lock (state.Gate)
             {
@@ -67,17 +67,17 @@ public static unsafe partial class Libc
         }
     }
 
-    private static bool TryPgliteSignals(out PgliteSignalState state)
+    private static bool TryGuestSignals(out GuestSignalState state)
     {
-        state = RuntimeContext.Current?.PgliteSignals!;
+        state = RuntimeContext.Current?.GuestSignals!;
         if (state == null) { errno = ENOTSUP; return false; }
         if (state.Stopped || state.Thread != Environment.CurrentManagedThreadId)
         { errno = EINVAL; return false; }
         return true;
     }
 
-    private const ulong UnmaskablePgliteSignals = (1UL << 8) | (1UL << 18);
-    private static bool ValidPgliteSignal(int sig) => sig >= 1 && sig <= 64 && sig != 9 && sig != 19;
+    private const ulong UnmaskableGuestSignals = (1UL << 8) | (1UL << 18);
+    private static bool ValidGuestSignal(int sig) => sig >= 1 && sig <= 64 && sig != 9 && sig != 19;
 
     /// <summary>Lexical sigsetjmp activation state. Keep this in the emitted
     /// activation, never inside C's numeric jmp_buf or a process-wide table.</summary>
@@ -96,7 +96,7 @@ public static unsafe partial class Libc
     public static GuestSignalMaskSnapshot CaptureGuestSignalMask(int saveMask)
     {
         if (saveMask == 0) return default;
-        if (!TryPgliteSignals(out var state))
+        if (!TryGuestSignals(out var state))
             throw new NotSupportedException("Signal-mask capture requires an opted-in live owner thread.");
         lock (state.Gate)
         {
@@ -111,7 +111,7 @@ public static unsafe partial class Libc
     {
         if (snapshot.Owner == null) return;
         if (RuntimeContext.Current != snapshot.Owner || snapshot.Thread != Environment.CurrentManagedThreadId ||
-            !TryPgliteSignals(out var state))
+            !TryGuestSignals(out var state))
             throw new InvalidOperationException("A saved signal mask belongs to its capturing owner thread.");
         lock (state.Gate)
         {
@@ -158,11 +158,11 @@ public static unsafe partial class Libc
     public static SignalJumpActivation ArmSignalJumpBuffer(ulong* buffer, int saveMask)
         => new(buffer, saveMask);
 
-    private static int PgliteSigaction(int sig, void* action, void* previous)
+    private static int GuestSigaction(int sig, void* action, void* previous)
     {
-        if (!ValidPgliteSignal(sig)) { errno = EINVAL; return -1; }
-        if (!TryPgliteSignals(out var state)) return -1;
-        var requested = action == null ? default : *(PgliteSignalAction*)action;
+        if (!ValidGuestSignal(sig)) { errno = EINVAL; return -1; }
+        if (!TryGuestSignals(out var state)) return -1;
+        var requested = action == null ? default : *(GuestSignalAction*)action;
         // SA_RESTART is meaningful only for actual interruptible syscalls. The
         // cooperative service has none. SA_SIGINFO has a different callback ABI.
         const uint supported = 0x10000000U | 0x80000000U;
@@ -171,10 +171,10 @@ public static unsafe partial class Libc
         lock (state.Gate)
         {
             if (state.Stopped) { errno = EINVAL; return -1; }
-            if (previous != null) *(PgliteSignalAction*)previous = state.Actions[sig - 1];
+            if (previous != null) *(GuestSignalAction*)previous = state.Actions[sig - 1];
             if (action != null)
             {
-                requested.Mask &= ~UnmaskablePgliteSignals;
+                requested.Mask &= ~UnmaskableGuestSignals;
                 state.Actions[sig - 1] = requested;
                 if (requested.Handler == 1) state.Pending &= ~(1UL << (sig - 1));
             }
@@ -182,9 +182,9 @@ public static unsafe partial class Libc
         return 0;
     }
 
-    private static int PgliteSigprocmask(int how, ulong* set, ulong* previous)
+    private static int GuestSigprocmask(int how, ulong* set, ulong* previous)
     {
-        if (!TryPgliteSignals(out var state)) return -1;
+        if (!TryGuestSignals(out var state)) return -1;
         ulong requested = set == null ? 0 : *set;
         if (set != null && (how < 0 || how > 2)) { errno = EINVAL; return -1; }
         lock (state.Gate)
@@ -192,16 +192,16 @@ public static unsafe partial class Libc
             if (state.Stopped) { errno = EINVAL; return -1; }
             if (previous != null) *previous = state.Mask;
             if (set != null)
-                state.Mask = (how == 0 ? state.Mask | requested : how == 1 ? state.Mask & ~requested : requested) & ~UnmaskablePgliteSignals;
+                state.Mask = (how == 0 ? state.Mask | requested : how == 1 ? state.Mask & ~requested : requested) & ~UnmaskableGuestSignals;
         }
-        if (set != null) PumpPgliteSignalsCore(RuntimeContext.Current!, state);
+        if (set != null) PumpGuestSignalsCore(RuntimeContext.Current!, state);
         return 0;
     }
 
-    private static int QueuePgliteSignal(int sig)
+    private static int QueueGuestSignal(int sig)
     {
-        if (!ValidPgliteSignal(sig)) { errno = EINVAL; return -1; }
-        if (!TryPgliteSignals(out var state)) return -1;
+        if (!ValidGuestSignal(sig)) { errno = EINVAL; return -1; }
+        if (!TryGuestSignals(out var state)) return -1;
         lock (state.Gate)
         {
             if (state.Stopped) { errno = EINVAL; return -1; }
@@ -209,7 +209,7 @@ public static unsafe partial class Libc
             { errno = ENOTSUP; return -1; }
             if (state.Actions[sig - 1].Handler != 1) state.Pending |= 1UL << (sig - 1);
         }
-        PumpPgliteSignalsCore(RuntimeContext.Current!, state);
+        PumpGuestSignalsCore(RuntimeContext.Current!, state);
         return 0;
     }
 
@@ -217,12 +217,12 @@ public static unsafe partial class Libc
     /// the owned real-time timer without consuming signals or running callbacks.</summary>
     public static int sigpending(ulong* pending)
     {
-        if (!TryPgliteSignals(out var state)) return -1;
+        if (!TryGuestSignals(out var state)) return -1;
         if (pending == null) { errno = EFAULT; return -1; }
         lock (state.Gate)
         {
             if (state.Stopped) { errno = EINVAL; return -1; }
-            ObservePgliteTimer(state, global::System.Diagnostics.Stopwatch.GetTimestamp());
+            ObserveGuestTimer(state, global::System.Diagnostics.Stopwatch.GetTimestamp());
             *pending = state.Pending & state.Mask;
         }
         return 0;
@@ -238,10 +238,10 @@ public static unsafe partial class Libc
         int savedError = errno;
         try
         {
-            if (!TryPgliteSignals(out var state)) return errno;
+            if (!TryGuestSignals(out var state)) return errno;
             if (set == null || signal == null) return EFAULT;
             ulong requested = *set;
-            if (requested == 0 || (requested & UnmaskablePgliteSignals) != 0) return EINVAL;
+            if (requested == 0 || (requested & UnmaskableGuestSignals) != 0) return EINVAL;
             const ulong alarm = 1UL << 13;
             while (true)
             {
@@ -251,7 +251,7 @@ public static unsafe partial class Libc
                     if (state.Stopped) return EINVAL;
                     if ((requested & ~state.Mask) != 0) return EINVAL;
                     long now = global::System.Diagnostics.Stopwatch.GetTimestamp();
-                    ObservePgliteTimer(state, now);
+                    ObserveGuestTimer(state, now);
                     ulong ready = state.Pending & requested;
                     if (ready != 0)
                     {
@@ -274,7 +274,7 @@ public static unsafe partial class Libc
         finally { errno = savedError; }
     }
 
-    private static void ObservePgliteTimer(PgliteSignalState state, long now)
+    private static void ObserveGuestTimer(GuestSignalState state, long now)
     {
         if (state.Due == 0 || now < state.Due) return;
         if (state.Actions[13].Handler != 1) state.Pending |= 1UL << 13;
@@ -286,7 +286,7 @@ public static unsafe partial class Libc
         }
     }
 
-    private static void PumpPgliteSignalsCore(RuntimeContext owner, PgliteSignalState state)
+    private static void PumpGuestSignalsCore(RuntimeContext owner, GuestSignalState state)
     {
         if (state.Delivering) return;
         state.Delivering = true;
@@ -295,13 +295,13 @@ public static unsafe partial class Libc
         {
             while (true)
             {
-                PgliteSignalAction action;
+                GuestSignalAction action;
                 ulong savedMask;
                 int sig;
                 lock (state.Gate)
                 {
                     if (state.Stopped) return;
-                    ObservePgliteTimer(state, global::System.Diagnostics.Stopwatch.GetTimestamp());
+                    ObserveGuestTimer(state, global::System.Diagnostics.Stopwatch.GetTimestamp());
                     ulong ready = state.Pending & ~state.Mask;
                     if (ready == 0) return;
                     sig = global::System.Numerics.BitOperations.TrailingZeroCount(ready) + 1;
@@ -318,7 +318,7 @@ public static unsafe partial class Libc
                     if (action.Handler == 1) continue;
                     if (action.Handler == 0)
                     {
-                        // Linux default-ignore dispositions used by PostgreSQL.
+                        // Linux default-ignore dispositions.
                         if (sig == 17 || sig == 18 || sig == 23 || sig == 28) continue;
                         // Owner-local terminal delivery; never signal the CLR host.
                         throw new RuntimeTerminationException(owner, owner.RecordTermination(
@@ -340,7 +340,7 @@ public static unsafe partial class Libc
         finally { state.Delivering = false; errno = savedError; }
     }
 
-    private static bool PgliteTimerTicks(long seconds, long microseconds, out long ticks)
+    private static bool GuestTimerTicks(long seconds, long microseconds, out long ticks)
     {
         ticks = 0;
         if (seconds < 0 || microseconds < 0 || microseconds >= 1000000) return false;
@@ -355,25 +355,25 @@ public static unsafe partial class Libc
 
     /// <summary>Backing for setitimer(ITIMER_REAL), using the guest LP64 ABI.
     /// Delivery occurs on the owning thread's next explicit signal pump.</summary>
-    public static int PgliteSetitimer(int which, void* value, void* previous)
+    public static int GuestSetitimer(int which, void* value, void* previous)
     {
         if (which != 0) { errno = ENOTSUP; return -1; }
         if (value == null) { errno = EFAULT; return -1; }
-        if (!TryPgliteSignals(out var state)) return -1;
-        var requested = *(PgliteIntervalTimer*)value;
-        if (!PgliteTimerTicks(requested.IntervalSeconds, requested.IntervalMicroseconds, out long interval) ||
-            !PgliteTimerTicks(requested.ValueSeconds, requested.ValueMicroseconds, out long delay))
+        if (!TryGuestSignals(out var state)) return -1;
+        var requested = *(GuestIntervalTimer*)value;
+        if (!GuestTimerTicks(requested.IntervalSeconds, requested.IntervalMicroseconds, out long interval) ||
+            !GuestTimerTicks(requested.ValueSeconds, requested.ValueMicroseconds, out long delay))
         { errno = EINVAL; return -1; }
         lock (state.Gate)
         {
             if (state.Stopped) { errno = EINVAL; return -1; }
             long now = global::System.Diagnostics.Stopwatch.GetTimestamp();
             if (delay > long.MaxValue - now) { errno = EINVAL; return -1; }
-            ObservePgliteTimer(state, now);
+            ObserveGuestTimer(state, now);
             if (previous != null)
             {
                 long remaining = state.Due == 0 ? 0 : Math.Max(0, state.Due - now);
-                *(PgliteIntervalTimer*)previous = PgliteTimerValue(state.Interval, remaining);
+                *(GuestIntervalTimer*)previous = GuestTimerValue(state.Interval, remaining);
             }
             state.Interval = interval;
             state.Due = delay == 0 ? 0 : now + delay;
@@ -381,10 +381,10 @@ public static unsafe partial class Libc
         return 0;
     }
 
-    private static uint PgliteAlarm(uint seconds)
+    private static uint GuestAlarm(uint seconds)
     {
-        PgliteIntervalTimer requested = new() { ValueSeconds = seconds }, previous = default;
-        if (PgliteSetitimer(0, &requested, &previous) != 0) return uint.MaxValue;
+        GuestIntervalTimer requested = new() { ValueSeconds = seconds }, previous = default;
+        if (GuestSetitimer(0, &requested, &previous) != 0) return uint.MaxValue;
         long secondsLeft = previous.ValueSeconds + (previous.ValueMicroseconds == 0 ? 0 : 1);
         return (uint)Math.Min(secondsLeft, uint.MaxValue);
     }
@@ -393,23 +393,23 @@ public static unsafe partial class Libc
     {
         if (which != 0) { errno = ENOTSUP; return -1; }
         if (value == null) { errno = EFAULT; return -1; }
-        if (!TryPgliteSignals(out var state)) return -1;
+        if (!TryGuestSignals(out var state)) return -1;
         lock (state.Gate)
         {
             if (state.Stopped) { errno = EINVAL; return -1; }
             long now = global::System.Diagnostics.Stopwatch.GetTimestamp();
-            ObservePgliteTimer(state, now);
+            ObserveGuestTimer(state, now);
             long remaining = state.Due == 0 ? 0 : Math.Max(0, state.Due - now);
-            *(PgliteIntervalTimer*)value = PgliteTimerValue(state.Interval, remaining);
+            *(GuestIntervalTimer*)value = GuestTimerValue(state.Interval, remaining);
         }
         return 0;
     }
 
-    private static PgliteIntervalTimer PgliteTimerValue(long interval, long remaining)
+    private static GuestIntervalTimer GuestTimerValue(long interval, long remaining)
     {
         long micros = (long)decimal.Ceiling((decimal)remaining * 1000000 / global::System.Diagnostics.Stopwatch.Frequency);
         long intervalMicros = (long)((decimal)interval * 1000000 / global::System.Diagnostics.Stopwatch.Frequency);
-        return new PgliteIntervalTimer
+        return new GuestIntervalTimer
         {
             IntervalSeconds = intervalMicros / 1000000,
             IntervalMicroseconds = intervalMicros % 1000000,
@@ -418,5 +418,5 @@ public static unsafe partial class Libc
         };
     }
 
-    public static int pthread_sigmask(int how, ulong* set, ulong* previous) => PgliteSigprocmask(how, set, previous);
+    public static int pthread_sigmask(int how, ulong* set, ulong* previous) => GuestSigprocmask(how, set, previous);
 }

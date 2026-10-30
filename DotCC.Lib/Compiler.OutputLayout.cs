@@ -46,7 +46,9 @@ public static partial class Compiler
         string.Concat(globals.Select(global => storage.Rewrite(literals.Rewrite(global.Field)))),
         StaticStorageInitializers.Order(globals.Select(global => storage.Rewrite(literals.Rewrite(global.Initializer)))),
         string.Concat(globals.Select(global => storage.Rewrite(literals.Rewrite(global.ThreadField)))),
-        string.Concat(globals.Select(global => storage.Rewrite(literals.Rewrite(global.StaticMembers)))),
+        // Special storage can initialize while eager pointers are still being
+        // bound. Its allocation recipes must acquire addresses directly.
+        string.Concat(globals.Select(global => storage.Rewrite(literals.Rewrite(global.StaticMembers), eagerAddresses: false))),
         storage.GlobalName, storage.ThreadName, storage.ThreadBackingName);
 
     // The object contract stores one independently keyed cache property per function.
@@ -59,6 +61,9 @@ public static partial class Compiler
         var tags = new StringBuilder();
         foreach (var (key, text) in declarations)
         {
+            // Older object fragments may carry the retired lazy-cache helper.
+            if (key == "__DotccGlobalAddressCache"
+                && text.TrimStart().StartsWith("internal unsafe ref struct __DotccGlobalAddressCache", StringComparison.Ordinal)) continue;
             if (key.StartsWith(MacroConstantPrefix, StringComparison.Ordinal)
                 || key.StartsWith(OwnerInitializerPrefix, StringComparison.Ordinal)
                 || key.StartsWith(LiteralPool.TypeKeyPrefix, StringComparison.Ordinal)) continue;

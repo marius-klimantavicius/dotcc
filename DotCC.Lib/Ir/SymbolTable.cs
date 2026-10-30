@@ -215,6 +215,52 @@ public sealed class SymbolTable
     /// <c>i</c>).</summary>
     public void BeginFunction() => _usedNames.Clear();
 
+    /// <summary>How many scopes are open (the global one included), for <see cref="TruncateScopes"/>.</summary>
+    internal int Depth => _scopes.Count;
+
+    /// <summary>Close every scope opened past <paramref name="depth"/> (never the global one): what a body abandoned
+    /// part-way left open.</summary>
+    internal void TruncateScopes(int depth)
+    {
+        while (_scopes.Count > System.Math.Max(depth, 1)) { _scopes.RemoveAt(_scopes.Count - 1); }
+    }
+
+    /// <summary>Begin a function body: reset the per-function used-name set so
+    /// renames are scoped to the function (two functions can each have a local
+    /// <c>i</c>).</summary>
+
+
+    /// <summary>Treat <paramref name="name"/> as already used in the current function, so a block local declared
+    /// with it is uniquified: an identifier the body must still reach by that name (a function of another unit it
+    /// calls, which a same-named C# local would shadow for the whole block).</summary>
+    internal void Reserve(string name) => _usedNames.Add(name);
+
+    /// <summary>A function's lowering, set aside while another body lowers in the middle of it: its
+    /// block scopes (everything above file scope) and its used names.</summary>
+    internal sealed record SuspendedFunction(List<Dictionary<string, Symbol>> Scopes, string[] UsedNames);
+
+    /// <summary>Set the current function aside so a nested body lowers against file scope only, with its
+    /// own used names (the Zig comptime engine lowers a callee on demand). Undone by
+    /// <see cref="ResumeFunction"/>.</summary>
+    internal SuspendedFunction SuspendFunction()
+    {
+        var scopes = _scopes.GetRange(1, _scopes.Count - 1);
+        _scopes.RemoveRange(1, _scopes.Count - 1);
+        var used = _usedNames.ToArray();
+        _usedNames.Clear();
+        return new SuspendedFunction(scopes, used);
+    }
+
+    /// <summary>Put back a function <see cref="SuspendFunction"/> set aside, dropping whatever the nested
+    /// body left above file scope.</summary>
+    internal void ResumeFunction(SuspendedFunction saved)
+    {
+        _scopes.RemoveRange(1, _scopes.Count - 1);
+        _scopes.AddRange(saved.Scopes);
+        _usedNames.Clear();
+        _usedNames.UnionWith(saved.UsedNames);
+    }
+
     public bool AtFileScope => _scopes.Count == 1;
 
     /// <summary>Declare a symbol in the innermost scope, computing its

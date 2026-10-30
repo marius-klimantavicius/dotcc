@@ -136,6 +136,11 @@ internal sealed partial class CSharpBackend
     private void EmitStaticAggregateStores(StringBuilder output, string destination, CType type, CExpr value,
         bool readableRow = false, bool zeroed = true)
     {
+        if (ZigStorage(type) is not null)
+        {
+            output.Append("        ").Append(ZigZero(type) ? "_" : destination).Append(" = ").Append(Coerced(value, type)).Append(";\n");
+            return;
+        }
         if (value is StructInit aggregate)
         {
             if (readableRow && TryReadableRecord(aggregate, out string row))
@@ -150,7 +155,7 @@ internal sealed partial class CSharpBackend
             {
                 bool untouched = zeroed && (!union || assigned.Count == 0) && !assigned.Contains(member.Name);
                 assigned.Add(member.Name);
-                EmitStaticAggregateStores(output, destination + "." + DotCC.EmitHelpers.Id(member.Name),
+                EmitStaticAggregateStores(output, destination + "." + FieldTarget(aggregate.Type, member.Name),
                     member.FieldType, member.Value, zeroed: untouched);
             }
             return;
@@ -220,7 +225,7 @@ internal sealed partial class CSharpBackend
                 if (!ReadableRecordScalar(member.Value)) return false;
                 expression = ReadableRecordConversion(member.Value, member.FieldType);
             }
-            members.Add(EmitHelpers.Id(member.Name) + " = " + expression);
+            members.Add(FieldTarget(value.Type, member.Name) + " = " + expression);
         }
         text = "new " + Cs(value.Type) + " { " + string.Join(", ", members) + " }";
         return text.Length <= 4096;
@@ -253,7 +258,7 @@ internal sealed partial class CSharpBackend
                 if (!ReadableRecordScalar(member.Value)) return false;
                 expression = ReadableRecordConversion(member.Value, member.FieldType);
             }
-            result.Append(pad).Append("    ").Append(EmitHelpers.Id(member.Name)).Append(" = ").Append(expression).Append(",\n");
+            result.Append(pad).Append("    ").Append(FieldTarget(value.Type, member.Name)).Append(" = ").Append(expression).Append(",\n");
         }
         text = result.Append(pad).Append('}').ToString();
         return text.Length <= 4096;

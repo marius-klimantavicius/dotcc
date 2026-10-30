@@ -27,10 +27,12 @@ internal sealed partial class CSharpBackend
         {
             var type = (CType.Func)function.Type.Unqualified;
             if (type.IsNativeCallConv) throw new CompileException("native function addresses are unsupported with --instance-methods");
-            var parameters = type.Params.Select((p, i) =>
-                (VaListLifetimeValidator.IsCursorReference(p) ? "scoped " : "") + Cs(p) + " a" + i).ToList();
-            var arguments = type.Params.Select((p, i) =>
-                (VaListLifetimeValidator.IsCursorReference(p) ? "ref " : "") + "a" + i).ToList();
+            var parameters = type.Params.Select((p, i) => (Type: p, Index: i))
+                .Where(p => p.Type.Unqualified is not CType.VoidType).Select(p =>
+                (VaListLifetimeValidator.IsCursorReference(p.Type) ? "scoped " : "") + Cs(p.Type) + " a" + p.Index).ToList();
+            var arguments = type.Params.Select((p, i) => (Type: p, Index: i))
+                .Where(p => p.Type.Unqualified is not CType.VoidType).Select(p =>
+                (VaListLifetimeValidator.IsCursorReference(p.Type) ? "ref " : "") + "a" + p.Index).ToList();
             if (type.Variadic) { parameters.Add("global::System.ReadOnlySpan<VaArg> tail"); arguments.Add("tail"); }
             parameters.Insert(0, "DotCcFunctions instance");
             var target = InstanceReferences.Target + name;

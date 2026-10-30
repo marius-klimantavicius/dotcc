@@ -32,6 +32,35 @@ public sealed unsafe class PgliteLifecycleTests
         RuntimeLibc.exit(100);
     }
 
+    [Theory]
+    [InlineData(7)]
+    [InlineData(-1)]
+    [InlineData(int.MaxValue)]
+    public void Host_selects_yield_statuses_and_scope_copies_the_selection(int status)
+    {
+        using var owner = new RuntimeLibc.RuntimeContext();
+        using var binding = owner.Enter();
+        int[] statuses = [status];
+        using var scope = owner.InterceptExits(statuses);
+        statuses[0] = 99;
+        var yielded = Assert.Throws<RuntimeLibc.RuntimeYieldException>(() => RuntimeLibc.exit(status));
+        Assert.Equal(status, yielded.Status);
+        Assert.Same(owner, yielded.Owner);
+        Assert.Null(owner.Termination);
+        Assert.Equal(99, Assert.Throws<RuntimeLibc.RuntimeTerminationException>(() => RuntimeLibc.exit(99)).Termination.Status);
+    }
+
+    [Theory]
+    [InlineData(99)]
+    [InlineData(100)]
+    public void Empty_interception_scope_has_no_special_exit_statuses(int status)
+    {
+        using var owner = new RuntimeLibc.RuntimeContext();
+        using var binding = owner.Enter();
+        using var scope = owner.InterceptExits();
+        Assert.Equal(status, Assert.Throws<RuntimeLibc.RuntimeTerminationException>(() => RuntimeLibc.exit(status)).Termination.Status);
+    }
+
     [Fact]
     public void Repeated_yields_preserve_owner_and_true_exit_is_terminal()
     {
@@ -41,15 +70,15 @@ public sealed unsafe class PgliteLifecycleTests
         {
             for (int i = 0; i < 8; i++)
             {
-                using var scope = owner.InterceptPgliteExits();
+                using var scope = owner.InterceptExits(99, 100);
                 int status = i % 2 == 0 ? 99 : 100;
-                var error = Assert.Throws<RuntimeLibc.PgliteYieldException>(() => RuntimeLibc.exit(status));
+                var error = Assert.Throws<RuntimeLibc.RuntimeYieldException>(() => RuntimeLibc.exit(status));
                 Assert.Same(owner, error.Owner);
                 Assert.Equal(status, error.Status);
                 Assert.Null(owner.Termination);
                 Assert.False(owner.TerminationTask.IsCompleted);
             }
-            using (owner.InterceptPgliteExits())
+            using (owner.InterceptExits(99, 100))
             {
                 using (other.Enter())
                 {
@@ -58,7 +87,7 @@ public sealed unsafe class PgliteLifecycleTests
                 }
                 Assert.Null(owner.Termination);
                 Assert.Equal(23, Assert.Throws<RuntimeLibc.RuntimeTerminationException>(() => RuntimeLibc.exit(23)).Termination.Status);
-                Assert.Throws<InvalidOperationException>(() => owner.InterceptPgliteExits());
+                Assert.Throws<InvalidOperationException>(() => owner.InterceptExits(99, 100));
             }
         }
     }
@@ -72,7 +101,7 @@ public sealed unsafe class PgliteLifecycleTests
         using var binding = owner.Enter();
         if (immediate)
         {
-            using var scope = owner.InterceptPgliteExits();
+            using var scope = owner.InterceptExits(99, 100);
             Assert.Equal(RuntimeLibc.RuntimeTerminationKind.ImmediateExit,
                 Assert.Throws<RuntimeLibc.RuntimeTerminationException>(() => RuntimeLibc._Exit(99)).Termination.Kind);
         }
@@ -84,8 +113,8 @@ public sealed unsafe class PgliteLifecycleTests
     {
         using var owner = new RuntimeLibc.RuntimeContext();
         using var binding = owner.Enter();
-        var outer = owner.InterceptPgliteExits();
-        var inner = owner.InterceptPgliteExits();
+        var outer = owner.InterceptExits(99, 100);
+        var inner = owner.InterceptExits(99, 100);
         Assert.Throws<InvalidOperationException>(outer.Dispose);
         inner.Dispose();
         using (owner.Enter())
@@ -98,9 +127,9 @@ public sealed unsafe class PgliteLifecycleTests
     {
         using var owner = new RuntimeLibc.RuntimeContext();
         using var binding = owner.Enter();
-        owner.EnablePgliteSignals(); expectedOwner = owner; delivered = nested = 0;
-        RuntimeLibc.PgliteSignalAction action = new() { Handler = (nint)(delegate*<int, void>)&Handler, Mask = 1UL << 9 };
-        RuntimeLibc.PgliteSignalAction old = new() { Handler = 42, Sigaction = 42, Mask = 42, Flags = 42 };
+        owner.EnableGuestSignals(); expectedOwner = owner; delivered = nested = 0;
+        RuntimeLibc.GuestSignalAction action = new() { Handler = (nint)(delegate*<int, void>)&Handler, Mask = 1UL << 9 };
+        RuntimeLibc.GuestSignalAction old = new() { Handler = 42, Sigaction = 42, Mask = 42, Flags = 42 };
         Assert.Equal(0, RuntimeLibc.sigaction(14, &action, &old)); Assert.Equal(0, old.Handler); Assert.Equal(0UL, old.Mask);
         Assert.Equal(0, RuntimeLibc.sigaction(14, null, &old)); Assert.Equal(action.Handler, old.Handler); Assert.Equal(action.Mask, old.Mask);
         ulong block = 1UL << 13, previous = 99;
@@ -122,47 +151,47 @@ public sealed unsafe class PgliteLifecycleTests
         using var owner = new RuntimeLibc.RuntimeContext();
         using var other = new RuntimeLibc.RuntimeContext();
         using var binding = owner.Enter();
-        owner.EnablePgliteSignals(); expectedOwner = owner; delivered = 0;
-        RuntimeLibc.PgliteSignalAction action = new() { Handler = (nint)(delegate*<int, void>)&SimpleHandler };
+        owner.EnableGuestSignals(); expectedOwner = owner; delivered = 0;
+        RuntimeLibc.GuestSignalAction action = new() { Handler = (nint)(delegate*<int, void>)&SimpleHandler };
         Assert.Equal(0, RuntimeLibc.sigaction(14, &action, null));
-        RuntimeLibc.PgliteIntervalTimer timer = new() { ValueMicroseconds = 1000 }, zero = default, old = default;
-        Assert.Equal(0, RuntimeLibc.PgliteSetitimer(0, &timer, null));
+        RuntimeLibc.GuestIntervalTimer timer = new() { ValueMicroseconds = 1000 }, zero = default, old = default;
+        Assert.Equal(0, RuntimeLibc.GuestSetitimer(0, &timer, null));
         Thread.Sleep(15); Assert.Equal(0, delivered);
         using (other.Enter())
         {
-            other.EnablePgliteSignals(); other.PumpPgliteSignals();
+            other.EnableGuestSignals(); other.PumpGuestSignals();
             Assert.Equal(0, delivered);
         }
-        owner.PumpPgliteSignals(); Assert.Equal(1, delivered);
+        owner.PumpGuestSignals(); Assert.Equal(1, delivered);
         timer.ValueSeconds = 1;
-        Assert.Equal(0, RuntimeLibc.PgliteSetitimer(0, &timer, null));
-        Assert.Equal(0, RuntimeLibc.PgliteSetitimer(0, &zero, &old));
+        Assert.Equal(0, RuntimeLibc.GuestSetitimer(0, &timer, null));
+        Assert.Equal(0, RuntimeLibc.GuestSetitimer(0, &zero, &old));
         Assert.True(old.ValueSeconds > 0 || old.ValueMicroseconds > 0);
-        Thread.Sleep(15); owner.PumpPgliteSignals(); Assert.Equal(1, delivered);
+        Thread.Sleep(15); owner.PumpGuestSignals(); Assert.Equal(1, delivered);
         timer.ValueSeconds = 0; timer.IntervalMicroseconds = 1000;
-        Assert.Equal(0, RuntimeLibc.PgliteSetitimer(0, &timer, null));
-        Thread.Sleep(15); owner.PumpPgliteSignals(); Assert.True(delivered >= 2);
+        Assert.Equal(0, RuntimeLibc.GuestSetitimer(0, &timer, null));
+        Thread.Sleep(15); owner.PumpGuestSignals(); Assert.True(delivered >= 2);
         Assert.Throws<RuntimeLibc.RuntimeTerminationException>(() => RuntimeLibc.exit(0));
-        Assert.True(owner.PgliteSignals!.Stopped);
-        Assert.Equal(0L, owner.PgliteSignals.Due); Assert.Equal(0UL, owner.PgliteSignals.Pending);
-        Assert.Equal(0, owner.PgliteSignals.Actions[13].Handler);
-        Assert.Throws<InvalidOperationException>(owner.PumpPgliteSignals);
+        Assert.True(owner.GuestSignals!.Stopped);
+        Assert.Equal(0L, owner.GuestSignals.Due); Assert.Equal(0UL, owner.GuestSignals.Pending);
+        Assert.Equal(0, owner.GuestSignals.Actions[13].Handler);
+        Assert.Throws<InvalidOperationException>(owner.PumpGuestSignals);
     }
 
     [Fact]
     public void Timer_rejects_invalid_requests_without_replacing_existing_timer()
     {
         using var owner = new RuntimeLibc.RuntimeContext();
-        using var binding = owner.Enter(); owner.EnablePgliteSignals();
-        RuntimeLibc.PgliteIntervalTimer timer = new() { ValueSeconds = 60 };
-        Assert.Equal(0, RuntimeLibc.PgliteSetitimer(0, &timer, null));
-        long due = owner.PgliteSignals!.Due;
+        using var binding = owner.Enter(); owner.EnableGuestSignals();
+        RuntimeLibc.GuestIntervalTimer timer = new() { ValueSeconds = 60 };
+        Assert.Equal(0, RuntimeLibc.GuestSetitimer(0, &timer, null));
+        long due = owner.GuestSignals!.Due;
         timer.ValueMicroseconds = 1000000;
-        Assert.Equal(-1, RuntimeLibc.PgliteSetitimer(0, &timer, null)); Assert.Equal(RuntimeLibc.EINVAL, RuntimeLibc.errno);
-        Assert.Equal(due, owner.PgliteSignals.Due);
-        Assert.Equal(-1, RuntimeLibc.PgliteSetitimer(1, &timer, null)); Assert.Equal(RuntimeLibc.ENOTSUP, RuntimeLibc.errno);
+        Assert.Equal(-1, RuntimeLibc.GuestSetitimer(0, &timer, null)); Assert.Equal(RuntimeLibc.EINVAL, RuntimeLibc.errno);
+        Assert.Equal(due, owner.GuestSignals.Due);
+        Assert.Equal(-1, RuntimeLibc.GuestSetitimer(1, &timer, null)); Assert.Equal(RuntimeLibc.ENOTSUP, RuntimeLibc.errno);
         Exception? wrongThread = null;
-        var thread = new Thread(() => { using var scope = owner.Enter(); wrongThread = Record.Exception(owner.PumpPgliteSignals); });
+        var thread = new Thread(() => { using var scope = owner.Enter(); wrongThread = Record.Exception(owner.PumpGuestSignals); });
         thread.Start(); thread.Join(); Assert.IsType<InvalidOperationException>(wrongThread);
     }
 
@@ -170,13 +199,13 @@ public sealed unsafe class PgliteLifecycleTests
     public void Timer_query_and_aliasing_preserve_interval_and_mask_query_works()
     {
         using var owner = new RuntimeLibc.RuntimeContext();
-        using var binding = owner.Enter(); owner.EnablePgliteSignals();
-        RuntimeLibc.PgliteIntervalTimer value = new() { ValueSeconds = 60, IntervalSeconds = 2, IntervalMicroseconds = 3 };
-        Assert.Equal(0, RuntimeLibc.PgliteSetitimer(0, &value, null));
+        using var binding = owner.Enter(); owner.EnableGuestSignals();
+        RuntimeLibc.GuestIntervalTimer value = new() { ValueSeconds = 60, IntervalSeconds = 2, IntervalMicroseconds = 3 };
+        Assert.Equal(0, RuntimeLibc.GuestSetitimer(0, &value, null));
         Assert.Equal(0, RuntimeLibc.getitimer(0, &value));
         Assert.Equal(2, value.IntervalSeconds); Assert.Equal(3, value.IntervalMicroseconds);
         Assert.InRange(value.ValueSeconds, 59, 60); Assert.InRange(value.ValueMicroseconds, 0, 999999);
-        value = default; Assert.Equal(0, RuntimeLibc.PgliteSetitimer(0, &value, &value));
+        value = default; Assert.Equal(0, RuntimeLibc.GuestSetitimer(0, &value, &value));
         Assert.Equal(2, value.IntervalSeconds);
         Assert.Equal(0, RuntimeLibc.getitimer(0, &value)); Assert.Equal(0, value.ValueSeconds);
         ulong mask = ulong.MaxValue;
@@ -189,12 +218,12 @@ public sealed unsafe class PgliteLifecycleTests
     public void Handler_unwind_restores_owner_mask_and_errno_without_terminating()
     {
         using var owner = new RuntimeLibc.RuntimeContext();
-        using var binding = owner.Enter(); owner.EnablePgliteSignals();
-        RuntimeLibc.PgliteSignalAction action = new() { Handler = (nint)(delegate*<int, void>)&YieldingHandler, Mask = 1UL << 9 };
+        using var binding = owner.Enter(); owner.EnableGuestSignals();
+        RuntimeLibc.GuestSignalAction action = new() { Handler = (nint)(delegate*<int, void>)&YieldingHandler, Mask = 1UL << 9 };
         Assert.Equal(0, RuntimeLibc.sigaction(14, &action, null));
         RuntimeLibc.errno = 73;
-        using (owner.InterceptPgliteExits())
-            Assert.Equal(100, Assert.Throws<RuntimeLibc.PgliteYieldException>(() => RuntimeLibc.raise(14)).Status);
+        using (owner.InterceptExits(99, 100))
+            Assert.Equal(100, Assert.Throws<RuntimeLibc.RuntimeYieldException>(() => RuntimeLibc.raise(14)).Status);
         Assert.Null(owner.Termination); Assert.Equal(73, RuntimeLibc.errno);
         ulong mask = ulong.MaxValue;
         Assert.Equal(0, RuntimeLibc.sigprocmask(2, null, &mask)); Assert.Equal(0UL, mask);
@@ -205,8 +234,8 @@ public sealed unsafe class PgliteLifecycleTests
     {
         using var owner = new RuntimeLibc.RuntimeContext();
         using var other = new RuntimeLibc.RuntimeContext();
-        using var binding = owner.Enter(); owner.EnablePgliteSignals(); expectedOwner = owner; delivered = 0;
-        RuntimeLibc.PgliteSignalAction action = new()
+        using var binding = owner.Enter(); owner.EnableGuestSignals(); expectedOwner = owner; delivered = 0;
+        RuntimeLibc.GuestSignalAction action = new()
         { Handler = (nint)(delegate*<int, void>)&SimpleHandler, Flags = unchecked((int)0x80000000U) };
         Assert.Equal(0, RuntimeLibc.sigaction(14, &action, null));
         Assert.Equal(0, RuntimeLibc.kill(RuntimeLibc.getpid(), 14)); Assert.Equal(1, delivered);
@@ -222,16 +251,16 @@ public sealed unsafe class PgliteLifecycleTests
         using (owner.Enter())
         {
             Assert.Equal(-1, RuntimeLibc.sigaction(14, null, null)); Assert.Equal(RuntimeLibc.ENOTSUP, RuntimeLibc.errno);
-            owner.EnablePgliteSignals();
-            RuntimeLibc.PgliteIntervalTimer timer = new() { ValueSeconds = 60 };
-            Assert.Equal(0, RuntimeLibc.PgliteSetitimer(0, &timer, null));
+            owner.EnableGuestSignals();
+            RuntimeLibc.GuestIntervalTimer timer = new() { ValueSeconds = 60 };
+            Assert.Equal(0, RuntimeLibc.GuestSetitimer(0, &timer, null));
             byte* localeName = stackalloc byte[] { (byte)'C', 0 };
             Assert.NotEqual((nint)0, (nint)RuntimeLibc.newlocale(1, localeName, null));
             Assert.Single(owner.PosixLocales);
             Assert.Equal(-1, RuntimeLibc.sigemptyset(null));
             Assert.Equal(-1, RuntimeLibc.sigfillset(null));
         }
-        owner.Dispose(); Assert.True(owner.PgliteSignals!.Stopped); Assert.Equal(0L, owner.PgliteSignals.Due);
+        owner.Dispose(); Assert.True(owner.GuestSignals!.Stopped); Assert.Equal(0L, owner.GuestSignals.Due);
         Assert.Empty(owner.PosixLocales);
     }
 
@@ -240,8 +269,8 @@ public sealed unsafe class PgliteLifecycleTests
     {
         using var owner = new RuntimeLibc.RuntimeContext();
         using var other = new RuntimeLibc.RuntimeContext();
-        using var binding = owner.Enter(); owner.EnablePgliteSignals(); expectedOwner = owner; delivered = 0;
-        RuntimeLibc.PgliteSignalAction action = new() { Handler = (nint)(delegate*<int, void>)&SimpleHandler };
+        using var binding = owner.Enter(); owner.EnableGuestSignals(); expectedOwner = owner; delivered = 0;
+        RuntimeLibc.GuestSignalAction action = new() { Handler = (nint)(delegate*<int, void>)&SimpleHandler };
         Assert.Equal(0, RuntimeLibc.sigaction(14, &action, null));
         var saved = RuntimeLibc.CaptureGuestSignalMask(1);
         var unsaved = RuntimeLibc.CaptureGuestSignalMask(0);
@@ -252,12 +281,12 @@ public sealed unsafe class PgliteLifecycleTests
         Assert.Equal(0, RuntimeLibc.sigprocmask(2, null, &observed)); Assert.Equal(mask, observed);
         using (other.Enter())
         {
-            other.EnablePgliteSignals();
+            other.EnableGuestSignals();
             Assert.Throws<InvalidOperationException>(() => RuntimeLibc.RestoreGuestSignalMask(saved));
         }
         RuntimeLibc.RestoreGuestSignalMask(saved);
         Assert.Equal(0, delivered);
         Assert.Equal(0, RuntimeLibc.sigprocmask(2, null, &observed)); Assert.Equal(0UL, observed);
-        owner.PumpPgliteSignals(); Assert.Equal(1, delivered);
+        owner.PumpGuestSignals(); Assert.Equal(1, delivered);
     }
 }

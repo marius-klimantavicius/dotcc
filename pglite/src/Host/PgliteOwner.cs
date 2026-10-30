@@ -35,7 +35,7 @@ public sealed class PgliteOwner : IDisposable
             {
                 using var binding = context.Enter();
                 runtime = Runtime.RuntimeContext.Current!;
-                runtime.EnablePgliteSignals();
+                runtime.EnableGuestSignals();
             }
             catch { context.Dispose(); throw; }
         }
@@ -68,7 +68,7 @@ public sealed class PgliteOwner : IDisposable
         if (owner == null || owner.thread != Environment.CurrentManagedThreadId ||
             !owner.entering || owner.closed || owner.quarantined || Runtime.RuntimeContext.Current != owner.runtime)
             throw new InvalidOperationException("A PGlite safe point requires the entering owning context.");
-        owner.runtime.PumpPgliteSignals();
+        owner.runtime.PumpGuestSignals();
     }
 
     /// <returns>0 for a normal return, 99 for an input/startup yield, or 100
@@ -82,11 +82,12 @@ public sealed class PgliteOwner : IDisposable
             int status = 0;
             try
             {
-                using var transport = runtime.InterceptPgliteExits();
-                runtime.PumpPgliteSignals();
+                // The fork uses these exit statuses to yield to its embedding host.
+                using var transport = runtime.InterceptExits(99, 100);
+                runtime.PumpGuestSignals();
                 entry();
             }
-            catch (Runtime.PgliteYieldException yield) when (ReferenceEquals(yield.Owner, runtime))
+            catch (Runtime.RuntimeYieldException yield) when (ReferenceEquals(yield.Owner, runtime))
             { status = yield.Status; }
             // Do not emulate AbortCurrentTransaction/FlushErrorState here.
             // This delegate must call the actual dpg_recover_query_error export.

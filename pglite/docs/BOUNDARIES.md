@@ -29,9 +29,10 @@ The following investigation retains its snapshot-specific failures and probes;
 current integrated results above supersede its present-tense open-gate statements.
 
 
-The owned runtime now supplies a deliberately scoped exit transport.
-`RuntimeContext.InterceptPgliteExits()` intercepts only `exit(99)` and
-`exit(100)` in its original thread/binding and throws `PgliteYieldException`
+The owned runtime supplies a deliberately scoped exit transport. The PGlite
+host selects statuses 99 and 100; shared libc assigns no special exit statuses.
+`RuntimeContext.InterceptExits(99, 100)` intercepts only `exit(99)` and
+`exit(100)` in its original thread/binding and throws `RuntimeYieldException`
 with that owner. It leaves `Termination` and `TerminationTask` unset. Ordinary
 exit codes, unscoped 99/100, `_exit`/`_Exit`, abort and worker failures retain
 terminal semantics. Real terminal requests and runtime disposal cancel owned
@@ -59,7 +60,7 @@ proof of PostgreSQL backend shutdown, persisted rows or successful full-backend
 reopen; those remain required in QUALIFICATION.md.
 
 The real signal implementation file is `DotCC.Libc/ProcessSignalLib.cs` (there
-is no SignalLib.cs). `PgliteSignalTimerLib.cs` implements an explicit opt-in,
+is no SignalLib.cs). `GuestSignalTimerLib.cs` implements an explicit opt-in,
 single-thread guest service. It supplies old-action writes, masks, pending
 coalescing, ignored/default dispositions, handler masks and restoration, one-shot
 SA_RESETHAND, owner-local raise/self-kill, ITIMER_REAL remaining/interval values,
@@ -85,7 +86,7 @@ For product integration, the supervisor owns these recipe changes:
    configured stages are rejected as destinations.
 3. Pass `--overrides-file src/Host/signal-overrides.json` for every object
    translation. It binds the poll hook to `PgliteOwner.PollSignals` and the
-   real declared `setitimer` to `PGlite.Libc.PgliteSetitimer`. The generated
+   real declared `setitimer` to `PGlite.Libc.GuestSetitimer`. The generated
    wrapper keeps the declared signature; this ordinary typed override is
    accepted by the real compiler. No shared timer-file edit is needed for this
    profile. If another override profile is needed, merge its function rules

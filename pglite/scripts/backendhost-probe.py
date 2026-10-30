@@ -164,7 +164,7 @@ def run(ctx, suite=None):
             shutil.copy2(source, headers / name)
             report["headers_sha256"][name] = hashlib.sha256(source.read_bytes()).hexdigest()
         report["runtime_sha256"] = {p.name: hashlib.sha256(p.read_bytes()).hexdigest()
-                                    for p in sorted((ctx.repo / "DotCC.Libc").glob("PgliteBackend*Lib.cs"))}
+                                    for p in sorted((ctx.repo / "DotCC.Libc").glob("PosixBackend*Lib.cs"))}
         native = work / "native"
         ctx.run([os.environ.get("CC", "cc"), "-std=gnu11", "-O2", "-Wall", "-Wextra", "-Werror",
                  "-DDPH_NATIVE_MAIN", fixtures / "backend_host.c", "-lm", "-o", native], "backendhost-native-build", 120)

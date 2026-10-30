@@ -17,12 +17,17 @@ internal sealed class LexerGrammar
     private sealed record State(Dfa Automaton, LexRule[] Rules);
     private readonly Dictionary<string, State> _states = new(StringComparer.Ordinal);
     private static readonly Lazy<LexerGrammar> CGrammar = new(() => new(DotCC.C.BuildLexer()));
-    private static readonly Lazy<LexerGrammar> ZigGrammar = new(() => new(DotCC.Zig.BuildLexer()));
+    private static readonly Lazy<LexerGrammar> ZigGrammar = new(() => new(DotCC.Zig.BuildLexer(), useReferenceLexer: true));
     internal static LexerGrammar C => CGrammar.Value;
     internal static LexerGrammar Zig => ZigGrammar.Value;
 
-    internal LexerGrammar(IReadOnlyDictionary<string, LexRule[]> rules)
+    private readonly IReadOnlyDictionary<string, LexRule[]>? _referenceRules;
+
+    internal LexerGrammar(IReadOnlyDictionary<string, LexRule[]> rules, bool useReferenceLexer = false)
     {
+        // Zig uses LALR.CC 4.11 trailing-context rules for labels. Its lexer must
+        // retain their lookahead; the C grammar keeps the reusable DFA path.
+        if (useReferenceLexer) { _referenceRules = rules; return; }
         if (!rules.ContainsKey("root")) throw new ArgumentException("Lexer requires a root state", nameof(rules));
         foreach (var (name, patterns) in rules)
         {
@@ -38,6 +43,7 @@ internal sealed class LexerGrammar
     {
         ArgumentNullException.ThrowIfNull(text);
         ArgumentOutOfRangeException.ThrowIfLessThan(initialLine, 1);
+        if (_referenceRules is not null) return BytesLexer.FromString(text, _referenceRules, initialLine: initialLine);
         return new Stream(this, Encoding.UTF8.GetBytes(text), initialLine);
     }
 

@@ -14,7 +14,7 @@ internal static unsafe class SigjmpProgram
         using var context = Probe.__DotCcCreateContext();
         using var binding = context.Enter();
         if (Probe.dpg_fixture_sigjmp_conditional(0) != 3) return 12;
-        Probe.Libc.RuntimeContext.Current!.EnablePgliteSignals();
+        Probe.Libc.RuntimeContext.Current!.EnableGuestSignals();
         if (Probe.dpg_fixture_sigjmp_conditional(1) != 42) return 13;
         if (Probe.dpg_fixture_sigjmp_mask(0) != 1 || Probe.dpg_fixture_sigjmp_mask(1) != 0) return 1;
         if (Probe.dpg_fixture_sigjmp_once() != 0) return 2;
@@ -23,8 +23,8 @@ internal static unsafe class SigjmpProgram
         if (Probe.dpg_fixture_sigjmp_repeated() != 0) return 5;
         if (Probe.dpg_fixture_sigjmp_handler(0) != 0 || Probe.dpg_fixture_sigjmp_handler(1) != 0) return 6;
         if (Probe.dpg_fixture_pending_consume() != 0) return 10;
-        Probe.Libc.PgliteIntervalTimer timer = new() { ValueMicroseconds = 2000 };
-        if (Probe.Libc.PgliteSetitimer(0, &timer, null) != 0 || Probe.dpg_fixture_pending_timer() != 0) return 11;
+        Probe.Libc.GuestIntervalTimer timer = new() { ValueMicroseconds = 2000 };
+        if (Probe.Libc.GuestSetitimer(0, &timer, null) != 0 || Probe.dpg_fixture_pending_timer() != 0) return 11;
         Probe.dpg_fixture_sigjmp_expire();
         try { Probe.dpg_fixture_sigjmp_stale(); return 7; }
         catch (Probe.Libc.JumpBufferException) { }

@@ -19,6 +19,7 @@ public sealed class DeclaratorInitializerExecutionTests
     [InlineData("designated-inline-buffers")]
     [InlineData("unary-token-boundaries")]
     [InlineData("self-linked-static-storage")]
+    [InlineData("static-flexible-initializer")]
     [InlineData("callback-value-dereference")]
     [InlineData("qualified-aggregate-projection")]
     [InlineData("goto-guarded-initializers")]

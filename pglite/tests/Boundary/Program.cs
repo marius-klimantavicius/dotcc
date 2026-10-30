@@ -34,7 +34,7 @@ internal static unsafe class Program
             if (args.Length != 2) throw new ArgumentException("Expected NATIVE_REPORT MANAGED_REPORT.");
             using var initialContext = ABI.__DotCcCreateContext();
             using var initialBinding = initialContext.Enter();
-            ABI.Libc.RuntimeContext.Current!.EnablePgliteSignals();
+            ABI.Libc.RuntimeContext.Current!.EnableGuestSignals();
             var layout = ABI.dpg_fixture_get_layout();
             using var native = JsonDocument.Parse(File.ReadAllText(args[0]));
             var fields = new Dictionary<string, uint>

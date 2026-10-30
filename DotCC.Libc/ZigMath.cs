@@ -96,6 +96,46 @@ public static class ZigMath
             ? OverflowSigned<T>(global::System.Int128.CreateTruncating(a) * global::System.Int128.CreateTruncating(b))
             : OverflowUnsigned<T>(global::System.UInt128.CreateTruncating(a) * global::System.UInt128.CreateTruncating(b));
 
+    // The 128-bit operands (a `u128` mantissa in std.fmt.parseFloat(f128, …), task #214) have no wider primitive
+    // accumulator, so their exact result is a BigInteger. C# prefers these non-generic overloads for a UInt128 / Int128
+    // pair, so the generic helpers above keep every narrower width.
+
+    /// <summary><c>@addWithOverflow</c> over <c>u128</c>: the wrapped sum and whether the exact one leaves the range.</summary>
+    public static (System.UInt128, byte) AddWithOverflow(System.UInt128 a, System.UInt128 b)
+        => (unchecked(a + b), (System.Numerics.BigInteger)a + b > System.UInt128.MaxValue ? (byte)1 : (byte)0);
+
+    /// <summary><c>@addWithOverflow</c> over <c>i128</c>.</summary>
+    public static (System.Int128, byte) AddWithOverflow(System.Int128 a, System.Int128 b)
+        => (unchecked(a + b), OutOfInt128((System.Numerics.BigInteger)a + b));
+
+    /// <summary><c>@subWithOverflow</c> over <c>u128</c>: a difference below zero overflows.</summary>
+    public static (System.UInt128, byte) SubWithOverflow(System.UInt128 a, System.UInt128 b)
+        => (unchecked(a - b), a < b ? (byte)1 : (byte)0);
+
+    /// <summary><c>@subWithOverflow</c> over <c>i128</c>.</summary>
+    public static (System.Int128, byte) SubWithOverflow(System.Int128 a, System.Int128 b)
+        => (unchecked(a - b), OutOfInt128((System.Numerics.BigInteger)a - b));
+
+    /// <summary><c>@mulWithOverflow</c> over <c>u128</c>.</summary>
+    public static (System.UInt128, byte) MulWithOverflow(System.UInt128 a, System.UInt128 b)
+        => (unchecked(a * b), (System.Numerics.BigInteger)a * b > System.UInt128.MaxValue ? (byte)1 : (byte)0);
+
+    /// <summary><c>@mulWithOverflow</c> over <c>i128</c>.</summary>
+    public static (System.Int128, byte) MulWithOverflow(System.Int128 a, System.Int128 b)
+        => (unchecked(a * b), OutOfInt128((System.Numerics.BigInteger)a * b));
+
+    /// <summary><c>@shlWithOverflow</c> over <c>u128</c>: the shifted-out bits overflow.</summary>
+    public static (System.UInt128, byte) ShlWithOverflow(System.UInt128 a, int shift)
+        => (a << shift, ((System.Numerics.BigInteger)a << shift) > System.UInt128.MaxValue ? (byte)1 : (byte)0);
+
+    /// <summary><c>@shlWithOverflow</c> over <c>i128</c>.</summary>
+    public static (System.Int128, byte) ShlWithOverflow(System.Int128 a, int shift)
+        => (a << shift, OutOfInt128((System.Numerics.BigInteger)a << shift));
+
+    /// <summary>1 when an exact result leaves <c>i128</c>'s range, else 0.</summary>
+    private static byte OutOfInt128(System.Numerics.BigInteger exact)
+        => exact > System.Int128.MaxValue || exact < System.Int128.MinValue ? (byte)1 : (byte)0;
+
     /// <summary><c>@shlWithOverflow(a, shift)</c> → <c>.{ a &lt;&lt;% shift, overflow }</c>; the overflow
     /// bit is set when the shift loses any high bits (truncating the exact 128-bit shift changed the
     /// value). The shift amount is a small non-negative count (Zig's <c>Log2(T)</c>).</summary>
@@ -137,6 +177,49 @@ public static class ZigMath
         return !T.IsZero(r) && (T.IsNegative(r) != T.IsNegative(b)) ? r + b : r;
     }
 
+    /// <summary><c>@mod(a, b)</c> of floats: the floored remainder, taking the sign of the divisor (zig allows no
+    /// <c>%</c> on a runtime float, so this is how a float remainder is spelled).</summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static double Mod(double a, double b)
+    {
+        var r = a % b;
+        return r != 0 && (r < 0) != (b < 0) ? r + b : r;
+    }
+
+    /// <summary><c>@mod(a, b)</c> of <c>f32</c> floats (see the <c>double</c> overload).</summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float Mod(float a, float b)
+    {
+        var r = a % b;
+        return r != 0 && (r < 0) != (b < 0) ? r + b : r;
+    }
+
+    /// <summary><c>@rem(a, b)</c> of floats: the truncated remainder (sign of the dividend), C#'s <c>%</c>.</summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static double Rem(double a, double b) => a % b;
+
+    /// <summary><c>@rem(a, b)</c> of <c>f32</c> floats.</summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float Rem(float a, float b) => a % b;
+
+    /// <summary><c>@rem(a, b)</c> of <c>f128</c> floats (task #214): the truncated remainder, C's <c>fmodl</c>.</summary>
+    public static Float128 Rem(Float128 a, Float128 b) => Float128.Fmod(a, b);
+
+    /// <summary><c>@mod(a, b)</c> of <c>f128</c> floats: the floored remainder, taking the sign of the divisor.</summary>
+    public static Float128 Mod(Float128 a, Float128 b)
+    {
+        var r = Float128.Fmod(a, b);
+        return !Float128.IsZero(r) && Float128.IsNegative(r) != Float128.IsNegative(b) ? r + b : r;
+    }
+
+    /// <summary><c>@min(a, b)</c> of <c>f128</c> floats: a NaN operand yields the other one, as zig's does.</summary>
+    public static Float128 Min(Float128 a, Float128 b)
+        => Float128.IsNaN(a) ? b : Float128.IsNaN(b) ? a : a < b ? a : b;
+
+    /// <summary><c>@max(a, b)</c> of <c>f128</c> floats: a NaN operand yields the other one, as zig's does.</summary>
+    public static Float128 Max(Float128 a, Float128 b)
+        => Float128.IsNaN(a) ? b : Float128.IsNaN(b) ? a : a > b ? a : b;
+
     /// <summary><c>@divFloor(a, b)</c> — division rounding toward negative infinity (unlike C#'s <c>/</c>,
     /// toward zero). For non-negative operands the two coincide.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -145,6 +228,28 @@ public static class ZigMath
         var q = a / b;
         var r = a % b;
         return !T.IsZero(r) && (T.IsNegative(r) != T.IsNegative(b)) ? q - T.One : q;
+    }
+
+    /// <summary>Integer division rounded toward positive infinity. The optional bit width is
+    /// Zig's logical width when its C# carrier is wider. Invalid operands throw rather than wrap;
+    /// this helper does not model Zig's build-mode-dependent panic machinery.</summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static T DivCeil<T>(T a, T b, int bitWidth = 0)
+        where T : global::System.Numerics.IBinaryInteger<T>, global::System.Numerics.IMinMaxValue<T>
+    {
+        var storageBits = int.CreateChecked(T.PopCount(T.AllBitsSet));
+        if (bitWidth < 0 || bitWidth > storageBits)
+            throw new global::System.ArgumentOutOfRangeException(nameof(bitWidth));
+        if (T.IsZero(b)) throw new global::System.DivideByZeroException();
+        if (T.IsNegative(T.MinValue) && b == -T.One)
+        {
+            var minimum = bitWidth == 0 || bitWidth == storageBits ? T.MinValue : -(T.One << (bitWidth - 1));
+            if (a == minimum) throw new global::System.OverflowException("zig @divCeil integer overflow");
+        }
+        var quotient = a / b;
+        var remainder = a % b;
+        return !T.IsZero(remainder) && T.IsNegative(remainder) == T.IsNegative(b)
+            ? quotient + T.One : quotient;
     }
 
     /// <summary><c>@popCount(x)</c> — the number of set bits. Width-agnostic: the value's leading
@@ -184,6 +289,67 @@ public static class ZigMath
         buf.Reverse();
         return T.ReadLittleEndian(buf, isUnsigned: !T.IsNegative(T.AllBitsSet));
     }
+
+    /// <summary><c>@byteSwap(v)</c> of a 128-bit vector: each lane's bytes reversed (std.mem.nativeToLittle over a
+    /// <c>@Vector</c>, task #144).</summary>
+    public static System.Runtime.Intrinsics.Vector128<T> ByteSwap<T>(System.Runtime.Intrinsics.Vector128<T> v)
+        where T : unmanaged, System.Numerics.IBinaryInteger<T>
+    {
+        System.Span<T> lanes = stackalloc T[System.Runtime.Intrinsics.Vector128<T>.Count];
+        System.Runtime.Intrinsics.Vector128.CopyTo(v, lanes);
+        for (var i = 0; i < lanes.Length; i++) { lanes[i] = ByteSwap(lanes[i]); }
+        return System.Runtime.Intrinsics.Vector128.Create<T>(lanes);
+    }
+
+    /// <summary><c>@byteSwap(v)</c> of a 256-bit vector: each lane's bytes reversed.</summary>
+    public static System.Runtime.Intrinsics.Vector256<T> ByteSwap<T>(System.Runtime.Intrinsics.Vector256<T> v)
+        where T : unmanaged, System.Numerics.IBinaryInteger<T>
+    {
+        System.Span<T> lanes = stackalloc T[System.Runtime.Intrinsics.Vector256<T>.Count];
+        System.Runtime.Intrinsics.Vector256.CopyTo(v, lanes);
+        for (var i = 0; i < lanes.Length; i++) { lanes[i] = ByteSwap(lanes[i]); }
+        return System.Runtime.Intrinsics.Vector256.Create<T>(lanes);
+    }
+
+    /// <summary><c>@bitReverse(x)</c> — reverse the low <paramref name="bits"/> bits of <typeparamref name="T"/> (the
+    /// operand's declared width, so a <c>u3</c> held in a byte reverses three bits, as zig does). A signed result is
+    /// the reversed bit pattern read at the carrier's width.</summary>
+    public static T BitReverse<T>(T x, int bits) where T : System.Numerics.IBinaryInteger<T>
+    {
+        var v = System.UInt128.CreateTruncating(x);
+        System.UInt128 r = 0;
+        for (var i = 0; i < bits; i++)
+        {
+            r = (r << 1) | (v & 1);
+            v >>= 1;
+        }
+        return T.CreateTruncating(r);
+    }
+
+    /// <summary>Zig's <c>@round</c>: to the nearest integer, a half rounding AWAY from zero (.NET's default is to even).</summary>
+    public static double RoundAway(double x) => System.Math.Round(x, System.MidpointRounding.AwayFromZero);
+
+    /// <summary>Zig's <c>@round</c> on an f32 (see <see cref="RoundAway(double)"/>).</summary>
+    public static float RoundAway(float x) => System.MathF.Round(x, System.MidpointRounding.AwayFromZero);
+
+    /// <summary>Zig's <c>@round</c> on an f128 (task #214): half away from zero, where <see cref="Float128.Round"/> rounds
+    /// ties to even (C's <c>rintl</c>). <c>x - trunc(x)</c> is exact, so the half is decided without rounding; a NaN or an
+    /// infinity is its own result.</summary>
+    public static Float128 RoundAway(Float128 x)
+    {
+        var whole = Float128.Truncate(x);
+        if (Float128.Abs(x - whole) >= (Float128)0.5)
+        {
+            return Float128.IsNegative(x) ? whole - Float128.One : whole + Float128.One;
+        }
+        return whole;
+    }
+
+    /// <summary>Zig's <c>@exp2</c>: 2 raised to <paramref name="x"/>.</summary>
+    public static double Exp2(double x) => System.Math.Pow(2.0, x);
+
+    /// <summary>Zig's <c>@exp2</c> on an f32.</summary>
+    public static float Exp2(float x) => System.MathF.Pow(2f, x);
 
     /// <summary>The magnitude of an integer as an unsigned 128-bit value — the exact-width backbone of
     /// <c>@abs</c>, which returns the UNSIGNED peer of <c>iN</c> (so <c>@abs(i8 -128) == u8 128</c>,

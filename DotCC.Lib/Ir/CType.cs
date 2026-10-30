@@ -73,10 +73,13 @@ public abstract partial record CType
     /// output-language projection (that is the backend's <see cref="ITarget.RenderType"/>).</summary>
     public string Describe() => this switch
     {
+        Prim { IsComptimeInt: true } => "comptime_int",
         Prim p => p.Name,
         VoidType => "void",
         Pointer ptr => ptr.Pointee.Describe() + "*",
         Array a => a.Element.Describe() + "[" + (a.Count?.ToString(System.Globalization.CultureInfo.InvariantCulture) ?? "") + "]",
+        Vector v => "@Vector(" + v.Count + ", " + v.Element.Describe() + ")",
+        EnumLiteral el => "@EnumLiteral() ." + el.Name,
         Func f => f.Return.Describe() + "(*)(" + string.Join(", ", f.Params.Select(p => p.Describe())) + ")",
         Named n => n.Name,
         Enum e => "enum " + e.Name,
@@ -101,6 +104,7 @@ public abstract partial record CType
     /// integer conversions and <see cref="Bytes"/> gives the width.</summary>
     public sealed record Prim(string Name, int Bytes, bool Integer, bool Signed) : CType
     {
+        public bool IsComptimeInt { get; init; }
         public override int SizeOf => Bytes;
         public override bool IsInteger => Integer;
         public override bool IsArithmetic => true;
@@ -111,6 +115,15 @@ public abstract partial record CType
     public sealed record VoidType : CType
     {
         public override int SizeOf => 1;
+    }
+
+    /// <summary>zig's comptime-only <c>@EnumLiteral()</c>: a bare <c>.member</c> with no result type
+    /// (std.StaticStringMap(Kw)'s <c>.{ "if", .kw_if }</c>, task #113). dotcc makes each literal its own singleton type
+    /// carrying <see cref="Name"/>, so wherever the value meets an enum it coerces statically, whatever expression carried
+    /// it there (a tuple element read in a comptime-called helper). It has no runtime representation.</summary>
+    public sealed record EnumLiteral(string Name) : CType
+    {
+        public override int SizeOf => 0;
     }
 
     /// <summary>A pointer to <see cref="Pointee"/>. (The C# backend lowers it to the
@@ -138,6 +151,31 @@ public abstract partial record CType
         /// <summary>The innermost non-array element (peels all array dimensions) —
         /// the flat scalar/struct the storage holds.</summary>
         public CType FlatElement { get { var e = Element; while (e is Array a) { e = a.Element; } return e; } }
+    }
+
+    /// <summary>A Zig SIMD vector <c>@Vector(Count, Element)</c> (road-to-zig-std, the target-identity segment T5).
+    /// A numeric one renders as .NET's <c>Vector64/128/256/512&lt;T&gt;</c> by its total width; a BOOL one (what a
+    /// comparison yields) is a lane bitmask in a <c>ulong</c> (see <c>DotCC.Libc.ZigVec</c>).</summary>
+    public sealed record Vector(CType Element, int Count) : CType
+    {
+        public override int SizeOf => IsMask ? 8 : Element.SizeOf * Count;
+
+        /// <summary>True for a BOOL vector, carried as a lane bitmask.</summary>
+        public bool IsMask => Element.Unqualified is Prim { Name: "_Bool" };
+
+        /// <summary>The .NET vector type family for a numeric vector of this width (<c>Vector128</c>), or null
+        /// for a width .NET has no vector type of.</summary>
+        public string? NetFamily => (Element.SizeOf * Count) switch
+        {
+            8 => "Vector64",
+            16 => "Vector128",
+            32 => "Vector256",
+            64 => "Vector512",
+            _ => null,
+        };
+
+        /// <summary>The bit width of <see cref="NetFamily"/> (64 / 128 / 256 / 512).</summary>
+        public int Bits => Element.SizeOf * Count * 8;
     }
 
     /// <summary>A function type. Not a value type in C; carried so a function
@@ -356,6 +394,8 @@ public abstract partial record CType
     }
 
     // ---- well-known instances -------------------------------------------
+
+    public static readonly CType ComptimeInt = new Prim("__int128", 16, true, true) { IsComptimeInt = true };
 
     public static readonly CType Void = new VoidType();
     public static readonly CType Bool = new Prim("_Bool", 1, true, false);

@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Runtime.Loader;
+using System.Text.RegularExpressions;
 using DotCC;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -74,7 +75,10 @@ public sealed partial class ManagedLibraryTests
             var generated = link
                 ? Compiler.LinkObjects([path], emit: EmitMode.ManagedLib, className: "Api", outputOptions: options)
                 : Compiler.EmitCSharp([path], emit: EmitMode.ManagedLib, className: "Api", outputOptions: options);
-            generated.ShouldContain(contextual ? "ref State __dotcc_address" : "__DotccGlobalAddressCache __dotcc_address");
+            generated.ShouldContain(contextual ? "ref State __dotcc_address" : "static unsafe State* __dotcc_globalAddress_state;");
+            generated.ShouldNotContain("__DotccGlobalAddressCache");
+            if (!contextual)
+                Regex.Matches(generated, @"static unsafe State\* __dotcc_globalAddress_state;").Count.ShouldBe(1);
             var host = contextual ? """
                 public static unsafe class Probe {
                     private static Api.__DotCcContext target;

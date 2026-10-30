@@ -35,6 +35,29 @@ internal sealed partial class CSharpBackend
         (target.Type.Unqualified is CType.Pointer && StoredAsNint(target)
             && !target.Type.IsAtomic && !target.Type.IsVolatile);
 
+    private (string, int) PointerSlotAssignment(Assign assignment, bool discard = false)
+    {
+        // Global pointer/callback slots use nint backing. Restore the logical
+        // pointer type only when the C assignment's result is consumed.
+        var slot = BareLValue(assignment.Target);
+        var type = Cs(assignment.Target.Type.Unqualified);
+        var value = assignment.CompoundOp is { } operation
+            ? $"({type}){slot} {BinSym(operation)} {Sub(assignment.Value, Prec(operation) + 1)}"
+            : Coerced(assignment.Value, assignment.Target.Type);
+        var store = $"{slot} = (nint)({value})";
+        return discard ? (store, PAssign) : ($"({type})({store})", PUnary);
+    }
+
+    private string? DiscardedPointerAssignment(CExpr expression)
+    {
+        if (expression is not Assign assignment || !StoredAsNint(assignment.Target)
+            || assignment.Target.Type.IsAtomic || assignment.Target.Type.IsVolatile) return null;
+        // Row-pointer arithmetic already emits a plain assignment while
+        // applying the C row stride. Keep that specialized lowering intact.
+        return assignment.CompoundOp is BinOp.Add or BinOp.Sub && PointerArrayStride(assignment.Target.Type) != 1
+            ? Expr(assignment) : PointerSlotAssignment(assignment, discard: true).Item1;
+    }
+
     private (string, int) PointerArrayUpdate(Unary value, bool discard = false)
     {
         var stride = PointerArrayStride(value.Operand.Type);
@@ -69,6 +92,8 @@ internal sealed partial class CSharpBackend
     private string ForPost(CExpr value)
     {
         while (value is Paren parenthesized) value = parenthesized.Inner;
+        if (DiscardedPointerAssignment(CFlowFacts.StatementValue(value)) is { } pointerAssignment)
+            return pointerAssignment;
         if (RequiresIntrinsicDiscard(value))
             return IntrinsicForPart(value);
         if (value is CommaOp comma)

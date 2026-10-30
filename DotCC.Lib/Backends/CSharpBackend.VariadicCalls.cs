@@ -17,9 +17,13 @@ internal sealed partial class CSharpBackend
         var fixedCount = signature is { Variadic: true, IsNativeCallConv: false }
             ? signature.Params.Count : call.Args.Count;
         for (var index = 0; index < fixedCount && index < call.Args.Count; index++)
+        {
+            if (signature is not null && index < signature.Params.Count
+                && signature.Params[index].Unqualified is CType.VoidType) continue;
             arguments.Add(signature is not null && index < signature.Params.Count
                 ? CoercedArg(call.Args[index], signature.Params[index])
                 : Sub(DecayEnum(call.Args[index]), PAssign));
+        }
         if (signature is { Variadic: true, IsNativeCallConv: false })
         {
             // Function pointers cannot carry a `params` modifier. Supply one

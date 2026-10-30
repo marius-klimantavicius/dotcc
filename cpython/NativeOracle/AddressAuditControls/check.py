@@ -31,10 +31,9 @@ def run(label, command, expected):
     (args.artifacts/'commands.json').write_text(json.dumps(commands, indent=2)+'\n')
     assert result.returncode == expected, (label, result.returncode, result.stdout[-4000:])
 
-helper_source = ROOT/'DotCC.Lib/GlobalAddressCache.cs'
-# The exact current compiler-owned mechanism is part of the control input.
-helper = helper_source.read_text().split('"""', 2)[1]
-helper = '\n'.join(line[8:] if line.startswith('        ') else line for line in helper.splitlines())
+helper_source = Path(__file__).with_name('LegacyGlobalAddressCache.cs.txt')
+# Preserve the historical representation as an independent analyzer control.
+helper = helper_source.read_text()
 base = '''using System;
 using System.Runtime.CompilerServices;
 public struct CGlobals { public int Counter; }
@@ -112,7 +111,7 @@ for name, body, exit_code, unknown, unresolved, caches in cases:
         'assembly': {'path': str(case/'pe/Control.dll'), 'sha256': sha(case/'pe/Control.dll')}})
 report = {'status': 'passed', 'scope': 'Eight authored semantic-analyzer positive/negative controls; no CPython or runtime acceptance',
     'analyzer': {'path': str(args.analyzer), 'sha256': sha(args.analyzer)},
-    'compilerMechanismSource': {'path': str(helper_source), 'sha256': sha(helper_source)},
+    'controlMechanismSource': {'path': str(helper_source), 'sha256': sha(helper_source)},
     'driver': {'path': str(Path(__file__)), 'sha256': sha(Path(__file__))}, 'cases': results}
 (args.artifacts/'comparison.json').write_text(json.dumps(report, indent=2)+'\n')
 print(json.dumps({'status': 'passed', 'controls': len(results)}))

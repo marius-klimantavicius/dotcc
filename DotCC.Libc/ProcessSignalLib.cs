@@ -118,7 +118,7 @@ public static unsafe partial class Libc
 
     /// <summary>Schedule the explicitly opted-in owner's cooperative SIGALRM
     /// timer, returning remaining seconds. Unbound use fails with ENOTSUP.</summary>
-    public static uint alarm(uint seconds) => PgliteAlarm(seconds);
+    public static uint alarm(uint seconds) => GuestAlarm(seconds);
 
     /// <summary><c>_exit(status)</c> — immediate termination, no handlers/flush
     /// (POSIX). Same backing as <see cref="_Exit"/>.</summary>
@@ -148,12 +148,12 @@ public static unsafe partial class Libc
     /// unmodeled here).</summary>
     public static int kill(int pid, int sig)
     {
-        if (RuntimeContext.Current?.PgliteSignals != null)
+        if (RuntimeContext.Current?.GuestSignals != null)
         {
             // An embedded backend must never target the containing CLR process
             // or another backend owner through an OS process signal.
             if (pid != getpid()) { errno = EPERM; return -1; }
-            return sig == 0 ? 0 : QueuePgliteSignal(sig);
+            return sig == 0 ? 0 : QueueGuestSignal(sig);
         }
         if (OperatingSystem.IsWindows()) { return WinKill(pid, sig); }
         int rc = PosixKill(pid, sig);
@@ -223,7 +223,7 @@ public static unsafe partial class Libc
     /// abnormal-termination contract.</summary>
     public static int raise(int sig)
     {
-        if (RuntimeContext.Current?.PgliteSignals != null) return QueuePgliteSignal(sig);
+        if (RuntimeContext.Current?.GuestSignals != null) return QueueGuestSignal(sig);
         if (sig == 2)
         {
             while (true)
@@ -301,11 +301,11 @@ public static unsafe partial class Libc
     /// <summary>Install/query the opted-in owner's guest disposition. Records
     /// use DotCC's struct sigaction ABI; host OS dispositions remain separate.
     /// Without an opted-in owner this fails with ENOTSUP.</summary>
-    public static int sigaction(int sig, void* act, void* oldact) => PgliteSigaction(sig, act, oldact);
+    public static int sigaction(int sig, void* act, void* oldact) => GuestSigaction(sig, act, oldact);
 
     /// <summary>Query/change the opted-in owner's guest mask and deliver newly
     /// unblocked pending signals on that owner thread.</summary>
-    public static int sigprocmask(int how, ulong* set, ulong* oldset) => PgliteSigprocmask(how, set, oldset);
+    public static int sigprocmask(int how, ulong* set, ulong* oldset) => GuestSigprocmask(how, set, oldset);
 
     // sigset_t is `unsigned long` (see <signal.h>): a 64-bit bitset, bit (n-1)
     // for signal n. These manipulators ARE faithful — pure bit twiddling.

@@ -58,9 +58,9 @@ public static partial class Compiler
         IReadOnlyList<string>? includeDirs = null,
         IReadOnlyList<string>? defines = null,
         CDialect? dialect = null,
-        WarningFlags warnings = WarningFlags.Default, CPreprocessingOptions? preprocessing = null, CSharpOutputOptions? outputOptions = null)
+        WarningFlags warnings = WarningFlags.Default, CPreprocessingOptions? preprocessing = null, CSharpOutputOptions? outputOptions = null, ZigCompilationOptions? zigOptions = null)
         => EmitCSharp(new[] { inputPath }, includeDirs, defines,
-                      emit: EmitMode.Object, dialect: dialect, warnings: warnings, preprocessing: preprocessing, outputOptions: outputOptions);
+                      emit: EmitMode.Object, dialect: dialect, warnings: warnings, preprocessing: preprocessing, outputOptions: outputOptions, zigOptions: zigOptions);
 
     private static string SerializeFragment(
         string functions, IReadOnlyDictionary<string, string> typeDecls, string aliases, IReadOnlyList<Backends.CSharpGlobalSource> globals, int mainArity,
@@ -100,6 +100,7 @@ public static partial class Compiler
         // unmanaged[Cdecl]<int, int>`) — is everything after the first space.
         foreach (var (name, ft) in importSpecs) { sb.Append(FragImport).Append(name).Append(' ').Append(ft).Append('\n'); }
         foreach (var d in defNames) { sb.Append(FragDef).Append(d).Append('\n'); }
+        sb.Append(ZigStorageObjectMetadata.Serialize(aggregateMetadata));
         if (aggregateMetadata != null)
             foreach (var (name, metadata) in aggregateMetadata)
                 sb.Append(FragAggregate).Append(name).Append(' ')
@@ -184,7 +185,7 @@ public static partial class Compiler
         var objectTexts = objectPaths.Select(path => File.ReadAllText(path).ReplaceLineEndings("\n")).ToArray();
         var foreignAbiProofs = objectTexts.Select((text, index) => SourceAbiForeignMetadata.Read(text, objectPaths[index])).ToArray();
         foreach (var text in objectTexts) InlineFunctionMetadata.ValidateVersion(text);
-        var identityGraphs = objectTexts.Select(AggregateIdentities.Read).ToArray();
+        var identityGraphs = objectTexts.Select(text => ZigStorageObjectMetadata.Attach(text, AggregateIdentities.Read(text))).ToArray();
         var variantNames = AggregateIdentities.Plan(objectPaths.Select((path, index) =>
             (path, identityGraphs[index])).ToArray());
         var discardedWeakFunctions = ResolveWeakObjectFunctions(objectPaths);
@@ -506,7 +507,9 @@ public static partial class Compiler
         var ownerInitializers = RenderOwnerInitializers(typeByName, literals, storage, definedNames,
             outputOptions?.InstanceMethods == true);
         var parts = missingBoundaries ? null : functionSources.Select(part => part with { Text = storage.Rewrite(literals.Rewrite(ResolveInstanceCalls(part.Text))) }).ToArray();
-        var files = BuildSourceFiles(storage.Rewrite(literals.Rewrite(ResolveInstanceCalls(functions.ToString()))), parts, aliasText,
+        var rewrittenFunctions = storage.Rewrite(literals.Rewrite(ResolveInstanceCalls(functions.ToString())));
+        globalText = storage.Complete(globalText);
+        var files = BuildSourceFiles(rewrittenFunctions, parts, aliasText,
             emit, libraryClass, importsClass, false, split, splitSize, namespaceName, nested,
             (functionText, fileAliases, partial) => BuildShell(mainArity, pointerResolvers.Methods + ownerInitializers + RenderMacroFields(typeByName, owner, definedNames) + functionText, types, fileAliases, globalText,
                 emit, System.Array.Empty<EmitHelpers.Export>(), debugHeap, importsClass,

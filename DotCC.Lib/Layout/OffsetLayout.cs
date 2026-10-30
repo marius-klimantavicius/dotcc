@@ -17,6 +17,9 @@ internal sealed class LayoutField
 internal sealed class LayoutAggregate
 {
     public string Name = "";
+    public string? ZigSourceIdentity;
+    public string? ZigStorage;
+    public string? ZigZeroOwner;
     public bool Union;
     public bool Packed;
     // C pragma-pack maximum member alignment. Distinct from Zig packed layout.
@@ -26,6 +29,7 @@ internal sealed class LayoutAggregate
 }
 internal sealed class LayoutInfo
 {
+    public readonly Dictionary<string, int> ZigBitOffsets = new(StringComparer.Ordinal);
     public int Size;
     public int Alignment;
     public readonly Dictionary<string, int> Offsets = new Dictionary<string, int>(StringComparer.Ordinal);
@@ -82,6 +86,18 @@ internal sealed class OffsetLayoutModel
         try
         {
             var aggregate = resolve(name);
+            if (aggregate.ZigZeroOwner is not null)
+            {
+                var owner = ZigStorageLayoutModel.DescribeZeroOwner(aggregate);
+                cache.Add(name, owner);
+                return owner;
+            }
+            if (aggregate.ZigStorage is not null)
+            {
+                var zig = ZigStorageLayoutModel.Describe(aggregate);
+                cache.Add(name, zig);
+                return zig;
+            }
             ValidateAlignment(aggregate.Alignment);
             if (aggregate.Pack is not (0 or 1 or 2 or 4 or 8 or 16))
                 throw new OffsetLayoutException("Invalid pragma packing: " + aggregate.Pack);
@@ -267,11 +283,11 @@ internal sealed class OffsetLayoutModel
     public int Offset(string name, IReadOnlyList<string> path)
     {
         if (path.Count == 0) throw new OffsetLayoutException("Empty offsetof member designator");
-        var total = 0;
+        var totalBits = 0;
         var currentType = "n:" + name;
         foreach (var segment in path)
         {
-            if (segment.StartsWith("[", StringComparison.Ordinal))
+            if (currentType.StartsWith("a:", StringComparison.Ordinal) && segment.StartsWith("[", StringComparison.Ordinal))
             {
                 if (!segment.EndsWith("]", StringComparison.Ordinal)
                     || !int.TryParse(segment.Substring(1, segment.Length - 2), NumberStyles.None, CultureInfo.InvariantCulture, out var index)
@@ -279,7 +295,7 @@ internal sealed class OffsetLayoutModel
                     throw new OffsetLayoutException("Invalid indexed offsetof designator: " + segment);
                 var end = currentType.IndexOf(':', 2);
                 currentType = currentType.Substring(end + 1);
-                total = checked(total + checked(index * Type(currentType).Size));
+                totalBits = checked(totalBits + checked(index * Type(currentType).Size * 8));
                 continue;
             }
             if (!currentType.StartsWith("n:", StringComparison.Ordinal))
@@ -288,11 +304,12 @@ internal sealed class OffsetLayoutModel
             var aggregate = resolve(name);
             var field = aggregate.Fields.FirstOrDefault(f => f.Name == segment);
             if (field == null) throw new OffsetLayoutException("Unknown offsetof member: " + name + "." + segment);
-            if (field.BitWidth != null) throw new OffsetLayoutException("offsetof cannot address bit-field: " + name + "." + field.Name);
-            total = checked(total + Aggregate(name).Offsets[field.Name]);
+            if (field.BitWidth != null && aggregate.ZigStorage is null) throw new OffsetLayoutException("offsetof cannot address bit-field: " + name + "." + field.Name);
+            var layout = Aggregate(name);
+            totalBits = checked(totalBits + (aggregate.ZigStorage is not null ? layout.ZigBitOffsets[field.Name] : layout.Offsets[field.Name] * 8));
             currentType = field.Type;
         }
-        return total;
+        return totalBits / 8;
     }
     private static int RoundUp(int value, int alignment) => checked((value + alignment - 1) / alignment * alignment);
 }
@@ -313,8 +330,33 @@ internal sealed class OffsetDocument
     public const string End = "end-dotcc-layout */";
     public readonly Dictionary<string, LayoutAggregate> Aggregates = new Dictionary<string, LayoutAggregate>(StringComparer.Ordinal);
     public readonly List<OffsetRequest> Requests = new List<OffsetRequest>();
+    private static bool NeedsPathCodec(string aggregate, IReadOnlyList<string> path) =>
+        aggregate.Contains('.') || path.Any(component => component.Contains('.'));
+
+    private static string EncodePathComponents(IEnumerable<string> components) => string.Concat(components.Select(component =>
+        component.Length.ToString(CultureInfo.InvariantCulture) + ":" + component));
+
+    private static string[] DecodePathComponents(string encoded)
+    {
+        var components = new List<string>();
+        for (var at = 0; at < encoded.Length;)
+        {
+            var colon = encoded.IndexOf(':', at);
+            if (colon < at || !int.TryParse(encoded.Substring(at, colon - at), NumberStyles.None,
+                    CultureInfo.InvariantCulture, out var length) || length <= 0 || length > encoded.Length - colon - 1)
+                throw new OffsetLayoutException("Invalid version-two offsetof path components");
+            components.Add(encoded.Substring(colon + 1, length));
+            at = colon + 1 + length;
+        }
+        if (components.Count == 0) throw new OffsetLayoutException("Empty version-two offsetof path components");
+        return components.ToArray();
+    }
+
     public static string RequestName(string aggregate, IReadOnlyList<string> path) =>
-        "__DotccOffset_" + BitConverter.ToString(Encoding.UTF8.GetBytes(aggregate + "." + string.Join(".", path))).Replace("-", "");
+        NeedsPathCodec(aggregate, path)
+            ? "__DotccOffset_v2_" + BitConverter.ToString(Encoding.UTF8.GetBytes(
+                EncodePathComponents(new[] { aggregate }.Concat(path)))).Replace("-", "")
+            : "__DotccOffset_" + BitConverter.ToString(Encoding.UTF8.GetBytes(aggregate + "." + string.Join(".", path))).Replace("-", "");
     public OffsetDocument ForRequest(OffsetRequest request)
     {
         var document = new OffsetDocument();
@@ -343,13 +385,19 @@ internal sealed class OffsetDocument
         {
             var aggregate = pair.Value;
             text.Append("aggregate\t").Append(Encode(aggregate.Name)).Append('\t').Append(aggregate.Union ? '1' : '0').Append('\t').Append(aggregate.Packed ? '1' : '0').Append('\t').Append(aggregate.Alignment).Append('\t').Append(aggregate.Pack).Append('\n');
+            if (aggregate.ZigZeroOwner is not null)
+                text.Append("zig-zero-owner\t").Append(Encode(aggregate.ZigZeroOwner)).Append('\n');
+            if (aggregate.ZigStorage is not null)
+                text.Append("zig-storage\t").Append(Encode(aggregate.ZigStorage)).Append('\n');
             foreach (var field in aggregate.Fields)
                 text.Append("field\t").Append(Encode(field.Name)).Append('\t').Append(Encode(field.Type)).Append('\t')
                     .Append(field.BitWidth?.ToString(CultureInfo.InvariantCulture) ?? "-").Append('\t').Append(field.Alignment).Append('\n');
         }
         foreach (var request in Requests.OrderBy(r => r.Name, StringComparer.Ordinal))
-            text.Append("request\t").Append(request.Name).Append('\t').Append(Encode(request.Aggregate)).Append('\t')
-                .Append(Encode(string.Join(".", request.Path))).Append('\t').Append(request.Expected.ToString(CultureInfo.InvariantCulture)).Append('\n');
+            text.Append(NeedsPathCodec(request.Aggregate, request.Path) ? "request-path-v2\t" : "request\t")
+                .Append(request.Name).Append('\t').Append(Encode(request.Aggregate)).Append('\t')
+                .Append(Encode(NeedsPathCodec(request.Aggregate, request.Path) ? EncodePathComponents(request.Path)
+                    : string.Join(".", request.Path))).Append('\t').Append(request.Expected.ToString(CultureInfo.InvariantCulture)).Append('\n');
         return text.Append(End).Append('\n').ToString();
     }
     public static IEnumerable<OffsetDocument> ReadSource(string source)
@@ -374,12 +422,16 @@ internal sealed class OffsetDocument
                     case "aggregate" when fields.Length is 4 or 5 or 6:
                         aggregate = new LayoutAggregate { Name = Decode(fields[1]), Union = fields[2] == "1", Packed = fields[3] == "1", Alignment = fields.Length >= 5 ? int.Parse(fields[4], CultureInfo.InvariantCulture) : 0, Pack = fields.Length == 6 ? int.Parse(fields[5], CultureInfo.InvariantCulture) : 0 };
                         document.Aggregates.Add(aggregate.Name, aggregate); break;
+                    case "zig-zero-owner" when fields.Length == 2 && aggregate != null && aggregate.ZigZeroOwner is null:
+                        aggregate.ZigZeroOwner = Decode(fields[1]); aggregate.ZigSourceIdentity = ZigStorageObjectMetadata.ReadContract(aggregate.ZigZeroOwner).Identity; break;
+                    case "zig-storage" when fields.Length == 2 && aggregate != null && aggregate.ZigStorage is null:
+                        aggregate.ZigStorage = Decode(fields[1]); aggregate.ZigSourceIdentity = ZigStorageObjectMetadata.ReadContract(aggregate.ZigStorage).Identity; break;
                     case "field" when (fields.Length is 4 or 5) && aggregate != null:
                         aggregate.Fields.Add(new LayoutField { Name = Decode(fields[1]), Type = Decode(fields[2]), BitWidth = fields[3] == "-" ? (int?)null : int.Parse(fields[3], CultureInfo.InvariantCulture), Alignment = fields.Length == 5 ? int.Parse(fields[4], CultureInfo.InvariantCulture) : 0 }); break;
-                    case "request" when fields.Length == 5:
+                    case "request" or "request-path-v2" when fields.Length == 5:
                         if (!fields[1].StartsWith("__DotccOffset_", StringComparison.Ordinal) || fields[1].Any(c => !char.IsLetterOrDigit(c) && c != '_'))
                             throw new OffsetLayoutException("Invalid offset declaration name");
-                        document.Requests.Add(new OffsetRequest { Name = fields[1], Aggregate = Decode(fields[2]), Path = Decode(fields[3]).Split('.'), Expected = int.Parse(fields[4], CultureInfo.InvariantCulture) }); break;
+                        document.Requests.Add(new OffsetRequest { Name = fields[1], Aggregate = Decode(fields[2]), Path = fields[0] == "request-path-v2" ? DecodePathComponents(Decode(fields[3])) : Decode(fields[3]).Split('.'), Expected = int.Parse(fields[4], CultureInfo.InvariantCulture) }); break;
                     default: throw new OffsetLayoutException("Invalid dotcc layout metadata record");
                 }
             }

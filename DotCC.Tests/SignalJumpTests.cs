@@ -56,7 +56,7 @@ public sealed unsafe class SignalJumpTests
     {
         using var owner = new L.RuntimeContext();
         using var binding = owner.Enter();
-        owner.EnablePgliteSignals();
+        owner.EnableGuestSignals();
         ulong mask = 1UL << 11, changed = 1UL << 9, observed = 0;
         Assert.Equal(0, L.sigprocmask(2, &mask, null));
         ulong slot = 0;
@@ -107,7 +107,7 @@ public sealed unsafe class SignalJumpTests
         using var owner = new L.RuntimeContext();
         using var foreign = new L.RuntimeContext();
         using var binding = owner.Enter();
-        owner.EnablePgliteSignals();
+        owner.EnableGuestSignals();
         ulong slot = 0;
         ulong* pointer = &slot;
         using var activation = L.ArmSignalJumpBuffer(pointer, save);
@@ -146,8 +146,8 @@ public sealed unsafe class SignalJumpTests
     {
         using var owner = new L.RuntimeContext();
         using var binding = owner.Enter();
-        owner.EnablePgliteSignals();
-        L.PgliteSignalAction action = new() { Handler = (nint)(delegate*<int, void>)&JumpHandler };
+        owner.EnableGuestSignals();
+        L.GuestSignalAction action = new() { Handler = (nint)(delegate*<int, void>)&JumpHandler };
         Assert.Equal(0, L.sigaction(14, &action, null));
         ulong slot = 0, observed = 0;
         handlerTarget = &slot;
@@ -156,7 +156,7 @@ public sealed unsafe class SignalJumpTests
         activation.Restore(jump);
         Assert.Equal(0, L.sigprocmask(2, null, &observed));
         Assert.Equal(save == 0 ? (1UL << 13) | (1UL << 9) : 0UL, observed);
-        Assert.False(owner.PgliteSignals!.Delivering);
+        Assert.False(owner.GuestSignals!.Delivering);
         handlerTarget = null;
     }
 
@@ -165,8 +165,8 @@ public sealed unsafe class SignalJumpTests
     {
         using var owner = new L.RuntimeContext();
         using var binding = owner.Enter();
-        owner.EnablePgliteSignals(); delivered = 0;
-        L.PgliteSignalAction action = new() { Handler = (nint)(delegate*<int, void>)&CountingHandler };
+        owner.EnableGuestSignals(); delivered = 0;
+        L.GuestSignalAction action = new() { Handler = (nint)(delegate*<int, void>)&CountingHandler };
         Assert.Equal(0, L.sigaction(14, &action, null));
         ulong slot = 0, block = 1UL << 13;
         ulong* pointer = &slot;
@@ -176,7 +176,7 @@ public sealed unsafe class SignalJumpTests
         var jump = Assert.Throws<L.JumpBufferException>(() => L.siglongjmp(pointer, 1));
         activation.Restore(jump);
         Assert.Equal(0, delivered);
-        owner.PumpPgliteSignals();
+        owner.PumpGuestSignals();
         Assert.Equal(1, delivered);
     }
 
@@ -204,8 +204,8 @@ public sealed unsafe class SignalJumpTests
     public void Pending_queries_do_not_consume_and_wait_consumes_only_selected_blocked_bits()
     {
         using var owner = new L.RuntimeContext();
-        using var binding = owner.Enter(); owner.EnablePgliteSignals(); delivered = 0;
-        L.PgliteSignalAction action = new() { Handler = (nint)(delegate*<int, void>)&CountingHandler };
+        using var binding = owner.Enter(); owner.EnableGuestSignals(); delivered = 0;
+        L.GuestSignalAction action = new() { Handler = (nint)(delegate*<int, void>)&CountingHandler };
         Assert.Equal(0, L.sigaction(13, &action, null));
         Assert.Equal(0, L.sigaction(14, &action, null));
         ulong pipe = 1UL << 12, both = pipe | (1UL << 13), observed = 0;
@@ -216,7 +216,7 @@ public sealed unsafe class SignalJumpTests
         using (var foreign = new L.RuntimeContext())
         using (foreign.Enter())
         {
-            foreign.EnablePgliteSignals();
+            foreign.EnableGuestSignals();
             ulong foreignPending = 99;
             int foreignSignal = 99;
             Assert.Equal(0, L.sigpending(&foreignPending)); Assert.Equal(0UL, foreignPending);
@@ -231,7 +231,7 @@ public sealed unsafe class SignalJumpTests
         Assert.Equal(L.ENOTSUP, L.sigwait(&pipe, &selected)); Assert.Equal(99, selected);
         Assert.Equal(0, L.sigwait(&both, &selected)); Assert.Equal(14, selected);
         Assert.Equal(0, L.sigpending(&observed)); Assert.Equal(0UL, observed);
-        Assert.Equal(0, L.sigprocmask(1, &both, null)); owner.PumpPgliteSignals();
+        Assert.Equal(0, L.sigprocmask(1, &both, null)); owner.PumpGuestSignals();
         Assert.Equal(0, delivered);
     }
 
@@ -239,22 +239,22 @@ public sealed unsafe class SignalJumpTests
     public void Wait_observes_and_consumes_owned_timer_and_pending_observes_expiry()
     {
         using var owner = new L.RuntimeContext();
-        using var binding = owner.Enter(); owner.EnablePgliteSignals(); delivered = 0;
-        L.PgliteSignalAction action = new() { Handler = (nint)(delegate*<int, void>)&CountingHandler };
+        using var binding = owner.Enter(); owner.EnableGuestSignals(); delivered = 0;
+        L.GuestSignalAction action = new() { Handler = (nint)(delegate*<int, void>)&CountingHandler };
         Assert.Equal(0, L.sigaction(14, &action, null));
         ulong alarm = 1UL << 13, observed = 99;
         Assert.Equal(0, L.sigprocmask(0, &alarm, null));
-        L.PgliteIntervalTimer timer = new() { ValueMicroseconds = 2000 };
-        Assert.Equal(0, L.PgliteSetitimer(0, &timer, null));
+        L.GuestIntervalTimer timer = new() { ValueMicroseconds = 2000 };
+        Assert.Equal(0, L.GuestSetitimer(0, &timer, null));
         int selected = 0;
         L.errno = 777;
         Assert.Equal(0, L.sigwait(&alarm, &selected)); Assert.Equal(14, selected); Assert.Equal(777, L.errno);
         Assert.Equal(0, L.sigpending(&observed)); Assert.Equal(0UL, observed);
-        Assert.Equal(0, L.PgliteSetitimer(0, &timer, null));
+        Assert.Equal(0, L.GuestSetitimer(0, &timer, null));
         Thread.Sleep(15);
         Assert.Equal(0, L.sigpending(&observed)); Assert.Equal(alarm, observed);
         Assert.Equal(0, L.sigwait(&alarm, &selected)); Assert.Equal(14, selected);
-        Assert.Equal(0, L.sigprocmask(1, &alarm, null)); owner.PumpPgliteSignals();
+        Assert.Equal(0, L.sigprocmask(1, &alarm, null)); owner.PumpGuestSignals();
         Assert.Equal(0, delivered);
     }
 
@@ -262,7 +262,7 @@ public sealed unsafe class SignalJumpTests
     public void Pending_and_wait_validate_pointers_masks_threads_and_terminal_lifetimes()
     {
         using var owner = new L.RuntimeContext();
-        using var binding = owner.Enter(); owner.EnablePgliteSignals();
+        using var binding = owner.Enter(); owner.EnableGuestSignals();
         ulong mask = 1UL << 12;
         int result = 99;
         Assert.Equal(-1, L.sigpending(null)); Assert.Equal(L.EFAULT, L.errno);

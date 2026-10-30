@@ -22,7 +22,7 @@ public sealed unsafe partial class InitializationBackend
         if (owner.thread != Environment.CurrentManagedThreadId || owner.runtime == null ||
             Runtime.RuntimeContext.Current != owner.runtime)
             throw new InvalidOperationException("A bootstrap safe point requires its owning backend context.");
-        owner.runtime.PumpPgliteSignals();
+        owner.runtime.PumpGuestSignals();
         return true;
     }
 }

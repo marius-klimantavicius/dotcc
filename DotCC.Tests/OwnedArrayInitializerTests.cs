@@ -37,7 +37,8 @@ public sealed class OwnedArrayInitializerTests
             source.ShouldNotContain("/*__dotcc_bound_initializer_address__*/");
             source.ShouldContain("GlobalArrayZeroed<Row>(1200)");
             source.ShouldContain("root_storage[1199] = new()");
-            source.ShouldContain("__dotcc_initializerAddress_");
+            source.ShouldContain("static unsafe Root* __dotcc_globalAddress_root;");
+            source.ShouldNotContain("__DotccGlobalAddressCache");
             Regex.Matches(source, @"void __dotcc_owned_array_\w+_Fill_\d+_\d+\(").Count.ShouldBeGreaterThan(1);
             // Whole rows remain bounded; the C026 containing value stays in place.
             source.ShouldContain("fixed (Root* root_destination");

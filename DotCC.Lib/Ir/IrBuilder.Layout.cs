@@ -13,6 +13,8 @@ internal sealed partial class IrBuilder
     {
         CType.Prim primitive => $"p:{primitive.Bytes}:{(type.AlignmentOverride != 0 ? type.AlignmentOverride : primitive.Bytes)}",
         CType.LongDoubleStorage16 => $"p:16:{(type.AlignmentOverride != 0 ? type.AlignmentOverride : 16)}",
+        CType.Slice => "p:16:8",
+        CType.VoidType => "a:0:p:1:1",
         CType.Func { IsFunctionType: true } => "unsupported:function-type",
         CType.Pointer or CType.Func => $"p:8:{(type.AlignmentOverride != 0 ? type.AlignmentOverride : 8)}",
         CType.Enum enumeration => LayoutType(type.AlignmentOverride != 0
@@ -28,6 +30,27 @@ internal sealed partial class IrBuilder
         _ => "unsupported:" + type.Unqualified.GetType().Name,
     };
 
+    internal readonly System.Collections.Generic.Dictionary<string, ZigStorageLayout> ZigStorageLayouts = new(StringComparer.Ordinal);
+
+    internal void SetZigStorageLayout(string name, ZigStorageLayout storage)
+    {
+        if (ZigStorageLayouts.TryGetValue(name, out var previous)
+            && ZigStorageObjectMetadata.Contract(previous) != ZigStorageObjectMetadata.Contract(storage))
+            throw new IrUnsupportedException("conflicting Zig storage proof for '" + name + "'");
+        ZigStorageLayouts[name] = storage;
+        var index = Types.FindIndex(t => t.Name == name);
+        if (index < 0) throw new IrUnsupportedException("Zig storage registration without source aggregate: " + name);
+        Types[index] = Types[index] with { ZigStorage = storage };
+    }
+
+    internal readonly System.Collections.Generic.Dictionary<string, ZigZeroOwnerLayout> ZigZeroOwners = new(StringComparer.Ordinal);
+    internal void SetZigZeroOwnerLayout(string name, ZigZeroOwnerLayout proof)
+    {
+        ZigZeroOwners[name] = proof;
+        var index = Types.FindIndex(t => t.Name == name);
+        Types[index] = Types[index] with { ZigZeroOwner = proof };
+    }
+
     private LayoutAggregate DescribeAggregate(string name)
     {
         if (_externalTypes.ContainsKey(name))
@@ -38,6 +61,16 @@ internal sealed partial class IrBuilder
         {
             Name = name, Union = _structIsUnion.GetValueOrDefault(name), Packed = _packedStructs.Contains(name), Alignment = _structAlignments.GetValueOrDefault(name), Pack = _structPacks.GetValueOrDefault(name),
         };
+        if (ZigStorageLayouts.TryGetValue(name, out var storage))
+        {
+            aggregate.ZigStorage = ZigStorageObjectMetadata.Contract(storage);
+            aggregate.ZigSourceIdentity = storage.SourceIdentity;
+        }
+        if (ZigZeroOwners.TryGetValue(name, out var owner))
+        {
+            aggregate.ZigZeroOwner = ZigStorageObjectMetadata.ZeroOwnerContract(owner);
+            aggregate.ZigSourceIdentity = owner.SourceCType.Name;
+        }
         foreach (var field in fields)
             aggregate.Fields.Add(new LayoutField { Name = field.Name, Type = LayoutType(field.Type), BitWidth = field.BitWidth, Alignment = field.Alignment });
         return aggregate;

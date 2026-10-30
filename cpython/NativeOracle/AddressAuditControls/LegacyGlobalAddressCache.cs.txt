@@ -1,0 +1,12 @@
+// Historical lazy-address representation retained as an analyzer control.
+// Current compiler output uses eager global pointer members instead.
+internal unsafe ref struct __DotccGlobalAddressCache
+{
+    private ref byte value;
+    internal T* Get<T>(delegate* managed<ref T> acquire) where T : unmanaged
+    {
+        if (global::System.Runtime.CompilerServices.Unsafe.IsNullRef(ref value))
+            value = ref global::System.Runtime.CompilerServices.Unsafe.As<T, byte>(ref acquire());
+        return (T*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref value);
+    }
+}

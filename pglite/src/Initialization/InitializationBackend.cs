@@ -70,7 +70,7 @@ public sealed unsafe partial class InitializationBackend
             using var environment = new InitializationEnvironment();
             using var binding = context.Enter();
             runtime = Runtime.RuntimeContext.Current!;
-            runtime.EnablePgliteSignals();
+            runtime.EnableGuestSignals();
             Redirect(request.InputPath, "rb\0"u8, 0);
             Redirect(request.OutputPath, "wb\0"u8, 1);
             if (request.MergeStandardError)

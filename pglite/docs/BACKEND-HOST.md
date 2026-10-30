@@ -22,7 +22,7 @@ The readonly original source is
 directory-creation code. Their database algorithms and reviewed configuration
 selection remain unchanged.
 
-New runtime implementations are in `DotCC.Libc/PgliteBackend*Lib.cs`. The
+New runtime implementations are in `DotCC.Libc/PosixBackend*Lib.cs`. The
 supervisor explicitly granted only the existing `UnsupportedPosixLib.cs`
 umask/getrlimit routes and `PosixFsLib.cs` OpenLinuxStream/mkdir hooks to this
 owner. The supervisor supplied shared header declarations and the
@@ -41,7 +41,7 @@ authoritative check for any additional missing names or signature mismatches.
 
 ## Runtime contracts
 
-`PgliteBackendProcessLib.cs` supplies an owner-local creation mask and the real
+`PosixBackendProcessLib.cs` supplies an owner-local creation mask and the real
 Linux x64 LP64 getrlimit query. Each owner's initial mask is captured lazily from
 the read-only `Umask` entry in `/proc/self/status`. umask exchanges only its low
 nine permission bits, returns the previous mask, and preserves guest errno on
@@ -53,7 +53,7 @@ apply this mask. getrlimit passes a private 16-byte result to the real host quer
 and copies it to caller storage only on success; it never changes process limits.
 setrlimit retains its explicit unsupported contract.
 
-`PgliteBackendStorageLib.cs` applies exact guest permissions to newly created
+`PosixBackendStorageLib.cs` applies exact guest permissions to newly created
 Linux files, including ordinary open and stdio opens through OpenLinuxStream.
 It first attempts native exclusive creation; only a descriptor proven newly
 created receives fchmod. For existing objects it retries without O_CREAT, so
@@ -82,7 +82,7 @@ stream cursors, and null offsets advance the FileStream logical cursors. Native
 file numbers are never confused with owner-local descriptors. Unsupported host
 platforms and missing symbols fail explicitly.
 
-`PgliteBackendTextLib.cs` supplies isascii and implicit-locale wide scalar
+`PosixBackendTextLib.cs` supplies isascii and implicit-locale wide scalar
 classification/case mapping using the existing owner's global/thread locale and
 validated native scalar service. C/POSIX remains ASCII; C.UTF-8 supports Unicode
 scalars. No native wide strings or host locale mutations cross the boundary.
@@ -90,18 +90,18 @@ strtof uses an immutable explicit C numeric locale and real binary32 parsing,
 including native errno, signed zero, hex forms and end-pointer rules. This avoids
 the double rounding from converting an intermediate binary64 result.
 
-`PgliteBackendMathLib.cs` supplies scalar lgamma/tgamma through the system math
+`PosixBackendMathLib.cs` supplies scalar lgamma/tgamma through the system math
 service, following the existing shared erf/erfc boundary. lgamma_r avoids
 modifying the host's signgam. Original PostgreSQL SQL/math/error logic stays
 translated. These imports are libc/libm primitives, never PostgreSQL symbols.
 
-`PgliteBackendNetworkLib.cs` returns real Linux LP64 getifaddrs lists, preserving
+`PosixBackendNetworkLib.cs` returns real Linux LP64 getifaddrs lists, preserving
 all native records, addresses, flags, union aliases and opaque ancillary data.
 Only the allocating owner can free a list. A native-list registry rejects foreign
 or double release and drains abandoned lists during owner disposal. Guest output
 storage is cleared before a failed query, and null output is EFAULT.
 
-`PgliteBackendDiagnosticsLib.cs` captures and symbolizes actual native host stack
+`PosixBackendDiagnosticsLib.cs` captures and symbolizes actual native host stack
 addresses. A JIT's managed frames may be absent from the system unwinder; no
 synthetic database frames are invented. backtrace_symbols copies native strings
 into one guest malloc block and immediately releases native allocation, retaining
@@ -164,7 +164,7 @@ python3 -B pglite/scripts/backendhost-probe.py \
 The continuing actual-source audit found that the former directory-open EISDIR
 failure caused original `fsync_fname`/`fsync_fname_ext` to take their portable
 unsupported-platform success path. That is insufficient for the selected Linux
-durability contract. `PgliteBackendDirectoryLib.cs` now adopts actual native
+durability contract. `PosixBackendDirectoryLib.cs` now adopts actual native
 directory descriptors without passing them to FileStream. It reuses the
 existing captured shared-stream/refcount backing for dup/dup2 and disposal;
 the final close releases the original SafeFileHandle. FileSlot distinguishes

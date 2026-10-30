@@ -21,6 +21,8 @@ internal sealed class ZigModule
 {
     /// <summary>Canonical absolute path — the graph's registry key (one module per file).</summary>
     public string Path { get; }
+    /// <summary>Named module scope inherited by relative file imports, independent of the file's directory.</summary>
+    internal string? ModuleName { get; set; }
 
     /// <summary>The resilient parse: the tree over the well-formed top-level decls, plus one
     /// <see cref="ParseErrorInfo"/> per decl that failed to parse and was skipped.</summary>
@@ -34,11 +36,19 @@ internal sealed class ZigModule
     /// breaks an import cycle (set before preparing).</summary>
     public ZigLowering? Lowering { get; set; }
 
-    public ZigModule(string path, ResilientParseResult parse)
+    public ZigModule(string path, ResilientParseResult parse,
+        IReadOnlyDictionary<string, ParseErrorInfo>? skippedDecls = null)
     {
         Path = path;
         Parse = parse;
+        SkippedDecls = skippedDecls ?? new Dictionary<string, ParseErrorInfo>(StringComparer.Ordinal);
     }
+
+    /// <summary>Each top-level declaration the resilient parse SKIPPED, by name → the error that
+    /// skipped it. A skipped decl is absent from <see cref="Decls"/>, so without this a reference to it
+    /// reads as "unresolved name" and hides the real wall, which is a parse gap
+    /// (<c>findScalarPos</c> in <c>mem.zig</c>: a <c>comptime if</c> statement).</summary>
+    public IReadOnlyDictionary<string, ParseErrorInfo> SkippedDecls { get; }
 
     /// <summary>Top-level declarations that parsed cleanly, in source order (a skipped decl is absent
     /// here and recorded in <see cref="Errors"/>). Flattened via the shared <see cref="ZigLowering"/>
@@ -59,14 +69,112 @@ internal sealed class ZigModule
 /// </summary>
 internal sealed class ZigImportScope
 {
+    internal ZigMemberIdentityRegistry MemberIdentities { get; } = new();
+
+    // Logical shapes belong to this compiler invocation and are shared by imported modules.
+    public ZigLowering.BitcastWidthMetadata BitcastWidths { get; } = new();
+
     /// <summary>Per container name, method name → the mangled free function it lowered to.</summary>
     public Dictionary<string, Dictionary<string, Symbol>> Methods { get; } = new(StringComparer.Ordinal);
 
     /// <summary>Per enum name, member name → its enum-constant symbol.</summary>
     public Dictionary<string, Dictionary<string, Symbol>> EnumMembers { get; } = new(StringComparer.Ordinal);
 
+    /// <summary>A reified container's method whose BODY is held until something references the method (task #190), →
+    /// the action that queues it for its owner's drain. Shared: the reference may come from another module.</summary>
+    public Dictionary<Symbol, System.Action> DormantMethodBodies { get; } = new();
+
     /// <summary>(container, method) → the module that owns an as-yet-undeclared lazy method + its AST.</summary>
     public Dictionary<(string container, string method), (ZigLowering owner, Item decl)> LazyMethodDecls { get; } = new();
+
+    /// <summary>A file-as-struct container's IR name → the module whose top-level functions are its
+    /// methods (road-to-zig-std G3: <c>Io/Writer.zig</c> declares fields at file scope).</summary>
+    public Dictionary<string, ZigLowering> FileStructOwners { get; } = new(StringComparer.Ordinal);
+
+    /// <summary>A GENERIC container method's template symbol → the module that declared it (and so holds
+    /// its template and drains its instances), so a call from any module in the chain instantiates it.</summary>
+    public Dictionary<Symbol, ZigLowering> GenericMethodOwners { get; } = new();
+
+    /// <summary>Each function's declared RETURN width (see ZigLowering's <c>_fnReturnBits</c>), shared: a generic
+    /// instantiated in its owner module (<c>std.math.cast(isize, v)</c>) is read from the caller's.</summary>
+    public Dictionary<Symbol, int> FnReturnBits { get; } = new();
+
+    /// <summary>Each struct field's declared integer width, by (struct IR name, field), shared: std.Io.Writer.printValue reads
+    /// a user struct's field (<c>@field(value, f_name)</c>) and asks its width (task #121).</summary>
+    public Dictionary<(string Struct, string Field), int> StructFieldBits { get; } = new();
+
+    /// <summary>Each struct field's attributes for <c>@typeInfo(T).@"struct".field_attrs</c>, by (struct IR name, field),
+    /// shared: std.MultiArrayList reads a user struct's (task #108). <c>Align</c> is the spelled <c>align(N)</c> expression,
+    /// evaluated in <c>Owner</c>, the module that declared the struct.</summary>
+    public Dictionary<(string Struct, string Field), (Item? Align, bool HasDefault, ZigLowering Owner)> StructFieldAttrs { get; } = new();
+
+    /// <summary>Each struct field's spelled sentinel (<see cref="ZigLowering.ZigSentinel"/>), by (struct IR name, field),
+    /// shared: std.json.static's innerParse reads a user struct's field types and asks `ptrInfo.sentinel()` (task #213).</summary>
+    public Dictionary<(string Struct, string Field), ZigLowering.ZigSentinel> StructFieldSentinels { get; } = new();
+
+    /// <summary>The struct types synthesized for untyped anonymous struct literals, by their field names and types, shared
+    /// so every module gives one shape one type (task #108).</summary>
+    public Dictionary<string, string> AnonStructs { get; } = new(StringComparer.Ordinal);
+
+    /// <summary>A reified instance's nested containers whose body is not registered yet, by mangled name (task #135):
+    /// the container's AST, the list its methods are deferred to, the instance that encloses it, and the module
+    /// reifying it. Shared, since another module may be the first to need the fields.</summary>
+    public Dictionary<string, (object? Content, List<(string container, Item fnDef)> Methods, string Instance, ZigLowering Owner)> PendingNestedBodies { get; }
+        = new(StringComparer.Ordinal);
+
+    /// <summary>Above zero while ANY module evaluates a type-returning body (compile-time code), shared: std.meta.FieldEnum's
+    /// body (meta.zig) instantiates std.simd.iota in simd.zig, whose `@Vector(3, u8)` result is then a compile-time
+    /// value (task #108).</summary>
+    public int TypeBodyDepth { get; set; }
+
+    /// <summary>A reified container's methods whose SIGNATURE did not lower, by (container IR name, method) → the failure,
+    /// shared: zig analyses a declaration only when it is referenced, so the failure is raised at the first call
+    /// (<c>ZigLowering.EnsureMethodDeclared</c>), not while the type is reified (std.MultiArrayList's debugger-only
+    /// <c>dbHelper(…, entry: *Entry)</c>, task #108).</summary>
+    public Dictionary<(string Container, string Method), string> FailedMethods { get; } = new();
+
+    /// <summary>A container's IR name → the module holding its VALUE consts, so a decl literal
+    /// (<c>var list: std.array_list.Aligned(u8, null) = .empty;</c>) written in another module lowers the
+    /// const where it was declared.</summary>
+    public Dictionary<string, ZigLowering> ContainerConstOwners { get; } = new(StringComparer.Ordinal);
+
+    /// <summary>Every tagged union's layout by its (module-qualified) IR name, so a module that switches on
+    /// or builds another module's union (`switch (placeholder.arg) { .none => … }` in Io/Writer.zig over
+    /// std.fmt.Specifier) knows it is one.</summary>
+    public Dictionary<string, ZigLowering.ZigUnionInfo> Unions { get; } = new(StringComparer.Ordinal);
+
+    private readonly Dictionary<string, string> _modulePrefixes = new(StringComparer.Ordinal);
+    private readonly HashSet<string> _usedPrefixes = new(StringComparer.Ordinal);
+
+    /// <summary>The IR-name prefix for an IMPORTED module's containers (module-qualified container
+    /// naming): the module's path relative to the std root when it lives there (<c>fmt</c>,
+    /// <c>Io_Writer</c>), else its file stem (<c>util</c>), sanitized to an identifier and de-duplicated
+    /// across this import chain (<c>util_2</c>) — so two modules' same-named containers, and a std
+    /// container named like one of dotcc's runtime types (<c>std.fmt.Alignment</c>), never share an
+    /// emitted C# type name. Stable per module path (memoized).</summary>
+    public string ModulePrefixFor(string modulePath, string? stdDir)
+    {
+        if (_modulePrefixes.TryGetValue(modulePath, out var known)) { return known; }
+        string rel;
+        if (stdDir is not null
+            && modulePath.StartsWith(stdDir, StringComparison.OrdinalIgnoreCase)
+            && modulePath.Length > stdDir.Length)
+        {
+            rel = modulePath[stdDir.Length..].TrimStart('/', '\\');
+        }
+        else
+        {
+            rel = System.IO.Path.GetFileName(modulePath);
+        }
+        if (rel.EndsWith(".zig", StringComparison.OrdinalIgnoreCase)) { rel = rel[..^4]; }
+        var sb = new System.Text.StringBuilder(rel.Length);
+        foreach (var ch in rel) { sb.Append(char.IsAsciiLetterOrDigit(ch) ? ch : '_'); }
+        var baseName = sb.Length == 0 || char.IsAsciiDigit(sb[0]) ? "m" + sb : sb.ToString();
+        var prefix = baseName;
+        for (var n = 2; !_usedPrefixes.Add(prefix); n++) { prefix = baseName + "_" + n; }
+        _modulePrefixes[modulePath] = prefix;
+        return prefix;
+    }
 }
 
 /// <summary>
@@ -85,24 +193,33 @@ internal sealed class ZigImportScope
 internal sealed class ZigModuleGraph
 {
     private readonly Parser _parser;
-    private readonly LexerGrammar _lexerTable;
+    private readonly IReadOnlyDictionary<string, LexRule[]> _lexerTable;
     private readonly IReadOnlySet<int> _syncTerminals;
     private readonly IReadOnlySet<int> _openBrackets;
     private readonly IReadOnlySet<int> _closeBrackets;
-    private readonly Dictionary<string, ZigModule> _modules = new(StringComparer.OrdinalIgnoreCase);
+    private readonly int _identId;
+    private readonly HashSet<int> _declKeywordIds;
+    private readonly Dictionary<(string? Scope, string Path), ZigModule> _modules = new();
+    private readonly Dictionary<string, string?> _fileOwners = new(OperatingSystem.IsWindows() ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal);
     private readonly List<ZigLowering> _lowerings = new();
+    private readonly ZigCompilationOptions? _options;
 
     /// <summary>The real <c>std.zig</c> root file path (from <c>--zig-lib-dir</c> / the
     /// <c>DOTCC_ZIG_LIB_DIR</c> env), or null when no std source tree is configured — then
     /// <c>@import("std")</c> stays purely on the curated path and a non-curated <c>std.x</c> errors.</summary>
     internal string? StdRootPath { get; }
 
-    public ZigModuleGraph(string? stdRootPath = null)
+    public ZigModuleGraph(string? stdRootPath = null, ZigCompilationOptions? options = null)
     {
         _parser = Zig.BuildParser(Zig.IdentityVisitor.Instance);
-        _lexerTable = LexerGrammar.Zig;
+        _lexerTable = Zig.BuildLexer();
         (_syncTerminals, _openBrackets, _closeBrackets) = BuildRecoverySets(_parser.Grammar);
+        var names = _parser.Grammar.SymbolNames;
+        int Id(string name) => Array.FindIndex(names, n => n.Name == name);
+        _identId = Id("IDENT");
+        _declKeywordIds = new HashSet<int> { Id("fn"), Id("const"), Id("var") };
         StdRootPath = stdRootPath;
+        _options = options;
     }
 
     /// <summary>Resolve an <c>@import</c> spec to a module, parsing (resiliently) and caching on first
@@ -110,11 +227,15 @@ internal sealed class ZigModuleGraph
     /// <paramref name="importerDir"/>; an absolute path is used as-is. (<c>"std"</c> and the synthetic
     /// modules are layered on in a later step.) Throws if the file can't be read — a referenced import
     /// that doesn't exist is a loud error, not a silent skip.</summary>
-    public ZigModule Load(string spec, string importerDir)
+    public ZigModule Load(string spec, string importerDir, string? moduleName = null)
     {
+        if (moduleName is not null && _options?.Dependency(moduleName, spec) is { } dependency)
+            return LoadPath(dependency.Root, dependency.Name);
         var full = Path.GetFullPath(Path.IsPathRooted(spec) ? spec : Path.Combine(importerDir, spec));
-        return LoadPath(full);
+        return LoadPath(full, full == StdRootPath ? null : moduleName);
     }
+
+    internal bool HasDependency(string? owner, string alias) => owner is not null && _options?.Dependency(owner, alias) is not null;
 
     /// <summary>Resolve a SYNTHETIC module — <c>builtin</c> / <c>root</c>, the compiler-provided
     /// modules with no file on disk (road-to-zig-std S3). Generated as Zig source and cached under a
@@ -122,24 +243,29 @@ internal sealed class ZigModuleGraph
     /// same lazy preparation, the same navigation. Null when the spec names no synthetic module.</summary>
     public ZigModule? LoadSynthetic(string spec)
     {
+        if (spec == "root" && _options is not null) return LoadPath(_options.GetModule(_options.RootModule).Root, _options.RootModule);
         if (ZigSyntheticModules.PathForSpec(spec) is not { } path) { return null; }
-        if (_modules.TryGetValue(path, out var existing)) { return existing; }
-        var module = ParseSource(path, ZigSyntheticModules.SourceForPath(path));
-        _modules[path] = module;
+        if (_modules.TryGetValue((null, path), out var existing)) { return existing; }
+        var module = ParseSource(path, ZigSyntheticModules.SourceForPath(path, withStd: StdRootPath is not null, outputMode: _options?.OutputMode, optimizeMode: _options?.OptimizeMode));
+        _modules[(null, path)] = module;
         return module;
     }
 
     /// <summary>Resolve a canonical file path to a module (parse + cache on first touch).</summary>
-    public ZigModule LoadPath(string path)
+    public ZigModule LoadPath(string path, string? moduleName = null)
     {
         var full = Path.GetFullPath(path);
-        if (_modules.TryGetValue(full, out var existing))
+        if (_fileOwners.TryGetValue(full, out var owner) && owner != moduleName)
+            throw new CompileException($"Zig modules: file '{full}' belongs to both '{owner ?? "std/default"}' and '{moduleName ?? "std/default"}'");
+        _fileOwners[full] = moduleName;
+        if (_modules.TryGetValue((moduleName, full), out var existing))
         {
             return existing;
         }
-        var source = File.ReadAllText(full);
+        var source = ZigSourceText.Read(full);
         var module = ParseSource(full, source);
-        _modules[full] = module;
+        module.ModuleName = moduleName;
+        _modules[(moduleName, full)] = module;
         return module;
     }
 
@@ -147,15 +273,131 @@ internal sealed class ZigModuleGraph
     /// cache — the seam unit tests drive, and the primitive <see cref="LoadPath"/> builds on.</summary>
     public ZigModule ParseSource(string path, string source)
     {
-        using var lexer = _lexerTable.FromString(source);
+        using var lexer = BytesLexer.FromString(source, _lexerTable);
         using var tokens = new SyncLATokenIterator(lexer);
         var result = _parser.ParseInputResilient(tokens, _syncTerminals, _openBrackets, _closeBrackets);
-        return new ZigModule(path, result);
+        return new ZigModule(path, result, result.Errors.Count == 0 ? null : FindSkippedDecls(source, result.Errors));
+    }
+
+    /// <summary>Name the top-level declaration each parse error skipped. The error records only where
+    /// skipping began, inside the declaration, so re-lex the file (only a file that HAD errors) and take
+    /// the last top-level <c>fn NAME</c> / <c>const NAME</c> / <c>var NAME</c> before that point, at
+    /// bracket depth 0 so a method or local inside it does not count. The first error of a declaration
+    /// names it.</summary>
+    private Dictionary<string, ParseErrorInfo> FindSkippedDecls(string source, IReadOnlyList<ParseErrorInfo> errors)
+    {
+        var starts = new List<(long offset, string name)>();
+        using (var lexer = BytesLexer.FromString(source, _lexerTable))
+        {
+            var depth = 0;
+            var pendingDeclKeyword = false;
+            while (lexer.MoveNext() && lexer.Current is { } t && t.ID != Item.EOF.ID)
+            {
+                if (_openBrackets.Contains(t.ID)) { depth++; }
+                else if (_closeBrackets.Contains(t.ID)) { depth = Math.Max(0, depth - 1); }
+                if (depth == 0 && pendingDeclKeyword && t.ID == _identId && t.Content is string name)
+                {
+                    starts.Add((t.Position.ByteOffset, name));
+                }
+                pendingDeclKeyword = depth == 0 && _declKeywordIds.Contains(t.ID);
+            }
+        }
+        var skipped = new Dictionary<string, ParseErrorInfo>(StringComparer.Ordinal);
+        foreach (var error in errors)
+        {
+            var at = error.SkippedFrom.ByteOffset;
+            string? owner = null;
+            foreach (var (offset, name) in starts)
+            {
+                if (offset > at) { break; }
+                owner = name;
+            }
+            if (owner is not null) { skipped.TryAdd(owner, error); }
+        }
+        return skipped;
     }
 
     /// <summary>Register a lazily-prepared module's lowering so the top-level drain reaches its pending
     /// function bodies (road-to-zig-std S2).</summary>
     internal void RegisterLowering(ZigLowering lowering) => _lowerings.Add(lowering);
+
+    /// <summary>Lower <paramref name="fn"/>'s pending body now, in whichever module owns it (the comptime
+    /// engine's E2, <see cref="IrBuilder.DemandFuncBody"/>). False when no module has it pending.</summary>
+    internal bool TryLowerBodyOnDemand(Symbol fn)
+    {
+        foreach (var root in _roots)
+        {
+            if (root.TryLowerBodyOnDemand(fn)) { return true; }
+        }
+        for (var i = 0; i < _lowerings.Count; i++)
+        {
+            if (_lowerings[i].TryLowerBodyOnDemand(fn)) { return true; }
+        }
+        return false;
+    }
+
+    /// <summary>The root modules (the input files), which drain their own bodies and so are not in the
+    /// lazy module list, but can still own a body a comptime call demands.</summary>
+    private readonly List<ZigLowering> _roots = new();
+
+    /// <summary>The module that declares the container registered under IR name <paramref name="container"/>
+    /// (module-qualified, so unique), or null.</summary>
+    internal ZigLowering? OwnerOfContainer(string container)
+    {
+        // The prefixed (imported) modules first: a root's unprefixed names can only be its own.
+        foreach (var lowering in _lowerings)
+        {
+            if (lowering.DeclaresContainer(container)) { return lowering; }
+        }
+        foreach (var root in _roots)
+        {
+            if (root.DeclaresContainer(container)) { return root; }
+        }
+        return null;
+    }
+
+    /// <summary>Record a root module for <see cref="TryLowerBodyOnDemand"/>.</summary>
+    internal void RegisterRoot(ZigLowering lowering) => _roots.Add(lowering);
+
+    /// <summary>The emitted names of every root unit's top-level functions, which are unmangled (task #190).</summary>
+    internal IEnumerable<string> RootFunctionTargetNames() => _roots.SelectMany(r => r.TopLevelFunctionTargetNames());
+
+    /// <summary>Every deferred <c>comptime</c> fold of the build, from any module (Milestone T pass 3,
+    /// lifted to the graph). A fold may call a function another module owns, such as
+    /// <c>std.math.maxInt(u8)</c>, whose instance body lowers only in <see cref="DrainAll"/>, so the
+    /// folds resolve once every module has drained (<see cref="ResolveComptimeFolds"/>).</summary>
+    internal List<ComptimeFold> PendingComptimeFolds { get; } = new();
+
+    /// <summary>Resolve every queued comptime fold with the shared interpreter, once all function bodies
+    /// of every module are lowered. A value that does not fold is a loud error.</summary>
+    internal void ResolveComptimeFolds(IrBuilder ir)
+    {
+        foreach (var fold in PendingComptimeFolds)
+        {
+            fold.Resolved = ir.ResolveComptimeFold(fold.Inner) ?? throw ir.ComptimeFoldFailure(fold.Inner);
+        }
+        PendingComptimeFolds.Clear();
+        // A comptime-only function has no runtime existence: every call to it was a fold, now spliced.
+        if (ComptimeOnlyFns.Count > 0) { ir.Functions.RemoveAll(f => ComptimeOnlyFns.Contains(f.Sym)); }
+    }
+
+    /// <summary>Every comptime-only function instance of the build (a <c>comptime_int</c> return, such as
+    /// <c>std.math.maxInt(u8)</c>'s), from any module. Each call to one is a fold; the bodies exist only
+    /// for the interpreter, so <see cref="ResolveComptimeFolds"/> drops them from the emitted program.</summary>
+    internal HashSet<Symbol> ComptimeOnlyFns { get; } = new();
+
+    /// <summary>Runtime call edges of the build, caller to callees, from any module (task #92).</summary>
+    internal Dictionary<Symbol, HashSet<Symbol>> RuntimeCalls { get; } = new();
+
+    /// <summary>Functions of the build whose body only compiles at comptime, with the error a runtime call reports: a
+    /// non-inline one returning from a <c>comptime { }</c> block (task #92), one iterating a tuple (task #100).</summary>
+    internal Dictionary<Symbol, string> ComptimeReturnFns { get; } = new();
+
+    /// <summary>zig's "function called at runtime cannot return value at comptime", once every body is lowered: see
+    /// <see cref="ZigLowering.CheckComptimeReturnsAtRuntime"/>, rooted at each root module's runtime roots.</summary>
+    internal void CheckComptimeReturnsAtRuntime()
+        => ZigLowering.CheckComptimeReturnsAtRuntime(_roots.SelectMany(r => r.RuntimeRoots()), RuntimeCalls, ComptimeReturnFns,
+            ComptimeOnlyFns);
 
     /// <summary>Drain every lazy module's enqueued function bodies at TOP LEVEL, to a fixpoint. Lowering a
     /// body may reference more decls (in this or another module) or prepare a NEW module, so this loops
@@ -200,7 +442,7 @@ internal sealed class ZigModuleGraph
         var sync = new HashSet<int>
         {
             Id("fn"), Id("pub"), Id("const"), Id("var"), Id("extern"),
-            Id("export"), Id("comptime"), Id("threadlocal"), Id("test"), Id("IDENT"),
+            Id("export"), Id("comptime"), Id("threadlocal"), Id("test"), Id("IDENT"), Id("inline"),
         };
         var open = new HashSet<int> { Id("{"), Id("("), Id("[") };
         var close = new HashSet<int> { Id("}"), Id(")"), Id("]") };

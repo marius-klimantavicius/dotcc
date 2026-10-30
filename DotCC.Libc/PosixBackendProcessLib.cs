@@ -49,7 +49,7 @@ public static unsafe partial class Libc
     /// Existing objects and explicit chmod/fchmod must not call this hook.</summary>
     internal static uint ApplyCreationMode(uint mode) => mode & ~EffectiveCreationMask;
 
-    internal static uint PgliteBackendUmask(uint mask)
+    internal static uint BackendUmask(uint mask)
     {
         var owner = RuntimeState;
         lock (owner.CreationMaskGate)
@@ -69,7 +69,7 @@ public static unsafe partial class Libc
 
     /// <summary>Query real Linux LP64 process resource limits. Guest storage is
     /// written only on success; the host's limits are never changed.</summary>
-    internal static int PgliteBackendGetrlimit(int resource, void* limit)
+    internal static int BackendGetrlimit(int resource, void* limit)
     {
         if (limit == null) { errno = EFAULT; return -1; }
         if (!OperatingSystem.IsLinux() || RuntimeInformation.ProcessArchitecture != Architecture.X64)

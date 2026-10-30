@@ -24,7 +24,7 @@ manually edited, and no native PostgreSQL engine is a product backend.
 
 ## Host services and complete fork libc
 
-`DotCC.Libc/PgliteProcessServicesLib.cs` provides owner-scoped, ref-returning
+`DotCC.Libc/ProcessServicesLib.cs` provides owner-scoped, ref-returning
 `optind` storage initially one, and the actual BCL host page-size query.
 It deliberately supplies no replacement getopt algorithm. The exact read-only
 `popen("locale -a", "r")` (also `"re"`) uses the real host locale utility as
@@ -39,7 +39,7 @@ in-process transport extension points.
 first unsigned-byte match, otherwise the original NUL terminator, without
 allocation, errno mutation or reading beyond that terminator.
 
-`PglitePosixIoLib.cs` implements positioned scalar/vector I/O on owned file
+`PosixIoLib.cs` implements positioned scalar/vector I/O on owned file
 descriptors. Linux uses actual pread/pwrite/preadv/pwritev on the FileStream's
 retained SafeFileHandle; synthetic descriptor numbers never reach the kernel.
 The other-platform path uses RandomAccess and a bounded vector gather/scatter

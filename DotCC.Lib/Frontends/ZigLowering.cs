@@ -30,8 +30,8 @@ namespace DotCC.Frontends;
 /// result type anyway, because the C# BACKEND promotes identically (<c>u8 + u8</c> is
 /// <c>int</c> in C# too) and inserts the narrowing cast back at the typed sink. A
 /// comparison / boolean op is typed <see cref="CType.Int"/>: the backend renders it as
-/// an integer-valued <c>(CBool)(…)</c> and wraps every condition in <c>Cond.B(…)</c>,
-/// so an <c>int</c>-typed relational feeds <c>if</c>/<c>while</c>/ternary cleanly.
+/// an integer-valued <c>(CBool)(…)</c> as a value and as the plain C# comparison in a
+/// condition, so an <c>int</c>-typed relational feeds <c>if</c>/<c>while</c>/ternary cleanly.
 /// </summary>
 internal sealed partial class ZigLowering
 {
@@ -50,6 +50,7 @@ internal sealed partial class ZigLowering
     /// <summary>Directory of the file being lowered — the base a relative <c>@import</c> resolves
     /// against (null for an in-memory/standalone unit).</summary>
     private readonly string? _importerDir;
+    private readonly string? _moduleName;
 
     /// <summary>Bound name of a <c>const X = @import("…zig");</c> → its raw import spec (a relative
     /// path, or the absolute <c>std.zig</c> path for <c>@import("std")</c>), recorded WITHOUT resolving —
@@ -57,35 +58,21 @@ internal sealed partial class ZigLowering
     /// LAZILY on first navigation/use (<see cref="ResolveImport"/>). Road-to-zig-std S1/S2.</summary>
     private readonly Dictionary<string, string> _importSpecs = new(System.StringComparer.Ordinal);
 
+    /// <summary>Names this module declares as <c>extern var</c> (data a linked library defines). dotcc binds
+    /// no extern data, so the declaration is inert and only a reference to one is rejected, by name.</summary>
+    private readonly HashSet<string> _externVars = new(System.StringComparer.Ordinal);
+
     /// <summary>Memo of a bound import name → the resolved+prepared <see cref="ZigModule"/> (populated by
     /// <see cref="ResolveImport"/> on first use), so <c>X.func(…)</c> / a <c>X.sub</c> navigation resolves
     /// the module without re-loading.</summary>
     private readonly Dictionary<string, ZigModule> _importModules = new(System.StringComparer.Ordinal);
-
-    // Retain const expressions so namespace/type re-exports can resolve on demand.
-    // Preparing an import must not eagerly follow every re-export in its source.
-    private readonly Dictionary<string, Item> _moduleConstExprs = new(System.StringComparer.Ordinal);
-    private readonly HashSet<string> _resolvingConstExports = new(System.StringComparer.Ordinal);
 
     /// <summary>Resolve an import bound in THIS unit by <paramref name="name"/> to its module, loading +
     /// preparing it (lazily) on first use and memoizing. Null when <paramref name="name"/> isn't a
     /// bound file import (e.g. an unconfigured <c>std</c>, or a plain value const).</summary>
     internal ZigModule? ResolveImport(string name)
     {
-        if (_importModules.TryGetValue(name, out var existing)) { return existing; }
-        if (!_importSpecs.ContainsKey(name) && _moduleConstExprs.TryGetValue(name, out var alias)
-            && _resolvingConstExports.Add(name))
-        {
-            try
-            {
-                if (ResolveModulePath(alias) is { } aliased)
-                {
-                    _importModules[name] = aliased;
-                    return aliased;
-                }
-            }
-            finally { _resolvingConstExports.Remove(name); }
-        }
+        if (_importModules.TryGetValue(name, out var existing)) { existing.Lowering?.ThrowTopComptimeFailure(); return existing; }
         if (!_importSpecs.TryGetValue(name, out var spec) || _moduleGraph is null) { return null; }
         // A SYNTHETIC module (`builtin` / `root` — road-to-zig-std S3): generated as Zig source and
         // prepared exactly like a file module, so navigation into it needs no second rule. Checked
@@ -97,17 +84,27 @@ internal sealed partial class ZigLowering
             _importModules[name] = synth;
             return synth;
         }
+        // The standard library is a compiler-provided named module, not a
+        // relative file called "std". Inline imports also need this identity.
+        if (spec == "std" && _moduleGraph.StdRootPath is { } standardRoot)
+        {
+            var standard = _moduleGraph.LoadPath(standardRoot);
+            EnsureModulePrepared(standard);
+            _importModules[name] = standard;
+            return standard;
+        }
         if (_importerDir is not null)
         {
             // Only a resolvable `.zig` file becomes a navigable module; a missing file isn't navigable,
             // so return null and let the caller error if it was actually used (rather than throw a raw
             // file-not-found here).
             var full = System.IO.Path.IsPathRooted(spec) ? spec : System.IO.Path.Combine(_importerDir, spec);
-            if (!spec.EndsWith(".zig", System.StringComparison.Ordinal) || !System.IO.File.Exists(full))
+            if (!_moduleGraph.HasDependency(_moduleName, spec)
+                && (!spec.EndsWith(".zig", System.StringComparison.Ordinal) || !System.IO.File.Exists(full)))
             {
                 return null;
             }
-            var mod = _moduleGraph.Load(spec, _importerDir);
+            var mod = _moduleGraph.Load(spec, _importerDir, _moduleName);
             EnsureModulePrepared(mod);
             _importModules[name] = mod;
             return mod;
@@ -121,15 +118,121 @@ internal sealed partial class ZigLowering
     /// Null when the expression isn't a module path (road-to-zig-std S1/S2).</summary>
     private ZigModule? ResolveModulePath(Item expr) => expr.Content switch
     {
-        Zig.Ident id => ResolveImport(Tok(id.Arg0)),
+        // A bare name is an import, or an ALIAS of a module path (`const math = std.math;`, recorded
+        // unresolved in _moduleAliasPaths), which is how std spells nearly every cross-file reference.
+        Zig.Ident id => ResolveNamedModule(Tok(id.Arg0)),
         Zig.Field f when ResolveModulePath(f.Arg0) is { Lowering: { } baseLowering } =>
-            baseLowering.ResolveImport(Tok(f.Arg2)),
+            baseLowering.ResolveNamedModule(Tok(f.Arg2)),
+        // A module bound as a const of a NESTED container another module declares (std.crypto's
+        // `pub const hash = struct { pub const sha2 = @import("crypto/sha2.zig"); … }`, so `std.crypto.hash.sha2`).
+        Zig.Field f when f.Arg0.Content is Zig.Field && TryResolveModuleNestedType(f.Arg0) is { Type: var nestedType, Owner: var nestedOwner }
+                         && ContainerTypeName(nestedType) is { } nestedName =>
+            nestedOwner.ContainerConstModule(nestedName, Tok(f.Arg2)),
+        // An INLINE import (`pub const block = @import("sort/block.zig").block;` in sort.zig): the spec is
+        // registered under a synthetic import name, so it resolves (and memoizes) exactly as `const x =
+        // @import("…");` does.
+        Zig.BuiltinCall { Arg2: not null } b when Tok(b.Arg0) == "@import" && Flatten(b.Arg2) is { Count: 1 } ia
+                               && ia[0].Content is Zig.StrLit sl =>
+            ResolveInlineImport(Tok(sl.Arg0).Trim('"')),
+        // `@field(Target, @tagName(family))` (std.Target.Cpu.has's parameter type): a module member named by a
+        // comptime string, on a module or on this file's own `@This()`.
+        Zig.BuiltinCall { Arg2: not null } fb when Tok(fb.Arg0) == "@field" && Flatten(fb.Arg2) is { Count: 2 } fa
+                               && ComptimeName(fa[1]) is { } member
+                               && FieldBaseModule(fa[0]) is { } baseModule =>
+            baseModule.ResolveNamedModule(member),
         _ => null,
     };
+
+    /// <summary>The module a container const names (<c>pub const sha2 = @import("crypto/sha2.zig");</c> inside a
+    /// namespace struct), resolved in that container's scope; null when the const is not a module path.</summary>
+    private ZigModule? ContainerConstModule(string container, string name)
+    {
+        if (!_containerConsts.TryGetValue(container, out var consts) || !consts.TryGetValue(name, out var entry)
+            || entry.typeItem is not null)
+        {
+            return null;
+        }
+        using var scope = EnterContainer(container);
+        return ResolveModulePath(entry.rhs);
+    }
+
+    /// <summary>The module an <c>@field</c> base denotes: a module path, or a name bound to this file's own
+    /// file-as-struct type (<c>const Target = @This();</c> in Target.zig), which is this module.</summary>
+    private ZigLowering? FieldBaseModule(Item baseItem)
+    {
+        if (ResolveModulePath(baseItem)?.Lowering is { } module) { return module; }
+        return baseItem.Content is Zig.Ident id && _fileContainer is { } file
+               && TryLookupContainerType(Tok(id.Arg0), out var t) && ContainerTypeName(t) == file
+            ? this
+            : null;
+    }
+
+    /// <summary>A comptime NAME: a comptime string (<see cref="EvalComptimeValue"/>), or <c>@tagName(x)</c>
+    /// of a comptime enum value (a generic's <c>comptime family: Arch.Family</c> seed). Null otherwise.</summary>
+    private string? ComptimeName(Item item)
+    {
+        if (item.Content is Zig.BuiltinCall { Arg2: not null, Arg0: var tn } tb && Tok(tn) == "@tagName"
+            && Flatten(tb.Arg2) is [{ Content: Zig.Ident { Arg0: var argTok } }]
+            && _symbols.Resolve(Tok(argTok)) is { } seed && _comptimeVars.TryGetValue(seed, out var seedValue)
+            && seedValue.Type.Unqualified is CType.Enum seedEnum
+            && _enumMembers.TryGetValue(seedEnum.Name, out var members))
+        {
+            return members.FirstOrDefault(m => m.Value.ConstValue == seedValue.Value).Key;
+        }
+        return TryComptimeByteName(item);
+    }
+
+    /// <summary>The module a top-level NAME of this module denotes: an import, an alias of a module path
+    /// (<c>const math = std.math;</c>), or a re-export of another module name (std.zig's
+    /// <c>pub const builtin = lang;</c>, so <c>std.builtin.Endian</c> is lang.zig's). Null when it names none.</summary>
+    private ZigModule? ResolveNamedModule(string name)
+        => ResolveImport(name)
+        ?? (_moduleAliasPaths.TryGetValue(name, out var aliased) ? ResolveModulePath(aliased)
+            : _declAliases.TryGetValue(name, out var reexport) && reexport.Content is Zig.Ident or Zig.Field
+                ? ResolveModulePath(reexport)
+                : IsSelfModuleAlias(name) ? _module
+                : IsRootSelfAlias(name) ? _rootSelfModule : null);
+
+    /// <summary>A top-level <c>const NAME = @This();</c> (std's <c>const mem = @This();</c>): inside a file, <c>@This()</c> is
+    /// the file's own struct, so the name aliases this module (<c>mem.eql(…)</c> calls its own <c>eql</c>).</summary>
+    private bool IsSelfModuleAlias(string name) =>
+        _lazyValueConsts.TryGetValue(name, out var vc) && vc.typeItem is null
+        && vc.rhs.Content is Zig.BuiltinCall { Arg2: null, Arg0: var thisTok } && IsThisBuiltin(thisTok)
+        && _symbols.Resolve(name) is null or { IsGlobal: true };
+
+    /// <summary>The ROOT file's analogue of <see cref="IsSelfModuleAlias"/>: a top-level <c>const root = @This();</c>
+    /// in a root file with no top-level fields (a namespace, not a file-as-struct type), not shadowed here.</summary>
+    private bool IsRootSelfAlias(string name) =>
+        _rootSelfAliases.Contains(name) && _symbols.Resolve(name) is null or { IsGlobal: true };
+
+    /// <summary>Whether a no-argument <c>BuiltinCall</c>'s name token is <c>@This</c>.</summary>
+    private static bool IsThisBuiltin(Item tok) => Tok(tok) == "@This";
+
+    /// <summary>The root file's top-level <c>const NAME = @This();</c> names (see <see cref="IsRootSelfAlias"/>).</summary>
+    private readonly HashSet<string> _rootSelfAliases = new(System.StringComparer.Ordinal);
+
+    /// <summary>A root unit has no <see cref="ZigModule"/> of its own (<see cref="_module"/> is null), so one that names
+    /// itself through <c>@This()</c> gets this synthetic module, whose <see cref="ZigModule.Lowering"/> is the root's
+    /// own lowering: <c>root.helper()</c>, <c>root.Point</c> and <c>root.limit</c> then resolve by the same
+    /// module-qualified paths as <c>util.helper()</c> through an import.</summary>
+    private ZigModule? _rootSelfModule;
+
+    /// <summary>Resolve an inline <c>@import("spec")</c> (see <see cref="ResolveModulePath"/>) through the
+    /// ordinary import table, under the synthetic name <c>@import:spec</c>.</summary>
+    private ZigModule? ResolveInlineImport(string spec)
+    {
+        var name = "@import:" + spec;
+        _importSpecs.TryAdd(name, spec);
+        return ResolveImport(name);
+    }
 
     /// <summary>This unit's top-level function declarations (name → the declared <see cref="Symbol"/>),
     /// captured in pass 1 so an importing module can build a call against them (<see cref="ExportedFns"/>).</summary>
     private readonly Dictionary<string, Symbol> _exportedFns = new(System.StringComparer.Ordinal);
+
+    /// <summary>The emitted names of this unit's top-level functions (see <see cref="ZigModuleGraph.RootFunctionTargetNames"/>).</summary>
+    internal IEnumerable<string> TopLevelFunctionTargetNames()
+        => _exportedFns.Values.Where(s => s.Kind == SymKind.Func).Select(s => s.TargetName);
 
     /// <summary>The top-level functions this unit declares, for an importer to call — see
     /// <see cref="_exportedFns"/>. Meaningful after <see cref="Lower"/> has run.</summary>
@@ -148,6 +251,41 @@ internal sealed partial class ZigLowering
     /// <summary>In a lazy module, each top-level function name → its raw decl AST (unlowered), so a
     /// reference can lower exactly that function on demand. Built in <see cref="Lower"/>'s prepare pass.</summary>
     private readonly Dictionary<string, Item> _moduleFnDecls = new(System.StringComparer.Ordinal);
+
+    /// <summary>True while the ROOT unit registers its containers (pass 0): a call to one of its own functions, from an
+    /// enum member's value (<c>b = maxOf(u16)</c>), declares that function early (<see cref="DeclareRootFnEarly"/>).</summary>
+    private bool _registeringRootContainers;
+
+    /// <summary>The root unit's functions declared early, during pass 0 (<see cref="DeclareRootFnEarly"/>), by name: pass 1
+    /// takes the declaration from here instead of declaring the function a second time.</summary>
+    private readonly Dictionary<string, (Symbol sym, List<(string name, CType type)> ps, Item body)> _rootEarlyFns =
+        new(System.StringComparer.Ordinal);
+
+    /// <summary>Declare the root unit's function <paramref name="name"/> while its containers are still registering (task
+    /// #123): zig analyses a declaration when it is referenced, so an enum member valued by a call (<c>b = maxOf(u16)</c>)
+    /// needs the callee before pass 1 declares every signature. The body joins the root's bodies, so a comptime
+    /// evaluation can lower it on demand; pass 1 reuses the declaration (<see cref="DeclaredEarlyOr"/>). Null when the
+    /// root declares no such function.</summary>
+    private Symbol? DeclareRootFnEarly(string name)
+    {
+        if (_rootEarlyFns.TryGetValue(name, out var known)) { return known.sym; }
+        if (!_moduleFnDecls.TryGetValue(name, out var d)) { return null; }
+        var e = d.Content switch
+        {
+            Zig.FnDef f          => DeclareFn(f.Arg1, f.Arg3, f.Arg7, f.Arg8, errUnion: f.Arg6 is not null),
+            _ => throw new IrUnsupportedException("zig root decl is not a function: " + (d.Content?.GetType().Name ?? "null")),
+        };
+        _rootEarlyFns[name] = e;
+        _exportedFns[name] = e.sym;
+        if (!_genericFns.ContainsKey(e.sym) && !_typeReturningGenerics.ContainsKey(e.sym)) { _rootBodies.Add(AsEntry(e, null)); }
+        return e.sym;
+    }
+
+    /// <summary>The root function <paramref name="nameTok"/> names, as <see cref="DeclareRootFnEarly"/> declared it in pass
+    /// 0, or else as <paramref name="declare"/> declares it now (pass 1).</summary>
+    private (Symbol sym, List<(string name, CType type)> ps, Item body) DeclaredEarlyOr(Item nameTok,
+        System.Func<(Symbol sym, List<(string name, CType type)> ps, Item body)> declare)
+        => _rootEarlyFns.TryGetValue(Tok(nameTok), out var early) ? early : declare();
 
     /// <summary>Names in a lazy module whose signature has already been declared (the demand memo, so a
     /// second reference — or a self/mutual call — resolves the existing symbol instead of re-declaring).</summary>
@@ -187,17 +325,20 @@ internal sealed partial class ZigLowering
     /// never touched. Idempotent via <see cref="_lazyDeclared"/>.</summary>
     internal Symbol? EnsureDeclLowered(string name)
     {
-        if (_lazyDeclared.Contains(name)) { return _symbols.Resolve(name); }
+        // The module's own table, not a scope lookup: a function declared lazily lands in whatever scope
+        // was current at its FIRST reference (a function body's), so once that body is done a later
+        // reference could no longer resolve it by scope (std.fmt.charToDigit, first named in one instance
+        // body, then called from another).
+        if (_lazyDeclared.Contains(name)) { return _exportedFns.GetValueOrDefault(name); }
         if (!_moduleFnDecls.TryGetValue(name, out var d)) { return null; }
-        _lazyDeclared.Add(name);
         var e = d.Content switch
         {
-            Zig.FnDef f          => DeclareFn(f.Arg1, f.Arg3, f.Arg6, f.Arg7),
-            Zig.FnDefNoArgs f    => DeclareFn(f.Arg1, null, f.Arg5, f.Arg6),
-            Zig.FnDefErr f       => DeclareFn(f.Arg1, f.Arg3, f.Arg7, f.Arg8, errUnion: true),
-            Zig.FnDefNoArgsErr f => DeclareFn(f.Arg1, null, f.Arg6, f.Arg7, errUnion: true),
+            Zig.FnDef f          => DeclareFn(f.Arg1, f.Arg3, f.Arg7, f.Arg8, errUnion: f.Arg6 is not null),
             _ => throw new IrUnsupportedException("lazy module decl is not a function: " + (d.Content?.GetType().Name ?? "null")),
         };
+        // Memoized only once declared, so a signature that failed to lower fails the same way at the next
+        // reference instead of resolving to nothing.
+        _lazyDeclared.Add(name);
         _exportedFns[name] = e.sym;
         // A generic / type-returning template has no base body to lower (an instantiation body is drained
         // via the monomorphization worklist); everything else enqueues its body for the top-level drain.
@@ -218,17 +359,25 @@ internal sealed partial class ZigLowering
     {
         if (_methods.TryGetValue(container, out var known) && known.TryGetValue(method, out var sym))
         {
-            return sym;
+            return ActivateMethod(sym);   // a held reified body is queued now that it is referenced (task #190)
+        }
+        // A reified container's method whose signature did not lower (task #108): now that it is referenced, its failure.
+        if (_shared.FailedMethods.TryGetValue((container, method), out var failure))
+        {
+            throw new CompileException(failure);
         }
         if (!_lazyMethodDecls.TryGetValue((container, method), out var pending))
         {
-            return null;
+            // A file-as-struct type's methods are its module's top-level functions (road-to-zig-std G3).
+            return _shared.FileStructOwners.TryGetValue(container, out var fileOwner)
+                ? fileOwner.FileStructFn(method)
+                : null;
         }
         // Declared BY ITS OWNER: the signature's types (and the body's) are spelled in that module's
         // source, so they must resolve in that module's environment, not the caller's.
         var owner = pending.owner;
         var e = owner.DeclareMethod(container, pending.decl);
-        owner._pendingModuleBodies.Add((e.sym, e.ps, e.body, container));
+        if (!owner.IsFnTemplate(e.sym)) { owner._pendingModuleBodies.Add((e.sym, e.ps, e.body, container)); }
         return e.sym;
     }
 
@@ -238,26 +387,46 @@ internal sealed partial class ZigLowering
     /// container types (structs / unions / enums, with their consts and nested containers) in pass 0,
     /// before any laziness kicks in, so the lookup is a plain read. Null when this module declares no
     /// such type — the caller reports that loudly, naming the module.
-    /// <para>The returned <see cref="CType"/> carries the container's PLAIN source name, which is also
-    /// the emitted C# type name; two modules declaring a same-named aggregate therefore collide, and
-    /// <see cref="IrBuilder.RegisterStructType"/> throws rather than silently dropping the second.
-    /// Module-qualified naming is the real fix (docs/plans/deferred.md).</para></summary>
-    internal CType? ResolveExportedType(string name)
+    /// <para>The lookup key is the container's plain SOURCE name; the returned <see cref="CType"/> carries
+    /// its module-qualified emitted name (<c>&lt;module&gt;__&lt;Name&gt;</c>, <see cref="QualifyTypeName"/>),
+    /// so two modules may each declare a same-named aggregate.</para></summary>
+    internal CType? ResolveExportedType(string name) => ResolveExportedType(name, 0);
+
+    /// <summary>A lazy module's top-level consts whose RHS is a CALL, not evaluated at prepare (see pass 0):
+    /// name → the call. The first TYPE-position use evaluates one (<see cref="TryDeferredTypeAlias"/>).</summary>
+    private readonly Dictionary<string, Item> _deferredTypeCalls = new(System.StringComparer.Ordinal);
+
+    /// <summary>Resolve a deferred type alias without consuming a failed or premature attempt.
+    /// A recursive demand is a dependency loop; ordinary value calls remain lazy value consts.</summary>
+    private bool TryDeferredTypeAlias(string name, out CType type)
     {
-        if (_containerTypes.TryGetValue(name, out var t) || _typeAliases.TryGetValue(name, out t)) { return t; }
-        if (_moduleConstExprs.TryGetValue(name, out var rhs) && _resolvingConstExports.Add(name))
+        type = CType.Int;
+        if (!_deferredTypeCalls.TryGetValue(name, out var rhs)) { return false; }
+        if (!_deferredTypeAliasesInProgress.Add(name))
         {
-            try
-            {
-                if (TryTypeAliasRhs(rhs, out var alias))
-                {
-                    _typeAliases[name] = alias;
-                    return alias;
-                }
-            }
-            finally { _resolvingConstExports.Remove(name); }
+            throw new IrUnsupportedException($"zig: deferred type alias '{name}' has a dependency loop");
         }
-        return null;
+        try
+        {
+            if (!TryTypeAliasRhs(rhs, out type)) { return false; }
+            _typeAliases[name] = type;
+            SetDeclaredIntBits(name, DeclaredBitsOfTypeArg(rhs));
+            SetDeclaredPtrSize(name, type.Unqualified is CType.Pointer ? PointerSizeOfTypeArg(rhs) : null);
+            _deferredTypeCalls.Remove(name);
+            return true;
+        }
+        finally { _deferredTypeAliasesInProgress.Remove(name); }
+    }
+
+    private CType? ResolveExportedType(string name, int hops)
+    {
+        RaiseIfPoisoned(name);   // a container whose lazy registration failed raises at this reference
+        if (_containerTypes.TryGetValue(name, out var t)) { return t; }
+        // A top-level type ALIAS (`pub const ArgSetType = u32;` in fmt.zig), recorded in pass 0.
+        if (_typeAliases.TryGetValue(name, out var alias)) { return alias; }
+        if (TryDeferredTypeAlias(name, out var deferred)) { return deferred; }
+        // A re-export (`pub const Pair = inner.Pair;`) names a type declared elsewhere.
+        return ResolveAliasedType(name, hops);
     }
 
     /// <summary>Lower everything this lazy module has enqueued (from each cursor onward). Runs at TOP
@@ -265,8 +434,8 @@ internal sealed partial class ZigLowering
     /// those up. Since road-to-zig-std S4d this covers all three worklists a lazy module can gather
     /// (referenced bodies, generic instances, reified type-returning generics' methods), not bodies
     /// alone: a navigated type may reify in this module, and its methods would otherwise be declared
-    /// and never lowered. A referenced decl needing the deferred `comptime`-fold pass is still a gap to
-    /// fill when a G-goal hits it.</summary>
+    /// and never lowered. A deferred <c>comptime</c> fold in any of these bodies resolves with every
+    /// other module's, after the graph drains (<see cref="ZigModuleGraph.ResolveComptimeFolds"/>).</summary>
     internal void DrainPendingBodies()
     {
         // The lazy-module analogue of pass 2.5, over three mutually-feeding worklists: a referenced
@@ -282,17 +451,24 @@ internal sealed partial class ZigLowering
             while (_pendingBodyCursor < _pendingModuleBodies.Count)
             {
                 var e = _pendingModuleBodies[_pendingBodyCursor++];
+                if (!BeginBody(e.sym)) { continue; }   // lowered on demand already (E2)
                 _currentContainer = e.container;   // a method body's `@This()`, as in pass 2
                 LowerFnBody(e.sym, e.ps, e.body);
                 _currentContainer = null;
             }
             for (; _pendingInstCursor < _pendingInstantiations.Count; _pendingInstCursor++)
             {
-                LowerInstantiationBody(_pendingInstantiations[_pendingInstCursor]);
+                if (BeginBody(_pendingInstantiations[_pendingInstCursor].Instance))
+                {
+                    LowerInstantiationBody(_pendingInstantiations[_pendingInstCursor]);
+                }
             }
             for (; _pendingReifiedCursor < _pendingReifiedMethods.Count; _pendingReifiedCursor++)
             {
-                LowerReifiedMethodBody(_pendingReifiedMethods[_pendingReifiedCursor]);
+                if (BeginBody(_pendingReifiedMethods[_pendingReifiedCursor].Method))
+                {
+                    LowerReifiedMethodBody(_pendingReifiedMethods[_pendingReifiedCursor]);
+                }
             }
         }
     }
@@ -314,6 +490,77 @@ internal sealed partial class ZigLowering
     /// return, so the error propagates through the <c>errdefer</c> <c>catch</c>(es) on the stack
     /// (Milestone H). A function with no <c>errdefer</c> keeps the direct-return form untouched.</summary>
     private bool _currentFnHasErrdefer;
+
+    /// <summary>The function whose body is lowering now (null outside one): the caller of every runtime call edge
+    /// recorded for the comptime-return check (task #92).</summary>
+    private Symbol? _currentFnSym;
+
+    /// <summary>Above zero while lowering code zig evaluates at COMPILE time (a <c>comptime</c> expression or block, a
+    /// type body, an array extent, a global initializer): a call there is not a runtime call (task #92).</summary>
+    private int _comptimeDepth;
+
+    /// <summary>Functions declared <c>inline fn</c> (and their generic instances), by symbol (task #92).</summary>
+    private readonly HashSet<Symbol> _zigInlineFns = new();
+
+    /// <summary>Runtime call edges, caller to callees, of the whole build (task #92): shared through the module graph.</summary>
+    private Dictionary<Symbol, HashSet<Symbol>> _runtimeCalls => _moduleGraph?.RuntimeCalls ?? _ownRuntimeCalls;
+
+    /// <summary>The runtime call edges of a lowering built without a module graph.</summary>
+    private readonly Dictionary<Symbol, HashSet<Symbol>> _ownRuntimeCalls = new();
+
+    /// <summary>Functions whose body only compiles at comptime, build-wide, with the error a runtime call reports: a
+    /// non-inline one returning from a <c>comptime { }</c> block (task #92), one iterating a tuple (task #100).</summary>
+    private Dictionary<Symbol, string> _comptimeReturnFns => _moduleGraph?.ComptimeReturnFns ?? _ownComptimeReturnFns;
+
+    /// <summary>The comptime-only functions of a lowering built without a module graph.</summary>
+    private readonly Dictionary<Symbol, string> _ownComptimeReturnFns = new();
+
+    /// <summary>Record that the function lowering now calls <paramref name="callee"/> at runtime (task #92).</summary>
+    private void RecordRuntimeCall(Symbol callee)
+    {
+        // A call lowered only for the comptime interpreter (a function's `comptime { }` result block) never runs.
+        if (_comptimeDepth > 0 || _loweringForComptimeEval > 0 || _currentFnSym is not { } caller) { return; }
+        if (!_runtimeCalls.TryGetValue(caller, out var callees))
+        {
+            callees = new HashSet<Symbol>();
+            _runtimeCalls[caller] = callees;
+        }
+        callees.Add(callee);
+    }
+
+    /// <summary>zig's "function called at runtime cannot return value at comptime" (task #92): a non-inline function
+    /// returning from a <c>comptime { }</c> block may only be called at compile time. The runtime call graph is walked
+    /// from <paramref name="roots"/> (<c>main</c>, or every top-level function of a program without one), so a function
+    /// reached only through <c>comptime f()</c>, a global initializer or a function nothing calls is not an error, as in
+    /// zig, which analyzes a function only once it is referenced. A comptime-only instance is never entered.</summary>
+    internal static void CheckComptimeReturnsAtRuntime(IEnumerable<Symbol> roots, Dictionary<Symbol, HashSet<Symbol>> calls,
+        Dictionary<Symbol, string> comptimeReturnFns, HashSet<Symbol> comptimeOnlyFns)
+    {
+        if (comptimeReturnFns.Count == 0) { return; }
+        var seen = new HashSet<Symbol>();
+        var work = new Stack<Symbol>();
+        foreach (var root in roots)
+        {
+            if (seen.Add(root)) { work.Push(root); }
+        }
+        while (work.Count > 0)
+        {
+            var fn = work.Pop();
+            if (comptimeReturnFns.TryGetValue(fn, out var error)) { throw new CompileException(error); }
+            if (!calls.TryGetValue(fn, out var callees)) { continue; }
+            foreach (var callee in callees)
+            {
+                if (!comptimeOnlyFns.Contains(callee) && seen.Add(callee)) { work.Push(callee); }
+            }
+        }
+    }
+
+    /// <summary>The roots of the runtime call graph for <see cref="CheckComptimeReturnsAtRuntime"/>: this root module's
+    /// <c>main</c>, or every top-level function when it has none (a library).</summary>
+    internal IEnumerable<Symbol> RuntimeRoots()
+        => (_exportedFns.TryGetValue("main", out var main)
+            ? new[] { main }
+            : _exportedFns.Values.Where(s => s.Kind == SymKind.Func)).Concat(TopExportRuntimeRoots());
 
     /// <summary>Monotonic counter for destructure temporaries (<c>__tupN</c>): a destructure
     /// <c>const a, const b = e;</c> evaluates <c>e</c> ONCE into <c>__tupN</c>, then binds each
@@ -339,6 +586,10 @@ internal sealed partial class ZigLowering
     /// hoisted construct's OWN internals are sequenced into the buffer, so they restore the flag
     /// (they don't count against a later hoist). See <see cref="Hoisted"/>.</summary>
     private bool _hoistImpureSeen;
+
+    /// <summary>The innermost struct literal whose earlier fields' side effects are held back while a later field lowers
+    /// (task #195); see <see cref="SiblingSpillFrame"/>.</summary>
+    private SiblingSpillFrame? _siblingSpill;
 
     /// <summary>Monotonic counter for ANF result temporaries (<c>__anfN</c>).</summary>
     private int _anfTempCounter;
@@ -380,10 +631,32 @@ internal sealed partial class ZigLowering
         public required string ContLabel { get; init; }
         public bool BreakUsed { get; set; }
         public bool ContUsed { get; set; }
+
+        /// <summary>A labeled block statement (task #130), not a loop: <c>break :lbl;</c> leaves it, <c>continue</c> is refused.</summary>
+        public bool IsBlock { get; init; }
     }
 
     /// <summary>Active labeled loops, innermost on top — see <see cref="LabeledLoopTarget"/>.</summary>
     private readonly Stack<LabeledLoopTarget> _labeledLoops = new();
+
+    /// <summary>Where an UNLABELED <c>break</c> goes when a <c>switch</c> statement sits between it and its
+    /// loop. zig's <c>break</c> in a prong exits the enclosing LOOP, but the prong lowers into a C#
+    /// <c>switch</c>, where a bare <c>break</c> exits only the switch (a silent miscompile: the loop kept
+    /// iterating). Such a break is a <c>goto</c> to <see cref="BreakLabel"/>, placed just after the loop
+    /// when used. <see cref="SwitchDepth"/> counts the statement switches entered since this loop.</summary>
+    private sealed class LoopBreakTarget
+    {
+        public required string BreakLabel { get; init; }
+        public bool Used { get; set; }
+        public int SwitchDepth { get; set; }
+    }
+
+    /// <summary>Every runtime loop being lowered, innermost on top (see <see cref="LoopBreakTarget"/>).</summary>
+    private readonly Stack<LoopBreakTarget> _loopBreakTargets = new();
+
+    /// <summary>The loop statement <see cref="LowerLoopWithBreakTarget"/> is lowering right now, so the
+    /// re-entry into <see cref="LowerStmt"/> lowers it instead of wrapping it again.</summary>
+    private Item? _loopBeingWrapped;
 
     /// <summary>Monotonic counter for labeled-loop break / continue labels (<c>__loopN_brk</c> /
     /// <c>__loopN_cont</c>), one per labeled loop (Milestone L, part 3).</summary>
@@ -487,12 +760,403 @@ internal sealed partial class ZigLowering
     /// Keyed by the AST <see cref="Item"/> reference, because a Zig struct type is nominal by its
     /// declaration SITE: two textually-identical inline <c>struct {…}</c> forms are DISTINCT types, and
     /// the same occurrence lowered in more than one pass must reify ONE registered type. The synthesized
-    /// name (<c>__AnonStruct&lt;n&gt;</c>) is unique program-wide, so it never collides with a user type
+    /// name (<c>__AnonStruct&lt;n&gt;</c>, module-qualified in an imported module since the counter is per
+    /// module) is unique program-wide, so it never collides with a user type
     /// or an in-function W2 container. Keyed by REFERENCE (<see cref="ReferenceEqualityComparer"/>) —
     /// <see cref="Item.Equals"/> compares the grammar symbol ID, so a value-equality dictionary would
     /// collapse every inline <c>struct {…}</c> (all share that ID) into one type; the parse tree is
     /// built once, so a given occurrence is the same object across passes and memoizes correctly.</summary>
     private readonly Dictionary<Item, string> _inlineStructNames = new(ReferenceEqualityComparer.Instance);
+
+    /// <summary>This module's IR-name prefix when it is an IMPORTED module (module-qualified container
+    /// naming), null for a root unit — whose names stay exactly as spelled, so a single-file program's
+    /// emitted C# is unchanged. Applied by <see cref="QualifyTypeName"/> to every container IR name the
+    /// module mints: top-level containers (and so their nested ones, which derive from the parent), W4
+    /// reified generic instances and inline anonymous structs. Assigned by the importer
+    /// (<see cref="ZigImportScope.ModulePrefixFor"/>).</summary>
+    private readonly string? _modulePrefix;
+
+    /// <summary>The file name (without <c>.zig</c>) of the unit being lowered, or null for an in-memory
+    /// unit: the source name of the file-as-struct container (<see cref="_fileContainer"/>).</summary>
+    private readonly string? _fileStem;
+
+    /// <summary>The IR name of this module's FILE-AS-STRUCT container (road-to-zig-std G3), or null when
+    /// the file declares no top-level fields. A zig file is itself a struct, so one with fields at file
+    /// scope (<c>Io/Writer.zig</c>: <c>vtable</c>, <c>buffer</c>, <c>end</c>) is an instantiable type
+    /// whose methods are the file's own top-level functions. The fields register as an ordinary struct
+    /// under this name; <c>@This()</c> at file scope resolves to it; and a method or static call on it
+    /// routes to the module's top-level function of that name (<see cref="FileStructFn"/>), so a
+    /// function is lowered once whether it is reached as <c>fixed(buf)</c> or <c>Writer.fixed(buf)</c>.</summary>
+    private string? _fileContainer;
+
+    /// <summary>The file-as-struct TYPE of this module (see <see cref="_fileContainer"/>), for an importer
+    /// that names the module in a type position (<c>const Writer = std.Io.Writer; var w: Writer</c>).</summary>
+    internal CType? FileStructType
+    {
+        get
+        {
+            if (_fileContainer is not { } fc) { return null; }
+            RaiseIfPoisoned(fc);   // its fields failed to lower in a lazy module: raise at this reference
+            return _containerTypes[fc];
+        }
+    }
+
+    /// <summary>This module's top-level function <paramref name="name"/>, as a method of its file-as-struct
+    /// container: declared on demand in a lazy module, read from pass 1 in a root unit. Null when there is
+    /// no such function; one the resilient parse SKIPPED raises its parse error instead, since "no such
+    /// method" would hide the real wall (<c>Writer.print</c>). A GENERIC one never reaches here from a
+    /// call: on an instance (<c>w.print(fmt, args)</c>) the method call instantiates it
+    /// (<see cref="TryResolveFileStructGenericMethod"/>), and through the type (<c>Writer.print(w, …)</c>)
+    /// it is an ordinary exported generic call (<see cref="FileStructGenericTemplate"/>). Any other
+    /// generic use is a loud cut, as its template symbol carries only a placeholder signature.</summary>
+    private Symbol? FileStructFn(string name)
+    {
+        var sym = FileStructFnSymbol(name);
+        if (sym is null) { RaiseIfSkippedDecl(name); }
+        if (sym is not null && (_genericFns.ContainsKey(sym) || _typeReturningGenerics.ContainsKey(sym)))
+        {
+            throw new IrUnsupportedException(
+                $"'{_fileStem}.{name}' is a generic (a `comptime` / `anytype` parameter, or a `type` return) "
+                + "used through its file-as-struct type other than as a call, which is not supported yet (road-to-zig-std G3)");
+        }
+        return sym;
+    }
+
+    /// <summary>This module's top-level function <paramref name="name"/> when it is a GENERIC template
+    /// (a <c>comptime</c> / <c>anytype</c> parameter), for a call through its file-as-struct type; null
+    /// for any other function or none.</summary>
+    internal Symbol? FileStructGenericTemplate(string name)
+        => _fileContainer is not null && FileStructFnSymbol(name) is { } sym && _genericFns.ContainsKey(sym) ? sym : null;
+
+    /// <summary>The symbol of this module's top-level function <paramref name="name"/>, declaring it on
+    /// demand in a lazy module (see <see cref="FileStructFn"/>), or null.</summary>
+    private Symbol? FileStructFnSymbol(string name)
+        => _lazy ? EnsureDeclLowered(name) : _exportedFns.GetValueOrDefault(name);
+
+    /// <summary>A LAZY module's top-level value <c>const</c>s (name → optional annotation + RHS), recorded
+    /// raw before pass 0 (road-to-zig-std G3/G5). zig evaluates a top-level <c>const</c>'s
+    /// initializer at comptime, so a reference lowers the RHS where it is named, with the annotation as
+    /// its sink, exactly as a container const is inlined (<see cref="LowerLazyValueConst"/>).</summary>
+    private readonly Dictionary<string, (Item? typeItem, Item rhs)> _lazyValueConsts = new(System.StringComparer.Ordinal);
+
+    /// <summary>The lazy value consts being lowered right now, the guard that turns a const depending on
+    /// itself into a loud error (zig reports a dependency loop) instead of a stack overflow.</summary>
+    private readonly HashSet<string> _lazyValueConstsInProgress = new(System.StringComparer.Ordinal);
+
+    /// <summary>Lower a reference to this lazy module's top-level value const <paramref name="name"/>, or
+    /// null when it declares none (see <see cref="_lazyValueConsts"/>).</summary>
+    /// <summary>A top-level VALUE const this (lazily prepared) module declares, lowered here for a read
+    /// from another module (<c>std.atomic.cache_line</c>); null when it declares no such const.</summary>
+    internal CExpr? LowerExportedValueConst(string name) => LowerLazyValueConst(name);
+
+    /// <summary>Whether this module declares <paramref name="name"/> at top level (what <c>@hasDecl(module, name)</c>
+    /// asks): a function or variable, a value const, a container, an alias, or a declaration that failed or is a
+    /// <c>@compileError</c> tombstone (still declared, as zig's lazy analysis has it).</summary>
+    internal bool DeclaresTopLevel(string name) =>
+        _lazyValueConsts.ContainsKey(name) || _containerTypes.ContainsKey(name) || _declAliases.ContainsKey(name)
+        || _moduleAliasPaths.ContainsKey(name) || _failedContainers.ContainsKey(name) || _poisonedConsts.ContainsKey(name)
+        || ResolveExportedDecl(name) is not null;
+
+    /// <summary>One field of a top-level value const that is its struct type's DEFAULT value:
+    /// <c>pub const options: Options = if (@hasDecl(root, "std_options")) root.std_options else .{};</c> in std.zig,
+    /// read as <c>std.options.fmt_max_depth</c>. The field's default lowers alone, in this module, so the rest of
+    /// the struct (std.Options holds a generic fn type and <c>@EnumLiteral()</c> fields) never has to. Null when the
+    /// const is not such a value or the field has no recorded default.</summary>
+    internal CExpr? LowerDefaultedConstField(string constName, string fieldName)
+    {
+        if (!_lazyValueConsts.TryGetValue(constName, out var vc) || vc.typeItem?.Content is not Zig.Ident { Arg0: var typeTok })
+        {
+            return null;
+        }
+        var init = vc.rhs;
+        while (init.Content is Zig.IfElseExpr { Arg4: null, Arg7: null } ie && TryFoldComptimeCondition(ie.Arg2) is { } taken) { init = taken ? ie.Arg5 : ie.Arg8; }
+        if (init.Content is not Zig.AnonStructInitEmpty) { return null; }
+        var structName = QualifyTypeName(Tok(typeTok));
+        if (!_structFieldDecls.TryGetValue((structName, fieldName), out var decl)
+            && !_structFieldDecls.TryGetValue((Tok(typeTok), fieldName), out decl))
+        {
+            return null;
+        }
+        return LowerExprSink(decl.Default, LowerType(decl.Type));
+    }
+
+    /// <summary>Lower a lazy module's top-level value const <paramref name="name"/> where it is read. An
+    /// UNTYPED one takes <paramref name="useSink"/>, the reader's result type: `const default_alignment =
+    /// .right;` in std.fmt is an enum literal that only its use can type.</summary>
+    /// <summary>The value of a <c>comptime_int</c> initializer. Comptime by definition, so a call in it runs
+    /// (<c>cacheLineForCpu(builtin.cpu)</c> in std.atomic), not only the call-free constant folding.</summary>
+    private long? ComptimeIntValue(CExpr init) =>
+        _ir.ConstEval(init) ?? (_ir.ResolveComptimeFold(init) is { } folded ? _ir.ConstEval(folded) : null);
+
+    private CExpr? LowerLazyValueConst(string name, CType? useSink = null)
+    {
+        if (!_lazy) { return null; }
+        // The source index includes aliases whose kind is decided only on demand. A name
+        // already bound as an import or type cannot supply a runtime value.
+        if (_importSpecs.ContainsKey(name) || _typeAliases.ContainsKey(name) || _containerTypes.ContainsKey(name)
+            || !_lazyValueConsts.TryGetValue(name, out var vc)) { return null; }
+        if (!_lazyValueConstsInProgress.Add(name))
+        {
+            throw new IrUnsupportedException($"zig: top-level `const {name}` depends on itself (a dependency loop)");
+        }
+        using var scope = new FnStateScope(this);
+        _comptimeDepth++;   // a top-level const's initializer is evaluated at compile time (task #92)
+        try
+        {
+            // `pub const cache_line: comptime_int = switch (builtin.cpu.arch) { … };` (std.atomic): a
+            // comptime-only integer folds to its literal; it has no runtime type to lower.
+            if (vc.typeItem?.Content is Zig.Ident { Arg0: var ctTok } && Tok(ctTok) == "comptime_int")
+            {
+                return ComptimeIntValue(LowerExprSink(vc.rhs, CType.Long)) is { } ct
+                    ? new LitInt(ct.ToString(System.Globalization.CultureInfo.InvariantCulture), ct) { Type = CType.Long }
+                    : throw new IrUnsupportedException($"zig `const {name}: comptime_int` must be compile-time-known");
+            }
+            if (_lazyConstStatics.TryGetValue(name, out var memo)) { return new VarRef(memo) { Type = memo.Type, IsLValue = true }; }
+            var sink = vc.typeItem is { } t ? LowerType(t) : useSink;
+            // A labeled block (std.array_hash_map's `const index_capacities = blk: { … break :blk capacities; };`, task #135)
+            // is evaluated ONCE at compile time into a static, as a container const's block is (task #79).
+            if (vc.rhs.Content is Zig.LabeledBlock)
+            {
+                var qualifiedBlock = QualifyTypeName(name);
+                var (blockType, blockInit) = ComptimeLabeledBlockInit($"'{name}'", qualifiedBlock, vc.rhs, vc.typeItem is null ? null : sink);
+                var blockSym = _symbols.Declare(new Symbol
+                {
+                    Name = qualifiedBlock + "__static", Kind = SymKind.Var, Type = blockType, Storage = Storage.Static, IsGlobal = true,
+                });
+                _ir.Globals.Add(new GlobalVar(blockSym, blockInit));
+                _ir.ConstGlobalInits[blockSym] = blockInit;
+                _lazyConstStatics[name] = blockSym;
+                return new VarRef(blockSym) { Type = blockType, IsLValue = true };
+            }
+            // Lowered under a fresh hoist of its own: this module's lowering has no statement in progress at a use site
+            // in another module. A value that needed statements first (std.base64's `standard = Codecs{ … }`, whose array
+            // fields are copied in after the literal, task #78) becomes a static global with a synthesized initializer.
+            CExpr value;
+            List<CStmt> pre;
+            using (EnterFreshHoist())
+            {
+                value = LowerExprSink(vc.rhs, sink);
+                pre = _hoist ?? new List<CStmt>();
+            }
+            // An array LITERAL (std.fmt.float's `FLOAT64_POW5_INV_SPLIT: [326][2]u64 = .{ … }`) is one program-lifetime table,
+            // as a root global is: it had been rebuilt as a `stackalloc` on every call of every function that read it.
+            if (pre.Count == 0 && value is StackArray { Type: CType.Array arrayType } table)
+            {
+                var (tableElement, tableElems) = FlattenArrayLiteral(name, table);
+                var tableSym = AddArrayGlobal(QualifyTypeName(name), arrayType,
+                    new PinnedArray(tableElement, tableElems, null) { Type = new CType.Pointer(tableElement) });
+                _ir.ConstGlobalInits[tableSym] = table;
+                _lazyConstStatics[name] = tableSym;
+                return new VarRef(tableSym) { Type = tableSym.Type, IsLValue = true };
+            }
+            if (pre.Count == 0) { return value; }
+            var qualified = QualifyTypeName(name);
+            var global = _symbols.Declare(new Symbol
+            {
+                Name = qualified, Kind = SymKind.Var, Type = value.Type, Storage = Storage.Static, IsGlobal = true,
+            });
+            _ir.Globals.Add(new GlobalVar(global, InitFunctionCall(qualified, pre, value)));
+            _lazyConstStatics[name] = global;
+            return new VarRef(global) { Type = global.Type, IsLValue = true };
+        }
+        finally
+        {
+            _comptimeDepth--;
+            _lazyValueConstsInProgress.Remove(name);
+        }
+    }
+
+    /// <summary>Each top-level <c>const</c> whose RHS is a dotted path rooted at an import
+    /// (<c>const Writer = std.Io.Writer;</c>) → that RHS, recorded WITHOUT resolving (so preparing a
+    /// module does not fan out into every module it aliases). A type position that names one resolves it
+    /// on demand (<see cref="TryResolveModuleTypeAlias"/>): when the path lands on a file-as-struct module,
+    /// the name is that module's type.</summary>
+    private readonly Dictionary<string, Item> _moduleAliasPaths = new(System.StringComparer.Ordinal);
+
+    /// <summary>Each TOP-LEVEL <c>const NAME = &lt;name or dotted path&gt;;</c> → its RHS, unresolved: a
+    /// candidate DECLARATION alias (road-to-zig-std G3/G5). std re-exports constantly, 633 times in the
+    /// pin: <c>pub const indexOfScalar = findScalar;</c> in <c>mem.zig</c>,
+    /// <c>pub const AutoHashMap = hash_map.AutoHashMap;</c> in <c>std.zig</c>. A lookup of NAME that finds no
+    /// declaration of its own follows the RHS (<see cref="ResolveExportedDecl"/>); recording resolves
+    /// nothing, so preparing a module never fans out into what it re-exports. Top-level only, unlike the
+    /// function-flat comptime maps, so a body's <c>const y = x;</c> can never pose as a re-export.</summary>
+    private readonly Dictionary<string, Item> _declAliases = new(System.StringComparer.Ordinal);
+
+    /// <summary>How many re-export hops a lookup follows before giving up: std's deepest chain is two
+    /// or three, so this only bounds a cycle (<c>const a = b; const b = a;</c>).</summary>
+    private const int MaxAliasHops = 16;
+
+    /// <summary>The FUNCTION declaration that <paramref name="name"/> names in this module, following
+    /// re-export aliases (<see cref="_declAliases"/>) across modules: the module that OWNS it and its
+    /// symbol, declared on demand in its owner. A generic template comes back as its template symbol, for
+    /// the owner to instantiate (the owner's environment spells its signature). Null when no function is
+    /// reachable under that name, so a caller can report it or try another reading.
+    /// <para><paramref name="raiseIfSkipped"/> is for a site that will fail when this returns null (a call
+    /// being lowered): it raises the parse error of a skipped declaration instead. A PROBE (a type-position
+    /// reading, a comptime-only check) leaves it false, since a probe that misses falls through to another
+    /// reading, e.g. the curated `std.mem.zeroes` behind a skipped `mem.zig` declaration of that name.</para></summary>
+    internal (ZigLowering Owner, Symbol Sym)? ResolveExportedDecl(string name, bool raiseIfSkipped = false)
+        => ResolveExportedDecl(name, 0, raiseIfSkipped);
+
+    private (ZigLowering Owner, Symbol Sym)? ResolveExportedDecl(string name, int hops, bool raiseIfSkipped)
+    {
+        if ((_lazy ? EnsureDeclLowered(name) : _exportedFns.GetValueOrDefault(name)) is { } sym)
+        {
+            return (this, sym);
+        }
+        if (hops >= MaxAliasHops || !_declAliases.TryGetValue(name, out var rhs))
+        {
+            // The name IS declared here, but that declaration did not parse.
+            if (raiseIfSkipped) { RaiseIfSkippedDecl(name); }
+            return null;
+        }
+        return rhs.Content switch
+        {
+            Zig.Ident id => ResolveExportedDecl(Tok(id.Arg0), hops + 1, raiseIfSkipped),
+            Zig.Field f => ResolveModulePath(f.Arg0)?.Lowering?.ResolveExportedDecl(Tok(f.Arg2), hops + 1, raiseIfSkipped),
+            _ => null,
+        };
+    }
+
+    /// <summary>The imported module this lowering prepared (null for a root unit, which is parsed
+    /// strictly, so it never has a skipped declaration).</summary>
+    private ZigModule? _module;
+
+    /// <summary>Whether this module is the std file <paramref name="fileName"/> (directly under the std root), so a
+    /// curated std function called BARE inside it lowers like the qualified call from outside.</summary>
+    private bool IsStdModule(string fileName) =>
+        _module?.Path is { } path && _moduleGraph?.StdRootPath is { } stdRoot
+        && string.Equals(System.IO.Path.GetFullPath(path),
+                         System.IO.Path.GetFullPath(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(stdRoot) ?? "", fileName)),
+                         System.StringComparison.OrdinalIgnoreCase);
+
+    /// <summary>Raise the real wall when <paramref name="name"/> is a top-level declaration of this
+    /// module that the resilient parse skipped: "did not parse", with the parse error, instead of the
+    /// "unresolved name" a lookup would otherwise report. A no-op for any other name.</summary>
+    /// <summary><see cref="RaiseIfSkippedDecl"/> for <paramref name="name"/> and each same-module alias it
+    /// names in turn (<c>pub const HashMapUnmanaged = Custom;</c>), up to <see cref="MaxAliasHops"/>.</summary>
+    internal void RaiseIfSkippedAlongAliases(string name)
+    {
+        for (var hops = 0; hops < MaxAliasHops; hops++)
+        {
+            RaiseIfSkippedDecl(name);
+            if (!_declAliases.TryGetValue(name, out var rhs) || rhs.Content is not Zig.Ident next) { return; }
+            name = Tok(next.Arg0);
+        }
+    }
+
+    internal void RaiseIfSkippedDecl(string name)
+    {
+        if (_module?.SkippedDecls.TryGetValue(name, out var error) is not true) { return; }
+        // The parser's message ends with the full expected-symbol list; the head is what locates it.
+        var message = error.Message;
+        var cut = message.IndexOf("; expected one of", System.StringComparison.Ordinal);
+        if (cut > 0) { message = message[..cut]; }
+        throw new IrUnsupportedException(
+            $"zig `{name}` in {System.IO.Path.GetFileName(_module.Path)} did not parse, so it cannot be used: {message}");
+    }
+
+    /// <summary>The TYPE that <paramref name="name"/> names through a re-export alias
+    /// (<c>pub const Pair = inner.Pair;</c>), following the chain like <see cref="ResolveExportedDecl"/>:
+    /// a container another module declares, or a file-as-struct module. Null when the alias leads to no
+    /// type.</summary>
+    private CType? ResolveAliasedType(string name, int hops)
+    {
+        if (hops >= MaxAliasHops || !_declAliases.TryGetValue(name, out var rhs)) { return null; }
+        return rhs.Content switch
+        {
+            Zig.Ident id => ResolveExportedType(Tok(id.Arg0), hops + 1),   // std.hash.crc's `Crc32 = Crc32IsoHdlc`, a type-call alias
+            Zig.Field f => ResolveModulePath(rhs)?.Lowering?.FileStructType
+                ?? ResolveModulePath(f.Arg0)?.Lowering?.ResolveExportedType(Tok(f.Arg2), hops + 1),
+            _ => null,
+        };
+    }
+
+    /// <summary>True when a top-level <c>const</c> is comptime-only because it aliases something with no
+    /// runtime value: a module (a namespace or a file-as-struct type), a type, or a function. The root
+    /// unit's global pass skips such a binding rather than lowering <c>util.f</c> as a value.</summary>
+    private bool IsComptimeOnlyAlias(string name)
+        => IsModuleAlias(name) || _rootSelfAliases.Contains(name)
+        || (_declAliases.ContainsKey(name)
+            // Only a function OWNED elsewhere: a same-file `const f2 = f;` keeps its fn-pointer global,
+            // so `&f2` and passing `f2` as a value still work.
+            && (ResolveExportedDecl(name) is { Owner: var owner } && owner != this
+                || ResolveAliasedType(name, 0) is not null));
+
+    /// <summary>True when <paramref name="name"/> is a recorded <see cref="_moduleAliasPaths"/> chain that
+    /// resolves to a module: a namespace (or a file-as-struct type), never a runtime value.</summary>
+    private bool IsModuleAlias(string name)
+        => _moduleAliasPaths.TryGetValue(name, out var path) && ResolveModulePath(path) is not null;
+
+    /// <summary>Resolve a bare name bound to a MODULE (an import, or a recorded
+    /// <see cref="_moduleAliasPaths"/> chain) whose file is a struct, to that struct type, memoizing it as
+    /// an ordinary type alias. False for any other name, and for a module with no top-level fields (a
+    /// namespace, not a type). Called only from type-shaped positions, so a module is prepared only when
+    /// a program actually asks for it as a type.</summary>
+    private bool TryResolveModuleTypeAlias(string name, out CType type)
+    {
+        type = CType.Int;
+        var module = _moduleAliasPaths.TryGetValue(name, out var path) ? ResolveModulePath(path)
+            : _importSpecs.ContainsKey(name) ? ResolveImport(name)
+            : null;
+        // The path may also end at a TYPE a module declares (`const Pair = lib.Pair;`), rather than at a
+        // file-as-struct module.
+        var fileType = CuratedStdFileType(module)
+            ?? module?.Lowering?.FileStructType
+            ?? (module is null && path?.Content is Zig.Field pf
+                ? ResolveModulePath(pf.Arg0)?.Lowering?.ResolveExportedType(Tok(pf.Arg2))
+                : null)
+            // Or a NESTED type further down (`const CpuModel = std.Target.Cpu.Model;` in std/Target/x86.zig).
+            ?? (module is null && path is { Content: Zig.Field } ? TryResolveModuleNestedType(path)?.Type : null);
+        if (fileType is null) { return false; }
+        _typeAliases[name] = fileType;
+        type = fileType;
+        return true;
+    }
+
+    /// <summary>The std FILES a curated type stands for, by path under the std root: std's own files name them by
+    /// import (mem.zig's <c>pub const Allocator = @import("mem/Allocator.zig");</c>), not by the <c>std.mem.Allocator</c>
+    /// path the curated set is keyed on, so the file itself has to map back to the curated type.</summary>
+    private static readonly Dictionary<string, string> CuratedStdFiles = new(System.StringComparer.Ordinal)
+    {
+        ["mem/Allocator.zig"] = "std.mem.Allocator",
+    };
+
+    /// <summary>The curated type <paramref name="module"/> stands for (<see cref="CuratedStdFiles"/>), or null when it
+    /// is not one of those std files: std.mem.join's <c>allocator: Allocator</c> is then the runtime allocator, whose
+    /// <c>alloc</c> / <c>free</c> the curated model owns, exactly as <c>std.mem.Allocator</c> from user code.</summary>
+    private CType? CuratedStdFileType(ZigModule? module)
+    {
+        if (module is null || _moduleGraph?.StdRootPath is not { } stdRoot
+            || System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(stdRoot)) is not { } stdDir)
+        {
+            return null;
+        }
+        var relative = System.IO.Path.GetRelativePath(stdDir, System.IO.Path.GetFullPath(module.Path)).Replace('\\', '/');
+        return CuratedStdFiles.TryGetValue(relative, out var curated) && StdTypes.TryGetValue(curated, out var make)
+            ? make()
+            : null;
+    }
+
+    /// <summary>The IR name for a container this module declares under source name
+    /// <paramref name="name"/>: <c>prefix__name</c> in an imported module, the name itself in a root unit.
+    /// The plain source name still resolves inside the module (it maps to the qualified type); only the
+    /// EMITTED name is qualified, which is what has to be unique program-wide.
+    /// <para>A ROOT unit's name is qualified too when it is one the runtime declares
+    /// (<see cref="RuntimeTypeNames"/> — <c>const Allocator = struct {…}</c> would otherwise emit a second
+    /// C# <c>Allocator</c> and fail to build): <c>root__Allocator</c>.</para></summary>
+    /// <summary>True when an import spec, read relative to this module's directory, names the configured
+    /// std ROOT (<c>std.zig</c> itself, as std's own files import it).</summary>
+    private bool IsStdRootSpec(string spec)
+    {
+        if (_moduleGraph?.StdRootPath is not { } stdRoot || _importerDir is null) { return false; }
+        var full = System.IO.Path.GetFullPath(System.IO.Path.IsPathRooted(spec) ? spec : System.IO.Path.Combine(_importerDir, spec));
+        return string.Equals(full, System.IO.Path.GetFullPath(stdRoot), System.StringComparison.OrdinalIgnoreCase);
+    }
+
+    private string QualifyTypeName(string name) => _modulePrefix is { } p
+        ? $"{p}__{name}"
+        : RuntimeTypeNames.IsReserved(name) ? $"root__{name}" : name;
 
     /// <summary>The comptime VALUE of each <c>const</c> that binds a comptime-known literal (a string or
     /// an integer today) — the seed of the comptime-value engine (road-to-zig-std S5). Populated as a
@@ -539,12 +1203,18 @@ internal sealed partial class ZigLowering
     /// as a struct-body member — road-to-zig-std S9, grammar #89) → the synthesized type of the nested
     /// struct, registered under a parent-mangled IR name (<c>Parent__Inner</c>). Scoped exactly like
     /// <see cref="_selfAliases"/>: consulted by <see cref="ResolveNestedType"/> only while a method of
-    /// the parent is being lowered (<see cref="_currentContainer"/> set, which covers both a method
-    /// signature and its body), so the plain name <c>Inner</c> resolves inside <c>Parent</c>'s methods
-    /// without leaking globally — two parents may each nest a same-named <c>Inner</c> (pervasive in std)
-    /// without colliding. V1 registers nested STRUCTS only, fields-only; external qualified access
-    /// (<c>Parent.Inner</c>), nested enum/union, and nested-in-nested are deferred loud cuts.</summary>
+    /// the parent (or a container nested inside it) is in scope — its fields, consts and methods, i.e.
+    /// while <see cref="_currentContainer"/> is it or a descendant — so the plain name <c>Inner</c>
+    /// resolves without leaking globally, and two parents may each nest a same-named <c>Inner</c>
+    /// (pervasive in std) without colliding. Any container kind nests (struct / enum / union, with
+    /// methods and consts, to any depth — pass 0 registers each as an ordinary container), and
+    /// <c>Parent.Inner</c> resolves qualified through this map too.</summary>
     private readonly Dictionary<string, Dictionary<string, CType>> _nestedContainerTypes = new(System.StringComparer.Ordinal);
+
+    /// <summary>A nested container's (mangled) name → its enclosing container's name — the lexical
+    /// scope chain <see cref="ResolveNestedType"/> walks, so a nested container's own members (and a
+    /// grandchild's) can name a sibling or an outer nested type by its plain name, as zig allows.</summary>
+    private readonly Dictionary<string, string> _containerParents = new(System.StringComparer.Ordinal);
 
     /// <summary>Per <c>(struct name, field name)</c>, the RAW default-value AST of a
     /// <c>field: T = default</c> declaration (std S9). Stored unlowered and materialized lazily — a
@@ -553,6 +1223,20 @@ internal sealed partial class ZigLowering
     /// matched C#'s zero-init). Keyed by the registered struct name, so a mangled in-function
     /// container (<c>&lt;fn&gt;__&lt;P&gt;</c>) and a top-level struct never collide.</summary>
     private readonly Dictionary<(string Struct, string Field), Item> _structFieldDefaults = new();
+
+    /// <summary>Each defaulted struct field's declared type and default ASTs, by (struct, field), recorded before
+    /// the struct's field types lower (see <see cref="RegisterStruct"/>), so they survive a failed registration.</summary>
+    private readonly Dictionary<(string Struct, string Field), (Item Type, Item Default)> _structFieldDecls = new();
+
+    /// <summary>Each top-level <c>const</c> of this module → its raw RHS, recorded before pass 0 in both
+    /// lowering modes. What lets a comptime CONDITION fold a module-level bool while containers are still
+    /// registering (debug.zig's <c>runtime_safety = switch (builtin.mode) {…}</c>, read by
+    /// <c>SafetyLock</c>'s field default and type const), before any global is declared.</summary>
+    private readonly Dictionary<string, Item> _topLevelConstRhs = new(System.StringComparer.Ordinal);
+
+    /// <summary>The top-level consts <see cref="TryFoldComptimeCondition"/> is folding, so a const that
+    /// names itself does not recurse.</summary>
+    private readonly HashSet<string> _foldingTopLevelConsts = new(System.StringComparer.Ordinal);
 
     /// <summary>Per container name, each namespaced VALUE <c>const</c> member → its (optional type
     /// annotation + ) right-hand-side expression, stored unlowered. A container-level <c>const</c>
@@ -577,10 +1261,17 @@ internal sealed partial class ZigLowering
     private readonly List<(string container, string name, Item? typeItem, Item rhs)> _pendingContainerVars = new();
 
     /// <summary>Deferred <c>comptime EXPR</c> folds (Milestone T), collected as they are lowered and
-    /// resolved in a post-pass after pass 2 — when every function body is lowered, so a
-    /// <c>comptime fib(10)</c> can interpret its callee regardless of declaration order. Each node is
-    /// shared by reference in the IR; resolving it patches its <see cref="ComptimeFold.Resolved"/> in place.</summary>
-    private readonly List<ComptimeFold> _pendingComptimeFolds = new();
+    /// resolved in a post-pass once every function body is lowered, so a <c>comptime fib(10)</c> can
+    /// interpret its callee regardless of declaration order. Each node is shared by reference in the IR;
+    /// resolving it patches its <see cref="ComptimeFold.Resolved"/> in place. The queue is the module
+    /// graph's (<see cref="ZigModuleGraph.PendingComptimeFolds"/>), resolved after every module drains,
+    /// because a fold may call a function a lazy module owns (<c>std.math.maxInt(u8)</c>); a lowering
+    /// with no graph resolves its own at the end of <see cref="Lower"/>.</summary>
+    private List<ComptimeFold> _pendingComptimeFolds => _moduleGraph?.PendingComptimeFolds ?? _ownComptimeFolds;
+
+    /// <summary>The fold queue of a lowering built without a module graph (see
+    /// <see cref="_pendingComptimeFolds"/>).</summary>
+    private readonly List<ComptimeFold> _ownComptimeFolds = new();
 
     /// <summary>Lowering-time values of <c>comptime var</c> / <c>comptime const</c> locals (Milestone T,
     /// part 3 — the loop counter of an <c>inline while</c>). Keyed by Symbol IDENTITY (the same instance
@@ -617,7 +1308,7 @@ internal sealed partial class ZigLowering
     /// memory model (correct size). A union with only void variants has no <c>__payload</c> (it is
     /// just a tag). Holds what construction (<see cref="BuildUnionInit"/>) and a union
     /// <c>switch</c> (<see cref="LowerUnionSwitch"/>) need.</summary>
-    private sealed record ZigUnionInfo(
+    internal sealed record ZigUnionInfo(
         string Name,                    // the outer discriminated-union struct name (`U`)
         CType.Enum TagType,             // the tag enum — auto-synthesized `U_Tag`, or a named `union(SomeEnum)` enum
         string TagFieldName,
@@ -626,7 +1317,7 @@ internal sealed partial class ZigLowering
         IReadOnlyDictionary<string, CType?> Variants);  // variant name → payload type (null = void)
 
     /// <summary>Registered tagged unions: the union struct name → its <see cref="ZigUnionInfo"/>.</summary>
-    private readonly Dictionary<string, ZigUnionInfo> _unions = new(System.StringComparer.Ordinal);
+    private Dictionary<string, ZigUnionInfo> _unions => _shared.Unions;   // shared: a switch in one module over another's union
 
     /// <summary>Module-import aliases (Milestone F): the bound name of a <c>const X =
     /// @import("std");</c> → the module string (<c>"std"</c>). Comptime — no runtime decl is
@@ -739,8 +1430,10 @@ internal sealed partial class ZigLowering
 
     public ZigLowering(IrBuilder ir, INameLegalizer names, Dictionary<string, int>? errorCodes = null,
         bool testMode = false, ZigModuleGraph? moduleGraph = null, string? importerDir = null,
-        ZigImportScope? shared = null)
+        ZigImportScope? shared = null, string? modulePrefix = null, string? fileStem = null, string? moduleName = null)
     {
+        _modulePrefix = modulePrefix;
+        _fileStem = fileStem;
         _shared = shared ?? new ZigImportScope();
         _methods = _shared.Methods;
         _enumMembers = _shared.EnumMembers;
@@ -752,6 +1445,7 @@ internal sealed partial class ZigLowering
         _testMode = testMode;
         _moduleGraph = moduleGraph;
         _importerDir = importerDir;
+        _moduleName = moduleName;
     }
 
     /// <summary>Prepare an <c>@import</c>ed module for LAZY lowering (road-to-zig-std S2): give it its own
@@ -764,10 +1458,14 @@ internal sealed partial class ZigLowering
     /// terminates).</summary>
     private void EnsureModulePrepared(ZigModule module)
     {
-        if (module.Lowering is not null) { return; }
+        if (module.Lowering is not null) { module.Lowering.ThrowTopComptimeFailure(); return; }
         var dir = System.IO.Path.GetDirectoryName(module.Path);
-        var child = new ZigLowering(_ir, _names, _errorCodes, _testMode, _moduleGraph, dir, _shared);
+        var stdDir = _moduleGraph?.StdRootPath is { } stdRoot ? System.IO.Path.GetDirectoryName(stdRoot) : null;
+        var child = new ZigLowering(_ir, _names, _errorCodes, _testMode, _moduleGraph, dir, _shared,
+            modulePrefix: _shared.ModulePrefixFor(module.Path, stdDir),
+            fileStem: System.IO.Path.GetFileNameWithoutExtension(module.Path), moduleName: module.ModuleName);
         module.Lowering = child;
+        child._module = module;
         _moduleGraph?.RegisterLowering(child);
         child.Lower(module.Parse.Tree, prepareOnly: true, lazy: true);
     }
@@ -784,8 +1482,11 @@ internal sealed partial class ZigLowering
         return code;
     }
 
-    private static string Tok(Item it) => NormalizeIdent(it.Content as string
-        ?? throw new IrUnsupportedException("expected a token lexeme"));
+    /// <summary>The lexeme of a token item. A one-token pass-through (a container field's FieldName, which is an IDENT or a
+    /// LABEL) stays a reduction in the trimmed tree, since only nonterminal pass-throughs are trimmed, so it is unwrapped.</summary>
+    private static string Tok(Item it) => it.Content is LALR.CC.Reduction { Children: [var only] }
+        ? Tok(only)
+        : NormalizeIdent(it.Content as string ?? throw new IrUnsupportedException("expected a token lexeme"));
 
     /// <summary>
     /// Normalizes a raw token lexeme into the name the rest of lowering uses. A Zig quoted
@@ -820,17 +1521,10 @@ internal sealed partial class ZigLowering
         // Pass 2 lowers each body against the now-complete type + signature environment. An
         // `extern fn` prototype is declared in pass 1 too but has no body to lower.
         var decls = Flatten(root);
+        RecordTopComptime(decls);
         // Set the lazy flag BEFORE pass 0 so `@import` binding (TryComptimeConstBinding, pass 0a) knows
         // to record a special/unmodeled import (`builtin`/`root`) as a deferred spec rather than throw.
         _lazy = lazy;
-        foreach (var decl in decls)
-        {
-            switch (Unwrap(decl).Content)
-            {
-                case Zig.ConstDecl d: _moduleConstExprs[Tok(d.Arg1)] = d.Arg3; break;
-                case Zig.ConstDeclTyped d: _moduleConstExprs[Tok(d.Arg1)] = d.Arg5; break;
-            }
-        }
 
         // Container methods (struct/enum/union), collected across pass 0 as mangled
         // `TypeName_method` free functions and declared in pass 1 (so a method body can
@@ -838,69 +1532,188 @@ internal sealed partial class ZigLowering
         // keyed only by the container NAME (see DeclareMethod / LowerMethodCall).
         var containerMethods = new List<(string container, Item fnDef)>();
 
+        // The pass-0 work list: every top-level decl in source order, with each struct's NESTED
+        // container members (`pub const Mode = enum {…};` inside `const Number = struct {…}` — std.fmt's
+        // shape) spliced in right after their parent, under a parent-mangled name (`Number__Mode`, unique
+        // so two parents' like-named nested types never collide in the IR). A nested container is then
+        // an ordinary container in every respect — enum or struct or union, with methods, consts and its
+        // own nested members — and only its NAME differs; the plain name resolves through the parent
+        // chain (ResolveNestedType), and qualified (`Number.Mode`) through the parent's nested map.
+        var pass0 = CollectPass0Decls(decls, QualifyTypeName);
+        CapturePackedBitSizeSources(pass0);
+        CaptureStorageUnionSources(pass0);
+        // A lazily prepared module's function decls are recorded FIRST (a syntactic scan, nothing lowers), so a
+        // container registered below that names one resolves it on demand: std.Io.Limit's `unlimited =
+        // math.maxInt(usize)` can be lowered while math.zig itself is still being prepared (task #122). The root
+        // unit records them too, for a container of its own naming one (task #123, DeclareRootFnEarly).
+        _registeringRootContainers = !lazy;
+        {
+            foreach (var decl in decls)
+            {
+                var early = Unwrap(decl);
+                if (early.Content switch
+                    {
+                        Zig.FnDef f          => f.Arg1,
+                        _ => (Item?)null,
+                    } is { } earlyName)
+                {
+                    _moduleFnDecls[Tok(earlyName)] = early;
+                }
+            }
+        }
+        foreach (var decl in decls)
+        {
+            switch (Unwrap(decl).Content)
+            {
+                case Zig.ConstDecl c:
+                    _topLevelConstRhs[Tok(c.Arg1)] = c.Arg3;
+                    if (_lazy) { _lazyValueConsts[Tok(c.Arg1)] = (null, c.Arg3); }
+                    if (c.Arg3.Content is Zig.CallArgs) { _deferredTypeCalls.TryAdd(Tok(c.Arg1), c.Arg3); }
+                    break;
+                case Zig.ConstDeclTyped c:
+                    _topLevelConstRhs[Tok(c.Arg1)] = c.Arg5;
+                    if (_lazy) { _lazyValueConsts[Tok(c.Arg1)] = (c.Arg3, c.Arg5); }
+                    if (c.Arg5.Content is Zig.CallArgs) { _deferredTypeCalls.TryAdd(Tok(c.Arg1), c.Arg5); }
+                    break;
+                case Zig.ConstDeclMods c when _lazy:
+                    _lazyValueConsts[Tok(c.Arg1)] = (null, c.Arg4);
+                    break;
+            }
+        }
+        // Bind import names without navigating them. A declaration may be used before its
+        // import appears in the file, including from a type initializer during pass 0.
+        foreach (var (name, rhs) in _topLevelConstRhs)
+        {
+            if (rhs.Content is Zig.BuiltinCall import && Tok(import.Arg0) == "@import")
+            {
+                TryComptimeConstBinding(name, rhs);
+            }
+        }
+
+        // A file with top-level FIELDS is itself a struct type (road-to-zig-std G3). Its NAME registers
+        // before pass 0a so a `const Writer = @This();` binding, and any container whose field points
+        // back at the file type, resolves; the field layout registers in pass 0b like any struct's.
+        var topFields = decls.Select(d => Unwrap(d).Content).OfType<Zig.TopField>().Select(t => t.Arg0).ToList();
+
+        // A ROOT namespace file naming itself (`const root = @This();`, then `root.helper()`): a lazy module
+        // records the binding as a value const and resolves it through its own ZigModule (IsSelfModuleAlias);
+        // the root has none, so it gets a synthetic one over its own tree and lowering.
+        if (!lazy && _module is null && topFields.Count == 0)
+        {
+            foreach (var d in decls.Select(Unwrap))
+            {
+                if (d.Content is Zig.ConstDecl { Arg3.Content: Zig.BuiltinCall { Arg2: null } self } c && IsThisBuiltin(self.Arg0))
+                {
+                    _rootSelfAliases.Add(Tok(c.Arg1));
+                }
+            }
+            if (_rootSelfAliases.Count > 0)
+            {
+                var path = System.IO.Path.Combine(_importerDir ?? "", (_fileStem ?? "root") + ".zig");
+                _rootSelfModule = new ZigModule(path, new LALR.CC.ResilientParseResult(root, [])) { Lowering = this };
+            }
+        }
+
+        // Record every top-level `const NAME = name;` / `= a.b.c;` as a candidate re-export, unresolved.
+        foreach (var d in decls.Select(Unwrap))
+        {
+            if (d.Content is Zig.ConstDecl { Arg3.Content: Zig.Ident or Zig.Field } alias)
+            {
+                _declAliases[Tok(alias.Arg1)] = alias.Arg3;
+            }
+        }
+        if (topFields.Count > 0)
+        {
+            // The stem is a file name, so it may hold any character (`my-file.zig`): keep it identifier-safe.
+            var stem = new string((_fileStem ?? "root").Select(c => char.IsAsciiLetterOrDigit(c) ? c : '_').ToArray());
+            var fileContainer = _modulePrefix is null ? "root__" + stem : QualifyTypeName(stem);
+            _fileContainer = fileContainer;
+            _containerTypes[fileContainer] = new CType.Named(fileContainer);
+            _shared.FileStructOwners[fileContainer] = this;
+        }
+
         // Pass 0a: register every container NAME first (a struct/union as a `CType.Named`
         // placeholder, an enum fully — enums are self-contained int constants), so pass 0b
         // can resolve a struct field that points to a struct/enum declared further down. An enum
         // is fully registered here (incl. its consts), so its methods are collected here too.
-        foreach (var decl in decls)
+        foreach (var (containerName, content, parent) in pass0)
         {
-            switch (Unwrap(decl).Content)
+            if (containerName is not { } name)
             {
-                case Zig.StructDecl s:        _containerTypes[Tok(s.Arg1)] = new CType.Named(Tok(s.Arg1)); break;
-                case Zig.StructDeclEmpty s:   _containerTypes[Tok(s.Arg1)] = new CType.Named(Tok(s.Arg1)); break;
-                case Zig.ExternStructDecl s:  _containerTypes[Tok(s.Arg1)] = new CType.Named(Tok(s.Arg1)); break;  // const IDENT = extern struct { … } ;
-                case Zig.PackedStructDecl s:  _containerTypes[Tok(s.Arg1)] = new CType.Named(Tok(s.Arg1)); break;  // const IDENT = packed struct { … } ;
-                case Zig.EnumDecl e:        foreach (var m in RegisterEnumZig(e.Arg1, null, e.Arg5)) { containerMethods.Add((Tok(e.Arg1), m)); } break;       // const IDENT = enum { EnumFields } ;
-                case Zig.EnumDeclTyped e:   foreach (var m in RegisterEnumZig(e.Arg1, e.Arg5, e.Arg8)) { containerMethods.Add((Tok(e.Arg1), m)); } break;     // const IDENT = enum ( Type ) { EnumFields } ;
-                case Zig.UnionDeclEnum u:     _containerTypes[Tok(u.Arg1)] = new CType.Named(Tok(u.Arg1)); break;  // const IDENT = union(enum) { … } ;
-                case Zig.UnionDeclTagged u:   _containerTypes[Tok(u.Arg1)] = new CType.Named(Tok(u.Arg1)); break;  // const IDENT = union(SomeEnum) { … } ;
-                case Zig.UnionDeclUntagged u: _containerTypes[Tok(u.Arg1)] = new CType.Named(Tok(u.Arg1)); break;  // const IDENT = union { … } ;
-                // A top-level comptime allocator/namespace binding (`const std = @import("std");`)
-                // — recorded HERE in pass 0 so a pass-1 signature (`fn f(a: std.mem.Allocator)`)
-                // resolves the import alias. Emits no decl (Milestone F). A non-comptime const
-                // falls through (rejected in pass 1 as an unsupported top-level global).
-                case Zig.ConstDecl d:      TryComptimeConstBinding(Tok(d.Arg1), d.Arg3); break;  // const IDENT = RhsExpr ;
-                case Zig.ConstDeclTyped d: TryComptimeConstBinding(Tok(d.Arg1), d.Arg5); break;  // const IDENT : Type = RhsExpr ;
+                switch (content)
+                {
+                    // A top-level comptime allocator/namespace binding (`const std = @import("std");`)
+                    // — recorded HERE in pass 0 so a pass-1 signature (`fn f(a: std.mem.Allocator)`)
+                    // resolves the import alias. Emits no decl (Milestone F). A non-comptime const
+                    // falls through (rejected in pass 1 as an unsupported top-level global).
+                    // In a LAZY module a CALL on the right (`pub const Crc3Gsm = Crc(u3, .{ … });` in hash/crc.zig)
+                    // is not evaluated at prepare: zig analyses a declaration only when it is referenced, and
+                    // preparing std.hash must not run every CRC instantiation. It is a deferred type-alias
+                    // candidate (TryDeferredTypeAlias) and, like any unclaimed const, a lazy value const.
+                    case Zig.ConstDecl d when _lazy && d.Arg3.Content is Zig.CallArgs:
+                        _deferredTypeCalls[Tok(d.Arg1)] = d.Arg3;
+                        break;
+                    case Zig.ConstDecl d:      TryComptimeConstBinding(Tok(d.Arg1), d.Arg3); break;  // const IDENT = RhsExpr ;
+                    case Zig.ConstDeclTyped d: TryComptimeConstBinding(Tok(d.Arg1), d.Arg5); break;  // const IDENT : Type = RhsExpr ;
+                }
+                continue;
             }
+            var registered = RegisterContainerIsolated(name, ContainerDeclName(content),
+                () => RegisterContainerName(name, content, containerMethods));
+            if (!registered) { continue; }
+            // A top-level container of an IMPORTED module registered under its qualified IR name
+            // (`fmt__Alignment`); the module's own code — and an importer navigating `fmt.Alignment` —
+            // still spells it plainly, so map the source name to the same type.
+            if (parent is null && ContainerDeclName(content) is { } plainName && plainName != name
+                && _containerTypes.TryGetValue(name, out var qualifiedType))
+            {
+                _containerTypes[plainName] = qualifiedType;
+            }
+            if (parent is { } parentName) { ScopeNestedContainer(name, content, parentName); }
         }
-        // Pass 0b: build struct field layouts (field types now resolve through 0a), register each
-        // struct's/union's consts, and collect their methods.
-        foreach (var decl in decls)
+        // Pass 0a2: every aggregate's consts, recorded (lazily, as ASTs) before ANY aggregate lays out its fields, so a field
+        // extent may read a const of a struct declared LATER in the file (std.crypto.blake3's `ChunkState { buf:
+        // [Blake3.block_length]u8 }` ahead of `Blake3`, task #140), as zig's order-independent declarations allow.
+        foreach (var (containerName, content, _) in pass0)
         {
-            switch (Unwrap(decl).Content)
+            if (containerName is not { } name || _failedContainers.ContainsKey(name) || StructConstItems(content) is not { } constItems) { continue; }
+            RegisterContainerIsolated(name, ContainerDeclName(content), () =>
             {
-                case Zig.StructDecl s:      // const IDENT = struct { Members } ;
-                {
-                    var (fields, methods, consts, containers) = SplitMembers(s.Arg5);
-                    RegisterStruct(Tok(s.Arg1), fields);
-                    RegisterContainerConsts(Tok(s.Arg1), consts);
-                    RegisterNestedContainers(Tok(s.Arg1), containers);
-                    foreach (var m in methods) { containerMethods.Add((Tok(s.Arg1), m)); }
-                    break;
-                }
-                case Zig.StructDeclEmpty s: RegisterStruct(Tok(s.Arg1), System.Array.Empty<Item>()); break;  // const IDENT = struct { } ;
-                case Zig.ExternStructDecl s:  // const IDENT = extern struct { Members } ;
-                {
-                    var (fields, methods, consts, containers) = SplitMembers(s.Arg6);
-                    RegisterStruct(Tok(s.Arg1), fields, AggregateLayout.Sequential);
-                    RegisterContainerConsts(Tok(s.Arg1), consts);
-                    RegisterNestedContainers(Tok(s.Arg1), containers);
-                    foreach (var m in methods) { containerMethods.Add((Tok(s.Arg1), m)); }
-                    break;
-                }
-                case Zig.PackedStructDecl s:  // const IDENT = packed struct { Members } ;
-                {
-                    var (fields, methods, consts, containers) = SplitMembers(s.Arg6);
-                    RegisterStruct(Tok(s.Arg1), fields, AggregateLayout.Packed);
-                    RegisterContainerConsts(Tok(s.Arg1), consts);
-                    RegisterNestedContainers(Tok(s.Arg1), containers);
-                    foreach (var m in methods) { containerMethods.Add((Tok(s.Arg1), m)); }
-                    break;
-                }
-                case Zig.UnionDeclEnum u:   foreach (var m in RegisterUnion(Tok(u.Arg1), u.Arg8)) { containerMethods.Add((Tok(u.Arg1), m)); } break;  // const IDENT = union(enum) { UnionMembers } ;
-                case Zig.UnionDeclTagged u: foreach (var m in RegisterUnionTagged(Tok(u.Arg1), Tok(u.Arg5), u.Arg8)) { containerMethods.Add((Tok(u.Arg1), m)); } break;  // const IDENT = union(SomeEnum) { UnionMembers } ;
-                case Zig.UnionDeclUntagged u: foreach (var m in RegisterUnionUntagged(Tok(u.Arg1), u.Arg5)) { containerMethods.Add((Tok(u.Arg1), m)); } break;  // const IDENT = union { UnionMembers } ;
-            }
+                using (EnterContainer(name)) { RegisterContainerConsts(name, constItems); }
+            });
+        }
+        // A layout may reflect on a later sibling or nested container (for example
+        // MultiArrayList(Row)). Publish every body before starting any of them;
+        // EnsureNestedBody consumes each entry once in its original owner scope.
+        foreach (var (containerName, content, _) in pass0)
+        {
+            if (containerName is not { } name || _failedContainers.ContainsKey(name)) { continue; }
+            _shared.PendingNestedBodies[name] = (content, containerMethods, name, this);
+        }
+
+        // Pass 0b: build struct field layouts (field types now resolve through 0a), register each
+        // struct's/union's consts, and collect their methods. Each runs with the container as the
+        // current scope, so a field typed by a NESTED container (`mode: Mode`) resolves — as does
+        // `@This()` in a field.
+        foreach (var (containerName, content, _) in pass0)
+        {
+            if (containerName is not { } name || _failedContainers.ContainsKey(name)) { continue; }
+            RegisterContainerIsolated(name, ContainerDeclName(content),
+                () => EnsureNestedBody(name));
+        }
+
+        if (_fileContainer is { } fileStruct)
+        {
+            RegisterContainerIsolated(fileStruct, null, () =>
+            {
+                using (EnterContainer(fileStruct)) { RegisterStruct(fileStruct, topFields); }
+            });
+        }
+        _registeringRootContainers = false;
+        if (_lazy)
+        {
+            var moduleContainers = pass0.Select(p => p.Name).OfType<string>();
+            FailDependentContainers(_fileContainer is { } fs ? moduleContainers.Append(fs) : moduleContainers);
         }
 
         // For a lazily-lowered imported module (road-to-zig-std S2), stop after registration: record
@@ -915,12 +1728,11 @@ internal sealed partial class ZigLowering
                 Item? fnName = d.Content switch
                 {
                     Zig.FnDef f          => f.Arg1,
-                    Zig.FnDefNoArgs f    => f.Arg1,
-                    Zig.FnDefErr f       => f.Arg1,
-                    Zig.FnDefNoArgsErr f => f.Arg1,
                     _ => null,
                 };
-                if (fnName is not null) { _moduleFnDecls[Tok(fnName)] = d; }
+                if (fnName is not null) { _moduleFnDecls[Tok(fnName)] = d; continue; }
+                // Const source was indexed before pass 0, so an initializer demanded by
+                // an earlier type can resolve it without evaluating unrelated declarations.
             }
             // The container methods collected above are NOT declared (that would lower their signatures,
             // defeating laziness — an unreferenced method naming an unlowerable type must stay
@@ -931,6 +1743,7 @@ internal sealed partial class ZigLowering
             {
                 _lazyMethodDecls[(container, MethodNameOf(fnDef))] = (this, fnDef);
             }
+            ExecuteTopComptime();
             return;
         }
 
@@ -966,25 +1779,22 @@ internal sealed partial class ZigLowering
             var d = Unwrap(decl);   // unwrap `pub`
             switch (d.Content)
             {
-                case Zig.ExternFnProto f:       DeclareExternFn(f.Arg2, f.Arg4, f.Arg6); break;  // extern fn IDENT ( Params ) Type ;
-                case Zig.ExternFnProtoNoArgs f: DeclareExternFn(f.Arg2, null, f.Arg5); break;     // extern fn IDENT ( ) Type ;
-                case Zig.ExternCFnProto f:       DeclareExternFn(f.Arg3, f.Arg5, f.Arg7); break;  // extern "c" fn IDENT ( Params ) Type ;
-                case Zig.ExternCFnProtoNoArgs f: DeclareExternFn(f.Arg3, null, f.Arg6); break;     // extern "c" fn IDENT ( ) Type ;
+                case Zig.ExternFnProto f: DeclareExternFn(f.Arg4, f.Arg6, f.Arg9); break;  // pub? extern STRING? fn IDENT ( Params? ) CallConv Type ;
+                case Zig.ExternVar v:     _externVars.Add(Tok(v.Arg5)); break;
+                case Zig.ExternConst c:   _externVars.Add(Tok(c.Arg4)); break;            // pub? extern STRING? const IDENT : Type ;            // pub? extern STRING? threadlocal? var IDENT : Type ;
                 // The optional CallConv (Milestone R, part 5) sits between `)` and the return, so the
                 // return type + body are one slot further right than the pre-CallConv layout.
-                case Zig.FnDef f:          AddFnEntry(Export(f.Arg1, DeclareFn(f.Arg1, f.Arg3, f.Arg6, f.Arg7))); break;
-                case Zig.FnDefNoArgs f:    AddFnEntry(Export(f.Arg1, DeclareFn(f.Arg1, null, f.Arg5, f.Arg6))); break;
-                case Zig.FnDefErr f:       AddFnEntry(Export(f.Arg1, DeclareFn(f.Arg1, f.Arg3, f.Arg7, f.Arg8, errUnion: true))); break;   // `!T` return → ErrorUnion(T)
-                case Zig.FnDefNoArgsErr f: AddFnEntry(Export(f.Arg1, DeclareFn(f.Arg1, null, f.Arg6, f.Arg7, errUnion: true))); break;
+                case Zig.FnDef f:          AddFnEntry(Export(f.Arg1, DeclaredEarlyOr(f.Arg1, () => DeclareFn(f.Arg1, f.Arg3, f.Arg7, f.Arg8, errUnion: f.Arg6 is not null)))); break;   // `!T` return → ErrorUnion(T)
                 // Container decls were handled in pass 0 — skip here.
-                case Zig.StructDecl or Zig.StructDeclEmpty or Zig.ExternStructDecl or Zig.PackedStructDecl or Zig.EnumDecl or Zig.EnumDeclTyped or Zig.UnionDeclEnum or Zig.UnionDeclTagged or Zig.UnionDeclUntagged: break;
+                case Zig.StructDecl or Zig.ExternStructDecl or Zig.PackedStructDecl or Zig.PackedStructDeclBacked or Zig.EnumDecl or Zig.EnumDeclTyped or Zig.UnionDecl: break;
                 // A top-level `const`/`var` is either a comptime binding (an `@import`/allocator
                 // alias recorded in pass 0, which emits no decl) or a runtime global — both are
                 // resolved by the global pass below (LowerTopLevelGlobals), so skip them here.
                 case Zig.ConstDecl or Zig.ConstDeclTyped or Zig.VarDecl or Zig.VarDeclTyped
-                  or Zig.ConstDeclTypedMods or Zig.VarDeclTypedMods or Zig.VarDeclThreadLocal: break;
-                // A container-level `comptime {}` is analysis-only — always DROPPED (its side effects
-                // need the comptime engine, S4–S7). A `test` block is DROPPED in a normal build too
+                  or Zig.ConstDeclTypedMods or Zig.VarDeclTypedMods or Zig.VarDeclThreadLocal
+                  or Zig.ConstDeclMods or Zig.VarDeclMods: break;
+                // Top-level comptime obligations run once the declarations are available below.
+                // A `test` block is DROPPED in a normal build
                 // (road-to-zig-std S9); but in TEST MODE (`dotcc zig test`) each `test "…" {}` is
                 // lowered to a runnable `anyerror!void` function and registered in the IR test manifest
                 // (DeclareTest) so the emitted program's entry point runs it — the harness for running
@@ -994,17 +1804,20 @@ internal sealed partial class ZigLowering
                 case Zig.TestDeclIdent t  when _testMode: AddFnEntry(DeclareTest(Tok(t.Arg1), t.Arg2)); break;
                 case Zig.TestDeclAnon t   when _testMode: AddFnEntry(DeclareTest(null, t.Arg1)); break;
                 case Zig.TestDeclNamed or Zig.TestDeclIdent or Zig.TestDeclAnon: break;   // normal build: drop
-                // A top-level container FIELD means this file is being used as an instantiable
-                // struct type (`@This()` at file scope). We PARSE it (road-to-zig-std S9, the largest
-                // std parse bucket), but reifying the file-as-struct — a synthesized named type whose
-                // members are these fields plus every sibling decl — is the S1 lift, not yet done.
-                // Fail loudly so the gap is visible rather than silently mis-lowered.
-                case Zig.TopField: throw new IrUnsupportedException(
-                    "top-level container field (file-as-struct type) is not yet lowered (road-to-zig-std S1)");
+                // A top-level container FIELD: registered with the file-as-struct type in pass 0b.
+                case Zig.TopField: break;
                 default: throw new IrUnsupportedException("zig top-level decl: " + (d.Content?.GetType().Name ?? "null"));
             }
         }
-        foreach (var (container, fnDef) in containerMethods) { entries.Add(DeclareMethod(container, fnDef)); }
+        foreach (var (container, fnDef) in containerMethods)
+        {
+            var me = DeclareMethod(container, fnDef);
+            if (!IsFnTemplate(me.sym)) { entries.Add(me); }   // a generic method instantiates per call
+        }
+
+        // A comptime global initializer may demand one of these bodies now.
+        // Publish work without executing it; pass 2 skips bodies demanded early.
+        _rootBodies.AddRange(entries);
 
         // Pass 1.5: runtime top-level globals. Lowered AFTER every function/method signature
         // (so a global initializer may reference a function) and BEFORE the bodies (so a body
@@ -1013,14 +1826,17 @@ internal sealed partial class ZigLowering
         LowerTopLevelGlobals(decls);
         // Container-level `var`s (Milestone R, part 6) — lowered to globals after top-level globals
         // (so a container var's init may reference one) and before pass 2 (so a body resolves it).
-        foreach (var (container, name, typeItem, rhs) in _pendingContainerVars)
+        foreach (var (container, name, _, _) in _pendingContainerVars.ToList())
         {
-            LowerContainerVar(container, name, typeItem, rhs);
+            EnsureContainerVar(container, name);
         }
 
-        // Pass 2: bodies. `_currentContainer` is set for a method body so its `@This()` resolves.
+        // Pass 2: bodies. `_currentContainer` is set for a method body so its `@This()` resolves. The list
+        // is kept, so a comptime call can lower a later body on demand (E2); the loop skips those.
+        ExecuteTopComptime();
         foreach (var (sym, ps, body, container) in entries)
         {
+            if (!BeginBody(sym)) { continue; }
             _currentContainer = container;
             LowerFnBody(sym, ps, body);
             _currentContainer = null;
@@ -1029,7 +1845,9 @@ internal sealed partial class ZigLowering
         // Pass 2.5 (wall-plan W3a): drain the monomorphization worklist. A generic call enqueued a
         // request during pass 2 (or during an earlier drained instance); each instance body lowers HERE,
         // at top level — never nested in another body's lowering — so the per-fn lowering state starts
-        // clean (the re-entrancy-safe design the plan's audit demanded). A cursor loop (not a fixed
+        // clean (the re-entrancy-safe design the plan's audit demanded). The one exception is a body a
+        // comptime value demanded earlier (the comptime engine's E2), which lowered under a FnStateScope
+        // that saved and restored that state; the loop skips it. A cursor loop (not a fixed
         // count) picks up transitive / recursive instantiations an instance body enqueues; the total is
         // bounded by MaxInstantiations (enforced at enqueue). Runs BEFORE the comptime-fold pass so a
         // `comptime EXPR` inside an instance body is resolved alongside the base-body folds below.
@@ -1045,29 +1863,38 @@ internal sealed partial class ZigLowering
         {
             for (; instCursor < _pendingInstantiations.Count; instCursor++)
             {
-                LowerInstantiationBody(_pendingInstantiations[instCursor]);
+                if (BeginBody(_pendingInstantiations[instCursor].Instance))
+                {
+                    LowerInstantiationBody(_pendingInstantiations[instCursor]);
+                }
             }
             for (; reifiedCursor < _pendingReifiedMethods.Count; reifiedCursor++)
             {
-                LowerReifiedMethodBody(_pendingReifiedMethods[reifiedCursor]);
+                if (BeginBody(_pendingReifiedMethods[reifiedCursor].Method))
+                {
+                    LowerReifiedMethodBody(_pendingReifiedMethods[reifiedCursor]);
+                }
             }
         }
 
-        // Pass 3 (Milestone T): resolve every deferred `comptime EXPR`. All function bodies are now
-        // lowered (in `_ir.Functions`), so a comptime call can interpret its callee. Each fold is
-        // evaluated by the shared comptime interpreter and patched in place with the spliced literal;
-        // a non-constant `comptime` value is a loud error.
-        foreach (var fold in _pendingComptimeFolds)
+        // Pass 3 (Milestone T): resolve every deferred `comptime EXPR` once all function bodies are
+        // lowered, so a comptime call can interpret its callee. With a module graph that is after EVERY
+        // module drains (ZigFrontend calls ZigModuleGraph.ResolveComptimeFolds): the callee may be a
+        // lazy module's instance, which lowers only then. Without one, all bodies are lowered now.
+        if (_moduleGraph is null)
         {
-            fold.Resolved = _ir.ResolveComptimeFold(fold.Inner)
-                ?? throw new IrUnsupportedException(
-                    "`comptime` expression did not evaluate to a compile-time constant value");
+            foreach (var fold in _ownComptimeFolds)
+            {
+                fold.Resolved = _ir.ResolveComptimeFold(fold.Inner) ?? throw _ir.ComptimeFoldFailure(fold.Inner);
+            }
+            CheckComptimeReturnsAtRuntime(RuntimeRoots(), _ownRuntimeCalls, _ownComptimeReturnFns, _ownComptimeOnlyFns);
+            _ir.Functions.RemoveAll(f => _ownComptimeOnlyFns.Contains(f.Sym) || HasComptimeOnlySignature(f.Sym));
         }
     }
 
     /// <summary>Pass 1.5: lower every runtime top-level <c>const</c>/<c>var</c> to a
     /// <see cref="GlobalVar"/> (the same IR node the C frontend's file-scope variables produce, so
-    /// the C# backend renders each as a field of the fixed-address globals struct, surfaced
+    /// the C# backend renders each as a <c>public static</c> field of <c>DotCcGlobals</c>, surfaced
     /// by bare name via <c>using static</c>). A <c>const</c> bound to a comptime <c>@import</c>/
     /// allocator alias (recorded in pass 0) emits no decl and is skipped. A top-level <c>var</c> is
     /// always a runtime global (only <c>const</c> can be a comptime binding). The const-ness of a
@@ -1083,18 +1910,24 @@ internal sealed partial class ZigLowering
                 // top-level `const P = Pair(i32);` whose RHS calls a type-returning generic (wall-plan
                 // W4) couldn't resolve in pass 0 (the fn wasn't declared yet), so it records the type
                 // alias HERE and emits no global. A plain runtime const still returns false → a global.
-                case Zig.ConstDecl d      when !IsComptimeBound(Tok(d.Arg1)):
-                    if (!TryComptimeConstBinding(Tok(d.Arg1), d.Arg3)) { LowerGlobal(d.Arg1, null, d.Arg3); }
+                // A name bound to a module path (`const math = std.math;`, or a file-as-struct TYPE) is
+                // comptime-only, with no runtime value (G3).
+                case Zig.ConstDecl d      when !IsComptimeBound(Tok(d.Arg1)) && !IsComptimeOnlyAlias(Tok(d.Arg1)):
+                    if (!TryComptimeConstBinding(Tok(d.Arg1), d.Arg3)) { LowerGlobal(d.Arg1, null, d.Arg3, isConst: true); }
                     break;  // const IDENT = RhsExpr ;
                 case Zig.ConstDeclTyped d when !IsComptimeBound(Tok(d.Arg1)):
-                    if (!TryComptimeConstBinding(Tok(d.Arg1), d.Arg5)) { LowerGlobal(d.Arg1, d.Arg3, d.Arg5); }
+                    if (!TryComptimeConstBinding(Tok(d.Arg1), d.Arg5)) { LowerGlobal(d.Arg1, d.Arg3, d.Arg5, isConst: true); }
                     break;  // const IDENT : Type = RhsExpr ;
                 case Zig.VarDecl d:        LowerGlobal(d.Arg1, null,   d.Arg3); break;  // var IDENT = RhsExpr ;
                 case Zig.VarDeclTyped d:   LowerGlobal(d.Arg1, d.Arg3, d.Arg5); break;  // var IDENT : Type = RhsExpr ;
                 // A typed global with align/linksection modifiers (Milestone R, part 5) — modifiers
                 // ignored (no-op on the managed target); RhsExpr is one slot right of the Type.
-                case Zig.ConstDeclTypedMods d: LowerGlobal(d.Arg1, d.Arg3, d.Arg6); break;  // const IDENT : Type DeclMods = RhsExpr ;
+                case Zig.ConstDeclTypedMods d: LowerGlobal(d.Arg1, d.Arg3, d.Arg6, isConst: true); break;  // const IDENT : Type DeclMods = RhsExpr ;
                 case Zig.VarDeclTypedMods d:   LowerGlobal(d.Arg1, d.Arg3, d.Arg6); break;  // var IDENT : Type DeclMods = RhsExpr ;
+                case Zig.ConstDeclMods d when !IsComptimeBound(Tok(d.Arg1)):
+                    if (!TryComptimeConstBinding(Tok(d.Arg1), d.Arg4)) { LowerGlobal(d.Arg1, null, d.Arg4, isConst: true); }
+                    break;  // const IDENT DeclMods = RhsExpr ;
+                case Zig.VarDeclMods d:        LowerGlobal(d.Arg1, null, d.Arg4); break;  // var IDENT DeclMods = RhsExpr ;
                 // `threadlocal var x: T = 0;` — thread storage duration → [ThreadStatic] on the
                 // emitted field (the C `_Thread_local` twofer; same marker, same constraint).
                 case Zig.VarDeclThreadLocal d: LowerGlobal(d.Arg2, d.Arg4, d.Arg6, threadLocal: true); break;
@@ -1107,26 +1940,46 @@ internal sealed partial class ZigLowering
     /// against that sink, declare the global symbol in the (module) scope so bodies resolve it, and
     /// record a <see cref="GlobalVar"/>. Scalar, aggregate (struct via <see cref="StructInit"/>),
     /// and <c>[N]T</c> array / <c>undefined</c> globals are supported (Milestone K). The initializer
-    /// is lowered at module scope, so it must be a constant / module-resolvable value.</summary>
-    private void LowerGlobal(Item nameTok, Item? typeItem, Item rhsItem, bool threadLocal = false)
+    /// is lowered at module scope, so it must be a constant / module-resolvable value.
+    /// <para>An integer <c>const</c> (<paramref name="isConst"/>) whose initializer folds also carries
+    /// the folded value, the way a C23 <c>constexpr</c> does (<see cref="Symbol.IsConstexpr"/>): a zig
+    /// container-level <c>const</c> IS comptime-known, so its name must fold wherever a constant is
+    /// required — a comptime argument (<c>addN(N, 3)</c>), an array extent. The emitted field is
+    /// unchanged.</para></summary>
+    private void LowerGlobal(Item nameTok, Item? typeItem, Item rhsItem, bool threadLocal = false, bool isConst = false)
     {
-        // `threadlocal` V1: a zero-initialized SCALAR only. The array/aggregate
-        // paths below don't carry the marker (their pinned backing store is
-        // process-wide by construction), and a non-zero initializer breaks under
-        // .NET [ThreadStatic] (the initializer runs on the first thread only) —
-        // both are loud rejections, checked where they'd otherwise lower.
+        // A container-level initializer is evaluated at compile time (task #92).
+        using (EnterComptime()) { LowerGlobalCore(nameTok, typeItem, rhsItem, threadLocal, isConst); }
+        // A top-level `const` is immutable: a store to it is zig's "cannot assign to constant" (task #95).
+        if (isConst && _symbols.Resolve(Tok(nameTok)) is { IsGlobal: true } declared) { _zigConstBindings.Add(declared); }
+    }
+
+    /// <summary>Lower a top-level <c>const</c> / <c>var</c> declaration (see <see cref="LowerGlobal"/>).</summary>
+    private void LowerGlobalCore(Item nameTok, Item? typeItem, Item rhsItem, bool threadLocal, bool isConst)
+    {
+        // `threadlocal` V1: a SCALAR only. The array/aggregate paths below don't
+        // carry the marker (their pinned backing store is process-wide by
+        // construction), so they are loud rejections, checked where they'd
+        // otherwise lower. A non-zero initializer is set on each thread's first
+        // access (GlobalVar.PerThreadInit).
         if (threadLocal && (IsSentinelArrayType(typeItem) || rhsItem.Content is Zig.UndefinedLit or Zig.LabeledBlock))
         {
             throw new IrUnsupportedException(
-                $"threadlocal '{Tok(nameTok)}': only a zero-initialized scalar threadlocal is supported");
+                $"threadlocal '{Tok(nameTok)}': only a scalar threadlocal is supported (not an array, `undefined` or a labeled block)");
         }
-        // A labeled value-block initializes via runtime statements (a temp + control flow); a global
-        // must be comptime-initialized, so it can't host one. Clear error (not the generic
-        // expression-position one, which would read oddly for a global).
+        // A labeled value-block initializer (`const table = blk: { … break :blk t; };`) runs at compile time, as in
+        // zig: its value becomes the static initializer (task #79).
+        CExpr? blockInit = null;
         if (rhsItem.Content is Zig.LabeledBlock)
         {
-            throw new IrUnsupportedException(
-                $"a labeled value-block can't initialize the global '{Tok(nameTok)}' (a global needs a comptime value)");
+            var (blockType, blockValue) = ComptimeLabeledBlockInit(
+                $"the global '{Tok(nameTok)}'", QualifyTypeName(Tok(nameTok)), rhsItem, typeItem is not null ? LowerType(typeItem) : null);
+            if (blockType.Unqualified is CType.Array blockArray)
+            {
+                AddArrayGlobal(Tok(nameTok), blockArray, blockValue);
+                return;
+            }
+            blockInit = blockValue;
         }
         // A `[N:s]T` sentinel array GLOBAL — reserve ONE extra trailing slot for the sentinel in the
         // pinned, program-lifetime backing store (the local-decl stackalloc does the same, part 4 /
@@ -1182,7 +2035,11 @@ internal sealed partial class ZigLowering
                 new LitInt(n.ToString(CultureInfo.InvariantCulture), n) { Type = CType.Int }) { Type = new CType.Pointer(uarr.Element) });
             return;
         }
-        var init = LowerExprSink(rhsItem, declared);
+        var init = blockInit ?? LowerGlobalInit(Tok(nameTok), rhsItem, declared);
+        // A bare enum literal (`const mode = @import("builtin").mode;`, the synthetic builtin's `.ReleaseFast`, task #161) is
+        // comptime-only in zig: it has no runtime form until it meets a typed sink, and a read of the name folds through
+        // its declaration (TryEvalComptimeTag), so no global is emitted.
+        if (isConst && declared is null && init.Type?.Unqualified is CType.EnumLiteral) { return; }
         // A comptime ARRAY at a global `const` (`const TBL = comptime buildTable();`) would resolve
         // (in pass 3) to a StackArray, but by then this global is already a scalar GlobalVar — the
         // StackArray would emit as an invalid `static T* TBL = stackalloc …` field initializer. The
@@ -1206,68 +2063,160 @@ internal sealed partial class ZigLowering
             if (threadLocal)
             {
                 throw new IrUnsupportedException(
-                    $"threadlocal '{Tok(nameTok)}': only a zero-initialized scalar threadlocal is supported");
+                    $"threadlocal '{Tok(nameTok)}': only a scalar threadlocal is supported (not an array, `undefined` or a labeled block)");
             }
-            AddArrayGlobal(Tok(nameTok), (CType.Array)sa.Type,
-                new PinnedArray(sa.Element, sa.Elems, null) { Type = new CType.Pointer(sa.Element) });
+            // A NESTED array (`const TABLE: [N][2]u64 = .{ .{…}, … }`, std.fmt.float's power-of-5 tables) is one flat
+            // block of scalars, row after row, as every use indexes it (`TABLE + i * 2`); its rows had been emitted as
+            // `stackalloc` pointers inside the static initializer, which neither builds nor outlives the initializer.
+            var (flatElement, flatElems) = FlattenArrayLiteral(Tok(nameTok), sa);
+            var arraySym = AddArrayGlobal(Tok(nameTok), (CType.Array)sa.Type,
+                new PinnedArray(flatElement, flatElems, null) { Type = new CType.Pointer(flatElement) });
+            // A const array is comptime-known, so a comptime use may read it (`Mixer(seed_a, 5)` passing it as a
+            // `comptime seed: [4]u32` argument): the interpreter evaluates its literal.
+            if (isConst) { _ir.ConstGlobalInits[arraySym] = sa; }
             return;
         }
-        // A .NET [ThreadStatic] initializer runs on the FIRST thread only, so C's/
-        // Zig's "every thread starts at the initial value" holds only for the
-        // zero/default value every thread's slot gets anyway.
-        if (threadLocal && _ir.ConstEval(init) is not 0)
-        {
-            throw new IrUnsupportedException(
-                $"threadlocal '{Tok(nameTok)}': a non-zero initializer is not supported (a .NET [ThreadStatic] initializer runs only on the first thread)");
-        }
         var type = declared ?? init.Type ?? CType.Int;
+        var folded = isConst && type.Unqualified is CType.Prim { Integer: true } ? _ir.ConstEval(init) : null;
         var sym = _symbols.Declare(new Symbol
         {
             Name = Tok(nameTok), Kind = SymKind.Var, Type = type, Storage = Storage.Static, IsGlobal = true,
             IsThreadLocal = threadLocal,
+            IsConstexpr = folded is not null,
+            ConstValue = folded ?? 0,
         });
+        if (declared is null && init is LitStr) { _stringLiteralSyms.Add(sym); }
+        NoteComptimeFloatConst(sym, isConst, declared, init);
+        // Every thread starts at the initial value: a non-zero one is set per thread.
         _ir.Globals.Add(new GlobalVar(sym, init));
+        // A top-level CONST aggregate (`const cpu: std.Target.Cpu = .{…}`) is comptime-known, so a comptime
+        // call may read it (`comptime std.atomic.cacheLineForCpu(cpu)`): the interpreter evaluates its init.
+        if (isConst && type.Unqualified is CType.Named) { _ir.ConstGlobalInits[sym] = init; }
+        // So is a top-level string CONST (std.Io.Writer's `const ANY = "any";`, read by printValue's `comptime
+        // std.mem.eql(u8, fmt, ANY)`, task #121).
+        if (isConst && init is LitStr) { _ir.ConstGlobalInits[sym] = init; }
+    }
+
+    /// <summary>Lower a global's initializer. One that needs statements before its value (std.base64's
+    /// <c>standard = Codecs{ .alphabet_chars = …, … }</c>: an array field is copied in after the literal, task #78) is
+    /// wrapped in a synthesized static <c>__init_NAME()</c> function, and the global is initialized by a call to it. C#
+    /// runs static initializers in declaration order, and a global the initializer reads is lowered, and so declared,
+    /// before it.</summary>
+    private CExpr LowerGlobalInit(string name, Item rhsItem, CType? declared)
+    {
+        CExpr value;
+        List<CStmt> pre;
+        using (EnterFreshHoist())
+        {
+            value = LowerExprSink(rhsItem, declared);
+            pre = _hoist ?? new List<CStmt>();
+        }
+        return pre.Count == 0 ? value : InitFunctionCall(name, pre, value);
+    }
+
+    /// <summary>A synthesized static <c>__init_NAME()</c> that runs <paramref name="pre"/> and returns <paramref name="value"/>,
+    /// and a call to it: the initializer of a global whose value needs statements first.</summary>
+    private Call InitFunctionCall(string name, List<CStmt> pre, CExpr value)
+    {
+        var fn = DeclareFnSymbol(new Symbol
+        {
+            Name = "__init_" + name,
+            Kind = SymKind.Func,
+            Type = new CType.Func(value.Type, new List<CType>(), false),
+            IsGlobal = true,
+        });
+        _ir.Functions.Add(new FuncDef(fn, new List<Symbol>(), new Block(new List<CStmt>(pre) { new Return(value) }), false));
+        return new Call(fn.Name, new List<CExpr>(), new List<CType>(), fn) { Type = value.Type };
+    }
+
+    /// <summary>A lazy module's top-level consts whose value needed statements (see <see cref="LowerLazyValueConst"/>),
+    /// memoized as static globals: each is evaluated once, as zig evaluates a top-level const once.</summary>
+    private readonly Dictionary<string, Symbol> _lazyConstStatics = new(System.StringComparer.Ordinal);
+
+    /// <summary>An array literal's elements as one flat block of scalars under its innermost element type: a row of a nested
+    /// array (<c>[N][2]u64</c>) contributes its own elements in order, which is the layout dotcc indexes a nested array by.
+    /// A row that is not itself a literal cannot be flattened here, and is a loud cut rather than a bad emit.</summary>
+    private static (CType Element, List<CExpr> Elems) FlattenArrayLiteral(string name, StackArray literal)
+    {
+        if (literal.Element.Unqualified is not CType.Array) { return (literal.Element, literal.Elems.ToList()); }
+        var flat = new List<CExpr>();
+        CType? scalar = null;
+        foreach (var row in literal.Elems)
+        {
+            if (row is not StackArray rowLiteral)
+            {
+                throw new IrUnsupportedException(
+                    $"global `{name}`: a nested array row must be an array literal to be laid out flat (got {row.GetType().Name})");
+            }
+            var (rowElement, rowElems) = FlattenArrayLiteral(name, rowLiteral);
+            scalar ??= rowElement;
+            flat.AddRange(rowElems);
+        }
+        return (scalar ?? ((CType.Array)literal.Element.Unqualified).Element, flat);
     }
 
     /// <summary>Record a <c>[N]T</c> array global: an array-typed static symbol (so references
     /// resolve + <c>sizeof</c> is exact) backed by the pinned <paramref name="pinned"/> store
     /// (rendered as a stable <c>T*</c>). The symbol is declared after the initializer is lowered, so
     /// a literal element can reference an earlier global but never the array itself.</summary>
-    private void AddArrayGlobal(string name, CType.Array arr, CExpr pinned)
+    /// <returns>The declared array symbol.</returns>
+    private Symbol AddArrayGlobal(string name, CType.Array arr, CExpr pinned)
     {
         var sym = _symbols.Declare(new Symbol
         {
             Name = name, Kind = SymKind.Var, Type = arr, Storage = Storage.Static, IsGlobal = true,
         });
         _ir.Globals.Add(new GlobalVar(sym, pinned));
+        return sym;
+    }
+
+    /// <summary>The global of container <paramref name="container"/>'s <c>var</c> <paramref name="name"/>, lowered now if it
+    /// was only registered: a lazy module (std.bit_set's <c>var empty_masks_data</c>, task #130) has no pass 1.5 to lower
+    /// it in, so its first reader does. Null when the container declares no such var.</summary>
+    private Symbol? EnsureContainerVar(string container, string name)
+    {
+        if (_containerVars.TryGetValue(container, out var vars) && vars.TryGetValue(name, out var done)) { return done; }
+        foreach (var (c, n, typeItem, rhs) in _pendingContainerVars)
+        {
+            if (c != container || n != name) { continue; }
+            LowerContainerVar(container, name, typeItem, rhs);
+            return _containerVars[container][name];
+        }
+        return null;
     }
 
     /// <summary>Pass 1.5: lower a container-level <c>var</c> (a namespaced mutable global, Milestone R
     /// part 6) to a <see cref="GlobalVar"/> under a mangled <c>Container_name</c> symbol — the same
-    /// shape a top-level global takes, so the backend renders it as a globals-struct field. The
+    /// shape a top-level global takes, so the backend renders it as a <c>DotCcGlobals</c> field. The
     /// initializer is lowered at module scope (with <see cref="_currentConstContainer"/> set so it may
     /// reference a sibling const by bare name). The symbol is recorded in <see cref="_containerVars"/>
-    /// so a <c>Type.name</c> read/write resolves to its <see cref="VarRef"/>. V1: scalar only — an
-    /// array/aggregate container var is rejected (the pinned-store mangling isn't wired).</summary>
+    /// so a <c>Type.name</c> read/write resolves to its <see cref="VarRef"/>. An array container var takes the pinned store
+    /// a top-level array global does (task #130).</summary>
     private void LowerContainerVar(string container, string name, Item? typeItem, Item rhsItem)
     {
+        if (_containerVars.TryGetValue(container, out var done) && done.ContainsKey(name)) { return; }
         var declared = typeItem is not null ? LowerType(typeItem) : null;
-        var prev = _currentConstContainer;
-        _currentConstContainer = container;   // a container var's init may name a sibling const
         CExpr init;
-        try { init = LowerExprSink(rhsItem, declared); }
-        finally { _currentConstContainer = prev; }
-        if (init is StackArray)
+        using (EnterConstContainer(container)) { init = LowerExprSink(rhsItem, declared); }   // a container var's init may name a sibling const
+        Symbol sym;
+        if (init is StackArray sa)
         {
-            throw new IrUnsupportedException(
-                $"container '{container}' var '{name}': an array/aggregate container `var` is not supported yet (use a scalar)");
+            // An array container var (std.bit_set.DynamicBitSetUnmanaged's `var empty_masks_data = [_]MaskInt{ 0, undefined
+            // };`, task #130) lives in the pinned, program-lifetime store a top-level array global uses: a `stackalloc`
+            // cannot be a static field's initializer.
+            var (flatElement, flatElems) = FlattenArrayLiteral(container + "." + name, sa);
+            sym = AddArrayGlobal(container + "_" + name, (CType.Array)sa.Type,
+                new PinnedArray(flatElement, flatElems, null) { Type = new CType.Pointer(flatElement) });
         }
-        var type = declared ?? init.Type ?? CType.Int;
-        var sym = _symbols.Declare(new Symbol
+        else
         {
-            Name = container + "_" + name, Kind = SymKind.Var, Type = type, Storage = Storage.Static, IsGlobal = true,
-        });
-        _ir.Globals.Add(new GlobalVar(sym, init));
+            var type = declared ?? init.Type ?? CType.Int;
+            sym = _symbols.Declare(new Symbol
+            {
+                Name = container + "_" + name, Kind = SymKind.Var, Type = type, Storage = Storage.Static, IsGlobal = true,
+            });
+            _ir.Globals.Add(new GlobalVar(sym, init));
+        }
         if (!_containerVars.TryGetValue(container, out var vars))
         {
             vars = new Dictionary<string, Symbol>(System.StringComparer.Ordinal);
@@ -1281,25 +2230,155 @@ internal sealed partial class ZigLowering
     /// by its annotation). <see cref="_currentConstContainer"/> is set so a bare identifier in the RHS
     /// resolves to a SIBLING const (Milestone R, part 6); a re-entry on the same const is a dependency
     /// cycle and errors cleanly (<see cref="_constResolving"/>).</summary>
-    private CExpr LowerContainerConst(string container, string name, Item? typeItem, Item rhs)
+    /// <param name="useSink">The reader's result type, which an UNTYPED const's RHS is lowered at (task #130).</param>
+    private CExpr LowerContainerConst(string container, string name, Item? typeItem, Item rhs, CType? useSink = null)
     {
         var key = container + "." + name;
         if (!_constResolving.Add(key))
         {
             throw new IrUnsupportedException($"container '{container}' const '{name}' has a dependency cycle");
         }
-        var prev = _currentConstContainer;
-        _currentConstContainer = container;
+        using var constContainer = EnterConstContainer(container);
+        // A reified struct's const may read its comptime params (`pub const max = if (cap) |n| n else 0;`),
+        // and any const is evaluated in its container's scope (`pub const empty: Self = .{ … };`, read as a
+        // decl literal from another module).
+        using var seeds = EnterReifiedSeeds(container);
+        using var scope = EnterContainer(container);
         try
         {
-            var sink = typeItem is not null ? LowerType(typeItem) : null;
+            var sink = typeItem is not null ? LowerType(typeItem) : useSink;
+            // A const computed by a labeled block (std.hash.crc's `lookup_table`) is evaluated ONCE, at compile time,
+            // into a static (task #79): re-lowering the block at each use would put its loop in every reader.
+            if (rhs.Content is Zig.LabeledBlock)
+            {
+                if (_foldedContainerConsts.TryGetValue((container, name), out var foldedConst)) { return foldedConst; }
+                if (!_staticContainerConsts.TryGetValue((container, name), out var blockSym))
+                {
+                    var (blockType, blockInit) = ComptimeLabeledBlockInit($"'{container}.{name}'", $"{container}__{name}", rhs, sink);
+                    // A `comptime_int` (std.MultiArrayList's `const init_capacity: comptime_int = init: { … }`, task #108) is
+                    // the literal itself, which meets a typed peer at that peer's width (`minimum +| (… + init_capacity)`
+                    // stays a usize); a static would carry it at the 128-bit comptime width.
+                    // Typed as a spelled literal of that value is (`int`, or `long` past it), which adopts a typed peer; the
+                    // comptime_int carrier is 128 bits wide and would widen the arithmetic it meets.
+                    if (blockType.Unqualified is CType.Prim { IsComptimeInt: true } && blockInit is LitInt { Value: { } } or Unary { Op: UnOp.Neg, Operand: LitInt { Value: { } } })
+                    {
+                        static CType Spelled(long v) => v is >= int.MinValue and <= int.MaxValue ? CType.Int : CType.Long;
+                        CExpr comptimeLit = blockInit switch
+                        {
+                            LitInt { Value: long lv } lit => lit with { Type = Spelled(lv) },
+                            Unary { Operand: LitInt { Value: long nv } negLit } neg => neg with { Operand = negLit with { Type = Spelled(-nv) }, Type = Spelled(-nv) },
+                            _ => blockInit,
+                        };
+                        _foldedContainerConsts[(container, name)] = comptimeLit;
+                        return comptimeLit;
+                    }
+                    blockSym = _symbols.Declare(new Symbol
+                    {
+                        Name = $"{container}__{name}__static", Kind = SymKind.Var, Type = blockType, Storage = Storage.Static, IsGlobal = true,
+                    });
+                    _ir.Globals.Add(new GlobalVar(blockSym, blockInit));
+                    // Comptime-known, as the block was evaluated to it: a comptime read (std.MultiArrayList's `inline for
+                    // (sizes.bytes) |size| elem_bytes += size;` into a `comptime var`, task #108) gets the value.
+                    _ir.ConstGlobalInits[blockSym] = blockInit;
+                    _staticContainerConsts[(container, name)] = blockSym;
+                }
+                return new VarRef(blockSym) { Type = blockSym.Type, IsLValue = true };
+            }
             return LowerExprSink(rhs, sink);
+        }
+        finally { _constResolving.Remove(key); }
+    }
+
+    /// <summary><c>comptime label: { … }</c> in value position (std.unicode's <c>const first = comptime first: { … break :first
+    /// a ++ b ++ c; };</c>, task #82): run by the comptime interpreter as a const's labeled block is. An array value becomes a
+    /// static global, one per site and function instance (a generic's instances may compute different tables); anything
+    /// else is its literal.</summary>
+    private CExpr ComptimeLabeledBlockValue(Item labeled, CType? sink)
+    {
+        var key = (labeled, _currentFnName);
+        if (_comptimeBlockStatics.TryGetValue(key, out var memo)) { return new VarRef(memo) { Type = memo.Type, IsLValue = true }; }
+        var (type, init) = ComptimeLabeledBlockInit("a `comptime` block", "__ctblk" + _comptimeBlockStatics.Count, labeled, sink);
+        if (init is not PinnedArray) { return init; }
+        var sym = _symbols.Declare(new Symbol
+        {
+            Name = "__ctblk" + _comptimeBlockStatics.Count, Kind = SymKind.Var, Type = type, Storage = Storage.Static, IsGlobal = true,
+        });
+        _ir.Globals.Add(new GlobalVar(sym, init));
+        _comptimeBlockStatics[key] = sym;
+        return new VarRef(sym) { Type = type, IsLValue = true };
+    }
+
+    /// <summary>The statics <see cref="ComptimeLabeledBlockValue"/> made, by site and function instance.</summary>
+    private readonly Dictionary<(Item Site, string Fn), Symbol> _comptimeBlockStatics = new();
+
+    /// <summary>The static initializer of a global or container const computed by a labeled block (std.hash.crc's
+    /// <c>const lookup_table = blk: { var table: [256]I = undefined; for (&amp;table, 0..) |*e, i| { … } break :blk table; };</c>).
+    /// zig runs the block at compile time, so it is lowered into a throwaway scope, run by the comptime interpreter,
+    /// and its value spliced back: a pinned array for a <c>[N]T</c> result, a literal otherwise. None of the block's
+    /// statements reach an emitted body. A block the interpreter cannot run is a loud cut that says why. A struct
+    /// with array fields (std.bit_set's <c>full</c>) is built by a synthesized <c>__init_</c><paramref name="initName"/>
+    /// that copies them in after the literal.</summary>
+    private (CType Type, CExpr Init) ComptimeLabeledBlockInit(string what, string initName, Item labeled, CType? declared)
+    {
+        Symbol? result = null;
+        CStmt lowered;
+        List<CStmt> hoisted;
+        _symbols.EnterScope();
+        _comptimeDepth++;   // the block runs at compile time: its calls, and its loops over comptime lists (task #116)
+        try
+        {
+            using var hoist = EnterFreshHoist();
+            lowered = LowerLabeledValue(labeled, declared, temp =>
+            {
+                result = temp;
+                return new Block(new List<CStmt>());
+            });
+            hoisted = _hoist ?? new List<CStmt>();
         }
         finally
         {
-            _currentConstContainer = prev;
-            _constResolving.Remove(key);
+            _comptimeDepth--;
+            _symbols.ExitScope();
         }
+        if (result is not { } resultSym
+            || _ir.EvalComptimeBlock(new Block([.. hoisted, lowered]), resultSym) is not { } value)
+        {
+            throw new IrUnsupportedException(
+                $"the labeled block initializing {what} did not evaluate at compile time"
+                + (_ir.ComptimeMiss is { } why ? $" (the interpreter stopped at {why})" : ""));
+        }
+        var type = declared ?? resultSym.Type;
+        IrUnsupportedException Unspliceable() => new(
+            $"the labeled block initializing {what} evaluated to a value with no static form");
+        // An array breaks out of the block decayed to a pointer (the temp is `T*`), so without an annotation the
+        // array type is the evaluated value's own.
+        if (value is IrBuilder.CtArray array
+            && (type.Unqualified as CType.Array ?? array.Type.Unqualified as CType.Array) is { } arrayType)
+        {
+            var elems = array.Elems.Select(e => _ir.SpliceComptimeValue(e) ?? throw Unspliceable()).ToList();
+            return (arrayType, new PinnedArray(arrayType.Element, elems, null) { Type = new CType.Pointer(arrayType.Element) });
+        }
+        if (_ir.SpliceComptimeValue(value) is { } spliced) { return (type, spliced); }
+        if (_ir.SpliceStructDeferringArrays(value) is not var (structInit, arrays) || type.Unqualified is not CType.Named)
+        {
+            throw Unspliceable();
+        }
+        Symbol temp;
+        _symbols.EnterScope();
+        try { temp = _symbols.Declare(new Symbol { Name = "__ctv", Kind = SymKind.Var, Type = type }); }
+        finally { _symbols.ExitScope(); }
+        var pre = new List<CStmt> { new DeclStmt(new List<LocalDecl> { new(temp, structInit) }) };
+        foreach (var (field, fieldArray, arrayValue) in arrays)
+        {
+            var elems = arrayValue.Elems.Select(e => _ir.SpliceComptimeValue(e) ?? throw Unspliceable()).ToList();
+            pre.Add(new ExprStmt(new Call("memcpy", new List<CExpr>
+            {
+                new Member(new VarRef(temp) { Type = type, IsLValue = true }, field, false) { Type = fieldArray, IsLValue = true },
+                new PinnedArray(fieldArray.Element, elems, null) { Type = new CType.Pointer(fieldArray.Element) },
+                ElementBytes(fieldArray.Element, elems.Count),
+            }) { Type = new CType.Pointer(CType.Void) }));
+        }
+        return (type, InitFunctionCall(initName, pre, new VarRef(temp) { Type = type }));
     }
 
     /// <summary>Tag a pass-1 function entry with the container it belongs to (null for a free
@@ -1310,21 +2389,202 @@ internal sealed partial class ZigLowering
 
     /// <summary>Unwrap a top-level decl's optional visibility/linkage modifier — <c>pub</c>
     /// (<see cref="Zig.PubFn"/>/<see cref="Zig.PubVar"/>), <c>export</c> (<see cref="Zig.ExportFn"/>/
-    /// <see cref="Zig.ExportVar"/>), or <c>pub export</c> (<see cref="Zig.PubExportFn"/>/
-    /// <see cref="Zig.PubExportVar"/>) — to its inner declaration; an unmodified decl is returned
+    /// <see cref="Zig.ExportVar"/>, each with an optional <c>pub</c> in its first slot) — to its inner
+    /// declaration; an unmodified decl is returned
     /// unchanged. Both modifiers are a no-op in a single-file console program (every non-static
     /// function is already export-eligible under <c>-shared</c>; a data export under <c>-shared</c>
     /// is a documented V1 cut), so peeling lets all the existing FnDef / global / container handling
     /// apply. A `pub` container (<see cref="Zig.PubContainer"/>) peels to the inner struct/enum/union
     /// decl (an in-FUNCTION container decl is still a cut — it'd need on-the-fly type registration).</summary>
+    /// <summary>Pass 0's work list (see <see cref="Lower"/>): each top-level decl's unwrapped content in
+    /// source order, a container one carrying its registration NAME (qualified by <paramref name="qualify"/>
+    /// — the module prefix of an imported module, see <see cref="QualifyTypeName"/>), with every struct's nested
+    /// container members spliced in directly after it (recursively) under the parent-mangled name
+    /// <c>Parent__Inner</c> and their parent's name. A non-container decl carries a null name.</summary>
+    /// <summary>Pass 0a for one container: register its NAME (a struct / union as a <see cref="CType.Named"/>
+    /// placeholder; an enum fully, with its consts and methods collected into <paramref name="methods"/>),
+    /// in its own scope. Shared by a module's pass 0 and a reified struct's nested containers.</summary>
+    private void RegisterContainerName(string name, object? content, List<(string container, Item fnDef)> methods)
+    {
+        using (EnterContainer(name))   // an enum's member values / consts resolve in its own scope
+        {
+            switch (content)
+            {
+                case Zig.StructDecl:        _containerTypes[name] = new CType.Named(name); break;
+                case Zig.ExternStructDecl:  _containerTypes[name] = new CType.Named(name); break;  // const IDENT = extern struct { … } ;
+                case Zig.PackedStructDecl:  _containerTypes[name] = new CType.Named(name); break;  // const IDENT = packed struct { … } ;
+                case Zig.PackedStructDeclBacked: _containerTypes[name] = new CType.Named(name); break;  // const IDENT = packed struct(T) { … } ;
+                case Zig.EnumDecl e:        foreach (var m in RegisterEnumZig(name, null, e.Arg5)) { methods.Add((name, m)); } break;       // const IDENT = enum { EnumFields } ;
+                case Zig.EnumDeclTyped e:   foreach (var m in RegisterEnumZig(name, e.Arg5, e.Arg8)) { methods.Add((name, m)); } break;     // const IDENT = enum ( Type ) { EnumFields } ;
+                case Zig.UnionDecl:         _containerTypes[name] = new CType.Named(name); break;  // const IDENT = [layout] union[(…)] { … } ;
+            }
+        }
+    }
+
+    /// <summary>Scope a NESTED container's plain name to its parent, after it is registered (an enum's
+    /// <see cref="CType.Enum"/> only exists once RegisterEnumZig has run).</summary>
+    private void ScopeNestedContainer(string name, object? content, string parentName)
+    {
+        if (!_containerTypes.TryGetValue(name, out var nestedType)) { return; }
+        _containerParents[name] = parentName;
+        if (!_nestedContainerTypes.TryGetValue(parentName, out var nestedMap))
+        {
+            nestedMap = new Dictionary<string, CType>(System.StringComparer.Ordinal);
+            _nestedContainerTypes[parentName] = nestedMap;
+        }
+        nestedMap[ContainerDeclName(content) ?? name] = nestedType;
+    }
+
+    /// <summary>Pass 0b for one container: its field layout (field types resolve through pass 0a), its
+    /// consts, and its methods (collected into <paramref name="methods"/>), in its own scope so a field typed
+    /// by a nested container or by <c>@This()</c> resolves.</summary>
+    private void RegisterContainerBody(string name, object? content, List<(string container, Item fnDef)> methods)
+    {
+        using (EnterContainer(name))
+        {
+            switch (content)
+            {
+                case Zig.StructDecl s:      // const IDENT = struct { Members? } ; (an empty body: Arg5 is null)
+                {
+                    var (fields, allFns, consts, _) = SplitMembers(s.Arg5);
+                    var fnDefs = DeclareTypeReturningMembers(name, allFns);
+                    RegisterContainerConsts(name, consts);   // first: a field may be typed by a type const
+                    RegisterStruct(name, fields);
+                    foreach (var m in fnDefs) { methods.Add((name, m)); }
+                    break;
+                }
+                case Zig.ExternStructDecl s:  // const IDENT = extern struct { Members } ;
+                {
+                    var (fields, allFns, consts, _) = SplitMembers(s.Arg6);
+                    var fnDefs = DeclareTypeReturningMembers(name, allFns);
+                    RegisterContainerConsts(name, consts);   // first: a field may be typed by a type const
+                    RegisterStruct(name, fields, AggregateLayout.Sequential);
+                    foreach (var m in fnDefs) { methods.Add((name, m)); }
+                    break;
+                }
+                case Zig.PackedStructDecl or Zig.PackedStructDeclBacked:  // const IDENT = packed struct [( T )] { Members } ;
+                {
+                    var (fields, allFns, consts, _) = SplitMembers(content is Zig.PackedStructDecl ps ? ps.Arg6 : ((Zig.PackedStructDeclBacked)content).Arg9);
+                    var fnDefs = DeclareTypeReturningMembers(name, allFns);
+                    RegisterContainerConsts(name, consts);   // first: a field may be typed by a type const
+                    RegisterStruct(name, fields, AggregateLayout.Packed);
+                    foreach (var m in fnDefs) { methods.Add((name, m)); }
+                    break;
+                }
+                case Zig.UnionDecl u:       foreach (var m in RegisterUnionHead(name, u.Arg3, u.Arg5)) { methods.Add((name, m)); } break;  // const IDENT = [layout] union[(…)] { UnionMembers } ;
+            }
+        }
+    }
+
+    /// <summary>The <c>const</c> / <c>var</c> members of an aggregate declaration, or null for
+    /// any other container: what pass 0a2 records ahead of every aggregate's field layout.</summary>
+    private static IReadOnlyList<Item>? StructConstItems(object? content) => content switch
+    {
+        Zig.StructDecl s => SplitMembers(s.Arg5).consts,
+        Zig.ExternStructDecl s => SplitMembers(s.Arg6).consts,
+        Zig.PackedStructDecl s => SplitMembers(s.Arg6).consts,
+        Zig.PackedStructDeclBacked s => SplitMembers(s.Arg9).consts,
+        Zig.UnionDecl u => SplitUnionMembers(u.Arg5).consts,
+        _ => null,
+    };
+
+    /// <summary>The nested containers of a container, depth-first (<c>&lt;parent&gt;__Inner</c>, then its own), each
+    /// with its content and parent: pass 0's flattening, for a container that is not top-level.</summary>
+    private static List<(string Name, object? Content, string Parent)> CollectNestedContainers(string parent, IReadOnlyList<Item> containers)
+    {
+        var list = new List<(string Name, object? Content, string Parent)>();
+        void Add(string p, IReadOnlyList<Item> items)
+        {
+            foreach (var nested in items)
+            {
+                if (ContainerDeclName(nested.Content) is not { } inner) { continue; }
+                var name = $"{p}__{inner}";
+                list.Add((name, nested.Content, p));
+                Add(name, NestedContainerItems(nested.Content));
+            }
+        }
+        Add(parent, containers);
+        return list;
+    }
+
+    private static List<(string? Name, object? Content, string? Parent)> CollectPass0Decls(IReadOnlyList<Item> decls,
+        Func<string, string> qualify)
+    {
+        var list = new List<(string? Name, object? Content, string? Parent)>();
+        foreach (var decl in decls)
+        {
+            var content = Unwrap(decl).Content;
+            if (ContainerDeclName(content) is { } name)
+            {
+                AddContainer(qualify(name), content, null);
+            }
+            else
+            {
+                list.Add((null, content, null));
+            }
+        }
+        return list;
+
+        void AddContainer(string name, object? content, string? parent)
+        {
+            list.Add((name, content, parent));
+            foreach (var nested in NestedContainerItems(content))
+            {
+                var nestedContent = nested.Content;
+                if (ContainerDeclName(nestedContent) is { } inner)
+                {
+                    AddContainer($"{name}__{inner}", nestedContent, name);
+                }
+            }
+        }
+    }
+
+    /// <summary>The declared (source) name of a container decl — <c>Mode</c> for
+    /// <c>const Mode = enum {…};</c> — or null when the node is not a container decl.</summary>
+    private static string? ContainerDeclName(object? content) => content switch
+    {
+        Zig.StructDecl s        => Tok(s.Arg1),
+        Zig.ExternStructDecl s  => Tok(s.Arg1),
+        Zig.PackedStructDecl s  => Tok(s.Arg1),
+        Zig.PackedStructDeclBacked s => Tok(s.Arg1),
+        Zig.EnumDecl e          => Tok(e.Arg1),
+        Zig.EnumDeclTyped e     => Tok(e.Arg1),
+        Zig.UnionDecl u         => Tok(u.Arg1),
+        _ => null,
+    };
+
+    /// <summary>The name tokens of the <c>inline fn</c> declarations seen (task #92). The <c>inline</c> keyword is
+    /// otherwise erased where a declaration is unwrapped, and zig lets only an inline function <c>return</c> from a
+    /// <c>comptime { }</c> block when it is called at runtime. Keyed by the AST token, which is unique per declaration
+    /// and shared by every lowering of it; weak, so a finished compilation's AST is not kept alive.</summary>
+    private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<Item, object> InlineFnNameToks = new();
+
+    /// <summary>Record <paramref name="fnDef"/> as an <c>inline fn</c> (see <see cref="InlineFnNameToks"/>) and return it.</summary>
+    private static Item MarkInline(Item fnDef)
+    {
+        var name = fnDef.Content switch
+        {
+            Zig.FnDef f => f.Arg1,
+            _ => null,
+        };
+        if (name is not null) { InlineFnNameToks.AddOrUpdate(name, InlineMark); }
+        return fnDef;
+    }
+
+    /// <summary>The value <see cref="InlineFnNameToks"/> maps to (only presence matters).</summary>
+    private static readonly object InlineMark = new();
+
+    /// <summary>True when the declaration named by <paramref name="nameTok"/> was an <c>inline fn</c>.</summary>
+    private static bool IsInlineFnName(Item nameTok) => InlineFnNameToks.TryGetValue(nameTok, out _);
+
     private static Item Unwrap(Item decl) => decl.Content switch
     {
         Zig.PubFn p         => p.Arg1,   // `pub FnDef`
-        Zig.ExportFn e      => e.Arg1,   // `export FnDef` (Milestone R)
-        Zig.PubExportFn pe  => pe.Arg2,  // `pub export FnDef` (Milestone R)
+        Zig.InlineFn i      => MarkInline(i.Arg2),   // `pub? inline FnDef` (an optimizer hint; lowers as a plain fn)
+        Zig.NoinlineFn n    => n.Arg2,   // `pub? noinline FnDef` (an optimizer hint; lowers as a plain fn, task #177)
+        Zig.ExportFn e      => e.Arg2,   // `pub? export FnDef` (Milestone R)
         Zig.PubVar p        => p.Arg1,   // `pub VarDecl` (exported/public data)
-        Zig.ExportVar e     => e.Arg1,   // `export VarDecl`
-        Zig.PubExportVar pe => pe.Arg2,  // `pub export VarDecl`
+        Zig.ExportVar e     => e.Arg2,   // `pub? export VarDecl`
         Zig.PubContainer p  => p.Arg1,   // `pub const P = struct/enum/union {…}` (public container)
         _ => decl,
     };
@@ -1339,6 +2599,8 @@ internal sealed partial class ZigLowering
     /// four with no cross-contamination.</summary>
     internal static List<Item> Flatten(Item it)
     {
+        // An optional list the source left out (`{ }`, `struct { }`, `T{ }`: the slot is null) is the empty list.
+        if (it is null) { return []; }
         var stack = new Stack<Item>();
         stack.Push(it);
         var ordered = new List<Item>();
@@ -1356,11 +2618,12 @@ internal sealed partial class ZigLowering
                 case Zig.ParamsTrail t: stack.Push(t.Arg0); break;  // [Param, ','] trailing comma
                 case Zig.ArgsCons c:   stack.Push(c.Arg2); stack.Push(c.Arg0); break;  // [Expr, ',', ArgList]
                 case Zig.ArgsOne o:    stack.Push(o.Arg0); break;
-                case Zig.ArgsOneTrailing o: stack.Push(o.Arg0); break;
+                case Zig.ArgsTrail t:  stack.Push(t.Arg0); break;  // [Arg, ','] trailing comma
                 case Zig.ProngsCons c: stack.Push(c.Arg2); stack.Push(c.Arg0); break;  // [Prongs, ',', Prong] (left-recursive)
                 case Zig.ProngsOne o:  stack.Push(o.Arg0); break;
                 case Zig.CaseValsCons c: stack.Push(c.Arg2); stack.Push(c.Arg0); break;  // [Expr, ',', CaseVals]
                 case Zig.CaseValsOne o:  stack.Push(o.Arg0); break;
+                case Zig.CaseValsTrail t: stack.Push(t.Arg0); break;  // [Expr, ','] trailing comma
                 case Zig.FieldDeclsCons c: stack.Push(c.Arg1); stack.Push(c.Arg0); break;  // [Member, FieldDecls] (right-recursive)
                 case Zig.FieldDeclsOne o:  stack.Push(o.Arg0); break;
                 case Zig.EnumFieldsCons c: stack.Push(c.Arg1); stack.Push(c.Arg0); break;  // [EnumMember, EnumFields] (right-recursive)
@@ -1378,6 +2641,9 @@ internal sealed partial class ZigLowering
                 case Zig.FnTypeParamsTrail t: stack.Push(t.Arg0); break;  // [FnTypeParam, ','] trailing comma
                 case Zig.DestructBindsCons c: stack.Push(c.Arg2); stack.Push(c.Arg0); break;  // [DestructBinds, ',', DestructBind]
                 case Zig.DestructBindsOne o:  stack.Push(o.Arg0); break;
+                case Zig.ForObjsCons c: stack.Push(c.Arg2); stack.Push(c.Arg0); break;  // [ForObjs, ',', ForObj]
+                case Zig.ForCapsCons c: stack.Push(c.Arg2); stack.Push(c.Arg0); break;  // [ForCaps, ',', ForCap]
+                case LALR.CC.Reduction { Children.Count: 0 }: break;  // an empty file (`File -> Decls?` with no declarations)
                 default: ordered.Add(n); break;
             }
         }

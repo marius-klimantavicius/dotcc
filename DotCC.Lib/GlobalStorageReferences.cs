@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using DotCC.Backends;
 
@@ -19,7 +18,6 @@ internal sealed class GlobalStorageReferences
     private const string AddressUseMarker = "/*__dotcc_address_use__*/";
     private const string ContextAddressMarker = "/*__dotcc_context_address__*/";
     private const string InitializerAddressMarker = "/*__dotcc_initializer_address__*/";
-    private const string BoundInitializerAddressMarker = "/*__dotcc_bound_initializer_address__*/";
     internal static string Emit(string name) => Marker + name;
     internal static string ThreadSlot(string name) => ThreadMarker + name;
     internal static string Runtime(string name) => RuntimeMarker + name;
@@ -28,8 +26,6 @@ internal sealed class GlobalStorageReferences
     // field or a context accessor. Retain explicit bound storage choices.
     private static string AddressRecord(string marker, params string[] fields) => marker
         + "C" + Convert.ToHexString(Encoding.UTF8.GetBytes(string.Join('\0', fields)));
-    internal static string AddressDeclaration(string root, string type, string local) =>
-        AddressRecord(AddressDeclarationMarker, root, type, local);
     internal static string AddressUse(string root, string type, string local, string contextual) =>
         AddressRecord(AddressUseMarker, root, type, local, contextual);
     internal static string ContextAddress(string root, string declaration) =>
@@ -49,11 +45,11 @@ internal sealed class GlobalStorageReferences
 
     // Type spellings also occur inside the encoded address records. Resolve
     // those fields before storage selection/materialization, while preserving
-    // the original root, evaluation branch, owner and tracked-ref mechanism.
+    // the original root, evaluation branch and storage owner.
     internal static string RelocateAddressTypes(string source, IReadOnlyDictionary<string, string> names)
     {
         foreach (var (marker, count) in new[] { (AddressDeclarationMarker, 3), (AddressUseMarker, 4),
-            (ContextAddressMarker, 2), (InitializerAddressMarker, 3), (BoundInitializerAddressMarker, 3) })
+            (ContextAddressMarker, 2), (InitializerAddressMarker, 3) })
             source = BoundSymbolReferences.Rewrite(source, record =>
             {
                 var fields = AddressFields(record, count);
@@ -72,13 +68,16 @@ internal sealed class GlobalStorageReferences
     private readonly string _runtimePath;
     private readonly string _ownerPath;
     private readonly HashSet<string> _stableAddresses = new(StringComparer.Ordinal);
+    private readonly HashSet<string> _ordinaryAddresses = new(StringComparer.Ordinal);
+    private readonly HashSet<string> _reservedNames;
+    private readonly Dictionary<string, (string Type, string Name)> _addressMembers = new(StringComparer.Ordinal);
     private static readonly IReadOnlyDictionary<string, string> NoRenames = new Dictionary<string, string>();
 
     internal GlobalStorageReferences(IReadOnlyList<CSharpGlobalSource> globals,
         IEnumerable<string> memberNames, string owner, string scope, string namespacePrefix, bool instanceMethods = false,
         bool stateContext = false)
     {
-        var reserved = new HashSet<string>(memberNames.Select(n =>
+        var reserved = _reservedNames = new HashSet<string>(memberNames.Concat(globals.Select(g => g.Name)).Select(n =>
             (n.StartsWith(Compiler.MacroConstantPrefix, StringComparison.Ordinal)
                 ? n[Compiler.MacroConstantPrefix.Length..] : n).TrimStart('@')), StringComparer.Ordinal);
         reserved.Add(owner.TrimStart('@'));
@@ -106,34 +105,64 @@ internal sealed class GlobalStorageReferences
             // Context/instance/TLS and unresolved external owners are excluded.
             if (!instanceMethods && !stateContext && global.ThreadField.Length == 0
                 && (global.Field.Length != 0 || global.StaticMembers.Length != 0))
+            {
                 _stableAddresses.Add(global.Name);
+                if (global.Field.Length != 0) _ordinaryAddresses.Add(global.Name);
+            }
         }
     }
 
-    internal string Rewrite(string source)
+    private string AddressMember(string root, string type)
+    {
+        if (!_addressMembers.TryGetValue(root, out var member))
+        {
+            string name = "__dotcc_globalAddress_" + root.TrimStart('@');
+            while (!_reservedNames.Add(name)) name += "_";
+            _addressMembers.Add(root, member = (type, name));
+        }
+        else if (member.Type != type)
+            throw new CompileException("inconsistent global address storage type: " + root);
+        return _ownerPath + member.Name;
+    }
+
+    // Call after all source fragments have been rewritten. Ordinary globals are
+    // fixed-address fields; special recipes own pinned/unmanaged storage. Bind
+    // every pointer before evaluating C initializers, including self/forward
+    // relocations and calls into compiler-owned aggregate initializer helpers.
+    internal CSharpGlobalOutput Complete(CSharpGlobalOutput globals)
+    {
+        var members = new StringBuilder();
+        var initializers = new StringBuilder();
+        foreach (var (root, member) in _addressMembers.OrderBy(pair => !_ordinaryAddresses.Contains(pair.Key))
+                     .ThenBy(pair => pair.Key, StringComparer.Ordinal))
+        {
+            members.Append("    internal static unsafe ").Append(member.Type).Append("* ").Append(member.Name).Append(";\n");
+            initializers.Append("        ").Append(member.Name).Append(" = (").Append(member.Type)
+                .Append("*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref ")
+                .Append(_references[root]).Append(");\n");
+        }
+        return globals with { AddressMembers = members.ToString(), Initializers = initializers.ToString() + globals.Initializers };
+    }
+
+    internal string Rewrite(string source, bool eagerAddresses = true)
     {
         source = BoundSymbolReferences.Rewrite(source, record =>
         {
             var fields = AddressFields(record, 3);
-            return _stableAddresses.Contains(fields[0])
-                ? AddressRecord(BoundInitializerAddressMarker, fields[0], fields[1], _references[fields[0]])
+            return eagerAddresses && _stableAddresses.Contains(fields[0])
+                ? AddressMember(fields[0], fields[1])
                 : fields[2];
         }, InitializerAddressMarker);
         source = BoundSymbolReferences.Rewrite(source, record =>
         {
-            var fields = AddressFields(record, 3);
-            if (!_stableAddresses.Contains(fields[0])) return "";
-            string type = fields[1], local = fields[2], value = _references[fields[0]];
-            // Null initialization dominates every C label. Acquisition remains
-            // lazy at an original use, including inside a conditional branch.
-            return GlobalAddressCache.Local(type, local, value);
+            AddressFields(record, 3);
+            return "";
         }, AddressDeclarationMarker);
         source = BoundSymbolReferences.Rewrite(source, record =>
         {
             var fields = AddressFields(record, 4);
-            string type = fields[1], local = fields[2];
-            return _stableAddresses.Contains(fields[0])
-                ? GlobalAddressCache.Use(type, local)
+            return eagerAddresses && _stableAddresses.Contains(fields[0])
+                ? AddressMember(fields[0], fields[1])
                 : fields[3];
         }, AddressUseMarker);
         source = BoundSymbolReferences.Rewrite(source, record =>
@@ -145,35 +174,5 @@ internal sealed class GlobalStorageReferences
         return BoundSymbolReferences.Rewrite(
             BoundSymbolReferences.Rewrite(BoundSymbolReferences.Rewrite(source, _references, Marker),
                 _threadSlots, ThreadMarker), NoRenames, RuntimeMarker, _runtimePath);
-    }
-
-    // Called only after C025 has selected the actual initializer helper body.
-    // Coalesce across global declaration fragments, never across helper bounds.
-    internal static string MaterializeInitializerAddresses(string source)
-    {
-        var counts = new Dictionary<string, int>(StringComparer.Ordinal);
-        BoundSymbolReferences.Rewrite(source, record =>
-        {
-            counts[record] = counts.GetValueOrDefault(record) + 1;
-            return record;
-        }, BoundInitializerAddressMarker);
-        if (counts.Count == 0) return source;
-        var locals = new Dictionary<string, string>(StringComparer.Ordinal);
-        var declarations = new StringBuilder();
-        foreach (var pair in counts.OrderBy(pair => pair.Key, StringComparer.Ordinal))
-        {
-            if (pair.Value < 2) continue;
-            var fields = AddressFields(pair.Key, 3);
-            string name = "__dotcc_initializerAddress_" + Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(pair.Key)));
-            locals.Add(pair.Key, name);
-            declarations.Append(GlobalAddressCache.Local(fields[1], name, fields[2]));
-        }
-        var body = BoundSymbolReferences.Rewrite(source, record =>
-        {
-            var fields = AddressFields(record, 3);
-            return locals.TryGetValue(record, out var local) ? GlobalAddressCache.Use(fields[1], local)
-                : "((" + fields[1] + "*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref " + fields[2] + "))";
-        }, BoundInitializerAddressMarker);
-        return declarations.Append(body).ToString();
     }
 }

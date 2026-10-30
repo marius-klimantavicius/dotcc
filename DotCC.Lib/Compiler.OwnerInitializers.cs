@@ -17,14 +17,12 @@ public static partial class Compiler
             {
                 var text = storage.Rewrite(literals.Rewrite(instance
                     ? InstanceReferences.Resolve(pair.Value, defined, "this") : pair.Value));
-                // Each compiler-owned record is exactly one method. Materialize
-                // lazy address reuse inside that body, after final storage has
-                // been selected; enclosing pins/locals cannot cross this scope.
+                // Each compiler-owned record is exactly one method. Address
+                // relocations now refer to the owner's eager pointer members.
                 int start = text.IndexOf('{'), end = text.LastIndexOf('}');
                 if (start < 0 || end <= start)
                     throw new CompileException("invalid owned initializer record; regenerate objects");
-                return text[..(start + 1)]
-                    + GlobalStorageReferences.MaterializeInitializerAddresses(text[(start + 1)..end]) + text[end..];
+                return text;
             }));
     }
 }

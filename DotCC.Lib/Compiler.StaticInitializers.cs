@@ -14,14 +14,14 @@ public static partial class Compiler
     private static (string Calls, string Members) PartitionStaticInitializers(string source)
     {
         const int limit = 32768;
-        if (source.Length <= limit) return (GlobalStorageReferences.MaterializeInitializerAddresses(source), "");
+        if (source.Length <= limit) return (source, "");
         var calls = new StringBuilder();
         var members = new StringBuilder();
         var part = new StringBuilder();
         void Flush()
         {
             if (part.Length == 0) return;
-            string body = GlobalStorageReferences.MaterializeInitializerAddresses(part.ToString());
+            string body = part.ToString();
             string name = "__DotCcInitializeGlobals_" + Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(body)));
             calls.Append("        ").Append(name).Append("();\n");
             members.Append("    private static unsafe void ").Append(name).Append("()\n    {\n")

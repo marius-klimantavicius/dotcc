@@ -41,7 +41,7 @@ internal sealed partial class CSharpBackend
 
     private bool AggregateDataLayout(CType type, int depth)
     {
-        if (depth > 64 || type.IsVolatile || type.IsAtomic) return false;
+        if (depth > 64 || type.IsVolatile || type.IsAtomic || ZigStorage(type) is not null) return false;
         if (_aggregateDataLayouts.TryGetValue(type, out bool known)) return known;
         _aggregateDataLayouts[type] = false; // Also rejects recursive by-value layouts.
         bool supported;

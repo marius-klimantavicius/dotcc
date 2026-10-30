@@ -1,0 +1,743 @@
+#nullable enable
+
+using System.Collections.Generic;
+using DotCC.Ir;
+using LALR.CC.LexicalGrammar;
+
+namespace DotCC.Frontends;
+
+/// <summary>The body of a <c>type</c>-returning function, EVALUATED at comptime (the W4 lift —
+/// road-to-zig-std G4 blocker 2, and the first brick on G3's road).
+///
+/// <para>W4 accepted exactly one body shape: <c>[const NAME = &lt;type&gt;;]* return struct {…};</c>.
+/// Measured against the pinned std, that is 110 of ~250 type-returning bodies. The rest return a type
+/// they did not declare: <b>28 delegate to another type-returning call</b>
+/// (<c>pub fn ArrayList(comptime T: type) type { return array_list.Aligned(T, null); }</c> — which is
+/// what <c>std.ArrayList</c> IS), 16 <c>return switch (@typeInfo(T)) {…}</c> (<c>std.meta.Child</c>),
+/// a handful <c>return if (…) A else B</c> or <c>return @Int(…)</c>, and several open with a comptime
+/// <c>if</c> that returns early (<c>array_list.Aligned</c>'s own
+/// <c>if (alignment) |a| { if (…) return Aligned(T, null); }</c>).</para>
+///
+/// <para>So the body is now walked statement by statement, as comptime code: a leading type alias binds
+/// (as before), an <c>if</c> whose condition folds contributes ONLY its taken arm, and the first
+/// <c>return</c> reached ends the walk — either <c>return struct {…}</c> (reified exactly as W4 always
+/// did) or <c>return &lt;type expression&gt;</c>, whose type IS the function's result. A delegating
+/// result is not a new type: <c>Managed(u8)</c> and <c>AlignedManaged(u8, null)</c> are the same type in
+/// zig, and here they resolve to the same reified <see cref="CType"/>, memoized under the delegating
+/// instance's own mangled name so a repeat call does not re-walk the body.</para>
+///
+/// <para>The comptime-interpreter firewall stands (no <c>TypeVal</c>): all of this runs at the LOWERING
+/// tier, over the same folds S4b/S5a/S3 built — <see cref="TryComptimeOptionalCond"/>,
+/// <see cref="SelectComptimeProng"/>, <see cref="TryFoldComptimeCondition"/>. A condition or subject
+/// none of them can settle is a loud cut, never a runtime branch: a type has no runtime.</para></summary>
+internal sealed partial class ZigLowering
+{
+    /// <summary>What walking a type-returning body produced: either a <c>return struct {…}</c> to reify
+    /// (<see cref="IsStruct"/>, with its <c>FieldDecls</c> item, null for <c>struct {}</c>) or an
+    /// already-resolved type the body delegated to (<see cref="Delegated"/>) together with the declared
+    /// integer width it carries (<see cref="DelegatedBits"/> — so <c>fn U() type { return u21; }</c>
+    /// still answers 21, not the widened 32). A <c>return @Struct(…)</c> is a struct too, but its fields arrive
+    /// already evaluated (<see cref="Reified"/>) rather than as declarations to lower. A <c>return @Enum(…)</c> is an enum
+    /// whose members arrive evaluated (<see cref="Enum"/>), registered under the instance's name.</summary>
+    private readonly record struct TypeBodyResult(bool IsStruct, Item? Fields, CType? Delegated, int? DelegatedBits,
+        AggregateLayout Layout = AggregateLayout.Default, IReadOnlyList<ReifiedField>? Reified = null, ReifiedEnum? Enum = null);
+
+    /// <summary>An enum built by <c>@Enum</c> (task #108): its tag type (and the width the source spelled for it), its member
+    /// names and values in order, and whether it is non-exhaustive.</summary>
+    private sealed record ReifiedEnum(CType Tag, int? TagBits, IReadOnlyList<string> Names, IReadOnlyList<long> Values, bool NonExhaustive);
+
+    /// <summary>One field of a struct built by <c>@Struct</c>: its name, its type and its default (null when it has
+    /// none), all already evaluated at comptime.</summary>
+    private readonly record struct ReifiedField(string Name, CType Type, CExpr? Default);
+
+    /// <summary>The type body's comptime POINTERS to a default value (std.enums.EnumFieldStruct's
+    /// <c>const default_ptr: ?*const anyopaque = if (field_default) |d| @ptrCast(&amp;d) else null;</c>), by name: the
+    /// pointee as a literal, or null for a null pointer. They exist to feed <c>@Struct</c>'s
+    /// <c>.default_value_ptr</c>, and are bound for one walk only.</summary>
+    private readonly Dictionary<string, CExpr?> _typeBodyDefaultPtrs = new(System.StringComparer.Ordinal);
+
+    /// <summary>Mangled delegating instances → the type they resolved to, plus its declared width (the
+    /// memo for a body that returns a type rather than a <c>struct {…}</c> — the struct form memoizes in
+    /// <see cref="_containerTypes"/>). Keyed by the DELEGATING instance's name, so
+    /// <c>Managed__u8</c> and <c>AlignedManaged__u8_optnull</c> both land on one reified struct.</summary>
+    private readonly Dictionary<string, (CType Type, int? Bits)> _delegatedTypes = new(System.StringComparer.Ordinal);
+
+    /// <summary>Instances whose body is being walked right now — the guard that turns a body delegating
+    /// to ITSELF (<c>fn A(comptime T: type) type { return A(T); }</c>, which zig rejects as a dependency
+    /// loop) into a loud error rather than a stack overflow. A struct body that refers to its own
+    /// instance from a FIELD is unaffected: the memo is installed before fields lower.</summary>
+    private readonly HashSet<string> _typeBodiesInProgress = new(System.StringComparer.Ordinal);
+
+    /// <summary>The declared integer width each type-returning CALL SITE last resolved to, reference-keyed
+    /// by the call node — the same "the site's recorded width" rule as <see cref="_reifiedIntBits"/>. Read
+    /// by <see cref="DeclaredBitsOfTypeArg"/>, which every consumer calls AFTER lowering the same node, so
+    /// the record is always the current instantiation's.</summary>
+    private readonly Dictionary<Item, int> _typeCallBits = new(ReferenceEqualityComparer.Instance);
+
+    /// <summary>Walk a type-returning generic's body at comptime (W4 + the W4 lift) and report what it
+    /// returns. Leading <c>const NAME = &lt;type&gt;;</c> aliases are bound into <see cref="_typeAliases"/>
+    /// (shadow-saved via <paramref name="typeShadows"/>, restored by the caller) so later statements and
+    /// the returned struct's fields see them. A body that ends without reaching a <c>return</c> — every
+    /// arm folded away — is a loud error, as it is in zig.</summary>
+    private TypeBodyResult ProcessTypeReturningBody(string fnName, Item body, List<(string name, CType? prev, int? prevBits)> typeShadows)
+    {
+        _shared.TypeBodyDepth++;
+        try { return ProcessTypeReturningBodyCore(fnName, body, typeShadows); }
+        finally { _shared.TypeBodyDepth--; }
+    }
+
+    /// <summary>The walk behind <see cref="ProcessTypeReturningBody"/>.</summary>
+    private TypeBodyResult ProcessTypeReturningBodyCore(string fnName, Item body, List<(string name, CType? prev, int? prevBits)> typeShadows)
+    {
+        var stmts = BodyStatements(body);
+        if (stmts.Count == 0)
+        {
+            throw new IrUnsupportedException(
+                $"type-returning generic '{fnName}': an empty body — expected `[const NAME = <type>;]* return <type>;`");
+        }
+        // A body's `const info = @typeInfo(T);` binds for the walk only (a reflection value has no runtime
+        // and must not leak into whatever lowering resumes after this instance is evaluated).
+        var outerTypeInfos = new Dictionary<string, ZigTypeInfo>(_typeInfoBindings, System.StringComparer.Ordinal);
+        var outerDefaultPtrs = new Dictionary<string, CExpr?>(_typeBodyDefaultPtrs, System.StringComparer.Ordinal);
+        _comptimeDepth++;   // a type body is evaluated at compile time (task #92)
+        var outerValueSession = _typeBodyValueSession;
+        _typeBodyValueSession = _ir.BeginComptimeSession();
+        _loweringForComptimeEval++;
+        try
+        {
+            var result = WalkTypeBody(fnName, stmts, typeShadows)
+                ?? throw new IrUnsupportedException(
+                    $"type-returning generic '{fnName}': the body reaches its end without returning a type "
+                    + "(every `return` sits in an arm that folded away)");
+            CaptureTypeBodyValues(_typeBodyValueSession);
+            return result;
+        }
+        finally
+        {
+            _loweringForComptimeEval--;
+            _ir.EndComptimeSession(_typeBodyValueSession);
+            _typeBodyValueSession = outerValueSession;
+            _comptimeDepth--;
+            _typeInfoBindings.Clear();
+            foreach (var (infoName, info) in outerTypeInfos) { _typeInfoBindings[infoName] = info; }
+            _typeBodyDefaultPtrs.Clear();
+            foreach (var (ptrName, pointee) in outerDefaultPtrs) { _typeBodyDefaultPtrs[ptrName] = pointee; }
+        }
+    }
+
+    /// <summary>The statements of a body or an arm: a braced block's list, or the single statement.</summary>
+    private static IReadOnlyList<Item> BodyStatements(Item stmt) => stmt.Content switch
+    {
+        Zig.Block b => Flatten(b.Arg1),
+        _ => new[] { stmt },
+    };
+
+    /// <summary>Walk statements in order; the first <c>return</c> reached is the result. Null when the
+    /// list ends without one (a folded-away early-return arm — the caller continues after it).</summary>
+    private TypeBodyResult? WalkTypeBody(string fnName, IReadOnlyList<Item> stmts, List<(string name, CType? prev, int? prevBits)> typeShadows)
+    {
+        foreach (var stmt in stmts)
+        {
+            switch (stmt.Content)
+            {
+                // `const ptr = switch (@typeInfo(T)) { .pointer => |ptr| ptr, else => @compileError(…) };`
+                // (std.mem.ReverseIterator, task #147): a switch that yields the active @typeInfo payload binds it, where
+                // any other switch below is a type alias.
+                case Zig.ConstDecl switchedInfoDecl when switchedInfoDecl.Arg3.Content is Zig.SwitchExpr
+                                                        && TryEvalTypeInfo(switchedInfoDecl.Arg3, out var switchedInfo):
+                    _typeInfoBindings[Tok(switchedInfoDecl.Arg1)] = switchedInfo;
+                    break;
+                // `const Slice = if (alignment) |a| … else []T;` — a TYPE alias; `const bits = @typeInfo(T).int.bits;`
+                // — a comptime VALUE (std.math.Log2Int computes its result width from one). Which it is
+                // is decided by the RHS's shape (IsTypeBodyTypeRhs), before anything is lowered.
+                case Zig.ConstDecl sel when UnwrapGrouped(sel.Arg3).Content is Zig.IfElseExpr { Arg4: null, Arg7: null } selIf && IsTypeArm(selIf.Arg5) && IsTypeArm(selIf.Arg8):
+                    BindTypeBodySelectedType(fnName, Tok(sel.Arg1), sel.Arg3, typeShadows);
+                    break;
+                case Zig.ConstDecl cd when IsTypeBodyTypeRhs(cd.Arg3):
+                {
+                    var aliasName = Tok(cd.Arg1);
+                    var (aliasType, aliasBits) = LowerComptimeTypeExpr(fnName, cd.Arg3);
+                    typeShadows.Add((aliasName,
+                                     _typeAliases.TryGetValue(aliasName, out var pv) ? pv : (CType?)null,
+                                     _declaredIntBits.TryGetValue(aliasName, out var pb) ? pb : (int?)null));
+                    _typeAliases[aliasName] = aliasType;
+                    SetDeclaredIntBits(aliasName, aliasBits);
+                    break;
+                }
+                // `const mask_info: std.builtin.Type = @typeInfo(MaskIntType);` (std.bit_set.Array): a reflection
+                // value, bound for the folds that read it (`mask_info != .int`, `mask_info.int.signedness`).
+                case Zig.ConstDecl ci when TryEvalTypeInfo(ci.Arg3, out var bodyInfo):
+                    _typeInfoBindings[Tok(ci.Arg1)] = bodyInfo;
+                    break;
+                case Zig.ConstDeclTyped ti when TryEvalTypeInfo(ti.Arg5, out var typedBodyInfo):
+                    _typeInfoBindings[Tok(ti.Arg1)] = typedBodyInfo;
+                    break;
+                // `const default_ptr: ?*const anyopaque = if (field_default) |d| @ptrCast(&d) else null;`: a pointer to a
+                // comptime default, for `@Struct`'s field attributes.
+                case Zig.ConstDeclTyped dp when TryBindTypeBodyDefaultPtr(Tok(dp.Arg1), dp.Arg5):
+                    break;
+                case Zig.ConstDecl dp when TryBindTypeBodyDefaultPtr(Tok(dp.Arg1), dp.Arg3):
+                    break;
+                case Zig.ConstDecl cv:
+                    BindTypeBodyComptimeValue(fnName, Tok(cv.Arg1), null, cv.Arg3);
+                    break;
+                case Zig.ConstDeclTyped ct:   // `const bits: u16 = …;` — an annotated const is always a value
+                    BindTypeBodyComptimeValue(fnName, Tok(ct.Arg1), ct.Arg3, ct.Arg5);
+                    break;
+                // `switch (@typeInfo(T)) { .array => |info| return info.child, …, else => {} }` as a STATEMENT
+                // (std.meta.Elem): only the selected prong is walked, and a prong that falls through (`{}`)
+                // continues after the switch.
+                case Zig.StmtDestructure:
+                case Zig.ForStmt:
+                case Zig.WhileStmt:
+                    RunTypeBodyValueStatement(fnName, stmt);
+                    break;
+                case Zig.StmtSwitch sw:
+                    if (WalkComptimeSwitchStmt(fnName, sw.Arg2, sw.Arg5, typeShadows) is { } rs1) { return rs1; }
+                    break;
+                // `@compileError("…");` REACHED — every arm that avoids it has already folded away, which is
+                // exactly zig's rule for it (std.meta.Elem ends with one after its switch).
+                case Zig.StmtExpr { Arg0.Content: Zig.BuiltinCall { Arg2: not null } ce } when Tok(ce.Arg0) == "@compileError":
+                    CompileErrorBuiltin(Flatten(ce.Arg2));
+                    break;
+                // `assert(from <= to);` (std.math.IntFittingRange): std.debug.assert over comptime operands is
+                // a compile-time check. A false one is zig's "reached unreachable" at analysis, so it is loud.
+                case Zig.StmtExpr { Arg0.Content: Zig.CallArgs { Arg2: not null } call } when IsAssertCallee(call.Arg0)
+                                                                          && Flatten(call.Arg2) is [var asserted]:
+                    if (!FoldTypeBodyCondition(fnName, asserted))
+                    {
+                        throw new IrUnsupportedException(
+                            $"type-returning generic '{fnName}': a comptime `assert` failed (zig: reached unreachable code)");
+                    }
+                    break;
+                // `_ = alignment;` — zig's unused-parameter silencer, which a type body needs as much as any
+                // other (zig rejects an unused parameter). A bare NAME has nothing to evaluate; a discarded
+                // CALL would, so it stays the loud cut below.
+                case Zig.ReturnStructType rst:
+                    return new TypeBodyResult(true, rst.Arg3, null, null);   // FieldDecls, null for `return struct {};`
+                case Zig.ReturnPackedStructType pst:
+                    return new TypeBodyResult(true, pst.Arg4, null, null, AggregateLayout.Packed);
+                case Zig.ReturnPackedStructTypeBacked pbt:
+                    return new TypeBodyResult(true, pbt.Arg7, null, null, AggregateLayout.Packed);   // backing type Arg5
+                case Zig.ReturnExternStructType est:
+                    return new TypeBodyResult(true, est.Arg4, null, null, AggregateLayout.Sequential);
+                // `return @Struct(.auto, null, names, &@splat(Data), &@splat(.{ .default_value_ptr = p }));`
+                // (std.enums.EnumFieldStruct): a struct built from comptime field lists.
+                case Zig.StmtAssign { Arg0.Content: Zig.Ident lhs, Arg1.Content: Zig.AopAssign, Arg2.Content: Zig.Ident } when Tok(lhs.Arg0) == "_":
+                    break;
+                case Zig.StmtAssign:
+                    RunTypeBodyValueStatement(fnName, stmt);
+                    break;
+                case Zig.StmtReturn { Arg1.Content: Zig.BuiltinCall { Arg2: not null } rb } when Tok(rb.Arg0) == "@Struct":
+                    return ReifyStructBuiltin(fnName, rb);
+                // `return @Enum(IntTag, .exhaustive, field_names, &std.simd.iota(IntTag, field_names.len));` (std.meta.FieldEnum,
+                // task #108): an enum built from comptime member lists.
+                case Zig.StmtReturn { Arg1.Content: Zig.BuiltinCall { Arg2: not null } eb } when Tok(eb.Arg0) == "@Enum":
+                    return ReifyEnumBuiltin(fnName, eb);
+                case Zig.StmtReturn r:
+                {
+                    // `return <type expression>;` — the function's result IS that type (a delegating call,
+                    // a folded `switch`/`if`, `@Int(…)`, a bare `T`). Its declared width comes back from the
+                    // same fold, so it is the TAKEN arm's width.
+                    var (t, bits) = LowerComptimeTypeExpr(fnName, r.Arg1);
+                    return new TypeBodyResult(false, null, t, bits);
+                }
+                case Zig.StmtIf { Arg4: null } f when ElseStmtParts(f.Arg6) is { ErrName: null } plainElse:
+                    if (WalkComptimeIf(fnName, f.Arg2, f.Arg5, plainElse.Body, typeShadows) is { } r1) { return r1; }
+                    break;
+                case Zig.StmtIf f when PayloadParts(f.Arg4) is { Name: { } cap, ByRef: false }
+                                       && ElseStmtParts(f.Arg6) is { ErrName: null } capElse:
+                    if (WalkComptimeIfCapture(fnName, f.Arg2, cap, f.Arg5, capElse.Body, typeShadows) is { } r3) { return r3; }
+                    break;
+                case Zig.Block:
+                    if (WalkTypeBody(fnName, BodyStatements(stmt), typeShadows) is { } r5) { return r5; }
+                    break;
+                // `const Op = enum { uninitialized, initialized, … };` (std.crypto.keccak_p's State, task #161).
+                case Zig.EnumDecl d:          BindTypeBodyLocalContainer(fnName, Tok(d.Arg1), d, typeShadows); break;
+                case Zig.EnumDeclTyped d:     BindTypeBodyLocalContainer(fnName, Tok(d.Arg1), d, typeShadows); break;
+                case Zig.UnionDecl d:         BindTypeBodyLocalContainer(fnName, Tok(d.Arg1), d, typeShadows); break;
+                // `var field_values = …;` (std.enums.EnumIndexer): a comptime variable the body then mutates in place.
+                case Zig.VarDecl vd:
+                    BindTypeBodyComptimeVar(fnName, Tok(vd.Arg1), null, vd.Arg3);
+                    break;
+                case Zig.VarDeclTyped vt:
+                    BindTypeBodyComptimeVar(fnName, Tok(vt.Arg1), vt.Arg3, vt.Arg5);
+                    break;
+                // `@setEvalBranchQuota(…);`, `std.mem.sortUnstable(comptime_int, &field_values, {}, …);`: comptime code, run now.
+                case Zig.StmtExpr se:
+                    RunTypeBodyStatement(fnName, stmt, se.Arg0);
+                    break;
+                default:
+                    throw new IrUnsupportedException(
+                        $"type-returning generic '{fnName}': a body statement must be a `const NAME = <type>;` alias, a "
+                        + "comptime `if`, or a `return` — got " + (stmt.Content?.GetType().Name ?? "null")
+                        + " (a type-returning body is evaluated at compile time; road-to-zig-std G4)");
+            }
+        }
+        return null;
+    }
+
+    /// <summary>Bind a comptime <c>var</c> of a type body (std.enums.EnumIndexer's <c>var field_values =
+    /// @typeInfo(E).@"enum".field_values[0..fields_len].*;</c>): its initializer is evaluated by the comptime interpreter
+    /// and the name bound as a comptime global, so a later statement may mutate it in place (a sort through
+    /// <c>&amp;field_values</c>) and a later <c>const</c> read it. A value that does not evaluate is a loud cut.</summary>
+    private void BindTypeBodyComptimeVar(string fnName, string name, Item? typeAst, Item rhs)
+    {
+        var declared = typeAst is { } ta ? LowerType(ta) : null;
+        // `@typeInfo(E).@"enum".field_values[0..n].*`: a copy of an integer member list, as a comptime array.
+        if (TryComptimeListArray(rhs) is { } listArray)
+        {
+            var listSym = _symbols.Declare(new Symbol { Name = name, Kind = SymKind.Var, Type = declared ?? listArray.Type });
+            _ir.ComptimeGlobals[listSym] = listArray;
+            _typeBodyValueSession!.Frame[listSym] = listArray;
+            _typeBodyAggregateLocals?.Add((name, listArray, listSym.Type));
+            return;
+        }
+        CExpr init;
+        using (EnterThrowawayHoist())
+        {
+            init = declared is { } sink ? LowerExprSink(rhs, sink) : LowerExpr(rhs);
+        }
+        if (_ir.EvalComptimeValue(init) is not { } value)
+        {
+            throw new IrUnsupportedException(
+                $"type-returning generic '{fnName}': `var {name}` must be compile-time-known (a type body is evaluated at compile time)"
+                + (_ir.ComptimeMiss is { } why ? $" (the interpreter stopped at {why})" : ""));
+        }
+        var sym = _symbols.Declare(new Symbol { Name = name, Kind = SymKind.Var, Type = declared ?? init.Type });
+        _ir.ComptimeGlobals[sym] = value;
+        _typeBodyValueSession!.Frame[sym] = value;
+        _typeBodyAggregateLocals?.Add((name, value, sym.Type));
+    }
+
+    /// <summary>An integer member list read as an ARRAY value (<c>list</c>, <c>list[a..b].*</c>, <c>list.*</c>): a fresh
+    /// comptime array of its <c>comptime_int</c> elements. Null for any other expression.</summary>
+    private IrBuilder.CtArray? TryComptimeListArray(Item rhs)
+    {
+        var cur = rhs;
+        if (cur.Content is Zig.Deref d) { cur = d.Arg0; }
+        long lo = 0;
+        long? hi = null;
+        if (cur.Content is Zig.SliceRange sr)
+        {
+            using var bounds = EnterThrowawayHoist();
+            if (_ir.ConstEval(LowerExpr(sr.Arg2)) is not { } l || _ir.ConstEval(LowerExpr(sr.Arg4)) is not { } h) { return null; }
+            (lo, hi) = (l, h);
+            cur = sr.Arg0;
+        }
+        if (!(TryFoldTypeInfoList(cur, out var list) || cur.Content is Zig.Ident id && _typeInfoLists.TryGetValue(Tok(id.Arg0), out list))
+            || list.Ints is not { } ints)
+        {
+            return null;
+        }
+        var end = hi ?? ints.Count;
+        if (lo < 0 || end > ints.Count || lo > end)
+        {
+            throw new IrUnsupportedException($"zig `{list.Label}[{lo}..{end}]`: out of bounds for its {ints.Count} members");
+        }
+        var elems = ints.Skip((int)lo).Take((int)(end - lo)).Select(v => (IrBuilder.ComptimeValue)new IrBuilder.CtInt(v, CType.ComptimeInt)).ToArray();
+        return new IrBuilder.CtArray(elems, CType.ComptimeInt, new CType.Array(CType.ComptimeInt, elems.Length));
+    }
+
+    /// <summary>Run an expression statement of a type body at compile time: a void builtin (<c>@setEvalBranchQuota</c>)
+    /// through its statement lowering, and anything else (a call such as <c>std.mem.sortUnstable(comptime_int,
+    /// &amp;field_values, {}, …)</c>) through the comptime interpreter, whose effect on a comptime <c>var</c> the body
+    /// then reads. A statement that does not evaluate is a loud cut, never a silent skip.</summary>
+    private void RunTypeBodyStatement(string fnName, Item stmt, Item expr)
+    {
+        // `@setEvalBranchQuota(3 * fields_len * std.math.log2(@max(fields_len, 1)) + …)` only raises a FLOOR, and dotcc's
+        // budget (IrBuilder.DefaultComptimeStepBudget) is already far above what a type body asks for; evaluating its
+        // argument would instantiate std.math.log2 for nothing. `@compileLog` prints nothing in dotcc.
+        if (expr.Content is Zig.BuiltinCall { Arg2: not null, Arg0: var builtinTok } && Tok(builtinTok) is "@setEvalBranchQuota" or "@compileLog")
+        {
+            return;
+        }
+        using var hoist = EnterThrowawayHoist();
+        if (_ir.EvalComptimeValue(LowerExpr(expr)) is null)
+        {
+            throw new IrUnsupportedException(
+                $"type-returning generic '{fnName}': a body statement did not evaluate at compile time"
+                + (_ir.ComptimeMiss is { } why ? $" (the interpreter stopped at {why})" : ""));
+        }
+    }
+
+    /// <summary>A <c>switch</c> STATEMENT in a type-returning body: the comptime subject selects one prong
+    /// (S5a's <see cref="SelectComptimeProng"/>), its capture is bound for the arm, and only that arm is
+    /// walked — a block (walked as statements; an empty one falls through), a <c>return</c>, or a nested
+    /// <c>switch</c> expression whose own prongs return (<c>.pointer =&gt; |info| switch (info.size) {…}</c>).
+    /// A prong that is any other bare expression is a loud cut: in statement position it would be a value
+    /// discarded, which zig rejects too.</summary>
+    private TypeBodyResult? WalkComptimeSwitchStmt(string fnName, Item subject, Item prongs,
+        List<(string name, CType? prev, int? prevBits)> typeShadows)
+    {
+        if (SelectComptimeProng(subject, prongs, out var payload) is not { } prong)
+        {
+            throw new IrUnsupportedException(
+                $"type-returning generic '{fnName}': a `switch` in a type body must be over a comptime subject "
+                + "(`@typeInfo(T)`, a comptime tag)");
+        }
+        EnterComptimeProng(prong, payload);
+        try
+        {
+            if (prong.Block is { } block) { return WalkTypeBody(fnName, BodyStatements(block), typeShadows); }
+            if (prong.Return is { } ret)
+            {
+                var (t, bits) = LowerComptimeTypeExpr(fnName, ret);
+                return new TypeBodyResult(false, null, t, bits);
+            }
+            if (prong.Expr is { } e)
+            {
+                var cur = e;
+                while (cur.Content is Zig.Grouped g) { cur = g.Arg1; }
+                switch (cur.Content)
+                {
+                    case Zig.SwitchExpr inner:         return WalkComptimeSwitchStmt(fnName, inner.Arg2, inner.Arg5, typeShadows);
+                    case Zig.BuiltinCall { Arg2: not null } ce when Tok(ce.Arg0) == "@compileError":
+                        CompileErrorBuiltin(Flatten(ce.Arg2));
+                        return null;
+                    // `.one => if (@typeInfo(ptr.child) != .array) @compileError("…"),` (std.mem.ReverseIterator, task #147): the
+                    // condition folds, and only a taken `@compileError` has an effect. (An else-less `if` expression since
+                    // zig-grammar-peg P3a.)
+                    case Zig.IfThenExpr { Arg4: null } guarded:
+                    {
+                        var taken = TryFoldComptimeCondition(guarded.Arg2) ?? TryFoldTypeIfCondition(guarded.Arg2)
+                            ?? throw new IrUnsupportedException(
+                                $"type-returning generic '{fnName}': an `if` prong in a type body needs a comptime condition");
+                        if (taken && guarded.Arg5.Content is Zig.BuiltinCall { Arg2: not null, Arg0: var guardTok } guardCall
+                            && Tok(guardTok) == "@compileError")
+                        {
+                            CompileErrorBuiltin(Flatten(guardCall.Arg2));
+                        }
+                        return null;
+                    }
+                }
+            }
+            throw new IrUnsupportedException(
+                $"type-returning generic '{fnName}': a `switch` statement prong in a type body must be a block, a "
+                + "`return <type>`, or a nested `switch` — a bare value would be discarded");
+        }
+        finally
+        {
+            ExitComptimeProng();
+        }
+    }
+
+    /// <summary>Whether a type body's <c>const</c> RHS denotes a TYPE (bound as an alias) rather than a
+    /// comptime VALUE. The comptime control-flow shapes (<c>if</c> / captured <c>if</c> / <c>switch</c>) are
+    /// types here, as they always were in a W4 body; otherwise <see cref="TryTypeAliasRhs"/> decides, the
+    /// same guarded recognizer a top-level <c>const</c> uses — so <c>const bits = @typeInfo(T).int.bits;</c>
+    /// is a value and <c>const E = T;</c> a type.</summary>
+    private bool IsTypeBodyTypeRhs(Item rhs)
+    {
+        var cur = rhs;
+        while (cur.Content is Zig.Grouped g) { cur = g.Arg1; }
+        return cur.Content is Zig.IfElseExpr or Zig.SwitchExpr
+            || TryTypeAliasRhs(rhs, out _);
+    }
+
+    /// <summary>Bind a comptime VALUE <c>const</c> in a type body (<c>const bits: u16 = @typeInfo(T).int.bits;
+    /// const log2_bits = 16 - @clz(bits - 1);</c>): lower the initializer into a throwaway hoist buffer, fold
+    /// it, and declare the name as a comptime symbol (<see cref="_comptimeVars"/> — the same binding a
+    /// <c>comptime n: u16</c> parameter seed gets), so a later <c>@Int(.unsigned, log2_bits)</c> or array
+    /// extent reads the literal. A value that does not fold is a loud cut: a type body has no runtime.</summary>
+    private void BindTypeBodyComptimeValue(string fnName, string name, Item? typeAst, Item rhs)
+    {
+        var declared = typeAst is { } ta ? LowerType(ta) : null;
+        CExpr value;
+        using (EnterThrowawayHoist())
+        {
+            // The annotation is the result type, so `const s: Signedness = if (…) .signed else .unsigned;` resolves.
+            value = declared is { } sink ? LowerExprSink(rhs, sink) : LowerExpr(rhs);
+        }
+        if (_ir.ConstEval(value) is not { } v)
+        {
+            // An aggregate (`const diff = @subWithOverflow(a, b);`, a tuple; a struct; an array) the interpreter evaluates:
+            // a comptime global, like a comptime `var`.
+            if (_ir.EvalComptimeValue(value) is { } aggregate and (IrBuilder.CtStruct or IrBuilder.CtArray or IrBuilder.CtSlice))
+            {
+                var aggSym = _symbols.Declare(new Symbol { Name = name, Kind = SymKind.Var, Type = declared ?? value.Type ?? CType.Long });
+                _ir.ComptimeGlobals[aggSym] = aggregate;
+                _typeBodyValueSession!.Frame[aggSym] = aggregate;
+                _typeBodyAggregateLocals?.Add((name, aggregate, aggSym.Type));
+                return;
+            }
+            throw new IrUnsupportedException(
+                $"type-returning generic '{fnName}': `const {name}` must be compile-time-known "
+                + "(a type body is evaluated at compile time)"
+                + (_ir.ComptimeMiss is { } why ? $" (the interpreter stopped at {why})" : ""));
+        }
+        var type = declared ?? value.Type ?? CType.Long;
+        // A comptime_int (an element of a `field_values` copy, `const min = field_values[0];`) is an untyped constant:
+        // carried as `int` / `long` like an untyped literal, so it coerces where it is used rather than forcing Int128.
+        if (declared is null && type.Unqualified is CType.Prim { IsComptimeInt: true })
+        {
+            type = v >= int.MinValue && v <= int.MaxValue ? CType.Int : CType.Long;
+        }
+        var sym = _symbols.Declare(new Symbol { Name = name, Kind = SymKind.Var, Type = type });
+        _comptimeVars[sym] = (v, type);
+        _typeBodyValueLocals?.Add((name, v, type));
+    }
+
+    /// <summary>The comptime VALUE locals of the type body being walked (<c>const min = field_values[0];</c> in
+    /// std.enums.EnumIndexer), which the returned struct's consts and methods read after the walk: they join the instance's
+    /// value seeds. Null outside a walk.</summary>
+    private List<(string Name, long Value, CType Type)>? _typeBodyValueLocals;
+
+    /// <summary>The comptime AGGREGATE locals of the type body being walked (<c>var field_values</c>, <c>const keys =
+    /// valuesFromFields(…)</c>), joining the instance's aggregate seeds the same way. Null outside a walk.</summary>
+    private List<(string Name, IrBuilder.ComptimeValue Value, CType Type)>? _typeBodyAggregateLocals;
+
+    /// <summary>The mangled name of the instance whose type body is being walked (<c>State__1600_512_24</c>), which a
+    /// container the body declares is registered under. Null outside a walk.</summary>
+    private string? _typeBodyInstance;
+
+    /// <summary>The methods of the structs the type body being walked declares (<see cref="BindTypeBodyLocalStruct"/>), as
+    /// (container, fn def): declared once the walk ends, with the instance's seeds, as a nested container's are. Null
+    /// outside a walk.</summary>
+    private List<(string Container, Item FnDef)>? _typeBodyContainerMethods;
+
+    /// <summary>A type body's <c>const Tracker = if (mode == .Debug) struct {…} else struct {…};</c> (std.crypto.keccak_p's
+    /// State, task #161): the condition folds, and the chosen struct is the body's own container. An enum arm is an inline
+    /// type as before.</summary>
+    private void BindTypeBodySelectedType(string fnName, string name, Item rhs,
+        List<(string name, CType? prev, int? prevBits)> typeShadows)
+    {
+        var arm = UnwrapGrouped(rhs).Content is Zig.IfElseExpr { Arg4: null, Arg7: null } ta
+            ? (FoldTypeBodyCondition(fnName, ta.Arg2) ? ta.Arg5 : ta.Arg8)
+            : throw new System.InvalidOperationException();
+        if (arm.Content is Zig.InlineStructType s)
+        {
+            BindTypeBodyLocalStruct(fnName, name, s.Arg2, typeShadows);
+            return;
+        }
+        var (aliasType, aliasBits) = LowerComptimeTypeExpr(fnName, rhs);
+        typeShadows.Add((name,
+                         _typeAliases.TryGetValue(name, out var pv) ? pv : (CType?)null,
+                         _declaredIntBits.TryGetValue(name, out var pb) ? pb : (int?)null));
+        _typeAliases[name] = aliasType;
+        SetDeclaredIntBits(name, aliasBits);
+    }
+
+    /// <summary>An expression without its enclosing parentheses.</summary>
+    private static Item UnwrapGrouped(Item expr)
+    {
+        while (expr.Content is Zig.Grouped g) { expr = g.Arg1; }
+        return expr;
+    }
+
+    /// <summary>A struct the type body declares for itself (the arm <see cref="BindTypeBodySelectedType"/> chose): registered
+    /// per instance as <c>&lt;instance&gt;__Name</c>, a lexical child of the instance so its consts and methods see the
+    /// instance's comptime seeds, and bound as a body alias. Its fields register now (the returned struct's fields may be
+    /// typed by it); its methods are queued in <see cref="_typeBodyContainerMethods"/>. A nested container is a loud cut,
+    /// as in a function body.</summary>
+    private void BindTypeBodyLocalStruct(string fnName, string name, Item? membersItem,
+        List<(string name, CType? prev, int? prevBits)> typeShadows)
+    {
+        var mangled = $"{_typeBodyInstance ?? fnName}__{name}";
+        var type = new CType.Named(mangled);
+        typeShadows.Add((name,
+                         _typeAliases.TryGetValue(name, out var pv) ? pv : (CType?)null,
+                         _declaredIntBits.TryGetValue(name, out var pb) ? pb : (int?)null));
+        _typeAliases[name] = type;
+        SetDeclaredIntBits(name, null);
+        if (_containerTypes.ContainsKey(mangled)) { return; }
+        var (fields, methods, consts, containers) = membersItem is { } m
+            ? SplitMembers(m)
+            : (new List<Item>(), new List<Item>(), new List<Item>(), new List<Item>());
+        if (containers.Count > 0)
+        {
+            throw new IrUnsupportedException(
+                $"type-returning generic '{fnName}': a body's struct (`{name}`) declares a nested container, which is not "
+                + "supported yet");
+        }
+        if (methods.Count > 0 && _typeBodyContainerMethods is null)
+        {
+            throw new IrUnsupportedException(
+                $"type-returning generic '{fnName}': a body's struct (`{name}`) with methods is only supported in a reified instance");
+        }
+        _containerTypes[mangled] = type;
+        if (_typeBodyInstance is { } instance) { _containerParents[mangled] = instance; }
+        using (EnterContainer(mangled))
+        {
+            RegisterStruct(mangled, fields, AggregateLayout.Default);
+            RegisterContainerConsts(mangled, consts);
+        }
+        foreach (var methodDef in methods) { _typeBodyContainerMethods?.Add((mangled, methodDef)); }
+    }
+
+    /// <summary>A type body's own <c>const Op = enum { … };</c> (std.crypto.keccak_p's State, task #161): registered under
+    /// the instance-mangled name <c>&lt;instance&gt;__Op</c>, as an in-function enum is under its function's (task #111), so
+    /// two instances get two types. The name is bound as a type alias for the rest of the walk, and rides along to the
+    /// returned struct's fields and methods like any other body alias. Fields only, as in a function body.</summary>
+    private void BindTypeBodyLocalContainer(string fnName, string name, object decl,
+        List<(string name, CType? prev, int? prevBits)> typeShadows)
+    {
+        var mangled = $"{_typeBodyInstance ?? fnName}__{name}";
+        if (!_containerTypes.TryGetValue(mangled, out var type))
+        {
+            if (decl is not Zig.EnumDecl and not Zig.EnumDeclTyped) { _containerTypes[mangled] = new CType.Named(mangled); }
+            List<Item> members;
+            using (EnterContainer(mangled))
+            {
+                members = decl switch
+                {
+                    Zig.EnumDecl e          => RegisterEnumZig(mangled, null, e.Arg5),
+                    Zig.EnumDeclTyped e     => RegisterEnumZig(mangled, e.Arg5, e.Arg8),
+                    Zig.UnionDecl u         => RegisterUnionHead(mangled, u.Arg3, u.Arg5),
+                    _ => throw new System.InvalidOperationException(),
+                };
+            }
+            if (members.Count > 0)
+            {
+                throw new IrUnsupportedException(
+                    $"type-returning generic '{fnName}': a body's enum / union (`{name}`) is fields-only; a method needs a "
+                    + "container-level declaration");
+            }
+            type = _containerTypes[mangled];
+        }
+        typeShadows.Add((name,
+                         _typeAliases.TryGetValue(name, out var pv) ? pv : (CType?)null,
+                         _declaredIntBits.TryGetValue(name, out var pb) ? pb : (int?)null));
+        _typeAliases[name] = type;
+        SetDeclaredIntBits(name, null);
+    }
+
+    /// <summary>A plain <c>if</c> in a type-returning body: only the taken arm is walked (the other may
+    /// name a type that does not exist for this instantiation — that is usually why it is there).</summary>
+    private TypeBodyResult? WalkComptimeIf(string fnName, Item cond, Item thenArm, Item? elseArm,
+        List<(string name, CType? prev, int? prevBits)> typeShadows)
+    {
+        var taken = FoldTypeBodyCondition(fnName, cond) ? thenArm : elseArm;
+        return taken is { } arm ? WalkTypeBody(fnName, BodyStatements(arm), typeShadows) : null;
+    }
+
+    /// <summary>A captured <c>if (opt) |x|</c> in a type-returning body, on a comptime optional (a
+    /// <c>comptime alignment: ?mem.Alignment</c> seed): <c>null</c> takes the else arm, a known payload the
+    /// then arm with <c>x</c> bound to it.</summary>
+    private TypeBodyResult? WalkComptimeIfCapture(string fnName, Item cond, string capName, Item thenArm, Item? elseArm,
+        List<(string name, CType? prev, int? prevBits)> typeShadows)
+    {
+        if (!TryComptimeOptionalCond(cond, out var copt))
+        {
+            throw new IrUnsupportedException(
+                $"type-returning generic '{fnName}': a captured `if (x) |{capName}|` must test a comptime-known optional");
+        }
+        if (!copt.HasValue)
+        {
+            return elseArm is { } el ? WalkTypeBody(fnName, BodyStatements(el), typeShadows) : null;
+        }
+        _symbols.EnterScope();
+        try
+        {
+            BindFoldedCapture(capName, copt.Value, copt.Inner);
+            return WalkTypeBody(fnName, BodyStatements(thenArm), typeShadows);
+        }
+        finally
+        {
+            _symbols.ExitScope();
+        }
+    }
+
+    /// <summary>Settle a type-returning body's condition at comptime: a tag / module-bool / type-equality
+    /// question (<see cref="TryFoldComptimeCondition"/>), else an ordinary expression over the comptime
+    /// VALUE seeds (<c>comptime n: u16</c> → <c>n &gt; 8</c>), lowered into a throwaway hoist buffer
+    /// because nothing of it may reach an emitted body (<see cref="TryFoldRequiredComptimeCondition"/>). Anything
+    /// that does not settle is a loud cut — a type cannot depend on a runtime value.</summary>
+    private bool FoldTypeBodyCondition(string fnName, Item cond) =>
+        TryFoldRequiredComptimeCondition(cond)
+        ?? throw new IrUnsupportedException(
+            $"type-returning generic '{fnName}': an `if` condition must be compile-time-known "
+            + "(a comptime parameter, a `builtin` query, or a type comparison)");
+
+    /// <summary>Lower an expression that must denote a TYPE, folding the comptime control flow a type
+    /// expression can be built from — the shapes a type-returning body returns and its aliases bind:
+    /// <list type="bullet">
+    /// <item><c>if (c) A else B</c> — <paramref name="fnName"/>'s condition folds; only the taken arm lowers;</item>
+    /// <item><c>if (opt) |x| A else B</c> — on a comptime optional (<c>Aligned</c>'s <c>Slice</c>);</item>
+    /// <item><c>switch (@typeInfo(T)) { .pointer =&gt; |info| info.child, … }</c> — the S5a prong
+    /// selection, with the capture bound for the arm (<c>std.meta.Child</c>);</item>
+    /// <item><c>@compileError(…)</c> reached in a taken arm — raised, which is zig's rule;</item>
+    /// <item>anything else — an ordinary type (<see cref="LowerType"/>), which already covers a
+    /// delegating type-returning call, local or module-qualified, and <c>@Int(…)</c>.</item>
+    /// </list>
+    /// Returns the type together with its declared integer width (<see cref="_declaredIntBits"/>'s
+    /// question), read off the arm that was actually TAKEN — so <c>if (n &gt; 8) u16 else u12</c> answers
+    /// 12 for a small <c>n</c>, not the 16 dotcc widens <c>u12</c> to.</summary>
+    private (CType Type, int? Bits) LowerComptimeTypeExpr(string fnName, Item expr)
+    {
+        var cur = expr;
+        while (cur.Content is Zig.Grouped g) { cur = g.Arg1; }
+        switch (cur.Content)
+        {
+            case Zig.IfElseExpr { Arg4: null, Arg7: null } ie:
+                return LowerComptimeTypeExpr(fnName, FoldTypeBodyCondition(fnName, ie.Arg2) ? ie.Arg5 : ie.Arg8);
+            case Zig.IfElseExpr ic:
+            {
+                if (!TryComptimeOptionalCond(ic.Arg2, out var copt))
+                {
+                    throw new IrUnsupportedException(
+                        $"type-returning generic '{fnName}': a captured `if (x) |{PayloadParts(ic.Arg4).Name}|` type must test a "
+                        + "comptime-known optional");
+                }
+                if (!copt.HasValue) { return LowerComptimeTypeExpr(fnName, ic.Arg8); }   // null → the else type
+                _symbols.EnterScope();
+                try
+                {
+                    BindFoldedCapture(PayloadParts(ic.Arg4).Name ?? "_", copt.Value, copt.Inner);
+                    return LowerComptimeTypeExpr(fnName, ic.Arg5);                        // payload → the then type
+                }
+                finally
+                {
+                    _symbols.ExitScope();
+                }
+            }
+            // The arm an `if (c) enum {…} else enum {…}` took (the IfExpr case above folds the condition): it reifies as
+            // the inline type it spells (one type per source site, as in an annotation).
+            case Zig.InlineEnumType e:
+                return (ReifyInlineEnum(cur, e.Arg2), null);
+            case Zig.InlineEnumTypeTyped et:
+                return (ReifyInlineEnum(cur, et.Arg5, et.Arg2), null);
+            case Zig.InlineStructType s:
+                return (ReifyInlineStruct(cur, s.Arg2), null);
+            case Zig.SwitchExpr se:
+                return LowerComptimeTypeSwitch(fnName, se.Arg2, se.Arg5);
+            case Zig.BuiltinCall { Arg2: not null } b when Tok(b.Arg0) == "@compileError":
+                CompileErrorBuiltin(Flatten(b.Arg2));   // always throws — the arm was reached
+                return (CType.Void, null);
+            default:
+            {
+                var t = LowerType(expr);
+                return (t, DeclaredBitsOfTypeArg(expr));   // after the lowering — see _typeCallBits
+            }
+        }
+    }
+
+    /// <summary>A <c>switch</c> whose prongs are TYPES: the comptime subject selects one prong (S5a's
+    /// <see cref="SelectComptimeProng"/>), its capture is bound to the subject's payload for the arm, and
+    /// only that arm lowers. A prong whose body is a block or a <c>return</c> is a loud cut — a value-
+    /// position type switch is a bare expression in every std use.</summary>
+    private (CType Type, int? Bits) LowerComptimeTypeSwitch(string fnName, Item subject, Item prongs)
+    {
+        if (SelectComptimeProng(subject, prongs, out var payload) is not { } prong)
+        {
+            throw new IrUnsupportedException(
+                $"type-returning generic '{fnName}': a type `switch` must be over a comptime subject "
+                + "(`@typeInfo(T)`, a comptime tag)");
+        }
+        if (prong.Expr is not { } armExpr)
+        {
+            throw new IrUnsupportedException(
+                $"type-returning generic '{fnName}': a type `switch` prong must be a bare type expression "
+                + "(a block or `return` prong is not supported yet)");
+        }
+        EnterComptimeProng(prong, payload);
+        try
+        {
+            return LowerComptimeTypeExpr(fnName, armExpr);
+        }
+        finally
+        {
+            ExitComptimeProng();
+        }
+    }
+}
