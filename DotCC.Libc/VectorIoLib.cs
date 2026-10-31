@@ -1,11 +1,14 @@
 #nullable enable
 using System;
+using System.Runtime.InteropServices;
 
 namespace DotCC.Libc;
 
 public static unsafe partial class Libc
 {
     // Linux LP64 iovec. The void* public boundary also accepts generated iovec*.
+    // Fields are populated through caller-owned memory, not managed assignments.
+    [StructLayout(LayoutKind.Sequential)]
     private struct VectorIoEntry { public void* Base; public ulong Length; }
 
     public static long readv(int fd, void* vectors, int count) => TransferVector(fd, vectors, count, false);

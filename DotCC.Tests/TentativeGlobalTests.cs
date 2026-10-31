@@ -28,6 +28,29 @@ public sealed class TentativeGlobalTests
     }
 
     [Theory]
+    [InlineData("int value = 1;", "int value = 1;")]
+    [InlineData("#include \"value.h\"", "#include \"other.h\"")]
+    [InlineData("#include \"value.h\"", "#include \"value.h\"\n#include \"value.h\"")]
+    [InlineData("#define VALUE 1\n#include \"value.h\"", "#define VALUE 2\n#include \"value.h\"")]
+    public void Header_coalescing_does_not_hide_conflicting_or_same_unit_definitions(string first, string second)
+    {
+        var directory = Path.Combine(Path.GetTempPath(), "dotcc-global-headers-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(directory);
+        try
+        {
+            const string header = "#ifndef VALUE\n#define VALUE 1\n#endif\nint value = VALUE;\n";
+            File.WriteAllText(Path.Combine(directory, "value.h"), header);
+            File.WriteAllText(Path.Combine(directory, "other.h"), header);
+            var sources = new[] { Path.Combine(directory, "first.c"), Path.Combine(directory, "second.c") };
+            File.WriteAllText(sources[0], first + "\nint main(void) { return value; }\n");
+            File.WriteAllText(sources[1], second + "\n");
+            Should.Throw<CompileException>(() => Compiler.EmitCSharp(sources))
+                .Message.ShouldContain("redefinition of global 'value'");
+        }
+        finally { Directory.Delete(directory, recursive: true); }
+    }
+
+    [Theory]
     [InlineData("extern int value; long value;")]
     [InlineData("int *value; const int *value;")]
     [InlineData("typedef int (*A)(int); typedef int (*B)(long); A value; B value;")]

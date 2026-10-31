@@ -350,6 +350,7 @@ internal sealed partial class IrBuilder
 
     private void BuildTopLevel(Item fn)
     {
+        _globalDeclarationSyntax = fn;
         _declaringInternalGlobal = fn.Content is C.GlobalStaticDeclList
             or C.GlobalAttributedStaticDeclList or C.GlobalAttributedStaticArr or C.GlobalAttributedStaticArrInit
             or C.GlobalStaticArr or C.GlobalStaticArrInit or C.GlobalStaticArrInitImplicit or C.GlobalStaticArrInitOuterImplicit

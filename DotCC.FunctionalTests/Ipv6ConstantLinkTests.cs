@@ -8,11 +8,15 @@ namespace DotCC.FunctionalTests;
 public sealed class Ipv6ConstantLinkTests
 {
     [Theory]
-    [InlineData(false, false)]
-    [InlineData(false, true)]
-    [InlineData(true, false)]
-    [InlineData(true, true)]
-    public void Separately_compiled_ipv6_constant_addresses_have_shared_identity(bool literalPool, bool reverse)
+    [InlineData(false, false, false)]
+    [InlineData(false, false, true)]
+    [InlineData(false, true, false)]
+    [InlineData(false, true, true)]
+    [InlineData(true, false, false)]
+    [InlineData(true, false, true)]
+    [InlineData(true, true, false)]
+    [InlineData(true, true, true)]
+    public void Ipv6_constant_addresses_have_shared_identity(bool objects, bool literalPool, bool reverse)
     {
         var directory = Path.Combine(Path.GetTempPath(), "dotcc-ipv6-link-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(directory);
@@ -35,12 +39,19 @@ public sealed class Ipv6ConstantLinkTests
                 }
                 """);
             File.WriteAllText(other, "#include <netinet/in.h>\nconst struct in6_addr *other_any(void) { return &in6addr_any; }\nconst struct in6_addr *other_loopback(void) { return &in6addr_loopback; }\n");
-            var mainObject = Path.Combine(directory, "main.cs");
-            var otherObject = Path.Combine(directory, "other.cs");
-            File.WriteAllText(mainObject, Compiler.EmitObject(main));
-            File.WriteAllText(otherObject, Compiler.EmitObject(other));
-            var linked = Compiler.LinkObjects(reverse ? new[] { otherObject, mainObject } : new[] { mainObject, otherObject },
-                outputOptions: new(LiteralPool: literalPool));
+            var inputs = reverse ? new[] { other, main } : new[] { main, other };
+            if (objects)
+            {
+                inputs = Array.ConvertAll(inputs, path =>
+                {
+                    var fragment = Path.ChangeExtension(path, ".cs");
+                    File.WriteAllText(fragment, Compiler.EmitObject(path));
+                    return fragment;
+                });
+            }
+            var linked = objects
+                ? Compiler.LinkObjects(inputs, outputOptions: new(LiteralPool: literalPool))
+                : Compiler.EmitCSharp(inputs, outputOptions: new(LiteralPool: literalPool));
             FixtureRunner.CompileAndRunCapturingExit(linked, Array.Empty<string>()).exit.ShouldBe(0);
         }
         finally { Directory.Delete(directory, recursive: true); }

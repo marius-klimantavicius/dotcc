@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using Item = global::LALR.CC.LexicalGrammar.Item;
 
 namespace DotCC.Ir;
 
@@ -14,6 +15,8 @@ internal sealed partial class IrBuilder
         public Symbol Symbol { get; } = symbol;
         public int StorageIndex { get; set; } = -1;
         public bool HasInitializer { get; set; }
+        public Item? DefinitionSyntax { get; set; }
+        public HashSet<string> DefinitionUnits { get; } = new(StringComparer.Ordinal);
     }
 
     // External linkage is shared; internal linkage belongs to the containing
@@ -23,6 +26,7 @@ internal sealed partial class IrBuilder
     private readonly HashSet<Symbol> _internalGlobals = new(ReferenceEqualityComparer.Instance);
     internal IReadOnlyCollection<Symbol> InternalGlobals => _internalGlobals;
     private bool _declaringInternalGlobal;
+    private Item? _globalDeclarationSyntax;
 
     private (string Unit, string Name) ScalarGlobalKey(string name, Storage semanticStorage)
     {
@@ -92,6 +96,21 @@ internal sealed partial class IrBuilder
         var symbol = declaration.Symbol;
         if (hasInitializer && declaration.HasInitializer)
         {
+            // The runtime headers define shared objects such as in6addr_any.
+            // Coalesce the same header definition across TUs, retaining its
+            // canonical symbol/storage. Never merge private objects, unrelated
+            // definitions, changed initializers, or repeats within any one TU.
+            if (!_internalGlobals.Contains(symbol)
+                && !declaration.DefinitionUnits.Contains(FunctionUnitIdentity)
+                && declaration.DefinitionSyntax is { } previous
+                && _globalDeclarationSyntax is { } current
+                && SourceFileOrigin.Of(previous) is { } origin
+                && origin.Identity == SourceFileOrigin.Of(current)?.Identity
+                && SyntaxIdentity.Of(previous) == SyntaxIdentity.Of(current))
+            {
+                declaration.DefinitionUnits.Add(FunctionUnitIdentity);
+                return;
+            }
             Diagnostics.Add(new Diagnostic(Severity.Error,
                 $"redefinition of global '{symbol.Name}'", position, _file));
             return;
@@ -107,6 +126,11 @@ internal sealed partial class IrBuilder
             Globals[declaration.StorageIndex] = new GlobalVar(symbol, initializer);
         }
         declaration.HasInitializer |= hasInitializer;
+        if (hasInitializer)
+        {
+            declaration.DefinitionSyntax = _globalDeclarationSyntax;
+            declaration.DefinitionUnits.Add(FunctionUnitIdentity);
+        }
     }
 
     private static bool CompatibleGlobalTypes(CType left, CType right)
