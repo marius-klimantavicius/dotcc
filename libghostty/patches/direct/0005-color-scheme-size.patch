@@ -1,0 +1,34 @@
+--- a/src/terminal/device_status.zig
++++ b/src/terminal/device_status.zig
+@@ -18,12 +18,7 @@
+ pub const max_color_scheme_report_encode_size = max: {
+     var result: usize = 0;
+     for (@typeInfo(ColorScheme).@"enum".field_values) |field_value| {
+-        var discarding: std.Io.Writer.Discarding = .init(&.{});
+-        encodeColorSchemeReport(
+-            &discarding.writer,
+-            @fromBackingInt(field_value),
+-        ) catch unreachable;
+-        result = @max(result, @as(usize, @intCast(discarding.count)));
++        result = @max(result, colorSchemeReportBytes(@fromBackingInt(field_value)).len);
+     }
+ 
+     break :max result;
+@@ -34,10 +29,15 @@
+     writer: *std.Io.Writer,
+     scheme: ColorScheme,
+ ) std.Io.Writer.Error!void {
+-    try writer.writeAll(switch (scheme) {
++    try writer.writeAll(colorSchemeReportBytes(scheme));
++}
++
++// Share the exact encoded bytes with the compile-time maximum calculation.
++fn colorSchemeReportBytes(scheme: ColorScheme) []const u8 {
++    return switch (scheme) {
+         .dark => "\x1B[?997;1n",
+         .light => "\x1B[?997;2n",
+-    });
++    };
+ }
+ 
+ /// Maximum number of bytes that `encodeVisibilityReport` will write.

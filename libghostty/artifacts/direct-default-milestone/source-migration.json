@@ -1,0 +1,986 @@
+{
+  "status": "moved-byte-identically",
+  "qualification_receipt": "/home/marius/p/dotcc/libghostty/artifacts/direct-resume-20261104/direct-publication/delivery.json",
+  "products": [
+    {
+      "form": "processed",
+      "source": "/home/marius/p/dotcc/libghostty/generated/direct/TranslatedGhosttyVt",
+      "canonical": "/home/marius/p/dotcc/libghostty/generated/TranslatedGhosttyVt",
+      "c_fallback": "/home/marius/p/dotcc/libghostty/generated/c-route/TranslatedGhosttyVt",
+      "qualified_files": [
+        {
+          "name": ".campaign-files.json",
+          "sha256": "63FBD73A8728930E414F324E4DE00FC4E52189EAD3289F0F315FDCD17795337C",
+          "bytes": 1113
+        },
+        {
+          "name": "Dotcc.SourceFiles.txt",
+          "sha256": "4DC2277E1CD3F808DEEA733E93A598488ED5456D88B3841BB3D3A4FD07551842",
+          "bytes": 811
+        },
+        {
+          "name": "GhosttyVt.00000.cs",
+          "sha256": "2D979BD202635E7CD4285AD22E096B814B6C68C3869B1E013DF50ED0D59800C0",
+          "bytes": 279629
+        },
+        {
+          "name": "GhosttyVt.00001.cs",
+          "sha256": "4620EE22B93102F7629C5085D3932E46592094F1BACC4B33C3B9C0D407D7B2AF",
+          "bytes": 340486
+        },
+        {
+          "name": "GhosttyVt.00002.cs",
+          "sha256": "B192191804689CD2F37FC6B07AD61C60021AEDE9E37CCCF0F62EAE436C901282",
+          "bytes": 260031
+        },
+        {
+          "name": "GhosttyVt.00003.cs",
+          "sha256": "FC3AF33100A6C7348D8BE756E5C7E74CB55447DBCD2907A5ADEAAEF5C9E1EAB6",
+          "bytes": 338021
+        },
+        {
+          "name": "GhosttyVt.00004.cs",
+          "sha256": "975CA9864EDF82B2275C5CAF0D8B7C2884545BAB7FC7F1CDE592797A5DFCA029",
+          "bytes": 263191
+        },
+        {
+          "name": "GhosttyVt.00005.cs",
+          "sha256": "46421A390A3F2B5F0BCCF86BDEBF2461633DD8067DFC9443CC6C70B77895C359",
+          "bytes": 262048
+        },
+        {
+          "name": "GhosttyVt.00006.cs",
+          "sha256": "E3E69E1F8BF8A5C3A9BA600393A287F9B67B23FABA66D9404EB1C795196047E9",
+          "bytes": 260871
+        },
+        {
+          "name": "GhosttyVt.00007.cs",
+          "sha256": "58BC9E1BBD68583CE421B1E4BD2EF6C79491933962DA7858F4F0B322B1DBB1AB",
+          "bytes": 267132
+        },
+        {
+          "name": "GhosttyVt.00008.cs",
+          "sha256": "EBEA0D6631C6A8AAAFA14762B6D2999B3E7F117645D000ACBCC2962A56E7A23E",
+          "bytes": 260657
+        },
+        {
+          "name": "GhosttyVt.00009.cs",
+          "sha256": "C1ADCA5ADC52D34ECFFDE4220B449F8330AECE632EE33E4993DA105B2B08AB59",
+          "bytes": 264383
+        },
+        {
+          "name": "GhosttyVt.00010.cs",
+          "sha256": "F0D58AC3927AC97AE41507EF3797EF174938508BBE4DFAAD1FAD018F15EFF160",
+          "bytes": 260669
+        },
+        {
+          "name": "GhosttyVt.00011.cs",
+          "sha256": "FDD7D7D5F1A5B0165EAB5D3621D542BA123D68AF781C7EE15EB407F642336E03",
+          "bytes": 259960
+        },
+        {
+          "name": "GhosttyVt.00012.cs",
+          "sha256": "7DE598309D4729F9F860CDD9B09ED60A972EA46942E3F6CEAAE37E0E43201351",
+          "bytes": 259184
+        },
+        {
+          "name": "GhosttyVt.00013.cs",
+          "sha256": "AF813656E5E639E3352F8CF17430422613436DF45E4B22C6F65806128B536822",
+          "bytes": 279096
+        },
+        {
+          "name": "GhosttyVt.00014.cs",
+          "sha256": "E522940A16A14BD9CDB4B12B8797E012EEBE7802C92FD4AE2B9A00E126E19D6D",
+          "bytes": 260422
+        },
+        {
+          "name": "GhosttyVt.00015.cs",
+          "sha256": "55D27FE23828405F26DE948D1C444317A2D814BBCC7E3527C041BC4F9654B5A5",
+          "bytes": 277087
+        },
+        {
+          "name": "GhosttyVt.00016.cs",
+          "sha256": "BAF6B4DB0CACAD97D51E5FCD157DFBD38FA4D0F8B5E89E619BB71B397D0C05A8",
+          "bytes": 260371
+        },
+        {
+          "name": "GhosttyVt.00017.cs",
+          "sha256": "AA44FCA8B5BD70965BD37797F562E3A9E4D835E19FAC109F1B1E50D51C9D000F",
+          "bytes": 260551
+        },
+        {
+          "name": "GhosttyVt.00018.cs",
+          "sha256": "2211A4FE47F918D813C4C28E84917F1D200B9FEB22185B929DFB4B4F88D81C75",
+          "bytes": 261487
+        },
+        {
+          "name": "GhosttyVt.00019.cs",
+          "sha256": "8524F79DC8B7F9C9488543701931FDEB5A2325066030CF9C52C8F625531F089B",
+          "bytes": 263205
+        },
+        {
+          "name": "GhosttyVt.00020.cs",
+          "sha256": "1931C0E9D43D32CF2F802B2352F4552E68AD14851A9FBDC587E2FB7A3B1D40DD",
+          "bytes": 263138
+        },
+        {
+          "name": "GhosttyVt.00021.cs",
+          "sha256": "DFB89DB053E0B7D8868BF84E1ACB88565BA1450FF53716A2076FB0C468D4E7AD",
+          "bytes": 260925
+        },
+        {
+          "name": "GhosttyVt.00022.cs",
+          "sha256": "010DD3EF12DF298DA3A938CAFC9A9EAA10FCDB9B55AE95F5E2B27EE8B5B4F97C",
+          "bytes": 258667
+        },
+        {
+          "name": "GhosttyVt.00023.cs",
+          "sha256": "9FF770250245E1DA073B1166E53548C86311330A419D517866A5057D8F082D14",
+          "bytes": 259899
+        },
+        {
+          "name": "GhosttyVt.00024.cs",
+          "sha256": "5C7029594818CEFFE17A2FE5B642FEF616457226982467B89CB1E0406292F72A",
+          "bytes": 261016
+        },
+        {
+          "name": "GhosttyVt.00025.cs",
+          "sha256": "EA2C43EBAD519E4627B52EC46214C7FEB182B7941E0F29797161AD6EEBA09BCC",
+          "bytes": 261089
+        },
+        {
+          "name": "GhosttyVt.00026.cs",
+          "sha256": "7FC7A6AA8A2E856AE53F121EBDB4EC805CC83598C475E15BAD80483818DF56E6",
+          "bytes": 262409
+        },
+        {
+          "name": "GhosttyVt.00027.cs",
+          "sha256": "57C1B0D2FAB25924B747134915FC582579DB98BB8D044C44397E8E9265D3119E",
+          "bytes": 259463
+        },
+        {
+          "name": "GhosttyVt.00028.cs",
+          "sha256": "110B94BEFB1DC080D5BE8807E7E84B3B5D6773D964A7DCC0AA76D3578CF8EC97",
+          "bytes": 260738
+        },
+        {
+          "name": "GhosttyVt.00029.cs",
+          "sha256": "78C6DF653C55CB6C9ECE7B47137B0D370D98ED85B03004AB6FA847DE1D05AB30",
+          "bytes": 259353
+        },
+        {
+          "name": "GhosttyVt.00030.cs",
+          "sha256": "1842747A8083DD396387906A7B4BAD9ED04159FC71339FF18BAB708DB4A7A1BF",
+          "bytes": 257792
+        },
+        {
+          "name": "GhosttyVt.00031.cs",
+          "sha256": "65F829678E2F120AC8C8DF1AAE3D3621135466812AEC48D94D532D92CCD70AB7",
+          "bytes": 257404
+        },
+        {
+          "name": "GhosttyVt.00032.cs",
+          "sha256": "549188B049FDA6C91E021229E57CD7B6ABCE0780AF70A460FADF2CD554953209",
+          "bytes": 258800
+        },
+        {
+          "name": "GhosttyVt.00033.cs",
+          "sha256": "1E72A8E069EAA0C9814E162A1A164DE1CE45EB7CD83985A11ABE6B61E54E1F2E",
+          "bytes": 267499
+        },
+        {
+          "name": "GhosttyVt.00034.cs",
+          "sha256": "6D55F89E36BFA845E91CA589AB5FF6F0E92BEE603D0440E64A98F2A899D2FF2D",
+          "bytes": 271472
+        },
+        {
+          "name": "GhosttyVt.00035.cs",
+          "sha256": "E5E348D1F732D3EFF4F05E0362878014186771EC41672BAADF99AE0A28A90BEE",
+          "bytes": 262747
+        },
+        {
+          "name": "GhosttyVt.00036.cs",
+          "sha256": "8F5643E858F9EFF626C5571C1FA713A3D349732484005E8BF84805EEF982CA98",
+          "bytes": 268588
+        },
+        {
+          "name": "GhosttyVt.00037.cs",
+          "sha256": "E2B74879FF4D8EEA5B5CF645AB9A4A86CAC6BDE4E0840AA3E86BBC1E0B24717A",
+          "bytes": 263964
+        },
+        {
+          "name": "GhosttyVt.00038.cs",
+          "sha256": "FAD27D1D0E30A65E15FB0EE4ADAA7EA81C79FA95857C60D2946E31C3FDEFDF77",
+          "bytes": 257347
+        },
+        {
+          "name": "GhosttyVt.00039.cs",
+          "sha256": "74D482548FBAFBA13203E396C49C6595D3C21956570906B35F3E288E006880C2",
+          "bytes": 262572
+        },
+        {
+          "name": "GhosttyVt.00040.cs",
+          "sha256": "AE8AEB398FCC32EEFFA116AA3DDF31567887D7182D62A4DFD046F84502A8A016",
+          "bytes": 258316
+        },
+        {
+          "name": "GhosttyVt.00041.cs",
+          "sha256": "0D3491AFB56A280DA21E9227BA16942E038EEB694997DE2B3F5EFCEAE3CF8C78",
+          "bytes": 82934
+        },
+        {
+          "name": "GhosttyVt.cs",
+          "sha256": "190C26F573D917B4EC11AAC657A5A1FDB8CBFBABBAB824D1EE63DD26679B1797",
+          "bytes": 6067340
+        },
+        {
+          "name": "THIRD-PARTY-NOTICES",
+          "sha256": "67DA488C407EA1ECD494792E53A28104EE3E8498C273144591817FC3DA273C1F",
+          "bytes": 7884
+        },
+        {
+          "name": "TranslatedGhosttyVt.csproj",
+          "sha256": "E2436F509CFB64547BC45E5195CF1F1BB275A655C501B16BAE7F54100EFBDE32",
+          "bytes": 535
+        }
+      ],
+      "c_source_files": [
+        {
+          "path": "GhosttyVt.00044.cs",
+          "sha256": "64deb00efb5d4a39a4c4826d1064e511d16b582bba032792fb8c5618c7ed4481"
+        },
+        {
+          "path": "GhosttyVt.00040.cs",
+          "sha256": "0d53b305924c5c0ff11b914921857d968bab641eca5c0a24bc5ee606cbe2a1d1"
+        },
+        {
+          "path": "GhosttyVt.00051.cs",
+          "sha256": "ba5476c055f59ed22cf69247236de42691bac6a28ff6a32ba5248953e7dc2bd2"
+        },
+        {
+          "path": "GhosttyVt.00021.cs",
+          "sha256": "926337ea11191e5162d5c0d1e70ead862d244601bdedbe62fa3f6576c9c4f4bd"
+        },
+        {
+          "path": "GhosttyVt.00029.cs",
+          "sha256": "fcc8e12985b76e135b4ef07793a9eeb7fbec663c57746da1e28eff17225a3176"
+        },
+        {
+          "path": "GhosttyVt.00002.cs",
+          "sha256": "c1157bde1046a24b778d927933379d055796fdf982e7e379c9bcfe06835e2f1d"
+        },
+        {
+          "path": "GhosttyVt.00045.cs",
+          "sha256": "849b34cdde388c8cd31e41c9dd57862eae92b44eb03e86c2ed06c308039a7aa0"
+        },
+        {
+          "path": "GhosttyVt.00037.cs",
+          "sha256": "6cfd39456ef9fee57234dd2793bc50a53bc71b9e127f382c47092e0f946cb4b4"
+        },
+        {
+          "path": "GhosttyVt.00036.cs",
+          "sha256": "57f26ff0a87cfb5be7f5661e3803d928adbad68beb93cd2bf68ffcaec8f438fe"
+        },
+        {
+          "path": "GhosttyVt.00011.cs",
+          "sha256": "c499f01752fa5bda427fb97c8b670c9bdd1827d8edf7c97afe341e781d39e749"
+        },
+        {
+          "path": "GhosttyVt.00041.cs",
+          "sha256": "c1e6e537d7799ce7390a2e977f2d36fd9d093e910320f4a9fbb70152102d1f03"
+        },
+        {
+          "path": "GhosttyVt.00042.cs",
+          "sha256": "de1e923ccf9d1cac4beccdde0f5e1aacde9bb5f700ac20ed4ef81dc16d3bdb81"
+        },
+        {
+          "path": "GhosttyVt.00017.cs",
+          "sha256": "083d6b7440648500be4fffea84284525a175237c7ff4fa9c430f02d8f37e562a"
+        },
+        {
+          "path": "GhosttyVt.00005.cs",
+          "sha256": "79076e1dad8a0a9dbcc16bdc7035d84e92d268a1d646703607529774c9d02a23"
+        },
+        {
+          "path": ".campaign-files.json",
+          "sha256": "1006a82a4048f80ad0fd43940aaa652602dcbd8143fe7ff7069a66fe80bb454a"
+        },
+        {
+          "path": "GhosttyVt.00031.cs",
+          "sha256": "4f7a212279f79177017f04086a9cf5df7a8306276e07d79667868a1401b99172"
+        },
+        {
+          "path": "THIRD-PARTY-NOTICES",
+          "sha256": "67da488c407ea1ecd494792e53a28104ee3e8498c273144591817fc3da273c1f"
+        },
+        {
+          "path": "GhosttyVt.00030.cs",
+          "sha256": "f6d611ee00b05ae91a86e3f25e2a72d98c2a45d14c0bbcf628288c8cd4b37190"
+        },
+        {
+          "path": "GhosttyVt.00047.cs",
+          "sha256": "b583aede4202fcae7b2af33691ac86a3c9827240778e56aef3cadac82e8e3617"
+        },
+        {
+          "path": "GhosttyVt.00024.cs",
+          "sha256": "f981001de084416677cd94a120f686dfe90063f39c91c4b615e92bf43dd4a0aa"
+        },
+        {
+          "path": "GhosttyVt.cs",
+          "sha256": "3da53981abdf7066733c5c5396e5c234bcd68933263205fccdbf59623f13dc24"
+        },
+        {
+          "path": "Dotcc.SourceFiles.txt",
+          "sha256": "95726dcc4c4117504529ca2ec2207bccf94b8b204555987dfe4cc9906fd8114a"
+        },
+        {
+          "path": "GhosttyVt.00046.cs",
+          "sha256": "a471dd8d2caf6aac3a1a1896c7bc6132d4e84cd9b0e2f8283dcf8ce617a000b0"
+        },
+        {
+          "path": "GhosttyVt.00015.cs",
+          "sha256": "3121c08228f85c0cb2dfc95c67bdc36b77e448d5a22488b04f7cf891e6b2ae87"
+        },
+        {
+          "path": "GhosttyVt.00000.cs",
+          "sha256": "a96119725081da226c987b824895ff741ecde8599a02b4caab513ca9142dbc4c"
+        },
+        {
+          "path": "GhosttyVt.00004.cs",
+          "sha256": "cc8b0255b084c4c09b51428b47f98db618ebcc8d767b38be64368cd6fbb2a708"
+        },
+        {
+          "path": "GhosttyVt.00014.cs",
+          "sha256": "3273c84d0708db58b416ea30cb6361ac9656d946a38fd35ef7fc4c2db43277ab"
+        },
+        {
+          "path": "GhosttyVt.00032.cs",
+          "sha256": "387f0ccca7f2058958c170119c0fac482559c2d8c8af631d98e6cdaba3a20f37"
+        },
+        {
+          "path": "GhosttyVt.00020.cs",
+          "sha256": "b4fbdba8863d94d383476a608e411ecc94576ad44529f5aef073b82dd92599d8"
+        },
+        {
+          "path": "GhosttyVt.00012.cs",
+          "sha256": "f3a57856d20d965b383452a1aff65ced143177da7b0055e649e848937b55e1d7"
+        },
+        {
+          "path": "GhosttyVt.00006.cs",
+          "sha256": "f173eee5f90295091a080c1ed198eea65ff71ab35163bf97c83fb25acc26ec2d"
+        },
+        {
+          "path": "GhosttyVt.00009.cs",
+          "sha256": "6513d48943ec53e7231798dd3294806e7975108b238044bcc2566982f9b94257"
+        },
+        {
+          "path": "TranslatedGhosttyVt.csproj",
+          "sha256": "e2436f509cfb64547bc45e5195cf1f1bb275a655c501b16bae7f54100efbde32"
+        },
+        {
+          "path": "GhosttyVt.00043.cs",
+          "sha256": "e11b5f8eb355c6b005f3e18955d2134cbd246777439a7cf0631f24a178cb22ca"
+        },
+        {
+          "path": "GhosttyVt.00023.cs",
+          "sha256": "3c82bfd99d99ede2e9d4693eb1145e1414296bf614540d0134165b23931aed8b"
+        },
+        {
+          "path": "GhosttyVt.00039.cs",
+          "sha256": "4f8d06b49f7cbe7195d5415b6f6c91d65f8e8ed4cb7cf9ff7a249aece58b4919"
+        },
+        {
+          "path": "GhosttyVt.00019.cs",
+          "sha256": "28e5a3fc7b960b6773ac70a7c5190d0043190df3f47965028bc7f0e6e5fb9aa8"
+        },
+        {
+          "path": "GhosttyVt.00048.cs",
+          "sha256": "421b34aae430b07f838246438391cc9b6be81946b7a725fb36bc3b5d48d6b659"
+        },
+        {
+          "path": "GhosttyVt.00053.cs",
+          "sha256": "9a3e775f37969ccc769d132e650b60bf09c5c883dc088cac98bbdb3a69ee6325"
+        },
+        {
+          "path": "GhosttyVt.00026.cs",
+          "sha256": "554f00455fea5ef5de7048421fac112e0b3c231016c1bb155b0016d098a4fe61"
+        },
+        {
+          "path": "GhosttyVt.00008.cs",
+          "sha256": "5eebef421da937449fb6ccf491def92943d5c1f67938974e275a8819111667a9"
+        },
+        {
+          "path": "GhosttyVt.00025.cs",
+          "sha256": "a5d6678a5f6a5dd63f617c9230505d5fcae83c11e3035caa2b7221aa255623c9"
+        },
+        {
+          "path": "GhosttyVt.00028.cs",
+          "sha256": "d96834648e40e26dbc8b242ecf19c71a3421581a13c08a68626f9bd388564b5d"
+        },
+        {
+          "path": "GhosttyVt.00049.cs",
+          "sha256": "d2a905ca01121e7e3e2946f43dbe61594492ebfe6f5f5edfa576fb8aed6884b0"
+        },
+        {
+          "path": "GhosttyVt.00038.cs",
+          "sha256": "6d4924ccb96dfd47117d9dea9f6348444bd800f07dfae1c1b434d46c97ce9535"
+        },
+        {
+          "path": "GhosttyVt.00027.cs",
+          "sha256": "41c0364ba9733e30a2fbda2f1797f344abaef5c9ba5312c46e8cc6c46793161c"
+        },
+        {
+          "path": "GhosttyVt.00054.cs",
+          "sha256": "77dc9bbf98fc1383a8a23618ec99cc3fe270b34a97b841003759d7754fe0f1b6"
+        },
+        {
+          "path": "GhosttyVt.00022.cs",
+          "sha256": "d8c6500ca0e263ed045edf9a8ef36bb428de391e8d9c0b5f3d7691a3fd88bbba"
+        },
+        {
+          "path": "GhosttyVt.00010.cs",
+          "sha256": "0dc3ba5da0c75f4fb1890237b013d10d70fff26ce8570e3947ec1dc955c64a1f"
+        },
+        {
+          "path": "GhosttyVt.00055.cs",
+          "sha256": "6e977b02cf23ebd3149d88a1637cf0b4145c5fc6ee1dac12bae6696b87e75a84"
+        },
+        {
+          "path": "GhosttyVt.00003.cs",
+          "sha256": "f11d955478bd76038128ca0cda022910831eb7db7c1b3e82f5432b2945840481"
+        },
+        {
+          "path": "GhosttyVt.00007.cs",
+          "sha256": "45650e93e8761f7b57e6d20e14d35588d1615f4bf82ab58b6ff4fff4b544755a"
+        },
+        {
+          "path": "GhosttyVt.00035.cs",
+          "sha256": "30f0b6bfc26c5e1429d57e72d4d59685d23a659d101e354ec3415ec40b5280f7"
+        },
+        {
+          "path": "GhosttyVt.00013.cs",
+          "sha256": "c0df011f8b0a2fa9321e72f607d98623d712bfb71ba079232af240e1ef9b4a35"
+        },
+        {
+          "path": "GhosttyVt.00050.cs",
+          "sha256": "0aea2e99e57d0d5dc6a2aa558f47b0aea38c9fe25162b1441f176ee1112c720b"
+        },
+        {
+          "path": "GhosttyVt.00034.cs",
+          "sha256": "c87ec63d354ade50ee7a17ae1c290b73c06535a65f07b395e520a1ea533d689d"
+        },
+        {
+          "path": "GhosttyVt.00018.cs",
+          "sha256": "d2553b2905217d9bc9292593b98a1e88ff3df1c49e54ae2e8194e5fb35aab41a"
+        },
+        {
+          "path": "GhosttyVt.00001.cs",
+          "sha256": "20c42834cf925b03f4a8db05260b7950494fd7e805c9e85b507c7caa3fcbf9c6"
+        },
+        {
+          "path": "GhosttyVt.00033.cs",
+          "sha256": "256b79bda89aedf3a95236098b79e73c0a1d1f80c707aef05797703adfea2e50"
+        },
+        {
+          "path": "GhosttyVt.00052.cs",
+          "sha256": "6c0216d85a20f263c25199b514db9e8e41cbe8a360b3087b0feb8dad6fce50e8"
+        },
+        {
+          "path": "GhosttyVt.00016.cs",
+          "sha256": "cfb81dbffb454dc6856aa454d2d0ae31ab73f702800db456deb46bb1d15e6795"
+        }
+      ]
+    },
+    {
+      "form": "raw",
+      "source": "/home/marius/p/dotcc/libghostty/generated/direct/TranslatedGhosttyVt.Raw",
+      "canonical": "/home/marius/p/dotcc/libghostty/generated/TranslatedGhosttyVt.Raw",
+      "c_fallback": "/home/marius/p/dotcc/libghostty/generated/c-route/TranslatedGhosttyVt.Raw",
+      "qualified_files": [
+        {
+          "name": ".campaign-files.json",
+          "sha256": "63FBD73A8728930E414F324E4DE00FC4E52189EAD3289F0F315FDCD17795337C",
+          "bytes": 1113
+        },
+        {
+          "name": "Dotcc.SourceFiles.txt",
+          "sha256": "4DC2277E1CD3F808DEEA733E93A598488ED5456D88B3841BB3D3A4FD07551842",
+          "bytes": 811
+        },
+        {
+          "name": "GhosttyVt.00000.cs",
+          "sha256": "238F075410E007D4B36C255B5D19D7DE6359623E6D711F7FFA957566E4D6F430",
+          "bytes": 281567
+        },
+        {
+          "name": "GhosttyVt.00001.cs",
+          "sha256": "DC6736BEA117EDF236BA8E1E825FEC1F56EA44F8D3C7F165752D1FE371D0F6CE",
+          "bytes": 342711
+        },
+        {
+          "name": "GhosttyVt.00002.cs",
+          "sha256": "8813F77859C5FFAA23EBAE14B6F90401285DD4EA560BBD36379BF70B4247B353",
+          "bytes": 263072
+        },
+        {
+          "name": "GhosttyVt.00003.cs",
+          "sha256": "E2031BF978073B35F03114076DFF4DE948403E906CAE6254427D2835F8C0D3E5",
+          "bytes": 341258
+        },
+        {
+          "name": "GhosttyVt.00004.cs",
+          "sha256": "3666E04087F59F0EBDB79458355A4DB29C944FF7EC981FEC22B3F38521D193B3",
+          "bytes": 264858
+        },
+        {
+          "name": "GhosttyVt.00005.cs",
+          "sha256": "B354D41C2F12F12362CDC18CB7762A90CA4E215576FBA75C77773C3E958792E0",
+          "bytes": 264867
+        },
+        {
+          "name": "GhosttyVt.00006.cs",
+          "sha256": "95B1C6A180DF6A761B5A581F1A2004A585DB1B48498709354360E4DA742A7E69",
+          "bytes": 262305
+        },
+        {
+          "name": "GhosttyVt.00007.cs",
+          "sha256": "3BE8D55F668508AE0A1F03D3A324A6EEE34C3D3D64F3B87F470EE242DC5D5A7D",
+          "bytes": 267552
+        },
+        {
+          "name": "GhosttyVt.00008.cs",
+          "sha256": "01CBBAFCED837601863209116E38E38DFA89CDD872509284A8CA87B863C1E6C9",
+          "bytes": 261796
+        },
+        {
+          "name": "GhosttyVt.00009.cs",
+          "sha256": "17851C4F1551CDCB7141654EF16D34046A9B876CC6251A22C180053A9F99E31C",
+          "bytes": 264336
+        },
+        {
+          "name": "GhosttyVt.00010.cs",
+          "sha256": "E4DA418330C5603CAEDD50AAB1D569A84FF2CFDD01ECF72D931B2875A30AE353",
+          "bytes": 264156
+        },
+        {
+          "name": "GhosttyVt.00011.cs",
+          "sha256": "FA4BA96D16BA5BCD024A71DE9234A96FCBA211B61C3DBC41EFFF1F9BB6482A8E",
+          "bytes": 262056
+        },
+        {
+          "name": "GhosttyVt.00012.cs",
+          "sha256": "8660314F2D60DE566487FE2416BA054EDCDD1B7A09F087F9DBC79A36A35EDF66",
+          "bytes": 262279
+        },
+        {
+          "name": "GhosttyVt.00013.cs",
+          "sha256": "6FCE206DC9D56A4DE5419EB97C107747B2E4284C4702A487F1B15B72988C0A5E",
+          "bytes": 282948
+        },
+        {
+          "name": "GhosttyVt.00014.cs",
+          "sha256": "DA85A1C9D607CC685172473DC841C6A875C345FE447A39D376CE831108451E1C",
+          "bytes": 264910
+        },
+        {
+          "name": "GhosttyVt.00015.cs",
+          "sha256": "4C692F3D562683F75E610D2BC7E90263F70C590855B297FF0896E39CD9E9CE4E",
+          "bytes": 278862
+        },
+        {
+          "name": "GhosttyVt.00016.cs",
+          "sha256": "22F24D5082D7E9F0252C5C25F9C14A9691A9C9CAD63D5BD42C1CA3EAF71627EC",
+          "bytes": 262790
+        },
+        {
+          "name": "GhosttyVt.00017.cs",
+          "sha256": "957EF55808905D255628C4F845AE9B183D56E4B15D52079DCDB96E339CB37D96",
+          "bytes": 262505
+        },
+        {
+          "name": "GhosttyVt.00018.cs",
+          "sha256": "E65EDD650C426282155F24745CCEFA26118B91DF5AE148619D7E8CC5EE5FEE98",
+          "bytes": 263980
+        },
+        {
+          "name": "GhosttyVt.00019.cs",
+          "sha256": "D45E6DBC97B1E4C21E4A013FE0D694A4DD2F5CC4175D06E9EB2AA72CC4BF43D1",
+          "bytes": 265401
+        },
+        {
+          "name": "GhosttyVt.00020.cs",
+          "sha256": "EBBDA6A3524E6761241F894E8802B87BE08A5A8997280547A4BF68B36EEC7143",
+          "bytes": 264687
+        },
+        {
+          "name": "GhosttyVt.00021.cs",
+          "sha256": "744BDED1BCD99D1D370EDBE0A4B84DEB9AEDB3871B2B8F349A4E5F1C3CC01447",
+          "bytes": 263498
+        },
+        {
+          "name": "GhosttyVt.00022.cs",
+          "sha256": "26C3169B92273BCB45FD177225B79B895EAC0D679439C249A6DF52763B4DFFD6",
+          "bytes": 262284
+        },
+        {
+          "name": "GhosttyVt.00023.cs",
+          "sha256": "AD9050149B29F507588268444D79927F97CD7DA137AEDD6A613D0EDDD001B8AE",
+          "bytes": 262259
+        },
+        {
+          "name": "GhosttyVt.00024.cs",
+          "sha256": "020A4122BB1FB36C999E96D33FD9FAEB29C6891B84A4EBEA752017ACD75AC7D8",
+          "bytes": 262402
+        },
+        {
+          "name": "GhosttyVt.00025.cs",
+          "sha256": "53E8028E643BDD0A643E6E8CC514D858872C664D4F259BBBE9C8F18097C0DC2C",
+          "bytes": 261940
+        },
+        {
+          "name": "GhosttyVt.00026.cs",
+          "sha256": "2635BD1D26DE32A57235DFD86BAB44825B5C20707BE4706C897371D3FDA13988",
+          "bytes": 262850
+        },
+        {
+          "name": "GhosttyVt.00027.cs",
+          "sha256": "559A506A64BD18B4AA2ED2357A3192DFF89EFC6483483149CA2111A51889DF14",
+          "bytes": 262132
+        },
+        {
+          "name": "GhosttyVt.00028.cs",
+          "sha256": "A896CF1B27043C8BCB1285F9846DCAF401EF25CAFDD0FC177E190972EFD136E2",
+          "bytes": 262981
+        },
+        {
+          "name": "GhosttyVt.00029.cs",
+          "sha256": "C7DCF394AF3207BF1B85433414D6C238D943A92A5131EEE1281E444B74790C02",
+          "bytes": 265178
+        },
+        {
+          "name": "GhosttyVt.00030.cs",
+          "sha256": "96BC511E0BE994746B39557347245FB08D1B48809166EC7F62A91E4E0DC0811D",
+          "bytes": 264242
+        },
+        {
+          "name": "GhosttyVt.00031.cs",
+          "sha256": "B1314DCD4F8C347C56768A45EBD265253F1C7701CF0CD6EE7DCA90DCEB2DA018",
+          "bytes": 263464
+        },
+        {
+          "name": "GhosttyVt.00032.cs",
+          "sha256": "679035655A8783EE6FABC89F1BEAE269A1B10E62D40FD74EB67C58C2F00DD91A",
+          "bytes": 263656
+        },
+        {
+          "name": "GhosttyVt.00033.cs",
+          "sha256": "8423266D2D021303832C33B40EF55C5323641ED82009BF7CF6262ACD6EE5E93E",
+          "bytes": 269454
+        },
+        {
+          "name": "GhosttyVt.00034.cs",
+          "sha256": "EC848B9615590A88FD36801BA13E4FB60D5B6F7D441BEEE18C0ED4E61984E9D9",
+          "bytes": 274690
+        },
+        {
+          "name": "GhosttyVt.00035.cs",
+          "sha256": "AA87E99583C8B303761A42A2AA844924F26BBAA38CAA137EBA3D8BA8AE93C03A",
+          "bytes": 265209
+        },
+        {
+          "name": "GhosttyVt.00036.cs",
+          "sha256": "6E57EDA2AA68B673D01FF940FE593083765F92BD65A805D7803E4F5B1E60C2B0",
+          "bytes": 271223
+        },
+        {
+          "name": "GhosttyVt.00037.cs",
+          "sha256": "71EC1933CADC86D8DF5BC2666E0EBD1FC03F499195391AE0EECC34CA67A04995",
+          "bytes": 267939
+        },
+        {
+          "name": "GhosttyVt.00038.cs",
+          "sha256": "133D1288B61895AF80147FCF199F342776961CE9406CCBBA978DFCFEEF665ACA",
+          "bytes": 262200
+        },
+        {
+          "name": "GhosttyVt.00039.cs",
+          "sha256": "3F075A95AB1A5BDC4C38FEEB174E4DCAED4F1D3C414A1BBFCDE11C56D94E1846",
+          "bytes": 264339
+        },
+        {
+          "name": "GhosttyVt.00040.cs",
+          "sha256": "11AF85F16F1B599BE35C560B07CE90E7D138F135421CD0906B9F6D1DB09B4DCC",
+          "bytes": 263910
+        },
+        {
+          "name": "GhosttyVt.00041.cs",
+          "sha256": "82961A99ED79EBB357C16257D595D67723BF136B9EC579C71E7B241B4441FBB1",
+          "bytes": 83476
+        },
+        {
+          "name": "GhosttyVt.cs",
+          "sha256": "190C26F573D917B4EC11AAC657A5A1FDB8CBFBABBAB824D1EE63DD26679B1797",
+          "bytes": 6067340
+        },
+        {
+          "name": "THIRD-PARTY-NOTICES",
+          "sha256": "67DA488C407EA1ECD494792E53A28104EE3E8498C273144591817FC3DA273C1F",
+          "bytes": 7884
+        },
+        {
+          "name": "TranslatedGhosttyVt.csproj",
+          "sha256": "E2436F509CFB64547BC45E5195CF1F1BB275A655C501B16BAE7F54100EFBDE32",
+          "bytes": 535
+        }
+      ],
+      "c_source_files": [
+        {
+          "path": "GhosttyVt.00044.cs",
+          "sha256": "ca4b7c91315865eb9bc0920547ec36059053ac85f9e3903032e009b58fb5ca7e"
+        },
+        {
+          "path": "GhosttyVt.00040.cs",
+          "sha256": "0c46c9a187c44c46819087e029eef9ae7a3016a228805263329ab43f8a5d8437"
+        },
+        {
+          "path": "GhosttyVt.00051.cs",
+          "sha256": "85f8bde7290a4fbce7bbc7006b33fa898f450c9a90aeefdab96bd8a526bcd4a8"
+        },
+        {
+          "path": "GhosttyVt.00021.cs",
+          "sha256": "97880c067df296f4ff87061f452bacb3aa133898c6a02f6c367609831ef68603"
+        },
+        {
+          "path": "GhosttyVt.00029.cs",
+          "sha256": "f29224d7309631e8a364d5aaa9a8a9d3a01f89ee9a532f5ee54b45b4029a6660"
+        },
+        {
+          "path": "GhosttyVt.00002.cs",
+          "sha256": "345365648c28ce683b8eb8ed1562271a97a68c102f9ae4cd63223a0a65e9c1e0"
+        },
+        {
+          "path": "GhosttyVt.00045.cs",
+          "sha256": "fd65b03a42d2dfc82f751ba95abcd1d7b7040ca1b4958fba4c5ab61322024827"
+        },
+        {
+          "path": "GhosttyVt.00037.cs",
+          "sha256": "3697b89de5020f7e11aef14b3fd1407694b074af2e18f53ac3df20bc8a783b01"
+        },
+        {
+          "path": "GhosttyVt.00036.cs",
+          "sha256": "538250d2b73a19006a4508a62e02aa740f31a12dc24c55ddc9d8d6407512c4e0"
+        },
+        {
+          "path": "GhosttyVt.00011.cs",
+          "sha256": "4d93f5d5814cff4996ad1912a3b7072addd223c507eeefac3e95faf6556ab96f"
+        },
+        {
+          "path": "GhosttyVt.00041.cs",
+          "sha256": "20e09299704d0b3ea1c31f5de2786ed852cf8bfcf17ea4257de3581f3e8e7904"
+        },
+        {
+          "path": "GhosttyVt.00042.cs",
+          "sha256": "2ac2c7565223a2798771cb7a70a44fdaf621121c8ba417b10d0c108adfc21d76"
+        },
+        {
+          "path": "GhosttyVt.00017.cs",
+          "sha256": "05f633468db9a403d50e759d981be0aecc9269726bc92933f46cf040d01b9cb9"
+        },
+        {
+          "path": "GhosttyVt.00005.cs",
+          "sha256": "f097363ba69c94f60b06b32f96dacd24b3d1eaf898c2675b20c0c7cb477246cc"
+        },
+        {
+          "path": ".campaign-files.json",
+          "sha256": "1006a82a4048f80ad0fd43940aaa652602dcbd8143fe7ff7069a66fe80bb454a"
+        },
+        {
+          "path": "GhosttyVt.00031.cs",
+          "sha256": "8b32162df4ddc9bc3d653c7eed652ed6cabd9fef98740c90dea909fd52dc9327"
+        },
+        {
+          "path": "THIRD-PARTY-NOTICES",
+          "sha256": "67da488c407ea1ecd494792e53a28104ee3e8498c273144591817fc3da273c1f"
+        },
+        {
+          "path": "GhosttyVt.00030.cs",
+          "sha256": "5c54e8d63953a2c7416398d00b0383d8d0e65749e47645212ae484ed84a5518d"
+        },
+        {
+          "path": "GhosttyVt.00047.cs",
+          "sha256": "7c311a3c7c53d6fb9ca31d4066efaeea3b3caa2982d263a64f7352d67a643464"
+        },
+        {
+          "path": "GhosttyVt.00024.cs",
+          "sha256": "2a61a48397612b93c4c20e6449950a9836e6012560316d8ebac6a9d7ca743d63"
+        },
+        {
+          "path": "GhosttyVt.cs",
+          "sha256": "3da53981abdf7066733c5c5396e5c234bcd68933263205fccdbf59623f13dc24"
+        },
+        {
+          "path": "Dotcc.SourceFiles.txt",
+          "sha256": "95726dcc4c4117504529ca2ec2207bccf94b8b204555987dfe4cc9906fd8114a"
+        },
+        {
+          "path": "GhosttyVt.00046.cs",
+          "sha256": "98ebff18b2c470f1deb69409cfeb0644b56957f75cd5938afcd24584739c4d2f"
+        },
+        {
+          "path": "GhosttyVt.00015.cs",
+          "sha256": "d92002ed39913a478520d1b1650ed8528bc85ae412d412dc4a459c0d00ca4d66"
+        },
+        {
+          "path": "GhosttyVt.00000.cs",
+          "sha256": "4e8fc371c30df04573fd47449239714e6c5fe91db7fd2e1619deb2cd19877887"
+        },
+        {
+          "path": "GhosttyVt.00004.cs",
+          "sha256": "845450bb60640dc4fdd93764d1c367be14f501b2c5a7e82dcf5ec1872d18b65e"
+        },
+        {
+          "path": "GhosttyVt.00014.cs",
+          "sha256": "4f6546dc1b0af89f71cf25dd62d96e904ee88289af283920626790d1c04abfe7"
+        },
+        {
+          "path": "GhosttyVt.00032.cs",
+          "sha256": "c8ed559db8e177f6dc558e0a2706b73a6cb7c14a03bd7b586a819eba76be324d"
+        },
+        {
+          "path": "GhosttyVt.00020.cs",
+          "sha256": "c915784e53a40b2439bc20f2bcd5b668ce45e5df96d801c0dadbcaccbcd49c98"
+        },
+        {
+          "path": "GhosttyVt.00012.cs",
+          "sha256": "28dfff505bdd6e2970193416cdf4b9f00f3bc737f55fea3fa8157f79001459cf"
+        },
+        {
+          "path": "GhosttyVt.00006.cs",
+          "sha256": "cf55dfa43d3b5c95edbf98d869f30ed0af554958bfa354c51fca7e57a205351e"
+        },
+        {
+          "path": "GhosttyVt.00009.cs",
+          "sha256": "74b27135ef74038f3456fda7cd6a4747addcaa85f5f65e6acad996aee641126d"
+        },
+        {
+          "path": "TranslatedGhosttyVt.csproj",
+          "sha256": "e2436f509cfb64547bc45e5195cf1f1bb275a655c501b16bae7f54100efbde32"
+        },
+        {
+          "path": "GhosttyVt.00043.cs",
+          "sha256": "b259c2f06628722dcecf69f1c9ab474e507ca8a6cac0403703a735908681b29c"
+        },
+        {
+          "path": "GhosttyVt.00023.cs",
+          "sha256": "ed3725a0abdaa5bfc142c0b68caeb85c37b2036a3802eda363a3fbe0d066668e"
+        },
+        {
+          "path": "GhosttyVt.00039.cs",
+          "sha256": "8ca811d26db71fe29a09bda062afd2441a90b679f22fd14759171cf61296a942"
+        },
+        {
+          "path": "GhosttyVt.00019.cs",
+          "sha256": "5663752b0ae74f9b60b2f1cb8e5eba58851c9863af3dfae581ac2066335ee950"
+        },
+        {
+          "path": "GhosttyVt.00048.cs",
+          "sha256": "8f328f4128b54c9e55ba33f5cef3b15ab6ebd5577cd637531e961e0f96b6d279"
+        },
+        {
+          "path": "GhosttyVt.00053.cs",
+          "sha256": "5136d3c2563e5c710889e408edf2081796e2b9aff00de4c35c503723961afb32"
+        },
+        {
+          "path": "GhosttyVt.00026.cs",
+          "sha256": "b2517783476e8de851991b2631c0cf68becf8a4dbca959f3a9a8f007df3b5b24"
+        },
+        {
+          "path": "GhosttyVt.00008.cs",
+          "sha256": "5135c0a8aaf8ca62068488777744591274ef01b8355f40431890a3db72be4cba"
+        },
+        {
+          "path": "GhosttyVt.00025.cs",
+          "sha256": "a3d10e66f46a037f5546471fe4c19214c8e57a386221b1ff64f98070a62fe583"
+        },
+        {
+          "path": "GhosttyVt.00028.cs",
+          "sha256": "03a3cb9f0b64ffee781d7283c1ad2f8f27759b27812f0ace94eb9897c02324fc"
+        },
+        {
+          "path": "GhosttyVt.00049.cs",
+          "sha256": "9ef7db60e4d664f985d9b88cc536b46436f673bdef6acb65f9a927b9bfb23e14"
+        },
+        {
+          "path": "GhosttyVt.00038.cs",
+          "sha256": "c56d7cf0be0d8a1e17fc9974c57f392c1a316be824a58c71572b51c7a4283c49"
+        },
+        {
+          "path": "GhosttyVt.00027.cs",
+          "sha256": "a06b5aa6c5ad2a856c38168874fad1f1e80dd033034226b23d6bb16337fe078b"
+        },
+        {
+          "path": "GhosttyVt.00054.cs",
+          "sha256": "3b6904011d45ae239dcb08d6d6a7bee6133e989af4aab912fa0674d88f62c918"
+        },
+        {
+          "path": "GhosttyVt.00022.cs",
+          "sha256": "2e7d403cfdc4155c08706aac133fc040b1c7e8e7d46896d65eb0804e99bf946a"
+        },
+        {
+          "path": "GhosttyVt.00010.cs",
+          "sha256": "9f497f6dd0407e5f198a31f6b7663db702a99003c2fd906aae6bcf453678f18f"
+        },
+        {
+          "path": "GhosttyVt.00055.cs",
+          "sha256": "bd65e0e6306864246f7172a93e6cd8ae90d07090ded658b25061a5459f88a97c"
+        },
+        {
+          "path": "GhosttyVt.00003.cs",
+          "sha256": "0bc63473d7c35de62aaf72fe2406a4b15bd5302602b94fc6298b314c3ab5add0"
+        },
+        {
+          "path": "GhosttyVt.00007.cs",
+          "sha256": "2e08a2c6931d5df082589f522769ec081f23cdfb318e3d45cdebac02de36359c"
+        },
+        {
+          "path": "GhosttyVt.00035.cs",
+          "sha256": "9c13faa90e9a6b5562beb53b2af61aed0cbbaeab7f035882a750a66c36819de7"
+        },
+        {
+          "path": "GhosttyVt.00013.cs",
+          "sha256": "66aebbc4848a14f22e86598d578e3ff9bf425c3c84b67c49b820c50c1aa3f712"
+        },
+        {
+          "path": "GhosttyVt.00050.cs",
+          "sha256": "19e0a0450eefeb5fd486f75fd64caebdfb935d67fc0fc6df968197a3d1e746ed"
+        },
+        {
+          "path": "GhosttyVt.00034.cs",
+          "sha256": "ec8463de5ef9fcf45c3faac3ae3bd96513f5654340cbd030dd8bea9d2b088157"
+        },
+        {
+          "path": "GhosttyVt.00018.cs",
+          "sha256": "4647ff8aba49f69e9381560041dec5dcdd95f9f3eadc3478773908a2e67612b3"
+        },
+        {
+          "path": "GhosttyVt.00001.cs",
+          "sha256": "46e1d35e7f344060350e18bae05d7ef3f947702beeda29c89209d4ca54aa8d7e"
+        },
+        {
+          "path": "GhosttyVt.00033.cs",
+          "sha256": "710da87d5aeb08ff0e16ff925452764688e7dfcbad26bfaf07c92db559608d61"
+        },
+        {
+          "path": "GhosttyVt.00052.cs",
+          "sha256": "7374983a914fd982f72a3eb75ac7d91e64f90d3a75762f834d560c4b00bb3a96"
+        },
+        {
+          "path": "GhosttyVt.00016.cs",
+          "sha256": "9e96e38a4807070e743261cf86fedbdcf64ecae29ac53282b057fbdf9904b76c"
+        }
+      ]
+    }
+  ],
+  "default_route": "direct-zig",
+  "upstream_managed_acceptance": "pending"
+}

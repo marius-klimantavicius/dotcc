@@ -661,7 +661,14 @@ public static unsafe class ZigAlloc
     public static T* CopyArrayResult<T>(T* src, int n) where T : unmanaged
     {
         nuint bytes = (nuint)n * (nuint)sizeof(T);
-        var dst = (T*)global::System.Runtime.InteropServices.NativeMemory.Alloc(bytes);
+        return (T*)CopyArrayResultBytes(src, bytes);
+    }
+
+    /// <summary>The same owned byte copy for compiler-known pointer-free value
+    /// storage that C# excludes from an unmanaged generic argument (Nullable).</summary>
+    public static void* CopyArrayResultBytes(void* src, nuint bytes)
+    {
+        var dst = global::System.Runtime.InteropServices.NativeMemory.Alloc(bytes);
         global::System.Buffer.MemoryCopy(src, dst, (long)bytes, (long)bytes);
         return dst;
     }

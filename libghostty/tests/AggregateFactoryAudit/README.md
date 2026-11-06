@@ -43,6 +43,11 @@ This does not claim NativeAOT or terminal qualification. Use a separate invocati
 for each product form. Compare only an assembly built from the reported canonical
 sources; the caller must coordinate that build and its receipt.
 
+An exact empty aggregate value-factory inventory is valid for direct Zig
+products. RVA getters are still required and measured. Primitive and owned
+pointer-array storage helpers receive a separate parameter-bound check; their
+source-owned allocations are outside the value-factory allocation measurement.
+
 The auditor's two allocation measurement methods use `NoInlining` and
 `AggressiveOptimization`. The standalone product audit additionally warms the
 complete getter set through a full first pass, retaining its measured runtime

@@ -13,7 +13,7 @@ using DotCC.Ir;
 /// type is a <c>delegate*</c>. This reproduces exactly the spellings the IR type
 /// model used to bake in via the old <c>CType.CsType</c> property.
 /// </summary>
-internal sealed class CSharpTarget(bool instanceMethods = false, IReadOnlyDictionary<string, string>? aggregateNames = null) : ITarget
+internal sealed partial class CSharpTarget(bool instanceMethods = false, IReadOnlyDictionary<string, string>? aggregateNames = null) : ITarget
 {
     // Aggregate bytes may only use the explicitly qualified layout profile.
     internal string StorageAbi => DotCC.Layout.OffsetLayoutModel.Abi;
@@ -23,12 +23,18 @@ internal sealed class CSharpTarget(bool instanceMethods = false, IReadOnlyDictio
         CType.Prim p => RenderPrim(p),
         CType.VoidType or CType.NoReturnType => "void",
         CType.Vector { IsMask: true } => "ulong",
+        CType.Vector { UsesStorage: true } v => "ZigVector" + v.Bits
+            + "<" + RenderType(v.Element.Unqualified) + ">",
         CType.Vector v => "System.Runtime.Intrinsics." + (v.NetFamily
             ?? throw new IrUnsupportedException("vector width has no runtime representation"))
             + "<" + RenderType(v.Element.Unqualified) + ">",
         // A pointer-TO-array collapses to the array's own flat row pointer (no extra
         // `*`); every other pointer is the pointee's spelling plus `*`.
         CType.Pointer ptr when VaListLifetimeValidator.IsVaList(ptr.Pointee) => "ref VaList",
+        // Only the pointer has storage. Keep the nominal pointee in the IR and
+        // object contract; C# uses address bits without emitting a fake value type.
+        CType.Pointer { Pointee.Unqualified: CType.Opaque } => "void*",
+        CType.Opaque o => throw new IrUnsupportedException("opaque type '" + o.Name + "' has no value or layout"),
         CType.Pointer ptr => ptr.Pointee is CType.Array ? RenderType(ptr.Pointee) : RenderType(ptr.Pointee) + "*",
         // An array lowers to a single pointer to its innermost scalar.
         CType.Array a => RenderType(a.FlatElement) + "*",
@@ -50,17 +56,15 @@ internal sealed class CSharpTarget(bool instanceMethods = false, IReadOnlyDictio
         CType.Float128Type => "Float128",
         CType.LongDoubleStorage16 => "LongDouble80Storage",
         // A Zig value optional `?T` → C# Nullable<T> (`T?`): null = none, `.?` = .Value,
-        // `orelse` = `??`. (An optional POINTER `?*T` is a bare nullable `T*`, never this.)
+        // `orelse` = `??`. A single ?*T uses T*'s niche; ??*T has a separate
+        // presence flag and pointer bits in Nullable<nuint>, projected below.
         CType.Optional { Inner.Unqualified: CType.Array optionalArray } => OptionalArrayName(optionalArray),
-        CType.Optional o => RenderType(o.Inner) + "?",
-        // A Zig error union `E!T` → the runtime `ErrUnion<Payload>` value type. A `void`
-        // payload (`!void`) has no generic-over-void in C#, so it uses the `Unit` payload.
-        CType.ErrorUnion eu => "ErrUnion<" + (
-            eu.Payload is CType.VoidType ? "Unit"
-            // `Error!*T` (Milestone U `create`): a pointer can't be an `ErrUnion<T>` generic arg, so
-            // the address rides as a `nuint`; the `try` unwrap casts it back to `T*`.
-            : eu.Payload.Unqualified is CType.Pointer ? "nuint"
-            : RenderType(eu.Payload)) + ">",
+        CType.Optional { Inner.Unqualified: CType.Pointer } => "nuint?",
+        CType.Optional { Inner.Unqualified: CType.Optional } => throw new IrUnsupportedException("nested managed optional storage is unsupported"),
+        CType.Optional { Inner.Unqualified: CType.VoidType or CType.Named { Name: "Unit" } } => "ZigOptionalVoid",
+        CType.Optional { Inner.Unqualified: CType.ErrorSetType } => "ZigOptionalError",
+        CType.Optional o => RenderValueOptional(o.Inner),
+        CType.ErrorUnion eu => RenderErrorUnion(eu.Payload),
         // A Zig error-set value (a bare `error.Foo` / a captured error, Milestone N) → the raw
         // `ushort` error code. V1 erases the named set into one flat code space, so an error value
         // IS its code; error-value equality and a future error `switch` compare the codes directly.
@@ -79,7 +83,7 @@ internal sealed class CSharpTarget(bool instanceMethods = false, IReadOnlyDictio
         // Arity-uniform — including arity 1 (`System.ValueTuple<T>`), where C#'s `(T)` shorthand
         // would be a parenthesised expression, not a tuple. Empty → the non-generic `System.ValueTuple`;
         // arity > 7 nests via the 8th `TRest` field (`ValueTuple<T1..T7, ValueTuple<T8..>>`).
-        CType.Tuple tup => RenderValueTuple(tup.Elements),
+        CType.Tuple tup => RenderValueTuple(tup.RuntimeElements),
         _ => throw new IrUnsupportedException("C# target cannot render type " + t.GetType().Name),
     };
 
@@ -102,7 +106,8 @@ internal sealed class CSharpTarget(bool instanceMethods = false, IReadOnlyDictio
     // Pointer-shaped tuple slots need a legal generic argument. Keep the
     // logical type in the IR; only the ValueTuple storage carries address bits.
     internal static bool TuplePointerSlot(CType type) => type.Unqualified is CType.Pointer or CType.Array or CType.Func;
-    internal string TupleElementType(CType type) => TuplePointerSlot(type) ? "nint" : RenderType(type.Unqualified);
+    internal string TupleElementType(CType type) => type.Unqualified is CType.VoidType ? RenderType(new CType.Named("Unit"))
+        : TuplePointerSlot(type) ? "nint" : RenderType(type.Unqualified);
 
     internal HashSet<string> RenderedNamedTypes { get; } = new(StringComparer.Ordinal);
 
@@ -168,6 +173,9 @@ internal sealed class CSharpTarget(bool instanceMethods = false, IReadOnlyDictio
     /// long</c> are both 64-bit <c>long</c> (LP64).</summary>
     private static string RenderPrim(CType.Prim p) => p.Name switch
     {
+        // Expression carrier only. Source size/alignment remain 0/1; the
+        // backend enforces the sole zero value and rejects physical transport.
+        "u0" when p.IsZigZeroInteger => "byte",
         "_Bool" => "CBool",
         "char" => "byte",
         "char8_t" => "byte",    // C23 char8_t → C# byte (an 8-bit UTF-8 code unit)
@@ -202,10 +210,14 @@ internal sealed class CSharpTarget(bool instanceMethods = false, IReadOnlyDictio
         {
             return (isConst ? "ConstSlice<" : "Slice<") + RenderType(rows.FlatElement.Unqualified) + ">";
         }
+        if (PtrPtrSliceTarget(element) is { } pointerTarget)
+            return (isConst ? "ConstPtrPtrSlice<" : "PtrPtrSlice<") + RenderType(pointerTarget) + ">";
         if (PtrSliceTarget(element) is { } target)
         {
             return (isConst ? "ConstPtrSlice<" : "PtrSlice<") + RenderType(target) + ">";
         }
+        if (NullableSliceTarget(element) is { } payload)
+            return (isConst ? "ConstOptionalSlice<" : "OptionalSlice<") + RenderType(payload) + ">";
         return (isConst ? "ConstSlice<" : "Slice<") + RenderType(element) + ">";
     }
 
@@ -253,14 +265,14 @@ internal sealed class CSharpTarget(bool instanceMethods = false, IReadOnlyDictio
     /// off a <c>Nullable</c>. <c>Value</c> is the element pointer (an array IS its element pointer here); a <c>T*</c>
     /// converts in by copying the elements, a null one to none (so <c>x = null</c> and a <c>null</c> field default need no
     /// rewrite); <c>x == null</c> tests for none, the only comparison zig allows an optional array.</summary>
-    internal string OptionalArrayTypesText()
+    internal string OptionalArrayTypesText(bool publicTypes = false)
     {
         var sb = new System.Text.StringBuilder();
         foreach (var (name, (element, count)) in _optionalArrays)
         {
             var bytes = $"sizeof({element}) * {count}";
             sb.Append("/// <summary>zig `?[").Append(count).Append(']').Append(element).Append("`: the elements inline beside a has-value flag.</summary>\n")
-              .Append("struct ").Append(name).Append("\n{\n")
+              .Append(publicTypes ? "public struct " : "internal struct ").Append(name).Append("\n{\n")
               .Append("    public unsafe fixed ").Append(element).Append(" Buf[").Append(count).Append("];\n")
               .Append("    public bool HasValue;\n")
               .Append("    public unsafe ").Append(element).Append("* Value => HasValue ? (").Append(element)

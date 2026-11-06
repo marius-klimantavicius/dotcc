@@ -13,6 +13,9 @@ namespace DotCC;
 /// separately when its object declaration is merged.</summary>
 internal sealed record ObjectAggregateMetadata(bool IsIncomplete, bool IsUnion, string Signature)
 {
+    // Full declared shape, bound to Signature. Cross-language managed adapters
+    // use this witness; generated C# is never a source of layout/type evidence.
+    internal string? SourceShape { get; init; }
     internal string? ZigStorageContract { get; init; }
     internal string? ZigStorageBaseShape { get; init; }
 
@@ -22,15 +25,22 @@ internal sealed record ObjectAggregateMetadata(bool IsIncomplete, bool IsUnion, 
         shape.Append(type.IsUnion ? "union" : "struct").Append('|')
             .Append((int)type.Layout).Append('|').Append(type.Alignment).Append('|').Append(type.Pack);
         foreach (var field in type.Fields)
-            shape.Append('|').Append(Atom(field.Name)).Append(':').Append(Describe(field.Type))
+        {
+            string described;
+            try { described = Describe(field.Type); }
+            catch (CompileException error) { throw new CompileException($"object aggregate field '{type.Name}.{field.Name}': {error.Message}", error); }
+            shape.Append('|').Append(Atom(field.Name)).Append(':').Append(described)
                 .Append(':').Append(field.BitWidth?.ToString(CultureInfo.InvariantCulture) ?? "-")
                 .Append(':').Append(field.Alignment).Append(':').Append(field.IsAnonymousAggregate);
+        }
         var zig = type.ZigStorage is { } storage ? ZigStorageObjectMetadata.Contract(storage)
             : type.ZigZeroOwner is { } owner ? ZigStorageObjectMetadata.ZeroOwnerContract(owner) : null;
         var baseShape = zig is not null ? shape.ToString() : null;
         if (zig is not null) shape.Append("|zig-storage:1|").Append(zig);
         return new(type.IsIncomplete, type.IsUnion,
-            Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(shape.ToString())))) { ZigStorageContract = zig, ZigStorageBaseShape = baseShape };
+            Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(shape.ToString())))) {
+                SourceShape = type.Fields.All(f => ManagedBoundaryContracts.RepresentedType(f.Type)) ? shape.ToString() : null,
+                ZigStorageContract = zig, ZigStorageBaseShape = baseShape };
     }
 
     private static string Atom(string value) => Convert.ToBase64String(Encoding.UTF8.GetBytes(value));
@@ -41,6 +51,8 @@ internal sealed record ObjectAggregateMetadata(bool IsIncomplete, bool IsUnion, 
         IrType.NoReturnType => "noreturn",
         IrType.Pointer p => "ptr(" + Describe(p.Pointee) + ")",
         IrType.Array a => "array(" + a.Count?.ToString(CultureInfo.InvariantCulture) + "," + Describe(a.Element) + ")",
+        IrType.Vector v => "vector(" + v.Count.ToString(CultureInfo.InvariantCulture) + "," + Describe(v.Element) + ")",
+        IrType.Opaque o => "opaque(" + Atom(o.Name) + ")",
         IrType.Named n => "named(" + Atom(n.Name) + ")",
         IrType.Enum e => "enum(" + Atom(e.Name) + "," + Describe(e.Underlying) + ")",
         IrType.Func f => "func(" + Describe(f.Return) + "," + f.Variadic + "," + f.IsNativeCallConv + "," + string.Join(";", f.Params.Select(Describe)) + ")",

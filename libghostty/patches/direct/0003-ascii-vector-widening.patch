@@ -1,0 +1,14 @@
+--- a/src/simd/vt.zig
++++ b/src/simd/vt.zig
+@@ -63,8 +63,9 @@
+                 while (decode_offset + vl <= decode.len) {
+                     const v: V = decode[decode_offset..][0..vl].*;
+                     if (@reduce(.Or, v >= @as(V, @splat(0x80)))) break;
+-                    const w: @Vector(vl, u32) = @intCast(v);
+-                    output[decode_count..][0..vl].* = w;
++                    // Preserve the ASCII widening lane by lane without requiring
++                    // a single vector four times wider than the input vector.
++                    inline for (0..vl) |lane| output[decode_count + lane] = v[lane];
+                     decode_count += vl;
+                     decode_offset += vl;
+                 }

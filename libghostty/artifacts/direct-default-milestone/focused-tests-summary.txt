@@ -1,0 +1,7 @@
+VSTest version 18.0.2 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+Results File: /mnt/storage/dotcc-libghostty-disposable/direct-default-commit/test-results/milestone-focused.trx
+
+Passed!  - Failed:     0, Passed:    20, Skipped:     0, Total:    20, Duration: 27 s - DotCC.FunctionalTests.dll (net10.0)

@@ -55,6 +55,21 @@ class AuditControls(unittest.TestCase):
     def records(self, source=None):
         return audit.methods(source or self.source)
 
+    def test_direct_runtime_profile_includes_zig_and_slice_without_changing_c_default(self):
+        repo = self.base / "runtime-profile"
+        for filename, owner, method in (("Libc.cs", "Libc", "c_body"),
+                                        ("ZigMem.cs", "ZigMem", "zig_body"),
+                                        ("Slice.cs", "Slice", "slice_body")):
+            write(repo / "DotCC.Libc" / filename,
+                  f"public static class {owner} {{\npublic static int {method}() => 1;\n}}")
+        c_records, c_imports = audit.runtime_inventory(repo)
+        direct_records, direct_imports = audit.runtime_inventory(repo, include_zig=True)
+        self.assertEqual({record["name"] for record in c_records}, {"c_body"})
+        self.assertEqual({record["name"] for record in direct_records},
+                         {"c_body", "zig_body", "slice_body"})
+        self.assertEqual(c_imports, [])
+        self.assertEqual(direct_imports, [])
+
     def test_public_body_is_unique_and_not_a_declaration(self):
         self.assertEqual(set(audit._exports(self.records(), {"ghostty_alloc"})), {"ghostty_alloc"})
         for body in ('public static extern byte* ghostty_alloc(int* a, ulong n);',

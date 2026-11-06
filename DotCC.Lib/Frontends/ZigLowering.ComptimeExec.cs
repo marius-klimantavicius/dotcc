@@ -13,6 +13,7 @@ namespace DotCC.Frontends;
 /// the <see cref="ZigLowering"/> binder.</summary>
 internal sealed partial class ZigLowering
 {
+    private readonly HashSet<Symbol> _mutableComptimeAggregates = new();
     /// <summary>Lower a <c>comptime var</c> / <c>comptime const</c> declaration (Milestone T, part 3):
     /// fold the initializer to a compile-time integer and track it by Symbol identity, emitting NO
     /// runtime declaration — references substitute its current value (see the <c>Zig.Ident</c> case).
@@ -64,6 +65,7 @@ internal sealed partial class ZigLowering
             }
             var aggSym = _symbols.Declare(new Symbol { Name = name, Kind = SymKind.Var, Type = ctype });
             _ir.ComptimeGlobals[aggSym] = agg;
+            if (varDeclItem.Content is Zig.VarDecl or Zig.VarDeclTyped) _mutableComptimeAggregates.Add(aggSym);
             return;
         }
         if (_ir.ConstEval(initExpr) is not { } v)
@@ -72,6 +74,10 @@ internal sealed partial class ZigLowering
                 $"`comptime var {name}` initializer must be a compile-time-known integer constant");
         }
         var sym = _symbols.Declare(new Symbol { Name = name, Kind = SymKind.Var, Type = ctype });
+        var location = typeItem is { } sourceType ? BitcastTypeLocation(sourceType, ctype) : BitcastSourceLocation(initItem, initExpr);
+        RememberBitcastValue(sym, location);
+        RecordValueBits(sym, location.IntegerBits, location.Element?.IntegerBits);
+        if (varDeclItem.Content is Zig.ConstDecl or Zig.ConstDeclTyped) _zigConstBindings.Add(sym);
         _comptimeVars[sym] = (v, ctype);
     }
     /// <summary>Lower a <c>comptime { … }</c> block statement (Milestone T, part 3): EXECUTE the block
@@ -118,38 +124,41 @@ internal sealed partial class ZigLowering
         // lowering folds (an array sized by what the block computed so far, `[self.max_len + 1]u32`), and a `return`
         // anywhere (`if (kvs_list.len == 0) return self;`, the final one) is the block's result.
         var session = _ir.BeginComptimeSession();
-        _symbols.EnterScope();
+        using var symbols = EnterSymbolScope();
+        using var comptime = EnterComptime();
         _loweringForComptimeEval++;
+        _sourceComptimeReturnDepth++;
+        var steppedLoop = false;
         try
         {
             foreach (var stmt in stmts)
             {
-                CStmt lowered;
-                using (var hoist = EnterFreshHoist())
-                {
-                    var main = LowerStmt(stmt);
-                    lowered = _hoist is { Count: > 0 } pre ? new Block([.. pre, main]) : main;
-                }
-                switch (_ir.RunComptimeSessionStmt(session, lowered))
-                {
-                    case null:
-                        return null;
-                    case (true, var value):
-                        return value is IrBuilder.CtSlice or IrBuilder.CtStruct && _ir.SpliceComptimeValue(value) is { } spliced
-                            ? new Return(spliced)
-                            : null;
-                }
+                steppedLoop |= stmt.Content is Zig.ForStmt or Zig.ForStmtThen or Zig.WhileStmt;
+                ExecuteTopComptimeStmt(stmt, session);
             }
-            return null;   // no statement returned: the block does not produce the function's result here
+            return null;
         }
-        catch (IrUnsupportedException) { return null; }
+        catch (SourceComptimeReturn returned)
+        {
+            return returned.Value is IrBuilder.CtSlice or IrBuilder.CtStruct
+                && _ir.SpliceComptimeValue(returned.Value) is { } spliced ? new Return(spliced) : null;
+        }
+        catch (IrUnsupportedException failure) when (steppedLoop)
+        {
+            throw new IrUnsupportedException($"comptime return loop in '{_currentFnName}': " + failure.Message);
+        }
+        catch (IrUnsupportedException failure)
+        {
+            throw new IrUnsupportedException($"comptime return in '{_currentFnName}': " + failure.Message);
+        }
         finally
         {
+            _sourceComptimeReturnDepth--;
             _loweringForComptimeEval--;
-            _symbols.ExitScope();
             _ir.EndComptimeSession(session);
         }
     }
+
     /// <summary>Execute one statement of a <c>comptime { … }</c> block at lowering time. Supports the
     /// compile-time value subset: nested blocks, <c>var</c>/<c>const</c> decls (tracked as comptime),
     /// assignment to a comptime var (folded + stored), and a <c>while</c> loop (interpreted, the body's
@@ -161,6 +170,12 @@ internal sealed partial class ZigLowering
         {
             case Zig.Block b:
                 foreach (var st in Flatten(b.Arg1)) { ExecuteComptimeStmt(st); }
+                break;
+            case Zig.ForStmt loop:
+                ExecuteComptimeFor(loop.Arg2, loop.Arg6, loop.Arg9, loop.Arg10);
+                break;
+            case Zig.ForStmtThen loop:
+                ExecuteComptimeFor(loop.Arg2, loop.Arg6, loop.Arg9, loop.Arg10);
                 break;
             case Zig.ComptimeVarDecl cv:
                 TrackComptimeVar(cv.Arg1);
@@ -197,7 +212,8 @@ internal sealed partial class ZigLowering
                 when CalleeLastName(ac.Arg0) == "assert" && Flatten(ac.Arg2) is { Count: 1 } assertArgs:
                 if (TryFoldComptimeCondition(assertArgs[0]) is false)
                 {
-                    throw new IrUnsupportedException("zig: a comptime assertion failed (`assert` in a `comptime` block)");
+                    throw new IrUnsupportedException("zig: a comptime assertion failed (`assert` in a `comptime` block)"
+                        + $" ({_module?.Path ?? _fileStem}:{assertArgs[0].Position.Line}, function '{_currentFnName}', container '{_currentContainer}')");
                 }
                 break;
             // `if (n > 10) unreachable;` whose condition folds true (a comptime check, task #189): zig's compile error.
@@ -205,10 +221,19 @@ internal sealed partial class ZigLowering
                 throw new CompileException("zig: reached unreachable code (in a `comptime` block)");
             default:
                 throw new IrUnsupportedException(
-                    $"comptime block: statement '{s.Content?.GetType().Name}' is not supported — only "
+                    $"comptime block ({_module?.Path ?? _fileStem}:{s.Position.Line}, function '{_currentFnName}'): statement '{s.Content?.GetType().Name}' is not supported — only "
                     + "var/const decls, assignments to a comptime var, and `while` loops run at comptime");
         }
     }
+    // Reuse the source-order iterator and capture binding, while retaining this
+    // executor's live scalar/aggregate stores for enclosing comptime variables.
+    private void ExecuteComptimeFor(Item objects, Item captures, Item body, Item? other)
+    {
+        var session = _ir.BeginComptimeSession();
+        try { ExecuteTopComptimeFor(objects, captures, body, other, session, ExecuteComptimeStmt); }
+        finally { _ir.EndComptimeSession(session); }
+    }
+
     /// <summary>Fold a call to a generic of THIS module whose parameters are all <c>comptime T: type</c> and whose
     /// body is one <c>return &lt;question&gt;;</c> (auto_hash's <c>typeContainsSlice</c>): the arguments bind as
     /// type aliases (shadow-saved), the question folds through <see cref="TryFoldComptimeCondition"/>, and the
@@ -252,7 +277,8 @@ internal sealed partial class ZigLowering
                 _typeAliases[pname] = resolved[i].Type;
                 SetDeclaredIntBits(pname, resolved[i].Bits);
             }
-            return TryFoldComptimeCondition(ret.Arg1);
+            return TryFoldComptimeCondition(ret.Arg1)
+                ?? InterpretTypeBoolReturn(g, ret, resolved);
         }
         finally
         {
@@ -300,12 +326,47 @@ internal sealed partial class ZigLowering
     /// (with comptime vars substituted), and the result is stored back.</summary>
     private void ExecuteComptimeAssign(Item lhsItem, Item rhsItem)
     {
+        if (lhsItem.Content is Zig.Ident discard && Tok(discard.Arg0) == "_")
+        {
+            // Discard still evaluates its RHS, including error handling and unreachable checks.
+            var session = _ir.BeginComptimeSession();
+            try
+            {
+                using var hoist = EnterFreshHoist();
+                var value = LowerExpr(rhsItem);
+                var statements = new List<CStmt>(_hoist!) { new ExprStmt(value) };
+                if (_ir.RunComptimeSessionStmt(session, new Seq(statements)) is null)
+                    throw new IrUnsupportedException("zig: discarded comptime expression did not evaluate"
+                        + (_ir.ComptimeMiss is { } why ? $" ({why})" : ""));
+            }
+            finally { _ir.EndComptimeSession(session); }
+            return;
+        }
+        if (lhsItem.Content is Zig.Field)
+        {
+            var root = lhsItem;
+            while (root.Content is Zig.Field field) root = field.Arg0;
+            if (root.Content is Zig.Ident aggregateName && _symbols.Resolve(Tok(aggregateName.Arg0)) is { } aggregate
+                && _mutableComptimeAggregates.Contains(aggregate) && _ir.ComptimeGlobals.ContainsKey(aggregate))
+            {
+                using var hoist = EnterFreshHoist();
+                var target = LowerExpr(lhsItem);
+                var value = LowerExprSink(rhsItem, BitcastSourceLocation(lhsItem, target));
+                if (_hoist is { Count: > 0 })
+                    throw new IrUnsupportedException("comptime aggregate assignment needs unsupported hoisted statements");
+                if (_ir.EvalComptimeValue(new Assign(null, target, value) { Type = target.Type }) is null)
+                    throw new IrUnsupportedException("comptime aggregate assignment value is not known"
+                        + (_ir.ComptimeMiss is { } why ? $" (the interpreter stopped at {why})" : ""));
+                return;
+            }
+        }
         if (lhsItem.Content is not Zig.Ident id
             || _symbols.Resolve(Tok(id.Arg0)) is not { } sym
             || !_comptimeVars.ContainsKey(sym))
         {
             throw new IrUnsupportedException(
-                "comptime block: an assignment target must be a `comptime var` (no runtime store at comptime)");
+                "comptime block: an assignment target must be a `comptime var` (no runtime store at comptime)"
+                + $" ({_module?.Path ?? _fileStem}:{lhsItem.Position.Line}, function '{_currentFnName}', {lhsItem.Content?.GetType().Name})");
         }
         if (_ir.ConstEval(LowerExpr(rhsItem)) is not { } v)
         {
@@ -349,6 +410,12 @@ internal sealed partial class ZigLowering
     /// seeds.</para></summary>
     private static CExpr ComptimeVarLit(long v, CType t)
     {
+        // A comptime enum parameter keeps its nominal type when substituted
+        // into runtime calls, returns and optional payloads. Build the number
+        // at its backing type first, including unsigned 64-bit seed patterns.
+        if (t.Unqualified is CType.Enum enumeration)
+            return new Cast(t, ComptimeVarLit(v, enumeration.Underlying)) { Type = t };
+        if (t.Unqualified.Equals(CType.Bool)) return new LitBool(v != 0) { Type = CType.Bool };
         if (t.Unqualified is CType.Prim { Integer: true, Signed: false, Bytes: <= 2 }) { t = CType.Int; }
         // A `u64` seed past `i64` is held as its bit pattern; spell the unsigned value (no long value, so nothing folds it
         // as a negative number).

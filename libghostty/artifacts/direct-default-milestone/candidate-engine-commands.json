@@ -1,0 +1,110 @@
+[
+  {
+    "stage": "engine-emit",
+    "command": [
+      "python3",
+      "libghostty/scripts/retry_direct.py",
+      "--compiler",
+      "/mnt/storage/dotcc-libghostty-disposable/direct-default-commit/compiler/bin/DotCC/release/dotcc.dll",
+      "--graph",
+      "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-native/module-graph-managed.json",
+      "--work",
+      "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/managed-build-repair/actual",
+      "--evidence",
+      "/home/marius/p/dotcc/libghostty/artifacts/direct-resume-20261104/managed-build-repair/actual"
+    ],
+    "exit": 0,
+    "seconds": 13.443404813995585,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/managed-build-repair/engine-emit.log"
+  },
+  {
+    "stage": "boundary-emit",
+    "command": [
+      "dotnet",
+      "/mnt/storage/dotcc-libghostty-disposable/direct-default-commit/compiler/bin/DotCC/release/dotcc.dll",
+      "libghostty/src/Boundary/ghostty_boundary.c",
+      "--emit=obj",
+      "--aggregate-data",
+      "-Ilibghostty/ref/ghostty-93967b7f9478e94dcbb42125c8a90f34feb40d75/include",
+      "-std=c11",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/managed-build-repair/boundary.csobj"
+    ],
+    "exit": 0,
+    "seconds": 0.5405916420277208,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/managed-build-repair/boundary-emit.log"
+  },
+  {
+    "stage": "joint-link",
+    "command": [
+      "dotnet",
+      "/mnt/storage/dotcc-libghostty-disposable/direct-default-commit/compiler/bin/DotCC/release/dotcc.dll",
+      "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/managed-build-repair/actual/engine.csobj",
+      "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/managed-build-repair/boundary.csobj",
+      "--emit=managedlib",
+      "--nest-types",
+      "--runtime=auto",
+      "--class-name",
+      "GhosttyVt",
+      "--namespace",
+      "Managed",
+      "--split=size",
+      "--split-size=262144",
+      "--literal-pool",
+      "--deduplicate-inline",
+      "--prune-unused-inline",
+      "--export-enum",
+      "DOTCC_STYLE_*",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/managed-build-repair/managed"
+    ],
+    "exit": 0,
+    "seconds": 9.490822528023273,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/managed-build-repair/joint-link.log"
+  },
+  {
+    "stage": "joint-build",
+    "command": [
+      "dotnet",
+      "build",
+      "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/managed-build-repair/managed/managed.csproj",
+      "-c",
+      "Release",
+      "-p:PublishAot=false",
+      "-p:UseArtifactsOutput=true",
+      "-p:ArtifactsPath=/mnt/storage/dotcc-libghostty-disposable/resume-20261104/managed-build-repair/joint-build",
+      "--nologo"
+    ],
+    "exit": 0,
+    "seconds": 10.483699104981497,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/managed-build-repair/joint-build.log"
+  },
+  {
+    "stage": "consumer-build",
+    "command": [
+      "dotnet",
+      "build",
+      "libghostty/samples/ManagedConsumer/ManagedConsumer.csproj",
+      "-c",
+      "Release",
+      "-p:PublishAot=false",
+      "-p:TranslatedProject=/mnt/storage/dotcc-libghostty-disposable/resume-20261104/managed-build-repair/managed/managed.csproj",
+      "-p:UseArtifactsOutput=true",
+      "-p:ArtifactsPath=/mnt/storage/dotcc-libghostty-disposable/resume-20261104/managed-build-repair/consumer-build",
+      "--nologo"
+    ],
+    "exit": 0,
+    "seconds": 11.581136651046108,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/managed-build-repair/consumer-build.log"
+  },
+  {
+    "stage": "consumer-run",
+    "command": [
+      "dotnet",
+      "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/managed-build-repair/consumer-build/bin/ManagedConsumer/release/GhosttyVt.Consumer.dll"
+    ],
+    "exit": 0,
+    "seconds": 0.2926981890341267,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/managed-build-repair/consumer-run.log"
+  }
+]

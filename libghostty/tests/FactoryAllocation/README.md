@@ -12,6 +12,12 @@ python3 libghostty/tests/FactoryAllocation/run.py \
   --work libghostty/build/factory-allocation/my-new-run
 ```
 
+`--work-root /path/to/storage` permits a new private work directory beneath an
+explicit storage root. The default root remains `libghostty/build`. An exact
+empty value-factory inventory is accepted when source and PE inventories both
+agree; every payload getter and the allocation-counter positive control still
+runs, with the same strict zero-byte acceptance rule.
+
 The default runs raw/JIT, raw/NativeAOT, processed/JIT and processed/NativeAOT
 sequentially. `--forms raw` or `--modes jit` selects a subset;
 `--prepare-only` writes reviewable projects/call sites/inventories without a

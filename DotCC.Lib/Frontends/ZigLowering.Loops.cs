@@ -132,11 +132,26 @@ internal sealed partial class ZigLowering
             default:
             {
                 var operand = LowerExpr(objExpr);
+                operand = PointedArray(operand).Array ?? operand;
+                if (operand.Type.Unqualified is CType.Tuple tuple)
+                    return UnrollTupleFor(operand, tuple, capture, byRef: false, index: null, body, inline: true);
+                var comptimeSlice = operand.Type.Unqualified is CType.Slice ? _ir.EvalComptimeValue(operand) : null;
+                if (operand.Type.Unqualified is CType.Slice knownSlice && IsComptimeNameRead(operand)
+                    && comptimeSlice is IrBuilder.CtSlice known)
+                    return UnrollKnownSlice(known, knownSlice.Element.Unqualified, capture, body,
+                        BitcastSourceLocation(objExpr, operand).Element);
+                // An empty comptime slice has no iterations. In particular,
+                // default logging filters must not analyze an unreachable body
+                // merely because the constant is typed as a slice.
+                if (operand.Type.Unqualified is CType.Slice
+                    && (IsComptimeGlobalReference(operand) || operand is SliceNew { Ptr: NullPtr })
+                    && comptimeSlice is IrBuilder.CtSlice { Length: 0 })
+                    return new Seq(new List<CStmt>());
                 if (operand.Type.Unqualified is not CType.Array arr || arr.Count is not int n)
                 {
                     throw new IrUnsupportedException(
                         "`inline for` over a value requires a fixed-size array `[N]T` of comptime-known "
-                        + "length (a slice's length is a runtime value)");
+                        + $"length; got {operand.Type.Describe()} (IR {operand.GetType().Name}, comptime {comptimeSlice?.GetType().Name}, length {(comptimeSlice is IrBuilder.CtSlice slice ? slice.Length : -1)}, purity {ComptimeReadDiagnostic(operand)}; {_module?.Path ?? _fileStem}:{objExpr.Position.Line}, function '{_currentFnName}')");
                 }
                 // A comptime-known array VALUE (std.crypto.md5's `const round0 = comptime [_]RoundParam{ roundParam(…), … };`):
                 // each copy binds its element as a literal, so `v[r.a]` indexes by a constant, as zig's unrolled copy does.
@@ -160,7 +175,7 @@ internal sealed partial class ZigLowering
                 }
                 // Re-lower the operand per copy (a VarRef is idempotent) so each `arr[k]` is its own node.
                 return UnrollInlineFor(n, capture, arr.Element, body,
-                    k => new DotCC.Ir.Index(LowerExpr(objExpr), new LitInt(k.ToString(System.Globalization.CultureInfo.InvariantCulture), k) { Type = CType.ULong }) { Type = arr.Element });
+                    k => new DotCC.Ir.Index(operand, new LitInt(k.ToString(System.Globalization.CultureInfo.InvariantCulture), k) { Type = CType.ULong }) { Type = arr.Element });
             }
         }
     }
@@ -245,7 +260,7 @@ internal sealed partial class ZigLowering
         using var symbolScope = EnterSymbolScope();
         var start = LowerExpr(startItem);
         var end = LowerExpr(endItem);
-        var iSym = _symbols.Declare(new Symbol { Name = capture, Kind = SymKind.Var, Type = CType.ULong });
+        var iSym = _symbols.Declare(new Symbol { Name = capture == "_" ? "__range" + _anfTempCounter++ : capture, Kind = SymKind.Var, Type = CType.ULong });
         RecordValueBits(iSym, 64, null);   // a usize (task #132: real std's `{d}` asks its width)
         var iRef = new VarRef(iSym) { Type = CType.ULong, IsLValue = true };
         var init = new DeclStmt(new List<LocalDecl> { new(iSym, start) });
@@ -366,6 +381,17 @@ internal sealed partial class ZigLowering
                 Name = captureName, Kind = SymKind.Var, Type = captureType,
                 IsConstexpr = folded is not null, ConstValue = folded ?? 0,
             });
+            var sourceRecord = UsesSourceStdlib && captureType.Unqualified is CType.Named
+                && RequiresComptimeStorage(captureType);
+            if (sourceRecord && captureName != "_")
+            {
+                // A record containing types is a comptime value, never runtime
+                // array storage. Publish the actual by-value element just as
+                // known-slice unrolling does, so its fields can be consumed.
+                _ir.ComptimeGlobals[sym] = _ir.EvalComptimeValue(init)
+                    ?? throw new CompileException("zig: inline comptime record capture must have a known element value");
+                _zigConstBindings.Add(sym);
+            }
             // A copy is analysed with its index comptime-known, so its constant conditions settle as zig's do.
             _inlineUnrollDepth++;
             CStmt body;
@@ -373,9 +399,41 @@ internal sealed partial class ZigLowering
             finally { _inlineUnrollDepth--; }
             symbolScope.Dispose();
             // `inline for (0..2) |_|` discards the index: no declaration (an unused `_` local is CS0219).
-            var copy = captureName == "_" ? new List<CStmt> { body }
+            var copy = captureName == "_" || sourceRecord ? new List<CStmt> { body }
                 : new List<CStmt> { new DeclStmt(new List<LocalDecl> { new(sym, init) }), body };
             if (!unroll.Add(new Block(copy))) { break; }
+        }
+        return unroll.Finish();
+    }
+
+    private CStmt UnrollKnownSlice(IrBuilder.CtSlice slice, CType element, string capture, Item bodyItem,
+        ZigResultLocation? location)
+    {
+        if (slice.Length < 0 || slice.Offset < 0 || slice.Offset > slice.Backing.Elems.LongLength
+            || slice.Length > slice.Backing.Elems.LongLength - slice.Offset)
+            throw new IrUnsupportedException("`inline for` over a comptime slice has an invalid backing range");
+        if (slice.Length > InlineUnrollCap)
+            throw new IrUnsupportedException($"`inline for` would unroll {slice.Length} iterations, exceeding the cap ({InlineUnrollCap})");
+        var unroll = new InlineUnroll(_blockLabelCounter++);
+        for (long index = 0; index < slice.Length; index++)
+        {
+            using var scope = EnterSymbolScope();
+            if (capture != "_")
+            {
+                var symbol = _symbols.Declare(new Symbol { Name = capture, Kind = SymKind.Var, Type = element });
+                _zigConstBindings.Add(symbol);
+                _ir.ComptimeGlobals[symbol] = slice.Backing.Elems[slice.Offset + index];
+                if (location is not null)
+                {
+                    RememberBitcastValue(symbol, location with { Physical = element });
+                    RecordValueBits(symbol, location.IntegerBits, location.Element?.IntegerBits);
+                }
+            }
+            _inlineUnrollDepth++;
+            CStmt body;
+            try { body = LowerStmt(bodyItem); }
+            finally { _inlineUnrollDepth--; }
+            if (!unroll.Add(new Block(new List<CStmt> { body }))) break;
         }
         return unroll.Finish();
     }
@@ -384,7 +442,7 @@ internal sealed partial class ZigLowering
     /// optional index capture its start plus the element's position. zig only iterates a tuple at comptime, which is where
     /// std does it (a comptime-evaluated block's callee); a by-reference capture is not modeled.</summary>
     private CStmt UnrollTupleFor(CExpr tupleExpr, CType.Tuple tuple, string elemName, bool byRef, (string name, CExpr start)? index,
-        Item bodyItem)
+        Item bodyItem, bool inline = false)
     {
         if (byRef)
         {
@@ -392,7 +450,10 @@ internal sealed partial class ZigLowering
         }
         var pre = new List<CStmt>();
         var tupleRef = tupleExpr;
-        if (tupleExpr is not VarRef)
+        var known = inline && IsComptimeNameRead(tupleExpr) ? _ir.EvalComptimeValue(tupleExpr) as IrBuilder.CtStruct : null;
+        if (tuple.Elements.Count > InlineUnrollCap)
+            throw new IrUnsupportedException($"`inline for` tuple exceeds the unroll cap ({InlineUnrollCap})");
+        if (known is null && tupleExpr is not VarRef)
         {
             var tmp = _symbols.Declare(new Symbol { Name = "__tup", Kind = SymKind.Var, Type = tupleExpr.Type });
             pre.Add(new DeclStmt(new List<LocalDecl> { new(tmp, tupleExpr) }));
@@ -407,7 +468,12 @@ internal sealed partial class ZigLowering
             {
                 var elemType = tuple.Elements[k];
                 var elemSym = _symbols.Declare(new Symbol { Name = elemName, Kind = SymKind.Var, Type = elemType });
-                copy.Add(new DeclStmt(new List<LocalDecl> { new(elemSym, new TupleIndex(tupleRef, k, elemType) { Type = elemType }) }));
+                if (tuple.ComptimeIntAt(k) is { } constant)
+                    _ir.ComptimeGlobals[elemSym] = new IrBuilder.CtInt(constant, CType.ComptimeInt);
+                else if (known is not null)
+                    _ir.ComptimeGlobals[elemSym] = known.Fields[k.ToString(CultureInfo.InvariantCulture)];
+                else
+                    copy.Add(new DeclStmt(new List<LocalDecl> { new(elemSym, TupleElement(tupleRef, k)) }));
             }
             if (index is { name: var indexName, start: var start } && indexName != "_")
             {
@@ -445,15 +511,31 @@ internal sealed partial class ZigLowering
         _                 => false,
     };
     /// <summary>Rebuild a loop statement with its body transformed by <paramref name="f"/> — used to
-    /// append a labeled loop's continue label to the end of the body. Defensive: anything that isn't a
-    /// loop is returned untouched (the grammar's <c>LoopStmt</c> guarantees a loop here).</summary>
-    private static CStmt WithLoopBody(CStmt loop, Func<CStmt, CStmt> f) => loop switch
+    /// append a labeled loop's continue label to the end of the body. Scoped setup wrappers belong
+    /// to that same source loop; its nested body loops keep their own continuations.</summary>
+    private static CStmt WithLoopBody(CStmt loop, Func<CStmt, CStmt> f)
     {
-        While w  => new While(w.Cond, f(w.Body)),
-        For fr   => new For(fr.Init, fr.Cond, fr.Post, f(fr.Body)),
-        DoWhile d => new DoWhile(f(d.Body), d.Cond),
-        _ => loop,
-    };
+        var transformed = false;
+        CStmt Visit(CStmt statement)
+        {
+            if (transformed) return statement;
+            switch (statement)
+            {
+                case While w: transformed = true; return w with { Body = f(w.Body) };
+                case For fr: transformed = true; return fr with { Body = f(fr.Body) };
+                case DoWhile d: transformed = true; return d with { Body = f(d.Body) };
+                // Slice/parallel loops and loop-else lowering wrap setup and
+                // the runtime loop in a scope. Stop at the first outer loop;
+                // never attach this continuation to a nested body loop.
+                case Block block: return block with { Stmts = block.Stmts.Select(Visit).ToList() };
+                case Seq sequence: return sequence with { Stmts = sequence.Stmts.Select(Visit).ToList() };
+                default: return statement;
+            }
+        }
+        var result = Visit(loop);
+        if (!transformed) throw new IrUnsupportedException("labeled continue has no runtime loop body");
+        return result;
+    }
     /// <summary>Append a (no-op-bodied) label to a statement, flattening into an existing block so the
     /// label sits at the body's end. The label wraps an empty <see cref="Block"/> (<c>lbl: { }</c>)
     /// because a C# label can't directly precede a declaration (CS1023).</summary>
@@ -598,8 +680,8 @@ internal sealed partial class ZigLowering
             else if (ct is CType.Pointer)
             {
                 test = capRef;        // a pointer condition tests non-null
-                payloadInit = capRef; // the unwrapped pointer is the same value
-                payloadType = cond.Type;
+                payloadInit = OptionalPointerPayload(capRef);
+                payloadType = OptionalPointerPayloadType(cond.Type);
             }
             else
             {
@@ -771,7 +853,7 @@ internal sealed partial class ZigLowering
     }
     /// <summary>Lower a runtime lockstep <c>for (a, b, c) |x, y, z| body</c> (road-to-zig-std G5): one index walks every
     /// object, each capture a per-iteration copy of its object's element (<c>|*x|</c>: a pointer into it). Each object is a
-    /// slice (an array, or a pointer to one, walks as a slice over it) read once into a temp, or a RANGE (task #108) whose
+    /// slice (an array, or a pointer to one, walks as a slice over it), a source-proved many-item pointer, or a RANGE whose
     /// capture is its start plus the index. The walk's length is the first slice's (zig asserts equal lengths; dotcc does
     /// not check, its ReleaseFast stance on safety checks), or a bounded range's when there is no slice. A <c>_</c> capture
     /// binds nothing. With an <paramref name="elseItem"/> (<c>for (…) |…| body else elsebody</c>, task #108) the loop's own
@@ -781,48 +863,72 @@ internal sealed partial class ZigLowering
         Item? elseItem = null)
     {
         var pre = new List<CStmt>();
-        var walks = new List<(CExpr? Slice, CType.Slice? Type, CExpr? Start)>(objects.Count);
+        var walks = new List<(CExpr? Slice, CExpr? Pointer, CType? Element, CExpr? Start)>(objects.Count);
+        var elementLocations = new List<ZigResultLocation?>(objects.Count);
         CExpr? len = null;
+        CExpr LowerOperand(Func<CExpr> lower)
+        {
+            using var hoist = EnterFreshHoist();
+            var value = lower();
+            if (_hoist is { } statements) pre.AddRange(statements);
+            return value;
+        }
         CExpr Pinned(CExpr value, string name)
         {
-            if (value is VarRef || _ir.ConstEval(value) is not null) { return value; }
+            // Even a variable read must be saved: a later object can mutate that variable.
             var tmp = _symbols.Declare(new Symbol { Name = name, Kind = SymKind.Var, Type = value.Type });
+            RememberHoistedValue(tmp, value);
             pre.Add(new DeclStmt(new List<LocalDecl> { new(tmp, value) }));
             return new VarRef(tmp) { Type = value.Type, IsLValue = true };
+        }
+        CExpr Operand(Func<CExpr> lower, string name)
+        {
+            // Hoists belong immediately before THIS operand's snapshot, after all preceding operands.
+            var value = LowerOperand(lower);
+            return Pinned(value, name);
         }
         foreach (var obj in objects)
         {
             if (obj.IsRange)
             {
-                var start = Pinned(LowerExprSink(obj.Expr, CType.ULong), "__lo");
+                var start = Operand(() => new Cast(CType.ULong, LowerExprSink(obj.Expr, CType.ULong)) { Type = CType.ULong }, "__lo");
                 if (obj.End is { } endItem)
                 {
-                    var end = Pinned(LowerExprSink(endItem, CType.ULong), "__hi");
+                    var end = Operand(() => new Cast(CType.ULong, LowerExprSink(endItem, CType.ULong)) { Type = CType.ULong }, "__hi");
                     len ??= new Binary(BinOp.Sub, end, start) { Type = CType.ULong };
                 }
-                walks.Add((null, null, start));
+                walks.Add((null, null, null, start));
+                elementLocations.Add(new(CType.ULong, 64));
                 continue;
             }
-            var value = LowerExpr(obj.Expr);
+            var value = LowerOperand(() => LowerExpr(obj.Expr));
+            var pointerSize = PointerSizeOfValue(obj.Expr) ?? (value.Type.Unqualified as CType.Pointer)?.ZigSourceSize;
+            var sourceLocation = BitcastPathLocation(obj.Expr) ?? BitcastSourceLocation(obj.Expr, value);
+            elementLocations.Add(pointerSize == "one" && value.Type.Unqualified is CType.Pointer { Pointee.Unqualified: CType.Array }
+                ? sourceLocation.Element?.Element : sourceLocation.Element);
             // An array, or a pointer to one (`&used`), walks as a slice over it.
-            if (value.Type.Unqualified is CType.Array arr) { value = CoerceToSlice(value, new CType.Slice(arr.Element)); }
-            else if (value.Type.Unqualified is CType.Pointer { Pointee: var pte } && pte.Unqualified is CType.Array parr)
+            if (value.Type.Unqualified is CType.Array arr)
             {
-                value = CoerceToSlice(value, new CType.Slice(parr.Element));
+                value = CoerceToSlice(value, new CType.Slice(IsConstStorage(value) ? arr.Element.WithQuals(TypeQual.Const) : arr.Element));
+            }
+            else if (pointerSize == "one" && value.Type.Unqualified is CType.Pointer { Pointee: var pte } && pte.Unqualified is CType.Array parr)
+            {
+                value = CoerceToSlice(value, new CType.Slice(pte.IsConst ? parr.Element.WithQuals(TypeQual.Const) : parr.Element));
+            }
+            if (value.Type.Unqualified is CType.Pointer pointer
+                && pointerSize is "many" or "c")
+            {
+                walks.Add((null, Pinned(value, "__p"), pointer.Pointee, null));
+                continue;
             }
             if (value.Type.Unqualified is not CType.Slice slc)
             {
                 throw new IrUnsupportedException(
-                    $"zig multi-object `for`: each object must be a slice, an array or a range; got {value.Type.Describe()}");
+                    $"zig multi-object `for`: each object must be a slice, an array, a many-item pointer or a range; got {value.Type.Describe()}"
+                    + $" ({_module?.Path ?? _fileStem}:{obj.Expr.Position.Line}, function '{_currentFnName}', source {obj.Expr.Content?.GetType().Name})");
             }
-            CExpr sliceRef = value;
-            if (value is not VarRef)
-            {
-                var tmp = _symbols.Declare(new Symbol { Name = "__s", Kind = SymKind.Var, Type = value.Type });
-                pre.Add(new DeclStmt(new List<LocalDecl> { new(tmp, value) }));
-                sliceRef = new VarRef(tmp) { Type = value.Type, IsLValue = true };
-            }
-            walks.Add((sliceRef, slc, null));
+            var sliceRef = Pinned(value, "__s");
+            walks.Add((sliceRef, null, slc.Element, null));
         }
         // The first slice's length wins over a bounded range's: it is the object zig checks the others against.
         if (walks.FirstOrDefault(w => w.Slice is not null) is { Slice: { } firstSlice })
@@ -831,7 +937,7 @@ internal sealed partial class ZigLowering
         }
         if (len is null)
         {
-            throw new CompileException("zig: a `for` over unbounded ranges only has no length (give a range an end, or add an object)");
+            throw new CompileException("zig: a `for` over unbounded pointers/ranges has no length (add a slice, array or bounded range)");
         }
         using var symbolScope = EnterSymbolScope();
         var iSym = _symbols.Declare(new Symbol { Name = "__i", Kind = SymKind.Var, Type = CType.ULong });
@@ -855,7 +961,7 @@ internal sealed partial class ZigLowering
         for (var k = 0; k < walks.Count; k++)
         {
             if (captures[k].Name == "_") { continue; }
-            var (sref, st, start) = walks[k];
+            var (sref, pointer, element, start) = walks[k];
             CType capType;
             CExpr capInit;
             if (start is not null)
@@ -863,20 +969,25 @@ internal sealed partial class ZigLowering
                 capType = CType.ULong;
                 capInit = start is LitInt { Value: 0 } ? iRef : new Binary(BinOp.Add, start, iRef) { Type = CType.ULong };
             }
-            else if (sref is not null && st is not null)
+            else if (element is not null && (sref is not null || pointer is not null))
             {
-                var ptr = new Member(sref, "Ptr", false) { Type = new CType.Pointer(st.Element) };
-                var elem = new DotCC.Ir.Index(ptr, iRef) { Type = st.Element, IsLValue = true };
+                var ptr = pointer ?? new Member(sref!, "Ptr", false) { Type = new CType.Pointer(element) };
+                var elem = new DotCC.Ir.Index(ptr, iRef) { Type = element, IsLValue = true };
                 // `|*x|` binds a pointer INTO the object (`x.* = …` writes through), `|x|` a per-iteration copy.
-                capType = captures[k].ByRef ? new CType.Pointer(st.Element) : st.Element;
+                capType = captures[k].ByRef ? new CType.Pointer(element) : element;
                 capInit = captures[k].ByRef ? new Unary(UnOp.AddrOf, elem) { Type = capType } : elem;
             }
             else
             {
-                throw new System.InvalidOperationException("a multi-object `for` walk is neither a range nor a slice");
+                throw new System.InvalidOperationException("a multi-object `for` walk is neither a range, a slice nor a pointer");
             }
             var sym = _symbols.Declare(new Symbol { Name = captures[k].Name, Kind = SymKind.Var, Type = capType });
-            bodyStmts.Add(new DeclStmt(new List<LocalDecl> { new(sym, capInit) }));
+            if (captures[k].ByRef) RecordValuePtrSize(sym, "one");
+            if (elementLocations[k] is { } location)
+                RememberBitcastValue(sym, captures[k].ByRef ? new(capType, Element: location) : location);
+            bodyStmts.Add(!captures[k].ByRef && capType.Unqualified is CType.Array { Count: { } count } capturedArray
+                ? ArrayValueCopyDecl(sym, capturedArray, count, capInit)
+                : new DeclStmt(new List<LocalDecl> { new(sym, capInit) }));
         }
         var userBody = LowerStmt(bodyItem);
         bodyStmts.Add(userBody);
@@ -975,6 +1086,7 @@ internal sealed partial class ZigLowering
         {
             throw new IrUnsupportedException($"for-over-slice needs a slice; got {sliceExpr.Type.Describe()}");
         }
+        var elementLocation = BitcastLoweredLocation(sliceExpr).Element;
         var pre = new List<CStmt>();
         CExpr sliceRef;
         if (sliceExpr is VarRef)
@@ -1005,7 +1117,17 @@ internal sealed partial class ZigLowering
         var elemType = byRef ? new CType.Pointer(slc.Element) : slc.Element;
         CExpr elemInit = byRef ? new Unary(UnOp.AddrOf, elemAccess) { Type = elemType } : elemAccess;
         var elemSym = _symbols.Declare(new Symbol { Name = elemName, Kind = SymKind.Var, Type = elemType });
-        if (!byRef) { RecordValueBits(elemSym, elemBits, null); }
+        if (!byRef)
+        {
+            // A field/call can carry element evidence that the AST-only width
+            // probe cannot name. Keep it on the per-iteration value copy.
+            var captured = elementLocation is { } source
+                ? source with { Physical = elemType, IntegerBits = source.IntegerBits ?? elemBits }
+                : new ZigResultLocation(elemType, elemBits);
+            RememberBitcastValue(elemSym, captured);
+            RecordValueBits(elemSym, captured.IntegerBits, captured.Element?.IntegerBits);
+            if (captured.IntegerBits is not null) _runtimeIntegerLoopCaptures.Add(elemSym);
+        }
         var bodyStmts = new List<CStmt> { new DeclStmt(new List<LocalDecl> { new(elemSym, elemInit) }) };
         if (index is { } idx)
         {

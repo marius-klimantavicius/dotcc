@@ -17,7 +17,10 @@ internal sealed record AggregateIdentity(string Name, string OriginalName, bool 
 // Linkage belongs to the ordinary external symbol, never to a tag merely
 // because some external declaration mentions it. References follow the
 // canonical type's traversal order, including pointers and callbacks.
-internal sealed record AggregateLinkageContract(string Symbol, string Type, string[] References, int?[] ArrayBounds);
+internal sealed record AggregateLinkageContract(string Symbol, string Type, string[] References, int?[] ArrayBounds)
+{
+    internal bool ManagedBoundarySupported { get; init; }
+}
 
 internal sealed record AggregateIdentitySet(IReadOnlyList<AggregateIdentity> Nodes,
     IReadOnlyList<AggregateLinkageContract> Linkage) : IReadOnlyList<AggregateIdentity>
@@ -65,10 +68,13 @@ internal static class AggregateIdentities
         }
     }
 
-    internal static ObjectAggregateMetadata EnumShape(EnumTypeDef type) => new(false, false,
-        Hash("enum|" + ObjectAggregateMetadata.Describe(type.Underlying) + "|"
+    internal static ObjectAggregateMetadata EnumShape(EnumTypeDef type)
+    {
+        var shape = "enum|" + ObjectAggregateMetadata.Describe(type.Underlying) + "|"
             + string.Join("|", type.Members.OrderBy(m => m.Name, StringComparer.Ordinal)
-                .Select(m => Encode(m.Name) + ":" + m.Value.ToString(CultureInfo.InvariantCulture)))));
+                .Select(m => Encode(m.Name) + ":" + m.Value.ToString(CultureInfo.InvariantCulture)));
+        return new(false, false, Hash(shape)) { SourceShape = shape };
+    }
 
     internal static string Serialize(IReadOnlyList<AggregateIdentity> graph) => Version + "\n" + string.Concat(
         graph.OrderBy(n => n.Name, StringComparer.Ordinal).Select(n => Prefix + n.Name + " "
@@ -79,7 +85,7 @@ internal static class AggregateIdentities
                 .Select(c => SerializeContract(LinkagePrefix, c)))
                 + string.Concat(semantic.Declarations.OrderBy(c => c.Symbol, StringComparer.Ordinal)
                     .ThenBy(c => c.References.Single(), StringComparer.Ordinal).Select(c => SerializeContract(DeclarationPrefix, c)))
-            : "");
+            : "") + ManagedBoundaryContracts.Serialize(graph);
 
     private static string Encode(string value) => Convert.ToBase64String(Encoding.UTF8.GetBytes(value));
 
@@ -132,7 +138,8 @@ internal static class AggregateIdentities
         // distinction. Top-level parameter qualifiers are likewise ignored.
         var normalized = Normalize(type);
         string Key(CType value) => ObjectAggregateMetadata.Describe(value);
-        return new(symbol, Key(normalized), References(type).ToArray(), bounds.ToArray());
+        return new(symbol, Key(normalized), References(type).ToArray(), bounds.ToArray())
+            { ManagedBoundarySupported = ManagedBoundaryContracts.RepresentedType(type) };
     }
 
     internal static IReadOnlyList<AggregateIdentity>? Read(string source)

@@ -1,0 +1,13 @@
+  Determining projects to restore...
+  Restored /home/marius/p/dotcc/libghostty/generated/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj (in 56 ms).
+  Restored /home/marius/p/dotcc/libghostty/src/Managed.GhosttyVt/Managed.GhosttyVt.csproj (in 135 ms).
+  Restored /home/marius/p/dotcc/libghostty/samples/ManagedConsumer/ManagedConsumer.csproj (in 135 ms).
+  TranslatedGhosttyVt -> /mnt/storage/dotcc-libghostty-disposable/direct-default-commit/default-build/bin/TranslatedGhosttyVt/release/TranslatedGhosttyVt.dll
+  Managed.GhosttyVt -> /mnt/storage/dotcc-libghostty-disposable/direct-default-commit/default-build/bin/Managed.GhosttyVt/release/Managed.GhosttyVt.dll
+  ManagedConsumer -> /mnt/storage/dotcc-libghostty-disposable/direct-default-commit/default-build/bin/ManagedConsumer/release/GhosttyVt.Consumer.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:10.83

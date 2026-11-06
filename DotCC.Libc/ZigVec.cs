@@ -12,7 +12,7 @@ namespace DotCC.Libc;
 /// is a trailing-zero count. The methods here cover what has no .NET operator: loads, comparisons to a mask,
 /// reductions, <c>@select</c> and lane reads.
 /// </summary>
-public static class ZigVec
+public static partial class ZigVec
 {
     // ---- loads: `slice[i..][0..N].*` / an array at a vector sink ---------------------------------------
 

@@ -4,9 +4,10 @@
     <AssemblyName>GhosttyVt.Consumer</AssemblyName>
     <IsAotCompatible>true</IsAotCompatible>
     <InvariantGlobalization>true</InvariantGlobalization>
-    <TranslatedProject Condition="'$(TranslatedProject)' == ''">../../generated/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj</TranslatedProject>
+    <!-- The conventional product is the direct Zig -> C# engine. -->
+    <TranslatedProject Condition="'$(TranslatedProject)' == ''">$(MSBuildThisFileDirectory)../../generated/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj</TranslatedProject>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="../../src/Managed.GhosttyVt/Managed.GhosttyVt.csproj" AdditionalProperties="TranslatedProject=$(TranslatedProject)" />
+    <ProjectReference Include="../../src/Managed.GhosttyVt/Managed.GhosttyVt.csproj" />
   </ItemGroup>
 </Project>

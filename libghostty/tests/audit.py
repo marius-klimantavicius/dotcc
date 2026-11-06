@@ -253,11 +253,12 @@ def native_imports(text, path):
     return results
 
 
-def runtime_inventory(repo):
-    # This is the C-profile resource selection in Compiler.Resources.LoadRuntimeBlock(false).
+def runtime_inventory(repo, include_zig=False):
+    # Match Compiler.Resources.LoadRuntimeBlock's selected resource profile.
+    # C callers retain their existing closure; direct Zig includes all resources.
     paths = sorted(p for p in (repo / "DotCC.Libc").glob("*.cs")
-                   if not p.name.startswith("Zig") and p.name != "Slice.cs")
-    _require(bool(paths), "Missing current authored C runtime")
+                   if include_zig or not p.name.startswith("Zig") and p.name != "Slice.cs")
+    _require(bool(paths), "Missing current authored runtime")
     sources = {str(p): _read(p) for p in paths}
     records = [record for path, text in sources.items() for record in methods(text, path)]
     imports = [record for path, text in sources.items() for record in native_imports(text, path)]

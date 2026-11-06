@@ -12,12 +12,14 @@ internal sealed partial class CSharpBackend
     private bool HasRequestedTypeAlignment(string name)
     {
         if (!_offsetDocument.Aggregates.TryGetValue(name, out var aggregate)) return false;
+        if (aggregate.ZigStorage is { } storage && ZigStorageObjectMetadata.ReadContract(storage).Alignment > 8) return true;
         if (aggregate.Alignment != 0 || aggregate.Pack != 0) return true;
         foreach (var field in aggregate.Fields)
         {
             if (field.Alignment != 0) return true;
             var type = field.Type;
-            while (type.StartsWith("a:", StringComparison.Ordinal)) type = type[(type.IndexOf(':', 2) + 1)..];
+            while (type.StartsWith("a:", StringComparison.Ordinal) || type.StartsWith("o:", StringComparison.Ordinal))
+                type = type.StartsWith("o:", StringComparison.Ordinal) ? type[2..] : type[(type.IndexOf(':', 2) + 1)..];
             if (type.StartsWith("p:", StringComparison.Ordinal) &&
                 int.TryParse(type[(type.LastIndexOf(':') + 1)..], out var scalarAlignment) && scalarAlignment > 8) return true;
             if (type.StartsWith("n:", StringComparison.Ordinal) && HasRequestedTypeAlignment(type[2..])) return true;
@@ -26,9 +28,11 @@ internal sealed partial class CSharpBackend
     }
     private int TypeAlignment(CType type)
     {
+        if (type.Unqualified is CType.Vector { IsMask: false, UsesStorage: true, SizeOf: 128 })
+            return _offsetModel.Type(IrBuilder.LayoutType(type)).Alignment;
         if (type.Unqualified is CType.Named named && !HasRequestedTypeAlignment(named.Name)) return 8;
         if (type.Unqualified is CType.Array array) return TypeAlignment(array.Element);
-        if (type.Unqualified is not (CType.Prim or CType.Pointer or CType.Func or CType.Enum or CType.Array or CType.Named or CType.LongDoubleStorage16)) return 0;
+        if (type.Unqualified is not (CType.Prim or CType.Pointer or CType.Func or CType.Enum or CType.Array or CType.Named or CType.LongDoubleStorage16 or CType.Optional)) return 0;
         return _offsetModel.Type(IrBuilder.LayoutType(type)).Alignment;
     }
 

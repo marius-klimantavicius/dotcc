@@ -67,6 +67,8 @@ internal sealed partial class ZigLowering
                     if (Terminates(lowered)) { return stmts; }
                     continue;
             }
+            if (UsesSourceStdlib && onErrorOnly && IsSuccessfulReturnSuffix(items, i + 1))
+                continue;
             // An `errdefer` makes the function's later `return error.X` propagate via a thrown
             // ZigErrorReturn (so it reaches this catch) — flagged BEFORE lowering the rest, so every
             // statement the guard wraps sees it (a guarded error-return always follows its errdefer
@@ -79,6 +81,37 @@ internal sealed partial class ZigLowering
         }
         return stmts;
     }
+
+    // A final return of an existing non-error value cannot take an error-only
+    // cleanup. Do not demand that cleanup's methods merely to discard it later.
+    private bool IsSuccessfulReturnSuffix(IReadOnlyList<Item> items, int start)
+    {
+        if (_currentFnRet?.Unqualified is not CType.ErrorUnion || items.Count != start + 1)
+            return false;
+        if (items[start].Content is Zig.StmtReturnVoid) return true;
+        if (items[start].Content is not Zig.StmtReturn returned) return false;
+        var value = returned.Arg1;
+        while (value.Content is Zig.Grouped grouped) value = grouped.Arg1;
+        return IsInfallibleReturnValue(value);
+    }
+
+    // Constructing an aggregate from existing values cannot propagate an error.
+    // Inspect every initializer: a `try` or a call still demands the cleanup.
+    private bool IsInfallibleReturnValue(Item value) => value.Content switch
+    {
+        Zig.Grouped grouped => IsInfallibleReturnValue(grouped.Arg1),
+        Zig.Ident name when _symbols.Resolve(Tok(name.Arg0)) is { } symbol =>
+            symbol.Type.Unqualified is not (CType.ErrorUnion or CType.ErrorSetType or CType.NoReturnType),
+        Zig.IntLit or Zig.CharLit or Zig.TrueLit or Zig.FalseLit or Zig.NullLit or Zig.VoidValue
+            or Zig.AnonStructInitEmpty => true,
+        Zig.AnonStructInit aggregate => Flatten(aggregate.Arg2).All(field => field.Content switch
+        {
+            Zig.FieldInit named => IsInfallibleReturnValue(named.Arg3),
+            Zig.FieldInitPositional positional => IsInfallibleReturnValue(positional.Arg0),
+            _ => false,
+        }),
+        _ => false,
+    };
     /// <summary>Lower a statement <c>if</c> (<c>stmtIf</c> / <c>stmtIfThen</c>): a plain one through
     /// <see cref="LowerIfStmt"/>, and one with a payload on either side through <see cref="LowerIfCapture"/>, which binds an
     /// optional's payload (<c>|x|</c>, or <c>|*x|</c> pointing at it) or an error union's value and error
@@ -123,10 +156,11 @@ internal sealed partial class ZigLowering
             // Registered on the fly into the module type section (top-level containers pre-register in
             // pass 0; a local one is first seen here mid-pass-2) and emits NO runtime statement. A local
             // enum / union (task #111) registers the same way, fields only.
+            case Zig.OpaqueDecl o:       return LowerLocalOpaque(Tok(o.Arg1), o.Arg5);
             case Zig.StructDecl s:       return LowerLocalStruct(Tok(s.Arg1), s.Arg5, AggregateLayout.Default);
             case Zig.ExternStructDecl s: return LowerLocalStruct(Tok(s.Arg1), s.Arg6, AggregateLayout.Sequential);
-            case Zig.PackedStructDecl s: return LowerLocalStruct(Tok(s.Arg1), s.Arg6, AggregateLayout.Packed);
-            case Zig.PackedStructDeclBacked s: return LowerLocalStruct(Tok(s.Arg1), s.Arg9, AggregateLayout.Packed);
+            case Zig.PackedStructDecl s: return LowerLocalStruct(Tok(s.Arg1), s.Arg6, AggregateLayout.Packed, source: stmt);
+            case Zig.PackedStructDeclBacked s: return LowerLocalStruct(Tok(s.Arg1), s.Arg9, AggregateLayout.Packed, source: stmt);
             case Zig.EnumDecl d:          return LowerLocalEnumOrUnion(Tok(d.Arg1), d);
             case Zig.EnumDeclTyped d:     return LowerLocalEnumOrUnion(Tok(d.Arg1), d);
             case Zig.UnionDecl d:         return LowerLocalEnumOrUnion(Tok(d.Arg1), d);
@@ -186,6 +220,12 @@ internal sealed partial class ZigLowering
             }
             // `if (opt) |p| if (n > 0) { … };` (std's Io/Writer.zig): an `if` expression standing as a statement (P3a).
             case Zig.StmtExpr e when IsStatementIf(e.Arg0): return LowerStatementIf(e.Arg0);
+            case Zig.StmtExpr { Arg0.Content: Zig.SwitchExpr statementSwitch }:
+                return LowerSwitchStmt(statementSwitch.Arg2, statementSwitch.Arg5);
+            // A selected capture branch can be a bare switch expression
+            // (`if (optionalType) |T| {...} else switch (layout) {...}`).
+            case Zig.SwitchExpr statementSwitch:
+                return LowerSwitchStmt(statementSwitch.Arg2, statementSwitch.Arg5);
             case Zig.EmptyStmt:         return new Seq(new List<CStmt>());   // the `;` after a block-armed `if` expression statement
             case Zig.StmtExpr e:        return Hoisted(() => new ExprStmt(LowerExpr(e.Arg0)));
 
@@ -315,7 +355,7 @@ internal sealed partial class ZigLowering
     {
         var labeled = IsLabeledValue(valueItem);
         if (!labeled && !IsValueControlFlowStmt(valueItem)) { return null; }
-        var target = LowerExpr(targetItem);
+        var target = OptionalStorageProjection(LowerExpr(targetItem));
         CStmt Apply(Symbol temp)
         {
             var value = new VarRef(temp) { Type = temp.Type };
@@ -344,7 +384,7 @@ internal sealed partial class ZigLowering
     {
         // A multi-dimensional array (`const plane = cube[1];` of a `[2][2][2]u8`, task #152) is one flat run: its storage
         // and its copy count the innermost elements.
-        var flatCount = count * RowFlatCount(arr);
+        var flatCount = (count + (arr.ZigSentinel is not null && count == arr.Count ? 1 : 0)) * RowFlatCount(arr);
         var countLit = new LitInt(flatCount.ToString(CultureInfo.InvariantCulture), flatCount) { Type = CType.Int };
         var target = new VarRef(sym) { Type = arr, IsLValue = true };
         return new Seq(new List<CStmt>
@@ -361,6 +401,7 @@ internal sealed partial class ZigLowering
     private static CExpr ArrayElementCopy(CExpr target, CExpr source, CType.Array arr, long count)
     {
         var elem = arr.FlatElement.Unqualified;
+        if (arr.ZigSentinel is not null && count == arr.Count) count++;
         count *= RowFlatCount(arr);
         var len = new LitInt(count.ToString(CultureInfo.InvariantCulture), count) { Type = CType.ULong };
         return new ZigMemCall("CopyForwards", elem, new List<CExpr>
@@ -416,9 +457,10 @@ internal sealed partial class ZigLowering
             value = new Binary(bop, new LitInt(cur.Value.ToString(CultureInfo.InvariantCulture), cur.Value) { Type = cur.Type }, value)
             { Type = CType.Long };
         }
-        if (_ir.ConstEval(value) is not { } next)
+        if (ComptimeIntValue(value) is not { } next)
         {
-            throw new IrUnsupportedException($"zig: `comptime var {sym.Name}` can only be assigned a compile-time-known value");
+            throw new IrUnsupportedException($"zig: `comptime var {sym.Name}` can only be assigned a compile-time-known value"
+                + (_ir.ComptimeMiss is { } why ? $" (the interpreter stopped at {why})" : ""));
         }
         _comptimeVars[sym] = (next, cur.Type);
         return new Seq(new List<CStmt>());
@@ -430,7 +472,7 @@ internal sealed partial class ZigLowering
     {
         // `v[i] +%= x` on a SIMD vector lane (task #155) replaces the lane.
         if (TryVectorLaneStore(targetItem, op, valueItem) is { } laneStore) { return laneStore; }
-        var target = LowerExpr(targetItem);
+        var target = OptionalStorageProjection(LowerExpr(targetItem));
         // A shift's count is not the target's type (std.math.gcd's `x >>= @intCast(xz)`, task #86): a cast builtin there takes
         // C#'s `int` shift count.
         var value = op is BinOp.Shl or BinOp.Shr && valueItem.Content is Zig.BuiltinCall { Arg2: not null, Arg0: var shiftCast }
@@ -446,15 +488,15 @@ internal sealed partial class ZigLowering
     /// widening replaced.</summary>
     private CExpr PlainAssignPost(Item lhsItem, Item rhsItem)
     {
-        var lhs = LowerExpr(lhsItem);
+        var lhs = OptionalStorageProjection(LowerExpr(lhsItem));
         var rhs = LowerExpr(rhsItem);
         return new Assign(null, lhs, rhs) { Type = lhs.Type };
     }
     /// <summary>Build the <see cref="For"/>-post CExpr for a <c>while (…) : (lhs op rhs)</c>
     /// continue-expression, dispatching on the <c>AssignOp</c> operator node. Each arm mirrors the
     /// matching statement-level assignment case: plain <c>=</c> → a null-op Assign; a compound or
-    /// wrapping op → an Assign carrying the same <see cref="BinOp"/> (wrap folds to the same node,
-    /// like <c>stmtAddWrapAssign</c>); a saturating op → the <c>ZigMath.Sat…</c> clamp assignment.
+    /// wrapping op → an Assign carrying the source logical width when narrower than its carrier;
+    /// a saturating op → the <c>ZigMath.Sat…</c> clamp assignment.
     /// Shared by the plain (<see cref="Zig.StmtWhileContAssign"/>) and capture-while
     /// (<see cref="Zig.StmtWhileCaptureContAssign"/>) continue forms.</summary>
     /// <summary>A BLOCK continue expression (<c>while (c) : ({ a += 1; b += 1; }) body</c>) as the loop's
@@ -493,11 +535,9 @@ internal sealed partial class ZigLowering
         Zig.AopBitAnd  => CompoundAssignExpr(lhsItem, BinOp.BitAnd, rhsItem),
         Zig.AopBitOr   => CompoundAssignExpr(lhsItem, BinOp.BitOr, rhsItem),
         Zig.AopBitXor  => CompoundAssignExpr(lhsItem, BinOp.BitXor, rhsItem),
-        // Wrapping ops fold to the same node as the plain compound: a native C# `target op= rhs`
-        // already truncates to the LHS width in the unchecked context (two's-complement wrap).
-        Zig.AopAddWrap => CompoundAssignExpr(lhsItem, BinOp.Add, rhsItem),
-        Zig.AopSubWrap => CompoundAssignExpr(lhsItem, BinOp.Sub, rhsItem),
-        Zig.AopMulWrap => CompoundAssignExpr(lhsItem, BinOp.Mul, rhsItem),
+        Zig.AopAddWrap => WrappingCompoundAssignExpr(lhsItem, BinOp.Add, rhsItem),
+        Zig.AopSubWrap => WrappingCompoundAssignExpr(lhsItem, BinOp.Sub, rhsItem),
+        Zig.AopMulWrap => WrappingCompoundAssignExpr(lhsItem, BinOp.Mul, rhsItem),
         Zig.AopAddSat  => SatCompoundAssignExpr(lhsItem, "SatAdd", rhsItem),
         Zig.AopSubSat  => SatCompoundAssignExpr(lhsItem, "SatSub", rhsItem),
         Zig.AopMulSat  => SatCompoundAssignExpr(lhsItem, "SatMul", rhsItem),
@@ -510,7 +550,9 @@ internal sealed partial class ZigLowering
         // condition renders `false`), and the comptime interpreter, which reads `@inComptime()` as true, the other.
         if (IsInComptimeTest(condItem))
         {
-            return new If(LowerExpr(condItem), LowerStmt(thenItem), elseItem is { } inElse ? LowerStmt(inElse) : null);
+            var comptimeThen = InComptimeIsThen(condItem);
+            return new If(LowerExpr(condItem), LowerInComptimePhaseArm(thenItem, comptimeThen),
+                elseItem is { } inElse ? LowerInComptimePhaseArm(inElse, !comptimeThen) : null);
         }
         // A COMPTIME TAG condition (road-to-zig-std S3a) — `builtin.cpu.arch == .x86_64`,
         // `builtin.os.tag != .windows`. Folded before the operand is lowered at all, because the
@@ -539,13 +581,27 @@ internal sealed partial class ZigLowering
             var arm = always ? LowerStmt(thenItem) : elseItem is { } laterElse ? LowerStmt(laterElse) : new Seq(new List<CStmt>());
             return new Seq(new List<CStmt> { new ExprStmt(LowerExpr(condItem)), arm });
         }
-        var cond = LowerExpr(condItem);
-        if (_inGenericInstance && _ir.ConstEval(cond) is { } cv)
+        CExpr cond;
+        List<CStmt>? conditionPrelude;
+        // An if condition executes once before either arm. Its temporaries
+        // belong here; arm statements keep their own hoist scopes.
+        using (EnterFreshHoist())
         {
-            if (cv != 0) { return LowerStmt(thenItem); }
-            return elseItem is { } taken ? LowerStmt(taken) : new Seq(new List<CStmt>());
+            cond = LowerExpr(condItem);
+            conditionPrelude = _hoist is { Count: > 0 } pre ? new List<CStmt>(pre) : null;
         }
-        return new If(cond, LowerStmt(thenItem), elseItem is { } el ? LowerStmt(el) : null);
+        CStmt result;
+        var knownCondition = _inGenericInstance && _ir.ConstEval(cond) is { } cv ? cv != 0 : (bool?)null;
+        if (knownCondition is null && UsesSourceStdlib && conditionPrelude is null && IsImmutableComptimeRead(cond)
+            && _ir.EvalComptimeValue(cond) is IrBuilder.CtBool boolean)
+            knownCondition = boolean.Value;
+        if (knownCondition is { } known)
+        {
+            result = known ? LowerStmt(thenItem)
+                : elseItem is { } taken ? LowerStmt(taken) : new Seq(new List<CStmt>());
+        }
+        else result = new If(cond, LowerStmt(thenItem), elseItem is { } el ? LowerStmt(el) : null);
+        return conditionPrelude is null ? result : new Seq([.. conditionPrelude, result]);
     }
     /// <summary>Dispatch a <c>switch</c> statement: lower the subject once, then route a
     /// tagged-union subject (a value or pointer-to a registered <c>union(enum)</c>) to
@@ -563,6 +619,11 @@ internal sealed partial class ZigLowering
     /// the operand is not a container const, or its value is not a constant initializer.</summary>
     private CExpr? TryStaticContainerConstAddress(Item operand)
     {
+        if (operand.Content is Zig.Field moduleField
+            && (moduleField.Arg0.Content is not Zig.Ident moduleBase || _symbols.Resolve(Tok(moduleBase.Arg0)) is null)
+            && FieldBaseModule(moduleField.Arg0) is { } module
+            && module.TryStaticModuleConstAddress(SourceMemberName(moduleField.Arg2)) is { } fieldAddress)
+            return fieldAddress;
         (string Container, string Name, Item? TypeItem, Item Rhs)? found = null;
         if (operand.Content is Zig.Ident id && _symbols.Resolve(Tok(id.Arg0)) is null)
         {
@@ -581,7 +642,9 @@ internal sealed partial class ZigLowering
         {
             found = (cn, Tok(f.Arg2), member.typeItem, member.rhs);
         }
-        if (found is not var (container, name, typeItem, rhs)) { return null; }
+        if (found is not var (container, name, typeItem, rhs))
+            return operand.Content is Zig.Ident moduleName && _symbols.Resolve(Tok(moduleName.Arg0)) is null
+                ? TryStaticModuleConstAddress(Tok(moduleName.Arg0)) : null;
         if (!_staticContainerConsts.TryGetValue((container, name), out var sym))
         {
             var value = LowerContainerConst(container, name, typeItem, rhs);
@@ -609,18 +672,22 @@ internal sealed partial class ZigLowering
     /// comptime-known literal in static storage (every evaluation yields the same address), so its
     /// struct value becomes a synthesized static global and the expression its address: std's VTable
     /// instances (<c>.vtable = &amp;.{ .drain = fixedDrain, .flush = noopFlush }</c>). A literal with a
-    /// runtime field (a stack temporary in zig) is a loud cut.</summary>
+    /// runtime field is materialized as a local temporary in the current function.</summary>
     private CExpr LowerAddressOfStructLiteral(Item literal, CType pointee)
     {
+        var savedImpure = _hoistImpureSeen;
         var value = LowerExprSink(literal, pointee.Unqualified);
         // Inside a block the comptime interpreter evaluates (TryComptimeReturnBlock, task #100) the literal is comptime
         // memory, whatever its fields: the interpreter reads `&` of an aggregate as the aggregate, and the splice pins it.
         if (_loweringForComptimeEval > 0) { return new Unary(UnOp.AddrOf, value) { Type = new CType.Pointer(pointee) }; }
         if (!IsStaticInitializer(value))
         {
-            throw new IrUnsupportedException(
-                "zig `&.{ … }` with a runtime-known field (a pointer to a stack temporary) is not supported yet; "
-                + "a comptime-known one (constants, function names) is");
+            if (_currentFnSym is null)
+                throw new IrUnsupportedException("zig runtime aggregate temporary needs a function scope");
+            var temporary = HoistLowered("runtime aggregate temporary", [], value, savedImpure);
+            if (temporary is VarRef local) local.Sym.AddressTaken = true;
+            return new Unary(UnOp.AddrOf, temporary)
+                { Type = new CType.Pointer(pointee) };
         }
         var sym = _symbols.Declare(new Symbol
         {
@@ -628,6 +695,9 @@ internal sealed partial class ZigLowering
             Storage = Storage.Static, IsGlobal = true,
         });
         _ir.Globals.Add(new GlobalVar(sym, value));
+        // This compiler-proven immutable literal is readable through its
+        // symbolic static address during comptime, just like a named const.
+        _ir.ConstGlobalInits[sym] = value;
         sym.AddressTaken = true;
         var global = new VarRef(sym) { Type = value.Type, IsLValue = true };
         return new Unary(UnOp.AddrOf, global) { Type = new CType.Pointer(pointee) };
@@ -640,7 +710,7 @@ internal sealed partial class ZigLowering
     {
         LitInt or LitFloat or LitBool or EnumConstRef or NullPtr or DefaultLit => true,
         VarRef { Sym.Kind: SymKind.Func } => true,
-        Unary { Op: UnOp.AddrOf, Operand: VarRef { Sym.Kind: SymKind.Func } } => true,
+        Unary { Op: UnOp.AddrOf, Operand: VarRef { Sym: { Kind: SymKind.Func } or { IsGlobal: true } } } => true,
         Cast c => IsStaticInitializer(c.Operand),
         Paren p => IsStaticInitializer(p.Inner),
         ComptimeFold { Resolved: { } r } => IsStaticInitializer(r),
@@ -672,6 +742,8 @@ internal sealed partial class ZigLowering
     /// <summary>True when the lvalue names storage zig treats as immutable (see <see cref="RejectConstStore"/>).</summary>
     private bool IsConstStorage(CExpr lvalue) => lvalue switch
     {
+        ComptimeFold { Live: true } fold => IsConstStorage(fold.Inner),
+        TupleIndex tuple => IsConstStorage(tuple.Tuple),
         Paren p => IsConstStorage(p.Inner),
         // `p[1] = v` with `p: *[2]u32` indexes the array `p` POINTS AT (PointedArray retypes the pointer to its array), so
         // the storage is the pointee, not the binding: a `const p` or a parameter still writes through.
@@ -705,8 +777,8 @@ internal sealed partial class ZigLowering
     }
     /// <summary>An assignment as a statement, whichever form spells it (a statement, an <c>if</c> arm, a switch prong body),
     /// by its <c>AssignOp</c>: <c>=</c> a plain store (<c>_ = v</c> a discard, see <see cref="LowerAssignStmt"/>); a compound
-    /// or wrapping operator the shared Assign node with its <see cref="BinOp"/> as CompoundOp (a native C# <c>op=</c>, which
-    /// evaluates the lvalue once and already wraps in the unchecked context); a saturating one
+    /// or wrapping operator the shared Assign node with its <see cref="BinOp"/> as CompoundOp (wrapping retains a narrow
+    /// source logical width and evaluates the lvalue once); a saturating one
     /// <c>x = ZigMath.Sat…(x, y)</c>.</summary>
     /// <summary>True for a control-flow expression (a value loop, a value `if`, a `switch`), which can never be assigned to.</summary>
     private static bool IsControlFlowExpr(Item e) => e.Content is Zig.WhileValue or Zig.ForValue or Zig.InlineForValue
@@ -717,6 +789,9 @@ internal sealed partial class ZigLowering
         // prong body is `Expr (AssignOp Expr)?` and a loop's brace-less body is an Expr (write `{ sum += x; }`).
         _ when IsControlFlowExpr(lhs) => throw new CompileException("zig: invalid left-hand side to assignment"),
         Zig.AopAssign => LowerAssignStmt(lhs, rhs),
+        Zig.AopAddWrap => WrappingCompoundAssign(lhs, BinOp.Add, rhs),
+        Zig.AopSubWrap => WrappingCompoundAssign(lhs, BinOp.Sub, rhs),
+        Zig.AopMulWrap => WrappingCompoundAssign(lhs, BinOp.Mul, rhs),
         Zig.AopAddSat => SatCompoundAssign(lhs, "SatAdd", rhs),
         Zig.AopSubSat => SatCompoundAssign(lhs, "SatSub", rhs),
         Zig.AopMulSat => SatCompoundAssign(lhs, "SatMul", rhs),
@@ -757,6 +832,11 @@ internal sealed partial class ZigLowering
             RejectNarrowingStore(lhsItem, rhsItem);
             if (lhsItem.Content is Zig.Ident lhs && Tok(lhs.Arg0) == "_")
             {
+                // Reflection payloads have no runtime representation. A source
+                // helper still executes its comptime body and validations before
+                // the proven metadata result can be discarded.
+                if (UsesSourceStdlib && TryEvalTypeInfo(rhsItem, out _))
+                    return new Seq(new List<CStmt>());
                 // `_ = attr;` / `_ = T;` over a comptime-only binding (a `field_attrs` entry or a type an `inline for` capture
                 // bound, task #162): there is no runtime value to evaluate.
                 if (rhsItem.Content is Zig.Ident discardedName && Tok(discardedName.Arg0) is var discardedText
@@ -772,6 +852,12 @@ internal sealed partial class ZigLowering
                     return LowerControlFlowFallback(dL, dC, dCap, dArm, null);
                 }
                 var discarded = LowerExpr(rhsItem);
+                // A bound enum literal (for example a comptime logging scope)
+                // has no runtime value. Require its actual compile-time value
+                // before erasing the discard; ordinary calls still execute.
+                if (discarded.Type.Unqualified is CType.EnumLiteral
+                    && _ir.EvalComptimeValue(discarded) is IrBuilder.CtEnumLiteral)
+                    return new Seq(new List<CStmt>());
                 // `_ = ctx;` over a `void` value (an unused `context: void` parameter) has nothing to
                 // evaluate and no C# spelling: it emits nothing.
                 if (discarded.Type.Unqualified is CType.VoidType && IsErasableVoid(discarded))
@@ -785,6 +871,28 @@ internal sealed partial class ZigLowering
             if (lhsItem.Content is Zig.Deref { Arg0: var viewedItem } && IsSliceOperand(viewedItem))
             {
                 var copyDest = LowerMemSlice(viewedItem, wantConst: false, out var copyElem);
+                // Reinterpret a bounded array of fully occupied lanes (Terminal's
+                // interlaced u64 cells). Prove both element layouts, including packed
+                // cells, before copying their bytes; aggregate width may exceed 128 bits.
+                if (rhsItem.Content is Zig.BuiltinCall { Arg2: not null } castCall && Tok(castCall.Arg0) == "@bitCast"
+                    && Flatten(castCall.Arg2) is [var sourceItem]
+                    && copyDest is SliceNew { Len: var destLen } && _ir.ConstEval(destLen) is { } destCount)
+                {
+                    var source = LowerExpr(sourceItem);
+                    var sourceLocation = BitcastSourceLocation(sourceItem, source);
+                    var destLocation = BitcastLoweredLocation(copyDest).Element ?? new ZigResultLocation(copyElem);
+                    if (source.Type.Unqualified is not CType.Array { Count: { } sourceCount, Element: var sourceElement }
+                        || sourceCount != destCount
+                        || BitcastLogicalBits(sourceLocation.Element ?? ZigResultLocation.Unknown(sourceElement)) is not { } sourceBits
+                        || BitcastLogicalBits(destLocation) != sourceBits
+                        || sourceBits != _ir.SizeOfConst(sourceElement) * 8 || sourceBits != _ir.SizeOfConst(copyElem) * 8)
+                        throw new IrUnsupportedException("zig: bounded array bitcast store needs equal, fully occupied source and destination element layouts");
+                    var destPtr = new Member(copyDest, "Ptr", false) { Type = new CType.Pointer(copyElem) };
+                    return new ExprStmt(new Call("memcpy", new List<CExpr>
+                    {
+                        destPtr, source, IntLit(sourceCount * (sourceBits / 8)),
+                    }) { Type = new CType.Pointer(CType.Void) });
+                }
                 // An anonymous list (`… [0..2].* = .{ high, low };` in std.unicode) is the array the slice views, so it lowers
                 // at that array type when the view's length is known.
                 var copyValue = rhsItem.Content is Zig.AnonStructInit && copyDest is SliceNew { Len: var viewLen }
@@ -823,7 +931,7 @@ internal sealed partial class ZigLowering
             }
             // `v[i] = x` on a SIMD vector lane (std.crypto.blake3's counterLow vector, task #155) replaces the lane.
             if (TryVectorLaneStore(lhsItem, null, rhsItem) is { } laneStore) { return new ExprStmt(laneStore); }
-            var target = LowerExpr(lhsItem);
+            var target = OptionalStorageProjection(LowerExpr(lhsItem));
             // `d = a;` between arrays: an element copy (the C# rep is the element pointer, so a plain assignment
             // would alias the storage). `d = undefined;` changes nothing. A ROW of a multi-dimensional array
             // (`self.cv_stack[self.cv_stack_len] = new_cv;` in std.crypto.blake3, task #154) is such a target too, and so is
@@ -832,7 +940,7 @@ internal sealed partial class ZigLowering
             if (target.Type.Unqualified is CType.Array { Count: { } assignCount } assignArr
                 && target is VarRef or Member or DotCC.Ir.Index or Unary { Op: UnOp.Deref })
             {
-                var assigned = LowerExprSink(rhsItem, BitcastLoweredLocation(target));
+                var assigned = LowerExprSink(rhsItem, BitcastSourceLocation(lhsItem, target));
                 if (assigned is DefaultLit) { return new Seq(new List<CStmt>()); }
                 return new ExprStmt(ArrayElementCopy(target, assigned, assignArr, assignCount));
             }
@@ -841,7 +949,8 @@ internal sealed partial class ZigLowering
             if (IsLabeledValue(rhsItem))
             {
                 return LowerLabeledValue(rhsItem, target.Type,
-                    temp => new ExprStmt(new Assign(null, target, new VarRef(temp) { Type = temp.Type }) { Type = target.Type }));
+                    temp => new ExprStmt(new Assign(null, target, new VarRef(temp) { Type = temp.Type }) { Type = target.Type }),
+                    BitcastSourceLocation(lhsItem, target));
             }
             // `x = switch (y) { … blk: {…} };` / `x = if (c) blk:{…} else …;` — a value-position
             // if/switch with a statement-producing branch (Milestone Y, part 1): temp-fill against
@@ -851,7 +960,7 @@ internal sealed partial class ZigLowering
                 return LowerValueControlFlowStmt(rhsItem, target.Type,
                     temp => new ExprStmt(new Assign(null, target, new VarRef(temp) { Type = temp.Type }) { Type = target.Type }));
             }
-            var value = LowerExprSink(rhsItem, BitcastLoweredLocation(target));   // target type is the sink (`x = .member;`)
+            var value = LowerExprSink(rhsItem, BitcastSourceLocation(lhsItem, target));   // target type is the sink (`x = .member;`)
             // Storing a void value into void storage (`unit = {};`) moves no data; nor into void-as-data storage (the runtime
             // `Unit`), such as hash_map's `self.values()[idx] = value;` for a set (`V = void`, std.BufSet, task #198), where the
             // value is an erased `void` parameter.

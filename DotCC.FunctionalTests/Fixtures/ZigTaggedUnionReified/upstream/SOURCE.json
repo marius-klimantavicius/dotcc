@@ -1,0 +1,13 @@
+{
+  "source_commit": "93967b7f9478e94dcbb42125c8a90f34feb40d75",
+  "files": {
+    "enum.zig": {
+      "source": "src/lib/enum.zig",
+      "sha256": "c2355247d9e5f63dfcdc4d849049cdf59dd8134c9bd63cb01cbca70821410d8a"
+    },
+    "target.zig": {
+      "source": "src/lib/target.zig",
+      "sha256": "828bccdc0f4ec38131d851afd47c58f2d5b74120e10e8aecb7740762d624b2ef"
+    }
+  }
+}

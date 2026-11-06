@@ -76,14 +76,40 @@ public sealed class ZigPackedBitSizeTests
     [Theory]
     [InlineData("fn Make() type { return packed struct { value: u3 }; } pub fn main() u8 { return @bitSizeOf(Make()); }")]
     [InlineData("pub fn main() u8 { const T = packed struct { value: u3 }; return @bitSizeOf(T); }")]
-    public void Unrecorded_local_and_reified_packed_layouts_do_not_guess(string source)
+    public void Local_and_reified_packed_layouts_retain_source_widths(string source)
     {
         InDirectory(directory =>
         {
             var path = Path.Combine(directory, "main.zig");
             File.WriteAllText(path, source);
-            Should.Throw<CompileException>(() => Compiler.EmitCSharp(new[] { path })).Message.ShouldContain("@bitSizeOf");
-            Should.Throw<CompileException>(() => Compiler.EmitObject(path)).Message.ShouldContain("@bitSizeOf");
+            Compiler.EmitCSharp(new[] { path }).ShouldNotBeNullOrWhiteSpace();
+            Compiler.EmitObject(path).ShouldNotBeNullOrWhiteSpace();
+        });
+    }
+
+    [Theory]
+    [InlineData("fn Make(comptime U: type) type { _ = U; return packed struct(Backing) { value: u3 = 0 }; } pub fn main() u8 { const Backing = u3; const P = Make(u8); return @bitSizeOf(P); }", "Backing")]
+    [InlineData("fn Id(comptime T: type) type { return T; } fn Make(comptime U: type) type { _ = U; return Id(packed struct(Backing) { value: u3 = 0 }); } pub fn main() u8 { const Backing = u3; const P = Make(u8); return @bitSizeOf(P); }", "Backing")]
+    [InlineData("fn Make(comptime U: type) type { _ = U; return packed struct { value: @Int(.unsigned, n) = 0 }; } pub fn main() u8 { const n = 3; const P = Make(u8); return @bitSizeOf(P); }", "n")]
+    public void Caller_bindings_cannot_supply_a_missing_definition(string source, string diagnostic)
+    {
+        InDirectory(directory =>
+        {
+            var path = Path.Combine(directory, "main.zig");
+            File.WriteAllText(path, source);
+            Should.Throw<CompileException>(() => Compiler.EmitCSharp(new[] { path })).Message.ShouldContain(diagnostic);
+            Should.Throw<CompileException>(() => Compiler.EmitObject(path)).Message.ShouldContain(diagnostic);
+        });
+    }
+
+    [Fact]
+    public void Packed_union_variants_must_have_equal_source_widths()
+    {
+        InDirectory(directory =>
+        {
+            var path = Path.Combine(directory, "main.zig");
+            File.WriteAllText(path, "const U = packed union { a: u3, b: u5 }; pub fn main() u8 { return @sizeOf(U); }");
+            Should.Throw<DotCC.Layout.OffsetLayoutException>(() => Compiler.EmitObject(path)).Message.ShouldContain("different logical widths");
         });
     }
 

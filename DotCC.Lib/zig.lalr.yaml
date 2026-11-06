@@ -229,6 +229,7 @@ symbols:
   - CallConv       # 151 optional callconv(...) between `)` and the fn return type (epsilon | callconv(Expr))
   - DeclMods       # 152 align/linksection modifier(s) between a typed decl's Type and `=` (non-empty)
   - 'comptime'     # 153 `comptime EXPR` value prefix — force compile-time evaluation (Milestone T)
+  - 'nosuspend'
   - 'inline'       # 154 `inline for/while` — comptime loop UNROLLING (Milestone T, part 3)
   - LoopExpr       # 155 a value-position `while`/`for … else …` loop (a RhsExpr; Milestone Y, part 2)
   - 'threadlocal'  # 156 `threadlocal var` — thread storage duration on a container-level var
@@ -322,6 +323,8 @@ symbols:
   - LoopElse       # 221 a value loop's `else Payload? IfArm`
   - UnionHead      # 222 `extern|packed? union (arg)?` (zig's ContainerDeclType for a union)
   - UnionArg       # 223 a union's `(enum)` / `(enum(T))` / `(Tag)` argument
+
+  - 'opaque'       # 224 source nominal incomplete type
 
 productions:
   # Start: single non-terminal, trimmed at parse time.
@@ -419,6 +422,7 @@ productions:
       # container `const` inside a function body is deferred — it'd need these on Stmt too).
       # An empty `struct {}` (a zero-size marker / namespace) is allowed; `enum {}` is not
       # (Zig rejects a memberless enum). The fixed-underlying form is `enum(u8) { … }`.
+      - { lhs: ContainerDecl, rhs: ['const', IDENT, '=', 'opaque', '{', FieldDecls?, '}', ';'], action: opaqueDecl }
       - { lhs: ContainerDecl, rhs: ['const', IDENT, '=', 'struct', '{', FieldDecls?, '}', ';'],         action: structDecl }
       # Layout-controlled structs (Milestone R): `extern struct` → C-ABI sequential layout
       # ([StructLayout(Sequential)]); `packed struct` → byte-packed, no inter-field padding
@@ -977,6 +981,7 @@ productions:
       - { lhs: Prefix, rhs: ['&', Prefix],  action: preAddrOf }
       - { lhs: Prefix, rhs: ['try', Prefix], action: preTry }
       - { lhs: Prefix, rhs: ['comptime', Prefix], action: preComptime }
+      - { lhs: Prefix, rhs: ['nosuspend', Prefix], action: preNosuspend }
       - { lhs: Prefix, rhs: [CurlySuffix] }
 
   # Curly-suffix level — Zig's `CurlySuffixExpr <- TypeExpr InitList?`. A value-position
@@ -1077,6 +1082,7 @@ productions:
       # An inline `struct { … }` is a Type like any other (zig's ContainerDecl is a primary type expression), so it
       # nests (`[N]struct {…}`, `*struct {…}`, `?struct {…}`), types a literal (`struct {…}{ .a = 1 }`, `[_]struct {…}{…}`)
       # and is an argument or a prong value. After `{`, the first member's `:` splits it from the tuple form.
+      - { lhs: Type, rhs: ['opaque', '{', FieldDecls?, '}'], action: inlineOpaqueType }
       - { lhs: Type, rhs: [InlineStructTy] }
       - { lhs: InlineStructTy, rhs: ['struct', '{', FieldDecls?, '}'], action: inlineStructType }
       # The other inline containers are Types the same way (zig-grammar-peg P5): `?enum { colon, expr }` (std's
@@ -1641,6 +1647,7 @@ productions:
       - { lhs: PrefixO, rhs: ['&', PrefixO], action: preAddrOf }
       - { lhs: PrefixO, rhs: ['try', PrefixO], action: preTry }
       - { lhs: PrefixO, rhs: ['comptime', PrefixO], action: preComptime }
+      - { lhs: PrefixO, rhs: ['nosuspend', PrefixO], action: preNosuspend }
       - { lhs: PrefixO, rhs: [OpenPrimary] }
       - { lhs: OpenPrimary, rhs: [IfExpr] }
       # A value loop (zig's ForExpr / WhileExpr are PrimaryExprs): open, since its `else` arm (or a brace-less body) is an
@@ -1743,6 +1750,7 @@ lexer:
     - { symbol: 'continue', match: 'continue' }
     - { symbol: 'switch',   match: 'switch' }
     - { symbol: 'for',      match: 'for' }
+    - { symbol: 'opaque',   match: 'opaque' }
     - { symbol: 'struct',   match: 'struct' }
     - { symbol: 'enum',     match: 'enum' }
     - { symbol: 'union',    match: 'union' }
@@ -1760,6 +1768,7 @@ lexer:
     - { symbol: 'defer',    match: 'defer' }
     - { symbol: 'errdefer', match: 'errdefer' }
     - { symbol: 'comptime', match: 'comptime' }
+    - { symbol: 'nosuspend', match: 'nosuspend' }
     - { symbol: 'inline',   match: 'inline' }
     # `noinline` (8 chars): first-rule-wins on the tie with IDENT; longest-match keeps `noinline_x` an IDENT.
     - { symbol: 'noinline', match: 'noinline' }

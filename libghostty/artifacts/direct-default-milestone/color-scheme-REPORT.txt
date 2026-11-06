@@ -1,0 +1,5 @@
+0015: explicit two-value ColorScheme declaration.
+
+Original and patched actual source pass C/Zig × Debug/Fast native controls. Each execution checks exact backing type, size/alignment, light/dark ordinals and exhaustive field count; both protocol responses at all buffer capacities0..16 preserve exact bytes, partial writes, failure status and guard bytes. Native source and command receipts are original-native.json/patched-native.json, replay with native.py.
+
+The source patch changes the nominal/reflection name from a generic enum factory instance to the ordinary ColorScheme declaration. Selected public API/protocol values and layout are preserved. Full final upstream qualification remains pending. Qualified canonical source products are untouched. The patch is manifested and repeated application succeeds.

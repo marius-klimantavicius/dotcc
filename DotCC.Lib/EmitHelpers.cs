@@ -48,11 +48,11 @@ internal static class EmitHelpers
         // the spelling `true`/`false` only ever reaches Visit(Var) as a real
         // user identifier — safe to @-escape. Likewise `null` is an ordinary
         // C identifier: NULL expands to ((void*)0), and typed null literals are
-        // rendered separately from identifier names. `default` is omitted: it's a C keyword
-        // (never a C identifier) and dotcc emits it for value-init.
+        // rendered separately from identifier names. Zig also permits `default`
+        // as an identifier; value initialization uses a distinct IR literal.
         "abstract", "as", "base", "bool", "break", "byte", "case", "catch",
         "char", "checked", "class", "const", "continue", "decimal",
-        "delegate", "do", "double", "else", "enum", "event", "explicit",
+        "default", "delegate", "do", "double", "else", "enum", "event", "explicit",
         "extern", "false", "finally", "fixed", "float", "for", "foreach",
         "goto", "if", "implicit", "in", "int", "interface", "internal", "is",
         "lock", "long", "namespace", "new", "null", "object", "operator", "out",

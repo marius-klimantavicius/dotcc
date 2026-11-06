@@ -15,7 +15,7 @@ namespace DotCC.Libc;
 /// the Zig-lowering emits <c>ZigMem.{Method}&lt;T&gt;(…)</c> with the element type baked in by the
 /// C# backend (see <c>DotCC.Ir.ZigMemCall</c>).
 /// </remarks>
-public static class ZigMem
+public static partial class ZigMem
 {
     /// <summary><c>std.mem.eql(T, a, b)</c> — element-wise equality of two slices: equal length
     /// AND identical contents. Compared BYTE-wise (via
@@ -65,6 +65,25 @@ public static class ZigMem
         T** d = dest.Ptr;
         T** s = source.Ptr;
         for (ulong i = 0; i < source.Len; i++) { d[i] = s[i]; }
+    }
+
+    /// <summary>Copy slices of fixed array rows over their flattened element storage.</summary>
+    public static unsafe void CopyForwardsRows<T>(Slice<T> dest, ConstSlice<T> source, ulong rowElements) where T : unmanaged
+    {
+        ulong count = checked(source.Len * rowElements);
+        for (ulong i = 0; i < count; i++) dest.Ptr[i] = source.Ptr[i];
+    }
+
+    public static unsafe void CopyForwardsRows<T>(Slice<T> dest, T* source, ulong rowElements) where T : unmanaged
+    {
+        ulong count = checked(dest.Len * rowElements);
+        for (ulong i = 0; i < count; i++) dest.Ptr[i] = source[i];
+    }
+
+    public static unsafe void CopyForwardsRows<T>(T* dest, ConstSlice<T> source, ulong rowElements) where T : unmanaged
+    {
+        ulong count = checked(source.Len * rowElements);
+        for (ulong i = 0; i < count; i++) dest[i] = source.Ptr[i];
     }
 
     /// <summary>zig <c>@constCast</c> of a <c>[]const T</c> slice: the <c>[]T</c> over the same pointer and length.</summary>

@@ -84,16 +84,26 @@ internal sealed partial class ZigLowering
     {
         private readonly ZigLowering? _owner;
         private readonly List<(string Name, CType? Prev, int? PrevBits, string? PrevPtrSize, ZigSentinel? PrevSentinel)>? _shadows;
+        private readonly List<(string Name, (ZigLowering Owner, Symbol Sym)? Previous)>? _functions;
 
-        internal ReifiedSeedScope(ZigLowering? owner, List<(string Name, CType? Prev, int? PrevBits, string? PrevPtrSize, ZigSentinel? PrevSentinel)>? shadows)
+        internal ReifiedSeedScope(ZigLowering? owner, List<(string Name, CType? Prev, int? PrevBits, string? PrevPtrSize, ZigSentinel? PrevSentinel)>? shadows,
+            List<(string Name, (ZigLowering Owner, Symbol Sym)? Previous)>? functions = null)
         {
             _owner = owner;
             _shadows = shadows;
+            _functions = functions;
         }
 
         public void Dispose()
         {
             if (_owner is not { } o || _shadows is not { } sh) { return; }
+            if (_functions is { } functions)
+                for (var i = functions.Count - 1; i >= 0; i--)
+                {
+                    var (name, previous) = functions[i];
+                    if (previous is { } function) o._fnAliases[name] = function;
+                    else o._fnAliases.Remove(name);
+                }
             for (var i = sh.Count - 1; i >= 0; i--)
             {
                 var (name, prev, prevBits, prevPtrSize, prevSentinel) = sh[i];
@@ -121,6 +131,13 @@ internal sealed partial class ZigLowering
         }
         _symbols.EnterScope();
         var shadows = new List<(string Name, CType? Prev, int? PrevBits, string? PrevPtrSize, ZigSentinel? PrevSentinel)>();
+        var functions = new List<(string Name, (ZigLowering Owner, Symbol Sym)? Previous)>();
+        if (_reifiedFunctionSeeds.TryGetValue(seedsKey, out var functionSeeds))
+            foreach (var (name, owner, function) in functionSeeds)
+            {
+                functions.Add((name, _fnAliases.TryGetValue(name, out var previous) ? previous : null));
+                _fnAliases[name] = (owner, function);
+            }
         foreach (var seed in seeds.Types)
         {
             shadows.Add((seed.Name,
@@ -148,7 +165,7 @@ internal sealed partial class ZigLowering
                 _ir.ComptimeGlobals[sym] = value;
             }
         }
-        return new ReifiedSeedScope(this, shadows);
+        return new ReifiedSeedScope(this, shadows, functions);
     }
 
     /// <summary>Make <paramref name="container"/> the current container until the returned guard is

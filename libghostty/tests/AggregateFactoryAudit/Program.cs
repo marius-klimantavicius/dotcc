@@ -25,13 +25,34 @@ try
                 il_bytes = method.GetMethodBody()?.GetILAsByteArray()?.Length ?? 0
             }))
         .OrderByDescending(method => method.parameters).ThenBy(method => method.type, StringComparer.Ordinal).ToArray();
+    var storageHelpers = assembly.GetTypes()
+        .SelectMany(type => type.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic |
+                BindingFlags.DeclaredOnly)
+            .Where(method => !method.IsSpecialName &&
+                (type.Name.StartsWith("__DotccPrimitiveInit_", StringComparison.Ordinal) ||
+                 method.Name.StartsWith("__dotcc_owned_array_", StringComparison.Ordinal)))
+            .Select(method => new {
+                type = type.FullName, method = method.Name, parameters = method.GetParameters().Length,
+                il_bytes = method.GetMethodBody()?.GetILAsByteArray()?.Length ?? 0
+            }))
+        .OrderByDescending(method => method.parameters).ThenBy(method => method.type, StringComparer.Ordinal).ToArray();
     // Warm the entire emitted getter set before the acceptance measurement.
     // Per-getter warmup alone does not finish process-wide tier promotion.
     var warmupPayloads = AggregateFactoryAudit.Inspect(image, assembly);
     var payloads = AggregateFactoryAudit.Inspect(image, assembly);
     var factoryBodies = AggregateFactoryAudit.InspectFactoryIl(assembly);
     var factoryMeasurements = AggregateFactoryAudit.InspectFactories(assembly);
+    var publicApi = assembly.GetType("Managed.GhosttyVt", throwOnError: true)!
+        .GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly)
+        .Where(method => method.Name.StartsWith("ghostty_", StringComparison.Ordinal))
+        .OrderBy(method => method.Name, StringComparer.Ordinal)
+        .Select(method => new {
+            name = method.Name, owner = method.DeclaringType!.FullName,
+            has_body = method.GetMethodBody() is not null,
+            il_bytes = method.GetMethodBody()?.GetILAsByteArray()?.Length ?? 0
+        }).ToArray();
     int maxParameters = factories.Select(method => method.parameters).DefaultIfEmpty().Max();
+    int maxStorageParameters = storageHelpers.Select(method => method.parameters).DefaultIfEmpty().Max();
     string[] sources = Directory.GetFiles(sourceDirectory, "*.cs", SearchOption.TopDirectoryOnly);
     using var before = JsonDocument.Parse(File.ReadAllBytes(args[2]));
     var report = new {
@@ -41,6 +62,8 @@ try
         source_files = sources.Length,
         source_bytes = sources.Sum(path => new FileInfo(path).Length),
         main_bytes = new FileInfo(Path.Combine(sourceDirectory, "GhosttyVt.cs")).Length,
+        assembly_references = assembly.GetReferencedAssemblies().Select(reference => reference.Name).Order().ToArray(),
+        public_api = publicApi,
         before = before.RootElement.Clone(),
         helper_method_count = factories.Length,
         helper_type_count = factories.Select(method => method.type).Distinct().Count(),
@@ -49,6 +72,11 @@ try
         maximum_allowed_parameters = maximum,
         bounded_parameters = maxParameters <= maximum,
         factories,
+        storage_helper_method_count = storageHelpers.Length,
+        maximum_storage_helper_parameters = maxStorageParameters,
+        bounded_storage_helper_parameters = maxStorageParameters <= maximum,
+        storage_helpers = storageHelpers,
+        storage_helper_scope = "Pointer-returning primitive/owned array storage helpers are arity-inspected separately; their source-owned allocations are not value-factory allocation probes",
         global_getter_warmup_rounds = 1,
         global_getter_warmup_runtime_allocated_bytes = warmupPayloads.Sum(payload => payload.AllocatedBytesAfterWarmup),
         payload_getters = payloads.Count,
@@ -70,9 +98,14 @@ try
     Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(args[3]))!);
     File.WriteAllText(args[3], JsonSerializer.Serialize(report, new JsonSerializerOptions { WriteIndented = true }) + "\n");
     AggregateFactoryAudit.RequireEmbeddedAllocationFree(payloads);
-    AggregateFactoryAudit.RequireAllocationFreeFactories(factoryMeasurements, factoryBodies);
+    // Direct Zig products can contain RVA getters without aggregate value
+    // factories. Preserve the exact empty inventory instead of inventing calls.
+    if (factoryMeasurements.Count != 0 || factoryBodies.Count != 0)
+        AggregateFactoryAudit.RequireAllocationFreeFactories(factoryMeasurements, factoryBodies);
     if (maxParameters > maximum)
         throw new InvalidOperationException($"Aggregate helper parameters {maxParameters} exceed bound {maximum}");
-    Console.WriteLine($"factory audit: {factories.Length} methods, max parameters {maxParameters}; {payloads.Count} RVA getters and {factoryMeasurements.Count} zero-argument factories allocation-free PASS");
+    if (maxStorageParameters > maximum)
+        throw new InvalidOperationException($"Array storage helper parameters {maxStorageParameters} exceed bound {maximum}");
+    Console.WriteLine($"factory audit: {factories.Length} value methods, max parameters {maxParameters}; {storageHelpers.Length} storage methods, max parameters {maxStorageParameters}; {payloads.Count} RVA getters and {factoryMeasurements.Count} zero-argument factories allocation-free PASS");
 }
 finally { context.Unload(); }

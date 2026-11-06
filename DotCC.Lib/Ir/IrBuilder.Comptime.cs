@@ -19,23 +19,16 @@ namespace DotCC.Ir;
 // enum initializers, relational/logical folding, 128-bit arithmetic) lights up
 // for both languages at once.
 //
-// The value domain is deliberately int / float / bool ONLY: NO `type` variant
-// and NO pointer variant. That single omission is the firewall that keeps
-// value-comptime from sliding into type-comptime — the moment a comptime
-// expression would need a type-as-value or a comptime pointer, it simply isn't
-// a `ComptimeValue` and the eval returns null (the caller decides whether that
-// position requires a constant). One deliberate hole (the comptime-engine segment
-// E1): the aggregates are MUTABLE references, so a pointer to a comptime struct or
-// array evaluates to the aggregate itself (`self: *Acc`, `fill(&buf, v)`), with no
-// pointer variant; a pointer to a scalar still is not a value. Integer arithmetic is carried in
-// <see cref="System.Int128"/> so a comptime computation that genuinely exceeds
-// 64 bits (now that the i128/u128/__int128 types exist) has somewhere to live.
+// Values include scalars, aggregates, bounded pointers into comptime storage,
+// source-function identities, and Zig type values. CtType has no runtime layout:
+// the Zig frontend consumes it in semantic evaluation and erases containers that
+// require comptime storage before handing the unit to the backend.
 // ---------------------------------------------------------------------------
 internal sealed partial class IrBuilder
 {
     /// <summary>A side-effect-free compile-time VALUE — the result of evaluating
-    /// the C/Zig value subset at dotcc compile time. No <c>type</c> variant and no
-    /// pointer variant (the value-/type-comptime firewall — see the file header).</summary>
+    /// the C/Zig value subset at dotcc compile time, including values that must
+    /// be consumed before runtime emission.</summary>
     internal abstract record ComptimeValue;
 
     /// <summary>A comptime integer, carried in 128 bits so a computation can exceed
@@ -77,7 +70,13 @@ internal sealed partial class IrBuilder
     /// such as <c>std.simd.suggestVectorLength</c> returns when it has no answer. A present optional is
     /// just its payload, so this is the only optional value there is. <see cref="Type"/> is the optional
     /// (or pointer) type it was typed at; it splices back as <c>default(T)</c>.</summary>
-    internal sealed record CtNull(CType Type) : ComptimeValue;
+    internal sealed record CtNull(CType Type) : ComptimeValue
+    {
+        // A bare Zig null is a comptime-only literal type. Keep its provenance
+        // when an anytype parameter forwards it; a typed absent optional is not
+        // an untyped peer and deliberately leaves this false.
+        internal bool ZigUntypedLiteral { get; init; }
+    }
 
     /// <summary>The result of a comptime call to a <c>void</c> function (<c>std.debug.assert(…)</c>): no value, but
     /// not a failure either. It is only ever discarded.</summary>
@@ -88,6 +87,9 @@ internal sealed partial class IrBuilder
     /// <summary>A comptime enum literal with no result type yet (<c>.kw_if</c> in a tuple, task #113): its name, so two
     /// tuples that differ only in one key their own instances.</summary>
     internal sealed record CtEnumLiteral(string Name) : ComptimeValue;
+    internal sealed record CtType(CType Value) : ComptimeValue;
+    internal sealed record CtFunction(Symbol Function, CType Type) : ComptimeValue;
+    internal sealed record CtUndefined(CType Type) : ComptimeValue;
 
     internal sealed record CtVoid : ComptimeValue
     {
@@ -99,11 +101,16 @@ internal sealed partial class IrBuilder
     /// <see cref="Length"/> elements of a comptime array starting at <see cref="Offset"/>. A string literal is a
     /// byte array, so <c>fmt[a..b]</c>, <c>.len</c> and <c>fmt[i]</c> evaluate. <see cref="Type"/> is the slice
     /// type; a byte slice splices back as a string literal.</summary>
-    internal sealed record CtSlice(CtArray Backing, long Offset, long Length, CType Type) : ComptimeValue;
+    internal sealed record CtSlice(CtArray Backing, long Offset, long Length, CType Type, bool NullPointer = false) : ComptimeValue;
 
     /// <summary>A pointer to an element of a comptime array (a slice's <c>.Ptr</c>, moved by pointer
     /// arithmetic): the one pointer the interpreter models, since it never leaves the array it points into.</summary>
     internal sealed record CtElemPtr(CtArray Backing, long Index, CType Type) : ComptimeValue;
+
+    // A bounded reference to a comptime local (std.sort.pdq's pivot and swap
+    // counters). Keep the owning frame alive across calls; copying a pointer
+    // retains its identity, while copying the scalar still copies its value.
+    internal sealed record CtVarPtr(Dictionary<Symbol, ComptimeValue> Storage, Symbol Variable, CType Type) : ComptimeValue;
 
     /// <summary>The comptime engine's E3: comptime variables that outlive one evaluation, keyed by their
     /// <see cref="Symbol"/>. A Zig <c>comptime var s: S = .{…}</c> of an aggregate type lives here while its
@@ -144,6 +151,10 @@ internal sealed partial class IrBuilder
     internal ComptimeValue? EvalComptimeValue(CExpr e) =>
         TryEvalTop(e, allowCalls: true) is { } v ? CloneComptime(v) : null;
 
+    // A comptime loop taking an element by reference must retain the operand's
+    // storage. EvalComptimeValue intentionally copies arrays for value reads.
+    internal ComptimeValue? EvalComptimeStorage(CExpr expression) => TryEvalTop(expression, allowCalls: true);
+
     /// <summary>A short, stable digest of a comptime value's contents (FNV-1a over a canonical spelling), for keying
     /// a generic instance by a comptime STRUCT argument (<c>comptime cpu: std.Target.Cpu</c>).</summary>
     internal static string ComptimeDigest(ComptimeValue v)
@@ -158,6 +169,10 @@ internal sealed partial class IrBuilder
                 case CtBool b: sb.Append(b.Value ? 'T' : 'F'); break;
                 case CtNull: sb.Append('n'); break;
                 case CtEnumLiteral el: sb.Append('e').Append(el.Name).Append(';'); break;
+                case CtType t: sb.Append('t').Append((int)t.Value.Quals).Append(':').Append(t.Value.Describe()).Append(';'); break;
+                case CtFunction fn: sb.Append('f').Append(fn.Function.TargetName.Length > 0 ? fn.Function.TargetName : fn.Function.Name).Append(';'); break;
+                case CtStaticPtr pointer: sb.Append('p').Append(pointer.Object.TargetName.Length > 0 ? pointer.Object.TargetName : pointer.Object.Name).Append(';'); break;
+                case CtUndefined undefined: sb.Append('u').Append(undefined.Type.Describe()).Append(';'); break;
                 case CtArray a: sb.Append('['); foreach (var e in a.Elems) { Spell(e); sb.Append(','); } sb.Append(']'); break;
                 case CtSlice sl:
                     sb.Append('<');
@@ -298,7 +313,7 @@ internal sealed partial class IrBuilder
         _comptimeFrame = null;
         _comptimeAllowCalls = allowCalls;
         try { return EvalComptime(e); }
-        catch (ComptimeAbort ex) { ComptimeMiss ??= ex.Message; return null; }
+        catch (ComptimeAbort ex) { ComptimeMiss = ex.Message + (ComptimeMiss is { } prior ? ": " + prior : ""); return null; }
         catch (ComptimeGoto) { return null; }   // a backward or stray jump: not evaluated
         finally
         {
@@ -328,7 +343,7 @@ internal sealed partial class IrBuilder
             EvalComptimeStmt(body);
             return local.TryGetValue(result, out var v) ? CloneComptime(v) : null;
         }
-        catch (ComptimeAbort ex) { ComptimeMiss ??= ex.Message; return null; }
+        catch (ComptimeAbort ex) { ComptimeMiss = ex.Message + (ComptimeMiss is { } prior ? ": " + prior : ""); return null; }
         catch (ComptimeGoto) { return null; }
         // A function's whole-body `comptime { … return x; }` (task #100): an early `return` IS the block's result.
         catch (ComptimeReturn r) when (returnIsResult) { return r.Value is { } rv ? CloneComptime(rv) : null; }
@@ -365,7 +380,7 @@ internal sealed partial class IrBuilder
             return (false, null);
         }
         catch (ComptimeReturn r) { return (true, r.Value is { } rv ? CloneComptime(rv) : null); }
-        catch (ComptimeAbort ex) { ComptimeMiss ??= ex.Message; return null; }
+        catch (ComptimeAbort ex) { ComptimeMiss = ex.Message + (ComptimeMiss is { } prior ? ": " + prior : ""); return null; }
         catch (ComptimeGoto) { return null; }
         finally
         {
@@ -509,6 +524,7 @@ internal sealed partial class IrBuilder
     /// interpreter stopped when it knows.</summary>
     internal IrUnsupportedException ComptimeFoldFailure(CExpr inner) => new(
         "`comptime` expression did not evaluate to a compile-time constant value"
+        + (inner.Pos.Line > 0 ? $" at {inner.Pos.File ?? "source"}:{inner.Pos.Line}" : "")
         + (inner is Call { CalleeSym: { } callee } ? $" (a call to '{callee.Name}')" : "")
         + (ComptimeMiss is { } why ? $"; the interpreter stopped at {why}" : ""));
 
@@ -533,12 +549,29 @@ internal sealed partial class IrBuilder
         CtArray a => SpliceArray(a),
         CtNull n => new DefaultLit { Type = n.Type },
         CtSlice sl => SpliceSlice(sl),
+        // A pointer into mutable comptime storage remains a live interpreter
+        // reference. It has no standalone runtime literal to substitute.
+        CtElemPtr or CtVarPtr or CtFieldPtr => throw new UnspliceableComptime(),
         // A void result (`comptime std.debug.assert(…)` as a statement): zig's `{}`, which lowers to the same node.
         CtVoid => new DefaultLit { Type = CType.Void },
         // An enum literal with no result type yet (task #113): the node it came from, coerced where it meets an enum.
         CtEnumLiteral el => new DefaultLit { Type = new CType.EnumLiteral(el.Name) },
+        CtType t => new ZigTypeValue(t.Value) { Type = new CType.ZigMetaType() },
+        CtFunction fn => SpliceFunction(fn),
+        CtStaticPtr pointer => SpliceStaticPointer(pointer),
+        CtUndefined undefined => new ZigUndefinedValue { Type = undefined.Type },
         _ => throw new IrUnsupportedException("comptime value cannot be spliced back (int/float/bool/struct/array)"),
     };
+
+    private static CExpr SpliceFunction(CtFunction function)
+    {
+        var reference = new VarRef(function.Function) { Type = function.Function.Type };
+        if (function.Type == function.Function.Type || function.Type.Unqualified is CType.ZigGenericFunctionType)
+            return reference with { Type = function.Type };
+        // Keep symbolic pointer casts when materializing the value. Changing
+        // only VarRef.Type would still emit the original canonical signature.
+        return new Cast(function.Type, reference) { Type = function.Type };
+    }
 
     /// <summary>Splice one element of a comptime array or slice at its ELEMENT type: an integer stored into an enum element
     /// (std.enums' `r.* = @enumFromInt(f_value)`, still a comptime_int) is cast from the enum's underlying type, since C# has
@@ -554,8 +587,18 @@ internal sealed partial class IrBuilder
     private CExpr SpliceArray(CtArray a)
     {
         var elems = new List<CExpr>(a.Elems.Length);
-        foreach (var e in a.Elems) { elems.Add(SpliceElement(e, a.Element.Unqualified)); }
-        return new StackArray(a.Element, elems) { Type = a.Type };
+        void Append(CtArray array)
+        {
+            foreach (var value in array.Elems)
+            {
+                if (array.Element.Unqualified is CType.Array && value is CtArray row) Append(row);
+                else elems.Add(SpliceElement(value, array.Element.Unqualified));
+            }
+        }
+        Append(a);
+        var element = a.Element;
+        while (element.Unqualified is CType.Array inner) element = inner.Element;
+        return new StackArray(element, elems) { Type = a.Type };
     }
 
     /// <summary>Splice a comptime struct value back as a <see cref="StructInit"/> object initializer,
@@ -667,6 +710,9 @@ internal sealed partial class IrBuilder
         {
             throw new IrUnsupportedException("comptime slice value cannot be spliced (not a slice type)");
         }
+        if (sl.NullPointer)
+            return new SliceNew(new NullPtr { Type = new CType.Pointer(elem.Unqualified) },
+                new LitInt("0", 0) { Type = CType.ULong }, elem, elem.IsConst) { Type = sl.Type };
         // Any other element (std.enums' `[]const comptime_int` / `[]const E`): its elements in a pinned, program-lifetime
         // array, viewed as the slice (the comptime memory a zig slice of comptime data points into).
         if (elem.Unqualified is not CType.Prim { Integer: true, Bytes: 1 })
@@ -692,11 +738,11 @@ internal sealed partial class IrBuilder
     }
 
     /// <summary>True for a comptime value that is all zeros (an integer 0, a false, an array or struct of them).</summary>
-    private static bool IsZero(ComptimeValue v) => v switch
+    internal static bool IsZero(ComptimeValue v) => v switch
     {
         CtInt i => i.Value == 0,
         CtBool b => !b.Value,
-        CtFloat f => f.Value == 0,
+        CtFloat f => System.BitConverter.DoubleToInt64Bits(f.Value) == 0,
         CtArray a => a.Elems.All(IsZero),
         CtStruct s => s.Fields.Values.All(IsZero),
         CtNull => true,
@@ -722,12 +768,45 @@ internal sealed partial class IrBuilder
         return new CtArray(elems, CType.UChar, new CType.Array(CType.UChar, count));
     }
 
-    /// <summary>The zero comptime value of a type — for an <c>undefined</c> / default-initialized
+    // Undefined aggregates still have assignable storage. Each element/field
+    // starts undefined, independently, until source code writes it. No numeric
+    // zero or active union variant is inferred from undefined source data.
+    private ComptimeValue? UndefinedValue(CType type, int depth = 0)
+    {
+        if (depth > 64) return null;
+        if (type.Unqualified is CType.VoidType) return CtVoid.Value;
+        if (type.Unqualified is CType.Array { Count: { } count } array)
+        {
+            if (count < 0 || count > ComptimeArrayCap) return null;
+            var elements = new ComptimeValue[count];
+            for (var i = 0; i < count; i++)
+            {
+                if (UndefinedValue(array.Element, depth + 1) is not { } element) return null;
+                elements[i] = element;
+            }
+            return new CtArray(elements, array.Element, type);
+        }
+        if (type.Unqualified is CType.Named named && _structFields.TryGetValue(named.Name, out var fields))
+        {
+            var values = new Dictionary<string, ComptimeValue>(StringComparer.Ordinal);
+            foreach (var field in fields)
+            {
+                if (field.Name.Length == 0) continue;
+                if (UndefinedValue(field.Type, depth + 1) is not { } value) return null;
+                values[field.Name] = value;
+            }
+            return new CtStruct(values, type);
+        }
+        return new CtUndefined(type);
+    }
+
+    /// <summary>The zero comptime value of a type — for a default-initialized
     /// comptime local. A scalar zeroes; a struct zero-fills every (named) field recursively. Returns
     /// null when the type has no comptime zero (a pointer, an array — not yet, an aggregate with an
     /// unmodelled field), so the position is "not a compile-time constant".</summary>
     private ComptimeValue? ZeroValue(CType t)
     {
+        if (t.Unqualified is CType.ZigMetaType or CType.ZigGenericFunctionType) { return new CtUndefined(t); }
         var u = t.Unqualified;
         if (u is CType.Prim p)
         {
@@ -742,7 +821,7 @@ internal sealed partial class IrBuilder
         if (u is CType.EnumLiteral enumLiteral) { return new CtEnumLiteral(enumLiteral.Name); }
         // An enum tag zeroes to its first value; an optional / pointer to null; a slice to the empty one.
         if (u is CType.Enum) { return new CtInt(System.Int128.Zero, t); }
-        if (u is CType.Optional or CType.Pointer) { return new CtNull(t); }
+        if (u is CType.Optional or CType.Pointer or CType.Func) { return new CtNull(t); }
         if (u is CType.Slice { Element: var se })
         {
             return new CtSlice(new CtArray(System.Array.Empty<ComptimeValue>(), se, new CType.Array(se, 0)), 0, 0, t);
@@ -753,6 +832,11 @@ internal sealed partial class IrBuilder
             foreach (var f in fields)
             {
                 if (f.Name.Length == 0) { continue; }   // anonymous padding bit-field — no member
+                if (ZigComptimeFunctionFields.Contains((named.Name, f.Name)))
+                {
+                    map[f.Name] = new CtUndefined(f.Type);
+                    continue;
+                }
                 if (ZeroValue(f.Type) is not { } fv) { return null; }   // a field we can't zero yet
                 map[f.Name] = fv;
             }
@@ -791,6 +875,10 @@ internal sealed partial class IrBuilder
 
     private static CExpr SpliceInt(CtInt i, bool castNarrowUnsigned = true)
     {
+        // A folded enum still has its nominal type. C# cannot pass its
+        // nonzero backing literal directly to a parameter of that enum type.
+        if (i.Type.Unqualified is CType.Enum enumeration)
+            return new Cast(i.Type, SpliceInt(new CtInt(i.Value, enumeration.Underlying), castNarrowUnsigned)) { Type = i.Type };
         // A non-negative magnitude splices straight to a LitInt; the fast-path Value is set when it
         // fits long, else left null so the literal rides the 128-bit decimal-Digits path (Milestone ß).
         if (i.Value >= System.Int128.Zero)
@@ -833,6 +921,8 @@ internal sealed partial class IrBuilder
         StepComptime();
         switch (e)
         {
+            case ZigTypeValue t: return new CtType(t.Value);
+            case ZigUndefinedValue undefined: return UndefinedValue(undefined.Type);
             case LitInt i:
                 // `Value` is the fast path (fits long); past long the magnitude lives in
                 // the decimal `Digits` (a u128-range / i128 literal) — parse it into 128 bits.
@@ -886,6 +976,9 @@ internal sealed partial class IrBuilder
             case Cast c:
                 return EvalCast(c);
 
+            case BitCast { ZigLayout: { } layout } bitcast:
+                return EvalZigBitcast(bitcast, layout);
+
             case CondExpr q:
                 return EvalComptime(q.Cond) is { } cnd ? EvalComptime(Truthy(cnd) ? q.Then : q.Else) : null;
 
@@ -906,21 +999,47 @@ internal sealed partial class IrBuilder
             // A pointer to a comptime AGGREGATE is the aggregate itself (the comptime-engine segment E1): a
             // CtStruct / CtArray is a mutable reference, so `&a` handed to a `self: *@This()` method and a
             // store through it (`self.n += v`) mutate the caller's value in place, by-reference for free. A
-            // pointer to a SCALAR is still not a comptime value: the firewall holds for everything that
-            // would need a pointer variant.
+            // scalar local uses a bounded CtVarPtr into its owning frame instead.
             // `&t[i]` / `&s.Ptr[i]`: a pointer to one element (a `for (&t, 0..) |*e, i|` capture), which the body
             // then stores through (`e.* = v`).
             case Unary { Op: UnOp.AddrOf, Operand: Index elemIx } pElem when ElementSlot(elemIx) is ({ } elemBacking, var elemAt):
                 return new CtElemPtr(elemBacking, elemAt, pElem.Type);
+            case Unary { Op: UnOp.AddrOf, Operand: VarRef { Sym.Kind: SymKind.Func } function } address:
+                return new CtFunction(function.Sym, address.Type);
+            case Unary { Op: UnOp.AddrOf, Operand: VarRef { Sym.IsGlobal: true } staticObject } address
+                when staticObject.Type.Unqualified is not CType.Array && !ComptimeGlobals.ContainsKey(staticObject.Sym):
+                return new CtStaticPtr(staticObject.Sym, address.Type);
+            case Unary { Op: UnOp.AddrOf, Operand: VarRef variable } address
+                when EvalComptime(variable) is { } addressed && addressed is not (CtStruct or CtArray):
+            {
+                var storage = _comptimeFrame is { } locals && locals.ContainsKey(variable.Sym) ? locals
+                    : ComptimeGlobals.ContainsKey(variable.Sym) ? ComptimeGlobals : null;
+                return storage is null ? null : new CtVarPtr(storage, variable.Sym, address.Type);
+            }
+            case Unary { Op: UnOp.AddrOf, Operand: Member member } address
+                when DereferenceComptimeStruct(EvalComptime(member.Base), member.Base.Type) is CtStruct parent
+                    && parent.Fields.ContainsKey(member.Field):
+                return new CtFieldPtr(parent, member.Field, address.Type);
             case Unary { Op: UnOp.AddrOf or UnOp.Deref } pu:
             {
                 var pointee = EvalComptime(pu.Operand);
+                if (pu.Op == UnOp.Deref && pointee is CtStaticPtr staticPointer)
+                    return ReadStaticPointer(staticPointer);
                 if (pu.Op == UnOp.Deref && pointee is CtElemPtr derefPtr)
                 {
                     return derefPtr.Index >= 0 && derefPtr.Index < derefPtr.Backing.Elems.Length
                         ? derefPtr.Backing.Elems[derefPtr.Index]
                         : null;
                 }
+                if (pu.Op == UnOp.Deref && pointee is CtVarPtr localPtr)
+                    return localPtr.Storage.GetValueOrDefault(localPtr.Variable);
+                if (pu.Op == UnOp.Deref && pointee is CtFieldPtr fieldPointer)
+                    return ReadComptimeFieldPointer(fieldPointer);
+                if (pu.Op == UnOp.Deref && pointee is CtFunction function)
+                    return function with { Type = pu.Type };
+                if (pu.Op == UnOp.Deref && pointee is CtArray pointedArray
+                    && pu.Operand.Type.Unqualified is CType.Pointer { Pointee.Unqualified: not CType.Array })
+                    return pointedArray.Elems.Length > 0 ? pointedArray.Elems[0] : null;
                 return pointee is CtStruct or CtArray ? pointee : EvalUnary(pu);
             }
             // `i++` / `--i` (a lowered `for` loop's step): the compound assignment by one, yielding the old
@@ -958,6 +1077,9 @@ internal sealed partial class IrBuilder
             // Outside a frame (`_comptimeFrame` null — plain const folding) a variable read is not a
             // compile-time constant, so these fall through to null.
             case VarRef v:
+                if (v.Sym.Kind == SymKind.Func && (FunctionPointerSignature(v.Type) is not null
+                    || ZigComptimeFunctionValues.Contains(v.Sym)))
+                    return new CtFunction(v.Sym, v.Type);
                 // A C23 `constexpr` object IS its value in any constant expression —
                 // this single substitution lights up every ICE position at once
                 // (array bounds, case labels, _Static_assert, bit-field widths,
@@ -979,6 +1101,14 @@ internal sealed partial class IrBuilder
             case Call c:
                 return EvalComptimeCall(c);
 
+            case IndirectCall indirect:
+                if (EvalComptime(indirect.Callee) is not CtFunction callback
+                    || FunctionPointerSignature(indirect.Callee.Type) is not { } signature
+                    || FunctionPointerSignature(callback.Function.Type) is not { } original
+                    || !CompatibleFunctionTypes(signature, original)) return null;
+                return EvalComptimeCall(new Call(callback.Function.Name, indirect.Args, CalleeSym: callback.Function)
+                    { Type = indirect.Type, CalleeType = signature });
+
             // --- comptime aggregates (Milestone T) -----------------------------
             // A struct value: build from a struct initializer, read a field by value, or zero-fill an
             // `undefined`/default. (`c.field = v` is the write side — see EvalComptimeAssign.)
@@ -993,10 +1123,16 @@ internal sealed partial class IrBuilder
             // `s.f`, and `p->f` through a pointer to a comptime struct (E1: the pointer is the struct).
             case Member { Base.Type: var sbt, Field: "Ptr" or "Len" } sm when sbt?.Unqualified is CType.Slice:
             {
-                if (EvalComptime(sm.Base) is not CtSlice slv) { return null; }
+                var sliceBase = EvalComptime(sm.Base);
+                if (sliceBase is not CtSlice slv)
+                {
+                    ComptimeMiss ??= $"slice field '{sm.Field}' on {(sm.Base is Call sliceCall ? sliceCall.Callee : sm.Base is VarRef variable ? variable.Sym.Name : sm.Base.GetType().Name)} (base evaluated to {sliceBase?.GetType().Name ?? "unknown"}, not a slice)"
+                        + (_comptimeCallStack.Count > 0 ? $" in '{string.Join("' called from '", _comptimeCallStack)}'" : "");
+                    return null;
+                }
                 return sm.Field == "Len"
                     ? new CtInt(slv.Length, CType.ULong)
-                    : new CtElemPtr(slv.Backing, slv.Offset, sm.Type);
+                    : slv.NullPointer ? new CtNull(sm.Type) : new CtElemPtr(slv.Backing, slv.Offset, sm.Type);
             }
 
             case Member { Base.Type: var ebt, Field: "IsErr" or "Value" or "Code" } em when ebt?.Unqualified is CType.ErrorUnion:
@@ -1020,7 +1156,10 @@ internal sealed partial class IrBuilder
             }
             case Member mem:
             {
-                return EvalComptime(mem.Base) is CtStruct ms && ms.Fields.TryGetValue(mem.Field, out var mv)
+                var value = EvalComptime(mem.Base);
+                if (value is CtStaticPtr staticPointer) value = ReadStaticPointer(staticPointer);
+                value = DereferenceComptimeStruct(value, mem.Base.Type);
+                return value is CtStruct ms && ms.Fields.TryGetValue(mem.Field, out var mv)
                     ? mv : null;
             }
 
@@ -1032,6 +1171,35 @@ internal sealed partial class IrBuilder
                 {
                     if (EvalComptime(sa.Elems[k]) is not { } ev) { return null; }
                     elems[k] = RetypeTo(ev, sa.Element);
+                }
+                // Runtime StackArray storage can be flattened (nested @splat).
+                // Restore source rows here so indexing and byte copies use the
+                // declared element type and retain independent row storage.
+                if (sa.Type.Unqualified is CType.Array { Element.Unqualified: CType.Array } nested
+                    && sa.Element.Unqualified is not CType.Array)
+                {
+                    var offset = 0;
+                    CtArray? Nest(CType.Array shape)
+                    {
+                        if (shape.Count is not { } count || count < 0 || count > ComptimeArrayCap) return null;
+                        var row = new ComptimeValue[count];
+                        for (var i = 0; i < count; i++)
+                        {
+                            if (shape.Element.Unqualified is CType.Array inner)
+                            {
+                                if (Nest(inner) is not { } child) return null;
+                                row[i] = child;
+                            }
+                            else
+                            {
+                                if (offset >= elems.Length || shape.Element.Unqualified != sa.Element.Unqualified) return null;
+                                row[i] = elems[offset++];
+                            }
+                        }
+                        return new CtArray(row, shape.Element, shape);
+                    }
+                    var result = Nest(nested);
+                    return offset == elems.Length ? result : null;
                 }
                 return new CtArray(elems, sa.Element, sa.Type);
             }
@@ -1096,19 +1264,26 @@ internal sealed partial class IrBuilder
 
             // `r[1]` of a comptime tuple (an overflow builtin's result).
             case TupleIndex ti:
+                if (ti.Tuple.Type.Unqualified is CType.Tuple tupleType && tupleType.ComptimeIntAt(ti.Index) is { } tupleConstant)
+                    return new CtInt(tupleConstant, CType.ComptimeInt);
                 return EvalComptime(ti.Tuple) is CtStruct tupleValue
                        && tupleValue.Fields.TryGetValue(ti.Index.ToString(CultureInfo.InvariantCulture), out var tupleElem)
                     ? tupleElem : null;
 
             case SliceNew sliceNew:
             {
-                var (backing, at) = EvalComptime(sliceNew.Ptr) switch
+                var pointer = ReadComptimeFieldPointer(EvalComptime(sliceNew.Ptr));
+                if (EvalComptime(sliceNew.Len) is not CtInt sliceLen) { return null; }
+                if (pointer is CtNull && sliceLen.Value == 0)
+                    return new CtSlice(new CtArray([], sliceNew.Element, new CType.Array(sliceNew.Element, 0)),
+                        0, 0, sliceNew.Type, NullPointer: true);
+                var (backing, at) = pointer switch
                 {
                     CtArray a => (a, 0L),
                     CtElemPtr ep => (ep.Backing, ep.Index),
                     _ => ((CtArray?)null, 0L),
                 };
-                if (backing is null || EvalComptime(sliceNew.Len) is not CtInt sliceLen) { return null; }
+                if (backing is null) { return null; }
                 return new CtSlice(backing, at, (long)sliceLen.Value, sliceNew.Type);
             }
 
@@ -1132,7 +1307,7 @@ internal sealed partial class IrBuilder
 
             case DefaultLit dl:
                 // A pointer's default is null (a labeled block's `T* __blkN = default;` result temp, before its break).
-                return dl.Type.Unqualified is CType.Optional or CType.Pointer ? new CtNull(dl.Type) : ZeroValue(dl.Type);
+                return dl.Type.Unqualified is CType.Optional or CType.Pointer or CType.Func ? new CtNull(dl.Type) : ZeroValue(dl.Type);
 
             case NullPtr np:
                 return new CtNull(np.Type);
@@ -1170,7 +1345,12 @@ internal sealed partial class IrBuilder
         if (si.Type.Unqualified is not CType.Named named || ZeroValue(named) is not CtStruct st) { return null; }
         foreach (var fi in si.Members)
         {
-            if (EvalComptime(fi.Value) is not { } v) { return null; }
+            if (EvalComptime(fi.Value) is not { } v)
+            {
+                ComptimeMiss = $"field '{named.Name}.{fi.Name}' ({fi.Value.GetType().Name})"
+                    + (ComptimeMiss is { } reason ? ": " + reason : "");
+                return null;
+            }
             st.Fields[fi.Name] = RetypeTo(v, fi.FieldType);
             st.Active = fi.Name;   // meaningful for a union payload: the variant written
         }
@@ -1216,8 +1396,31 @@ internal sealed partial class IrBuilder
     /// truncate). Truncation to the target width is the backend's job at emit.</summary>
     private ComptimeValue? EvalCast(Cast c)
     {
+        if (TryEvalComptimeParentPointer(c, out var parent)) return parent;
         if (EvalComptime(c.Operand) is not { } v) { return null; }
-        if (v is CtNull) { return c.Target.Unqualified is CType.Optional or CType.Pointer ? new CtNull(c.Target) : null; }
+        if (v is CtUndefined) { return new CtUndefined(c.Target); }
+        if (v is CtFieldPtr fieldPointer)
+        {
+            if (c.Target.Unqualified is CType.Prim { Name: "_Bool" }) return new CtBool(true);
+            var target = c.Target.Unqualified is CType.Optional optional ? optional.Inner : c.Target;
+            if (target.Unqualified is CType.Pointer) return fieldPointer with { Type = target };
+            throw new ComptimeAbort("a symbolic field address cannot convert to " + c.Target.Describe());
+        }
+        if (v is CtStaticPtr pointer)
+        {
+            if (c.Target.Unqualified is CType.Prim { Name: "_Bool" }) return new CtBool(true);
+            var target = c.Target.Unqualified is CType.Optional optional ? optional.Inner : c.Target;
+            return target.Unqualified is CType.Pointer ? pointer with { Type = target } : null;
+        }
+        // A function value is an identity, never an invented numeric address.
+        if (v is CtFunction function)
+        {
+            if (c.Target.Unqualified is CType.Prim { Name: "_Bool" }) return new CtBool(true);
+            var target = c.Target.Unqualified is CType.Optional optional ? optional.Inner : c.Target;
+            return target.Unqualified is CType.Func or CType.Pointer
+                ? function with { Type = target } : null;
+        }
+        if (v is CtNull) { return c.Target.Unqualified is CType.Optional or CType.Pointer or CType.Func ? new CtNull(c.Target) : null; }
         if (c.Target.Unqualified is not CType.Prim p) { return v; }
         if (p.Integer)
         {
@@ -1283,6 +1486,59 @@ internal sealed partial class IrBuilder
         }
 
         if (EvalComptime(b.Left) is not { } l || EvalComptime(b.Right) is not { } r) { return null; }
+        if (l is CtFieldPtr || r is CtFieldPtr)
+        {
+            if (b.Op is not (BinOp.Eq or BinOp.Ne))
+                throw new ComptimeAbort("arithmetic on a symbolic field address is not supported at comptime");
+            bool equal;
+            if (l is CtFieldPtr left && r is CtFieldPtr right)
+                equal = ReferenceEquals(left.Parent, right.Parent) && left.Field == right.Field;
+            else if (l is CtNull || r is CtNull) equal = false;
+            else return null;
+            return new CtBool(b.Op == BinOp.Eq ? equal : !equal);
+        }
+        if (l is CtStaticPtr || r is CtStaticPtr)
+        {
+            if (b.Op is not (BinOp.Eq or BinOp.Ne)) return null;
+            bool equal;
+            if (l is CtStaticPtr lp && r is CtStaticPtr rp) equal = ReferenceEquals(lp.Object, rp.Object);
+            else if (l is CtNull || r is CtNull || l is CtInt li && li.Value == 0 || r is CtInt ri && ri.Value == 0) equal = false;
+            else return null;
+            return new CtBool(b.Op == BinOp.Eq ? equal : !equal);
+        }
+        if (l is CtFunction || r is CtFunction)
+        {
+            if (b.Op is not (BinOp.Eq or BinOp.Ne)) return null;
+            bool equal;
+            if (l is CtFunction lf && r is CtFunction rf) equal = ReferenceEquals(lf.Function, rf.Function);
+            else if (l is CtNull || r is CtNull || l is CtInt li && li.Value == 0 || r is CtInt ri && ri.Value == 0) equal = false;
+            else return null;
+            return new CtBool(b.Op == BinOp.Eq ? equal : !equal);
+        }
+        if (b.Op is BinOp.Eq or BinOp.Ne
+            && (b.Left.Type.Unqualified is CType.Pointer || b.Right.Type.Unqualified is CType.Pointer)
+            && (l is CtElemPtr or CtVarPtr or CtArray or CtStruct || r is CtElemPtr or CtVarPtr or CtArray or CtStruct))
+        {
+            var equal = (l, r) switch
+            {
+                (CtElemPtr a, CtElemPtr c) => ReferenceEquals(a.Backing, c.Backing) && a.Index == c.Index,
+                (CtVarPtr a, CtVarPtr c) => ReferenceEquals(a.Storage, c.Storage) && ReferenceEquals(a.Variable, c.Variable),
+                (CtArray a, CtElemPtr c) => ReferenceEquals(a, c.Backing) && c.Index == 0,
+                (CtElemPtr a, CtArray c) => ReferenceEquals(a.Backing, c) && a.Index == 0,
+                _ => ReferenceEquals(l, r),
+            };
+            return new CtBool(b.Op == BinOp.Eq ? equal : !equal);
+        }
+        // A present Zig optional is represented by its payload. In particular,
+        // ?usize(0) and ?bool(false) are present, despite their numeric value.
+        // Null equality tests presence before arithmetic comparison can erase it.
+        if (b.Op is BinOp.Eq or BinOp.Ne
+            && (b.Left.Type.Unqualified is CType.Optional || b.Right.Type.Unqualified is CType.Optional)
+            && (l is CtNull || r is CtNull))
+        {
+            var equal = l is CtNull && r is CtNull;
+            return new CtBool(b.Op == BinOp.Eq ? equal : !equal);
+        }
         if (_primitivePayloadPrecision && (l is CtFloat || r is CtFloat))
         {
             var common = CType.UsualArithmetic(b.Left.Type, b.Right.Type);
@@ -1316,6 +1572,7 @@ internal sealed partial class IrBuilder
     /// arithmetic-conversion result type.</summary>
     private ComptimeValue? CombineBin(BinOp op, ComptimeValue l, ComptimeValue r)
     {
+        if (l is CtUndefined || r is CtUndefined) throw new ComptimeAbort("use of undefined comptime operand");
         if (op is BinOp.Lt or BinOp.Gt or BinOp.Le or BinOp.Ge or BinOp.Eq or BinOp.Ne)
         {
             return new CtBool(Compare(op, l, r));
@@ -1395,14 +1652,17 @@ internal sealed partial class IrBuilder
 
     private static bool Truthy(ComptimeValue v) => v switch
     {
+        CtUndefined => throw new ComptimeAbort("use of undefined comptime value as a condition"),
         CtBool b => b.Value,
         CtInt i => i.Value != System.Int128.Zero,
         CtFloat f => f.Value != 0.0,
+        CtFunction or CtStaticPtr or CtFieldPtr => true,
         _ => false,
     };
 
     private static System.Int128 ToInt128(ComptimeValue v) => v switch
     {
+        CtUndefined => throw new ComptimeAbort("use of undefined comptime integer value"),
         CtInt i => i.Value,
         CtBool b => b.Value ? System.Int128.One : System.Int128.Zero,
         _ => System.Int128.Zero,
@@ -1463,6 +1723,8 @@ internal sealed partial class IrBuilder
     /// declared return type so the spliced literal carries the right carrier.</summary>
     private ComptimeValue? EvalComptimeCall(Call c)
     {
+        if (TryEvalComptimeVectorLoad(c, out var vectorLoad)) return vectorLoad;
+        if (c.Callee == "ZigMath.ShlExact") return EvalZigShlExact(c);
         // `@addWithOverflow(a, b)` and friends (std.sort.pdq's `@subWithOverflow`): the wrapped result and the overflow
         // bit, as the two-element tuple the runtime helper returns (a struct with fields "0" and "1").
         if (c is { Callee: "ZigMath.AddWithOverflow" or "ZigMath.SubWithOverflow" or "ZigMath.MulWithOverflow", Args: [var ovA, var ovB] }
@@ -1602,6 +1864,7 @@ internal sealed partial class IrBuilder
         if (c.Callee == "__dotcc_unreachable")
         {
             throw new ComptimeAbort("`unreachable` (or a `@compileError` on a path the evaluation took)"
+                + (c.Pos.Line > 0 ? $" at {c.Pos.File ?? "source"}:{c.Pos.Line}" : "")
                 + (_comptimeCallStack.Count > 0 ? $" in '{string.Join("' called from '", _comptimeCallStack)}'" : ""));
         }
         if (!_comptimeAllowCalls || c.CalleeSym is not { } cs)
@@ -1621,7 +1884,8 @@ internal sealed partial class IrBuilder
         {
             if (EvalComptime(c.Args[i]) is not { } av)
             {
-                ComptimeMiss ??= $"argument {i + 1} of a call to '{cs.Name}'";
+                ComptimeMiss = $"argument {i + 1} of a call to '{cs.Name}'"
+                    + (ComptimeMiss is { } reason ? ": " + reason : "");
                 return null;
             }
             argVals[i] = av;
@@ -1656,6 +1920,10 @@ internal sealed partial class IrBuilder
         {
             if (r.Value is null && c.Type.Unqualified is CType.VoidType) { return CtVoid.Value; }   // a bare `return;`
             return r.Value is { } rv ? RetypeTo(rv, c.Type) : null;
+        }
+        catch (ComptimeAbort ex)
+        {
+            throw new ComptimeAbort(ex.Message + $" in '{cs.Name}'");
         }
         finally
         {
@@ -1714,8 +1982,39 @@ internal sealed partial class IrBuilder
         return p.Signed && (low >> (bits - 1)) != 0 ? low - (System.Int128.One << bits) : low;
     }
 
-    private static ComptimeValue RetypeTo(ComptimeValue v, CType t)
+    private ComptimeValue RetypeTo(ComptimeValue v, CType t)
     {
+        if (v is CtNull && t.Unqualified is CType.Optional or CType.Pointer or CType.Func) return new CtNull(t);
+        // Stores and by-value calls own aggregate storage. Pointer/slice fields
+        // keep their referents; their payloads share the same interpreter shapes
+        // as aggregate values, so copying must follow the destination's type.
+        if (t.Unqualified is CType.Optional optional) return RetypeTo(v, optional.Inner);
+        if (t.Unqualified is CType.ErrorUnion errorUnion && v is not CtError) return RetypeTo(v, errorUnion.Payload);
+        if (v is CtFieldPtr fieldPointer)
+        {
+            if (t.Unqualified is CType.Pointer) return fieldPointer with { Type = t };
+            if (t.Unqualified is CType.Prim { Name: "_Bool" }) return new CtBool(true);
+            throw new ComptimeAbort("a symbolic field address cannot convert to " + t.Describe());
+        }
+        if (v is CtStaticPtr pointer)
+        {
+            if (t.Unqualified is CType.Prim { Name: "_Bool" }) return new CtBool(true);
+            if (t.Unqualified is CType.Pointer) return pointer with { Type = t };
+            throw new ComptimeAbort("a symbolic static address cannot convert to " + t.Describe());
+        }
+        if (v is CtFunction function)
+        {
+            if (t.Unqualified is CType.Prim { Name: "_Bool" }) return new CtBool(true);
+            if (t.Unqualified is CType.Func or CType.Pointer or CType.ZigGenericFunctionType)
+                return function with { Type = t };
+            throw new ComptimeAbort("a symbolic function address cannot convert to " + t.Describe());
+        }
+        if (v is CtArray array && t.Unqualified is CType.Array targetArray)
+            return new CtArray(array.Elems.Select(element => RetypeTo(element, targetArray.Element)).ToArray(), array.Element, array.Type);
+        if (v is CtStruct aggregate && t.Unqualified is CType.Named named && StructFieldsOf(named.Name) is { } fields)
+            return new CtStruct(aggregate.Fields.ToDictionary(field => field.Key,
+                field => fields.FirstOrDefault(source => source.Name == field.Key).Type is { } fieldType
+                    ? RetypeTo(field.Value, fieldType) : field.Value), aggregate.Type) { Active = aggregate.Active };
         if (t.Unqualified is not CType.Prim p) { return v; }
         if (p.Integer)
         {
@@ -1736,11 +2035,18 @@ internal sealed partial class IrBuilder
         };
     }
 
+    private static CType.Func? FunctionPointerSignature(CType type) => type.Unqualified switch
+    {
+        CType.Func function => function,
+        CType.Pointer { Pointee.Unqualified: CType.Func function } => function,
+        _ => null,
+    };
+
     /// <summary>The array and absolute element index an <see cref="Index"/> names: the base is a comptime array, an
     /// element pointer (<c>s.Ptr[i]</c>) or a slice, the index a comptime int. Null backing when either is not.</summary>
     private (CtArray? Backing, long Index) ElementSlot(Index ix)
     {
-        var (arr, start) = EvalComptime(ix.Base) switch
+        var (arr, start) = ReadComptimeFieldPointer(EvalComptime(ix.Base)) switch
         {
             CtArray a => (a, 0L),
             CtElemPtr ep => (ep.Backing, ep.Index),
@@ -1765,12 +2071,24 @@ internal sealed partial class IrBuilder
         return stored;
     }
 
+    private static ComptimeValue? DereferenceComptimeStruct(ComptimeValue? value, CType baseType)
+        => baseType.Unqualified is not CType.Pointer ? value : value switch
+        {
+            CtArray { Elems.Length: > 0 } array => array.Elems[0],
+            CtElemPtr pointer when pointer.Index >= 0 && pointer.Index < pointer.Backing.Elems.Length
+                => pointer.Backing.Elems[pointer.Index],
+            CtVarPtr pointer => pointer.Storage.GetValueOrDefault(pointer.Variable),
+            CtFieldPtr pointer => ReadComptimeFieldPointer(pointer),
+            _ => value,
+        };
+
     /// <summary>Apply a comptime assignment (simple or compound) to a frame local or a struct field,
     /// returning the stored value. A local/param l-value (<c>x = v</c>) or a struct member
     /// (<c>c.field = v</c>, mutating the frame's struct value in place) is assignable at comptime;
     /// anything else aborts.</summary>
     private ComptimeValue? EvalComptimeAssign(Assign a)
     {
+        if (a.ZigWrappingBits is not null) return EvalComptimeWrappingAssignment(a);
         if (EvalComptime(a.Value) is not { } rhs) { return null; }
 
         switch (a.Target)
@@ -1796,7 +2114,7 @@ internal sealed partial class IrBuilder
             // A struct field — `c.field = v`. EvalComptime(m.Base) returns the SAME CtStruct the
             // frame holds (by reference), so mutating its field map writes through to the local; a
             // nested `c.inner.field = v` likewise mutates the nested struct in place.
-            case Member m when EvalComptime(m.Base) is CtStruct st:
+            case Member m when DereferenceComptimeStruct(EvalComptime(m.Base), m.Base.Type) is CtStruct st:
                 var ftype = StructFieldType(st.Type, m.Field);
                 if (a.CompoundOp is { } mop)
                 {
@@ -1810,12 +2128,41 @@ internal sealed partial class IrBuilder
                 st.Fields[m.Field] = stored;
                 return stored;
 
+            case TupleIndex tuple when EvalComptime(tuple.Tuple) is CtStruct tupleValue:
+            {
+                var field = tuple.Index.ToString(CultureInfo.InvariantCulture);
+                if (a.CompoundOp is { } tupleOp)
+                {
+                    if (!tupleValue.Fields.TryGetValue(field, out var current)
+                        || CombineBin(tupleOp, current, rhs) is not { } combined) return null;
+                    rhs = combined;
+                }
+                return tupleValue.Fields[field] = RetypeTo(rhs, tuple.Type);
+            }
+
             // An array element — `t[i] = v`, `s.Ptr[i] = v`, or `e.* = v` through an element pointer (mutates the
             // frame's array value in place).
             case Index ix when ElementSlot(ix) is ({ } arr, var ai):
                 return StoreElement(arr, ai, a.CompoundOp, rhs);
             case Unary { Op: UnOp.Deref, Operand: var derefTarget } when EvalComptime(derefTarget) is CtElemPtr targetPtr:
                 return StoreElement(targetPtr.Backing, targetPtr.Index, a.CompoundOp, rhs);
+            case Unary { Op: UnOp.Deref, Operand: var scalarTarget } when EvalComptime(scalarTarget) is CtVarPtr scalarPtr:
+                if (a.CompoundOp is { } scalarOp)
+                {
+                    if (!scalarPtr.Storage.TryGetValue(scalarPtr.Variable, out var current)
+                        || CombineBin(scalarOp, current, rhs) is not { } combined) return null;
+                    rhs = combined;
+                }
+                return scalarPtr.Storage[scalarPtr.Variable] = RetypeTo(rhs, scalarPtr.Variable.Type);
+            case Unary { Op: UnOp.Deref, Operand: var fieldTarget } when EvalComptime(fieldTarget) is CtFieldPtr fieldPtr:
+                if (a.CompoundOp is { } fieldOp)
+                {
+                    if (!fieldPtr.Parent.Fields.TryGetValue(fieldPtr.Field, out var current)
+                        || CombineBin(fieldOp, current, rhs) is not { } combined) return null;
+                    rhs = combined;
+                }
+                var fieldType = StructFieldType(fieldPtr.Parent.Type, fieldPtr.Field) ?? a.Target.Type;
+                return fieldPtr.Parent.Fields[fieldPtr.Field] = RetypeTo(rhs, fieldType);
 
             default:
                 throw new ComptimeAbort("comptime assignment target must be a local variable, struct field, or array element");
@@ -1856,6 +2203,11 @@ internal sealed partial class IrBuilder
 
             case Labeled l:
                 EvalComptimeStmt(l.Body);
+                break;
+
+            case DeferGuard { OnErrorOnly: false } cleanup:
+                try { EvalComptimeStmt(cleanup.Body); }
+                finally { EvalComptimeStmt(cleanup.Cleanup); }
                 break;
 
             case DeclStmt d:
@@ -1923,13 +2275,14 @@ internal sealed partial class IrBuilder
                     // skipping it had left an array copy (`const final = result;`) all zeros.
                     if (e.Expr is Call or ZigMemCall)
                     {
-                        throw new ComptimeAbort("a call whose effect is not known at compile time");
+                        throw new ComptimeAbort("a call whose effect is not known at compile time"
+                            + (e.Expr is Call unknownCall ? $" ('{unknownCall.Callee}')" : ""));
                     }
                 }
                 break;
 
             case If i:
-                if (EvalComptime(i.Cond) is not { } cnd) { throw new ComptimeAbort("non-constant comptime condition"); }
+                if (EvalComptime(i.Cond) is not { } cnd) { throw new ComptimeAbort($"non-constant comptime condition ({i.Cond.GetType().Name})"); }
                 if (Truthy(cnd)) { EvalComptimeStmt(i.Then); }
                 else if (i.Else is { } el) { EvalComptimeStmt(el); }
                 break;

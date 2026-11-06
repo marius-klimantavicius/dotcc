@@ -15,9 +15,12 @@ internal sealed partial class CSharpBackend
         var stores = new StringBuilder();
         void Store(string destination, CType type, CExpr value)
         {
+            if (type.Unqualified is CType.VoidType && IsPure(value)) return;
             var field = "p" + arguments.Count;
-            fields.Append("        public ").Append(Cs(type)).Append(' ').Append(field).Append(";\n");
-            string argument = Coerced(value, type);
+            bool isVoid = type.Unqualified is CType.VoidType;
+            var carrier = isVoid ? "Unit" : Cs(type);
+            fields.Append("        public ").Append(carrier).Append(' ').Append(field).Append(";\n");
+            string argument = isVoid ? DiscardedUnitValue(value) : Coerced(value, type);
             if (_canHoist)
             {
                 // Consume the WHOLE value before rendering the next operand.
@@ -25,14 +28,15 @@ internal sealed partial class CSharpBackend
                 // delaying its final value until pack construction would let the
                 // next operand's prefixes interleave with this evaluation.
                 string local = "__aggregateValue" + _clCounter++;
-                _pending.Add(Cs(type) + " " + local + " = " + argument);
+                _pending.Add(carrier + " " + local + " = " + argument);
                 argument = local;
             }
             // No-hoist/lazy/loop contexts retain inline evaluation at the
             // original site. Pointer, CBool, callback and struct values remain
-            // typed locals/fields, without delegates or generic pointer carriers.
+            // typed locals/fields. Void effects use the expression-only Unit
+            // carrier; no void field is added to the source aggregate layout.
             arguments.Add(field + " = " + argument);
-            stores.Append("        ").Append(destination).Append(" = args.").Append(field).Append(";\n");
+            stores.Append("        ").Append(isVoid ? "_" : destination).Append(" = args.").Append(field).Append(";\n");
         }
         foreach (var member in initializer.Members)
         {

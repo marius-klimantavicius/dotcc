@@ -1,0 +1,24 @@
+--- a/src/terminal/modes.zig
++++ b/src/terminal/modes.zig
+@@ -279,10 +279,18 @@
+             .state = .permanently_reset,
+         };
+ 
+-        var discarding: std.Io.Writer.Discarding = .init(&.{});
+-        report.encode(&discarding.writer) catch unreachable;
+-        break :max_size discarding.count;
++        // Count the unchanged encoder's framing and decimal fields directly.
++        break :max_size "\x1B[".len + (if (report.tag.ansi) "" else "?").len +
++            decimalDigits(report.tag.value) + ";".len +
++            decimalDigits(@backingInt(report.state)) + "$y".len;
+     };
++
++    fn decimalDigits(value: u16) usize {
++        var remaining = value;
++        var count: usize = 1;
++        while (remaining >= 10) : (remaining /= 10) count += 1;
++        return count;
++    }
+ 
+     /// The state of a mode as reported in a DECRPM response.
+     pub const State = enum(u8) {

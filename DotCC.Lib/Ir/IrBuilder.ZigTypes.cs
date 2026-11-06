@@ -6,6 +6,8 @@ internal sealed partial class IrBuilder
     internal Dictionary<string, bool> StructIsUnion => _structIsUnion;
     internal HashSet<string> PackedStructs => _packedStructs;
     internal HashSet<string> PrunableTypes { get; } = new(StringComparer.Ordinal);
+    internal HashSet<(string Owner, string Field)> ZigComptimeFunctionFields { get; } = new();
+    internal HashSet<Symbol> ZigComptimeFunctionValues { get; } = new();
 
     /// <summary>Withdraw a registered struct / union so it is not emitted: a lazy Zig module's container
     /// found, after registering, to hold a container that could not be lowered (road-to-zig-std G3,

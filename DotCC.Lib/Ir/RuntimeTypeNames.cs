@@ -21,9 +21,11 @@ internal static class RuntimeTypeNames
     private static readonly HashSet<string> Names = new(System.StringComparer.Ordinal)
     {
         "Alignment", "Allocator", "AllocatorVTable", "ArenaAllocator", "ArenaChunk", "Atomic", "CBool",
-        "ConstPtrSlice", "ConstSlice", "ErrUnion", "FixedBufferAllocator", "Float128", "Libc", "NativeImports",
-        "PrintfBuilder", "PtrSlice", "ScanfReader", "Slice", "SprintfBuilder", "Unit",
+        "ConstOptionalSlice", "ConstPtrPtrSlice", "ConstPtrSlice", "ConstSlice", "ErrUnion", "FixedBufferAllocator", "Float128", "Libc", "NativeImports",
+        "OptionalSlice", "PrintfBuilder", "PtrPtrSlice", "PtrSlice", "ScanfReader", "Slice", "SprintfBuilder", "Unit",
         "WSprintfBuilder", "ZigAlloc", "ZigErrorReturn", "ZigList", "ZigMath", "ZigMem", "ZigTesting", "ZigVec",
+        "ZigVector32", "ZigVector1024",
+        "ZigOptionalVoid", "ZigOptionalError", "ZigOptionalZero", "ZigErrorUnionZero",
     };
 
     /// <summary>The classes the C# program SHELL emits around the user code (<c>CSharpBackend.BuildShell</c>

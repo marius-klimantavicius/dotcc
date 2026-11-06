@@ -25,22 +25,28 @@ internal sealed partial class ZigLowering
         return new StatementExpression(new Block(new[] { NoreturnStatement(value) }), null) { Type = sink };
     }
 
-    private static CType NoreturnPeerType(CType? sink, params CExpr[] arms)
+    private CType NoreturnPeerType(CType? sink, params CExpr[] arms)
     {
         var values = arms.Where(a => !IsNoreturn(a)).ToArray();
         if (values.Any(a => a.Type.Unqualified is CType.VoidType)
             && (values.Any(a => a.Type.Unqualified is not CType.VoidType)
                 || sink is not null && sink.Unqualified is not CType.VoidType))
         {
-            throw new IrUnsupportedException("incompatible peer types: void does not produce a value (unlike noreturn)");
+            throw new IrUnsupportedException("incompatible peer types: void does not produce a value (unlike noreturn)"
+                + $" (arms {string.Join(", ", arms.Select(a => a.Type.Describe()))}; sink {sink?.Describe() ?? "none"}; {_module?.Path ?? _fileStem}, function '{_currentFnName}', container '{_currentContainer}')");
         }
+        if (sink is null && UsesSourceStdlib && values.Length > 1 && values.All(a => a is TupleNew)
+            && TupleValuePeer(values.Cast<TupleNew>().ToList()) is { } tuplePeer) return tuplePeer;
         return sink ?? values.FirstOrDefault()?.Type ?? CType.NoReturn;
     }
 
-    private static CExpr NoreturnConditional(CExpr cond, CExpr then, CExpr otherwise, CType? sink)
+    private CExpr NoreturnConditional(CExpr cond, CExpr then, CExpr otherwise, CType? sink)
     {
         var type = NoreturnPeerType(sink, then, otherwise);
-        return new CondExpr(CoerceNoreturn(cond, CType.Bool), CoerceNoreturn(then, type), CoerceNoreturn(otherwise, type)) { Type = type };
+        var result = new CondExpr(CoerceNoreturn(cond, CType.Bool), CoerceTupleValuePeer(CoerceNoreturn(then, type), type),
+            CoerceTupleValuePeer(CoerceNoreturn(otherwise, type), type)) { Type = type };
+        if (TuplePeerSourceBits(then, otherwise) is { } bits) _tupleResultBits[result] = bits;
+        return result;
     }
 
     /// <summary>A bottom expression used as a statement retains its real calls. A bottom if/switch
@@ -48,6 +54,7 @@ internal sealed partial class ZigLowering
     private static CStmt NoreturnStatement(CExpr value) => value switch
     {
         Paren p => NoreturnStatement(p.Inner),
+        StatementExpression { Value: null } s when IsNoreturn(s) => s.Body,
         CondExpr c when IsNoreturn(c) => new If(CoerceNoreturn(c.Cond, CType.Bool), NoreturnStatement(c.Then), NoreturnStatement(c.Else)),
         SwitchExpr s when IsNoreturn(s) => new Switch(s.Subject, s.Arms.Select(a => new SwitchSection(
             a.Labels ?? new[] { new SwitchLabel(null) }, new[] { NoreturnStatement(a.Value) })).ToList()),
@@ -161,5 +168,14 @@ internal sealed partial class ZigLowering
         var message = LowerExprSink(args[0], new CType.Slice(CType.UChar.WithQuals(TypeQual.Const)));
         // Evaluate the message before trapping, including effects in a computed message.
         return new CommaOp(new CExpr[] { message, UnreachableCall() }) { Type = CType.NoReturn };
+    }
+
+    private static CExpr LowerNoreturnTrap(IReadOnlyList<Item> args)
+    {
+        if (args.Count != 0) throw new CompileException("zig @trap expects no arguments");
+        // Abort the translated program through its existing runtime termination
+        // policy. The unreachable tail also gives C# a terminating expression.
+        return new CommaOp(new CExpr[] { new Call("abort", new List<CExpr>()) { Type = CType.Void }, UnreachableCall() })
+            { Type = CType.NoReturn };
     }
 }

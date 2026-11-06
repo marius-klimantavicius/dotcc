@@ -14,6 +14,10 @@ public sealed class ZigPackedBitSizeExecutionTests
     [InlineData("logical.zig", true)]
     [InlineData("physical.zig", false)]
     [InlineData("physical.zig", true)]
+    [InlineData("reified.zig", false)]
+    [InlineData("reified.zig", true)]
+    [InlineData("union.zig", false)]
+    [InlineData("union.zig", true)]
     public void Reflection_and_selected_physical_sizes_have_independent_native_controls(string fixture, bool objects)
     {
         var directory = Path.Combine(Path.GetTempPath(), "dotcc-packed-bits-" + Guid.NewGuid().ToString("N"));
@@ -32,7 +36,7 @@ public sealed class ZigPackedBitSizeExecutionTests
             }
             else emitted = Compiler.EmitCSharp(new[] { path }, emit: EmitMode.Csproj);
             var result = FixtureRunner.CompileAndRunCapturingStreams(emitted, Array.Empty<string>());
-            result.exit.ShouldBe(0);
+            result.exit.ShouldBe(fixture is "reified.zig" or "union.zig" ? 42 : 0);
             result.stdout.ShouldBeEmpty();
             result.stderr.ShouldBeEmpty();
         }

@@ -45,6 +45,30 @@ namespace DotCC.Libc;
 /// </remarks>
 public static class ZigMath
 {
+    /// <summary>Capture the destination and its old value before evaluating a wrapping assignment's RHS.</summary>
+    public static WrappingAssignment<T> Wrapping<T>(ref T target)
+        where T : unmanaged, global::System.Numerics.IBinaryInteger<T>
+        => new(ref target);
+
+    public ref struct WrappingAssignment<T> where T : unmanaged, global::System.Numerics.IBinaryInteger<T>
+    {
+        private ref T _target;
+        private readonly T _old;
+        public WrappingAssignment(ref T target) { _target = ref target; _old = target; }
+        public T Add(T value, int bits) => _target = NormalizeWrapping(unchecked(_old + value), bits);
+        public T Sub(T value, int bits) => _target = NormalizeWrapping(unchecked(_old - value), bits);
+        public T Mul(T value, int bits) => _target = NormalizeWrapping(unchecked(_old * value), bits);
+    }
+
+    private static T NormalizeWrapping<T>(T value, int bits)
+        where T : unmanaged, global::System.Numerics.IBinaryInteger<T>
+    {
+        var carrierBits = Unsafe.SizeOf<T>() * 8;
+        if (bits <= 0 || bits > carrierBits) throw new global::System.ArgumentOutOfRangeException(nameof(bits));
+        var shift = carrierBits - bits;
+        return (value << shift) >> shift;
+    }
+
     /// <summary>Saturating add — <c>a +| b</c> clamped to <typeparamref name="T"/>'s range.</summary>
     public static T SatAdd<T>(T a, T b)
         where T : global::System.Numerics.IBinaryInteger<T>, global::System.Numerics.IMinMaxValue<T>
@@ -144,6 +168,31 @@ public static class ZigMath
         => T.IsNegative(T.MinValue)
             ? OverflowSigned<T>(global::System.Int128.CreateTruncating(a) << shift)
             : OverflowUnsigned<T>(global::System.UInt128.CreateTruncating(a) << shift);
+
+    /// <summary>Exact left shift within the source integer width, including non-carrier widths.
+    /// Signed results must fit their signed range; unsigned results must lose no set bits.
+    /// BigInteger supplies the wider accumulator for 128-bit operands, as in the overflow helpers.</summary>
+    public static T ShlExact<T>(T value, System.Int128 shift, int bits)
+        where T : global::System.Numerics.IBinaryInteger<T>, global::System.Numerics.IMinMaxValue<T>
+    {
+        var signed = T.IsNegative(T.MinValue);
+        if (bits < 1 || bits > 128)
+            throw new System.NotSupportedException("zig @shlExact supports scalar integer widths 1 through 128 only");
+        if (shift < 0 || shift >= bits)
+            throw new System.ArgumentOutOfRangeException(nameof(shift), "zig @shlExact shift amount must be non-negative and less than the integer bit width");
+        var min = signed ? -(global::System.Numerics.BigInteger.One << (bits - 1)) : global::System.Numerics.BigInteger.Zero;
+        var max = (global::System.Numerics.BigInteger.One << (bits - (signed ? 1 : 0))) - 1;
+        if (min < global::System.Numerics.BigInteger.CreateChecked(T.MinValue)
+            || max > global::System.Numerics.BigInteger.CreateChecked(T.MaxValue))
+            throw new System.NotSupportedException("zig @shlExact logical width exceeds its managed integer carrier");
+        var input = global::System.Numerics.BigInteger.CreateChecked(value);
+        if (input < min || input > max)
+            throw new System.OverflowException("zig @shlExact operand does not fit its logical integer width");
+        var exact = input << (int)shift;
+        if (exact < min || exact > max)
+            throw new System.OverflowException("zig @shlExact overflow: shifted bits disagree with the result sign or leave the unsigned integer width");
+        return T.CreateChecked(exact);
+    }
 
     // ---- Zig math builtins (road-to-zig-std B3) — each maps to a BCL/generic-math primitive.
     // The Zig front-end coerces both operands to their peer integer type, so C# infers T and the

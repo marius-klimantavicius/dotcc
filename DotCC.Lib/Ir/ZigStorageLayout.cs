@@ -16,7 +16,7 @@ public sealed record ZigStorageLayout(ZigStorageKind Kind, CType.Named SourceCTy
 {
     public int Stride => NativeSize;
     // This is a measured finite target profile, not a general Zig ABI rule.
-    public const string AcceptedProfile = "zig-0.17-linux-x86_64-le-dotnet10-integer1to64-r49-v1";
+    public const string AcceptedProfile = "zig-0.17-linux-x86_64-le-dotnet10-integer1to128-v2";
     public static bool CompilerModelHostMatches => OperatingSystem.IsLinux()
         && RuntimeInformation.ProcessArchitecture == Architecture.X64
         && BitConverter.IsLittleEndian && IntPtr.Size == 8 && Environment.Version.Major == 10;

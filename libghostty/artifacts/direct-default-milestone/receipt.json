@@ -1,0 +1,85 @@
+{
+  "status": "passed working direct default; full upstream managed qualification pending",
+  "parent_commit": "b07877b665a186e399899ebbbddd95274b00f8ff",
+  "default_reference_chain": [
+    "libghostty/samples/ManagedConsumer/ManagedConsumer.csproj",
+    "libghostty/src/Managed.GhosttyVt/Managed.GhosttyVt.csproj",
+    "libghostty/generated/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj"
+  ],
+  "canonical_forms": [
+    "libghostty/generated/TranslatedGhosttyVt",
+    "libghostty/generated/TranslatedGhosttyVt.Raw"
+  ],
+  "candidate_engine": {
+    "emitted": true,
+    "linked": true,
+    "built": true,
+    "ran": true,
+    "commands": "candidate-engine-commands.json"
+  },
+  "compiler_build": {
+    "exit": 0,
+    "warnings": 0,
+    "errors": 0
+  },
+  "runtime_build": {
+    "exit": 0,
+    "warnings": 0,
+    "errors": 0
+  },
+  "ordinary_default_build": {
+    "exit": 0,
+    "warnings": 0,
+    "errors": 0,
+    "TranslatedProject_override": false
+  },
+  "ordinary_default_consumer": {
+    "exit": 0,
+    "exact_output": "PASS owning terminal transcript, UTF-8 chunking, screens, resize/reset, concurrent isolation and disposal"
+  },
+  "focused_regressions": {
+    "passed": 20,
+    "failed": 0,
+    "skipped": 0
+  },
+  "tool_defaults_tests": {
+    "passed": 5
+  },
+  "delivery_audit_controls": {
+    "passed": 27
+  },
+  "publication_bytes_unchanged": true,
+  "retained_owning_differential_allocation_rows": "raw/processed x JIT/whole-library-rooted NativeAOT passed before default promotion",
+  "upstream_managed_cases_accepted": 287,
+  "upstream_managed_total": 2622,
+  "full_upstream_qualification": "pending; no complete campaign acceptance claim",
+  "source_compatibility": {
+    "canonical_publication": "0001-0014",
+    "candidate_regeneration_and_engine": "0001-0015",
+    "0016": "excluded and unapplied"
+  },
+  "excluded_pending_files": [
+    "DotCC.Lib/Frontends/ZigLowering.BitcastWidth.cs",
+    "DotCC.Lib/Frontends/ZigLowering.Types.cs",
+    "DotCC.Lib/Frontends/ZigLowering.TypeInfo.cs",
+    "DotCC.Lib/Frontends/ZigLowering.Generics.cs",
+    "DotCC.Lib/Frontends/ZigLowering.Stmts.cs",
+    "DotCC.Lib/Frontends/ZigLowering.Loops.cs",
+    "DotCC.FunctionalTests/ZigStaticPointerExecutionTests.cs",
+    "DotCC.FunctionalTests/ZigRenderOptionalExecutionTests.cs",
+    "libghostty/patches/direct/manifest.json",
+    "libghostty/patches/direct/README.md",
+    "DotCC.Lib/Frontends/ZigLowering.CompositeTypeLocations.cs",
+    "DotCC.FunctionalTests/ZigGenericElementWidthExecutionTests.cs",
+    "DotCC.FunctionalTests/ZigOptionalStorageVectorExecutionTests.cs"
+  ],
+  "additional_exclusions": [
+    "for-else-return/comptime-slice-arguments fixtures and test rows",
+    "generic-element-width experiment fixtures/tests",
+    "optional-vector and forward-null experiment controls",
+    "0016-concrete-size-report.patch and its manifest/README entry"
+  ],
+  "unrelated_work": "not staged; separate index used; original index was empty",
+  "fresh_qualification": "candidate compiler, full actual engine, default consumer and 20 focused controls; no full upstream rerun",
+  "generated_whitespace": "published emitter bytes preserved; unified compatibility patch context whitespace also preserved"
+}

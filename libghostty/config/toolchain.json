@@ -2,7 +2,7 @@
   "name": "zig",
   "version": "0.17.0",
   "index_url": "https://ziglang.org/download/index.json",
-  "directory": "build/native-tools",
+  "directory": "/mnt/storage/dotcc-libghostty-disposable/campaign/native-tools",
   "hosts": {
     "x86_64-linux": {
       "url": "https://ziglang.org/download/0.17.0/zig-x86_64-linux-0.17.0.tar.xz",

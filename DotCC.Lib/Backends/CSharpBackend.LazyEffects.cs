@@ -5,7 +5,7 @@ namespace DotCC.Backends;
 
 internal sealed partial class CSharpBackend
 {
-    private static bool HasLazyEffects(CExpr expression)
+    private bool HasLazyEffects(CExpr expression)
     {
         var comma = false;
         var addressedLocal = false;
@@ -14,6 +14,9 @@ internal sealed partial class CSharpBackend
         {
             if (node is CommaOp) comma = true;
             if (node is StackArray or Member { Arrow: false, Type.Unqualified: CType.Array, Base.IsLValue: false })
+                branchStorage = true;
+            if (node is NullCoalesce coalesce && (IsAlignedOptional(coalesce.Left.Type)
+                || coalesce.Left.Type.Unqualified is CType.Optional { Inner.Unqualified: CType.ErrorSetType }))
                 branchStorage = true;
             if (node is VarRef { Sym.IsGlobal: false, Sym.AddressTaken: true }) addressedLocal = true;
         });

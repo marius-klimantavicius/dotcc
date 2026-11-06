@@ -13,12 +13,9 @@ namespace DotCC.Frontends;
 /// a type back from one, and <c>@compileError</c> is how a comptime program rejects the type it was
 /// handed.
 ///
-/// <para><b><c>@Int(signedness, bits)</c></b> (207 uses) is the whole of the family that pays. The
-/// other constructors are measured and cut: <c>@Pointer</c> ×14, <c>@Struct</c> ×5, <c>@Enum</c> ×4,
-/// <c>@Union</c> ×3 — and each of those takes comptime AGGREGATE arguments (an attributes struct, a
-/// <c>[]const []const u8</c> of field names, a <c>*const [N]type</c>), which is a comptime-value
-/// engine dotcc does not have. They get loud cuts naming what they would need, not half-built
-/// reifiers.</para>
+/// <para>Scalar constructors and bounded aggregate reflection share the source
+/// type model. Structs and enums use the type-body reifiers; untagged unions
+/// additionally accept mutable field-name, type, and attribute arrays.</para>
 ///
 /// <para><b>The exact-width rule carries over.</b> <c>@bitSizeOf</c> (431 uses, and the operand of
 /// most <c>@Int</c> calls: <c>@Int(.unsigned, @bitSizeOf(T))</c>) is answered from the SAME declared
@@ -71,6 +68,7 @@ internal sealed partial class ZigLowering
     /// binding, exactly as a source SPELLING does (S5b). Recording it at the site also means the
     /// width operand is evaluated once, not again per query.</summary>
     private readonly Dictionary<Item, int> _reifiedIntBits = new(ReferenceEqualityComparer.Instance);
+    private readonly Dictionary<Item, ZigResultLocation> _reifiedTypeLocations = new(ReferenceEqualityComparer.Instance);
 
     // ---- @Int and the rest of the reification family ----------------------
 
@@ -90,7 +88,7 @@ internal sealed partial class ZigLowering
         var element = PointerAttrsConst(args[1]) ? child.WithQuals(TypeQual.Const) : child;
         return size switch
         {
-            "slice" => new CType.Slice(element),
+            "slice" => SourceSlice(element),
             "one" or "many" or "c" => new CType.Pointer(element),
             _ => throw new IrUnsupportedException($"zig `@Pointer`: `.{size}` is not a pointer size"),
         };
@@ -164,7 +162,10 @@ internal sealed partial class ZigLowering
                 throw new IrUnsupportedException(
                     "zig `@Enum(…)` is modeled as a type-returning function's result (`fn E(…) type { return "
                     + "@Enum(…); }`), which names the enum after the instance; here it has no name to take");
-            case "@Union" or "@Fn" or "@Tuple":
+            case "@Union":
+                type = ReifyUnionBuiltin("union", b);
+                return true;
+            case "@Fn" or "@Tuple":
                 throw new IrUnsupportedException(
                     $"zig `{name}(…)` reifies a type from comptime AGGREGATE arguments (field-name and "
                     + "field-type arrays, an attributes struct), which dotcc has no comptime-aggregate engine "
@@ -203,11 +204,24 @@ internal sealed partial class ZigLowering
         }
         var name = ComptimeName(args[1]) ?? TryComptimeTagName(args[1])
             ?? throw new IrUnsupportedException("zig `@FieldType`: the field name must be comptime-known");
+        CType RememberFieldType(string owner, CType fieldType)
+        {
+            var location = BitcastFieldLocation(owner, name, fieldType);
+            var declared = (fieldType.Unqualified is CType.Enum enumeration ? EnumBackingBits(enumeration) : null)
+                ?? location.IntegerBits;
+            _reifiedTypeLocations[call.Arg2!] = location with { IntegerBits = declared };
+            if (declared is { } bits)
+                _reifiedIntBits[call.Arg2!] = bits;
+            else _reifiedIntBits.Remove(call.Arg2!);
+            return fieldType;
+        }
+        if (_unions.TryGetValue(containerName, out var union) && union.Variants.TryGetValue(name, out var payload))
+            return RememberFieldType(containerName, payload ?? CType.Void);
         foreach (var agg in AggregatesOf(containerName))
         {
             if (_ir.StructFields.TryGetValue(agg, out var fields) && fields.FirstOrDefault(f => f.Name == name) is { Type: { } fieldType })
             {
-                return fieldType;
+                return RememberFieldType(agg, fieldType);
             }
         }
         throw new IrUnsupportedException($"zig `@FieldType`: '{containerName}' has no field '{name}'");
@@ -237,7 +251,13 @@ internal sealed partial class ZigLowering
         }
         var names = ReifiedFieldNames(fnName, args[2]);
         var types = ReifiedList(fnName, args[3], names.Count, "field_types", LowerType);
-        var defaults = ReifiedList(fnName, args[4], names.Count, "field_attrs", attr => ReifiedFieldDefault(fnName, attr));
+        var bits = TryFoldTypeInfoList(StripAddrOf(args[3]), out var typeList) && typeList.Types is not null
+            ? typeList.TypeBits?.ToList() ?? Enumerable.Repeat<int?>(null, names.Count).ToList()
+            : ReifiedList(fnName, args[3], names.Count, "field_types", DeclaredBitsOfTypeArg);
+        var defaults = TryFoldTypeInfoList(StripAddrOf(args[4]), out var attrList) && attrList.Attrs is { } attributes
+            ? attributes.Select((attr, index) => ReflectedFieldDefault(attr, types[index])).ToList()
+            : ReifiedList(fnName, args[4], names.Count, "field_attrs", attr => ReifiedFieldDefault(fnName, attr));
+        if (defaults.Count != names.Count) { throw new CompileException("zig: @Struct field attribute count differs from field count"); }
         var fields = new List<ReifiedField>(names.Count);
         var seen = new HashSet<string>(System.StringComparer.Ordinal);
         for (var i = 0; i < names.Count; i++)
@@ -246,9 +266,25 @@ internal sealed partial class ZigLowering
             {
                 throw new IrUnsupportedException($"zig `@Struct`: duplicate struct field name '{names[i]}'");
             }
-            fields.Add(new ReifiedField(names[i], types[i], defaults[i]));
+            fields.Add(new ReifiedField(names[i], types[i], defaults[i], bits[i]));
         }
         return new TypeBodyResult(true, null, null, null, layout, fields);
+    }
+
+    private CExpr? ReflectedFieldDefault(ZigFieldAttr attr, CType type)
+    {
+        if (attr.Align is not null) { throw new IrUnsupportedException("zig: @Struct with explicit field alignment is not modeled"); }
+        if (attr.Comptime) { throw new IrUnsupportedException("zig: @Struct with comptime fields is not modeled"); }
+        if (attr.Default is { } direct) { return direct; }
+        if (!attr.HasDefault) { return null; }
+        if (attr.Struct is { } owner && attr.Field is { } field)
+        {
+            if (_reifiedFieldDefaults.TryGetValue((owner, field), out var value)) { return value; }
+            if (_shared.StructFieldAttrs.TryGetValue((owner, field), out var source)
+                && source.Owner._structFieldDefaults.TryGetValue((owner, field), out var expression))
+                return source.Owner.LowerFieldDefault(owner, type, expression);
+        }
+        throw new IrUnsupportedException("zig: reflected field default has no source value");
     }
 
     /// <summary>Evaluate a type-returning body's <c>return @Enum(TagInt, mode, field_names, field_values);</c> (std.meta.FieldEnum,
@@ -371,9 +407,13 @@ internal sealed partial class ZigLowering
     /// <see cref="_reifiedFieldDefaults"/>, where a struct literal omitting that field reads it.</summary>
     private void RegisterReifiedStruct(string name, IReadOnlyList<ReifiedField> fields, AggregateLayout layout)
     {
+        if (layout == AggregateLayout.Packed)
+            PackedBitSizeEvidence.GetOrCreateValue(_ir).Packed[name] = new(this, null, null);
         foreach (var f in fields)
         {
             if (f.Default is { } d) { _reifiedFieldDefaults[(name, f.Name)] = d; }
+            _shared.BitcastWidths.Fields[(name, f.Name)] = new(f.Type, f.IntegerBits);
+            if (f.IntegerBits is { } bits) _structFieldBits[(name, f.Name)] = bits;
         }
         RegisterAggregate(name, fields.Select(f => new StructField(f.Name, f.Type)).ToList(), isUnion: false, layout);
     }
@@ -396,7 +436,7 @@ internal sealed partial class ZigLowering
         {
             "auto" => AggregateLayout.Default,
             "extern" => AggregateLayout.Sequential,
-            "packed" => throw new IrUnsupportedException("zig `@Struct(.@\"packed\", …)`: a packed reified struct is not modeled"),
+            "packed" => AggregateLayout.Packed,
             var other => throw new IrUnsupportedException($"zig `@Struct`: `.{other}` is not a container layout"),
         };
     }
@@ -483,7 +523,7 @@ internal sealed partial class ZigLowering
         {
             items = positional.Select(p => each(p.Arg0)).ToList();
         }
-        else if (typeof(T) == typeof(CType) && TryFoldTypeInfoList(arg, out var list) && list.Types is { } folded)
+        else if (typeof(T) == typeof(CType) && TryFoldTypeInfoList(cur, out var list) && list.Types is { } folded)
         {
             items = folded.Cast<T>().ToList();
         }
@@ -625,8 +665,11 @@ internal sealed partial class ZigLowering
             // `@typeInfo(T).int.bits` answers. A runtime value of one, outside such a body, stays loud.
             if (bits > 128 && (_typeBodiesInProgress.Count > 0 || _typeArgDepth > 0)) { return signed ? CType.Int128 : CType.UInt128; }
             throw new IrUnsupportedException(
-                $"zig `@Int(.{(signed ? "signed" : "unsigned")}, {bits})`: dotcc models integer widths 1..128 "
-                + $"(`{spelling}` is outside that range; a wider one needs BigInteger)");
+                $"zig `@Int(.{(signed ? "signed" : "unsigned")}, {bits})`: dotcc models unsigned width 0 and integer widths 1..128 "
+                + $"(`{spelling}` is outside that range; a wider one needs BigInteger)"
+                + $" ({_module?.Path ?? _fileStem}:{args[1].Position.Line}, function '{_currentFnName}', container '{_currentContainer}')"
+                + $"; T={_typeAliases.GetValueOrDefault("T")?.Describe()}, source_bits={_declaredIntBits.GetValueOrDefault("T")}, local_bits={_symbols.Resolve("bits")?.ConstValue}"
+                + (_currentFnSym is { } integerOwner ? "; callers: " + DescribeRuntimeDemand(integerOwner) : ""));
         }
         return type;
     }
@@ -736,8 +779,11 @@ internal sealed partial class ZigLowering
             // `void` as data (task #114's runtime `Unit`, std.array_hash_map's `Hash = void`) has no bits, as `void` has.
             CType.Named { Name: "Unit" } => 0,
             CType.Pointer => 64,
-            CType.Enum e => ExactBitWidth(e.Underlying),
+            // The enum's carrier can be wider than its source tag (enum(u2)
+            // uses a byte carrier). Keep the nominal source backing proof.
+            CType.Enum e => EnumBackingBits(e),
             CType.Prim p => p.Bytes * 8,
+            CType.LongDoubleStorage16 => 80,
             CType.Named n => PackedBitSizes(n.Name) ?? UniformStructBits(n.Name),
             _ => null,
         };
@@ -783,15 +829,32 @@ internal sealed partial class ZigLowering
         {
             throw new IrUnsupportedException($"zig `@compileError` expects (message); got {args.Count} argument(s)");
         }
+        Call DeferredFailure() => new("__dotcc_unreachable", new List<CExpr>(), new List<CType>(), null)
+        {
+            Type = CType.Void,
+            Pos = new SrcPos(args[0].Position.Line, args[0].Position.Column)
+            {
+                File = _module?.Path ?? System.IO.Path.Combine(_importerDir ?? "", (_fileStem ?? "root") + ".zig"),
+            },
+        };
+        if (InComptimeOnlyArm)
+        {
+            // The interpreter takes this arm and rejects the call if reached.
+            // Runtime code cannot enter it, so its parameter-dependent diagnostic
+            // need not be formatted while constructing the shared body.
+            return DeferredFailure();
+        }
         if (ComptimeMessageText(args[0]) is { } message)
         {
-            throw new IrUnsupportedException("zig `@compileError`: " + message);
+            throw new IrUnsupportedException("zig `@compileError`: " + message
+                + $" ({_module?.Path ?? _fileStem}:{args[0].Position.Line}, function '{_currentFnName}')"
+                + (_currentFnSym is { } owner ? "; callers: " + DescribeRuntimeDemand(owner) : ""));
         }
         // A message built from a RUNTIME value (`parser.specifier() catch |err| @compileError(@errorName(err))`
         // in std.fmt.Placeholder.parse): zig accepts that only on a path it evaluates at comptime, and raises
         // it only if the evaluation takes it. dotcc lowers such a body as runtime code too, so the arm
         // becomes the `unreachable` trap, and the comptime interpreter stops if it ever reaches it.
-        return new Call("__dotcc_unreachable", new List<CExpr>(), new List<CType>(), null) { Type = CType.Void };
+        return DeferredFailure();
     }
 
     /// <summary>What a <c>@compileError</c> / <c>@compileLog</c> message reads as when it is not
@@ -895,7 +958,7 @@ internal sealed partial class ZigLowering
         }
         if (_failedContainers.TryGetValue(name, out var failure))
         {
-            throw new ZigFailedContainerException(name, failure);
+            throw new ZigFailedContainerException(_failedContainerNames.GetValueOrDefault(name, name), failure);
         }
     }
 
@@ -904,7 +967,10 @@ internal sealed partial class ZigLowering
     /// container's layout, the pointee of a single-item pointer (<see cref="LowerPointee"/>), tells it
     /// apart from every other unsupported construct without reading the message.</summary>
     private sealed class ZigFailedContainerException(string container, string failure)
-        : IrUnsupportedException($"zig container `{container}` could not be lowered: " + failure);
+        : IrUnsupportedException($"zig container `{container}` could not be lowered: " + failure)
+    {
+        internal string Container { get; } = container;
+    }
 
     /// <summary>Each container of a LAZY module whose registration failed (road-to-zig-std G3), by its
     /// IR and its source name → the failure. Preparing a module registers all of its containers up front,
@@ -914,6 +980,7 @@ internal sealed partial class ZigLowering
     /// REFERENCE, the tombstone rule above applied to a container. A root unit stays eager: its own
     /// containers are the program, and one that cannot lower is an error where it stands.</summary>
     private readonly Dictionary<string, string> _failedContainers = new(System.StringComparer.Ordinal);
+    private readonly Dictionary<string, string> _failedContainerNames = new(System.StringComparer.Ordinal);
 
     /// <summary>After a lazy module's containers are registered, carry each failure to the containers that
     /// depend on it (road-to-zig-std G3). Registration runs in declaration order, so a container can
@@ -947,8 +1014,10 @@ internal sealed partial class ZigLowering
                     {
                         _containerTypes.Remove(n);
                         _failedContainers[n] = message;
+                        _failedContainerNames[n] = name;
                     }
                     _failedContainers[name] = message;
+                    _failedContainerNames[name] = name;
                     changed = true;
                     break;
                 }
@@ -985,6 +1054,7 @@ internal sealed partial class ZigLowering
             case CType.Named n:
                 return _failedContainers.ContainsKey(n.Name) ? null : t;
             case CType.Pointer { Pointee: CType.Named pn } p when _failedContainers.ContainsKey(pn.Name):
+                if (UsesSourceStdlib) return p;
                 return p with { Pointee = CType.Void.WithQuals(pn.Quals) };
             case CType.Pointer p:
                 return WithoutFailedContainers(p.Pointee) is { } pte ? p with { Pointee = pte } : null;
@@ -1041,6 +1111,7 @@ internal sealed partial class ZigLowering
         fields = fields.Select((f, i) => f with { TargetName = identities[i].TargetName }).ToList();
         _ir.RegisterStructType(name, fields, isUnion, layout);
         RegisterZigStorage(name, fields, isUnion, layout);
+        if (RequiresComptimeStorage(new CType.Named(name))) { _ir.PrunableTypes.Add(name); }
         if (_lazy) { _ir.PrunableTypes.Add(name); }
     }
 
@@ -1062,6 +1133,7 @@ internal sealed partial class ZigLowering
             {
                 _containerTypes.Remove(n);
                 _failedContainers[n] = ex.Message;
+                _failedContainerNames[n] = name;
             }
             return false;
         }

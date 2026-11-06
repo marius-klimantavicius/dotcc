@@ -46,34 +46,51 @@ internal sealed partial class ZigLowering
         {
             return new Seq(new List<CStmt> { new ExprStmt(LowerExpr(valueItem)), new Return(new ErrUnionOk(null) { Type = voidUnion }) });
         }
+        if (_currentFnRet is CType.ErrorUnion { Payload.Unqualified: not CType.VoidType } catchReturn
+            && IsControlFlowFallback(valueItem, out var caught, out var isCatch, out var capture, out var failureArm)
+            && isCatch && failureArm.Content is Zig.SwitchExpr)
+            return LowerControlFlowFallback(caught, true, capture, failureArm,
+                payload => new Return(new ErrUnionOk(payload) { Type = catchReturn }), returnSwitchValues: true);
         // `return blk: { … break :blk v; };` — a labeled value-block return (Milestone L, part 2).
-        // Temp-fill against the function's return type, then `return` the result temp. (In an error-
-        // union function the wrapping below would need to apply to the temp — deferred with a clear
-        // error rather than silently returning an unwrapped value.)
+        // Fill against the complete return type, including success/error tags.
         if (IsLabeledValue(valueItem))
         {
-            if (_currentFnRet is CType.ErrorUnion)
-            {
-                throw new IrUnsupportedException(
-                    "a labeled value-block `return blk: {…}` in an error-union (`!T`) function is not supported yet");
-            }
             return LowerLabeledValue(valueItem, _currentFnRet,
-                temp => new Return(new VarRef(temp) { Type = temp.Type }));
+                temp => _currentFnRet is CType.ErrorUnion errorReturn
+                    ? ReturnErrorUnionValue(new VarRef(temp) { Type = temp.Type }, errorReturn)
+                    : new Return(new VarRef(temp) { Type = temp.Type }), BitcastReturnLocation(_currentFnRet));
         }
         // `return switch (y) { … blk: {…} };` / `return if (c) blk:{…} else …;` — a value-position
         // if/switch with a statement-producing branch (Milestone Y, part 1): temp-fill against the
-        // return type, then `return` the temp. An error-union `!T` function is deferred (like the
-        // labeled-block return above — the ErrUnion wrapping would need to apply to the temp).
+        // return type, then `return` the temp. Error-union switch arms return through
+        // the ordinary source return path; value ifs with block arms remain deferred.
         if (IsValueControlFlowStmt(valueItem))
         {
+            // Return each selected switch arm through the ordinary return
+            // lowering: payloads, error codes and errdefers keep their own
+            // semantics, and terminating block arms need no result temporary.
+            if (_currentFnRet is CType.ErrorUnion && valueItem.Content is Zig.SwitchExpr returnSwitch)
+                return BuildValueSwitch(returnSwitch.Arg2, returnSwitch.Arg5, new ValueTempTarget
+                {
+                    Temp = new Symbol { Name = "__return_switch", Kind = SymKind.Var, Type = _currentFnRet },
+                    ResultType = _currentFnRet,
+                    ConsumeValue = arm => Hoisted(() => LowerReturn(arm)),
+                });
             if (_currentFnRet is CType.ErrorUnion)
             {
                 throw new IrUnsupportedException(
-                    "a value-position `if`/`switch` with a block branch in an error-union (`!T`) function `return` is not supported yet");
+                    "a value-position `if`/`switch` with a block branch in an error-union (`!T`) function `return` is not supported yet"
+                    + $" ({_module?.Path ?? _fileStem}:{valueItem.Position.Line}, function '{_currentFnName}')");
             }
             return LowerValueControlFlowStmt(valueItem, _currentFnRet,
                 temp => new Return(new VarRef(temp) { Type = temp.Type }));
         }
+        // A return-if inherits the optional payload's result location in each
+        // arm. Lower the two returns separately so null, enum literals and errors
+        // retain their own wrapping and error-only cleanup behavior.
+        if (_currentFnRet is CType.ErrorUnion { Payload.Unqualified: CType.Optional or CType.Pointer { ZigOptional: true } }
+            && valueItem.Content is Zig.IfElseExpr { Arg4: null, Arg7: null } optionalIf)
+            return LowerReturnIf(optionalIf.Arg2, optionalIf.Arg5, optionalIf.Arg8);
         if (_currentFnRet is CType.ErrorUnion eu)
         {
             // `return error.X;` or the set-qualified `return E.X;` (Milestone X, part 2) — both an
@@ -104,6 +121,7 @@ internal sealed partial class ZigLowering
                     // A value `if` at a slice payload (std.mem.join's `return if (zero) try allocator.dupe(…) else
                     // &[0]u8{};`): each arm coerces to the slice.
                     || valueItem.Content is Zig.IfElseExpr { Arg4: null, Arg7: null } && eu.Payload.Unqualified is CType.Slice
+                    || valueItem.Content is Zig.SwitchExpr && eu.Payload.Unqualified is CType.Named
                     // A comptime-bounded slice at an array-pointer payload (std.Io.Reader.takeArray's `return (try
                     // r.take(n))[0..n];` for a `*[n]u8`, task #202): the slice's own pointer.
                     || valueItem.Content is Zig.SliceRange && eu.Payload.Unqualified is CType.Pointer
@@ -111,7 +129,13 @@ internal sealed partial class ZigLowering
                 : LowerExpr(valueItem);
             if (IsNoreturn(v)) { return NoreturnStatement(v); }
             if (UnifyErrUnionArms(v, eu) is { } unified) { v = unified; }
-            if (v.Type.Unqualified is CType.ErrorUnion) { return new Return(v); }
+            if (v.Type.Unqualified is CType.ErrorUnion)
+            {
+                // An error union returned as a value must pass through active errdefers,
+                // just like a directly returned error. Try evaluates it once and throws
+                // only its error half; the function boundary restores the same error code.
+                return ReturnErrorUnionValue(v, eu);
+            }
             // An array (`return &[0]u8{};`) at a slice payload is that slice.
             if (eu.Payload.Unqualified is CType.Slice okSlice && (v.Type.Unqualified is CType.Array || PointedArray(v) is ({ }, _)))
             {
@@ -149,6 +173,15 @@ internal sealed partial class ZigLowering
         // a struct/enum-returning function.
         return new Return(LowerExprSink(valueItem, BitcastReturnLocation(_currentFnRet)));
     }
+    private CStmt ReturnErrorUnionValue(CExpr value, CType.ErrorUnion type)
+    {
+        if (!_currentFnHasErrdefer) return new Return(value);
+        var payload = LowerTry(value);
+        return type.Payload.Unqualified is CType.VoidType
+            ? new Seq(new List<CStmt> { new ExprStmt(payload), new Return(new ErrUnionOk(null) { Type = type }) })
+            : new Return(new ErrUnionOk(payload) { Type = type });
+    }
+
     /// <summary>Lower <c>return;</c>. In a <c>!void</c> function it is a success error union
     /// with no payload (<c>ErrUnion&lt;Unit&gt;.Ok(default)</c>); otherwise a plain
     /// <c>return;</c>.</summary>
@@ -202,13 +235,28 @@ internal sealed partial class ZigLowering
         var payload = eu.Payload;
         var pre = new List<CStmt>();
 
+        // `f() catch null` has the peer type ?T, rather than T. Keep the
+        // successful payload present and the failure absent; a slice's null
+        // must never become an empty (present) slice or a pointer conversion.
+        var fallbackSyntax = fallbackItem;
+        while (fallbackSyntax.Content is Zig.Grouped group) fallbackSyntax = group.Arg1;
+        if (fallbackSyntax.Content is Zig.NullLit && payload.Unqualified is not
+            (CType.Pointer or CType.Func or CType.Optional or CType.VoidType))
+        {
+            var optional = new CType.Optional(payload);
+            var once = HoistCatchUnion(union, pre);
+            return (pre, new CondExpr(new Member(once, "IsErr", false) { Type = CType.Bool },
+                new DefaultLit { Type = optional }, new Member(once, "Value", false) { Type = payload }) { Type = optional });
+        }
+
         // The fallback is result-located at the payload type: `bufPrint(…) catch "ERR"` coerces the string literal to the
         // slice the payload is (it had been left a `byte*` beside a `Slice<byte>`, CS0029).
         // It runs only on error, so what it hoists stays with it (task #203).
         if (capName is null)
         {
-            var (fb, fbHoisted) = LowerArmIsolated(() => LowerExprSink(fallbackItem, payload));
-            if (fbHoisted.Count == 0 && IsSimpleReeval(fb)) { return (pre, new ZigCatch(union, fb) { Type = payload }); }
+            var (fb, fbHoisted) = LowerArmIsolated(() => LowerExprSink(fallbackItem, payload, preserveErrorPeers: true));
+            if (fb.Type.Unqualified is not (CType.ErrorSetType or CType.ErrorUnion)
+                && fbHoisted.Count == 0 && IsSimpleReeval(fb)) { return (pre, new ZigCatch(union, fb) { Type = payload }); }
             var ce = HoistCatchUnion(union, pre);
             return (pre, LazyCatchFallback(ce, fb, fbHoisted, payload, pre));
         }
@@ -220,7 +268,7 @@ internal sealed partial class ZigLowering
             var errSym = _symbols.Declare(new Symbol { Name = capName, Kind = SymKind.Var, Type = CType.ErrorSet });
             pre.Add(new DeclStmt(new List<LocalDecl> { new(errSym, new Member(ceCap, "Code", false) { Type = CType.ErrorSet }) }));
         }
-        var (fbCap, fbCapHoisted) = LowerArmIsolated(() => LowerExprSink(fallbackItem, payload));
+        var (fbCap, fbCapHoisted) = LowerArmIsolated(() => LowerExprSink(fallbackItem, payload, preserveErrorPeers: true));
         return (pre, LazyCatchFallback(ceCap, fbCap, fbCapHoisted, payload, pre));
     }
 
@@ -230,8 +278,37 @@ internal sealed partial class ZigLowering
     private CExpr LazyCatchFallback(CExpr union, CExpr fallback, List<CStmt> fallbackHoisted, CType payload, List<CStmt> pre)
     {
         var isErr = new Member(union, "IsErr", false) { Type = CType.Bool };
-        var value = new Member(union, "Value", false) { Type = payload };
-        if (fallbackHoisted.Count == 0) { return new CondExpr(isErr, fallback, value) { Type = payload }; }
+        CExpr value = new Member(union, "Value", false) { Type = payload };
+        // T and an error peer as error!T. Keep the tag, rather than treating the
+        // error's numeric code as a successful payload. A fallback union is supported
+        // only at the same payload type; arbitrary union payload peers need more rules.
+        if (fallback.Type.Unqualified is CType.ErrorSetType or CType.ErrorUnion)
+        {
+            var result = new CType.ErrorUnion(payload);
+            if (fallback.Type.Unqualified is CType.ErrorUnion fallbackUnion)
+            {
+                if (!fallbackUnion.Payload.Equals(payload)
+                    || BitcastLoweredLocation(union).IntegerBits is { } leftBits
+                       && BitcastLoweredLocation(fallback).IntegerBits is { } rightBits && leftBits != rightBits)
+                    throw new IrUnsupportedException("zig catch error-union fallback with a different payload type is not supported");
+            }
+            else fallback = new ErrUnionErr(fallback) { Type = result };
+            value = payload.Unqualified is CType.VoidType
+                ? new ErrUnionOk(null) { Type = result }
+                : new ErrUnionOk(value) { Type = result };
+            payload = result;
+        }
+        if (fallbackHoisted.Count == 0)
+        {
+            var conditional = new CondExpr(isErr, fallback, value) { Type = payload };
+            if (payload.Unqualified is not CType.ErrorUnion) return conditional;
+            // The union's successful source type remains the peer's payload type.
+            // Retain its logical widths when the tagged result needs a temporary.
+            var peer = _symbols.Declare(new Symbol { Name = "__anf" + _anfTempCounter++, Kind = SymKind.Var, Type = payload });
+            RememberHoistedValue(peer, union);
+            pre.Add(new DeclStmt(new List<LocalDecl> { new(peer, conditional) }));
+            return new VarRef(peer) { Type = payload };
+        }
         if (payload.Unqualified is CType.VoidType)
         {
             fallbackHoisted.Add(new ExprStmt(fallback));
@@ -239,6 +316,7 @@ internal sealed partial class ZigLowering
             return new DefaultLit { Type = CType.Void };
         }
         var temp = _symbols.Declare(new Symbol { Name = "__anf" + _anfTempCounter++, Kind = SymKind.Var, Type = payload });
+        RememberHoistedValue(temp, union);
         var target = new VarRef(temp) { Type = payload, IsLValue = true };
         fallbackHoisted.Add(IsUnreachableCallExpr(fallback)
             ? new ExprStmt(fallback)
@@ -255,6 +333,7 @@ internal sealed partial class ZigLowering
     {
         if (union is VarRef) { return union; }
         var tmp = _symbols.Declare(new Symbol { Name = "__cE", Kind = SymKind.Var, Type = union.Type });
+        RememberHoistedValue(tmp, union);
         pre.Add(new DeclStmt(new List<LocalDecl> { new(tmp, union) }));
         return new VarRef(tmp) { Type = union.Type, IsLValue = true };
     }
@@ -290,15 +369,27 @@ internal sealed partial class ZigLowering
     private CExpr LowerControlFlowFallbackExpr(Item expr)
     {
         IsControlFlowFallback(expr, out var cfLhs, out var cfIsCatch, out var cfCap, out var cfArm);
-        var buf = RequireHoistable(cfIsCatch ? "catch (control-flow fallback)" : "orelse (control-flow fallback)");
+        var buf = RequireHoistable((cfIsCatch ? "catch (control-flow fallback)" : "orelse (control-flow fallback)") + $" at line {expr.Position.Line}");
         var savedImpure = _hoistImpureSeen;
         Symbol? anfSym = null;
+        var boundVoid = false;
         var cfStmt = LowerControlFlowFallback(cfLhs, cfIsCatch, cfCap, cfArm, payload =>
         {
+            if (IsVoidValueType(payload.Type))
+            {
+                boundVoid = true;
+                return new Seq(new List<CStmt>());
+            }
             anfSym = _symbols.Declare(new Symbol { Name = "__anf" + _anfTempCounter++, Kind = SymKind.Var, Type = payload.Type });
+            RememberHoistedValue(anfSym, payload);
             return new DeclStmt(new List<LocalDecl> { new(anfSym, payload) });
         });
         _hoistImpureSeen = savedImpure;   // the construct's internals are sequenced in the buffer
+        if (boundVoid)
+        {
+            buf.Add(cfStmt);
+            return new DefaultLit { Type = CType.Void };
+        }
         if (anfSym is not { } payloadSym)
         {
             throw new IrUnsupportedException("internal: control-flow fallback did not bind a payload");
@@ -307,14 +398,14 @@ internal sealed partial class ZigLowering
         return new VarRef(payloadSym) { Type = payloadSym.Type };
     }
 
-    /// <summary>True for a jump expression: <c>break</c> / <c>continue</c>, plain, labeled or with a value (the
-    /// <c>fb*</c> records, zig-grammar-peg P1b).</summary>
+    /// <summary>True for a jump expression: a bare <c>return</c>, or <c>break</c> / <c>continue</c>,
+    /// plain, labeled or with a value. Value-bearing returns have their own sink-aware path.</summary>
     private static bool IsJumpArm(Item arm) => arm.Content is Zig.FbBreak or Zig.FbBreakLabel or Zig.FbBreakLabelValue or Zig.FbBreakValue
-        or Zig.FbContinue or Zig.FbContinueLabel or Zig.FbContinueLabelValue;
+        or Zig.FbContinue or Zig.FbContinueLabel or Zig.FbContinueLabelValue or Zig.ReturnExpr { Arg1: null };
 
     /// <summary>True for an expression that never yields a value: a jump, a <c>return</c>, or an <c>if</c> both of whose
     /// arms are one. As an <c>orelse</c> / <c>catch</c> fallback it makes the construct a control-flow fallback.</summary>
-    private static bool IsNoreturnArm(Item arm) => IsJumpArm(arm) || arm.Content is Zig.ReturnExpr or Zig.SwitchExprEmpty
+    private static bool IsNoreturnArm(Item arm) => IsJumpArm(arm) || IsUnreachableItem(arm) || arm.Content is Zig.ReturnExpr or Zig.SwitchExprEmpty
         || arm.Content is Zig.IfElseExpr { Arg4: null, Arg7: null } ie && IsNoreturnArm(ie.Arg5) && IsNoreturnArm(ie.Arg8);
 
     /// <summary>One arm of a noreturn <c>if</c> fallback: a <c>return</c> lowers under its own hoist buffer (its value
@@ -339,6 +430,7 @@ internal sealed partial class ZigLowering
     /// <c>switch</c> arm is handled by the caller (it fills a result, it is not a jump).</summary>
     private CStmt LowerFallbackArm(Item arm) => arm.Content switch
     {
+        _ when IsUnreachableItem(arm) => new ExprStmt(UnreachableCall(arm)),
         Zig.ReturnExpr { Arg1: null } => LowerReturnVoid(),
         Zig.ReturnExpr { Arg1.Content: Zig.IfElseExpr { Arg4: null, Arg7: null } ri } when !HasTypeArm(ri) => LowerReturnIf(ri.Arg2, ri.Arg5, ri.Arg8),
         Zig.ReturnExpr { Arg1: { } returned } => LowerReturn(returned),
@@ -388,7 +480,11 @@ internal sealed partial class ZigLowering
     /// [bind(payload)] }</c>. <paramref name="resultSink"/> is the declared type of what binds the result, when there is
     /// one: an OPTIONAL there types a value arm's result (see below).</summary>
     private CStmt LowerControlFlowFallback(Item lhsItem, bool isCatch, string? capture, Item arm, Func<CExpr, CStmt>? bind,
-        CType? resultSink = null)
+        CType? resultSink = null, bool returnSwitchValues = false)
+        => Hoisted(() => LowerControlFlowFallbackCore(lhsItem, isCatch, capture, arm, bind, resultSink, returnSwitchValues));
+
+    private CStmt LowerControlFlowFallbackCore(Item lhsItem, bool isCatch, string? capture, Item arm, Func<CExpr, CStmt>? bind,
+        CType? resultSink, bool returnSwitchValues)
     {
         var lhs = LowerExpr(lhsItem);
         // An optional dotcc already folded to its compile-time VALUE (std.unicode's `std.simd.suggestVectorLength(u16) orelse
@@ -426,6 +522,7 @@ internal sealed partial class ZigLowering
         else
         {
             var tmp = _symbols.Declare(new Symbol { Name = "__cf", Kind = SymKind.Var, Type = lhs.Type });
+            RememberHoistedValue(tmp, lhs);
             pre.Add(new DeclStmt(new List<LocalDecl> { new(tmp, lhs) }));
             lhsRef = new VarRef(tmp) { Type = lhs.Type, IsLValue = true };
         }
@@ -455,16 +552,17 @@ internal sealed partial class ZigLowering
             test = new Unary(UnOp.LogNot, new Member(lhsRef, "HasValue", false) { Type = CType.Bool }) { Type = CType.Int };
             payload = new Member(lhsRef, "Value", false) { Type = opt.Inner };
         }
-        else if (ct is CType.Pointer)
+        else if (ct is CType.Pointer or CType.Func)
         {
             // A niche optional pointer (`?*T` → bare `T*`): none is null, the unwrapped value is the
             // pointer itself.
             test = new Binary(BinOp.Eq, lhsRef, new NullPtr { Type = new CType.Pointer(CType.Void) }) { Type = CType.Int };
-            payload = lhsRef;
+            payload = OptionalPointerPayload(lhsRef);
         }
         else
         {
-            throw new IrUnsupportedException("zig `orelse` with a control-flow fallback requires an optional left operand");
+            throw new IrUnsupportedException("zig `orelse` with a control-flow fallback requires an optional left operand"
+                + $" ({_module?.Path ?? _fileStem}:{lhsItem.Position.Line}, function '{_currentFnName}', got {ct.Describe()})");
         }
 
         // A value-yielding `switch` arm fills a result declared in the ENCLOSING scope (the consumer
@@ -472,7 +570,9 @@ internal sealed partial class ZigLowering
         // A `switch` arm over a `!void` whose result nobody binds (`self.shrinkAndFreePrecise(…) catch |e|
         // switch (e) { error.OutOfMemory => { …; return; } };` in array_list) yields no value: it is a
         // statement switch on the failure path, so its prongs may be void blocks.
-        var voidSwitch = arm.Content is Zig.SwitchExpr && bind is null && payload.Type.Unqualified.Equals(CType.Void);
+        // A surrounding value consumer can still bind the single void value; it
+        // does not make a writable result location for the catch branches.
+        var voidSwitch = arm.Content is Zig.SwitchExpr && payload.Type.Unqualified.Equals(CType.Void);
         // The value arm's result is at the RESULT type, which zig takes from the result location: `const lnum: ?usize =
         // parseUnsigned(…) catch |err| switch (err) { error.InvalidCharacter => null, … };` (std.SemanticVersion.order,
         // task #195) is a `?usize` whose prong may be `null`, not the `usize` payload. Only an optional sink over the payload
@@ -483,7 +583,7 @@ internal sealed partial class ZigLowering
         {
             payload = new Cast(resultSink, payload) { Type = resultSink };
         }
-        Symbol? switchResult = arm.Content is Zig.SwitchExpr or Zig.LabeledBlock or Zig.LabeledSwitch && !voidSwitch
+        Symbol? switchResult = !returnSwitchValues && (arm.Content is Zig.SwitchExpr or Zig.LabeledBlock or Zig.LabeledSwitch) && !voidSwitch
             ? _symbols.Declare(new Symbol { Name = "__cfv" + _anfTempCounter++, Kind = SymKind.Var, Type = payload.Type })
             : null;
         // The failure path, in its own scope: `catch |e|` binds the error code first (a `_` binds
@@ -497,7 +597,17 @@ internal sealed partial class ZigLowering
                 var errSym = _symbols.Declare(new Symbol { Name = cap, Kind = SymKind.Var, Type = CType.ErrorSet });
                 onFail.Add(new DeclStmt(new List<LocalDecl> { new(errSym, new Member(lhsRef, "Code", false) { Type = CType.ErrorSet }) }));
             }
-            if (arm.Content is Zig.SwitchExpr && switchResult is { } result)
+            if (returnSwitchValues && arm.Content is Zig.SwitchExpr returnSwitch)
+            {
+                onFail.Add(BuildValueSwitch(returnSwitch.Arg2, returnSwitch.Arg5, new ValueTempTarget
+                {
+                    Temp = new Symbol { Name = "__catch_return", Kind = SymKind.Var, Type = _currentFnRet! },
+                    ResultType = _currentFnRet,
+                    ConsumeValue = value => Hoisted(() => LowerReturn(value)),
+                }));
+                pre.Add(new If(test, new Block(onFail), null));
+            }
+            else if (arm.Content is Zig.SwitchExpr && switchResult is { } result)
             {
                 // A value-yielding `switch` arm (`a catch |err| switch (err) { error.X => 0, else => return err }`)
                 // FILLS a result on the failure path — each prong a value or a jump — and the success path
@@ -531,14 +641,15 @@ internal sealed partial class ZigLowering
             }
             else
             {
-                if (bind is not null && ArmCanFallThrough(arm))
+                var loweredArm = Hoisted(() => LowerFallbackArm(arm));
+                if (bind is not null && !IsVoidValueType(payload.Type) && !Terminates(loweredArm))
                 {
                     throw new IrUnsupportedException(
                         $"zig `{(isCatch ? "catch" : "orelse")} {{ … }}`: where the fallback must produce a value, the block must "
                         + "not fall through — end it with `return`, `break`, `continue` or `unreachable` (a `void` block is not a "
-                        + "value of the payload type; zig rejects this too)");
+                        + $"value of the payload type; zig rejects this too) ({_module?.Path ?? _fileStem}:{arm.Position.Line}, function '{_currentFnName}')");
                 }
-                onFail.Add(LowerFallbackArm(arm));
+                onFail.Add(loweredArm);
                 pre.Add(new If(test, new Block(onFail), null));
             }
         }

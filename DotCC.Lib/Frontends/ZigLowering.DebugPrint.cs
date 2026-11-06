@@ -28,6 +28,14 @@ namespace DotCC.Frontends;
 /// struct argument, and a non-literal format or non-<c>.{…}</c> argument tuple.</para></summary>
 internal sealed partial class ZigLowering
 {
+    // The typed adapter handles literal format/tuple calls. In source mode a
+    // forwarding function (std.testing.failPrint) can instead demand the real
+    // std.debug.print declaration, which accepts its known format and typed
+    // runtime tuple parameter without changing either argument's evaluation.
+    private static bool IsLiteralDebugPrintCall(IReadOnlyList<Item> arguments)
+        => arguments.Count == 2 && arguments[0].Content is Zig.StrLit
+            && arguments[1].Content is Zig.AnonStructInit or Zig.AnonStructInitEmpty;
+
     /// <summary>A synthetic reference to libc's <c>stderr</c> stream (a <c>FILE*</c>). Rendered verbatim
     /// as <c>stderr</c> — the emitted program's <c>using static Libc;</c> surfaces it, and the runtime
     /// <c>fprintf</c> routes it to <see cref="System.Console.Error"/>. Marked <c>FromSystemHeader</c> so

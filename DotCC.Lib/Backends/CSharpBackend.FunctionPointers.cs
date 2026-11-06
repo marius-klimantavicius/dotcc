@@ -14,6 +14,16 @@ internal sealed partial class CSharpBackend
 
     private string FunctionPointer(Symbol function)
     {
+        // std.heap keeps malloc_usable_size as a function value before calling
+        // it. Preserve the same proven host binding as a direct std.c call;
+        // the existing typed runtime-pointer resolver supplies the address.
+        if (function.IntrinsicOverride is { Kind: "zigHostExtern", Value: "malloc_usable_size" })
+            return FunctionPointer(new Symbol
+            {
+                Name = "__dotcc_zig_c_malloc_usable_size", Kind = SymKind.Func,
+                TargetName = "__dotcc_zig_c_malloc_usable_size",
+                Type = function.Type, IsGlobal = true, FromSystemHeader = true,
+            });
         var name = function.TargetName;
         _usedFunctionAddresses.Add(name);
         var signature = Cs(function.Type.Unqualified);

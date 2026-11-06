@@ -65,7 +65,7 @@ public static partial class Compiler
     private static string SerializeFragment(
         string functions, IReadOnlyDictionary<string, string> typeDecls, string aliases, IReadOnlyList<Backends.CSharpGlobalSource> globals, int mainArity,
         IReadOnlyList<(string Name, string FieldType)> importSpecs, IEnumerable<string> defNames, bool mainReturnsVoid = false,
-        bool mainReturnsErrUnion = false, bool mainErrPayloadIsVoid = false, IReadOnlyList<CSharpFunctionSource>? functionSources = null, string overrideProfile = "none", bool usesZig = false, IReadOnlyDictionary<string, ObjectAggregateMetadata>? aggregateMetadata = null, IReadOnlyList<AggregateIdentity>? aggregateIdentities = null, IReadOnlyDictionary<string, string>? anonymousTypedefs = null, IReadOnlyDictionary<string, InlineFunctionMetadata>? inlineMetadata = null, IEnumerable<string>? globalNames = null, IEnumerable<string>? usedFunctionAddresses = null, IEnumerable<FunctionOverrideMetadata>? functionOverrides = null, IReadOnlyList<ExternalTypeOverride>? externalTypes = null, bool instanceMethods = false, IEnumerable<string>? weakFunctions = null, IEnumerable<string>? weakReferences = null, string? sourceAbiForeignProof = null)
+        bool mainReturnsErrUnion = false, bool mainErrPayloadIsVoid = false, IReadOnlyList<CSharpFunctionSource>? functionSources = null, string overrideProfile = "none", bool usesZig = false, IReadOnlyDictionary<string, ObjectAggregateMetadata>? aggregateMetadata = null, IReadOnlyList<AggregateIdentity>? aggregateIdentities = null, IReadOnlyDictionary<string, string>? anonymousTypedefs = null, IReadOnlyDictionary<string, InlineFunctionMetadata>? inlineMetadata = null, IEnumerable<string>? globalNames = null, IEnumerable<string>? usedFunctionAddresses = null, IEnumerable<FunctionOverrideMetadata>? functionOverrides = null, IReadOnlyList<ExternalTypeOverride>? externalTypes = null, bool instanceMethods = false, IEnumerable<string>? weakFunctions = null, IEnumerable<string>? weakReferences = null, string? sourceAbiForeignProof = null, bool managedBoundarySourceTypes = false)
     {
         var sb = new StringBuilder();
         sb.Append(MagicObject).Append(" 2 — link with `dotcc <objs> -o <out>`.\n");
@@ -73,6 +73,7 @@ public static partial class Compiler
         if (aggregateIdentities != null) sb.Append(AggregateIdentities.Serialize(aggregateIdentities));
         sb.Append("//!!dotcc-obj calling-convention:").Append(instanceMethods ? "instance-v1" : "static-v1").Append('\n');
         sb.Append("//!!dotcc-obj source-language:").Append(usesZig ? "zig" : "c").Append('\n');
+        if (usesZig) sb.Append(ManagedBoundaryContracts.SourceProfilePrefix).Append(managedBoundarySourceTypes ? "source" : "curated").Append('\n');
         sb.Append("//!!dotcc-obj override-profile:").Append(overrideProfile).Append('\n');
         sb.Append(sourceAbiForeignProof);
         sb.Append(SerializeFunctionOverrides(functionOverrides));
@@ -185,7 +186,10 @@ public static partial class Compiler
         var objectTexts = objectPaths.Select(path => File.ReadAllText(path).ReplaceLineEndings("\n")).ToArray();
         var foreignAbiProofs = objectTexts.Select((text, index) => SourceAbiForeignMetadata.Read(text, objectPaths[index])).ToArray();
         foreach (var text in objectTexts) InlineFunctionMetadata.ValidateVersion(text);
-        var identityGraphs = objectTexts.Select(text => ZigStorageObjectMetadata.Attach(text, AggregateIdentities.Read(text))).ToArray();
+        var identityGraphs = objectTexts.Select(text => ManagedBoundaryContracts.Attach(text,
+            ZigStorageObjectMetadata.Attach(text, AggregateIdentities.Read(text)))).ToArray();
+        var managedBridges = ManagedBoundaryContracts.Prepare(objectTexts, objectPaths, identityGraphs,
+            emit, outputOptions?.InstanceMethods == true);
         var variantNames = AggregateIdentities.Plan(objectPaths.Select((path, index) =>
             (path, identityGraphs[index])).ToArray());
         var discardedWeakFunctions = ResolveWeakObjectFunctions(objectPaths);
@@ -195,6 +199,8 @@ public static partial class Compiler
             var text = identityGraphs[objectIndex] is { } graph
                 ? AggregateIdentities.Relocate(objectTexts[objectIndex], graph, variantNames[objectIndex])
                 : objectTexts[objectIndex];
+            if (managedBridges.Renames[objectIndex].Count != 0)
+                text = AnonymousTypedefNames.Rewrite(text, managedBridges.Renames[objectIndex]);
             ValidateInstanceObject(text, path, outputOptions?.InstanceMethods == true);
             AnonymousTypedefNames.Read(text, anonymousTypedefs);
             if (text.Split('\n').Contains("//!!dotcc-obj source-language:zig", StringComparer.Ordinal)) usesZig = true;
@@ -427,6 +433,16 @@ public static partial class Compiler
             FlushType();
             FlushGlobal();
             FlushFunction();
+        }
+
+        foreach (var bridge in managedBridges.Bridges)
+        {
+            if (!functionOrigins.TryAdd(bridge.Name, objectPaths[bridge.Caller]))
+                throw new CompileException("managed boundary adapter name conflicts with an existing definition: " + bridge.Name);
+            var part = ManagedBoundaryContracts.Emit(bridge, variantNames);
+            functionSources.Add(part);
+            functions.Append(part.Text);
+            definedNames.Add(part.Name);
         }
 
         if (!libraryMode && mainArity < 0)

@@ -21,6 +21,16 @@ internal sealed partial class ZigLowering
     {
         public required Symbol Temp;
         public CType? ResultType;
+        public ZigResultLocation? Location;
+        public ZigResultLocation? InferredLocation;
+        public bool HasInferredLocation;
+        public Func<Item, CStmt>? ConsumeValue;
+    }
+    private static void MergeValueTempLocation(ValueTempTarget target, ZigResultLocation location)
+    {
+        if (!target.HasInferredLocation) target.InferredLocation = location;
+        else if (target.InferredLocation != location) target.InferredLocation = ZigResultLocation.Unknown(target.ResultType);
+        target.HasInferredLocation = true;
     }
     /// <summary>True when <paramref name="rhs"/> is a value-position <c>if</c>/<c>switch</c> EXPRESSION
     /// with a branch that needs STATEMENTS to produce its value — a labeled value-block branch
@@ -67,11 +77,11 @@ internal sealed partial class ZigLowering
     /// <paramref name="consume"/> (the decl / return / assignment that reads it). Dispatches an
     /// <c>if</c>/<c>switch</c> branch-temp-fill (Milestone Y, part 1) and a <c>while/for … else</c>
     /// value loop (part 2) to their builders.</summary>
-    private CStmt LowerValueControlFlowStmt(Item rhs, CType? sink, Func<Symbol, CStmt> consume) => rhs.Content switch
+    private CStmt LowerValueControlFlowStmt(Item rhs, CType? sink, Func<Symbol, CStmt> consume, ZigResultLocation? location = null) => rhs.Content switch
     {
-        Zig.IfElseExpr { Arg4: null, Arg7: null } or Zig.SwitchExpr => LowerValueIfSwitch(rhs, sink, consume),
-        Zig.PreComptime { Arg1.Content: Zig.SwitchExpr } c => LowerValueControlFlowStmt(c.Arg1, sink, consume),
-        Zig.PreComptime { Arg1.Content: Zig.IfElseExpr } c => LowerValueControlFlowStmt(c.Arg1, sink, consume),
+        Zig.IfElseExpr { Arg4: null, Arg7: null } or Zig.SwitchExpr => LowerValueIfSwitch(rhs, sink, consume, location),
+        Zig.PreComptime { Arg1.Content: Zig.SwitchExpr } c => LowerValueControlFlowStmt(c.Arg1, sink, consume, location),
+        Zig.PreComptime { Arg1.Content: Zig.IfElseExpr } c => LowerValueControlFlowStmt(c.Arg1, sink, consume, location),
         Zig.WhileValue or Zig.ForValue or Zig.InlineForValue or Zig.LabeledLoopExpr
             => LowerLoopValue(rhs, sink, consume),
         _ => throw new IrUnsupportedException(
@@ -83,11 +93,11 @@ internal sealed partial class ZigLowering
     /// then the consumer. The temp's type is the <paramref name="sink"/> when known, else the first
     /// branch's value type. (Milestone Y, part 1.) A union-subject value-switch and a <c>|x|</c>
     /// capture in expression position stay clear deferred errors.</summary>
-    private CStmt LowerValueIfSwitch(Item rhs, CType? sink, Func<Symbol, CStmt> consume)
+    private CStmt LowerValueIfSwitch(Item rhs, CType? sink, Func<Symbol, CStmt> consume, ZigResultLocation? location = null)
     {
         var n = _blockLabelCounter++;
         var temp = _symbols.Declare(new Symbol { Name = "__vcf" + n, Kind = SymKind.Var, Type = sink ?? CType.Int });
-        var rt = new ValueTempTarget { Temp = temp, ResultType = sink };
+        var rt = new ValueTempTarget { Temp = temp, ResultType = sink, Location = location };
         // The cond/subject is lowered before the branches (left-to-right C# argument evaluation), and
         // the first branch's FillValueTemp fixes rt.ResultType so a sink-less switch/if still types.
         CStmt filler = rhs.Content switch
@@ -103,6 +113,7 @@ internal sealed partial class ZigLowering
         var resultType = rt.ResultType
             ?? throw new IrUnsupportedException("a value-position `if`/`switch` must yield a value in every branch");
         temp.Type = resultType;
+        if ((location ?? rt.InferredLocation) is { } resultLocation) RememberBitcastValue(temp, resultLocation);
         return new Seq(new List<CStmt>
         {
             // Default-initialized so C# definite-assignment is satisfied even though every real path
@@ -111,6 +122,21 @@ internal sealed partial class ZigLowering
             filler,
             consume(temp),
         });
+    }
+
+    /// <summary>A switch needed inside an expression uses the same branch/temp lowering
+    /// as a statement RHS. The enclosing hoist keeps it ordered and inside lazy arms.</summary>
+    private CExpr HoistValueSwitch(Item subject, Item prongs, CType? sink)
+    {
+        var buffer = RequireHoistable($"value switch at {_module?.Path ?? _fileStem}:{subject.Position.Line}");
+        var temp = _symbols.Declare(new Symbol { Name = "__vsw" + _blockLabelCounter++, Kind = SymKind.Var, Type = sink ?? CType.Int });
+        var target = new ValueTempTarget { Temp = temp, ResultType = sink };
+        var filler = BuildValueSwitch(subject, prongs, target);
+        temp.Type = target.ResultType ?? throw new IrUnsupportedException("a value switch must yield a value or terminate");
+        if (target.InferredLocation is { } resultLocation) RememberBitcastValue(temp, resultLocation);
+        buffer.Add(new DeclStmt(new List<LocalDecl> { new(temp, new DefaultLit { Type = temp.Type }) }));
+        buffer.Add(filler);
+        return new VarRef(temp) { Type = temp.Type };
     }
     /// <summary>Lower a value-position loop <c>while/for (…) { … } else v</c> (Milestone Y, part 2) as
     /// a C# STATEMENT filling a result temp. The loop runs normally; a <c>break v</c> (unlabeled, the
@@ -276,6 +302,7 @@ internal sealed partial class ZigLowering
     /// The first branch lowered fixes <see cref="ValueTempTarget.ResultType"/>.</summary>
     private CStmt FillValueTemp(Item valueItem, ValueTempTarget rt)
     {
+        if (rt.ConsumeValue is { } consume) return consume(valueItem);
         // An `unreachable` prong (`error.CodepointTooLarge => unreachable` in std.unicode's utf16LeToUtf8Impl, task #188) has
         // no value to store: it is the trap, as a statement. (Assigned, its `void` call was CS0029.)
         if (IsUnreachableItem(valueItem)) { return new ExprStmt(LowerExpr(valueItem)); }
@@ -293,11 +320,13 @@ internal sealed partial class ZigLowering
             return LowerLabeledValue(valueItem, rt.ResultType, blkTemp =>
             {
                 rt.ResultType ??= blkTemp.Type;
+                MergeValueTempLocation(rt, BitcastSymbolLocation(blkTemp));
                 return new ExprStmt(new Assign(null, RtRef(rt), new VarRef(blkTemp) { Type = blkTemp.Type }) { Type = rt.ResultType });
-            });
+            }, rt.Location);
         }
-        var value = rt.ResultType is { } sk ? LowerExprSink(valueItem, sk) : LowerExpr(valueItem);
+        var value = rt.ResultType is { } sk ? LowerExprSink(valueItem, rt.Location ?? ZigResultLocation.Unknown(sk)) : LowerExpr(valueItem);
         rt.ResultType ??= value.Type;
+        MergeValueTempLocation(rt, BitcastSourceLocation(valueItem, value));
         return new ExprStmt(new Assign(null, RtRef(rt), value) { Type = rt.ResultType });
     }
     /// <summary>An lvalue reference to a value-control-flow result temp at its (now-resolved) type.
@@ -320,13 +349,16 @@ internal sealed partial class ZigLowering
         {
             // A selected BLOCK prong (`.comptime_int => comptime { …; return result; }` in std.math.log2) runs in
             // place: its `return` leaves the function, so the result temp is never read.
-            if (ctProng.Expr is null && ctProng.Block is { } ctBlock)
+            if (ctProng.Expr is null)
             {
                 EnterComptimeProng(ctProng, ctPayload);
                 try
                 {
                     rt.ResultType ??= CType.Int;
-                    return LowerBlock(ctBlock);
+                    var statement = LowerSelectedProng(ctProng);
+                    if (!Terminates(statement))
+                        throw new IrUnsupportedException($"zig: a selected switch prong in a value position must yield a value or terminate ({_module?.Path ?? _fileStem}:{subjectItem.Position.Line}, function '{_currentFnName}')");
+                    return statement;
                 }
                 finally { ExitComptimeProng(); }
             }
@@ -339,6 +371,19 @@ internal sealed partial class ZigLowering
             EnterComptimeProng(ctProng, ctPayload);
             try { return FillValueTemp(ctValue, rt); }
             finally { ExitComptimeProng(); }
+        }
+        // A value switch needs the same constant-prong selection as a
+        // statement switch. Generic bit widths choose one result type; unused
+        // branches can have different widths or deliberately reject the type.
+        if ((_inlineUnrollDepth > 0 || _inGenericInstance)
+            && TrySelectConstProng(subjectItem, prongsItem) is { } constantProng)
+        {
+            if (constantProng.Expr is { } constantValue) return FillValueTemp(constantValue, rt);
+            var statement = LowerSelectedProng(constantProng);
+            if (!Terminates(statement))
+                throw new IrUnsupportedException("zig: selected value-switch prong must yield a value or terminate");
+            rt.ResultType ??= CType.Int;
+            return statement;
         }
         var subject = LowerExpr(subjectItem);
         var uname = subject.Type.Unqualified switch
@@ -356,6 +401,7 @@ internal sealed partial class ZigLowering
         // subject is read once into a temp when a capture needs it again (it may be a call).
         var pre = new List<CStmt>();
         var prongs = Flatten(prongsItem);
+        ValidateEnumCatchAll(subject.Type, prongsItem);
         if (subject is not VarRef && prongs.Any(p => DecomposeProng(p) is { CaptureName: not null, ByRef: false, Block: null }))
         {
             var st = _symbols.Declare(new Symbol { Name = "__sw" + _blockLabelCounter++, Kind = SymKind.Var, Type = subject.Type });
@@ -365,6 +411,11 @@ internal sealed partial class ZigLowering
         var sections = new List<SwitchSection>();
         foreach (var prongItem in prongs)
         {
+            if (prongItem.Content is Zig.InlineProng inlineProng)
+            {
+                sections.AddRange(LowerInlineProngSections(inlineProng.Arg1, subject, prongs, value => FillValueTemp(value, rt)));
+                continue;
+            }
             // Each prong either YIELDS the value (fill the temp) or JUMPS (`=> return v`), which is how
             // a value switch reports the cases it cannot answer — the prong never reaches the consumer.
             var view = DecomposeProng(prongItem);
@@ -381,9 +432,9 @@ internal sealed partial class ZigLowering
                     { Block: { } block } => () => LowerNoReturnProngBlock(block),
                     _ => ThrowValueProng,
                 };
-            static CStmt ThrowValueProng() => throw new IrUnsupportedException(
+            CStmt ThrowValueProng() => throw new IrUnsupportedException(
                 "a value-position switch prong must yield a value (`v => expr` or `v => blk: {… break :blk v;}`) "
-                + "or jump (`v => return …`); a void block prong or a `|*x|` capture in a switch expression is not supported yet");
+                + $"or jump (`v => return …`); unsupported prong {prongItem.Content?.GetType().Name} in {_module?.Path ?? _fileStem}:{subjectItem.Position.Line}, function '{_currentFnName}'");
             var labels = LowerCaseVals(caseVals, subject.Type);
             var stmts = new List<CStmt>();
             _symbols.EnterScope();
@@ -394,7 +445,7 @@ internal sealed partial class ZigLowering
                     var capSym = _symbols.Declare(new Symbol { Name = cap, Kind = SymKind.Var, Type = subject.Type });
                     stmts.Add(new DeclStmt(new List<LocalDecl> { new(capSym, subject) }));
                 }
-                var stmt = body();
+                var stmt = Hoisted(body);
                 stmts.Add(stmt);
                 // A jump needs no `break` (and an unreachable `break` after one is a C# warning).
                 if (!Terminates(stmt)) { stmts.Add(new Break()); }
@@ -420,7 +471,7 @@ internal sealed partial class ZigLowering
         {
             throw new IrUnsupportedException(
                 "a value-position switch prong must yield a value (`v => expr` or `v => blk: {… break :blk v;}`) "
-                + "or jump (`v => return …`); a void block prong or a `|*x|` capture in a switch expression is not supported yet");
+                + $"or jump (`v => return …`); falling-through block in {_module?.Path ?? _fileStem}:{block.Position.Line}, function '{_currentFnName}'");
         }
         return lowered;
     }
@@ -431,12 +482,36 @@ internal sealed partial class ZigLowering
         body.Count > 0 && Terminates(body[^1]);
     private static bool Terminates(CStmt s) => s switch
     {
-        Return or Break or Continue or Goto => true,
+        Return or Break or Continue or Goto or ZigErrorThrow => true,
         ExprStmt e when CFlowFacts.TerminatesExpression(e.Expr) => true,   // `unreachable` lowers to a throw
         Block b => b.Stmts.Count > 0 && Terminates(b.Stmts[^1]),
         // A hoisted return (`return math.powi(T, x, y) catch unreachable;` in std.math.pow): its temps come first.
         Seq q => q.Stmts.Count > 0 && Terminates(q.Stmts[^1]),
         If f => f.Else is { } e && Terminates(f.Then) && Terminates(e),
+        DeferGuard d => Terminates(d.Body),
+        Switch sw => SwitchCannotComplete(sw),
+        // A constant-true retry loop can return or continue forever, but cannot
+        // reach the following statement without an exit from this loop. Nested
+        // loop/switch breaks do not exit it; gotos remain conservative.
+        While { Cond: LitBool { Value: true } } w => !HasLoopFallthroughExit(w.Body),
+        For { Cond: LitBool { Value: true } } f => !HasLoopFallthroughExit(f.Body),
+        _ => false,
+    };
+
+    private static bool HasLoopFallthroughExit(CStmt statement, int nested = 0) => statement switch
+    {
+        Break => nested == 0,
+        Goto => true,
+        Block block => block.Stmts.Any(s => HasLoopFallthroughExit(s, nested)),
+        Seq sequence => sequence.Stmts.Any(s => HasLoopFallthroughExit(s, nested)),
+        If conditional => HasLoopFallthroughExit(conditional.Then, nested)
+            || conditional.Else is { } other && HasLoopFallthroughExit(other, nested),
+        DeferGuard guard => HasLoopFallthroughExit(guard.Body, nested) || HasLoopFallthroughExit(guard.Cleanup, nested),
+        Labeled label => HasLoopFallthroughExit(label.Body, nested),
+        While loop => HasLoopFallthroughExit(loop.Body, nested + 1),
+        DoWhile loop => HasLoopFallthroughExit(loop.Body, nested + 1),
+        For loop => HasLoopFallthroughExit(loop.Body, nested + 1),
+        Switch selection => selection.Sections.Any(section => section.Body.Any(s => HasLoopFallthroughExit(s, nested + 1))),
         _ => false,
     };
     /// <summary>Lower <c>return e;</c>. In a <c>!T</c> function the value becomes an error

@@ -20,6 +20,8 @@ public sealed class ZigBitcastWidthTests
         }
         yield return new object[] { "const U = u24; pub fn main() u8 { const x: U = @bitCast(@as(u32, 1)); return @truncate(x); }" };
         yield return new object[] { "fn word() u24 { return @bitCast(@as(u32, 1)); } pub fn main() u8 { return @truncate(word()); }" };
+        yield return new object[] { "const F = packed struct(u5) { value: u5 }; fn bad(x: u6) F { return @bitCast(~x); } pub fn main() u8 { _ = bad(1); return 0; }" };
+        yield return new object[] { "const F = packed struct(u5) { value: u5 }; fn bad(x: u5) F { return @bitCast(@as(u8, ~x)); } pub fn main() u8 { _ = bad(1); return 0; }" };
         yield return new object[] { "fn take(x: u24) u8 { return @truncate(x); } pub fn main() u8 { return take(@bitCast(@as(u32, 1))); }" };
         yield return new object[] { "const H = struct { x: u24 }; pub fn main() u8 { const h: H = .{ .x = @bitCast(@as(u32, 1)) }; return @truncate(h.x); }" };
         yield return new object[] { "pub fn main() u8 { const a: [1]u24 = .{ @bitCast(@as(u32, 1)) }; return @truncate(a[0]); }" };

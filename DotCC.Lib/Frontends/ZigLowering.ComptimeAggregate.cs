@@ -102,6 +102,17 @@ internal sealed partial class ZigLowering
     {
         if (value.Content is Zig.Grouped g) { return ReadComptimeAggField(g.Arg1); }
         if (value.Content is Zig.EnumLit lit) { return new ZigAggField(Tok(lit.Arg1), null, null); }
+        // A literal may reuse an earlier constant (`.{ .cpu = cpu, .abi = abi }`).
+        // Read it in this definition's scope, with the same symbol guard as ordinary
+        // aggregate lookup: a runtime local of the same name must not use this map.
+        if (value.Content is Zig.Ident id && _symbols.Resolve(Tok(id.Arg0)) is null)
+        {
+            var name = Tok(id.Arg0);
+            if (_comptimeAggregates.TryGetValue(name, out var aggregate))
+                return new ZigAggField(null, null, aggregate);
+            if (_comptimeEnumLits.TryGetValue(name, out var tag))
+                return new ZigAggField(tag, null, null, _lazyValueConsts.GetValueOrDefault(name).typeItem, this);
+        }
         // `@as(std.Target.Cpu.Arch, .x86_64)`: the tag, typed (the synthetic builtin with a real std).
         if (value.Content is Zig.BuiltinCall { Arg2: not null, } asCall && Tok(asCall.Arg0) == "@as" && Flatten(asCall.Arg2) is { Count: 2 } asArgs
             && ReadComptimeAggField(asArgs[1]) is { Tag: { } typedTag })
@@ -232,6 +243,16 @@ internal sealed partial class ZigLowering
         // The read must be rooted at a module, at whatever depth — `builtin.link_libc`,
         // `builtin.cpu.arch`, `builtin.target.os.tag`.
         if (!IsModuleRooted(f.Arg0)) { return false; }
+        // An annotated constant keeps its declared type at an imported value
+        // boundary, including optional payloads and nominal enum values.
+        if (ResolveModulePath(f.Arg0)?.Lowering is { } owner
+            && owner._lazyValueConsts.TryGetValue(Tok(f.Arg2), out var declaration)
+            && declaration.typeItem is { } declaredType
+            && owner.LowerExportedValueConst(Tok(f.Arg2)) is { } typedValue)
+        {
+            value = typedValue;
+            return true;
+        }
         if (TryReadComptimeAggregateField(expr) is not { } field) { return false; }
         if (field.Value is { } scalar) { value = scalar; return true; }
         if (field is { Tag: { } tag, TagType: { } tagType, TagTypeScope: { } tagScope }

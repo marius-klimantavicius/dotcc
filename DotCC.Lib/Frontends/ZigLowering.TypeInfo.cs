@@ -98,17 +98,22 @@ internal sealed partial class ZigLowering
         if (DeclaredBitsFromSpelling(typeAst) is { } spelled) { return spelled; }
         var cur = typeAst;
         while (cur.Content is Zig.Grouped g) { cur = g.Arg1; }
+        if (_optionalTypeSelections.TryGetValue(cur, out var optionalSelection)) return optionalSelection.DeclaredBits;
+        if (cur.Content is Zig.Index typeIndex && TryFoldTypeInfoList(typeIndex.Arg0, out var typeList)
+            && typeList.Types is not null)
+            return typeList.TypeBits?[ComptimeListIndex(typeList, typeIndex.Arg2)];
         // A CONSTRUCTED `@Int(.unsigned, 21)` (road-to-zig-std S7) knows its width just as exactly as
         // the spelling `u21` does — it was built from it — so the constructor's own argument is the
-        // answer. Read from the site's recorded width rather than re-evaluated (see _reifiedIntBits).
-        if (cur.Content is Zig.BuiltinCall { Arg2: not null, } bc && Tok(bc.Arg0) == "@Int"
+        // answer. @FieldType similarly records the selected source field's width.
+        // Read the site's proof rather than re-evaluating (see _reifiedIntBits).
+        if (cur.Content is Zig.BuiltinCall { Arg2: not null, } bc && Tok(bc.Arg0) is "@Int" or "@FieldType"
             && _reifiedIntBits.TryGetValue(bc.Arg2, out var reified))
         {
             return reified;
         }
         // A call to a type-returning generic (the W4 lift) — the width its body's returned type carried
         // (`fn U(comptime n: u16) type { return @Int(.unsigned, n); }` → `U(21)` is 21 bits).
-        if (cur.Content is Zig.CallArgs && _typeCallBits.TryGetValue(cur, out var called))
+        if (cur.Content is Zig.CallArgs or Zig.LabeledBlock or Zig.Unwrap && _typeCallBits.TryGetValue(cur, out var called))
         {
             return called;
         }
@@ -131,8 +136,7 @@ internal sealed partial class ZigLowering
         if (cur.Content is Zig.Field { Arg2: var tagTok } tagField && Tok(tagTok) == "tag_type" && TryEvalTypeInfo(tagField.Arg0, out var tagInfo)
             && tagInfo.Type.Unqualified is CType.Enum tagEnum)
         {
-            return TypeBodyEnumWidth(tagEnum.Name)
-                ?? (!_enumsWithSpelledTag.Contains(tagEnum.Name) ? InferredTagBits(tagEnum) : null);
+            return EnumBackingBits(tagEnum);
         }
         // A vector's width is its LANE's (`@Vector(16, u32)`), so `@typeInfo(V).vector.child` passes it on to
         // `@typeInfo(C).int.bits` (std.math.rotr over a vector in std.crypto.blake3, task #148).
@@ -145,6 +149,10 @@ internal sealed partial class ZigLowering
         {
             return childInfo.DeclaredBits;
         }
+        if (cur.Content is Zig.Field { Arg2: var pointeeTok } pointeeField && Tok(pointeeTok) == "child"
+            && TryEvalTypeInfo(pointeeField.Arg0, out var pointerInfo) && pointerInfo.Tag == "pointer"
+            && pointerInfo.Type.Unqualified is CType.Pointer { ZigSourcePointeeBits: { } pointeeBits })
+            return pointeeBits;
         // An error union's width is its payload's (`fn charToDigit(…) (error{InvalidCharacter}!u8)`).
         if (cur.Content is Zig.ErrUnion eu) { return DeclaredBitsOfTypeArg(eu.Arg2); }
         // So is an optional's (`fn cast(comptime T: type, x: anytype) ?T`), so an unwrapped payload keeps it.
@@ -156,6 +164,11 @@ internal sealed partial class ZigLowering
             if (tofArgs[0].Content is Zig.Ident aid && _anytypeSeedBits.TryGetValue(Tok(aid.Arg0), out var seeded)) { return seeded; }
             return DeclaredBitsOfValue(tofArgs[0]);
         }
+        // The peer form appears in std.testing.expectEqual: its typed inner
+        // function and diagnostic tuple must retain the actual narrow width.
+        if (cur.Content is Zig.BuiltinCall { Arg2: not null } peerTypeOf && Tok(peerTypeOf.Arg0) == "@TypeOf"
+            && Flatten(peerTypeOf.Arg2) is { Count: > 1 } peerArguments)
+            return DeclaredBitsOfTypeOfPeers(peerArguments);
         // A module-qualified alias (`std.fmt.ArgSetType`, `pub const ArgSetType = u32;`): the owning
         // module recorded the width its alias spelled (Writer.print asks `@typeInfo(…).int.bits` of it).
         if (cur.Content is Zig.Field qf && ResolveModulePath(qf.Arg0)?.Lowering is { } owner)
@@ -163,10 +176,12 @@ internal sealed partial class ZigLowering
             return owner.ExportedDeclaredBits(Tok(qf.Arg2));
         }
         // A container's type const named qualified (`Metadata.FingerPrint`): the width it spelled.
-        if (cur.Content is Zig.Field cf && MemberBaseType(cf.Arg0)?.Unqualified is CType.Named { Name: var baseContainer })
+        if (cur.Content is Zig.Field cf
+            && (MemberBaseType(cf.Arg0) ?? TryResolveModuleNestedType(cf.Arg0)?.Type)?.Unqualified is CType.Named { Name: var baseContainer })
         {
-            TryContainerTypeConst(baseContainer, Tok(cf.Arg2));   // evaluated (and its width recorded) on first use
-            return _typeConstBits.TryGetValue((baseContainer, Tok(cf.Arg2)), out var qualifiedBits) ? qualifiedBits : null;
+            var declaringOwner = _moduleGraph?.OwnerOfContainer(baseContainer) ?? this;
+            declaringOwner.TryContainerTypeConst(baseContainer, Tok(cf.Arg2));
+            return declaringOwner._typeConstBits.TryGetValue((baseContainer, Tok(cf.Arg2)), out var qualifiedBits) ? qualifiedBits : null;
         }
         if (cur.Content is Zig.Ident id)
         {
@@ -244,9 +259,18 @@ internal sealed partial class ZigLowering
         Zig.Grouped g => DeclaredBitsOfValue(g.Arg1),
         Zig.Ident id => _symbols.Resolve(Tok(id.Arg0)) is { } s && _valueBits.TryGetValue(s, out var b) ? b : null,
         Zig.Field f when Tok(f.Arg2) == "len" => 64,
-        Zig.Index ix => DeclaredElemBitsOfValue(ix.Arg0),
+        // The language defines this result as usize; this frontend's source
+        // target is LP64, independently of the cast's physical carrier.
+        Zig.BuiltinCall pointer when Tok(pointer.Arg0) == "@intFromPtr" => ZigUsizeBits,
+        Zig.Index ix => DeclaredTupleIndexBits(ix.Arg0, ix.Arg2) ?? DeclaredElemBitsOfValue(ix.Arg0),
         Zig.BuiltinCall { Arg2: not null } bc when Tok(bc.Arg0) == "@as" && Flatten(bc.Arg2) is { Count: 2 } asArgs => DeclaredBitsOfTypeArg(asArgs[0]),
+        Zig.BuiltinCall { Arg2: not null } backing when Tok(backing.Arg0) is "@backingInt" or "@intFromEnum"
+            && Flatten(backing.Arg2) is [var enumValue] => EnumBackingValueBits(enumValue),
         Zig.BuiltinCall { Arg2: not null } fb when Tok(fb.Arg0) == "@intFromBool" => 1,   // a `u1`
+        Zig.BuiltinCall { Arg2: not null } sh when Tok(sh.Arg0) == "@shlExact" && Flatten(sh.Arg2) is [var shifted, _]
+            => DeclaredBitsOfArgument(shifted),
+        Zig.BuiltinCall { Arg2: not null } swapped when Tok(swapped.Arg0) == "@byteSwap" && Flatten(swapped.Arg2) is [var swappedValue]
+            => DeclaredBitsOfArgument(swappedValue),
         Zig.BuiltinCall { Arg2: not null } division when Tok(division.Arg0) == "@divCeil" && Flatten(division.Arg2) is [var numerator, var denominator]
             => PeerDeclaredBits(numerator, denominator),
         // `@clz` / `@ctz` / `@popCount` of an N-bit integer is a `std.math.Log2IntCeil(uN)`: the bits that hold N itself
@@ -285,8 +309,10 @@ internal sealed partial class ZigLowering
     /// <see cref="DeclaredBitsOfValue"/>): equal widths, or one operand an integer literal adopting the other's; else null.</summary>
     private int? PeerDeclaredBits(Item lhs, Item rhs)
     {
-        var l = DeclaredBitsOfValue(lhs);
-        var r = DeclaredBitsOfValue(rhs);
+        if (IsSourceComptimeInteger(lhs)) return DeclaredBitsOfArgument(rhs);
+        if (IsSourceComptimeInteger(rhs)) return DeclaredBitsOfArgument(lhs);
+        var l = DeclaredBitsOfArgument(lhs);
+        var r = DeclaredBitsOfArgument(rhs);
         if (l is { } lb && r is { } rb) { return lb == rb ? lb : null; }
         if (l is { } onlyL && IsIntegerLiteral(rhs)) { return onlyL; }
         if (r is { } onlyR && IsIntegerLiteral(lhs)) { return onlyR; }
@@ -324,14 +350,28 @@ internal sealed partial class ZigLowering
             _ => null,
         };
 
-        CType? Operand(Item o) => (o.Content is Zig.Ident ? null : PeerTypeOfValue(o))
-            ?? (o.Content is Zig.Ident id && _symbols.Resolve(Tok(id.Arg0)) is { Type.Unqualified: CType.Prim { Integer: true } t } ? t : null);
+        CType? Operand(Item o)
+        {
+            if (o.Content is Zig.Ident id && _symbols.Resolve(Tok(id.Arg0)) is { Type.Unqualified: CType.Prim { Integer: true } t }) return t;
+            if (o.Content is Zig.Ident) return null;
+            if (PeerTypeOfValue(o) is { } peer) return peer;
+            if (o.Content is Zig.Field or Zig.Index or Zig.BuiltinCall or Zig.CallArgs)
+            {
+                using var hoist = EnterFreshHoist();
+                return LowerExpr(o).Type.Unqualified is CType.Prim { Integer: true } integer ? integer : null;
+            }
+            return null;
+        }
 
         CType? Peer(Item l, Item r)
         {
             if (IsIntegerLiteral(r)) { return Operand(l); }
             if (IsIntegerLiteral(l)) { return Operand(r); }
-            return Operand(l) is { } lt && Operand(r) is { } rt && lt.Equals(rt) ? lt : null;
+            var lt = Operand(l);
+            var rt = Operand(r);
+            if (IsSourceComptimeInteger(l) || lt?.Unqualified is CType.Prim { IsComptimeInt: true }) return rt;
+            if (IsSourceComptimeInteger(r) || rt?.Unqualified is CType.Prim { IsComptimeInt: true }) return lt;
+            return lt is not null && lt.Equals(rt) ? lt : null;
         }
     }
 
@@ -346,15 +386,18 @@ internal sealed partial class ZigLowering
     /// <summary>The declared width a LOWERED expression carries, for what the AST alone cannot resolve: a
     /// call's callee (its declared return width, <see cref="_fnReturnBits"/>: <c>iterator.length()</c>,
     /// <c>try charToDigit(…)</c>), a variable, a slice length, through <c>try</c> and parentheses.</summary>
-    private int? DeclaredBitsOfLowered(CExpr e) => e switch
+    private int? DeclaredBitsOfLowered(CExpr e) => _shared.BitcastWidths.Expressions.TryGetValue(e, out var known)
+        ? known.IntegerBits : e switch
     {
         Paren p => DeclaredBitsOfLowered(p.Inner),
         ZigTry t => DeclaredBitsOfLowered(t.Inner),
         VarRef v => _valueBits.TryGetValue(v.Sym, out var b) ? b : null,
+        Call call when _shared.BitcastWidths.CallResults.TryGetValue(call, out var result) => result.IntegerBits,
         Call { CalleeSym: { } s } => _fnReturnBits.TryGetValue(s, out var rb) ? rb : null,
         Call { Callee: "ZigMath.DivCeil", Args: [_, _, LitInt { Value: { } width }] } when width is >= 1 and <= 128 => (int)width,
+        Call { Callee: "ZigMath.ShlExact", Args: [_, _, LitInt { Value: { } width }] } when width is >= 1 and <= 128 => (int)width,
         ComptimeFold f => DeclaredBitsOfLowered(f.Inner),
-        TupleIndex { Tuple: VarRef tv, Index: var ti } when _valueTupleElemBits.TryGetValue(tv.Sym, out var tbits) && ti < tbits.Length
+        TupleIndex { Tuple: var tuple, Index: var ti } when TupleResultBits(tuple) is { } tbits && ti < tbits.Length
             => tbits[ti],
         Member { Field: "Len" } => 64,
         // A struct field read (`@field(value, f_name)` in std.Io.Writer.printValue's struct arm, task #121): its declared width.
@@ -371,8 +414,9 @@ internal sealed partial class ZigLowering
     private int? DeclaredBitsOfArgument(Item arg)
     {
         if (DeclaredBitsOfValue(arg) is { } bits) { return bits; }
-        using var hoist = EnterThrowawayHoist();
-        return DeclaredBitsOfLowered(LowerExpr(arg));
+        using var hoist = EnterFreshHoist();
+        var value = LowerExpr(arg);
+        return BitcastSourceLocation(arg, value).IntegerBits ?? DeclaredBitsOfLowered(value);
     }
 
     /// <summary>Each function's declared RETURN width, where its return type spelled one (read per instance
@@ -388,7 +432,9 @@ internal sealed partial class ZigLowering
     private int? DeclaredElemBitsOfValue(Item e) => e.Content switch
     {
         Zig.Grouped g => DeclaredElemBitsOfValue(g.Arg1),
-        Zig.Ident id => _symbols.Resolve(Tok(id.Arg0)) is { } s && _valueElemBits.TryGetValue(s, out var b) ? b : null,
+        Zig.Ident id => _symbols.Resolve(Tok(id.Arg0)) is { } s
+            ? _valueElemBits.GetValueOrDefault(s, 0) is > 0 and var b ? b : BitcastSymbolLocation(s).Element?.IntegerBits
+            : null,
         Zig.PreAddrOf a => DeclaredElemBitsOfValue(a.Arg1),
         Zig.SliceRange sr => DeclaredElemBitsOfValue(sr.Arg0),
         Zig.SliceOpen so => DeclaredElemBitsOfValue(so.Arg0),
@@ -440,10 +486,14 @@ internal sealed partial class ZigLowering
                 {
                     _valueTupleElemBits[ps] = tb;
                 }
+                if (_instanceAnytypeSentinels.TryGetValue(fn, out var sentinels) && sentinels.TryGetValue(ps.Name, out var sentinel))
+                    _valueSentinels[ps] = sentinel;
                 continue;
             }
             if (info.Kind != ParamKind.Runtime) { continue; }
             RecordValueBits(ps, DeclaredBitsOfTypeArg(info.TypeAst), ElemBitsOfTypeAst(info.TypeAst));
+            if (ps.Type?.Unqualified is CType.Pointer or CType.Slice or CType.Array
+                && SentinelOfTypeArg(info.TypeAst) is { } parameterSentinel) _valueSentinels[ps] = parameterSentinel;
             if (ps.Type?.Unqualified is CType.Pointer) { RecordValuePtrSize(ps, PointerSizeOfTypeArg(info.TypeAst)); }
         }
     }
@@ -459,7 +509,14 @@ internal sealed partial class ZigLowering
     /// <c>.@"enum"</c> / <c>.@"union"</c> / <c>.@"fn"</c> compare as their inner text. A slice is
     /// zig's <c>pointer</c> kind (with <c>size</c> <c>.slice</c>), matching how the real
     /// <c>@typeInfo</c> reports one.</summary>
-    private string TypeInfoTag(CType type) => type.Unqualified switch
+    private string TypeInfoTag(CType type)
+    {
+        if (UsesSourceStdlib && type.Unqualified is CType.Named named)
+        {
+            EnsureNestedBody(named.Name);
+            (_moduleGraph?.OwnerOfContainer(named.Name) ?? this).RaiseIfPoisoned(named.Name);
+        }
+        return type.Unqualified switch
     {
         // `_Bool` is an INTEGER prim in the C type model (CType.Bool == Prim("_Bool", 1, true, false)),
         // so it must be recognized before the integer arm or every `bool` would report `int`.
@@ -468,14 +525,19 @@ internal sealed partial class ZigLowering
         CType.Prim { Integer: true } => "int",
         CType.Prim => "float",
         // zig's f128, the runtime's software binary128 (task #214).
-        CType.Float128Type => "float",
-        CType.VoidType => "void",
+        CType.Float128Type or CType.LongDoubleStorage16 => "float",
+        CType.VoidType { ZigAnyopaque: true } => "opaque",
+        CType.VoidType or CType.Named { Name: "Unit" } => "void",
         CType.NoReturnType => "noreturn",
+        CType.Opaque => "opaque",
+        CType.Pointer { ZigOptional: true } => "optional",
         CType.Pointer or CType.Slice => "pointer",
         CType.Optional => "optional",
         CType.Array => "array",
         CType.Vector => "vector",
         CType.Enum => "enum",
+        CType.Func { ZigSourcePointer: true, ZigOptional: true } => "optional",
+        CType.Func { ZigSourcePointer: true } => "pointer",
         CType.Func => "fn",
         CType.ErrorUnion => "error_union",
         CType.ErrorSetType => "error_set",
@@ -488,7 +550,8 @@ internal sealed partial class ZigLowering
         CType.Named or CType.Tuple or CType.ZigList or CType.Allocator => "struct",
         _ => throw new IrUnsupportedException(
             $"zig `@typeInfo`: no `std.builtin.Type` tag is modeled for {type.Describe()} (road-to-zig-std S5)"),
-    };
+        };
+    }
 
     /// <summary>The DECLARED bit width read off a type's SOURCE spelling, or null when the operand is
     /// not a bare primitive keyword (an alias, a comptime type param, <c>@TypeOf(x)</c>, a composite).
@@ -496,6 +559,8 @@ internal sealed partial class ZigLowering
     /// fidelity rule on the class. The <c>uN</c>/<c>iN</c> rule matches
     /// <see cref="TryArbitraryWidthInt"/>'s (that is where the widening this guards against happens);
     /// the fixed names are dotcc's LP64 target widths, which agree with zig's for this target.</summary>
+    private const int ZigUsizeBits = 64;
+
     private static int? DeclaredBitsFromSpelling(Item typeAst)
     {
         if (typeAst.Content is Zig.Grouped g) { return DeclaredBitsFromSpelling(g.Arg1); }
@@ -503,7 +568,8 @@ internal sealed partial class ZigLowering
         var name = Tok(id.Arg0);
         switch (name)
         {
-            case "usize" or "isize" or "c_long" or "c_ulong" or "c_longlong" or "c_ulonglong" or "f64": return 64;
+            case "usize" or "isize": return ZigUsizeBits;
+            case "c_long" or "c_ulong" or "c_longlong" or "c_ulonglong" or "f64": return 64;
             case "c_int" or "c_uint" or "f32": return 32;
             case "c_short" or "c_ushort": return 16;
             case "c_char": return 8;
@@ -513,7 +579,8 @@ internal sealed partial class ZigLowering
         var digits = name.AsSpan(1);
         if (digits.Length > 1 && digits[0] == '0') { return null; }
         foreach (var ch in digits) { if (ch is < '0' or > '9') { return null; } }
-        return int.TryParse(digits, out var bits) && bits >= 1 && bits <= 128 ? bits : null;
+        return int.TryParse(digits, out var bits) && bits >= 0 && bits <= 128
+            && (bits != 0 || name[0] == 'u') ? bits : null;
     }
 
     /// <summary>Evaluate an expression to a folded <c>@typeInfo</c> value. Four forms, all comptime:
@@ -528,6 +595,9 @@ internal sealed partial class ZigLowering
         info = null!;
         switch (expr.Content)
         {
+            case Zig.CallArgs call when TryEvalSourceReflectionCall(call, out var reflected):
+                info = reflected;
+                return true;
             case Zig.Grouped g:
                 return TryEvalTypeInfo(g.Arg1, out info);
 
@@ -550,7 +620,9 @@ internal sealed partial class ZigLowering
                 }
                 var t = LowerType(args[0]);
                 info = new ZigTypeInfo(TypeInfoTag(t), t, DeclaredBitsOfTypeArg(args[0]),
-                                       t.Unqualified is CType.Pointer ? PointerSizeOfTypeArg(args[0]) : null,
+                                       t.Unqualified is CType.Pointer pointer
+                                           ? PointerSizeOfTypeArg(args[0]) ?? pointer.ZigSourceSize
+                                           : t.Unqualified is CType.Func { ZigSourcePointer: true } ? "one" : null,
                                        t.Unqualified is CType.Pointer or CType.Slice or CType.Array ? SentinelOfTypeArg(args[0]) : null);
                 return true;
             }
@@ -582,7 +654,9 @@ internal sealed partial class ZigLowering
                 if (!IsTypeInfoTag(tag)) { return false; }
                 throw new IrUnsupportedException(
                     $"zig `@typeInfo({baseInfo.Type.Describe()}).{tag}`: the active `std.builtin.Type` field is "
-                    + $"`{baseInfo.Tag}`, not `{tag}`");
+                    + $"`{baseInfo.Tag}`, not `{tag}`"
+                    + $" ({_module?.Path ?? _fileStem}:{expr.Position.Line}, function '{_currentFnName}')"
+                    + (_currentFnSym is { } owner ? "; callers: " + DescribeRuntimeDemand(owner) : ""));
             }
         }
         return false;
@@ -594,7 +668,7 @@ internal sealed partial class ZigLowering
     /// the field fold).</summary>
     private static bool IsTypeInfoTag(string name) => name is
         "int" or "float" or "bool" or "void" or "pointer" or "optional" or "array"
-        or "enum" or "struct" or "union" or "fn" or "error_union" or "error_set";
+        or "opaque" or "enum" or "struct" or "union" or "fn" or "error_union" or "error_set";
 
     /// <summary>Fold a <c>@typeInfo</c> payload field that yields a VALUE — <c>bits</c>,
     /// <c>is_const</c>, <c>len</c>. Returns false when the expression is not such an access, so the
@@ -614,15 +688,28 @@ internal sealed partial class ZigLowering
             var attrPointee = attrInfo.Type.Unqualified switch
             {
                 CType.Pointer p => p.Pointee,
+                CType.Func { ZigSourcePointer: true } function => function with
+                    { Quals = function.ZigSourcePointerConst ? TypeQual.Const : TypeQual.None },
                 CType.Slice s => s.Element,
                 _ => CType.Void,
+            };
+            var sourceAlignment = attrInfo.Type.Unqualified switch
+            {
+                CType.Pointer pointer => pointer.ZigSourceAlignment,
+                CType.Func { ZigSourcePointer: true } function => function.ZigSourcePointerAlignment,
+                CType.Slice slice => slice.ZigSourceAlignment,
+                _ => null,
             };
             value = Tok(attrField.Arg2) switch
             {
                 "const" => new LitBool(attrPointee.IsConst) { Type = CType.Bool },
                 "volatile" => new LitBool((attrPointee.Quals & TypeQual.Volatile) != 0) { Type = CType.Bool },
+                "align" when sourceAlignment is { } alignment
+                    => alignment == 0
+                        ? new DefaultLit { Type = new CType.Optional(CType.ULong) }
+                        : new Cast(new CType.Optional(CType.ULong), new LitInt(alignment.ToString(System.Globalization.CultureInfo.InvariantCulture), alignment) { Type = CType.ULong }) { Type = new CType.Optional(CType.ULong) },
                 var other => throw new IrUnsupportedException(
-                    $"zig `@typeInfo({attrInfo.Type.Describe()}).pointer.attrs.{other}` is not modeled (only `const` and `volatile`)"),
+                    $"zig `@typeInfo({attrInfo.Type.Describe()}).pointer.attrs.{other}` lacks source evidence or is not modeled ({_module?.Path ?? _fileStem}:{expr.Position.Line}, function '{_currentFnName}')"),
             };
             return true;
         }
@@ -633,18 +720,50 @@ internal sealed partial class ZigLowering
         if (IsTypeInfoTag(field)) { return false; }
         switch (info.Tag, field)
         {
+            case ("struct", "layout") or ("union", "layout"):
+            {
+                var layoutName = SourceContainerLayout(info);
+                var language = ResolveInlineImport("std")?.Lowering?.ResolveNamedModule("lang")?.Lowering
+                    ?? throw new IrUnsupportedException("zig container layout value requires the source std.lang module");
+                var typeContainer = language.ResolveExportedType("Type");
+                var typeName = typeContainer is not null ? ContainerTypeName(typeContainer) : null;
+                if (typeName is null) throw new IrUnsupportedException("zig std.lang.Type declaration is unavailable");
+                using var container = language.EnterContainer(typeName);
+                if (language.LowerTypeName("ContainerLayout").Unqualified is not CType.Enum layoutEnum)
+                    throw new IrUnsupportedException("zig std.lang.Type.ContainerLayout is not an enum");
+                value = language.ResolveEnumLit(layoutName, layoutEnum);
+                return true;
+            }
+            case ("struct", "backing_integer") or ("union", "backing_integer"):
+                var optionalBackingType = new CType.Optional(new CType.ZigMetaType());
+                value = ReflectedPackedBackingType(info) is { } backingType
+                    ? new ZigTypeValue(backingType.Type) { Type = optionalBackingType }
+                    : new DefaultLit { Type = optionalBackingType };
+                return true;
+            case ("union", "tag_type") when info.Type.Unqualified is CType.Named unionNameForTag:
+                var optionalTagType = new CType.Optional(new CType.ZigMetaType());
+                value = _unions.TryGetValue(unionNameForTag.Name, out var unionWithTag)
+                    ? new ZigTypeValue(unionWithTag.TagType) { Type = optionalTagType }
+                    : new DefaultLit { Type = optionalTagType };
+                return true;
+
+            case ("pointer", "sentinel_ptr") or ("array", "sentinel_ptr"):
+                value = TypeInfoSentinelPointer(info);
+                return true;
             case ("int", "bits") or ("float", "bits"):
                 // A float's width is its lowered type's (std.math.isInf over an `anytype` f64, task #189): f32, f64 and f128
                 // lower at their own width (C# `float` / `double`, the runtime's `Float128`, task #214), so no float is
                 // widened the way `u21` is, and nothing is lost.
                 var floatBits = info.Tag == "float" && info.Type.Unqualified is CType.Prim { Integer: false, Bytes: 4 or 8 } fp
                     ? fp.Bytes * 8
-                    : info.Type.Unqualified is CType.Float128Type ? 128 : (int?)null;
+                    : info.Type.Unqualified is CType.Float128Type ? 128
+                    : info.Type.Unqualified is CType.LongDoubleStorage16 ? 80 : (int?)null;
                 if ((info.DeclaredBits ?? floatBits) is not { } bits)
                 {
                     throw new IrUnsupportedException(
                         $"zig `@typeInfo({info.Type.Describe()}).{info.Tag}.bits`: the declared width is not known here"
-                        + (_currentFnName.Length > 0 ? $" (in '{_currentFnName}')" : "") + ". "
+                        + $" ({_module?.Path ?? _fileStem}:{expr.Position.Line}, function '{_currentFnName}')"
+                        + (_currentFnSym is { } owner ? "; callers: " + DescribeRuntimeDemand(owner) : "") + ". "
                         + "It rides a type SPELLING — `@typeInfo(u21)` directly, or a `comptime T: type` / alias bound to "
                         + "one — but an `anytype` param or `@TypeOf(expr)` yields only the lowered type, and dotcc widens "
                         + "`uN`/`iN` to the smallest standard width (`u21` → a 32-bit `uint`), so reporting that width "
@@ -662,6 +781,8 @@ internal sealed partial class ZigLowering
                 var pointee = info.Type.Unqualified switch
                 {
                     CType.Pointer p => p.Pointee,
+                    CType.Func { ZigSourcePointer: true } function => function with
+                        { Quals = function.ZigSourcePointerConst ? TypeQual.Const : TypeQual.None },
                     CType.Slice s => s.Element,
                     _ => CType.Void,
                 };
@@ -712,7 +833,7 @@ internal sealed partial class ZigLowering
 
             case ("pointer", "size"):
                 throw new IrUnsupportedException(
-                    "zig `@typeInfo(T).pointer.size`: dotcc lowers `*T`, `[*]T` and `[*c]T` to one C pointer, so the "
+                    $"zig `@typeInfo({info.Type.Describe()}).pointer.size` ({_module?.Path ?? _fileStem}:{expr.Position.Line}, function '{_currentFnName}'): dotcc lowers `*T`, `[*]T` and `[*c]T` to one C pointer, so the "
                     + "pointer SIZE class is not recoverable from the lowered type (road-to-zig-std S5)");
 
             case (_, "signedness"):
@@ -744,12 +865,48 @@ internal sealed partial class ZigLowering
     {
         type = CType.Void;
         if (expr.Content is Zig.Grouped g) { return TryFoldTypeInfoType(g.Arg1, out type); }
+        if (expr.Content is Zig.Unwrap { Arg0.Content: Zig.Field returnField }
+            && Tok(returnField.Arg2) == "return_type" && TryEvalTypeInfo(returnField.Arg0, out var fnInfo)
+            && fnInfo.Type.Unqualified is CType.Func function)
+        {
+            type = function.Return;
+            return true;
+        }
+        if (expr.Content is Zig.Field errorField && Tok(errorField.Arg2) is "error_set" or "payload"
+            && TryEvalTypeInfo(errorField.Arg0, out var errorInfo) && errorInfo.Type.Unqualified is CType.ErrorUnion errorUnion)
+        {
+            type = Tok(errorField.Arg2) == "error_set" ? ReflectedErrorSet(errorUnion) : errorUnion.Payload;
+            return true;
+        }
+        if (expr.Content is Zig.Unwrap { Arg0.Content: Zig.Field tag }
+            && Tok(tag.Arg2) == "tag_type" && TryEvalTypeInfo(tag.Arg0, out var unionInfo)
+            && unionInfo.Tag == "union" && unionInfo.Type.Unqualified is CType.Named unionType)
+        {
+            if (!_unions.TryGetValue(unionType.Name, out var tagged))
+                throw new CompileException("zig: attempted to unwrap the null tag_type of an untagged union");
+            type = tagged.TagType;
+            return true;
+        }
+        if (expr.Content is Zig.Unwrap { Arg0.Content: Zig.Field backing }
+            && Tok(backing.Arg2) == "backing_integer" && TryEvalTypeInfo(backing.Arg0, out var packedInfo)
+            && packedInfo.Tag is "struct" or "union")
+        {
+            if (ReflectedPackedBackingType(packedInfo) is not { } reflected)
+                throw new CompileException("zig: attempted to unwrap the null backing_integer of an unpacked aggregate");
+            type = reflected.Type;
+            RecordTypeCallBits(expr, reflected.DeclaredBits);
+            return true;
+        }
         if (expr.Content is not Zig.Field f || Tok(f.Arg2) != "child" || !TryEvalTypeInfo(f.Arg0, out var info))
         {
             return false;
         }
         var child = info.Type.Unqualified switch
         {
+            CType.Pointer { ZigOptional: true } p when info.Tag == "optional" => p with { ZigOptional = false },
+            CType.Func { ZigOptional: true } optionalFunction when info.Tag == "optional" => optionalFunction with { ZigOptional = false },
+            CType.Func { ZigSourcePointer: true } pointerFunction when info.Tag == "pointer" => pointerFunction with
+                { ZigSourcePointer = false, ZigSourcePointerConst = false, ZigSourcePointerAlignment = null },
             CType.Pointer p => p.Pointee,
             CType.Slice s => s.Element,
             CType.Optional o => o.Inner,
@@ -763,7 +920,7 @@ internal sealed partial class ZigLowering
                 $"zig `@typeInfo({info.Type.Describe()}).{info.Tag}.child`: only a pointer / slice / optional / array "
                 + "kind has a child type");
         }
-        type = child;
+        type = SourceSentinelArrayValueType(child);
         return true;
     }
 
@@ -773,11 +930,50 @@ internal sealed partial class ZigLowering
     /// <c>switch (@typeInfo(T))</c> dispatches) and an <c>int</c> payload's <c>signedness</c>
     /// (<c>signed</c>/<c>unsigned</c>, which IS exactly recoverable — dotcc's width widening never
     /// changes a type's signedness). Yields the payload alongside, so a prong capture can bind it.</summary>
+    private string SourceContainerLayout(ZigTypeInfo info)
+    {
+        AggregateLayout layout;
+        if (info.Type.Unqualified is CType.Named named)
+        {
+            var owner = _moduleGraph?.OwnerOfContainer(named.Name) ?? this;
+            owner.EnsureNestedBody(named.Name);
+            owner.RaiseIfPoisoned(named.Name);
+            layout = _ir.Types.Find(declaration => declaration.Name == named.Name)?.Layout
+                ?? (UsesSourceStdlib
+                    ? throw new IrUnsupportedException("zig source container layout is unavailable for '" + named.Name + "'")
+                    : AggregateLayout.Default);
+        }
+        else if (info.Type.Unqualified is CType.Tuple) layout = AggregateLayout.Default;
+        else if (!UsesSourceStdlib) layout = AggregateLayout.Default;
+        else throw new IrUnsupportedException("zig source container layout is unavailable for " + info.Type.Describe());
+        return layout switch
+        {
+            AggregateLayout.Packed => "packed",
+            AggregateLayout.Sequential => "extern",
+            _ => "auto",
+        };
+    }
+
     private bool TryEvalComptimeTag(Item expr, out string tag, out ZigTypeInfo? payload)
     {
         tag = "";
         payload = null;
         if (expr.Content is Zig.Grouped g) { return TryEvalComptimeTag(g.Arg1, out tag, out payload); }
+        if (expr.Content is Zig.EnumLit selectedLiteral)
+        {
+            tag = SourceMemberName(selectedLiteral.Arg1);
+            return true;
+        }
+        if (expr.Content is Zig.IfElseExpr { Arg4: null, Arg7: null } conditional
+            && TryFoldTypeIfCondition(conditional.Arg2) is { } taken)
+            return TryEvalComptimeTag(taken ? conditional.Arg5 : conditional.Arg8, out tag, out payload);
+        if (expr.Content is Zig.Ident literalName && _symbols.Resolve(Tok(literalName.Arg0)) is { } literalSymbol
+            && _ir.ComptimeGlobals.TryGetValue(literalSymbol, out var literalValue)
+            && literalValue is IrBuilder.CtEnumLiteral literal)
+        {
+            tag = literal.Name;
+            return true;
+        }
         // A name bound to a comptime tag (`const signedness = @typeInfo(T).int.signedness;`).
         if (expr.Content is Zig.Ident tagId && _symbols.Resolve(Tok(tagId.Arg0)) is null
             && _comptimeTagBindings.TryGetValue(Tok(tagId.Arg0), out var boundTag))
@@ -805,15 +1001,7 @@ internal sealed partial class ZigLowering
                 throw new IrUnsupportedException(
                     $"zig `@typeInfo({lInfo.Type.Describe()}).{lInfo.Tag}.layout`: only a struct or union carries a layout");
             }
-            var layout = lInfo.Type.Unqualified is CType.Named ln
-                ? _ir.Types.Find(d => d.Name == ln.Name)?.Layout ?? AggregateLayout.Default
-                : AggregateLayout.Default;
-            tag = layout switch
-            {
-                AggregateLayout.Packed => "packed",
-                AggregateLayout.Sequential => "extern",
-                _ => "auto",
-            };
+            tag = SourceContainerLayout(lInfo);
             return true;
         }
         // `<info>.mode` of an enum (std.enums.EnumIndexer's `if (@typeInfo(E).@"enum".mode == .nonexhaustive)`).
@@ -925,17 +1113,48 @@ internal sealed partial class ZigLowering
         variant = "";
         payload = null;
         var root = expr;
-        while (root.Content is Zig.Field or Zig.Grouped)
+        while (root.Content is Zig.Field or Zig.Grouped or Zig.Unwrap)
         {
-            root = root.Content is Zig.Field rf ? rf.Arg0 : ((Zig.Grouped)root.Content).Arg1;
+            root = root.Content switch
+            {
+                Zig.Field rf => rf.Arg0,
+                Zig.Unwrap unwrapped => unwrapped.Arg0,
+                _ => ((Zig.Grouped)root.Content).Arg1,
+            };
         }
-        if (root.Content is not Zig.Ident rid || _symbols.Resolve(Tok(rid.Arg0)) is not { } rootSym
-            || !_ir.ComptimeGlobals.ContainsKey(rootSym))
-        {
-            return false;
-        }
+        var knownRoot = root.Content is Zig.Ident rid && _symbols.Resolve(Tok(rid.Arg0)) is { } rootSym
+            && _ir.ComptimeGlobals.ContainsKey(rootSym);
+        var sourceCall = UsesSourceStdlib && root.Content is Zig.CallArgs;
+        // File-as-struct constants retain their declarations in the module's
+        // lazy value table. Keep the annotation when demanding the value: an
+        // anonymous union initializer needs that real result location.
+        var sourceTypedConst = UsesSourceStdlib && root.Content is Zig.Ident topConstant
+            && _symbols.Resolve(Tok(topConstant.Arg0)) is null or { IsGlobal: true }
+            && _lazyValueConsts.TryGetValue(Tok(topConstant.Arg0), out var topDeclaration)
+            && topDeclaration.typeItem is { } topAnnotation && !IsTypeKeyword(topAnnotation);
+        var sourceContainerConst = false;
+        if (UsesSourceStdlib && root.Content is Zig.Ident constant
+            && _symbols.Resolve(Tok(constant.Arg0)) is null or { IsGlobal: true })
+            for (var container = _currentConstContainer ?? _currentContainer; container is not null;
+                 container = _containerParents.GetValueOrDefault(container))
+                if (_containerConsts.TryGetValue(container, out var declarations)
+                    && declarations.TryGetValue(Tok(constant.Arg0), out var declaration))
+                {
+                    using var seeds = EnterReifiedSeeds(container);
+                    using var scope = EnterContainer(container);
+                    if (declaration.typeItem is { } annotation && IsTypeKeyword(annotation)
+                        || declaration.typeItem is null && IsTypeConstMember(declaration.rhs)) return false;
+                    sourceContainerConst = true;
+                    break;
+                }
+        if (!knownRoot && !sourceCall && !sourceContainerConst && !sourceTypedConst) return false;
         CExpr lowered;
         using (EnterThrowawayHoist()) { lowered = LowerExpr(expr); }
+        if (sourceTypedConst && (lowered.Type.Unqualified is not CType.Named namedConstant
+            || !_unions.ContainsKey(namedConstant.Name))) return false;
+        // A returned type-valued union is necessarily comptime data. Ordinary
+        // runtime union calls keep the runtime switch and its single evaluation.
+        if (!knownRoot && !sourceContainerConst && !sourceTypedConst && !RequiresComptimeStorage(lowered.Type)) return false;
         if (_ir.EvalComptimeValue(lowered) is not IrBuilder.CtStruct value
             || value.Type.Unqualified is not CType.Named { Name: var unionName }
             || !_unions.TryGetValue(unionName, out var info)
@@ -1040,6 +1259,28 @@ internal sealed partial class ZigLowering
         while (expr.Content is Zig.Grouped g) { expr = g.Arg1; }
         return expr.Content is Zig.CallArgs { Arg2: null, Arg0.Content: Zig.Field { Arg2: var methodTok } receiver }
             && Tok(methodTok) == "sentinel" && TryEvalTypeInfo(receiver.Arg0, out _);
+    }
+
+    private CExpr TypeInfoSentinelPointer(ZigTypeInfo info)
+    {
+        var pointer = new CType.Pointer(CType.Void.WithQuals(TypeQual.Const));
+        if (info.Sentinel is { HasSentinel: false }) return new NullPtr { Type = pointer };
+        var element = info.Type.Unqualified switch
+        {
+            CType.Pointer p => p.Pointee, CType.Slice s => s.Element, CType.Array a => a.Element, _ => CType.Void,
+        };
+        if (info.Sentinel is not { Value: { } sentinel } || element.Unqualified is not CType.Prim { Integer: true })
+            throw new IrUnsupportedException($"zig @typeInfo({info.Type.Describe()}).{info.Tag}.sentinel_ptr requires source-backed integer sentinel metadata ({_module?.Path ?? _fileStem}, function '{_currentFnName}')"
+                + (_currentFnSym is { } owner ? "; callers: " + DescribeRuntimeDemand(owner) : ""));
+        var key = (element.Unqualified, sentinel);
+        if (!_shared.SentinelPointers.TryGetValue(key, out var storage))
+        {
+            var scalar = new Cast(element.Unqualified,
+                new LitInt(sentinel.ToString(System.Globalization.CultureInfo.InvariantCulture), sentinel) { Type = CType.Long }) { Type = element.Unqualified };
+            storage = new PinnedArray(element.Unqualified, [scalar], null) { Type = new CType.Pointer(element.Unqualified) };
+            _shared.SentinelPointers[key] = storage;
+        }
+        return new Cast(pointer, storage) { Type = pointer };
     }
 
     /// <summary><c>info.sentinel()</c> over a folded <c>@typeInfo</c> pointer or array payload, as a comptime optional

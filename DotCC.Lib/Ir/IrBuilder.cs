@@ -117,6 +117,7 @@ internal sealed partial class IrBuilder
     /// backs <c>@errorName</c> (Milestone X, part 1). Null/empty for a C-only program or a Zig
     /// program that never names an error.</summary>
     public IReadOnlyDictionary<string, int>? ZigErrorCodes { get; set; }
+    internal bool ZigManagedFunctionPointers { get; set; }
 
     /// <summary>
     /// Functions a native import (`-l`) library must resolve: declared by prototype,
@@ -1296,7 +1297,9 @@ internal sealed partial class IrBuilder
     internal long? SizeOfConst(CType t) => t.Unqualified switch
     {
         CType.Named n when n.IsExternal || _structFields.ContainsKey(n.Name) => Layout(t).Size,
-        CType.Array array => array.RuntimeCount is null ? SizeOfConst(array.Element) * (array.Count ?? 0) : null,
+        CType.Optional or CType.ErrorUnion => Layout(t).Size,
+        CType.Tuple { Elements.Count: 2 } => Layout(t).Size,
+        CType.Array array => array.RuntimeCount is null ? SizeOfConst(array.Element) * array.StorageCount : null,
         _ => t.SizeOf,
     };
 

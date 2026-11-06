@@ -20,11 +20,13 @@ class Context:
         self.layout = Layout(self.root, recipe.product, recipe.default_profile)
         self.run_id = time.strftime("%Y%m%d-%H%M%S") + "-" + uuid.uuid4().hex[:8]
         self.artifacts = self.root / "artifacts/campaign" / self.run_id
-        self.work = self.root / "build/campaign" / self.run_id
+        self.work = (Path(recipe.work_root) if recipe.work_root is not None
+                     else self.root / "build/campaign") / self.run_id
         self.receipt = dict(schema_version=1, project=recipe.name, action=options.action,
                             profile=self.profile, hash_policy=options.hashes,
                             run_id=self.run_id, status="running", started=time.time(),
-                            staging=str(self.work.relative_to(self.root)), python=sys.executable,
+                            staging=str(self.work.relative_to(self.root) if self.work.is_relative_to(self.root)
+                                        else self.work), python=sys.executable,
                             warnings=[], commands=[], tasks=[], outputs={})
         self.receipt["selection"] = {name: getattr(options, name, None) for name in
                                      ("form", "mode", "rid", "suite", "fetch", "tools", "restore", "fast", "jobs")}
@@ -37,6 +39,8 @@ class Context:
                         DOTCC_CAMPAIGN_FETCH=options.fetch, DOTCC_CAMPAIGN_RESTORE=options.restore,
                         PYTHONPATH=str(self.repo / "Scripts") + os.pathsep + os.environ.get("PYTHONPATH", ""),
                         TMPDIR=str(self.work / "tmp"))
+        if recipe.work_root is not None and self.profile == recipe.default_profile:
+            self.env.update(UseArtifactsOutput="true", ArtifactsPath=str(self.work / "managed-build"))
 
     def start(self):
         self.artifacts.mkdir(parents=True)
@@ -151,13 +155,18 @@ class Context:
             return
         self.receipt["dotnet_sdk"] = self.run(["dotnet", "--version"], "dotnet-version").strip()
         for project, executable in (("DotCC", "dotcc.dll"), ("DotCC.PostProcess", "dotcc-postprocess.dll")):
-            if self.options.tools == "build" and project not in self.session:
+            work_root = getattr(getattr(self, "recipe", None), "work_root", None)
+            tool_artifacts = Path(work_root) / "tool-build" if work_root is not None else None
+            source = (tool_artifacts / "bin" / project / "release" if tool_artifacts is not None
+                      else self.repo / project / "bin/Release/net10.0")
+            tool_key = (project, str(source)) if tool_artifacts is not None else project
+            if self.options.tools == "build" and tool_key not in self.session:
                 from .delivery import lock
                 with lock(self.repo / "Scripts/.campaign-tools.lock"):
                     self.managed("build", self.repo / project / (project + ".csproj"),
-                                 project + "-build", "-p:UseLocalLalrCc=false")
-                self.session.add(project)
-            source = self.repo / project / "bin/Release/net10.0"
+                                 project + "-build", "-p:UseLocalLalrCc=false",
+                                 *(["--artifacts-path", tool_artifacts] if tool_artifacts is not None else []))
+                self.session.add(tool_key)
             override = os.environ.get({"DotCC": "DOTCC_COMPILER",
                                        "DotCC.PostProcess": "DOTCC_POSTPROCESSOR"}[project])
             if override:

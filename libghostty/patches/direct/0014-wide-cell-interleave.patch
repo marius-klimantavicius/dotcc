@@ -1,0 +1,18 @@
+--- a/src/terminal/Terminal.zig
++++ b/src/terminal/Terminal.zig
+@@ -1108,10 +1108,11 @@
+                         const narrow: @Vector(pair_lanes, u32) =
+                             cps[printed + idx / 2 ..][0..pair_lanes].*;
+                         const wides: Vp = wide_v | (@as(Vp, @intCast(narrow)) << shift_v);
+-                        const inter: [2 * pair_lanes]u64 = std.simd.interlace(.{
+-                            wides,
+-                            spacer_v,
+-                        });
++                        var inter: [2 * pair_lanes]u64 = undefined;
++                        inline for (0..pair_lanes) |pair| {
++                            inter[2 * pair] = wides[pair];
++                            inter[2 * pair + 1] = spacer_v[pair];
++                        }
+                         cells[idx..][0 .. 2 * pair_lanes].* = @bitCast(inter);
+                     }
+                 }

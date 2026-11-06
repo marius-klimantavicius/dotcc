@@ -38,7 +38,7 @@ internal static class ZigStorageObjectMetadata
 
     internal sealed record FieldProof(string Name, int Offset, int Width, string SourceType, string TargetName, bool Signed = false);
     internal sealed record ContractProof(ZigStorageKind Kind, string Identity, int Bits, int Size, int Alignment,
-        string Profile, string Reason, FieldProof[] Fields, bool IsZeroOwner = false);
+        string Profile, string Reason, FieldProof[] Fields, bool IsZeroOwner = false, bool IsPackedUnion = false);
     internal static ContractProof ReadContract(string contract)
     {
         try
@@ -87,7 +87,7 @@ internal static class ZigStorageObjectMetadata
         if (!type.StartsWith("0:prim(", StringComparison.Ordinal) || !type.EndsWith(')')) return false;
         var parts = type[7..^1].Split(',');
         if (parts.Length != 4 || parts[2] != "True" || parts[3] is not ("True" or "False")
-            || !int.TryParse(parts[1], NumberStyles.None, CultureInfo.InvariantCulture, out bytes) || bytes is not (1 or 2 or 4 or 8)) return false;
+            || !int.TryParse(parts[1], NumberStyles.None, CultureInfo.InvariantCulture, out bytes) || bytes is not (1 or 2 or 4 or 8 or 16)) return false;
         var name = Decode(parts[0]);
         signed = parts[3] == "True"; boolean = name == "_Bool";
         return SourceName(name) && (!boolean || bytes == 1 && !signed);
@@ -107,6 +107,8 @@ internal static class ZigStorageObjectMetadata
 
     private static ContractProof ValidateContract(ContractProof proof, string backing, bool backingSigned, string origin)
     {
+        proof = proof with { IsPackedUnion = backing == "packed-union"
+            || backing.StartsWith("packed-union-explicit-", StringComparison.Ordinal) };
         void Invalid() => throw new CompileException("invalid Zig storage semantic descriptor (range/type/target/physical proof)");
         if (!SourceName(proof.Identity) || proof.Profile != ZigStorageLayout.AcceptedProfile || origin.Length == 0
             || proof.Fields.Length > 4096 || proof.Fields.Select(f => f.Name).Distinct(StringComparer.Ordinal).Count() != proof.Fields.Length
@@ -131,29 +133,32 @@ internal static class ZigStorageObjectMetadata
         }
         if (proof.Kind == ZigStorageKind.Zero)
         {
-            if (proof.Bits != 0 || proof.Size != 0 || proof.Alignment != 1 || proof.Fields.Length != 0 || backing != "zero" || backingSigned) Invalid();
+            if (proof.Bits != 0 || proof.Size != 0 || proof.Alignment != 1 || backing != "zero" || backingSigned
+                || proof.Fields.Any(f => f.Offset != 0 || f.Width != 0 || f.Signed || NamedSource(f.SourceType) is null)) Invalid();
             return proof;
         }
-        if (proof.Kind != ZigStorageKind.PackedInteger || proof.Bits is < 1 or > 64 || proof.Fields.Length == 0
+        if (proof.Kind != ZigStorageKind.PackedInteger || proof.Bits is < 1 or > 128 || proof.Fields.Length == 0
             || !origin.StartsWith("r44-owner-ast:", StringComparison.Ordinal)
-            || backing == "inferred-unsignedness-unspecified" && backingSigned
-            || backing != "inferred-unsignedness-unspecified" && backing != "explicit-" + (backingSigned ? "i" : "u") + proof.Bits) Invalid();
-        var physical = proof.Bits switch { <= 8 => (1, 1), <= 16 => (2, 2), <= 32 => (4, 4), _ => (8, 8) };
+            || !((backing == "inferred-unsignedness-unspecified" || backing == "packed-union") && !backingSigned
+                || backing == (proof.IsPackedUnion ? "packed-union-" : "") + "explicit-"
+                    + (backingSigned ? "i" : "u") + proof.Bits)) Invalid();
+        var physical = proof.Bits switch { <= 8 => (1, 1), <= 16 => (2, 2), <= 32 => (4, 4), <= 64 => (8, 8), _ => (16, 16) };
         if (proof.Size != physical.Item1 || proof.Alignment != physical.Item2) Invalid();
         long cursor = 0;
         foreach (var field in proof.Fields)
         {
-            if (field.Width is < 1 or > 64 || field.Offset != cursor || (long)field.Offset + field.Width > proof.Bits) Invalid();
+            if (field.Width is < 1 or > 128 || field.Offset != (proof.IsPackedUnion ? 0 : cursor)
+                || (long)field.Offset + field.Width > proof.Bits || proof.IsPackedUnion && field.Width != proof.Bits) Invalid();
             if (Primitive(field.SourceType, out var bytes, out var signed, out var boolean))
             {
                 if (field.Width > bytes * 8 || signed != field.Signed || boolean && field.Width != 1) Invalid();
             }
             else if (EnumSource(field.SourceType, out _, out var underlying))
             {
-                if (!Primitive(underlying, out bytes, out signed, out boolean) || boolean || field.Width > bytes * 8 || signed != field.Signed) Invalid();
+                if (!Primitive(underlying, out bytes, out signed, out boolean) || bytes > 8 || boolean || field.Width > bytes * 8 || signed != field.Signed) Invalid();
             }
             else if (NamedSource(field.SourceType) is not { Length: > 0 } || field.Signed) Invalid();
-            cursor += field.Width;
+            cursor = proof.IsPackedUnion ? field.Width : cursor + field.Width;
         }
         if (cursor != proof.Bits) Invalid();
         return proof;
@@ -197,7 +202,7 @@ internal static class ZigStorageObjectMetadata
                 if (NamedSource(field.SourceType) is { } child)
                 {
                     if (!parsed.TryGetValue(child, out var nested) || nested.IsZeroOwner
-                        || nested.Kind != (proof.IsZeroOwner ? ZigStorageKind.Zero : ZigStorageKind.PackedInteger)
+                        || nested.Kind != (proof.IsZeroOwner || proof.Kind == ZigStorageKind.Zero ? ZigStorageKind.Zero : ZigStorageKind.PackedInteger)
                         || nested.Bits != field.Width)
                         throw new CompileException("missing/mismatched Zig source member storage dependency: " + child);
                 }

@@ -1,0 +1,17 @@
+--- a/src/terminal/stream.zig
++++ b/src/terminal/stream.zig
+@@ -1461,11 +1461,12 @@
+ 
+             // We explicitly inline this call here for performance reasons.
+             //
+-            // We do this rather than mark Parser.next as inline because doing
++            // We do this rather than mark Parser.nextInto as inline because doing
+             // that causes weird behavior in some tests- I'm not sure if they
+             // miscompile or it's just very counter-intuitive comptime stuff,
+             // but regardless, this is the easy solution.
+-            const actions = @call(.always_inline, Parser.next, .{ &self.parser, c });
++            var actions: [3]?Parser.Action = undefined;
++            @call(.always_inline, Parser.nextInto, .{ &self.parser, c, &actions });
+             if (comptime until) u.transition(prev_state, self.parser.state, c);
+ 
+             for (actions) |action_opt| {

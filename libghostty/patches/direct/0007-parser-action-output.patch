@@ -1,0 +1,57 @@
+--- a/src/terminal/Parser.zig
++++ b/src/terminal/Parser.zig
+@@ -255,6 +255,14 @@
+ /// Up to 3 actions may need to be executed -- in order -- representing
+ /// the state exit, transition, and entry actions.
+ pub fn next(self: *Parser, c: u8) [3]?Action {
++    var actions: [3]?Action = undefined;
++    self.nextInto(c, &actions);
++    return actions;
++}
++
++/// Like next, storing the actions in caller-owned output. Payload slices
++/// retain the same lifetime as the actions returned by next.
++pub fn nextInto(self: *Parser, c: u8, out: *[3]?Action) void {
+     const effect = table[c][@backingInt(self.state)];
+ 
+     // log.info("next: {x}", .{c});
+@@ -270,9 +278,9 @@
+     // 1. exit action from old state
+     // 2. transition action
+     // 3. entry action to new state
+-    return [3]?Action{
++    {
+         // Exit depends on current state
+-        if (self.state == next_state) null else switch (self.state) {
++        out[0] = if (self.state == next_state) null else switch (self.state) {
+             .osc_string => if (self.osc_parser.end(c)) |cmd|
+                 Action{ .osc_dispatch = cmd.* }
+             else
+@@ -280,12 +288,12 @@
+             .dcs_passthrough => Action{ .dcs_unhook = {} },
+             .sos_pm_apc_string => Action{ .apc_end = {} },
+             else => null,
+-        },
+-
+-        self.doAction(action, c),
++        };
++
++        out[1] = self.doAction(action, c);
+ 
+         // Entry depends on new state
+-        if (self.state == next_state) null else switch (next_state) {
++        out[2] = if (self.state == next_state) null else switch (next_state) {
+             .escape, .dcs_entry, .csi_entry => clear: {
+                 self.clear();
+                 break :clear null;
+@@ -312,8 +320,8 @@
+             },
+             .sos_pm_apc_string => Action{ .apc_start = {} },
+             else => null,
+-        },
+-    };
++        };
++    }
+ }
+ 
+ pub inline fn collect(self: *Parser, c: u8) void {

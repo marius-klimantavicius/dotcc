@@ -83,6 +83,11 @@ internal sealed record InlineFunctionMetadata(string OriginalName, bool IsStatic
         }
         internal void Type(CType type)
         {
+            // A folded Zig expression can retain a source-only annotation
+            // (e.g. a generic function-field cast). It has no runtime type
+            // descriptor and proves no body equivalence. Keep the body and
+            // emit the existing unsupported-shape marker instead.
+            if (ContainsComptimeAnnotation(type)) { Supported = false; return; }
             Atom(ObjectAggregateMetadata.Describe(type));
             switch (type)
             {
@@ -99,10 +104,24 @@ internal sealed record InlineFunctionMetadata(string OriginalName, bool IsStatic
                     if (enumeration == null) { Supported = false; break; }
                     foreach (var member in enumeration.Members) { Atom(member.Name); Atom(member.Value); }
                     break;
-                case CType.Prim or CType.VoidType or CType.Named or CType.Enum or CType.ComplexType or CType.Float128Type or CType.LongDoubleStorage16: break;
+                case CType.Prim or CType.VoidType or CType.Opaque or CType.Named or CType.Enum or CType.ComplexType or CType.Float128Type or CType.LongDoubleStorage16: break;
                 default: Supported = false; break;
             }
         }
+        private static bool ContainsComptimeAnnotation(CType type) => type.Unqualified switch
+        {
+            CType.ZigMetaType or CType.ZigGenericFunctionType or CType.EnumLiteral => true,
+            CType.Pointer p => ContainsComptimeAnnotation(p.Pointee),
+            CType.Array a => ContainsComptimeAnnotation(a.Element),
+            CType.Vector v => ContainsComptimeAnnotation(v.Element),
+            CType.Func f => ContainsComptimeAnnotation(f.Return) || f.Params.Any(ContainsComptimeAnnotation),
+            CType.Optional o => ContainsComptimeAnnotation(o.Inner),
+            CType.ErrorUnion e => ContainsComptimeAnnotation(e.Payload),
+            CType.Slice s => ContainsComptimeAnnotation(s.Element),
+            CType.ZigList l => ContainsComptimeAnnotation(l.Element),
+            CType.Tuple t => t.Elements.Any(ContainsComptimeAnnotation),
+            _ => false,
+        };
         internal void Local(Symbol symbol)
         {
             if (!_locals.TryAdd(symbol, _locals.Count)) { Supported = false; return; }
@@ -205,7 +224,7 @@ internal sealed record InlineFunctionMetadata(string OriginalName, bool IsStatic
                 case EnumConstRef e: Atom("enum-ref"); Reference(e.Sym); break;
                 case Unary e: Atom("unary"); Atom(e.Op); Expression(e.Operand); break;
                 case Binary e: Atom("binary"); Atom(e.Op); Expression(e.Left); Expression(e.Right); break;
-                case Assign e: Atom("assign"); Atom(e.CompoundOp); Expression(e.Target); Expression(e.Value); break;
+                case Assign e: Atom("assign"); Atom(e.CompoundOp); Atom(e.ZigWrappingBits); Expression(e.Target); Expression(e.Value); break;
                 case Call e:
                     Atom("call"); Atom(e.Callee);
                     Override(e.SemanticTarget);

@@ -1,8 +1,10 @@
 # Translate libghostty-vt with DotCC
 
 Status: C route accepted with the explicit user upstream-test deferral;
-direct Zig phase not yet qualified. See [acceptance evidence](C-ROUTE-ACCEPTANCE.md).
-Campaign: `libghostty/`. Updated: 2026-10-30.
+working direct managed products published as the canonical default, with final upstream managed
+acceptance pending. See [C acceptance evidence](C-ROUTE-ACCEPTANCE.md) and
+[direct product status](DIRECT-ZIG.md).
+Campaign: `libghostty/`. Updated: 2026-11-06.
 
 This plan instantiates the [project template](../../docs/plans/translation-template.md)
 and adopts [translation baseline v4](../../docs/plans/translation-baseline.md)
@@ -21,6 +23,9 @@ The supervisor owns this plan, recipe, delivery, integration, and qualification.
 Compiler builds are coordinated; independent native work can run concurrently.
 Each subsequent task receives a bounded scope and acceptance check. The
 supervisor reviews results and continues through P6 without another user prompt.
+Technical design, file ownership, ABI/layout choices and implementation-scope
+questions go to the supervisor. The parent thread monitors and relays the user's
+instructions; workers do not open human questionnaires for technical decisions.
 
 Repository baseline: branch `sqlite`, HEAD
 `d3b1ccd975fd883f4f6b75d4b70fa4c9f112fc81`, with extensive preexisting tracked
@@ -43,6 +48,37 @@ supersedes the earlier upstream-matrix prerequisite for the C-route commit.
 
 The supervisor retains implementation, integration and validation ownership through both routes; required bounded parallel agents and coordinated shared builds continue.
 
+The C-route completion commit is `3592b42929380f9cbd3209d8729f600629e85999`.
+Its 45 owned paths were committed while preserving all 123,933 unrelated staged
+records and flags. The initial direct round used an isolated worktree to integrate
+the relevant upstream Zig frontend, a second prepares the actual pinned module
+graph without C emission, and a third adds native-backed regressions for the
+known language gaps. Those tasks used `codex` / `gpt-6.1-sol` / `xhigh`; subsequent
+bounded rounds retain those settings. The
+supervisor owns generic module configuration and integration. The accepted C
+products remain the comparison baseline until direct products pass publication
+and qualification. No direct translation or upstream matrix is yet accepted.
+Current direct-source retries and their remaining gates are recorded in
+[DIRECT-ZIG.md](DIRECT-ZIG.md).
+
+The resumed direct campaign uses Lib/fast/source with managed function pointers
+and 92 selected runtime entry methods. Source allocator, packed storage, vector,
+reflection, optional and atomic blockers have advanced. The complete engine now
+emits and links with the authored boundary into 43 managed source files; the
+full managed project and owning consumer now build with zero warnings/errors.
+The unchanged owning consumer now passes transcript/styles, split UTF-8,
+alternate screens, resize/reset, concurrent isolation and disposal. Actual
+emitted/linked/built/ran is 1/1/1/1. Raw/processed JIT/whole-library-rooted NativeAOT
+owning consumers and all 24 differential cases now pass in all four rows. Both
+source-delivery audits and four factory/allocation rows pass (61 RVA getters,
+zero warmed managed allocation, maximum actual storage-helper arity one).
+The retained upstream qualification is in progress; final campaign acceptance
+remains pending. Current failures and
+commands are maintained in DIRECT-ZIG.md. Working managed libghostty governs required partial FFI;
+external C library delivery is not an independent gate. Fourteen documented,
+native-validated compatibility patches are applied under the user's explicit
+authorization. The accepted C compiler and canonical products are preserved.
+
 ## Outcome and scope
 
 Translate the actual Zig libghostty-vt terminal engine, including its parser,
@@ -59,7 +95,7 @@ or native wrapper cannot satisfy any runtime gate.
 | Required | Terminal creation/free, incremental `vt_write`, cursor/dimensions/mode queries, grid content and styles, text formatting, resize/reflow, reset, Unicode UTF-8 including chunk boundaries, alternate screen and two independent instances. |
 | Excluded | Ghostty GUI, window system, GPU/font rendering, historical macOS embedding libghostty; Kitty graphics/image decoding, regex search, snapshot serialization, input event encoding and tmux integration. |
 | Later extensions | Independently qualified graphics, input encoders, search and other targets. |
-| Departures | Genuine Zig-to-C compiler intermediate selected, then DotCC C lowering. Direct DotCC Zig frontend remains a diagnostic route with repaired regressions. The complete selected upstream engine stays translated. |
+| Departures | The accepted C route uses the genuine Zig-to-C intermediate and DotCC C lowering. The working direct Zig product is published separately; final upstream managed acceptance is pending. Both routes retain the complete selected upstream engine. |
 
 ## Decisions and feasibility work
 
@@ -100,11 +136,15 @@ available and document any fallback constants against these headers.
 | Lifecycle | Construct, reset, resize, free subordinate handles and terminal. | Owning managed API guards lifetime and concurrent entry. | Repeated cycles, disposed access and two independently evolving instances. |
 | Optional providers | Upstream feature selection excludes graphics/regex. | No replacement algorithms. | Configuration and unresolved-import audit. |
 
-Allowed adaptations: upstream build options, explicit allocator extension point,
-and five exact support-header macro rules documented in [ADAPTATIONS.md](ADAPTATIONS.md).
-No engine source is edited. Grammar/lowering defects are repaired in the
-shared compiler, not hidden by editing emitted C#. Generic frontend fixes need
-native-valid reductions and execution checks plus full-source retries.
+The accepted C route uses upstream build options, the explicit allocator extension
+point and five exact support-header macro rules in [ADAPTATIONS.md](ADAPTATIONS.md).
+For the direct route, the user additionally authorizes limited behavior-preserving
+source patches when they materially shorten the path. Explicit patch rationale,
+pin guards and validation are in `patches/direct/`; translated engine logic and
+required functionality remain intact. Shared compiler defects are repaired in
+source, never hidden by editing emitted C#. Validate the reached behavior and
+retry the actual engine promptly; broad infrastructure certification is not a
+prerequisite to each compiler edit.
 
 | Risk | Smallest useful experiment | Observable success/failure | Gate |
 | --- | --- | --- | --- |
@@ -184,16 +224,18 @@ Optional extended fuzzing, stress and performance campaigns are excluded.
 
 ## Reproduction commands and acceptance
 
-The following canonical commands reproduce the retained C-route checks:
+The following commands describe the retained C-route workflow. C translation
+now requires the explicit `scalar` profile and publishes outside the direct
+default; the accepted historical evidence remains in C-ROUTE-ACCEPTANCE.md:
 
 ```bash
 bash Scripts/campaign.sh layout libghostty --write
 bash Scripts/campaign.sh layout libghostty --check
 bash libghostty/scripts/fetch.sh --fetch missing
-bash libghostty/scripts/translate.sh --fetch never
+bash libghostty/scripts/translate.sh --profile scalar --fetch never
 dotnet build libghostty/ManagedConsumer.slnx -c Release
 bash libghostty/scripts/test.sh --suite consumer --form all --mode all --rid linux-x64
-bash libghostty/scripts/verify.sh --fetch never --rid linux-x64
+bash libghostty/scripts/verify.sh --profile scalar --fetch never --rid linux-x64
 ```
 
 Keep framework receipts under `artifacts/campaign/`, specialist evidence linked
@@ -213,3 +255,34 @@ is not assumed. Both forms and the execution matrices must be regenerated and
 revalidated after these choices.
 
 Large aggregate expression factories now use immutable span payloads for constant primitive and proven record tables, copied into owned inline storage; runtime values use typed value argument packs. Canonical regeneration `181517-e418fbb7` retains `Managed.GhosttyVt`, with a maximum factory/helper arity of two. Native and emitted sequencing/floating-width regressions pass. Current PE audits and private executables compiling exact canonical sources execute 3,277 getters and 92 zero-argument factories per form with zero warmed managed allocations in JIT and whole-rooted NativeAOT; positive controls allocate. Argument-taking factories retain IL and separate functional/consumer coverage. See `tests/FactoryAllocation/RESULTS.md`; final retained C P4/P6 acceptance is recorded in `C-ROUTE-ACCEPTANCE.md`; direct Zig remains unqualified.
+
+
+## Managed direct scope correction — 2026-11-04
+
+Working libghostty governs the scope. The delivery target is managed C#;
+implement partial C-FFI, callbacks, layouts and reflection wherever the selected
+engine or consumer actually needs them. The user explicitly corrected any
+blanket exclusion based on an FFI label. Producing a native C library and broad
+external interoperability qualification are not independent completion gates.
+The selected managed API methods, owning workflow, translated algorithms,
+source-backed layouts/data, aggregate data, bounded factories and retained
+managed JIT/NativeAOT behavior remain required. Native Zig and accepted C-route
+products remain independent behavioral oracles; useful interop work is retained.
+
+The user also authorized limited targeted libghostty source patches. Prefer a
+small behavior-preserving compatibility patch when it materially shortens the
+path past an incidental source idiom. Keep each patch explicit, minimal,
+reproducible against the pin, documented and validated on relevant behavior.
+Engine replacements, hidden algorithm substitutions and silent feature removal
+remain prohibited. Compiler fixes remain appropriate for needed language
+semantics. Current direct inputs apply the explicit `Action.Value` forwarder patch; rationale, manifest and reproduction are under `patches/direct/`.
+
+The 92-root runtime graph retains the selected terminal/API methods. A targeted
+source/caller check found that `ghostty_type_json` returns a standalone generated
+layout manifest; neither terminal execution nor the owning managed consumer
+uses it. It is therefore separate from the current runtime dependency closure,
+not excluded merely because it describes C types. Its source is retained. A
+93-root probe is retained under `actual-type-json-dependency-probe`; it currently
+fails optional-type comptime binding in `TypeDecl.initUnion`. Add the manifest
+and fix that dependency if a selected consumer needs it. No full 93-method
+acceptance is claimed from the 92-root work.

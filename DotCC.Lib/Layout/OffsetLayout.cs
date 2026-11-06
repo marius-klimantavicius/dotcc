@@ -60,6 +60,7 @@ internal sealed class OffsetLayoutModel
     public OffsetLayoutModel(Func<string, LayoutAggregate> resolve) { this.resolve = resolve; }
     public LayoutInfo Type(string type)
     {
+        if (type == "z:void") return new LayoutInfo { Size = 0, Alignment = 1 };
         if (type.StartsWith("p:", StringComparison.Ordinal))
         {
             var pieces = type.Split(':');
@@ -77,6 +78,49 @@ internal sealed class OffsetLayoutModel
             return new LayoutInfo { Size = checked(count * element.Size), Alignment = element.Alignment };
         }
         if (type.StartsWith("n:", StringComparison.Ordinal)) return Aggregate(type.Substring(2));
+        if (type.StartsWith("t:", StringComparison.Ordinal))
+        {
+            var elements = type[2..].Split(',');
+            if (elements.Length != 2) throw new OffsetLayoutException("unsupported managed tuple storage: " + type);
+            var first = Type(System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(elements[0])));
+            var second = Type(System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(elements[1])));
+            if (first.Size == 0 || second.Size == 0 || first.Alignment > 8 || second.Alignment > 8
+                || first.Size % first.Alignment != 0 || second.Size % second.Alignment != 0)
+                throw new OffsetLayoutException("unsupported managed tuple storage: " + type);
+            // Two naturally sized, nonzero fields have the same total extent
+            // in either alignment order. Keep ValueTuple's field projection;
+            // this descriptor proves only its enclosing storage requirements.
+            var alignment = Math.Max(first.Alignment, second.Alignment);
+            var size = RoundUp(RoundUp(first.Size, second.Alignment) + second.Size, alignment);
+            var sourceSize = RoundUp(RoundUp(second.Size, first.Alignment) + first.Size, alignment);
+            if (size != sourceSize) throw new OffsetLayoutException("unproven managed tuple extent: " + type);
+            return new LayoutInfo { Size = size, Alignment = alignment };
+        }
+        if (type.StartsWith("e:", StringComparison.Ordinal))
+        {
+            // Zero-sized, alignment-one payloads use ZigErrorUnionZero<T>,
+            // which physically stores only the ushort code. Nonzero payloads
+            // use ErrUnion<T>; internal member offsets are managed.
+            var payload = Type(type.Substring(2));
+            if (payload is { Size: 0, Alignment: 1 }) return new LayoutInfo { Size = 2, Alignment = 2 };
+            if (payload.Size == 0 || payload.Alignment > 8 || payload.Size % payload.Alignment != 0)
+                throw new OffsetLayoutException("unsupported managed error-union payload storage: " + type.Substring(2));
+            var alignment = Math.Max(2, payload.Alignment);
+            return new LayoutInfo { Size = checked(RoundUp(RoundUp(2, payload.Alignment) + payload.Size, alignment)), Alignment = alignment };
+        }
+        if (type.StartsWith("o:", StringComparison.Ordinal))
+        {
+            // Managed Nullable<T> stores a flag followed by the aligned payload.
+            // Optional inline arrays store the flag after the payload; their
+            // extent/alignment is identical for nonzero, naturally sized T.
+            // Pointer optionals are niches and never reach this descriptor.
+            var payload = Type(type.Substring(2));
+            if (payload is { Size: 0, Alignment: 1 }) return new LayoutInfo { Size = 1, Alignment = 1 };
+            if (payload.Size == 0 || payload.Alignment > 128 || payload.Size % payload.Alignment != 0)
+                throw new OffsetLayoutException("unsupported managed optional payload storage: " + type.Substring(2)
+                    + " (size " + payload.Size + ", alignment " + payload.Alignment + ")");
+            return new LayoutInfo { Size = checked(RoundUp(1, payload.Alignment) + payload.Size), Alignment = payload.Alignment };
+        }
         throw new OffsetLayoutException("Unsupported or incomplete layout: " + type);
     }
     public LayoutInfo Aggregate(string name)
@@ -115,8 +159,16 @@ internal sealed class OffsetLayoutModel
             for (var fieldIndex = 0; fieldIndex < aggregate.Fields.Count; fieldIndex++)
             {
                 var field = aggregate.Fields[fieldIndex];
-                var layout = Type(field.Type);
+                LayoutInfo layout;
+                try { layout = Type(field.Type); }
+                catch (OffsetLayoutException error) { throw new OffsetLayoutException("field '" + name + "." + field.Name + "': " + error.Message); }
                 var alignment = MemberAlignment(aggregate, field, aggregate.Packed ? 1 : layout.Alignment);
+                if (field.Type == "z:void")
+                {
+                    result.Alignment = Math.Max(result.Alignment, alignment);
+                    result.Offsets.Add(field.Name, 0);
+                    continue;
+                }
                 if (field.BitWidth is int width)
                 {
                     if (width < 0 || width > checked(layout.Size * 8) || layout.Size > 8)
@@ -368,7 +420,9 @@ internal sealed class OffsetDocument
             foreach (var field in aggregate.Fields)
             {
                 var type = field.Type;
-                while (type.StartsWith("a:", StringComparison.Ordinal)) type = type.Substring(type.IndexOf(':', 2) + 1);
+                while (type.StartsWith("a:", StringComparison.Ordinal) || type.StartsWith("o:", StringComparison.Ordinal) || type.StartsWith("e:", StringComparison.Ordinal))
+                    type = type.StartsWith("o:", StringComparison.Ordinal) || type.StartsWith("e:", StringComparison.Ordinal)
+                        ? type.Substring(2) : type.Substring(type.IndexOf(':', 2) + 1);
                 if (type.StartsWith("n:", StringComparison.Ordinal)) Include(type.Substring(2));
             }
         }

@@ -136,7 +136,12 @@ internal sealed partial class CSharpBackend
     private void EmitStaticAggregateStores(StringBuilder output, string destination, CType type, CExpr value,
         bool readableRow = false, bool zeroed = true)
     {
-        if (ZigStorage(type) is not null)
+        if (type.Unqualified is CType.VoidType)
+        {
+            output.Append("        _ = ").Append(DiscardedUnitValue(value)).Append(";\n");
+            return;
+        }
+        if (ZigStorage(type) is not null || type.Unqualified is CType.Optional && value is StructInit)
         {
             output.Append("        ").Append(ZigZero(type) ? "_" : destination).Append(" = ").Append(Coerced(value, type)).Append(";\n");
             return;
@@ -182,7 +187,8 @@ internal sealed partial class CSharpBackend
     private bool TryCompactRecord(StructInit value, out string text, int depth = 0)
     {
         text = "";
-        if (depth > 8 || value.Type.Unqualified is not CType.Named named
+        if (depth > 8 || value.Members.Any(member => member.FieldType.Unqualified is CType.VoidType)
+            || value.Type.Unqualified is not CType.Named named
             || StaticAggregateStores(value) > 32) return false;
         bool known = _aggregateDefinitions.TryGetValue(named.Name, out var definition);
         if (known)
@@ -237,7 +243,8 @@ internal sealed partial class CSharpBackend
     private bool TryReadableRecord(StructInit value, out string text, int depth = 0)
     {
         text = "";
-        if (depth > 8 || value.Type.Unqualified is not CType.Named named
+        if (depth > 8 || value.Members.Any(member => member.FieldType.Unqualified is CType.VoidType)
+            || value.Type.Unqualified is not CType.Named named
             || !_aggregateDefinitions.TryGetValue(named.Name, out var definition)
             || definition.IsIncomplete || !ReadableRecordLayout(definition, depth)
             || _offsetModel.Aggregate(named.Name).Size > 512 || StaticAggregateStores(value) > 32

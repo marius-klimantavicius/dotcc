@@ -74,11 +74,16 @@ internal sealed class ZigImportScope
     // Logical shapes belong to this compiler invocation and are shared by imported modules.
     public ZigLowering.BitcastWidthMetadata BitcastWidths { get; } = new();
 
+    // Reflection sentinel addresses refer to immutable scalar storage shared
+    // across modules, rather than fabricated non-null pointer values.
+    public Dictionary<(CType Element, long Value), CExpr> SentinelPointers { get; } = new();
+
     /// <summary>Per container name, method name → the mangled free function it lowered to.</summary>
     public Dictionary<string, Dictionary<string, Symbol>> Methods { get; } = new(StringComparer.Ordinal);
 
     /// <summary>Per enum name, member name → its enum-constant symbol.</summary>
     public Dictionary<string, Dictionary<string, Symbol>> EnumMembers { get; } = new(StringComparer.Ordinal);
+    public HashSet<string> NonExhaustiveEnums { get; } = new(StringComparer.Ordinal);
 
     /// <summary>A reified container's method whose BODY is held until something references the method (task #190), →
     /// the action that queues it for its owner's drain. Shared: the reference may come from another module.</summary>
@@ -91,6 +96,10 @@ internal sealed class ZigImportScope
     /// methods (road-to-zig-std G3: <c>Io/Writer.zig</c> declares fields at file scope).</summary>
     public Dictionary<string, ZigLowering> FileStructOwners { get; } = new(StringComparer.Ordinal);
 
+    // Declared source identities, independent of emitted-name legalization and
+    // import aliases. Anonymous/reified names are deliberately absent.
+    public Dictionary<string, string> SourceTypeNames { get; } = new(StringComparer.Ordinal);
+
     /// <summary>A GENERIC container method's template symbol → the module that declared it (and so holds
     /// its template and drains its instances), so a call from any module in the chain instantiates it.</summary>
     public Dictionary<Symbol, ZigLowering> GenericMethodOwners { get; } = new();
@@ -98,6 +107,7 @@ internal sealed class ZigImportScope
     /// <summary>Each function's declared RETURN width (see ZigLowering's <c>_fnReturnBits</c>), shared: a generic
     /// instantiated in its owner module (<c>std.math.cast(isize, v)</c>) is read from the caller's.</summary>
     public Dictionary<Symbol, int> FnReturnBits { get; } = new();
+    public Dictionary<Symbol, ZigLowering.ZigSentinel> FnReturnSentinels { get; } = new();
 
     /// <summary>Each struct field's declared integer width, by (struct IR name, field), shared: std.Io.Writer.printValue reads
     /// a user struct's field (<c>@field(value, f_name)</c>) and asks its width (task #121).</summary>
@@ -203,14 +213,35 @@ internal sealed class ZigModuleGraph
     private readonly Dictionary<string, string?> _fileOwners = new(OperatingSystem.IsWindows() ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal);
     private readonly List<ZigLowering> _lowerings = new();
     private readonly ZigCompilationOptions? _options;
+    private readonly bool _isTest;
+    internal bool IsTest => _isTest;
 
     /// <summary>The real <c>std.zig</c> root file path (from <c>--zig-lib-dir</c> / the
     /// <c>DOTCC_ZIG_LIB_DIR</c> env), or null when no std source tree is configured — then
     /// <c>@import("std")</c> stays purely on the curated path and a non-curated <c>std.x</c> errors.</summary>
     internal string? StdRootPath { get; }
 
-    public ZigModuleGraph(string? stdRootPath = null, ZigCompilationOptions? options = null)
+    /// <summary>Immutable policy for this request and every imported module; never process-global.</summary>
+    internal ZigStdlibTypeModel StdlibTypes { get; }
+    internal ZigFunctionPointerAbi FunctionPointerAbi { get; }
+    internal IReadOnlySet<string>? ManagedRoots { get; }
+    internal HashSet<string> ManagedRootsFound { get; } = new(StringComparer.Ordinal);
+
+    internal void CheckManagedRoots()
     {
+        if (ManagedRoots is null) return;
+        var missing = ManagedRoots.Where(name => !ManagedRootsFound.Contains(name)).ToArray();
+        if (missing.Length != 0) throw new CompileException("Zig modules: managed roots were not declared: " + string.Join(", ", missing));
+    }
+
+    public ZigModuleGraph(string? stdRootPath = null, ZigCompilationOptions? options = null, bool testMode = false)
+    {
+        _isTest = testMode || options?.IsTest == true;
+        StdlibTypes = options?.StdlibTypes ?? ZigStdlibTypeModel.Curated;
+        FunctionPointerAbi = options?.FunctionPointerAbi ?? ZigFunctionPointerAbi.Native;
+        ManagedRoots = options?.ManagedRoots;
+        if (StdlibTypes == ZigStdlibTypeModel.Source && (stdRootPath is null || !File.Exists(stdRootPath)))
+            throw new CompileException("Zig modules: stdlib_types source requires a configured real std root (zig_lib_dir or DOTCC_ZIG_LIB_DIR)");
         _parser = Zig.BuildParser(Zig.IdentityVisitor.Instance);
         _lexerTable = Zig.BuildLexer();
         (_syncTerminals, _openBrackets, _closeBrackets) = BuildRecoverySets(_parser.Grammar);
@@ -237,6 +268,17 @@ internal sealed class ZigModuleGraph
 
     internal bool HasDependency(string? owner, string alias) => owner is not null && _options?.Dependency(owner, alias) is not null;
 
+    internal string? SourceTypeNamespace(string path, string? moduleName)
+    {
+        var moduleRoot = moduleName is not null && _options is not null ? _options.GetModule(moduleName).Root : StdRootPath;
+        if (moduleRoot is null) return null;
+        var directory = Path.GetDirectoryName(moduleRoot)!;
+        var relative = Path.GetRelativePath(directory, path).Replace('\\', '/');
+        if (relative.StartsWith("../", StringComparison.Ordinal) || Path.IsPathRooted(relative)
+            || !relative.EndsWith(".zig", StringComparison.Ordinal)) return null;
+        return relative[..^4].Replace('/', '.');
+    }
+
     /// <summary>Resolve a SYNTHETIC module — <c>builtin</c> / <c>root</c>, the compiler-provided
     /// modules with no file on disk (road-to-zig-std S3). Generated as Zig source and cached under a
     /// virtual path, so from here on it is an ordinary <see cref="ZigModule"/>: the same parse, the
@@ -246,7 +288,8 @@ internal sealed class ZigModuleGraph
         if (spec == "root" && _options is not null) return LoadPath(_options.GetModule(_options.RootModule).Root, _options.RootModule);
         if (ZigSyntheticModules.PathForSpec(spec) is not { } path) { return null; }
         if (_modules.TryGetValue((null, path), out var existing)) { return existing; }
-        var module = ParseSource(path, ZigSyntheticModules.SourceForPath(path, withStd: StdRootPath is not null, outputMode: _options?.OutputMode, optimizeMode: _options?.OptimizeMode));
+        var module = ParseSource(path, ZigSyntheticModules.SourceForPath(path, withStd: StdRootPath is not null, outputMode: _options?.OutputMode, optimizeMode: _options?.OptimizeMode,
+            sourceStdlib: StdlibTypes == ZigStdlibTypeModel.Source, isTest: _isTest));
         _modules[(null, path)] = module;
         return module;
     }
@@ -359,6 +402,11 @@ internal sealed class ZigModuleGraph
     /// <summary>Record a root module for <see cref="TryLowerBodyOnDemand"/>.</summary>
     internal void RegisterRoot(ZigLowering lowering) => _roots.Add(lowering);
 
+    internal void CompleteRuntimeDeclarations()
+    {
+        if (_roots.Count > 0) _roots[0].CompleteRuntimeDeclarations();
+    }
+
     /// <summary>The emitted names of every root unit's top-level functions, which are unmangled (task #190).</summary>
     internal IEnumerable<string> RootFunctionTargetNames() => _roots.SelectMany(r => r.TopLevelFunctionTargetNames());
 
@@ -408,6 +456,18 @@ internal sealed class ZigModuleGraph
         do
         {
             any = false;
+            // An imported body can instantiate a generic callback declared by
+            // an eager root after that root's own pass has finished. Drain only
+            // the root work already demanded by those calls, at the same
+            // top-level fixpoint as imported modules.
+            foreach (var root in _roots)
+            {
+                if (root.HasPendingBodies)
+                {
+                    root.DrainPendingBodies();
+                    any = true;
+                }
+            }
             for (var i = 0; i < _lowerings.Count; i++)
             {
                 if (_lowerings[i].HasPendingBodies)

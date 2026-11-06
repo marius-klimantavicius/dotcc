@@ -24,17 +24,17 @@ internal sealed partial class ZigLowering
     /// the ENCLOSING scope (before the body's), so a <c>break</c> inside can assign it and the
     /// consumer outside can read it. The end label wraps an empty block (<c>__blkN_end: { }</c>) so a
     /// following declaration is legal — a C# label can't directly precede a declaration (CS1023).</summary>
-    private CStmt LowerLabeledValueBlock(string label, Item blockItem, CType? sink, Func<Symbol, CStmt> consume)
-        => LowerLabeledValueBody(label, () => LowerBlock(blockItem), sink, consume);
+    private CStmt LowerLabeledValueBlock(string label, Item blockItem, CType? sink, Func<Symbol, CStmt> consume, ZigResultLocation? location = null)
+        => LowerLabeledValueBody(label, () => LowerBlock(blockItem), sink, consume, location);
     /// <summary>True for a labeled value: a labeled block (<c>blk: { … }</c>) or a labeled switch
     /// (<c>sw: switch (x) { … break :sw v; … }</c>, std.math.shl).</summary>
     private static bool IsLabeledValue(Item item) => item.Content is Zig.LabeledBlock or Zig.LabeledSwitch;
     /// <summary><see cref="LowerLabeledValueBlock"/> for either labeled value form (<see cref="IsLabeledValue"/>): a
     /// labeled switch's body is the switch as a STATEMENT, each prong's <c>break :label v</c> filling the result temp.</summary>
-    private CStmt LowerLabeledValue(Item labeled, CType? sink, Func<Symbol, CStmt> consume) => labeled.Content switch
+    private CStmt LowerLabeledValue(Item labeled, CType? sink, Func<Symbol, CStmt> consume, ZigResultLocation? location = null) => labeled.Content switch
     {
-        Zig.LabeledBlock lb => LowerLabeledValueBlock(Tok(lb.Arg0), lb.Arg2, sink, consume),
-        Zig.LabeledSwitch { Arg2.Content: Zig.SwitchExpr sw } ls => LowerLabeledValueBody(Tok(ls.Arg0), () => LowerContinuableSwitchBody(Tok(ls.Arg0), sw.Arg2, sw.Arg5), sink, consume),
+        Zig.LabeledBlock lb => LowerLabeledValueBlock(Tok(lb.Arg0), lb.Arg2, sink, consume, location),
+        Zig.LabeledSwitch { Arg2.Content: Zig.SwitchExpr sw } ls => LowerLabeledValueBody(Tok(ls.Arg0), () => LowerContinuableSwitchBody(Tok(ls.Arg0), sw.Arg2, sw.Arg5), sink, consume, location),
         _ => throw new IrUnsupportedException("internal: not a labeled value: " + (labeled.Content?.GetType().Name ?? "null")),
     };
     /// <summary>A labeled switch's own body as a value (<see cref="LowerLabeledSwitchBody"/>), which a <c>continue
@@ -53,11 +53,11 @@ internal sealed partial class ZigLowering
     /// <summary>A labeled value-block in a sub-expression (std.hash.XxHash3.final's `acc.digest(len, last_block: { … })`, a call
     /// argument, task #178): its statements run in the statement's hoist, before the expression, and fill a result temp the
     /// position reads. Refused past an earlier side-effecting operand of the same statement, whose order it would change.</summary>
-    private CExpr HoistLabeledValue(Item labeled, CType? sink)
+    private CExpr HoistLabeledValue(Item labeled, CType? sink, ZigResultLocation? location = null)
     {
         var buf = RequireHoistable("labeled value-block");
         Symbol? result = null;
-        var stmt = LowerLabeledValue(labeled, sink, temp => { result = temp; return new Seq(new List<CStmt>()); });
+        var stmt = LowerLabeledValue(labeled, sink, temp => { result = temp; return new Seq(new List<CStmt>()); }, location);
         if (result is not { } resultTemp)
         {
             throw new IrUnsupportedException("internal: a labeled value-block produced no result temp");
@@ -67,21 +67,24 @@ internal sealed partial class ZigLowering
     }
     /// <summary>The core of <see cref="LowerLabeledValueBlock"/>: <paramref name="lowerBody"/> lowers the body while the
     /// label's break target is pushed.</summary>
-    private CStmt LowerLabeledValueBody(string label, Func<CStmt> lowerBody, CType? sink, Func<Symbol, CStmt> consume)
+    private CStmt LowerLabeledValueBody(string label, Func<CStmt> lowerBody, CType? sink, Func<Symbol, CStmt> consume, ZigResultLocation? location = null)
     {
         var n = _blockLabelCounter++;
         var endLabel = "__blk" + n + "_end";
         // Declared with a provisional type; retyped below once the result type is resolved. The
         // counter-unique name never collides, so declaring it up front is safe.
         var temp = _symbols.Declare(new Symbol { Name = "__blk" + n, Kind = SymKind.Var, Type = sink ?? CType.Int });
-        var target = new LabeledBlockTarget { Label = label, Temp = temp, EndLabel = endLabel, Sink = sink, ResultType = sink };
+        var target = new LabeledBlockTarget { Label = label, Temp = temp, EndLabel = endLabel, Sink = sink, ResultType = sink, Location = location };
         _labeledBlocks.Push(target);
         var body = lowerBody();   // each `break :label v` reads `target` via LowerLabeledBreak
         _labeledBlocks.Pop();
+        ResolveLabeledSlicePeers(target);
+        ResolveLabeledTuplePointerPeers(target);
         var resultType = target.ResultType
             ?? throw new IrUnsupportedException(
                 $"labeled block ':{label}' must yield a value via `break :{label} <value>;`");
         temp.Type = resultType;
+        if (location is not null) RememberBitcastValue(temp, location);
         var stmts = new List<CStmt>
         {
             // `T __blkN = default;` — default-initialized so C# definite-assignment is satisfied even
@@ -135,6 +138,13 @@ internal sealed partial class ZigLowering
         // clear deferred error — and is invalid Zig anyway (a value `break` needs a value loop).
         if (_labeledBlocks.All(t => t.Label != label) && _labeledLoops.FirstOrDefault(l => l.Label == label) is { IsBlock: true })
         {
+            var voidValue = LowerExpr(valueItem);
+            if (voidValue.Type.Unqualified is CType.VoidType)
+            {
+                var jump = LowerLabeledLoopJump(label, isContinue: false);
+                return IsErasableVoid(voidValue) ? jump
+                    : new Block(new List<CStmt> { new ExprStmt(voidValue), jump });
+            }
             throw new IrUnsupportedException(
                 $"`break :{label} <value>` yields a value, but ':{label}' is a block statement, whose value is void");
         }
@@ -147,19 +157,82 @@ internal sealed partial class ZigLowering
         var target = _labeledBlocks.FirstOrDefault(t => t.Label == label)
             ?? throw new IrUnsupportedException(
                 $"`break :{label}` has no enclosing labeled block ':{label}'");
-        var value = target.Sink is { } sk ? LowerExprSink(valueItem, sk) : LowerExpr(valueItem);
+        var value = target.Sink is { } sk ? LowerExprSink(valueItem, target.Location ?? ZigResultLocation.Unknown(sk)) : LowerExpr(valueItem);
         target.ResultType ??= value.Type;
+        if (target.Location is null)
+        {
+            target.Temp.Type = target.ResultType;
+            var shape = BitcastSourceLocation(valueItem, value) with { Physical = target.ResultType };
+            if (_shared.BitcastWidths.Values.TryGetValue(target.Temp, out var prior) && prior != shape)
+                shape = ZigResultLocation.Unknown(target.ResultType);
+            RememberBitcastValue(target.Temp, shape);
+        }
         var tref = new VarRef(target.Temp) { Type = target.ResultType, IsLValue = true };
         // A `Block` (not a brace-less `Seq`): this pair is a single statement, and as an `if`/`while`
         // body the backend braces a Block but renders a Seq brace-less — which would leave the `goto`
         // unconditional (`if (c) temp = v; goto end;`). A `goto` out of the block to the enclosing
         // end label is legal C#; the assign-and-goto declare nothing, so the extra scope is harmless.
-        return new Block(new List<CStmt>
+        var statements = new List<CStmt>
         {
-            new ExprStmt(new Assign(null, tref, value) { Type = target.ResultType }),
+            value.Type.Unqualified is CType.VoidType
+                ? IsErasableVoid(value) ? new Seq(new List<CStmt>()) : new ExprStmt(value)
+                : new ExprStmt(new Assign(null, tref, value) { Type = target.ResultType }),
             new Goto(target.EndLabel),
-        });
+        };
+        if (target.Sink is null)
+        {
+            target.SourceBreaks.Add((value, statements));
+            if (value is TupleNew tuple) target.TupleBreaks.Add((tuple, statements));
+            else target.HasNonTupleBreak = true;
+        }
+        return new Block(statements);
     }
+
+    private void ResolveLabeledSlicePeers(LabeledBlockTarget target)
+    {
+        if (target.Sink is not null || target.SourceBreaks.Count < 2) return;
+        var sites = target.SourceBreaks;
+        var slice = sites.Select(site => site.Value.Type.Unqualified).OfType<CType.Slice>().FirstOrDefault();
+        if (slice is null || sites.Any(site => site.Value.Type.Unqualified is CType.Slice candidate
+            ? candidate.Element.Unqualified != slice.Element.Unqualified
+            : StringArrayExtent(site.Value) is null)) return;
+        var readOnly = sites.Any(site => StringArrayExtent(site.Value) is not null
+            || site.Value.Type.Unqualified is CType.Slice { Element.IsConst: true });
+        var peer = new CType.Slice(readOnly ? slice.Element.WithQuals(TypeQual.Const) : slice.Element);
+        target.ResultType = peer;
+        target.Temp.Type = peer;
+        foreach (var (value, statements) in sites)
+        {
+            var converted = value.Type.Unqualified is CType.Slice
+                ? value.Type == peer ? value : new Cast(peer, value) { Type = peer }
+                : CoerceToSlice(value, peer);
+            statements[0] = new ExprStmt(new Assign(null,
+                new VarRef(target.Temp) { Type = peer, IsLValue = true }, converted) { Type = peer });
+        }
+    }
+
+    // A tuple may yield null in an early break and an optional pointer in a later
+    // one. Resolve each slot from all breaks before publishing the block's type.
+    // Keep evaluation at each original break; only its result coercions change.
+    private void ResolveLabeledTuplePointerPeers(LabeledBlockTarget target)
+    {
+        if (target.Sink is not null || target.HasNonTupleBreak || target.TupleBreaks.Count < 2
+            || target.ResultType?.Unqualified is not CType.Tuple first) return;
+        var sites = target.TupleBreaks;
+        var result = TupleValuePeer(sites.Select(site => site.Value).ToList());
+        if (result is null) return;
+        target.ResultType = result;
+        target.Temp.Type = result;
+        if (TuplePeerSourceBits(sites.Select(site => (CExpr)site.Value).ToArray()) is { } bits)
+            _valueTupleElemBits[target.Temp] = bits;
+        foreach (var (tuple, statements) in sites)
+        {
+            var converted = CoerceTupleValuePeer(tuple, result);
+            statements[0] = new ExprStmt(new Assign(null,
+                new VarRef(target.Temp) { Type = result, IsLValue = true }, converted) { Type = result });
+        }
+    }
+
     /// <summary>Lower a labeled loop <c>lbl: while/for (…) { … }</c> (Milestone L, part 3). The loop
     /// itself lowers normally (its record name is unchanged by the grammar's <c>LoopStmt</c> factor);
     /// while its body is lowered, an enclosing <see cref="LabeledLoopTarget"/> lets a <c>break :lbl</c>

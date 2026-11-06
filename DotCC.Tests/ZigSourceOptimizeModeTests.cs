@@ -38,7 +38,7 @@ public sealed class ZigSourceOptimizeModeTests : IDisposable
         foreach (var withStd in new[] { false, true })
         {
             var source = ZigSyntheticModules.SourceForPath(ZigSyntheticModules.BuiltinPath, withStd, options.OutputMode, options.OptimizeMode);
-            source.ShouldContain("pub const mode = ." + tag + ";");
+            source.ShouldContain((withStd ? "pub const mode: @import(\"std\").lang.Optimize = ." : "pub const mode = .") + tag + ";");
             source.ShouldContain("pub const output_mode = .Lib;");
         }
     }

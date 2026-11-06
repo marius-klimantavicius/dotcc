@@ -67,8 +67,8 @@ public readonly struct ErrUnion<T>
 /// <summary>
 /// The unit payload for an error union over <c>void</c> (<c>!void</c>). C# has no
 /// <c>Nullable&lt;void&gt;</c> and no generic instantiation over <c>void</c>, so
-/// <c>!void</c> lowers to <c>ErrUnion&lt;Unit&gt;</c> — a one-value payload that is
-/// always <c>default</c>.
+/// <c>!void</c> uses this nominal payload with <c>ZigErrorUnionZero&lt;Unit&gt;</c>,
+/// which stores no CLR-sized Unit field.
 /// </summary>
 public readonly struct Unit { }
 
@@ -93,7 +93,7 @@ public sealed class ZigErrorReturn : global::System.Exception
 /// generic <see cref="ErrUnion{T}"/> value type — same name, different arity, both
 /// legal in one namespace).
 /// </summary>
-public static class ErrUnion
+public static partial class ErrUnion
 {
     /// <summary><c>try u</c> — yield the payload on success, or propagate the error by
     /// throwing <see cref="ZigErrorReturn"/> (caught at the enclosing <c>!T</c>

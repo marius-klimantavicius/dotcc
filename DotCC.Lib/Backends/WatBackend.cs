@@ -725,6 +725,8 @@ internal sealed partial class WatBackend
             case Binary b:
                 EmitBinary(b);
                 break;
+            case Assign { ZigWrappingBits: not null }:
+                throw new IrUnsupportedException("wasm: narrow Zig wrapping assignment is unsupported");
             case Assign a:
                 EmitAssign(a);
                 break;

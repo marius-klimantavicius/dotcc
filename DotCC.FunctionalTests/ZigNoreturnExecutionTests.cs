@@ -50,6 +50,38 @@ public sealed class ZigNoreturnExecutionTests
     }
 
     [Fact]
+    public void Reached_trap_terminates_the_managed_program()
+    {
+        var directory = Path.Combine(Path.GetTempPath(), "dotcc-trap-child-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(directory);
+        try
+        {
+            var path = Path.Combine(directory, "TrapChild.dll");
+            var references = ((string)AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES")!).Split(Path.PathSeparator)
+                .Select(file => MetadataReference.CreateFromFile(file));
+            var compilation = CSharpCompilation.Create("TrapChild",
+                [CSharpSyntaxTree.ParseText(Emit("pub fn main() void { @trap(); }", EmitMode.Csproj),
+                    new CSharpParseOptions(LanguageVersion.Preview))], references,
+                new CSharpCompilationOptions(OutputKind.ConsoleApplication, allowUnsafe: true));
+            var emitted = compilation.Emit(path);
+            emitted.Success.ShouldBeTrue(string.Join("\n", emitted.Diagnostics));
+            File.WriteAllText(Path.Combine(directory, "TrapChild.runtimeconfig.json"),
+                "{\"runtimeOptions\":{\"tfm\":\"net10.0\",\"framework\":{\"name\":\"Microsoft.NETCore.App\",\"version\":\"10.0.0\"}}}");
+            var start = new ProcessStartInfo("dotnet") { RedirectStandardOutput = true, RedirectStandardError = true, WorkingDirectory = directory };
+            start.ArgumentList.Add(path);
+            start.Environment["DOTNET_DbgEnableMiniDump"] = "0";
+            using var child = Process.Start(start)!;
+            var stdout = child.StandardOutput.ReadToEndAsync();
+            var stderr = child.StandardError.ReadToEndAsync();
+            if (!child.WaitForExit(15000)) { child.Kill(entireProcessTree: true); throw new TimeoutException("trap child did not terminate"); }
+            child.ExitCode.ShouldNotBe(0);
+            stdout.GetAwaiter().GetResult().ShouldBeEmpty();
+            stderr.GetAwaiter().GetResult().ShouldContain("abort");
+        }
+        finally { Directory.Delete(directory, true); }
+    }
+
+    [Fact]
     public void Noreturn_main_has_a_compilable_console_entry()
     {
         var source = Emit("pub fn main() noreturn { unreachable; }", EmitMode.Csproj);

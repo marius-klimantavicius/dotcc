@@ -24,9 +24,11 @@
     "kitty_graphics",
     "tmux"
   ],
-  "implementation": "actual upstream Zig engine compiled by pinned Zig C backend, then translated by DotCC",
+  "implementation": "actual upstream Zig engine translated directly to C# by DotCC; explicit scalar/qualification profiles retain the accepted Zig-C route",
   "adaptations": [],
   "c_target": "x86_64-freestanding-none",
   "aggregate_data": true,
-  "maximum_factory_parameters": 2
+  "maximum_factory_parameters": 2,
+  "default_route": "direct-zig",
+  "default_profile": "direct"
 }

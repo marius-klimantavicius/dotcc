@@ -71,7 +71,14 @@ internal sealed partial class CSharpBackend
 
     /// <summary>Project a neutral <see cref="CType"/> onto the target's type
     /// spelling — replaces the type model's old baked-in <c>CsType</c> property.</summary>
-    private string Cs(CType t) => _target.RenderType(t);
+    private string Cs(CType t)
+    {
+        try { return _target.RenderType(t); }
+        catch (IrUnsupportedException error)
+        {
+            throw new IrUnsupportedException(error.Message + $" (rendering {t.Describe()}, function '{_currentFnName}')");
+        }
+    }
 
     public static CSharpBackendResult Run(IrBuilder unit, DotCC.ConversionGate? convGate = null, bool publicTypes = false, bool relocatable = false, string pointerClass = "DotCcProgramFunctionPointers", bool inlineMetadata = false, bool instanceMethods = false, IReadOnlyList<string>? stableFunctionPointers = null, bool aggregateTokens = false, bool aggregateData = false)
     {
@@ -91,11 +98,12 @@ internal sealed partial class CSharpBackend
         cg._initializerNames.UnionWith(unit.Functions.Select(function => function.Sym.TargetName.TrimStart('@')));
         cg._initializerNames.UnionWith(unit.Types.Select(type => type.Name.TrimStart('@')));
         cg._initializerNames.UnionWith(new[] { "error", "p", "storage", "destination", "__dotcc_staticBase" });
-        cg.RegisterStableFunctionPointers(unit, stableFunctionPointers);
         cg._offsetDocument = unit.CreateOffsetDocument();
         cg._offsetRequests.UnionWith(cg._offsetDocument.Requests.Select(request => request.Name));
         cg._offsetModel = new DotCC.Layout.OffsetLayoutModel(name => cg._offsetDocument.Aggregates.TryGetValue(name, out var aggregate)
             ? aggregate : throw new DotCC.Layout.OffsetLayoutException("Unknown offsetof aggregate: " + name));
+        cg._target.OptionalPayloadLayout = type => cg._offsetModel.Type(IrBuilder.LayoutType(type));
+        cg.RegisterStableFunctionPointers(unit, stableFunctionPointers);
         cg.ValidateZigStorage(unit);
         // C tag namespace vs ordinary namespace: collect globals whose name an
         // emitted struct/enum type will shadow, so reads qualify (GlobalName).
@@ -278,8 +286,10 @@ internal sealed partial class CSharpBackend
         } while (reachedMore);
         for (var i = 0; i < structTexts.Length; i++)
             if (structTexts[i] is { } text) typeDeclarations.Add(unit.Types[i].Name, text);
-        var optionalArrays = cg._target.OptionalArrayTypesText();
+        var optionalArrays = cg._target.OptionalArrayTypesText(publicTypes);
         if (optionalArrays.Length > 0) typeDeclarations.Add("__zigOptionalArrays", optionalArrays);
+        foreach (var optional in cg._target.AlignedOptionalTypesText(publicTypes)) typeDeclarations.Add(optional.Key, optional.Value);
+        foreach (var array in cg._target.ArrayValueTypesText(publicTypes)) typeDeclarations.Add(array.Key, array.Value);
         foreach (var en in unit.Enums) { typeDeclarations.Add(en.Name, cg.EnumText(en)); }
         foreach (var factory in cg._aggregateFactories) { typeDeclarations.Add(factory.Key, factory.Value); }
         // One independently keyed partial declaration per function lets object
@@ -325,6 +335,7 @@ internal sealed partial class CSharpBackend
     /// <c>[FieldOffset(0)]</c> (C overlays all members at the same address).</summary>
     private string StructText(StructTypeDef t)
     {
+        ValidateZigAggregate(t);
         if (t.ZigStorage is { } zig) return ZigStorageStructText(t, zig);
         var wrappers = new StringBuilder();   // [InlineArray] wrapper types for non-primitive array members
         var sb = new StringBuilder();
@@ -768,7 +779,7 @@ internal sealed partial class CSharpBackend
 
     private string LocalType(Symbol symbol)
         => (VaListLifetimeValidator.IsCursorReference(symbol.Type) || _scopedVaListLocals.Contains(symbol)
-            ? "scoped " : "") + Cs(symbol.Type);
+            ? "scoped " : "") + (symbol.Type.Unqualified is CType.VoidType ? "Unit" : Cs(symbol.Type));
 
     private string Func(FuncDef fn)
     {
@@ -823,14 +834,16 @@ internal sealed partial class CSharpBackend
         // body that falls off the end is a Zig success, so it returns Ok(default).
         if (retTy is CType.ErrorUnion eu)
         {
-            var ts = eu.Payload is CType.VoidType ? "Unit" : Cs(eu.Payload);
+            var unionType = Cs(eu);
             sb.Append("{\n");
+            foreach (var parameter in fn.Params.Where(RequiresAlignedObject))
+                EmitAlignedLocal(sb, Pad(1), parameter, parameter.TargetName);
             sb.Append(Pad(1)).Append("try\n");
             Stmt(sb, body, 1);
-            sb.Append(Pad(1)).Append($"catch (ZigErrorReturn __e) {{ return ErrUnion<{ts}>.Err(__e.Code); }}\n");
+            sb.Append(Pad(1)).Append($"catch (ZigErrorReturn __e) {{ return {unionType}.Err(__e.Code); }}\n");
             if (eu.Payload is CType.VoidType && !Terminates(body))
             {
-                sb.Append(Pad(1)).Append("return ErrUnion<Unit>.Ok(default);\n");
+                sb.Append(Pad(1)).Append($"return {unionType}.Ok(default);\n");
             }
             sb.Append("}\n");
             return FinishZigStorageFunction(sb.ToString());
@@ -1092,8 +1105,7 @@ internal sealed partial class CSharpBackend
                 }
                 break;
             case While w:
-                sb.Append(pad).Append($"while ({LoopCondition(w.Cond)})\n");
-                WithNormalBreak(() => Nested(sb, w.Body, ind));
+                RenderWhile(sb, w, ind);
                 break;
             case DoWhile dw:
                 sb.Append(pad).Append("do\n");
@@ -1477,16 +1489,16 @@ internal sealed partial class CSharpBackend
 
     // Render a sub-statement of if/while/for: a block keeps the parent indent; a
     // single statement indents one level. If that statement HOISTED comma side
-    // effects (emitting preceding statements), it's wrapped in a block so they don't
-    // leak out of the controller's single-statement body — but ONLY then, so a plain
-    // body (or a label, which a `goto` must still reach) keeps its bare form.
+    // effects, is a sequence, or declares storage, wrap it in a block so the
+    // controller owns the whole body and C# accepts its declarations. Ordinary
+    // single statements (including labels that a goto must reach) keep their form.
     private void Nested(StringBuilder sb, CStmt s, int ind)
     {
         if (s is Block) { Stmt(sb, s, ind); return; }
         var before = _hoistedCount;
         var tmp = new StringBuilder();
         Stmt(tmp, s, ind + 1);
-        if (_hoistedCount != before)
+        if (_hoistedCount != before || s is Seq or DeclStmt or ArrayDecl)
         {
             sb.Append(Pad(ind)).Append("{\n").Append(tmp).Append(Pad(ind)).Append("}\n");
         }
@@ -1763,9 +1775,17 @@ internal sealed partial class CSharpBackend
     private bool TryCoerceCast(CExpr value, CType target, out string text)
     {
         SourceAbiValidation.Conversion(value.Type, target);
+        if (target.IsZigZeroInteger) { text = ZeroIntegerConversion(value); return true; }
+        if (TryCoerceVoidOptional(value, target, out text)) return true;
         text = "";
         var tgt = target.Unqualified;
         var src = RenderedScalarType(value);
+        if (tgt is CType.Optional { Inner.Unqualified: CType.Pointer }
+            && src is CType.Pointer && value is not (NullPtr or DefaultLit))
+        {
+            text = $"((nuint?)(nuint)({Expr(value)}))";
+            return true;
+        }
 
         // Authored external scalar wrappers can deliberately expose only an
         // explicit conversion back to C's integer ABI. C still converts at
@@ -1973,6 +1993,11 @@ internal sealed partial class CSharpBackend
         }
         var value = DecayEnum(ce);
         var target = CType.IntegerPromote(subject.Unqualified is CType.Enum enumeration ? enumeration.Underlying : subject);
+        // CBool conversions are user-defined operators, which C# constant
+        // patterns cannot call. Spell a folded boolean label in the governing
+        // integral type instead of emitting a CBool conversion or uint suffix.
+        if (subject.Unqualified == CType.Bool && FoldConst(value, out var booleanValue))
+            return booleanValue.ToString(global::System.Globalization.CultureInfo.InvariantCulture);
         // C converts every integer case constant to the promoted governing type.
         // A generated size_t offset is a ulong constant; C# needs that narrowing
         // conversion explicitly even when the value is representable as int.
@@ -1996,6 +2021,7 @@ internal sealed partial class CSharpBackend
     {
         switch (e)
         {
+            case LitBool literal: v = literal.Value ? 1 : 0; return true;
             case LitInt { Value: { } lv }: v = lv; return true;
             case EnumConstRef ec: v = ec.Sym.ConstValue; return true;
             case Paren p: return FoldConst(p.Inner, out v);
@@ -2146,9 +2172,18 @@ internal sealed partial class CSharpBackend
     {
         SourceAbiValidation.Expression(e, materializing: true);
         ValidateZigExpression(e);
+        if (TryRenderZeroInteger(e, out var zeroInteger)) return zeroInteger;
         if (TryRenderZigStorage(e, out var zig)) return zig;
+        if (TryRenderVoidOptional(e, out var voidOptional)) return voidOptional;
+        if (TryRenderZeroOptional(e, out var zeroOptional)) return zeroOptional;
+        if (TryRenderAlignedOptional(e, out var alignedOptional)) return alignedOptional;
         switch (e)
         {
+            // Integer constants can retain a nominal enum type after folding
+            // or comptime substitution. Render that type too: C# otherwise
+            // sees an int even where the IR already matches an enum sink.
+            case LitInt { Type.Unqualified: CType.Enum enumeration } i:
+                return Render(new Cast(i.Type, i with { Type = enumeration.Underlying }) { Type = i.Type });
             case LitInt i: return (_target.RenderIntLit(i), PPrimary);
             case LitBool b: return (b.Value ? "true" : "false", PPrimary);
             case RuntimeIntrinsic { Kind: RuntimeIntrinsicKind.IsLittleEndian }:
@@ -2165,6 +2200,8 @@ internal sealed partial class CSharpBackend
             // lazy right). The right is coerced to the payload type so `maybe_u8 orelse 0`
             // is `a ?? (byte)0`, not a `byte?`/`int` mismatch. Parenthesized → safe anywhere.
             case NullCoalesce nc:
+                if (nc.Left.Type.Unqualified is CType.Optional { Inner.Unqualified: CType.Pointer })
+                    return ($"(({Cs(nc.Type)})({Sub(nc.Left, PUnary)} ?? (nuint)({Cs(nc.Type)})({Expr(nc.Right)})))", PPrimary);
                 return ($"({Sub(nc.Left, PUnary)} ?? {Coerced(nc.Right, nc.Type)})", PPrimary);
             // Zig error unions (Milestone B2). `return e;` in a `!T` fn → ErrUnion<P>.Ok(e);
             // a `!void` success carries no payload (`return;` / fall-off) → Ok(default). The
@@ -2172,22 +2209,24 @@ internal sealed partial class CSharpBackend
             case ErrUnionOk ok:
             {
                 var eu = (CType.ErrorUnion)ok.Type;
-                var ts = eu.Payload is CType.VoidType ? "Unit" : Cs(eu.Payload);
+                var unionType = Cs(eu);
                 var arg = ok.Payload is null ? "default"
                         : eu.Payload is CType.VoidType ? Expr(ok.Payload)  // a Unit-valued `try`-of-!void
+                        : eu.Payload.Unqualified is CType.Pointer ? $"(nuint)({Expr(ok.Payload)})"
                         : Coerced(ok.Payload, eu.Payload);
-                return ($"ErrUnion<{ts}>.Ok({arg})", PPrimary);
+                return ($"{unionType}.Ok({arg})", PPrimary);
             }
             // `return error.Foo;` → ErrUnion<P>.Err(code) (code from the flat global set).
             case ErrUnionErr err:
             {
                 var eu = (CType.ErrorUnion)err.Type;
-                var ts = eu.Payload is CType.VoidType ? "Unit" : Cs(eu.Payload);
-                return ($"ErrUnion<{ts}>.Err({Expr(err.Code)})", PPrimary);
+                return ($"{Cs(eu)}.Err({Expr(err.Code)})", PPrimary);
             }
             // `try e` → ErrUnion.Try(e): the payload on success, else throw ZigErrorReturn
             // (caught at the enclosing `!T` function's emitted try/catch boundary — see Func).
             case ZigTry t:
+                if (t.Type.Unqualified is CType.Array)
+                    return ($"ErrUnion.Try({Expr(t.Inner)}).ToOwnedArray()", PPostfix);
                 return ($"ErrUnion.Try({Expr(t.Inner)})", PPrimary);
             // `u catch fallback` → ErrUnion.Catch<P>(u, fallback): the payload on success,
             // else the (side-effect-free) fallback. The type argument is explicit so a fitting
@@ -2195,6 +2234,8 @@ internal sealed partial class CSharpBackend
             // C# infers T from both args and a bare `0` (int) clashes with the union's payload.
             case ZigCatch c:
             {
+                if (c.Type.Unqualified is CType.Pointer)
+                    return ($"({Cs(c.Type)})ErrUnion.Catch<nuint>({Expr(c.Union)}, (nuint)({Expr(c.Fallback)}))", PPrimary);
                 var cts = c.Type is CType.VoidType ? "Unit" : Cs(c.Type);
                 return ($"ErrUnion.Catch<{cts}>({Expr(c.Union)}, {Coerced(c.Fallback, c.Type)})", PPrimary);
             }
@@ -2298,16 +2339,34 @@ internal sealed partial class CSharpBackend
             // is a stackalloc pointer; an array literal hoists to a `__cl` pointer).
             case ArrayByValReturn abr:
             {
-                var elem = Cs(abr.Element.Unqualified);
-                return ($"ZigAlloc.CopyArrayResult<{elem}>({Expr(abr.Source)}, {abr.Count})", PPostfix);
+                var element = abr.Element.Unqualified is CType.Array rows ? rows.FlatElement.Unqualified : abr.Element.Unqualified;
+                var count = checked(abr.Count * FlatCount(abr.Element));
+                var elem = Cs(element);
+                if (element is CType.Optional or CType.Pointer or CType.Func)
+                    return ($"(({elem}*)ZigAlloc.CopyArrayResultBytes({Expr(abr.Source)}, (nuint){count} * (nuint)sizeof({elem})))", PPrimary);
+                return ($"ZigAlloc.CopyArrayResult<{elem}>({Expr(abr.Source)}, {count})", PPostfix);
             }
             // A curated `std.mem` helper / `@memcpy` / `@memset` → `ZigMem.{Method}<{elem}>(args)`.
             // The frontend fixes the method + element type + args; the backend supplies the C# element
             // name and renders the args (slice fat pointers, a value, or a sentinel pointer).
             case ZigMemCall zm:
             {
-                var elem = Cs(CSharpTarget.PtrSliceTarget(zm.Element.Unqualified) ?? zm.Element.Unqualified);
-                var callArgs = string.Join(", ", zm.Args.Select(x => Expr(x)));
+                if (zm.Element.Unqualified is CType.Array rows && zm.Method == "CopyForwards")
+                {
+                    // Slice lengths count rows, while their managed data pointer
+                    // addresses flat elements. The helper scales the count and
+                    // evaluates each original view exactly once.
+                    var rowElement = rows.FlatElement.Unqualified;
+                    if (rowElement is CType.Pointer or CType.Func or CType.Optional or CType.Array)
+                        throw new IrUnsupportedException("copyForwards of array rows requires a supported unmanaged value element");
+                    var rowArgs = string.Join(", ", zm.Args.Select(Expr));
+                    return ($"ZigMem.CopyForwardsRows<{Cs(rowElement)}>({rowArgs}, {FlatCount(rows)}UL)", PPostfix);
+                }
+                var elem = Cs(_target.NullableSliceTarget(zm.Element.Unqualified)
+                    ?? CSharpTarget.PtrPtrSliceTarget(zm.Element.Unqualified)
+                    ?? CSharpTarget.PtrSliceTarget(zm.Element.Unqualified) ?? zm.Element.Unqualified);
+                var callArgs = string.Join(", ", zm.Args.Select((x, index) =>
+                    zm.Method == "Set" && index == 1 ? Coerced(x, zm.Element) : Expr(x)));
                 return ($"ZigMem.{zm.Method}<{elem}>({callArgs})", PPostfix);
             }
             // A curated `std.ArrayList(T)` member call → `{recv}.{Method}(args)` — an instance
@@ -2324,8 +2383,9 @@ internal sealed partial class CSharpBackend
             case TupleNew tn:
             {
                 var tt = (CType.Tuple)tn.TupleType.Unqualified;
-                var vals = tn.Elements.Select((e, i) => TupleElementValue(e, tt.Elements[i])).ToList();
-                return (BuildValueTupleCtor(tt.Elements, vals), PPrimary);
+                var vals = tn.Elements.Select((e, i) => (e, i)).Where(x => tt.ComptimeIntAt(x.i) is null)
+                    .Select(x => TupleElementValue(x.e, tt.Elements[x.i])).ToList();
+                return (BuildValueTupleCtor(tt.RuntimeElements, vals), PPrimary);
             }
             // A Zig tuple index `t[N]` (Milestone G) → `<tuple>.Item{N+1}` (ValueTuple's 1-based
             // fields). Also the per-binder read a destructure desugars into. For an index ≥ 7 the
@@ -2333,7 +2393,10 @@ internal sealed partial class CSharpBackend
             case TupleIndex ti:
             {
                 var sbTi = new StringBuilder(Sub(ti.Tuple, PPostfix));
-                var tiIdx = ti.Index;
+                var sourceTuple = (CType.Tuple)ti.Tuple.Type.Unqualified;
+                if (sourceTuple.ComptimeIntAt(ti.Index) is { } constant)
+                    return Render(new LitInt(constant.ToString(global::System.Globalization.CultureInfo.InvariantCulture), constant >= long.MinValue && constant <= long.MaxValue ? (long)constant : null) { Type = CType.ComptimeInt });
+                var tiIdx = Enumerable.Range(0, ti.Index).Count(i => sourceTuple.ComptimeIntAt(i) is null);
                 while (tiIdx >= 7) { sbTi.Append(".Rest"); tiIdx -= 7; }
                 sbTi.Append(".Item").Append(tiIdx + 1);
                 return CSharpTarget.TuplePointerSlot(ti.Element)
@@ -2371,6 +2434,7 @@ internal sealed partial class CSharpBackend
                 return v.Type.IsAtomic ? ($"({Cs(v.Type)})Atomic.Load(ref {GlobalName(v.Sym)})", PUnary)
                      : v.Type.IsVolatile ? ($"({Cs(v.Type)}){VolatileRead(GlobalName(v.Sym))}", PUnary)
                      : ($"({Cs(v.Type)}){GlobalName(v.Sym)}", PUnary);
+            case VarRef { Type.Unqualified: CType.VoidType }: return ("default(Unit)", PPrimary);
             case VarRef v: return v.Sym.Kind == SymKind.Func
                 ? (FunctionPointer(v.Sym), PPrimary)
                 : QualifiedRead(v, GlobalName(v.Sym), PPrimary);
@@ -2418,8 +2482,18 @@ internal sealed partial class CSharpBackend
                 var t = $"{Sub(ix.Base, PPostfix)}[{Expr(DecayEnum(ix.Idx))}]";
                 return QualifiedRead(ix, t, PPostfix);
             }
+            case Member { Type.Unqualified: CType.VoidType } m:
+                return (DiscardedUnitValue(m.Base), PPrimary);
             case Member m:
             {
+                var unionBase = m.Base.Type.Unqualified is CType.Pointer basePointer && m.Arrow
+                    ? basePointer.Pointee.Unqualified : m.Base.Type.Unqualified;
+                if (m.Field == "Value" && unionBase is CType.ErrorUnion { Payload.Unqualified: CType.Pointer } pointerUnion)
+                    return ($"({Cs(pointerUnion.Payload)})({MemberBase(m)}{(m.Arrow ? "->" : ".")}Value)", PUnary);
+                if (m.Field == "Value" && unionBase is CType.ErrorUnion { Payload.Unqualified: CType.Array })
+                    return ($"{MemberBase(m)}{(m.Arrow ? "->" : ".")}Value.ToOwnedArray()", PPostfix);
+                if (m.Field == "Value" && unionBase is CType.Optional { Inner.Unqualified: CType.Pointer } pointerOptional)
+                    return ($"({Cs(pointerOptional.Inner)})({MemberBase(m)}{(m.Arrow ? "->" : ".")}Value)", PUnary);
                 if (IsZeroSizedAggregate(m.Type)) return ($"*{ZeroSizedMemberAddress(m)}", PUnary);
                 string dot;
                 if (!m.Arrow && m.Type.Unqualified is CType.Array && !m.Base.IsLValue)
@@ -2497,8 +2571,8 @@ internal sealed partial class CSharpBackend
                 _pending.Add($"{Cs(sa.Element)}* {name} = {lit}");
                 return (name, PPrimary);
             }
-            case DefaultLit { Type.Unqualified: CType.VoidType }: return ("default(Unit)", PPrimary);
-            case DefaultLit: return ($"default({Cs(e.Type)})", PPrimary);
+            case DefaultLit { Type.Unqualified: CType.VoidType } or ZigUndefinedValue { Type.Unqualified: CType.VoidType }: return ("default(Unit)", PPrimary);
+            case DefaultLit or ZigUndefinedValue: return ($"default({Cs(e.Type)})", PPrimary);
             // A promoted malloc → a zero-initialized stack struct value.
             case StackNew sn: return ($"new {Cs(sn.StructType)}()", PPrimary);
             case PinnedArray pa: return (PinnedArrayText(pa), PPrimary);
@@ -2536,7 +2610,9 @@ internal sealed partial class CSharpBackend
                     }
                     var cboolMismatch = t.Type.IsArithmetic && CBoolRendered(t.Then) != CBoolRendered(t.Else);
                     string Arm(CExpr a) => NoHoist(() =>
-                        cboolMismatch && CBoolRendered(a)
+                        IsUnreachableCall(CFlowFacts.StatementValue(a))
+                            ? "throw new global::System.Diagnostics.UnreachableException(\"unreachable() reached\")"
+                            : cboolMismatch && CBoolRendered(a)
                             ? CoercionCast(a, Cs(t.Type))
                             : t.Type.IsArithmetic && a.Type.IsArithmetic && Cs(a.Type.Unqualified) != Cs(t.Type)
                             ? CoercionCast(a, Cs(t.Type))
@@ -2563,18 +2639,19 @@ internal sealed partial class CSharpBackend
                 }
             case SwitchExpr sw:
                 {
+                    ValidateSwitchExpressionCases(sw);
                     // C#'s native switch expression. Each arm's labels are constant patterns
                     // (joined with `or` for a multi-value Zig prong); a null-label arm is the `_`
                     // default (Zig's `else`). Each arm value is coerced to the result type so the
-                    // arms share a C# type (C# requires it). The subject is decayed (an enum subject
-                    // matches its `EnumType.member` constant-pattern labels). Self-parenthesized and
+                    // arms share a C# type (C# requires it). Subject and labels use the same
+                    // promoted integral representation as statement switches. Self-parenthesized and
                     // returned as a primary (like the ternary), so it never needs outer parens.
                     // One label → a constant pattern, or `>= lo and <= hi` for an inclusive range
                     // (Zig `lo...hi`); a multi-value prong joins them with `or`.
                     string LabelPat(SwitchLabel l) =>
                         l.HiExpr is { } hi
-                            ? $">= {Sub(DecayEnum(l.CaseExpr!), PCond)} and <= {Sub(DecayEnum(hi), PCond)}"
-                            : Sub(DecayEnum(l.CaseExpr!), PCond);
+                            ? $">= {CaseValue(l.CaseExpr!, sw.Subject.Type)} and <= {CaseValue(hi, sw.Subject.Type)}"
+                            : CaseValue(l.CaseExpr!, sw.Subject.Type);
                     string ArmText(SwitchExprArm a) => NoHoist(() =>
                     {
                         var val = Coerced(a.Value, sw.Type);
@@ -2582,7 +2659,13 @@ internal sealed partial class CSharpBackend
                             ? $"_ => {val}"
                             : $"{string.Join(" or ", a.Labels.Select(LabelPat))} => {val}";
                     });
-                    return ($"({Sub(DecayEnum(sw.Subject), PPostfix)} switch {{ {string.Join(", ", sw.Arms.Select(ArmText))} }})", PPrimary);
+                    var subject = DecayEnum(sw.Subject);
+                    var subjectText = SwitchSubject(subject, CType.IntegerPromote(subject.Type));
+                    // Zig's else prong can occur anywhere. C#'s discard pattern
+                    // must follow every specific pattern. Other prongs retain
+                    // their order and remain lazy native switch-expression arms.
+                    var ordered = sw.Arms.Where(a => a.Labels is not null).Concat(sw.Arms.Where(a => a.Labels is null));
+                    return ($"(({subjectText}) switch {{ {string.Join(", ", ordered.Select(ArmText))} }})", PPrimary);
                 }
             case StatementExpression statement:
                 return (RenderStatementExpression(statement), PPrimary);
@@ -2601,6 +2684,8 @@ internal sealed partial class CSharpBackend
                 return (CommaValue(co), PPrimary);
             case Assign { CompoundOp: BinOp.Add or BinOp.Sub } a when PointerArrayStride(a.Target.Type) != 1:
                 return ($"{PointerArrayLValue(a.Target)} {BinSym(a.CompoundOp.Value)}= {Sub(a.Value, PMul)} * {PointerArrayStride(a.Target.Type)}", PAssign);
+            case Assign { ZigWrappingBits: not null } a:
+                return ZigWrappingAssignment(a);
             case Assign a when a.Target.Type.IsAtomic:
                 {
                     // An atomic lvalue stores seq-cst (Atomic.Store, returns the stored
@@ -2873,6 +2958,8 @@ internal sealed partial class CSharpBackend
     /// it for free — so signed-only and float pairs stay untouched.</summary>
     private (string Left, string Right) ReconcileOperands(CExpr left, CExpr right, int lp, int rp)
     {
+        left = CoerceComptimeIntegerPeer(left, right.Type);
+        right = CoerceComptimeIntegerPeer(right, left.Type);
         if (left.Type.Unqualified is CType.Prim { Integer: true } lt
             && right.Type.Unqualified is CType.Prim { Integer: true } rt
             && CType.UsualArithmetic(lt, rt) is CType.Prim common)
@@ -2947,6 +3034,10 @@ internal sealed partial class CSharpBackend
     /// <see cref="IsConstExpr"/> flag alone.</summary>
     private (string, int) RenderCast(Cast c)
     {
+        if (c.Target.Unqualified is CType.Optional { Inner.Unqualified: CType.Pointer }
+            && c.Operand.Type.Unqualified is CType.Pointer)
+            return c.Operand is NullPtr ? ("null", PPrimary)
+                : ($"((nuint?)(nuint)({Expr(c.Operand)}))", PPrimary);
         // A C cast of a function designator — `(sexp_proc3)fn`, `(sexp)&fn` —
         // starts at its canonical typed pointer before converting signatures or
         // erasing to an object pointer. It must never recapture the method address.
@@ -3031,7 +3122,13 @@ internal sealed partial class CSharpBackend
     /// are omitted, so C# zero-fills them (C's partial-init rule).</summary>
     private string StructInitText(StructInit si)
     {
-        if (si.Members.Any(member => member.Value is InlineArrayInit)) return StructArrayInitText(si);
+        // A void field has no storage. Its unique, effect-free value needs no
+        // initializer; effectful values retain their ordered slot in the factory.
+        if (si.Members.Any(member => member.FieldType.Unqualified is CType.VoidType && IsPure(member.Value)))
+            si = si with { Members = si.Members.Where(member => member.FieldType.Unqualified is not CType.VoidType
+                || !IsPure(member.Value)).ToArray() };
+        if (si.Members.Any(member => member.Value is InlineArrayInit || member.FieldType.Unqualified is CType.VoidType))
+            return StructArrayInitText(si);
         var sb = new StringBuilder("new ").Append(Cs(si.Type)).Append(" { ");
         for (var i = 0; i < si.Members.Count; i++)
         {
@@ -3111,6 +3208,8 @@ internal sealed partial class CSharpBackend
         // an invocation-expression is a legal C# statement whatever its return type.
         // ZigListCall likewise — deinit/clearRetainingCapacity are void statements.
         StatementExpression { Type.Unqualified: CType.VoidType } => true,
+        NullCoalesce coalesce when IsVoidOptional(coalesce.Left.Type) => true,
+        Assign assignment when IsVoidPayloadPlace(assignment.Target) => false,
         Assign a when a.Target.Type.IsVolatile && a.Target.Type.IsPointerLowered => false,
         Assign a when StoredAsNint(a.Target) => false,
         Unary { Op: UnOp.PreInc or UnOp.PreDec or UnOp.PostInc or UnOp.PostDec } u
@@ -3159,10 +3258,12 @@ internal sealed partial class CSharpBackend
     {
         // A volatile/atomic read is itself an observable access — never drop it.
         _ when e.Type.IsVolatile || e.Type.IsAtomic => false,
+        Cast cast when cast.Target.IsZigZeroInteger => false,
         LitInt or LitFloat or LitStr or NullPtr or NameRef or DefaultLit or VarRef or SizeOfExpr or OffsetOf or RuntimeIntrinsic => true,
         Paren p => IsPure(p.Inner),
         Cast c => IsPure(c.Operand),
         BitCast bc => IsPure(bc.Operand),
+        Member { Field: "Value" } m when IsVoidOptional(m.Base.Type) => false,
         Member m => IsPure(m.Base),
         Index ix => IsPure(ix.Base) && IsPure(ix.Idx),
         Unary u => u.Op is not (UnOp.PreInc or UnOp.PreDec or UnOp.PostInc or UnOp.PostDec)
@@ -3353,6 +3454,7 @@ internal sealed partial class CSharpBackend
     {
         if ((c.SemanticTarget ?? c.CalleeSym?.IntrinsicOverride) is { } replacement)
         {
+            if (replacement.Kind == "zigHostExtern") return ZigHostExternCall(c, replacement.Value);
             if (replacement.Kind == "managedMethod")
             {
                 if (replacement.PassInstance && !_instanceMethods)
@@ -3433,6 +3535,19 @@ internal sealed partial class CSharpBackend
         var context = _instanceMethods && HasInstanceCallbackBoundary(c)
             ? InstanceReferences.CallbackContext + (c.CalleeSym?.TargetName ?? DotCC.EmitHelpers.Id(c.Callee)) + " " : "";
         var invocation = $"{target}({context}{string.Join(", ", a)})";
+        if (c.Callee == "ZigMem.OptionalPayload" && c.Args.Count == 1
+            && c.Args[0].Type.Unqualified is CType.Pointer { Pointee.Unqualified: CType.Optional { Inner.Unqualified: CType.Array } })
+            return $"({a[0]})->Value";
+        if (c.Callee == "ZigMem.OptionalPayload" && c.Args.Count == 1
+            && c.Args[0].Type.Unqualified is CType.Pointer { Pointee: var niche }
+            && (IsVoidOptional(niche) || niche.Unqualified is CType.Optional { Inner.Unqualified: CType.ErrorSetType }))
+            return $"(({Cs(c.Type)})({Cs(niche)}.PayloadAddress({a[0]})))";
+        if (c.Callee == "ZigMem.OptionalPayload" && c.Args.Count == 1
+            && c.Args[0].Type.Unqualified is CType.Pointer { Pointee: var optional } && IsAlignedOptional(optional))
+            return $"{Cs(optional)}.PayloadAddress({a[0]})";
+        if (c.Callee == "ZigMem.OptionalPayload"
+            && c.Args[0].Type.Unqualified is CType.Pointer { Pointee.Unqualified: CType.Optional { Inner.Unqualified: CType.Pointer } })
+            return $"(({Cs(c.Type)})({invocation}))";
         // Runtime services use void* for C-owned aggregate records whose emitted
         // struct type is defined by the header (e.g. protoent and dirent).
         // Preserve the C declaration's result type at the managed call boundary.
@@ -3489,10 +3604,21 @@ internal sealed partial class CSharpBackend
     /// dimensions (<c>int[2][3]</c> → <c>(2 * (3 * sizeof(int)))</c>). A struct
     /// element bottoms out at C#'s <c>sizeof(T)</c> so the real aligned layout is
     /// used; a scalar/pointer likewise.</summary>
-    private string SizeofText(CType t) => t.Unqualified is CType.Array { Count: { } n } a
-        ? $"({n} * {SizeofText(a.Element)})"
-        : IsZeroSizedAggregate(t) ? "0"
-        : $"sizeof({Cs(t)})";
+    private string SizeofText(CType t)
+    {
+        if (t.IsZigZeroInteger) return "0";
+        if (t.Unqualified is CType.Array { Count: not null } a) return $"({a.StorageCount} * {SizeofText(a.Element)})";
+        if (t.Unqualified is CType.Optional)
+        {
+            // Runtime sizeof and folded allocation bounds must admit the same
+            // payloads. In particular, CLR empty structs cannot stand for a
+            // zero-sized Zig optional payload, and Nullable<T?> is invalid.
+            try { _ = _offsetModel.Type(IrBuilder.LayoutType(t)); }
+            catch (DotCC.Layout.OffsetLayoutException error)
+            { throw new IrUnsupportedException("layout of '" + t.Describe() + "': " + error.Message); }
+        }
+        return IsZeroSizedAggregate(t) ? "0" : $"sizeof({Cs(t)})";
+    }
 
     private bool IsZeroSizedAggregate(CType type) => type.Unqualified is CType.Named named
         && _offsetDocument.Aggregates.ContainsKey(named.Name) && _offsetModel.Aggregate(named.Name).Size == 0;
@@ -3510,7 +3636,7 @@ internal sealed partial class CSharpBackend
     /// the stride, in elements, of one row when a multi-dim array is flattened.</summary>
     private static int FlatCount(CType t) => t.Unqualified is CType.Array a
         ? a.RuntimeCount is not null ? throw new IrUnsupportedException("pointer arithmetic over a runtime-sized array object")
-            : (a.Count ?? 0) * FlatCount(a.Element) : 1;
+            : a.StorageCount * FlatCount(a.Element) : 1;
 
     private static string Pad(int ind) => new string(' ', ind * 4);
 }

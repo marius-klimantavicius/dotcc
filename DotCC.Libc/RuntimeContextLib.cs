@@ -120,7 +120,12 @@ public static unsafe partial class Libc
     {
         internal int HostError;
         internal ResolverStorage? Resolver;
-        internal int Errno, PthreadSets;
+        // Source libc's __errno_location returns a stable lvalue. A pinned
+        // owner/thread-local cell shares storage with the ordinary errno API.
+        private readonly int[] errnoCell = GC.AllocateArray<int>(1, pinned: true);
+        internal ref int Errno => ref errnoCell[0];
+        internal int* ErrnoAddress { get { fixed (int* address = errnoCell) return address; } }
+        internal int PthreadSets;
         internal long Self;
         internal bool Created;
         internal int CancellationState;

@@ -66,6 +66,16 @@ internal sealed partial class ZigLowering
     }
     private CStmt DeclOrComptime(Item nameTok, Item? typeItem, Item initExpr)
     {
+        if (IsOptionalTypeAnnotation(typeItem))
+        {
+            var value = ReadOptionalTypeInitializer(initExpr);
+            var symbol = _symbols.Declare(new Symbol { Name = Tok(nameTok), Kind = SymKind.Var,
+                Type = new CType.Optional(new CType.ZigMetaType()) });
+            _optionalTypeLocals[symbol] = value;
+            _ir.ComptimeGlobals[symbol] = value is { } present ? new IrBuilder.CtType(present.Type) : new IrBuilder.CtNull(symbol.Type);
+            _zigConstBindings.Add(symbol);
+            return new Seq(new List<CStmt>());
+        }
         // `const add = switch (sign) { .pos => math.add, .neg => math.sub };` (std.fmt.parseIntWithSign):
         // a comptime alias of a FUNCTION, here a generic of another module picked by a comptime switch.
         // It has no runtime value to hold (a generic has no single address); a call through it
@@ -215,8 +225,15 @@ internal sealed partial class ZigLowering
                 return TryResolveFnAlias(g.Arg1);
             case Zig.Field f when ResolveModulePath(f.Arg0)?.Lowering is { } owner
                                && owner.ResolveExportedDecl(Tok(f.Arg2)) is { } decl
-                               && decl.Sym.Kind == SymKind.Func && decl.Owner.IsGenericTemplate(decl.Sym):
+                               && decl.Sym.Kind == SymKind.Func:
                 return decl;
+            case Zig.Field f when TryTypeArmType(UnwrapGrouped(f.Arg0), out var baseType)
+                && ContainerTypeName(baseType) is { } container
+                && EnsureMethodDeclared(container, Tok(f.Arg2)) is { } function:
+            {
+                var functionOwner = _moduleGraph?.OwnerOfContainer(container) ?? this;
+                return (functionOwner, functionOwner.ActivateMethod(function));
+            }
             case Zig.SwitchExpr:
             {
                 var (subjectItem, prongsItem) = rhs.Content switch
@@ -224,24 +241,29 @@ internal sealed partial class ZigLowering
                     Zig.SwitchExpr s => (s.Arg2, s.Arg5),
                     _ => throw new System.InvalidOperationException(),
                 };
-                if (!LooksLikeFnAliasArms(prongsItem)) { return null; }
+                if (SelectComptimeProng(subjectItem, prongsItem, out var payload) is { Expr: { } selectedArm } selected)
+                {
+                    EnterComptimeProng(selected, payload);
+                    try { return FunctionAliasShape(selectedArm) ? TryResolveFnAlias(selectedArm) : null; }
+                    finally { ExitComptimeProng(); }
+                }
                 CExpr subject;
                 using (EnterThrowawayHoist()) { subject = LowerExpr(subjectItem); }
                 if (_ir.ConstEval(subject) is not { } v) { return null; }
                 Item? elseArm = null;
                 foreach (var prong in Flatten(prongsItem))
                 {
-                    if (!IsPlainValueProng(prong) || DecomposeProng(prong) is not { Expr: { } armValue } pe) { return null; }
-                    if (pe.CaseVals.Content is Zig.CaseElse) { elseArm = armValue; continue; }
+                    var pe = DecomposeProng(prong);
+                    if (pe.CaseVals.Content is Zig.CaseElse) { elseArm = pe.Expr; continue; }
                     foreach (var label in LowerCaseVals(pe.CaseVals, subject.Type))
                     {
                         if (label.HiExpr is null && label.CaseExpr is { } ce && _ir.ConstEval(ce) == v)
                         {
-                            return TryResolveFnAlias(armValue);
+                            return pe.Expr is { } armValue && FunctionAliasShape(armValue) ? TryResolveFnAlias(armValue) : null;
                         }
                     }
                 }
-                return elseArm is { } ea ? TryResolveFnAlias(ea) : null;
+                return elseArm is { } ea && FunctionAliasShape(ea) ? TryResolveFnAlias(ea) : null;
             }
             case Zig.IfElseExpr { Arg4: null, Arg7: null } e:
             {
@@ -254,6 +276,8 @@ internal sealed partial class ZigLowering
             // An arm naming a comptime FUNCTION parameter (`else lessThanFn`), or a closure-idiom method.
             case Zig.Ident fid when _fnAliases.TryGetValue(Tok(fid.Arg0), out var passed):
                 return passed;
+            case Zig.Ident fid when ResolveExportedDecl(Tok(fid.Arg0)) is { } declared:
+                return declared;
             case Zig.StructMemberExpr sme:
                 return (this, ReifyClosureExpr(rhs, sme));
             default:
@@ -266,20 +290,31 @@ internal sealed partial class ZigLowering
     /// ReleaseFast mode dotcc reports).</summary>
     private Symbol ReifyClosureExpr(Item site, Zig.StructMemberExpr sme)
     {
-        if (_closureSites.TryGetValue(site, out var known)) { return known; }
-        var owner = $"{_currentFnName}__L{_closureSites.Count}";
+        // The same syntax belongs to distinct lexical generic instances. A
+        // comparator capturing one instance's keys must never be reused by a
+        // sibling specialization with a different element type or key table.
+        var context = (_currentConstContainer ?? _currentContainer ?? "") + "\0" + _currentFnName;
+        if (!_closureSites.TryGetValue(context, out var sites))
+            _closureSites[context] = sites = new(ReferenceEqualityComparer.Instance);
+        if (sites.TryGetValue(site, out var known)) { return known; }
+        var owner = $"{_currentFnName}__L{_closureSiteSerial++}";
         var sym = ReifyClosureStruct(owner, sme.Arg2, Tok(sme.Arg5),
             System.Array.Empty<TypeSeed>(), System.Array.Empty<ValueSeed>(),
             System.Array.Empty<(string, bool, long, CType)>());
-        _closureSites[site] = sym;
+        sites[site] = sym;
         return sym;
     }
     /// <summary>Each closure-idiom expression site → its reified method (<see cref="ReifyClosureExpr"/>).</summary>
-    private readonly Dictionary<Item, Symbol> _closureSites = new(ReferenceEqualityComparer.Instance);
-    /// <summary>True when every arm of a switch is a bare dotted path (<c>.pos =&gt; math.add</c>): the only
-    /// shape <see cref="TryResolveFnAlias"/> evaluates, so an ordinary value switch is never lowered twice.</summary>
-    private static bool LooksLikeFnAliasArms(Item prongsItem)
-        => Flatten(prongsItem).All(p => IsPlainValueProng(p) && DecomposeProng(p).Expr?.Content is Zig.Field);
+    private readonly Dictionary<string, Dictionary<Item, Symbol>> _closureSites = new(System.StringComparer.Ordinal);
+    private int _closureSiteSerial;
+    /// <summary>Whether a selected expression can name a function. Untaken switch arms may
+    /// have unrelated types and must not prevent resolution of the selected declaration.</summary>
+    private static bool FunctionAliasShape(Item expression) => expression.Content switch
+    {
+        Zig.Field or Zig.Ident or Zig.StructMemberExpr or Zig.SwitchExpr or Zig.IfElseExpr => true,
+        Zig.Grouped grouped => FunctionAliasShape(grouped.Arg1),
+        _ => false,
+    };
     // `const`/`var x = init;` — lower under an ANF hoist buffer so a catch/orelse in a SUB-expression
     // of the initializer (`const r = 1 + (a catch b());`) lifts to a temp before the decl. A
     // WHOLE-init catch / control-flow fallback is intercepted at the top of DeclOfInner (its own
@@ -310,9 +345,9 @@ internal sealed partial class ZigLowering
             return LowerLabeledValue(initExpr, declared, temp =>
             {
                 var sym = _symbols.Declare(new Symbol { Name = Tok(nameTok), Kind = SymKind.Var, Type = temp.Type });
-                RememberBitcastValue(sym, bitcastLocation);
+                RememberBitcastValue(sym, declared is not null ? bitcastLocation : BitcastSymbolLocation(temp));
                 return new DeclStmt(new List<LocalDecl> { new(sym, new VarRef(temp) { Type = temp.Type }) });
-            });
+            }, declared is not null ? bitcastLocation : null);
         }
         // `const x = switch (y) { … blk: {…} };` / `const x = if (c) blk:{…} else …;` — a value-
         // position if/switch with a labeled-block (statement-producing) branch (Milestone Y, part 1):
@@ -324,9 +359,9 @@ internal sealed partial class ZigLowering
             return LowerValueControlFlowStmt(initExpr, declared, temp =>
             {
                 var sym = _symbols.Declare(new Symbol { Name = Tok(nameTok), Kind = SymKind.Var, Type = temp.Type });
-                RememberBitcastValue(sym, bitcastLocation);
+                RememberBitcastValue(sym, declared is not null ? bitcastLocation : BitcastSymbolLocation(temp));
                 return new DeclStmt(new List<LocalDecl> { new(sym, new VarRef(temp) { Type = temp.Type }) });
-            });
+            }, declared is not null ? bitcastLocation : null);
         }
         // `const v = a catch return [x];` / `const v = a orelse return [x];` (Milestone N, part 6) —
         // a control-flow fallback. On the error/none path the `return` runs (early-out); on success
@@ -337,6 +372,12 @@ internal sealed partial class ZigLowering
             {
                 var ptype = declared ?? payload.Type ?? CType.Int;
                 var psym = _symbols.Declare(new Symbol { Name = Tok(nameTok), Kind = SymKind.Var, Type = ptype });
+                var resultLocation = declared is not null ? bitcastLocation : BitcastSourceLocation(cfLhs, payload);
+                RememberBitcastValue(psym, resultLocation);
+                RememberValueSentinel(psym, cfLhs, typeItem);
+                RecordValueBits(psym, resultLocation.IntegerBits, resultLocation.Element?.IntegerBits);
+                if (ptype.Unqualified is CType.Pointer)
+                    RecordValuePtrSize(psym, typeItem is { } pointerType ? PointerSizeOfTypeArg(pointerType) : PointerSizeOfValue(cfLhs));
                 // A `const` bound to a compile-time-known payload is itself comptime-known (`const chunk_len =
                 // std.simd.suggestVectorLength(u16) orelse break :vectorized;` sizes a `@Vector`, task #144).
                 if (isConst && payload is LitInt { Value: { } knownValue })
@@ -369,7 +410,10 @@ internal sealed partial class ZigLowering
             {
                 var ctype = declared ?? value.Type ?? CType.Int;
                 var csym = _symbols.Declare(new Symbol { Name = Tok(nameTok), Kind = SymKind.Var, Type = ctype });
-                RememberBitcastValue(csym, bitcastLocation);
+                var resultLocation = declared is not null ? bitcastLocation : BitcastLoweredLocation(value);
+                RememberBitcastValue(csym, resultLocation);
+                RememberValueSentinel(csym, initExpr, typeItem);
+                RecordValueBits(csym, resultLocation.IntegerBits, resultLocation.Element?.IntegerBits);
                 pre.Add(new DeclStmt(new List<LocalDecl> { new(csym, value) }));
                 return pre.Count == 1 ? pre[0] : new Seq(pre);
             }
@@ -418,7 +462,17 @@ internal sealed partial class ZigLowering
                 && initExpr.Content is Zig.BuiltinCall { Arg2: not null, Arg0: var bitCastTok } bitCastCall && Tok(bitCastTok) == "@bitCast"
                 && Flatten(bitCastCall.Arg2) is [var bitCastArg])
             {
+                var beforeBitcastOperand = _hoistImpureSeen;
                 var source = LowerExpr(bitCastArg);
+                if (source.Type.Unqualified is CType.Prim { Integer: true, IsComptimeInt: false }
+                    || source.Type.Unqualified is CType.Named packedSource
+                        && _shared.BitcastWidths.PackedBits.ContainsKey(packedSource.Name))
+                {
+                    var converted = LowerLogicalBitcast(bitCastArg, source, bitcastLocation, beforeBitcastOperand);
+                    var symbol = _symbols.Declare(new Symbol { Name = Tok(nameTok), Kind = SymKind.Var, Type = arr });
+                    RememberBitcastValue(symbol, bitcastLocation);
+                    return ArrayValueCopyDecl(symbol, arr, bitCount, converted);
+                }
                 long destBytes = (long)bitCount * RowFlatCount(arr) * arr.FlatElement.SizeOf;
                 long? sourceBytes = source.Type.Unqualified switch
                 {
@@ -466,6 +520,50 @@ internal sealed partial class ZigLowering
                 return new Seq(bitStmts);
             }
             var arrInit = LowerExprSink(initExpr, bitcastLocation);
+            // Dereferencing a string yields its byte-array value. A typed local
+            // owns a copy of the logical bytes, excluding the source sentinel.
+            if (UsesSourceStdlib && initExpr.Content is Zig.Deref && arrInit is LitStr literalBytes
+                && arr.Element.Unqualified is CType.Prim { Integer: true, Signed: false, Bytes: 1 }
+                && bitcastLocation.Element?.IntegerBits == 8)
+            {
+                var bytes = DotCC.EmitHelpers.StringByteValues(literalBytes.Segments);
+                if (arr.Count != bytes.Count || sentinel && sentVal != 0)
+                    throw new CompileException($"zig: string array value does not match the declared length/sentinel of '{Tok(nameTok)}'");
+                arrInit = new StackArray(arr.Element, bytes.Select(value => (CExpr)new LitInt(
+                    value.ToString(CultureInfo.InvariantCulture), value) { Type = CType.Int }).ToList()) { Type = arr };
+            }
+            // A vector coerces to an array of the same lanes. Give the local its own
+            // array storage and use the existing vector store, evaluating the value once.
+            if (!sentinel && arr.Count is { } vectorCount
+                && arrInit.Type.Unqualified is CType.Vector { IsMask: false } vector
+                && vector.Count == vectorCount && vector.Element.Unqualified.Equals(arr.Element.Unqualified)
+                && (arr.Element.Unqualified is not CType.Prim { Integer: true }
+                    || bitcastLocation.Element?.IntegerBits is { } arrayBits
+                        && (arrayBits == arr.Element.SizeOf * 8
+                            || BitcastSourceLocation(initExpr, arrInit).Element?.IntegerBits == arrayBits)))
+            {
+                var symbol = _symbols.Declare(new Symbol { Name = Tok(nameTok), Kind = SymKind.Var, Type = arr });
+                RememberBitcastValue(symbol, bitcastLocation);
+                return new Seq(new List<CStmt>
+                {
+                    new ArrayDecl(symbol, arr.Element, IntLit(vectorCount), null),
+                    new ExprStmt(new Call("ZigVec.Store", new List<CExpr>
+                    {
+                        arrInit, new VarRef(symbol) { Type = arr, IsLValue = true },
+                    }) { Type = CType.Void }),
+                });
+            }
+            // A bounded slice dereference is an array VALUE. A typed local
+            // needs the same independent copy as the inferred declaration
+            // below, after proving its length and element type match.
+            if (!sentinel && initExpr.Content is Zig.Deref && arrInit is SliceNew copiedSlice
+                && arr.Count is { } copiedCount && _ir.ConstEval(copiedSlice.Len) == copiedCount
+                && copiedSlice.Element.Unqualified.Equals(arr.Element.Unqualified))
+            {
+                var copy = _symbols.Declare(new Symbol { Name = Tok(nameTok), Kind = SymKind.Var, Type = arr });
+                RememberBitcastValue(copy, bitcastLocation);
+                return ArrayValueCopyDecl(copy, arr, copiedCount, copiedSlice.Ptr);
+            }
             // A `comptime EXPR` initializer is a ComptimeFold until pass 3 resolves it to a
             // StackArray (e.g. `const t: [N]T = comptime buildTable();`). Route it through the
             // ordinary DeclStmt path — the symbol is array-typed (renders `T*`), and the backend
@@ -496,10 +594,18 @@ internal sealed partial class ZigLowering
             if (arrInit is not StackArray sa)
             {
                 throw new IrUnsupportedException(
-                    $"a `[N]T` array local '{Tok(nameTok)}' must be initialized with an array literal (`.{{…}}` / `[N]T{{…}}`) or `undefined`");
+                    $"a `[N]T` array local '{Tok(nameTok)}' must be initialized with an array literal (`.{{…}}` / `[N]T{{…}}`) or `undefined`"
+                    + $" (initializer {arrInit.GetType().Name}: {arrInit.Type.Describe()}"
+                    + (arrInit is SliceNew ds ? $", length {_ir.ConstEval(ds.Len)}, element {ds.Element.Describe()} -> {arr.Element.Describe()}, equal {ds.Element.Unqualified.Equals(arr.Element.Unqualified)}" : "") + ")");
             }
             var asym = _symbols.Declare(new Symbol { Name = Tok(nameTok), Kind = SymKind.Var, Type = arr });
             RememberBitcastValue(asym, bitcastLocation);
+            // Keep a proved immutable byte initializer for later comptime
+            // questions without replacing this local's own array storage.
+            if (UsesSourceStdlib && isConst && !sentinel && arr.Count == sa.Elems.Count
+                && arr.Element.Unqualified is CType.Prim { Integer: true, Signed: false, Bytes: 1 }
+                && bitcastLocation.Element?.IntegerBits == 8 && IsComptimeNameRead(sa))
+                _unfoldedConstInits[asym] = sa;
             // Append the trailing sentinel → `stackalloc T[]{ e0, …, eN-1, s }` lays down N+1 slots.
             // The sentinel is an `int` literal (NOT element-typed): it renders bare (e.g. `0` / `5`),
             // which C#'s constant conversion accepts into any element type — an element-typed literal
@@ -527,6 +633,23 @@ internal sealed partial class ZigLowering
         // `const t = x > 2;` is a zig `bool`, though the IR types a comparison as C's `int` (task #81): `{}` prints it
         // `true`, and `@TypeOf(t)` is `bool`.
         var type = declared ?? (IsZigBoolValue(init) ? CType.Bool : init.Type) ?? CType.Int;
+        if (UsesSourceStdlib && isConst && RequiresComptimeStorage(type))
+        {
+            // A source record containing types has no runtime local. Evaluate
+            // its real initializer and retain the value for later projections.
+            var sourceOnlySymbol = _symbols.Declare(new Symbol { Name = Tok(nameTok), Kind = SymKind.Var, Type = type });
+            var sourceOnlyValue = _hoist is { Count: > 0 } sourceOnlyStatements
+                ? _ir.EvalComptimeBlock(new Block([.. sourceOnlyStatements,
+                    new DeclStmt([new(sourceOnlySymbol, init)])]), sourceOnlySymbol)
+                : _ir.EvalComptimeValue(init);
+            if (sourceOnlyValue is null)
+                throw new CompileException($"zig: comptime-only local '{Tok(nameTok)}' initializer must be known at compile time"
+                    + (_ir.ComptimeMiss is { } why ? " (" + why + ")" : ""));
+            _hoist?.Clear();
+            _ir.ComptimeGlobals[sourceOnlySymbol] = sourceOnlyValue;
+            RememberBitcastValue(sourceOnlySymbol, declared is not null ? bitcastLocation : BitcastSourceLocation(initExpr, init));
+            return new Seq(new List<CStmt>());
+        }
         // `var result = 10;` in a comptime-only function (std.math.log10's `pow10`, task #171) is zig's comptime_int, which
         // only such a body may hold in a `var`: an `int` carrier wrapped `result *= result` at 32 bits (10^16 read back as
         // 1874919424), a silent miscompile of every power the interpreter built past 2^31.
@@ -555,12 +678,32 @@ internal sealed partial class ZigLowering
             IsConstexpr = folded is not null, ConstValue = folded ?? 0,
         });
         RememberBitcastValue(sym2, (declared is not null ? bitcastLocation : BitcastSourceLocation(initExpr, init)));
+        if (TupleResultBits(init) is { } tupleBits) _valueTupleElemBits[sym2] = tupleBits;
+        RememberValueSentinel(sym2, initExpr, typeItem);
         if (declared is null && init is LitStr) { _stringLiteralSyms.Add(sym2); }
+        // A selected comptime branch can produce a string even though the
+        // initializer syntax was not itself a literal. Preserve that immutable
+        // value for subsequent comptime parameters, keyed by its lexical symbol.
+        if (isConst && declared is null && init is LitStr literalString)
+            _comptimeStringVars[sym2] = literalString;
+        // An immutable slice of known bytes is also a comptime string. Keep
+        // the actual symbol and backing window, rather than a name-only alias.
+        if (isConst && type.Unqualified is CType.Slice { Element.Unqualified: CType.Prim { Integer: true, Bytes: 1, Name: not "_Bool" } }
+            && IsComptimeNameRead(init)
+            && _ir.EvalComptimeValue(init) is IrBuilder.CtSlice knownString
+            && _ir.SpliceComptimeValue(knownString) is SliceNew { Ptr: LitStr slicedString })
+            _comptimeStringVars[sym2] = slicedString;
         NoteComptimeFloatConst(sym2, isConst, declared, init);
         RememberImmutableLiteralMemberName(sym2, isConst, declared is null, init);
+        // A const optional slice over comptime storage remains a known optional when passed
+        // to another generic. Only pure constant reads qualify; runtime calls keep their storage.
+        if (UsesSourceStdlib && isConst && type.Unqualified is CType.Optional { Inner.Unqualified: CType.Slice }
+            && IsComptimeNameRead(init) && _ir.EvalComptimeValue(init) is { } optionalSliceValue
+            && optionalSliceValue is IrBuilder.CtNull or IrBuilder.CtSlice)
+            _ir.ComptimeGlobals[sym2] = optionalSliceValue;
         // `const value = 42;` is a comptime_int in zig (the lowered local is an `int` carrier): an `anytype` it is
         // passed to binds it as a comptime value (ComptimeIntArgValue).
-        if (declared is null && isConst && folded is not null && initExpr.Content is Zig.IntLit) { _comptimeIntLocals.Add(sym2); }
+        if (declared is null && isConst && folded is not null && IsSourceComptimeInteger(initExpr, init)) { _comptimeIntLocals.Add(sym2); }
         // A `comptime_int` const whose initializer is a CALL (std.sort.pdq's `const stack_size = math.log2(math.maxInt(usize) + 1);`)
         // does not fold here; an array extent that names it runs the call then (task #73, see ConstEvalArraySize). Only a
         // comptime_int: zig rejects a runtime-typed call result (`const n = f(3);`) as an extent, and so does dotcc.
@@ -569,6 +712,13 @@ internal sealed partial class ZigLowering
         {
             _unfoldedConstInits[sym2] = init;
         }
+        // A source const namespace member can be a known record, such as a
+        // codec descriptor. Keep its proved initializer for comptime questions
+        // without replacing the ordinary local or changing its address identity.
+        if (UsesSourceStdlib && isConst && type.Unqualified is CType.Named
+            && initExpr.Content is Zig.Ident or Zig.Field
+            && _ir.EvalComptimeValue(InlineUnfoldedConsts(init)) is IrBuilder.CtStruct)
+            _unfoldedConstInits[sym2] = init;
         // A const bound to a `comptime label: { … }` block (std.meta.stringToEnum's `const kvs = comptime build_kvs: { … };`,
         // task #116) is comptime-known: its evaluated aggregate is what a later comptime use reads (`initComptime(kvs)`).
         if (isConst && initExpr.Content is Zig.PreComptime { Arg1.Content: Zig.LabeledBlock or Zig.LabeledSwitch } && _ir.EvalComptimeValue(init) is { } blockValue)
@@ -649,7 +799,18 @@ internal sealed partial class ZigLowering
         CExpr rhs;
         using (EnterFreshHoist())
         {
-            rhs = LowerExpr(d.Arg4);
+            // Typed destructure binders result-locate the tuple's branches,
+            // including tuples whose untyped integer fields would otherwise be
+            // erased as different compile-time-only values.
+            var typed = binders.Select(binder => binder.Content switch
+            {
+                Zig.DestructBindConstTyped c => LowerType(c.Arg3),
+                Zig.DestructBindVarTyped v => LowerType(v.Arg3),
+                _ => (CType?)null,
+            }).ToList();
+            rhs = typed.All(type => type is not null)
+                ? LowerExprSink(d.Arg4, new CType.Tuple(typed.Select(type => type!).ToList()))
+                : LowerExpr(d.Arg4);
             if (_hoist is { Count: > 0 } hoisted) { stmts.AddRange(hoisted); }
         }
         if (rhs.Type.Unqualified is not CType.Tuple tup)
@@ -664,12 +825,13 @@ internal sealed partial class ZigLowering
         }
         // The single-eval temp: `var __tupN = e;`, then each binder reads `__tupN.ItemK`.
         var tmp = _symbols.Declare(new Symbol { Name = "__tup" + _tupleTempCounter++, Kind = SymKind.Var, Type = tup });
+        RememberHoistedValue(tmp, rhs);
         stmts.Add(new DeclStmt(new List<LocalDecl> { new(tmp, rhs) }));
         var tmpRef = new VarRef(tmp) { Type = tup, IsLValue = true };
         for (int i = 0; i < binders.Count; i++)
         {
             var et = tup.Elements[i];
-            var read = new TupleIndex(tmpRef, i, et) { Type = et };
+            var read = TupleElement(tmpRef, i);
             stmts.Add(LowerDestructBinder(binders[i], elemItem: null, snapshotRead: read));
         }
         return new Seq(stmts);
@@ -685,8 +847,8 @@ internal sealed partial class ZigLowering
         {
             case Zig.DestructBindConst c:      return DeclareDestructLocal(Tok(c.Arg1), null, elemItem, snapshotRead);
             case Zig.DestructBindVar v:        return DeclareDestructLocal(Tok(v.Arg1), null, elemItem, snapshotRead);
-            case Zig.DestructBindConstTyped c: return DeclareDestructLocal(Tok(c.Arg1), LowerType(c.Arg3), elemItem, snapshotRead);
-            case Zig.DestructBindVarTyped v:   return DeclareDestructLocal(Tok(v.Arg1), LowerType(v.Arg3), elemItem, snapshotRead);
+            case Zig.DestructBindConstTyped c: return DeclareDestructLocal(Tok(c.Arg1), LowerType(c.Arg3), elemItem, snapshotRead, c.Arg3);
+            case Zig.DestructBindVarTyped v:   return DeclareDestructLocal(Tok(v.Arg1), LowerType(v.Arg3), elemItem, snapshotRead, v.Arg3);
             case Zig.DestructBindLValue lv:    return AssignDestructTarget(lv.Arg0, elemItem, snapshotRead);
             default:
                 throw new IrUnsupportedException(
@@ -696,13 +858,19 @@ internal sealed partial class ZigLowering
     /// <summary>Declare a fresh destructure local <c>name</c>. With a <paramref name="declType"/> the
     /// element lowers at that type as its sink (literal RHS) or the snapshot read is coerced to it;
     /// without one the type is inferred from the element/read.</summary>
-    private CStmt DeclareDestructLocal(string name, CType? declType, Item? elemItem, CExpr? snapshotRead)
+    private CStmt DeclareDestructLocal(string name, CType? declType, Item? elemItem, CExpr? snapshotRead, Item? typeAst = null)
     {
         CExpr value = elemItem is not null
             ? (declType is not null ? LowerExprSink(elemItem, declType) : LowerExpr(elemItem))
             : (declType is not null ? CoerceRead(snapshotRead!, declType) : snapshotRead!);
         var symType = declType ?? value.Type;
         var sym = _symbols.Declare(new Symbol { Name = name, Kind = SymKind.Var, Type = symType });
+        var source = typeAst is not null ? BitcastTypeLocation(typeAst, symType)
+            : elemItem is not null ? BitcastSourceLocation(elemItem, value) : BitcastLoweredLocation(value);
+        var bits = typeAst is not null ? source.IntegerBits
+            : elemItem is not null ? DeclaredBitsOfValue(elemItem) ?? source.IntegerBits : DeclaredBitsOfLowered(value);
+        RememberBitcastValue(sym, source with { Physical = symType, IntegerBits = bits });
+        RecordValueBits(sym, bits, source.Element?.IntegerBits);
         return new DeclStmt(new List<LocalDecl> { new(sym, value) });
     }
     /// <summary>Assign a destructure element to an existing lvalue (or discard it for <c>_</c>). The

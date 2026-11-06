@@ -272,22 +272,20 @@ clearly.
 **`@import("builtin")` and `@import("root")`** resolve too (road-to-zig-std S3). Neither is a file:
 real zig GENERATES `builtin` per compilation to describe the target, and dotcc does the same — a
 module written as Zig source at compile start and fed through the ordinary import path, so it parses,
-binds and navigates like any other module with no special lowering. It is deliberately **duck-typed**
-(bare enum literals and anonymous struct literals carrying the fields std reads) rather than typed
-against `std.Target`, which would pull in ~37,000 lines of per-architecture CPU feature tables
-describing hardware dotcc does not target — the program it emits is C#. The surface is what std
-actually reads, measured across the 195 pinned files that import it: `cpu.arch` (172), `os.tag` (92),
-`link_libc` (99), `zig_backend` (87), `single_threaded` (46), `mode` (43), `abi` (42), `target.*`
-chaining to the same, plus `strip_debug_info`, `unwind_tables`, `is_test`, `fuzz` and the rest of the
-≤5-use tail. **`root` is EMPTY on purpose** — std probes it for optional overrides (`std_options`,
-`panic`), and a program that declares none is exactly what an empty module describes. Two deliberate
-choices are load-bearing: `link_libc = true` (biases std toward libc-backed paths, which land on
-`extern fn`s dotcc's runtime implements) and `mode = .ReleaseFast` (dotcc does not trap integer
-overflow, so claiming a safe mode would have std emit checks dotcc does not honour — note this
-DIVERGES from `zig build-exe`'s `.Debug` default, the one member a differential program must avoid).
-**Cuts (loud):** the `std.Target` METHODS — `cpu.has(…)` (19 uses), `target.isGnuLibC()`,
-`ptrBitWidth()`, `stackAlignment()` (~30 call sites total) — each needs a real type to hang on, and
-each is a separate decision about what dotcc's target actually is.
+binds and navigates like any other module with no special lowering. With `stdlib_types:source`
+and a configured source stdlib, `builtin.target` is the real source `std.Target`. Its CPU/model/features,
+ABI and object format use source types and the host settings. Its OS version range comes from
+`std.Target.Os.VersionRange.default`, representing the standard library's default range rather than
+detecting the native host kernel version. Calls such as `target.ptrBitWidth()` use the original source
+method. Named constant fields retain their definition-scoped comptime values, so a switch on
+`builtin.target.os.tag` discards foreign OS arms. Curated/no-stdlib target records keep their field-only
+surface. A configured stdlib also supplies the typed host `std.Target.Cpu` and its source methods.
+
+The remaining surface includes `link_libc`, backend/mode/output settings and compiler feature flags.
+`root` resolves to the actual root module for declarations and optional overrides. The default
+`link_libc = true` selects libc paths; the default optimize mode is `ReleaseFast`. Explicit library and
+optimize settings propagate through the module graph. These compile-host settings do not claim
+cross-target execution support.
 
 **Navigation reaches TYPES, not just functions** (road-to-zig-std **S4d**). A dotted type that no
 curated row claims (`util.Point`, `std.ascii.Pair`) resolves through the module graph to the container

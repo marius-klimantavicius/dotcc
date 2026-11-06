@@ -17,12 +17,12 @@ namespace DotCC.Frontends;
 /// <para><b>Why dotcc writes its own instead of copying zig's.</b> Real zig's generated
 /// <c>builtin.zig</c> is only ~55 lines, but every line of it is typed against <c>std.Target</c> —
 /// <c>std.Target.Cpu</c>, <c>std.Target.aarch64.featureSet(&amp;.{…})</c>, <c>std.Target.Os</c>. That
-/// is <c>Target.zig</c> (3,824 lines) plus the <c>Target/</c> per-architecture feature tables (33,488
-/// lines), all of it describing hardware dotcc does not target: the emitted program is C#. So this
-/// module is DUCK-TYPED — bare enum literals and anonymous struct literals carrying the fields std
-/// reads, and nothing else. What makes that work is that std's platform queries are comptime
-/// QUESTIONS (<c>builtin.cpu.arch == .x86_64</c>, <c>switch (builtin.os.tag)</c>), which the comptime
-/// aggregate domain answers without either side ever needing a nominal type.</para>
+/// dependency is why the curated/no-stdlib model uses bare enum literals and anonymous records. With
+/// source stdlib types, <c>target</c> is instead a source <c>std.Target</c>, using the host CPU,
+/// ABI and object-format types. Its OS range comes from source
+/// <c>std.Target.Os.VersionRange.default</c>; it is the standard library's default range,
+/// not a measurement of the host kernel version. Its methods resolve through ordinary source
+/// navigation and keep their source implementation.</para>
 ///
 /// <para><b>The surface is measured, not guessed.</b> Counted across the pinned std's 195 files that
 /// import it: <c>cpu</c> 196 (of which <c>cpu.arch</c> 172), <c>target</c> 100, <c>os</c> 100 (of
@@ -31,9 +31,9 @@ namespace DotCC.Frontends;
 /// ≤5 each. All of them are here. With a real std the <c>cpu</c> is the exception: it is a TYPED
 /// <c>std.Target.Cpu</c> read off the host (<see cref="HostCpuSource"/>, the target-identity segment T3), so
 /// <c>cpu.has(…)</c> (×19 in std) and <c>cacheLineForCpu(cpu)</c> are std.Target's own code. The <c>target</c>
-/// methods (<c>target.isGnuLibC()</c>, <c>target.ptrBitWidth()</c>, about 10 call sites) are deliberately
-/// NOT: a method needs a real type to hang on, and each one is a decision about what dotcc's target
-/// actually is. They fail loudly, which is the right outcome until one is needed.</para></summary>
+/// methods (<c>target.isGnuLibC()</c>, <c>target.ptrBitWidth()</c>) are available through the
+/// nominal source target when source stdlib types are selected. Curated/no-stdlib target
+/// records retain the earlier field-only surface.</para></summary>
 internal static class ZigSyntheticModules
 {
     /// <summary>The virtual path the synthetic <c>builtin</c> module is registered under. Not a real
@@ -57,9 +57,9 @@ internal static class ZigSyntheticModules
 
     /// <summary>Generate the source of a synthetic module by its virtual path.</summary>
     internal static string SourceForPath(string path, bool withStd = false, ZigSourceOutputMode? outputMode = null,
-        ZigSourceOptimizeMode? optimizeMode = null) => path switch
+        ZigSourceOptimizeMode? optimizeMode = null, bool sourceStdlib = false, bool isTest = false) => path switch
     {
-        BuiltinPath => BuiltinSource(withStd, outputMode, optimizeMode),
+        BuiltinPath => BuiltinSource(withStd, outputMode, optimizeMode, sourceStdlib, isTest),
         RootPath => RootSource(),
         _ => throw new IrUnsupportedException($"zig: '{path}' is not a synthetic module"),
     };
@@ -79,7 +79,7 @@ internal static class ZigSyntheticModules
     /// <summary>The <c>builtin</c> module — the target description. Written entirely as bare enum
     /// literals and anonymous struct literals, so no nominal type is needed on either side (see the
     /// class summary).</summary>
-    private static string BuiltinSource(bool withStd, ZigSourceOutputMode? outputMode, ZigSourceOptimizeMode? optimizeMode)
+    private static string BuiltinSource(bool withStd, ZigSourceOutputMode? outputMode, ZigSourceOptimizeMode? optimizeMode, bool sourceStdlib, bool isTest)
     {
         var sb = new StringBuilder();
         sb.Append("// dotcc's synthetic `builtin` module (road-to-zig-std S3) — generated, not a file.\n");
@@ -105,7 +105,9 @@ internal static class ZigSyntheticModules
             null => "ReleaseFast",
             _ => throw new IrUnsupportedException("zig: unsupported optimize_mode"),
         };
-        sb.Append("pub const mode = .").Append(modeTag).Append(";\n\n");
+        sb.Append(withStd && optimizeMode is not null
+            ? "pub const mode: @import(\"std\").lang.Optimize = ."
+            : "pub const mode = .").Append(modeTag).Append(";\n\n");
 
         sb.Append("// link_libc = true is the big lever: it biases std toward its libc-backed paths, which\n");
         sb.Append("// bottom out in `extern fn`s dotcc's C-shaped runtime already implements, rather than\n");
@@ -113,7 +115,7 @@ internal static class ZigSyntheticModules
         sb.Append("pub const link_libc = true;\n");
         sb.Append("pub const link_libcpp = false;\n\n");
 
-        sb.Append("pub const is_test = false;\n");
+        sb.Append("pub const is_test = ").Append(isTest ? "true" : "false").Append(";\n");
         sb.Append("pub const single_threaded = false;\n");
         sb.Append("pub const strip_debug_info = false;\n");
         sb.Append("pub const unwind_tables = .none;\n");
@@ -138,7 +140,8 @@ internal static class ZigSyntheticModules
         sb.Append("// compile-time question like `std.fs.path.sep` come out right for the machine compiling.\n");
         sb.Append("// Note that the EMITTED program is portable C# regardless — this describes the compile,\n");
         sb.Append("// not the run. Each is a bare enum literal, so a `== .tag` or `switch` over it folds.\n");
-        sb.Append("pub const abi = .").Append(abi).Append(";\n");
+        sb.Append(withStd ? "pub const abi: @import(\"std\").Target.Abi = ." : "pub const abi = .")
+          .Append(abi).Append(";\n");
         sb.Append("pub const object_format = .").Append(ofmt).Append(";\n");
         // With a real std to navigate, the architecture carries the TYPE zig's own builtin gives it
         // (`std.Target.Cpu.Arch`, the target-identity segment T3a), so `builtin.cpu.arch.endian()` is the
@@ -150,13 +153,24 @@ internal static class ZigSyntheticModules
         // host's, so std's comptime feature questions (`cpu.has(.x86, .avx2)`) answer for this machine.
         if (withStd && HostCpuSource(arch) is { } typedCpu) { sb.Append(typedCpu); }
         else { sb.Append("pub const cpu = .{ .arch = ").Append(archValue).Append(" };\n"); }
-        sb.Append("pub const os = .{ .tag = .").Append(os).Append(" };\n");
+        var osValue = withStd ? "@as(@import(\"std\").Target.Os.Tag, ." + os + ")" : "." + os;
+        var objectFormatValue = withStd && sourceStdlib ? $"@as(std.Target.ObjectFormat, .{ofmt})" : $".{ofmt}";
+        if (withStd && sourceStdlib)
+        {
+            sb.Append("pub const os: std.Target.Os = .{ .tag = ").Append(osValue)
+              .Append(", .version_range = std.Target.Os.VersionRange.default(cpu.arch, ").Append(osValue)
+              .Append(", abi) };\n");
+            sb.Append("pub const target: std.Target = .{ .cpu = cpu, .os = os, .abi = abi, .ofmt = ")
+              .Append(objectFormatValue).Append(" };\n");
+            return sb.ToString();
+        }
+        sb.Append("pub const os = .{ .tag = ").Append(osValue).Append(" };\n");
         // Spelled out rather than referring to `cpu` / `os` by name: the aggregate recorder reads a
         // literal, and generated text costs nothing to repeat.
         sb.Append("pub const target = .{ .cpu = .{ .arch = ").Append(archValue)
-          .Append(" }, .os = .{ .tag = .").Append(os)
-          .Append(" }, .abi = .").Append(abi)
-          .Append(", .ofmt = .").Append(ofmt).Append(" };\n");
+          .Append(" }, .os = .{ .tag = ").Append(osValue)
+          .Append(" }, .abi = ").Append(withStd ? $"@as(std.Target.Abi, .{abi})" : $".{abi}")
+          .Append(", .ofmt = ").Append(objectFormatValue).Append(" };\n");
         return sb.ToString();
     }
 

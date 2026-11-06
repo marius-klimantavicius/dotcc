@@ -44,6 +44,8 @@ public abstract partial record CType
 
     public virtual bool IsInteger => false;
     public virtual bool IsArithmetic => false;
+    /// <summary>Zig's unsigned zero-bit integer has the sole value zero and no storage.</summary>
+    public bool IsZigZeroInteger => Unqualified is Prim { Name: "u0", Bytes: 0, Integer: true, Signed: false };
     public bool IsConst => (Quals & TypeQual.Const) != 0;
     public bool IsVolatile => (Quals & TypeQual.Volatile) != 0;
     public bool IsAtomic => (Quals & TypeQual.Atomic) != 0;
@@ -75,12 +77,14 @@ public abstract partial record CType
     {
         Prim { IsComptimeInt: true } => "comptime_int",
         Prim p => p.Name,
+        VoidType { ZigAnyopaque: true } => "anyopaque",
         VoidType => "void",
         Pointer ptr => ptr.Pointee.Describe() + "*",
         Array a => a.Element.Describe() + "[" + (a.Count?.ToString(System.Globalization.CultureInfo.InvariantCulture) ?? "") + "]",
         Vector v => "@Vector(" + v.Count + ", " + v.Element.Describe() + ")",
         EnumLiteral el => "@EnumLiteral() ." + el.Name,
         Func f => f.Return.Describe() + "(*)(" + string.Join(", ", f.Params.Select(p => p.Describe())) + ")",
+        Opaque o => "opaque " + o.Name,
         Named n => n.Name,
         Enum e => "enum " + e.Name,
         ComplexType => "_Complex",
@@ -114,7 +118,11 @@ public abstract partial record CType
     /// we report 1 to match gcc's extension rather than throw).</summary>
     public sealed record VoidType : CType
     {
-        public override int SizeOf => 1;
+        // Source identity for Zig's erased opaque pointee; its address still
+        // renders as void*, but it is neither void data nor a sized type.
+        public bool ZigAnyopaque { get; init; }
+        public override int SizeOf => ZigAnyopaque
+            ? throw new IrUnsupportedException("opaque type 'anyopaque' has no value or layout") : 1;
     }
 
     /// <summary>zig's comptime-only <c>@EnumLiteral()</c>: a bare <c>.member</c> with no result type
@@ -126,12 +134,34 @@ public abstract partial record CType
         public override int SizeOf => 0;
     }
 
+    /// <summary>Zig's type of types. Values exist only during semantic evaluation.</summary>
+    public sealed record ZigMetaType : CType
+    {
+        public override int SizeOf => throw new IrUnsupportedException("a Zig type value has no runtime layout");
+    }
+
+    /// <summary>A source generic function type. It has no runtime address or layout;
+    /// the Zig frontend retains its complete parameter and return syntax.</summary>
+    public sealed record ZigGenericFunctionType(string Identity) : CType
+    {
+        public override int SizeOf => throw new IrUnsupportedException("a generic source function type has no runtime layout");
+    }
+
     /// <summary>A pointer to <see cref="Pointee"/>. (The C# backend lowers it to the
     /// pointee's type plus <c>*</c> — except a pointer-TO-array, which like the array
     /// itself collapses to one flat pointer to the innermost scalar, <c>int (*p)[3]</c>
     /// → <c>int*</c>, a row pointer subscripted with the array's stride.)</summary>
     public sealed record Pointer(CType Pointee) : CType
     {
+        // Source pointer attribute, distinct from the alignment of pointer storage.
+        // null = no source evidence; 0 = unspelled; positive = explicit align(N).
+        public int? ZigSourceAlignment { get; init; }
+        public string? ZigSourceSize { get; init; }
+        // Exact source integer pointee width; never inferred from its carrier.
+        public int? ZigSourcePointeeBits { get; init; }
+        // A single source ?*T uses the pointer's null niche. Retain its identity
+        // so applying another optional (including through an alias) adds a flag.
+        public bool ZigOptional { get; init; }
         public override int SizeOf => 8;
         public override bool IsInteger => false;
     }
@@ -145,7 +175,11 @@ public abstract partial record CType
     public sealed record Array(CType Element, int? Count) : CType
     {
         public CExpr? RuntimeCount { get; init; }
-        public override int SizeOf => RuntimeCount is null ? Element.SizeOf * (Count ?? 0)
+        // Zig arrays with a known integer sentinel retain their logical count separately
+        // from storage. Ordinary C arrays leave this unset.
+        public long? ZigSentinel { get; init; }
+        public int StorageCount => checked((Count ?? 0) + (ZigSentinel is null ? 0 : 1));
+        public override int SizeOf => RuntimeCount is null ? Element.SizeOf * StorageCount
             : throw new IrUnsupportedException("variable-length array has no constant size");
 
         /// <summary>The innermost non-array element (peels all array dimensions) —
@@ -155,13 +189,20 @@ public abstract partial record CType
 
     /// <summary>A Zig SIMD vector <c>@Vector(Count, Element)</c> (road-to-zig-std, the target-identity segment T5).
     /// A numeric one renders as .NET's <c>Vector64/128/256/512&lt;T&gt;</c> by its total width; a BOOL one (what a
-    /// comparison yields) is a lane bitmask in a <c>ulong</c> (see <c>DotCC.Libc.ZigVec</c>).</summary>
+    /// comparison yields) is a lane bitmask in a <c>ulong</c> (see <c>DotCC.Libc.ZigVec</c>).
+    /// Numeric vectors of 4 or 128 bytes use bounded value storage for memory operations.</summary>
     public sealed record Vector(CType Element, int Count) : CType
     {
         public override int SizeOf => IsMask ? 8 : Element.SizeOf * Count;
 
         /// <summary>True for a BOOL vector, carried as a lane bitmask.</summary>
         public bool IsMask => Element.Unqualified is Prim { Name: "_Bool" };
+
+        /// <summary>Bounded value storage for numeric vectors outside the .NET SIMD families.
+        /// These widths support splats, lane access and raw unaligned loads/stores; they do not
+        /// imply support for SIMD arithmetic or for a wider bool mask.</summary>
+        public bool UsesStorage => !IsMask && SizeOf is 4 or 128
+            && Element.Unqualified is Prim { Name: not "_Bool", Bytes: 1 or 2 or 4 or 8 };
 
         /// <summary>The .NET vector type family for a numeric vector of this width (<c>Vector128</c>), or null
         /// for a width .NET has no vector type of.</summary>
@@ -199,6 +240,15 @@ public abstract partial record CType
         /// <summary>A function typedef before parameter or pointer decay. A bare
         /// declaration of this type declares a function, never callback storage.</summary>
         public bool IsFunctionType { get; init; }
+        // Zig distinguishes a function body type, its single-item pointer,
+        // and the optional pointer niche despite their delegate* carrier.
+        public bool ZigSourcePointer { get; init; }
+        public bool ZigOptional { get; init; }
+        public bool ZigSourcePointerConst { get; init; }
+        public int? ZigSourcePointerAlignment { get; init; }
+        // Exact source function signature, when its declaring type syntax
+        // provides every name. Never reconstructed from delegate* carriers.
+        public string? ZigSourceFunctionName { get; init; }
 
         /// <summary>Equality excludes <see cref="IsNativeCallConv"/> (a .NET ABI
         /// annotation, not C type identity) and otherwise replicates the synthesized
@@ -210,11 +260,25 @@ public abstract partial record CType
             other is not null
             && Quals == other.Quals
             && IsFunctionType == other.IsFunctionType
+            && ZigSourcePointer == other.ZigSourcePointer
+            && ZigOptional == other.ZigOptional
+            && ZigSourcePointerConst == other.ZigSourcePointerConst
+            && ZigSourcePointerAlignment == other.ZigSourcePointerAlignment
+            && ZigSourceFunctionName == other.ZigSourceFunctionName
             && Variadic == other.Variadic
             && EqualityComparer<IReadOnlyList<CType>>.Default.Equals(Params, other.Params)
             && EqualityComparer<CType>.Default.Equals(Return, other.Return);
 
-        public override int GetHashCode() => HashCode.Combine(Quals, Variadic, Return, IsFunctionType);
+        public override int GetHashCode() => HashCode.Combine(HashCode.Combine(Quals, Variadic, Return, IsFunctionType,
+            ZigSourcePointer, ZigOptional, ZigSourcePointerConst, ZigSourcePointerAlignment), ZigSourceFunctionName);
+    }
+
+    /// <summary>A source Zig opaque declaration. Name is its canonical, owner-qualified
+    /// nominal identity, never a layout-bearing aggregate or anyopaque alias.</summary>
+    public sealed record Opaque(string Name) : CType
+    {
+        public override int SizeOf => throw new IrUnsupportedException(
+            "opaque type '" + Name + "' has no value or layout");
     }
 
     /// <summary>A named type the IR doesn't model structurally yet (a typedef
@@ -275,18 +339,20 @@ public abstract partial record CType
         public override int SizeOf => 0;
     }
 
-    /// <summary>A Zig optional <c>?T</c> over a NON-pointer payload. The C# backend
+    /// <summary>A flagged Zig optional <c>?T</c>. The C# backend
     /// lowers it to <c>Nullable&lt;T&gt;</c> (<c>T?</c>), so <c>null</c> is none, <c>.?</c>
     /// is <c>.Value</c> (panics on none), and <c>orelse</c> is <c>??</c> — exactly Zig's
     /// semantics, for free. An optional POINTER <c>?*T</c> does NOT use this: it lowers to
     /// a bare nullable <c>T*</c> (Zig's own niche), so <see cref="Optional"/> only ever
-    /// wraps a value type. The C front-end never produces it (C has no optionals); only the
+    /// wraps a value type, or an already nullable pointer (? ?*T). The latter's
+    /// payload is carried as nuint under a separate presence flag. The C front-end
+    /// never produces it (C has no optionals); only the
     /// C# target renders it.</summary>
     public sealed record Optional(CType Inner) : CType
     {
-        // Approximate (Nullable<T> is the payload plus a flag byte, padded). @sizeOf(?T)
-        // is not a B1 feature, so an exact layout isn't needed here.
-        public override int SizeOf => Inner.SizeOf + 1;
+        // Aggregate payloads need the shared layout resolver. Never use an
+        // unpadded payload-plus-flag estimate for allocation or array strides.
+        public override int SizeOf => throw new IrUnsupportedException("optional size requires the resolved managed storage layout");
     }
 
     /// <summary>A Zig error union <c>E!T</c> (Milestone B2). The C# backend lowers it to
@@ -329,6 +395,7 @@ public abstract partial record CType
     /// front-end never produces it (C has no slices); only the C# target renders it.</summary>
     public sealed record Slice(CType Element) : CType
     {
+        public int? ZigSourceAlignment { get; init; }
         // A fat pointer: a data pointer (8) plus a nuint length (8). @sizeOf([]T) is not in
         // scope for Milestone E, so an exact-layout guarantee isn't needed here.
         public override int SizeOf => 16;
@@ -375,20 +442,27 @@ public abstract partial record CType
     /// never produces it; only the C# target renders it.</summary>
     public sealed record Tuple(IReadOnlyList<CType> Elements) : CType
     {
+        // A comptime_int tuple field is a value in the Zig type, not runtime storage.
+        // Keep source positions so reflection and mixed tuple accesses retain their indices.
+        public IReadOnlyList<System.Int128?> ComptimeIntValues { get; init; } = [];
+        public System.Int128? ComptimeIntAt(int index) => index < ComptimeIntValues.Count ? ComptimeIntValues[index] : null;
+        public IReadOnlyList<CType> RuntimeElements => Elements.Where((_, i) => ComptimeIntAt(i) is null).ToArray();
+
         // Approximate — Σ element sizes, ignoring ValueTuple field layout/padding. @sizeOf of a
         // tuple isn't a Zig surface feature, so an exact layout isn't needed here.
-        public override int SizeOf => Elements.Sum(e => e.SizeOf);
+        public override int SizeOf => RuntimeElements.Sum(e => e.SizeOf);
 
         // Structural equality over the element list (the default record comparer would use
         // reference equality on the list), plus the base qualifiers — mirrors the Func record.
         public bool Equals(Tuple? other) =>
-            other is not null && Quals == other.Quals && Elements.SequenceEqual(other.Elements);
+            other is not null && Quals == other.Quals && Elements.SequenceEqual(other.Elements)
+            && Enumerable.Range(0, Elements.Count).All(i => ComptimeIntAt(i) == other.ComptimeIntAt(i));
 
         public override int GetHashCode()
         {
             var h = new HashCode();
             h.Add(Quals);
-            foreach (var e in Elements) { h.Add(e); }
+            for (var i = 0; i < Elements.Count; i++) { h.Add(Elements[i]); h.Add(ComptimeIntAt(i)); }
             return h.ToHashCode();
         }
     }
@@ -454,6 +528,7 @@ public abstract partial record CType
     /// <see cref="UsualArithmetic"/> ranks them above <c>long</c> structurally on <c>Bytes</c>.</summary>
     public static readonly CType Int128 = new Prim("__int128", 16, true, true);
     public static readonly CType UInt128 = new Prim("unsigned __int128", 16, true, false);
+    public static readonly CType ZigU0 = new Prim("u0", 0, true, false);
     public static readonly CType Float = new Prim("float", 4, false, true);
     public static readonly CType Double = new Prim("double", 8, false, true);
     public static readonly CType LongDouble = new Prim("long double", 8, false, true);

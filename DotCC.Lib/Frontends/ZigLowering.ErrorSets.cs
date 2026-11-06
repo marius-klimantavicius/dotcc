@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using DotCC.Ir;
 using LALR.CC.LexicalGrammar;
 
@@ -13,6 +14,73 @@ namespace DotCC.Frontends;
 /// binder.</summary>
 internal sealed partial class ZigLowering
 {
+    // Runtime codes keep the existing erased representation. Source evidence
+    // belongs to the particular type value, so reflected finite sets retain
+    // membership and specialization identity without changing ushort storage.
+    private sealed record SourceErrorSet(HashSet<string> Members);
+    private sealed record SourceErrorUnion(ZigLowering Owner, Item Set, string? Container, InlineCaptures Captures)
+    {
+        internal CType.ErrorSetType? Resolved;
+    }
+    private static readonly ConditionalWeakTable<CType.ErrorSetType, SourceErrorSet> SourceErrorSets = new();
+    private static readonly ConditionalWeakTable<CType.ErrorUnion, SourceErrorUnion> SourceErrorUnions = new();
+
+    private CType.ErrorSetType SourceErrorSetType(IEnumerable<string> members)
+    {
+        var names = new HashSet<string>(members, System.StringComparer.Ordinal);
+        foreach (var name in names) ErrorCode(name);
+        var type = new CType.ErrorSetType();
+        SourceErrorSets.Add(type, new(names));
+        return type;
+    }
+
+    private CType.ErrorUnion SourceErrorUnionType(Zig.ErrUnion source)
+    {
+        var type = new CType.ErrorUnion(LowerType(source.Arg2));
+        SourceErrorUnions.Add(type, new(this, source.Arg0, _currentContainer, CaptureInlineEnvironment(source.Arg0)));
+        return type;
+    }
+
+    private static CType.ErrorSetType ReflectedErrorSet(CType.ErrorUnion union)
+    {
+        if (!SourceErrorUnions.TryGetValue(union, out var source)) return (CType.ErrorSetType)CType.ErrorSet;
+        if (source.Resolved is { } resolved) return resolved;
+        using var definition = source.Owner.EnterPackedSource(source.Container ?? "", new(source.Owner, null, source.Captures));
+        return source.Resolved = source.Owner.LowerType(source.Set).Unqualified as CType.ErrorSetType
+            ?? throw new CompileException("zig: reflected error union set must be an error-set type");
+    }
+
+    private static string? SourceErrorTypeKey(CType type)
+    {
+        if (type.Unqualified is CType.ErrorUnion union)
+            return SourceErrorTypeKey(ReflectedErrorSet(union)) is { } setKey
+                ? "eu_" + setKey + "_" + MangleType(union.Payload) : null;
+        if (type.Unqualified is not CType.ErrorSetType set || !SourceErrorSets.TryGetValue(set, out var source)) return null;
+        return "es_" + string.Join("_", source.Members.OrderBy(n => n, System.StringComparer.Ordinal)
+            .Select(n => System.Convert.ToHexString(System.Text.Encoding.UTF8.GetBytes(n))));
+    }
+
+    private CType LowerErrorSetType(Item expression)
+    {
+        if (expression.Content is Zig.ErrorSet literal)
+        {
+            return SourceErrorSetType(WalkErrSetMembers(literal.Arg2));
+        }
+        if (expression.Content is Zig.ErrSetMerge merge
+            && LowerType(merge.Arg0).Unqualified is CType.ErrorSetType left
+            && LowerType(merge.Arg2).Unqualified is CType.ErrorSetType right)
+            return SourceErrorSets.TryGetValue(left, out var a) && SourceErrorSets.TryGetValue(right, out var b)
+                ? SourceErrorSetType(a.Members.Concat(b.Members)) : CType.ErrorSet;
+        throw new CompileException("zig: error-set merge operands must be error-set types");
+    }
+
+    private CExpr SourceErrorSetMember(CType.ErrorSetType set, string name)
+    {
+        if (SourceErrorSets.TryGetValue(set, out var source) && !source.Members.Contains(name))
+            throw new CompileException($"zig: error '{name}' is not a member of the error-set type");
+        return LowerErrorLit(name);
+    }
+
     /// <summary>True when an item is an <c>error.Foo</c> literal, yielding the error name.</summary>
     private static bool IsErrorLit(Item it, out string name)
     {
@@ -84,7 +152,12 @@ internal sealed partial class ZigLowering
                 foreach (var m in WalkErrSetMembers(inlineSet.Arg2)) { members.Add(m); }
                 return true;
             default:
-                return false;                                    // anyerror / an unknown set name
+                if (LowerType(eu.Arg0).Unqualified is CType.ErrorSetType set && SourceErrorSets.TryGetValue(set, out var source))
+                {
+                    members = source.Members;
+                    return true;
+                }
+                return false;                                    // anyerror / inferred set
         }
     }
     /// <summary>Lower a bare <c>error.Foo</c> value to its stable code in the flat global error set,

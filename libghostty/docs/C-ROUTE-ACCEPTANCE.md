@@ -10,6 +10,11 @@ case names, 20 core partitions, helpers and partial history remain available.
 **Deferred upstream execution is not passed.** This acceptance covers every
 remaining C gate in [`verification.json`](../config/verification.json).
 
+The direct Zig product became the canonical default on 2026-11-06. These
+accepted C product bytes are retained under `generated/c-route/`; the paths and
+reference chain below describe the original acceptance run. Full direct upstream
+managed qualification remains pending.
+
 ## Current results
 
 Normal WARN verification from `/` passed in

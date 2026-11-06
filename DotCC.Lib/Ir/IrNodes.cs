@@ -102,7 +102,11 @@ public sealed record Binary(BinOp Op, CExpr Left, CExpr Right) : CExpr;
 
 /// <summary>An assignment. <see cref="CompoundOp"/> is null for a plain
 /// <c>=</c>, or the arithmetic/bitwise op for a compound assignment (<c>+=</c>).</summary>
-public sealed record Assign(BinOp? CompoundOp, CExpr Target, CExpr Value) : CExpr;
+public sealed record Assign(BinOp? CompoundOp, CExpr Target, CExpr Value) : CExpr
+{
+    /// <summary>A Zig wrapping assignment's logical integer width when narrower than its carrier.</summary>
+    public int? ZigWrappingBits { get; init; }
+}
 
 /// <summary>A function call by name (a named function or libc builtin).
 /// <see cref="ParamTypes"/> is the resolved callee's fixed-parameter types (null
@@ -293,6 +297,13 @@ public sealed record StackNew(CType StructType) : CExpr;
 /// the carried <see cref="CExpr.Type"/>. Codegen emits <c>default(T)</c>, which
 /// zero-fills a scalar, pointer, struct, or union uniformly.</summary>
 public sealed record DefaultLit : CExpr;
+
+/// <summary>A compile-time Zig type value, erased before runtime emission.</summary>
+public sealed record ZigTypeValue(CType Value) : CExpr;
+
+/// <summary>An undefined Zig value. It remains undefined during comptime evaluation;
+/// managed runtime storage may choose its zero representation.</summary>
+public sealed record ZigUndefinedValue : CExpr;
 
 /// <summary><c>va_arg(ap, T)</c> — pull the next variadic argument of type
 /// <see cref="Target"/> from the <see cref="Ap"/> cursor. Codegen lowers it to the

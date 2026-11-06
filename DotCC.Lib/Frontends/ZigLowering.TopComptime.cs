@@ -41,11 +41,12 @@ internal sealed partial class ZigLowering
     // Preserve symbol metadata while giving private source functions internal linkage.
     private Symbol ApplyZigFunctionLinkage(Symbol symbol)
     {
-        if (!_moduleFnDecls.TryGetValue(symbol.Name, out var declaration) || declaration.Content is not Zig.FnDef function
-            || IsTypeKeyword(function.Arg7) || CollectParamInfos(function.Arg3, out _).Any(parameter => parameter.IsComptime || parameter.Kind == ParamKind.AnyType))
-            return symbol;
         var result = symbol;
-        if (_privateTopFunctions.Contains(symbol.Name) && symbol.Storage == Storage.None)
+        // Zig pub controls source visibility; it does not export a native symbol.
+        // In source mode only export fn / @export aliases become external entries.
+        if ((_privateTopFunctions.Contains(symbol.Name)
+                || UsesSourceStdlib && symbol.Name != "main" && !_cExportTopFunctions.Contains(symbol.Name))
+            && symbol.Storage == Storage.None)
         {
             result = new Symbol
             {
@@ -59,6 +60,9 @@ internal sealed partial class ZigLowering
                 Nodiscard = symbol.Nodiscard, Deprecated = symbol.Deprecated,
             };
         }
+        if (!_moduleFnDecls.TryGetValue(symbol.Name, out var declaration) || declaration.Content is not Zig.FnDef function
+            || IsTypeKeyword(function.Arg7) || CollectParamInfos(function.Arg3, out _).Any(parameter => parameter.IsComptime || parameter.Kind == ParamKind.AnyType))
+            return result;
         TopFunctionAbis.GetValue(result, _ => new TopFunctionAbi(this, function.Arg5, _cExportTopFunctions.Contains(symbol.Name)));
         return result;
     }
@@ -110,6 +114,12 @@ internal sealed partial class ZigLowering
         internal bool IsContinue { get; } = isContinue;
     }
 
+    private int _sourceComptimeReturnDepth;
+    private sealed class SourceComptimeReturn(IrBuilder.ComptimeValue? value) : Exception
+    {
+        internal IrBuilder.ComptimeValue? Value { get; } = value;
+    }
+
     // Source-order execution is essential: lowering an entire runtime-shaped block
     // would analyze untaken @compileError/@export arms before interpreting the guard.
     private void ExecuteTopComptimeStmt(Item statement, IrBuilder.ComptimeSession session)
@@ -158,6 +168,8 @@ internal sealed partial class ZigLowering
                 ExecuteTopComptimeWhile(loop.Arg2, loop.Arg5, loop.Arg6, loop.Arg7, session); return;
             case Zig.StmtBreak: throw new TopComptimeJump(false);
             case Zig.StmtContinue: throw new TopComptimeJump(true);
+            case Zig.StmtBreakLabelValue valueBreak when SourceComptimeValueTarget(Tok(valueBreak.Arg2)) is { } target:
+                ExecuteSourceComptimeValueBreak(target, valueBreak.Arg3, session); return;
             case Zig.StmtExpr { Arg0.Content: Zig.BuiltinCall builtin } when Tok(builtin.Arg0) == "@export":
                 ExportBuiltin(Flatten(builtin.Arg2)); return;
             case Zig.StmtExpr { Arg0: var expression } when ResolveModulePath(expression) is not null:
@@ -177,7 +189,11 @@ internal sealed partial class ZigLowering
             throw new IrUnsupportedException("zig top-level comptime statement did not evaluate: "
                 + statement.Content?.GetType().Name + (_ir.ComptimeMiss is { } miss ? " (" + miss + ")" : ""));
         }
-        if (result.Value.Returned) { throw new CompileException("zig: return outside function in top-level comptime"); }
+        if (result.Value.Returned)
+        {
+            if (_sourceComptimeReturnDepth > 0) throw new SourceComptimeReturn(result.Value.Value);
+            throw new CompileException("zig: return outside function in top-level comptime");
+        }
     }
 
     private void ExecuteTopComptimeIf(Item condition, Item yes, Item? no, IrBuilder.ComptimeSession session)
@@ -286,17 +302,25 @@ internal sealed partial class ZigLowering
 
     private (bool Returned, IrBuilder.ComptimeValue? Value)? ExecuteComptimeSessionStatement(
         IrBuilder.ComptimeSession session, Item statement)
-        => _ir.RunComptimeSessionStmt(session, TopComptimeStores(LowerStmt(statement)));
+    {
+        using var hoist = EnterFreshHoist();
+        var lowered = LowerStmt(statement);
+        if (_hoist is { Count: > 0 } pre) lowered = new Block([.. pre, lowered]);
+        return _ir.RunComptimeSessionStmt(session, TopComptimeStores(lowered));
+    }
 
     private void ExecuteTopComptimeFor(Item objectsItem, Item capturesItem, Item body, Item? other,
-        IrBuilder.ComptimeSession session)
+        IrBuilder.ComptimeSession session, Action<Item>? execute = null)
     {
+        execute ??= statement => ExecuteTopComptimeStmt(statement, session);
         var (objects, captures) = DecomposeForMulti(objectsItem, capturesItem);
         var lists = new ZigComptimeList?[objects.Count];
+        var values = new (IrBuilder.CtArray Backing, long Offset, int Length, CType Element)?[objects.Count];
         int? count = null;
         for (var i = 0; i < objects.Count; i++)
         {
-            if (captures[i].ByRef) { throw new IrUnsupportedException("zig top-level comptime: by-reference for capture is not supported"); }
+            if (captures[i].ByRef && objects[i].IsRange)
+                throw new CompileException("zig: a range has no storage for a by-reference for capture");
             if (objects[i].IsRange)
             {
                 if (objects[i].End is not { } end) { continue; }
@@ -306,27 +330,34 @@ internal sealed partial class ZigLowering
                     throw new IrUnsupportedException("zig top-level comptime: invalid or excessive for range");
                 lists[i] = new ZigComptimeList { Label = "range", Ints = Enumerable.Range(0, (int)(high - low)).Select(k => low.Value + k).ToList() };
             }
-            else if (TryComptimeIterable(objects[i].Expr, out var list)) { lists[i] = list; }
+            else if (TryComptimeIterable(objects[i].Expr, out var list))
+            {
+                if (captures[i].ByRef)
+                    throw new IrUnsupportedException("zig comptime: reflected list has no storage for a by-reference for capture");
+                lists[i] = list;
+            }
             else
             {
-                var value = _ir.EvalComptimeValue(LowerExpr(objects[i].Expr));
-                var elements = value switch
+                var operand = LowerExpr(objects[i].Expr);
+                var value = captures[i].ByRef ? _ir.EvalComptimeStorage(operand) : _ir.EvalComptimeValue(operand);
+                values[i] = value switch
                 {
-                    IrBuilder.CtArray array => array.Elems,
-                    IrBuilder.CtSlice slice => slice.Backing.Elems.Skip((int)slice.Offset).Take((int)slice.Length).ToArray(),
-                    _ => throw new IrUnsupportedException("zig top-level comptime: for operand is not a supported comptime list"),
+                    IrBuilder.CtArray array => (array, 0, array.Elems.Length, array.Element),
+                    IrBuilder.CtSlice slice when slice.Offset >= 0 && slice.Length >= 0
+                        && slice.Offset <= slice.Backing.Elems.LongLength
+                        && slice.Length <= slice.Backing.Elems.LongLength - slice.Offset
+                        => (slice.Backing, slice.Offset, (int)slice.Length, slice.Backing.Element),
+                    _ => throw new IrUnsupportedException("zig comptime: for operand is not a supported comptime list"),
                 };
-                lists[i] = new ZigComptimeList { Label = "values", Ints = elements.Select(element => element is IrBuilder.CtInt integer && integer.Value >= long.MinValue && integer.Value <= long.MaxValue
-                    ? (long)integer.Value : throw new IrUnsupportedException("zig top-level comptime: noninteger array capture is not supported")).ToList() };
             }
-            var length = lists[i]!.Count;
+            var length = lists[i]?.Count ?? values[i]!.Value.Length;
             if (count is { } previous && previous != length) { throw new CompileException("zig: for loop operands have unequal lengths"); }
             count = length;
         }
         if (count is null || count > InlineUnrollCap) { throw new IrUnsupportedException("zig top-level comptime for requires a bounded iterable"); }
         for (var i = 0; i < lists.Length; i++)
         {
-            if (lists[i] is not null) { continue; }
+            if (lists[i] is not null || values[i] is not null) { continue; }
             var low = ComptimeIntValue(LowerExpr(objects[i].Expr))
                 ?? throw new IrUnsupportedException("zig top-level comptime: range start must be known");
             lists[i] = new ZigComptimeList { Label = "range", Ints = Enumerable.Range(0, count.Value).Select(k => low + k).ToList() };
@@ -335,16 +366,36 @@ internal sealed partial class ZigLowering
         for (var k = 0; k < count.Value; k++)
         {
             var shadows = new List<ComptimeCaptureShadow>();
+            var captured = new List<Symbol>();
             using var scope = EnterSymbolScope();
             try
             {
-                for (var i = 0; i < captures.Count; i++) { shadows.Add(SeedComptimeCapture(captures[i].Name, lists[i]!, k)); }
-                ExecuteTopComptimeStmt(body, session);
+                for (var i = 0; i < captures.Count; i++)
+                {
+                    if (values[i] is not { } source)
+                    {
+                        shadows.Add(SeedComptimeCapture(captures[i].Name, lists[i]!, k));
+                        continue;
+                    }
+                    if (captures[i].Name == "_") continue;
+                    var type = captures[i].ByRef ? new CType.Pointer(source.Element) : source.Element;
+                    var symbol = _symbols.Declare(new Symbol { Name = captures[i].Name, Kind = SymKind.Var, Type = type });
+                    _zigConstBindings.Add(symbol);
+                    _ir.ComptimeGlobals[symbol] = captures[i].ByRef
+                        ? new IrBuilder.CtElemPtr(source.Backing, source.Offset + k, type)
+                        : source.Backing.Elems[source.Offset + k];
+                    captured.Add(symbol);
+                }
+                execute(body);
             }
             catch (TopComptimeJump jump) { if (!jump.IsContinue) { broke = true; break; } }
-            finally { for (var i = shadows.Count - 1; i >= 0; i--) { RestoreComptimeCapture(shadows[i]); } }
+            finally
+            {
+                foreach (var symbol in captured) _ir.ComptimeGlobals.Remove(symbol);
+                for (var i = shadows.Count - 1; i >= 0; i--) RestoreComptimeCapture(shadows[i]);
+            }
         }
-        if (!broke && ForElseBody(other) is { } elseBody) { ExecuteTopComptimeStmt(elseBody, session); }
+        if (!broke && ForElseBody(other) is { } elseBody) { execute(elseBody); }
     }
 
     private Action SaveTopComptimeBindings()
@@ -374,15 +425,35 @@ internal sealed partial class ZigLowering
         if (arguments.Count != 2 || arguments[1].Content is not Zig.AnonStructInit options)
             throw new IrUnsupportedException("zig @export expects (declaration pointer, .{ .name = comptime_string })");
         string? name = null;
+        var linkage = "strong";
+        var visibility = "default";
+        var seen = new HashSet<string>(StringComparer.Ordinal);
         foreach (var option in Flatten(options.Arg2))
         {
-            if (option.Content is not Zig.FieldInit field || Tok(field.Arg1) != "name" || name is not null)
-                throw new IrUnsupportedException("zig @export: only the .name option is supported");
-            name = ComptimeName(field.Arg3)
-                ?? throw new CompileException("zig @export .name must be a comptime string");
+            if (option.Content is not Zig.FieldInit field || !seen.Add(Tok(field.Arg1)))
+                throw new CompileException("zig @export: options must be distinct named fields");
+            switch (Tok(field.Arg1))
+            {
+                case "name": name = ComptimeName(field.Arg3)
+                    ?? throw new CompileException("zig @export .name must be a comptime string"); break;
+                case "linkage":
+                    if (ComptimeExportTag(field.Arg3, "GlobalLinkage") is not { } linkageTag || linkageTag is not ("strong" or "weak"))
+                        throw new IrUnsupportedException("zig @export: linkage must be .strong or .weak");
+                    linkage = linkageTag;
+                    break;
+                case "visibility":
+                    if (ComptimeExportTag(field.Arg3, "SymbolVisibility") is not { } visibilityTag || visibilityTag is not ("default" or "hidden"))
+                        throw new IrUnsupportedException("zig @export: visibility must be .default or .hidden");
+                    visibility = visibilityTag;
+                    break;
+                default: throw new IrUnsupportedException("zig @export: unsupported option " + Tok(field.Arg1));
+            }
         }
         if (string.IsNullOrEmpty(name) || name.Any(c => !(char.IsAsciiLetterOrDigit(c) || c == '_')) || char.IsAsciiDigit(name[0]))
             throw new IrUnsupportedException("zig @export: export name must be a nonempty managed identifier");
+        if (_moduleGraph?.ManagedRoots is { } selected && !selected.Contains(name))
+            return new DefaultLit { Type = CType.Void };
+        _moduleGraph?.ManagedRootsFound.Add(name);
         var operand = Unparen(LowerExpr(arguments[0]));
         if (operand is Unary { Op: UnOp.AddrOf, Operand: var addressed }) { operand = Unparen(addressed); }
         if (operand is not VarRef { Sym: { Kind: SymKind.Func } canonical } || canonical.Type.Unqualified is not CType.Func signature
@@ -390,8 +461,9 @@ internal sealed partial class ZigLowering
             throw new IrUnsupportedException("zig @export: only concrete function declarations are supported (data exports require target support)");
         if (!TopFunctionAbis.TryGetValue(canonical, out var abi) || !abi.CAbi)
             throw new IrUnsupportedException("zig @export: function must use callconv(.c) (other calling conventions are not supported)");
-        if (!TopExportAbiType(signature.Return, true) || signature.Params.Any(parameter => !TopExportAbiType(parameter, false)))
-            throw new IrUnsupportedException("zig @export: function has an unsupported ABI parameter or return type");
+        if (!UsesManagedFunctionPointers && (!TopExportAbiType(signature.Return, true) || signature.Params.Any(parameter => !TopExportAbiType(parameter, false))))
+            throw new IrUnsupportedException("zig @export: function " + name + " has an unsupported ABI parameter or return type: "
+                + signature.Return.Describe() + " (" + string.Join(", ", signature.Params.Select(p => p.Describe())) + ")" + _topExportAbiFailure);
         RegisterTopExportName(name, canonical);
         // Root the actual body through the ordinary on-demand path; never duplicate its algorithm.
         RootTopExportBody(canonical);
@@ -401,7 +473,8 @@ internal sealed partial class ZigLowering
             || _exportedFns.Values.Any(function => !ReferenceEquals(function, canonical) && function.TargetName == _names.Escape(name))
             || _moduleGraph?.RootFunctionTargetNames().Contains(_names.Escape(name)) == true)
             throw new CompileException("zig: exported name collides with a function: " + name);
-        var alias = new Symbol { Name = name, TargetName = _names.Escape(name), Kind = SymKind.Func, Type = signature, IsGlobal = true };
+        var alias = new Symbol { Name = name, TargetName = _names.Escape(name), Kind = SymKind.Func, Type = signature,
+            IsGlobal = true, IsWeak = linkage == "weak", Storage = visibility == "hidden" ? Storage.Static : Storage.None };
         var parameters = signature.Params.Select((type, index) => new Symbol
             { Name = "arg" + index, TargetName = "arg" + index, Type = type, Kind = SymKind.Param }).ToList();
         var call = new Call(canonical.Name, parameters.Select(parameter => (CExpr)new VarRef(parameter) { Type = parameter.Type }).ToList(), signature.Params, canonical)
@@ -413,11 +486,30 @@ internal sealed partial class ZigLowering
         return new DefaultLit { Type = CType.Void };
     }
 
+    private string? ComptimeExportTag(Item expression, string builtinType, string context = "@export")
+    {
+        if (expression.Content is Zig.EnumLit literal) { return SourceMemberName(literal.Arg1); }
+        using var hoist = EnterThrowawayHoist();
+        var value = LowerExpr(expression);
+        if (value.Type.Unqualified is CType.EnumLiteral { Name.Length: > 0 } literalType) { return literalType.Name; }
+        if (_ir.EvalComptimeValue(value) is IrBuilder.CtEnumLiteral enumLiteral) { return enumLiteral.Name; }
+        if (value.Type.Unqualified is CType.Enum enumeration && _enumMembers.TryGetValue(enumeration.Name, out var members)
+            && _ir.EvalComptimeValue(value) is IrBuilder.CtInt integer)
+        {
+            var language = _moduleGraph?.StdRootPath is not null
+                ? ResolveInlineImport("std")?.Lowering?.ResolveNamedModule("lang")?.Lowering : null;
+            if (language?.ResolveExportedType(builtinType) != enumeration)
+                throw new CompileException("zig " + context + ": option requires std.lang." + builtinType);
+            return members.FirstOrDefault(member => (Int128)member.Value.ConstValue == integer.Value).Key;
+        }
+        return null;
+    }
+
     private bool TopExportAbiType(CType type, bool returns) => TopExportAbiType(type, returns, false, new HashSet<string>(StringComparer.Ordinal));
 
     private bool TopExportAbiType(CType type, bool returns, bool field, HashSet<string> visiting) => type.Unqualified switch
     {
-        CType.VoidType => returns,
+        CType.VoidType => returns || field,
         CType.Prim { IsComptimeInt: false } => true,
         CType.Enum or CType.Pointer or CType.Func => true,
         CType.Array { Count: >= 0 } array => field && TopExportAbiType(array.Element, false, true, visiting),
@@ -425,14 +517,27 @@ internal sealed partial class ZigLowering
         _ => false,
     };
 
+    private string? _topExportAbiFailure;
+
     private bool TopExportAggregate(string name, HashSet<string> visiting)
     {
         var definition = _ir.Types.FirstOrDefault(type => type.Name == name);
-        if (definition is not { Layout: AggregateLayout.Sequential, IsIncomplete: false } || !visiting.Add(name)) { return false; }
+        if (definition is not { Layout: AggregateLayout.Sequential, IsIncomplete: false } || !visiting.Add(name))
+        {
+            _topExportAbiFailure = " [aggregate " + name + ": " + (definition?.Layout.ToString() ?? "missing") + "]";
+            return false;
+        }
         try
         {
-            return definition.Fields.All(field => !field.IsFlexibleArray && field.BitWidth is null
-                && TopExportAbiType(field.Type, false, true, visiting));
+            foreach (var field in definition.Fields)
+            {
+                if (field.IsFlexibleArray || field.BitWidth is not null || !TopExportAbiType(field.Type, false, true, visiting))
+                {
+                    _topExportAbiFailure += " [field " + name + "." + field.Name + ": " + field.Type.Describe() + "]";
+                    return false;
+                }
+            }
+            return true;
         }
         finally { visiting.Remove(name); }
     }

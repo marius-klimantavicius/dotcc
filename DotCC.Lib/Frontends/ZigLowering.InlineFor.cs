@@ -126,6 +126,7 @@ internal sealed partial class ZigLowering
         else if (list.Types is { } types)
         {
             _typeAliases[name] = types[k];
+            SetDeclaredIntBits(name, list.TypeBits?[k]);
             SetDeclaredSentinel(name, list.TypeSentinels?[k]);
         }
         else if (list.Attrs is { } attrs)

@@ -1,4 +1,4 @@
-"""Pinned libghostty-vt: genuine whole-engine Zig C emission into DotCC."""
+"""Pinned libghostty-vt: direct Zig by default, with explicit C-route profiles."""
 import os
 from pathlib import Path
 import platform
@@ -41,6 +41,30 @@ def prepare(ctx):
     if not isinstance(policy.get("aggregate_data", False), bool):
         raise RuntimeError("translation.aggregate_data must be Boolean")
     compile_options = ["--aggregate-data"] if policy.get("aggregate_data", False) else []
+    if ctx.profile == "direct":
+        ctx.run(["python3", ctx.root / "patches/direct/apply.py", ctx.sources["product"]],
+                "direct-compatibility")
+        zig = ctx.sources["zig"] / ("zig.exe" if os.name == "nt" else "zig")
+        graph = helper(ctx.root / "scripts/prepare_direct.py").prepare(
+            ctx.root, zig, ctx.work / "direct-native", ctx.artifacts / "direct-native")
+        modules = json_file(graph)
+        root = next(module["root"] for module in modules["modules"]
+                    if module["name"] == modules["root_module"])
+        engine = (graph.parent / root).resolve()
+        ctx.receipt["libghostty_selection"] = {
+            "policy": str(ctx.root / "config/direct.json"),
+            "upstream_zig_root": str(engine), "module_graph": str(graph),
+            "abi_adapter": policy["bridge"], "native_backend_at_runtime": False,
+            "full_direct_upstream_acceptance": "pending",
+        }
+        return Translation([
+            Unit(engine, ("--zig-modules-file", str(graph), "--aggregate-data")),
+            Unit(ctx.root / policy["bridge"], ("-std=c11", "--aggregate-data",
+                 *flags(includes=(ctx.sources["product"] / "include",)))),
+        ], [], [*("--runtime=auto" if flag == "--runtime=c" else flag
+                  for flag in link_flags("GhosttyVt", "Managed")),
+                "--prune-unused-inline", "--export-enum", "DOTCC_STYLE_*"],
+            objects=True, configure=configure)
     if ctx.profile == "upstream-render" or ctx.profile.startswith("upstream-core"):
         core = ctx.profile != "upstream-render"
         module = helper(ctx.root / ("tests/upstream/core.py" if core else "tests/upstream/run.py"))
@@ -160,34 +184,42 @@ def run_host_io(ctx, suite):
     return helper(ctx.root / "tests/upstream/host_io_probe.py").run(ctx, suite)
 
 
+def validate_options(options):
+    # Direct delivery currently verifies the owning consumer only. Full direct
+    # upstream acceptance is pending; explicit C profiles retain their policy.
+    if options.profile == "direct" and options.action == "verify" and options.suite is None:
+        options.suite = ["consumer"]
+
+
 _core_profiles = tuple(part["profile"] for part in core_partitions(Path(__file__).resolve().parents[1]))
+_c_profiles = ("scalar", "qualification", "upstream-render", "upstream-core", *_core_profiles)
 _verification = json_file(Path(__file__).resolve().parents[1] / "config/verification.json")
 if _verification.get("schema_version") != 1:
     raise RuntimeError("Unsupported libghostty verification policy schema")
 
 
 recipe = Recipe(
-    "libghostty", "TranslatedGhosttyVt", ("scalar", "qualification", "upstream-render", "upstream-core", *_core_profiles),
+    "libghostty", "TranslatedGhosttyVt", ("direct", *_c_profiles),
     ("src/Managed.GhosttyVt/Managed.GhosttyVt.csproj", "samples/ManagedConsumer/ManagedConsumer.csproj"),
     sources, prepare,
     consumer=Consumer(property="TranslatedProject"),
-    suites=(Suite("host-io", (), run=run_host_io,
+    suites=(Suite("host-io", (), run=run_host_io, profiles=_c_profiles,
                   scope="native/emitted-JIT read-only corpus directory, positional binary I/O, errors and cleanup"),
-            Suite("native", (), run=run_native, timeout=3600,
+            Suite("native", (), run=run_native, timeout=3600, profiles=_c_profiles,
                   scope="pinned Zig native and genuine whole-engine C, 16 exact assertion cases"),
             Suite("consumer", ("consumer",), matrix=True,
                   scope="owning translated terminal transcript, split UTF-8, screens, resize/reset, independent instances"),
             Suite("qualification", (), run=run_qualification, matrix=True,
-                  required_profiles=("qualification",),
+                  required_profiles=("qualification",), profiles=_c_profiles,
                   scope="24 native differential, physical ABI layout and allocator boundary cases, rooted AOT"),
-            Suite("upstream-native", (), run=run_upstream_native, timeout=3600,
+            Suite("upstream-native", (), run=run_upstream_native, timeout=3600, profiles=_c_profiles,
                   scope="applicable unchanged upstream render assertions, original native vs genuine C, with allocator checks"),
             Suite("upstream", (), run=run_upstream, matrix=True,
-                  required_profiles=("upstream-render",),
+                  required_profiles=("upstream-render",), profiles=_c_profiles,
                   scope="applicable unchanged upstream render assertions, raw/processed JIT/rooted-AOT"),
-            Suite("upstream-core-native", (), run=run_upstream_core_native, timeout=3600,
+            Suite("upstream-core-native", (), run=run_upstream_core_native, timeout=3600, profiles=_c_profiles,
                   scope="2564 applicable unchanged upstream core assertions, native/genuine-C, fixture I/O and entropy"),
-            Suite("upstream-core", (), run=run_upstream_core, matrix=True, timeout=3600,
+            Suite("upstream-core", (), run=run_upstream_core, matrix=True, timeout=3600, profiles=_c_profiles,
                   verify_profiles=_core_profiles,
                   scope="2564 applicable unchanged upstream core cases, raw/processed JIT/rooted-AOT, zero skips"),
             Suite("factory-allocation", (), run=run_factory_allocation, matrix=True,
@@ -200,4 +232,6 @@ recipe = Recipe(
     # 2026-10-30. Keep their explicit suites and profile inventories runnable;
     # ordinary C-route verification prepares only product qualification.
     verify_suites=tuple(_verification["verify_suites"]),
+    validate_options=validate_options,
+    work_root=Path("/mnt/storage/dotcc-libghostty-disposable/campaign"),
 )

@@ -1,0 +1,124 @@
+[
+  {
+    "stage": "raw-jit-build",
+    "command": [
+      "dotnet",
+      "build",
+      "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery-consumer/OwningConsumer.csproj",
+      "-c",
+      "Release",
+      "-p:PublishAot=false",
+      "-p:TranslatedProject=/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+      "-p:UseArtifactsOutput=true",
+      "-p:ArtifactsPath=/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery-consumer/raw-jit-build",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery-consumer/raw-jit",
+      "--nologo"
+    ],
+    "exit": 0,
+    "seconds": 12.071029327984434,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery-consumer/raw-jit-build.log"
+  },
+  {
+    "stage": "raw-jit-run",
+    "command": [
+      "dotnet",
+      "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery-consumer/raw-jit/GhosttyVt.DirectConsumer.dll"
+    ],
+    "exit": 0,
+    "seconds": 0.29587443702621385,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery-consumer/raw-jit-run.log"
+  },
+  {
+    "stage": "raw-aot-build",
+    "command": [
+      "dotnet",
+      "publish",
+      "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery-consumer/OwningConsumer.csproj",
+      "-c",
+      "Release",
+      "-p:PublishAot=true",
+      "-p:TranslatedProject=/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+      "-p:UseArtifactsOutput=true",
+      "-p:ArtifactsPath=/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery-consumer/raw-aot-build",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery-consumer/raw-aot",
+      "--nologo",
+      "-r",
+      "linux-x64"
+    ],
+    "exit": 0,
+    "seconds": 20.10462360800011,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery-consumer/raw-aot-build.log"
+  },
+  {
+    "stage": "raw-aot-run",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery-consumer/raw-aot/GhosttyVt.DirectConsumer"
+    ],
+    "exit": 0,
+    "seconds": 0.009363985969685018,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery-consumer/raw-aot-run.log"
+  },
+  {
+    "stage": "processed-jit-build",
+    "command": [
+      "dotnet",
+      "build",
+      "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery-consumer/OwningConsumer.csproj",
+      "-c",
+      "Release",
+      "-p:PublishAot=false",
+      "-p:TranslatedProject=/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+      "-p:UseArtifactsOutput=true",
+      "-p:ArtifactsPath=/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery-consumer/processed-jit-build",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery-consumer/processed-jit",
+      "--nologo"
+    ],
+    "exit": 0,
+    "seconds": 9.89098935999209,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery-consumer/processed-jit-build.log"
+  },
+  {
+    "stage": "processed-jit-run",
+    "command": [
+      "dotnet",
+      "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery-consumer/processed-jit/GhosttyVt.DirectConsumer.dll"
+    ],
+    "exit": 0,
+    "seconds": 0.2885613290127367,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery-consumer/processed-jit-run.log"
+  },
+  {
+    "stage": "processed-aot-build",
+    "command": [
+      "dotnet",
+      "publish",
+      "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery-consumer/OwningConsumer.csproj",
+      "-c",
+      "Release",
+      "-p:PublishAot=true",
+      "-p:TranslatedProject=/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+      "-p:UseArtifactsOutput=true",
+      "-p:ArtifactsPath=/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery-consumer/processed-aot-build",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery-consumer/processed-aot",
+      "--nologo",
+      "-r",
+      "linux-x64"
+    ],
+    "exit": 0,
+    "seconds": 20.5921669100062,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery-consumer/processed-aot-build.log"
+  },
+  {
+    "stage": "processed-aot-run",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery-consumer/processed-aot/GhosttyVt.DirectConsumer"
+    ],
+    "exit": 0,
+    "seconds": 0.01036333100637421,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery-consumer/processed-aot-run.log"
+  }
+]

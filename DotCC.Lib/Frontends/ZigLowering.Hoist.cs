@@ -11,7 +11,7 @@ namespace DotCC.Frontends;
 
 /// <summary>The ANF statement hoist: a construct that lowers to statements, in a sub-expression, appends them to a
 /// per-statement buffer and evaluates to a temp, guarded against reordering an earlier side effect. Also the struct
-/// literal fields held back for a later field that hoists. One concern of the <see cref="ZigLowering"/>
+/// fields and call operands held back for a later sibling that hoists. One concern of the <see cref="ZigLowering"/>
 /// binder.</summary>
 internal sealed partial class ZigLowering
 {
@@ -57,6 +57,7 @@ internal sealed partial class ZigLowering
             return new DefaultLit { Type = CType.Void };
         }
         var sym = _symbols.Declare(new Symbol { Name = "__anf" + _anfTempCounter++, Kind = SymKind.Var, Type = value.Type });
+        RememberHoistedValue(sym, value);
         buf.AddRange(pre);
         buf.Add(new DeclStmt(new List<LocalDecl> { new(sym, value) }));
         return new VarRef(sym) { Type = value.Type };
@@ -76,9 +77,9 @@ internal sealed partial class ZigLowering
         if (_hoistImpureSeen)
         {
             throw new IrUnsupportedException(
-                $"zig `{what}` in a sub-expression can't be hoisted past an earlier side-effecting operand in the same statement — bind it to a `const` first");
+                $"zig `{what}` in a sub-expression can't be hoisted past an earlier side-effecting operand in the same statement — bind it to a `const` first ({_module?.Path ?? _fileStem}, function '{_currentFnName}')");
         }
-        // An earlier field of an enclosing struct literal, held back (task #195), goes into the buffer first.
+        // Held operands of enclosing calls/literals go into the buffer first.
         SpillHeldSiblings(buf);
         return buf;
     }
@@ -90,23 +91,34 @@ internal sealed partial class ZigLowering
     /// field goes first: it is bound to a temp in the same buffer, just ahead of the hoisted statement. While a later
     /// field lowers, the earlier fields' impurity is held in <see cref="ImpureUnspilled"/> rather than in the watermark,
     /// and <see cref="RequireHoistable"/> spills it on demand. When no hoist comes nothing is spilled, and the literal
-    /// emits as before.</summary>
+    /// emits as before. Calls use the same chain with an argument list; their pending indices include reads as
+    /// well as effects, since a later argument may change a previously read value.</summary>
     private sealed class SiblingSpillFrame(SiblingSpillFrame? parent, List<CStmt> buffer, List<FieldInit> members)
     {
-        /// <summary>The enclosing literal's frame, when this literal is one of its fields.</summary>
+        internal SiblingSpillFrame(SiblingSpillFrame? parent, List<CStmt> buffer, List<CExpr> arguments)
+            : this(parent, buffer, new List<FieldInit>()) { Arguments = arguments; }
+
+        private List<CExpr>? Arguments { get; }
+        internal CExpr Read(int index) => Arguments is { } args ? args[index] : Members[index].Value;
+        internal void Replace(int index, CExpr value)
+        {
+            if (Arguments is { } args) args[index] = value;
+            else Members[index] = Members[index] with { Value = value };
+        }
+        /// <summary>The enclosing call/literal's frame.</summary>
         internal SiblingSpillFrame? Parent { get; } = parent;
 
-        /// <summary>The hoist buffer the literal is lowered against; only a hoist into this same buffer spills.</summary>
+        /// <summary>Only a hoist into this same buffer spills; isolated lazy branches and type probes cannot spill it.</summary>
         internal List<CStmt> Buffer { get; } = buffer;
 
         /// <summary>The literal's lowered fields, in order; a spilled one's value is replaced by its temp.</summary>
         internal List<FieldInit> Members { get; } = members;
 
-        /// <summary>Indices into <see cref="Members"/> of the fields with a side effect that is not in the buffer yet.</summary>
+        /// <summary>Pending field effects, or all earlier call operands, not in the buffer yet.</summary>
         internal List<int> ImpureUnspilled { get; } = [];
     }
-    /// <summary>Bind every held-back impure field (<see cref="SiblingSpillFrame"/>) of the literals being lowered against
-    /// <paramref name="buffer"/> to a temp in it, outermost literal first, since an enclosing literal's earlier fields
+    /// <summary>Bind held operands (<see cref="SiblingSpillFrame"/>) being lowered against
+    /// <paramref name="buffer"/> to a temp in it, outermost frame first, since an enclosing call/literal's earlier operands
     /// were evaluated before this one's. Called just before a construct appends its hoisted statements.</summary>
     private void SpillHeldSiblings(List<CStmt> buffer)
     {
@@ -117,18 +129,66 @@ internal sealed partial class ZigLowering
             var frame = chain[i];
             foreach (var index in frame.ImpureUnspilled)
             {
-                var member = frame.Members[index];
-                if (member.Value.Type.Unqualified is CType.VoidType)
+                var value = frame.Read(index);
+                if (value.Type.Unqualified is CType.VoidType)
                 {
-                    buffer.Add(new ExprStmt(member.Value));
-                    frame.Members[index] = member with { Value = new DefaultLit { Type = CType.Void } };
+                    buffer.Add(new ExprStmt(value));
+                    frame.Replace(index, new DefaultLit { Type = CType.Void });
                     continue;
                 }
-                var temp = _symbols.Declare(new Symbol { Name = "__anf" + _anfTempCounter++, Kind = SymKind.Var, Type = member.Value.Type });
-                buffer.Add(new DeclStmt(new List<LocalDecl> { new(temp, member.Value) }));
-                frame.Members[index] = member with { Value = new VarRef(temp) { Type = member.Value.Type } };
+                var temp = _symbols.Declare(new Symbol { Name = "__anf" + _anfTempCounter++, Kind = SymKind.Var, Type = value.Type });
+                RememberHoistedValue(temp, value);
+                buffer.Add(new DeclStmt(new List<LocalDecl> { new(temp, value) }));
+                frame.Replace(index, new VarRef(temp) { Type = value.Type });
             }
             frame.ImpureUnspilled.Clear();
+        }
+    }
+
+    private void RememberHoistedValue(Symbol temp, CExpr value)
+    {
+        var location = BitcastLoweredLocation(value);
+        RememberBitcastValue(temp, location);
+        RecordValueBits(temp, location.IntegerBits, location.Element?.IntegerBits);
+        if (TupleResultBits(value) is { } tupleBits) _valueTupleElemBits[temp] = tupleBits;
+    }
+
+    /// <summary>Hold a call's evaluated operands until a later argument needs statements. Spill ALL earlier
+    /// operands then, including reads: a later argument may mutate the storage they read. An adjusted receiver
+    /// is already a value or an address, so saving it preserves the method's value/pointer semantics.
+    /// Frames share the literal spill chain, so nested calls and literals spill outer operands first.
+    /// With no hoist the original expressions remain intact.</summary>
+    private readonly ref struct CallArgumentScope
+    {
+        private readonly ZigLowering _owner;
+        private readonly List<CExpr> _arguments;
+        private readonly SiblingSpillFrame? _parent;
+        private readonly SiblingSpillFrame? _frame;
+        private readonly bool _savedImpure;
+
+        internal CallArgumentScope(ZigLowering owner, List<CExpr> arguments, bool savedImpure)
+        {
+            _owner = owner;
+            _arguments = arguments;
+            _parent = owner._siblingSpill;
+            _savedImpure = savedImpure;
+            _frame = owner._hoist is { } buffer && !savedImpure
+                ? new SiblingSpillFrame(_parent, buffer, arguments) : null;
+            if (_frame is not null) owner._siblingSpill = _frame;
+        }
+
+        internal void Add(CExpr value)
+        {
+            _arguments.Add(value);
+            if (_frame is null) return;
+            _frame.ImpureUnspilled.Add(_arguments.Count - 1);
+            _owner._hoistImpureSeen = false;
+        }
+
+        public void Dispose()
+        {
+            _owner._siblingSpill = _parent;
+            _owner._hoistImpureSeen |= _savedImpure || _frame is { ImpureUnspilled.Count: > 0 };
         }
     }
 
@@ -210,13 +270,16 @@ internal sealed partial class ZigLowering
         }
         if (left.Type.Unqualified is CType.Optional opt)
         {
+            var resultType = OrElseResultType(left.Type, right);
+            CExpr payload = new Member(left, "Value", false) { Type = opt.Inner };
+            if (resultType.Unqualified is CType.Optional) payload = OptionalConditionalArm(payload, resultType);
             return HoistedValueIf(new Member(left, "HasValue", false) { Type = CType.Bool }, impureBeforeLeft,
-                new Member(left, "Value", false) { Type = opt.Inner }, new List<CStmt>(), right, rightHoisted, opt.Inner);
+                payload, new List<CStmt>(), right, rightHoisted, resultType);
         }
-        if (left.Type.Unqualified is CType.Pointer)
+        if (left.Type.Unqualified is CType.Pointer or CType.Func)
         {
             var notNull = new Binary(BinOp.Ne, left, new NullPtr { Type = new CType.Pointer(CType.Void) }) { Type = CType.Int };
-            return HoistedValueIf(notNull, impureBeforeLeft, left, new List<CStmt>(), right, rightHoisted, left.Type);
+            return HoistedValueIf(notNull, impureBeforeLeft, OptionalPointerPayload(left), new List<CStmt>(), right, rightHoisted, OptionalPointerPayloadType(left.Type));
         }
         throw new IrUnsupportedException("zig `orelse` requires an optional left operand");
     }

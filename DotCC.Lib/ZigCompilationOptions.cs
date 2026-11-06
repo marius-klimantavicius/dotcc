@@ -18,6 +18,10 @@ public enum ZigSourceOutputMode { Exe, Lib, Obj }
 /// <summary>The native Zig source optimization context; does not select C# code generation flags.</summary>
 public enum ZigSourceOptimizeMode { Debug, Safe, Fast, Small }
 
+/// <summary>Selects the allocator-family type/value/method graph. Curated preserves the legacy runtime ABI.</summary>
+public enum ZigStdlibTypeModel { Curated, Source }
+public enum ZigFunctionPointerAbi { Native, Managed }
+
 /// <summary>Immutable, invocation-local Zig module configuration; independent of C preprocessing.</summary>
 public sealed class ZigCompilationOptions
 {
@@ -26,13 +30,33 @@ public sealed class ZigCompilationOptions
     public IReadOnlyList<ZigModuleDefinition> Modules { get; }
     public ZigSourceOutputMode? OutputMode { get; }
     public ZigSourceOptimizeMode? OptimizeMode { get; }
+    public ZigStdlibTypeModel? StdlibTypes { get; }
+    public ZigFunctionPointerAbi FunctionPointerAbi { get; }
+    /// <summary>Source test execution context; does not import or select test declarations.</summary>
+    public bool IsTest { get; }
+    public IReadOnlySet<string>? ManagedRoots { get; }
     private readonly IReadOnlyDictionary<string, ZigModuleDefinition> _modules;
 
     public ZigCompilationOptions(string rootModule, IReadOnlyList<ZigModuleDefinition> modules, string? zigLibDir = null,
-        ZigSourceOutputMode? outputMode = null, ZigSourceOptimizeMode? optimizeMode = null)
+        ZigSourceOutputMode? outputMode = null, ZigSourceOptimizeMode? optimizeMode = null,
+        ZigStdlibTypeModel? stdlibTypes = null, ZigFunctionPointerAbi functionPointerAbi = ZigFunctionPointerAbi.Native,
+        IReadOnlyList<string>? managedRoots = null, bool isTest = false)
     {
+        IsTest = isTest;
         if (outputMode is { } mode && !Enum.IsDefined(mode)) throw Error("unsupported output_mode");
         if (optimizeMode is { } optimize && !Enum.IsDefined(optimize)) throw Error("unsupported optimize_mode");
+        if (stdlibTypes is { } types && !Enum.IsDefined(types)) throw Error("unsupported stdlib_types");
+        StdlibTypes = stdlibTypes;
+        if (!Enum.IsDefined(functionPointerAbi)) throw Error("unsupported function_pointer_abi");
+        FunctionPointerAbi = functionPointerAbi;
+        if (managedRoots is not null)
+        {
+            if (functionPointerAbi != ZigFunctionPointerAbi.Managed) throw Error("managed_roots requires function_pointer_abi managed");
+            var selectedRoots = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var entry in managedRoots)
+                if (!selectedRoots.Add(Required(entry, "managed_roots entry"))) throw Error("duplicate managed_roots entry");
+            ManagedRoots = selectedRoots;
+        }
         OutputMode = outputMode;
         OptimizeMode = optimizeMode;
         RootModule = Required(rootModule, "root_module");
@@ -82,7 +106,7 @@ public sealed class ZigCompilationOptions
         {
             using var json = JsonDocument.Parse(File.ReadAllText(full));
             var root = json.RootElement;
-            Fields(root, "schema_version", "root_module", "zig_lib_dir", "modules", "output_mode", "optimize_mode");
+            Fields(root, "schema_version", "root_module", "zig_lib_dir", "modules", "output_mode", "optimize_mode", "stdlib_types", "function_pointer_abi", "managed_roots", "is_test");
             if (root.GetProperty("schema_version").GetInt32() != 1) throw Error("unsupported schema_version");
             var modules = new List<ZigModuleDefinition>();
             foreach (var module in root.GetProperty("modules").EnumerateArray())
@@ -114,7 +138,27 @@ public sealed class ZigCompilationOptions
                 "small" => ZigSourceOptimizeMode.Small,
                 _ => throw Error("optimize_mode must be debug, safe, fast or small"),
             } : null;
-            return new(Text(root, "root_module"), modules, lib, mode, optimizeMode);
+            ZigStdlibTypeModel? stdlibTypes = null;
+            if (root.TryGetProperty("stdlib_types", out var typesNode))
+            {
+                if (typesNode.ValueKind != JsonValueKind.String) throw Error("stdlib_types must be curated or source");
+                stdlibTypes = typesNode.GetString() switch
+                {
+                    "curated" => ZigStdlibTypeModel.Curated,
+                    "source" => ZigStdlibTypeModel.Source,
+                    _ => throw Error("stdlib_types must be curated or source"),
+                };
+            }
+            var functionPointerAbi = root.TryGetProperty("function_pointer_abi", out var abiNode) ? abiNode.GetString() switch
+            {
+                "managed" => ZigFunctionPointerAbi.Managed,
+                "native" => ZigFunctionPointerAbi.Native,
+                _ => throw Error("function_pointer_abi must be managed or native"),
+            } : ZigFunctionPointerAbi.Native;
+            var managedRoots = root.TryGetProperty("managed_roots", out var rootsNode)
+                ? rootsNode.EnumerateArray().Select(entry => entry.GetString() ?? throw Error("managed_roots entries must be strings")).ToArray() : null;
+            var isTest = root.TryGetProperty("is_test", out var testNode) && testNode.GetBoolean();
+            return new(Text(root, "root_module"), modules, lib, mode, optimizeMode, stdlibTypes, functionPointerAbi, managedRoots, isTest);
         }
         catch (Exception ex) when (ex is JsonException or InvalidOperationException or KeyNotFoundException or ArgumentException or FormatException or OverflowException)
         {

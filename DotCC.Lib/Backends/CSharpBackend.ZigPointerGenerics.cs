@@ -8,6 +8,14 @@ internal sealed partial class CSharpBackend
 {
     private string TupleElementValue(CExpr value, CType type)
     {
+        // Zig void remains the logical slot type. Its managed transport uses
+        // Unit; a source @as(void, {}) is a no-op rather than a C# void cast.
+        if (type.Unqualified is CType.VoidType)
+        {
+            while (value is Cast { Target.Unqualified: CType.VoidType, Operand.Type.Unqualified: CType.VoidType } cast)
+                value = cast.Operand;
+            return Coerced(value, new CType.Named("Unit"));
+        }
         var text = Coerced(value, type);
         return CSharpTarget.TuplePointerSlot(type) ? $"(nint)({text})" : text;
     }

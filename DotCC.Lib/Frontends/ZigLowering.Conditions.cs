@@ -13,6 +13,23 @@ namespace DotCC.Frontends;
 /// of the <see cref="ZigLowering"/> binder.</summary>
 internal sealed partial class ZigLowering
 {
+    // Reading a declared comptime value has no runtime effects, even when its
+    // initializer needed a comptime function or labeled block. Do not classify
+    // mutable globals, runtime calls, or dereferences through this predicate.
+    private bool IsImmutableComptimeRead(CExpr value) => value switch
+    {
+        LitBool => true,
+        VarRef variable => _ir.ConstGlobalInits.ContainsKey(variable.Sym) || _ir.ComptimeGlobals.ContainsKey(variable.Sym),
+        Member member when member.Base.Type.Unqualified is CType.Named or CType.Tuple
+            => IsImmutableComptimeRead(member.Base),
+        StructInit aggregate => IsComptimeNameRead(aggregate),
+        Unary { Op: UnOp.LogNot } negated => IsImmutableComptimeRead(negated.Operand),
+        Paren parenthesized => IsImmutableComptimeRead(parenthesized.Inner),
+        Cast cast => IsImmutableComptimeRead(cast.Operand),
+        ComptimeFold fold => IsImmutableComptimeRead(fold.Inner),
+        _ => false,
+    };
+
     /// <summary>True for <c>@inComptime()</c> or <c>!@inComptime()</c>, parenthesized or not.</summary>
     private static bool IsInComptimeTest(Item cond)
     {
@@ -59,6 +76,19 @@ internal sealed partial class ZigLowering
     {
         var cur = condItem;
         while (cur.Content is Zig.Grouped g) { cur = g.Arg1; }
+        if (cur.Content is Zig.PreComptime forced)
+        {
+            _typeBoolQuestionMiss = null;
+            // This probe also classifies untyped const initializers. Comptime
+            // evaluation does not turn an integer or pointer into a Zig bool.
+            using (EnterThrowawayHoist())
+                if (!IsZigBoolValue(LowerExpr(forced.Arg1))) return null;
+            return TryFoldRequiredComptimeCondition(forced.Arg1)
+                ?? throw new CompileException("zig: an explicit comptime condition must evaluate at compile time"
+                    + $" ({_module?.Path ?? _fileStem}:{forced.Arg1.Position.Line}, {forced.Arg1.Content?.GetType().Name}, function '{_currentFnName}')"
+                    + (_typeBoolQuestionMiss is { } question ? "; type question: " + question : "")
+                    + (_currentFnSym is { } owner ? "; callers: " + DescribeRuntimeDemand(owner) : ""));
+        }
         if (cur.Content is Zig.CmpEq eq && TryFoldComptimeTagCompare(eq.Arg0, eq.Arg2, negate: false, out var eqVal))
         {
             return eqVal is LitBool { Value: var e } && e;
@@ -368,6 +398,9 @@ internal sealed partial class ZigLowering
         var lb = DeclaredBitsOfTypeArg(left);
         if (!TryTypeAliasRhs(right, out var rt)) { return null; }
         var rb = DeclaredBitsOfTypeArg(right);
+        if (lt.Unqualified is CType.ErrorSetType leftSet && rt.Unqualified is CType.ErrorSetType rightSet
+            && SourceErrorSets.TryGetValue(leftSet, out var leftSource) && SourceErrorSets.TryGetValue(rightSet, out var rightSource))
+            return leftSource.Members.SetEquals(rightSource.Members);
         // A side with no recorded width is its carrier's (an alias whose width was never tracked); comparing the raw null
         // against `u64`'s 64 had made `DT == u64` false for `const DT = if (…) u64 else u128;`, silently (task #77).
         static int? Carrier(CType t) => t.Unqualified is CType.Prim { Integer: true, Bytes: var bytes } ? bytes * 8 : null;
@@ -378,8 +411,8 @@ internal sealed partial class ZigLowering
     private static bool IsComptimeNumberTypeName(Item item)
         => item.Content is Zig.Ident id && Tok(id.Arg0) is "comptime_int" or "comptime_float";
     /// <summary>True for a zig primitive type name dotcc does not lower (<c>f16</c>, <c>f80</c>,
-    /// <c>c_longdouble</c>, the zero-width <c>u0</c> / <c>i0</c>): a comparison against one still answers, since no
-    /// lowered type is it (std.bit_set's <c>if (MaskInt == u0) return;</c>).</summary>
+    /// <c>c_longdouble</c>, signed zero-width <c>i0</c>): a comparison against one still answers, since no
+    /// lowered type is it. The supported unsigned <c>u0</c> uses ordinary type equality.</summary>
     private static bool IsUnmodeledPrimitiveType(Item item)
-        => item.Content is Zig.Ident id && Tok(id.Arg0) is "f16" or "f80" or "c_longdouble" or "u0" or "i0";
+        => item.Content is Zig.Ident id && Tok(id.Arg0) is "f16" or "f80" or "c_longdouble" or "i0";
 }

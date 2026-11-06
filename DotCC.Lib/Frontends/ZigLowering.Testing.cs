@@ -1,6 +1,7 @@
 #nullable enable
 
 using System.Collections.Generic;
+using System.Numerics;
 using DotCC.Ir;
 using LALR.CC.LexicalGrammar;
 
@@ -17,6 +18,75 @@ namespace DotCC.Frontends;
 /// observes as a failing test.</para></summary>
 internal sealed partial class ZigLowering
 {
+    private bool NeedsSourceTestingCall(string method, IReadOnlyList<Item> arguments)
+    {
+        if (!UsesSourceStdlib) return false;
+        if (method == "expectEqualSlices" && arguments.Count == 3)
+            // CLR enums and CBool do not satisfy the adapter's IEquatable<T>
+            // constraint. Source testing retains its actual element comparison.
+            return LowerType(arguments[0]).Unqualified is not CType.Prim { Name: not "_Bool" };
+        if (method == "expectError" && arguments.Count == 2)
+            // Source !void has its proved zero-payload carrier, not ErrUnion<T>.
+            return TypeOfOperand(arguments[1]).Type.Unqualified is CType.ErrorUnion { Payload.Unqualified: CType.VoidType };
+        if (method != "expectEqual" || arguments.Count != 2
+            || TryFoldTypeEquality(arguments[0], arguments[1]) is not null) return false;
+        // Literal enum peers retain the existing result-location path below.
+        if (UnwrapGrouped(arguments[0]).Content is Zig.EnumLit || UnwrapGrouped(arguments[1]).Content is Zig.EnumLit)
+            return false;
+        // This probe is unevaluated. The chosen call lowers each real argument
+        // once through its existing call-argument evaluation scope.
+        using var hoist = EnterThrowawayHoist();
+        var expected = LowerTestingEqualityArgument(arguments[0], null);
+        var actual = LowerTestingEqualityArgument(arguments[1], null);
+        foreach (var value in new[] { expected, actual })
+        {
+            if (value.Type.Unqualified is CType.Pointer or CType.Func or CType.Slice or CType.Array or CType.Optional) return true;
+            if (value.Type.Unqualified is CType.Named named && _ir.StructFieldsOf(named.Name) is not null
+                && _ir.StructIsUnion.TryGetValue(named.Name, out var union) && !union) return true;
+        }
+        NormalizeTestingEqualityPeers(arguments, ref expected, ref actual);
+        return expected.Type.Unqualified != actual.Type.Unqualified;
+    }
+
+    private CExpr LowerTestingEqualityArgument(Item source, CType.Enum? literalPeer)
+    {
+        var value = literalPeer is not null ? LowerExprSink(source, literalPeer) : LowerExpr(source);
+        return UsesSourceStdlib && IsZigBoolValue(value) && value.Type.Unqualified != CType.Bool
+            ? new Cast(CType.Bool, value) { Type = CType.Bool } : value;
+    }
+
+    private void NormalizeTestingEqualityPeers(IReadOnlyList<Item> source, ref CExpr expected, ref CExpr actual)
+    {
+        var originalExpected = expected;
+        expected = CoerceComptimeIntegerPeer(source[0], expected, source[1], actual, arithmetic: true, out _);
+        actual = CoerceComptimeIntegerPeer(source[1], actual, source[0], originalExpected, arithmetic: true, out _);
+        expected = CoerceTestingIntegerConstant(source[0], expected, source[1], actual);
+        actual = CoerceTestingIntegerConstant(source[1], actual, source[0], originalExpected);
+    }
+
+    private CExpr CoerceTestingIntegerConstant(Item source, CExpr value, Item peerSource, CExpr peer)
+    {
+        // Upstream expectEqual is inline: a known typed constant still coerces
+        // by value at its call site. Do not turn it into a runtime i32 parameter
+        // before comparing a cached `const limit: usize = 0` with a runtime usize.
+        if (!UsesSourceStdlib || value.Type.Unqualified is not CType.Prim { Integer: true, Name: not ("_Bool" or "char") }
+            || peer.Type.Unqualified is not CType.Prim { Integer: true, IsComptimeInt: false, Name: not ("_Bool" or "char") }
+            || IsSourceComptimeInteger(peerSource, peer) || !IsComptimeNameRead(value)
+            || _ir.EvalComptimeValue(value) is not IrBuilder.CtInt constant) return value;
+        var bits = DeclaredBitsOfValue(peerSource) ?? DeclaredBitsOfLowered(peer)
+            ?? BitcastLoweredLocation(peer).IntegerBits;
+        var target = ZigIntOperandType(peerSource) ?? peer.Type;
+        if (bits is not (> 0 and <= 128) || target.Unqualified is not CType.Prim { Integer: true } integer)
+            return value;
+        var number = BigInteger.CreateChecked(constant.Value);
+        var minimum = integer.Signed ? -(BigInteger.One << (bits.Value - 1)) : BigInteger.Zero;
+        var maximum = (BigInteger.One << (integer.Signed ? bits.Value - 1 : bits.Value)) - 1;
+        if (number < minimum || number > maximum) return value;
+        var converted = _ir.SpliceComptimeValue(new IrBuilder.CtInt(constant.Value, target))!;
+        _shared.BitcastWidths.Expressions[converted] = new(target, bits);
+        return converted;
+    }
+
     /// <summary>Lower a curated <c>std.testing</c> call. <c>expect(ok: bool)</c> and
     /// <c>expectEqual(expected, actual)</c> are modeled; any other member is a clear cut.</summary>
     private CExpr LowerStdTestingCall(string method, IReadOnlyList<Item> argItems)
@@ -41,10 +111,29 @@ internal sealed partial class ZigLowering
                     throw new IrUnsupportedException(
                         $"zig `std.testing.expectEqual` expects two arguments (expected, actual); got {argItems.Count}");
                 }
-                // Both operands lower with their natural types; C# infers the generic `T` at the
-                // emitted call. Real Zig also requires `@TypeOf(expected) == @TypeOf(actual)`.
-                var expected = LowerExpr(argItems[0]);
-                var actual = LowerExpr(argItems[1]);
+                // Type values have no runtime carrier. Compare their source
+                // identity and logical widths through the existing type-equality
+                // path, retaining the ordinary assertion error on a mismatch.
+                if (UsesSourceStdlib && TryFoldTypeEquality(argItems[0], argItems[1]) is { } equalTypes)
+                    return equalTypes
+                        ? new ErrUnionOk(null) { Type = errUnionVoid }
+                        : new ErrUnionErr(LowerErrorLit("TestExpectedEqual")) { Type = errUnionVoid };
+                // A bare enum literal adopts the other operand's source enum.
+                // Probe its type without executing it, then lower each operand
+                // once in source order. The literal has no runtime carrier.
+                var expectedEnum = UnwrapGrouped(argItems[0]).Content is Zig.EnumLit
+                    ? TypeOfOperand(argItems[1]).Type.Unqualified as CType.Enum : null;
+                var actualEnum = UnwrapGrouped(argItems[1]).Content is Zig.EnumLit
+                    ? TypeOfOperand(argItems[0]).Type.Unqualified as CType.Enum : null;
+                var equalityValues = new List<CExpr>(2);
+                using (var evaluation = new CallArgumentScope(this, equalityValues, _hoistImpureSeen))
+                {
+                    evaluation.Add(LowerTestingEqualityArgument(argItems[0], expectedEnum));
+                    evaluation.Add(LowerTestingEqualityArgument(argItems[1], actualEnum));
+                }
+                var expected = equalityValues[0];
+                var actual = equalityValues[1];
+                NormalizeTestingEqualityPeers(argItems, ref expected, ref actual);
                 return new Call("ZigTesting.expectEqual", new List<CExpr> { expected, actual })
                 {
                     Type = errUnionVoid,

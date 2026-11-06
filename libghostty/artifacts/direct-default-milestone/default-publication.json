@@ -1,0 +1,73 @@
+{
+  "status": "passed",
+  "route": "direct-zig",
+  "profile": "direct",
+  "canonical_projects": {
+    "processed": "/home/marius/p/dotcc/libghostty/generated/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+    "raw": "/home/marius/p/dotcc/libghostty/generated/TranslatedGhosttyVt.Raw/TranslatedGhosttyVt.csproj"
+  },
+  "c_fallback_projects": {
+    "processed": "/home/marius/p/dotcc/libghostty/generated/c-route/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+    "raw": "/home/marius/p/dotcc/libghostty/generated/c-route/TranslatedGhosttyVt.Raw/TranslatedGhosttyVt.csproj"
+  },
+  "qualification_source": "/home/marius/p/dotcc/libghostty/artifacts/direct-resume-20261104/direct-publication/delivery.json",
+  "migration": "/home/marius/p/dotcc/libghostty/artifacts/direct-resume-20261104/direct-default/migration.json",
+  "product_bytes_unchanged": true,
+  "c_source_bytes_preserved": true,
+  "ordinary_reference_chain": [
+    "libghostty/samples/ManagedConsumer/ManagedConsumer.csproj",
+    "libghostty/src/Managed.GhosttyVt/Managed.GhosttyVt.csproj",
+    "libghostty/generated/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj"
+  ],
+  "translated_project_override_supplied": false,
+  "commands": [
+    {
+      "stage": "ordinary-solution-build",
+      "command": [
+        "dotnet",
+        "build",
+        "libghostty/ManagedConsumer.slnx",
+        "-c",
+        "Release",
+        "-p:PublishAot=false",
+        "-p:UseArtifactsOutput=true",
+        "-p:ArtifactsPath=/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-default/default-build",
+        "--nologo"
+      ],
+      "exit": 0
+    },
+    {
+      "stage": "ordinary-owning-consumer",
+      "command": [
+        "dotnet",
+        "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-default/default-build/bin/ManagedConsumer/release/GhosttyVt.Consumer.dll"
+      ],
+      "exit": 0,
+      "exact_output": "PASS owning terminal transcript, UTF-8 chunking, screens, resize/reset, concurrent isolation and disposal\n"
+    }
+  ],
+  "script_build_receipt": "/home/marius/p/dotcc/libghostty/artifacts/campaign/20261106-052414-4785891d/receipt.json",
+  "script_consumer_receipt": "/home/marius/p/dotcc/libghostty/artifacts/campaign/20261106-052549-f17f5ace/receipt.json",
+  "publication_checks": {
+    "raw": {
+      "source_files": 43,
+      "selected_entry_bodies": 92,
+      "rva_getters": 61,
+      "warmed_getter_allocations": 0,
+      "max_storage_helper_parameters": 1,
+      "matches_previously_qualified_bytes": true
+    },
+    "processed": {
+      "source_files": 43,
+      "selected_entry_bodies": 92,
+      "rva_getters": 61,
+      "warmed_getter_allocations": 0,
+      "max_storage_helper_parameters": 1,
+      "matches_previously_qualified_bytes": true
+    }
+  },
+  "fresh_regeneration_executed": false,
+  "regeneration_validation": "Default recipe selects direct; separate actual Zig root/module graph and authored C boundary; normal delivery; preparation checks and translate dry-run pass.",
+  "upstream_managed_acceptance": "pending",
+  "campaign_complete": false
+}

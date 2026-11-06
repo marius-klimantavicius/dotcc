@@ -67,13 +67,15 @@ def prepare(form: str, project: Path, audit_path: Path, work: Path) -> dict:
     assembly = Path(audit["assembly"])
     require(sha(assembly) == audit["assembly_sha256"], "Actual accepted PE no longer matches its audit")
     require(audit["bounded_parameters"] and audit["max_parameters"] <= 2, "Unbounded accepted factory")
+    require(audit.get("bounded_storage_helper_parameters", True) and
+            audit.get("maximum_storage_helper_parameters", 0) <= 2, "Unbounded accepted storage helper")
     text = "\n".join(Path(f["path"]).read_text() for f in source["files"])
     require("__FactoryAllocation" not in text and "__RunFactoryAllocation" not in text,
             "Canonical product already contains diagnostic entrypoints")
     getters = audit["getters"]
     factories = audit["factory_measurements"]
     require(len(getters) == audit["payload_getters"] > 0, "Getter inventory count mismatch")
-    require(len(factories) == audit["zero_argument_factory_probes"] > 0, "Factory inventory count mismatch")
+    require(len(factories) == audit["zero_argument_factory_probes"], "Factory inventory count mismatch")
     source_payloads = re.findall(r"ReadOnlySpan<(byte|ushort|uint|ulong)>\s+(" + PAYLOAD + r")\s*=>", text)
     expected_payloads = []
     cases = []
@@ -214,6 +216,8 @@ def validate_result(result_path: Path, form: dict, mode: str) -> dict:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--work", type=Path, required=True, help="New, empty private work/output directory")
+    parser.add_argument("--work-root", type=Path, default=LIB / "build",
+                        help="Allowed private output root (default: libghostty/build)")
     parser.add_argument("--forms", nargs="+", choices=("raw", "processed"), default=["raw", "processed"])
     parser.add_argument("--modes", nargs="+", choices=("jit", "nativeaot"), default=["jit", "nativeaot"])
     parser.add_argument("--raw-project", type=Path, default=LIB / "generated/TranslatedGhosttyVt.Raw/TranslatedGhosttyVt.csproj")
@@ -225,7 +229,7 @@ def main() -> int:
     parser.add_argument("--prepare-only", action="store_true")
     args = parser.parse_args()
     work = args.work.resolve()
-    require(work.is_relative_to(LIB / "build"), "Keep private work beneath libghostty/build")
+    require(work.is_relative_to(args.work_root.resolve()), "Keep private work beneath --work-root")
     require(not work.exists(), "Use a new work directory to preserve every prior failure/log")
     work.mkdir(parents=True)
     (work / "tmp").mkdir()

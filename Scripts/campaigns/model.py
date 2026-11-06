@@ -84,6 +84,7 @@ class Recipe:
     before_suite: Callable | None = None
     script_arguments: Callable | None = None
     legacy_owned: tuple[str, ...] = ()
+    work_root: Path | None = None
 
     @property
     def default_profile(self):

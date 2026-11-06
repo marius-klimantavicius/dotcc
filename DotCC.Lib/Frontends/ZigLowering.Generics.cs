@@ -175,7 +175,7 @@ internal sealed partial class ZigLowering
         IReadOnlyList<TypeSeed> TypeSeeds,
         IReadOnlyList<(string name, CType type)> RuntimeParams,
         IReadOnlyList<(string name, bool hasValue, long value, CType inner)> OptionalSeeds,
-        IReadOnlyList<(string name, LitStr value)> StringSeeds,
+        IReadOnlyList<(string name, LitStr value, CType type)> StringSeeds,
         IReadOnlyList<(string name, ZigLowering owner, Symbol fn)>? FnSeeds = null);
 
     /// <summary>Generic (comptime-param) function symbols → their retained template. Populated in
@@ -353,7 +353,7 @@ internal sealed partial class ZigLowering
     /// has no runtime representation, anywhere inside it?</summary>
     internal static bool IsComptimeOnlyType(CType t) => t.Unqualified switch
     {
-        CType.EnumLiteral => true,
+        CType.ZigMetaType or CType.EnumLiteral or CType.ZigGenericFunctionType => true,
         CType.Tuple tuple => tuple.Elements.Any(IsComptimeOnlyType),
         CType.Pointer p => IsComptimeOnlyType(p.Pointee),
         CType.Array a => IsComptimeOnlyType(a.Element),
@@ -415,26 +415,27 @@ internal sealed partial class ZigLowering
     /// <summary>Instantiate this module's GENERIC top-level function <paramref name="name"/> called as a
     /// method of its file-as-struct type on an instance (road-to-zig-std G3): <c>w.print(fmt, args)</c> is
     /// <c>print(w, fmt, args)</c> with <c>fn print(w: *Writer, comptime fmt: []const u8, args: anytype)</c>.
-    /// The receiver item fills parameter 0, which must be a runtime (or <c>anytype</c>) parameter, and the
+    /// The receiver item fills parameter 0, including a compile-time value parameter, and the
     /// rest are read in <paramref name="caller"/> as for any exported generic. Returns the instance and the
-    /// runtime argument items AFTER the receiver (the caller passes the receiver itself, adjusted to the
-    /// instance's first parameter), or null when <paramref name="name"/> is not a generic function here.</summary>
-    internal (Symbol Instance, IReadOnlyList<Item> RuntimeArgs)? TryResolveFileStructGenericMethod(
+    /// runtime argument items AFTER a runtime receiver. A compile-time receiver is specialized away;
+    /// the caller must not pass it to the resulting instance.</summary>
+    internal (Symbol Instance, IReadOnlyList<Item> RuntimeArgs, bool RuntimeReceiver)? TryResolveFileStructGenericMethod(
         string name, Item receiverItem, IReadOnlyList<Item> argItems, ZigLowering caller)
     {
         if (_fileContainer is null || FileStructFnSymbol(name) is not { } sym || !_genericFns.TryGetValue(sym, out var g))
         {
             return null;
         }
-        if (g.Params.Count == 0 || g.Params[0].Kind is not (ParamKind.Runtime or ParamKind.AnyType))
+        if (g.Params.Count == 0 || g.Params[0].Kind is not (ParamKind.Runtime or ParamKind.AnyType or ParamKind.ComptimeValue))
         {
             throw new IrUnsupportedException(
-                $"'{_fileStem}.{name}' called on an instance needs a runtime first parameter to take the receiver");
+                $"'{_fileStem}.{name}' called on an instance needs a value first parameter to take the receiver");
         }
         var all = new List<Item>(argItems.Count + 1) { receiverItem };
         all.AddRange(argItems);
         var (instance, runtimeArgs) = ResolveGenericInstance(sym, g, all, caller);
-        return (instance, runtimeArgs.Skip(1).ToList());
+        var runtimeReceiver = g.Params[0].Kind is ParamKind.Runtime or ParamKind.AnyType;
+        return (instance, runtimeReceiver ? runtimeArgs.Skip(1).ToList() : runtimeArgs, runtimeReceiver);
     }
 
     /// <summary>The body of <see cref="InstantiateGeneric"/>: resolve (or reuse) the instance a call
@@ -462,14 +463,18 @@ internal sealed partial class ZigLowering
         var typeSeeds = new List<TypeSeed>();
         var valueSeeds = new List<ValueSeed>();
         var optionalSeeds = new List<(string name, bool hasValue, long value, CType inner)>();
-        var stringSeeds = new List<(string name, LitStr value)>();
+        var optionalTypeSeeds = new List<(string name, TypeSeed? value)>();
+        var stringSeeds = new List<(string name, LitStr value, CType type)>();
         var anytypeSeeds = new List<(string name, CType type)>();
         var anytypeBits = new Dictionary<string, int>(System.StringComparer.Ordinal);
+        var anytypeLocations = new Dictionary<string, ZigResultLocation>(System.StringComparer.Ordinal);
         var anytypeTupleBits = new Dictionary<string, int?[]>(System.StringComparer.Ordinal);
         var anytypePtrSize = new Dictionary<string, string>(System.StringComparer.Ordinal);
+        var anytypeSentinels = new Dictionary<string, ZigSentinel>(System.StringComparer.Ordinal);
         var fnSeeds = new List<(string name, ZigLowering owner, Symbol fn)>();
         var aggregateSeeds = new List<(string name, IrBuilder.ComptimeValue value, CType type)>();
         var comptimeIntArgs = new Dictionary<string, long>(System.StringComparer.Ordinal);
+        var comptimeNullArgs = new HashSet<string>(System.StringComparer.Ordinal);
         // A comptime_int argument beyond `long` (std.sort.pdq's `math.log2(math.maxInt(usize) + 1)`, 2^64): bound as a
         // comptime global the interpreter reads at full width, since a value seed is a `long`.
         var wideComptimeIntArgs = new Dictionary<string, System.Int128>(System.StringComparer.Ordinal);
@@ -498,6 +503,12 @@ internal sealed partial class ZigLowering
                                                fnSeedType is CType.Pointer ? argScope.PointerSizeOfTypeArg(argItems[i]) : null,
                                                fnSeedType is CType.Pointer or CType.Slice or CType.Array ? argScope.SentinelOfTypeArg(argItems[i]) : null));
                     break;
+                case ParamKind.AnyType when argScope.IsSourceNullLiteral(argItems[i]):
+                    comptimeNullArgs.Add(g.Params[i].Name);
+                    // This carrier is used only by the existing comptime seed;
+                    // null contributes no runtime parameter or pointer class.
+                    anytypeSeeds.Add((g.Params[i].Name, new CType.Pointer(CType.Void)));
+                    break;
                 // An `anytype` bound to a `comptime_int` (`log2(pos_max)` in std.math.IntFittingRange) is comptime:
                 // zig instantiates per VALUE, and `@TypeOf(x)` is `comptime_int`, so it is a value seed here.
                 // Evaluated ONCE: the argument may run a comptime call, which must not be lowered twice.
@@ -517,13 +528,20 @@ internal sealed partial class ZigLowering
                     anytypeSeeds.Add((g.Params[i].Name, tupleArg.type));
                     break;
                 case ParamKind.AnyType:
-                    anytypeSeeds.Add((g.Params[i].Name, argScope.InferArgType(argItems[i])));
+                    anytypeSeeds.Add((g.Params[i].Name, argScope.InferArgType(argItems[i], out var argumentLocation)));
+                    if (UsesSourceStdlib && GenericElementLocationMangle(argumentLocation.Element).Length != 0)
+                        anytypeLocations[g.Params[i].Name] = argumentLocation;
                     // The argument's declared width, where its value carries one (road-to-zig-std G3).
                     if (argScope.DeclaredBitsOfArgument(argItems[i]) is { } argBits) { anytypeBits[g.Params[i].Name] = argBits; }
                     // A tuple literal's per-element widths (std.fmt's `.{42}`: `@field(args, "0")` is an `int`, 32 bits).
                     if (argScope.TupleLiteralElemBits(argItems[i]) is { } tupleBits) { anytypeTupleBits[g.Params[i].Name] = tupleBits; }
                     // A pointer argument's spelled size class (task #119: std.Random.init's `pointer: anytype`).
-                    if (argScope.PointerSizeOfValue(argItems[i]) is { } argPtrSize) { anytypePtrSize[g.Params[i].Name] = argPtrSize; }
+                    if ((argScope.PointerSizeOfValue(argItems[i])
+                        ?? (anytypeSeeds[^1].type.Unqualified as CType.Pointer)?.ZigSourceSize) is { } argPtrSize)
+                        anytypePtrSize[g.Params[i].Name] = argPtrSize;
+                    if (anytypeSeeds[^1].type.Unqualified is CType.Pointer or CType.Slice or CType.Array
+                        && argScope.SentinelOfValue(argItems[i]) is { } argSentinel)
+                        anytypeSentinels[g.Params[i].Name] = argSentinel;
                     break;
             }
         }
@@ -553,8 +571,12 @@ internal sealed partial class ZigLowering
         var anytypeShadows = new List<(string name, CType? prev)>();
         var anytypeBitShadows = new List<(string name, int? prev)>();
         var anytypePtrSizeShadows = new List<(string name, string? prev)>();
+        var anytypeSentinelShadows = new List<(string name, ZigSentinel? prev)>();
         foreach (var (name, type) in anytypeSeeds)
         {
+            anytypeSentinelShadows.Add((name, _anytypeSeedSentinels.GetValueOrDefault(name)));
+            if (anytypeSentinels.TryGetValue(name, out var sentinel)) _anytypeSeedSentinels[name] = sentinel;
+            else _anytypeSeedSentinels.Remove(name);
             anytypePtrSizeShadows.Add((name, _anytypeSeedPtrSize.GetValueOrDefault(name)));
             if (anytypePtrSize.TryGetValue(name, out var aps)) { _anytypeSeedPtrSize[name] = aps; } else { _anytypeSeedPtrSize.Remove(name); }
             anytypeShadows.Add((name, _anytypeSeeds.TryGetValue(name, out var pv) ? pv : (CType?)null));
@@ -579,6 +601,13 @@ internal sealed partial class ZigLowering
                         // is a comptime `null` (no runtime rep) or a comptime-known payload. Seed it into
                         // _comptimeOptionalVars so a captured `if (x) |y| … else …` folds at lowering time.
                         var valueParamType = LowerType(g.Params[i].TypeAst).Unqualified;
+                        if (valueParamType is CType.EnumLiteral)
+                        {
+                            var literal = argScope.ComptimeEnumLiteralArgument(argItems[i]);
+                            mangleTokens.Add("c" + IrBuilder.ComptimeDigest(literal));
+                            aggregateSeeds.Add((g.Params[i].Name, literal, new CType.EnumLiteral(literal.Name)));
+                            break;
+                        }
                         // A comptime FUNCTION value (`comptime lessThanFn: fn (…) bool`, std.mem.sort): the
                         // function it names keys the instance, and calls in the body go straight to it.
                         if (valueParamType is CType.Func)
@@ -595,11 +624,27 @@ internal sealed partial class ZigLowering
                         }
                         if (valueParamType is CType.Optional optParam)
                         {
-                            if (!argScope.TryComptimeOptionalArg(argItems[i], out var hasOpt, out var ov))
+                            if (optParam.Inner.Unqualified is CType.ZigMetaType)
+                            {
+                                var selected = argScope.ReadOptionalTypeInitializer(argItems[i]);
+                                mangleTokens.Add(selected is { } present ? "opttype" + MangleTypeSeed(present) : "opttypenull");
+                                optionalTypeSeeds.Add((g.Params[i].Name, selected));
+                                break;
+                            }
+                            if (optParam.Inner.Unqualified is CType.Slice optionalSlice)
+                            {
+                                var optionalValue = argScope.ComptimeOptionalSliceArg(argItems[i], optParam, optionalSlice);
+                                mangleTokens.Add("optc" + IrBuilder.ComptimeDigest(optionalValue));
+                                aggregateSeeds.Add((g.Params[i].Name, optionalValue, optParam));
+                                break;
+                            }
+                            if (!argScope.TryComptimeOptionalArg(argItems[i], out var hasOpt, out var ov, optParam.Inner))
                             {
                                 throw new IrUnsupportedException(
                                     $"call to generic '{templateSym.Name}': the `comptime {g.Params[i].Name}: ?T` argument must be "
-                                    + "a comptime `null` or a compile-time-known payload");
+                                    + "a comptime `null` or a compile-time-known payload"
+                                    + $" ({argScope._module?.Path ?? argScope._fileStem}:{argItems[i].Position.Line}, function '{argScope._currentFnName}')"
+                                    + (argScope._ir.ComptimeMiss is { } why ? $"; {why}" : ""));
                             }
                             mangleTokens.Add(OptionalMangleToken(hasOpt, ov));
                             optionalSeeds.Add((g.Params[i].Name, hasOpt, ov, optParam.Inner));
@@ -616,10 +661,11 @@ internal sealed partial class ZigLowering
                             {
                                 throw new IrUnsupportedException(
                                     $"call to generic '{templateSym.Name}': the `comptime {g.Params[i].Name}` argument must be a "
-                                    + "compile-time-known string (a literal, a comptime const, or a `++` / `**` fold)");
+                                    + "compile-time-known string (a literal, a comptime const, or a `++` / `**` fold)"
+                                    + $" ({argScope._module?.Path ?? argScope._fileStem}:{argItems[i].Position.Line}, function '{argScope._currentFnName}', {argItems[i].Content?.GetType().Name})");
                             }
                             mangleTokens.Add(MangleComptimeString(str));
-                            stringSeeds.Add((g.Params[i].Name, str));
+                            stringSeeds.Add((g.Params[i].Name, str, valueParamType));
                             break;
                         }
                         // A comptime SLICE param of a non-byte element (std.enums.valuesFromFields's `comptime field_values:
@@ -694,6 +740,12 @@ internal sealed partial class ZigLowering
                     case ParamKind.AnyType when typePointerArgs.Contains(g.Params[i].Name):
                         mangleTokens.Add("tp" + MangleTypeSeed(typeSeeds.First(s => s.Name == g.Params[i].Name)));
                         break;
+                    case ParamKind.AnyType when comptimeNullArgs.Contains(g.Params[i].Name):
+                        mangleTokens.Add("null");
+                        var nullCarrier = new CType.Pointer(CType.Void);
+                        aggregateSeeds.Add((g.Params[i].Name,
+                            new IrBuilder.CtNull(nullCarrier) { ZigUntypedLiteral = true }, nullCarrier));
+                        break;
                     case ParamKind.AnyType when comptimeTupleArgs.TryGetValue(g.Params[i].Name, out var ctTuple):
                         mangleTokens.Add("ct" + IrBuilder.ComptimeDigest(ctTuple.value));
                         aggregateSeeds.Add((g.Params[i].Name, ctTuple.value, ctTuple.type));
@@ -717,11 +769,20 @@ internal sealed partial class ZigLowering
                         // own, and a pointer no spelling classifies keys apart from all three, so an instance that reads
                         // `@typeInfo(@TypeOf(p)).pointer.size` never answers for an argument of another class.
                         mangleTokens.Add(MangleType(anyType)
+                            + GenericElementLocationMangle(anytypeLocations.GetValueOrDefault(g.Params[i].Name)?.Element)
                             + (anytypeBits.TryGetValue(g.Params[i].Name, out var mb) && anyType.Unqualified is CType.Prim { Integer: true } mp
                                && mb != mp.Bytes * 8 ? "w" + mb.ToString(inv) : "")
+                            + (anyType.Unqualified is CType.Tuple
+                                ? anytypeTupleBits.TryGetValue(g.Params[i].Name, out var elementWidths)
+                                    ? "_tw" + string.Join("_", elementWidths.Select(width => width?.ToString(inv) ?? "u"))
+                                    : "_tuple_unknown"
+                                : "")
                             + (anyType.Unqualified is CType.Pointer
                                ? anytypePtrSize.GetValueOrDefault(g.Params[i].Name) switch { "one" => "", "many" => "pm", "c" => "pc", _ => "pu" }
-                               : ""));
+                               : "")
+                            + (UsesSourceStdlib && anyType.Unqualified is CType.Pointer or CType.Slice or CType.Array
+                                && !anytypeSentinels.ContainsKey(g.Params[i].Name) ? "_sentinel_unknown"
+                                : SentinelMangle(anytypeSentinels.GetValueOrDefault(g.Params[i].Name))));
                         runtimeArgItems.Add(argItems[i]);
                         break;
                     default:
@@ -752,6 +813,8 @@ internal sealed partial class ZigLowering
                 var comptimeOnly = !g.ErrUnion && (IsComptimeIntType(g.RetType)
                     || g.RetType.Content is Zig.TyOptional { Arg1: var optRet } && IsComptimeIntType(optRet));
                 CType ret;
+                Action<Symbol> captureSignature;
+                int? signatureReturnBits;
                 _symbols.EnterScope();
                 try
                 {
@@ -761,6 +824,7 @@ internal sealed partial class ZigLowering
                         var optSym = _symbols.Declare(new Symbol { Name = name, Kind = SymKind.Var, Type = new CType.Optional(inner) });
                         _comptimeOptionalVars[optSym] = (hasValue, value, inner);
                     }
+                    foreach (var (name, value) in optionalTypeSeeds) DeclareOptionalTypeSeed(name, value);
                     // A comptime STRUCT param spelled in the return type (std.bit_set's `iterator(self, comptime options:
                     // IteratorOptions) Iterator(options)`).
                     foreach (var (name, value, type) in aggregateSeeds)
@@ -772,6 +836,7 @@ internal sealed partial class ZigLowering
                                     && !typePointerArgs.Contains(p.Name)
                                     && !wideComptimeIntArgs.ContainsKey(p.Name)
                                     && !comptimeTupleArgs.ContainsKey(p.Name)
+                                    && !comptimeNullArgs.Contains(p.Name)
                                     || interpretedParams.Contains(p.Name))
                         .Select(p => (p.Name, p.Kind == ParamKind.AnyType ? _anytypeSeeds[p.Name] : LowerType(p.TypeAst)))
                         .ToList();
@@ -792,6 +857,18 @@ internal sealed partial class ZigLowering
                         comptimeOnly = true;
                         ret = CType.Int128;
                     }
+                    captureSignature = CaptureBitcastSignature(
+                        new CType.Func(g.ErrUnion ? new CType.ErrorUnion(ret) : ret,
+                            runtimeParams.Select(p => p.Item2).ToList(), false),
+                        // Source-only anytype seeds (including a bare null) do
+                        // not occupy a physical parameter slot. Keep the same
+                        // selected names as the signature above.
+                        g.Params.Where(p => runtimeParams.Any(runtime => runtime.Item1 == p.Name)).ToList(),
+                        g.RetType, anytypeBits, anytypeLocations);
+                    // Result metadata reads the same definition-scoped parameter
+                    // bindings as the physical signature. Never re-evaluate a
+                    // return AST such as @TypeOf(val, lower, upper) after exit.
+                    signatureReturnBits = DeclaredBitsOfTypeArg(g.RetType);
                 }
                 finally
                 {
@@ -816,11 +893,11 @@ internal sealed partial class ZigLowering
                     _fnValueOfInstance[instanceSym] = ReifyClosureStruct(mangled, closure.Arg3, Tok(closure.Arg6),
                         typeSeeds, valueSeeds, optionalSeeds);
                 }
-                if (comptimeOnly)
+                if (comptimeOnly || UsesSourceStdlib && !g.ErrUnion && RequiresComptimeStorage(ret))
                 {
                     _comptimeOnlyFns.Add(instanceSym);
                     if (interpretedParams.Count > 0) { _interpretedInstances.Add(instanceSym); }
-                    if (TryEvalComptimeIntBody(g, valueSeeds, optionalSeeds) is { } value) { _comptimeIntValues[instanceSym] = value; }
+                    if (comptimeOnly && TryEvalComptimeIntBody(g, valueSeeds, optionalSeeds) is { } value) { _comptimeIntValues[instanceSym] = value; }
                 }
                 _instantiations[mangled] = instanceSym;
                 // A runtime parameter of a comptime-only type (the enum-literal tuple std.StaticStringMap's initSortedKVs
@@ -841,11 +918,12 @@ internal sealed partial class ZigLowering
                         + "a vector only at compile time (the runtime array fallback is github.com/sebgod/dotcc/issues/127)");
                 }
                 _fnParamInfos[instanceSym] = g.Params;
-                CaptureBitcastFunction(instanceSym, g.Params, g.RetType, anytypeBits);
-                if (DeclaredBitsOfTypeArg(g.RetType) is { } instRetBits) { _fnReturnBits[instanceSym] = instRetBits; }
+                captureSignature(instanceSym);
+                if (signatureReturnBits is { } instRetBits) { _fnReturnBits[instanceSym] = instRetBits; }
                 if (anytypeBits.Count > 0) { _instanceAnytypeBits[instanceSym] = anytypeBits; }
                 if (anytypeTupleBits.Count > 0) { _instanceAnytypeTupleBits[instanceSym] = anytypeTupleBits; }
                 if (anytypePtrSize.Count > 0) { _instanceAnytypePtrSize[instanceSym] = anytypePtrSize; }
+                if (anytypeSentinels.Count > 0) _instanceAnytypeSentinels[instanceSym] = anytypeSentinels;
                 // A method instance's body re-enters its owner's seeds too, its own LAST so they win a clash.
                 if (ownerSeedsKey is { } osk && _reifiedSeeds.TryGetValue(osk, out var os))
                 {
@@ -855,6 +933,7 @@ internal sealed partial class ZigLowering
                 }
                 _pendingInstantiations.Add(new PendingInstantiation(instanceSym, g, valueSeeds, typeSeeds, runtimeParams, optionalSeeds, stringSeeds, fnSeeds));
                 if (aggregateSeeds.Count > 0) { _instanceAggregateSeeds[instanceSym] = aggregateSeeds; }
+                if (optionalTypeSeeds.Count > 0) { _instanceOptionalTypeSeeds[instanceSym] = optionalTypeSeeds; }
             }
         }
         finally
@@ -889,6 +968,9 @@ internal sealed partial class ZigLowering
                 var (name, prev) = anytypePtrSizeShadows[i];
                 if (prev is { } ps) { _anytypeSeedPtrSize[name] = ps; } else { _anytypeSeedPtrSize.Remove(name); }
             }
+            foreach (var (name, previous) in anytypeSentinelShadows)
+                if (previous is { } sentinel) _anytypeSeedSentinels[name] = sentinel;
+                else _anytypeSeedSentinels.Remove(name);
         }
         // The runtime arguments are the CALLER's expressions — lowered (in BuildCall) in the restored
         // caller type env, coercing to the instance's now-concrete parameter types. An `anytype`
@@ -938,18 +1020,37 @@ internal sealed partial class ZigLowering
     /// argument is lowered AGAIN in <see cref="BuildCall"/> for the runtime call, so any side effect is
     /// emitted exactly once (the inference lowering here is discarded).</summary>
     private CType InferArgType(Item argItem)
+        => InferArgType(argItem, out _, captureLocation: false);
+
+    private CType InferArgType(Item argItem, out ZigResultLocation location, bool captureLocation = true)
     {
-        using var _ = EnterThrowawayHoist();   // the inference lowering is discarded
+        // Inference emits nothing and must not inherit an earlier receiver/argument's
+        // ordering barrier. Its nested fallbacks are lowered only to discover their type.
+        using var _ = EnterFreshHoist();
         var lowered = LowerExpr(argItem);
         // An arithmetic argument is its operands' peer type (`f / 25` over a `comptime f: u11` is a `u11`, task #163), which C's
         // promotion widened to `int` in the lowered expression.
         var type = (PeerTypeOfValue(argItem) ?? lowered.Type
             ?? throw new IrUnsupportedException("zig `anytype` argument has no statically known type")).Unqualified;
+        type = SourceSentinelArrayValueType(type);
         // A string literal is `*const [N:0]u8`: its logical length excludes the NUL its stored array carries, so
         // `input.len` in the callee is N (std.hash.XxHash32.hash(0, "hello") had read 6, silently, task #87).
-        return type is CType.Array { Count: int stored } litArr && stored > 0 && IsStringLiteralValue(lowered)
-            ? new CType.Array(litArr.Element, stored - 1)
+        var inferred = type is CType.Array { Count: int stored } litArr && stored > 0 && IsStringLiteralValue(lowered)
+            ? new CType.Array(CType.UChar, stored - 1)
             : type;
+        location = captureLocation && UsesSourceStdlib
+            ? BitcastSourceLocation(argItem, lowered) with { Physical = inferred }
+            : ZigResultLocation.Unknown(inferred);
+        if (UsesSourceStdlib && inferred.Unqualified is CType.Pointer
+            { Pointee.Unqualified: CType.Prim { Integer: true, Name: not "_Bool" } } sourcePointer
+            && location.Element?.IntegerBits is { } pointeeBits)
+        {
+            if (sourcePointer.ZigSourcePointeeBits is { } existingBits && existingBits != pointeeBits)
+                throw new IrUnsupportedException("zig: inferred pointer has conflicting source pointee widths");
+            inferred = sourcePointer with { ZigSourcePointeeBits = pointeeBits };
+            location = location with { Physical = inferred };
+        }
+        return inferred;
     }
 
     /// <summary>Each local <c>const</c> initialized by an untyped integer literal: a <c>comptime_int</c> in zig, lowered
@@ -974,7 +1075,9 @@ internal sealed partial class ZigLowering
         catch (IrUnsupportedException) { return null; }
         var untypedConst = argItem.Content is Zig.Ident { Arg0: var constTok } && _symbols.Resolve(Tok(constTok)) is { } constSym
                            && _comptimeIntLocals.Contains(constSym);
-        if (argItem.Content is not Zig.IntLit && !untypedConst && lowered.Type?.Unqualified is not CType.Prim { IsComptimeInt: true })
+        if (!((IsComptimeUntypedNumeric(argItem) || UsesSourceStdlib && IsSourceComptimeInteger(argItem, lowered))
+                && lowered.Type?.Unqualified is CType.Prim { Integer: true })
+            && !untypedConst && lowered.Type?.Unqualified is not CType.Prim { IsComptimeInt: true })
         {
             return null;
         }
@@ -991,16 +1094,19 @@ internal sealed partial class ZigLowering
     /// <summary>Each instance's comptime STRUCT parameters (<c>comptime cpu: std.Target.Cpu</c>) with their values,
     /// bound as comptime aggregates while its body lowers (<see cref="LowerInstantiationBody"/>).</summary>
     private readonly Dictionary<Symbol, List<(string name, IrBuilder.ComptimeValue value, CType type)>> _instanceAggregateSeeds = new();
+    private readonly Dictionary<Symbol, List<(string name, TypeSeed? value)>> _instanceOptionalTypeSeeds = new();
 
     /// <summary>True for the bare type name <c>comptime_int</c>.</summary>
     private static bool IsComptimeIntType(Item type) => type.Content is Zig.Ident id && Tok(id.Arg0) == "comptime_int";
 
     private void LowerInstantiationBody(PendingInstantiation p)
     {
+        var ownerAggregateScope = EnterReifiedAggregateSeeds(p.Generic.Owner ?? "");
         // A comptime struct parameter is a comptime aggregate the body reads (`cpu.arch`, `cpu.has(…)`): bound in a
         // scope around the body, like `const x = comptime f();` of one.
         var aggregateScope = _instanceAggregateSeeds.TryGetValue(p.Instance, out var aggregates);
-        if (aggregateScope)
+        var optionalTypeScope = _instanceOptionalTypeSeeds.TryGetValue(p.Instance, out var optionalTypes);
+        if (aggregateScope || optionalTypeScope)
         {
             _symbols.EnterScope();
             foreach (var (name, value, type) in aggregates ?? [])
@@ -1008,6 +1114,7 @@ internal sealed partial class ZigLowering
                 var sym = _symbols.Declare(new Symbol { Name = name, Kind = SymKind.Var, Type = type });
                 _ir.ComptimeGlobals[sym] = value;
             }
+            foreach (var (name, value) in optionalTypes ?? []) DeclareOptionalTypeSeed(name, value);
         }
         try
         {
@@ -1015,7 +1122,8 @@ internal sealed partial class ZigLowering
         }
         finally
         {
-            if (aggregateScope) { _symbols.ExitScope(); }
+            if (aggregateScope || optionalTypeScope) { _symbols.ExitScope(); }
+            if (ownerAggregateScope) { _symbols.ExitScope(); }
         }
     }
 
@@ -1091,6 +1199,10 @@ internal sealed partial class ZigLowering
                     + "consts (the closure idiom), not fields or nested containers");
             }
             _containerTypes[anon] = new CType.Named(anon);
+            // The closure-idiom struct is lexically nested where its source is
+            // declared. Its signatures and delayed bodies can name that
+            // container's computed aliases and captured aggregate parameters.
+            if (_currentContainer is { } lexicalParent) _containerParents[anon] = lexicalParent;
             using var container = EnterContainer(anon);
             RegisterStruct(anon, fields);
             RegisterContainerConsts(anon, consts);
@@ -1120,7 +1232,8 @@ internal sealed partial class ZigLowering
             {
                 var name = Tok(id.Arg0);
                 if (argScope._fnAliases.TryGetValue(name, out var alias)) { return alias; }
-                var sym = argScope._symbols.Resolve(name) ?? (argScope._lazy ? argScope.EnsureDeclLowered(name) : null);
+                var sym = argScope._symbols.Resolve(name) ?? (argScope._lazy
+                    ? argScope.EnsureDeclLowered(name) : argScope.DeclareRootFnEarly(name));
                 return sym is { Kind: SymKind.Func } && !argScope._genericFns.ContainsKey(sym) ? (argScope, sym) : null;
             }
             case Zig.CallArgs:
@@ -1158,6 +1271,8 @@ internal sealed partial class ZigLowering
                      && containerMethods.TryGetValue(Tok(memberTok), out var method)
                      && !argScope._genericFns.ContainsKey(method):
                 return (argScope, argScope.ActivateMethod(method));
+            case Zig.Field when argScope.TryResolveFnAlias(arg) is { } imported && !imported.Owner.IsFnTemplate(imported.Sym):
+                return (imported.Owner, imported.Sym);
             default:
                 return null;
         }
@@ -1171,7 +1286,7 @@ internal sealed partial class ZigLowering
     /// caller's own comptime optional seed passed on by name (array_list's <c>Aligned(T, alignment)</c>
     /// forwarding <c>alignment</c> to <c>AlignedManaged</c>), or a compile-time-known payload. False when it
     /// is none of those.</summary>
-    private bool TryComptimeOptionalArg(Item arg, out bool hasValue, out long value)
+    private bool TryComptimeOptionalArg(Item arg, out bool hasValue, out long value, CType? payloadType = null)
     {
         hasValue = false;
         value = 0;
@@ -1185,10 +1300,32 @@ internal sealed partial class ZigLowering
             value = seeded.Value;
             return true;
         }
-        if (_ir.ConstEval(LowerExpr(arg)) is not { } v) { return false; }
-        hasValue = true;
-        value = v;
-        return true;
+        using var hoist = EnterThrowawayHoist();
+        var lowered = payloadType is null ? LowerExpr(arg) : LowerExprSink(arg, payloadType);
+        // A computed optional may be null. ConstEval alone sees only present
+        // payloads; the existing interpreter preserves both optional outcomes.
+        switch (_ir.EvalComptimeValue(lowered))
+        {
+            case IrBuilder.CtNull: return true;
+            case IrBuilder.CtInt integer when integer.Value >= long.MinValue && integer.Value <= long.MaxValue:
+                hasValue = true;
+                value = (long)integer.Value;
+                return true;
+            default: return false;
+        }
+    }
+
+    private IrBuilder.ComptimeValue ComptimeOptionalSliceArg(Item arg, CType.Optional optional, CType.Slice slice)
+    {
+        if (IsComptimeNull(arg)) { return new IrBuilder.CtNull(optional); }
+        using var hoist = EnterThrowawayHoist();
+        var lowered = LowerExpr(arg);
+        var value = lowered.Type.Unqualified is CType.Optional
+            ? _ir.EvalComptimeValue(lowered)
+            : ComptimeSliceArg(arg, slice);
+        return value is IrBuilder.CtNull or IrBuilder.CtSlice ? value
+            : throw new IrUnsupportedException("zig: a comptime optional slice argument must be null or a compile-time-known slice"
+                + (_ir.ComptimeMiss is { } why ? $" (the interpreter stopped at {why})" : ""));
     }
 
     /// <summary>The instance-name token of a comptime optional argument: <c>optnull</c>, or <c>opt</c> and
@@ -1236,20 +1373,44 @@ internal sealed partial class ZigLowering
     private static string MangleType(CType t)
     {
         t = t.Unqualified;
+        if (SourceErrorTypeKey(t) is { } sourceErrorKey) return sourceErrorKey;
         return t switch
         {
             CType.Prim { Name: "_Bool" } => "bool",
             CType.Prim { IsComptimeInt: true } => "comptime_int",   // not `i128`, which is another type
             CType.Prim p when p.IsInteger => (p.Signed ? "i" : "u") + (p.Bytes * 8).ToString(CultureInfo.InvariantCulture),
             CType.Prim p => "f" + (p.Bytes * 8).ToString(CultureInfo.InvariantCulture),
+            CType.VoidType { ZigAnyopaque: true } => "anyopaque",
             CType.VoidType => "void",
             CType.Named n => n.Name,
             CType.Enum e => e.Name,
-            CType.Pointer ptr => "p_" + MangleType(ptr.Pointee),
+            CType.Func { ZigSourcePointer: true } function => SourceFunctionMangle(function) + "_fp"
+                + (function.ZigOptional ? "_optional" : "")
+                + (function.ZigSourcePointerConst ? "_const" : "")
+                + (function.ZigSourcePointerAlignment is { } functionAlignment ? "pa" + functionAlignment.ToString(CultureInfo.InvariantCulture) : ""),
+            CType.Func function => SourceFunctionMangle(function),
+            CType.Pointer ptr => "p_" + MangleType(ptr.Pointee)
+                + (ptr.ZigSourcePointeeBits is { } pointeeBits ? "pb" + pointeeBits.ToString(CultureInfo.InvariantCulture) : "")
+                + (ptr.ZigSourceAlignment is { } alignment ? "pa" + alignment.ToString(CultureInfo.InvariantCulture) : "")
+                + (ptr.ZigSourceSize is "many" or "c" ? "ps" + ptr.ZigSourceSize : "")
+                + (ptr.ZigOptional ? "_optional" : ""),
+            CType.Slice slice => SanitizeIdent(slice.Describe())
+                + (slice.ZigSourceAlignment is { } sliceAlignment ? "pa" + sliceAlignment.ToString(CultureInfo.InvariantCulture) : ""),
+            CType.Tuple tuple => "tuple_" + string.Join("_", tuple.Elements.Select((element, i) =>
+                MangleType(element) + (tuple.ComptimeIntAt(i) is { } value
+                    ? "_ci" + value.ToString(CultureInfo.InvariantCulture).Replace("-", "n") : ""))),
+            CType.Array array => "a" + array.Count?.ToString(CultureInfo.InvariantCulture) + "_" + MangleType(array.Element)
+                + (array.ZigSentinel is { } sentinel
+                    ? "_s" + sentinel.ToString(CultureInfo.InvariantCulture).Replace("-", "n") : ""),
             CType.Vector v => "v" + v.Count.ToString(CultureInfo.InvariantCulture) + "_" + MangleType(v.Element),
             _ => SanitizeIdent(t.Describe()),
         };
     }
+
+    private static string SourceFunctionMangle(CType.Func function)
+        => SanitizeIdent(function.Describe()) + (function.ZigSourceFunctionName is { } signature
+            ? "_sig" + System.Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(signature)))
+            : "");
 
     /// <summary>Mangle a resolved comptime-TYPE argument for the instance key, honouring the DECLARED
     /// integer width when the source spelled one that the lowered type cannot represent. <see
@@ -1271,7 +1432,7 @@ internal sealed partial class ZigLowering
         _ => "",
     };
 
-    private static string MangleTypeSeed(TypeSeed seed)
+    private string MangleTypeSeed(TypeSeed seed)
     {
         // A many-item or C pointer is a different type from the single-item pointer it lowers alike to (task #150); a
         // single-item or unspelled one keeps the plain name, so no existing instance name changes.
@@ -1341,17 +1502,40 @@ internal sealed partial class ZigLowering
             && _symbols.Resolve(Tok(id.Arg0)) is { } sym
             && _typeReturningGenerics.TryGetValue(sym, out var info))
         {
-            type = EvalTypeReturningCall(sym, info, args, out var localBits);
-            RecordTypeCallBits(maybeCall, localBits);
+            type = EvalTypeReturningCall(sym, info, args, out var localBits, out var localLocation);
+            RecordTypeCallBits(maybeCall, localBits, localLocation);
             return true;
+        }
+        // A comptime receiver can choose the returned type (`kind.OutType()`).
+        // Keep the receiver as the first source argument so the ordinary definition-
+        // scoped evaluator validates and binds its declared comptime parameter.
+        if (calleeItem.Content is Zig.Field { Arg0.Content: Zig.Ident receiverId } receiverField
+            && _symbols.Resolve(Tok(receiverId.Arg0)) is { } receiver
+            && ContainerTypeName(receiver.Type) is { } receiverContainer)
+        {
+            var receiverOwner = _moduleGraph?.OwnerOfContainer(receiverContainer) ?? this;
+            // This is a type-result probe, not a value use of the method.
+            // A file container's ordinary generic must reach call dispatch.
+            var receiverMethod = receiverContainer == receiverOwner._fileContainer
+                ? receiverOwner.FileStructFnSymbol(Tok(receiverField.Arg2))
+                : receiverOwner.EnsureMethodDeclared(receiverContainer, Tok(receiverField.Arg2));
+            if (receiverMethod is not null
+                && receiverOwner._typeReturningGenerics.TryGetValue(receiverMethod, out var receiverInfo))
+            {
+                var withReceiver = new List<Item>(args.Count + 1) { receiverField.Arg0 };
+                withReceiver.AddRange(args);
+                type = receiverOwner.EvalTypeReturningCall(receiverMethod, receiverInfo, withReceiver, out var receiverBits, out var receiverLocation, typeArgScope: this);
+                RecordTypeCallBits(maybeCall, receiverBits, receiverLocation);
+                return true;
+            }
         }
         // A type-returning METHOD: named bare inside its container or one it encloses (hash_map's
         // `FieldIterator(K)`), or through a container type (`Self.SentinelSlice(s)`).
         if (TypeReturningMethodCallee(calleeItem) is { } methodSym
             && _typeReturningGenerics.TryGetValue(methodSym, out var methodInfo))
         {
-            type = EvalTypeReturningCall(methodSym, methodInfo, args, out var methodBits);
-            RecordTypeCallBits(maybeCall, methodBits);
+            type = EvalTypeReturningCall(methodSym, methodInfo, args, out var methodBits, out var methodLocation);
+            RecordTypeCallBits(maybeCall, methodBits, methodLocation);
             return true;
         }
         // A SIBLING in a lazy module that is not declared yet (hash_map.zig's `AutoHashMap` body calls
@@ -1362,8 +1546,8 @@ internal sealed partial class ZigLowering
             && ResolveExportedDecl(Tok(sid.Arg0)) is { Owner: var owner, Sym: var siblingSym }
             && owner._typeReturningGenerics.TryGetValue(siblingSym, out var siblingInfo))
         {
-            type = owner.EvalTypeReturningCall(siblingSym, siblingInfo, args, out var siblingBits, typeArgScope: this);
-            RecordTypeCallBits(maybeCall, siblingBits);
+            type = owner.EvalTypeReturningCall(siblingSym, siblingInfo, args, out var siblingBits, out var siblingLocation, typeArgScope: this);
+            RecordTypeCallBits(maybeCall, siblingBits, siblingLocation);
             return true;
         }
         // A type-returning method of a container ANOTHER module declares, reached through a type alias or a
@@ -1379,8 +1563,8 @@ internal sealed partial class ZigLowering
                     : foreignOwner.EnsureMethodDeclared(foreignContainer, Tok(foreignField.Arg2))) is { } foreignSym
             && foreignOwner._typeReturningGenerics.TryGetValue(foreignSym, out var foreignInfo))
         {
-            type = foreignOwner.EvalTypeReturningCall(foreignSym, foreignInfo, args, out var foreignBits, typeArgScope: this);
-            RecordTypeCallBits(maybeCall, foreignBits);
+            type = foreignOwner.EvalTypeReturningCall(foreignSym, foreignInfo, args, out var foreignBits, out var foreignLocation, typeArgScope: this);
+            RecordTypeCallBits(maybeCall, foreignBits, foreignLocation);
             return true;
         }
         // A MODULE-QUALIFIED callee (`array_list.Aligned(u8)`, `std.array_list.Aligned(u8)`) — the
@@ -1394,7 +1578,7 @@ internal sealed partial class ZigLowering
             && nav.TryEvalExportedTypeReturningCall(Tok(fld.Arg2), args, caller: this) is { } navResult)
         {
             type = navResult.Type;
-            RecordTypeCallBits(maybeCall, navResult.Bits);
+            RecordTypeCallBits(maybeCall, navResult.Bits, navResult.Location);
             return true;
         }
         return false;
@@ -1410,6 +1594,7 @@ internal sealed partial class ZigLowering
                 => TryLookupContainerType(Tok(id.Arg0), out var known) ? known
                    : TryResolveModuleTypeAlias(Tok(id.Arg0), out var aliased) ? aliased : null,
             Zig.Field when !IsCuratedStdPath(baseItem) => TryResolveModuleNestedType(baseItem)?.Type,
+            Zig.CallArgs => TryEvalTypeReturningCall(baseItem, out var called) ? called : null,
             _ => null,
         };
         if (type is null || ContainerTypeName(type) is not { } name) { return null; }
@@ -1457,6 +1642,7 @@ internal sealed partial class ZigLowering
     {
         Zig.Ident id => TryLookupContainerType(Tok(id.Arg0), out var ct) ? ct : null,
         Zig.CallArgs => TryEvalTypeReturningCall(baseItem, out var called) ? called : null,
+        Zig.BuiltinCall { Arg2: not null } builtin when Tok(builtin.Arg0) == "@TypeOf" => TypeOfBuiltin(builtin.Arg2),
         Zig.Field => TryResolveQualifiedNestedType(baseItem),
         _ => null,
     };
@@ -1498,7 +1684,7 @@ internal sealed partial class ZigLowering
     /// fall through to its own handling.
     /// <para>A non-type comptime argument (a <c>comptime n: usize</c> value) is read in the caller's
     /// scope too, so a caller-side named <c>const</c> folds like a literal.</para></summary>
-    internal (CType Type, int? Bits)? TryEvalExportedTypeReturningCall(string name, IReadOnlyList<Item> argItems, ZigLowering caller)
+    internal (CType Type, int? Bits, ZigResultLocation? Location)? TryEvalExportedTypeReturningCall(string name, IReadOnlyList<Item> argItems, ZigLowering caller)
     {
         // Through any re-export (`pub const AutoHashMap = hash_map.AutoHashMap;`): the template is
         // evaluated by the module that declares it.
@@ -1507,16 +1693,18 @@ internal sealed partial class ZigLowering
         {
             return null;
         }
-        var type = owner.EvalTypeReturningCall(sym, info, argItems, out var bits, typeArgScope: caller);
-        return (type, bits);
+        var type = owner.EvalTypeReturningCall(sym, info, argItems, out var bits, out var location, typeArgScope: caller);
+        return (type, bits, location);
     }
 
     /// <summary>Record (or clear) the declared integer width a type-returning call site just resolved to
     /// — see <see cref="_typeCallBits"/>. A struct result carries none; a delegating one carries its
     /// returned type's (<c>fn U(comptime n: u16) type { return @Int(.unsigned, n); }</c>).</summary>
-    private void RecordTypeCallBits(Item callSite, int? bits)
+    private void RecordTypeCallBits(Item callSite, int? bits, ZigResultLocation? location = null)
     {
         if (bits is { } b) { _typeCallBits[callSite] = b; } else { _typeCallBits.Remove(callSite); }
+        if (location is not null) _typeCallLocations[callSite] = location;
+        else _typeCallLocations.Remove(callSite);
     }
 
     /// <summary>Evaluate (or reuse) a type-returning generic at a use site (wall-plan W4): resolve each
@@ -1541,8 +1729,14 @@ internal sealed partial class ZigLowering
     /// zig).</para></summary>
     private CType EvalTypeReturningCall(Symbol templateSym, TypeReturningGenericInfo info,
         IReadOnlyList<Item> argItems, out int? declaredBits, ZigLowering? typeArgScope = null)
+        => EvalTypeReturningCall(templateSym, info, argItems, out declaredBits, out _, typeArgScope);
+
+    private CType EvalTypeReturningCall(Symbol templateSym, TypeReturningGenericInfo info,
+        IReadOnlyList<Item> argItems, out int? declaredBits, out ZigResultLocation? declaredLocation,
+        ZigLowering? typeArgScope = null)
     {
         declaredBits = null;
+        declaredLocation = null;
         // Whose type environment the comptime TYPE arguments are read in: this module's for an ordinary
         // local call, the CALLER's when the template was reached through the module graph (S4d) — the
         // arguments are spelled at the call site, so they resolve there.
@@ -1631,6 +1825,8 @@ internal sealed partial class ZigLowering
             for (var i = 0; i < info.Params.Count; i++)
             {
                 var p = info.Params[i];
+                var parameter = p.Kind is ParamKind.ComptimeType or ParamKind.AnyType
+                    ? (Type: CType.Void, Bits: (int?)null) : LowerDependentParameterType(p.TypeAst, valueSeeds);
                 if (p.Kind == ParamKind.ComptimeType)
                 {
                     mangleTokens.Add(MangleTypeSeed(typeSeeds.First(s => s.Name == p.Name)));
@@ -1643,6 +1839,17 @@ internal sealed partial class ZigLowering
                         mangleTokens.Add("fn" + anyFn.Fn.Name);
                         typeFnSeeds.Add((p.Name, anyFn.Owner, anyFn.Fn));
                     }
+                    else if (argScope.TryTypeAliasRhs(argItems[i], out var anyType))
+                    {
+                        // A comptime anytype may hold a type as well as a value.
+                        // Keep it in the type environment, so @TypeOf(E) is type
+                        // and E remains usable as a type after lazy re-entry.
+                        var seed = new TypeSeed(p.Name, anyType, argScope.DeclaredBitsOfTypeArg(argItems[i]),
+                            anyType is CType.Pointer ? argScope.PointerSizeOfTypeArg(argItems[i]) : null,
+                            anyType is CType.Pointer or CType.Slice or CType.Array ? argScope.SentinelOfTypeArg(argItems[i]) : null);
+                        mangleTokens.Add(MangleTypeSeed(seed));
+                        typeSeeds.Add(seed);
+                    }
                     else
                     {
                         using var discarded = argScope.EnterThrowawayHoist();
@@ -1653,7 +1860,13 @@ internal sealed partial class ZigLowering
                         aggregateSeeds.Add((p.Name, value, argument.Type));
                     }
                 }
-                else if (LowerType(p.TypeAst).Unqualified is CType.Func)
+                else if (parameter.Type.Unqualified is CType.EnumLiteral)
+                {
+                    var literal = argScope.ComptimeEnumLiteralArgument(argItems[i]);
+                    mangleTokens.Add("c" + IrBuilder.ComptimeDigest(literal));
+                    aggregateSeeds.Add((p.Name, literal, new CType.EnumLiteral(literal.Name)));
+                }
+                else if (parameter.Type.Unqualified is CType.Func)
                 {
                     // A comptime FUNCTION value: the function it names keys the instance (one struct per function).
                     if (TryResolveComptimeFnValue(argItems[i], argScope) is not { } fnValue)
@@ -1665,18 +1878,25 @@ internal sealed partial class ZigLowering
                     mangleTokens.Add("fn" + fnValue.Fn.Name);
                     typeFnSeeds.Add((p.Name, fnValue.Owner, fnValue.Fn));
                 }
-                else if (LowerType(p.TypeAst).Unqualified is CType.Slice sliceParameter)
+                else if (parameter.Type.Unqualified is CType.Slice sliceParameter)
                 {
                     var value = argScope.ComptimeSliceArg(argItems[i], sliceParameter)
                         ?? throw new IrUnsupportedException($"call to type-returning generic '{templateSym.Name}': argument '{p.Name}' must be a compile-time-known slice");
                     mangleTokens.Add("c" + IrBuilder.ComptimeDigest(value));
                     aggregateSeeds.Add((p.Name, value, sliceParameter));
                 }
-                else if (LowerType(p.TypeAst).Unqualified is CType.Optional optP)
+                else if (parameter.Type.Unqualified is CType.Optional optP)
                 {
+                    if (optP.Inner.Unqualified is CType.Slice optionalSlice)
+                    {
+                        var optionalValue = argScope.ComptimeOptionalSliceArg(argItems[i], optP, optionalSlice);
+                        mangleTokens.Add("optc" + IrBuilder.ComptimeDigest(optionalValue));
+                        aggregateSeeds.Add((p.Name, optionalValue, optP));
+                        continue;
+                    }
                     // A comptime OPTIONAL value param `comptime x: ?T` — a comptime null or known payload,
                     // or the caller's own comptime optional passed on (`AlignedManaged(T, alignment)`).
-                    if (!argScope.TryComptimeOptionalArg(argItems[i], out var hasOpt, out var ov))
+                    if (!argScope.TryComptimeOptionalArg(argItems[i], out var hasOpt, out var ov, optP.Inner))
                     {
                         throw new IrUnsupportedException(
                             $"call to type-returning generic '{templateSym.Name}': the `comptime {p.Name}: ?T` argument "
@@ -1685,7 +1905,7 @@ internal sealed partial class ZigLowering
                     mangleTokens.Add(OptionalMangleToken(hasOpt, ov));
                     optionalSeeds.Add((p.Name, hasOpt, ov, optP.Inner));
                 }
-                else if (LowerType(p.TypeAst) is var aggParamType
+                else if (parameter.Type is var aggParamType
                          && (aggParamType.Unqualified is CType.Named
                              || aggParamType.Unqualified is CType.Array { Count: not null }))
                 {
@@ -1707,7 +1927,7 @@ internal sealed partial class ZigLowering
                 {
                     // An ENUM-typed param (std.mem's `SplitIterator(T, .scalar)` with `comptime delimiter_type:
                     // DelimiterType`) is the result location its bare `.scalar` argument resolves against.
-                    var valueParamType = LowerType(p.TypeAst);
+                    var valueParamType = parameter.Type;
                     long vv;
                     // A `comptime x: bool` asked as a comptime QUESTION (std.array_hash_map.Auto's `!autoEqlIsCheap(K)`, a
                     // switch over `@typeInfo(K)`, task #106) folds without lowering the call as a runtime one.
@@ -1722,17 +1942,19 @@ internal sealed partial class ZigLowering
                             : argScope.LowerExpr(argItems[i]);
                         // A `u64` past `i64` (std.hash.Fnv1a_64's `0xcbf29ce484222325`, task #139) has no long value; the
                         // interpreter reads it, and the seed carries its bit pattern, which the unsigned type spells back.
-                        vv = _ir.ConstEval(valueArg)
+                        vv = argScope.ComptimeIntValue(valueArg)
                             ?? (IsUnsigned64(valueParamType) && _ir.EvalComptimeValue(valueArg) is IrBuilder.CtInt { Value: var wide }
                                 && wide >= 0 && wide <= ulong.MaxValue ? unchecked((long)(ulong)wide) : (long?)null)
                             ?? throw new IrUnsupportedException(
                                 $"call to type-returning generic '{templateSym.Name}': the `comptime {p.Name}` argument "
-                                + "must be a compile-time-known value");
+                                + "must be a compile-time-known value"
+                                + $" (source {argScope._fileStem}:{argItems[i].Position.Line}; lowered {DescribeComptimeOperand(valueArg)})"
+                                + (_ir.ComptimeMiss is { } miss ? $" ({miss})" : ""));
                     }
                     mangleTokens.Add(vv >= 0 ? vv.ToString(inv)
                         : IsUnsigned64(valueParamType) ? unchecked((ulong)vv).ToString(inv)
                         : "n" + (-(System.Int128)vv).ToString(inv));
-                    valueSeeds.Add(new ValueSeed(p.Name, vv, LowerType(p.TypeAst), DeclaredBitsOfTypeArg(p.TypeAst)));
+                    valueSeeds.Add(new ValueSeed(p.Name, vv, parameter.Type, parameter.Bits));
                 }
             }
             // Module-qualified in an imported module: two modules may each declare a `fn Box(comptime T)`.
@@ -1746,6 +1968,7 @@ internal sealed partial class ZigLowering
             if (_delegatedTypes.TryGetValue(mangled, out var delegated))
             {
                 declaredBits = delegated.Bits;
+                declaredLocation = delegated.Location;
                 return delegated.Type;
             }
             if (_containerTypes.TryGetValue(mangled, out var existing)) { return existing; }
@@ -1757,6 +1980,12 @@ internal sealed partial class ZigLowering
             }
 
             var mangledType = new CType.Named(mangled);
+            // Arguments above belong to the caller. The body and any anonymous type it
+            // captures belong to this definition, with only its owner and explicit seeds.
+            using var definition = new DefinitionBindingScope(this);
+            using var definitionOwner = EnterContainer(info.Owner);
+            using var definitionSeeds = EnterReifiedSeeds(ownerSeedsKey ?? "");
+            foreach (var seed in typeSeeds) InstallDefinitionType(seed);
             // The body below re-targets _currentContainer more than once (DeclareMethod clears it); the
             // guard restores the caller's on every exit path, including the delegated early return.
             using var containerRestore = EnterContainer(_currentContainer);
@@ -1821,13 +2050,14 @@ internal sealed partial class ZigLowering
                 if (bodyResult.Enum is { } reifiedEnum)
                 {
                     var enumType = RegisterReifiedEnum(mangled, reifiedEnum);
-                    _delegatedTypes[mangled] = (enumType, null);
+                    _delegatedTypes[mangled] = (enumType, null, null);
                     return enumType;
                 }
                 if (!bodyResult.IsStruct && bodyResult.Delegated is { } delegatedType)
                 {
-                    _delegatedTypes[mangled] = (delegatedType, bodyResult.DelegatedBits);
+                    _delegatedTypes[mangled] = (delegatedType, bodyResult.DelegatedBits, bodyResult.DelegatedLocation);
                     declaredBits = bodyResult.DelegatedBits;
+                    declaredLocation = bodyResult.DelegatedLocation;
                     return delegatedType;
                 }
                 var (fields, methods, consts, containers) = bodyResult.Fields is { } m
@@ -1860,6 +2090,9 @@ internal sealed partial class ZigLowering
                     }
                 }
                 _reifiedSeeds[mangled] = (methodTypeSeeds, valueSeeds, optionalSeeds);
+                if (typeFnSeeds.Count > 0) { _reifiedFunctionSeeds[mangled] = typeFnSeeds; }
+                if (bodyResult.Packed is { } packed)
+                    PackedBitSizeEvidence.GetOrCreateValue(_ir).Packed[mangled] = packed;
                 if (aggregateSeeds.Count > 0) { _reifiedAggregateSeeds[mangled] = aggregateSeeds; }
                 _currentContainer = mangled;
                 // TYPE const members (`pub const Slice = if (alignment) |a| … else []T;` in Aligned,
@@ -1887,7 +2120,9 @@ internal sealed partial class ZigLowering
                 _currentContainer = mangled;
                 // TYPE-returning member functions first: a type const may call one (`KeyIterator = FieldIterator(K)`).
                 methods = DeclareTypeReturningMembers(mangled, methods);
-                // Every untyped const is published first, so a type const is resolvable on demand (TryContainerTypeConst)
+                // Publish values with annotations too: a type alias can depend on
+                // a later typed constant (e.g. *align(item_alignment.toByteUnits()) T).
+                // Every const is published first, so a type const is resolvable on demand (TryContainerTypeConst)
                 // by one evaluated before it, or by a nested body registered early (std.array_hash_map's `Data { hash:
                 // Hash, … }` read by `DataList = std.MultiArrayList(Data)`, with `Hash` declared after both, task #135).
                 if (!_containerConsts.TryGetValue(mangled, out var published))
@@ -1899,11 +2134,16 @@ internal sealed partial class ZigLowering
                 foreach (var c in consts)
                 {
                     if (c.Content is Zig.ConstDecl untyped) { published.TryAdd(Tok(untyped.Arg1), (null, untyped.Arg3)); }
+                    else if (c.Content is Zig.ConstDeclTyped typed) { published.TryAdd(Tok(typed.Arg1), (typed.Arg3, typed.Arg5)); }
                 }
                 var valueConsts = new List<Item>();
                 foreach (var c in consts)
                 {
-                    if (c.Content is Zig.ConstDecl typeConst && IsTypeConstMember(typeConst.Arg3))
+                    // Source instances resolve aliases when a field/member needs them.
+                    // Eagerly evaluating every alias rejects valid Value(pointer):
+                    // its integer-only Bit alias belongs to unused bit operations.
+                    if (!UsesSourceStdlib && c.Content is Zig.ConstDecl typeConst && typeConst.Arg3.Content is not Zig.LabeledBlock
+                        && IsTypeConstMember(typeConst.Arg3))
                     {
                         if (TryContainerTypeConst(mangled, Tok(typeConst.Arg1)) is null)
                         {
@@ -1917,6 +2157,7 @@ internal sealed partial class ZigLowering
                 foreach (var c in valueConsts)
                 {
                     if (c.Content is Zig.ConstDecl untypedValue) { published.Remove(Tok(untypedValue.Arg1)); }
+                    else if (c.Content is Zig.ConstDeclTyped typedValue) { published.Remove(Tok(typedValue.Arg1)); }
                 }
                 consts = valueConsts;
                 // `const Self = @This();` → a self alias scoped to the MANGLED container, plus any value
@@ -1991,6 +2232,19 @@ internal sealed partial class ZigLowering
         }
     }
 
+    private static string DescribeComptimeOperand(CExpr expression, int depth = 0)
+        => depth >= 5 ? expression.GetType().Name : expression switch
+        {
+            VarRef variable => "variable " + variable.Sym.Name,
+            LitInt literal => "integer " + literal.Digits,
+            Binary binary => binary.Op + "(" + DescribeComptimeOperand(binary.Left, depth + 1) + ", "
+                + DescribeComptimeOperand(binary.Right, depth + 1) + ")",
+            Cast cast => "cast(" + DescribeComptimeOperand(cast.Operand, depth + 1) + ")",
+            ComptimeFold fold => "fold(" + DescribeComptimeOperand(fold.Inner, depth + 1) + ")",
+            Call call => "call " + call.CalleeSym?.Name,
+            _ => expression.GetType().Name,
+        };
+
     /// <summary>A METHOD of a reified type-returning generic's struct, awaiting body lowering
     /// (road-to-zig-std G4). Same re-entrancy rule as <see cref="PendingInstantiation"/>: the reification
     /// that produced it runs from an arbitrary type position (a signature, a global initializer, another
@@ -2050,6 +2304,9 @@ internal sealed partial class ZigLowering
     /// <summary>Each reified container's comptime STRUCT seeds (std.hash.crc's <c>algorithm</c>), by its mangled
     /// name: bound again as comptime aggregates wherever <see cref="_reifiedSeeds"/> is re-entered.</summary>
     private readonly Dictionary<string, List<(string name, IrBuilder.ComptimeValue value, CType type)>> _reifiedAggregateSeeds
+        = new(System.StringComparer.Ordinal);
+
+    private readonly Dictionary<string, IReadOnlyList<(string name, ZigLowering owner, Symbol fn)>> _reifiedFunctionSeeds
         = new(System.StringComparer.Ordinal);
 
     /// <summary>Declare the comptime STRUCT seeds recorded for <paramref name="container"/> (or its nearest reified

@@ -1,0 +1,3012 @@
+{
+  "assembly": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-default/default-build/bin/TranslatedGhosttyVt/release/TranslatedGhosttyVt.dll",
+  "assembly_sha256": "A459CBA62E9EA53932337CB71E64CADBC68BE68EB4C429CA9778A46DAFD69AD0",
+  "source_directory": "/home/marius/p/dotcc/libghostty/generated/TranslatedGhosttyVt",
+  "source_files": 43,
+  "source_bytes": 17081953,
+  "main_bytes": 6067340,
+  "assembly_references": [
+    "System.Collections",
+    "System.Collections.Concurrent",
+    "System.Console",
+    "System.Diagnostics.Process",
+    "System.Memory",
+    "System.Net.NameResolution",
+    "System.Net.NetworkInformation",
+    "System.Net.Primitives",
+    "System.Net.Sockets",
+    "System.Runtime",
+    "System.Runtime.InteropServices",
+    "System.Runtime.Intrinsics",
+    "System.Runtime.Numerics",
+    "System.Security.Cryptography",
+    "System.Threading",
+    "System.Threading.Thread"
+  ],
+  "public_api": [
+    {
+      "name": "ghostty_alloc",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_build_info",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_cell_get",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_cell_get_multi",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 12
+    },
+    {
+      "name": "ghostty_color_scheme_report_encode",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 10
+    },
+    {
+      "name": "ghostty_formatter_format",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_formatter_format_alloc",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 10
+    },
+    {
+      "name": "ghostty_formatter_format_buf",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 10
+    },
+    {
+      "name": "ghostty_formatter_free",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_formatter_terminal_new",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 10
+    },
+    {
+      "name": "ghostty_free",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_grid_ref_cell",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_grid_ref_graphemes",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 10
+    },
+    {
+      "name": "ghostty_grid_ref_hyperlink_uri",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 10
+    },
+    {
+      "name": "ghostty_grid_ref_row",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_grid_ref_style",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_mode_new",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 20
+    },
+    {
+      "name": "ghostty_mode_report_encode",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 12
+    },
+    {
+      "name": "ghostty_osc_command_data",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_osc_command_type",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_osc_end",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_osc_free",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_osc_new",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_osc_next",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_osc_reset",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_osc_set",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_render_state_begin_update",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_render_state_clean",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_render_state_end_update",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_render_state_free",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_render_state_get",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_render_state_get_multi",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 12
+    },
+    {
+      "name": "ghostty_render_state_image_get",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_render_state_image_get_multi",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 12
+    },
+    {
+      "name": "ghostty_render_state_image_iterator_free",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_render_state_image_iterator_new",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_render_state_image_iterator_next",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_render_state_new",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_render_state_row_cells_free",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_render_state_row_cells_get",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_render_state_row_cells_get_multi",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 12
+    },
+    {
+      "name": "ghostty_render_state_row_cells_new",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_render_state_row_cells_next",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_render_state_row_cells_select",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_render_state_row_get",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_render_state_row_get_multi",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 12
+    },
+    {
+      "name": "ghostty_render_state_row_iterator_free",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_render_state_row_iterator_new",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_render_state_row_iterator_next",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_render_state_row_iterator_next_dirty",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_render_state_row_set",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_render_state_set",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_render_state_update",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_row_get",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_row_get_multi",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 12
+    },
+    {
+      "name": "ghostty_sgr_attribute_tag",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_sgr_attribute_value",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_sgr_free",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_sgr_new",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_sgr_next",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_sgr_reset",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_sgr_set_params",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 10
+    },
+    {
+      "name": "ghostty_sgr_unknown_full",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_sgr_unknown_partial",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_size_report_encode",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 12
+    },
+    {
+      "name": "ghostty_style_default",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_style_is_default",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_sys_log_stderr",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 14
+    },
+    {
+      "name": "ghostty_sys_set",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_terminal_compress",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_terminal_compression_activity",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_terminal_continuation_alloc",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 10
+    },
+    {
+      "name": "ghostty_terminal_continuation_buf",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 10
+    },
+    {
+      "name": "ghostty_terminal_continuation_write",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_terminal_free",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_terminal_get",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_terminal_get_multi",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 12
+    },
+    {
+      "name": "ghostty_terminal_grid_ref",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_terminal_grid_ref_track",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_terminal_new",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 10
+    },
+    {
+      "name": "ghostty_terminal_point_from_grid_ref",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 10
+    },
+    {
+      "name": "ghostty_terminal_reset",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_terminal_resize",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 12
+    },
+    {
+      "name": "ghostty_terminal_scroll_viewport",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_terminal_set",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_terminal_vt_write",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_terminal_vt_write_until",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 12
+    },
+    {
+      "name": "ghostty_tracked_grid_ref_free",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_tracked_grid_ref_has_value",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_tracked_grid_ref_point",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_tracked_grid_ref_set",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_unicode_codepoint_width",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_unicode_grapheme_width",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    }
+  ],
+  "before": {
+    "created_utc": "2026-11-05T21:14:35.200147\u002B00:00",
+    "work": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1",
+    "status": "pass",
+    "driver": "/home/marius/p/dotcc/libghostty/tests/FactoryAllocation/Driver.cs",
+    "driver_sha256": "C630ABB7E25ED73A2F137CE20396C4480428A1A1698C1346485AD3893F211A69",
+    "generator_sha256": "4D2E4EBB32A2C70A006C37A1B559D93CEA133C0CD48AE28994BB807FB816B0F1",
+    "environment": {
+      "DOTNET_PROCESSOR_COUNT": "1",
+      "DOTNET_TieredCompilation": null,
+      "DOTNET_TieredPGO": null,
+      "COMPlus_TieredCompilation": null,
+      "TMPDIR": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/tmp"
+    },
+    "measurement": "Full-set warmup pass, then strict zero allocated bytes per getter/factory; each pass includes 256 local warmups and 10000 measured iterations (1000 for factories \u003E=4096 bytes). All bytes consumed by no-inline checksum. BCL/hash/JSON setup, destinations, positive control excluded.",
+    "limits": "Private same-source diagnostic executable, not a product binary. Managed per-thread allocation counters only; accepted PE audit covers IL/RVA and allocation services. Argument-taking Create is not executed; no fabricated Args. No terminal qualification or translation/upstream phase.",
+    "forms": [
+      {
+        "form": "raw",
+        "canonical": {
+          "project": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+          "project_sha256": "E2436F509CFB64547BC45E5195CF1F1BB275A655C501B16BAE7F54100EFBDE32",
+          "manifest": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/Dotcc.SourceFiles.txt",
+          "manifest_sha256": "4DC2277E1CD3F808DEEA733E93A598488ED5456D88B3841BB3D3A4FD07551842",
+          "source_fingerprint": "5DBB50A5A6202DBF76EFB37A9F4BEFA5B208F302D2ABB5FF38D629B88AFFBB75",
+          "files": [
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00000.cs",
+              "name": "GhosttyVt.00000.cs",
+              "bytes": 281567,
+              "sha256": "238F075410E007D4B36C255B5D19D7DE6359623E6D711F7FFA957566E4D6F430"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00001.cs",
+              "name": "GhosttyVt.00001.cs",
+              "bytes": 342711,
+              "sha256": "DC6736BEA117EDF236BA8E1E825FEC1F56EA44F8D3C7F165752D1FE371D0F6CE"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00002.cs",
+              "name": "GhosttyVt.00002.cs",
+              "bytes": 263072,
+              "sha256": "8813F77859C5FFAA23EBAE14B6F90401285DD4EA560BBD36379BF70B4247B353"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00003.cs",
+              "name": "GhosttyVt.00003.cs",
+              "bytes": 341258,
+              "sha256": "E2031BF978073B35F03114076DFF4DE948403E906CAE6254427D2835F8C0D3E5"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00004.cs",
+              "name": "GhosttyVt.00004.cs",
+              "bytes": 264858,
+              "sha256": "3666E04087F59F0EBDB79458355A4DB29C944FF7EC981FEC22B3F38521D193B3"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00005.cs",
+              "name": "GhosttyVt.00005.cs",
+              "bytes": 264867,
+              "sha256": "B354D41C2F12F12362CDC18CB7762A90CA4E215576FBA75C77773C3E958792E0"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00006.cs",
+              "name": "GhosttyVt.00006.cs",
+              "bytes": 262305,
+              "sha256": "95B1C6A180DF6A761B5A581F1A2004A585DB1B48498709354360E4DA742A7E69"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00007.cs",
+              "name": "GhosttyVt.00007.cs",
+              "bytes": 267552,
+              "sha256": "3BE8D55F668508AE0A1F03D3A324A6EEE34C3D3D64F3B87F470EE242DC5D5A7D"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00008.cs",
+              "name": "GhosttyVt.00008.cs",
+              "bytes": 261796,
+              "sha256": "01CBBAFCED837601863209116E38E38DFA89CDD872509284A8CA87B863C1E6C9"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00009.cs",
+              "name": "GhosttyVt.00009.cs",
+              "bytes": 264336,
+              "sha256": "17851C4F1551CDCB7141654EF16D34046A9B876CC6251A22C180053A9F99E31C"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00010.cs",
+              "name": "GhosttyVt.00010.cs",
+              "bytes": 264156,
+              "sha256": "E4DA418330C5603CAEDD50AAB1D569A84FF2CFDD01ECF72D931B2875A30AE353"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00011.cs",
+              "name": "GhosttyVt.00011.cs",
+              "bytes": 262056,
+              "sha256": "FA4BA96D16BA5BCD024A71DE9234A96FCBA211B61C3DBC41EFFF1F9BB6482A8E"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00012.cs",
+              "name": "GhosttyVt.00012.cs",
+              "bytes": 262279,
+              "sha256": "8660314F2D60DE566487FE2416BA054EDCDD1B7A09F087F9DBC79A36A35EDF66"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00013.cs",
+              "name": "GhosttyVt.00013.cs",
+              "bytes": 282948,
+              "sha256": "6FCE206DC9D56A4DE5419EB97C107747B2E4284C4702A487F1B15B72988C0A5E"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00014.cs",
+              "name": "GhosttyVt.00014.cs",
+              "bytes": 264910,
+              "sha256": "DA85A1C9D607CC685172473DC841C6A875C345FE447A39D376CE831108451E1C"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00015.cs",
+              "name": "GhosttyVt.00015.cs",
+              "bytes": 278862,
+              "sha256": "4C692F3D562683F75E610D2BC7E90263F70C590855B297FF0896E39CD9E9CE4E"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00016.cs",
+              "name": "GhosttyVt.00016.cs",
+              "bytes": 262790,
+              "sha256": "22F24D5082D7E9F0252C5C25F9C14A9691A9C9CAD63D5BD42C1CA3EAF71627EC"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00017.cs",
+              "name": "GhosttyVt.00017.cs",
+              "bytes": 262505,
+              "sha256": "957EF55808905D255628C4F845AE9B183D56E4B15D52079DCDB96E339CB37D96"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00018.cs",
+              "name": "GhosttyVt.00018.cs",
+              "bytes": 263980,
+              "sha256": "E65EDD650C426282155F24745CCEFA26118B91DF5AE148619D7E8CC5EE5FEE98"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00019.cs",
+              "name": "GhosttyVt.00019.cs",
+              "bytes": 265401,
+              "sha256": "D45E6DBC97B1E4C21E4A013FE0D694A4DD2F5CC4175D06E9EB2AA72CC4BF43D1"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00020.cs",
+              "name": "GhosttyVt.00020.cs",
+              "bytes": 264687,
+              "sha256": "EBBDA6A3524E6761241F894E8802B87BE08A5A8997280547A4BF68B36EEC7143"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00021.cs",
+              "name": "GhosttyVt.00021.cs",
+              "bytes": 263498,
+              "sha256": "744BDED1BCD99D1D370EDBE0A4B84DEB9AEDB3871B2B8F349A4E5F1C3CC01447"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00022.cs",
+              "name": "GhosttyVt.00022.cs",
+              "bytes": 262284,
+              "sha256": "26C3169B92273BCB45FD177225B79B895EAC0D679439C249A6DF52763B4DFFD6"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00023.cs",
+              "name": "GhosttyVt.00023.cs",
+              "bytes": 262259,
+              "sha256": "AD9050149B29F507588268444D79927F97CD7DA137AEDD6A613D0EDDD001B8AE"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00024.cs",
+              "name": "GhosttyVt.00024.cs",
+              "bytes": 262402,
+              "sha256": "020A4122BB1FB36C999E96D33FD9FAEB29C6891B84A4EBEA752017ACD75AC7D8"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00025.cs",
+              "name": "GhosttyVt.00025.cs",
+              "bytes": 261940,
+              "sha256": "53E8028E643BDD0A643E6E8CC514D858872C664D4F259BBBE9C8F18097C0DC2C"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00026.cs",
+              "name": "GhosttyVt.00026.cs",
+              "bytes": 262850,
+              "sha256": "2635BD1D26DE32A57235DFD86BAB44825B5C20707BE4706C897371D3FDA13988"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00027.cs",
+              "name": "GhosttyVt.00027.cs",
+              "bytes": 262132,
+              "sha256": "559A506A64BD18B4AA2ED2357A3192DFF89EFC6483483149CA2111A51889DF14"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00028.cs",
+              "name": "GhosttyVt.00028.cs",
+              "bytes": 262981,
+              "sha256": "A896CF1B27043C8BCB1285F9846DCAF401EF25CAFDD0FC177E190972EFD136E2"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00029.cs",
+              "name": "GhosttyVt.00029.cs",
+              "bytes": 265178,
+              "sha256": "C7DCF394AF3207BF1B85433414D6C238D943A92A5131EEE1281E444B74790C02"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00030.cs",
+              "name": "GhosttyVt.00030.cs",
+              "bytes": 264242,
+              "sha256": "96BC511E0BE994746B39557347245FB08D1B48809166EC7F62A91E4E0DC0811D"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00031.cs",
+              "name": "GhosttyVt.00031.cs",
+              "bytes": 263464,
+              "sha256": "B1314DCD4F8C347C56768A45EBD265253F1C7701CF0CD6EE7DCA90DCEB2DA018"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00032.cs",
+              "name": "GhosttyVt.00032.cs",
+              "bytes": 263656,
+              "sha256": "679035655A8783EE6FABC89F1BEAE269A1B10E62D40FD74EB67C58C2F00DD91A"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00033.cs",
+              "name": "GhosttyVt.00033.cs",
+              "bytes": 269454,
+              "sha256": "8423266D2D021303832C33B40EF55C5323641ED82009BF7CF6262ACD6EE5E93E"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00034.cs",
+              "name": "GhosttyVt.00034.cs",
+              "bytes": 274690,
+              "sha256": "EC848B9615590A88FD36801BA13E4FB60D5B6F7D441BEEE18C0ED4E61984E9D9"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00035.cs",
+              "name": "GhosttyVt.00035.cs",
+              "bytes": 265209,
+              "sha256": "AA87E99583C8B303761A42A2AA844924F26BBAA38CAA137EBA3D8BA8AE93C03A"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00036.cs",
+              "name": "GhosttyVt.00036.cs",
+              "bytes": 271223,
+              "sha256": "6E57EDA2AA68B673D01FF940FE593083765F92BD65A805D7803E4F5B1E60C2B0"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00037.cs",
+              "name": "GhosttyVt.00037.cs",
+              "bytes": 267939,
+              "sha256": "71EC1933CADC86D8DF5BC2666E0EBD1FC03F499195391AE0EECC34CA67A04995"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00038.cs",
+              "name": "GhosttyVt.00038.cs",
+              "bytes": 262200,
+              "sha256": "133D1288B61895AF80147FCF199F342776961CE9406CCBBA978DFCFEEF665ACA"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00039.cs",
+              "name": "GhosttyVt.00039.cs",
+              "bytes": 264339,
+              "sha256": "3F075A95AB1A5BDC4C38FEEB174E4DCAED4F1D3C414A1BBFCDE11C56D94E1846"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00040.cs",
+              "name": "GhosttyVt.00040.cs",
+              "bytes": 263910,
+              "sha256": "11AF85F16F1B599BE35C560B07CE90E7D138F135421CD0906B9F6D1DB09B4DCC"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.00041.cs",
+              "name": "GhosttyVt.00041.cs",
+              "bytes": 83476,
+              "sha256": "82961A99ED79EBB357C16257D595D67723BF136B9EC579C71E7B241B4441FBB1"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/GhosttyVt.cs",
+              "name": "GhosttyVt.cs",
+              "bytes": 6067340,
+              "sha256": "190C26F573D917B4EC11AAC657A5A1FDB8CBFBABBAB824D1EE63DD26679B1797"
+            }
+          ],
+          "source_files": 43,
+          "source_bytes": 17195562
+        },
+        "accepted_audit": "/home/marius/p/dotcc/libghostty/artifacts/direct-resume-20261104/factory-qualification/final-raw-audit.json",
+        "accepted_audit_sha256": "90BE3E6BD368A12921AC2C842ED33B8DAEF12CAF9DEDC33773BD445534C166B5",
+        "accepted_assembly": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/raw/TranslatedGhosttyVt/bin/Release/net10.0/TranslatedGhosttyVt.dll",
+        "accepted_assembly_sha256": "E51D489530202CAF3F6AC7DEA4B96043E1BA45043A7AE66DEE22303586564241",
+        "project": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/raw/FactoryAllocation.csproj",
+        "project_sha256": "1443C645DDD52C25A3587F81A101F1FDD143E9DA1F28B64F478F01FEDDA92C94",
+        "calls_sha256": "C2AEBE824333A97CC6003161DDA12B8D7161A5493D0FBA3DAD67E33731401C86",
+        "cases_sha256": "2FDD10E0CCA184E0C8927B16453FFE7D2BDF9C670133EA5B2E2C654E4E56D34D",
+        "getters": 61,
+        "factories": 0,
+        "excluded_argument_factories": [],
+        "group_count": 1,
+        "maximum_calls_per_group": 61,
+        "maximum_probe_parameters": 2,
+        "maximum_wrapper_parameters": 0,
+        "nativeaot_root": "entire diagnostic assembly FactoryAllocation.raw, including every canonical translated source",
+        "runs": [
+          {
+            "mode": "jit",
+            "status": "pass",
+            "build": {
+              "argv": [
+                "dotnet",
+                "build",
+                "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/raw/FactoryAllocation.csproj",
+                "-c",
+                "Release",
+                "--artifacts-path",
+                "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/raw/artifacts-jit",
+                "--output",
+                "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/raw/outputs/jit",
+                "-m:1",
+                "-nodeReuse:false",
+                "-p:BuildInParallel=false",
+                "-p:UseSharedCompilation=false"
+              ],
+              "cwd": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/raw",
+              "log": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/raw/jit-build.log",
+              "started_utc": "2026-11-05T21:14:35.520456\u002B00:00",
+              "exit_code": 0,
+              "elapsed_seconds": 15.344,
+              "log_sha256": "8478C151DBD5F1DAC3FCDA098C58CB73529A983266C005FB468FD91C338FD114"
+            },
+            "binary": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/raw/outputs/jit/FactoryAllocation.raw.dll",
+            "binary_sha256": "16F651B5629CF6AC9B18B23B46BA492EA1915B57B810B6DE0EFA8AD4BB457C55",
+            "execution": {
+              "argv": [
+                "dotnet",
+                "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/raw/outputs/jit/FactoryAllocation.raw.dll",
+                "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/raw/outputs/jit-result.json",
+                "jit"
+              ],
+              "cwd": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/raw",
+              "log": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/raw/jit-run.log",
+              "started_utc": "2026-11-05T21:14:50.876630\u002B00:00",
+              "exit_code": 0,
+              "elapsed_seconds": 2.468,
+              "log_sha256": "866B525B6A098E93C45188A7D2A31EC592B50F3A8841DBB350E18F0B40F2FF6A"
+            },
+            "getters": 61,
+            "factories": 0,
+            "allocated_bytes": 0,
+            "positive_control_bytes": 288,
+            "result": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/raw/outputs/jit-result.json",
+            "result_sha256": "D47E3AF5B95109173215DBA11E332C76B091CD6D59CEF3626B0687B9A9F2C422",
+            "canonical_unchanged": true
+          },
+          {
+            "mode": "nativeaot",
+            "status": "pass",
+            "build": {
+              "argv": [
+                "dotnet",
+                "publish",
+                "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/raw/FactoryAllocation.csproj",
+                "-c",
+                "Release",
+                "--artifacts-path",
+                "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/raw/artifacts-nativeaot",
+                "--output",
+                "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/raw/outputs/nativeaot",
+                "-m:1",
+                "-nodeReuse:false",
+                "-p:BuildInParallel=false",
+                "-p:UseSharedCompilation=false",
+                "-r",
+                "linux-x64",
+                "-p:PublishAot=true",
+                "-p:IlcSingleThreaded=true"
+              ],
+              "cwd": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/raw",
+              "log": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/raw/nativeaot-build.log",
+              "started_utc": "2026-11-05T21:14:53.364460\u002B00:00",
+              "exit_code": 0,
+              "elapsed_seconds": 38.944,
+              "log_sha256": "1376ACA9116E65C1EA18FDD38A5EF63D1D6332327F8B974A0418C60C223ED2B4"
+            },
+            "binary": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/raw/outputs/nativeaot/FactoryAllocation.raw",
+            "binary_sha256": "0E228CD69E63BA481C2D61F2CD5EECAD6FFC03F404F8A0CF9B82F5A7AD19006C",
+            "execution": {
+              "argv": [
+                "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/raw/outputs/nativeaot/FactoryAllocation.raw",
+                "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/raw/outputs/nativeaot-result.json",
+                "nativeaot"
+              ],
+              "cwd": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/raw",
+              "log": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/raw/nativeaot-run.log",
+              "started_utc": "2026-11-05T21:15:32.324413\u002B00:00",
+              "exit_code": 0,
+              "elapsed_seconds": 1.315,
+              "log_sha256": "3EF1DCAC471D15F0AEAEFA9940ADD0E38EDF57B27D7C7C3B10510EEF01F4C62B"
+            },
+            "getters": 61,
+            "factories": 0,
+            "allocated_bytes": 0,
+            "positive_control_bytes": 288,
+            "result": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/raw/outputs/nativeaot-result.json",
+            "result_sha256": "4CAA6055DDC942966D7D84CFF26DFAD57B5480A1B0EC9C838BF782C0F792AF77",
+            "canonical_unchanged": true
+          }
+        ]
+      },
+      {
+        "form": "processed",
+        "canonical": {
+          "project": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+          "project_sha256": "E2436F509CFB64547BC45E5195CF1F1BB275A655C501B16BAE7F54100EFBDE32",
+          "manifest": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/Dotcc.SourceFiles.txt",
+          "manifest_sha256": "4DC2277E1CD3F808DEEA733E93A598488ED5456D88B3841BB3D3A4FD07551842",
+          "source_fingerprint": "A0CFF0AA739025D04CEDAECD2546B29588B3E65A46BE27AD56EDE9EF8C183A3E",
+          "files": [
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00000.cs",
+              "name": "GhosttyVt.00000.cs",
+              "bytes": 279629,
+              "sha256": "2D979BD202635E7CD4285AD22E096B814B6C68C3869B1E013DF50ED0D59800C0"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00001.cs",
+              "name": "GhosttyVt.00001.cs",
+              "bytes": 340486,
+              "sha256": "4620EE22B93102F7629C5085D3932E46592094F1BACC4B33C3B9C0D407D7B2AF"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00002.cs",
+              "name": "GhosttyVt.00002.cs",
+              "bytes": 260031,
+              "sha256": "B192191804689CD2F37FC6B07AD61C60021AEDE9E37CCCF0F62EAE436C901282"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00003.cs",
+              "name": "GhosttyVt.00003.cs",
+              "bytes": 338021,
+              "sha256": "FC3AF33100A6C7348D8BE756E5C7E74CB55447DBCD2907A5ADEAAEF5C9E1EAB6"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00004.cs",
+              "name": "GhosttyVt.00004.cs",
+              "bytes": 263191,
+              "sha256": "975CA9864EDF82B2275C5CAF0D8B7C2884545BAB7FC7F1CDE592797A5DFCA029"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00005.cs",
+              "name": "GhosttyVt.00005.cs",
+              "bytes": 262048,
+              "sha256": "46421A390A3F2B5F0BCCF86BDEBF2461633DD8067DFC9443CC6C70B77895C359"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00006.cs",
+              "name": "GhosttyVt.00006.cs",
+              "bytes": 260871,
+              "sha256": "E3E69E1F8BF8A5C3A9BA600393A287F9B67B23FABA66D9404EB1C795196047E9"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00007.cs",
+              "name": "GhosttyVt.00007.cs",
+              "bytes": 267132,
+              "sha256": "58BC9E1BBD68583CE421B1E4BD2EF6C79491933962DA7858F4F0B322B1DBB1AB"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00008.cs",
+              "name": "GhosttyVt.00008.cs",
+              "bytes": 260657,
+              "sha256": "EBEA0D6631C6A8AAAFA14762B6D2999B3E7F117645D000ACBCC2962A56E7A23E"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00009.cs",
+              "name": "GhosttyVt.00009.cs",
+              "bytes": 264383,
+              "sha256": "C1ADCA5ADC52D34ECFFDE4220B449F8330AECE632EE33E4993DA105B2B08AB59"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00010.cs",
+              "name": "GhosttyVt.00010.cs",
+              "bytes": 260669,
+              "sha256": "F0D58AC3927AC97AE41507EF3797EF174938508BBE4DFAAD1FAD018F15EFF160"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00011.cs",
+              "name": "GhosttyVt.00011.cs",
+              "bytes": 259960,
+              "sha256": "FDD7D7D5F1A5B0165EAB5D3621D542BA123D68AF781C7EE15EB407F642336E03"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00012.cs",
+              "name": "GhosttyVt.00012.cs",
+              "bytes": 259184,
+              "sha256": "7DE598309D4729F9F860CDD9B09ED60A972EA46942E3F6CEAAE37E0E43201351"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00013.cs",
+              "name": "GhosttyVt.00013.cs",
+              "bytes": 279096,
+              "sha256": "AF813656E5E639E3352F8CF17430422613436DF45E4B22C6F65806128B536822"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00014.cs",
+              "name": "GhosttyVt.00014.cs",
+              "bytes": 260422,
+              "sha256": "E522940A16A14BD9CDB4B12B8797E012EEBE7802C92FD4AE2B9A00E126E19D6D"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00015.cs",
+              "name": "GhosttyVt.00015.cs",
+              "bytes": 277087,
+              "sha256": "55D27FE23828405F26DE948D1C444317A2D814BBCC7E3527C041BC4F9654B5A5"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00016.cs",
+              "name": "GhosttyVt.00016.cs",
+              "bytes": 260371,
+              "sha256": "BAF6B4DB0CACAD97D51E5FCD157DFBD38FA4D0F8B5E89E619BB71B397D0C05A8"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00017.cs",
+              "name": "GhosttyVt.00017.cs",
+              "bytes": 260551,
+              "sha256": "AA44FCA8B5BD70965BD37797F562E3A9E4D835E19FAC109F1B1E50D51C9D000F"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00018.cs",
+              "name": "GhosttyVt.00018.cs",
+              "bytes": 261487,
+              "sha256": "2211A4FE47F918D813C4C28E84917F1D200B9FEB22185B929DFB4B4F88D81C75"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00019.cs",
+              "name": "GhosttyVt.00019.cs",
+              "bytes": 263205,
+              "sha256": "8524F79DC8B7F9C9488543701931FDEB5A2325066030CF9C52C8F625531F089B"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00020.cs",
+              "name": "GhosttyVt.00020.cs",
+              "bytes": 263138,
+              "sha256": "1931C0E9D43D32CF2F802B2352F4552E68AD14851A9FBDC587E2FB7A3B1D40DD"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00021.cs",
+              "name": "GhosttyVt.00021.cs",
+              "bytes": 260925,
+              "sha256": "DFB89DB053E0B7D8868BF84E1ACB88565BA1450FF53716A2076FB0C468D4E7AD"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00022.cs",
+              "name": "GhosttyVt.00022.cs",
+              "bytes": 258667,
+              "sha256": "010DD3EF12DF298DA3A938CAFC9A9EAA10FCDB9B55AE95F5E2B27EE8B5B4F97C"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00023.cs",
+              "name": "GhosttyVt.00023.cs",
+              "bytes": 259899,
+              "sha256": "9FF770250245E1DA073B1166E53548C86311330A419D517866A5057D8F082D14"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00024.cs",
+              "name": "GhosttyVt.00024.cs",
+              "bytes": 261016,
+              "sha256": "5C7029594818CEFFE17A2FE5B642FEF616457226982467B89CB1E0406292F72A"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00025.cs",
+              "name": "GhosttyVt.00025.cs",
+              "bytes": 261089,
+              "sha256": "EA2C43EBAD519E4627B52EC46214C7FEB182B7941E0F29797161AD6EEBA09BCC"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00026.cs",
+              "name": "GhosttyVt.00026.cs",
+              "bytes": 262409,
+              "sha256": "7FC7A6AA8A2E856AE53F121EBDB4EC805CC83598C475E15BAD80483818DF56E6"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00027.cs",
+              "name": "GhosttyVt.00027.cs",
+              "bytes": 259463,
+              "sha256": "57C1B0D2FAB25924B747134915FC582579DB98BB8D044C44397E8E9265D3119E"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00028.cs",
+              "name": "GhosttyVt.00028.cs",
+              "bytes": 260738,
+              "sha256": "110B94BEFB1DC080D5BE8807E7E84B3B5D6773D964A7DCC0AA76D3578CF8EC97"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00029.cs",
+              "name": "GhosttyVt.00029.cs",
+              "bytes": 259353,
+              "sha256": "78C6DF653C55CB6C9ECE7B47137B0D370D98ED85B03004AB6FA847DE1D05AB30"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00030.cs",
+              "name": "GhosttyVt.00030.cs",
+              "bytes": 257792,
+              "sha256": "1842747A8083DD396387906A7B4BAD9ED04159FC71339FF18BAB708DB4A7A1BF"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00031.cs",
+              "name": "GhosttyVt.00031.cs",
+              "bytes": 257404,
+              "sha256": "65F829678E2F120AC8C8DF1AAE3D3621135466812AEC48D94D532D92CCD70AB7"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00032.cs",
+              "name": "GhosttyVt.00032.cs",
+              "bytes": 258800,
+              "sha256": "549188B049FDA6C91E021229E57CD7B6ABCE0780AF70A460FADF2CD554953209"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00033.cs",
+              "name": "GhosttyVt.00033.cs",
+              "bytes": 267499,
+              "sha256": "1E72A8E069EAA0C9814E162A1A164DE1CE45EB7CD83985A11ABE6B61E54E1F2E"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00034.cs",
+              "name": "GhosttyVt.00034.cs",
+              "bytes": 271472,
+              "sha256": "6D55F89E36BFA845E91CA589AB5FF6F0E92BEE603D0440E64A98F2A899D2FF2D"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00035.cs",
+              "name": "GhosttyVt.00035.cs",
+              "bytes": 262747,
+              "sha256": "E5E348D1F732D3EFF4F05E0362878014186771EC41672BAADF99AE0A28A90BEE"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00036.cs",
+              "name": "GhosttyVt.00036.cs",
+              "bytes": 268588,
+              "sha256": "8F5643E858F9EFF626C5571C1FA713A3D349732484005E8BF84805EEF982CA98"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00037.cs",
+              "name": "GhosttyVt.00037.cs",
+              "bytes": 263964,
+              "sha256": "E2B74879FF4D8EEA5B5CF645AB9A4A86CAC6BDE4E0840AA3E86BBC1E0B24717A"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00038.cs",
+              "name": "GhosttyVt.00038.cs",
+              "bytes": 257347,
+              "sha256": "FAD27D1D0E30A65E15FB0EE4ADAA7EA81C79FA95857C60D2946E31C3FDEFDF77"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00039.cs",
+              "name": "GhosttyVt.00039.cs",
+              "bytes": 262572,
+              "sha256": "74D482548FBAFBA13203E396C49C6595D3C21956570906B35F3E288E006880C2"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00040.cs",
+              "name": "GhosttyVt.00040.cs",
+              "bytes": 258316,
+              "sha256": "AE8AEB398FCC32EEFFA116AA3DDF31567887D7182D62A4DFD046F84502A8A016"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.00041.cs",
+              "name": "GhosttyVt.00041.cs",
+              "bytes": 82934,
+              "sha256": "0D3491AFB56A280DA21E9227BA16942E038EEB694997DE2B3F5EFCEAE3CF8C78"
+            },
+            {
+              "path": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/GhosttyVt.cs",
+              "name": "GhosttyVt.cs",
+              "bytes": 6067340,
+              "sha256": "190C26F573D917B4EC11AAC657A5A1FDB8CBFBABBAB824D1EE63DD26679B1797"
+            }
+          ],
+          "source_files": 43,
+          "source_bytes": 17081953
+        },
+        "accepted_audit": "/home/marius/p/dotcc/libghostty/artifacts/direct-resume-20261104/factory-qualification/final-processed-audit.json",
+        "accepted_audit_sha256": "0703508C95B81F615A283F3DF58214D9B929C1864D06452571AE8DFA50E8F24A",
+        "accepted_assembly": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/direct-delivery/processed/TranslatedGhosttyVt/bin/Release/net10.0/TranslatedGhosttyVt.dll",
+        "accepted_assembly_sha256": "4D8DF80BF0403DDC0158A608866E1832493686BC675469625F3DEEC718A6918A",
+        "project": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/processed/FactoryAllocation.csproj",
+        "project_sha256": "F625FD01F161584FEBAFF1E4D906780FB13EB3D987AD76CEF6A25FA5CCC6CF93",
+        "calls_sha256": "3987512B641A1DA95B0F6FA3FD713EC0715CE40BB880204CEDE03FB27E0D6C0C",
+        "cases_sha256": "2FDD10E0CCA184E0C8927B16453FFE7D2BDF9C670133EA5B2E2C654E4E56D34D",
+        "getters": 61,
+        "factories": 0,
+        "excluded_argument_factories": [],
+        "group_count": 1,
+        "maximum_calls_per_group": 61,
+        "maximum_probe_parameters": 2,
+        "maximum_wrapper_parameters": 0,
+        "nativeaot_root": "entire diagnostic assembly FactoryAllocation.processed, including every canonical translated source",
+        "runs": [
+          {
+            "mode": "jit",
+            "status": "pass",
+            "build": {
+              "argv": [
+                "dotnet",
+                "build",
+                "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/processed/FactoryAllocation.csproj",
+                "-c",
+                "Release",
+                "--artifacts-path",
+                "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/processed/artifacts-jit",
+                "--output",
+                "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/processed/outputs/jit",
+                "-m:1",
+                "-nodeReuse:false",
+                "-p:BuildInParallel=false",
+                "-p:UseSharedCompilation=false"
+              ],
+              "cwd": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/processed",
+              "log": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/processed/jit-build.log",
+              "started_utc": "2026-11-05T21:15:33.658924\u002B00:00",
+              "exit_code": 0,
+              "elapsed_seconds": 12.884,
+              "log_sha256": "50858FAFB8191D38B4986173952713CDEDB05B615422467B6115BCAD5AC15A3B"
+            },
+            "binary": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/processed/outputs/jit/FactoryAllocation.processed.dll",
+            "binary_sha256": "D96E7913F58C98B42EC5193AF8309ABDD7B7C3687D18F823172E37D986D932BC",
+            "execution": {
+              "argv": [
+                "dotnet",
+                "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/processed/outputs/jit/FactoryAllocation.processed.dll",
+                "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/processed/outputs/jit-result.json",
+                "jit"
+              ],
+              "cwd": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/processed",
+              "log": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/processed/jit-run.log",
+              "started_utc": "2026-11-05T21:15:46.554678\u002B00:00",
+              "exit_code": 0,
+              "elapsed_seconds": 2.518,
+              "log_sha256": "5ECD37AD9D313F7EE84ABB13A65FDF5258151C6FCFBFA20F20DE11A251AF9212"
+            },
+            "getters": 61,
+            "factories": 0,
+            "allocated_bytes": 0,
+            "positive_control_bytes": 288,
+            "result": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/processed/outputs/jit-result.json",
+            "result_sha256": "4DB65340C312EC53E3B080D7921DC1E61C546EC4C0B70D40F8FE1AFFFCD01202",
+            "canonical_unchanged": true
+          },
+          {
+            "mode": "nativeaot",
+            "status": "pass",
+            "build": {
+              "argv": [
+                "dotnet",
+                "publish",
+                "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/processed/FactoryAllocation.csproj",
+                "-c",
+                "Release",
+                "--artifacts-path",
+                "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/processed/artifacts-nativeaot",
+                "--output",
+                "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/processed/outputs/nativeaot",
+                "-m:1",
+                "-nodeReuse:false",
+                "-p:BuildInParallel=false",
+                "-p:UseSharedCompilation=false",
+                "-r",
+                "linux-x64",
+                "-p:PublishAot=true",
+                "-p:IlcSingleThreaded=true"
+              ],
+              "cwd": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/processed",
+              "log": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/processed/nativeaot-build.log",
+              "started_utc": "2026-11-05T21:15:49.092184\u002B00:00",
+              "exit_code": 0,
+              "elapsed_seconds": 33.328,
+              "log_sha256": "93FF0CD873478772A876331C7A6D94765EDB3336B99D875C459296FD98214F04"
+            },
+            "binary": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/processed/outputs/nativeaot/FactoryAllocation.processed",
+            "binary_sha256": "78EEECF650B88629C4E8C01D4E454B2A2F94A67F5961757CD65808CDA1E6E32D",
+            "execution": {
+              "argv": [
+                "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/processed/outputs/nativeaot/FactoryAllocation.processed",
+                "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/processed/outputs/nativeaot-result.json",
+                "nativeaot"
+              ],
+              "cwd": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/processed",
+              "log": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/processed/nativeaot-run.log",
+              "started_utc": "2026-11-05T21:16:22.434973\u002B00:00",
+              "exit_code": 0,
+              "elapsed_seconds": 1.315,
+              "log_sha256": "7774E4FCD63FD8609DA28E0FC23BBE3F769AFD10C1615F3E06CA06E3114E98E7"
+            },
+            "getters": 61,
+            "factories": 0,
+            "allocated_bytes": 0,
+            "positive_control_bytes": 288,
+            "result": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/processed/outputs/nativeaot-result.json",
+            "result_sha256": "4D1D3C16198390484EF2BCF576FEABCEC5A5CE26AF511C4E7187A77B783C4137",
+            "canonical_unchanged": true
+          }
+        ]
+      }
+    ],
+    "sdk": {
+      "argv": [
+        "dotnet",
+        "--info"
+      ],
+      "cwd": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1",
+      "log": "/mnt/storage/dotcc-libghostty-disposable/resume-20261104/factory-qualification/measurements-final-1/dotnet-info.log",
+      "started_utc": "2026-11-05T21:14:35.345277\u002B00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 0.164,
+      "log_sha256": "CCDBD09D4F8FB65BA39B3B244000148CF067595FCCB1F46A062442D04C458A0A"
+    }
+  },
+  "helper_method_count": 0,
+  "helper_type_count": 0,
+  "max_parameters": 0,
+  "maximum_helper_il_bytes": 0,
+  "maximum_allowed_parameters": 2,
+  "bounded_parameters": true,
+  "factories": [],
+  "storage_helper_method_count": 141,
+  "maximum_storage_helper_parameters": 1,
+  "bounded_storage_helper_parameters": true,
+  "storage_helpers": [
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_01D569F28E97B129278F95E3B4BAAD6D23416E604A3B25F1B477DDCC7828AC01_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 91
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_07D40F2711CBD1A159DE9FFD1CECBA5CBA6A2CBA8C6FE6EBCE350DAB342F8142_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 34
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_12E73C3D710E62B208E4FC026FEC46D643A2E60DB38D68AB47E45B22CFAD4473_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 90
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_1F8D7AFFAE03D1CBBAEAEFA688A2E655202EA8D3BCDDACFF022A54B421F221CB_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 36
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_2C2C8BAED88694EBEDD3F1D266A3A1015AF1C638FEFA936631FD1E19836C6684_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 34
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_2D335F176CCE04E411A561680B7691B20A2ED7E2394DC98FBFA70FD7290E0BB7_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 4120
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_2D335F176CCE04E411A561680B7691B20A2ED7E2394DC98FBFA70FD7290E0BB7_Fill_0_1",
+      "parameters": 1,
+      "il_bytes": 4323
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_2D335F176CCE04E411A561680B7691B20A2ED7E2394DC98FBFA70FD7290E0BB7_Fill_0_2",
+      "parameters": 1,
+      "il_bytes": 3181
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_2ED15C0E9BA8F3C59715FE181EFABA1F66FFBCCF305A58D495DE7CFCFB9A877A_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 35
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_3F983F0BD0656B58AAD2865FAA7399176A510682278A9666BDF7EDBC3B80A32F_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 57
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_43460B6FB23018C5C0F91C1BB36C5960514C86AA026152FC49717678F4D44608_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 35
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_465F293589AB341DE7561537AEF2D4B24888E8732F5C6C4490E9BA46F3CBB1F5_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 2352
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_472BABA9E2A409E8DF024A99B78767E84B2626B16773C94E61B298F099783969_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 124
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_4AC2C24F11C6C13A4425562603498436C902744547764F78917069E749F2F04D_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 333
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_538600356E5BB8201F356B423D1680288741A541C4AC8BC12A1D29D9D180AA87_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 90
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_5698E132B7A4F2281857A514608D3920BAEB103065A1B412E6B829369468C2E4_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 267
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_589E2A51F90D8AE8C55301CCB1E3903319788AF3A77FD78DB8BD3710D2FF0162_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 90
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_702913FD92888A411F55FE0F672030EB460C3C910D29FF65CD413FCEE035D9BB_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 90
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_723E1909B88BCD0B9607898345796781BB3F405ECBA26FCFDCEDA9539578428C_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 56
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_7637202848636C242D548FB6F8F4CB9F51F868A8551B3E5199B7E16B71291026_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 4499
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_7637202848636C242D548FB6F8F4CB9F51F868A8551B3E5199B7E16B71291026_Fill_0_1",
+      "parameters": 1,
+      "il_bytes": 4772
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_7637202848636C242D548FB6F8F4CB9F51F868A8551B3E5199B7E16B71291026_Fill_0_2",
+      "parameters": 1,
+      "il_bytes": 4817
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_7637202848636C242D548FB6F8F4CB9F51F868A8551B3E5199B7E16B71291026_Fill_0_3",
+      "parameters": 1,
+      "il_bytes": 4875
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_7637202848636C242D548FB6F8F4CB9F51F868A8551B3E5199B7E16B71291026_Fill_0_4",
+      "parameters": 1,
+      "il_bytes": 4929
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_7637202848636C242D548FB6F8F4CB9F51F868A8551B3E5199B7E16B71291026_Fill_0_5",
+      "parameters": 1,
+      "il_bytes": 4923
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_7637202848636C242D548FB6F8F4CB9F51F868A8551B3E5199B7E16B71291026_Fill_0_6",
+      "parameters": 1,
+      "il_bytes": 4791
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_86004892FB02705CC81EA6595FB8916B87C1D1E49D3888BAF76FCB2860EEA2C3_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 4038
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_86004892FB02705CC81EA6595FB8916B87C1D1E49D3888BAF76FCB2860EEA2C3_Fill_0_1",
+      "parameters": 1,
+      "il_bytes": 4229
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_86004892FB02705CC81EA6595FB8916B87C1D1E49D3888BAF76FCB2860EEA2C3_Fill_0_2",
+      "parameters": 1,
+      "il_bytes": 3357
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_86FA55755D8B5731CEB334540119DEED19E0D7EB4B17EC2A80DBC5B0AF03D472_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 36
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_89C1142C9D110CA0A781641A936FBF778966AA1690B5514FD7B9894001D6EDD6_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 34
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_91BDBF610228E953D7B4E78742E8BFD6B9E229921424DBE8FD2294C6DF8B535C_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 35
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_93426F126ECAFA2D0B2DFCEE33A605908946718CAA7498D26CFAD3A2DFF67757_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 3444
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_93426F126ECAFA2D0B2DFCEE33A605908946718CAA7498D26CFAD3A2DFF67757_Fill_0_1",
+      "parameters": 1,
+      "il_bytes": 3638
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_93426F126ECAFA2D0B2DFCEE33A605908946718CAA7498D26CFAD3A2DFF67757_Fill_0_2",
+      "parameters": 1,
+      "il_bytes": 2950
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_95738E28C41DD5BAF932E8DAEF35FCFAC68996CABFA5D87E0C307F44AB3DC802_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 34
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_95E936B248E7E587D841435C5600D83783A9EBBE1F8CE8AB12537DB69A391E80_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 4619
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_95E936B248E7E587D841435C5600D83783A9EBBE1F8CE8AB12537DB69A391E80_Fill_0_1",
+      "parameters": 1,
+      "il_bytes": 4910
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_95E936B248E7E587D841435C5600D83783A9EBBE1F8CE8AB12537DB69A391E80_Fill_0_2",
+      "parameters": 1,
+      "il_bytes": 4946
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_95E936B248E7E587D841435C5600D83783A9EBBE1F8CE8AB12537DB69A391E80_Fill_0_3",
+      "parameters": 1,
+      "il_bytes": 5016
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_95E936B248E7E587D841435C5600D83783A9EBBE1F8CE8AB12537DB69A391E80_Fill_0_4",
+      "parameters": 1,
+      "il_bytes": 5017
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_95E936B248E7E587D841435C5600D83783A9EBBE1F8CE8AB12537DB69A391E80_Fill_0_5",
+      "parameters": 1,
+      "il_bytes": 5011
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_95E936B248E7E587D841435C5600D83783A9EBBE1F8CE8AB12537DB69A391E80_Fill_0_6",
+      "parameters": 1,
+      "il_bytes": 4087
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_96D91B487D5F3093A88697C9611FB37B47D91E1ACE3B8D4226AC7520CDC69E04_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 3514
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_96D91B487D5F3093A88697C9611FB37B47D91E1ACE3B8D4226AC7520CDC69E04_Fill_0_1",
+      "parameters": 1,
+      "il_bytes": 3720
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_96D91B487D5F3093A88697C9611FB37B47D91E1ACE3B8D4226AC7520CDC69E04_Fill_0_2",
+      "parameters": 1,
+      "il_bytes": 2798
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_9D1D4C77215739D7629C3C8FE1973B4DCC48CADEAF03800FA1546CA34D4031D9_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 90
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_9FD89E5DABB8BE7DAC2E00246FE9AF9CD2E129D0B9E59C96BCB6C0E8BABFB3D1_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 3374
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_9FD89E5DABB8BE7DAC2E00246FE9AF9CD2E129D0B9E59C96BCB6C0E8BABFB3D1_Fill_0_1",
+      "parameters": 1,
+      "il_bytes": 3556
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_9FD89E5DABB8BE7DAC2E00246FE9AF9CD2E129D0B9E59C96BCB6C0E8BABFB3D1_Fill_0_2",
+      "parameters": 1,
+      "il_bytes": 3102
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_A68E6E73683134A7FB730A4C3FEA4EE4C166C41DB712688451DB1B18079DF6CE_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 34
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_A9A0E7179D75CC3021F7FB320A238CEE4E61177BD6152FA2810C569DF2A577D4_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 1965
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_AC8F7D5D822C84454EEFE5C12548742585E645354EB739CB6EBCE471F7A25F6F_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 124
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_B3FB805564EC59C41AEA878588EF35087A70F42DBCCC4B0612A7F0BA044585DD_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 90
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_B9D6E04BC1A47DD16AB443FA802E5B292ACB693CA012E7737BC452327E4BF1C8_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 35
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_C18174A06C8F17753BD99B5A77480A3479222FC3E250059CB7C98BCF543AF16C_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 90
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_C45B7B1B13EA59FC1A98DF24187722F0F2191245D0318AA97BCC14D72EF16D1C_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 1264
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_CED48B66F602CABAE44688722BD7356B686AB86FFECB30B68061356B58B74CB9_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 90
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_D63868A066199DD10E88C9ADB15E245D93AF2E9DC9572E92D88BF8EFAA2489FF_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 90
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_DFB69A67E91381D5964EC1F70F31EAD29E5A54D99FCDEE6FA75AF15317503342_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 192
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_DFD29ABDF52B945B0EDA8869AE8BF7BD6334C7C0BBE9C358649E36012C562B7B_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 4202
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_DFD29ABDF52B945B0EDA8869AE8BF7BD6334C7C0BBE9C358649E36012C562B7B_Fill_0_1",
+      "parameters": 1,
+      "il_bytes": 4417
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_DFD29ABDF52B945B0EDA8869AE8BF7BD6334C7C0BBE9C358649E36012C562B7B_Fill_0_2",
+      "parameters": 1,
+      "il_bytes": 3005
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_E368CAC8EC2D69184C7D3F85DEB7EE63124713A73D2478103E72E784932CB0D8_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 90
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_EDA15139385C88F382204D33BC563E08BD91C5E44A099D463EE5C7D2E7194363_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 5343
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_EDA15139385C88F382204D33BC563E08BD91C5E44A099D463EE5C7D2E7194363_Fill_0_1",
+      "parameters": 1,
+      "il_bytes": 5594
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_EDA15139385C88F382204D33BC563E08BD91C5E44A099D463EE5C7D2E7194363_Fill_0_2",
+      "parameters": 1,
+      "il_bytes": 5787
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_EDA15139385C88F382204D33BC563E08BD91C5E44A099D463EE5C7D2E7194363_Fill_0_3",
+      "parameters": 1,
+      "il_bytes": 5825
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_EDA15139385C88F382204D33BC563E08BD91C5E44A099D463EE5C7D2E7194363_Fill_0_4",
+      "parameters": 1,
+      "il_bytes": 5805
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_EDA15139385C88F382204D33BC563E08BD91C5E44A099D463EE5C7D2E7194363_Fill_0_5",
+      "parameters": 1,
+      "il_bytes": 5821
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_EDA15139385C88F382204D33BC563E08BD91C5E44A099D463EE5C7D2E7194363_Fill_0_6",
+      "parameters": 1,
+      "il_bytes": 5796
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_EDA15139385C88F382204D33BC563E08BD91C5E44A099D463EE5C7D2E7194363_Fill_0_7",
+      "parameters": 1,
+      "il_bytes": 5801
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_EDA15139385C88F382204D33BC563E08BD91C5E44A099D463EE5C7D2E7194363_Fill_0_8",
+      "parameters": 1,
+      "il_bytes": 1856
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_F3729FF06876F98B1E6903E59023FD41A12740B7A6B026BC8F2B31BC7D4D4459_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 5228
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_F3729FF06876F98B1E6903E59023FD41A12740B7A6B026BC8F2B31BC7D4D4459_Fill_0_1",
+      "parameters": 1,
+      "il_bytes": 5475
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_F3729FF06876F98B1E6903E59023FD41A12740B7A6B026BC8F2B31BC7D4D4459_Fill_0_2",
+      "parameters": 1,
+      "il_bytes": 5631
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_F3729FF06876F98B1E6903E59023FD41A12740B7A6B026BC8F2B31BC7D4D4459_Fill_0_3",
+      "parameters": 1,
+      "il_bytes": 5722
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_F3729FF06876F98B1E6903E59023FD41A12740B7A6B026BC8F2B31BC7D4D4459_Fill_0_4",
+      "parameters": 1,
+      "il_bytes": 5693
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_F3729FF06876F98B1E6903E59023FD41A12740B7A6B026BC8F2B31BC7D4D4459_Fill_0_5",
+      "parameters": 1,
+      "il_bytes": 5681
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_F3729FF06876F98B1E6903E59023FD41A12740B7A6B026BC8F2B31BC7D4D4459_Fill_0_6",
+      "parameters": 1,
+      "il_bytes": 5696
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_F3729FF06876F98B1E6903E59023FD41A12740B7A6B026BC8F2B31BC7D4D4459_Fill_0_7",
+      "parameters": 1,
+      "il_bytes": 5720
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_F3729FF06876F98B1E6903E59023FD41A12740B7A6B026BC8F2B31BC7D4D4459_Fill_0_8",
+      "parameters": 1,
+      "il_bytes": 2782
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_F8D5097ED1343D2940A7A83E77DF5B84982413733C0CA08FE32A26D06814F5B0_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 90
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_FD86B955ED882F48F429FF254BAABF8CA2D25F437422F6D368AF4509D8E0B527_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 90
+    },
+    {
+      "type": "Managed.GhosttyVt\u002B__DotccPrimitiveInit_0B91A4618EF2F71F604F43174C681171826FAA819AC989A1701F78A985C61A5C",
+      "method": "Copy_0_0",
+      "parameters": 1,
+      "il_bytes": 58
+    },
+    {
+      "type": "Managed.GhosttyVt\u002B__DotccPrimitiveInit_627882A0620F2DF4B0D331C640018F5CDBFA61944A7D0A249E75184CB2668585",
+      "method": "Copy_0_0",
+      "parameters": 1,
+      "il_bytes": 256
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_01D569F28E97B129278F95E3B4BAAD6D23416E604A3B25F1B477DDCC7828AC01_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_07D40F2711CBD1A159DE9FFD1CECBA5CBA6A2CBA8C6FE6EBCE350DAB342F8142_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_12B06E814EC47E57ABCECEAB7AE3E054FAB0995DB2E37360E5D77CA49D461E28_Create",
+      "parameters": 0,
+      "il_bytes": 7
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_12E73C3D710E62B208E4FC026FEC46D643A2E60DB38D68AB47E45B22CFAD4473_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_15022A225D8154F28740588746B6F53DCBFE432C35D65CAFDB3D8C8C41C3985A_Create",
+      "parameters": 0,
+      "il_bytes": 7
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_1F8D7AFFAE03D1CBBAEAEFA688A2E655202EA8D3BCDDACFF022A54B421F221CB_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_208850521AC35D24CF32E834E89FB2D441906BC805604CB0A2D4909F3E05ADA6_Create",
+      "parameters": 0,
+      "il_bytes": 7
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_2C2C8BAED88694EBEDD3F1D266A3A1015AF1C638FEFA936631FD1E19836C6684_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_2D335F176CCE04E411A561680B7691B20A2ED7E2394DC98FBFA70FD7290E0BB7_Create",
+      "parameters": 0,
+      "il_bytes": 29
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_2ED15C0E9BA8F3C59715FE181EFABA1F66FFBCCF305A58D495DE7CFCFB9A877A_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_3F983F0BD0656B58AAD2865FAA7399176A510682278A9666BDF7EDBC3B80A32F_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_43460B6FB23018C5C0F91C1BB36C5960514C86AA026152FC49717678F4D44608_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_465F293589AB341DE7561537AEF2D4B24888E8732F5C6C4490E9BA46F3CBB1F5_Create",
+      "parameters": 0,
+      "il_bytes": 14
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_472BABA9E2A409E8DF024A99B78767E84B2626B16773C94E61B298F099783969_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_4AC2C24F11C6C13A4425562603498436C902744547764F78917069E749F2F04D_Create",
+      "parameters": 0,
+      "il_bytes": 14
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_538600356E5BB8201F356B423D1680288741A541C4AC8BC12A1D29D9D180AA87_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_5698E132B7A4F2281857A514608D3920BAEB103065A1B412E6B829369468C2E4_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_589E2A51F90D8AE8C55301CCB1E3903319788AF3A77FD78DB8BD3710D2FF0162_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_5F37446600CF37A9A173D019F927F94DE7A2C6F90669919A3255E86013F592F5_Create",
+      "parameters": 0,
+      "il_bytes": 7
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_64812ADEB017B7312AF8DEB7A52D28720E61085FB4630A3BB84A98AE7651C091_Create",
+      "parameters": 0,
+      "il_bytes": 7
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_702913FD92888A411F55FE0F672030EB460C3C910D29FF65CD413FCEE035D9BB_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_723E1909B88BCD0B9607898345796781BB3F405ECBA26FCFDCEDA9539578428C_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_7637202848636C242D548FB6F8F4CB9F51F868A8551B3E5199B7E16B71291026_Create",
+      "parameters": 0,
+      "il_bytes": 53
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_86004892FB02705CC81EA6595FB8916B87C1D1E49D3888BAF76FCB2860EEA2C3_Create",
+      "parameters": 0,
+      "il_bytes": 29
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_86FA55755D8B5731CEB334540119DEED19E0D7EB4B17EC2A80DBC5B0AF03D472_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_88564FB0DB5AF5F7F8A1493027A24EBB64217F3A1198715CB5B9746E357A1127_Create",
+      "parameters": 0,
+      "il_bytes": 7
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_89C1142C9D110CA0A781641A936FBF778966AA1690B5514FD7B9894001D6EDD6_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_91BDBF610228E953D7B4E78742E8BFD6B9E229921424DBE8FD2294C6DF8B535C_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_93426F126ECAFA2D0B2DFCEE33A605908946718CAA7498D26CFAD3A2DFF67757_Create",
+      "parameters": 0,
+      "il_bytes": 29
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_95738E28C41DD5BAF932E8DAEF35FCFAC68996CABFA5D87E0C307F44AB3DC802_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_95E936B248E7E587D841435C5600D83783A9EBBE1F8CE8AB12537DB69A391E80_Create",
+      "parameters": 0,
+      "il_bytes": 53
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_96D91B487D5F3093A88697C9611FB37B47D91E1ACE3B8D4226AC7520CDC69E04_Create",
+      "parameters": 0,
+      "il_bytes": 29
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_9D1D4C77215739D7629C3C8FE1973B4DCC48CADEAF03800FA1546CA34D4031D9_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_9FD89E5DABB8BE7DAC2E00246FE9AF9CD2E129D0B9E59C96BCB6C0E8BABFB3D1_Create",
+      "parameters": 0,
+      "il_bytes": 29
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_A68E6E73683134A7FB730A4C3FEA4EE4C166C41DB712688451DB1B18079DF6CE_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_A9A0E7179D75CC3021F7FB320A238CEE4E61177BD6152FA2810C569DF2A577D4_Create",
+      "parameters": 0,
+      "il_bytes": 14
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_AB921805455766D50CD827E74675EFCEA0670E53685E377B74B5D93375E78E8D_Create",
+      "parameters": 0,
+      "il_bytes": 7
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_AC8F7D5D822C84454EEFE5C12548742585E645354EB739CB6EBCE471F7A25F6F_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_B3FB805564EC59C41AEA878588EF35087A70F42DBCCC4B0612A7F0BA044585DD_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_B9D6E04BC1A47DD16AB443FA802E5B292ACB693CA012E7737BC452327E4BF1C8_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_C18174A06C8F17753BD99B5A77480A3479222FC3E250059CB7C98BCF543AF16C_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_C45B7B1B13EA59FC1A98DF24187722F0F2191245D0318AA97BCC14D72EF16D1C_Create",
+      "parameters": 0,
+      "il_bytes": 14
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_CED48B66F602CABAE44688722BD7356B686AB86FFECB30B68061356B58B74CB9_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_D63868A066199DD10E88C9ADB15E245D93AF2E9DC9572E92D88BF8EFAA2489FF_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_DA204D8759E3C554DE64EC8C21A4DA178E92D86952ABFCC135CE451CB55B7A3E_Create",
+      "parameters": 0,
+      "il_bytes": 7
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_DE55E92F1862C3DCE08EE4D10137B45C5586A468AC79356E11CF51C24E1D80A6_Create",
+      "parameters": 0,
+      "il_bytes": 7
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_DFB69A67E91381D5964EC1F70F31EAD29E5A54D99FCDEE6FA75AF15317503342_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_DFD29ABDF52B945B0EDA8869AE8BF7BD6334C7C0BBE9C358649E36012C562B7B_Create",
+      "parameters": 0,
+      "il_bytes": 29
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_E368CAC8EC2D69184C7D3F85DEB7EE63124713A73D2478103E72E784932CB0D8_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_EDA15139385C88F382204D33BC563E08BD91C5E44A099D463EE5C7D2E7194363_Create",
+      "parameters": 0,
+      "il_bytes": 65
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_F3729FF06876F98B1E6903E59023FD41A12740B7A6B026BC8F2B31BC7D4D4459_Create",
+      "parameters": 0,
+      "il_bytes": 65
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_F8D5097ED1343D2940A7A83E77DF5B84982413733C0CA08FE32A26D06814F5B0_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_FD86B955ED882F48F429FF254BAABF8CA2D25F437422F6D368AF4509D8E0B527_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt\u002B__DotccPrimitiveInit_0B91A4618EF2F71F604F43174C681171826FAA819AC989A1701F78A985C61A5C",
+      "method": "Create",
+      "parameters": 0,
+      "il_bytes": 17
+    },
+    {
+      "type": "Managed.GhosttyVt\u002B__DotccPrimitiveInit_627882A0620F2DF4B0D331C640018F5CDBFA61944A7D0A249E75184CB2668585",
+      "method": "Create",
+      "parameters": 0,
+      "il_bytes": 17
+    }
+  ],
+  "storage_helper_scope": "Pointer-returning primitive/owned array storage helpers are arity-inspected separately; their source-owned allocations are not value-factory allocation probes",
+  "global_getter_warmup_rounds": 1,
+  "global_getter_warmup_runtime_allocated_bytes": 3856,
+  "payload_getters": 61,
+  "getter_logical_bytes": 84034,
+  "maximum_getter_il_bytes": 16,
+  "getters": [
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_B08BB5E5D6EAAC1049EDE0893D30ED022B1A4D9B5B48DB414871F51C9CB35283D",
+      "Backing": "Byte",
+      "Elements": 5,
+      "Bytes": 5,
+      "IlBytes": 12,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "08BB5E5D6EAAC1049EDE0893D30ED022B1A4D9B5B48DB414871F51C9CB35283D"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_B5AC9831B2E30EB285EF34F8501620F878432D5C04331AD1AE47F977A83BA41A5",
+      "Backing": "Byte",
+      "Elements": 8,
+      "Bytes": 8,
+      "IlBytes": 12,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "5AC9831B2E30EB285EF34F8501620F878432D5C04331AD1AE47F977A83BA41A5"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_B5D91ED26A12C7A7DA134DE3F1E7FAFD259955312FB343489E80DBE29C30075D0",
+      "Backing": "Byte",
+      "Elements": 43,
+      "Bytes": 43,
+      "IlBytes": 13,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "5D91ED26A12C7A7DA134DE3F1E7FAFD259955312FB343489E80DBE29C30075D0"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_B69AA14D3A320DA49C4DD9551F83B0C6239B2F5473DA1E283D57E17EBBADC11F3",
+      "Backing": "Byte",
+      "Elements": 256,
+      "Bytes": 256,
+      "IlBytes": 16,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "69AA14D3A320DA49C4DD9551F83B0C6239B2F5473DA1E283D57E17EBBADC11F3"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_B7F3ECA3698213F7E68FFD32501DC86B5C1C9359B34E2E8956A71DC39512BEC85",
+      "Backing": "Byte",
+      "Elements": 256,
+      "Bytes": 256,
+      "IlBytes": 16,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "7F3ECA3698213F7E68FFD32501DC86B5C1C9359B34E2E8956A71DC39512BEC85"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_B8F3DC984E498A3715CC98371E2418810B3CC8B1A152579F6DB3F2D42C2F47EB3",
+      "Backing": "Byte",
+      "Elements": 5,
+      "Bytes": 5,
+      "IlBytes": 12,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "8F3DC984E498A3715CC98371E2418810B3CC8B1A152579F6DB3F2D42C2F47EB3"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_BB3FC882E2C40AE57537921EB748AD64E2983D29BB2B7829A433D67C1A82DC119",
+      "Backing": "Byte",
+      "Elements": 13,
+      "Bytes": 13,
+      "IlBytes": 13,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "B3FC882E2C40AE57537921EB748AD64E2983D29BB2B7829A433D67C1A82DC119"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_BBF0070D8CDE6A1173987796177950669806EFD2CB9F3377676C7B7BC930AFBEC",
+      "Backing": "Byte",
+      "Elements": 6,
+      "Bytes": 6,
+      "IlBytes": 12,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "BF0070D8CDE6A1173987796177950669806EFD2CB9F3377676C7B7BC930AFBEC"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_BC3A3674842D925C4A400B5B98383F894363E98BF1D328BBA0DCF44852AE9A0E2",
+      "Backing": "Byte",
+      "Elements": 10,
+      "Bytes": 10,
+      "IlBytes": 13,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "C3A3674842D925C4A400B5B98383F894363E98BF1D328BBA0DCF44852AE9A0E2"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_BF0DE9826B1EC0F51B1E733D77E3EB17417A2AC01197DA818139137420F57DA17",
+      "Backing": "Byte",
+      "Elements": 108,
+      "Bytes": 108,
+      "IlBytes": 13,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "F0DE9826B1EC0F51B1E733D77E3EB17417A2AC01197DA818139137420F57DA17"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_01ACECB507ABFE1A354AA8064F4AF5D3F1ACD019E37DB3C11C97523B71C76E9D",
+      "Backing": "UInt32",
+      "Elements": 2,
+      "Bytes": 8,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "01ACECB507ABFE1A354AA8064F4AF5D3F1ACD019E37DB3C11C97523B71C76E9D"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_12CDF0432663831374DA02E4FEB1797DB336537321C3BE8449FFD68AE9745310",
+      "Backing": "UInt32",
+      "Elements": 6,
+      "Bytes": 24,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "12CDF0432663831374DA02E4FEB1797DB336537321C3BE8449FFD68AE9745310"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_1DFE7EB69B5B24084F642CA9D1ECC6D1C58544AD14E433883932D162488A894D",
+      "Backing": "UInt32",
+      "Elements": 56,
+      "Bytes": 224,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "1DFE7EB69B5B24084F642CA9D1ECC6D1C58544AD14E433883932D162488A894D"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_227D7BBE810149B5A39923238CCC1297FB8C2503AFC96B5C8AB02DDD37687D77",
+      "Backing": "UInt32",
+      "Elements": 24,
+      "Bytes": 96,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "227D7BBE810149B5A39923238CCC1297FB8C2503AFC96B5C8AB02DDD37687D77"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_2A3B5F7679B95109A70840E95228B48A7989BEAEFB77D86382384721D2F43CCD",
+      "Backing": "UInt32",
+      "Elements": 8,
+      "Bytes": 32,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "2A3B5F7679B95109A70840E95228B48A7989BEAEFB77D86382384721D2F43CCD"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_363F012B74B9C88D828C809A568DC50627214866415AEB36EF6EFFBC3061741F",
+      "Backing": "UInt32",
+      "Elements": 3,
+      "Bytes": 12,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "363F012B74B9C88D828C809A568DC50627214866415AEB36EF6EFFBC3061741F"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_40302C271E7D2CE9203B4AF14BE1EB346175156AE5E3FFD90171BF0498308082",
+      "Backing": "UInt32",
+      "Elements": 23,
+      "Bytes": 92,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "40302C271E7D2CE9203B4AF14BE1EB346175156AE5E3FFD90171BF0498308082"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_5CCB1E242514771CD24F2813C698D8EA19E283B2BB46F882254971B7DD64B632",
+      "Backing": "UInt32",
+      "Elements": 8,
+      "Bytes": 32,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "5CCB1E242514771CD24F2813C698D8EA19E283B2BB46F882254971B7DD64B632"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_7AA877887B42A89E842F39316984E430348FB949C60728DA491E02F952A0143D",
+      "Backing": "UInt32",
+      "Elements": 4,
+      "Bytes": 16,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "7AA877887B42A89E842F39316984E430348FB949C60728DA491E02F952A0143D"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_9234580CB315299F17AD77E62DBE350D9FF3CA5406488E20823FBF108B4A16E6",
+      "Backing": "UInt32",
+      "Elements": 33,
+      "Bytes": 132,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "9234580CB315299F17AD77E62DBE350D9FF3CA5406488E20823FBF108B4A16E6"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_951CDA222BCEFB9974F9CCE0A467DEA90AFE72A989D0253EE66CEAFF900980AC",
+      "Backing": "UInt32",
+      "Elements": 11,
+      "Bytes": 44,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "951CDA222BCEFB9974F9CCE0A467DEA90AFE72A989D0253EE66CEAFF900980AC"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_A6A0ECB78DB3F28FF070A6E8F772D80F103468F5321EFDF01778F5067A7817D8",
+      "Backing": "UInt32",
+      "Elements": 7,
+      "Bytes": 28,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "A6A0ECB78DB3F28FF070A6E8F772D80F103468F5321EFDF01778F5067A7817D8"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_AD5DC1478DE06A4C2728EA528BD9361A4B945E92A414BF4D180CEDAAEAA5F4CC",
+      "Backing": "UInt32",
+      "Elements": 3,
+      "Bytes": 12,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "AD5DC1478DE06A4C2728EA528BD9361A4B945E92A414BF4D180CEDAAEAA5F4CC"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_BAED642339816AFFB3FE8719792D0E4CE82F12DB72B7373D244EAA65445800FE",
+      "Backing": "UInt32",
+      "Elements": 4,
+      "Bytes": 16,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "BAED642339816AFFB3FE8719792D0E4CE82F12DB72B7373D244EAA65445800FE"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_BF6B4BE04C1F936B313E76329144CB84EB8909F50A9B2A2CEF608F0DC25FAD24",
+      "Backing": "UInt32",
+      "Elements": 20,
+      "Bytes": 80,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "BF6B4BE04C1F936B313E76329144CB84EB8909F50A9B2A2CEF608F0DC25FAD24"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_E1A613AA4B331588D97B5FEEF1FAABE8E8138D8C488EE9122B8533BFDDA3C189",
+      "Backing": "UInt32",
+      "Elements": 7,
+      "Bytes": 28,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "E1A613AA4B331588D97B5FEEF1FAABE8E8138D8C488EE9122B8533BFDDA3C189"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_EABC8F6CBA27917FA9DD6FB40169BE36F8B0485FB56DF799DDD58688964C47A2",
+      "Backing": "UInt32",
+      "Elements": 30,
+      "Bytes": 120,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "EABC8F6CBA27917FA9DD6FB40169BE36F8B0485FB56DF799DDD58688964C47A2"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_F770C8D4A0B7266FBCAAB3BA5CEC244E8A48C90033E555518D6630D74E858C2F",
+      "Backing": "UInt32",
+      "Elements": 15,
+      "Bytes": 60,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "F770C8D4A0B7266FBCAAB3BA5CEC244E8A48C90033E555518D6630D74E858C2F"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_F77510E541A71CA944669FA22641C76D86D94ECF5C4C42B4A750DF4657A7578A",
+      "Backing": "UInt32",
+      "Elements": 36,
+      "Bytes": 144,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "F77510E541A71CA944669FA22641C76D86D94ECF5C4C42B4A750DF4657A7578A"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_083D0BB345C114AF916E5BDA2FF5495753DB646C52771A1BE48CB3FFD449B79B",
+      "Backing": "UInt64",
+      "Elements": 3,
+      "Bytes": 24,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "083D0BB345C114AF916E5BDA2FF5495753DB646C52771A1BE48CB3FFD449B79B"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_0DA8E1CB942F0BB8D7C37CC11FEB64F730D4474A72EB19C38685C6C28E6507E4",
+      "Backing": "UInt64",
+      "Elements": 2,
+      "Bytes": 16,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "0DA8E1CB942F0BB8D7C37CC11FEB64F730D4474A72EB19C38685C6C28E6507E4"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_23E8D60B496F9E373AC6805EF95C5C0BC9769A2A1A60CF4E17E849EA02F89088",
+      "Backing": "UInt64",
+      "Elements": 3,
+      "Bytes": 24,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "23E8D60B496F9E373AC6805EF95C5C0BC9769A2A1A60CF4E17E849EA02F89088"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_35B5D8FCFFD3774F5ED79DB3766B1201592A664DD438E1D814B5C4849E37F483",
+      "Backing": "UInt64",
+      "Elements": 3,
+      "Bytes": 24,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "35B5D8FCFFD3774F5ED79DB3766B1201592A664DD438E1D814B5C4849E37F483"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_41ECDB3B0FAA77651E5A5517CAE50D3CCFFBC4C70F0972CFF008C8503B9C6BEA",
+      "Backing": "UInt64",
+      "Elements": 10,
+      "Bytes": 80,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "41ECDB3B0FAA77651E5A5517CAE50D3CCFFBC4C70F0972CFF008C8503B9C6BEA"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_4BDC4962907A6CCE2D3F263E7C4774F0D2B093EDD144E27B074F6ED74ECB50A2",
+      "Backing": "UInt64",
+      "Elements": 10,
+      "Bytes": 80,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "4BDC4962907A6CCE2D3F263E7C4774F0D2B093EDD144E27B074F6ED74ECB50A2"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_4CBBD8CA5215B8D161AEC181A74B694F4E24B001D5B081DC0030ED797A8973E0",
+      "Backing": "UInt64",
+      "Elements": 2,
+      "Bytes": 16,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "4CBBD8CA5215B8D161AEC181A74B694F4E24B001D5B081DC0030ED797A8973E0"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_88D0CC78AB04B5EE63DE41A391DB39598ABFF3C1A480DD7D4B364B4044F6459E",
+      "Backing": "UInt64",
+      "Elements": 3,
+      "Bytes": 24,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "88D0CC78AB04B5EE63DE41A391DB39598ABFF3C1A480DD7D4B364B4044F6459E"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_93062D5171F3840381A92DDCFF0F2FC70A6761B9666B6158908ABA77FCBDD57E",
+      "Backing": "UInt64",
+      "Elements": 3,
+      "Bytes": 24,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "93062D5171F3840381A92DDCFF0F2FC70A6761B9666B6158908ABA77FCBDD57E"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_A1E03200F1F82AD2C1CEC8795C271AAECF98F5AA2D151D2229EC5FA0C177CF77",
+      "Backing": "UInt64",
+      "Elements": 4,
+      "Bytes": 32,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "A1E03200F1F82AD2C1CEC8795C271AAECF98F5AA2D151D2229EC5FA0C177CF77"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_A50C3B90D33E72501A570C3E53D7D8D278248A19CFCFDE8B599125AAAA7D9FF0",
+      "Backing": "UInt64",
+      "Elements": 3,
+      "Bytes": 24,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "A50C3B90D33E72501A570C3E53D7D8D278248A19CFCFDE8B599125AAAA7D9FF0"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_AB25350E3E65EFEBE24584461683ECDA68725576E825E550038B90E7B1479946",
+      "Backing": "UInt64",
+      "Elements": 3,
+      "Bytes": 24,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "AB25350E3E65EFEBE24584461683ECDA68725576E825E550038B90E7B1479946"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_B3DB6650E4598CA51942F83E2B5F5ADC1D65B806FB1224619D7C385D3642DE1C",
+      "Backing": "UInt64",
+      "Elements": 3,
+      "Bytes": 24,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "B3DB6650E4598CA51942F83E2B5F5ADC1D65B806FB1224619D7C385D3642DE1C"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_B97F04A7B2553FFE229DEB26F42FF91EE2EAB9E5F91C5761F898E52F8D7E5A2C",
+      "Backing": "UInt64",
+      "Elements": 3,
+      "Bytes": 24,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "B97F04A7B2553FFE229DEB26F42FF91EE2EAB9E5F91C5761F898E52F8D7E5A2C"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_E0A29D453AD1CA0A8B6F6A95067E533E912778DDCA794D29E806FBE5B3568E35",
+      "Backing": "UInt64",
+      "Elements": 3,
+      "Bytes": 24,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "E0A29D453AD1CA0A8B6F6A95067E533E912778DDCA794D29E806FBE5B3568E35"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_E92B80D2EE5AB0F63D286728DC9849450B7CF439C2C2718D3BAC632A510FD50C",
+      "Backing": "UInt64",
+      "Elements": 3,
+      "Bytes": 24,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "E92B80D2EE5AB0F63D286728DC9849450B7CF439C2C2718D3BAC632A510FD50C"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_EB27F3D354581AB8A5D624ED4E1D2C35C67E965041E160650B1EE51B2A091259",
+      "Backing": "UInt64",
+      "Elements": 3,
+      "Bytes": 24,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "EB27F3D354581AB8A5D624ED4E1D2C35C67E965041E160650B1EE51B2A091259"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_F5EEB0CBD4D1BD0350BBCCD06B3B422751BFEF1C822D4E8F24F05B33739D968E",
+      "Backing": "UInt64",
+      "Elements": 4,
+      "Bytes": 32,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "F5EEB0CBD4D1BD0350BBCCD06B3B422751BFEF1C822D4E8F24F05B33739D968E"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pushort_16CC5B109FD43582102B86FFE7510326F0DE62335A427F4F7DAFF96781AEF187",
+      "Backing": "UInt16",
+      "Elements": 256,
+      "Bytes": 512,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "16CC5B109FD43582102B86FFE7510326F0DE62335A427F4F7DAFF96781AEF187"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pushort_6F2CCA8B63A731B890437E911F209BC3D39F85CC508A7F939AADFA8EB119FF90",
+      "Backing": "UInt16",
+      "Elements": 3328,
+      "Bytes": 6656,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "6F2CCA8B63A731B890437E911F209BC3D39F85CC508A7F939AADFA8EB119FF90"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pushort_8F12E21BF38AF5CB6A32A3C5D7C10E4A86A60C25629BA384E2E208F3F86492AC",
+      "Backing": "UInt16",
+      "Elements": 4096,
+      "Bytes": 8192,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "8F12E21BF38AF5CB6A32A3C5D7C10E4A86A60C25629BA384E2E208F3F86492AC"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pushort_98736598B24AA7F10B44DF9C0513A04084C151FC1D9D5F81B804C11D56F206E1",
+      "Backing": "UInt16",
+      "Elements": 43,
+      "Bytes": 86,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "98736598B24AA7F10B44DF9C0513A04084C151FC1D9D5F81B804C11D56F206E1"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pushort_AF62A145D4D2733CC357CB7DF29B053913C899667E112F6B4A06A3EB0DD5C8CC",
+      "Backing": "UInt16",
+      "Elements": 4096,
+      "Bytes": 8192,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "AF62A145D4D2733CC357CB7DF29B053913C899667E112F6B4A06A3EB0DD5C8CC"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pushort_B1B74812BB6E17F6CBB7FFD9CAA526D542363F4AA3914520A3D3D07328CEDF57",
+      "Backing": "UInt16",
+      "Elements": 4096,
+      "Bytes": 8192,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "B1B74812BB6E17F6CBB7FFD9CAA526D542363F4AA3914520A3D3D07328CEDF57"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pushort_B5AB19606AD1199733E09C22D0F8AB5AE864F65E0BB0FDB74116E27DDE058E8C",
+      "Backing": "UInt16",
+      "Elements": 43,
+      "Bytes": 86,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "B5AB19606AD1199733E09C22D0F8AB5AE864F65E0BB0FDB74116E27DDE058E8C"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pushort_C33BBDF98CC4BA2514613DC59DBA960078D57B43678DC7360BCCF9D3912387E7",
+      "Backing": "UInt16",
+      "Elements": 4096,
+      "Bytes": 8192,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "C33BBDF98CC4BA2514613DC59DBA960078D57B43678DC7360BCCF9D3912387E7"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pushort_C59B563AF1817EBF613010D404646705BC1DEBCCB2A699C296A1EDBAC3A953AB",
+      "Backing": "UInt16",
+      "Elements": 4096,
+      "Bytes": 8192,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "C59B563AF1817EBF613010D404646705BC1DEBCCB2A699C296A1EDBAC3A953AB"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pushort_C8905D1C6D04BBC62715FE8DDD34B958981E64E456ABC53D57B0C0AF8C796243",
+      "Backing": "UInt16",
+      "Elements": 256,
+      "Bytes": 512,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "C8905D1C6D04BBC62715FE8DDD34B958981E64E456ABC53D57B0C0AF8C796243"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pushort_D77F9EED8CC275A33C0AC6AAF97C434165D65C1FF7DB7787502E65F652F421EC",
+      "Backing": "UInt16",
+      "Elements": 4096,
+      "Bytes": 8192,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "D77F9EED8CC275A33C0AC6AAF97C434165D65C1FF7DB7787502E65F652F421EC"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pushort_E2A54A1309B53FC6F597A6AEECF679521E9B03734A5843EC4BDBE3574B181BC5",
+      "Backing": "UInt16",
+      "Elements": 4096,
+      "Bytes": 8192,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "E2A54A1309B53FC6F597A6AEECF679521E9B03734A5843EC4BDBE3574B181BC5"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pushort_F1CC0381CD94720F74A647DB89D0DFA862D796AFF71C8C40B74DA1D74381462A",
+      "Backing": "UInt16",
+      "Elements": 4096,
+      "Bytes": 8192,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "F1CC0381CD94720F74A647DB89D0DFA862D796AFF71C8C40B74DA1D74381462A"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pushort_FB94BDE0169AD8906234DCF10E715C636744C6749559300F1D0A93BA990E32FB",
+      "Backing": "UInt16",
+      "Elements": 4096,
+      "Bytes": 8192,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "FB94BDE0169AD8906234DCF10E715C636744C6749559300F1D0A93BA990E32FB"
+    }
+  ],
+  "zero_argument_factory_probes": 0,
+  "zero_argument_factory_probes_passed": 0,
+  "zero_argument_factory_probes_not_passed": 0,
+  "factory_measurements": [],
+  "factory_helper_il": [],
+  "runtime_tiering": "default",
+  "measurement_code": "Auditor measurement methods use NoInlining|AggressiveOptimization before allocation counting; emitted getter/factory attributes and process tiering unchanged",
+  "allocation_measurement": "JIT: 256 warmup iterations; 10000 reads/copies per getter; 1000 factory calls for \u003E=4096-byte values, otherwise 10000; every returned byte consumed in no-inline checksum. Reflection/delegates/destinations/type initialization excluded",
+  "factory_probe_scope": "Every zero-argument Create with closed unmanaged return \u003C=1MiB; unsupported/errors explicit and fail audit; factories taking Args are IL/callgraph audited but not dynamically invoked",
+  "il_policy": "No newarr, ordinary reference constructors, known native/managed allocation service calls, unresolved/indirect calls in factory/helper graph. Exception constructors are separately recorded guarded failure paths; successful executed paths must allocate zero bytes",
+  "qualification": "PE RVA and executed JIT getter/factory audit; not NativeAOT execution or terminal qualification"
+}

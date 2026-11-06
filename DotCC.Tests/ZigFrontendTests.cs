@@ -1221,13 +1221,13 @@ public sealed class ZigFrontendTests
     [Fact]
     public void Lowers_an_error_union_void_main()
     {
-        // `pub fn main() !void` (Milestone N, part 4) → main returns `ErrUnion<Unit>`. The entry
+        // `pub fn main() !void` → main returns the code-only zero-payload carrier. The entry
         // calls it into a temp; an error maps to a non-zero exit (1, reported to stderr), success to
         // exit 0 (a void payload has no exit value). Matches real zig's `!void` main.
         var cs = EmitZig(
             "fn boom(go: bool) !void { if (go) return error.Bad; }\n" +
             "pub fn main() !void { try boom(false); }\n");
-        cs.ShouldContain("ErrUnion<Unit> main()");          // error-union main lowered
+        cs.ShouldContain("ZigErrorUnionZero<Unit> main()"); // error-union main lowered
         cs.ShouldContain("var __mr = main();");              // entry: call into a temp
         cs.ShouldContain("if (__mr.IsErr)");                 // error → non-zero exit
         cs.ShouldContain("return 1;");                       // error exit code
@@ -1309,14 +1309,13 @@ public sealed class ZigFrontendTests
     [Fact]
     public void Lowers_error_union_void()
     {
-        // `!void` has no generic-over-void in C#, so it lowers to `ErrUnion<Unit>`. A body
-        // that falls off the end is a Zig success → a trailing `ErrUnion<Unit>.Ok(default)`.
+        // `!void` stores only its error code. Falling off the end is a Zig success.
         var cs = EmitZig(
             "fn check(x: u8) !void { if (x == 0) return error.Zero; }\n" +
             "pub fn main() u8 { return 0; }\n");
-        cs.ShouldContain("ErrUnion<Unit> check");        // `!void` → ErrUnion<Unit>
-        cs.ShouldContain("ErrUnion<Unit>.Err(");          // `return error.Zero`
-        cs.ShouldContain("ErrUnion<Unit>.Ok(default)");   // fall-off success
+        cs.ShouldContain("ZigErrorUnionZero<Unit> check");
+        cs.ShouldContain("ZigErrorUnionZero<Unit>.Err(");
+        cs.ShouldContain("ZigErrorUnionZero<Unit>.Ok(default)");
     }
 
     [Fact]
@@ -3969,7 +3968,7 @@ public sealed class ZigFrontendTests
             "fn step(go: bool) !void { if (go) return error.Bad; }\n" +
             "fn run(go: bool) !u8 { step(go) catch return error.Stop; return 7; }\n" +
             "pub fn main() u8 { return run(false) catch 9; }\n");
-        cs.ShouldContain("ErrUnion<Unit> __cf = step");   // `!void` → ErrUnion<Unit>
+        cs.ShouldContain("ZigErrorUnionZero<Unit> __cf = step");
         cs.ShouldContain("Cond.B(__cf.IsErr)");            // error → early return
         cs.ShouldContain("ErrUnion<byte>.Err(");           // `return error.Stop` in the `!u8` fn
     }

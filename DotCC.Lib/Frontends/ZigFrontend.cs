@@ -61,7 +61,8 @@ internal sealed class ZigFrontend : IFrontend
         if (options?.ZigLibDir is not null && stdRoot is null) throw new CompileException("Zig modules: zig_lib_dir contains no std.zig");
         if (options is not null && (paths.Count != 1 || Path.GetFullPath(paths[0]) != options.GetModule(options.RootModule).Root))
             throw new CompileException("Zig modules: source input must match the configured root module");
-        var moduleGraph = new ZigModuleGraph(stdRoot, options);
+        var moduleGraph = new ZigModuleGraph(stdRoot, options, testMode);
+        ir.ZigManagedFunctionPointers |= moduleGraph.FunctionPointerAbi == ZigFunctionPointerAbi.Managed;
         ir.DemandFuncBody = moduleGraph.TryLowerBodyOnDemand;
         foreach (var path in paths)
         {
@@ -96,6 +97,7 @@ internal sealed class ZigFrontend : IFrontend
         // S2). References were collected while the roots lowered; this lowers exactly those decls (and
         // their transitive references) to a fixpoint — an unreferenced std-heavy decl never lowers.
         moduleGraph.DrainAll();
+        moduleGraph.CheckManagedRoots();
         // Then every deferred `comptime` fold of every module (Milestone T pass 3): a fold may call a
         // function whose body only the drain lowered (a lazy module's generic instance).
         moduleGraph.ResolveComptimeFolds(ir);
@@ -103,6 +105,12 @@ internal sealed class ZigFrontend : IFrontend
         // A function whose signature carries a comptime-only type (task #113) ran only at comptime: the check above
         // rejected any runtime call to it, so its runtime copy, which C# could not spell, goes.
         ir.Functions.RemoveAll(f => ZigLowering.HasComptimeOnlySignature(f.Sym));
+        ZigLowering.EraseSourceComptimeTypeDefinitions(ir);
+        moduleGraph.CompleteRuntimeDeclarations();
+        moduleGraph.ResolveComptimeFolds(ir);
+        moduleGraph.CheckComptimeReturnsAtRuntime();
+        ir.Functions.RemoveAll(f => ZigLowering.HasComptimeOnlySignature(f.Sym));
+        ZigLowering.EraseSourceComptimeTypeDefinitions(ir);
         ir.DemandFuncBody = null;
         // Carry the flat error set to the backend so it can emit the `@errorName` code→name
         // table (Milestone X). Merge into any existing map (a mixed build lowers C first, but C

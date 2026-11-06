@@ -27,6 +27,7 @@ internal sealed partial class ZigLowering
         // `=> if (c) x,` / `=> if (c) { … } else { … },` (zig-grammar-peg P3a): an `if` whose arms are statements.
         _ when IsStatementIf(e) => LowerStatementIf(e),
         _ when IsVoidLoop(e) => LowerStmt(e),
+        Zig.LabeledBlock or Zig.LabeledSwitch => LowerLabeledBlockStmt(e),
         Zig.SwitchExpr s => LowerSwitchStmt(s.Arg2, s.Arg5),
         _ => Hoisted(() => new ExprStmt(LowerExpr(e))),
     };
@@ -40,9 +41,14 @@ internal sealed partial class ZigLowering
     private static bool IsUnreachableItem(Item e) => e.Content is Zig.Ident { Arg0: var tok } && Tok(tok) == "unreachable";
     /// <summary>zig's <c>unreachable</c>: the loud trap C23's <c>unreachable()</c> also lowers to.</summary>
     private static Call UnreachableCall() => new("__dotcc_unreachable", new List<CExpr>(), new List<CType>(), null) { Type = CType.NoReturn };
+    private Call UnreachableCall(Item origin) => UnreachableCall() with
+    {
+        Pos = new SrcPos(origin.Position.Line, origin.Position.Column)
+        { File = _module?.Path ?? System.IO.Path.Combine(_importerDir ?? "", (_fileStem ?? "root") + ".zig") },
+    };
     /// <summary>The prong a switch over a comptime-known integer subject takes (case values, ranges, then
     /// <c>else</c>), or null when the subject does not fold or the prong captures.</summary>
-    private ZigProng? TrySelectConstProng(Item subjectItem, Item prongsItem)
+    private ZigProng? TrySelectConstProng(Item subjectItem, Item prongsItem, bool evaluateCalls = false)
     {
         CExpr subject;
         // A subject with no value lowering (`@typeInfo(T)`, a comptime tag) is the comptime-tag path's, not this one.
@@ -54,7 +60,12 @@ internal sealed partial class ZigLowering
         {
             return null;
         }
-        if (_ir.ConstEval(subject) is not { } v) { return null; }
+        var known = _ir.ConstEval(subject);
+        if (known is null && evaluateCalls && _ir.EvalComptimeValue(subject) is IrBuilder.CtInt integer
+            && integer.Value >= long.MinValue && integer.Value <= long.MaxValue)
+            known = (long)integer.Value;
+        if (known is not { } v) { return null; }
+        ValidateEnumCatchAll(subject.Type, prongsItem);
         ZigProng? elseProng = null;
         foreach (var prongItem in Flatten(prongsItem))
         {
@@ -63,7 +74,8 @@ internal sealed partial class ZigLowering
             if (prong.CaseVals.Content is Zig.CaseElse) { elseProng = prong; continue; }
             foreach (var label in LowerCaseVals(prong.CaseVals, subject.Type))
             {
-                if (label.CaseExpr is not { } ce || _ir.ConstEval(ce) is not { } lo) { return null; }
+                if (label.CaseExpr is null) { elseProng = prong; continue; }
+                if (_ir.ConstEval(label.CaseExpr) is not { } lo) { return null; }
                 var hi = label.HiExpr is { } he ? _ir.ConstEval(he) : lo;
                 if (hi is null) { return null; }
                 if (v >= lo && v <= hi) { return prong; }
@@ -92,7 +104,7 @@ internal sealed partial class ZigLowering
     /// else-less one (zig's <c>else</c> is optional), or one with a non-empty <c>{ … }</c> block arm. Its value is void, so
     /// it has a meaning only where a statement stands (an expression statement, a prong body).</summary>
     private static bool IsStatementIf(Item e) => e.Content is Zig.IfThenExpr
-        || e.Content is Zig.IfElseExpr { Arg4: null, Arg7: null } ie && (ie.Arg5.Content is Zig.Block || ie.Arg8.Content is Zig.Block);
+        || e.Content is Zig.IfElseExpr ie && (ie.Arg5.Content is Zig.Block || ie.Arg8.Content is Zig.Block);
 
     /// <summary>Lower an <see cref="IsStatementIf">statement <c>if</c></see>. A condition that folds at compile time keeps
     /// only the taken arm, so an untaken <c>@compileError</c> / switch / block is never analysed (what the retired
@@ -118,6 +130,12 @@ internal sealed partial class ZigLowering
                     return LowerArmStmt(taken ? ie.Arg5 : ie.Arg8);
                 }
                 return new If(LowerExpr(ie.Arg2), LowerArmStmt(ie.Arg5), LowerArmStmt(ie.Arg8));
+            case Zig.IfElseExpr captured:
+            {
+                var (capture, byRef, _) = PayloadParts(captured.Arg4);
+                return LowerIfCapture(captured.Arg2, capture ?? "_", captured.Arg5, captured.Arg8,
+                    PayloadParts(captured.Arg7).Name, byRef);
+            }
             default:
                 throw new IrUnsupportedException("internal: statement if " + (e.Content?.GetType().Name ?? "null"));
         }
@@ -135,6 +153,7 @@ internal sealed partial class ZigLowering
         _ when IsNoreturnArm(arm) => LowerExitArm(arm),
         _ when IsStatementIf(arm) => LowerStatementIf(arm),
         _ when IsVoidLoop(arm) => LowerStmt(arm),
+        Zig.LabeledBlock or Zig.LabeledSwitch => LowerLabeledBlockStmt(arm),
         Zig.SwitchExpr s => LowerSwitchStmt(s.Arg2, s.Arg5),
         _ => Hoisted(() => new ExprStmt(LowerExpr(arm))),
     };
@@ -250,9 +269,17 @@ internal sealed partial class ZigLowering
         // prong at lowering time and lowers ONLY that one (road-to-zig-std S5).
         if (SelectComptimeProng(subjectItem, prongsItem, out var ctPayload) is { } ctProng)
         {
+            var capturedType = ctPayload is null ? _comptimeUnionPayload as ZigTypeValue : null;
             EnterComptimeProng(ctProng, ctPayload);
             try
             {
+                if (capturedType is not null && ctProng.CaptureName is { } typeName && typeName != "_")
+                {
+                    if (capturedType.Value.Unqualified is not CType.Named)
+                        throw new IrUnsupportedException("zig: type-valued union capture requires a proved named source type");
+                    using var typeCapture = EnterOptionalTypeCapture(typeName, new TypeSeed(typeName, capturedType.Value, null));
+                    return LowerSelectedProng(ctProng);
+                }
                 return LowerSelectedProng(ctProng);
             }
             finally
@@ -288,39 +315,41 @@ internal sealed partial class ZigLowering
     /// as zig does.</summary>
     private CStmt LowerSwitch(CExpr subject, Item prongsItem)
     {
+        ValidateEnumCatchAll(subject.Type, prongsItem);
         var sections = new List<SwitchSection>();
         var prongs = Flatten(prongsItem);
-        // A switch over an error value binds a prong capture to that error (`error.ReadFailed, error.EndOfStream => |e|
-        // return e`, `else => |e| return e` all through std.Io.Reader, task #202): dotcc erases error sets, so the narrowed
-        // error zig binds is the subject's code. The subject is read once into a temp when a capture reads it again.
-        var errorType = subject.Type is { Unqualified: CType.ErrorSetType } et ? et : null;
-        var errorSwitch = errorType is not null;
+        // Enum/error captures bind the switched value with its source type. Save
+        // an effectful subject so the capture does not evaluate it a second time.
+        var captureType = subject.Type.Unqualified is CType.ErrorSetType or CType.Enum
+            || UsesSourceStdlib && subject.Type.Unqualified is CType.Prim { Integer: true }
+                ? subject.Type : null;
         var pre = new List<CStmt>();
-        if (errorType is { } swType && subject is not VarRef && prongs.Any(p => DecomposeProng(p).CaptureName is not null))
+        if (captureType is { } swType && subject is not VarRef && prongs.Any(p => DecomposeProng(p).CaptureName is not null))
         {
             var st = _symbols.Declare(new Symbol { Name = "__sw" + _blockLabelCounter++, Kind = SymKind.Var, Type = swType });
+            RememberBitcastValue(st, BitcastLoweredLocation(subject));
             pre.Add(new DeclStmt(new List<LocalDecl> { new(st, subject) }));
             subject = new VarRef(st) { Type = swType, IsLValue = true };
         }
         foreach (var prongItem in prongs)
         {
             var view = DecomposeProng(prongItem);
-            if (errorSwitch && view.CaptureName is not null && prongItem.Content is not Zig.InlineProng)
+            if (captureType is not null && view.CaptureName is not null && prongItem.Content is not Zig.InlineProng)
             {
-                sections.Add(LowerErrorCaptureSection(prongItem, subject));
+                sections.Add(LowerScalarCaptureSection(prongItem, subject));
                 continue;
             }
             // `inline 0, 1, 2, 3 => |count| { … }` (std.hash.XxHash32's finalize, task #87): one section per case value, the
             // capture a comptime constant of that value (so the body's `inline for (0..count)` unrolls).
             if (prongItem.Content is Zig.InlineProng inlineProng)
             {
-                sections.AddRange(LowerInlineProngSections(inlineProng.Arg1, subject));
+                sections.AddRange(LowerInlineProngSections(inlineProng.Arg1, subject, prongs));
                 continue;
             }
             if (view.CaptureName is not null)
             {
                 throw new IrUnsupportedException(
-                    "zig switch payload capture `|x|` is only valid on a tagged-union switch");
+                    $"zig switch capture `|x|` requires a tagged union, enum or error set in {_fileStem}:{prongItem.Position.Line} ({_currentFnName})");
             }
             // The body as a statement (`=> { … }`, `1 => doThing()`, `.lt => return .lt`, a jump, an assignment, a loop).
             // A `return` reuses the statement return-lowering (error-union wrapping / errdefer routing), so an `E!T` prong
@@ -349,11 +378,12 @@ internal sealed partial class ZigLowering
         return new Seq(pre);
     }
 
-    /// <summary>One section of an error switch whose prong captures the error (<c>… => |e| return e</c>, task #202): the
-    /// capture is bound to the subject's code in the section's own scope, then the prong body runs.</summary>
-    private SwitchSection LowerErrorCaptureSection(Item prongItem, CExpr subject)
+    /// <summary>One section of an enum/error switch whose prong captures the switched value:
+    /// bind the subject with its nominal type in the section's own scope, then run the body.</summary>
+    private SwitchSection LowerScalarCaptureSection(Item prongItem, CExpr subject)
     {
         var prong = DecomposeProng(prongItem);
+        if (prong.ByRef) throw new CompileException("zig: a scalar switch capture cannot be by reference");
         var labels = LowerCaseVals(prong.CaseVals, subject.Type);
         var stmts = new List<CStmt>();
         _symbols.EnterScope();
@@ -362,6 +392,13 @@ internal sealed partial class ZigLowering
             if (prong.CaptureName is { } cap && cap != "_")
             {
                 var capSym = _symbols.Declare(new Symbol { Name = cap, Kind = SymKind.Var, Type = subject.Type });
+                if (UsesSourceStdlib)
+                {
+                    var captureLocation = BitcastLoweredLocation(subject);
+                    RememberBitcastValue(capSym, captureLocation);
+                    RecordValueBits(capSym, captureLocation.IntegerBits, captureLocation.Element?.IntegerBits);
+                    _zigConstBindings.Add(capSym);
+                }
                 stmts.Add(new DeclStmt(new List<LocalDecl> { new(capSym, subject) }));
             }
             stmts.Add(LowerRuntimeProngBody(prong));
@@ -376,44 +413,74 @@ internal sealed partial class ZigLowering
     /// <summary>The sections of an <c>inline</c> prong of a runtime integer switch: the body instantiated once per case
     /// value (a range expands, up to 256 values), each with its <c>|x|</c> capture bound as a comptime constant of that
     /// value. <c>inline else</c> would need the subject type's whole value set, and is a loud cut.</summary>
-    private List<SwitchSection> LowerInlineProngSections(Item innerProng, CExpr subject)
+    private List<SwitchSection> LowerInlineProngSections(Item innerProng, CExpr subject,
+        IReadOnlyList<Item> allProngs, Func<Item, CStmt>? fillValue = null)
     {
         var prong = DecomposeProng(innerProng);
+        if (prong.ByRef || prong.Comptime)
+            throw new IrUnsupportedException("zig inline integer/enum switch does not support by-reference captures or comptime blocks");
+        var values = new List<long>();
         if (prong.CaseVals.Content is Zig.CaseElse)
         {
-            throw new IrUnsupportedException("zig `inline else =>` in a runtime switch is not supported yet (list the case values)");
+            if (subject.Type.Unqualified is not CType.Enum enumeration
+                || _nonExhaustiveEnums.Contains(enumeration.Name)
+                || !_enumMembers.TryGetValue(enumeration.Name, out var members))
+                throw new IrUnsupportedException("zig `inline else =>` requires a source-known exhaustive enum");
+            var excluded = allProngs.Select(DecomposeProng).Where(p => p.CaseVals.Content is not Zig.CaseElse)
+                .SelectMany(p => LowerCaseVals(p.CaseVals, subject.Type)).ToList();
+            foreach (var member in members.Values)
+            {
+                var value = member.ConstValue;
+                if (!excluded.Any(label => label.CaseExpr is { } lo && _ir.ConstEval(lo) is { } first
+                    && value >= first && value <= (label.HiExpr is { } hi ? _ir.ConstEval(hi) ?? first : first)))
+                    values.Add(value);
+            }
         }
-        long Value(Item item) => _ir.ConstEval(LowerExpr(item))
+        long Value(Item item) => _ir.ConstEval(LowerExprSink(item, subject.Type))
             ?? throw new IrUnsupportedException("zig `inline` prong: a case value must be comptime-known");
-        var sections = new List<SwitchSection>();
+        if (prong.CaseVals.Content is not Zig.CaseElse)
         foreach (var (lo, hi) in WalkCaseValItems(prong.CaseVals))
         {
             var first = Value(lo);
             var last = hi is { } h ? Value(h) : first;
-            if (last - first > 256) { throw new IrUnsupportedException("zig `inline` prong: a range of more than 256 values"); }
+            if (last < first || (Int128)last - first > 256) { throw new IrUnsupportedException("zig `inline` prong: invalid or oversized range"); }
             for (var v = first; v <= last; v++)
+            {
+                values.Add(v);
+                if (v == last) break;
+            }
+        }
+        if (values.Count > 256) throw new IrUnsupportedException("zig inline switch exceeds 256 values");
+        var sections = new List<SwitchSection>();
+        foreach (var v in values)
             {
                 _symbols.EnterScope();
                 CStmt lowered;
+                Symbol? capSym = null;
                 try
                 {
                     if (prong.CaptureName is { } cap && cap != "_")
                     {
-                        var capSym = _symbols.Declare(new Symbol { Name = cap, Kind = SymKind.Var, Type = subject.Type });
+                        capSym = _symbols.Declare(new Symbol { Name = cap, Kind = SymKind.Var, Type = subject.Type });
                         _comptimeVars[capSym] = (v, subject.Type);
                     }
-                    lowered = LowerSelectedProng(prong);
+                    // Only the selected section runs. Its hoists and impurity
+                    // watermark belong inside that section, after dispatch.
+                    lowered = Hoisted(() => fillValue is { } fill && prong.Expr is { } value ? fill(value) : LowerSelectedProng(prong));
                 }
                 finally
                 {
+                    if (capSym is not null) _comptimeVars.Remove(capSym);
                     _symbols.ExitScope();
                 }
                 var body = new List<CStmt> { lowered };
                 if (!EndsInJump(body)) { body.Add(new Break()); }
-                var label = new LitInt(v.ToString(CultureInfo.InvariantCulture), v) { Type = subject.Type };
+                // The backend switches on the C-promoted subject. Give each
+                // generated numeric label that same type; a narrow unsigned
+                // source type otherwise renders a uint suffix in an int switch.
+                var label = new LitInt(v.ToString(CultureInfo.InvariantCulture), v) { Type = CType.IntegerPromote(subject.Type) };
                 sections.Add(new SwitchSection(new List<SwitchLabel> { new SwitchLabel(label) }, body));
             }
-        }
         return sections;
     }
     /// <summary>Lower a <c>switch</c> over a tagged union: switch on the <see cref="TagFieldName"/>
@@ -434,10 +501,7 @@ internal sealed partial class ZigLowering
     {
         // A VALUE switch (`const n: u8 = switch (spec) { .none => 1, .number => |v| v * 4 };`) passes
         // `fillValue`: each prong's value expression fills the result temp instead of being a statement.
-        CStmt ProngValue(Item valueItem) => fillValue is { } fill ? fill(valueItem)
-            : IsStatementIf(valueItem) ? LowerStatementIf(valueItem)   // `.lib => |n| if (n == w) return true,` (P3a)
-            : IsVoidLoop(valueItem) ? LowerStmt(valueItem)   // `.list => |l| for (l.items) |e| h.update(e),` (std's Build.zig)
-            : new ExprStmt(LowerExpr(valueItem));
+        CStmt ProngValue(Item valueItem) => fillValue is { } fill ? fill(valueItem) : LowerProngExprStmt(valueItem);
         var isPtr = subject.Type.Unqualified is CType.Pointer;
         var pre = new List<CStmt>();
         CExpr unionRef;
@@ -473,8 +537,13 @@ internal sealed partial class ZigLowering
                 var inlined = DecomposeProng(inlineProng.Arg1);
                 if (inlined.CaseVals.Content is Zig.CaseElse)
                 {
-                    throw new IrUnsupportedException(
-                        $"zig `inline else =>` in a switch over the tagged union '{info.Name}' is not supported yet (list the variants)");
+                    var excluded = Flatten(prongsItem).Select(DecomposeProng)
+                        .Where(p => p.CaseVals.Content is not Zig.CaseElse)
+                        .SelectMany(p => WalkCaseValItems(p.CaseVals)).Select(v => EnumLitName(v.Item1))
+                        .ToHashSet(System.StringComparer.Ordinal);
+                    foreach (var variant in info.Variants.Keys.Where(v => !excluded.Contains(v)))
+                        AddUnionSection(inlineProng.Arg1, null, variant);
+                    continue;
                 }
                 if (inlined.CaptureName is null or "_")
                 {
@@ -490,7 +559,7 @@ internal sealed partial class ZigLowering
 
         // One prong's section: its labels (or the single variant `onlyCase` an unrolled `inline` prong stands for), its
         // capture bound to that variant's payload, and its body.
-        void AddUnionSection(Item prongItem, Item? onlyCase)
+        void AddUnionSection(Item prongItem, Item? onlyCase, string? knownVariant = null)
         {
             // A prong body is a Block, a bare expr, a `return [e]`, a jump, an assignment or a loop, each with an optional
             // `|x|` / `|*x|` payload capture. The body is lowered INSIDE the capture scope so it sees the binding.
@@ -498,40 +567,78 @@ internal sealed partial class ZigLowering
             var caseVals = view.CaseVals;
             var captureName = view.CaptureName;
             var captureByRef = view.ByRef;
-            if (onlyCase is null) { RejectUnionRange(caseVals, info); }
+            if (onlyCase is null && knownVariant is null) { RejectUnionRange(caseVals, info); }
             // `.variant` → EnumConstRef(U_Tag.variant); an unrolled `inline` prong has the one variant it stands for.
-            var labels = onlyCase is { } one
+            var labels = knownVariant is { } known
+                ? new List<SwitchLabel> { new SwitchLabel(ResolveEnumLit(known, info.TagType)) }
+                : onlyCase is { } one
                 ? new List<SwitchLabel> { new SwitchLabel(CaseLabelValue(one, info.TagType)) }
                 : LowerCaseVals(caseVals, info.TagType);
+
+            // A variant with a source-proved bottom payload has no value that can select
+            // its arm. Zig does not analyze that body (std.Io.Terminal.Mode.windows_api
+            // is such a variant when WindowsApi resolves to noreturn). Keep an explicit
+            // trap for an invalid tag, but never create storage/captures for bottom.
+            if (UnionProngIsUninhabited(caseVals, onlyCase, knownVariant, info))
+            {
+                sections.Add(new SwitchSection(labels, new List<CStmt> { new ExprStmt(UnreachableCall(prongItem)) }));
+                return;
+            }
 
             // Lower the body statements; a `return` reuses the statement return-lowering (error-union
             // wrapping / errdefer). For a block the statements are flattened (so a leading capture decl
             // sits in the same scope); the other forms are a single statement.
             List<CStmt> LowerProngBody() =>
                 view.Block is { } blockBody && !view.Comptime ? new List<CStmt>(LowerBlock(blockBody).Stmts)
-                : view.Expr is { } exprBody ? new List<CStmt> { ProngValue(exprBody) }
+                : view.Expr is { } exprBody ? new List<CStmt> { Hoisted(() => ProngValue(exprBody)) }
                 : new List<CStmt> { LowerRuntimeProngBody(view) };
 
+            using var prongScope = EnterSymbolScope();
+            Symbol? tagSymbol = null;
+            if (view.TagName is { } tagName && tagName != "_")
+            {
+                var variant = knownVariant ?? CaptureVariantName(onlyCase ?? caseVals, info, tagName);
+                var tagValue = _ir.ConstEval(ResolveEnumLit(variant, info.TagType))
+                    ?? throw new CompileException("zig: union tag is not comptime-known");
+                tagSymbol = DeclareValueSeed(new(tagName, tagValue, info.TagType));
+            }
             List<CStmt> body;
             if (captureName is not null && captureName != "_")
             {
-                var variant = CaptureVariantName(onlyCase ?? caseVals, info, captureName);
-                var payloadType = info.Variants[variant]
-                    ?? throw new IrUnsupportedException(
-                        $"union '{info.Name}' variant '{variant}' is a void variant — it has no payload to capture with `|{captureName}|`");
+                var variant = knownVariant ?? CaptureVariantName(onlyCase ?? caseVals, info, captureName);
+                var payloadType = info.Variants[variant] ?? CType.Void;
+                var voidReference = captureByRef && payloadType.Unqualified is CType.VoidType;
                 using var symbolScope = EnterSymbolScope();
                 // By-value (`|x|`): `var x = __un.__payload.variant;` (a copy). By-reference (`|*x|`):
                 // `T* x = &(__un.__payload.variant);` — a pointer into the union's payload field, so
                 // `x.* = …` writes through to the (mutable) union value.
                 var bindType = captureByRef ? new CType.Pointer(payloadType) : payloadType;
                 var capSym = _symbols.Declare(new Symbol { Name = captureName, Kind = SymKind.Var, Type = bindType });
-                var payloadBase = new Member(unionRef, info.PayloadFieldName, isPtr) { Type = new CType.Named(info.PayloadTypeName!), IsLValue = true };
-                var payloadField = new Member(payloadBase, variant, false) { Type = payloadType, IsLValue = true };
-                CExpr capInit = captureByRef ? new Unary(UnOp.AddrOf, payloadField) { Type = bindType } : payloadField;
+                CExpr capInit;
+                if (payloadType.Unqualified is CType.VoidType) capInit = new DefaultLit { Type = CType.Void };
+                else
+                {
+                    var payloadBase = new Member(unionRef, info.PayloadFieldName, isPtr) { Type = new CType.Named(info.PayloadTypeName!), IsLValue = true };
+                    var payloadField = new Member(payloadBase, variant, false) { Type = payloadType, IsLValue = true };
+                    capInit = captureByRef ? new Unary(UnOp.AddrOf, payloadField) { Type = bindType } : payloadField;
+                }
+                var payloadLocation = BitcastFieldLocation(info.Name, variant, payloadType);
+                RememberBitcastValue(capSym, captureByRef
+                    ? new ZigResultLocation(bindType, Element: payloadLocation, Sentinel: new ZigSentinel(false, null))
+                    : payloadLocation);
+                if (!captureByRef && payloadLocation.Sentinel is { } sentinel)
+                    _valueSentinels[capSym] = sentinel;
                 if (captureByRef && unionRef is VarRef { Sym: { } uvar }) { uvar.AddressTaken = true; }
-                var inner = LowerProngBody();
+                List<CStmt> inner;
+                if (voidReference) _unmaterializedVoidCaptures.Add(capSym);
+                try { inner = LowerProngBody(); }
+                finally { if (voidReference) _unmaterializedVoidCaptures.Remove(capSym); }
                 symbolScope.Dispose();
-                var combined = new List<CStmt> { new DeclStmt(new List<LocalDecl> { new(capSym, capInit) }) };
+                // A zero-sized pointer capture needs no storage if the selected
+                // comptime arm never reads it. Runtime reads still reject at the
+                // binding, rather than manufacturing a pointer to absent storage.
+                var combined = new List<CStmt>();
+                if (!voidReference) combined.Add(new DeclStmt(new List<LocalDecl> { new(capSym, capInit) }));
                 combined.AddRange(inner);
                 body = new List<CStmt> { new Block(combined) };
             }
@@ -541,6 +648,7 @@ internal sealed partial class ZigLowering
             }
             if (!EndsInJump(body)) { body.Add(new Break()); }   // no Zig fall-through
             sections.Add(new SwitchSection(labels, body));
+            if (tagSymbol is not null) _comptimeVars.Remove(tagSymbol);
         }
 
         // A Zig union switch is exhaustive; C# can't prove a tag switch covers every case, so
@@ -558,6 +666,20 @@ internal sealed partial class ZigLowering
         pre.Add(sw);
         return new Block(pre);   // { var __un = subject; switch (__un.__tag) { … } }
     }
+
+    private bool UnionProngIsUninhabited(Item cases, Item? onlyCase, string? knownVariant, ZigUnionInfo info)
+    {
+        bool IsBottom(string variant) => info.Variants.TryGetValue(variant, out var payload)
+            && payload?.Unqualified is CType.NoReturnType;
+        if (knownVariant is { } known) return IsBottom(known);
+        if (onlyCase is { } one) return one.Content is Zig.EnumLit literal && IsBottom(SourceMemberName(literal.Arg1));
+        if (cases.Content is Zig.CaseElse) return false;
+        var variants = WalkCaseValItems(cases).ToList();
+        return variants.Count > 0 && variants.All(value => value.Item2 is null
+            && value.Item1.Content is Zig.EnumLit literal && IsBottom(SourceMemberName(literal.Arg1)));
+    }
+
+    private readonly HashSet<Symbol> _unmaterializedVoidCaptures = new();
     /// <summary>The payload <c>.variant</c> a tagged-union capture prong binds. A single-variant prong
     /// (<c>.a =&gt; |x|</c>) returns that variant. A MULTI-variant capture prong (<c>.a, .b =&gt; |x|</c>,
     /// Milestone Z) is allowed only when every listed variant shares the SAME payload type — then the
@@ -618,6 +740,13 @@ internal sealed partial class ZigLowering
         var labels = new List<SwitchLabel>();
         foreach (var (lo, hi) in WalkCaseValItems(caseVals))
         {
+            if (hi is null && IsEnumCatchAllItem(lo))
+            {
+                if (sink?.Unqualified is not CType.Enum en || !_nonExhaustiveEnums.Contains(en.Name))
+                    throw new IrUnsupportedException($"zig `_` switch prong requires a source-known nonexhaustive enum (got {sink?.Describe()}, function '{_currentFnName}')");
+                labels.Add(new SwitchLabel(null));
+                continue;
+            }
             labels.Add(hi is null
                 ? new SwitchLabel(CaseLabelValue(lo, sink))
                 : new SwitchLabel(CaseLabelValue(lo, sink), CaseLabelValue(hi, sink)));
@@ -686,29 +815,29 @@ internal sealed partial class ZigLowering
     /// becomes one arm with both labels (rendered `a or b`). The subject is lowered once. Deferred
     /// (clear error): a block-bodied prong (`=> { … break :blk v; }`, needs the labeled-block
     /// increment) and a tagged-union payload capture `|x|` in expression position.</summary>
-    private CExpr LowerSwitchExpr(Item subjectItem, Item prongsItem, CType? sink)
+    private CExpr LowerSwitchExpr(Item subjectItem, Item prongsItem, CType? sink, ZigResultLocation? location = null)
     {
         // A COMPTIME subject folds to the selected prong's value (road-to-zig-std S5) — which is also
         // what makes a `|i|` capture work in expression position, where a RUNTIME switch expression
         // still can't bind one (there is nothing to bind at comptime: the payload is the fold).
         if (SelectComptimeProng(subjectItem, prongsItem, out var ctPayload) is { } ctProng)
         {
-            if (ctProng.Expr is not { } ctValue)
-            {
-                throw new IrUnsupportedException(
-                    "zig `switch (@typeInfo(T))` in value position: the selected prong must yield a value "
-                    + "(`.int => expr`); a block-bodied prong needs a `const`/`return` statement context");
-            }
             EnterComptimeProng(ctProng, ctPayload);
-            try { return LowerExprSink(ctValue, sink); }
+            try { return LowerSelectedProngExpression(ctProng, sink, subjectItem, location); }
             finally { ExitComptimeProng(); }
         }
         if (TryFoldComptimeIntSwitch(subjectItem, prongsItem, sink) is { } folded) { return folded; }
+        if (SwitchExprNeedsStmt(prongsItem, subjectItem))
+            return HoistValueSwitch(subjectItem, prongsItem, sink);
         var subjectImpure = _hoistImpureSeen;
-        var subject = LowerExpr(subjectItem);
+        // A value switch over a tagged union selects by its discriminant too. Its
+        // labels name tags, including variants whose payloads need explicit construction.
+        var subject = UnionTagOrSelf(LowerExpr(subjectItem));
+        ValidateEnumCatchAll(subject.Type, prongsItem);
         var arms = new List<SwitchExprArm>();
         // What each arm hoisted: an arm runs only when selected, so its statements stay with it (task #203).
         var armHoists = new List<List<CStmt>>();
+        var armLocations = new List<ZigResultLocation>();
         foreach (var prongItem in Flatten(prongsItem))
         {
             if (DecomposeProng(prongItem) is not { Expr: { } peValue, CaptureName: null } pe || prongItem.Content is Zig.InlineProng)
@@ -718,15 +847,15 @@ internal sealed partial class ZigLowering
                     "(a labeled `break :blk v`) is supported only as a full `const`/`var`/`return`/assignment RHS " +
                     "(Milestone Y, part 1), not in a sub-expression; a `|x|` capture in a switch expression is not supported yet");
             }
-            var (value, hoisted) = LowerArmIsolated(() => LowerExprSink(peValue, sink));
+            var (value, hoisted) = LowerArmIsolated(() => LowerExprSink(peValue, location ?? ZigResultLocation.Unknown(sink)));
             armHoists.Add(hoisted);
+            if (!IsNoreturn(value)) armLocations.Add(BitcastSourceLocation(peValue, value));
             // `else` → the `_` default arm; otherwise the prong's case values become the arm's
             // labels (a multi-value prong → several, rendered `a or b`), reusing LowerCaseVals so an
             // inclusive range `lo...hi` lowers to a relational-pattern label exactly as in a
             // statement switch.
-            arms.Add(pe.CaseVals.Content is Zig.CaseElse
-                ? new SwitchExprArm(null, value)
-                : new SwitchExprArm(LowerCaseVals(pe.CaseVals, subject.Type), value));
+            var labels = LowerCaseVals(pe.CaseVals, subject.Type);
+            arms.Add(new SwitchExprArm(labels.Any(label => label.CaseExpr is null) ? null : labels, value));
         }
         // A Zig switch over an error set or enum is exhaustive — real zig proves the prongs cover
         // every member, so no `else` is required. dotcc erases an error set to a flat `ushort` and
@@ -749,7 +878,23 @@ internal sealed partial class ZigLowering
             return HoistedValueSwitch(subject, subjectImpure, arms, armHoists,
                 HoistedResultType(sink, resultType, arms.Select(a => a.Value)));
         }
-        return new SwitchExpr(subject, arms.Select(a => a with { Value = CoerceNoreturn(a.Value, resultType) }).ToList()) { Type = resultType };
+        var result = new SwitchExpr(subject, arms.Select(a => a with { Value = CoerceNoreturn(a.Value, resultType) }).ToList()) { Type = resultType };
+        if (armLocations.Count > 0 && armLocations[0].IntegerBits is { } bits && armLocations.All(arm => arm.IntegerBits == bits))
+            _shared.BitcastWidths.Expressions[result] = new(resultType, bits);
+        return result;
+    }
+
+    private CExpr LowerSelectedProngExpression(ZigProng prong, CType? sink, Item origin, ZigResultLocation? location = null)
+    {
+        if (prong.Expr is { } value) return LowerExprSink(value, location ?? ZigResultLocation.Unknown(sink));
+        var statement = LowerSelectedProng(prong);
+        // An empty block is the actual void value used for unavailable platform APIs.
+        if (prong.Block is not null && statement is Block { Stmts.Count: 0 }
+            && (sink is null || IsVoidValueType(sink)))
+            return new DefaultLit { Type = CType.Void };
+        if (!Terminates(statement))
+            throw new IrUnsupportedException($"zig: a selected switch prong in a value position must yield a value or terminate ({_module?.Path ?? _fileStem}:{origin.Position.Line}, function '{_currentFnName}')");
+        return new StatementExpression(new Block(new[] { statement }), null) { Type = CType.NoReturn };
     }
     /// <summary>A switch EXPRESSION over a compile-time-known integer whose prongs a runtime C# switch
     /// expression cannot carry (a <c>|x|</c> capture): std.math.IntFittingRange's
@@ -794,16 +939,11 @@ internal sealed partial class ZigLowering
             throw new IrUnsupportedException(
                 $"zig `switch` over the comptime value {subject.Value}: no prong matches it and there is no `else`");
         }
-        if (chosen.Expr is not { } value)
-        {
-            throw new IrUnsupportedException(
-                "zig `switch` over a comptime integer in value position: the selected prong must yield a value (`v => expr`)");
-        }
-        if (chosen.CaptureName is not { } capture || capture == "_") { return LowerExprSink(value, sink); }
+        if (chosen.CaptureName is not { } capture || capture == "_") { return LowerSelectedProngExpression(chosen, sink, subjectItem); }
         var prev = _comptimeValues.GetValueOrDefault(capture);
         _comptimeValues[capture] = _ir.SpliceComptimeValue(subject)
             ?? throw new IrUnsupportedException($"zig `switch` capture `|{capture}|`: the comptime subject has no literal form");
-        try { return LowerExprSink(value, sink); }
+        try { return LowerSelectedProngExpression(chosen, sink, subjectItem); }
         finally
         {
             if (prev is { } p) { _comptimeValues[capture] = p; } else { _comptimeValues.Remove(capture); }

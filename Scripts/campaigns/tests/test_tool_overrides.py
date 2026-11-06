@@ -65,6 +65,26 @@ class SelectedToolTests(unittest.TestCase):
             self.assertEqual(ctx.compiler.read_bytes(), b'root DotCC')
             self.assertEqual(ctx.postprocessor.read_bytes(), b'root DotCC.PostProcess')
 
+    def test_disposable_tool_builds_preserve_existing_root_tools(self):
+        with tempfile.TemporaryDirectory() as directory, patch.dict(os.environ, {}, clear=True):
+            root = Path(directory); ctx = self.fixture(root)
+            ctx.recipe = SimpleNamespace(work_root=root/'disposable')
+            ctx.options.tools = 'build'
+            builds = []
+            def managed(action, project, label, *args):
+                artifact_root = Path(args[args.index('--artifacts-path') + 1])
+                self.assertEqual(artifact_root, root/'disposable/tool-build')
+                filename = 'dotcc.dll' if project.stem == 'DotCC' else 'dotcc-postprocess.dll'
+                self.tool(artifact_root/'bin'/project.stem/'release'/filename).write_bytes(b'private tool')
+                builds.append(project.stem)
+            ctx.managed = managed
+            Context.tools(ctx)
+            self.assertEqual(builds, ['DotCC', 'DotCC.PostProcess'])
+            self.assertEqual(ctx.compiler.read_bytes(), b'private tool')
+            self.assertEqual(ctx.postprocessor.read_bytes(), b'private tool')
+            self.assertEqual((root/'DotCC/bin/Release/net10.0/dotcc.dll').read_bytes(), b'root DotCC')
+            self.assertEqual((root/'DotCC.PostProcess/bin/Release/net10.0/dotcc-postprocess.dll').read_bytes(), b'root DotCC.PostProcess')
+
     def test_normal_path_preserves_recursive_dependency_contract_for_each_hash_policy(self):
         for mode in ('off', 'warn', 'strict'):
             with self.subTest(mode=mode), tempfile.TemporaryDirectory() as directory, patch.dict(os.environ, {}, clear=True):

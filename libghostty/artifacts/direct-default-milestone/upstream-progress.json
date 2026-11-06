@@ -1,0 +1,45 @@
+{
+  "core_cases": 229,
+  "render_cases": 58,
+  "total_accepted_cases": 287,
+  "rows": [
+    {
+      "partition": "formatters-01",
+      "cases": 138,
+      "form": "raw",
+      "mode": "jit",
+      "receipt": "libghostty/artifacts/direct-resume-20261104/direct-core-managed/formatters-01-imported-enum-optional-union-managed-stages.json"
+    },
+    {
+      "partition": "unicode-01",
+      "cases": 16,
+      "form": "raw",
+      "mode": "jit",
+      "receipt": "libghostty/artifacts/direct-resume-20261104/direct-core-managed/unicode-01-union-types-lazy-fallback-managed-stages.json"
+    },
+    {
+      "partition": "logical-render-01",
+      "cases": 31,
+      "form": "raw",
+      "mode": "jit",
+      "receipt": "libghostty/artifacts/direct-resume-20261104/direct-core-managed/logical-render-01-imported-enum-optional-union-managed-stages.json"
+    },
+    {
+      "partition": "protocol-state-02",
+      "cases": 43,
+      "form": "raw",
+      "mode": "jit",
+      "receipt": "libghostty/artifacts/direct-resume-20261104/direct-core-managed/protocol-state-02-packed-union-contract-recovery-managed-stages.json"
+    },
+    {
+      "partition": "glyph-reset",
+      "cases": 1,
+      "form": "raw",
+      "mode": "jit",
+      "receipt": "libghostty/artifacts/direct-resume-20261104/direct-core-managed/glyph-reset-dependent-parameters-return-peers-managed-stages.json"
+    }
+  ],
+  "render_receipt": "libghostty/artifacts/direct-resume-20261104/direct-upstream/render-58-jit-accepted.json",
+  "remaining_upstream_and_other_rows": "pending",
+  "canonical_default": "Previously qualified direct product; private upstream fixes are not automatically published."
+}

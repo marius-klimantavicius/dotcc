@@ -15,9 +15,9 @@ namespace DotCC.Libc;
 /// <remarks>
 /// The curated subset mirrors the campaign's "grow on purpose" stance: only the two most common
 /// assertions are modeled today (<c>expect</c>, <c>expectEqual</c>); any other <c>std.testing</c>
-/// member is a clear, specific cut at the lowering site. <c>expectEqual</c> requires the two operands
-/// to be the same <c>unmanaged</c> + <see cref="System.IEquatable{T}"/> type (C# infers <c>T</c> from
-/// the call), which covers the integer / float / bool / enum scalars a leaf test compares.
+/// member is a clear, specific cut at the lowering site. <c>expectEqual</c> takes two operands of
+/// the same unmanaged type. Scalar/enum equality uses typed comparison; source-mode structs
+/// use the upstream fieldwise assertion instead of this adapter.
 /// </remarks>
 public static class ZigTesting
 {
@@ -44,8 +44,29 @@ public static class ZigTesting
 
     /// <summary><c>std.testing.expectEqual(expected, actual)</c> — <c>Ok</c> when the two are
     /// equal, else an error union carrying <see cref="TestExpectedEqual"/>.</summary>
-    public static ErrUnion<Unit> expectEqual<T>(T expected, T actual) where T : unmanaged, global::System.IEquatable<T> =>
-        expected.Equals(actual) ? ErrUnion<Unit>.Ok(default) : ErrUnion<Unit>.Err(TestExpectedEqual);
+    public static ErrUnion<Unit> expectEqual<T>(T expected, T actual) where T : unmanaged =>
+        ScalarEqual(expected, actual) ? ErrUnion<Unit>.Ok(default) : ErrUnion<Unit>.Err(TestExpectedEqual);
+
+    private static bool ScalarEqual<T>(T expected, T actual) where T : unmanaged
+    {
+        // .NET floating Equals considers NaNs equal. Zig's == is IEEE equality:
+        // NaN is unequal to itself and both signs of zero compare equal.
+        if (typeof(T) == typeof(float))
+            return global::System.Runtime.CompilerServices.Unsafe.As<T, float>(ref expected)
+                == global::System.Runtime.CompilerServices.Unsafe.As<T, float>(ref actual);
+        if (typeof(T) == typeof(double))
+            return global::System.Runtime.CompilerServices.Unsafe.As<T, double>(ref expected)
+                == global::System.Runtime.CompilerServices.Unsafe.As<T, double>(ref actual);
+        if (typeof(T) == typeof(global::System.Half))
+            return global::System.Runtime.CompilerServices.Unsafe.As<T, global::System.Half>(ref expected)
+                == global::System.Runtime.CompilerServices.Unsafe.As<T, global::System.Half>(ref actual);
+        if (typeof(T) == typeof(CBool))
+            return (int)global::System.Runtime.CompilerServices.Unsafe.As<T, CBool>(ref expected)
+                == (int)global::System.Runtime.CompilerServices.Unsafe.As<T, CBool>(ref actual);
+        // The BCL specializes enum and IEquatable scalar comparers without
+        // boxing. Float128's typed Equals already implements IEEE comparison.
+        return global::System.Collections.Generic.EqualityComparer<T>.Default.Equals(expected, actual);
+    }
 
     /// <summary><c>std.testing.expectError(expected, actual)</c> — <c>Ok</c> when <paramref name="actual"/>
     /// is an error whose code equals <paramref name="expected"/> (an <c>error.X</c> code); else an error
