@@ -1,5 +1,6 @@
 """Locked, recoverable promotion of a complete set of generated projects."""
 from contextlib import contextmanager, nullcontext
+import errno
 import json
 import os
 from pathlib import Path
@@ -84,6 +85,28 @@ def validate_emission(directory, product):
         raise RuntimeError(f"Emitter did not write {product}.csproj")
 
 
+def _move_tree(source, destination):
+    """Move a product between disposable storage and its published filesystem.
+
+    Keep the complete source until copying succeeds. A failed copy removes only
+    the destination reserved by this call, so the promotion journal can restore
+    the previous product without mistaking a partial tree for user content.
+    """
+    source, destination = Path(source), Path(destination)
+    try:
+        source.rename(destination)
+    except OSError as error:
+        if error.errno != errno.EXDEV:
+            raise
+        destination.mkdir()
+        try:
+            shutil.copytree(source, destination, symlinks=True, dirs_exist_ok=True)
+        except BaseException:
+            shutil.rmtree(destination)
+            raise
+        shutil.rmtree(source)
+
+
 def recover(journal):
     if not journal.exists():
         return
@@ -93,16 +116,16 @@ def recover(journal):
         return
     for row in reversed(data["outputs"]):
         target, candidate, backup = (Path(row[key]) for key in ("target", "candidate", "backup"))
-        # Rename state is inferred from paths, including interruption between
-        # the rename and a receipt write. Backups stay on the same filesystem.
+        # Completed move state is inferred from paths. Preserve ambiguous
+        # copies after interruption rather than overwrite an unknown tree.
         if backup.exists():
             if target.exists():
                 if candidate.exists():
                     raise RuntimeError(f"Ambiguous promotion recovery: {target}")
-                target.rename(candidate)
-            backup.rename(target)
+                _move_tree(target, candidate)
+            _move_tree(backup, target)
         elif not row["previous"] and target.exists() and not candidate.exists():
-            target.rename(candidate)
+            _move_tree(target, candidate)
     for row in data.get("metadata", []):
         path = Path(row["path"])
         if row["previous"] is None:
@@ -169,8 +192,8 @@ def promote(pairs, journal, validate, metadata=None, *, legacy_owned=()):
             for row in state['outputs']:
                 target = Path(row["target"])
                 if row["previous"]:
-                    target.rename(row["backup"])
-                Path(row["candidate"]).rename(target)
+                    _move_tree(target, row["backup"])
+                _move_tree(row["candidate"], target)
         validate()
         with publication_lock():
             for path, value in metadata.items():

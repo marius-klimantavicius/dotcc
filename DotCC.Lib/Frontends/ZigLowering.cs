@@ -2537,15 +2537,16 @@ internal sealed partial class ZigLowering
     /// else is its literal.</summary>
     private CExpr ComptimeLabeledBlockValue(Item labeled, CType? sink)
     {
-        var key = (labeled, _currentFnName);
+        var key = (labeled, _typeBodyInstance ?? _currentFnName);
         if (_comptimeBlockStatics.TryGetValue(key, out var memo)) { return new VarRef(memo) { Type = memo.Type, IsLValue = true }; }
-        var (type, init) = ComptimeLabeledBlockInit("a `comptime` block", "__ctblk" + _comptimeBlockStatics.Count, labeled, sink);
+        var (type, init) = ComptimeLabeledBlockInit("a `comptime` block", QualifyTypeName("__ctblk" + _comptimeBlockStatics.Count), labeled, sink);
         if (init is not PinnedArray) { return init; }
         var sym = _symbols.Declare(new Symbol
         {
-            Name = "__ctblk" + _comptimeBlockStatics.Count, Kind = SymKind.Var, Type = type, Storage = Storage.Static, IsGlobal = true,
+            Name = QualifyTypeName("__ctblk" + _comptimeBlockStatics.Count), Kind = SymKind.Var, Type = type, Storage = Storage.Static, IsGlobal = true,
         });
         _ir.Globals.Add(new GlobalVar(sym, init));
+        _ir.ConstGlobalInits[sym] = init;
         _comptimeBlockStatics[key] = sym;
         return new VarRef(sym) { Type = type, IsLValue = true };
     }

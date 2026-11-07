@@ -1,0 +1,15 @@
+PASS library-version numeric=1.0.0 string=1.0.0 c-string=1.0.0 pre=0 build=0
+PASS optimize mode=3 release-fast=1
+PASS feature simd=0
+PASS feature kitty_graphics=0
+PASS feature tmux_control_mode=0
+PASS feature snapshot=0
+PASS feature formatter=1
+PASS feature selection=0
+PASS feature search=0
+PASS feature render_state=1
+PASS feature input_encode=0
+PASS feature color=0
+PASS feature grid_introspection=1
+PASS feature glyph_protocol=0
+RESULT version-feature-cases=14 passed=14 failed=0

@@ -1,6 +1,7 @@
 """Infrastructure contracts exercised with tiny fixtures, never upstream builds."""
 from contextlib import redirect_stderr, redirect_stdout
 from dataclasses import replace
+import errno
 import io
 import json
 import os
@@ -429,6 +430,47 @@ class DeliveryTests(Fixture):
         with self.assertRaisesRegex(RuntimeError, "Unowned"):
             promote([(candidate, target)], self.root / "journal.json", lambda: None)
         self.assertEqual((target / "notes.txt").read_text(), "authored")
+
+    def test_cross_device_promotion_preserves_unowned_source(self):
+        candidate, target = self.output("candidate", "new"), self.output("target", "old")
+        self.file("target/notes.txt", "user data")
+        with patch.object(Path, "rename", side_effect=OSError(errno.EXDEV, "different filesystems")):
+            promote([(candidate, target)], self.root / "journal.json", lambda: None)
+        self.assertEqual((target / "Generated.cs").read_text(), "new")
+        self.assertEqual((target / "notes.txt").read_text(), "user data")
+        self.assertFalse(candidate.exists())
+
+    def test_cross_device_final_validation_failure_restores_both_products(self):
+        raw, processed = self.output("raw", "new raw"), self.output("processed", "new processed")
+        old_raw, old_processed = self.output("old-raw", "old raw"), self.output("old-processed", "old processed")
+        def fail():
+            raise RuntimeError("final build failure")
+        with patch.object(Path, "rename", side_effect=OSError(errno.EXDEV, "different filesystems")):
+            with self.assertRaisesRegex(RuntimeError, "final build failure"):
+                promote([(raw, old_raw), (processed, old_processed)], self.root / "journal.json", fail)
+        self.assertEqual((old_raw / "Generated.cs").read_text(), "old raw")
+        self.assertEqual((old_processed / "Generated.cs").read_text(), "old processed")
+        self.assertEqual((raw / "Generated.cs").read_text(), "new raw")
+        self.assertEqual((processed / "Generated.cs").read_text(), "new processed")
+
+    def test_cross_device_partial_copy_failure_retains_source_and_restores_old_product(self):
+        candidate, target = self.output("candidate", "new"), self.output("target", "old")
+        self.file("target/notes.txt", "user data")
+        copy = shutil.copytree
+        def failing_copy(source, destination, *args, **kwargs):
+            if Path(source) == candidate:
+                (Path(destination) / "partial.cs").write_text("partial copy")
+                raise OSError("copy failed")
+            return copy(source, destination, *args, **kwargs)
+        with patch.object(Path, "rename", side_effect=OSError(errno.EXDEV, "different filesystems")):
+            with patch("campaigns.delivery.shutil.copytree", side_effect=failing_copy):
+                with self.assertRaisesRegex(OSError, "copy failed"):
+                    promote([(candidate, target)], self.root / "journal.json", lambda: None)
+        self.assertEqual((target / "Generated.cs").read_text(), "old")
+        self.assertEqual((target / "notes.txt").read_text(), "user data")
+        self.assertEqual((candidate / "Generated.cs").read_text(), "new")
+        self.assertFalse((target / "partial.cs").exists())
+        self.assertFalse((self.root / "journal.json").exists())
 
     def test_interrupted_rename_recovered(self):
         candidate, target = self.output("candidate", "new"), self.output("target", "old")

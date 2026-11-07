@@ -231,11 +231,15 @@ internal sealed partial class ZigLowering
         // { for (@typeInfo(T).@"enum".field_names, 0..) |name, i| kvs_array[i] = .{ name, @field(T, name) }; … }`, task
         // #116): zig runs the loop at compile time, so each capture is comptime-known, which is what `inline for`'s unroll
         // gives; a runtime loop would have nothing to iterate.
-        if (_comptimeDepth > 0 && objects[0] is { IsRange: false } ctFirst && TryComptimeIterable(ctFirst.Expr, out var ctList))
+        if (_comptimeDepth > 0 && objects.Any(obj => !obj.IsRange && TryComptimeIterable(obj.Expr, out _)))
         {
-            return objects.Count == 1
-                ? UnrollComptimeFor(new[] { (ctList, captures[0].Name) }, body, elseBody)
-                : UnrollComptimeMultiFor(objsItem, capsItem, body, elseBody);
+            if (objects[0] is { IsRange: false } ctFirst && TryComptimeIterable(ctFirst.Expr, out var ctList))
+                return objects.Count == 1
+                    ? UnrollComptimeFor(new[] { (ctList, captures[0].Name) }, body, elseBody)
+                    : UnrollComptimeMultiFor(objsItem, capsItem, body, elseBody);
+            // An array can precede a reflected list (CEnum copies field_values
+            // through &result). Reuse the bounded mixed-loop path and its aliases.
+            return UnrollMixedInlineFor(objsItem, capsItem, body, elseBody);
         }
         // `for (…) |…| body else elsebody` (task #108): the else runs when the loop ends without a `break`.
         if (elseBody is not null) { return LowerForParallel(objects, captures, body, elseBody); }

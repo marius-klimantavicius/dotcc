@@ -30,6 +30,7 @@ using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633763323230643365
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633363613433626363 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c3ca43bcc;
 using __DotCcEnum_76616C6772696E645F5F436C69656E7452657175657374 = global::Managed.GhosttyVt.valgrind__ClientRequest;
 using __DotCcEnum_506167654C6973745F5F4E6F64655F5F446174615F546167 = global::Managed.GhosttyVt.PageList__Node__Data_Tag;
+using __DotCcEnum_72656E6465725F5F5365744F7074696F6E = global::Managed.GhosttyVt.render__SetOption;
 using __DotCcEnum_6465766963655F617474726962757465735F5F436F6E666F726D616E63654C6576656C = global::Managed.GhosttyVt.device_attributes__ConformanceLevel;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636164343962373363 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_cad49b73c;
 using __DotCcEnum_506167654C6973745F5F5363726F6C6C5F546167 = global::Managed.GhosttyVt.PageList__Scroll_Tag;
@@ -40,6 +41,7 @@ using __DotCcEnum_5461726765745F5F416269 = global::Managed.GhosttyVt.Target__Abi
 using __DotCcEnum_53637265656E5F5F5F5F416E6F6E456E756D30 = global::Managed.GhosttyVt.Screen____AnonEnum0;
 using __DotCcEnum_6D6574615F5F4669656C64456E756D5F5F506167654C6973745F5F4C696D697473 = global::Managed.GhosttyVt.meta__FieldEnum__PageList__Limits;
 using __DotCcEnum_72656E6465725F5F526F7744617461 = global::Managed.GhosttyVt.render__RowData;
+using __DotCcEnum_72656E6465725F5F526F774F7074696F6E = global::Managed.GhosttyVt.render__RowOption;
 using __DotCcEnum_6F73635F325F5F5061727365725F5F5374617465 = global::Managed.GhosttyVt.osc_2__Parser__State;
 using __DotCcEnum_646E645F636F6D6D616E645F5F526571756573745F546167 = global::Managed.GhosttyVt.dnd_command__Request_Tag;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633566353337626532 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c5f537be2;
@@ -49,6 +51,7 @@ using __DotCcEnum_5461726765745F5F4F735F5F57696E646F777356657273696F6E = global:
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633336613366316236 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c36a3f1b6;
 using __DotCcEnum_5465726D696E616C5F5F5F5F416E6F6E456E756D30 = global::Managed.GhosttyVt.Terminal____AnonEnum0;
 using __DotCcEnum_506167654C6973745F5F496E6372656173654361706163697479 = global::Managed.GhosttyVt.PageList__IncreaseCapacity;
+using __DotCcEnum_53637265656E5F5F5F5F416E6F6E456E756D33 = global::Managed.GhosttyVt.Screen____AnonEnum3;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636661643537633037 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_cfad57c07;
 using __DotCcEnum_686561705F4172656E61416C6C6F6361746F725F5F50757368526573756C745F546167 = global::Managed.GhosttyVt.heap_ArenaAllocator__PushResult_Tag;
 using __DotCcEnum_6D6174685F5F4F72646572 = global::Managed.GhosttyVt.math__Order;
@@ -86,13 +89,13 @@ using __DotCcEnum_7367725F5F4174747269627574655F5F556E6465726C696E65 = global::M
 using __DotCcEnum_646E645F726573706F6E73655F5F456E636F64696E67 = global::Managed.GhosttyVt.dnd_response__Encoding;
 using __DotCcEnum_726573756C745F5F526573756C74 = global::Managed.GhosttyVt.result__Result;
 using __DotCcEnum_53637265656E5F5F5F5F416E6F6E456E756D32 = global::Managed.GhosttyVt.Screen____AnonEnum2;
+using __DotCcEnum_7379735F5F4F7074696F6E = global::Managed.GhosttyVt.sys__Option;
 using __DotCcEnum_6170635F5F53746174655F546167 = global::Managed.GhosttyVt.apc__State_Tag;
 using __DotCcEnum_5461726765745F5F4F626A656374466F726D6174 = global::Managed.GhosttyVt.Target__ObjectFormat;
 using __DotCcEnum_5061727365725F5F416374696F6E5F546167 = global::Managed.GhosttyVt.Parser__Action_Tag;
 using __DotCcEnum_496F5F46696C655F5265616465725F5F4D6F6465 = global::Managed.GhosttyVt.Io_File_Reader__Mode;
 using __DotCcEnum_686561705F4172656E61416C6C6F6361746F725F5F52657365744D6F64655F546167 = global::Managed.GhosttyVt.heap_ArenaAllocator__ResetMode_Tag;
 using __DotCcEnum_7374796C655F325F5F5374796C655F5F436F6C6F725F5F546167 = global::Managed.GhosttyVt.style_2__Style__Color__Tag;
-using __DotCcEnum_5465726D696E616C5F5F5072696E74536C6963655769647468 = global::Managed.GhosttyVt.Terminal__PrintSliceWidth;
 using __DotCcEnum_6465766963655F617474726962757465735F5F5072696D6172795F5F46656174757265 = global::Managed.GhosttyVt.device_attributes__Primary__Feature;
 using __DotCcEnum_5461726765745F68657861676F6E5F5F46656174757265 = global::Managed.GhosttyVt.Target_hexagon__Feature;
 using __DotCcEnum_636F6C6F725F335F5F5370656369616C = global::Managed.GhosttyVt.color_3__Special;
@@ -116,8 +119,8 @@ using __DotCcEnum_6463735F5F436F6D6D616E645F5F44454352515353 = global::Managed.G
 using __DotCcEnum_76616C6772696E645F6D656D636865636B5F5F436C69656E7452657175657374 = global::Managed.GhosttyVt.valgrind_memcheck__ClientRequest;
 using __DotCcEnum_61727261795F686173685F6D61705F5F4361706163697479496E64657854797065 = global::Managed.GhosttyVt.array_hash_map__CapacityIndexType;
 using __DotCcEnum_496F5F46696C655F5F4B696E64 = global::Managed.GhosttyVt.Io_File__Kind;
+using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633164613662336138 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c1da6b3a8;
 using __DotCcEnum_6F73635F325F5F5061727365725F5F436170747572655F5F4261636B696E675F546167 = global::Managed.GhosttyVt.osc_2__Parser__Capture__Backing_Tag;
-using __DotCcEnum_72656E6465725F5F437572736F7256697375616C5374796C65 = global::Managed.GhosttyVt.render__CursorVisualStyle;
 using __DotCcEnum_736F72745F7064715F5F48696E74 = global::Managed.GhosttyVt.sort_pdq__Hint;
 using __DotCcEnum_636C6970626F6172645F325F5F526561645F5F526573756C745F546167 = global::Managed.GhosttyVt.clipboard_2__Read__Result_Tag;
 using __DotCcEnum_616E73695F5F4330 = global::Managed.GhosttyVt.ansi__C0;
@@ -126,7 +129,6 @@ using __DotCcEnum_636F6C6F725F5F4F7065726174696F6E = global::Managed.GhosttyVt.c
 using __DotCcEnum_6B697474795F636C6970626F6172645F70726F746F636F6C5F5F537461747573 = global::Managed.GhosttyVt.kitty_clipboard_protocol__Status;
 using __DotCcEnum_6170635F5F50726F746F636F6C = global::Managed.GhosttyVt.apc__Protocol;
 using __DotCcEnum_73656D616E7469635F70726F6D70745F5F436F6D6D616E645F5F416374696F6E = global::Managed.GhosttyVt.semantic_prompt__Command__Action;
-using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633430323464633238 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c4024dc28;
 using __DotCcEnum_70726F6772616D5F7374617475735F5F436F6D6D616E645F546167 = global::Managed.GhosttyVt.program_status__Command_Tag;
 using __DotCcEnum_636F6C6F725F335F5F4B696E645F546167 = global::Managed.GhosttyVt.color_3__Kind_Tag;
 using __DotCcEnum_6373695F5F4572617365446973706C6179 = global::Managed.GhosttyVt.csi__EraseDisplay;
@@ -138,10 +140,10 @@ using __DotCcEnum_6772617068656D655F5F4772617068656D655769647468456666656374 = g
 using __DotCcEnum_6373695F5F45726173654C696E65 = global::Managed.GhosttyVt.csi__EraseLine;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636130376336633233 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_ca07c6c23;
 using __DotCcEnum_506167654C6973745F5F5F5F416E6F6E556E696F6E305F546167 = global::Managed.GhosttyVt.PageList____AnonUnion0_Tag;
+using __DotCcEnum_74797065735F335F5F437572736F725374796C65 = global::Managed.GhosttyVt.types_3__CursorStyle;
 using __DotCcEnum_666D745F5F416C69676E6D656E74 = global::Managed.GhosttyVt.fmt__Alignment;
 using __DotCcEnum_6275696C645F696E666F5F5F4275696C64496E666F = global::Managed.GhosttyVt.build_info__BuildInfo;
 using __DotCcEnum_506167654C6973745F5F496E6372656D656E74616C436F6D7072657373696F6E526573756C74 = global::Managed.GhosttyVt.PageList__IncrementalCompressionResult;
-using __DotCcEnum_7374796C655F5F436F6C6F72546167 = global::Managed.GhosttyVt.style__ColorTag;
 using __DotCcEnum_506167654C6973745F5F56696577706F72745F546167 = global::Managed.GhosttyVt.PageList__Viewport_Tag;
 using __DotCcEnum_496F5F4469725F5F5265616465725F5F5374617465 = global::Managed.GhosttyVt.Io_Dir__Reader__State;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633834366562383534 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c846eb854;
@@ -162,7 +164,6 @@ using __DotCcEnum_506167654C6973745F5F436F6D7072657373696F6E536372617463685F5461
 using __DotCcEnum_53656C656374696F6E5F5F426F756E64735F546167 = global::Managed.GhosttyVt.Selection__Bounds_Tag;
 using __DotCcEnum_636C6970626F6172645F325F5F57726974655F5F526573756C745F546167 = global::Managed.GhosttyVt.clipboard_2__Write__Result_Tag;
 using __DotCcEnum_6F73635F325F5F5465726D696E61746F72 = global::Managed.GhosttyVt.osc_2__Terminator;
-using __DotCcEnum_7465726D696E616C5F5F5465726D696E616C437572736F725374796C65 = global::Managed.GhosttyVt.terminal__TerminalCursorStyle;
 using __DotCcEnum_506167654C6973745F5F506167654974657261746F725F5F4C696D69745F546167 = global::Managed.GhosttyVt.PageList__PageIterator__Limit_Tag;
 using __DotCcEnum_6C616E675F5F456E6469616E = global::Managed.GhosttyVt.lang__Endian;
 using __DotCcEnum_686561705F5F5F5F416E6F6E556E696F6E305F546167 = global::Managed.GhosttyVt.heap____AnonUnion0_Tag;
@@ -180,7 +181,9 @@ using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633332396663356139
 using __DotCcEnum_6170635F5F436F6D6D616E645F546167 = global::Managed.GhosttyVt.apc__Command_Tag;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636433333364643464 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_cd333dd4d;
 using __DotCcEnum_68797065726C696E6B5F5F50616765456E7472795F5F49645F546167 = global::Managed.GhosttyVt.hyperlink__PageEntry__Id_Tag;
+using __DotCcEnum_666F726D61747465725F5F4F7074696F6E = global::Managed.GhosttyVt.formatter__Option;
 using __DotCcEnum_6F73635F5F436F6D6D616E6444617461 = global::Managed.GhosttyVt.osc__CommandData;
+using __DotCcEnum_7465726D696E616C5F5F4F7074696F6E = global::Managed.GhosttyVt.terminal__Option;
 using __DotCcEnum_706167655F5F43656C6C5F5F53656D616E746963436F6E74656E74 = global::Managed.GhosttyVt.page__Cell__SemanticContent;
 using __DotCcEnum_706167655F5F526F775F5F53656D616E74696350726F6D7074 = global::Managed.GhosttyVt.page__Row__SemanticPrompt;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633437333233396563 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c473239ec;
@@ -210,6 +213,7 @@ using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633363643637393664
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633838303663616564 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c8806caed;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633562326163383131 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c5b2ac811;
 using __DotCcEnum_68797065726C696E6B5F5F48797065726C696E6B5F5F49645F546167 = global::Managed.GhosttyVt.hyperlink__Hyperlink__Id_Tag;
+using __DotCcEnum_5465726D696E616C5F5F5072696E74536C6963654D69786564526F775F5F53746F70 = global::Managed.GhosttyVt.Terminal__PrintSliceMixedRow__Stop;
 using __DotCcEnum_635F5F5F5F416E6F6E456E756D31 = global::Managed.GhosttyVt.c____AnonEnum1;
 using __DotCcEnum_666D745F5F43617365 = global::Managed.GhosttyVt.fmt__Case;
 using __DotCcEnum_78745F636865636B73756D5F5F56616C75655F546167 = global::Managed.GhosttyVt.xt_checksum__Value_Tag;
@@ -226,19 +230,19 @@ using __DotCcEnum_5465726D696E616C5F5F446563636F6C6D4D6F6465 = global::Managed.G
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633262643762326166 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c2bd7b2af;
 using __DotCcEnum_72656E6465725F5F526F7743656C6C7344617461 = global::Managed.GhosttyVt.render__RowCellsData;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636630373331306539 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_cf07310e9;
-using __DotCcEnum_5F5F446F744363547970656465665F34363336323630304243383945323145354234343735414539333242333836343046463531454546393044433731364645303732383746333544313844464434 = global::Managed.GhosttyVt.GhosttyPointTag;
-using __DotCcEnum_5F5F446F744363547970656465665F38453938394341423537343643374443394441454641333130393838363945344542443445423534384635354339323131454534343334343937393039433030 = global::Managed.GhosttyVt.GhosttyTerminalData;
-using __DotCcEnum_5F5F446F744363547970656465665F35424345333530373346314534354637304138443832424132424541383445453036373836383530353132344631313838433532393036363644383545333237 = global::Managed.GhosttyVt.GhosttyCellData;
-using __DotCcEnum_5F5F446F744363547970656465665F43303034443441424233424338313144423537313535393445433345354434323635424239324443303733443239333841413239374231383839424443394333 = global::Managed.GhosttyVt.GhosttyResult;
-using __DotCcEnum_5F5F446F744363547970656465665F34384134363232364635353144443144443032383437454538333644384136373033354239394439463934353844463633383934344137383539413131393341 = global::Managed.GhosttyVt.GhosttyFormatterFormat;
+using __DotCcEnum_5F5F446F744363547970656465665F42343433304439444231373133423442463337353942433732463336343833304138434538304430373237373346423338423245463438354638373034324145 = global::Managed.GhosttyVt.GhosttyResult;
+using __DotCcEnum_5F5F446F744363547970656465665F42393432423136393035383537384536463744353439413132384332363446323836323544433937413445324131363841383533343233333530363945433544 = global::Managed.GhosttyVt.GhosttyPointTag;
+using __DotCcEnum_5F5F446F744363547970656465665F44383133333931433843353335394138414442413938353433363230433636363432353035464446423837373341463337454335383635383333443935394538 = global::Managed.GhosttyVt.GhosttyTerminalData;
+using __DotCcEnum_5F5F446F744363547970656465665F44353335424632413237433246423245304135464634373046434139344436353034454542444646394138463838444636453434333030334643393142303741 = global::Managed.GhosttyVt.GhosttyCellData;
+using __DotCcEnum_5F5F446F744363547970656465665F45313739394335393033333344303646413942333645433635313836453339464242454341414144393434394633453039443837313537424438463246343441 = global::Managed.GhosttyVt.GhosttyFormatterOption;
+using __DotCcEnum_5F5F446F744363547970656465665F45364536453544393039344443313533343543344430414638324245324333354637433942434634364446324233414134383635334135374439413632323638 = global::Managed.GhosttyVt.GhosttyStyleColorTag;
 using __DotCcEnum_446F74636347686F73747479546578745374796C65 = global::Managed.GhosttyVt.DotccGhosttyTextStyle;
-using __DotCcEnum_5F5F446F744363547970656465665F46453531373538343036394442364138303334454138454633344542424634304636383130423745453942424345313931334443444533413633394534443543 = global::Managed.GhosttyVt.GhosttyStyleColorTag;
 using DotCcLiterals = global::Managed.GhosttyVt.GhosttyVtLiterals;
 using DotCcPointers = global::Managed.GhosttyVt.GhosttyVtFunctionPointers;
 
 public static unsafe partial class GhosttyVt
 {
-    public static unsafe ErrUnion<Unit> Io_Writer__print__s8faed272_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__s85f7dafd_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__CSI> args)
     {
         try
         {
@@ -330,46 +334,30 @@ public static unsafe partial class GhosttyVt
                     
                 
                 
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S150 /*"invalid tab set command: "*/), 25UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S768 /*"invalid ICH command: "*/), 21UL)));
                 }
-                int fmt_begin = 26;
+                int fmt_begin = 22;
                 
                 
-                int fmt_end = 27;
+                int fmt_end = 23;
                 byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2661 /*"invalid tab set command: {f}"*/), 28UL).Ptr + fmt_begin, 1UL));
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2370 /*"invalid ICH command: {f}"*/), 24UL).Ptr + fmt_begin, 1UL));
                 ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__ESC__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__CSI__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
             }
             {
-                int start_index__1 = 28;
+                int start_index__1 = 24;
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe ErrUnion<Unit> Io_Writer__print__s8ae59137_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__s72fc7ddc_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__CSI> args)
     {
         try
         {
@@ -497,34 +485,30 @@ public static unsafe partial class GhosttyVt
                     
                 
                 
-                    
-                    
-                
-                
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S83 /*"invalid reverse index command: "*/), 31UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2104 /*"ignoring unimplemented CSI @: "*/), 30UL)));
                 }
-                int fmt_begin = 32;
+                int fmt_begin = 31;
                 
                 
-                int fmt_end = 33;
+                int fmt_end = 32;
                 byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2666 /*"invalid reverse index command: {f}"*/), 34UL).Ptr + fmt_begin, 1UL));
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1483 /*"ignoring unimplemented CSI @: {f}"*/), 33UL).Ptr + fmt_begin, 1UL));
                 ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__ESC__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__CSI__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
             }
             {
-                int start_index__1 = 34;
+                int start_index__1 = 33;
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe ErrUnion<Unit> Io_Writer__print__sf3e21027_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__sf0a8e932_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__CSI> args)
     {
         try
         {
@@ -636,213 +620,30 @@ public static unsafe partial class GhosttyVt
                     
                 
                 
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1155 /*"invalid single shift 2 command: "*/), 32UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3035 /*"invalid DECRQCRA command: "*/), 26UL)));
                 }
-                int fmt_begin = 33;
+                int fmt_begin = 27;
                 
                 
-                int fmt_end = 34;
+                int fmt_end = 28;
                 byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1966 /*"invalid single shift 2 command: {f}"*/), 35UL).Ptr + fmt_begin, 1UL));
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1042 /*"invalid DECRQCRA command: {f}"*/), 29UL).Ptr + fmt_begin, 1UL));
                 ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__ESC__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__CSI__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
             }
             {
-                int start_index__1 = 35;
+                int start_index__1 = 29;
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe ErrUnion<Unit> Io_Writer__print__s696c03c4_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__ESC> args)
-    {
-        try
-        {
-            int max_format_args = 32;
-            {
-                int start_index = 0;
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3037 /*"invalid single shift 3 command: "*/), 32UL)));
-                }
-                int fmt_begin = 33;
-                
-                
-                int fmt_end = 34;
-                byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1793 /*"invalid single shift 3 command: {f}"*/), 35UL).Ptr + fmt_begin, 1UL));
-                ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__ESC__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
-            }
-            {
-                int start_index__1 = 35;
-            }
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
-    }
-
-
-
-    public static unsafe ErrUnion<Unit> Io_Writer__print__sd106f1f2_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__sdbf4c80e_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__CSI> args)
     {
         try
         {
@@ -964,28 +765,179 @@ public static unsafe partial class GhosttyVt
                 
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2702 /*"unimplemented ESC callback: "*/), 28UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2343 /*"invalid XTCHECKSUM command: "*/), 28UL)));
                 }
                 int fmt_begin = 29;
                 
                 
                 int fmt_end = 30;
                 byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3001 /*"unimplemented ESC callback: {f}"*/), 31UL).Ptr + fmt_begin, 1UL));
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1494 /*"invalid XTCHECKSUM command: {f}"*/), 31UL).Ptr + fmt_begin, 1UL));
                 ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__ESC__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__CSI__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
             }
             {
                 int start_index__1 = 31;
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe ErrUnion<Unit> Io_Writer__print__s993f1bff_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__sc3f015bf_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__CSI> args)
+    {
+        try
+        {
+            int max_format_args = 32;
+            {
+                int start_index = 0;
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                
+                {
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2424 /*"ignoring unimplemented CSI y: "*/), 30UL)));
+                }
+                int fmt_begin = 31;
+                
+                
+                int fmt_end = 32;
+                byte* placeholder_array = stackalloc byte[1];
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S959 /*"ignoring unimplemented CSI y: {f}"*/), 33UL).Ptr + fmt_begin, 1UL));
+                ulong arg_to_print = (ulong)0L;
+                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__CSI__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+            }
+            {
+                int start_index__1 = 33;
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__sdbde56f2_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__CSI> args)
     {
         try
         {
@@ -1107,589 +1059,28 @@ public static unsafe partial class GhosttyVt
                 
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1096 /*"invalid full reset command: "*/), 28UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2978 /*"unimplemented CSI callback: "*/), 28UL)));
                 }
                 int fmt_begin = 29;
                 
                 
                 int fmt_end = 30;
                 byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1517 /*"invalid full reset command: {f}"*/), 31UL).Ptr + fmt_begin, 1UL));
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1312 /*"unimplemented CSI callback: {f}"*/), 31UL).Ptr + fmt_begin, 1UL));
                 ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__ESC__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__CSI__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
             }
             {
                 int start_index__1 = 31;
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe ErrUnion<Unit> Io_Writer__print__se532921d_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__ESC> args)
-    {
-        try
-        {
-            int max_format_args = 32;
-            {
-                int start_index = 0;
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2979 /*"invalid locking shift 1 right command: "*/), 39UL)));
-                }
-                int fmt_begin = 40;
-                
-                
-                int fmt_end = 41;
-                byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S991 /*"invalid locking shift 1 right command: {f}"*/), 42UL).Ptr + fmt_begin, 1UL));
-                ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__ESC__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
-            }
-            {
-                int start_index__1 = 42;
-            }
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
-    }
-
-
-
-    public static unsafe ErrUnion<Unit> Io_Writer__print__s6987704c_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__ESC> args)
-    {
-        try
-        {
-            int max_format_args = 32;
-            {
-                int start_index = 0;
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1556 /*"invalid locking shift 2 right command: "*/), 39UL)));
-                }
-                int fmt_begin = 40;
-                
-                
-                int fmt_end = 41;
-                byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S482 /*"invalid locking shift 2 right command: {f}"*/), 42UL).Ptr + fmt_begin, 1UL));
-                ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__ESC__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
-            }
-            {
-                int start_index__1 = 42;
-            }
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
-    }
-
-
-
-    public static unsafe ErrUnion<Unit> Io_Writer__print__s82effb1b_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__ESC> args)
-    {
-        try
-        {
-            int max_format_args = 32;
-            {
-                int start_index = 0;
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1421 /*"invalid locking shift 3 right command: "*/), 39UL)));
-                }
-                int fmt_begin = 40;
-                
-                
-                int fmt_end = 41;
-                byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2668 /*"invalid locking shift 3 right command: {f}"*/), 42UL).Ptr + fmt_begin, 1UL));
-                ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__ESC__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
-            }
-            {
-                int start_index__1 = 42;
-            }
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
-    }
-
-
-
-    public static unsafe ErrUnion<Unit> Io_Writer__print__sa22cdc21_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__sa6ab426d_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__CSI> args)
     {
         try
         {
@@ -1791,36 +1182,2527 @@ public static unsafe partial class GhosttyVt
                 
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3097 /*"unimplemented setMode: "*/), 23UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1650 /*"invalid DECIC command: "*/), 23UL)));
                 }
                 int fmt_begin = 24;
                 
                 
                 int fmt_end = 25;
                 byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S252 /*"unimplemented setMode: {f}"*/), 26UL).Ptr + fmt_begin, 1UL));
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S615 /*"invalid DECIC command: {f}"*/), 26UL).Ptr + fmt_begin, 1UL));
                 ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__ESC__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__CSI__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
             }
             {
                 int start_index__1 = 26;
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe fmt__Placeholder fmt__Placeholder_parse__s65f8c821__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__se452fe08_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        fmt__Parser parser = new fmt__Parser { bytes = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2838 /*"any"*/), 3UL), i = 0 };
-        ErrUnion<fmt__Specifier> __cE = fmt__Parser_specifier__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&parser);
+        try
+        {
+            int max_format_args = 32;
+            {
+                int start_index = 0;
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                
+                {
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1619 /*"invalid DECDC command: "*/), 23UL)));
+                }
+                int fmt_begin = 24;
+                
+                
+                int fmt_end = 25;
+                byte* placeholder_array = stackalloc byte[1];
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S93 /*"invalid DECDC command: {f}"*/), 26UL).Ptr + fmt_begin, 1UL));
+                ulong arg_to_print = (ulong)0L;
+                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__CSI__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+            }
+            {
+                int start_index__1 = 26;
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__s028dc4fb_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__CSI> args)
+    {
+        try
+        {
+            int max_format_args = 32;
+            {
+                int start_index = 0;
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                
+                {
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S833 /*"unimplemented CSI action: "*/), 26UL)));
+                }
+                int fmt_begin = 27;
+                
+                
+                int fmt_end = 28;
+                byte* placeholder_array = stackalloc byte[1];
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2130 /*"unimplemented CSI action: {f}"*/), 29UL).Ptr + fmt_begin, 1UL));
+                ulong arg_to_print = (ulong)0L;
+                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__CSI__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+            }
+            {
+                int start_index__1 = 29;
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__s6466db2d_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__ESC> args)
+    {
+        try
+        {
+            int max_format_args = 32;
+            {
+                int start_index = 0;
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                
+                {
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1397 /*"invalid command: "*/), 17UL)));
+                }
+                int fmt_begin = 18;
+                
+                
+                int fmt_end = 19;
+                byte* placeholder_array = stackalloc byte[1];
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2792 /*"invalid command: {f}"*/), 20UL).Ptr + fmt_begin, 1UL));
+                ulong arg_to_print = (ulong)0L;
+                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__ESC__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+            }
+            {
+                int start_index__1 = 20;
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__sc98be146_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__ESC> args)
+    {
+        try
+        {
+            int max_format_args = 32;
+            {
+                int start_index = 0;
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                
+                {
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2711 /*"invalid back index command: "*/), 28UL)));
+                }
+                int fmt_begin = 29;
+                
+                
+                int fmt_end = 30;
+                byte* placeholder_array = stackalloc byte[1];
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1443 /*"invalid back index command: {f}"*/), 31UL).Ptr + fmt_begin, 1UL));
+                ulong arg_to_print = (ulong)0L;
+                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__ESC__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+            }
+            {
+                int start_index__1 = 31;
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__s65666d80_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__ESC> args)
+    {
+        try
+        {
+            int max_format_args = 32;
+            {
+                int start_index = 0;
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                
+                {
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2651 /*"invalid forward index command: "*/), 31UL)));
+                }
+                int fmt_begin = 32;
+                
+                
+                int fmt_end = 33;
+                byte* placeholder_array = stackalloc byte[1];
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1293 /*"invalid forward index command: {f}"*/), 34UL).Ptr + fmt_begin, 1UL));
+                ulong arg_to_print = (ulong)0L;
+                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__ESC__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+            }
+            {
+                int start_index__1 = 34;
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__sc2742391_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__ESC> args)
+    {
+        try
+        {
+            int max_format_args = 32;
+            {
+                int start_index = 0;
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                
+                {
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1560 /*"invalid index command: "*/), 23UL)));
+                }
+                int fmt_begin = 24;
+                
+                
+                int fmt_end = 25;
+                byte* placeholder_array = stackalloc byte[1];
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2606 /*"invalid index command: {f}"*/), 26UL).Ptr + fmt_begin, 1UL));
+                ulong arg_to_print = (ulong)0L;
+                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__ESC__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+            }
+            {
+                int start_index__1 = 26;
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__sf222fa34_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__ESC> args)
+    {
+        try
+        {
+            int max_format_args = 32;
+            {
+                int start_index = 0;
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                
+                {
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2905 /*"invalid next line command: "*/), 27UL)));
+                }
+                int fmt_begin = 28;
+                
+                
+                int fmt_end = 29;
+                byte* placeholder_array = stackalloc byte[1];
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1059 /*"invalid next line command: {f}"*/), 30UL).Ptr + fmt_begin, 1UL));
+                ulong arg_to_print = (ulong)0L;
+                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__ESC__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+            }
+            {
+                int start_index__1 = 30;
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__s8faed272_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__ESC> args)
+    {
+        try
+        {
+            int max_format_args = 32;
+            {
+                int start_index = 0;
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                
+                {
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S150 /*"invalid tab set command: "*/), 25UL)));
+                }
+                int fmt_begin = 26;
+                
+                
+                int fmt_end = 27;
+                byte* placeholder_array = stackalloc byte[1];
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2676 /*"invalid tab set command: {f}"*/), 28UL).Ptr + fmt_begin, 1UL));
+                ulong arg_to_print = (ulong)0L;
+                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__ESC__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+            }
+            {
+                int start_index__1 = 28;
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__s8ae59137_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__ESC> args)
+    {
+        try
+        {
+            int max_format_args = 32;
+            {
+                int start_index = 0;
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                
+                {
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S83 /*"invalid reverse index command: "*/), 31UL)));
+                }
+                int fmt_begin = 32;
+                
+                
+                int fmt_end = 33;
+                byte* placeholder_array = stackalloc byte[1];
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2682 /*"invalid reverse index command: {f}"*/), 34UL).Ptr + fmt_begin, 1UL));
+                ulong arg_to_print = (ulong)0L;
+                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__ESC__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+            }
+            {
+                int start_index__1 = 34;
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__sf3e21027_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__ESC> args)
+    {
+        try
+        {
+            int max_format_args = 32;
+            {
+                int start_index = 0;
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                
+                {
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1162 /*"invalid single shift 2 command: "*/), 32UL)));
+                }
+                int fmt_begin = 33;
+                
+                
+                int fmt_end = 34;
+                byte* placeholder_array = stackalloc byte[1];
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1977 /*"invalid single shift 2 command: {f}"*/), 35UL).Ptr + fmt_begin, 1UL));
+                ulong arg_to_print = (ulong)0L;
+                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__ESC__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+            }
+            {
+                int start_index__1 = 35;
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__s696c03c4_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__ESC> args)
+    {
+        try
+        {
+            int max_format_args = 32;
+            {
+                int start_index = 0;
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                
+                {
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3054 /*"invalid single shift 3 command: "*/), 32UL)));
+                }
+                int fmt_begin = 33;
+                
+                
+                int fmt_end = 34;
+                byte* placeholder_array = stackalloc byte[1];
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1804 /*"invalid single shift 3 command: {f}"*/), 35UL).Ptr + fmt_begin, 1UL));
+                ulong arg_to_print = (ulong)0L;
+                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__ESC__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+            }
+            {
+                int start_index__1 = 35;
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__sd106f1f2_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__ESC> args)
+    {
+        try
+        {
+            int max_format_args = 32;
+            {
+                int start_index = 0;
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                
+                {
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2718 /*"unimplemented ESC callback: "*/), 28UL)));
+                }
+                int fmt_begin = 29;
+                
+                
+                int fmt_end = 30;
+                byte* placeholder_array = stackalloc byte[1];
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3019 /*"unimplemented ESC callback: {f}"*/), 31UL).Ptr + fmt_begin, 1UL));
+                ulong arg_to_print = (ulong)0L;
+                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__ESC__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+            }
+            {
+                int start_index__1 = 31;
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__s993f1bff_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__ESC> args)
+    {
+        try
+        {
+            int max_format_args = 32;
+            {
+                int start_index = 0;
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                
+                {
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1102 /*"invalid full reset command: "*/), 28UL)));
+                }
+                int fmt_begin = 29;
+                
+                
+                int fmt_end = 30;
+                byte* placeholder_array = stackalloc byte[1];
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1524 /*"invalid full reset command: {f}"*/), 31UL).Ptr + fmt_begin, 1UL));
+                ulong arg_to_print = (ulong)0L;
+                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__ESC__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+            }
+            {
+                int start_index__1 = 31;
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__se532921d_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__ESC> args)
+    {
+        try
+        {
+            int max_format_args = 32;
+            {
+                int start_index = 0;
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                
+                {
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2997 /*"invalid locking shift 1 right command: "*/), 39UL)));
+                }
+                int fmt_begin = 40;
+                
+                
+                int fmt_end = 41;
+                byte* placeholder_array = stackalloc byte[1];
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S997 /*"invalid locking shift 1 right command: {f}"*/), 42UL).Ptr + fmt_begin, 1UL));
+                ulong arg_to_print = (ulong)0L;
+                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__ESC__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+            }
+            {
+                int start_index__1 = 42;
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__s6987704c_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__ESC> args)
+    {
+        try
+        {
+            int max_format_args = 32;
+            {
+                int start_index = 0;
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                
+                {
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1565 /*"invalid locking shift 2 right command: "*/), 39UL)));
+                }
+                int fmt_begin = 40;
+                
+                
+                int fmt_end = 41;
+                byte* placeholder_array = stackalloc byte[1];
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S485 /*"invalid locking shift 2 right command: {f}"*/), 42UL).Ptr + fmt_begin, 1UL));
+                ulong arg_to_print = (ulong)0L;
+                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__ESC__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+            }
+            {
+                int start_index__1 = 42;
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__s82effb1b_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__ESC> args)
+    {
+        try
+        {
+            int max_format_args = 32;
+            {
+                int start_index = 0;
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                
+                {
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1428 /*"invalid locking shift 3 right command: "*/), 39UL)));
+                }
+                int fmt_begin = 40;
+                
+                
+                int fmt_end = 41;
+                byte* placeholder_array = stackalloc byte[1];
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2684 /*"invalid locking shift 3 right command: {f}"*/), 42UL).Ptr + fmt_begin, 1UL));
+                ulong arg_to_print = (ulong)0L;
+                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__ESC__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+            }
+            {
+                int start_index__1 = 42;
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__sa22cdc21_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__ESC> args)
+    {
+        try
+        {
+            int max_format_args = 32;
+            {
+                int start_index = 0;
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                
+                {
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3115 /*"unimplemented setMode: "*/), 23UL)));
+                }
+                int fmt_begin = 24;
+                
+                
+                int fmt_end = 25;
+                byte* placeholder_array = stackalloc byte[1];
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S255 /*"unimplemented setMode: {f}"*/), 26UL).Ptr + fmt_begin, 1UL));
+                ulong arg_to_print = (ulong)0L;
+                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__ESC__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+            }
+            {
+                int start_index__1 = 26;
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe fmt__Placeholder fmt__Placeholder_parse__s65f8c821__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        fmt__Parser parser = new fmt__Parser { bytes = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2856 /*"any"*/), 3UL), i = 0 };
+        ErrUnion<fmt__Specifier> __cE = fmt__Parser_specifier__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&parser);
         ushort err = __cE.Code;
         fmt__Specifier arg = ((__cE.IsErr) ? throw new global::System.Diagnostics.UnreachableException("unreachable() reached") : __cE.Value);
-        ConstSlice<byte> specifier_arg = fmt__Parser_until__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&parser, 58);
+        ConstSlice<byte> specifier_arg = fmt__Parser_until__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&parser, 58);
         {
-            byte? __cap = fmt__Parser_char__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&parser);
+            byte? __cap = fmt__Parser_char__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&parser);
             if ((__cap.HasValue))
             {
                 byte b = __cap.Value;
@@ -1830,19 +3712,19 @@ public static unsafe partial class GhosttyVt
                 }
             }
         }
-        byte? __ifcapc49 = fmt__Parser_peek__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&parser, 1);
+        byte? __ifcapc49 = fmt__Parser_peek__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&parser, 1);
         byte? __ifcap50 = default;
         if ((__ifcapc49.HasValue))
         {
             byte b__1 = __ifcapc49.Value;
-            __ifcap50 = (((int)b__1) switch { 60 or 94 or 62 => fmt__Parser_char__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&parser), _ => null });
+            __ifcap50 = (((int)b__1) switch { 60 or 94 or 62 => fmt__Parser_char__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&parser), _ => default(byte?) });
         }
         else
         {
-            __ifcap50 = null;
+            __ifcap50 = default(byte?);
         }
         byte? fill = __ifcap50;
-        byte? __ifcapc51 = fmt__Parser_peek__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&parser, 0);
+        byte? __ifcapc51 = fmt__Parser_peek__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&parser, 0);
         fmt__Alignment? __ifcap52 = default;
         if ((__ifcapc51.HasValue))
         {
@@ -1856,13 +3738,13 @@ public static unsafe partial class GhosttyVt
                     case 62:
                         {
                             {
-                                __blk10 = (((int)fmt__Parser_char__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&parser).Value) switch { 60 => __DotCcEnum_666D745F5F416C69676E6D656E74.left, 94 => __DotCcEnum_666D745F5F416C69676E6D656E74.center, _ => __DotCcEnum_666D745F5F416C69676E6D656E74.right });
+                                __blk10 = (((int)fmt__Parser_char__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&parser).Value) switch { 60 => __DotCcEnum_666D745F5F416C69676E6D656E74.left, 94 => __DotCcEnum_666D745F5F416C69676E6D656E74.center, _ => __DotCcEnum_666D745F5F416C69676E6D656E74.right });
                                 goto __blk10_end;
                             }
                         }
                     default:
                         {
-                            __blk10 = null;
+                            __blk10 = default(fmt__Alignment?);
                             goto __blk10_end;
                         }
                 }
@@ -1874,18 +3756,18 @@ public static unsafe partial class GhosttyVt
         }
         else
         {
-            __ifcap52 = null;
+            __ifcap52 = default(fmt__Alignment?);
         }
         fmt__Alignment? alignment = __ifcap52;
         if (((((fill == null)) && ((alignment == null)))))
         {
-            fill = (((fmt__Parser_peek__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&parser, 0) == 48)) ? (byte?)(byte)48 : (byte?)null);
+            fill = (((fmt__Parser_peek__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&parser, 0) == 48)) ? (byte?)(byte)48 : default(byte?));
         }
-        ErrUnion<fmt__Specifier> __cE__1 = fmt__Parser_specifier__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&parser);
+        ErrUnion<fmt__Specifier> __cE__1 = fmt__Parser_specifier__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&parser);
         ushort err__1 = __cE__1.Code;
         fmt__Specifier width = ((__cE__1.IsErr) ? throw new global::System.Diagnostics.UnreachableException("unreachable() reached") : __cE__1.Value);
         {
-            byte? __cap__1 = fmt__Parser_char__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&parser);
+            byte? __cap__1 = fmt__Parser_char__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&parser);
             if ((__cap__1.HasValue))
             {
                 byte b__3 = __cap__1.Value;
@@ -1895,11 +3777,11 @@ public static unsafe partial class GhosttyVt
                 }
             }
         }
-        ErrUnion<fmt__Specifier> __cE__2 = fmt__Parser_specifier__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&parser);
+        ErrUnion<fmt__Specifier> __cE__2 = fmt__Parser_specifier__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&parser);
         ushort err__2 = __cE__2.Code;
         fmt__Specifier precision = ((__cE__2.IsErr) ? throw new global::System.Diagnostics.UnreachableException("unreachable() reached") : __cE__2.Value);
         {
-            byte? __cap__2 = fmt__Parser_char__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&parser);
+            byte? __cap__2 = fmt__Parser_char__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&parser);
             if ((__cap__2.HasValue))
             {
                 byte b__4 = __cap__2.Value;
@@ -1912,7 +3794,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ErrUnion<Unit> Io_Writer__print__s7961baa5_tuple___const_unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<ConstSlice<byte>> args)
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__s7961baa5_tuple___const_unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<ConstSlice<byte>> args)
     {
         try
         {
@@ -2042,7 +3924,7 @@ public static unsafe partial class GhosttyVt
                 
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S7 /*"invalid charset intermediate: "*/), 30UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S7 /*"invalid charset intermediate: "*/), 30UL)));
                 }
                 int fmt_begin = 31;
                 
@@ -2053,188 +3935,21 @@ public static unsafe partial class GhosttyVt
                 
                 int fmt_end = 34;
                 byte* placeholder_array = stackalloc byte[3];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 3UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2863 /*"invalid charset intermediate: {any}"*/), 35UL).Ptr + fmt_begin, 3UL));
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 3UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2881 /*"invalid charset intermediate: {any}"*/), 35UL).Ptr + fmt_begin, 3UL));
                 ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__s65f8c821___const_unsigned_charpa0_sentinel_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2838 /*"any"*/), 3UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2838 /*"any"*/), 3UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+                _ = ErrUnion.Try(Io_Writer__printValue__s65f8c821___const_unsigned_charpa0_sentinel_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2856 /*"any"*/), 3UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2856 /*"any"*/), 3UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
             }
             {
                 int start_index__1 = 35;
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe ErrUnion<Unit> Io_Writer__print__safb96443_tuple_u8_tw8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<byte> args)
-    {
-        try
-        {
-            int max_format_args = 32;
-            {
-                int start_index = 0;
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S472 /*"invalid C0 character, ignoring: 0x"*/), 34UL)));
-                }
-                int fmt_begin = 35;
-                
-                
-                int fmt_end = 36;
-                byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S992 /*"invalid C0 character, ignoring: 0x{x}"*/), 37UL).Ptr + fmt_begin, 1UL));
-                ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__sdaab3ffc_u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S261 /*"x"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S261 /*"x"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
-            }
-            {
-                int start_index__1 = 37;
-            }
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
-    }
-
-
-
-    public static unsafe ErrUnion<Unit> Io_Writer__print__sdf07f90c_tuple___const_unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<ConstSlice<byte>> args)
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__sdf07f90c_tuple___const_unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<ConstSlice<byte>> args)
     {
         try
         {
@@ -2428,28 +4143,195 @@ public static unsafe partial class GhosttyVt
                 
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S324 /*"OSC 1 (change icon) received and ignored icon="*/), 46UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S327 /*"OSC 1 (change icon) received and ignored icon="*/), 46UL)));
                 }
                 int fmt_begin = 47;
                 
                 
                 int fmt_end = 48;
                 byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S588 /*"OSC 1 (change icon) received and ignored icon={s}"*/), 49UL).Ptr + fmt_begin, 1UL));
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S592 /*"OSC 1 (change icon) received and ignored icon={s}"*/), 49UL).Ptr + fmt_begin, 1UL));
                 ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__se4bc98db___const_unsigned_charpa0_sentinel_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S512 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S512 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+                _ = ErrUnion.Try(Io_Writer__printValue__se4bc98db___const_unsigned_charpa0_sentinel_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S515 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S515 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
             }
             {
                 int start_index__1 = 49;
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe ErrUnion<Unit> Io_Writer__print__sa1a8edf2_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__safb96443_tuple_u8_tw8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<byte> args)
+    {
+        try
+        {
+            int max_format_args = 32;
+            {
+                int start_index = 0;
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                    
+                    
+                
+                
+                
+                {
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S475 /*"invalid C0 character, ignoring: 0x"*/), 34UL)));
+                }
+                int fmt_begin = 35;
+                
+                
+                int fmt_end = 36;
+                byte* placeholder_array = stackalloc byte[1];
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S998 /*"invalid C0 character, ignoring: 0x{x}"*/), 37UL).Ptr + fmt_begin, 1UL));
+                ulong arg_to_print = (ulong)0L;
+                _ = ErrUnion.Try(Io_Writer__printValue__sdaab3ffc_u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S263 /*"x"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S263 /*"x"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+            }
+            {
+                int start_index__1 = 37;
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__sa1a8edf2_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__CSI> args)
     {
         try
         {
@@ -2599,28 +4481,28 @@ public static unsafe partial class GhosttyVt
                 
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2926 /*"invalid device attributes command: "*/), 35UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2944 /*"invalid device attributes command: "*/), 35UL)));
                 }
                 int fmt_begin = 36;
                 
                 
                 int fmt_end = 37;
                 byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1840 /*"invalid device attributes command: {f}"*/), 38UL).Ptr + fmt_begin, 1UL));
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1851 /*"invalid device attributes command: {f}"*/), 38UL).Ptr + fmt_begin, 1UL));
                 ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__CSI__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__CSI__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
             }
             {
                 int start_index__1 = 38;
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe ErrUnion<Unit> Io_Writer__print__s2e9918eb_tuple_u16_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<ushort> args)
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__s2e9918eb_tuple_u16_tw16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<ushort> args)
     {
         try
         {
@@ -2710,25 +4592,25 @@ public static unsafe partial class GhosttyVt
                 
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1571 /*"unimplemented mode: "*/), 20UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1580 /*"unimplemented mode: "*/), 20UL)));
                 }
                 int fmt_begin = 21;
                 int fmt_end = 21;
-                ConstSlice<byte> placeholder_array = new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1079 /*"unimplemented mode: {}"*/), 22UL).Ptr + fmt_begin, (ulong)(fmt_end - fmt_begin));
+                ConstSlice<byte> placeholder_array = new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1085 /*"unimplemented mode: {}"*/), 22UL).Ptr + fmt_begin, (ulong)(fmt_end - fmt_begin));
                 ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__sffcaaa85_u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+                _ = ErrUnion.Try(Io_Writer__printValue__sffcaaa85_u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1340 /*""*/), 0UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1340 /*""*/), 0UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
             }
             {
                 int start_index__1 = 22;
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe ErrUnion<Unit> Io_Writer__print__s7b79c232_tuple_u8_tw8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<byte> args)
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__s7b79c232_tuple_u8_tw8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<byte> args)
     {
         try
         {
@@ -2870,25 +4752,25 @@ public static unsafe partial class GhosttyVt
                 
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2019 /*"unknown CSI m with intermediate: "*/), 33UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2030 /*"unknown CSI m with intermediate: "*/), 33UL)));
                 }
                 int fmt_begin = 34;
                 int fmt_end = 34;
-                ConstSlice<byte> placeholder_array = new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3050 /*"unknown CSI m with intermediate: {}"*/), 35UL).Ptr + fmt_begin, (ulong)(fmt_end - fmt_begin));
+                ConstSlice<byte> placeholder_array = new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3068 /*"unknown CSI m with intermediate: {}"*/), 35UL).Ptr + fmt_begin, (ulong)(fmt_end - fmt_begin));
                 ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__sffcaaa85_u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+                _ = ErrUnion.Try(Io_Writer__printValue__sffcaaa85_u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1340 /*""*/), 0UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1340 /*""*/), 0UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
             }
             {
                 int start_index__1 = 35;
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe ErrUnion<Unit> Io_Writer__print__s2b42cd05_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__s2b42cd05_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__CSI> args)
     {
         try
         {
@@ -3074,28 +4956,28 @@ public static unsafe partial class GhosttyVt
                 
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1898 /*"ignoring CSI 22/23 t with extra parameters: "*/), 44UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1909 /*"ignoring CSI 22/23 t with extra parameters: "*/), 44UL)));
                 }
                 int fmt_begin = 45;
                 
                 
                 int fmt_end = 46;
                 byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2875 /*"ignoring CSI 22/23 t with extra parameters: {f}"*/), 47UL).Ptr + fmt_begin, 1UL));
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2893 /*"ignoring CSI 22/23 t with extra parameters: {f}"*/), 47UL).Ptr + fmt_begin, 1UL));
                 ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__CSI__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__CSI__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
             }
             {
                 int start_index__1 = 47;
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe ErrUnion<Unit> Io_Writer__print__sb4e5b3a5_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__sb4e5b3a5_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__CSI> args)
     {
         try
         {
@@ -3285,28 +5167,28 @@ public static unsafe partial class GhosttyVt
                 
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3113 /*"ignoring CSI t with unimplemented parameter: "*/), 45UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3131 /*"ignoring CSI t with unimplemented parameter: "*/), 45UL)));
                 }
                 int fmt_begin = 46;
                 
                 
                 int fmt_end = 47;
                 byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2547 /*"ignoring CSI t with unimplemented parameter: {f}"*/), 48UL).Ptr + fmt_begin, 1UL));
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2561 /*"ignoring CSI t with unimplemented parameter: {f}"*/), 48UL).Ptr + fmt_begin, 1UL));
                 ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__CSI__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__CSI__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
             }
             {
                 int start_index__1 = 48;
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe ErrUnion<Unit> Io_Writer__print__s559027fb_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__s559027fb_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Parser__Action__ESC> args)
     {
         try
         {
@@ -3420,7 +5302,7 @@ public static unsafe partial class GhosttyVt
                 
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1766 /*"unimplemented ESC action: "*/), 26UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1776 /*"unimplemented ESC action: "*/), 26UL)));
                 }
                 int fmt_begin = 27;
                 
@@ -3429,19 +5311,19 @@ public static unsafe partial class GhosttyVt
                 byte* placeholder_array = stackalloc byte[1];
                 ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S167 /*"unimplemented ESC action: {f}"*/), 29UL).Ptr + fmt_begin, 1UL));
                 ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__ESC__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_Parser__Action__ESC__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
             }
             {
                 int start_index__1 = 29;
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe ErrUnion<Unit> Io_Writer__print__s593640b7_tuple_u32_tw21__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<uint> args)
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__s593640b7_tuple_u32_tw21__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<uint> args)
     {
         try
         {
@@ -3631,28 +5513,28 @@ public static unsafe partial class GhosttyVt
                 
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2555 /*"ignoring UTF-8-decoded C1 controls, first: 0x"*/), 45UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2569 /*"ignoring UTF-8-decoded C1 controls, first: 0x"*/), 45UL)));
                 }
                 int fmt_begin = 46;
                 
                 
                 int fmt_end = 47;
                 byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2872 /*"ignoring UTF-8-decoded C1 controls, first: 0x{x}"*/), 48UL).Ptr + fmt_begin, 1UL));
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2890 /*"ignoring UTF-8-decoded C1 controls, first: 0x{x}"*/), 48UL).Ptr + fmt_begin, 1UL));
                 ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__sdaab3ffc_u32w21__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S261 /*"x"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S261 /*"x"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+                _ = ErrUnion.Try(Io_Writer__printValue__sdaab3ffc_u32w21__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S263 /*"x"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S263 /*"x"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
             }
             {
                 int start_index__1 = 48;
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe ErrUnion<Unit> Io_Writer__print__se017303d_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__se017303d_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Slice<byte>> args)
     {
         try
         {
@@ -3770,16 +5652,16 @@ public static unsafe partial class GhosttyVt
                 
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1163 /*"unknown hyperlink option: '"*/), 27UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1170 /*"unknown hyperlink option: '"*/), 27UL)));
                 }
                 int fmt_begin = 28;
                 
                 
                 int fmt_end = 29;
                 byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S696 /*"unknown hyperlink option: '{s}'"*/), 31UL).Ptr + fmt_begin, 1UL));
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S702 /*"unknown hyperlink option: '{s}'"*/), 31UL).Ptr + fmt_begin, 1UL));
                 ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__se4bc98db___unsigned_charpa0_sentinel_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S512 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S512 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+                _ = ErrUnion.Try(Io_Writer__printValue__se4bc98db___unsigned_charpa0_sentinel_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S515 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S515 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
             }
             {
                 int start_index__1 = 30;
@@ -3788,17 +5670,17 @@ public static unsafe partial class GhosttyVt
                     
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1671 /*"'"*/), 1UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1681 /*"'"*/), 1UL)));
                 }
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe ErrUnion<Unit> Io_Writer__print__s283fdd08_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple args)
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__s283fdd08_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple args)
     {
         try
         {
@@ -4074,17 +5956,17 @@ public static unsafe partial class GhosttyVt
                     
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S891 /*"exceeded limit for number of keys in kitty color protocol, ignoring"*/), 67UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S897 /*"exceeded limit for number of keys in kitty color protocol, ignoring"*/), 67UL)));
                 }
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe ErrUnion<Unit> Io_Writer__print__s241eb3b3_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple args)
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__s241eb3b3_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple args)
     {
         try
         {
@@ -4248,17 +6130,17 @@ public static unsafe partial class GhosttyVt
                     
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3004 /*"zero length key in kitty color protocol"*/), 39UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3022 /*"zero length key in kitty color protocol"*/), 39UL)));
                 }
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe ErrUnion<Unit> Io_Writer__print__sf0b9252c_tuple___const_unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<ConstSlice<byte>> args)
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__sf0b9252c_tuple___const_unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<ConstSlice<byte>> args)
     {
         try
         {
@@ -4416,28 +6298,28 @@ public static unsafe partial class GhosttyVt
                 
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2689 /*"unknown key in kitty color protocol: "*/), 37UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2705 /*"unknown key in kitty color protocol: "*/), 37UL)));
                 }
                 int fmt_begin = 38;
                 
                 
                 int fmt_end = 39;
                 byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2447 /*"unknown key in kitty color protocol: {s}"*/), 40UL).Ptr + fmt_begin, 1UL));
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2461 /*"unknown key in kitty color protocol: {s}"*/), 40UL).Ptr + fmt_begin, 1UL));
                 ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__se4bc98db___const_unsigned_charpa0_sentinel_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S512 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S512 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+                _ = ErrUnion.Try(Io_Writer__printValue__se4bc98db___const_unsigned_charpa0_sentinel_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S515 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S515 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
             }
             {
                 int start_index__1 = 40;
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe ErrUnion<Unit> Io_Writer__print__sd6c08ba8_tuple_anyerror_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<ushort> args)
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__sd6c08ba8_tuple_anyerror_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<ushort> args)
     {
         try
         {
@@ -4631,25 +6513,25 @@ public static unsafe partial class GhosttyVt
                 
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S407 /*"unable to append kitty color protocol option: "*/), 46UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S410 /*"unable to append kitty color protocol option: "*/), 46UL)));
                 }
                 int fmt_begin = 47;
                 int fmt_end = 47;
-                ConstSlice<byte> placeholder_array = new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1817 /*"unable to append kitty color protocol option: {}"*/), 48UL).Ptr + fmt_begin, (ulong)(fmt_end - fmt_begin));
+                ConstSlice<byte> placeholder_array = new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1828 /*"unable to append kitty color protocol option: {}"*/), 48UL).Ptr + fmt_begin, (ulong)(fmt_end - fmt_begin));
                 ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__sffcaaa85_anyerror__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+                _ = ErrUnion.Try(Io_Writer__printValue__sffcaaa85_anyerror__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1340 /*""*/), 0UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1340 /*""*/), 0UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
             }
             {
                 int start_index__1 = 48;
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe ErrUnion<Unit> Io_Writer__print__s65fe9f5c_tuple___const_unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<ConstSlice<byte>> args)
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__s65fe9f5c_tuple___const_unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<ConstSlice<byte>> args)
     {
         try
         {
@@ -4843,28 +6725,28 @@ public static unsafe partial class GhosttyVt
                 
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S863 /*"invalid color format in kitty color protocol: "*/), 46UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S869 /*"invalid color format in kitty color protocol: "*/), 46UL)));
                 }
                 int fmt_begin = 47;
                 
                 
                 int fmt_end = 48;
                 byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2620 /*"invalid color format in kitty color protocol: {s}"*/), 49UL).Ptr + fmt_begin, 1UL));
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2635 /*"invalid color format in kitty color protocol: {s}"*/), 49UL).Ptr + fmt_begin, 1UL));
                 ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__se4bc98db___const_unsigned_charpa0_sentinel_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S512 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S512 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+                _ = ErrUnion.Try(Io_Writer__printValue__se4bc98db___const_unsigned_charpa0_sentinel_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S515 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S515 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
             }
             {
                 int start_index__1 = 49;
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe ErrUnion<Unit> Io_Writer__print__s8ede9e55_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__s8ede9e55_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<Slice<byte>> args)
     {
         try
         {
@@ -4970,28 +6852,28 @@ public static unsafe partial class GhosttyVt
                 
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1588 /*"unknown rxvt extension: "*/), 24UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1597 /*"unknown rxvt extension: "*/), 24UL)));
                 }
                 int fmt_begin = 25;
                 
                 
                 int fmt_end = 26;
                 byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2482 /*"unknown rxvt extension: {s}"*/), 27UL).Ptr + fmt_begin, 1UL));
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2496 /*"unknown rxvt extension: {s}"*/), 27UL).Ptr + fmt_begin, 1UL));
                 ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__se4bc98db___unsigned_charpa0_sentinel_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S512 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S512 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+                _ = ErrUnion.Try(Io_Writer__printValue__se4bc98db___unsigned_charpa0_sentinel_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S515 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S515 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
             }
             {
                 int start_index__1 = 27;
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe ErrUnion<Unit> Io_Writer__print__scc7d3526_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple args)
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__scc7d3526_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple args)
     {
         try
         {
@@ -5167,26 +7049,26 @@ public static unsafe partial class GhosttyVt
                     
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1156 /*"rxvt notify extension is missing the title"*/), 42UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1163 /*"rxvt notify extension is missing the title"*/), 42UL)));
                 }
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe ErrUnion<Slice<byte>> Io_Writer__Allocating_toOwnedSliceSentinel__0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Allocating* a)
+    public static unsafe ErrUnion<Slice<byte>> Io_Writer__Allocating_toOwnedSliceSentinel__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Allocating* a)
     {
         try
         {
-            _ = ErrUnion.Try(Io_Writer__Allocating_ensureTotalCapacityPrecise__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(a, a->writer.end + 1UL));
+            _ = ErrUnion.Try(Io_Writer__Allocating_ensureTotalCapacityPrecise__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(a, a->writer.end + 1UL));
             a->writer.buffer.Ptr[a->writer.end] = 0;
             a->writer.end += (ulong)(1);
             try
             {
-                Slice<byte> result = ErrUnion.Try(Io_Writer__Allocating_toOwnedSlice__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(a));
+                Slice<byte> result = ErrUnion.Try(Io_Writer__Allocating_toOwnedSlice__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(a));
                 return ErrUnion<Slice<byte>>.Ok(new Slice<byte>(result.Ptr + 0, (ulong)(result.Len - 1UL - (ulong)(0))));
             }
             catch (ZigErrorReturn)
@@ -5200,7 +7082,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ErrUnion<Unit> Io_Writer__print__s02ef5929_tuple_color_3__Kind_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<color_3__Kind> args)
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__s02ef5929_tuple_color_3__Kind_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<color_3__Kind> args)
     {
         try
         {
@@ -5214,16 +7096,16 @@ public static unsafe partial class GhosttyVt
                 
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2918 /*";"*/), 1UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2936 /*";"*/), 1UL)));
                 }
                 int fmt_begin = 2;
                 
                 
                 int fmt_end = 3;
                 byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S617 /*";{f}="*/), 5UL).Ptr + fmt_begin, 1UL));
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S622 /*";{f}="*/), 5UL).Ptr + fmt_begin, 1UL));
                 ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_color_3__Kind__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1652 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+                _ = ErrUnion.Try(Io_Writer__printValue__s41518ae9_color_3__Kind__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"f"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
             }
             {
                 int start_index__1 = 4;
@@ -5232,17 +7114,17 @@ public static unsafe partial class GhosttyVt
                     
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2801 /*"="*/), 1UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2818 /*"="*/), 1UL)));
                 }
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe ErrUnion<Unit> Io_Writer__print__s7cd2c6b5_tuple___const_unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<ConstSlice<byte>> args)
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__s7cd2c6b5_tuple___const_unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<ConstSlice<byte>> args)
     {
         try
         {
@@ -5264,16 +7146,16 @@ public static unsafe partial class GhosttyVt
                 
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S160 /*"\u001B]l"*/), 3UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S160 /*"\u001B]l"*/), 3UL)));
                 }
                 int fmt_begin = 4;
                 
                 
                 int fmt_end = 5;
                 byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2559 /*"\u001B]l{s}\u001B\\"*/), 8UL).Ptr + fmt_begin, 1UL));
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2573 /*"\u001B]l{s}\u001B\\"*/), 8UL).Ptr + fmt_begin, 1UL));
                 ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__se4bc98db___const_unsigned_charpa0_sentinel_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S512 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S512 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+                _ = ErrUnion.Try(Io_Writer__printValue__se4bc98db___const_unsigned_charpa0_sentinel_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S515 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S515 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
             }
             {
                 int start_index__1 = 6;
@@ -5286,17 +7168,17 @@ public static unsafe partial class GhosttyVt
                     
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S248 /*"\u001B\\"*/), 2UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S251 /*"\u001B\\"*/), 2UL)));
                 }
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe ErrUnion<Unit> Io_Writer__print__s04eeef12_tuple_u8_tw8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<byte> args)
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__s04eeef12_tuple_u8_tw8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<byte> args)
     {
         try
         {
@@ -5322,16 +7204,16 @@ public static unsafe partial class GhosttyVt
                 
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1678 /*"\u001B]4;"*/), 4UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1688 /*"\u001B]4;"*/), 4UL)));
                 }
                 int fmt_begin = 5;
                 
                 
                 int fmt_end = 6;
                 byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2718 /*"\u001B]4;{d};"*/), 8UL).Ptr + fmt_begin, 1UL));
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2734 /*"\u001B]4;{d};"*/), 8UL).Ptr + fmt_begin, 1UL));
                 ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__s314cf48b_u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S876 /*"d"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S876 /*"d"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+                _ = ErrUnion.Try(Io_Writer__printValue__s314cf48b_u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S882 /*"d"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S882 /*"d"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
             }
             {
                 int start_index__1 = 7;
@@ -5340,17 +7222,17 @@ public static unsafe partial class GhosttyVt
                     
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2918 /*";"*/), 1UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2936 /*";"*/), 1UL)));
                 }
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe ErrUnion<Unit> Io_Writer__print__sb73ce865_tuple_u8_tw4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<byte> args)
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__print__sb73ce865_tuple_u8_tw5__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, global::System.ValueTuple<byte> args)
     {
         try
         {
@@ -5368,16 +7250,16 @@ public static unsafe partial class GhosttyVt
                 
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3024 /*"\u001B]"*/), 2UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3041 /*"\u001B]"*/), 2UL)));
                 }
                 int fmt_begin = 3;
                 
                 
                 int fmt_end = 4;
                 byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1376 /*"\u001B]{d};"*/), 6UL).Ptr + fmt_begin, 1UL));
+                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1383 /*"\u001B]{d};"*/), 6UL).Ptr + fmt_begin, 1UL));
                 ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__s314cf48b_u8w4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S876 /*"d"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S876 /*"d"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
+                _ = ErrUnion.Try(Io_Writer__printValue__s314cf48b_u8w5__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S882 /*"d"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S882 /*"d"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
             }
             {
                 int start_index__1 = 5;
@@ -5386,1008 +7268,12 @@ public static unsafe partial class GhosttyVt
                     
                 
                 {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2918 /*";"*/), 1UL)));
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2936 /*";"*/), 1UL)));
                 }
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
-    }
-
-
-
-    public static unsafe ErrUnion<Unit> Io_Writer__print__s0d5853b6_tuple_u8_tw8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<byte> args)
-    {
-        try
-        {
-            int max_format_args = 32;
-            {
-                int start_index = 0;
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2046 /*"\u001B]52;"*/), 5UL)));
-                }
-                int fmt_begin = 6;
-                
-                
-                int fmt_end = 7;
-                byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S505 /*"\u001B]52;{c};"*/), 9UL).Ptr + fmt_begin, 1UL));
-                ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__saf58f3d8_u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2856 /*"c"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2856 /*"c"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
-            }
-            {
-                int start_index__1 = 8;
-                
-                    
-                    
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2918 /*";"*/), 1UL)));
-                }
-            }
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
-    }
-
-
-
-    public static unsafe ErrUnion<Unit> Io_Writer__print__s4a8505f8_tuple_u8_tw8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<byte> args)
-    {
-        try
-        {
-            int max_format_args = 32;
-            {
-                int start_index = 0;
-                
-                
-                int fmt_begin = 1;
-                
-                
-                int fmt_end = 2;
-                byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S107 /*"{d} q"*/), 5UL).Ptr + fmt_begin, 1UL));
-                ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__s314cf48b_u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S876 /*"d"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S876 /*"d"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
-            }
-            {
-                int start_index__1 = 3;
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1082 /*" q"*/), 2UL)));
-                }
-            }
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
-    }
-
-
-
-    public static unsafe ErrUnion<Unit> Io_Writer__print__s1d898274_tuple_u16_u16_tw16_16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<ushort, ushort> args)
-    {
-        try
-        {
-            int max_format_args = 32;
-            {
-                int start_index = 0;
-                
-                
-                int fmt_begin = 1;
-                
-                
-                int fmt_end = 2;
-                byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2079 /*"{d};{d}r"*/), 8UL).Ptr + fmt_begin, 1UL));
-                ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__s314cf48b_u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S876 /*"d"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S876 /*"d"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
-            }
-            {
-                int start_index__1 = 3;
-                
-                    
-                    
-                
-                
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2918 /*";"*/), 1UL)));
-                }
-                int fmt_begin__1 = 5;
-                
-                
-                int fmt_end__1 = 6;
-                byte* placeholder_array__1 = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array__1, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2079 /*"{d};{d}r"*/), 8UL).Ptr + fmt_begin__1, 1UL));
-                ulong arg_to_print__1 = (ulong)1L;
-                _ = ErrUnion.Try(Io_Writer__printValue__s314cf48b_u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S876 /*"d"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S876 /*"d"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item2, 3UL));
-            }
-            {
-                int start_index__2 = 7;
-                
-                    
-                    
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1806 /*"r"*/), 1UL)));
-                }
-            }
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
-    }
-
-
-
-    public static unsafe ErrUnion<Unit> Io_Writer__print__s078b9e69_tuple_u16_u16_tw16_16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<ushort, ushort> args)
-    {
-        try
-        {
-            int max_format_args = 32;
-            {
-                int start_index = 0;
-                
-                
-                int fmt_begin = 1;
-                
-                
-                int fmt_end = 2;
-                byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2619 /*"{d};{d}s"*/), 8UL).Ptr + fmt_begin, 1UL));
-                ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__s314cf48b_u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S876 /*"d"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S876 /*"d"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
-            }
-            {
-                int start_index__1 = 3;
-                
-                    
-                    
-                
-                
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2918 /*";"*/), 1UL)));
-                }
-                int fmt_begin__1 = 5;
-                
-                
-                int fmt_end__1 = 6;
-                byte* placeholder_array__1 = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array__1, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2619 /*"{d};{d}s"*/), 8UL).Ptr + fmt_begin__1, 1UL));
-                ulong arg_to_print__1 = (ulong)1L;
-                _ = ErrUnion.Try(Io_Writer__printValue__s314cf48b_u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S876 /*"d"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S876 /*"d"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item2, 3UL));
-            }
-            {
-                int start_index__2 = 7;
-                
-                    
-                    
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S512 /*"s"*/), 1UL)));
-                }
-            }
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
-    }
-
-
-
-    public static unsafe ErrUnion<Unit> Io_Writer__print__sdf9d8cb9_tuple_u16_tw16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<ushort> args)
-    {
-        try
-        {
-            int max_format_args = 32;
-            {
-                int start_index = 0;
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2607 /*"\u001B[?"*/), 3UL)));
-                }
-                int fmt_begin = 4;
-                int fmt_end = 4;
-                ConstSlice<byte> placeholder_array = new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S488 /*"\u001B[?{}"*/), 5UL).Ptr + fmt_begin, (ulong)(fmt_end - fmt_begin));
-                ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__sffcaaa85_u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
-            }
-            {
-                int start_index__1 = 5;
-            }
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
-    }
-
-
-
-    public static unsafe ErrUnion<Unit> Io_Writer__print__s5b059ed8_tuple_u16_tw16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<ushort> args)
-    {
-        try
-        {
-            int max_format_args = 32;
-            {
-                int start_index = 0;
-                
-                    
-                    
-                
-                
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2918 /*";"*/), 1UL)));
-                }
-                int fmt_begin = 2;
-                int fmt_end = 2;
-                ConstSlice<byte> placeholder_array = new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1526 /*";{}"*/), 3UL).Ptr + fmt_begin, (ulong)(fmt_end - fmt_begin));
-                ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__sffcaaa85_u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
-            }
-            {
-                int start_index__1 = 3;
-            }
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
-    }
-
-
-
-    public static unsafe ErrUnion<Unit> Io_Writer__print__sae919c4d_tuple_u16_u16_u16_tw16_16_16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<ushort, ushort, ushort> args)
-    {
-        try
-        {
-            int max_format_args = 32;
-            {
-                int start_index = 0;
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2089 /*"\u001B[>"*/), 3UL)));
-                }
-                int fmt_begin = 4;
-                int fmt_end = 4;
-                ConstSlice<byte> placeholder_array = new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2865 /*"\u001B[>{};{};{}c"*/), 12UL).Ptr + fmt_begin, (ulong)(fmt_end - fmt_begin));
-                ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__sffcaaa85_u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
-            }
-            {
-                int start_index__1 = 5;
-                
-                    
-                    
-                
-                
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2918 /*";"*/), 1UL)));
-                }
-                int fmt_begin__1 = 7;
-                int fmt_end__1 = 7;
-                ConstSlice<byte> placeholder_array__1 = new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2865 /*"\u001B[>{};{};{}c"*/), 12UL).Ptr + fmt_begin__1, (ulong)(fmt_end__1 - fmt_begin__1));
-                ulong arg_to_print__1 = (ulong)1L;
-                _ = ErrUnion.Try(Io_Writer__printValue__sffcaaa85_u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item2, 3UL));
-            }
-            {
-                int start_index__2 = 8;
-                
-                    
-                    
-                
-                
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2918 /*";"*/), 1UL)));
-                }
-                int fmt_begin__2 = 10;
-                int fmt_end__2 = 10;
-                ConstSlice<byte> placeholder_array__2 = new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2865 /*"\u001B[>{};{};{}c"*/), 12UL).Ptr + fmt_begin__2, (ulong)(fmt_end__2 - fmt_begin__2));
-                ulong arg_to_print__2 = (ulong)2L;
-                _ = ErrUnion.Try(Io_Writer__printValue__sffcaaa85_u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item3, 3UL));
-            }
-            {
-                int start_index__3 = 11;
-                
-                    
-                    
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2856 /*"c"*/), 1UL)));
-                }
-            }
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
-    }
-
-
-
-    public static unsafe fmt__Placeholder fmt__Placeholder_parse__sae105116__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        fmt__Parser parser = new fmt__Parser { bytes = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1746 /*"X:0>8"*/), 5UL), i = 0 };
-        ErrUnion<fmt__Specifier> __cE = fmt__Parser_specifier__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&parser);
-        ushort err = __cE.Code;
-        fmt__Specifier arg = ((__cE.IsErr) ? throw new global::System.Diagnostics.UnreachableException("unreachable() reached") : __cE.Value);
-        ConstSlice<byte> specifier_arg = fmt__Parser_until__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&parser, 58);
-        {
-            byte? __cap = fmt__Parser_char__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&parser);
-            if ((__cap.HasValue))
-            {
-                byte b = __cap.Value;
-                {
-                    if (((b != (byte)58)))
-                        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
-                }
-            }
-        }
-        byte? __ifcapc53 = fmt__Parser_peek__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&parser, 1);
-        byte? __ifcap54 = default;
-        if ((__ifcapc53.HasValue))
-        {
-            byte b__1 = __ifcapc53.Value;
-            __ifcap54 = (((int)b__1) switch { 60 or 94 or 62 => fmt__Parser_char__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&parser), _ => null });
-        }
-        else
-        {
-            __ifcap54 = null;
-        }
-        byte? fill = __ifcap54;
-        byte? __ifcapc55 = fmt__Parser_peek__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&parser, 0);
-        fmt__Alignment? __ifcap56 = default;
-        if ((__ifcapc55.HasValue))
-        {
-            byte b__2 = __ifcapc55.Value;
-            fmt__Alignment? __blk11 = default(fmt__Alignment?);
-            {
-                switch ((int)b__2)
-                {
-                    case 60:
-                    case 94:
-                    case 62:
-                        {
-                            {
-                                __blk11 = (((int)fmt__Parser_char__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&parser).Value) switch { 60 => __DotCcEnum_666D745F5F416C69676E6D656E74.left, 94 => __DotCcEnum_666D745F5F416C69676E6D656E74.center, _ => __DotCcEnum_666D745F5F416C69676E6D656E74.right });
-                                goto __blk11_end;
-                            }
-                        }
-                    default:
-                        {
-                            __blk11 = null;
-                            goto __blk11_end;
-                        }
-                }
-            }
-            __blk11_end:
-            {
-            }
-            __ifcap56 = __blk11;
-        }
-        else
-        {
-            __ifcap56 = null;
-        }
-        fmt__Alignment? alignment = __ifcap56;
-        if (((((fill == null)) && ((alignment == null)))))
-        {
-            fill = (((fmt__Parser_peek__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&parser, 0) == 48)) ? (byte?)(byte)48 : (byte?)null);
-        }
-        ErrUnion<fmt__Specifier> __cE__1 = fmt__Parser_specifier__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&parser);
-        ushort err__1 = __cE__1.Code;
-        fmt__Specifier width = ((__cE__1.IsErr) ? throw new global::System.Diagnostics.UnreachableException("unreachable() reached") : __cE__1.Value);
-        {
-            byte? __cap__1 = fmt__Parser_char__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&parser);
-            if ((__cap__1.HasValue))
-            {
-                byte b__3 = __cap__1.Value;
-                {
-                    if (((b__3 != (byte)46)))
-                        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
-                }
-            }
-        }
-        ErrUnion<fmt__Specifier> __cE__2 = fmt__Parser_specifier__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&parser);
-        ushort err__2 = __cE__2.Code;
-        fmt__Specifier precision = ((__cE__2.IsErr) ? throw new global::System.Diagnostics.UnreachableException("unreachable() reached") : __cE__2.Value);
-        {
-            byte? __cap__2 = fmt__Parser_char__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&parser);
-            if ((__cap__2.HasValue))
-            {
-                byte b__4 = __cap__2.Value;
-                throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
-            }
-        }
-        ConstSlice<byte> specifier_array = new ConstSlice<byte>(specifier_arg.Ptr + 0, (ulong)(specifier_arg.Len - (ulong)(0)));
-        return new fmt__Placeholder { specifier_arg = specifier_array, fill = (fill ?? 32), alignment = (alignment ?? __DotCcEnum_666D745F5F416C69676E6D656E74.right), arg = arg, width = width, precision = precision };
-    }
-
-
-
-    public static unsafe ErrUnion<Unit> Io_Writer__print__s1b705ca6_tuple_u32_tw32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<uint> args)
-    {
-        try
-        {
-            int max_format_args = 32;
-            {
-                int start_index = 0;
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S633 /*"\u001BP!|"*/), 4UL)));
-                }
-                int fmt_begin = 5;
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                int fmt_end = 10;
-                byte* placeholder_array = stackalloc byte[5];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 5UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S626 /*"\u001BP!|{X:0>8}\u001B\\"*/), 13UL).Ptr + fmt_begin, 5UL));
-                ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__s806750c2_u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2002 /*"X"*/), 1UL), fill = (byte)48, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)1, __payload = new fmt__Specifier_Payload { number = 8UL } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2002 /*"X"*/), 1UL), fill = (byte)48, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)1, __payload = new fmt__Specifier_Payload { number = 8UL } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = (ulong?)8UL, precision = default(ulong?) }, args.Item1, 3UL));
-            }
-            {
-                int start_index__1 = 11;
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S248 /*"\u001B\\"*/), 2UL)));
-                }
-            }
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
-    }
-
-
-
-    public static unsafe ErrUnion<Unit> Io_Writer__print__s3fcb102d_tuple_kitty_clipboard_protocol__Operation_kitty_clipboard_protocol__Status_twu_u__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<kitty_clipboard_protocol__Operation, kitty_clipboard_protocol__Status> args)
-    {
-        try
-        {
-            int max_format_args = 32;
-            {
-                int start_index = 0;
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S517 /*"\u001B]5522;type="*/), 12UL)));
-                }
-                int fmt_begin = 13;
-                
-                
-                int fmt_end = 14;
-                byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2680 /*"\u001B]5522;type={t}:status={t}"*/), 26UL).Ptr + fmt_begin, 1UL));
-                ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__se2c961a8_kitty_clipboard_protocol__Operation__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S690 /*"t"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S690 /*"t"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
-            }
-            {
-                int start_index__1 = 15;
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2944 /*":status="*/), 8UL)));
-                }
-                int fmt_begin__1 = 24;
-                
-                
-                int fmt_end__1 = 25;
-                byte* placeholder_array__1 = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array__1, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2680 /*"\u001B]5522;type={t}:status={t}"*/), 26UL).Ptr + fmt_begin__1, 1UL));
-                ulong arg_to_print__1 = (ulong)1L;
-                _ = ErrUnion.Try(Io_Writer__printValue__se2c961a8_kitty_clipboard_protocol__Status__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S690 /*"t"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S690 /*"t"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item2, 3UL));
-            }
-            {
-                int start_index__2 = 26;
-            }
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
-    }
-
-
-
-    public static unsafe ErrUnion<Unit> Io_Writer__print__s2fddec96_tuple___const_unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<ConstSlice<byte>> args)
-    {
-        try
-        {
-            int max_format_args = 32;
-            {
-                int start_index = 0;
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1168 /*":id="*/), 4UL)));
-                }
-                int fmt_begin = 5;
-                
-                
-                int fmt_end = 6;
-                byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S95 /*":id={s}"*/), 7UL).Ptr + fmt_begin, 1UL));
-                ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__se4bc98db___const_unsigned_charpa0_sentinel_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S512 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S512 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
-            }
-            {
-                int start_index__1 = 7;
-            }
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
-    }
-
-
-
-    public static unsafe ErrUnion<Unit> Io_Writer__print__se1360073_tuple___const_unsigned_charpa0___const_unsigned_charpa0___const_unsigned_charpa0_twu_u_u__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<ConstSlice<byte>, ConstSlice<byte>, ConstSlice<byte>> args)
-    {
-        try
-        {
-            int max_format_args = 32;
-            {
-                int start_index = 0;
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1314 /*"\u001B]72;"*/), 5UL)));
-                }
-                int fmt_begin = 6;
-                
-                
-                int fmt_end = 7;
-                byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S569 /*"\u001B]72;{s}{s}{s}"*/), 14UL).Ptr + fmt_begin, 1UL));
-                ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__se4bc98db___const_unsigned_charpa0_sentinel_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S512 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S512 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
-            }
-            {
-                int start_index__1 = 8;
-                
-                
-                int fmt_begin__1 = 9;
-                
-                
-                int fmt_end__1 = 10;
-                byte* placeholder_array__1 = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array__1, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S569 /*"\u001B]72;{s}{s}{s}"*/), 14UL).Ptr + fmt_begin__1, 1UL));
-                ulong arg_to_print__1 = (ulong)1L;
-                _ = ErrUnion.Try(Io_Writer__printValue__se4bc98db___const_unsigned_charpa0_sentinel_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S512 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S512 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item2, 3UL));
-            }
-            {
-                int start_index__2 = 11;
-                
-                
-                int fmt_begin__2 = 12;
-                
-                
-                int fmt_end__2 = 13;
-                byte* placeholder_array__2 = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array__2, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S569 /*"\u001B]72;{s}{s}{s}"*/), 14UL).Ptr + fmt_begin__2, 1UL));
-                ulong arg_to_print__2 = (ulong)2L;
-                _ = ErrUnion.Try(Io_Writer__printValue__se4bc98db___const_unsigned_charpa0_sentinel_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S512 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S512 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item3, 3UL));
-            }
-            {
-                int start_index__3 = 14;
-            }
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
-    }
-
-
-
-    public static unsafe ErrUnion<Unit> Io_Writer__print__s339e377a_tuple___const_unsigned_charpa0___const_unsigned_charpa0_u8_twu_u_8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<ConstSlice<byte>, ConstSlice<byte>, byte> args)
-    {
-        try
-        {
-            int max_format_args = 32;
-            {
-                int start_index = 0;
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1314 /*"\u001B]72;"*/), 5UL)));
-                }
-                int fmt_begin = 6;
-                
-                
-                int fmt_end = 7;
-                byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S955 /*"\u001B]72;{s}{s}:m={c};"*/), 18UL).Ptr + fmt_begin, 1UL));
-                ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__se4bc98db___const_unsigned_charpa0_sentinel_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S512 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S512 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
-            }
-            {
-                int start_index__1 = 8;
-                
-                
-                int fmt_begin__1 = 9;
-                
-                
-                int fmt_end__1 = 10;
-                byte* placeholder_array__1 = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array__1, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S955 /*"\u001B]72;{s}{s}:m={c};"*/), 18UL).Ptr + fmt_begin__1, 1UL));
-                ulong arg_to_print__1 = (ulong)1L;
-                _ = ErrUnion.Try(Io_Writer__printValue__se4bc98db___const_unsigned_charpa0_sentinel_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S512 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S512 /*"s"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item2, 3UL));
-            }
-            {
-                int start_index__2 = 11;
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S733 /*":m="*/), 3UL)));
-                }
-                int fmt_begin__2 = 15;
-                
-                
-                int fmt_end__2 = 16;
-                byte* placeholder_array__2 = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array__2, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S955 /*"\u001B]72;{s}{s}:m={c};"*/), 18UL).Ptr + fmt_begin__2, 1UL));
-                ulong arg_to_print__2 = (ulong)2L;
-                _ = ErrUnion.Try(Io_Writer__printValue__saf58f3d8_u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2856 /*"c"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2856 /*"c"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item3, 3UL));
-            }
-            {
-                int start_index__3 = 17;
-                
-                    
-                    
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2918 /*";"*/), 1UL)));
-                }
-            }
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
-    }
-
-
-
-    public static unsafe ErrUnion<Unit> Io_Writer__print__s480232ec_tuple_u64_u64_tw64_64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<ulong, ulong> args)
-    {
-        try
-        {
-            int max_format_args = 32;
-            {
-                int start_index = 0;
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2653 /*"\u001B["*/), 2UL)));
-                }
-                int fmt_begin = 3;
-                
-                
-                int fmt_end = 4;
-                byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S771 /*"\u001B[{d}X\u001B[{d}C"*/), 12UL).Ptr + fmt_begin, 1UL));
-                ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__s314cf48b_u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S876 /*"d"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S876 /*"d"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
-            }
-            {
-                int start_index__1 = 5;
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2551 /*"X\u001B["*/), 3UL)));
-                }
-                int fmt_begin__1 = 9;
-                
-                
-                int fmt_end__1 = 10;
-                byte* placeholder_array__1 = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array__1, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S771 /*"\u001B[{d}X\u001B[{d}C"*/), 12UL).Ptr + fmt_begin__1, 1UL));
-                ulong arg_to_print__1 = (ulong)1L;
-                _ = ErrUnion.Try(Io_Writer__printValue__s314cf48b_u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S876 /*"d"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S876 /*"d"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item2, 3UL));
-            }
-            {
-                int start_index__2 = 11;
-                
-                    
-                    
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1533 /*"C"*/), 1UL)));
-                }
-            }
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
-    }
-
-
-
-    public static unsafe ErrUnion<Unit> Io_Writer__print__sa081114b_tuple_u64_tw64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* w, global::System.ValueTuple<ulong> args)
-    {
-        try
-        {
-            int max_format_args = 32;
-            {
-                int start_index = 0;
-                
-                    
-                    
-                
-                
-                    
-                    
-                
-                
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2653 /*"\u001B["*/), 2UL)));
-                }
-                int fmt_begin = 3;
-                
-                
-                int fmt_end = 4;
-                byte* placeholder_array = stackalloc byte[1];
-                ZigMem.CopyForwards<byte>(new Slice<byte>(placeholder_array, 1UL), new ConstSlice<byte>(new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1245 /*"\u001B[{d}C"*/), 6UL).Ptr + fmt_begin, 1UL));
-                ulong arg_to_print = (ulong)0L;
-                _ = ErrUnion.Try(Io_Writer__printValue__s314cf48b_u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new fmt__Options { fill = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S876 /*"d"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.fill, alignment = new fmt__Placeholder { specifier_arg = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S876 /*"d"*/), 1UL), fill = (byte)32, alignment = (fmt__Alignment)2, arg = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, width = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } }, precision = new fmt__Specifier { __tag = (fmt__Specifier_Tag)0, __payload = new fmt__Specifier_Payload {  } } }.alignment, width = default(ulong?), precision = default(ulong?) }, args.Item1, 3UL));
-            }
-            {
-                int start_index__1 = 5;
-                
-                    
-                    
-                
-                {
-                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(w, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1533 /*"C"*/), 1UL)));
-                }
-            }
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 

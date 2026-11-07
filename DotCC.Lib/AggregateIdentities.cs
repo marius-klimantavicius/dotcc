@@ -72,7 +72,8 @@ internal static class AggregateIdentities
     {
         var shape = "enum|" + ObjectAggregateMetadata.Describe(type.Underlying) + "|"
             + string.Join("|", type.Members.OrderBy(m => m.Name, StringComparer.Ordinal)
-                .Select(m => Encode(m.Name) + ":" + m.Value.ToString(CultureInfo.InvariantCulture)));
+                .Select(m => Encode(m.Name) + ":" + m.Value.ToString(CultureInfo.InvariantCulture)))
+            + (type.IsNonExhaustive ? "|nonexhaustive:1" : "");
         return new(false, false, Hash(shape)) { SourceShape = shape };
     }
 

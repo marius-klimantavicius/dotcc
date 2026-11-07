@@ -1,203 +1,280 @@
 # Pinned upstream and native control
 
-The selected implementation is Ghostty's actual `libghostty-vt`, not the GUI
-library or an alternate terminal. Source and toolchain pins live in
-[`source.json`](../config/source.json) and [`toolchain.json`](../config/toolchain.json).
-The selected source revision is `93967b7f9478e94dcbb42125c8a90f34feb40d75`,
-committed on 2026-10-29, identifying itself as `1.4.1-dev`. Its archive SHA-256 is
-`af551aa496cf54ff734e11563d45fe2c49739ee754d1740d1ac984a67a42dc70`.
-The native library version is explicitly `0.1.0`, and the compiler is official
-Zig `0.17.0`. Scripts read these values from metadata.
+Official **libghostty-vt 1.0.0 is the canonical direct managed default**. Its
+source/API closure is described below. Both raw/processed products pass owning
+terminal behavior, 45 native differential/version/API cases, allocation and
+delivery checks under JIT and whole-library-rooted NativeAOT. Normal regeneration
+and the ordinary no-override solution/consumer pass. See the
+[upgrade receipt](../artifacts/vt-1.0.0/DELIVERY.json) and
+[upgrade documentation](VT-1.0.0.md). Full upstream managed qualification remains
+pending; historical 0.1.0 results are separated below.
 
-Under the user's 2026-10-30 scope change, the actual 16-case whole-engine native
-oracle and two delivery-boundary controls below remain C-route requirements.
-Upstream assertion suites, their full 2,622-case matrix and the upstream-only
-host-I/O probe are deferred to direct Zig translation. Their inventories,
-20 core partitions, specialist commands, historical subsets and cancelled
-expanded attempt are retained in [upstream test qualification](UPSTREAM-TESTS.md).
-No deferred result is counted as passed; retained C-route P6 acceptance is recorded in [C-ROUTE-ACCEPTANCE.md](C-ROUTE-ACCEPTANCE.md).
+## Official release and provenance
+
+The selected implementation is Ghostty's actual terminal library. Its source
+and toolchain metadata are [source.json](../config/source.json) and
+[toolchain.json](../config/toolchain.json).
+
+| Input | Current pin |
+| --- | --- |
+| Library release | `vt-1.0.0`; `LIB_VERSION` is `1.0.0` |
+| Annotated tag object | `6b38d55f04e66ebecc472d8be19946edcc6d2e9d` |
+| Peeled source commit | `0fa3d577a5614150ff8e2c152de5fb9d5c6d2dec` |
+| Tag date | `2026-11-06T22:55:16Z` |
+| Official source archive SHA-256 | `4a6ef758be721923e1969e7b81b443dcc92d8dd3fb5a39600c03a8817a753676` |
+| Matching dependency archive SHA-256 | `4d5ea5e448e4c7ea8fb55ccbaa8668f2a97d44f438cee831e2b7ecd162d85c29` |
+| Compiler | Official Zig `0.17.0` |
+
+The archives are the official
+[source release](https://release.files.ghostty.org/libghostty-vt/1.0.0/libghostty-vt-1.0.0.tar.gz)
+and matching
+[dependency bundle](https://release.files.ghostty.org/libghostty-vt/1.0.0/libghostty-vt-1.0.0-deps.tar.gz).
+The signed `SHA256SUMS` content and trusted-comment signatures were verified
+against Ghostty's published minisign key; both archive hashes match that
+manifest. The annotated tag and its peeled commit were also checked.
+[provenance.json](../artifacts/vt-1.0.0/provenance.json) records the key, signatures,
+checksums, and tag refs. This does not assert a separate Git-tag signature check.
+
+The library has its own release version. The source's application
+`build.zig.zon` still identifies Ghostty as `1.4.1-dev`; that is distinct from
+libghostty-vt `1.0.0`. Use the official library archive, which includes
+`LIB_VERSION` and the library's source subset. The
+[official installation documentation](https://lib.ghostty.org/vt/installing.html)
+and [version-pinned packaging guide](https://github.com/ghostty-org/ghostty/blob/vt-1.0.0/PACKAGING-LIBGHOSTTY.md)
+explain the release files, signature verification, required Zig version, and
+offline dependency layout.
 
 ## Useful terminal-core scope
 
-The workflow is to feed a VT byte recording into an independently owned terminal,
-inspect its cursor/modes/cells/styles, resize it with primary-screen reflow,
-extract plain UTF-8 text, reset it, and dispose it. Actual upstream parser,
-screen/page storage, Unicode/grapheme/width handling, escape-sequence processing,
-alternate-screen state, formatting, and render-state extraction remain engine
-code. Render-state extraction supplies logical rows/cells; it draws no pixels.
+The workflow feeds VT bytes into an independently owned terminal, inspects its
+cursor/modes/cells/styles, resizes it with primary-screen reflow, extracts plain
+UTF-8 text, resets it, and disposes it. The parser, screen/page storage,
+Unicode/grapheme/width handling, escape processing, alternate screens,
+formatting, and render-state extraction remain actual upstream engine code.
+Render-state extraction supplies logical rows/cells without drawing pixels.
 
-The upstream scalar profile in [`translation.json`](../config/translation.json)
-enables `formatter`, `render_state`, and `grid_introspection`. GUI integration,
-PTY/process management, fonts/shaping, GPU/software drawing, keyboard/mouse
-encoding, binary snapshot persistence, selection/search, optional color utility
-exports, Kitty images, glyph registration, and regex/Tmux integrations are outside
-this product. Ordinary VT color/style processing still belongs to the terminal.
-Disabling a feature uses upstream build gates, without source edits.
+The selected [scalar profile](../config/translation.json) uses ReleaseFast,
+`simd=false`, and `-Dvt-features=-all,+formatter,+render-state,+grid-introspection`.
+GUI/PTY process management, fonts/shaping, drawing, input encoding, binary
+snapshot persistence, selection/search, optional color utility exports, Kitty
+images, glyph registration, and regex/Tmux integrations remain outside the
+product. Ordinary terminal color/style processing remains enabled. Upstream
+feature gates select this scope; the explicit compatibility patches are recorded
+separately below.
 
-## Actual implementation and generated inputs
+## Actual implementation and dependency closure
 
-`src/lib_vt.zig` is the engine compilation root. It reaches `src/terminal/main.zig`
-and exports the C API declared in `src/terminal/c/main.zig` with `@export`.
-`src/build/GhosttyZig.zig`, `GhosttyLibVt.zig`, `SharedDeps.zig`, and
-`src/terminal/build_options.zig` define the real module and feature closure.
-The public C header root is `include/ghostty/vt.h`.
+`src/lib_vt.zig` is the compilation root. It reaches `src/terminal/main.zig` and
+exports the C API through `src/terminal/c/main.zig` and `@export`. The public
+header root is `include/ghostty/vt.h`. `GhosttyLibVt.zig`, `SharedDeps.zig`,
+`GhosttyZig.zig`, and `src/terminal/build_options.zig` define the upstream graph
+and generated options.
 
-The scalar product requires the pinned `uucode` implementation and Unicode 18
-data. The upstream build graph also acquires `zigimg`, `translate_c`, `aro`,
-zlib sources, and the pinned theme archive during configuration. Those five
-inputs do not contribute terminal algorithm code in this profile. Their URLs,
-Zig package content hashes, and owning `.zon` manifests are in `dependencies`.
-`observed_extra_packages` records incidental acquisitions from broader upstream
-build/help discovery; those packages are not selected product dependencies.
+The release's `deps/libghostty-vt.txt` and matching dependency bundle contain
+exactly five packages:
 
-Generation runs the pinned uucode table generator with
-`src/build/uucode_config.zig`, then `src/unicode/props_uucode.zig` and
-`src/unicode/symbols_uucode.zig` to obtain `tables.zig`, `props.zig`, and
-`symbols.zig`. Upstream emits `build_options` and `terminal_options` modules.
-No Unicode tables are replaced by host character APIs. The C backend then
-monomorphizes the entire selected Zig engine and its actual module graph into
-`engine.c`; its support header is the pinned toolchain's `lib/zig.h`.
+| Package | Source commit | Role in this profile |
+| --- | --- | --- |
+| uucode | `1fb73433bba5d93366c57f23ff2e9d7939746500` | Unicode implementation and generated tables |
+| aro | `d0c8c4d9c55daa7ef6e40cf0f630a5b5e900989b` | Upstream build-graph tooling input |
+| translate_c | `02ff0c523fb92a38939b04d0145c4a9602a74d56` | Upstream build-graph tooling input |
+| highway | `66486a10623fa0d72fe91260f96c892e41aceb06` | Upstream build-graph input; optional C++ SIMD is disabled |
+| wuffs | `7411f488fe2e2c205c3d3b3d28638b7356522930` | Upstream build-graph input; image features are disabled |
 
-`tests/native/run.py:prepare_engine(ctx)` captures the actual upstream verbose
-`build-lib` argv instead of reconstructing module imports. It preserves module
-options and generated paths, changes the root target to the explicitly selected
-`x86_64-freestanding-none`, and adds `-ofmt=c -femit-bin=.../engine.c`.
-It records complete argv, generated module paths, output size, and target in
-`native/emit-c-command.json` and `native/engine-closure.json` under the private
-campaign work directory. This is a genuine whole-engine intermediate for DotCC;
-native C execution is only an oracle, never the managed product backend.
+URLs and exact Zig package content hashes are in
+[source.json](../config/source.json). The current uucode package is
+`uucode-0.2.0-ZZjBPm6FVgBcY-79AHV8ckQj86z0JwOyVyj89VeZrEiv`; it supplies
+Unicode 18 data. The remaining four packages do not supply terminal algorithm
+code to the selected engine. No incidental extra packages are recorded for this
+release closure.
 
-The first original-target output was 19,327,091 bytes, 542,652 lines, and retained
-Linux syscall assembly in standard-library host paths. Adding libc retained
-assembly. The validated freestanding output was approximately 19 MB and had no
-inline assembly. Exact current sizes are recorded with each generated artifact.
-No terminal algorithm was removed to obtain this result.
+The real uucode generator and `src/build/uucode_config.zig` produce
+`tables.zig`; `src/unicode/props_uucode.zig` and `symbols_uucode.zig` produce
+`props.zig` and `symbols.zig`. Upstream also generates `build_options` and
+`terminal_options`. No host character API replaces these tables.
 
-## Host and ABI contract
+The private native shared/static builds use the captured upstream invocation in
+[native/command.json](../artifacts/vt-1.0.0/native/command.json); the actual engine
+module argv is in [engine-command.json](../artifacts/vt-1.0.0/native/engine-command.json).
+The direct frontend consumes the captured graph's eleven modules: `root`,
+`build_options`, `terminal_options`, `unicode_tables`, `symbols_tables`, `uucode`,
+`types.zig`, `config.zig`, `tables`, `storage.zig`, and `build_config`.
+[direct.json](../config/direct.json) records the current 96 selected roots,
+Lib output, fast optimization, source stdlib types, and managed function pointers.
+The authored C boundary is translated separately and linked with the actual Zig
+engine object. The direct route does not create a C engine intermediate.
 
-The initial target is little-endian x86-64, LP64: pointers/`size_t` are 8 bytes,
-`uint16_t` is 2 bytes, C enums are 4 bytes, and C `bool` is 1 byte. Native
-observations give `GhosttyAllocator` size 16, its four-function vtable size 32,
-and `GhosttyFormatterTerminalOptions` size 56. The C backend emits layout
-assertions for its actual generated structs. These native observations are not
-evidence of managed layout; managed/emitted layout must be checked separately.
+The [release compatibility manifest](../patches/vt-1.0.0/manifest.json) records
+all nineteen patches and exact source/patch hashes. Its
+[README](../patches/vt-1.0.0/README.md) explains each bounded adaptation,
+including lazy manifest validation, explicit sized validation, bounded print
+scans, scalar cell storage for `simd=false`, and a reserved-style mask derived
+from actual field layout rather than comptime pointer reinterpretation. The old pin's pending patches
+are not imported implicitly. [Replay evidence](../artifacts/vt-1.0.0/patches/replay.json)
+checks pristine application, partial chains, idempotence, preservation of unknown
+edits, and final source hashes.
 
-The pinned constructor is
-`ghostty_terminal_new(allocator, out_terminal, uint16_t cols, uint16_t rows)`;
-older `GhosttyTerminalOptions` examples do not apply. `vt_write` consumes bytes
-and retains parser state between calls. `get` writes a value of the documented
-type into its final pointer. `reset` preserves dimensions; `resize` also accepts
-cell pixel dimensions. C enum/status values come from the real headers.
+The actual Zig engine and authored boundary emit and link into the published
+managed product. Raw/processed builds and execution, four-row differential and
+allocation checks, and canonical publication pass. Consult
+[translation stages](../artifacts/vt-1.0.0/translation/stages.json) and the
+[progress receipt](../artifacts/vt-1.0.0/RESUME.json) for the current frontier.
 
-Freestanding upstream intentionally has no default allocator. Every allocating
-entry point, including formatter/render/iterator creation, must receive a valid
-allocator. The authored ABI adapter supplies allocation/free only, using the
-existing public `GhosttyAllocator` extension point. Its resize/remap callbacks
-decline in-place changes; upstream performs relocation and copying. Allocation
-alignment is a base-2 exponent, not a byte count. Allocator storage and vtable
-must stay address-stable until every object using them has been freed.
+## Current 1.0.0 host and ABI contract
 
-Upstream's freestanding `TinyIo` becomes `std.Io.failing`; the selected workflow
-requires no filesystem, clock, entropy, network, subprocess, or rendering
-services. All actual terminal algorithms remain upstream. Logging is discarded
-unless the caller installs the documented logger. Panic/trap handling and
-compiler support intrinsics remain explicit translation/runtime concerns.
+The selected host is little-endian Linux x86-64 LP64: pointers and `size_t` are
+8 bytes, `uint16_t` is 2, C enums are 4, and C `bool` is 1. Current native header
+and library observations are:
 
-Terminal instances are not concurrently reentrant. A consumer must serialize
-access to each instance and must not feed it recursively from callbacks. Multiple
-instances may be independently owned. Callback userdata remains caller-owned;
-PTY response bytes are borrowed for the synchronous callback and must be copied
-if retained. Render row/cell views are invalid after the next render-state update.
-A formatter borrows its terminal, which must outlive it. Returned allocated
-buffers are freed with the same allocator and exact length through `ghostty_free`.
+| Type | Size / relevant layout |
+| --- | --- |
+| `GhosttyAllocator` | 16 bytes; `ctx` at 0, `vtable` at 8 |
+| `GhosttyAllocatorVtable` | 64 bytes; alloc/resize/remap/free at 0/8/16/24; four reserved pointer slots at 32 |
+| `GhosttyGridRef` | 16 bytes; node/x/y at 0/8/10 |
+| `GhosttyPoint` | 24 bytes; tag at 0, value at 8 |
+| `GhosttyStyle` | 16 bytes; three colors at 0/4/8, 16-bit flags at 12, reserved at 14 |
+| `GhosttyCodepointBuffer` | 24 bytes; pointer/capacity/length at 0/8/16 |
+| `GhosttyFormatterOption` | 4-byte C enum |
 
-## Native assertion evidence
+These are 1.0.0 facts from [API/layout assessment](../artifacts/vt-1.0.0/boundary/api-assessment.json)
+and [native layout output](../artifacts/vt-1.0.0/boundary/abi-layout-native.stdout).
+[Standalone managed layout checks](../artifacts/vt-1.0.0/boundary/managed-layout-checks.json)
+are recorded separately; native layouts alone do not qualify translated engine
+interoperability.
 
-[`oracle.c`](../tests/native/oracle.c) passes 16 cases with the original native
-Zig static library and with native-compiled whole-engine freestanding C.
-Transcripts match [`expected.txt`](../tests/native/expected.txt) exactly:
+The terminal constructor remains
+`ghostty_terminal_new(allocator, out_terminal, uint16_t cols, uint16_t rows)`.
+`ghostty_terminal_vt_write` retains parser/UTF-8 state between calls;
+`ghostty_terminal_vt_write_until` additionally reports the exact consumed prefix
+and requested string/ground boundaries. `get` writes the header-documented type
+through its output pointer. Reset preserves dimensions; resize accepts cell pixel
+dimensions as well as rows/columns. Unknown option/data keys return
+`GHOSTTY_UNSUPPORTED`; enum/status values must come from the release headers.
 
-1. Creation, dimensions, empty text, initial cursor.
-2. ASCII feed, line breaks, formatter text, render cells, render cursor.
-3. Cursor CUP addressing and the updated cell.
-4. Erase display and cursor home.
-5. Bold/palette SGR and style reset.
-6. Split UTF-8, wide character/tail, combining grapheme, exact codepoints.
-7. Cursor visibility modes.
-8. Alternate-screen contents and primary-screen/cursor restoration.
-9. Resize/reflow with retained text, exact row cells, and pixel dimensions.
-10. Reset with dimensions preserved.
-11. DSR reply callback bytes, bell, OSC title and notification count.
-12. Formatter sizing, short buffer, allocated result and allocator pairing.
-13. Ordinary invalid dimensions/queries and documented null cleanup.
-14. Allocator failure returns out-of-memory.
-15. Instance independence and survival after another instance is freed.
-16. Thirty-two create/feed/format/free cycles, no tracked live allocations.
+The 1.0.0 formatter constructor is the three-argument
+`ghostty_formatter_terminal_new(allocator, out_formatter, terminal)`.
+Configuration uses `ghostty_formatter_set`/`ghostty_formatter_get`; the boundary
+sets `GHOSTTY_FORMATTER_OPT_UNWRAP` explicitly. Formatter output defaults to
+trimmed plain text. The formatter borrows its terminal, which must outlive it.
+Allocated output is freed with the same allocator and exact length through
+`ghostty_free`. See the pinned
+[formatter header](https://github.com/ghostty-org/ghostty/blob/vt-1.0.0/include/ghostty/vt/formatter.h)
+and [API-delta controls](../artifacts/vt-1.0.0/boundary/api-delta-checks.json).
 
-The allocator checks every free's original owner, length, and alignment.
-`CHECK` assertions remain active regardless of `NDEBUG`. Feed checks the terminal's
-VT-processing-error flag. A mismatch or failed assertion exits nonzero.
+Extensible sized structs start with `size_t size`. Initialize them with
+`GHOSTTY_INIT_SIZED` or `ghostty_sized_init`. Their declared base layout is the
+minimum accepted size. Input extension bytes beyond the known struct must be
+zero; output helpers write only fields that fit and retain the caller's size.
+New fields cannot occupy the base layout's trailing padding. The selected
+`GhosttyTerminalWriteStop` follows this contract. Fixed `GhosttyStyle` does not
+have a size field. See the pinned
+[types header](https://github.com/ghostty-org/ghostty/blob/vt-1.0.0/include/ghostty/vt/types.h)
+and [sized-validation controls](../artifacts/vt-1.0.0/patches/sized-validator-summary.json).
 
-[`boundary_control.c`](../tests/native/boundary_control.c) separately exercises
-the real authored delivery ABI against both engines: snapshot sizing and short
-buffers, UTF-8 width/cursor, screen switching, resize/reset, two independent
-instances, errors, and cleanup. Its two cases match
-[`boundary-expected.txt`](../tests/native/boundary-expected.txt).
+The authored boundary supplies an address-stable allocator and 64-byte vtable,
+including zeroed reserved slots. Its resize/remap callbacks decline in-place
+changes; upstream performs relocation/copying. Alignment is a base-2 exponent.
+The freestanding C preparation route requires an explicit allocator; native
+host defaults are not a translated-runtime allocation contract. Allocator and
+vtable storage must outlive every object using them. See the pinned
+[allocator header](https://github.com/ghostty-org/ghostty/blob/vt-1.0.0/include/ghostty/vt/allocator.h).
 
-Current native evidence is under `build/native-tools/context-validation/artifacts/`
-(16 engine cases) and `build/native-tools/boundary-context/artifacts/` (two adapter
-cases). The integrated recipe's 2026-10-29 native run also passed its then-current
-16-case suite. Future native suite runs include both controls. These results do
-not establish successful DotCC translation or managed execution.
+Terminal access must be serialized per instance, including synchronous callbacks;
+callbacks must not feed the same terminal recursively. Independent instances may
+have independent owners. Userdata remains caller-owned, and PTY reply bytes must
+be copied if retained after the callback. Render row/cell views expire at the
+next render-state update. The workflow requires no filesystem, clocks, entropy,
+network, subprocess, or drawing service; required allocator, callback, panic,
+and compiler-runtime services remain explicit translation/runtime concerns.
 
-## Reproduction and offline behavior
+## Current release qualification and native evidence
 
-Use the normal campaign commands from any working directory:
+The release's [native controls](../artifacts/vt-1.0.0/boundary/native-checks.json)
+pass 16 whole-engine oracle cases, two delivery-boundary cases, and six ABI
+layouts. Direct/indirect native transcripts agree. Seven additional
+[API-delta cases](../artifacts/vt-1.0.0/boundary/api-delta-checks.json) and fourteen
+[version/feature cases](../artifacts/vt-1.0.0/boundary/version-build-info-checks.json)
+pass, including library version `1.0.0` and the selected scalar feature flags.
 
-```bash
-bash libghostty/scripts/fetch.sh --fetch missing
-bash libghostty/scripts/test.sh --suite native --fetch never
+The final patches additionally pass
+[long-input LLVM native differential checks](../artifacts/vt-1.0.0/patches/print-batches/parity.json):
+2,940 cases, 5,670 snapshots, 4,322,970 cells, 2,730 boundary stops, and
+3,212,468 input bytes. Exact original/patched observations agree for long ASCII,
+controls/CSI, upper bytes, Unicode/graphemes/wide cells, charset mappings, and
+`write_until` offsets across batch and row boundaries. The scanner control
+exercises u8 lanes 128 to 64 while u16=64 and u32=32 remain unchanged.
+
+The corresponding actual managed engine passes all 45 combined native controls
+in raw/processed JIT/whole-library-rooted NativeAOT, with exact transcripts:
+[qualification](../artifacts/vt-1.0.0/qualification/qualification.json). Owning
+consumer, allocation and published delivery checks pass separately. Full upstream
+managed qualification is still pending. Prepared qualification inputs are in
+[qualification/prepared.json](../artifacts/vt-1.0.0/qualification/prepared.json).
+The old pin's 287-case raw/JIT subset and 2,622-case inventory are historical,
+not vt-1.0.0 managed acceptance. [UPSTREAM-TESTS.md](UPSTREAM-TESTS.md) retains
+that inventory/history.
+
+## Offline reproduction
+
+Use the matching official source and dependency bundles and the pinned Zig
+compiler. Pass the unpacked dependency directory to `zig build --system`;
+its hash-named packages supply the complete release closure without remote
+fetching. The current recipe can expose that directory as the source tree's
+`zig-pkg`. Captured commands include the explicit version strings, scalar feature
+flags, and `-fno-sys` integration selections. Missing offline inputs must fail
+rather than trigger an alternate engine or fallback.
+
+The reusable patch command is:
+
+```sh
+python3 libghostty/patches/vt-1.0.0/apply.py libghostty/ref/libghostty-vt-1.0.0
 ```
 
-The helper uses `ctx.sources['product']` and `ctx.sources['zig']`, shared
-`Context.run` logging/process handling, and private campaign outputs. It never
-downloads sources or toolchains itself. The pinned Zig build acquires its own
-manifest-pinned package dependencies when acquisition is allowed. With
-`--fetch never`, `zig build --system <source>/zig-pkg` disables remote package
-fetching, and explicit `-fno-sys` selections retain the scalar profile. A missing
-package fails with Zig's missing-package diagnostic. A fresh private build cache
-with these offline settings passed; existing generated inputs are not required.
+Add `--check` to require the complete recorded source result without writing.
+Native commands and private cache/install paths are in the receipts linked
+above; direct delivery commands are documented in [DIRECT-ZIG.md](DIRECT-ZIG.md).
+Native C consumers require `CC`/`cc` and link with `-lm`. Sources, generated
+inputs, tools, scratch products, and native oracles remain distinct from the
+managed delivered implementation.
 
-The native suite requires a GNU-compatible host C compiler (`CC` or `cc`) and
-links its controls with `-lm`. The selected C backend profile has currently been
-executed on Linux x86-64. Native tools do not write shared DotCC compiler bins.
-Full commands and logs are in campaign receipts. The core native operations are:
+## Historical 0.1.0 C-route and direct baseline
 
-```text
-zig build <native_build_arguments from translation.json> --prefix <private>/install
-    --cache-dir <private>/zig-cache -j2 --verbose <offline/version options>
-zig build-lib <captured actual upstream module argv>
-    -target x86_64-freestanding-none -ofmt=c -femit-bin=<private>/engine.c
-cc -std=c11 -Wall -Wextra -Werror -I<upstream>/include -c tests/native/oracle.c
-cc <oracle.o> <original static library> -lm -o <native oracle>
-cc -std=gnu11 -O0 -w -I<zig>/lib -c <engine.c> -o <engine.o>
-cc <oracle.o> <engine.o> -lm -o <C oracle>
-```
+The earlier source was `93967b7f9478e94dcbb42125c8a90f34feb40d75`, committed
+2026-10-29, with archive SHA-256
+`af551aa496cf54ff734e11563d45fe2c49739ee754d1740d1ac984a67a42dc70`.
+It identified the app as `1.4.1-dev` and explicitly built library `0.1.0` with
+Zig 0.17.0. Its allocator vtable size 32 and formatter-options size 56 were
+observations of that older ABI; they do not describe the 1.0.0 types above.
+
+The C route was accepted on 2026-10-30 for Linux x64 LP64. It used the genuine
+Zig C backend's whole-engine intermediate, then DotCC translation. The original
+host-target emission retained Linux assembly; explicitly selecting
+`x86_64-freestanding-none` produced approximately 19 MB of genuine engine C
+without inline assembly. The original Zig/C native oracles covered creation,
+ASCII, cursor addressing, erasure, SGR, split UTF-8/wide/graphemes, visibility,
+alternate screens, resize/reflow, reset, callbacks, formatter buffers, ordinary
+errors, allocator failure, independent owners, and repeated disposal. Two
+separate authored-boundary cases and six layouts completed its 24-case suite.
+
+[C-ROUTE-ACCEPTANCE.md](C-ROUTE-ACCEPTANCE.md) retains the accepted raw/processed
+JIT/NativeAOT evidence and reproduction receipts. Its products remain under
+`generated/c-route/`. [DIRECT-DEFAULT-MILESTONE.md](DIRECT-DEFAULT-MILESTONE.md)
+records the working 0.1.0 direct product made canonical on 2026-11-06. Neither
+historical acceptance qualifies the current 1.0.0 source upgrade, and no native
+Ghostty library is a managed runtime dependency of those delivered products.
 
 ## License and notice closure
 
-Distribute the original Ghostty MIT `LICENSE`, uucode MIT `LICENSE.md`, the
-Unicode license, the Hoehrmann UTF-8 decoder license, the Zig MIT `LICENSE`,
-and this repository's MIT `LICENSE` for the embedded DotCC shared runtime
-with both emitted forms. The pinned uucode package omits its referenced
-`licenses/` directory from Zig package exports. `license_sources` therefore
-declares a separate exact-commit codeload archive selecting `LICENSE.md` and
-`licenses/`. It was acquired with the shared campaign `Source`/`acquire` path;
-the required Unicode and Hoehrmann notices are present under that reference tree.
-`license_inputs` maps the original source paths and metadata records its checksum.
-Do not use the historical loose `ref/licenses/` copies for reproducible delivery.
+Distribute Ghostty's MIT `LICENSE`, uucode's MIT `LICENSE.md`, the Unicode and
+Hoehrmann notices, Zig's MIT `LICENSE`, and this repository's MIT `LICENSE` for
+the embedded shared runtime with both emitted forms. The pinned uucode package
+omits its supplemental `licenses/` directory from package exports, so
+[source.json](../config/source.json) records an exact-commit license archive at
+`1fb73433bba5d93366c57f23ff2e9d7939746500`, SHA-256
+`9e574f5b72c07f426eb31e2604860f22ba0fc5f9ccb44ef44e3212a5e9001828`.
+Its `license_inputs` map the selected original notices. Historical loose
+`ref/licenses/` files are not the current reproducible inputs.
 
-Build-only translate-c/aro/zigimg/zlib/theme sources retain their own notices in
-their reference trees. Their acquisition does not authorize delivering their
-algorithms as part of the selected product. No native library is a managed
-runtime dependency.
+Build-only dependencies retain their notices in their own source trees. Native
+controls and acquired build packages do not become native Ghostty providers in
+the managed product.

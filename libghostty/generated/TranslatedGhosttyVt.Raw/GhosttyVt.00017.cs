@@ -30,6 +30,7 @@ using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633763323230643365
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633363613433626363 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c3ca43bcc;
 using __DotCcEnum_76616C6772696E645F5F436C69656E7452657175657374 = global::Managed.GhosttyVt.valgrind__ClientRequest;
 using __DotCcEnum_506167654C6973745F5F4E6F64655F5F446174615F546167 = global::Managed.GhosttyVt.PageList__Node__Data_Tag;
+using __DotCcEnum_72656E6465725F5F5365744F7074696F6E = global::Managed.GhosttyVt.render__SetOption;
 using __DotCcEnum_6465766963655F617474726962757465735F5F436F6E666F726D616E63654C6576656C = global::Managed.GhosttyVt.device_attributes__ConformanceLevel;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636164343962373363 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_cad49b73c;
 using __DotCcEnum_506167654C6973745F5F5363726F6C6C5F546167 = global::Managed.GhosttyVt.PageList__Scroll_Tag;
@@ -40,6 +41,7 @@ using __DotCcEnum_5461726765745F5F416269 = global::Managed.GhosttyVt.Target__Abi
 using __DotCcEnum_53637265656E5F5F5F5F416E6F6E456E756D30 = global::Managed.GhosttyVt.Screen____AnonEnum0;
 using __DotCcEnum_6D6574615F5F4669656C64456E756D5F5F506167654C6973745F5F4C696D697473 = global::Managed.GhosttyVt.meta__FieldEnum__PageList__Limits;
 using __DotCcEnum_72656E6465725F5F526F7744617461 = global::Managed.GhosttyVt.render__RowData;
+using __DotCcEnum_72656E6465725F5F526F774F7074696F6E = global::Managed.GhosttyVt.render__RowOption;
 using __DotCcEnum_6F73635F325F5F5061727365725F5F5374617465 = global::Managed.GhosttyVt.osc_2__Parser__State;
 using __DotCcEnum_646E645F636F6D6D616E645F5F526571756573745F546167 = global::Managed.GhosttyVt.dnd_command__Request_Tag;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633566353337626532 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c5f537be2;
@@ -49,6 +51,7 @@ using __DotCcEnum_5461726765745F5F4F735F5F57696E646F777356657273696F6E = global:
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633336613366316236 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c36a3f1b6;
 using __DotCcEnum_5465726D696E616C5F5F5F5F416E6F6E456E756D30 = global::Managed.GhosttyVt.Terminal____AnonEnum0;
 using __DotCcEnum_506167654C6973745F5F496E6372656173654361706163697479 = global::Managed.GhosttyVt.PageList__IncreaseCapacity;
+using __DotCcEnum_53637265656E5F5F5F5F416E6F6E456E756D33 = global::Managed.GhosttyVt.Screen____AnonEnum3;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636661643537633037 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_cfad57c07;
 using __DotCcEnum_686561705F4172656E61416C6C6F6361746F725F5F50757368526573756C745F546167 = global::Managed.GhosttyVt.heap_ArenaAllocator__PushResult_Tag;
 using __DotCcEnum_6D6174685F5F4F72646572 = global::Managed.GhosttyVt.math__Order;
@@ -86,13 +89,13 @@ using __DotCcEnum_7367725F5F4174747269627574655F5F556E6465726C696E65 = global::M
 using __DotCcEnum_646E645F726573706F6E73655F5F456E636F64696E67 = global::Managed.GhosttyVt.dnd_response__Encoding;
 using __DotCcEnum_726573756C745F5F526573756C74 = global::Managed.GhosttyVt.result__Result;
 using __DotCcEnum_53637265656E5F5F5F5F416E6F6E456E756D32 = global::Managed.GhosttyVt.Screen____AnonEnum2;
+using __DotCcEnum_7379735F5F4F7074696F6E = global::Managed.GhosttyVt.sys__Option;
 using __DotCcEnum_6170635F5F53746174655F546167 = global::Managed.GhosttyVt.apc__State_Tag;
 using __DotCcEnum_5461726765745F5F4F626A656374466F726D6174 = global::Managed.GhosttyVt.Target__ObjectFormat;
 using __DotCcEnum_5061727365725F5F416374696F6E5F546167 = global::Managed.GhosttyVt.Parser__Action_Tag;
 using __DotCcEnum_496F5F46696C655F5265616465725F5F4D6F6465 = global::Managed.GhosttyVt.Io_File_Reader__Mode;
 using __DotCcEnum_686561705F4172656E61416C6C6F6361746F725F5F52657365744D6F64655F546167 = global::Managed.GhosttyVt.heap_ArenaAllocator__ResetMode_Tag;
 using __DotCcEnum_7374796C655F325F5F5374796C655F5F436F6C6F725F5F546167 = global::Managed.GhosttyVt.style_2__Style__Color__Tag;
-using __DotCcEnum_5465726D696E616C5F5F5072696E74536C6963655769647468 = global::Managed.GhosttyVt.Terminal__PrintSliceWidth;
 using __DotCcEnum_6465766963655F617474726962757465735F5F5072696D6172795F5F46656174757265 = global::Managed.GhosttyVt.device_attributes__Primary__Feature;
 using __DotCcEnum_5461726765745F68657861676F6E5F5F46656174757265 = global::Managed.GhosttyVt.Target_hexagon__Feature;
 using __DotCcEnum_636F6C6F725F335F5F5370656369616C = global::Managed.GhosttyVt.color_3__Special;
@@ -116,8 +119,8 @@ using __DotCcEnum_6463735F5F436F6D6D616E645F5F44454352515353 = global::Managed.G
 using __DotCcEnum_76616C6772696E645F6D656D636865636B5F5F436C69656E7452657175657374 = global::Managed.GhosttyVt.valgrind_memcheck__ClientRequest;
 using __DotCcEnum_61727261795F686173685F6D61705F5F4361706163697479496E64657854797065 = global::Managed.GhosttyVt.array_hash_map__CapacityIndexType;
 using __DotCcEnum_496F5F46696C655F5F4B696E64 = global::Managed.GhosttyVt.Io_File__Kind;
+using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633164613662336138 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c1da6b3a8;
 using __DotCcEnum_6F73635F325F5F5061727365725F5F436170747572655F5F4261636B696E675F546167 = global::Managed.GhosttyVt.osc_2__Parser__Capture__Backing_Tag;
-using __DotCcEnum_72656E6465725F5F437572736F7256697375616C5374796C65 = global::Managed.GhosttyVt.render__CursorVisualStyle;
 using __DotCcEnum_736F72745F7064715F5F48696E74 = global::Managed.GhosttyVt.sort_pdq__Hint;
 using __DotCcEnum_636C6970626F6172645F325F5F526561645F5F526573756C745F546167 = global::Managed.GhosttyVt.clipboard_2__Read__Result_Tag;
 using __DotCcEnum_616E73695F5F4330 = global::Managed.GhosttyVt.ansi__C0;
@@ -126,7 +129,6 @@ using __DotCcEnum_636F6C6F725F5F4F7065726174696F6E = global::Managed.GhosttyVt.c
 using __DotCcEnum_6B697474795F636C6970626F6172645F70726F746F636F6C5F5F537461747573 = global::Managed.GhosttyVt.kitty_clipboard_protocol__Status;
 using __DotCcEnum_6170635F5F50726F746F636F6C = global::Managed.GhosttyVt.apc__Protocol;
 using __DotCcEnum_73656D616E7469635F70726F6D70745F5F436F6D6D616E645F5F416374696F6E = global::Managed.GhosttyVt.semantic_prompt__Command__Action;
-using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633430323464633238 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c4024dc28;
 using __DotCcEnum_70726F6772616D5F7374617475735F5F436F6D6D616E645F546167 = global::Managed.GhosttyVt.program_status__Command_Tag;
 using __DotCcEnum_636F6C6F725F335F5F4B696E645F546167 = global::Managed.GhosttyVt.color_3__Kind_Tag;
 using __DotCcEnum_6373695F5F4572617365446973706C6179 = global::Managed.GhosttyVt.csi__EraseDisplay;
@@ -138,10 +140,10 @@ using __DotCcEnum_6772617068656D655F5F4772617068656D655769647468456666656374 = g
 using __DotCcEnum_6373695F5F45726173654C696E65 = global::Managed.GhosttyVt.csi__EraseLine;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636130376336633233 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_ca07c6c23;
 using __DotCcEnum_506167654C6973745F5F5F5F416E6F6E556E696F6E305F546167 = global::Managed.GhosttyVt.PageList____AnonUnion0_Tag;
+using __DotCcEnum_74797065735F335F5F437572736F725374796C65 = global::Managed.GhosttyVt.types_3__CursorStyle;
 using __DotCcEnum_666D745F5F416C69676E6D656E74 = global::Managed.GhosttyVt.fmt__Alignment;
 using __DotCcEnum_6275696C645F696E666F5F5F4275696C64496E666F = global::Managed.GhosttyVt.build_info__BuildInfo;
 using __DotCcEnum_506167654C6973745F5F496E6372656D656E74616C436F6D7072657373696F6E526573756C74 = global::Managed.GhosttyVt.PageList__IncrementalCompressionResult;
-using __DotCcEnum_7374796C655F5F436F6C6F72546167 = global::Managed.GhosttyVt.style__ColorTag;
 using __DotCcEnum_506167654C6973745F5F56696577706F72745F546167 = global::Managed.GhosttyVt.PageList__Viewport_Tag;
 using __DotCcEnum_496F5F4469725F5F5265616465725F5F5374617465 = global::Managed.GhosttyVt.Io_Dir__Reader__State;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633834366562383534 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c846eb854;
@@ -162,7 +164,6 @@ using __DotCcEnum_506167654C6973745F5F436F6D7072657373696F6E536372617463685F5461
 using __DotCcEnum_53656C656374696F6E5F5F426F756E64735F546167 = global::Managed.GhosttyVt.Selection__Bounds_Tag;
 using __DotCcEnum_636C6970626F6172645F325F5F57726974655F5F526573756C745F546167 = global::Managed.GhosttyVt.clipboard_2__Write__Result_Tag;
 using __DotCcEnum_6F73635F325F5F5465726D696E61746F72 = global::Managed.GhosttyVt.osc_2__Terminator;
-using __DotCcEnum_7465726D696E616C5F5F5465726D696E616C437572736F725374796C65 = global::Managed.GhosttyVt.terminal__TerminalCursorStyle;
 using __DotCcEnum_506167654C6973745F5F506167654974657261746F725F5F4C696D69745F546167 = global::Managed.GhosttyVt.PageList__PageIterator__Limit_Tag;
 using __DotCcEnum_6C616E675F5F456E6469616E = global::Managed.GhosttyVt.lang__Endian;
 using __DotCcEnum_686561705F5F5F5F416E6F6E556E696F6E305F546167 = global::Managed.GhosttyVt.heap____AnonUnion0_Tag;
@@ -180,7 +181,9 @@ using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633332396663356139
 using __DotCcEnum_6170635F5F436F6D6D616E645F546167 = global::Managed.GhosttyVt.apc__Command_Tag;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636433333364643464 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_cd333dd4d;
 using __DotCcEnum_68797065726C696E6B5F5F50616765456E7472795F5F49645F546167 = global::Managed.GhosttyVt.hyperlink__PageEntry__Id_Tag;
+using __DotCcEnum_666F726D61747465725F5F4F7074696F6E = global::Managed.GhosttyVt.formatter__Option;
 using __DotCcEnum_6F73635F5F436F6D6D616E6444617461 = global::Managed.GhosttyVt.osc__CommandData;
+using __DotCcEnum_7465726D696E616C5F5F4F7074696F6E = global::Managed.GhosttyVt.terminal__Option;
 using __DotCcEnum_706167655F5F43656C6C5F5F53656D616E746963436F6E74656E74 = global::Managed.GhosttyVt.page__Cell__SemanticContent;
 using __DotCcEnum_706167655F5F526F775F5F53656D616E74696350726F6D7074 = global::Managed.GhosttyVt.page__Row__SemanticPrompt;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633437333233396563 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c473239ec;
@@ -210,6 +213,7 @@ using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633363643637393664
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633838303663616564 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c8806caed;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633562326163383131 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c5b2ac811;
 using __DotCcEnum_68797065726C696E6B5F5F48797065726C696E6B5F5F49645F546167 = global::Managed.GhosttyVt.hyperlink__Hyperlink__Id_Tag;
+using __DotCcEnum_5465726D696E616C5F5F5072696E74536C6963654D69786564526F775F5F53746F70 = global::Managed.GhosttyVt.Terminal__PrintSliceMixedRow__Stop;
 using __DotCcEnum_635F5F5F5F416E6F6E456E756D31 = global::Managed.GhosttyVt.c____AnonEnum1;
 using __DotCcEnum_666D745F5F43617365 = global::Managed.GhosttyVt.fmt__Case;
 using __DotCcEnum_78745F636865636B73756D5F5F56616C75655F546167 = global::Managed.GhosttyVt.xt_checksum__Value_Tag;
@@ -226,19 +230,19 @@ using __DotCcEnum_5465726D696E616C5F5F446563636F6C6D4D6F6465 = global::Managed.G
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633262643762326166 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c2bd7b2af;
 using __DotCcEnum_72656E6465725F5F526F7743656C6C7344617461 = global::Managed.GhosttyVt.render__RowCellsData;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636630373331306539 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_cf07310e9;
-using __DotCcEnum_5F5F446F744363547970656465665F34363336323630304243383945323145354234343735414539333242333836343046463531454546393044433731364645303732383746333544313844464434 = global::Managed.GhosttyVt.GhosttyPointTag;
-using __DotCcEnum_5F5F446F744363547970656465665F38453938394341423537343643374443394441454641333130393838363945344542443445423534384635354339323131454534343334343937393039433030 = global::Managed.GhosttyVt.GhosttyTerminalData;
-using __DotCcEnum_5F5F446F744363547970656465665F35424345333530373346314534354637304138443832424132424541383445453036373836383530353132344631313838433532393036363644383545333237 = global::Managed.GhosttyVt.GhosttyCellData;
-using __DotCcEnum_5F5F446F744363547970656465665F43303034443441424233424338313144423537313535393445433345354434323635424239324443303733443239333841413239374231383839424443394333 = global::Managed.GhosttyVt.GhosttyResult;
-using __DotCcEnum_5F5F446F744363547970656465665F34384134363232364635353144443144443032383437454538333644384136373033354239394439463934353844463633383934344137383539413131393341 = global::Managed.GhosttyVt.GhosttyFormatterFormat;
+using __DotCcEnum_5F5F446F744363547970656465665F42343433304439444231373133423442463337353942433732463336343833304138434538304430373237373346423338423245463438354638373034324145 = global::Managed.GhosttyVt.GhosttyResult;
+using __DotCcEnum_5F5F446F744363547970656465665F42393432423136393035383537384536463744353439413132384332363446323836323544433937413445324131363841383533343233333530363945433544 = global::Managed.GhosttyVt.GhosttyPointTag;
+using __DotCcEnum_5F5F446F744363547970656465665F44383133333931433843353335394138414442413938353433363230433636363432353035464446423837373341463337454335383635383333443935394538 = global::Managed.GhosttyVt.GhosttyTerminalData;
+using __DotCcEnum_5F5F446F744363547970656465665F44353335424632413237433246423245304135464634373046434139344436353034454542444646394138463838444636453434333030334643393142303741 = global::Managed.GhosttyVt.GhosttyCellData;
+using __DotCcEnum_5F5F446F744363547970656465665F45313739394335393033333344303646413942333645433635313836453339464242454341414144393434394633453039443837313537424438463246343441 = global::Managed.GhosttyVt.GhosttyFormatterOption;
+using __DotCcEnum_5F5F446F744363547970656465665F45364536453544393039344443313533343543344430414638324245324333354637433942434634364446324233414134383635334135374439413632323638 = global::Managed.GhosttyVt.GhosttyStyleColorTag;
 using __DotCcEnum_446F74636347686F73747479546578745374796C65 = global::Managed.GhosttyVt.DotccGhosttyTextStyle;
-using __DotCcEnum_5F5F446F744363547970656465665F46453531373538343036394442364138303334454138454633344542424634304636383130423745453942424345313931334443444533413633394534443543 = global::Managed.GhosttyVt.GhosttyStyleColorTag;
 using DotCcLiterals = global::Managed.GhosttyVt.GhosttyVtLiterals;
 using DotCcPointers = global::Managed.GhosttyVt.GhosttyVtFunctionPointers;
 
 public static unsafe partial class GhosttyVt
 {
-    public static unsafe SemanticVersion__SemanticVersion? Target__Os__TaggedVersionRange_gnuLibCVersion__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Target__Os__TaggedVersionRange range)
+    public static unsafe SemanticVersion__SemanticVersion? Target__Os__TaggedVersionRange_gnuLibCVersion__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Target__Os__TaggedVersionRange range)
     {
         SemanticVersion__SemanticVersion? __vcf5 = default(SemanticVersion__SemanticVersion?);
         switch ((int)range.__tag)
@@ -246,7 +250,7 @@ public static unsafe partial class GhosttyVt
             case (int)__DotCcEnum_5461726765745F5F4F735F5F54616767656456657273696F6E52616E67655F546167.none:
             case (int)__DotCcEnum_5461726765745F5F4F735F5F54616767656456657273696F6E52616E67655F546167.semver:
             case (int)__DotCcEnum_5461726765745F5F4F735F5F54616767656456657273696F6E52616E67655F546167.windows:
-                __vcf5 = null;
+                __vcf5 = default(SemanticVersion__SemanticVersion?);
                 break;
             case (int)__DotCcEnum_5461726765745F5F4F735F5F54616767656456657273696F6E52616E67655F546167.hurd:
                 {
@@ -266,28 +270,28 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe Target__Os__TaggedVersionRange Target__Os_versionRange__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Target__Os os)
+    public static unsafe Target__Os__TaggedVersionRange Target__Os_versionRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Target__Os os)
     {
-        return (((int)Target__Os__Tag_versionRangeTag__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(os.tag)) switch { (int)__DotCcEnum_5461726765745F5F4F735F5F54616767656456657273696F6E52616E67655F546167.none => new Target__Os__TaggedVersionRange { __tag = __DotCcEnum_5461726765745F5F4F735F5F54616767656456657273696F6E52616E67655F546167.none, __payload = new Target__Os__TaggedVersionRange_Payload {  } }, (int)__DotCcEnum_5461726765745F5F4F735F5F54616767656456657273696F6E52616E67655F546167.semver => new Target__Os__TaggedVersionRange { __tag = __DotCcEnum_5461726765745F5F4F735F5F54616767656456657273696F6E52616E67655F546167.semver, __payload = new Target__Os__TaggedVersionRange_Payload { semver = os.version_range.semver } }, (int)__DotCcEnum_5461726765745F5F4F735F5F54616767656456657273696F6E52616E67655F546167.hurd => new Target__Os__TaggedVersionRange { __tag = __DotCcEnum_5461726765745F5F4F735F5F54616767656456657273696F6E52616E67655F546167.hurd, __payload = new Target__Os__TaggedVersionRange_Payload { hurd = os.version_range.hurd } }, (int)__DotCcEnum_5461726765745F5F4F735F5F54616767656456657273696F6E52616E67655F546167.linux => new Target__Os__TaggedVersionRange { __tag = __DotCcEnum_5461726765745F5F4F735F5F54616767656456657273696F6E52616E67655F546167.linux, __payload = new Target__Os__TaggedVersionRange_Payload { linux = os.version_range.linux } }, _ => new Target__Os__TaggedVersionRange { __tag = __DotCcEnum_5461726765745F5F4F735F5F54616767656456657273696F6E52616E67655F546167.windows, __payload = new Target__Os__TaggedVersionRange_Payload { windows = os.version_range.windows } } });
+        return (((int)Target__Os__Tag_versionRangeTag__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(os.tag)) switch { (int)__DotCcEnum_5461726765745F5F4F735F5F54616767656456657273696F6E52616E67655F546167.none => new Target__Os__TaggedVersionRange { __tag = __DotCcEnum_5461726765745F5F4F735F5F54616767656456657273696F6E52616E67655F546167.none, __payload = new Target__Os__TaggedVersionRange_Payload {  } }, (int)__DotCcEnum_5461726765745F5F4F735F5F54616767656456657273696F6E52616E67655F546167.semver => new Target__Os__TaggedVersionRange { __tag = __DotCcEnum_5461726765745F5F4F735F5F54616767656456657273696F6E52616E67655F546167.semver, __payload = new Target__Os__TaggedVersionRange_Payload { semver = os.version_range.semver } }, (int)__DotCcEnum_5461726765745F5F4F735F5F54616767656456657273696F6E52616E67655F546167.hurd => new Target__Os__TaggedVersionRange { __tag = __DotCcEnum_5461726765745F5F4F735F5F54616767656456657273696F6E52616E67655F546167.hurd, __payload = new Target__Os__TaggedVersionRange_Payload { hurd = os.version_range.hurd } }, (int)__DotCcEnum_5461726765745F5F4F735F5F54616767656456657273696F6E52616E67655F546167.linux => new Target__Os__TaggedVersionRange { __tag = __DotCcEnum_5461726765745F5F4F735F5F54616767656456657273696F6E52616E67655F546167.linux, __payload = new Target__Os__TaggedVersionRange_Payload { linux = os.version_range.linux } }, _ => new Target__Os__TaggedVersionRange { __tag = __DotCcEnum_5461726765745F5F4F735F5F54616767656456657273696F6E52616E67655F546167.windows, __payload = new Target__Os__TaggedVersionRange_Payload { windows = os.version_range.windows } } });
     }
 
 
 
-    public static unsafe Target__Os__TaggedVersionRange_Tag Target__Os__Tag_versionRangeTag__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Target__Os__Tag tag)
+    public static unsafe Target__Os__TaggedVersionRange_Tag Target__Os__Tag_versionRangeTag__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Target__Os__Tag tag)
     {
         return (((int)tag) switch { (int)__DotCcEnum_5461726765745F5F4F735F5F546167.freestanding or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.other or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.managarm or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.haiku or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.illumos or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.plan9 or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.serenity or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.psx or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.ps3 or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.ps4 or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.ps5 or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.gba or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.emscripten or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.mesa3d or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.ashetos => __DotCcEnum_5461726765745F5F4F735F5F54616767656456657273696F6E52616E67655F546167.none, (int)__DotCcEnum_5461726765745F5F4F735F5F546167.contiki or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.fuchsia or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.hermit or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.rtems or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.dragonfly or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.freebsd or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.netbsd or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.openbsd or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.driverkit or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.ios or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.maccatalyst or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.macos or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.tvos or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.visionos or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.watchos or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.uefi or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.__zig_member_336473 or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.wiiu or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.@switch or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.psp or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.vita or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.wasi or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.amdhsa or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.amdpal or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.cuda or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.nvcl or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.opencl or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.opengl or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.vulkan or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.tios => __DotCcEnum_5461726765745F5F4F735F5F54616767656456657273696F6E52616E67655F546167.semver, (int)__DotCcEnum_5461726765745F5F4F735F5F546167.hurd => __DotCcEnum_5461726765745F5F4F735F5F54616767656456657273696F6E52616E67655F546167.hurd, (int)__DotCcEnum_5461726765745F5F4F735F5F546167.linux => __DotCcEnum_5461726765745F5F4F735F5F54616767656456657273696F6E52616E67655F546167.linux, _ => __DotCcEnum_5461726765745F5F4F735F5F54616767656456657273696F6E52616E67655F546167.windows });
     }
 
 
 
-    public static unsafe CBool c__versionCheck__c67829fa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe CBool c__versionCheck__c67829fa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return false;
     }
 
 
 
-    public static unsafe ErrUnion<Unit> posix_2__randomSecure__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<byte> buffer)
+    public static unsafe ZigErrorUnionZero<Unit> posix_2__randomSecure__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<byte> buffer)
     {
         try
         {
@@ -295,8 +299,8 @@ public static unsafe partial class GhosttyVt
                 ulong i = 0;
                 while (Cond.B(((CBool)(i < buffer.Len))))
                 {
-                    ulong rc = os_linux__getrandom__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<byte>(buffer.Ptr + i, buffer.Len - (ulong)i).Ptr, buffer.Len - i, 0);
-                    switch ((int)(ushort)os_linux__errno__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(rc))
+                    ulong rc = os_linux__getrandom__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<byte>(buffer.Ptr + i, buffer.Len - (ulong)i).Ptr, buffer.Len - i, 0);
+                    switch ((int)(ushort)os_linux__errno__u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(rc))
                     {
                         case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.SUCCESS:
                             i += rc;
@@ -304,38 +308,41 @@ public static unsafe partial class GhosttyVt
                         case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.INTR:
                             continue;
                         default:
-                            return ErrUnion<Unit>.Err(93);
+                            return ZigErrorUnionZero<Unit>.Err(96);
                     }
                 }
-                return ErrUnion<Unit>.Ok(default);
+                return ZigErrorUnionZero<Unit>.Ok(default);
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
     }
 
 
 
-    public static unsafe void posix_2__closeFd__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(int fd)
+    public static unsafe void posix_2__closeFd__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(int fd)
     {
         close(fd);
     }
 
 
 
-    public static unsafe ErrUnion<ulong> posix_2__realPathFd__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(int fd, Slice<byte> out_buffer)
+    public static unsafe ErrUnion<ulong> posix_2__realPathFd__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(int fd, Slice<byte> out_buffer)
     {
         try
         {
             {
                 byte* procfs_buf = stackalloc byte[28];
-                byte* template = (DotCcLiterals.Pointer + DotCcLiterals.S327 /*"/proc/self/fd/{d}"*/);
-                ErrUnion<Slice<byte>> __cE = mem__printSentinel__sc2681465_tuple_i32_tw32_0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<byte>(procfs_buf, 28UL), new global::System.ValueTuple<int>(fd));
-                Slice<byte> proc_path = (Cond.B(__cE.IsErr) ? ((global::System.Func<Slice<byte>>)(() => {     throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
-     }))() : __cE.Value);
+                byte* template = (DotCcLiterals.Pointer + DotCcLiterals.S330 /*"/proc/self/fd/{d}"*/);
+                ErrUnion<Slice<byte>> __cf = mem__printSentinel__sc2681465_tuple_i32_tw32_0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<byte>(procfs_buf, 28UL), new global::System.ValueTuple<int>(fd));
+                if (Cond.B(__cf.IsErr))
+                {
+                    throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+                }
+                Slice<byte> proc_path = __cf.Value;
                 while (true)
                 {
                     long rc = readlink(proc_path.Ptr, out_buffer.Ptr, out_buffer.Len);
-                    os_linux____AnonEnum14 __sw12 = c__errno__i64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(rc);
+                    os_linux____AnonEnum14 __sw12 = c__errno__i64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(rc);
                     switch ((int)(ushort)__sw12)
                     {
                         case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.SUCCESS:
@@ -345,9 +352,9 @@ public static unsafe partial class GhosttyVt
                         case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.ACCES:
                             return ErrUnion<ulong>.Err(16);
                         case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.IO:
-                            return ErrUnion<ulong>.Err(116);
+                            return ErrUnion<ulong>.Err(119);
                         case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.LOOP:
-                            return ErrUnion<ulong>.Err(111);
+                            return ErrUnion<ulong>.Err(114);
                         case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.NAMETOOLONG:
                             return ErrUnion<ulong>.Err(25);
                         case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.NOENT:
@@ -359,7 +366,7 @@ public static unsafe partial class GhosttyVt
                         default:
                             {
                                 os_linux____AnonEnum14 err = __sw12;
-                                return ErrUnion<ulong>.Err(posix__unexpectedErrno__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(err));
+                                return ErrUnion<ulong>.Err(posix__unexpectedErrno__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(err));
                             }
                     }
                 }
@@ -370,7 +377,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe Slice<posix__iovec> posix_2__buffersToIovecs__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ConstSlice<Slice<byte>> data, posix__iovec* iovecs_buffer)
+    public static unsafe Slice<posix__iovec> posix_2__buffersToIovecs__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ConstSlice<Slice<byte>> data, posix__iovec* iovecs_buffer)
     {
         ulong i = 0;
         for (ulong __i = 0UL; Cond.B(((CBool)(__i < data.Len))); __i++)
@@ -391,20 +398,21 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe vt__DecodeResult vt__utf8DecodeUntilControlSeq__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ConstSlice<byte> input, Slice<uint> output)
+    public static unsafe vt__DecodeResult vt__utf8DecodeUntilControlSeq__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ConstSlice<byte> input, Slice<uint> output)
     {
-        quirks____AnonStruct0_assert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(((CBool)(output.Len >= input.Len)));
-        return vt__utf8DecodeUntilControlSeqScalar__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(input, output);
+        quirks____AnonStruct0_assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)(output.Len >= input.Len)));
+        return vt__utf8DecodeUntilControlSeqScalar__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(input, output);
     }
 
 
 
-    public static unsafe vt__DecodeResult vt__utf8DecodeUntilControlSeqScalar__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ConstSlice<byte> input, Slice<uint> output)
+    public static unsafe vt__DecodeResult vt__utf8DecodeUntilControlSeqScalar__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ConstSlice<byte> input, Slice<uint> output)
     {
-        ulong idx = (index_of__indexOf__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(input, 27) ?? input.Len);
+        ulong idx = (index_of__indexOf__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(input, 27) ?? input.Len);
         ConstSlice<byte> decode = new ConstSlice<byte>(input.Ptr + 0, (ulong)(idx - (ulong)(0)));
         ulong decode_offset = 0;
         ulong decode_count = 0;
+        CBool ascii = true;
         while (Cond.B(((CBool)(decode_offset < decode.Len))))
         {
             byte b0 = decode.Ptr[decode_offset];
@@ -687,6 +695,7 @@ public static unsafe partial class GhosttyVt
                 }
                 continue;
             }
+            ascii = false;
             if (Cond.B(((CBool)(Cond.B(((CBool)(b0 < (byte)194))) || Cond.B(((CBool)(b0 > (byte)244)))))))
             {
                 output.Ptr[decode_count] = 65533;
@@ -705,7 +714,7 @@ public static unsafe partial class GhosttyVt
                 if (Cond.B(((CBool)(decode_offset + valid >= decode.Len))))
                 {
                     if (Cond.B(((CBool)(decode.Len == input.Len))))
-                        return new vt__DecodeResult { consumed = decode_offset, decoded = decode_count };
+                        return new vt__DecodeResult { consumed = decode_offset, decoded = decode_count, ascii = false };
                     break;
                 }
                 byte cb = decode.Ptr[decode_offset + valid];
@@ -729,12 +738,12 @@ public static unsafe partial class GhosttyVt
                 decode_offset += valid;
             }
         }
-        return new vt__DecodeResult { consumed = decode_offset, decoded = decode_count };
+        return new vt__DecodeResult { consumed = decode_offset, decoded = decode_count, ascii = ascii };
     }
 
 
 
-    public static unsafe void fastmem__copy__page__Cell__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<page__Cell> dest, ConstSlice<page__Cell> source)
+    public static unsafe void fastmem__copy__page__Cell__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<page__Cell> dest, ConstSlice<page__Cell> source)
     {
         {
             memcpy(dest.Ptr, source.Ptr, source.Len * 8UL);
@@ -743,17 +752,17 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe crypto_siphash__SipHash__u128_1_3 crypto_siphash__SipHash__u128_1_3_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(byte* key)
+    public static unsafe crypto_siphash__SipHash__u128_1_3 crypto_siphash__SipHash__u128_1_3_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(byte* key)
     {
-        return new crypto_siphash__SipHash__u128_1_3 { state = crypto_siphash__SipHashStateless__u128_1_3_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(key), buf_len = 0 };
+        return new crypto_siphash__SipHash__u128_1_3 { state = crypto_siphash__SipHashStateless__u128_1_3_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(key), buf_len = 0 };
     }
 
 
 
-    public static unsafe crypto_siphash__SipHashStateless__u128_1_3 crypto_siphash__SipHashStateless__u128_1_3_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(byte* key)
+    public static unsafe crypto_siphash__SipHashStateless__u128_1_3 crypto_siphash__SipHashStateless__u128_1_3_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(byte* key)
     {
-        ulong k0 = mem__readInt__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new ConstSlice<byte>(key + 0, unchecked((ulong)(8 - 0))).Ptr, __DotCcEnum_6C616E675F5F456E6469616E.little);
-        ulong k1 = mem__readInt__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new ConstSlice<byte>(key + 8, unchecked((ulong)(16 - 8))).Ptr, __DotCcEnum_6C616E675F5F456E6469616E.little);
+        ulong k0 = mem__readInt__u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new ConstSlice<byte>(key + 0, unchecked((ulong)(8 - 0))).Ptr, __DotCcEnum_6C616E675F5F456E6469616E.little);
+        ulong k1 = mem__readInt__u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new ConstSlice<byte>(key + 8, unchecked((ulong)(16 - 8))).Ptr, __DotCcEnum_6C616E675F5F456E6469616E.little);
         crypto_siphash__SipHashStateless__u128_1_3 d = new crypto_siphash__SipHashStateless__u128_1_3 { v0 = k0 ^ 8317987319222330741UL, v1 = k1 ^ 7237128888997146477UL, v2 = k0 ^ 7816392313619706465UL, v3 = k1 ^ 8387220255154660723UL, msg_len = 0 };
         {
             d.v1 ^= (ulong)(238);
@@ -763,2254 +772,2254 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ulong? index_of__indexOf__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ConstSlice<byte> input, byte needle)
+    public static unsafe ulong? index_of__indexOf__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ConstSlice<byte> input, byte needle)
     {
-        return index_of__indexOfScalar__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(input, needle);
+        return index_of__indexOfScalar__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(input, needle);
     }
 
 
 
-    public static unsafe ulong? index_of__indexOfScalar__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ConstSlice<byte> input, byte needle)
+    public static unsafe ulong? index_of__indexOfScalar__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ConstSlice<byte> input, byte needle)
     {
-        return mem__findScalar__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(input, needle);
+        return mem__findScalar__u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(input, needle);
     }
 
 
 
-    public static unsafe void log__scoped__ce42edf70_warn__s715bec16_tuple_osc_2__Parser__State_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<osc_2__Parser__State> args)
+    public static unsafe void log__scoped__ce42edf70_warn__s715bec16_tuple_osc_2__Parser__State_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<osc_2__Parser__State> args)
     {
-        log__log__1_ce42edf70_s715bec16_tuple_osc_2__Parser__State_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_ce42edf70_s715bec16_tuple_osc_2__Parser__State_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c3d4b3088_info__sb0ac2643_tuple_osc_2__Parser__State_anyerror___const_unsigned_char_twu_u_u__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<osc_2__Parser__State, ushort, ConstSlice<byte>> args)
+    public static unsafe void log__scoped__c3d4b3088_info__sb0ac2643_tuple_osc_2__Parser__State_anyerror___const_unsigned_char_twu_u_u__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<osc_2__Parser__State, ushort, ConstSlice<byte>> args)
     {
-        log__log__2_c3d4b3088_sb0ac2643_tuple_osc_2__Parser__State_anyerror___const_unsigned_char_twu_u_u__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__2_c3d4b3088_sb0ac2643_tuple_osc_2__Parser__State_anyerror___const_unsigned_char_twu_u_u__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c7471c9ef_warn__s86055197_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
+    public static unsafe void log__scoped__c7471c9ef_warn__s86055197_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
     {
-        log__log__1_c7471c9ef_s86055197_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c7471c9ef_s86055197_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c7471c9ef_warn__sddd238b1_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
+    public static unsafe void log__scoped__c7471c9ef_warn__sddd238b1_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
     {
-        log__log__1_c7471c9ef_sddd238b1_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c7471c9ef_sddd238b1_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c7471c9ef_warn__se9dea1ab_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
+    public static unsafe void log__scoped__c7471c9ef_warn__se9dea1ab_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
     {
-        log__log__1_c7471c9ef_se9dea1ab_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c7471c9ef_se9dea1ab_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c7471c9ef_warn__s7de12dca_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
+    public static unsafe void log__scoped__c7471c9ef_warn__s7de12dca_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
     {
-        log__log__1_c7471c9ef_s7de12dca_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c7471c9ef_s7de12dca_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c7471c9ef_warn__sc1e4cc52_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
+    public static unsafe void log__scoped__c7471c9ef_warn__sc1e4cc52_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
     {
-        log__log__1_c7471c9ef_sc1e4cc52_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c7471c9ef_sc1e4cc52_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c7471c9ef_warn__s18856938_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
+    public static unsafe void log__scoped__c7471c9ef_warn__s18856938_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
     {
-        log__log__1_c7471c9ef_s18856938_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c7471c9ef_s18856938_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c7471c9ef_warn__s9f6f790f_tuple_u8_tw8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<byte> args)
+    public static unsafe void log__scoped__c7471c9ef_warn__s9f6f790f_tuple_u8_tw8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<byte> args)
     {
-        log__log__1_c7471c9ef_s9f6f790f_tuple_u8_tw8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c7471c9ef_s9f6f790f_tuple_u8_tw8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c7471c9ef_warn__sc838bace_tuple_u8_anyerror_tw8_u__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<byte, ushort> args)
+    public static unsafe void log__scoped__c7471c9ef_warn__sc838bace_tuple_u8_anyerror_tw8_u__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<byte, ushort> args)
     {
-        log__log__1_c7471c9ef_sc838bace_tuple_u8_anyerror_tw8_u__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c7471c9ef_sc838bace_tuple_u8_anyerror_tw8_u__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c76fc13a2_warn__s30dbcae4_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__scoped__c76fc13a2_warn__s30dbcae4_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        log__log__1_c76fc13a2_s30dbcae4_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c76fc13a2_s30dbcae4_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c76fc13a2_warn__s4c4bd7a9_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
+    public static unsafe void log__scoped__c76fc13a2_warn__s4c4bd7a9_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
     {
-        log__log__1_c76fc13a2_s4c4bd7a9_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c76fc13a2_s4c4bd7a9_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c76fc13a2_warn__s0739880e_tuple_u64_comptime_int_ci64_tw64_u__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ulong> args)
+    public static unsafe void log__scoped__c76fc13a2_warn__s0739880e_tuple_u64_comptime_int_ci64_tw64_u__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ulong> args)
     {
-        log__log__1_c76fc13a2_s0739880e_tuple_u64_comptime_int_ci64_tw64_u__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c76fc13a2_s0739880e_tuple_u64_comptime_int_ci64_tw64_u__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c76fc13a2_warn__s49841e2c_tuple_u8_tw8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<byte> args)
+    public static unsafe void log__scoped__c76fc13a2_warn__s49841e2c_tuple_u8_tw8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<byte> args)
     {
-        log__log__1_c76fc13a2_s49841e2c_tuple_u8_tw8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c76fc13a2_s49841e2c_tuple_u8_tw8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c84a2bcbb_warn__s86055197_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
+    public static unsafe void log__scoped__c84a2bcbb_warn__s86055197_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
     {
-        log__log__1_c84a2bcbb_s86055197_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c84a2bcbb_s86055197_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c84a2bcbb_warn__s5a054087_tuple_u64_u64_tw64_64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ulong, ulong> args)
+    public static unsafe void log__scoped__c84a2bcbb_warn__s5a054087_tuple_u64_u64_tw64_64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ulong, ulong> args)
     {
-        log__log__1_c84a2bcbb_s5a054087_tuple_u64_u64_tw64_64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c84a2bcbb_s5a054087_tuple_u64_u64_tw64_64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c84a2bcbb_warn__se9dea1ab_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
+    public static unsafe void log__scoped__c84a2bcbb_warn__se9dea1ab_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
     {
-        log__log__1_c84a2bcbb_se9dea1ab_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c84a2bcbb_se9dea1ab_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c4954827c_warn__s8af7410a_tuple_u64_tw64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ulong> args)
+    public static unsafe void log__scoped__c4954827c_warn__s8af7410a_tuple_u64_tw64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ulong> args)
     {
-        log__log__1_c4954827c_s8af7410a_tuple_u64_tw64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c4954827c_s8af7410a_tuple_u64_tw64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c4954827c_warn__s3e82ac88_tuple_anyerror_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ushort> args)
+    public static unsafe void log__scoped__c4954827c_warn__s3e82ac88_tuple_anyerror_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ushort> args)
     {
-        log__log__1_c4954827c_s3e82ac88_tuple_anyerror_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c4954827c_s3e82ac88_tuple_anyerror_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__ce51059ed_err__s704bbf97_tuple_anyerror_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ushort> args)
+    public static unsafe void log__scoped__ce51059ed_err__s704bbf97_tuple_anyerror_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ushort> args)
     {
-        log__log__0_ce51059ed_s704bbf97_tuple_anyerror_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__0_ce51059ed_s704bbf97_tuple_anyerror_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__cfd790e9b_warn__s7711a0bf_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
+    public static unsafe void log__scoped__cfd790e9b_warn__s7711a0bf_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
     {
-        log__log__1_cfd790e9b_s7711a0bf_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_cfd790e9b_s7711a0bf_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__cfd790e9b_warn__sae62fc9c_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
+    public static unsafe void log__scoped__cfd790e9b_warn__sae62fc9c_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
     {
-        log__log__1_cfd790e9b_sae62fc9c_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_cfd790e9b_sae62fc9c_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s593640b7_tuple_u32_tw32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<uint> args)
+    public static unsafe void log__scoped__c72a21161_warn__s593640b7_tuple_u32_tw32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<uint> args)
     {
-        log__log__1_c72a21161_s593640b7_tuple_u32_tw32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s593640b7_tuple_u32_tw32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_info__s41f4efa1_tuple_u8_u8_tw8_8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<byte, byte> args)
+    public static unsafe void log__scoped__c72a21161_warn__sa27a90f6_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__2_c72a21161_s41f4efa1_tuple_u8_u8_tw8_8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sa27a90f6_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sa27a90f6_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__see24c0f3_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
     {
-        log__log__1_c72a21161_sa27a90f6_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_see24c0f3_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__see24c0f3_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
+    public static unsafe void log__scoped__c72a21161_warn__sf7fe897b_tuple___const_unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ConstSlice<byte>> args)
     {
-        log__log__1_c72a21161_see24c0f3_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sf7fe897b_tuple___const_unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sf7fe897b_tuple___const_unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ConstSlice<byte>> args)
+    public static unsafe void log__scoped__c72a21161_debug__s36f62dfc_tuple_osc_2__Command_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<osc_2__Command> args)
     {
-        log__log__1_c72a21161_sf7fe897b_tuple___const_unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__3_c72a21161_s36f62dfc_tuple_osc_2__Command_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_debug__s36f62dfc_tuple_osc_2__Command_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<osc_2__Command> args)
+    public static unsafe void log__scoped__c72a21161_warn__s4d19fa48_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
     {
-        log__log__3_c72a21161_s36f62dfc_tuple_osc_2__Command_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s4d19fa48_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s4d19fa48_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
+    public static unsafe void log__scoped__c72a21161_info__s41f4efa1_tuple_u8_u8_tw8_8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<byte, byte> args)
     {
-        log__log__1_c72a21161_s4d19fa48_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__2_c72a21161_s41f4efa1_tuple_u8_u8_tw8_8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s6e2e5a12_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s6e2e5a12_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s6e2e5a12_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s6e2e5a12_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s83763020_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__scoped__c72a21161_warn__s83763020_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        log__log__1_c72a21161_s83763020_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s83763020_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s6267865f_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s6267865f_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s6267865f_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s6267865f_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s74bc076b_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__scoped__c72a21161_warn__s74bc076b_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        log__log__1_c72a21161_s74bc076b_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s74bc076b_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sa7972801_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__sa7972801_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_sa7972801_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sa7972801_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sfabc3ef2_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__scoped__c72a21161_warn__sfabc3ef2_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        log__log__1_c72a21161_sfabc3ef2_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sfabc3ef2_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s28a8518a_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s28a8518a_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s28a8518a_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s28a8518a_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sa9d37bdd_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__scoped__c72a21161_warn__sa9d37bdd_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        log__log__1_c72a21161_sa9d37bdd_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sa9d37bdd_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s9eec9edc_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__scoped__c72a21161_warn__s9eec9edc_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        log__log__1_c72a21161_s9eec9edc_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s9eec9edc_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s799fae67_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__scoped__c72a21161_warn__s799fae67_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        log__log__1_c72a21161_s799fae67_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s799fae67_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s14466472_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s14466472_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s14466472_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s14466472_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s956ec34e_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__scoped__c72a21161_warn__s956ec34e_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        log__log__1_c72a21161_s956ec34e_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s956ec34e_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sc0acf4b1_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__sc0acf4b1_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_sc0acf4b1_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sc0acf4b1_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s53dd4d29_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__scoped__c72a21161_warn__s53dd4d29_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        log__log__1_c72a21161_s53dd4d29_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s53dd4d29_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s97db63de_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s97db63de_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s97db63de_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s97db63de_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s62d48d38_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__scoped__c72a21161_warn__s62d48d38_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        log__log__1_c72a21161_s62d48d38_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s62d48d38_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s85e90ea9_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s85e90ea9_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s85e90ea9_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s85e90ea9_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s30160b11_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s30160b11_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s30160b11_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s30160b11_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s59468ca5_tuple_csi__EraseLine_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<csi__EraseLine> args)
+    public static unsafe void log__scoped__c72a21161_warn__s59468ca5_tuple_csi__EraseLine_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<csi__EraseLine> args)
     {
-        log__log__1_c72a21161_s59468ca5_tuple_csi__EraseLine_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s59468ca5_tuple_csi__EraseLine_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s3cdf2598_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s3cdf2598_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s3cdf2598_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s3cdf2598_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__se6c39675_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__scoped__c72a21161_warn__se6c39675_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        log__log__1_c72a21161_se6c39675_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_se6c39675_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s704954ed_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s704954ed_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s704954ed_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s704954ed_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__se7bd4954_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__scoped__c72a21161_warn__se7bd4954_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        log__log__1_c72a21161_se7bd4954_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_se7bd4954_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s0d247678_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s0d247678_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s0d247678_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s0d247678_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sb9acc481_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__scoped__c72a21161_warn__sb9acc481_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        log__log__1_c72a21161_sb9acc481_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sb9acc481_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s97a23417_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s97a23417_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s97a23417_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s97a23417_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s24a20ea2_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__scoped__c72a21161_warn__s24a20ea2_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        log__log__1_c72a21161_s24a20ea2_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s24a20ea2_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sb121c0de_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__sb121c0de_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_sb121c0de_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sb121c0de_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s4e40854d_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__scoped__c72a21161_warn__s4e40854d_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        log__log__1_c72a21161_s4e40854d_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s4e40854d_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s8dad8b50_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s8dad8b50_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s8dad8b50_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s8dad8b50_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s2eb0573e_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__scoped__c72a21161_warn__s2eb0573e_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        log__log__1_c72a21161_s2eb0573e_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s2eb0573e_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s84fd0bb7_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s84fd0bb7_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s84fd0bb7_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s84fd0bb7_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s81a9bb99_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__scoped__c72a21161_warn__s81a9bb99_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        log__log__1_c72a21161_s81a9bb99_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s81a9bb99_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s1c944223_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s1c944223_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s1c944223_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s1c944223_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s68dc3913_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__scoped__c72a21161_warn__s68dc3913_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        log__log__1_c72a21161_s68dc3913_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s68dc3913_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sae9991cf_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__sae9991cf_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_sae9991cf_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sae9991cf_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sfa49a780_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__scoped__c72a21161_warn__sfa49a780_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        log__log__1_c72a21161_sfa49a780_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sfa49a780_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sa92f2673_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__sa92f2673_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_sa92f2673_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sa92f2673_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s52ee04cb_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__scoped__c72a21161_warn__s52ee04cb_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        log__log__1_c72a21161_s52ee04cb_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s52ee04cb_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s4e6a2648_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s4e6a2648_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s4e6a2648_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s4e6a2648_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s2da99dbd_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__scoped__c72a21161_warn__s2da99dbd_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        log__log__1_c72a21161_s2da99dbd_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s2da99dbd_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s8368b1a1_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s8368b1a1_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s8368b1a1_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s8368b1a1_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sc2cefd3c_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__scoped__c72a21161_warn__sc2cefd3c_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        log__log__1_c72a21161_sc2cefd3c_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sc2cefd3c_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sde1a056b_tuple_u16_tw16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ushort> args)
+    public static unsafe void log__scoped__c72a21161_warn__sde1a056b_tuple_u16_tw16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ushort> args)
     {
-        log__log__1_c72a21161_sde1a056b_tuple_u16_tw16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sde1a056b_tuple_u16_tw16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s2b5037f3_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s2b5037f3_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s2b5037f3_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s2b5037f3_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s386c284a_tuple_csi__TabClear_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<csi__TabClear> args)
+    public static unsafe void log__scoped__c72a21161_warn__s386c284a_tuple_csi__TabClear_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<csi__TabClear> args)
     {
-        log__log__1_c72a21161_s386c284a_tuple_csi__TabClear_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s386c284a_tuple_csi__TabClear_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sc694d82e_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__scoped__c72a21161_warn__sc694d82e_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        log__log__1_c72a21161_sc694d82e_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sc694d82e_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s90fdad2a_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s90fdad2a_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s90fdad2a_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s90fdad2a_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s13cdcaf6_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s13cdcaf6_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s13cdcaf6_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s13cdcaf6_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s033e8334_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__scoped__c72a21161_warn__s033e8334_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        log__log__1_c72a21161_s033e8334_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s033e8334_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sb3298e63_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__sb3298e63_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_sb3298e63_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sb3298e63_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__se8e62869_tuple_u8_tw8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<byte> args)
+    public static unsafe void log__scoped__c72a21161_warn__se8e62869_tuple_u8_tw8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<byte> args)
     {
-        log__log__1_c72a21161_se8e62869_tuple_u8_tw8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_se8e62869_tuple_u8_tw8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s21ae777f_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__scoped__c72a21161_warn__s21ae777f_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        log__log__1_c72a21161_s21ae777f_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s21ae777f_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sa53067c6_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__sa53067c6_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_sa53067c6_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sa53067c6_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__saabf49e1_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__scoped__c72a21161_warn__saabf49e1_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        log__log__1_c72a21161_saabf49e1_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_saabf49e1_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s3616a3fd_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s3616a3fd_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s3616a3fd_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s3616a3fd_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s9c95cee6_tuple_u16_tw16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ushort> args)
+    public static unsafe void log__scoped__c72a21161_warn__s9c95cee6_tuple_u16_tw16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ushort> args)
     {
-        log__log__1_c72a21161_s9c95cee6_tuple_u16_tw16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s9c95cee6_tuple_u16_tw16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sb6455dd2_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__sb6455dd2_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_sb6455dd2_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sb6455dd2_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s3a6beafc_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s3a6beafc_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s3a6beafc_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s3a6beafc_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s689ed7b0_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__scoped__c72a21161_warn__s689ed7b0_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        log__log__1_c72a21161_s689ed7b0_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s689ed7b0_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s885aaccf_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s885aaccf_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s885aaccf_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s885aaccf_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__safa39075_tuple_u16_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ushort> args)
+    public static unsafe void log__scoped__c72a21161_warn__safa39075_tuple_u16_tw16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ushort> args)
     {
-        log__log__1_c72a21161_safa39075_tuple_u16_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_safa39075_tuple_u16_tw16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s457c168c_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s457c168c_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s457c168c_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s457c168c_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sff3862b5_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__sff3862b5_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_sff3862b5_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sff3862b5_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s041d9147_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s041d9147_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s041d9147_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s041d9147_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sb9da2e66_tuple_u16_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ushort> args)
+    public static unsafe void log__scoped__c72a21161_warn__sb9da2e66_tuple_u16_tw16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ushort> args)
     {
-        log__log__1_c72a21161_sb9da2e66_tuple_u16_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sb9da2e66_tuple_u16_tw16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__seb9647ca_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__seb9647ca_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_seb9647ca_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_seb9647ca_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__seba3587f_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__seba3587f_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_seba3587f_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_seba3587f_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sa2219d4c_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__sa2219d4c_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_sa2219d4c_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sa2219d4c_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s99907402_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s99907402_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s99907402_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s99907402_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s34eea9b8_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s34eea9b8_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s34eea9b8_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s34eea9b8_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s159e74c3_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s159e74c3_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s159e74c3_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s159e74c3_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s420e72bc_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s420e72bc_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s420e72bc_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s420e72bc_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_err__s038875aa_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_err__s038875aa_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__0_c72a21161_s038875aa_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__0_c72a21161_s038875aa_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s49f2b87a_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s49f2b87a_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s49f2b87a_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s49f2b87a_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s681a0db7_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s681a0db7_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s681a0db7_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s681a0db7_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s8eb79beb_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s8eb79beb_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s8eb79beb_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s8eb79beb_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__scb771613_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__scb771613_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_scb771613_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_scb771613_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s85f7dafd_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s85f7dafd_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s85f7dafd_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s85f7dafd_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s72fc7ddc_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s72fc7ddc_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s72fc7ddc_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s72fc7ddc_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sf0a8e932_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__sf0a8e932_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_sf0a8e932_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sf0a8e932_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sdbf4c80e_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__sdbf4c80e_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_sdbf4c80e_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sdbf4c80e_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sc3f015bf_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__sc3f015bf_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_sc3f015bf_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sc3f015bf_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sdbde56f2_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__sdbde56f2_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_sdbde56f2_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sdbde56f2_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sa6ab426d_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__sa6ab426d_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_sa6ab426d_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sa6ab426d_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__se452fe08_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__se452fe08_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_se452fe08_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_se452fe08_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s028dc4fb_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s028dc4fb_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s028dc4fb_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s028dc4fb_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s6466db2d_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__scoped__c72a21161_warn__s6466db2d_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        log__log__1_c72a21161_s6466db2d_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s6466db2d_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sc98be146_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__scoped__c72a21161_warn__sc98be146_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        log__log__1_c72a21161_sc98be146_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sc98be146_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s65666d80_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__scoped__c72a21161_warn__s65666d80_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        log__log__1_c72a21161_s65666d80_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s65666d80_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sc2742391_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__scoped__c72a21161_warn__sc2742391_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        log__log__1_c72a21161_sc2742391_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sc2742391_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sf222fa34_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__scoped__c72a21161_warn__sf222fa34_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        log__log__1_c72a21161_sf222fa34_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sf222fa34_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s8faed272_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__scoped__c72a21161_warn__s8faed272_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        log__log__1_c72a21161_s8faed272_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s8faed272_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s8ae59137_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__scoped__c72a21161_warn__s8ae59137_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        log__log__1_c72a21161_s8ae59137_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s8ae59137_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sf3e21027_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__scoped__c72a21161_warn__sf3e21027_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        log__log__1_c72a21161_sf3e21027_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sf3e21027_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s696c03c4_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__scoped__c72a21161_warn__s696c03c4_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        log__log__1_c72a21161_s696c03c4_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s696c03c4_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sd106f1f2_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__scoped__c72a21161_warn__sd106f1f2_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        log__log__1_c72a21161_sd106f1f2_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sd106f1f2_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s993f1bff_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__scoped__c72a21161_warn__s993f1bff_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        log__log__1_c72a21161_s993f1bff_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s993f1bff_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__se532921d_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__scoped__c72a21161_warn__se532921d_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        log__log__1_c72a21161_se532921d_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_se532921d_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s6987704c_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__scoped__c72a21161_warn__s6987704c_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        log__log__1_c72a21161_s6987704c_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s6987704c_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s82effb1b_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__scoped__c72a21161_warn__s82effb1b_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        log__log__1_c72a21161_s82effb1b_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s82effb1b_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sa22cdc21_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__scoped__c72a21161_warn__sa22cdc21_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        log__log__1_c72a21161_sa22cdc21_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sa22cdc21_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s7961baa5_tuple___const_unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ConstSlice<byte>> args)
+    public static unsafe void log__scoped__c72a21161_warn__s7961baa5_tuple___const_unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ConstSlice<byte>> args)
     {
-        log__log__1_c72a21161_s7961baa5_tuple___const_unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s7961baa5_tuple___const_unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__safb96443_tuple_u8_tw8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<byte> args)
+    public static unsafe void log__scoped__c72a21161_warn__sdf07f90c_tuple___const_unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ConstSlice<byte>> args)
     {
-        log__log__1_c72a21161_safb96443_tuple_u8_tw8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sdf07f90c_tuple___const_unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sdf07f90c_tuple___const_unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ConstSlice<byte>> args)
+    public static unsafe void log__scoped__c72a21161_warn__safb96443_tuple_u8_tw8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<byte> args)
     {
-        log__log__1_c72a21161_sdf07f90c_tuple___const_unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_safb96443_tuple_u8_tw8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sa1a8edf2_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__sa1a8edf2_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_sa1a8edf2_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sa1a8edf2_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s2e9918eb_tuple_u16_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ushort> args)
+    public static unsafe void log__scoped__c72a21161_warn__s2e9918eb_tuple_u16_tw16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ushort> args)
     {
-        log__log__1_c72a21161_s2e9918eb_tuple_u16_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s2e9918eb_tuple_u16_tw16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s7b79c232_tuple_u8_tw8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<byte> args)
+    public static unsafe void log__scoped__c72a21161_warn__s7b79c232_tuple_u8_tw8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<byte> args)
     {
-        log__log__1_c72a21161_s7b79c232_tuple_u8_tw8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s7b79c232_tuple_u8_tw8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s2b42cd05_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__s2b42cd05_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_s2b42cd05_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s2b42cd05_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__sb4e5b3a5_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__scoped__c72a21161_warn__sb4e5b3a5_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        log__log__1_c72a21161_sb4e5b3a5_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_sb4e5b3a5_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s559027fb_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__scoped__c72a21161_warn__s559027fb_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        log__log__1_c72a21161_s559027fb_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s559027fb_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c72a21161_warn__s593640b7_tuple_u32_tw21__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<uint> args)
+    public static unsafe void log__scoped__c72a21161_warn__s593640b7_tuple_u32_tw21__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<uint> args)
     {
-        log__log__1_c72a21161_s593640b7_tuple_u32_tw21__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c72a21161_s593640b7_tuple_u32_tw21__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c67b847c7_warn__se017303d_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__scoped__c67b847c7_warn__se017303d_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        log__log__1_c67b847c7_se017303d_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c67b847c7_se017303d_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__cf41c8a64_warn__s283fdd08_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
+    public static unsafe void log__scoped__cf41c8a64_warn__s283fdd08_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
     {
-        log__log__1_cf41c8a64_s283fdd08_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_cf41c8a64_s283fdd08_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__cf41c8a64_warn__s241eb3b3_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
+    public static unsafe void log__scoped__cf41c8a64_warn__s241eb3b3_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
     {
-        log__log__1_cf41c8a64_s241eb3b3_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_cf41c8a64_s241eb3b3_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__cf41c8a64_warn__sf0b9252c_tuple___const_unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ConstSlice<byte>> args)
+    public static unsafe void log__scoped__cf41c8a64_warn__sf0b9252c_tuple___const_unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ConstSlice<byte>> args)
     {
-        log__log__1_cf41c8a64_sf0b9252c_tuple___const_unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_cf41c8a64_sf0b9252c_tuple___const_unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__cf41c8a64_warn__sd6c08ba8_tuple_anyerror_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ushort> args)
+    public static unsafe void log__scoped__cf41c8a64_warn__sd6c08ba8_tuple_anyerror_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ushort> args)
     {
-        log__log__1_cf41c8a64_sd6c08ba8_tuple_anyerror_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_cf41c8a64_sd6c08ba8_tuple_anyerror_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__cf41c8a64_warn__s65fe9f5c_tuple___const_unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ConstSlice<byte>> args)
+    public static unsafe void log__scoped__cf41c8a64_warn__s65fe9f5c_tuple___const_unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ConstSlice<byte>> args)
     {
-        log__log__1_cf41c8a64_s65fe9f5c_tuple___const_unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_cf41c8a64_s65fe9f5c_tuple___const_unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c99a2e027_warn__s8ede9e55_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__scoped__c99a2e027_warn__s8ede9e55_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        log__log__1_c99a2e027_s8ede9e55_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c99a2e027_s8ede9e55_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__c99a2e027_warn__scc7d3526_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
+    public static unsafe void log__scoped__c99a2e027_warn__scc7d3526_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
     {
-        log__log__1_c99a2e027_scc7d3526_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__1_c99a2e027_scc7d3526_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__scoped__cf07a96da_debug__s5273e4db_tuple_iterm2__Key_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<iterm2__Key> args)
+    public static unsafe void log__scoped__cf07a96da_debug__s5273e4db_tuple_iterm2__Key_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<iterm2__Key> args)
     {
-        log__log__3_cf07a96da_s5273e4db_tuple_iterm2__Key_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        log__log__3_cf07a96da_s5273e4db_tuple_iterm2__Key_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe CBool log__logEnabled__1_ce42edf70__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe CBool log__logEnabled__1_ce42edf70__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return ((CBool)(unchecked((byte)(log__Level)1) <= unchecked((byte)(log__Level)2)));
     }
 
 
 
-    public static unsafe void log__log__1_ce42edf70_s715bec16_tuple_osc_2__Parser__State_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<osc_2__Parser__State> args)
+    public static unsafe void log__log__1_ce42edf70_s715bec16_tuple_osc_2__Parser__State_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<osc_2__Parser__State> args)
     {
-        sys__logFn__1_ce42edf70_s715bec16_tuple_osc_2__Parser__State_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_ce42edf70_s715bec16_tuple_osc_2__Parser__State_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe CBool log__logEnabled__2_c3d4b3088__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe CBool log__logEnabled__2_c3d4b3088__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return ((CBool)(unchecked((byte)(log__Level)2) <= unchecked((byte)(log__Level)2)));
     }
 
 
 
-    public static unsafe void log__log__2_c3d4b3088_sb0ac2643_tuple_osc_2__Parser__State_anyerror___const_unsigned_char_twu_u_u__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<osc_2__Parser__State, ushort, ConstSlice<byte>> args)
+    public static unsafe void log__log__2_c3d4b3088_sb0ac2643_tuple_osc_2__Parser__State_anyerror___const_unsigned_char_twu_u_u__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<osc_2__Parser__State, ushort, ConstSlice<byte>> args)
     {
-        sys__logFn__2_c3d4b3088_sb0ac2643_tuple_osc_2__Parser__State_anyerror___const_unsigned_char_twu_u_u__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__2_c3d4b3088_sb0ac2643_tuple_osc_2__Parser__State_anyerror___const_unsigned_char_twu_u_u__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe CBool log__logEnabled__1_c7471c9ef__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return ((CBool)(unchecked((byte)(log__Level)1) <= unchecked((byte)(log__Level)2)));
-    }
-
-
-
-    public static unsafe void log__log__1_c7471c9ef_s86055197_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
-    {
-        sys__logFn__1_c7471c9ef_s86055197_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
-    }
-
-
-
-    public static unsafe void log__log__1_c7471c9ef_sddd238b1_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
-    {
-        sys__logFn__1_c7471c9ef_sddd238b1_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
-    }
-
-
-
-    public static unsafe void log__log__1_c7471c9ef_se9dea1ab_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
-    {
-        sys__logFn__1_c7471c9ef_se9dea1ab_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
-    }
-
-
-
-    public static unsafe void log__log__1_c7471c9ef_s7de12dca_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
-    {
-        sys__logFn__1_c7471c9ef_s7de12dca_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
-    }
-
-
-
-    public static unsafe void log__log__1_c7471c9ef_sc1e4cc52_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
-    {
-        sys__logFn__1_c7471c9ef_sc1e4cc52_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
-    }
-
-
-
-    public static unsafe void log__log__1_c7471c9ef_s18856938_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
-    {
-        sys__logFn__1_c7471c9ef_s18856938_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
-    }
-
-
-
-    public static unsafe void log__log__1_c7471c9ef_s9f6f790f_tuple_u8_tw8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<byte> args)
-    {
-        sys__logFn__1_c7471c9ef_s9f6f790f_tuple_u8_tw8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
-    }
-
-
-
-    public static unsafe void log__log__1_c7471c9ef_sc838bace_tuple_u8_anyerror_tw8_u__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<byte, ushort> args)
-    {
-        sys__logFn__1_c7471c9ef_sc838bace_tuple_u8_anyerror_tw8_u__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
-    }
-
-
-
-    public static unsafe CBool log__logEnabled__1_c76fc13a2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe CBool log__logEnabled__1_c7471c9ef__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return ((CBool)(unchecked((byte)(log__Level)1) <= unchecked((byte)(log__Level)2)));
     }
 
 
 
-    public static unsafe void log__log__1_c76fc13a2_s30dbcae4_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__log__1_c7471c9ef_s86055197_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
     {
-        sys__logFn__1_c76fc13a2_s30dbcae4_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c7471c9ef_s86055197_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c76fc13a2_s4c4bd7a9_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
+    public static unsafe void log__log__1_c7471c9ef_sddd238b1_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
     {
-        sys__logFn__1_c76fc13a2_s4c4bd7a9_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c7471c9ef_sddd238b1_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c76fc13a2_s0739880e_tuple_u64_comptime_int_ci64_tw64_u__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ulong> args)
+    public static unsafe void log__log__1_c7471c9ef_se9dea1ab_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
     {
-        sys__logFn__1_c76fc13a2_s0739880e_tuple_u64_comptime_int_ci64_tw64_u__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c7471c9ef_se9dea1ab_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c76fc13a2_s49841e2c_tuple_u8_tw8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<byte> args)
+    public static unsafe void log__log__1_c7471c9ef_s7de12dca_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
     {
-        sys__logFn__1_c76fc13a2_s49841e2c_tuple_u8_tw8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c7471c9ef_s7de12dca_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe CBool log__logEnabled__1_c84a2bcbb__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe void log__log__1_c7471c9ef_sc1e4cc52_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
+    {
+        sys__logFn__1_c7471c9ef_sc1e4cc52_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
+    }
+
+
+
+    public static unsafe void log__log__1_c7471c9ef_s18856938_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
+    {
+        sys__logFn__1_c7471c9ef_s18856938_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
+    }
+
+
+
+    public static unsafe void log__log__1_c7471c9ef_s9f6f790f_tuple_u8_tw8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<byte> args)
+    {
+        sys__logFn__1_c7471c9ef_s9f6f790f_tuple_u8_tw8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
+    }
+
+
+
+    public static unsafe void log__log__1_c7471c9ef_sc838bace_tuple_u8_anyerror_tw8_u__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<byte, ushort> args)
+    {
+        sys__logFn__1_c7471c9ef_sc838bace_tuple_u8_anyerror_tw8_u__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
+    }
+
+
+
+    public static unsafe CBool log__logEnabled__1_c76fc13a2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return ((CBool)(unchecked((byte)(log__Level)1) <= unchecked((byte)(log__Level)2)));
     }
 
 
 
-    public static unsafe void log__log__1_c84a2bcbb_s86055197_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
+    public static unsafe void log__log__1_c76fc13a2_s30dbcae4_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        sys__logFn__1_c84a2bcbb_s86055197_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c76fc13a2_s30dbcae4_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c84a2bcbb_s5a054087_tuple_u64_u64_tw64_64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ulong, ulong> args)
+    public static unsafe void log__log__1_c76fc13a2_s4c4bd7a9_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
     {
-        sys__logFn__1_c84a2bcbb_s5a054087_tuple_u64_u64_tw64_64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c76fc13a2_s4c4bd7a9_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c84a2bcbb_se9dea1ab_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
+    public static unsafe void log__log__1_c76fc13a2_s0739880e_tuple_u64_comptime_int_ci64_tw64_u__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ulong> args)
     {
-        sys__logFn__1_c84a2bcbb_se9dea1ab_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c76fc13a2_s0739880e_tuple_u64_comptime_int_ci64_tw64_u__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe CBool log__logEnabled__1_c4954827c__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe void log__log__1_c76fc13a2_s49841e2c_tuple_u8_tw8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<byte> args)
+    {
+        sys__logFn__1_c76fc13a2_s49841e2c_tuple_u8_tw8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
+    }
+
+
+
+    public static unsafe CBool log__logEnabled__1_c84a2bcbb__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return ((CBool)(unchecked((byte)(log__Level)1) <= unchecked((byte)(log__Level)2)));
     }
 
 
 
-    public static unsafe void log__log__1_c4954827c_s8af7410a_tuple_u64_tw64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ulong> args)
+    public static unsafe void log__log__1_c84a2bcbb_s86055197_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
     {
-        sys__logFn__1_c4954827c_s8af7410a_tuple_u64_tw64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c84a2bcbb_s86055197_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c4954827c_s3e82ac88_tuple_anyerror_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ushort> args)
+    public static unsafe void log__log__1_c84a2bcbb_s5a054087_tuple_u64_u64_tw64_64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ulong, ulong> args)
     {
-        sys__logFn__1_c4954827c_s3e82ac88_tuple_anyerror_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c84a2bcbb_s5a054087_tuple_u64_u64_tw64_64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe CBool log__logEnabled__0_ce51059ed__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe void log__log__1_c84a2bcbb_se9dea1ab_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
+    {
+        sys__logFn__1_c84a2bcbb_se9dea1ab_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
+    }
+
+
+
+    public static unsafe CBool log__logEnabled__1_c4954827c__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return ((CBool)(unchecked((byte)(log__Level)1) <= unchecked((byte)(log__Level)2)));
+    }
+
+
+
+    public static unsafe void log__log__1_c4954827c_s8af7410a_tuple_u64_tw64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ulong> args)
+    {
+        sys__logFn__1_c4954827c_s8af7410a_tuple_u64_tw64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
+    }
+
+
+
+    public static unsafe void log__log__1_c4954827c_s3e82ac88_tuple_anyerror_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ushort> args)
+    {
+        sys__logFn__1_c4954827c_s3e82ac88_tuple_anyerror_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
+    }
+
+
+
+    public static unsafe CBool log__logEnabled__0_ce51059ed__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return ((CBool)(unchecked((byte)(log__Level)0) <= unchecked((byte)(log__Level)2)));
     }
 
 
 
-    public static unsafe void log__log__0_ce51059ed_s704bbf97_tuple_anyerror_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ushort> args)
+    public static unsafe void log__log__0_ce51059ed_s704bbf97_tuple_anyerror_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ushort> args)
     {
-        sys__logFn__0_ce51059ed_s704bbf97_tuple_anyerror_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__0_ce51059ed_s704bbf97_tuple_anyerror_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe CBool log__logEnabled__1_cfd790e9b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return ((CBool)(unchecked((byte)(log__Level)1) <= unchecked((byte)(log__Level)2)));
-    }
-
-
-
-    public static unsafe void log__log__1_cfd790e9b_s7711a0bf_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
-    {
-        sys__logFn__1_cfd790e9b_s7711a0bf_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
-    }
-
-
-
-    public static unsafe void log__log__1_cfd790e9b_sae62fc9c_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
-    {
-        sys__logFn__1_cfd790e9b_sae62fc9c_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
-    }
-
-
-
-    public static unsafe CBool log__logEnabled__1_c72a21161__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe CBool log__logEnabled__1_cfd790e9b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return ((CBool)(unchecked((byte)(log__Level)1) <= unchecked((byte)(log__Level)2)));
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s593640b7_tuple_u32_tw32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<uint> args)
+    public static unsafe void log__log__1_cfd790e9b_s7711a0bf_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
     {
-        sys__logFn__1_c72a21161_s593640b7_tuple_u32_tw32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_cfd790e9b_s7711a0bf_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe CBool log__logEnabled__2_c72a21161__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe void log__log__1_cfd790e9b_sae62fc9c_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
+    {
+        sys__logFn__1_cfd790e9b_sae62fc9c_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
+    }
+
+
+
+    public static unsafe CBool log__logEnabled__1_c72a21161__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return ((CBool)(unchecked((byte)(log__Level)1) <= unchecked((byte)(log__Level)2)));
+    }
+
+
+
+    public static unsafe void log__log__1_c72a21161_s593640b7_tuple_u32_tw32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<uint> args)
+    {
+        sys__logFn__1_c72a21161_s593640b7_tuple_u32_tw32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
+    }
+
+
+
+    public static unsafe void log__log__1_c72a21161_sa27a90f6_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
+    {
+        sys__logFn__1_c72a21161_sa27a90f6_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
+    }
+
+
+
+    public static unsafe void log__log__1_c72a21161_see24c0f3_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
+    {
+        sys__logFn__1_c72a21161_see24c0f3_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
+    }
+
+
+
+    public static unsafe void log__log__1_c72a21161_sf7fe897b_tuple___const_unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ConstSlice<byte>> args)
+    {
+        sys__logFn__1_c72a21161_sf7fe897b_tuple___const_unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
+    }
+
+
+
+    public static unsafe CBool log__logEnabled__3_c72a21161__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return ((CBool)(unchecked((byte)(log__Level)3) <= unchecked((byte)(log__Level)2)));
+    }
+
+
+
+    public static unsafe void log__log__3_c72a21161_s36f62dfc_tuple_osc_2__Command_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<osc_2__Command> args)
+    {
+        return;
+    }
+
+
+
+    public static unsafe void log__log__1_c72a21161_s4d19fa48_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
+    {
+        sys__logFn__1_c72a21161_s4d19fa48_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
+    }
+
+
+
+    public static unsafe CBool log__logEnabled__2_c72a21161__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return ((CBool)(unchecked((byte)(log__Level)2) <= unchecked((byte)(log__Level)2)));
     }
 
 
 
-    public static unsafe void log__log__2_c72a21161_s41f4efa1_tuple_u8_u8_tw8_8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<byte, byte> args)
+    public static unsafe void log__log__2_c72a21161_s41f4efa1_tuple_u8_u8_tw8_8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<byte, byte> args)
     {
-        sys__logFn__2_c72a21161_s41f4efa1_tuple_u8_u8_tw8_8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__2_c72a21161_s41f4efa1_tuple_u8_u8_tw8_8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sa27a90f6_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_s6e2e5a12_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_sa27a90f6_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s6e2e5a12_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_see24c0f3_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
+    public static unsafe void log__log__1_c72a21161_s83763020_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        sys__logFn__1_c72a21161_see24c0f3_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s83763020_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sf7fe897b_tuple___const_unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ConstSlice<byte>> args)
+    public static unsafe void log__log__1_c72a21161_s6267865f_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_sf7fe897b_tuple___const_unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s6267865f_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe CBool log__logEnabled__3_c72a21161__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe void log__log__1_c72a21161_s74bc076b_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        return ((CBool)(unchecked((byte)(log__Level)3) <= unchecked((byte)(log__Level)2)));
+        sys__logFn__1_c72a21161_s74bc076b_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__3_c72a21161_s36f62dfc_tuple_osc_2__Command_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<osc_2__Command> args)
+    public static unsafe void log__log__1_c72a21161_sa7972801_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        return;
+        sys__logFn__1_c72a21161_sa7972801_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s4d19fa48_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
+    public static unsafe void log__log__1_c72a21161_sfabc3ef2_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        sys__logFn__1_c72a21161_s4d19fa48_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sfabc3ef2_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s6e2e5a12_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_s28a8518a_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s6e2e5a12_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s28a8518a_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s83763020_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__log__1_c72a21161_sa9d37bdd_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        sys__logFn__1_c72a21161_s83763020_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sa9d37bdd_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s6267865f_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_s9eec9edc_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        sys__logFn__1_c72a21161_s6267865f_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s9eec9edc_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s74bc076b_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__log__1_c72a21161_s799fae67_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        sys__logFn__1_c72a21161_s74bc076b_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s799fae67_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sa7972801_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_s14466472_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_sa7972801_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s14466472_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sfabc3ef2_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__log__1_c72a21161_s956ec34e_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        sys__logFn__1_c72a21161_sfabc3ef2_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s956ec34e_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s28a8518a_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_sc0acf4b1_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s28a8518a_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sc0acf4b1_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sa9d37bdd_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__log__1_c72a21161_s53dd4d29_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        sys__logFn__1_c72a21161_sa9d37bdd_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s53dd4d29_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s9eec9edc_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__log__1_c72a21161_s97db63de_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s9eec9edc_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s97db63de_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s799fae67_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__log__1_c72a21161_s62d48d38_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        sys__logFn__1_c72a21161_s799fae67_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s62d48d38_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s14466472_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_s85e90ea9_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s14466472_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s85e90ea9_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s956ec34e_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__log__1_c72a21161_s30160b11_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s956ec34e_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s30160b11_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sc0acf4b1_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_s59468ca5_tuple_csi__EraseLine_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<csi__EraseLine> args)
     {
-        sys__logFn__1_c72a21161_sc0acf4b1_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s59468ca5_tuple_csi__EraseLine_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s53dd4d29_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__log__1_c72a21161_s3cdf2598_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s53dd4d29_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s3cdf2598_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s97db63de_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_se6c39675_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        sys__logFn__1_c72a21161_s97db63de_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_se6c39675_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s62d48d38_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__log__1_c72a21161_s704954ed_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s62d48d38_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s704954ed_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s85e90ea9_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_se7bd4954_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        sys__logFn__1_c72a21161_s85e90ea9_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_se7bd4954_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s30160b11_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_s0d247678_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s30160b11_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s0d247678_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s59468ca5_tuple_csi__EraseLine_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<csi__EraseLine> args)
+    public static unsafe void log__log__1_c72a21161_sb9acc481_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        sys__logFn__1_c72a21161_s59468ca5_tuple_csi__EraseLine_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sb9acc481_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s3cdf2598_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_s97a23417_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s3cdf2598_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s97a23417_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_se6c39675_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__log__1_c72a21161_s24a20ea2_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        sys__logFn__1_c72a21161_se6c39675_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s24a20ea2_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s704954ed_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_sb121c0de_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s704954ed_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sb121c0de_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_se7bd4954_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__log__1_c72a21161_s4e40854d_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        sys__logFn__1_c72a21161_se7bd4954_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s4e40854d_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s0d247678_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_s8dad8b50_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s0d247678_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s8dad8b50_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sb9acc481_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__log__1_c72a21161_s2eb0573e_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        sys__logFn__1_c72a21161_sb9acc481_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s2eb0573e_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s97a23417_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_s84fd0bb7_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s97a23417_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s84fd0bb7_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s24a20ea2_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__log__1_c72a21161_s81a9bb99_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        sys__logFn__1_c72a21161_s24a20ea2_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s81a9bb99_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sb121c0de_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_s1c944223_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_sb121c0de_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s1c944223_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s4e40854d_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__log__1_c72a21161_s68dc3913_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        sys__logFn__1_c72a21161_s4e40854d_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s68dc3913_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s8dad8b50_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_sae9991cf_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s8dad8b50_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sae9991cf_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s2eb0573e_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__log__1_c72a21161_sfa49a780_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        sys__logFn__1_c72a21161_s2eb0573e_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sfa49a780_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s84fd0bb7_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_sa92f2673_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s84fd0bb7_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sa92f2673_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s81a9bb99_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__log__1_c72a21161_s52ee04cb_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        sys__logFn__1_c72a21161_s81a9bb99_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s52ee04cb_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s1c944223_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_s4e6a2648_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s1c944223_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s4e6a2648_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s68dc3913_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__log__1_c72a21161_s2da99dbd_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        sys__logFn__1_c72a21161_s68dc3913_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s2da99dbd_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sae9991cf_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_s8368b1a1_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_sae9991cf_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s8368b1a1_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sfa49a780_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__log__1_c72a21161_sc2cefd3c_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        sys__logFn__1_c72a21161_sfa49a780_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sc2cefd3c_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sa92f2673_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_sde1a056b_tuple_u16_tw16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ushort> args)
     {
-        sys__logFn__1_c72a21161_sa92f2673_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sde1a056b_tuple_u16_tw16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s52ee04cb_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__log__1_c72a21161_s2b5037f3_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s52ee04cb_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s2b5037f3_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s4e6a2648_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_s386c284a_tuple_csi__TabClear_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<csi__TabClear> args)
     {
-        sys__logFn__1_c72a21161_s4e6a2648_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s386c284a_tuple_csi__TabClear_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s2da99dbd_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__log__1_c72a21161_sc694d82e_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        sys__logFn__1_c72a21161_s2da99dbd_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sc694d82e_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s8368b1a1_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_s90fdad2a_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s8368b1a1_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s90fdad2a_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sc2cefd3c_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__log__1_c72a21161_s13cdcaf6_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_sc2cefd3c_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s13cdcaf6_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sde1a056b_tuple_u16_tw16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ushort> args)
+    public static unsafe void log__log__1_c72a21161_s033e8334_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        sys__logFn__1_c72a21161_sde1a056b_tuple_u16_tw16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s033e8334_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s2b5037f3_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_sb3298e63_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s2b5037f3_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sb3298e63_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s386c284a_tuple_csi__TabClear_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<csi__TabClear> args)
+    public static unsafe void log__log__1_c72a21161_se8e62869_tuple_u8_tw8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<byte> args)
     {
-        sys__logFn__1_c72a21161_s386c284a_tuple_csi__TabClear_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_se8e62869_tuple_u8_tw8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sc694d82e_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__log__1_c72a21161_s21ae777f_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        sys__logFn__1_c72a21161_sc694d82e_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s21ae777f_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s90fdad2a_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_sa53067c6_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s90fdad2a_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sa53067c6_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s13cdcaf6_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_saabf49e1_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        sys__logFn__1_c72a21161_s13cdcaf6_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_saabf49e1_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s033e8334_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__log__1_c72a21161_s3616a3fd_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s033e8334_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s3616a3fd_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sb3298e63_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_s9c95cee6_tuple_u16_tw16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ushort> args)
     {
-        sys__logFn__1_c72a21161_sb3298e63_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s9c95cee6_tuple_u16_tw16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_se8e62869_tuple_u8_tw8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<byte> args)
+    public static unsafe void log__log__1_c72a21161_sb6455dd2_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_se8e62869_tuple_u8_tw8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sb6455dd2_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s21ae777f_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__log__1_c72a21161_s3a6beafc_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s21ae777f_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s3a6beafc_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sa53067c6_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_s689ed7b0_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        sys__logFn__1_c72a21161_sa53067c6_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s689ed7b0_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_saabf49e1_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__log__1_c72a21161_s885aaccf_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_saabf49e1_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s885aaccf_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s3616a3fd_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_safa39075_tuple_u16_tw16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ushort> args)
     {
-        sys__logFn__1_c72a21161_s3616a3fd_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_safa39075_tuple_u16_tw16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s9c95cee6_tuple_u16_tw16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ushort> args)
+    public static unsafe void log__log__1_c72a21161_s457c168c_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s9c95cee6_tuple_u16_tw16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s457c168c_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sb6455dd2_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_sff3862b5_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_sb6455dd2_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sff3862b5_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s3a6beafc_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_s041d9147_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s3a6beafc_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s041d9147_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s689ed7b0_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__log__1_c72a21161_sb9da2e66_tuple_u16_tw16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ushort> args)
     {
-        sys__logFn__1_c72a21161_s689ed7b0_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sb9da2e66_tuple_u16_tw16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s885aaccf_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_seb9647ca_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s885aaccf_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_seb9647ca_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_safa39075_tuple_u16_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ushort> args)
+    public static unsafe void log__log__1_c72a21161_seba3587f_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_safa39075_tuple_u16_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_seba3587f_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s457c168c_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_sa2219d4c_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s457c168c_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sa2219d4c_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sff3862b5_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_s99907402_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_sff3862b5_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s99907402_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s041d9147_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_s34eea9b8_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s041d9147_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s34eea9b8_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sb9da2e66_tuple_u16_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ushort> args)
+    public static unsafe void log__log__1_c72a21161_s159e74c3_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_sb9da2e66_tuple_u16_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s159e74c3_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_seb9647ca_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_s420e72bc_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_seb9647ca_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s420e72bc_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_seba3587f_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
-    {
-        sys__logFn__1_c72a21161_seba3587f_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
-    }
-
-
-
-    public static unsafe void log__log__1_c72a21161_sa2219d4c_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
-    {
-        sys__logFn__1_c72a21161_sa2219d4c_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
-    }
-
-
-
-    public static unsafe void log__log__1_c72a21161_s99907402_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
-    {
-        sys__logFn__1_c72a21161_s99907402_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
-    }
-
-
-
-    public static unsafe void log__log__1_c72a21161_s34eea9b8_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
-    {
-        sys__logFn__1_c72a21161_s34eea9b8_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
-    }
-
-
-
-    public static unsafe void log__log__1_c72a21161_s159e74c3_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
-    {
-        sys__logFn__1_c72a21161_s159e74c3_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
-    }
-
-
-
-    public static unsafe void log__log__1_c72a21161_s420e72bc_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
-    {
-        sys__logFn__1_c72a21161_s420e72bc_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
-    }
-
-
-
-    public static unsafe CBool log__logEnabled__0_c72a21161__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe CBool log__logEnabled__0_c72a21161__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return ((CBool)(unchecked((byte)(log__Level)0) <= unchecked((byte)(log__Level)2)));
     }
 
 
 
-    public static unsafe void log__log__0_c72a21161_s038875aa_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__0_c72a21161_s038875aa_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__0_c72a21161_s038875aa_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__0_c72a21161_s038875aa_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s49f2b87a_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_s49f2b87a_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s49f2b87a_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s49f2b87a_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s681a0db7_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_s681a0db7_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s681a0db7_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s681a0db7_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s8eb79beb_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_s8eb79beb_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s8eb79beb_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s8eb79beb_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_scb771613_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_scb771613_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_scb771613_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_scb771613_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s85f7dafd_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_s85f7dafd_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s85f7dafd_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s85f7dafd_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s72fc7ddc_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_s72fc7ddc_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s72fc7ddc_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s72fc7ddc_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sf0a8e932_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_sf0a8e932_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_sf0a8e932_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sf0a8e932_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sdbf4c80e_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_sdbf4c80e_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_sdbf4c80e_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sdbf4c80e_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sc3f015bf_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_sc3f015bf_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_sc3f015bf_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sc3f015bf_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sdbde56f2_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_sdbde56f2_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_sdbde56f2_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sdbde56f2_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sa6ab426d_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_sa6ab426d_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_sa6ab426d_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sa6ab426d_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_se452fe08_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_se452fe08_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_se452fe08_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_se452fe08_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s028dc4fb_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_s028dc4fb_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s028dc4fb_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s028dc4fb_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s6466db2d_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__log__1_c72a21161_s6466db2d_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        sys__logFn__1_c72a21161_s6466db2d_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s6466db2d_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sc98be146_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__log__1_c72a21161_sc98be146_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        sys__logFn__1_c72a21161_sc98be146_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sc98be146_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s65666d80_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__log__1_c72a21161_s65666d80_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        sys__logFn__1_c72a21161_s65666d80_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s65666d80_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sc2742391_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__log__1_c72a21161_sc2742391_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        sys__logFn__1_c72a21161_sc2742391_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sc2742391_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sf222fa34_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__log__1_c72a21161_sf222fa34_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        sys__logFn__1_c72a21161_sf222fa34_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sf222fa34_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s8faed272_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__log__1_c72a21161_s8faed272_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        sys__logFn__1_c72a21161_s8faed272_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s8faed272_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s8ae59137_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__log__1_c72a21161_s8ae59137_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        sys__logFn__1_c72a21161_s8ae59137_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s8ae59137_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sf3e21027_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__log__1_c72a21161_sf3e21027_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        sys__logFn__1_c72a21161_sf3e21027_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sf3e21027_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s696c03c4_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__log__1_c72a21161_s696c03c4_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        sys__logFn__1_c72a21161_s696c03c4_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s696c03c4_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sd106f1f2_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__log__1_c72a21161_sd106f1f2_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        sys__logFn__1_c72a21161_sd106f1f2_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sd106f1f2_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s993f1bff_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__log__1_c72a21161_s993f1bff_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        sys__logFn__1_c72a21161_s993f1bff_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s993f1bff_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_se532921d_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__log__1_c72a21161_se532921d_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        sys__logFn__1_c72a21161_se532921d_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_se532921d_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s6987704c_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__log__1_c72a21161_s6987704c_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        sys__logFn__1_c72a21161_s6987704c_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s6987704c_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s82effb1b_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__log__1_c72a21161_s82effb1b_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        sys__logFn__1_c72a21161_s82effb1b_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s82effb1b_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sa22cdc21_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__log__1_c72a21161_sa22cdc21_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        sys__logFn__1_c72a21161_sa22cdc21_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sa22cdc21_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s7961baa5_tuple___const_unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ConstSlice<byte>> args)
+    public static unsafe void log__log__1_c72a21161_s7961baa5_tuple___const_unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ConstSlice<byte>> args)
     {
-        sys__logFn__1_c72a21161_s7961baa5_tuple___const_unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s7961baa5_tuple___const_unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_safb96443_tuple_u8_tw8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<byte> args)
+    public static unsafe void log__log__1_c72a21161_sdf07f90c_tuple___const_unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ConstSlice<byte>> args)
     {
-        sys__logFn__1_c72a21161_safb96443_tuple_u8_tw8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sdf07f90c_tuple___const_unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sdf07f90c_tuple___const_unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ConstSlice<byte>> args)
+    public static unsafe void log__log__1_c72a21161_safb96443_tuple_u8_tw8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<byte> args)
     {
-        sys__logFn__1_c72a21161_sdf07f90c_tuple___const_unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_safb96443_tuple_u8_tw8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sa1a8edf2_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_sa1a8edf2_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_sa1a8edf2_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sa1a8edf2_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s2e9918eb_tuple_u16_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ushort> args)
+    public static unsafe void log__log__1_c72a21161_s2e9918eb_tuple_u16_tw16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ushort> args)
     {
-        sys__logFn__1_c72a21161_s2e9918eb_tuple_u16_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s2e9918eb_tuple_u16_tw16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s7b79c232_tuple_u8_tw8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<byte> args)
+    public static unsafe void log__log__1_c72a21161_s7b79c232_tuple_u8_tw8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<byte> args)
     {
-        sys__logFn__1_c72a21161_s7b79c232_tuple_u8_tw8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s7b79c232_tuple_u8_tw8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s2b42cd05_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_s2b42cd05_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_s2b42cd05_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s2b42cd05_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_sb4e5b3a5_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__CSI> args)
+    public static unsafe void log__log__1_c72a21161_sb4e5b3a5_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__CSI> args)
     {
-        sys__logFn__1_c72a21161_sb4e5b3a5_tuple_Parser__Action__CSI_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_sb4e5b3a5_tuple_Parser__Action__CSI_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s559027fb_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Parser__Action__ESC> args)
+    public static unsafe void log__log__1_c72a21161_s559027fb_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Parser__Action__ESC> args)
     {
-        sys__logFn__1_c72a21161_s559027fb_tuple_Parser__Action__ESC_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s559027fb_tuple_Parser__Action__ESC_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c72a21161_s593640b7_tuple_u32_tw21__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<uint> args)
+    public static unsafe void log__log__1_c72a21161_s593640b7_tuple_u32_tw21__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<uint> args)
     {
-        sys__logFn__1_c72a21161_s593640b7_tuple_u32_tw21__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c72a21161_s593640b7_tuple_u32_tw21__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe CBool log__logEnabled__1_c67b847c7__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return ((CBool)(unchecked((byte)(log__Level)1) <= unchecked((byte)(log__Level)2)));
-    }
-
-
-
-    public static unsafe void log__log__1_c67b847c7_se017303d_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
-    {
-        sys__logFn__1_c67b847c7_se017303d_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
-    }
-
-
-
-    public static unsafe CBool log__logEnabled__1_cf41c8a64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe CBool log__logEnabled__1_c67b847c7__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return ((CBool)(unchecked((byte)(log__Level)1) <= unchecked((byte)(log__Level)2)));
     }
 
 
 
-    public static unsafe void log__log__1_cf41c8a64_s283fdd08_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
+    public static unsafe void log__log__1_c67b847c7_se017303d_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
     {
-        sys__logFn__1_cf41c8a64_s283fdd08_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_c67b847c7_se017303d_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_cf41c8a64_s241eb3b3_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
-    {
-        sys__logFn__1_cf41c8a64_s241eb3b3_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
-    }
-
-
-
-    public static unsafe void log__log__1_cf41c8a64_sf0b9252c_tuple___const_unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ConstSlice<byte>> args)
-    {
-        sys__logFn__1_cf41c8a64_sf0b9252c_tuple___const_unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
-    }
-
-
-
-    public static unsafe void log__log__1_cf41c8a64_sd6c08ba8_tuple_anyerror_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ushort> args)
-    {
-        sys__logFn__1_cf41c8a64_sd6c08ba8_tuple_anyerror_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
-    }
-
-
-
-    public static unsafe void log__log__1_cf41c8a64_s65fe9f5c_tuple___const_unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<ConstSlice<byte>> args)
-    {
-        sys__logFn__1_cf41c8a64_s65fe9f5c_tuple___const_unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
-    }
-
-
-
-    public static unsafe CBool log__logEnabled__1_c99a2e027__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe CBool log__logEnabled__1_cf41c8a64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return ((CBool)(unchecked((byte)(log__Level)1) <= unchecked((byte)(log__Level)2)));
     }
 
 
 
-    public static unsafe void log__log__1_c99a2e027_s8ede9e55_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<Slice<byte>> args)
+    public static unsafe void log__log__1_cf41c8a64_s283fdd08_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
     {
-        sys__logFn__1_c99a2e027_s8ede9e55_tuple___unsigned_charpa0_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_cf41c8a64_s283fdd08_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe void log__log__1_c99a2e027_scc7d3526_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple args)
+    public static unsafe void log__log__1_cf41c8a64_s241eb3b3_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
     {
-        sys__logFn__1_c99a2e027_scc7d3526_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(args);
+        sys__logFn__1_cf41c8a64_s241eb3b3_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
     }
 
 
 
-    public static unsafe CBool log__logEnabled__3_cf07a96da__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe void log__log__1_cf41c8a64_sf0b9252c_tuple___const_unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ConstSlice<byte>> args)
+    {
+        sys__logFn__1_cf41c8a64_sf0b9252c_tuple___const_unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
+    }
+
+
+
+    public static unsafe void log__log__1_cf41c8a64_sd6c08ba8_tuple_anyerror_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ushort> args)
+    {
+        sys__logFn__1_cf41c8a64_sd6c08ba8_tuple_anyerror_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
+    }
+
+
+
+    public static unsafe void log__log__1_cf41c8a64_s65fe9f5c_tuple___const_unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<ConstSlice<byte>> args)
+    {
+        sys__logFn__1_cf41c8a64_s65fe9f5c_tuple___const_unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
+    }
+
+
+
+    public static unsafe CBool log__logEnabled__1_c99a2e027__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return ((CBool)(unchecked((byte)(log__Level)1) <= unchecked((byte)(log__Level)2)));
+    }
+
+
+
+    public static unsafe void log__log__1_c99a2e027_s8ede9e55_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<Slice<byte>> args)
+    {
+        sys__logFn__1_c99a2e027_s8ede9e55_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
+    }
+
+
+
+    public static unsafe void log__log__1_c99a2e027_scc7d3526_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple args)
+    {
+        sys__logFn__1_c99a2e027_scc7d3526_tuple__tuple_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(args);
+    }
+
+
+
+    public static unsafe CBool log__logEnabled__3_cf07a96da__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return ((CBool)(unchecked((byte)(log__Level)3) <= unchecked((byte)(log__Level)2)));
     }
 
 
 
-    public static unsafe void log__log__3_cf07a96da_s5273e4db_tuple_iterm2__Key_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.ValueTuple<iterm2__Key> args)
+    public static unsafe void log__log__3_cf07a96da_s5273e4db_tuple_iterm2__Key_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.ValueTuple<iterm2__Key> args)
     {
         return;
     }
 
 
 
-    public static unsafe void debug__SafetyLock_assertUnlocked__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(debug__SafetyLock l)
+    public static unsafe void debug__SafetyLock_assertUnlocked__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(debug__SafetyLock l)
     {
         return;
     }
 
 
 
-    public static unsafe void debug__SafetyLock_lock__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(debug__SafetyLock* l)
+    public static unsafe void debug__SafetyLock_lock__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(debug__SafetyLock* l)
     {
         return;
     }
 
 
 
-    public static unsafe void debug__SafetyLock_unlock__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(debug__SafetyLock* l)
+    public static unsafe void debug__SafetyLock_unlock__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(debug__SafetyLock* l)
     {
         return;
     }
 
 
 
-    public static unsafe ErrUnion<ulong> math__mul__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong a, ulong b)
+    public static unsafe ErrUnion<ulong> math__mul__u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ulong a, ulong b)
     {
         try
         {
@@ -3024,7 +3033,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ErrUnion<ulong> math__add__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong a, ulong b)
+    public static unsafe ErrUnion<ulong> math__add__u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ulong a, ulong b)
     {
         try
         {
@@ -3038,11 +3047,11 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe byte? math__cast__u8_u16w9__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ushort x)
+    public static unsafe byte? math__cast__u8_u16w9__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ushort x)
     {
         if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(false) || Cond.B(((CBool)(511 > 255)))))) && Cond.B(((CBool)(x > 255)))))))
         {
-            return null;
+            return default(byte?);
         }
         else
         {
@@ -3052,11 +3061,11 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe byte? math__cast__u3_u16w9__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ushort x)
+    public static unsafe byte? math__cast__u3_u16w9__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ushort x)
     {
         if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(false) || Cond.B(((CBool)(511 > 7)))))) && Cond.B(((CBool)(x > 7)))))))
         {
-            return null;
+            return default(byte?);
         }
         else
         {
@@ -3066,11 +3075,11 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe byte? math__cast__u3_u8w4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(byte x)
+    public static unsafe byte? math__cast__u3_u8w4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(byte x)
     {
         if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(false) || Cond.B(((CBool)(15 > 7)))))) && Cond.B(((CBool)(x > 7)))))))
         {
-            return null;
+            return default(byte?);
         }
         else
         {
@@ -3080,7 +3089,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ulong? math__cast__u64_u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong x)
+    public static unsafe ulong? math__cast__u64_u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ulong x)
     {
         {
             return (ulong)(ulong)x;
@@ -3089,7 +3098,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ErrUnion<uint> math__add__u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(uint a, uint b)
+    public static unsafe ErrUnion<uint> math__add__u32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(uint a, uint b)
     {
         try
         {
@@ -3103,11 +3112,11 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ushort? math__cast__u16_u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong x)
+    public static unsafe ushort? math__cast__u16_u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ulong x)
     {
         if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(false) || Cond.B(((CBool)(18446744073709551615UL > (ulong)(65535))))))) && Cond.B(((CBool)(x > (ulong)(65535))))))))
         {
-            return null;
+            return default(ushort?);
         }
         else
         {
@@ -3117,11 +3126,11 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe byte? math__cast__u5_u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(byte x)
+    public static unsafe byte? math__cast__u5_u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(byte x)
     {
         if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(false) || Cond.B(((CBool)(255 > 31)))))) && Cond.B(((CBool)(x > 31)))))))
         {
-            return null;
+            return default(byte?);
         }
         else
         {
@@ -3131,11 +3140,11 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe byte? math__cast__u5_u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ushort x)
+    public static unsafe byte? math__cast__u5_u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ushort x)
     {
         if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(false) || Cond.B(((CBool)(65535 > 31)))))) && Cond.B(((CBool)(x > 31)))))))
         {
-            return null;
+            return default(byte?);
         }
         else
         {
@@ -3145,24 +3154,24 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ulong math__clamp__u64_ci0_ci100__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong val)
+    public static unsafe ulong math__clamp__u64_ci0_ci100__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ulong val)
     {
-        debug__assert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(((CBool)((global::System.Int128)0UL <= (global::System.Int128)100UL)));
+        debug__assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)((global::System.Int128)0UL <= (global::System.Int128)100UL)));
         return (ulong)(ZigMath.Max((global::System.Int128)0UL, (global::System.Int128)ZigMath.Min(val, (ulong)(global::System.Int128)100UL)));
     }
 
 
 
-    public static unsafe ErrUnion<ushort> math__mul__u9__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ushort a, ushort b)
+    public static unsafe ErrUnion<ushort> math__mul__u9__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ushort a, ushort b)
     {
         try
         {
-            global::System.ValueTuple<ushort, byte> __statementExpression44;
+            global::System.ValueTuple<ushort, byte> __statementExpression21;
             {
         global::System.ValueTuple<ushort, byte> __overflow1 = ZigMath.MulWithOverflow(a, b);
-        __statementExpression44 = new global::System.ValueTuple<ushort, byte>((ushort)((ushort)(__overflow1.Item1 << 7) >> 7), (byte)(int)(((CBool)(Cond.B(((CBool)(__overflow1.Item2 != 0))) || Cond.B(((CBool)(__overflow1.Item1 != (ushort)((ushort)(__overflow1.Item1 << 7) >> 7))))))));
+        __statementExpression21 = new global::System.ValueTuple<ushort, byte>((ushort)((ushort)(__overflow1.Item1 << 7) >> 7), (byte)(int)(((CBool)(Cond.B(((CBool)(__overflow1.Item2 != 0))) || Cond.B(((CBool)(__overflow1.Item1 != (ushort)((ushort)(__overflow1.Item1 << 7) >> 7))))))));
     };
-            global::System.ValueTuple<ushort, byte> ov = __statementExpression44;
+            global::System.ValueTuple<ushort, byte> ov = __statementExpression21;
             if (Cond.B(((CBool)(ov.Item2 != (byte)0))))
                 return ErrUnion<ushort>.Err(12);
             return ErrUnion<ushort>.Ok(ov.Item1);
@@ -3172,16 +3181,16 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ErrUnion<ushort> math__add__u9__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ushort a, ushort b)
+    public static unsafe ErrUnion<ushort> math__add__u9__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ushort a, ushort b)
     {
         try
         {
-            global::System.ValueTuple<ushort, byte> __statementExpression45;
+            global::System.ValueTuple<ushort, byte> __statementExpression22;
             {
         global::System.ValueTuple<ushort, byte> __overflow2 = ZigMath.AddWithOverflow(a, b);
-        __statementExpression45 = new global::System.ValueTuple<ushort, byte>((ushort)((ushort)(__overflow2.Item1 << 7) >> 7), (byte)(int)(((CBool)(Cond.B(((CBool)(__overflow2.Item2 != 0))) || Cond.B(((CBool)(__overflow2.Item1 != (ushort)((ushort)(__overflow2.Item1 << 7) >> 7))))))));
+        __statementExpression22 = new global::System.ValueTuple<ushort, byte>((ushort)((ushort)(__overflow2.Item1 << 7) >> 7), (byte)(int)(((CBool)(Cond.B(((CBool)(__overflow2.Item2 != 0))) || Cond.B(((CBool)(__overflow2.Item1 != (ushort)((ushort)(__overflow2.Item1 << 7) >> 7))))))));
     };
-            global::System.ValueTuple<ushort, byte> ov = __statementExpression45;
+            global::System.ValueTuple<ushort, byte> ov = __statementExpression22;
             if (Cond.B(((CBool)(ov.Item2 != (byte)0))))
                 return ErrUnion<ushort>.Err(12);
             return ErrUnion<ushort>.Ok(ov.Item1);
@@ -3191,7 +3200,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ushort? math__cast__u9_u16w9__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ushort x)
+    public static unsafe ushort? math__cast__u9_u16w9__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ushort x)
     {
         {
             return (ushort)(ushort)x;
@@ -3200,7 +3209,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ErrUnion<ushort> math__mul__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ushort a, ushort b)
+    public static unsafe ErrUnion<ushort> math__mul__u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ushort a, ushort b)
     {
         try
         {
@@ -3214,7 +3223,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ErrUnion<ushort> math__add__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ushort a, ushort b)
+    public static unsafe ErrUnion<ushort> math__add__u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ushort a, ushort b)
     {
         try
         {
@@ -3228,7 +3237,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ushort? math__cast__u16_u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ushort x)
+    public static unsafe ushort? math__cast__u16_u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ushort x)
     {
         {
             return (ushort)(ushort)x;
@@ -3237,11 +3246,11 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe byte? math__cast__u4_u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(byte x)
+    public static unsafe byte? math__cast__u4_u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(byte x)
     {
         if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(false) || Cond.B(((CBool)(255 > 15)))))) && Cond.B(((CBool)(x > 15)))))))
         {
-            return null;
+            return default(byte?);
         }
         else
         {
@@ -3251,10 +3260,82 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe color_2__Special? enums__fromInt__color_2__Special_u8w3__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(byte integer)
+    public static unsafe enum__Enum__c1cd10fd6_c37464d09? enums__fromInt__enum__Enum__c1cd10fd6_c37464d09_i32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(int integer)
     {
         {
-            ConstSlice<color_2__Special> __s = enums__values__color_2__Special__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0();
+            ConstSlice<enum__Enum__c1cd10fd6_c37464d09> __s = enums__values__enum__Enum__c1cd10fd6_c37464d09__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659();
+            for (ulong __i = 0UL; Cond.B(((CBool)(__i < __s.Len))); __i++)
+            {
+                enum__Enum__c1cd10fd6_c37464d09 value = __s.Ptr[__i];
+                {
+                    if (Cond.B(((CBool)((int)value == integer))))
+                        return value;
+                }
+            }
+        }
+        return default(enum__Enum__c1cd10fd6_c37464d09?);
+    }
+
+
+
+    public static unsafe enum__Enum__c1cd10fd6_c98520838? enums__fromInt__enum__Enum__c1cd10fd6_c98520838_i32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(int integer)
+    {
+        {
+            ConstSlice<enum__Enum__c1cd10fd6_c98520838> __s = enums__values__enum__Enum__c1cd10fd6_c98520838__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659();
+            for (ulong __i = 0UL; Cond.B(((CBool)(__i < __s.Len))); __i++)
+            {
+                enum__Enum__c1cd10fd6_c98520838 value = __s.Ptr[__i];
+                {
+                    if (Cond.B(((CBool)((int)value == integer))))
+                        return value;
+                }
+            }
+        }
+        return default(enum__Enum__c1cd10fd6_c98520838?);
+    }
+
+
+
+    public static unsafe enum__Enum__c1cd10fd6_cb7bf9e86? enums__fromInt__enum__Enum__c1cd10fd6_cb7bf9e86_i32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(int integer)
+    {
+        {
+            ConstSlice<enum__Enum__c1cd10fd6_cb7bf9e86> __s = enums__values__enum__Enum__c1cd10fd6_cb7bf9e86__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659();
+            for (ulong __i = 0UL; Cond.B(((CBool)(__i < __s.Len))); __i++)
+            {
+                enum__Enum__c1cd10fd6_cb7bf9e86 value = __s.Ptr[__i];
+                {
+                    if (Cond.B(((CBool)((int)value == integer))))
+                        return value;
+                }
+            }
+        }
+        return default(enum__Enum__c1cd10fd6_cb7bf9e86?);
+    }
+
+
+
+    public static unsafe enum__Enum__c1cd10fd6_c2e659fc9? enums__fromInt__enum__Enum__c1cd10fd6_c2e659fc9_i32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(int integer)
+    {
+        {
+            ConstSlice<enum__Enum__c1cd10fd6_c2e659fc9> __s = enums__values__enum__Enum__c1cd10fd6_c2e659fc9__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659();
+            for (ulong __i = 0UL; Cond.B(((CBool)(__i < __s.Len))); __i++)
+            {
+                enum__Enum__c1cd10fd6_c2e659fc9 value = __s.Ptr[__i];
+                {
+                    if (Cond.B(((CBool)((int)value == integer))))
+                        return value;
+                }
+            }
+        }
+        return default(enum__Enum__c1cd10fd6_c2e659fc9?);
+    }
+
+
+
+    public static unsafe color_2__Special? enums__fromInt__color_2__Special_u8w3__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(byte integer)
+    {
+        {
+            ConstSlice<color_2__Special> __s = enums__values__color_2__Special__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659();
             for (ulong __i = 0UL; Cond.B(((CBool)(__i < __s.Len))); __i++)
             {
                 color_2__Special value = __s.Ptr[__i];
@@ -3264,15 +3345,15 @@ public static unsafe partial class GhosttyVt
                 }
             }
         }
-        return null;
+        return default(color_2__Special?);
     }
 
 
 
-    public static unsafe color_2__Dynamic? enums__fromInt__color_2__Dynamic_u8w5__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(byte integer)
+    public static unsafe color_2__Dynamic? enums__fromInt__color_2__Dynamic_u8w5__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(byte integer)
     {
         {
-            ConstSlice<color_2__Dynamic> __s = enums__values__color_2__Dynamic__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0();
+            ConstSlice<color_2__Dynamic> __s = enums__values__color_2__Dynamic__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659();
             for (ulong __i = 0UL; Cond.B(((CBool)(__i < __s.Len))); __i++)
             {
                 color_2__Dynamic value = __s.Ptr[__i];
@@ -3282,51 +3363,51 @@ public static unsafe partial class GhosttyVt
                 }
             }
         }
-        return null;
+        return default(color_2__Dynamic?);
     }
 
 
 
-    public static unsafe enum__Enum__c1cd10fd6_c7c220d3e? enums__fromInt__enum__Enum__c1cd10fd6_c7c220d3e_u8w4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(byte integer)
+    public static unsafe enum__Enum__c1cd10fd6_c7c220d3e? enums__fromInt__enum__Enum__c1cd10fd6_c7c220d3e_u8w4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(byte integer)
     {
         {
-            ConstSlice<enum__Enum__c1cd10fd6_c7c220d3e> __s = enums__values__enum__Enum__c1cd10fd6_c7c220d3e__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0();
+            ConstSlice<enum__Enum__c1cd10fd6_c7c220d3e> __s = enums__values__enum__Enum__c1cd10fd6_c7c220d3e__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659();
             for (ulong __i = 0UL; Cond.B(((CBool)(__i < __s.Len))); __i++)
             {
                 enum__Enum__c1cd10fd6_c7c220d3e value = __s.Ptr[__i];
                 {
-                    if (Cond.B(((CBool)((byte)value == integer))))
+                    if (Cond.B(((CBool)((int)value == integer))))
                         return value;
                 }
             }
         }
-        return null;
+        return default(enum__Enum__c1cd10fd6_c7c220d3e?);
     }
 
 
 
-    public static unsafe enum__Enum__c1cd10fd6_c8f8b0f0f? enums__fromInt__enum__Enum__c1cd10fd6_c8f8b0f0f_u8w4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(byte integer)
+    public static unsafe enum__Enum__c1cd10fd6_c8f8b0f0f? enums__fromInt__enum__Enum__c1cd10fd6_c8f8b0f0f_u8w4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(byte integer)
     {
         {
-            ConstSlice<enum__Enum__c1cd10fd6_c8f8b0f0f> __s = enums__values__enum__Enum__c1cd10fd6_c8f8b0f0f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0();
+            ConstSlice<enum__Enum__c1cd10fd6_c8f8b0f0f> __s = enums__values__enum__Enum__c1cd10fd6_c8f8b0f0f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659();
             for (ulong __i = 0UL; Cond.B(((CBool)(__i < __s.Len))); __i++)
             {
                 enum__Enum__c1cd10fd6_c8f8b0f0f value = __s.Ptr[__i];
                 {
-                    if (Cond.B(((CBool)((byte)value == integer))))
+                    if (Cond.B(((CBool)((int)value == integer))))
                         return value;
                 }
             }
         }
-        return null;
+        return default(enum__Enum__c1cd10fd6_c8f8b0f0f?);
     }
 
 
 
-    public static unsafe modes_2__Report__State? enums__fromInt__modes_2__Report__State_i32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(int integer)
+    public static unsafe modes_2__Report__State? enums__fromInt__modes_2__Report__State_i32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(int integer)
     {
         {
-            ConstSlice<modes_2__Report__State> __s = enums__values__modes_2__Report__State__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0();
+            ConstSlice<modes_2__Report__State> __s = enums__values__modes_2__Report__State__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659();
             for (ulong __i = 0UL; Cond.B(((CBool)(__i < __s.Len))); __i++)
             {
                 modes_2__Report__State value = __s.Ptr[__i];
@@ -3336,43 +3417,43 @@ public static unsafe partial class GhosttyVt
                 }
             }
         }
-        return null;
+        return default(modes_2__Report__State?);
     }
 
 
 
-    public static unsafe ConstSlice<enum__Enum__c1cd10fd6_cd333dd4d> enums__valuesFromFields__enum__Enum__c1cd10fd6_cd333dd4d_c11b577bb__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<enum__Enum__c1cd10fd6_cd333dd4d> enums__valuesFromFields__enum__Enum__c1cd10fd6_cd333dd4d_c11b577bb__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<enum__Enum__c1cd10fd6_cd333dd4d>(Libc.GlobalArrayFrom<enum__Enum__c1cd10fd6_cd333dd4d>(__DotccPrimitiveView_AF1A9E874B78905FDFE991B271475158B25D3703BF3C2A4C4693075CC17D0EB2.Values), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<enum__Enum__c1cd10fd6_cd333dd4d> enums__values__enum__Enum__c1cd10fd6_cd333dd4d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<enum__Enum__c1cd10fd6_cd333dd4d> enums__values__enum__Enum__c1cd10fd6_cd333dd4d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<enum__Enum__c1cd10fd6_cd333dd4d>(Libc.GlobalArrayFrom<enum__Enum__c1cd10fd6_cd333dd4d>(__DotccPrimitiveView_AF1A9E874B78905FDFE991B271475158B25D3703BF3C2A4C4693075CC17D0EB2.Values), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<stream__Boundary> enums__valuesFromFields__stream__Boundary_cac7fc6dd__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<stream__Boundary> enums__valuesFromFields__stream__Boundary_cac7fc6dd__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<stream__Boundary>(Libc.GlobalArrayFrom<stream__Boundary>(__DotccPrimitiveView_E43BFBC5C82B64CE76B1A0B2E05FD922EFBA5C01B20E8F0BD100E0BAB17DEE41.Values), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<stream__Boundary> enums__values__stream__Boundary__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<stream__Boundary> enums__values__stream__Boundary__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<stream__Boundary>(Libc.GlobalArrayFrom<stream__Boundary>(__DotccPrimitiveView_E43BFBC5C82B64CE76B1A0B2E05FD922EFBA5C01B20E8F0BD100E0BAB17DEE41.Values), 7UL);
     }
 
 
 
-    public static unsafe csi__EraseDisplay? enums__fromInt__csi__EraseDisplay_u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ushort integer)
+    public static unsafe csi__EraseDisplay? enums__fromInt__csi__EraseDisplay_u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ushort integer)
     {
         {
-            ConstSlice<csi__EraseDisplay> __s = enums__values__csi__EraseDisplay__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0();
+            ConstSlice<csi__EraseDisplay> __s = enums__values__csi__EraseDisplay__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659();
             for (ulong __i = 0UL; Cond.B(((CBool)(__i < __s.Len))); __i++)
             {
                 csi__EraseDisplay value = __s.Ptr[__i];
@@ -3382,16 +3463,16 @@ public static unsafe partial class GhosttyVt
                 }
             }
         }
-        return null;
+        return default(csi__EraseDisplay?);
     }
 
 
 
-    public static unsafe csi__TabClear? enums__fromInt__csi__TabClear_u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ushort integer)
+    public static unsafe csi__TabClear? enums__fromInt__csi__TabClear_u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ushort integer)
     {
         {
             {
-                byte? __cap = math__cast__u1_u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(integer);
+                byte? __cap = math__cast__u8_u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(integer);
                 if (Cond.B(__cap.HasValue))
                 {
                     byte tag = __cap.Value;
@@ -3400,248 +3481,305 @@ public static unsafe partial class GhosttyVt
                     }
                 }
             }
-            return null;
+            return default(csi__TabClear?);
         }
     }
 
 
 
-    public static unsafe ConstSlice<color_2__Special> enums__valuesFromFields__color_2__Special_c36e33b94__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<enum__Enum__c1cd10fd6_c37464d09> enums__valuesFromFields__enum__Enum__c1cd10fd6_c37464d09_c402952f6__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new ConstSlice<enum__Enum__c1cd10fd6_c37464d09>(Libc.GlobalArrayFrom<enum__Enum__c1cd10fd6_c37464d09>(__DotccPrimitiveView_F2E48A58F0470F7129F56CFB1CAEB15FCC85FAC21F4A1AFA5AABCB86A42FF29D.Values), 2UL);
+    }
+
+
+
+    public static unsafe ConstSlice<enum__Enum__c1cd10fd6_c37464d09> enums__values__enum__Enum__c1cd10fd6_c37464d09__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new ConstSlice<enum__Enum__c1cd10fd6_c37464d09>(Libc.GlobalArrayFrom<enum__Enum__c1cd10fd6_c37464d09>(__DotccPrimitiveView_F2E48A58F0470F7129F56CFB1CAEB15FCC85FAC21F4A1AFA5AABCB86A42FF29D.Values), 2UL);
+    }
+
+
+
+    public static unsafe ConstSlice<enum__Enum__c1cd10fd6_c98520838> enums__valuesFromFields__enum__Enum__c1cd10fd6_c98520838_c36e33b94__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new ConstSlice<enum__Enum__c1cd10fd6_c98520838>(Libc.GlobalArrayFrom<enum__Enum__c1cd10fd6_c98520838>(__DotccPrimitiveView_1DDC14EFDED1099C79DB67AFAADDBB474B9D9C520ADAE8937B8314C90604CB43.Values), 5UL);
+    }
+
+
+
+    public static unsafe ConstSlice<enum__Enum__c1cd10fd6_c98520838> enums__values__enum__Enum__c1cd10fd6_c98520838__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new ConstSlice<enum__Enum__c1cd10fd6_c98520838>(Libc.GlobalArrayFrom<enum__Enum__c1cd10fd6_c98520838>(__DotccPrimitiveView_1DDC14EFDED1099C79DB67AFAADDBB474B9D9C520ADAE8937B8314C90604CB43.Values), 5UL);
+    }
+
+
+
+    public static unsafe ConstSlice<enum__Enum__c1cd10fd6_cb7bf9e86> enums__valuesFromFields__enum__Enum__c1cd10fd6_cb7bf9e86_c11b577bb__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new ConstSlice<enum__Enum__c1cd10fd6_cb7bf9e86>(Libc.GlobalArrayFrom<enum__Enum__c1cd10fd6_cb7bf9e86>(__DotccPrimitiveView_CEB4F54E7E4838634E747CE53E70FF1BFDE26751BA9F567EF58124011ECC9E3C.Values), 4UL);
+    }
+
+
+
+    public static unsafe ConstSlice<enum__Enum__c1cd10fd6_cb7bf9e86> enums__values__enum__Enum__c1cd10fd6_cb7bf9e86__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new ConstSlice<enum__Enum__c1cd10fd6_cb7bf9e86>(Libc.GlobalArrayFrom<enum__Enum__c1cd10fd6_cb7bf9e86>(__DotccPrimitiveView_CEB4F54E7E4838634E747CE53E70FF1BFDE26751BA9F567EF58124011ECC9E3C.Values), 4UL);
+    }
+
+
+
+    public static unsafe ConstSlice<enum__Enum__c1cd10fd6_c2e659fc9> enums__valuesFromFields__enum__Enum__c1cd10fd6_c2e659fc9_c36e33b94__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new ConstSlice<enum__Enum__c1cd10fd6_c2e659fc9>(Libc.GlobalArrayFrom<enum__Enum__c1cd10fd6_c2e659fc9>(__DotccPrimitiveView_4E27F18157F5C23E6146E4D904C88D95FB871589A5B8B2AA83D407C72F137177.Values), 5UL);
+    }
+
+
+
+    public static unsafe ConstSlice<enum__Enum__c1cd10fd6_c2e659fc9> enums__values__enum__Enum__c1cd10fd6_c2e659fc9__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new ConstSlice<enum__Enum__c1cd10fd6_c2e659fc9>(Libc.GlobalArrayFrom<enum__Enum__c1cd10fd6_c2e659fc9>(__DotccPrimitiveView_4E27F18157F5C23E6146E4D904C88D95FB871589A5B8B2AA83D407C72F137177.Values), 5UL);
+    }
+
+
+
+    public static unsafe ConstSlice<color_2__Special> enums__valuesFromFields__color_2__Special_c36e33b94__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<color_2__Special>(Libc.GlobalArrayFrom<color_2__Special>(__DotccPrimitiveView_BD4C01141843C857533F790C23C1A9B571B9739813FA46E66D6B86C22B9E3863.Values), 5UL);
     }
 
 
 
-    public static unsafe ConstSlice<color_2__Special> enums__values__color_2__Special__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<color_2__Special> enums__values__color_2__Special__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<color_2__Special>(Libc.GlobalArrayFrom<color_2__Special>(__DotccPrimitiveView_BD4C01141843C857533F790C23C1A9B571B9739813FA46E66D6B86C22B9E3863.Values), 5UL);
     }
 
 
 
-    public static unsafe ConstSlice<color_2__Dynamic> enums__valuesFromFields__color_2__Dynamic_c99995f98__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<color_2__Dynamic> enums__valuesFromFields__color_2__Dynamic_c99995f98__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<color_2__Dynamic>(Libc.GlobalArrayFrom<color_2__Dynamic>(__DotccPrimitiveView_8F584E35BA7FC3A76B7B1DC02127795892D5E80A34A5F8C3D9032BA076BB8E15.Values), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<color_2__Dynamic> enums__values__color_2__Dynamic__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<color_2__Dynamic> enums__values__color_2__Dynamic__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<color_2__Dynamic>(Libc.GlobalArrayFrom<color_2__Dynamic>(__DotccPrimitiveView_8F584E35BA7FC3A76B7B1DC02127795892D5E80A34A5F8C3D9032BA076BB8E15.Values), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<enum__Enum__c1cd10fd6_c7c220d3e> enums__valuesFromFields__enum__Enum__c1cd10fd6_c7c220d3e_c7d7e516d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<enum__Enum__c1cd10fd6_c7c220d3e> enums__valuesFromFields__enum__Enum__c1cd10fd6_c7c220d3e_c7d7e516d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<enum__Enum__c1cd10fd6_c7c220d3e>(Libc.GlobalArrayFrom<enum__Enum__c1cd10fd6_c7c220d3e>(__DotccPrimitiveView_50C8169903FE5F7810448A4D1B415A6BADE5807351A6543EDF9C9F7FDCF6BDF0.Values), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<enum__Enum__c1cd10fd6_c7c220d3e> enums__values__enum__Enum__c1cd10fd6_c7c220d3e__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<enum__Enum__c1cd10fd6_c7c220d3e> enums__values__enum__Enum__c1cd10fd6_c7c220d3e__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<enum__Enum__c1cd10fd6_c7c220d3e>(Libc.GlobalArrayFrom<enum__Enum__c1cd10fd6_c7c220d3e>(__DotccPrimitiveView_50C8169903FE5F7810448A4D1B415A6BADE5807351A6543EDF9C9F7FDCF6BDF0.Values), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<enum__Enum__c1cd10fd6_c8f8b0f0f> enums__valuesFromFields__enum__Enum__c1cd10fd6_c8f8b0f0f_c7d7e516d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<enum__Enum__c1cd10fd6_c8f8b0f0f> enums__valuesFromFields__enum__Enum__c1cd10fd6_c8f8b0f0f_c7d7e516d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<enum__Enum__c1cd10fd6_c8f8b0f0f>(Libc.GlobalArrayFrom<enum__Enum__c1cd10fd6_c8f8b0f0f>(__DotccPrimitiveView_0E10FC39094D0DBDEF6D56FB34DD946BCB40EE56869AFCC9865E3FD0353F6A11.Values), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<enum__Enum__c1cd10fd6_c8f8b0f0f> enums__values__enum__Enum__c1cd10fd6_c8f8b0f0f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<enum__Enum__c1cd10fd6_c8f8b0f0f> enums__values__enum__Enum__c1cd10fd6_c8f8b0f0f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<enum__Enum__c1cd10fd6_c8f8b0f0f>(Libc.GlobalArrayFrom<enum__Enum__c1cd10fd6_c8f8b0f0f>(__DotccPrimitiveView_0E10FC39094D0DBDEF6D56FB34DD946BCB40EE56869AFCC9865E3FD0353F6A11.Values), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<modes_2__Report__State> enums__valuesFromFields__modes_2__Report__State_c36e33b94__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<modes_2__Report__State> enums__valuesFromFields__modes_2__Report__State_c36e33b94__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<modes_2__Report__State>(Libc.GlobalArrayFrom<modes_2__Report__State>(__DotccPrimitiveView_64EEB3A4AD92A51ACB561027EFD90AD03C37C8305D708B2C98BFB01EA4312C6C.Values), 5UL);
     }
 
 
 
-    public static unsafe ConstSlice<modes_2__Report__State> enums__values__modes_2__Report__State__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<modes_2__Report__State> enums__values__modes_2__Report__State__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<modes_2__Report__State>(Libc.GlobalArrayFrom<modes_2__Report__State>(__DotccPrimitiveView_64EEB3A4AD92A51ACB561027EFD90AD03C37C8305D708B2C98BFB01EA4312C6C.Values), 5UL);
     }
 
 
 
-    public static unsafe ConstSlice<csi__EraseDisplay> enums__valuesFromFields__csi__EraseDisplay_c4a6e4828__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<csi__EraseDisplay> enums__valuesFromFields__csi__EraseDisplay_c4a6e4828__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<csi__EraseDisplay>(Libc.GlobalArrayFrom<csi__EraseDisplay>(__DotccPrimitiveView_B3253C581D05F0C5E56C564697E9BF1B1C71E28518849494FA7EE86519B6FA11.Values), 5UL);
     }
 
 
 
-    public static unsafe ConstSlice<csi__EraseDisplay> enums__values__csi__EraseDisplay__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<csi__EraseDisplay> enums__values__csi__EraseDisplay__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<csi__EraseDisplay>(Libc.GlobalArrayFrom<csi__EraseDisplay>(__DotccPrimitiveView_B3253C581D05F0C5E56C564697E9BF1B1C71E28518849494FA7EE86519B6FA11.Values), 5UL);
     }
 
 
 
-    public static unsafe void enums__EnumSet__stream__Boundary_insert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(enums__EnumSet__stream__Boundary* self, stream__Boundary key)
+    public static unsafe void enums__EnumSet__stream__Boundary_insert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(enums__EnumSet__stream__Boundary* self, stream__Boundary key)
     {
-        bit_set__Integer__7_set__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->bits, enums__EnumIndexer__stream__Boundary_indexOf__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(key));
+        bit_set__Integer__7_set__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->bits, enums__EnumIndexer__stream__Boundary_indexOf__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(key));
     }
 
 
 
-    public static unsafe enums__EnumSet__stream__Boundary__Iterator enums__EnumSet__stream__Boundary_iterator__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(enums__EnumSet__stream__Boundary* self)
+    public static unsafe enums__EnumSet__stream__Boundary__Iterator enums__EnumSet__stream__Boundary_iterator__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(enums__EnumSet__stream__Boundary* self)
     {
-        return new enums__EnumSet__stream__Boundary__Iterator { inner = bit_set__Integer__7_iterator__c33255c7c__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->bits) };
+        return new enums__EnumSet__stream__Boundary__Iterator { inner = bit_set__Integer__7_iterator__c33255c7c__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->bits) };
     }
 
 
 
-    public static unsafe stream__Boundary? enums__EnumSet__stream__Boundary__Iterator_next__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(enums__EnumSet__stream__Boundary__Iterator* self)
+    public static unsafe stream__Boundary? enums__EnumSet__stream__Boundary__Iterator_next__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(enums__EnumSet__stream__Boundary__Iterator* self)
     {
-        ulong? __ifcapc0 = bit_set__Integer__7_SingleWordIterator__0_next__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->inner);
+        ulong? __ifcapc0 = bit_set__Integer__7_SingleWordIterator__0_next__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->inner);
         stream__Boundary? __ifcap1 = default;
         if (Cond.B(__ifcapc0.HasValue))
         {
             ulong index = __ifcapc0.Value;
-            __ifcap1 = enums__EnumIndexer__stream__Boundary_keyForIndex__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(index);
+            __ifcap1 = enums__EnumIndexer__stream__Boundary_keyForIndex__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(index);
         }
         else
         {
-            __ifcap1 = null;
+            __ifcap1 = default(stream__Boundary?);
         }
         return __ifcap1;
     }
 
 
 
-    public static unsafe enums__EnumMap__apc__Protocol_u64 enums__EnumMap__apc__Protocol_u64_initFull__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong value)
+    public static unsafe enums__EnumMap__apc__Protocol_u64 enums__EnumMap__apc__Protocol_u64_initFull__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ulong value)
     {
-        enums__EnumMap__apc__Protocol_u64 __anf2 = new enums__EnumMap__apc__Protocol_u64 { bits = new bit_set__Integer__2 { mask = unchecked((byte)(~(byte)0 & 3)) } };
-        ulong* __cl203 = stackalloc ulong[]{ value, value };
-        memcpy(__anf2.values, __cl203, 16);
+        enums__EnumMap__apc__Protocol_u64 __anf2 = default(enums__EnumMap__apc__Protocol_u64);
+        __anf2.bits = new bit_set__Integer__2 { mask = unchecked((byte)(~(byte)0 & 3)) };
+        ulong* __cl207 = stackalloc ulong[]{ value, value };
+        memcpy(__anf2.values, __cl207, 16);
         return __anf2;
     }
 
 
 
-    public static unsafe void enums__EnumMap__apc__Protocol_u64_put__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(enums__EnumMap__apc__Protocol_u64* self, apc__Protocol key, ulong value)
+    public static unsafe void enums__EnumMap__apc__Protocol_u64_put__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(enums__EnumMap__apc__Protocol_u64* self, apc__Protocol key, ulong value)
     {
-        ulong index = enums__EnumIndexer__apc__Protocol_indexOf__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(key);
-        bit_set__Integer__2_set__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->bits, index);
+        ulong index = enums__EnumIndexer__apc__Protocol_indexOf__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(key);
+        bit_set__Integer__2_set__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->bits, index);
         self->values[index] = value;
     }
 
 
 
-    public static unsafe void enums__EnumMap__apc__Protocol_u64_remove__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(enums__EnumMap__apc__Protocol_u64* self, apc__Protocol key)
+    public static unsafe void enums__EnumMap__apc__Protocol_u64_remove__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(enums__EnumMap__apc__Protocol_u64* self, apc__Protocol key)
     {
-        ulong index = enums__EnumIndexer__apc__Protocol_indexOf__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(key);
-        bit_set__Integer__2_unset__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->bits, index);
+        ulong index = enums__EnumIndexer__apc__Protocol_indexOf__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(key);
+        bit_set__Integer__2_unset__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->bits, index);
         self->values[index] = default(ulong);
     }
 
 
 
-    public static unsafe void enums__EnumSet__apc__Protocol_setPresent__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(enums__EnumSet__apc__Protocol* self, apc__Protocol key, CBool present)
+    public static unsafe void enums__EnumSet__apc__Protocol_setPresent__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(enums__EnumSet__apc__Protocol* self, apc__Protocol key, CBool present)
     {
-        bit_set__Integer__2_setValue__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->bits, enums__EnumIndexer__apc__Protocol_indexOf__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(key), present);
+        bit_set__Integer__2_setValue__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->bits, enums__EnumIndexer__apc__Protocol_indexOf__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(key), present);
     }
 
 
 
-    public static unsafe ulong enums__EnumIndexer__stream__Boundary_indexOf__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream__Boundary e)
+    public static unsafe ulong enums__EnumIndexer__stream__Boundary_indexOf__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(stream__Boundary e)
     {
         return (ulong)(ulong)((byte)e - 0);
     }
 
 
 
-    public static unsafe enums__EnumSet__stream__Boundary enums__EnumSet__stream__Boundary_initOne__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream__Boundary key)
+    public static unsafe enums__EnumSet__stream__Boundary enums__EnumSet__stream__Boundary_initOne__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(stream__Boundary key)
     {
-        stream__Boundary* __cl204 = stackalloc stream__Boundary[]{ key };
-        return enums__EnumSet__stream__Boundary_initMany__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new ConstSlice<stream__Boundary>(__cl204, 1UL));
+        stream__Boundary* __cl208 = stackalloc stream__Boundary[]{ key };
+        return enums__EnumSet__stream__Boundary_initMany__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new ConstSlice<stream__Boundary>(__cl208, 1UL));
     }
 
 
 
-    public static unsafe ulong? enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_u64_get__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_u64* self, enum__Enum__c1cd10fd6_c846eb854 key)
+    public static unsafe ulong? enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_u64_get__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_u64* self, enum__Enum__c1cd10fd6_c846eb854 key)
     {
-        ulong index = enums__EnumIndexer__enum__Enum__c1cd10fd6_c846eb854_indexOf__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(key);
-        return (Cond.B(bit_set__Integer__2_isSet__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self->bits, index)) ? (ulong?)self->values[index] : (ulong?)null);
+        ulong index = enums__EnumIndexer__enum__Enum__c1cd10fd6_c846eb854_indexOf__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(key);
+        return (Cond.B(bit_set__Integer__2_isSet__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self->bits, index)) ? (ulong?)self->values[index] : default(ulong?));
     }
 
 
 
-    public static unsafe enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_p_Screen__Screenpa0__Iterator enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_p_Screen__Screenpa0_iterator__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_p_Screen__Screenpa0* self)
+    public static unsafe enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_p_Screen__Screenpa0__Iterator enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_p_Screen__Screenpa0_iterator__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_p_Screen__Screenpa0* self)
     {
-        return new enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_p_Screen__Screenpa0__Iterator { inner = bit_set__Integer__2_iterator__c33255c7c__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->bits), values = (Screen__Screen**)&self->values };
+        return new enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_p_Screen__Screenpa0__Iterator { inner = bit_set__Integer__2_iterator__c33255c7c__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->bits), values = (Screen__Screen**)&self->values };
     }
 
 
 
-    public static unsafe enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_p_Screen__Screenpa0__Entry? enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_p_Screen__Screenpa0__Iterator_next__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_p_Screen__Screenpa0__Iterator* self)
+    public static unsafe enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_p_Screen__Screenpa0__Entry? enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_p_Screen__Screenpa0__Iterator_next__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_p_Screen__Screenpa0__Iterator* self)
     {
-        ulong? __ifcapc3 = bit_set__Integer__2_SingleWordIterator__0_next__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->inner);
+        ulong? __ifcapc3 = bit_set__Integer__2_SingleWordIterator__0_next__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->inner);
         enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_p_Screen__Screenpa0__Entry? __ifcap4 = default;
         if (Cond.B(__ifcapc3.HasValue))
         {
             ulong index = __ifcapc3.Value;
-            __ifcap4 = new enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_p_Screen__Screenpa0__Entry { key = enums__EnumIndexer__enum__Enum__c1cd10fd6_c846eb854_keyForIndex__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(index), value = &(self->values)[index] };
+            __ifcap4 = new enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_p_Screen__Screenpa0__Entry { key = enums__EnumIndexer__enum__Enum__c1cd10fd6_c846eb854_keyForIndex__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(index), value = &(self->values)[index] };
         }
         else
         {
-            __ifcap4 = null;
+            __ifcap4 = default(enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_p_Screen__Screenpa0__Entry?);
         }
         return __ifcap4;
     }
 
 
 
-    public static unsafe Screen__Screen* enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_p_Screen__Screenpa0_get__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_p_Screen__Screenpa0* self, enum__Enum__c1cd10fd6_c846eb854 key)
+    public static unsafe Screen__Screen* enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_p_Screen__Screenpa0_get__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_p_Screen__Screenpa0* self, enum__Enum__c1cd10fd6_c846eb854 key)
     {
-        ulong index = enums__EnumIndexer__enum__Enum__c1cd10fd6_c846eb854_indexOf__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(key);
-        return ((Screen__Screen*)(Cond.B(bit_set__Integer__2_isSet__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self->bits, index)) ? ((Screen__Screen**)&self->values)[index] : (Screen__Screen*)(null)));
+        ulong index = enums__EnumIndexer__enum__Enum__c1cd10fd6_c846eb854_indexOf__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(key);
+        return ((Screen__Screen*)(Cond.B(bit_set__Integer__2_isSet__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self->bits, index)) ? ((Screen__Screen**)&self->values)[index] : (Screen__Screen*)(null)));
     }
 
 
 
-    public static unsafe CBool bit_set__Integer__2_isSet__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(bit_set__Integer__2 self, ulong index)
+    public static unsafe CBool bit_set__Integer__2_isSet__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(bit_set__Integer__2 self, ulong index)
     {
-        debug__assert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(((CBool)(index < (ulong)2)));
-        return ((CBool)((self.mask & bit_set__Integer__2_maskBit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(index)) != (byte)0));
+        debug__assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)(index < (ulong)2)));
+        return ((CBool)((byte)(self.mask & bit_set__Integer__2_maskBit__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(index)) != (byte)0));
     }
 
 
 
-    public static unsafe Screen__Screen* enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_p_Screen__Screenpa0_fetchRemove__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_p_Screen__Screenpa0* self, enum__Enum__c1cd10fd6_c846eb854 key)
+    public static unsafe Screen__Screen* enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_p_Screen__Screenpa0_fetchRemove__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_p_Screen__Screenpa0* self, enum__Enum__c1cd10fd6_c846eb854 key)
     {
-        ulong index = enums__EnumIndexer__enum__Enum__c1cd10fd6_c846eb854_indexOf__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(key);
-        Screen__Screen* result = ((Screen__Screen*)(Cond.B(bit_set__Integer__2_isSet__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self->bits, index)) ? ((Screen__Screen**)&self->values)[index] : (Screen__Screen*)(null)));
-        bit_set__Integer__2_unset__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->bits, index);
+        ulong index = enums__EnumIndexer__enum__Enum__c1cd10fd6_c846eb854_indexOf__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(key);
+        Screen__Screen* result = ((Screen__Screen*)(Cond.B(bit_set__Integer__2_isSet__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self->bits, index)) ? ((Screen__Screen**)&self->values)[index] : (Screen__Screen*)(null)));
+        bit_set__Integer__2_unset__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->bits, index);
         ((Screen__Screen**)&self->values)[index] = default(Screen__Screen*);
         return result;
     }
 
 
 
-    public static unsafe void enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_u64_put__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_u64* self, enum__Enum__c1cd10fd6_c846eb854 key, ulong value)
+    public static unsafe void enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_u64_put__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(enums__EnumMap__enum__Enum__c1cd10fd6_c846eb854_u64* self, enum__Enum__c1cd10fd6_c846eb854 key, ulong value)
     {
-        ulong index = enums__EnumIndexer__enum__Enum__c1cd10fd6_c846eb854_indexOf__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(key);
-        bit_set__Integer__2_set__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->bits, index);
+        ulong index = enums__EnumIndexer__enum__Enum__c1cd10fd6_c846eb854_indexOf__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(key);
+        bit_set__Integer__2_set__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->bits, index);
         self->values[index] = value;
     }
 
 
 
-    public static unsafe stream__Boundary enums__EnumIndexer__stream__Boundary_keyForIndex__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong i)
+    public static unsafe stream__Boundary enums__EnumIndexer__stream__Boundary_keyForIndex__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ulong i)
     {
         ulong enum_value = i + (ulong)(0);
         return (stream__Boundary)(stream__Boundary)(int)(byte)(byte)enum_value;
@@ -3649,42 +3787,42 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ulong enums__EnumIndexer__apc__Protocol_indexOf__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(apc__Protocol e)
+    public static unsafe ulong enums__EnumIndexer__apc__Protocol_indexOf__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(apc__Protocol e)
     {
         return (ulong)(ulong)((byte)e - 0);
     }
 
 
 
-    public static unsafe enums__EnumSet__stream__Boundary enums__EnumSet__stream__Boundary_initMany__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ConstSlice<stream__Boundary> keys)
+    public static unsafe enums__EnumSet__stream__Boundary enums__EnumSet__stream__Boundary_initMany__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ConstSlice<stream__Boundary> keys)
     {
         enums__EnumSet__stream__Boundary set = new enums__EnumSet__stream__Boundary { bits = new bit_set__Integer__7 { mask = 0 } };
         for (ulong __i = 0UL; Cond.B(((CBool)(__i < keys.Len))); __i++)
         {
             stream__Boundary key = keys.Ptr[__i];
-            enums__EnumSet__stream__Boundary_insert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&set, key);
+            enums__EnumSet__stream__Boundary_insert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&set, key);
         }
         return set;
     }
 
 
 
-    public static unsafe ulong enums__EnumIndexer__enum__Enum__c1cd10fd6_c846eb854_indexOf__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(enum__Enum__c1cd10fd6_c846eb854 e)
+    public static unsafe ulong enums__EnumIndexer__enum__Enum__c1cd10fd6_c846eb854_indexOf__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(enum__Enum__c1cd10fd6_c846eb854 e)
     {
-        return (ulong)(ulong)((byte)e - 0);
+        return (ulong)(ulong)((int)e - 0);
     }
 
 
 
-    public static unsafe enum__Enum__c1cd10fd6_c846eb854 enums__EnumIndexer__enum__Enum__c1cd10fd6_c846eb854_keyForIndex__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong i)
+    public static unsafe enum__Enum__c1cd10fd6_c846eb854 enums__EnumIndexer__enum__Enum__c1cd10fd6_c846eb854_keyForIndex__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ulong i)
     {
         ulong enum_value = i + (ulong)(0);
-        return (enum__Enum__c1cd10fd6_c846eb854)(enum__Enum__c1cd10fd6_c846eb854)(int)(byte)(byte)enum_value;
+        return (enum__Enum__c1cd10fd6_c846eb854)(enum__Enum__c1cd10fd6_c846eb854)(int)(int)(int)enum_value;
     }
 
 
 
-    public static unsafe void mem__swap__comptime_int__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::System.Int128* a, global::System.Int128* b)
+    public static unsafe void mem__swap__comptime_int__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::System.Int128* a, global::System.Int128* b)
     {
         {
             Slice<byte> a_bytes = new Slice<byte>((byte*)a, ((ulong)(sizeof(global::System.Int128))) / ((ulong)(sizeof(byte))));
@@ -3708,7 +3846,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ConstSlice<ushort> mem__absorbSentinel____const_unsigned_shortpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ConstSlice<ushort> slice)
+    public static unsafe ConstSlice<ushort> mem__absorbSentinel____const_unsigned_shortpa0_e16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ConstSlice<ushort> slice)
     {
         {
             {
@@ -3719,7 +3857,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe Slice<byte> mem__absorbSentinel____unsigned_charpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<byte> slice)
+    public static unsafe Slice<byte> mem__absorbSentinel____unsigned_charpa0_e8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<byte> slice)
     {
         {
             {
@@ -3730,34 +3868,45 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe void mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data> items, ulong amount)
+    public static unsafe void mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data> items, ulong amount)
     {
-        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + 0, (ulong)(amount - (ulong)(0))));
-        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + amount, items.Len - (ulong)amount));
-        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items);
+        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + 0, (ulong)(amount - (ulong)(0))));
+        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + amount, items.Len - (ulong)amount));
+        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items);
     }
 
 
 
-    public static unsafe mem__TokenIterator__u8_2 mem__tokenizeScalar__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ConstSlice<byte> buffer, byte delimiter)
+    public static unsafe Slice<byte> mem__absorbSentinel____unsigned_charpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<byte> slice)
+    {
+        {
+            {
+                return slice;
+            }
+        }
+    }
+
+
+
+    public static unsafe mem__TokenIterator__u8_2 mem__tokenizeScalar__u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ConstSlice<byte> buffer, byte delimiter)
     {
         return new mem__TokenIterator__u8_2 { index = 0, buffer = buffer, delimiter = delimiter };
     }
 
 
 
-    public static unsafe CBool mem__startsWith__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ConstSlice<byte> haystack, ConstSlice<byte> needle)
+    public static unsafe CBool mem__startsWith__u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ConstSlice<byte> haystack, ConstSlice<byte> needle)
     {
-        return ((CBool)(Cond.B(((CBool)(needle.Len > haystack.Len))) ? false : mem__eql__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new ConstSlice<byte>(haystack.Ptr + 0, (ulong)(needle.Len - (ulong)(0))), needle)));
+        return ((CBool)(Cond.B(((CBool)(needle.Len > haystack.Len))) ? false : mem__eql__u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new ConstSlice<byte>(haystack.Ptr + 0, (ulong)(needle.Len - (ulong)(0))), needle)));
     }
 
 
 
-    public static unsafe CBool mem__eql__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ConstSlice<byte> a, ConstSlice<byte> b)
+    public static unsafe CBool mem__eql__u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ConstSlice<byte> a, ConstSlice<byte> b)
     {
-        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(false) ? 0 : 1)) && Cond.B(((CBool)(((ulong)(sizeof(byte))) != (ulong)(0))))))) && Cond.B(meta__hasUniqueRepresentation__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0())))) && Cond.B(((CBool)(Cond.B(true) && Cond.B((Cond.B(false) ? 0 : 1)))))))))
+        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(false) ? 0 : 1)) && Cond.B(((CBool)(((ulong)(sizeof(byte))) != (ulong)(0))))))) && Cond.B(meta__hasUniqueRepresentation__u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659())))) && Cond.B(true)))))
         {
-            return mem__eqlBytes__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new ConstSlice<byte>((byte*)a.Ptr, a.Len), new ConstSlice<byte>((byte*)b.Ptr, b.Len));
+            return mem__eqlBytes__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new ConstSlice<byte>((byte*)a.Ptr, a.Len), new ConstSlice<byte>((byte*)b.Ptr, b.Len));
         }
         if (Cond.B(((CBool)(a.Len != b.Len))))
             return false;
@@ -3783,23 +3932,23 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ulong? mem__findNone__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ConstSlice<byte> slice, ConstSlice<byte> values)
+    public static unsafe ulong? mem__findNone__u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ConstSlice<byte> slice, ConstSlice<byte> values)
     {
-        return mem__findNonePos__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slice, 0, values);
+        return mem__findNonePos__u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slice, 0, values);
     }
 
 
 
-    public static unsafe void mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0__Data__Data> items, ulong amount)
+    public static unsafe void mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0__Data__Data> items, ulong amount)
     {
-        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0__Data__Data>(items.Ptr + 0, (ulong)(amount - (ulong)(0))));
-        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0__Data__Data>(items.Ptr + amount, items.Len - (ulong)amount));
-        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items);
+        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0__Data__Data>(items.Ptr + 0, (ulong)(amount - (ulong)(0))));
+        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0__Data__Data>(items.Ptr + amount, items.Len - (ulong)amount));
+        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items);
     }
 
 
 
-    public static unsafe uint mem__readInt__u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(byte* buffer, lang__Endian endian)
+    public static unsafe uint mem__readInt__u32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(byte* buffer, lang__Endian endian)
     {
         uint little_val = ZigBitcastWidth.Array<uint>((void*)(buffer), 4, 8, 1, 32, false);
         return (((int)endian) switch { (int)__DotCcEnum_6C616E675F5F456E6469616E.little => little_val, _ => ZigMath.ByteSwap(little_val) });
@@ -3807,7 +3956,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ulong mem__readInt__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(byte* buffer, lang__Endian endian)
+    public static unsafe ulong mem__readInt__u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(byte* buffer, lang__Endian endian)
     {
         ulong little_val = ZigBitcastWidth.Array<ulong>((void*)(buffer), 8, 8, 1, 64, false);
         return (((int)endian) switch { (int)__DotCcEnum_6C616E675F5F456E6469616E.little => little_val, _ => ZigMath.ByteSwap(little_val) });
@@ -3815,7 +3964,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe void mem__replaceScalar__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<byte> slice, byte match, byte replacement)
+    public static unsafe void mem__replaceScalar__u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<byte> slice, byte match, byte replacement)
     {
         for (ulong __i = 0UL; Cond.B(((CBool)(__i < slice.Len))); __i++)
         {
@@ -3829,82 +3978,43 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe void mem__writeInt__u128__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(byte* buffer, global::System.UInt128 value, lang__Endian endian)
+    public static unsafe void mem__writeInt__u128__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(byte* buffer, global::System.UInt128 value, lang__Endian endian)
     {
         byte* __dotcc_aligned_value_bytes = stackalloc byte[sizeof(global::System.UInt128) + 15];
         global::System.UInt128* __dotcc_aligned_value = (global::System.UInt128*)(((nuint)__dotcc_aligned_value_bytes + 15) & ~(nuint)15);
         *__dotcc_aligned_value = value;
         {
-            byte* __anf6 = default;
+            byte* __anf11 = default;
             switch ((int)endian)
             {
                 case (int)__DotCcEnum_6C616E675F5F456E6469616E.little:
                     {
-                        byte* __dotcc_aligned___bitcastArray2_bytes = stackalloc byte[sizeof(global::System.UInt128) + 15];
-                        global::System.UInt128* __dotcc_aligned___bitcastArray2 = (global::System.UInt128*)(((nuint)__dotcc_aligned___bitcastArray2_bytes + 15) & ~(nuint)15);
-                        *__dotcc_aligned___bitcastArray2 = (global::System.UInt128)(*__dotcc_aligned_value);
-                        byte* __cl205 = stackalloc byte[]{ (byte)((*__dotcc_aligned___bitcastArray2) >> 0), (byte)((*__dotcc_aligned___bitcastArray2) >> 8), (byte)((*__dotcc_aligned___bitcastArray2) >> 16), (byte)((*__dotcc_aligned___bitcastArray2) >> 24), (byte)((*__dotcc_aligned___bitcastArray2) >> 32), (byte)((*__dotcc_aligned___bitcastArray2) >> 40), (byte)((*__dotcc_aligned___bitcastArray2) >> 48), (byte)((*__dotcc_aligned___bitcastArray2) >> 56), (byte)((*__dotcc_aligned___bitcastArray2) >> 64), (byte)((*__dotcc_aligned___bitcastArray2) >> 72), (byte)((*__dotcc_aligned___bitcastArray2) >> 80), (byte)((*__dotcc_aligned___bitcastArray2) >> 88), (byte)((*__dotcc_aligned___bitcastArray2) >> 96), (byte)((*__dotcc_aligned___bitcastArray2) >> 104), (byte)((*__dotcc_aligned___bitcastArray2) >> 112), (byte)((*__dotcc_aligned___bitcastArray2) >> 120) };
-                        byte* __anf3 = __cl205;
-                        __anf6 = __anf3;
+                        byte* __dotcc_aligned___bitcastArray7_bytes = stackalloc byte[sizeof(global::System.UInt128) + 15];
+                        global::System.UInt128* __dotcc_aligned___bitcastArray7 = (global::System.UInt128*)(((nuint)__dotcc_aligned___bitcastArray7_bytes + 15) & ~(nuint)15);
+                        *__dotcc_aligned___bitcastArray7 = (global::System.UInt128)(*__dotcc_aligned_value);
+                        byte* __cl209 = stackalloc byte[]{ (byte)((*__dotcc_aligned___bitcastArray7) >> 0), (byte)((*__dotcc_aligned___bitcastArray7) >> 8), (byte)((*__dotcc_aligned___bitcastArray7) >> 16), (byte)((*__dotcc_aligned___bitcastArray7) >> 24), (byte)((*__dotcc_aligned___bitcastArray7) >> 32), (byte)((*__dotcc_aligned___bitcastArray7) >> 40), (byte)((*__dotcc_aligned___bitcastArray7) >> 48), (byte)((*__dotcc_aligned___bitcastArray7) >> 56), (byte)((*__dotcc_aligned___bitcastArray7) >> 64), (byte)((*__dotcc_aligned___bitcastArray7) >> 72), (byte)((*__dotcc_aligned___bitcastArray7) >> 80), (byte)((*__dotcc_aligned___bitcastArray7) >> 88), (byte)((*__dotcc_aligned___bitcastArray7) >> 96), (byte)((*__dotcc_aligned___bitcastArray7) >> 104), (byte)((*__dotcc_aligned___bitcastArray7) >> 112), (byte)((*__dotcc_aligned___bitcastArray7) >> 120) };
+                        byte* __anf8 = __cl209;
+                        __anf11 = __anf8;
                         break;
                     }
                 default:
                     {
-                        byte* __dotcc_aligned___bitcastArray4_bytes = stackalloc byte[sizeof(global::System.UInt128) + 15];
-                        global::System.UInt128* __dotcc_aligned___bitcastArray4 = (global::System.UInt128*)(((nuint)__dotcc_aligned___bitcastArray4_bytes + 15) & ~(nuint)15);
-                        *__dotcc_aligned___bitcastArray4 = (global::System.UInt128)ZigMath.ByteSwap((*__dotcc_aligned_value));
-                        byte* __cl206 = stackalloc byte[]{ (byte)((*__dotcc_aligned___bitcastArray4) >> 0), (byte)((*__dotcc_aligned___bitcastArray4) >> 8), (byte)((*__dotcc_aligned___bitcastArray4) >> 16), (byte)((*__dotcc_aligned___bitcastArray4) >> 24), (byte)((*__dotcc_aligned___bitcastArray4) >> 32), (byte)((*__dotcc_aligned___bitcastArray4) >> 40), (byte)((*__dotcc_aligned___bitcastArray4) >> 48), (byte)((*__dotcc_aligned___bitcastArray4) >> 56), (byte)((*__dotcc_aligned___bitcastArray4) >> 64), (byte)((*__dotcc_aligned___bitcastArray4) >> 72), (byte)((*__dotcc_aligned___bitcastArray4) >> 80), (byte)((*__dotcc_aligned___bitcastArray4) >> 88), (byte)((*__dotcc_aligned___bitcastArray4) >> 96), (byte)((*__dotcc_aligned___bitcastArray4) >> 104), (byte)((*__dotcc_aligned___bitcastArray4) >> 112), (byte)((*__dotcc_aligned___bitcastArray4) >> 120) };
-                        byte* __anf5 = __cl206;
-                        __anf6 = __anf5;
+                        byte* __dotcc_aligned___bitcastArray9_bytes = stackalloc byte[sizeof(global::System.UInt128) + 15];
+                        global::System.UInt128* __dotcc_aligned___bitcastArray9 = (global::System.UInt128*)(((nuint)__dotcc_aligned___bitcastArray9_bytes + 15) & ~(nuint)15);
+                        *__dotcc_aligned___bitcastArray9 = (global::System.UInt128)ZigMath.ByteSwap((*__dotcc_aligned_value));
+                        byte* __cl210 = stackalloc byte[]{ (byte)((*__dotcc_aligned___bitcastArray9) >> 0), (byte)((*__dotcc_aligned___bitcastArray9) >> 8), (byte)((*__dotcc_aligned___bitcastArray9) >> 16), (byte)((*__dotcc_aligned___bitcastArray9) >> 24), (byte)((*__dotcc_aligned___bitcastArray9) >> 32), (byte)((*__dotcc_aligned___bitcastArray9) >> 40), (byte)((*__dotcc_aligned___bitcastArray9) >> 48), (byte)((*__dotcc_aligned___bitcastArray9) >> 56), (byte)((*__dotcc_aligned___bitcastArray9) >> 64), (byte)((*__dotcc_aligned___bitcastArray9) >> 72), (byte)((*__dotcc_aligned___bitcastArray9) >> 80), (byte)((*__dotcc_aligned___bitcastArray9) >> 88), (byte)((*__dotcc_aligned___bitcastArray9) >> 96), (byte)((*__dotcc_aligned___bitcastArray9) >> 104), (byte)((*__dotcc_aligned___bitcastArray9) >> 112), (byte)((*__dotcc_aligned___bitcastArray9) >> 120) };
+                        byte* __anf10 = __cl210;
+                        __anf11 = __anf10;
                         break;
                     }
             }
-            ZigMem.CopyForwards<byte>(new Slice<byte>(buffer, 16UL), new ConstSlice<byte>(__anf6, 16UL));
+            ZigMem.CopyForwards<byte>(new Slice<byte>(buffer, 16UL), new ConstSlice<byte>(__anf11, 16UL));
         }
     }
 
 
 
-    public static unsafe void mem__writeInt__u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(byte* buffer, uint value, lang__Endian endian)
-    {
-        byte* __anf11 = default;
-        switch ((int)endian)
-        {
-            case (int)__DotCcEnum_6C616E675F5F456E6469616E.little:
-                {
-                    byte* __dotcc_aligned___bitcastArray7_bytes = stackalloc byte[sizeof(global::System.UInt128) + 15];
-                    global::System.UInt128* __dotcc_aligned___bitcastArray7 = (global::System.UInt128*)(((nuint)__dotcc_aligned___bitcastArray7_bytes + 15) & ~(nuint)15);
-                    *__dotcc_aligned___bitcastArray7 = (global::System.UInt128)value;
-                    byte* __cl207 = stackalloc byte[]{ (byte)((*__dotcc_aligned___bitcastArray7) >> 0), (byte)((*__dotcc_aligned___bitcastArray7) >> 8), (byte)((*__dotcc_aligned___bitcastArray7) >> 16), (byte)((*__dotcc_aligned___bitcastArray7) >> 24) };
-                    byte* __anf8 = __cl207;
-                    __anf11 = __anf8;
-                    break;
-                }
-            default:
-                {
-                    byte* __dotcc_aligned___bitcastArray9_bytes = stackalloc byte[sizeof(global::System.UInt128) + 15];
-                    global::System.UInt128* __dotcc_aligned___bitcastArray9 = (global::System.UInt128*)(((nuint)__dotcc_aligned___bitcastArray9_bytes + 15) & ~(nuint)15);
-                    *__dotcc_aligned___bitcastArray9 = (global::System.UInt128)ZigMath.ByteSwap(value);
-                    byte* __cl208 = stackalloc byte[]{ (byte)((*__dotcc_aligned___bitcastArray9) >> 0), (byte)((*__dotcc_aligned___bitcastArray9) >> 8), (byte)((*__dotcc_aligned___bitcastArray9) >> 16), (byte)((*__dotcc_aligned___bitcastArray9) >> 24) };
-                    byte* __anf10 = __cl208;
-                    __anf11 = __anf10;
-                    break;
-                }
-        }
-        ZigMem.CopyForwards<byte>(new Slice<byte>(buffer, 4UL), new ConstSlice<byte>(__anf11, 4UL));
-    }
-
-
-
-    public static unsafe ushort mem__readInt__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(byte* buffer, lang__Endian endian)
-    {
-        ushort little_val = ZigBitcastWidth.Array<ushort>((void*)(buffer), 2, 8, 1, 16, false);
-        return (((int)endian) switch { (int)__DotCcEnum_6C616E675F5F456E6469616E.little => little_val, _ => ZigMath.ByteSwap(little_val) });
-    }
-
-
-
-    public static unsafe void mem__writeInt__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(byte* buffer, ulong value, lang__Endian endian)
+    public static unsafe void mem__writeInt__u32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(byte* buffer, uint value, lang__Endian endian)
     {
         byte* __anf16 = default;
         switch ((int)endian)
@@ -3914,8 +4024,8 @@ public static unsafe partial class GhosttyVt
                     byte* __dotcc_aligned___bitcastArray12_bytes = stackalloc byte[sizeof(global::System.UInt128) + 15];
                     global::System.UInt128* __dotcc_aligned___bitcastArray12 = (global::System.UInt128*)(((nuint)__dotcc_aligned___bitcastArray12_bytes + 15) & ~(nuint)15);
                     *__dotcc_aligned___bitcastArray12 = (global::System.UInt128)value;
-                    byte* __cl209 = stackalloc byte[]{ (byte)((*__dotcc_aligned___bitcastArray12) >> 0), (byte)((*__dotcc_aligned___bitcastArray12) >> 8), (byte)((*__dotcc_aligned___bitcastArray12) >> 16), (byte)((*__dotcc_aligned___bitcastArray12) >> 24), (byte)((*__dotcc_aligned___bitcastArray12) >> 32), (byte)((*__dotcc_aligned___bitcastArray12) >> 40), (byte)((*__dotcc_aligned___bitcastArray12) >> 48), (byte)((*__dotcc_aligned___bitcastArray12) >> 56) };
-                    byte* __anf13 = __cl209;
+                    byte* __cl211 = stackalloc byte[]{ (byte)((*__dotcc_aligned___bitcastArray12) >> 0), (byte)((*__dotcc_aligned___bitcastArray12) >> 8), (byte)((*__dotcc_aligned___bitcastArray12) >> 16), (byte)((*__dotcc_aligned___bitcastArray12) >> 24) };
+                    byte* __anf13 = __cl211;
                     __anf16 = __anf13;
                     break;
                 }
@@ -3924,18 +4034,26 @@ public static unsafe partial class GhosttyVt
                     byte* __dotcc_aligned___bitcastArray14_bytes = stackalloc byte[sizeof(global::System.UInt128) + 15];
                     global::System.UInt128* __dotcc_aligned___bitcastArray14 = (global::System.UInt128*)(((nuint)__dotcc_aligned___bitcastArray14_bytes + 15) & ~(nuint)15);
                     *__dotcc_aligned___bitcastArray14 = (global::System.UInt128)ZigMath.ByteSwap(value);
-                    byte* __cl210 = stackalloc byte[]{ (byte)((*__dotcc_aligned___bitcastArray14) >> 0), (byte)((*__dotcc_aligned___bitcastArray14) >> 8), (byte)((*__dotcc_aligned___bitcastArray14) >> 16), (byte)((*__dotcc_aligned___bitcastArray14) >> 24), (byte)((*__dotcc_aligned___bitcastArray14) >> 32), (byte)((*__dotcc_aligned___bitcastArray14) >> 40), (byte)((*__dotcc_aligned___bitcastArray14) >> 48), (byte)((*__dotcc_aligned___bitcastArray14) >> 56) };
-                    byte* __anf15 = __cl210;
+                    byte* __cl212 = stackalloc byte[]{ (byte)((*__dotcc_aligned___bitcastArray14) >> 0), (byte)((*__dotcc_aligned___bitcastArray14) >> 8), (byte)((*__dotcc_aligned___bitcastArray14) >> 16), (byte)((*__dotcc_aligned___bitcastArray14) >> 24) };
+                    byte* __anf15 = __cl212;
                     __anf16 = __anf15;
                     break;
                 }
         }
-        ZigMem.CopyForwards<byte>(new Slice<byte>(buffer, 8UL), new ConstSlice<byte>(__anf16, 8UL));
+        ZigMem.CopyForwards<byte>(new Slice<byte>(buffer, 4UL), new ConstSlice<byte>(__anf16, 4UL));
     }
 
 
 
-    public static unsafe global::System.UInt128 mem__readInt__u128__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(byte* buffer, lang__Endian endian)
+    public static unsafe ushort mem__readInt__u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(byte* buffer, lang__Endian endian)
+    {
+        ushort little_val = ZigBitcastWidth.Array<ushort>((void*)(buffer), 2, 8, 1, 16, false);
+        return (((int)endian) switch { (int)__DotCcEnum_6C616E675F5F456E6469616E.little => little_val, _ => ZigMath.ByteSwap(little_val) });
+    }
+
+
+
+    public static unsafe global::System.UInt128 mem__readInt__u128__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(byte* buffer, lang__Endian endian)
     {
         byte* __dotcc_aligned_little_val_bytes = stackalloc byte[sizeof(global::System.UInt128) + 15];
         global::System.UInt128* __dotcc_aligned_little_val = (global::System.UInt128*)(((nuint)__dotcc_aligned_little_val_bytes + 15) & ~(nuint)15);
@@ -3945,7 +4063,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe void mem__writeInt__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(byte* buffer, ushort value, lang__Endian endian)
+    public static unsafe void mem__writeInt__u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(byte* buffer, ushort value, lang__Endian endian)
     {
         byte* __anf21 = default;
         switch ((int)endian)
@@ -3955,8 +4073,8 @@ public static unsafe partial class GhosttyVt
                     byte* __dotcc_aligned___bitcastArray17_bytes = stackalloc byte[sizeof(global::System.UInt128) + 15];
                     global::System.UInt128* __dotcc_aligned___bitcastArray17 = (global::System.UInt128*)(((nuint)__dotcc_aligned___bitcastArray17_bytes + 15) & ~(nuint)15);
                     *__dotcc_aligned___bitcastArray17 = (global::System.UInt128)value;
-                    byte* __cl211 = stackalloc byte[]{ (byte)((*__dotcc_aligned___bitcastArray17) >> 0), (byte)((*__dotcc_aligned___bitcastArray17) >> 8) };
-                    byte* __anf18 = __cl211;
+                    byte* __cl213 = stackalloc byte[]{ (byte)((*__dotcc_aligned___bitcastArray17) >> 0), (byte)((*__dotcc_aligned___bitcastArray17) >> 8) };
+                    byte* __anf18 = __cl213;
                     __anf21 = __anf18;
                     break;
                 }
@@ -3965,8 +4083,8 @@ public static unsafe partial class GhosttyVt
                     byte* __dotcc_aligned___bitcastArray19_bytes = stackalloc byte[sizeof(global::System.UInt128) + 15];
                     global::System.UInt128* __dotcc_aligned___bitcastArray19 = (global::System.UInt128*)(((nuint)__dotcc_aligned___bitcastArray19_bytes + 15) & ~(nuint)15);
                     *__dotcc_aligned___bitcastArray19 = (global::System.UInt128)ZigMath.ByteSwap(value);
-                    byte* __cl212 = stackalloc byte[]{ (byte)((*__dotcc_aligned___bitcastArray19) >> 0), (byte)((*__dotcc_aligned___bitcastArray19) >> 8) };
-                    byte* __anf20 = __cl212;
+                    byte* __cl214 = stackalloc byte[]{ (byte)((*__dotcc_aligned___bitcastArray19) >> 0), (byte)((*__dotcc_aligned___bitcastArray19) >> 8) };
+                    byte* __anf20 = __cl214;
                     __anf21 = __anf20;
                     break;
                 }
@@ -3976,50 +4094,50 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe void mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data> items, ulong amount)
+    public static unsafe void mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data> items, ulong amount)
     {
-        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + 0, (ulong)(amount - (ulong)(0))));
-        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + amount, items.Len - (ulong)amount));
-        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items);
+        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + 0, (ulong)(amount - (ulong)(0))));
+        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + amount, items.Len - (ulong)amount));
+        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items);
     }
 
 
 
-    public static unsafe void mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data> items, ulong amount)
+    public static unsafe void mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data> items, ulong amount)
     {
-        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + 0, (ulong)(amount - (ulong)(0))));
-        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + amount, items.Len - (ulong)amount));
-        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items);
+        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + 0, (ulong)(amount - (ulong)(0))));
+        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + amount, items.Len - (ulong)amount));
+        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items);
     }
 
 
 
-    public static unsafe void mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_p_Build__PackageOptions__UserProvidedpa0_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_p_Build__PackageOptions__UserProvidedpa0_array_hash_map__StringContext_1__Data__Data> items, ulong amount)
+    public static unsafe void mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_p_Build__PackageOptions__UserProvidedpa0_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_p_Build__PackageOptions__UserProvidedpa0_array_hash_map__StringContext_1__Data__Data> items, ulong amount)
     {
-        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_p_Build__PackageOptions__UserProvidedpa0_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_p_Build__PackageOptions__UserProvidedpa0_array_hash_map__StringContext_1__Data__Data>(items.Ptr + 0, (ulong)(amount - (ulong)(0))));
-        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_p_Build__PackageOptions__UserProvidedpa0_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_p_Build__PackageOptions__UserProvidedpa0_array_hash_map__StringContext_1__Data__Data>(items.Ptr + amount, items.Len - (ulong)amount));
-        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_p_Build__PackageOptions__UserProvidedpa0_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items);
+        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_p_Build__PackageOptions__UserProvidedpa0_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_p_Build__PackageOptions__UserProvidedpa0_array_hash_map__StringContext_1__Data__Data>(items.Ptr + 0, (ulong)(amount - (ulong)(0))));
+        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_p_Build__PackageOptions__UserProvidedpa0_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_p_Build__PackageOptions__UserProvidedpa0_array_hash_map__StringContext_1__Data__Data>(items.Ptr + amount, items.Len - (ulong)amount));
+        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_p_Build__PackageOptions__UserProvidedpa0_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items);
     }
 
 
 
-    public static unsafe void mem__sort__multi_array_list__MultiArrayList__array_hash_map__Custom__Build__PackageInstanceKey_p_Build__Dependencypa0_Build____AnonStruct0_1__Data__Data_void_mu__C9495A178D9425D881E293E7F2DD266741726A7B20B128F8481B754EDAA45DF1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__Build__PackageInstanceKey_p_Build__Dependencypa0_Build____AnonStruct0_1__Data__Data> items)
+    public static unsafe void mem__sort__multi_array_list__MultiArrayList__array_hash_map__Custom__Build__PackageInstanceKey_p_Build__Dependencypa0_Build____AnonStruct0_1__Data__Data_void_mu__C9495A178D9425D881E293E7F2DD266741726A7B20B128F8481B754EDAA45DF1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__Build__PackageInstanceKey_p_Build__Dependencypa0_Build____AnonStruct0_1__Data__Data> items)
     {
-        sort_block__block__multi_array_list__MultiArrayList__array_hash_map__Custom__Build__PackageInstanceKey_p_Build__Dependencypa0_Build____AnonStruct0_1__Data__Data__A491C248011A84264912BCBD68DFBC26B9B03524F46652545494CB5243AEA805__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items);
+        sort_block__block__multi_array_list__MultiArrayList__array_hash_map__Custom__Build__PackageInstanceKey_p_Build__Dependencypa0_Build____AnonStruct0_1__Data__Data__A491C248011A84264912BCBD68DFBC26B9B03524F46652545494CB5243AEA805__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items);
     }
 
 
 
-    public static unsafe void mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom__Build_Cache__Manifest__File__Offset_void_Build_Cache__Manifest__File__HashContext_0__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__Build_Cache__Manifest__File__Offset_void_Build_Cache__Manifest__File__HashContext_0__Data__Data> items, ulong amount)
+    public static unsafe void mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom__Build_Cache__Manifest__File__Offset_void_Build_Cache__Manifest__File__HashContext_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__Build_Cache__Manifest__File__Offset_void_Build_Cache__Manifest__File__HashContext_0__Data__Data> items, ulong amount)
     {
-        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom__Build_Cache__Manifest__File__Offset_void_Build_Cache__Manifest__File__HashContext_0__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__Build_Cache__Manifest__File__Offset_void_Build_Cache__Manifest__File__HashContext_0__Data__Data>(items.Ptr + 0, (ulong)(amount - (ulong)(0))));
-        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom__Build_Cache__Manifest__File__Offset_void_Build_Cache__Manifest__File__HashContext_0__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__Build_Cache__Manifest__File__Offset_void_Build_Cache__Manifest__File__HashContext_0__Data__Data>(items.Ptr + amount, items.Len - (ulong)amount));
-        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom__Build_Cache__Manifest__File__Offset_void_Build_Cache__Manifest__File__HashContext_0__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items);
+        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom__Build_Cache__Manifest__File__Offset_void_Build_Cache__Manifest__File__HashContext_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__Build_Cache__Manifest__File__Offset_void_Build_Cache__Manifest__File__HashContext_0__Data__Data>(items.Ptr + 0, (ulong)(amount - (ulong)(0))));
+        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom__Build_Cache__Manifest__File__Offset_void_Build_Cache__Manifest__File__HashContext_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__Build_Cache__Manifest__File__Offset_void_Build_Cache__Manifest__File__HashContext_0__Data__Data>(items.Ptr + amount, items.Len - (ulong)amount));
+        mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom__Build_Cache__Manifest__File__Offset_void_Build_Cache__Manifest__File__HashContext_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items);
     }
 
 
 
-    public static unsafe math__Order mem__order__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ConstSlice<byte> lhs, ConstSlice<byte> rhs)
+    public static unsafe math__Order mem__order__u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ConstSlice<byte> lhs, ConstSlice<byte> rhs)
     {
         if (Cond.B(((CBool)(lhs.Ptr != rhs.Ptr))))
         {
@@ -4032,7 +4150,7 @@ public static unsafe partial class GhosttyVt
                     byte lhs_elem = __s.Ptr[__i];
                     byte rhs_elem = __s__1.Ptr[__i];
                     {
-                        switch ((int)math__order__u8_u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(lhs_elem, rhs_elem))
+                        switch ((int)math__order__u8_u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lhs_elem, rhs_elem))
                         {
                             case (int)__DotCcEnum_6D6174685F5F4F72646572.eq:
                                 continue;
@@ -4047,16 +4165,16 @@ public static unsafe partial class GhosttyVt
                 }
             }
         }
-        return math__order__u64_u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(lhs.Len, rhs.Len);
+        return math__order__u64_u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lhs.Len, rhs.Len);
     }
 
 
 
-    public static unsafe ErrUnion<Slice<byte>> mem__printSentinel__sc2681465_tuple_i32_tw32_0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<byte> buffer, global::System.ValueTuple<int> args)
+    public static unsafe ErrUnion<Slice<byte>> mem__printSentinel__sc2681465_tuple_i32_tw32_0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<byte> buffer, global::System.ValueTuple<int> args)
     {
         try
         {
-            Slice<byte> result = ErrUnion.Try(mem__print__s0440b9e3_tuple_i32_tw32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(buffer, args));
+            Slice<byte> result = ErrUnion.Try(mem__print__s0440b9e3_tuple_i32_tw32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer, args));
             return ErrUnion<Slice<byte>>.Ok(new Slice<byte>(result.Ptr + 0, (ulong)(result.Len - 1UL - (ulong)(0))));
         }
         catch (ZigErrorReturn __e) { return ErrUnion<Slice<byte>>.Err(__e.Code); }
@@ -4064,28 +4182,28 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe void mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data> items)
+    public static unsafe void mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data> items)
     {
         ulong i = 0;
         ulong end = items.Len / 2UL;
         {
-            goto __blk33_brk;
+            goto __blk34_brk;
         }
-        __blk33_brk:
+        __blk34_brk:
         {
         }
         for (; Cond.B(((CBool)(i < end))); i += (ulong)(1))
         {
-            mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&items.Ptr[i], &items.Ptr[items.Len - i - 1UL]);
+            mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&items.Ptr[i], &items.Ptr[items.Len - i - 1UL]);
         }
     }
 
 
 
-    public static unsafe ulong? mem__findNonePos__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ConstSlice<byte> slice, ulong start_index, ConstSlice<byte> values)
+    public static unsafe ulong? mem__findNonePos__u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ConstSlice<byte> slice, ulong start_index, ConstSlice<byte> values)
     {
         if (Cond.B(((CBool)(start_index >= slice.Len))))
-            return null;
+            return default(ulong?);
         {
             ConstSlice<byte> __s = new ConstSlice<byte>(slice.Ptr + start_index, slice.Len - (ulong)start_index);
             for (ulong __i = 0UL; Cond.B(((CBool)(__i < __s.Len))); __i++)
@@ -4098,58 +4216,40 @@ public static unsafe partial class GhosttyVt
                         byte value = values.Ptr[__i__1];
                         {
                             if (Cond.B(((CBool)(c == value))))
-                                goto __loop35_cont;
+                                goto __loop36_cont;
                         }
                     }
                     return i;
                 }
-                __loop35_cont:
+                __loop36_cont:
                 {
                 }
             }
         }
-        return null;
+        return default(ulong?);
     }
 
 
 
-    public static unsafe void mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0__Data__Data> items)
+    public static unsafe void mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0__Data__Data> items)
     {
         ulong i = 0;
         ulong end = items.Len / 2UL;
         {
-            goto __blk37_brk;
+            goto __blk38_brk;
         }
-        __blk37_brk:
+        __blk38_brk:
         {
         }
         for (; Cond.B(((CBool)(i < end))); i += (ulong)(1))
         {
-            mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&items.Ptr[i], &items.Ptr[items.Len - i - 1UL]);
+            mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&items.Ptr[i], &items.Ptr[items.Len - i - 1UL]);
         }
     }
 
 
 
-    public static unsafe void mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data> items)
-    {
-        ulong i = 0;
-        ulong end = items.Len / 2UL;
-        {
-            goto __blk39_brk;
-        }
-        __blk39_brk:
-        {
-        }
-        for (; Cond.B(((CBool)(i < end))); i += (ulong)(1))
-        {
-            mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&items.Ptr[i], &items.Ptr[items.Len - i - 1UL]);
-        }
-    }
-
-
-
-    public static unsafe void mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data> items)
+    public static unsafe void mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data> items)
     {
         ulong i = 0;
         ulong end = items.Len / 2UL;
@@ -4161,13 +4261,13 @@ public static unsafe partial class GhosttyVt
         }
         for (; Cond.B(((CBool)(i < end))); i += (ulong)(1))
         {
-            mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&items.Ptr[i], &items.Ptr[items.Len - i - 1UL]);
+            mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&items.Ptr[i], &items.Ptr[items.Len - i - 1UL]);
         }
     }
 
 
 
-    public static unsafe void mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_p_Build__PackageOptions__UserProvidedpa0_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_p_Build__PackageOptions__UserProvidedpa0_array_hash_map__StringContext_1__Data__Data> items)
+    public static unsafe void mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data> items)
     {
         ulong i = 0;
         ulong end = items.Len / 2UL;
@@ -4179,13 +4279,13 @@ public static unsafe partial class GhosttyVt
         }
         for (; Cond.B(((CBool)(i < end))); i += (ulong)(1))
         {
-            mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_p_Build__PackageOptions__UserProvidedpa0_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&items.Ptr[i], &items.Ptr[items.Len - i - 1UL]);
+            mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&items.Ptr[i], &items.Ptr[items.Len - i - 1UL]);
         }
     }
 
 
 
-    public static unsafe void mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom__Build_Cache__Manifest__File__Offset_void_Build_Cache__Manifest__File__HashContext_0__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__Build_Cache__Manifest__File__Offset_void_Build_Cache__Manifest__File__HashContext_0__Data__Data> items)
+    public static unsafe void mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_p_Build__PackageOptions__UserProvidedpa0_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_p_Build__PackageOptions__UserProvidedpa0_array_hash_map__StringContext_1__Data__Data> items)
     {
         ulong i = 0;
         ulong end = items.Len / 2UL;
@@ -4197,18 +4297,36 @@ public static unsafe partial class GhosttyVt
         }
         for (; Cond.B(((CBool)(i < end))); i += (ulong)(1))
         {
-            mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__Build_Cache__Manifest__File__Offset_void_Build_Cache__Manifest__File__HashContext_0__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&items.Ptr[i], &items.Ptr[items.Len - i - 1UL]);
+            mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_p_Build__PackageOptions__UserProvidedpa0_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&items.Ptr[i], &items.Ptr[items.Len - i - 1UL]);
         }
     }
 
 
 
-    public static unsafe ErrUnion<Slice<byte>> mem__print__s0440b9e3_tuple_i32_tw32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<byte> buffer, global::System.ValueTuple<int> args)
+    public static unsafe void mem__reverse__multi_array_list__MultiArrayList__array_hash_map__Custom__Build_Cache__Manifest__File__Offset_void_Build_Cache__Manifest__File__HashContext_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__Build_Cache__Manifest__File__Offset_void_Build_Cache__Manifest__File__HashContext_0__Data__Data> items)
+    {
+        ulong i = 0;
+        ulong end = items.Len / 2UL;
+        {
+            goto __blk43_brk;
+        }
+        __blk43_brk:
+        {
+        }
+        for (; Cond.B(((CBool)(i < end))); i += (ulong)(1))
+        {
+            mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__Build_Cache__Manifest__File__Offset_void_Build_Cache__Manifest__File__HashContext_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&items.Ptr[i], &items.Ptr[items.Len - i - 1UL]);
+        }
+    }
+
+
+
+    public static unsafe ErrUnion<Slice<byte>> mem__print__s0440b9e3_tuple_i32_tw32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<byte> buffer, global::System.ValueTuple<int> args)
     {
         try
         {
-            Io_Writer__Writer w = Io_Writer__fixed__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(buffer);
-            ErrUnion<Unit> __cf = Io_Writer__print__s0440b9e3_tuple_i32_tw32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&w, args);
+            Io_Writer__Writer w = Io_Writer__fixed__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer);
+            ZigErrorUnionZero<Unit> __cf = Io_Writer__print__s0440b9e3_tuple_i32_tw32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&w, args);
             if (Cond.B(__cf.IsErr))
             {
                 ushort err = __cf.Code;
@@ -4220,19 +4338,19 @@ public static unsafe partial class GhosttyVt
                         throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
                 }
             }
-            return ErrUnion<Slice<byte>>.Ok(Io_Writer__buffered__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&w));
+            return ErrUnion<Slice<byte>>.Ok(Io_Writer__buffered__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&w));
         }
         catch (ZigErrorReturn __e) { return ErrUnion<Slice<byte>>.Err(__e.Code); }
     }
 
 
 
-    public static unsafe ConstSlice<byte>? mem__TokenIterator__u8_2_next__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mem__TokenIterator__u8_2* self)
+    public static unsafe ConstSlice<byte>? mem__TokenIterator__u8_2_next__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem__TokenIterator__u8_2* self)
     {
-        ConstSlice<byte>? __cf = mem__TokenIterator__u8_2_peek__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self);
+        ConstSlice<byte>? __cf = mem__TokenIterator__u8_2_peek__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self);
         if (Cond.B((Cond.B(__cf.HasValue) ? 0 : 1)))
         {
-            return null;
+            return default(ConstSlice<byte>?);
         }
         ConstSlice<byte> result = __cf.Value;
         self->index += result.Len;
@@ -4241,7 +4359,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ConstSlice<byte> mem__SplitIterator__u8_2_rest__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mem__SplitIterator__u8_2 self)
+    public static unsafe ConstSlice<byte> mem__SplitIterator__u8_2_rest__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem__SplitIterator__u8_2 self)
     {
         ulong end = self.buffer.Len;
         ulong start = (self.index ?? end);
@@ -4250,18 +4368,18 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ConstSlice<byte>? mem__TokenIterator__u8_2_peek__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mem__TokenIterator__u8_2* self)
+    public static unsafe ConstSlice<byte>? mem__TokenIterator__u8_2_peek__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem__TokenIterator__u8_2* self)
     {
-        for (; Cond.B(((CBool)(Cond.B(((CBool)(self->index < self->buffer.Len))) && Cond.B(mem__TokenIterator__u8_2_isDelimiter__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*self, self->index))))); self->index += (ulong)(1))
+        for (; Cond.B(((CBool)(Cond.B(((CBool)(self->index < self->buffer.Len))) && Cond.B(mem__TokenIterator__u8_2_isDelimiter__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*self, self->index))))); self->index += (ulong)(1))
         {
         }
         ulong start = self->index;
         if (Cond.B(((CBool)(start == self->buffer.Len))))
         {
-            return null;
+            return default(ConstSlice<byte>?);
         }
         ulong end = start;
-        for (; Cond.B(((CBool)(Cond.B(((CBool)(end < self->buffer.Len))) && Cond.B((Cond.B(mem__TokenIterator__u8_2_isDelimiter__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*self, end)) ? 0 : 1))))); end += (ulong)(1))
+        for (; Cond.B(((CBool)(Cond.B(((CBool)(end < self->buffer.Len))) && Cond.B((Cond.B(mem__TokenIterator__u8_2_isDelimiter__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*self, end)) ? 0 : 1))))); end += (ulong)(1))
         {
         }
         return new ConstSlice<byte>(self->buffer.Ptr + start, (ulong)(end - start));
@@ -4269,14 +4387,14 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe CBool mem__TokenIterator__u8_2_isDelimiter__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mem__TokenIterator__u8_2 self, ulong index)
+    public static unsafe CBool mem__TokenIterator__u8_2_isDelimiter__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem__TokenIterator__u8_2 self, ulong index)
     {
         return ((CBool)(self.buffer.Ptr[index] == self.delimiter));
     }
 
 
 
-    public static unsafe CBool mem__eqlBytes__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ConstSlice<byte> a, ConstSlice<byte> b)
+    public static unsafe CBool mem__eqlBytes__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ConstSlice<byte> a, ConstSlice<byte> b)
     {
         if (Cond.B(((CBool)(a.Len != b.Len))))
             return false;
@@ -4286,13 +4404,13 @@ public static unsafe partial class GhosttyVt
         {
             if (Cond.B(((CBool)(a.Len < 4UL))))
             {
-                int x = a.Ptr[0] ^ b.Ptr[0] | a.Ptr[a.Len - 1UL] ^ b.Ptr[a.Len - 1UL] | a.Ptr[a.Len / 2UL] ^ b.Ptr[a.Len / 2UL];
-                return ((CBool)(x == 0));
+                byte x = (byte)((byte)((byte)(a.Ptr[0] ^ b.Ptr[0]) | (byte)(a.Ptr[a.Len - 1UL] ^ b.Ptr[a.Len - 1UL])) | (byte)(a.Ptr[a.Len / 2UL] ^ b.Ptr[a.Len / 2UL]));
+                return ((CBool)(x == (byte)0));
             }
             uint x__1 = 0;
             {
-                ulong* __cl213 = stackalloc ulong[]{ 0, a.Len - 4UL, a.Len / 8UL * 4UL, a.Len - 4UL - a.Len / 8UL * 4UL };
-                Slice<ulong> __s = new Slice<ulong>(__cl213, 4UL);
+                ulong* __cl215 = stackalloc ulong[]{ 0, a.Len - 4UL, a.Len / 8UL * 4UL, a.Len - 4UL - a.Len / 8UL * 4UL };
+                Slice<ulong> __s = new Slice<ulong>(__cl215, 4UL);
                 for (ulong __i = 0UL; Cond.B(((CBool)(__i < __s.Len))); __i++)
                 {
                     ulong n = __s.Ptr[__i];
@@ -4351,136 +4469,92 @@ public static unsafe partial class GhosttyVt
         {
             System.Runtime.Intrinsics.Vector512<byte> a_chunk = ZigVec.Load512((byte*)(new ConstSlice<byte>(a.Ptr + i * (ulong)(64L), a.Len - (ulong)(i * (ulong)(64L))).Ptr + 0));
             System.Runtime.Intrinsics.Vector512<byte> b_chunk = ZigVec.Load512((byte*)(new ConstSlice<byte>(b.Ptr + i * (ulong)(64L), b.Len - (ulong)(i * (ulong)(64L))).Ptr + 0));
-            if (Cond.B(eqlBytes__Scan_isNotEqual__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(a_chunk, b_chunk)))
+            if (Cond.B(eqlBytes__Scan_isNotEqual__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(a_chunk, b_chunk)))
                 return false;
         }
         System.Runtime.Intrinsics.Vector512<byte> last_a_chunk = ZigVec.Load512((byte*)(new ConstSlice<byte>(a.Ptr + (a.Len - (ulong)(64L)), a.Len - (ulong)(a.Len - (ulong)(64L))).Ptr + 0));
         System.Runtime.Intrinsics.Vector512<byte> last_b_chunk = ZigVec.Load512((byte*)(new ConstSlice<byte>(b.Ptr + (a.Len - (ulong)(64L)), b.Len - (ulong)(a.Len - (ulong)(64L))).Ptr + 0));
-        return (Cond.B(eqlBytes__Scan_isNotEqual__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(last_a_chunk, last_b_chunk)) ? 0 : 1);
+        return (Cond.B(eqlBytes__Scan_isNotEqual__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(last_a_chunk, last_b_chunk)) ? 0 : 1);
     }
 
 
 
-    public static unsafe CBool eqlBytes__Scan_isNotEqual__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(System.Runtime.Intrinsics.Vector512<byte> chunk_a, System.Runtime.Intrinsics.Vector512<byte> chunk_b)
+    public static unsafe CBool eqlBytes__Scan_isNotEqual__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(System.Runtime.Intrinsics.Vector512<byte> chunk_a, System.Runtime.Intrinsics.Vector512<byte> chunk_b)
     {
         return ((CBool)(ZigVec.Ne(chunk_a, chunk_b) != 0UL));
     }
 
 
 
-    public static unsafe void sort__insertion__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array_l__01B825397D9B52CF6ED48FC268B0B86571AA05EC4498A77790C30E082CAC1E65__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data> items)
+    public static unsafe void sort__insertion__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array_l__01B825397D9B52CF6ED48FC268B0B86571AA05EC4498A77790C30E082CAC1E65__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data> items)
     {
-        sort__insertionContext__insertion__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data___D793D7341CC171B97158FF7D06E640CD1CB53DF0ABA9022849C24AB93CEDB741__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(0, items.Len, new insertion__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array_list__M__1D35894EDBC5A602720A3C057C590ABAD959B5C27AF24A21F7267F1133D18FD8 { items = items });
+        sort__insertionContext__insertion__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data___D793D7341CC171B97158FF7D06E640CD1CB53DF0ABA9022849C24AB93CEDB741__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(0, items.Len, new insertion__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array_list__M__1D35894EDBC5A602720A3C057C590ABAD959B5C27AF24A21F7267F1133D18FD8 { items = items });
     }
 
 
 
-    public static unsafe void sort__insertion__multi_array_list__MultiArrayList__array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0__Data__Data__ACCA490B6FC9959A8AE40D140F5C26E33E743D14A07AF7CF9DE236DFC3AC6F97__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0__Data__Data> items)
+    public static unsafe void sort__insertion__multi_array_list__MultiArrayList__array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0__Data__Data__ACCA490B6FC9959A8AE40D140F5C26E33E743D14A07AF7CF9DE236DFC3AC6F97__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0__Data__Data> items)
     {
-        sort__insertionContext__insertion__multi_array_list__MultiArrayList__array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pi__79B3ACF0B642DF99CB9271876A1B557F6C336780285AA7BE8C9C6A02B8D0356E__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(0, items.Len, new insertion__multi_array_list__MultiArrayList__array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0__Data__Data_void___84D94B486455934EF6A5A274EB70B7E47E089879CFCB89A18A2B51E0D749A2D6 { items = items });
+        sort__insertionContext__insertion__multi_array_list__MultiArrayList__array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pi__79B3ACF0B642DF99CB9271876A1B557F6C336780285AA7BE8C9C6A02B8D0356E__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(0, items.Len, new insertion__multi_array_list__MultiArrayList__array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0__Data__Data_void___84D94B486455934EF6A5A274EB70B7E47E089879CFCB89A18A2B51E0D749A2D6 { items = items });
     }
 
 
 
-    public static unsafe void sort__heapContext__static_string_map__StaticStringMapWithEql__color_2__RGB_fneqlAsciiIgnoreCase__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong a, ulong b, static_string_map__StaticStringMapWithEql__color_2__RGB_fneqlAsciiIgnoreCase__SortContext context)
+    public static unsafe void sort__heapContext__static_string_map__StaticStringMapWithEql__color_2__RGB_fneqlAsciiIgnoreCase__SortContext__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ulong a, ulong b, static_string_map__StaticStringMapWithEql__color_2__RGB_fneqlAsciiIgnoreCase__SortContext context)
     {
-        debug__assert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(((CBool)(a <= b)));
+        debug__assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)(a <= b)));
         ulong i = a + (b - a) / 2UL;
         while (Cond.B(((CBool)(i > a))))
         {
             i -= (ulong)(1);
-            sort__siftDown__static_string_map__StaticStringMapWithEql__color_2__RGB_fneqlAsciiIgnoreCase__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(a, i, b, context);
+            sort__siftDown__static_string_map__StaticStringMapWithEql__color_2__RGB_fneqlAsciiIgnoreCase__SortContext__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(a, i, b, context);
         }
         i = b;
         while (Cond.B(((CBool)(i > a))))
         {
             i -= (ulong)(1);
-            static_string_map__StaticStringMapWithEql__color_2__RGB_fneqlAsciiIgnoreCase__SortContext_swap__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, a, i);
-            sort__siftDown__static_string_map__StaticStringMapWithEql__color_2__RGB_fneqlAsciiIgnoreCase__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(a, a, i, context);
+            static_string_map__StaticStringMapWithEql__color_2__RGB_fneqlAsciiIgnoreCase__SortContext_swap__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(context, a, i);
+            sort__siftDown__static_string_map__StaticStringMapWithEql__color_2__RGB_fneqlAsciiIgnoreCase__SortContext__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(a, a, i, context);
         }
     }
 
 
 
-    public static unsafe void sort__heapContext__static_string_map__StaticStringMapWithEql__mouse__Shape_fndefaultEql__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong a, ulong b, static_string_map__StaticStringMapWithEql__mouse__Shape_fndefaultEql__SortContext context)
+    public static unsafe void sort__heapContext__static_string_map__StaticStringMapWithEql__mouse__Shape_fndefaultEql__SortContext__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ulong a, ulong b, static_string_map__StaticStringMapWithEql__mouse__Shape_fndefaultEql__SortContext context)
     {
-        debug__assert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(((CBool)(a <= b)));
+        debug__assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)(a <= b)));
         ulong i = a + (b - a) / 2UL;
         while (Cond.B(((CBool)(i > a))))
         {
             i -= (ulong)(1);
-            sort__siftDown__static_string_map__StaticStringMapWithEql__mouse__Shape_fndefaultEql__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(a, i, b, context);
+            sort__siftDown__static_string_map__StaticStringMapWithEql__mouse__Shape_fndefaultEql__SortContext__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(a, i, b, context);
         }
         i = b;
         while (Cond.B(((CBool)(i > a))))
         {
             i -= (ulong)(1);
-            static_string_map__StaticStringMapWithEql__mouse__Shape_fndefaultEql__SortContext_swap__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, a, i);
-            sort__siftDown__static_string_map__StaticStringMapWithEql__mouse__Shape_fndefaultEql__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(a, a, i, context);
+            static_string_map__StaticStringMapWithEql__mouse__Shape_fndefaultEql__SortContext_swap__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(context, a, i);
+            sort__siftDown__static_string_map__StaticStringMapWithEql__mouse__Shape_fndefaultEql__SortContext__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(a, a, i, context);
         }
     }
 
 
 
-    public static unsafe void sort__heapContext__static_string_map__StaticStringMapWithEql__iterm2__Key_fneqlIgnoreCase__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong a, ulong b, static_string_map__StaticStringMapWithEql__iterm2__Key_fneqlIgnoreCase__SortContext context)
+    public static unsafe void sort__heapContext__static_string_map__StaticStringMapWithEql__iterm2__Key_fneqlIgnoreCase__SortContext__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ulong a, ulong b, static_string_map__StaticStringMapWithEql__iterm2__Key_fneqlIgnoreCase__SortContext context)
     {
-        debug__assert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(((CBool)(a <= b)));
+        debug__assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)(a <= b)));
         ulong i = a + (b - a) / 2UL;
         while (Cond.B(((CBool)(i > a))))
         {
             i -= (ulong)(1);
-            sort__siftDown__static_string_map__StaticStringMapWithEql__iterm2__Key_fneqlIgnoreCase__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(a, i, b, context);
+            sort__siftDown__static_string_map__StaticStringMapWithEql__iterm2__Key_fneqlIgnoreCase__SortContext__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(a, i, b, context);
         }
         i = b;
         while (Cond.B(((CBool)(i > a))))
         {
             i -= (ulong)(1);
-            static_string_map__StaticStringMapWithEql__iterm2__Key_fneqlIgnoreCase__SortContext_swap__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, a, i);
-            sort__siftDown__static_string_map__StaticStringMapWithEql__iterm2__Key_fneqlIgnoreCase__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(a, a, i, context);
-        }
-    }
-
-
-
-    public static unsafe void sort__insertion__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Da__802B26A08EB03D9F9F667F96513718B27B55043D41F88180E3D8C65A2E5374D7__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data> items)
-    {
-        sort__insertionContext__insertion__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__S__8B2661784B7951EFAB0131772D7D07D32BE8BBF395BF266413B8A91ED11EABF0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(0, items.Len, new insertion__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Da__1A5FE2462FE8B0CB375F6A0CBDC18C45BE4F0F8149CA8CE826BCFC31022BD27D { items = items });
-    }
-
-
-
-    public static unsafe void sort__insertion__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi___9356784F25507A93329FE269CC10533177C3B3E6B968321092AA5A4029EF51E6__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data> items)
-    {
-        sort__insertionContext__insertion__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__8BC1DA69BFCE0735346C37B57E70442DF0FC57501826691CD6EB0751AA061DFF__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(0, items.Len, new insertion__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi_array___47785EA96F2E6E464EEDC1DF1D10730DF67EC43DB08ED0FCC3120536A59A9898 { items = items });
-    }
-
-
-
-    public static unsafe void sort__insertion__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_p_Build__PackageOptions__UserProvidedpa0_array_hash_map__Str__8E228CC8998AC504B6C59BFE55B7F22AEDF2C0781AF352A3076D8F918130A46A__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_p_Build__PackageOptions__UserProvidedpa0_array_hash_map__StringContext_1__Data__Data> items)
-    {
-        sort__insertionContext__insertion__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_p_Build__PackageOptions__UserProvidedpa0_a__7EE84F474750234D1C01D778ED875A8298A4F5624E7A372DE666051835A95A06__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(0, items.Len, new insertion__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_p_Build__PackageOptions__UserProvidedpa0_array_hash_map__StringCon__985D5E2A077C96FEF2B5F19DF8D6E2225069579762B22B855C2BCD5DEC9DFF52 { items = items });
-    }
-
-
-
-    public static unsafe void sort__insertion__multi_array_list__MultiArrayList__array_hash_map__Custom__Build_Cache__Manifest__File__Offset_void_Build_Cache__Manifest__File__HashContext_0____30E83633CA6039F9106F2B6389C9CC2A6D7B33A91663413A464393CB9E34E441__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__Build_Cache__Manifest__File__Offset_void_Build_Cache__Manifest__File__HashContext_0__Data__Data> items)
-    {
-        sort__insertionContext__insertion__multi_array_list__MultiArrayList__array_hash_map__Custom__Build_Cache__Manifest__File__Offset_void_Build_Cache__Manifest__Fil__F637204463664D6786B657B381420D2BB2ED42E04A26C5E7E1948EA771AF814D__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(0, items.Len, new insertion__multi_array_list__MultiArrayList__array_hash_map__Custom__Build_Cache__Manifest__File__Offset_void_Build_Cache__Manifest__File__HashContext_0__Data____0423F114229DE43D69B23653523D488FC34BC137A7BAFEDE723F29FB822ED8C5 { items = items });
-    }
-
-
-
-    public static unsafe void sort__insertionContext__insertion__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data___D793D7341CC171B97158FF7D06E640CD1CB53DF0ABA9022849C24AB93CEDB741__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong a, ulong b, insertion__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array_list__M__1D35894EDBC5A602720A3C057C590ABAD959B5C27AF24A21F7267F1133D18FD8 context)
-    {
-        debug__assert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(((CBool)(a <= b)));
-        ulong i = a + 1UL;
-        for (; Cond.B(((CBool)(i < b))); i += (ulong)(1))
-        {
-            ulong j = i;
-            for (; Cond.B(((CBool)(Cond.B(((CBool)(j > a))) && Cond.B(insertion__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array_list__M__E81C4D9085D99DDB489D3D3E8583A33B8AE2EA520C56F1C0B2956D749E91F11B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, j, j - 1UL))))); j -= (ulong)(1))
-            {
-                insertion__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array_list__M__46A56D31B727895AF44F800DE34B2C4C22B918955A07501FF22F7F4A18C031CB__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, j, j - 1UL);
-            }
+            static_string_map__StaticStringMapWithEql__iterm2__Key_fneqlIgnoreCase__SortContext_swap__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(context, a, i);
+            sort__siftDown__static_string_map__StaticStringMapWithEql__iterm2__Key_fneqlIgnoreCase__SortContext__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(a, a, i, context);
         }
     }
 

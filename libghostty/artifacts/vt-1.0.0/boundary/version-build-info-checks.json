@@ -1,0 +1,32 @@
+{
+  "checks": [
+    {
+      "stage": "compile",
+      "argv": [
+        "cc",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-I/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/include",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/boundary/version_build_info.c",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/native/install/lib/libghostty-vt.a",
+        "-lm",
+        "-o",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/boundary/version-build-info-native"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "stage": "run",
+      "argv": [
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/boundary/version-build-info-native"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS library-version numeric=1.0.0 string=1.0.0 c-string=1.0.0 pre=0 build=0\nPASS optimize mode=3 release-fast=1\nPASS feature simd=0\nPASS feature kitty_graphics=0\nPASS feature tmux_control_mode=0\nPASS feature snapshot=0\nPASS feature formatter=1\nPASS feature selection=0\nPASS feature search=0\nPASS feature render_state=1\nPASS feature input_encode=0\nPASS feature color=0\nPASS feature grid_introspection=1\nPASS feature glyph_protocol=0\nRESULT version-feature-cases=14 passed=14 failed=0\n",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,6 +1,17 @@
 # Direct Zig implementation
 
-Current product status (2026-11-06): the complete 92-root direct Zig engine
+Official **vt-1.0.0 is the canonical direct default** (2026-11-07). The actual
+96-root Zig engine emits, links, builds and runs as `Managed.GhosttyVt` in raw
+and processed forms. Both pass the owning consumer and 45 native differential,
+version and API cases under JIT and whole-library-rooted NativeAOT. Published
+source/PE audits retain all selected bodies, 63 RVA getters with zero warmed
+managed allocation, and 144 storage helpers with maximum arity one (bound two).
+Normal `translate.sh` regenerated and published both canonical paths; the ordinary
+`ManagedConsumer.slnx` builds/runs with no project override and zero warnings/errors.
+See [1.0.0 evidence and reproduction](VT-1.0.0.md). Full upstream managed
+qualification remains pending. The previous pin's results below are historical.
+
+Historical 0.1.0 product status (2026-11-06): the complete 92-root direct Zig engine
 emits and links with the authored C boundary into 43 Managed.GhosttyVt source
 files. Emitted/linked/built/ran is **1/1/1/1**: the full managed project and owning
 consumer build with zero warnings/errors. The unchanged owning consumer passes

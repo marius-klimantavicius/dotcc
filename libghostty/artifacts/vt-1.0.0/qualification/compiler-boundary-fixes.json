@@ -1,0 +1,120 @@
+{
+  "focused_passed": 56,
+  "focused_failed": 0,
+  "focused_skipped": 0,
+  "test_output": "Passed!  - Failed:     0, Passed:    56, Skipped:     0, Total:    56, Duration: 32 s - DotCC.FunctionalTests.dll (net10.0)",
+  "log": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/boundary-contract-tests.txt",
+  "fixes": [
+    "Explicit packed integer C/Zig boundary proof, nested physical layouts and by-value result materialization",
+    "Module-owned names for immutable comptime array globals",
+    "PreComptime wrapper preserves enum-tag condition pruning",
+    "Empty anonymous struct literals inherit pointer result location",
+    "Retain actual nonexhaustive enum source evidence in hash-bound object descriptors; exact backing and shared named values remain checked",
+    "Reflect C enum payload aliases to actual declared Zig c_int and account for explicit void union payloads without changing storage",
+    "Allow plain C char byte buffers through pointers only; qualifiers, signed-char values and record fields stay strict"
+  ],
+  "files": [
+    {
+      "path": "DotCC.Lib/ManagedBoundaryContracts.cs",
+      "root_sha256": "75f100b256724e0a892a389701b4c724d66210ed27534a948ad32519a1e7d0aa",
+      "clean_export_sha256": "75f100b256724e0a892a389701b4c724d66210ed27534a948ad32519a1e7d0aa"
+    },
+    {
+      "path": "DotCC.Lib/ZigStorageObjectMetadata.cs",
+      "root_sha256": "6b49b630e9d1e4e6d2eb3cece9517de22ebe1002a8edadf5d8b5d08649fa3d22",
+      "clean_export_sha256": "6b49b630e9d1e4e6d2eb3cece9517de22ebe1002a8edadf5d8b5d08649fa3d22"
+    },
+    {
+      "path": "DotCC.Lib/AggregateIdentities.cs",
+      "root_sha256": "5b285cf483f45320e7ebc504f5fc83263f1a867745ea5a3cf5443ce2caf65c98",
+      "clean_export_sha256": "5b285cf483f45320e7ebc504f5fc83263f1a867745ea5a3cf5443ce2caf65c98"
+    },
+    {
+      "path": "DotCC.Lib/Ir/IrNodes.cs",
+      "root_sha256": "2b8a82adf79c5c20cc33851e5c4dea8662b973bc4bf5512883f09bfeb6f76138",
+      "clean_export_sha256": "2b8a82adf79c5c20cc33851e5c4dea8662b973bc4bf5512883f09bfeb6f76138"
+    },
+    {
+      "path": "DotCC.Lib/Ir/IrBuilder.cs",
+      "root_sha256": "6472516e940e81ab89749be9372c043c46289b60bf7502ad7ba51eaa9ae15732",
+      "clean_export_sha256": "6472516e940e81ab89749be9372c043c46289b60bf7502ad7ba51eaa9ae15732"
+    },
+    {
+      "path": "DotCC.Lib/Frontends/ZigLowering.cs",
+      "root_sha256": "7b855e65a02eeee2ebbec89b270ac445c40767cf71b4f0838672150de82675a9",
+      "clean_export_sha256": "7b855e65a02eeee2ebbec89b270ac445c40767cf71b4f0838672150de82675a9"
+    },
+    {
+      "path": "DotCC.Lib/Frontends/ZigLowering.TypeInfo.cs",
+      "root_sha256": "4f15efe74fbe8367cf89b382464e1658ec2809241a6581da70358e65ebde3b81",
+      "clean_export_sha256": "6b839c41d46528585e84858f009bb32b0250e57404f7d6ec3fc83e474b151059"
+    },
+    {
+      "path": "DotCC.Lib/Frontends/ZigLowering.Decls.cs",
+      "root_sha256": "c13467bb4e3b6a356f87cd67cd2c3256aa9095dd250a6cff51454c63a3ecc56c",
+      "clean_export_sha256": "c13467bb4e3b6a356f87cd67cd2c3256aa9095dd250a6cff51454c63a3ecc56c"
+    },
+    {
+      "path": "DotCC.Lib/Frontends/ZigLowering.Reify.cs",
+      "root_sha256": "b665eed51cbf62e75ac12cdc4c26468f04617afad5cc90b420965e352ccfb5b4",
+      "clean_export_sha256": "b665eed51cbf62e75ac12cdc4c26468f04617afad5cc90b420965e352ccfb5b4"
+    }
+  ],
+  "normal_product_stages": "all passed: engine, boundary, link, raw-build, postprocessor-build, processed-restore, postprocess, processed-build",
+  "normal_products": {
+    "raw": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+    "processed": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+    "graph": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/native/module-graph-managed.json",
+    "delivery_qualified": false
+  },
+  "native_packed_boundary_modes": [
+    "debug",
+    "fast"
+  ],
+  "behavioral_qualification": {
+    "cases": 45,
+    "baseline_cases": 24,
+    "version_feature_cases": 14,
+    "api_delta_cases": 7,
+    "engine": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/engine/engine.csobj",
+    "engine_sha256": "c270ed4fbf1485095d53ef80e0364b51db1843dc132393e1aa881dbc4fcab945",
+    "results": [
+      {
+        "form": "raw",
+        "mode": "jit",
+        "passed": 45,
+        "failed": 0,
+        "exact_native_match": true,
+        "whole_library_rooted": false,
+        "project": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/raw/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj"
+      },
+      {
+        "form": "raw",
+        "mode": "aot",
+        "passed": 45,
+        "failed": 0,
+        "exact_native_match": true,
+        "whole_library_rooted": true,
+        "project": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/raw/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj"
+      },
+      {
+        "form": "processed",
+        "mode": "jit",
+        "passed": 45,
+        "failed": 0,
+        "exact_native_match": true,
+        "whole_library_rooted": false,
+        "project": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/processed/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj"
+      },
+      {
+        "form": "processed",
+        "mode": "aot",
+        "passed": 45,
+        "failed": 0,
+        "exact_native_match": true,
+        "whole_library_rooted": true,
+        "project": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/processed/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj"
+      }
+    ]
+  }
+}

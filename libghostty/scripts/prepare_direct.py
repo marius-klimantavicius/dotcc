@@ -17,6 +17,18 @@ def prepare(root, zig, work, evidence, reuse_log=False):
     pin = json.loads((root / "config/source.json").read_text())
     graph = json.loads((root / "config/direct.json").read_text())
     source = (root / "ref" / pin["directory"]).resolve()
+    # Standalone regeneration uses the same official offline bundle as the
+    # normal recipe. Preserve an existing source package path unless it agrees.
+    if bundle := pin.get("dependency_bundle"):
+        expected = Path(bundle["directory"]).resolve()
+        packages = source / "zig-pkg"
+        if not expected.is_dir():
+            raise RuntimeError("Missing release dependency bundle; run scripts/fetch.sh first")
+        if packages.exists() or packages.is_symlink():
+            if packages.resolve() != expected:
+                raise RuntimeError("Release dependency path differs; preserving existing inputs")
+        else:
+            packages.symlink_to(expected, target_is_directory=True)
     tool = json.loads((root / "config/toolchain.json").read_text())
     if subprocess.check_output([zig, "version"], text=True).strip() != tool["version"]:
         raise RuntimeError("Direct inputs require the pinned Zig version")

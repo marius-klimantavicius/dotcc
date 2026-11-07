@@ -89,7 +89,7 @@ internal static class ManagedBoundaryContracts
     }
 
     internal sealed record Bridge(int Caller, int Definition, string Symbol, string Name, IrType.Func CallerType,
-        IrType.Func DefinitionType, IReadOnlyList<(string C, string Zig, int Size)> Storage);
+        IrType.Func DefinitionType, IReadOnlyList<(IrType C, IrType Zig, int Size)> Storage);
     internal sealed record Plan(IReadOnlyList<Bridge> Bridges, IReadOnlyDictionary<string, string>[] Renames);
 
     internal static Plan Prepare(IReadOnlyList<string> texts, IReadOnlyList<string> paths,
@@ -173,7 +173,7 @@ internal static class ManagedBoundaryContracts
         var ct = new CSharpTarget(aggregateNames: variants[bridge.Caller]);
         var zt = new CSharpTarget(aggregateNames: variants[bridge.Definition]);
         string ConvertValue(IrType from, IrType to, string value, CSharpTarget target)
-            => from is IrType.Named && to is IrType.Named
+            => from is IrType.Named || to is IrType.Named
                 ? "*(" + target.RenderType(to) + "*)&" + value
                 : "(" + target.RenderType(to) + ")(" + value + ")";
         // Library shells promote the backend's ordinary `static unsafe`
@@ -183,13 +183,13 @@ internal static class ManagedBoundaryContracts
         // Validate the emitted unmanaged storage before any copy or alias. This
         // catches a backend/layout-model disagreement without inventing bytes.
         foreach (var item in bridge.Storage.Distinct())
-            code.Append("    if (sizeof(").Append(ct.RenderType(new IrType.Named(item.C))).Append(") != ").Append(item.Size)
-                .Append(" || sizeof(").Append(zt.RenderType(new IrType.Named(item.Zig))).Append(") != ").Append(item.Size)
+            code.Append("    if (sizeof(").Append(ct.RenderType(item.C)).Append(") != ").Append(item.Size)
+                .Append(" || sizeof(").Append(zt.RenderType(item.Zig)).Append(") != ").Append(item.Size)
                 .Append(") throw new global::System.InvalidOperationException(\"managed C/Zig boundary layout mismatch\");\n");
         string call = EmitHelpers.Id(bridge.Symbol) + "(" + string.Join(", ", bridge.CallerType.Params.Select((p, i) =>
             ConvertValue(p, bridge.DefinitionType.Params[i], "p" + i, zt))) + ")";
         if (bridge.CallerType.Return is IrType.VoidType) code.Append("    ").Append(call).Append(";\n");
-        else if (bridge.CallerType.Return is IrType.Named)
+        else if (bridge.CallerType.Return is IrType.Named || bridge.DefinitionType.Return is IrType.Named)
             code.Append("    var result = ").Append(call).Append(";\n    return ").Append(ConvertValue(bridge.DefinitionType.Return, bridge.CallerType.Return, "result", ct)).Append(";\n");
         else code.Append("    return ").Append(ConvertValue(bridge.DefinitionType.Return, bridge.CallerType.Return, call, ct)).Append(";\n");
         return new(bridge.Name, code.Append("}\n").ToString());
@@ -201,7 +201,7 @@ internal static class ManagedBoundaryContracts
         private readonly Dictionary<string, AggregateIdentity> c = cgraph.ToDictionary(n => n.Name, StringComparer.Ordinal);
         private readonly Dictionary<string, AggregateIdentity> z = zgraph.ToDictionary(n => n.Name, StringComparer.Ordinal);
         private readonly HashSet<(string, string)> visited = [];
-        internal readonly List<(string C, string Zig, int Size)> Storage = [];
+        internal readonly List<(IrType C, IrType Zig, int Size)> Storage = [];
         private void Fail(string reason) => throw new CompileException("conflicting managed C/Zig boundary contracts for '" + symbol
             + "' in '" + cpath + "' and '" + zpath + "': " + reason);
         private AggregateIdentity Node(Dictionary<string, AggregateIdentity> nodes, string name, bool requireShape = true)
@@ -216,10 +216,22 @@ internal static class ManagedBoundaryContracts
         internal void Compare(IrType left, IrType right, bool pointee = false, bool parameter = false)
         {
             if (!parameter && left.Quals != right.Quals) Fail("different qualifiers");
+            // An explicit Zig packed integer backing is its declared scalar
+            // representation, including when embedded in an extern record.
+            // Preserve the named type; certify the exact signed full-width
+            // backing from the validated storage proof before aliasing bytes.
+            if (left is IrType.Prim scalar && right is IrType.Named packed
+                && TryPackedScalar(scalar, packed)) return;
             switch (left, right)
             {
                 case (IrType.VoidType, IrType.VoidType): return;
                 case (IrType.Prim a, IrType.Prim b):
+                    // Plain C char buffers are byte object representations;
+                    // Zig's C-facing byte APIs spell those elements u8. This
+                    // applies only through a pointer, with qualifiers already
+                    // checked, never to signed-char values or record fields.
+                    if (pointee && a is { Name: "char", Bytes: 1, Integer: true }
+                        && b is { Name: "unsigned char", Bytes: 1, Integer: true, Signed: false }) return;
                     if (a.Name != b.Name || a.Bytes != b.Bytes || a.Integer != b.Integer || a.Signed != b.Signed) Fail("different scalar representation");
                     return;
                 case (IrType.Pointer a, IrType.Pointer b):
@@ -251,7 +263,19 @@ internal static class ManagedBoundaryContracts
                     // C's INT_MAX sentinel reserves the representation without
                     // adding an engine state. All real integer values must agree;
                     // member spellings remain in their own nominal source enum.
-                    if (!EnumValues(cm).SequenceEqual(EnumValues(zm))) Fail("different enum value domains");
+                    // A declared nonexhaustive Zig enum accepts every value of
+                    // its exact backing integer. C API wrappers intentionally
+                    // use enum(c_int) { _ } and validate values in their body.
+                    // Closed enums still require the identical finite domain.
+                    if (!zm.IsNonExhaustive && !EnumValues(cm).SequenceEqual(EnumValues(zm))) Fail("different enum value domains");
+                    return;
+                case (IrType.Enum a, IrType.Prim b):
+                    // A C-facing Zig alias can intentionally expose c_int
+                    // rather than the core enum (for example Underline.C).
+                    // Keep C's declared enum witness and its exact integer
+                    // representation; no target enum or members are invented.
+                    if (!Node(c, a.Name).IsEnum) Fail("different enum kind");
+                    Compare(a.Underlying, b);
                     return;
                 case (IrType.Named a, IrType.Named b):
                     var cn = Node(c, a.Name, false); var zn = Node(z, b.Name, false);
@@ -281,8 +305,18 @@ internal static class ManagedBoundaryContracts
                         // enum domains and nested layouts remain in each key.
                         foreach (var common in cs.Fields.Join(zs.Fields, f => f.Name, f => f.Name, (x, y) => (x, y)))
                             Compare(common.x.Type, common.y.Type);
-                        var cfields = cs.Fields.GroupBy(f => AlternativeKey(f.Type, c)).ToDictionary(g => g.Key, g => g.ToArray(), StringComparer.Ordinal);
-                        var zfields = zs.Fields.GroupBy(f => AlternativeKey(f.Type, z)).ToDictionary(g => g.Key, g => g.ToArray(), StringComparer.Ordinal);
+                        string CallerAlternative(StructField field) => field.Type is IrType.Enum enumeration
+                            && zs.Fields.Any(other => other.Type is IrType.Prim
+                                && other.Type.Unqualified == enumeration.Underlying.Unqualified)
+                                ? AlternativeKey(enumeration.Underlying, c) : AlternativeKey(field.Type, c);
+                        // Reflected tagged unions retain void alternatives for
+                        // tags with no payload. C omits those members. They
+                        // contribute no bytes; complete union storage and every
+                        // actual payload alternative are still proved above.
+                        var cfields = cs.Fields.Where(f => f.Type is not IrType.VoidType).GroupBy(CallerAlternative)
+                            .ToDictionary(g => g.Key, g => g.ToArray(), StringComparer.Ordinal);
+                        var zfields = zs.Fields.Where(f => f.Type is not IrType.VoidType).GroupBy(f => AlternativeKey(f.Type, z))
+                            .ToDictionary(g => g.Key, g => g.ToArray(), StringComparer.Ordinal);
                         if (!cfields.Keys.Order(StringComparer.Ordinal).SequenceEqual(zfields.Keys.Order(StringComparer.Ordinal)))
                             Fail("different union alternatives");
                         foreach (var pair in cfields)
@@ -302,10 +336,25 @@ internal static class ManagedBoundaryContracts
                             Compare(cf.Type, zf.Type);
                         }
                     }
-                    Storage.Add((a.Name, b.Name, cl.Size));
+                    Storage.Add((a, b, cl.Size));
                     return;
                 default: Fail("different or unsupported source type kinds"); return;
             }
+        }
+        private bool TryPackedScalar(IrType.Prim scalar, IrType.Named packed)
+        {
+            if (!scalar.Integer || scalar.Name == "_Bool" || scalar.Bytes is not (1 or 2 or 4 or 8)
+                || Node(z, packed.Name).Shape.ZigStorageContract is not { } contract) return false;
+            var proof = ZigStorageObjectMetadata.ReadContract(contract);
+            if (proof.Kind != ZigStorageKind.PackedInteger || proof.IsPackedUnion || proof.IsZeroOwner
+                || proof.Bits != scalar.Bytes * 8 || proof.Size != scalar.Bytes || proof.Alignment != scalar.Bytes
+                || proof.BackingSigned != scalar.Signed
+                || proof.BackingKind != "explicit-" + (scalar.Signed ? "i" : "u") + proof.Bits)
+                return false;
+            var layout = Layout(packed.Name, z);
+            if (layout.Size != proof.Size || layout.Alignment != proof.Alignment) Fail("different packed integer backing storage");
+            Storage.Add((scalar, packed, proof.Size));
+            return true;
         }
         private string AlternativeKey(IrType type, Dictionary<string, AggregateIdentity> nodes, int depth = 0)
         {
@@ -324,7 +373,8 @@ internal static class ManagedBoundaryContracts
             string EnumKey(string shape)
             {
                 var enumeration = ParseEnum(shape);
-                return "enum:" + Key(enumeration.Underlying) + ":" + string.Join(",", EnumValues(enumeration));
+                return "enum:" + Key(enumeration.Underlying) + ":" + (enumeration.IsNonExhaustive ? "open:" : "")
+                    + string.Join(",", EnumValues(enumeration));
             }
             string AggregateKey(string name)
             {
@@ -346,9 +396,22 @@ internal static class ManagedBoundaryContracts
             var model = new OffsetLayoutModel(n => {
                 if (!nodes.TryGetValue(n, out var node) || node.Shape.IsIncomplete || node.Shape.SourceShape is null)
                     throw new CompileException("missing managed boundary aggregate storage witness: " + n);
-                var type = ParseStruct(n, node.Shape.SourceShape);
+                // The object loader has already bound this storage contract to
+                // the source-shape hash. Use its established layout model for
+                // nested packed fields rather than treating bitfields as a C
+                // aggregate or discarding the declared backing representation.
+                var shape = node.Shape.SourceShape;
+                if (node.Shape.ZigStorageContract is { } storage)
+                {
+                    int marker = shape.IndexOf("|zig-storage:1|", StringComparison.Ordinal);
+                    if (marker < 0 || shape[(marker + "|zig-storage:1|".Length)..] != storage)
+                        throw new CompileException("missing managed boundary Zig storage shape witness: " + n);
+                    shape = shape[..marker];
+                }
+                var type = ParseStruct(n, shape);
                 var aggregate = new LayoutAggregate { Name = n, Union = type.IsUnion, Packed = type.Layout == AggregateLayout.Packed,
-                    Pack = type.Pack, Alignment = type.Alignment };
+                    Pack = type.Pack, Alignment = type.Alignment, ZigStorage = node.Shape.ZigStorageContract,
+                    ZigSourceIdentity = n };
                 foreach (var f in type.Fields) aggregate.Fields.Add(new LayoutField { Name = f.Name,
                     Type = IrBuilder.LayoutType(f.Type), BitWidth = f.BitWidth, Alignment = f.Alignment });
                 return aggregate;
@@ -362,11 +425,12 @@ internal static class ManagedBoundaryContracts
     {
         var parts = shape.Split('|');
         if (parts.Length < 3 || parts[0] != "enum") throw new CompileException("invalid managed boundary enum witness");
-        return new("", ParseType(parts[1]), parts.Skip(2).Where(p => p.Length != 0).Select(p => {
+        bool nonExhaustive = parts[^1] == "nonexhaustive:1";
+        return new("", ParseType(parts[1]), parts.Skip(2).Where(p => p.Length != 0 && p != "nonexhaustive:1").Select(p => {
             var pair = p.Split(':');
             if (pair.Length != 2) throw new CompileException("invalid managed boundary enum member witness");
             return new EnumMember(Decode(pair[0]), long.Parse(pair[1], CultureInfo.InvariantCulture));
-        }).ToArray());
+        }).ToArray()) { IsNonExhaustive = nonExhaustive };
     }
     private static StructTypeDef ParseStruct(string name, string shape)
     {

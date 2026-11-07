@@ -13,6 +13,7 @@ internal sealed record ProjectInput(string ProjectPath, string AssemblyName, str
     IReadOnlyList<string> RuntimeReferencePaths) : IDisposable
 {
     internal Dictionary<string, string> SourceHashes { get; } = new(StringComparer.Ordinal);
+    internal string? SdkGeneratedAnalyzerConfigPath { get; init; }
 
     internal GeneratorHost? Generators { get; private set; }
     internal bool IsProjectSource(SyntaxTree tree) => SourceHashes.ContainsKey(tree.FilePath);
@@ -33,7 +34,7 @@ internal sealed record ProjectInput(string ProjectPath, string AssemblyName, str
             "-p:Configuration=" + configuration, "-p:SkipCompilerExecution=true", "-p:ProvideCommandLineArgs=true",
             "-p:NonExistentFile=" + Path.Combine(Path.GetTempPath(), "dotcc-postprocess-evaluate-" + Guid.NewGuid().ToString("N")),
             "-p:BuildProjectReferences=false", "-getItem:CscCommandLineArgs,ReferenceCopyLocalPaths",
-            "-getProperty:TargetPath,AssemblyName,OutputType,TargetFramework" })
+            "-getProperty:TargetPath,AssemblyName,OutputType,TargetFramework,GeneratedMSBuildEditorConfigFile" })
             start.ArgumentList.Add(argument);
         using var process = Process.Start(start) ?? throw new InvalidOperationException("Could not start dotnet msbuild.");
         var outputTask = process.StandardOutput.ReadToEndAsync(cancellationToken);
@@ -67,7 +68,12 @@ internal sealed record ProjectInput(string ProjectPath, string AssemblyName, str
         var runtime = root.GetProperty("Items").GetProperty("ReferenceCopyLocalPaths").EnumerateArray()
             .Select(item => item.TryGetProperty("FullPath", out var full) ? full.GetString()! : item.GetProperty("Identity").GetString()!)
             .Select(path => Path.GetFullPath(path, start.WorkingDirectory)).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray();
-        return new(project, assemblyName, framework, configuration, parsed, arguments, runtime);
+        var generatedConfig = properties.GetProperty("GeneratedMSBuildEditorConfigFile").GetString();
+        return new(project, assemblyName, framework, configuration, parsed, arguments, runtime)
+        {
+            SdkGeneratedAnalyzerConfigPath = string.IsNullOrEmpty(generatedConfig) ? null
+                : Path.GetFullPath(generatedConfig, start.WorkingDirectory).Replace('\\', '/'),
+        };
     }
 
     internal CSharpCompilation CreateCompilation(CancellationToken cancellationToken)
@@ -150,8 +156,9 @@ internal sealed record ProjectInput(string ProjectPath, string AssemblyName, str
         {
             var path = Path.GetFullPath(config, BaseDirectory).Replace('\\', '/');
             bool sdk = path.Contains("/sdk/", StringComparison.OrdinalIgnoreCase) && path.EndsWith(".globalconfig", StringComparison.Ordinal);
-            bool generated = path.StartsWith(BaseDirectory.Replace('\\', '/') + "/obj/", StringComparison.Ordinal)
-                && path.EndsWith(".GeneratedMSBuildEditorConfig.editorconfig", StringComparison.Ordinal);
+            bool generated = path == SdkGeneratedAnalyzerConfigPath
+                || path.StartsWith(BaseDirectory.Replace('\\', '/') + "/obj/", StringComparison.Ordinal)
+                    && path.EndsWith(".GeneratedMSBuildEditorConfig.editorconfig", StringComparison.Ordinal);
             if (!sdk && !generated)
                 throw new InvalidOperationException("Custom analyzer configuration is unsupported because source paths are relocated: " + config);
         }

@@ -1,0 +1,157 @@
+{
+  "frozen_qualification_source_manifest": "/home/marius/p/dotcc/libghostty/artifacts/vt-1.0.0/qualified-product-sources.json",
+  "products": {
+    "raw": {
+      "compared_files": 48,
+      "changed": [
+        ".campaign-files.json"
+      ],
+      "added": [],
+      "identical": false
+    },
+    "processed": {
+      "compared_files": 48,
+      "changed": [
+        ".campaign-files.json"
+      ],
+      "added": [],
+      "identical": false
+    }
+  },
+  "normal_translation_stages": [
+    {
+      "stage": "engine",
+      "command": [
+        "python3",
+        "/home/marius/p/dotcc/libghostty/scripts/retry_direct.py",
+        "--compiler",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/compiler-build/bin/DotCC/release/dotcc.dll",
+        "--graph",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/native/module-graph-managed.json",
+        "--work",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/engine",
+        "--evidence",
+        "/home/marius/p/dotcc/libghostty/artifacts/vt-1.0.0/translation/engine"
+      ],
+      "exit": 0,
+      "seconds": 13.248802397050895,
+      "log": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/engine.log"
+    },
+    {
+      "stage": "boundary",
+      "command": [
+        "dotnet",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/compiler-build/bin/DotCC/release/dotcc.dll",
+        "/home/marius/p/dotcc/libghostty/src/Boundary/ghostty_boundary.c",
+        "--emit=obj",
+        "--aggregate-data",
+        "-std=c11",
+        "-I/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/include",
+        "-o",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/boundary.csobj"
+      ],
+      "exit": 0,
+      "seconds": 0.5311145579908043,
+      "log": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/boundary.log"
+    },
+    {
+      "stage": "link",
+      "command": [
+        "dotnet",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/compiler-build/bin/DotCC/release/dotcc.dll",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/engine/engine.csobj",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/boundary.csobj",
+        "--emit=managedlib",
+        "--nest-types",
+        "--runtime=auto",
+        "--class-name",
+        "GhosttyVt",
+        "--namespace",
+        "Managed",
+        "--split=size",
+        "--split-size=262144",
+        "--literal-pool",
+        "--deduplicate-inline",
+        "--prune-unused-inline",
+        "--export-enum",
+        "DOTCC_STYLE_*",
+        "-o",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt"
+      ],
+      "exit": 0,
+      "seconds": 9.594065410085022,
+      "log": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/link.log"
+    },
+    {
+      "stage": "raw-build",
+      "command": [
+        "dotnet",
+        "build",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+        "-c",
+        "Release",
+        "--nologo"
+      ],
+      "exit": 0,
+      "seconds": 10.921370930969715,
+      "log": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw-build.log"
+    },
+    {
+      "stage": "postprocessor-build",
+      "command": [
+        "dotnet",
+        "build",
+        "/home/marius/p/dotcc/DotCC.PostProcess/DotCC.PostProcess.csproj",
+        "-c",
+        "Release",
+        "-p:PublishAot=false",
+        "-p:UseArtifactsOutput=true",
+        "-p:ArtifactsPath=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/postprocessor",
+        "--nologo"
+      ],
+      "exit": 0,
+      "seconds": 0.7487748239655048,
+      "log": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/postprocessor-build.log"
+    },
+    {
+      "stage": "processed-restore",
+      "command": [
+        "dotnet",
+        "restore",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+        "--nologo"
+      ],
+      "exit": 0,
+      "seconds": 0.608593184966594,
+      "log": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed-restore.log"
+    },
+    {
+      "stage": "postprocess",
+      "command": [
+        "dotnet",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/postprocessor/bin/DotCC.PostProcess/release/dotcc-postprocess.dll",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+        "--in-place"
+      ],
+      "exit": 0,
+      "seconds": 29.79269966192078,
+      "log": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/postprocess.log"
+    },
+    {
+      "stage": "processed-build",
+      "command": [
+        "dotnet",
+        "build",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+        "-c",
+        "Release",
+        "--nologo"
+      ],
+      "exit": 0,
+      "seconds": 9.640307537978515,
+      "log": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed-build.log"
+    }
+  ],
+  "final_engine_sha256": "c270ed4fbf1485095d53ef80e0364b51db1843dc132393e1aa881dbc4fcab945",
+  "qualification_engine_sha256": "c270ed4fbf1485095d53ef80e0364b51db1843dc132393e1aa881dbc4fcab945"
+}

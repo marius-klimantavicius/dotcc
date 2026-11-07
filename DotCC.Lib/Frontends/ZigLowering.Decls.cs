@@ -1419,7 +1419,7 @@ internal sealed partial class ZigLowering
             next++;
         }
         members = AnnotateEnumMembers(name, members);
-        _ir.RegisterEnumType(name, underlying, members);
+        _ir.RegisterEnumType(name, underlying, members, _nonExhaustiveEnums.Contains(name));
         _containerTypes[name] = enumType;
         _enumMembers[name] = memberSyms;
         RegisterContainerConsts(name, consts);   // e.g. `const Self = @This();` → the enum type
@@ -2454,7 +2454,7 @@ internal sealed partial class ZigLowering
                 return CoerceToSlice(LowerExprSink(listAddr.Arg1, new CType.Array(listSlice.Element, null)), listSlice);
             // `&.{ … }` at a `*const S` sink (std.Io.Writer.fixed's `.vtable = &.{ .drain = fixedDrain, … }`):
             // the literal is result-located at `S`, and a comptime-known one lives in static storage.
-            case Zig.PreAddrOf pa when pa.Arg1.Content is Zig.AnonStructInit
+            case Zig.PreAddrOf pa when pa.Arg1.Content is Zig.AnonStructInit or Zig.AnonStructInitEmpty
                                     && sink?.Unqualified is CType.Pointer { Pointee: var pointee }
                                     && pointee.Unqualified is CType.Named:
                 return LowerAddressOfStructLiteral(pa.Arg1, pointee);

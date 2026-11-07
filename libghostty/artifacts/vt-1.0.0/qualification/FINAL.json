@@ -1,0 +1,35 @@
+{
+  "status": "qualified; compiler and subtask source edits frozen",
+  "managed_api": "Managed.GhosttyVt",
+  "owner_api": "Managed.Terminal (unchanged)",
+  "selected_roots": 96,
+  "release_runtime_version": "1.0.0",
+  "normal_translation_all_stages_pass": true,
+  "behavioral_cases_per_row": 45,
+  "behavioral_rows": 4,
+  "all_native_transcripts_exact": true,
+  "whole_library_aot_rows": 2,
+  "focused_compiler_tests": {
+    "passed": 56,
+    "failed": 0,
+    "skipped": 0
+  },
+  "final_engine_sha256": "c270ed4fbf1485095d53ef80e0364b51db1843dc132393e1aa881dbc4fcab945",
+  "qualified_engine_sha256": "c270ed4fbf1485095d53ef80e0364b51db1843dc132393e1aa881dbc4fcab945",
+  "delivered_files_per_form": 47,
+  "delivered_source_files_identical_to_owning_factory_audit_products": true,
+  "bookkeeping": "Only self-listed .campaign-files.json changed; root owns idempotence normalization",
+  "evidence": [
+    "qualification.json",
+    "prepare-stages.json",
+    "qualify-stages.json",
+    "compiler-boundary-fixes.json",
+    "final-product-comparison.json",
+    "engine-identity.json",
+    "raw-jit.stdout",
+    "raw-aot.stdout",
+    "processed-jit.stdout",
+    "processed-aot.stdout"
+  ],
+  "remaining_owner": "Root owns normal default recipe publication and ordinary no-override consumer validation"
+}

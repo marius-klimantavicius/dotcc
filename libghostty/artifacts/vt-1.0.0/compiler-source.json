@@ -1,0 +1,140 @@
+{
+  "base_commit": "51b1be1f59bb351806e724ed58b712f0bdb8e091",
+  "source_export": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/compiler-source",
+  "selection": [
+    "DotCC",
+    "DotCC.Lib",
+    "DotCC.Libc",
+    "DotCC.PostProcess",
+    "LICENSE",
+    "Directory.Packages.props",
+    "Directory.Build.props",
+    "nuget.config"
+  ],
+  "changes": [
+    {
+      "path": "DotCC.Lib/AggregateIdentities.cs",
+      "before_sha256": "f17905fcdd902da3a9644cdbf247a50c0d379a05a365a46cec3038c994e70df7",
+      "after_sha256": "5b285cf483f45320e7ebc504f5fc83263f1a867745ea5a3cf5443ce2caf65c98",
+      "root_has_additional_pending_edits": false
+    },
+    {
+      "path": "DotCC.Lib/Frontends/ZigLowering.Decls.cs",
+      "before_sha256": "ed4fe9bfc0933195302dd876fcf4a208284b0ba42ee8aa88ebcb010f69e68b68",
+      "after_sha256": "c13467bb4e3b6a356f87cd67cd2c3256aa9095dd250a6cff51454c63a3ecc56c",
+      "root_has_additional_pending_edits": false
+    },
+    {
+      "path": "DotCC.Lib/Frontends/ZigLowering.EnumTypeReceivers.cs",
+      "before_sha256": null,
+      "after_sha256": "0b8073e91f10ef8c93b28517aaf91399836062a5a8899f1de9fe3d322a87523e",
+      "root_has_additional_pending_edits": false
+    },
+    {
+      "path": "DotCC.Lib/Frontends/ZigLowering.Generics.cs",
+      "before_sha256": "de9477a6803f54bb5202b12896f34286c28e7e1f842bab7f2bb005c87725d263",
+      "after_sha256": "8142a8ccd143817e5906125d392c1eaa45297cb2c4f1920dbe6229bf400c04c6",
+      "root_has_additional_pending_edits": true
+    },
+    {
+      "path": "DotCC.Lib/Frontends/ZigLowering.LocalDecls.cs",
+      "before_sha256": "9da9e4606ca4ba33f2b7ac48b197a5a2e9f00c5b70126e8eaaac0e18e5313f6b",
+      "after_sha256": "90c59c3c8ae1268a8199cb765a371011e30ba959d31bfd09c15016e24d1157e5",
+      "root_has_additional_pending_edits": false
+    },
+    {
+      "path": "DotCC.Lib/Frontends/ZigLowering.Loops.cs",
+      "before_sha256": "237fa181e154bc131e4b8c9ebae8b10a135884ad9b7223f76b3bf97383f57b3d",
+      "after_sha256": "79eaa2f415be4fc4c448fbc46277665df01b038dcbd710c578129c48b4c7d7ac",
+      "root_has_additional_pending_edits": true
+    },
+    {
+      "path": "DotCC.Lib/Frontends/ZigLowering.Reify.cs",
+      "before_sha256": "a272d7dd97e31add59787830421f76b9ec710cd9b56faabbe6ee5411119ec74c",
+      "after_sha256": "b665eed51cbf62e75ac12cdc4c26468f04617afad5cc90b420965e352ccfb5b4",
+      "root_has_additional_pending_edits": false
+    },
+    {
+      "path": "DotCC.Lib/Frontends/ZigLowering.Switch.NonExhaustive.cs",
+      "before_sha256": "06877e740ed2d02812c5653928d730e9d90184eded2372db96b81466e10a0e4b",
+      "after_sha256": "e2ca8843eeef8fe4638db38ee7820a7200ae657dba7088405fa13a4b579a4d0d",
+      "root_has_additional_pending_edits": false
+    },
+    {
+      "path": "DotCC.Lib/Frontends/ZigLowering.Switch.cs",
+      "before_sha256": "c3f5bf762f60ebb8c27645be1036bfd4cd86f037bbefa062c602d92349ec78c6",
+      "after_sha256": "776e9f10abbdbcad86fe8f58af125a700f572e783829e7099caa6c6b04f6bdd7",
+      "root_has_additional_pending_edits": false
+    },
+    {
+      "path": "DotCC.Lib/Frontends/ZigLowering.TypeInfo.Lists.cs",
+      "before_sha256": "93abf3aa28e0b6d1df0a552dba618d36323f2e0920e9021bf6b1fa2aff750fd7",
+      "after_sha256": "5db155a05b16979cf78ba0abce5e8b963ee50776db24aa470d574bb9058cb918",
+      "root_has_additional_pending_edits": false
+    },
+    {
+      "path": "DotCC.Lib/Frontends/ZigLowering.TypeInfo.cs",
+      "before_sha256": "454fbc71d3df9e47c0fb5c3813c8e5173d03770edcf29e03a0e02d0f3765771d",
+      "after_sha256": "6b839c41d46528585e84858f009bb32b0250e57404f7d6ec3fc83e474b151059",
+      "root_has_additional_pending_edits": true
+    },
+    {
+      "path": "DotCC.Lib/Frontends/ZigLowering.Types.cs",
+      "before_sha256": "36ab043d194513ae04843657b8251d508efa4bbf865894930dd30484b2f1eab2",
+      "after_sha256": "d665e48923cfcf984c8aeb194874923d4defc9d08ae2811550c8435aa8b677ea",
+      "root_has_additional_pending_edits": true
+    },
+    {
+      "path": "DotCC.Lib/Frontends/ZigLowering.Vector.cs",
+      "before_sha256": "c04b6e66ae08139e1cc721755c8e3abf1cc54f5a401626b74e35b7435a19516b",
+      "after_sha256": "b4613ccb8b6661781fd73181c3255c23126fdd0497a2f9c6e15bf9f8d0566605",
+      "root_has_additional_pending_edits": false
+    },
+    {
+      "path": "DotCC.Lib/Frontends/ZigLowering.cs",
+      "before_sha256": "328c6bc14a88681db18c87a46525c5363963ab30a3f6a3685505b56dfc164f1e",
+      "after_sha256": "7b855e65a02eeee2ebbec89b270ac445c40767cf71b4f0838672150de82675a9",
+      "root_has_additional_pending_edits": false
+    },
+    {
+      "path": "DotCC.Lib/Ir/IrBuilder.cs",
+      "before_sha256": "efee8f23b7451a47682779925064ccd545cfed9ce262ab1bf4fd57174eb05916",
+      "after_sha256": "6472516e940e81ab89749be9372c043c46289b60bf7502ad7ba51eaa9ae15732",
+      "root_has_additional_pending_edits": false
+    },
+    {
+      "path": "DotCC.Lib/Ir/IrNodes.cs",
+      "before_sha256": "c34ff4d5ef4d0131ba9490fed0e2de3c94b48c53307cb532e99cb46463248022",
+      "after_sha256": "2b8a82adf79c5c20cc33851e5c4dea8662b973bc4bf5512883f09bfeb6f76138",
+      "root_has_additional_pending_edits": false
+    },
+    {
+      "path": "DotCC.Lib/ManagedBoundaryContracts.cs",
+      "before_sha256": "8a41f538ad1ae239101e4050297c41a94298b1e807748f6a722496d101366005",
+      "after_sha256": "75f100b256724e0a892a389701b4c724d66210ed27534a948ad32519a1e7d0aa",
+      "root_has_additional_pending_edits": false
+    },
+    {
+      "path": "DotCC.Lib/ZigStorageObjectMetadata.cs",
+      "before_sha256": "49f08a78b840d224ef196d1adc30f6e31e4ac8288b65afb00328ad531230a4fb",
+      "after_sha256": "6b49b630e9d1e4e6d2eb3cece9517de22ebe1002a8edadf5d8b5d08649fa3d22",
+      "root_has_additional_pending_edits": false
+    },
+    {
+      "path": "DotCC.Libc/ZigVec.Reduce.cs",
+      "before_sha256": "1a5da89e448429c2e25cf36142f129f768c71539d7a5c1b5edfb2d55d0c32d42",
+      "after_sha256": "78eae484b0d94240dfa40627cc96956887c17506cff6e2973717e287b6502c41",
+      "root_has_additional_pending_edits": false
+    },
+    {
+      "path": "DotCC.PostProcess/ProjectInput.cs",
+      "before_sha256": "9268b6b970bcd7440452c0ac465ff2954998dc26e2aca6d04c62f13beda7a469",
+      "after_sha256": "f5dc6e6ae134f2d1016946b28ad1a51d7e0206a46529dbef6e07ccb125e50513",
+      "root_has_additional_pending_edits": false
+    }
+  ],
+  "patch": "compiler-vt-1.0.0.patch",
+  "patch_sha256": "5077322adafb0d8fa16c84887275d5b87d3ae308f81e634c7b05600661c2f5f8",
+  "pending_root_experiments_included": false,
+  "status": "frozen compiler with56focusedchecks+45-casefour-rowenginequalification; postprocessor SDK artifact config repair2focusedchecks"
+}

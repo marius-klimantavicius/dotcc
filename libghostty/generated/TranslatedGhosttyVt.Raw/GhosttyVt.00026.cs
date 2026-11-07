@@ -30,6 +30,7 @@ using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633763323230643365
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633363613433626363 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c3ca43bcc;
 using __DotCcEnum_76616C6772696E645F5F436C69656E7452657175657374 = global::Managed.GhosttyVt.valgrind__ClientRequest;
 using __DotCcEnum_506167654C6973745F5F4E6F64655F5F446174615F546167 = global::Managed.GhosttyVt.PageList__Node__Data_Tag;
+using __DotCcEnum_72656E6465725F5F5365744F7074696F6E = global::Managed.GhosttyVt.render__SetOption;
 using __DotCcEnum_6465766963655F617474726962757465735F5F436F6E666F726D616E63654C6576656C = global::Managed.GhosttyVt.device_attributes__ConformanceLevel;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636164343962373363 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_cad49b73c;
 using __DotCcEnum_506167654C6973745F5F5363726F6C6C5F546167 = global::Managed.GhosttyVt.PageList__Scroll_Tag;
@@ -40,6 +41,7 @@ using __DotCcEnum_5461726765745F5F416269 = global::Managed.GhosttyVt.Target__Abi
 using __DotCcEnum_53637265656E5F5F5F5F416E6F6E456E756D30 = global::Managed.GhosttyVt.Screen____AnonEnum0;
 using __DotCcEnum_6D6574615F5F4669656C64456E756D5F5F506167654C6973745F5F4C696D697473 = global::Managed.GhosttyVt.meta__FieldEnum__PageList__Limits;
 using __DotCcEnum_72656E6465725F5F526F7744617461 = global::Managed.GhosttyVt.render__RowData;
+using __DotCcEnum_72656E6465725F5F526F774F7074696F6E = global::Managed.GhosttyVt.render__RowOption;
 using __DotCcEnum_6F73635F325F5F5061727365725F5F5374617465 = global::Managed.GhosttyVt.osc_2__Parser__State;
 using __DotCcEnum_646E645F636F6D6D616E645F5F526571756573745F546167 = global::Managed.GhosttyVt.dnd_command__Request_Tag;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633566353337626532 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c5f537be2;
@@ -49,6 +51,7 @@ using __DotCcEnum_5461726765745F5F4F735F5F57696E646F777356657273696F6E = global:
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633336613366316236 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c36a3f1b6;
 using __DotCcEnum_5465726D696E616C5F5F5F5F416E6F6E456E756D30 = global::Managed.GhosttyVt.Terminal____AnonEnum0;
 using __DotCcEnum_506167654C6973745F5F496E6372656173654361706163697479 = global::Managed.GhosttyVt.PageList__IncreaseCapacity;
+using __DotCcEnum_53637265656E5F5F5F5F416E6F6E456E756D33 = global::Managed.GhosttyVt.Screen____AnonEnum3;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636661643537633037 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_cfad57c07;
 using __DotCcEnum_686561705F4172656E61416C6C6F6361746F725F5F50757368526573756C745F546167 = global::Managed.GhosttyVt.heap_ArenaAllocator__PushResult_Tag;
 using __DotCcEnum_6D6174685F5F4F72646572 = global::Managed.GhosttyVt.math__Order;
@@ -86,13 +89,13 @@ using __DotCcEnum_7367725F5F4174747269627574655F5F556E6465726C696E65 = global::M
 using __DotCcEnum_646E645F726573706F6E73655F5F456E636F64696E67 = global::Managed.GhosttyVt.dnd_response__Encoding;
 using __DotCcEnum_726573756C745F5F526573756C74 = global::Managed.GhosttyVt.result__Result;
 using __DotCcEnum_53637265656E5F5F5F5F416E6F6E456E756D32 = global::Managed.GhosttyVt.Screen____AnonEnum2;
+using __DotCcEnum_7379735F5F4F7074696F6E = global::Managed.GhosttyVt.sys__Option;
 using __DotCcEnum_6170635F5F53746174655F546167 = global::Managed.GhosttyVt.apc__State_Tag;
 using __DotCcEnum_5461726765745F5F4F626A656374466F726D6174 = global::Managed.GhosttyVt.Target__ObjectFormat;
 using __DotCcEnum_5061727365725F5F416374696F6E5F546167 = global::Managed.GhosttyVt.Parser__Action_Tag;
 using __DotCcEnum_496F5F46696C655F5265616465725F5F4D6F6465 = global::Managed.GhosttyVt.Io_File_Reader__Mode;
 using __DotCcEnum_686561705F4172656E61416C6C6F6361746F725F5F52657365744D6F64655F546167 = global::Managed.GhosttyVt.heap_ArenaAllocator__ResetMode_Tag;
 using __DotCcEnum_7374796C655F325F5F5374796C655F5F436F6C6F725F5F546167 = global::Managed.GhosttyVt.style_2__Style__Color__Tag;
-using __DotCcEnum_5465726D696E616C5F5F5072696E74536C6963655769647468 = global::Managed.GhosttyVt.Terminal__PrintSliceWidth;
 using __DotCcEnum_6465766963655F617474726962757465735F5F5072696D6172795F5F46656174757265 = global::Managed.GhosttyVt.device_attributes__Primary__Feature;
 using __DotCcEnum_5461726765745F68657861676F6E5F5F46656174757265 = global::Managed.GhosttyVt.Target_hexagon__Feature;
 using __DotCcEnum_636F6C6F725F335F5F5370656369616C = global::Managed.GhosttyVt.color_3__Special;
@@ -116,8 +119,8 @@ using __DotCcEnum_6463735F5F436F6D6D616E645F5F44454352515353 = global::Managed.G
 using __DotCcEnum_76616C6772696E645F6D656D636865636B5F5F436C69656E7452657175657374 = global::Managed.GhosttyVt.valgrind_memcheck__ClientRequest;
 using __DotCcEnum_61727261795F686173685F6D61705F5F4361706163697479496E64657854797065 = global::Managed.GhosttyVt.array_hash_map__CapacityIndexType;
 using __DotCcEnum_496F5F46696C655F5F4B696E64 = global::Managed.GhosttyVt.Io_File__Kind;
+using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633164613662336138 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c1da6b3a8;
 using __DotCcEnum_6F73635F325F5F5061727365725F5F436170747572655F5F4261636B696E675F546167 = global::Managed.GhosttyVt.osc_2__Parser__Capture__Backing_Tag;
-using __DotCcEnum_72656E6465725F5F437572736F7256697375616C5374796C65 = global::Managed.GhosttyVt.render__CursorVisualStyle;
 using __DotCcEnum_736F72745F7064715F5F48696E74 = global::Managed.GhosttyVt.sort_pdq__Hint;
 using __DotCcEnum_636C6970626F6172645F325F5F526561645F5F526573756C745F546167 = global::Managed.GhosttyVt.clipboard_2__Read__Result_Tag;
 using __DotCcEnum_616E73695F5F4330 = global::Managed.GhosttyVt.ansi__C0;
@@ -126,7 +129,6 @@ using __DotCcEnum_636F6C6F725F5F4F7065726174696F6E = global::Managed.GhosttyVt.c
 using __DotCcEnum_6B697474795F636C6970626F6172645F70726F746F636F6C5F5F537461747573 = global::Managed.GhosttyVt.kitty_clipboard_protocol__Status;
 using __DotCcEnum_6170635F5F50726F746F636F6C = global::Managed.GhosttyVt.apc__Protocol;
 using __DotCcEnum_73656D616E7469635F70726F6D70745F5F436F6D6D616E645F5F416374696F6E = global::Managed.GhosttyVt.semantic_prompt__Command__Action;
-using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633430323464633238 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c4024dc28;
 using __DotCcEnum_70726F6772616D5F7374617475735F5F436F6D6D616E645F546167 = global::Managed.GhosttyVt.program_status__Command_Tag;
 using __DotCcEnum_636F6C6F725F335F5F4B696E645F546167 = global::Managed.GhosttyVt.color_3__Kind_Tag;
 using __DotCcEnum_6373695F5F4572617365446973706C6179 = global::Managed.GhosttyVt.csi__EraseDisplay;
@@ -138,10 +140,10 @@ using __DotCcEnum_6772617068656D655F5F4772617068656D655769647468456666656374 = g
 using __DotCcEnum_6373695F5F45726173654C696E65 = global::Managed.GhosttyVt.csi__EraseLine;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636130376336633233 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_ca07c6c23;
 using __DotCcEnum_506167654C6973745F5F5F5F416E6F6E556E696F6E305F546167 = global::Managed.GhosttyVt.PageList____AnonUnion0_Tag;
+using __DotCcEnum_74797065735F335F5F437572736F725374796C65 = global::Managed.GhosttyVt.types_3__CursorStyle;
 using __DotCcEnum_666D745F5F416C69676E6D656E74 = global::Managed.GhosttyVt.fmt__Alignment;
 using __DotCcEnum_6275696C645F696E666F5F5F4275696C64496E666F = global::Managed.GhosttyVt.build_info__BuildInfo;
 using __DotCcEnum_506167654C6973745F5F496E6372656D656E74616C436F6D7072657373696F6E526573756C74 = global::Managed.GhosttyVt.PageList__IncrementalCompressionResult;
-using __DotCcEnum_7374796C655F5F436F6C6F72546167 = global::Managed.GhosttyVt.style__ColorTag;
 using __DotCcEnum_506167654C6973745F5F56696577706F72745F546167 = global::Managed.GhosttyVt.PageList__Viewport_Tag;
 using __DotCcEnum_496F5F4469725F5F5265616465725F5F5374617465 = global::Managed.GhosttyVt.Io_Dir__Reader__State;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633834366562383534 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c846eb854;
@@ -162,7 +164,6 @@ using __DotCcEnum_506167654C6973745F5F436F6D7072657373696F6E536372617463685F5461
 using __DotCcEnum_53656C656374696F6E5F5F426F756E64735F546167 = global::Managed.GhosttyVt.Selection__Bounds_Tag;
 using __DotCcEnum_636C6970626F6172645F325F5F57726974655F5F526573756C745F546167 = global::Managed.GhosttyVt.clipboard_2__Write__Result_Tag;
 using __DotCcEnum_6F73635F325F5F5465726D696E61746F72 = global::Managed.GhosttyVt.osc_2__Terminator;
-using __DotCcEnum_7465726D696E616C5F5F5465726D696E616C437572736F725374796C65 = global::Managed.GhosttyVt.terminal__TerminalCursorStyle;
 using __DotCcEnum_506167654C6973745F5F506167654974657261746F725F5F4C696D69745F546167 = global::Managed.GhosttyVt.PageList__PageIterator__Limit_Tag;
 using __DotCcEnum_6C616E675F5F456E6469616E = global::Managed.GhosttyVt.lang__Endian;
 using __DotCcEnum_686561705F5F5F5F416E6F6E556E696F6E305F546167 = global::Managed.GhosttyVt.heap____AnonUnion0_Tag;
@@ -180,7 +181,9 @@ using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633332396663356139
 using __DotCcEnum_6170635F5F436F6D6D616E645F546167 = global::Managed.GhosttyVt.apc__Command_Tag;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636433333364643464 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_cd333dd4d;
 using __DotCcEnum_68797065726C696E6B5F5F50616765456E7472795F5F49645F546167 = global::Managed.GhosttyVt.hyperlink__PageEntry__Id_Tag;
+using __DotCcEnum_666F726D61747465725F5F4F7074696F6E = global::Managed.GhosttyVt.formatter__Option;
 using __DotCcEnum_6F73635F5F436F6D6D616E6444617461 = global::Managed.GhosttyVt.osc__CommandData;
+using __DotCcEnum_7465726D696E616C5F5F4F7074696F6E = global::Managed.GhosttyVt.terminal__Option;
 using __DotCcEnum_706167655F5F43656C6C5F5F53656D616E746963436F6E74656E74 = global::Managed.GhosttyVt.page__Cell__SemanticContent;
 using __DotCcEnum_706167655F5F526F775F5F53656D616E74696350726F6D7074 = global::Managed.GhosttyVt.page__Row__SemanticPrompt;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633437333233396563 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c473239ec;
@@ -210,6 +213,7 @@ using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633363643637393664
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633838303663616564 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c8806caed;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633562326163383131 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c5b2ac811;
 using __DotCcEnum_68797065726C696E6B5F5F48797065726C696E6B5F5F49645F546167 = global::Managed.GhosttyVt.hyperlink__Hyperlink__Id_Tag;
+using __DotCcEnum_5465726D696E616C5F5F5072696E74536C6963654D69786564526F775F5F53746F70 = global::Managed.GhosttyVt.Terminal__PrintSliceMixedRow__Stop;
 using __DotCcEnum_635F5F5F5F416E6F6E456E756D31 = global::Managed.GhosttyVt.c____AnonEnum1;
 using __DotCcEnum_666D745F5F43617365 = global::Managed.GhosttyVt.fmt__Case;
 using __DotCcEnum_78745F636865636B73756D5F5F56616C75655F546167 = global::Managed.GhosttyVt.xt_checksum__Value_Tag;
@@ -226,5673 +230,6048 @@ using __DotCcEnum_5465726D696E616C5F5F446563636F6C6D4D6F6465 = global::Managed.G
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633262643762326166 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c2bd7b2af;
 using __DotCcEnum_72656E6465725F5F526F7743656C6C7344617461 = global::Managed.GhosttyVt.render__RowCellsData;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636630373331306539 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_cf07310e9;
-using __DotCcEnum_5F5F446F744363547970656465665F34363336323630304243383945323145354234343735414539333242333836343046463531454546393044433731364645303732383746333544313844464434 = global::Managed.GhosttyVt.GhosttyPointTag;
-using __DotCcEnum_5F5F446F744363547970656465665F38453938394341423537343643374443394441454641333130393838363945344542443445423534384635354339323131454534343334343937393039433030 = global::Managed.GhosttyVt.GhosttyTerminalData;
-using __DotCcEnum_5F5F446F744363547970656465665F35424345333530373346314534354637304138443832424132424541383445453036373836383530353132344631313838433532393036363644383545333237 = global::Managed.GhosttyVt.GhosttyCellData;
-using __DotCcEnum_5F5F446F744363547970656465665F43303034443441424233424338313144423537313535393445433345354434323635424239324443303733443239333841413239374231383839424443394333 = global::Managed.GhosttyVt.GhosttyResult;
-using __DotCcEnum_5F5F446F744363547970656465665F34384134363232364635353144443144443032383437454538333644384136373033354239394439463934353844463633383934344137383539413131393341 = global::Managed.GhosttyVt.GhosttyFormatterFormat;
+using __DotCcEnum_5F5F446F744363547970656465665F42343433304439444231373133423442463337353942433732463336343833304138434538304430373237373346423338423245463438354638373034324145 = global::Managed.GhosttyVt.GhosttyResult;
+using __DotCcEnum_5F5F446F744363547970656465665F42393432423136393035383537384536463744353439413132384332363446323836323544433937413445324131363841383533343233333530363945433544 = global::Managed.GhosttyVt.GhosttyPointTag;
+using __DotCcEnum_5F5F446F744363547970656465665F44383133333931433843353335394138414442413938353433363230433636363432353035464446423837373341463337454335383635383333443935394538 = global::Managed.GhosttyVt.GhosttyTerminalData;
+using __DotCcEnum_5F5F446F744363547970656465665F44353335424632413237433246423245304135464634373046434139344436353034454542444646394138463838444636453434333030334643393142303741 = global::Managed.GhosttyVt.GhosttyCellData;
+using __DotCcEnum_5F5F446F744363547970656465665F45313739394335393033333344303646413942333645433635313836453339464242454341414144393434394633453039443837313537424438463246343441 = global::Managed.GhosttyVt.GhosttyFormatterOption;
+using __DotCcEnum_5F5F446F744363547970656465665F45364536453544393039344443313533343543344430414638324245324333354637433942434634364446324233414134383635334135374439413632323638 = global::Managed.GhosttyVt.GhosttyStyleColorTag;
 using __DotCcEnum_446F74636347686F73747479546578745374796C65 = global::Managed.GhosttyVt.DotccGhosttyTextStyle;
-using __DotCcEnum_5F5F446F744363547970656465665F46453531373538343036394442364138303334454138454633344542424634304636383130423745453942424345313931334443444533413633394534443543 = global::Managed.GhosttyVt.GhosttyStyleColorTag;
 using DotCcLiterals = global::Managed.GhosttyVt.GhosttyVtLiterals;
 using DotCcPointers = global::Managed.GhosttyVt.GhosttyVtFunctionPointers;
 
 public static unsafe partial class GhosttyVt
 {
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__sf9faf9e1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s53947c91__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2512 /*"\u001B[6;5~"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2036 /*"\\E[%p1%dC"*/), 9UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s6070c162_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__se251751a_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S568 /*"\u001B[6;6~"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S113 /*"\u001B[C"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s6070c162__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__se251751a__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S568 /*"\u001B[6;6~"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S113 /*"\u001B[C"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s44224ecf_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s9ffd490d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S448 /*"\u001B[6;7~"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2243 /*"\\E[%i%p1%d;%p2%dH"*/), 17UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s44224ecf__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s438fe633__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S448 /*"\u001B[6;7~"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1676 /*"\\E[%p1%dA"*/), 9UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s0fe421a5_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s2a5663a0_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2796 /*"\u001B[5;2~"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2260 /*"\u001B[A"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s0fe421a5__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s2a5663a0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2796 /*"\u001B[5;2~"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2260 /*"\u001B[A"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__se7ae4458_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s18234243_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1852 /*"\u001B[5;3~"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1587 /*"\u001B[?12;25h"*/), 9UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__se7ae4458__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s18234243__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1852 /*"\u001B[5;3~"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1587 /*"\u001B[?12;25h"*/), 9UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__saa964637_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s60247381__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2523 /*"\u001B[5;4~"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1581 /*"\\E[%p1%dP"*/), 9UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__saa964637__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sd48449aa_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2523 /*"\u001B[5;4~"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1891 /*"\u001B[P"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__sf750e1aa_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sd48449aa__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1022 /*"\u001B[5;5~"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1891 /*"\u001B[P"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__sf750e1aa__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sfdbbc830_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1022 /*"\u001B[5;5~"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2584 /*"\u001B[2m"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s6acfc229_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sfdbbc830__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2606 /*"\u001B[5;6~"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2584 /*"\u001B[2m"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s6acfc229__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s5a5d37ca__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2606 /*"\u001B[5;6~"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1947 /*"\\E[%p1%dM"*/), 9UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s1b4a0e2c_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sdb390801_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2480 /*"\u001B[5;7~"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S221 /*"\u001B[M"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s1b4a0e2c__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sdb390801__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2480 /*"\u001B[5;7~"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S221 /*"\u001B[M"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__sd2f2ba86_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sbd7e8f49_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1768 /*"\u001B[1;2C"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S887 /*"\u001B]2;\\007"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__sd2f2ba86__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sbd7e8f49__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1768 /*"\u001B[1;2C"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S887 /*"\u001B]2;\\007"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__seec33d83_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sd038ab89__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2705 /*"\u001B[1;3C"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1402 /*"\\E[%p1%dX"*/), 9UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__seec33d83__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s494070f0_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2705 /*"\u001B[1;3C"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1192 /*"\u001B[J"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__seead9370_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s494070f0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S405 /*"\u001B[1;4C"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1192 /*"\u001B[J"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__seead9370__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s633e5b47_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S405 /*"\u001B[1;4C"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S153 /*"\u001B[K"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s06f5b205_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s633e5b47__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S769 /*"\u001B[1;5C"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S153 /*"\u001B[K"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s06f5b205__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s9608cc2f_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S769 /*"\u001B[1;5C"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2998 /*"\u001B[1K"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__sf1be8e3a_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s9608cc2f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3066 /*"\u001B[1;6C"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2998 /*"\u001B[1K"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__sf1be8e3a__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sa73de0c6_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3066 /*"\u001B[1;6C"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S947 /*"\u001B[?5h$<100/>\u001B[?5l"*/), 17UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s0b228be7_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sa73de0c6__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2596 /*"\u001B[1;7C"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S947 /*"\u001B[?5h$<100/>\u001B[?5l"*/), 17UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s0b228be7__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s446c52dd_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2596 /*"\u001B[1;7C"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2886 /*"\u001B[H"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__sdaf7444c_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s446c52dd__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3034 /*"\u001B[1;2A"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2886 /*"\u001B[H"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__sdaf7444c__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__se66d4049__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3034 /*"\u001B[1;2A"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S514 /*"\\E[%i%p1%dG"*/), 11UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s7ec89d61_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s904acf0e_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2221 /*"\u001B[1;3A"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S371 /*"^I"*/), 2UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s7ec89d61__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s904acf0e_s904acf0e_s39890f9c__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2221 /*"\u001B[1;3A"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1975 /*"\t"*/), 1UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__se6a909aa_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s904acf0e__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1424 /*"\u001B[1;4A"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1975 /*"\t"*/), 1UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__se6a909aa__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s245d5e44_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1424 /*"\u001B[1;4A"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1213 /*"\u001BH"*/), 2UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__sb6f0b6e7_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s245d5e44__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S298 /*"\u001B[1;5A"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1213 /*"\u001BH"*/), 2UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__sb6f0b6e7__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__se18d0d56__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S298 /*"\u001B[1;5A"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2929 /*"\\E[%p1%d@"*/), 9UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s39c37cc0_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s5458e455_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1078 /*"\u001B[1;6A"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3078 /*"\u001B[@"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s39c37cc0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s5458e455__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1078 /*"\u001B[1;6A"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3078 /*"\u001B[@"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s5b278705_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s745b2221__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2468 /*"\u001B[1;7A"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2031 /*"\\E[%p1%dL"*/), 9UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s5b278705__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s413be72a_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2468 /*"\u001B[1;7A"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S170 /*"\u001B[L"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__sd630578c_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s413be72a__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S170 /*"\u001B[L"*/), 3UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sc32dac5e_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2336 /*"\\n"*/), 2UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sc32dac5e__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2336 /*"\\n"*/), 2UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s2e1d6906__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S431 /*"\\E[%p1%dS"*/), 9UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s2c7472a2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2607 /*"\\E]4;%p1%d;rgb\\:%p2%{255}%*%{1000}%/%2.2X/%p3%{255}%*%{1000}%/%2.2X/%p4%{255}%*%{1000}%/%2.2X\\E\\\\"*/), 97UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s0902411a_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2737 /*"\u001B[8m"*/), 4UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s0902411a__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2737 /*"\u001B[8m"*/), 4UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s3d08b3ed_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S158 /*"\u001B]104\\007"*/), 9UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s3d08b3ed__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S158 /*"\u001B]104\\007"*/), 9UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s38a20dbf_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1491 /*"\u001B[39;49m"*/), 8UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s38a20dbf__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1491 /*"\u001B[39;49m"*/), 8UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s6d3d49d9_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1153 /*"\u001B8"*/), 2UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s6d3d49d9__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1153 /*"\u001B8"*/), 2UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s2d6bc4e1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2468 /*"%p1%c\\E[%p2%{1}%-%db"*/), 20UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sdd121025_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S208 /*"\u001B[7m"*/), 4UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sdd121025__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S208 /*"\u001B[7m"*/), 4UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sab3d81f0_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S441 /*"\u001BM"*/), 2UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sab3d81f0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S441 /*"\u001BM"*/), 2UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s382ec1e5__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1599 /*"\\E[%p1%dT"*/), 9UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s306d9596_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2943 /*"\u001B[23m"*/), 5UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s306d9596__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2943 /*"\u001B[23m"*/), 5UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s64976fb4_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1095 /*"\u001B(B"*/), 3UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s64976fb4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1095 /*"\u001B(B"*/), 3UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s74f1ffe5_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2419 /*"\u001B[?7l"*/), 5UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s74f1ffe5__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2419 /*"\u001B[?7l"*/), 5UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sd717d03b_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2876 /*"\u001B[?1049l"*/), 8UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sd717d03b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2876 /*"\u001B[?1049l"*/), 8UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sa4d0c135_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S720 /*"\u001B[4l"*/), 4UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sa4d0c135__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S720 /*"\u001B[4l"*/), 4UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sd19cecce_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2657 /*"\u001B[?1l\u001B>"*/), 7UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sd19cecce__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2657 /*"\u001B[?1l\u001B>"*/), 7UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sa94bc142_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2195 /*"\u001B[27m"*/), 5UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sa94bc142__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2195 /*"\u001B[27m"*/), 5UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sa4f1f5b1_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S242 /*"\u001B[24m"*/), 5UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sa4f1f5b1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S242 /*"\u001B[24m"*/), 5UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s8dc7f18c_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S673 /*"\u001B[29m"*/), 5UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s8dc7f18c__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S673 /*"\u001B[29m"*/), 5UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sabdaa75b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S692 /*"\\E[%?%p1%{8}%<%t4%p1%d%e%p1%{16}%<%t10%p1%{8}%-%d%e48;5;%p1%d%;m"*/), 64UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s4f2a950a__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2163 /*"\\E[%?%p1%{8}%<%t3%p1%d%e%p1%{16}%<%t9%p1%{8}%-%d%e38;5;%p1%d%;m"*/), 63UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s4ec7da02__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2387 /*"\\E[48:2:%p1%d:%p2%d:%p3%dm"*/), 26UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s71493111__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S464 /*"\\E[38:2:%p1%d:%p2%d:%p3%dm"*/), 26UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sebab2bfe__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2466 /*"%?%p9%t\\E(0%e\\E(B%;\\E[0%?%p6%t;1%;%?%p5%t;2%;%?%p2%t;4%;%?%p1%p3%|%t;7%;%?%p4%t;5%;%?%p7%t;8%;m"*/), 95UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sc740cb76_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2401 /*"\u001B(B\u001B[m"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sc740cb76__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2401 /*"\u001B(B\u001B[m"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sb68b8b71_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S262 /*"\u001B[3m"*/), 4UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sb68b8b71__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S262 /*"\u001B[3m"*/), 4UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sd0e161ef_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2157 /*"\u001B(0"*/), 3UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sd0e161ef__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2157 /*"\u001B(0"*/), 3UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s94138d22_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1515 /*"\u001B[?7h"*/), 5UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s94138d22__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1515 /*"\u001B[?7h"*/), 5UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sac8f83ac_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S571 /*"\u001B[?1049h"*/), 8UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sac8f83ac__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S571 /*"\u001B[?1049h"*/), 8UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s83a3cad2_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1539 /*"\u001B[4h"*/), 4UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s83a3cad2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1539 /*"\u001B[4h"*/), 4UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s6385d618_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1083 /*"\u001B[?1h\u001B="*/), 7UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s6385d618__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1083 /*"\u001B[?1h\u001B="*/), 7UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s9abf6856_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S389 /*"\u001B[4m"*/), 4UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s9abf6856__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S389 /*"\u001B[4m"*/), 4UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s7f790deb_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2060 /*"\u001B[9m"*/), 4UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s7f790deb__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2060 /*"\u001B[9m"*/), 4UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sa4abc2c6_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S459 /*"\u001B[3g"*/), 4UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sa4abc2c6__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S459 /*"\u001B[3g"*/), 4UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s5ecebb5f_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1500 /*"\u001B]2;"*/), 4UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s5ecebb5f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1500 /*"\u001B]2;"*/), 4UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s6afd325b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2719 /*"\\E[%i%d;%dR"*/), 11UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s69f21129_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1208 /*"\u001B[6n"*/), 4UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s69f21129__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1208 /*"\u001B[6n"*/), 4UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s725f76f4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3085 /*"\\E[?%[;0123456789]c"*/), 19UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s3389c008_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2630 /*"\u001B[c"*/), 3UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s3389c008__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2630 /*"\u001B[c"*/), 3UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s9e95ed00__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1914 /*"\\E[%i%p1%dd"*/), 11UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s9da913e7_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S993 /*"\u001B[3;2~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s9da913e7__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S993 /*"\u001B[3;2~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s56b1471a_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2487 /*"\u001B[3;3~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s56b1471a__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2487 /*"\u001B[3;3~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sf9707895_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1254 /*"\u001B[3;4~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sf9707895__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1254 /*"\u001B[3;4~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sdac11208_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2497 /*"\u001B[3;5~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sdac11208__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2497 /*"\u001B[3;5~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__scfccaa33_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3015 /*"\u001B[3;6~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__scfccaa33__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3015 /*"\u001B[3;6~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sffb07786_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3063 /*"\u001B[3;7~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sffb07786__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3063 /*"\u001B[3;7~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sf4f52ea3_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1718 /*"\u001B[1;2B"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sf4f52ea3__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1718 /*"\u001B[1;2B"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sccc0c966_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1744 /*"\u001B[1;3B"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sccc0c966__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1744 /*"\u001B[1;3B"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s58b078e5_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S836 /*"\u001B[1;4B"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s58b078e5__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S836 /*"\u001B[1;4B"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s1cf39610_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2723 /*"\u001B[1;5B"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s1cf39610__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2723 /*"\u001B[1;5B"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s53c16717_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S564 /*"\u001B[1;6B"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s53c16717__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S564 /*"\u001B[1;6B"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__se92017ca_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1535 /*"\u001B[1;7B"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__se92017ca__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1535 /*"\u001B[1;7B"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s8cff1847_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2418 /*"\u001B[1;2F"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s8cff1847__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2418 /*"\u001B[1;2F"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s64cab30a_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2729 /*"\u001B[1;3F"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s64cab30a__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2729 /*"\u001B[1;3F"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s80a62a81_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2501 /*"\u001B[1;4F"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s80a62a81__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2501 /*"\u001B[1;4F"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s84e9ac6c_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S921 /*"\u001B[1;5F"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s84e9ac6c__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S921 /*"\u001B[1;5F"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sbbb77d73_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2889 /*"\u001B[1;6F"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sbbb77d73__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2889 /*"\u001B[1;6F"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s51162e26_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1583 /*"\u001B[1;7F"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s51162e26__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1583 /*"\u001B[1;7F"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s750dfd09_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1761 /*"\u001B[1;2H"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s750dfd09__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1761 /*"\u001B[1;2H"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s84d9eff4_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S842 /*"\u001B[1;3H"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s84d9eff4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S842 /*"\u001B[1;3H"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sf8beec4f_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S957 /*"\u001B[1;4H"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sf8beec4f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S957 /*"\u001B[1;4H"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s05027ad2_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1034 /*"\u001B[1;5H"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s05027ad2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1034 /*"\u001B[1;5H"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sd3da357d_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2150 /*"\u001B[1;6H"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sd3da357d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2150 /*"\u001B[1;6H"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s6138d998_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1621 /*"\u001B[1;7H"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s6138d998__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1621 /*"\u001B[1;7H"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s40e3560a_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2826 /*"\u001B[2;2~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s40e3560a__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2826 /*"\u001B[2;2~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s7566b897_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S175 /*"\u001B[2;3~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s7566b897__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S175 /*"\u001B[2;3~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s5edad538_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1233 /*"\u001B[2;4~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s5edad538__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1233 /*"\u001B[2;4~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s125c0185_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S976 /*"\u001B[2;5~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s125c0185__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S976 /*"\u001B[2;5~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s98aaebf6_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2074 /*"\u001B[2;6~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s98aaebf6__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2074 /*"\u001B[2;6~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sfc7986e3_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2403 /*"\u001B[2;7~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sfc7986e3__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2403 /*"\u001B[2;7~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sdd041365_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S589 /*"\u001B[1;2D"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sdd041365__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S589 /*"\u001B[1;2D"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__secd00650_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S386 /*"\u001B[1;3D"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__secd00650__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S386 /*"\u001B[1;3D"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s70a19423_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3124 /*"\u001B[1;4D"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s70a19423__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3124 /*"\u001B[1;4D"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sfce45926_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S530 /*"\u001B[1;5D"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sfce45926__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S530 /*"\u001B[1;5D"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__scbbc13d1_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2700 /*"\u001B[1;6D"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__scbbc13d1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2700 /*"\u001B[1;6D"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sd91b816c_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2053 /*"\u001B[1;7D"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sd91b816c__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2053 /*"\u001B[1;7D"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s6fafc46e_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3027 /*"\u001B[6;2~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s6fafc46e__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3027 /*"\u001B[6;2~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__se304793b_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1454 /*"\u001B[6;3~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__se304793b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1454 /*"\u001B[6;3~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s2ceee564_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S806 /*"\u001B[6;4~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s2ceee564__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S806 /*"\u001B[6;4~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sf9faf9e1_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2526 /*"\u001B[6;5~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sf9faf9e1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2526 /*"\u001B[6;5~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s6070c162_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S572 /*"\u001B[6;6~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s6070c162__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S572 /*"\u001B[6;6~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s44224ecf_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S451 /*"\u001B[6;7~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s44224ecf__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S451 /*"\u001B[6;7~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s0fe421a5_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2813 /*"\u001B[5;2~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s0fe421a5__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2813 /*"\u001B[5;2~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__se7ae4458_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1863 /*"\u001B[5;3~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__se7ae4458__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1863 /*"\u001B[5;3~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__saa964637_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2537 /*"\u001B[5;4~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__saa964637__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2537 /*"\u001B[5;4~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sf750e1aa_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1028 /*"\u001B[5;5~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sf750e1aa__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1028 /*"\u001B[5;5~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s6acfc229_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2620 /*"\u001B[5;6~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s6acfc229__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2620 /*"\u001B[5;6~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s1b4a0e2c_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2494 /*"\u001B[5;7~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s1b4a0e2c__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2494 /*"\u001B[5;7~"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sd2f2ba86_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1778 /*"\u001B[1;2C"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sd2f2ba86__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1778 /*"\u001B[1;2C"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__seec33d83_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2721 /*"\u001B[1;3C"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__seec33d83__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2721 /*"\u001B[1;3C"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__seead9370_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S408 /*"\u001B[1;4C"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__seead9370__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S408 /*"\u001B[1;4C"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s06f5b205_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S775 /*"\u001B[1;5C"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s06f5b205__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S775 /*"\u001B[1;5C"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sf1be8e3a_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3084 /*"\u001B[1;6C"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sf1be8e3a__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3084 /*"\u001B[1;6C"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s0b228be7_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2610 /*"\u001B[1;7C"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s0b228be7__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2610 /*"\u001B[1;7C"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sdaf7444c_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3051 /*"\u001B[1;2A"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sdaf7444c__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3051 /*"\u001B[1;2A"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s7ec89d61_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2234 /*"\u001B[1;3A"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s7ec89d61__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2234 /*"\u001B[1;3A"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__se6a909aa_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1431 /*"\u001B[1;4A"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__se6a909aa__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1431 /*"\u001B[1;4A"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sb6f0b6e7_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S300 /*"\u001B[1;5A"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sb6f0b6e7__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S300 /*"\u001B[1;5A"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s39c37cc0_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1084 /*"\u001B[1;6A"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s39c37cc0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1084 /*"\u001B[1;6A"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s5b278705_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2482 /*"\u001B[1;7A"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s5b278705__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2482 /*"\u001B[1;7A"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sd630578c_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S21 /*"^?"*/), 2UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__sd630578c_sd630578c_sbaebb4f2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sd630578c_sd630578c_sbaebb4f2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1920 /*"\u007F"*/), 1UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1931 /*"\u007F"*/), 1UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__sd630578c__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sd630578c__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1920 /*"\u007F"*/), 1UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1931 /*"\u007F"*/), 1UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__sca3fa236_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sca3fa236_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1756 /*"\u001BOD"*/), 3UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1766 /*"\u001BOD"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__sca3fa236__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sca3fa236__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1756 /*"\u001BOD"*/), 3UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1766 /*"\u001BOD"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__saa4e7a60_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__saa4e7a60_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2851 /*"\u001BOB"*/), 3UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2869 /*"\u001BOB"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__saa4e7a60__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__saa4e7a60__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2851 /*"\u001BOB"*/), 3UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2869 /*"\u001BOB"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__sd450fb15_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sd450fb15_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1778 /*"\u001BOC"*/), 3UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1789 /*"\u001BOC"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__sd450fb15__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sd450fb15__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1778 /*"\u001BOC"*/), 3UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1789 /*"\u001BOC"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s444b9b37_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s444b9b37_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2220 /*"\u001BOA"*/), 3UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2233 /*"\u001BOA"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s444b9b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s444b9b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2220 /*"\u001BOA"*/), 3UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2233 /*"\u001BOA"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s59a6e783_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s59a6e783_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S972 /*"\u001B[3~"*/), 4UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S978 /*"\u001B[3~"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s59a6e783__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s59a6e783__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S972 /*"\u001B[3~"*/), 4UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S978 /*"\u001B[3~"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__sd2442bfc_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sd2442bfc_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S851 /*"\u001BOF"*/), 3UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S857 /*"\u001BOF"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__sd2442bfc__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sd2442bfc__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S851 /*"\u001BOF"*/), 3UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S857 /*"\u001BOF"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s2a6748c6_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S180 /*"\u001BOM"*/), 3UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s2a6748c6__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s2a6748c6_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S180 /*"\u001BOM"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__sa0e08d45_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s2a6748c6__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2714 /*"\u001BOP"*/), 3UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S180 /*"\u001BOM"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__sa0e08d45__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sa0e08d45_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2714 /*"\u001BOP"*/), 3UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2730 /*"\u001BOP"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s8dd22c6a_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sa0e08d45__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1827 /*"\u001B[21~"*/), 5UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2730 /*"\u001BOP"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s8dd22c6a__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s8dd22c6a_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1827 /*"\u001B[21~"*/), 5UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1838 /*"\u001B[21~"*/), 5UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s85522cec_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s8dd22c6a__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3044 /*"\u001B[23~"*/), 5UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1838 /*"\u001B[21~"*/), 5UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s85522cec__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s85522cec_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3044 /*"\u001B[23~"*/), 5UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3062 /*"\u001B[23~"*/), 5UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s480d51c3_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s85522cec__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S234 /*"\u001B[24~"*/), 5UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3062 /*"\u001B[23~"*/), 5UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s480d51c3__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s480d51c3_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S234 /*"\u001B[24~"*/), 5UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S237 /*"\u001B[24~"*/), 5UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s86625ed6_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s480d51c3__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S874 /*"\u001B[1;2P"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S237 /*"\u001B[24~"*/), 5UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s86625ed6__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s86625ed6_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S874 /*"\u001B[1;2P"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S880 /*"\u001B[1;2P"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__se86537b3_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s86625ed6__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2553 /*"\u001B[1;2Q"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S880 /*"\u001B[1;2P"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__se86537b3__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__se86537b3_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2553 /*"\u001B[1;2Q"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2567 /*"\u001B[1;2Q"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s0e67b21c_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__se86537b3__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2443 /*"\u001B[1;2R"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2567 /*"\u001B[1;2Q"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s0e67b21c__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s0e67b21c_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2443 /*"\u001B[1;2R"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2457 /*"\u001B[1;2R"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__sf869ce11_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s0e67b21c__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2902 /*"\u001B[1;2S"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2457 /*"\u001B[1;2R"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__sf869ce11__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sf869ce11_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2902 /*"\u001B[1;2S"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2920 /*"\u001B[1;2S"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s564737ad_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sf869ce11__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2444 /*"\u001B[15;2~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2920 /*"\u001B[1;2S"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s564737ad__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s564737ad_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2444 /*"\u001B[15;2~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2458 /*"\u001B[15;2~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s8ed4af93_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s564737ad__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S663 /*"\u001B[17;2~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2458 /*"\u001B[15;2~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s8ed4af93__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s8ed4af93_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S663 /*"\u001B[17;2~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S669 /*"\u001B[17;2~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__sec3eb0c4_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s8ed4af93__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1212 /*"\u001B[18;2~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S669 /*"\u001B[17;2~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__sec3eb0c4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sec3eb0c4_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1212 /*"\u001B[18;2~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1218 /*"\u001B[18;2~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__sb6de7150_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sec3eb0c4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2732 /*"\u001BOQ"*/), 3UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1218 /*"\u001B[18;2~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__sb6de7150__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sb6de7150_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2732 /*"\u001BOQ"*/), 3UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2748 /*"\u001BOQ"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__sff5502d1_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sb6de7150__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2955 /*"\u001B[19;2~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2748 /*"\u001BOQ"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__sff5502d1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sff5502d1_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2955 /*"\u001B[19;2~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2973 /*"\u001B[19;2~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s26d4560b_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sff5502d1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S274 /*"\u001B[20;2~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2973 /*"\u001B[19;2~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s26d4560b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s26d4560b_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S274 /*"\u001B[20;2~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S276 /*"\u001B[20;2~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s2312c72e_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s26d4560b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1961 /*"\u001B[21;2~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S276 /*"\u001B[20;2~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s2312c72e__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s2312c72e_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1961 /*"\u001B[21;2~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1972 /*"\u001B[21;2~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s5b185468_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s2312c72e__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S522 /*"\u001B[23;2~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1972 /*"\u001B[21;2~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s5b185468__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s5b185468_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S522 /*"\u001B[23;2~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S526 /*"\u001B[23;2~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s225986a7_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s5b185468__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S290 /*"\u001B[24;2~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S526 /*"\u001B[23;2~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s225986a7__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s225986a7_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S290 /*"\u001B[24;2~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S292 /*"\u001B[24;2~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s1385a8f5_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s225986a7__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2192 /*"\u001B[1;5P"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S292 /*"\u001B[24;2~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s1385a8f5__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s1385a8f5_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2192 /*"\u001B[1;5P"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2205 /*"\u001B[1;5P"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__se9832840_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s1385a8f5__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2646 /*"\u001B[1;5Q"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2205 /*"\u001B[1;5P"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__se9832840__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__se9832840_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2646 /*"\u001B[1;5Q"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2661 /*"\u001B[1;5Q"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s03811297_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__se9832840__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2053 /*"\u001B[1;5R"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2661 /*"\u001B[1;5Q"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s03811297__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s03811297_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2053 /*"\u001B[1;5R"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2064 /*"\u001B[1;5R"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__sa17e39ba_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s03811297__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2064 /*"\u001B[1;5R"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sa17e39ba_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3 /*"\u001B[1;5S"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__sa17e39ba__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sa17e39ba__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3 /*"\u001B[1;5S"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__saa728bd2_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__saa728bd2_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2663 /*"\u001B[15;5~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2678 /*"\u001B[15;5~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__saa728bd2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__saa728bd2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2663 /*"\u001B[15;5~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2678 /*"\u001B[15;5~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s50db9227_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s50db9227_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1222 /*"\u001BOR"*/), 3UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1228 /*"\u001BOR"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s50db9227__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s50db9227__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1222 /*"\u001BOR"*/), 3UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1228 /*"\u001BOR"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s18bf807c_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s18bf807c_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2832 /*"\u001B[17;5~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2850 /*"\u001B[17;5~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s18bf807c__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s18bf807c__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2832 /*"\u001B[17;5~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2850 /*"\u001B[17;5~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s5641989b_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s5641989b_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S996 /*"\u001B[18;5~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1002 /*"\u001B[18;5~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s5641989b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s5641989b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S996 /*"\u001B[18;5~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1002 /*"\u001B[18;5~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s4065361e_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s4065361e_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S868 /*"\u001B[19;5~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S874 /*"\u001B[19;5~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s4065361e__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s4065361e__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S868 /*"\u001B[19;5~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S874 /*"\u001B[19;5~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__se5477a34_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S62 /*"\u001B[20;5~"*/), 7UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__se5477a34__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__se5477a34_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S62 /*"\u001B[20;5~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__safd865a1_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__se5477a34__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S295 /*"\u001B[21;5~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S62 /*"\u001B[20;5~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__safd865a1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__safd865a1_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S295 /*"\u001B[21;5~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S297 /*"\u001B[21;5~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__sd0ce4cc7_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__safd865a1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S437 /*"\u001B[23;5~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S297 /*"\u001B[21;5~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__sd0ce4cc7__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sd0ce4cc7_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S437 /*"\u001B[23;5~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S440 /*"\u001B[23;5~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s5f7184c8_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sd0ce4cc7__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1120 /*"\u001B[24;5~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S440 /*"\u001B[23;5~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s5f7184c8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s5f7184c8_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1120 /*"\u001B[24;5~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1126 /*"\u001B[24;5~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__se52e974a_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s5f7184c8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1970 /*"\u001B[1;6P"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1126 /*"\u001B[24;5~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__se52e974a__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__se52e974a_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1970 /*"\u001B[1;6P"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1981 /*"\u001B[1;6P"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s07310b67_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__se52e974a__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2597 /*"\u001B[1;6Q"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1981 /*"\u001B[1;6P"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s07310b67__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s07310b67_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2597 /*"\u001B[1;6Q"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2611 /*"\u001B[1;6Q"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s6d33ea90_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s07310b67__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S280 /*"\u001B[1;6R"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2611 /*"\u001B[1;6Q"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s6d33ea90__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s6d33ea90_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S280 /*"\u001B[1;6R"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S282 /*"\u001B[1;6R"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s2ed91e0a_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s6d33ea90__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S282 /*"\u001B[1;6R"*/), 6UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s2ed91e0a_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S39 /*"\u001BOS"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s2ed91e0a__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s2ed91e0a__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S39 /*"\u001BOS"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s57360685_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s57360685_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S246 /*"\u001B[1;6S"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S249 /*"\u001B[1;6S"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s57360685__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s57360685__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S246 /*"\u001B[1;6S"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S249 /*"\u001B[1;6S"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s2f0c5e11_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s2f0c5e11_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3013 /*"\u001B[15;6~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3030 /*"\u001B[15;6~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s2f0c5e11__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s2f0c5e11__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3013 /*"\u001B[15;6~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3030 /*"\u001B[15;6~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s681b08c7_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s681b08c7_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S242 /*"\u001B[17;6~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S245 /*"\u001B[17;6~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s681b08c7__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s681b08c7__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S242 /*"\u001B[17;6~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S245 /*"\u001B[17;6~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__sf8b16db0_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sf8b16db0_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1419 /*"\u001B[18;6~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1426 /*"\u001B[18;6~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__sf8b16db0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sf8b16db0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1419 /*"\u001B[18;6~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1426 /*"\u001B[18;6~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__scdd79f6d_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__scdd79f6d_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2156 /*"\u001B[19;6~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2168 /*"\u001B[19;6~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__scdd79f6d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__scdd79f6d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2156 /*"\u001B[19;6~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2168 /*"\u001B[19;6~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s5e2d839f_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s5e2d839f_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S350 /*"\u001B[20;6~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S353 /*"\u001B[20;6~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s5e2d839f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s5e2d839f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S350 /*"\u001B[20;6~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S353 /*"\u001B[20;6~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__se9d50122_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__se9d50122_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2831 /*"\u001B[21;6~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2849 /*"\u001B[21;6~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__se9d50122__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__se9d50122__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2831 /*"\u001B[21;6~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2849 /*"\u001B[21;6~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s8172c47c_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s8172c47c_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1115 /*"\u001B[23;6~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1121 /*"\u001B[23;6~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s8172c47c__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s8172c47c__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1115 /*"\u001B[23;6~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1121 /*"\u001B[23;6~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__sd20037f3_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sd20037f3_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S582 /*"\u001B[24;6~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S586 /*"\u001B[24;6~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__sd20037f3__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sd20037f3__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S582 /*"\u001B[24;6~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S586 /*"\u001B[24;6~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__sd35d82d7_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sd35d82d7_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1575 /*"\u001B[1;3P"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1584 /*"\u001B[1;3P"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__sd35d82d7__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sd35d82d7__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1575 /*"\u001B[1;3P"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1584 /*"\u001B[1;3P"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s9c7fd231_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s9c7fd231_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2879 /*"\u001B[15~"*/), 5UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2897 /*"\u001B[15~"*/), 5UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s9c7fd231__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s9c7fd231__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2879 /*"\u001B[15~"*/), 5UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2897 /*"\u001B[15~"*/), 5UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s715aa9fa_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s715aa9fa_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2496 /*"\u001B[1;3Q"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2510 /*"\u001B[1;3Q"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s715aa9fa__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s715aa9fa__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2496 /*"\u001B[1;3Q"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2510 /*"\u001B[1;3Q"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__se3621935_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__se3621935_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S658 /*"\u001B[1;3R"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S663 /*"\u001B[1;3R"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__se3621935__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__se3621935__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S658 /*"\u001B[1;3R"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S663 /*"\u001B[1;3R"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__sb95f9880_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sb95f9880_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S816 /*"\u001B[1;3S"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S822 /*"\u001B[1;3S"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__sb95f9880__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sb95f9880__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S816 /*"\u001B[1;3S"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S822 /*"\u001B[1;3S"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__sc5d1cb00_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S131 /*"\u001B[15;3~"*/), 7UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__sc5d1cb00__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sc5d1cb00_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S131 /*"\u001B[15;3~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__sbeb87ce6_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sc5d1cb00__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1581 /*"\u001B[17;3~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S131 /*"\u001B[15;3~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__sbeb87ce6__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sbeb87ce6_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1581 /*"\u001B[17;3~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1590 /*"\u001B[17;3~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s61ec00c1_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sbeb87ce6__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1520 /*"\u001B[18;3~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1590 /*"\u001B[17;3~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s61ec00c1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s61ec00c1_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1520 /*"\u001B[18;3~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1527 /*"\u001B[18;3~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s30fd97d4_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s61ec00c1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1527 /*"\u001B[18;3~"*/), 7UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s30fd97d4_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S57 /*"\u001B[19;3~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s30fd97d4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s30fd97d4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S57 /*"\u001B[19;3~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__sf4cb5c7e_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sf4cb5c7e_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2565 /*"\u001B[20;3~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2579 /*"\u001B[20;3~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__sf4cb5c7e__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sf4cb5c7e__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2565 /*"\u001B[20;3~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2579 /*"\u001B[20;3~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s69ee4ffb_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s69ee4ffb_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S412 /*"\u001B[21;3~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S415 /*"\u001B[21;3~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s69ee4ffb__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s69ee4ffb__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S412 /*"\u001B[21;3~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S415 /*"\u001B[21;3~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__scec514f5_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__scec514f5_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3027 /*"\u001B[23;3~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3044 /*"\u001B[23;3~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__scec514f5__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__scec514f5__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3027 /*"\u001B[23;3~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3044 /*"\u001B[23;3~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s734d819f_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s734d819f_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2324 /*"\u001B[17~"*/), 5UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2338 /*"\u001B[17~"*/), 5UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s734d819f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s734d819f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2324 /*"\u001B[17~"*/), 5UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2338 /*"\u001B[17~"*/), 5UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__saf22a8da_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__saf22a8da_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1632 /*"\u001B[24;3~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1642 /*"\u001B[24;3~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__saf22a8da__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__saf22a8da__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1632 /*"\u001B[24;3~"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1642 /*"\u001B[24;3~"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s8a14179c_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s8a14179c_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2386 /*"\u001B[1;4P"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2400 /*"\u001B[1;4P"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s8a14179c__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s8a14179c__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2386 /*"\u001B[1;4P"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2400 /*"\u001B[1;4P"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s74163391_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S17 /*"\u001B[1;4Q"*/), 6UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s74163391__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s74163391_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S17 /*"\u001B[1;4Q"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s020ec456_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s74163391__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1579 /*"\u001B[1;4R"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S17 /*"\u001B[1;4Q"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s020ec456__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s020ec456_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1579 /*"\u001B[1;4R"*/), 6UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1588 /*"\u001B[1;4R"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__sb9fa7f88_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s020ec456__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S694 /*"\u001B[18~"*/), 5UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1588 /*"\u001B[1;4R"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__sb9fa7f88__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sb9fa7f88_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S694 /*"\u001B[18~"*/), 5UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S700 /*"\u001B[18~"*/), 5UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__sd8a9e615_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sb9fa7f88__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S678 /*"\u001B[19~"*/), 5UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S700 /*"\u001B[18~"*/), 5UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__sd8a9e615__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sd8a9e615_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S678 /*"\u001B[19~"*/), 5UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S684 /*"\u001B[19~"*/), 5UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s411790f7_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sd8a9e615__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S982 /*"\u001B[20~"*/), 5UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S684 /*"\u001B[19~"*/), 5UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s411790f7__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s411790f7_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S982 /*"\u001B[20~"*/), 5UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S988 /*"\u001B[20~"*/), 5UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s525cfa62_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s411790f7__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S786 /*"\u001BOH"*/), 3UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S988 /*"\u001B[20~"*/), 5UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s525cfa62__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s525cfa62_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S786 /*"\u001BOH"*/), 3UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S792 /*"\u001BOH"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__sea8c3416_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s525cfa62__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3099 /*"\u001B[2~"*/), 4UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S792 /*"\u001BOH"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__sea8c3416__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__sea8c3416_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3099 /*"\u001B[2~"*/), 4UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3117 /*"\u001B[2~"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s8dc98b8f_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__sea8c3416__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S553 /*"\u001B[<"*/), 3UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3117 /*"\u001B[2~"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s8dc98b8f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s8dc98b8f_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S553 /*"\u001B[<"*/), 3UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S557 /*"\u001B[<"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__scbaad32a_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s8dc98b8f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2124 /*"\u001B[6~"*/), 4UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S557 /*"\u001B[<"*/), 3UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__scbaad32a__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__scbaad32a_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2124 /*"\u001B[6~"*/), 4UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2135 /*"\u001B[6~"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s3f29b3a9_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__scbaad32a__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S880 /*"\u001B[5~"*/), 4UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2135 /*"\u001B[6~"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s3f29b3a9__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s3f29b3a9_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S880 /*"\u001B[5~"*/), 4UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S886 /*"\u001B[5~"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s277051ea_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s3f29b3a9__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1665 /*"\u001B]\u001B\\\\\u001Bc"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S886 /*"\u001B[5~"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s277051ea__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s277051ea_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1665 /*"\u001B]\u001B\\\\\u001Bc"*/), 7UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1675 /*"\u001B]\u001B\\\\\u001Bc"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__comptimeReplace__s232b8c3a_sc26f0766_s2f405b37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s277051ea__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S745 /*"\u001B7"*/), 2UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1675 /*"\u001B]\u001B\\\\\u001Bc"*/), 7UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__xtgettcapString__s232b8c3a__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__comptimeReplace__s232b8c3a_sc26f0766_s2f405b37__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S745 /*"\u001B7"*/), 2UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S751 /*"\u001B7"*/), 2UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s8d9578c7__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__xtgettcapString__s232b8c3a__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1754 /*"544E"*/), 4UL);
+        return new Slice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S751 /*"\u001B7"*/), 2UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s3476d430__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s8d9578c7__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2772 /*"787465726D2D67686F73747479"*/), 26UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1764 /*"544E"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s6c70b292__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s3476d430__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S207 /*"436F"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2789 /*"787465726D2D67686F73747479"*/), 26UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sffcadfad__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s6c70b292__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2061 /*"323536"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S209 /*"436F"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s9e4da5e1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sffcadfad__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S372 /*"524742"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2072 /*"323536"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s9e228b70__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s9e4da5e1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S266 /*"38"*/), 2UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S375 /*"524742"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s0fee3480__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s9e228b70__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S508 /*"616D"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S268 /*"38"*/), 2UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s3713aca7__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s0fee3480__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1660 /*"626365"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S511 /*"616D"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sb6f28e9c__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s3713aca7__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S358 /*"636363"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1670 /*"626365"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sc337be1d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sb6f28e9c__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2907 /*"6873"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S361 /*"636363"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s4b7471d3__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sc337be1d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S978 /*"6B6D"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2925 /*"6873"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s4f3d785d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s4b7471d3__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2131 /*"6D633569"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S984 /*"6B6D"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s780d8b77__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s4f3d785d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2770 /*"6D6972"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2142 /*"6D633569"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s0f4402db__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s780d8b77__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2912 /*"6D736772"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2787 /*"6D6972"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s6d1055ee__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s0f4402db__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1844 /*"6E7063"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2930 /*"6D736772"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s6229e0c1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s6d1055ee__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1167 /*"78656E6C"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1855 /*"6E7063"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s33569e03__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s6229e0c1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1993 /*"4158"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1174 /*"78656E6C"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s47caf497__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s33569e03__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1050 /*"5463"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2004 /*"4158"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sc376060d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s47caf497__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1044 /*"5375"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1056 /*"5463"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s5c282879__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sc376060d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2274 /*"5854"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1050 /*"5375"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s7ef0b973__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s5c282879__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S455 /*"66756C6C6B6264"*/), 14UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2287 /*"5854"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__se76d8aac__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s7ef0b973__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2009 /*"636F6C6F7273"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S458 /*"66756C6C6B6264"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__scf6b144f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__se76d8aac__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1558 /*"636F6C73"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2020 /*"636F6C6F7273"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sb77c5fed__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__scf6b144f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S629 /*"3830"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1567 /*"636F6C73"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s89969bcb__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sb77c5fed__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1752 /*"6974"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S634 /*"3830"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sa2ed74d5__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s89969bcb__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1762 /*"6974"*/), 4UL);
+    }
+
+
+
+    public static unsafe ConstSlice<byte> Source__hexencode__sa2ed74d5__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S148 /*"6C696E6573"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sed45eb8f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sed45eb8f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1180 /*"3234"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1187 /*"3234"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s4c461909__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s4c461909__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1034 /*"7061697273"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1040 /*"7061697273"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s489066d3__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s489066d3__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2526 /*"3332373637"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2540 /*"3332373637"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sce9e718c__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sce9e718c__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S215 /*"61637363"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S217 /*"61637363"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sac3d3e99__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sac3d3e99__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2177 /*"2B2B5C2C5C2C2D2D2E2E30306060616166666767686869696A6A6B6B6C6C6D6D6E6E6F6F70707171727273737474757576767777787879797A7A7B7B7C7C7D7D7E7E"*/), 132UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2190 /*"2B2B5C2C5C2C2D2D2E2E30306060616166666767686869696A6A6B6B6C6C6D6D6E6E6F6F70707171727273737474757576767777787879797A7A7B7B7C7C7D7D7E7E"*/), 132UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s70edd3bf__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s70edd3bf__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S236 /*"536D756C78"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S239 /*"536D756C78"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s44dc10f5__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s44dc10f5__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1441 /*"5C455B343A25703125646D"*/), 22UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1448 /*"5C455B343A25703125646D"*/), 22UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__saa062052__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__saa062052__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1330 /*"536D6F6C"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1337 /*"536D6F6C"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s86f35b2d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s86f35b2d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S270 /*"1B5B35336D"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S272 /*"1B5B35336D"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s93e2a783__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s93e2a783__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1524 /*"526D6F6C"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1532 /*"526D6F6C"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s2bd528fb__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s2bd528fb__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1910 /*"1B5B35356D"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1921 /*"1B5B35356D"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s386de897__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s386de897__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S68 /*"536574756C63"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sa4e90448__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sa4e90448__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2413 /*"5C455B35383A323A3A257031257B36353533367D252F25643A257031257B3235367D252F257B3235357D252625643A257031257B3235357D25262564253B6D"*/), 126UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2427 /*"5C455B35383A323A3A257031257B36353533367D252F25643A257031257B3235367D252F257B3235357D252625643A257031257B3235357D25262564253B6D"*/), 126UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s1b67860b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s1b67860b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2372 /*"5373"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2386 /*"5373"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s845296e8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s845296e8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1032 /*"5C455B25703125642071"*/), 20UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1038 /*"5C455B25703125642071"*/), 20UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s05f508de__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s05f508de__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1959 /*"5365"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1970 /*"5365"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sa75e15da__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sa75e15da__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2236 /*"1B5B302071"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2249 /*"1B5B302071"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s65363b77__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s65363b77__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2453 /*"4D73"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2467 /*"4D73"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sf69d09e9__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sf69d09e9__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1046 /*"5C455D35323B25703125733B25703225735C303037"*/), 42UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1052 /*"5C455D35323B25703125733B25703225735C303037"*/), 42UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sc705b3c3__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sc705b3c3__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2488 /*"53796E63"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2502 /*"53796E63"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sb1af810f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sb1af810f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S806 /*"5C455B3F32303236253F257031257B317D252D25746C256568253B"*/), 54UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S812 /*"5C455B3F32303236253F257031257B317D252D25746C256568253B"*/), 54UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s4bb46973__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s4bb46973__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S797 /*"4244"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S803 /*"4244"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sc1d4dbb5__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sc1d4dbb5__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S282 /*"1B5B3F323030346C"*/), 16UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S284 /*"1B5B3F323030346C"*/), 16UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__se9b19096__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__se9b19096__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1748 /*"4245"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1758 /*"4245"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sa0a7e552__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sa0a7e552__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2175 /*"1B5B3F3230303468"*/), 16UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2188 /*"1B5B3F3230303468"*/), 16UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s7f938eda__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s7f938eda__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1881 /*"5053"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1892 /*"5053"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__scbc6cdfe__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__scbc6cdfe__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2956 /*"1B5B3230307E"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2974 /*"1B5B3230307E"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sfbbeede3__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sfbbeede3__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S481 /*"5045"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S484 /*"5045"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sfdcfc78b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sfdcfc78b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S226 /*"1B5B3230317E"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S229 /*"1B5B3230317E"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s7c2be73e__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s7c2be73e__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2355 /*"584D"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2369 /*"584D"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sb4dafa5f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sb4dafa5f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3107 /*"5C455B3F313030363B31303030253F257031257B317D253D25746825656C253B"*/), 64UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3125 /*"5C455B3F313030363B31303030253F257031257B317D253D25746825656C253B"*/), 64UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sd1827bae__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sd1827bae__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1475 /*"786D"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1482 /*"786D"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s22aa5299__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s22aa5299__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S441 /*"5C455B3C256925703325643B25703125643B25703225643B253F25703425744D25656D253B"*/), 74UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S444 /*"5C455B3C256925703325643B25703125643B25703225643B253F25703425744D25656D253B"*/), 74UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sbad78f9d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sbad78f9d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2755 /*"5256"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2771 /*"5256"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s11580704__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s11580704__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S502 /*"1B5B3E63"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S505 /*"1B5B3E63"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s34f8c5d5__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s34f8c5d5__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1613 /*"7276"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1623 /*"7276"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sd6f27561__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sd6f27561__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1992 /*"1B5C5C5B5B302D395D2B3B5B302D395D2B3B5B302D395D2B63"*/), 50UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2003 /*"1B5C5C5B5B302D395D2B3B5B302D395D2B3B5B302D395D2B63"*/), 50UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__se42d7bbf__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__se42d7bbf__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1686 /*"5852"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1696 /*"5852"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sb3c0a7f8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sb3c0a7f8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S434 /*"1B5B3E3071"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S437 /*"1B5B3E3071"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sb895c40f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sb895c40f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1474 /*"7872"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1481 /*"7872"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s88632c4d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s88632c4d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S674 /*"1B503E5C5C7C5B202D7E5D2B611B5C5C"*/), 32UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S680 /*"1B503E5C5C7C5B202D7E5D2B611B5C5C"*/), 32UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s49a7e634__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s49a7e634__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S551 /*"456E6D67"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S555 /*"456E6D67"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s81d32f7b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s81d32f7b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2698 /*"1B5B3F363968"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2714 /*"1B5B3F363968"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s7bc25060__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s7bc25060__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S495 /*"44736D67"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S498 /*"44736D67"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s5888176c__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s5888176c__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S660 /*"1B5B3F36396C"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S666 /*"1B5B3F36396C"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sf50e6ee4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sf50e6ee4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1102 /*"436C6D67"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1108 /*"436C6D67"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s08f389c3__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s08f389c3__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2999 /*"1B5B73"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3017 /*"1B5B73"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s2f80803d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s2f80803d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2854 /*"436D67"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2872 /*"436D67"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s047ebffb__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s047ebffb__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2313 /*"5C455B256925703125643B257032256473"*/), 34UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2327 /*"5C455B256925703125643B257032256473"*/), 34UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sf32b45c2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sf32b45c2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2811 /*"636C656172"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2829 /*"636C656172"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s1d55c077__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s1d55c077__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2147 /*"1B5B481B5B324A"*/), 14UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2159 /*"1B5B481B5B324A"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sdf5abfd6__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sdf5abfd6__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1753 /*"4533"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1763 /*"4533"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sb6a9689a__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sb6a9689a__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3056 /*"1B5B334A"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3074 /*"1B5B334A"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__se8ca5aca__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__se8ca5aca__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S953 /*"6665"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S960 /*"6665"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s28bea955__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s28bea955__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2034 /*"1B5B3F3130303468"*/), 16UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2045 /*"1B5B3F3130303468"*/), 16UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s0acccee7__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s0acccee7__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S366 /*"6664"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S369 /*"6664"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s05b51ab2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s05b51ab2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S125 /*"1B5B3F313030346C"*/), 16UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s5b9bd2b0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s5b9bd2b0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2502 /*"6B78494E"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2516 /*"6B78494E"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s195a68f0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s195a68f0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3026 /*"1B5B49"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3043 /*"1B5B49"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s5cc3621b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s5cc3621b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1560 /*"6B784F5554"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1569 /*"6B784F5554"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s2c77661b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s2c77661b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1614 /*"1B5B4F"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1624 /*"1B5B4F"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s3811e667__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s3811e667__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3028 /*"62656C"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3045 /*"62656C"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sb9a1de02__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sb9a1de02__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1463 /*"07"*/), 2UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1470 /*"07"*/), 2UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s31cfe82c__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s31cfe82c__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2595 /*"626C696E6B"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2609 /*"626C696E6B"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__se594395f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__se594395f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S379 /*"1B5B356D"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S382 /*"1B5B356D"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s5a359ed6__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s5a359ed6__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S320 /*"626F6C64"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S323 /*"626F6C64"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s553a85eb__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s553a85eb__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1724 /*"1B5B316D"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1734 /*"1B5B316D"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sd8f55e31__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sd8f55e31__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S734 /*"636274"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S740 /*"636274"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s37a2706f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s37a2706f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S35 /*"1B5B5A"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sca19a4c9__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sca19a4c9__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1742 /*"6369766973"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1752 /*"6369766973"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s257562fc__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s257562fc__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2900 /*"1B5B3F32356C"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2918 /*"1B5B3F32356C"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sac4d8566__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sac4d8566__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S822 /*"636E6F726D"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S828 /*"636E6F726D"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s8122dc5e__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s8122dc5e__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1363 /*"1B5B3F31326C1B5B3F323568"*/), 24UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1370 /*"1B5B3F31326C1B5B3F323568"*/), 24UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s9148dd2b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s9148dd2b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3040 /*"6372"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3057 /*"6372"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s5763917e__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s5763917e__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S760 /*"5C72"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S766 /*"5C72"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__se1561c81__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__se1561c81__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2258 /*"637372"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2271 /*"637372"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__se27c4bde__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__se27c4bde__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1876 /*"5C455B256925703125643B257032256472"*/), 34UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1887 /*"5C455B256925703125643B257032256472"*/), 34UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__se76de504__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__se76de504__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2439 /*"637562"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2453 /*"637562"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s7996f6fa__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s7996f6fa__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S431 /*"5C455B257031256444"*/), 18UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S434 /*"5C455B257031256444"*/), 18UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sd3728f74__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sd3728f74__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1506 /*"63756231"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1513 /*"63756231"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s238b2b91__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s238b2b91__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1854 /*"08"*/), 2UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1865 /*"08"*/), 2UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sf7727b62__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sf7727b62__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2490 /*"637564"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2504 /*"637564"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s6992609c__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s6992609c__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2654 /*"5C455B257031256442"*/), 18UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2669 /*"5C455B257031256442"*/), 18UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s8d6cdc7e__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s8d6cdc7e__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1230 /*"63756431"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1236 /*"63756431"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s4a6323b4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s4a6323b4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1884 /*"0A"*/), 2UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1895 /*"0A"*/), 2UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s7f77cea8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s7f77cea8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S645 /*"637566"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S650 /*"637566"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s53947c91__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s53947c91__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S751 /*"5C455B257031256443"*/), 18UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S757 /*"5C455B257031256443"*/), 18UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__se659f270__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__se659f270__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1592 /*"63756631"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1601 /*"63756631"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s01694db2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s01694db2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1938 /*"1B5B43"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1949 /*"1B5B43"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sddfff7e9__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sddfff7e9__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2163 /*"637570"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2175 /*"637570"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s9ffd490d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s9ffd490d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1255 /*"5C455B256925703125643B257032256448"*/), 34UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1262 /*"5C455B256925703125643B257032256448"*/), 34UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s4c0760d8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s4c0760d8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S607 /*"637575"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S611 /*"637575"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s438fe633__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s438fe633__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S269 /*"5C455B257031256441"*/), 18UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S271 /*"5C455B257031256441"*/), 18UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s443cade0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s443cade0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2886 /*"63757531"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2904 /*"63757531"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s896ea0f8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s896ea0f8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S967 /*"1B5B41"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S974 /*"1B5B41"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s6bbad13d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s6bbad13d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1589 /*"6376766973"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1598 /*"6376766973"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s5a83f20b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s5a83f20b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1996 /*"1B5B3F31323B323568"*/), 18UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2007 /*"1B5B3F31323B323568"*/), 18UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__scd7c7898__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__scd7c7898__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S133 /*"646368"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s60247381__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s60247381__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1763 /*"5C455B257031256450"*/), 18UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1773 /*"5C455B257031256450"*/), 18UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s005fdaa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s005fdaa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S459 /*"64636831"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S462 /*"64636831"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s34d9bb82__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s34d9bb82__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S33 /*"1B5B50"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s61421726__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s61421726__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1933 /*"64696D"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1944 /*"64696D"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s34ea81a8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s34ea81a8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S201 /*"1B5B326D"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S202 /*"1B5B326D"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s78f3add6__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s78f3add6__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1561 /*"646C"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1570 /*"646C"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s5a5d37ca__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s5a5d37ca__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S906 /*"5C455B25703125644D"*/), 18UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S913 /*"5C455B25703125644D"*/), 18UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s3a322a5a__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s3a322a5a__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2940 /*"646C31"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2958 /*"646C31"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s7c7c6139__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s7c7c6139__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2660 /*"1B5B4D"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2675 /*"1B5B4D"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s8e659f64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s8e659f64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2057 /*"64736C"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2068 /*"64736C"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s283882c1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s283882c1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S866 /*"1B5D323B5C303037"*/), 16UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S872 /*"1B5D323B5C303037"*/), 16UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s0449dd7d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s0449dd7d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1757 /*"656368"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1767 /*"656368"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sd038ab89__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sd038ab89__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S577 /*"5C455B257031256458"*/), 18UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S581 /*"5C455B257031256458"*/), 18UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s9eb44894__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s9eb44894__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S527 /*"6564"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S531 /*"6564"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s2a842ee8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s2a842ee8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1094 /*"1B5B4A"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1100 /*"1B5B4A"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sf1d1aa7f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sf1d1aa7f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2771 /*"656C"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2788 /*"656C"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s0481b47f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s0481b47f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2166 /*"1B5B4B"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2178 /*"1B5B4B"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sea4cfd4b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sea4cfd4b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1464 /*"656C31"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1471 /*"656C31"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s2234dfa7__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s2234dfa7__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S844 /*"1B5B314B"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S850 /*"1B5B314B"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s6433e297__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s6433e297__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2388 /*"666C617368"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2402 /*"666C617368"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s46843fe6__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s46843fe6__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S293 /*"1B5B3F3568243C3130302F3E1B5B3F356C"*/), 34UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S295 /*"1B5B3F3568243C3130302F3E1B5B3F356C"*/), 34UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s1227800a__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s1227800a__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3002 /*"66736C"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3020 /*"66736C"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sdb5bfdae__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sdb5bfdae__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S811 /*"686F6D65"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S817 /*"686F6D65"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s835d4e65__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s835d4e65__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1444 /*"1B5B48"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1451 /*"1B5B48"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sdccddb71__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sdccddb71__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S58 /*"687061"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__se66d4049__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__se66d4049__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1750 /*"5C455B2569257031256447"*/), 22UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1760 /*"5C455B2569257031256447"*/), 22UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sb926653e__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sb926653e__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S803 /*"6874"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S809 /*"6874"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s39890f9c__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s39890f9c__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2915 /*"09"*/), 2UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2933 /*"09"*/), 2UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s49fbbf3c__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s49fbbf3c__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2265 /*"687473"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2278 /*"687473"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s79c6abac__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s79c6abac__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S98 /*"1B48"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s7d6e5539__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s7d6e5539__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S109 /*"696368"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__se18d0d56__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__se18d0d56__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2340 /*"5C455B257031256440"*/), 18UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2354 /*"5C455B257031256440"*/), 18UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s93762509__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s93762509__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S543 /*"69636831"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S547 /*"69636831"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sb37121ad__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sb37121ad__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1320 /*"1B5B40"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1327 /*"1B5B40"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s9bf0b22b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s9bf0b22b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S668 /*"696C"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S674 /*"696C"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s745b2221__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s745b2221__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2203 /*"5C455B25703125644C"*/), 18UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2216 /*"5C455B25703125644C"*/), 18UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s50c11e1f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s50c11e1f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1425 /*"696C31"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1432 /*"696C31"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sa27edba2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sa27edba2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1512 /*"1B5B4C"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1519 /*"1B5B4C"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s6fa36893__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s6fa36893__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2096 /*"696E64"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2107 /*"696E64"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sc32dac5e__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sc32dac5e__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2674 /*"5C6E"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2690 /*"5C6E"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s237965e8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s237965e8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2006 /*"696E646E"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2017 /*"696E646E"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s2e1d6906__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s2e1d6906__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2140 /*"5C455B257031256453"*/), 18UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2152 /*"5C455B257031256453"*/), 18UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s5f77487e__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s5f77487e__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S609 /*"696E697463"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S613 /*"696E697463"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s2c7472a2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s2c7472a2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1690 /*"5C455D343B25703125643B7267625C3A257032257B3235357D252A257B313030307D252F25322E32582F257033257B3235357D252A257B313030307D252F25322E32582F257034257B3235357D252A25"…*/), 194UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1700 /*"5C455D343B25703125643B7267625C3A257032257B3235357D252A257B313030307D252F25322E32582F257033257B3235357D252A257B313030307D252F25322E32582F257034257B3235357D252A25"…*/), 194UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sbfa68a97__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sbfa68a97__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1832 /*"696E766973"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1843 /*"696E766973"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sbce5e002__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sbce5e002__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1600 /*"1B5B386D"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1610 /*"1B5B386D"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s7ad566dc__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s7ad566dc__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1138 /*"6F63"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1145 /*"6F63"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s591c3845__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s591c3845__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S469 /*"1B5D3130345C303037"*/), 18UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S472 /*"1B5D3130345C303037"*/), 18UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s968ad368__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s968ad368__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1659 /*"6F70"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1669 /*"6F70"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s414cc5d7__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s414cc5d7__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3023 /*"1B5B33393B34396D"*/), 16UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3040 /*"1B5B33393B34396D"*/), 16UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s2761b45f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s2761b45f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1584 /*"7263"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1593 /*"7263"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s82a63281__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s82a63281__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S297 /*"1B38"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S299 /*"1B38"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__se770a7a8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__se770a7a8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S834 /*"726570"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S840 /*"726570"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s2d6bc4e1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s2d6bc4e1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3078 /*"25703125635C455B257032257B317D252D256462"*/), 40UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3096 /*"25703125635C455B257032257B317D252D256462"*/), 40UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sc7616abe__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sc7616abe__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S689 /*"726576"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S695 /*"726576"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s704a315d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s704a315d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S408 /*"1B5B376D"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S411 /*"1B5B376D"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s4752dc35__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s4752dc35__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2741 /*"7269"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2757 /*"7269"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s225af788__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s225af788__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S76 /*"1B4D"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s8f3b61ae__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s8f3b61ae__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1122 /*"72696E"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1128 /*"72696E"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s382ec1e5__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s382ec1e5__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S750 /*"5C455B257031256454"*/), 18UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S756 /*"5C455B257031256454"*/), 18UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s1a97d492__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s1a97d492__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2819 /*"7269746D"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2837 /*"7269746D"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s57f094ee__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s57f094ee__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S599 /*"1B5B32336D"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S603 /*"1B5B32336D"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sa99e0f70__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sa99e0f70__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S757 /*"726D616373"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S763 /*"726D616373"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sd738cdfc__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sd738cdfc__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S627 /*"1B2842"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S632 /*"1B2842"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__se18ae7e9__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__se18ae7e9__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S323 /*"726D616D"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S326 /*"726D616D"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s038c1b5d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s038c1b5d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S586 /*"1B5B3F376C"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S590 /*"1B5B3F376C"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sd2c1a46c__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sd2c1a46c__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1482 /*"726D637570"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1489 /*"726D637570"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s36244683__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s36244683__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S279 /*"1B5B3F313034396C"*/), 16UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S281 /*"1B5B3F313034396C"*/), 16UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sd6dac320__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sd6dac320__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3076 /*"726D6972"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3094 /*"726D6972"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s5b24570d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s5b24570d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2350 /*"1B5B346C"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2364 /*"1B5B346C"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sd28635e9__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sd28635e9__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1334 /*"726D6B78"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1341 /*"726D6B78"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sca876a86__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sca876a86__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1141 /*"1B5B3F316C1B3E"*/), 14UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1148 /*"1B5B3F316C1B3E"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s87726ed2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s87726ed2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S960 /*"726D736F"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S967 /*"726D736F"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__se326e6da__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__se326e6da__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S504 /*"1B5B32376D"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S507 /*"1B5B32376D"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s61f0a87d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s61f0a87d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1679 /*"726D756C"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1689 /*"726D756C"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s727f8389__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s727f8389__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2647 /*"1B5B32346D"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2662 /*"1B5B32346D"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sd9349ad4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sd9349ad4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S594 /*"726D7878"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S598 /*"726D7878"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s2dd589f4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s2dd589f4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2839 /*"1B5B32396D"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2857 /*"1B5B32396D"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s4c4df4f6__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s4c4df4f6__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S561 /*"7365746162"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S565 /*"7365746162"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sabdaa75b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sabdaa75b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1821 /*"5C455B253F257031257B387D253C25743425703125642565257031257B31367D253C25743130257031257B387D252D2564256534383B353B2570312564253B6D"*/), 128UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1832 /*"5C455B253F257031257B387D253C25743425703125642565257031257B31367D253C25743130257031257B387D252D2564256534383B353B2570312564253B6D"*/), 128UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__se457de9a__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__se457de9a__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1765 /*"7365746166"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1775 /*"7365746166"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s4f2a950a__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s4f2a950a__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1340 /*"5C455B253F257031257B387D253C25743325703125642565257031257B31367D253C257439257031257B387D252D2564256533383B353B2570312564253B6D"*/), 126UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1347 /*"5C455B253F257031257B387D253C25743325703125642565257031257B31367D253C257439257031257B387D252D2564256533383B353B2570312564253B6D"*/), 126UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s0fc4f85b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s0fc4f85b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2750 /*"73657472676262"*/), 14UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2766 /*"73657472676262"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s4ec7da02__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s4ec7da02__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1448 /*"5C455B34383A323A25703125643A25703225643A25703325646D"*/), 52UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1455 /*"5C455B34383A323A25703125643A25703225643A25703325646D"*/), 52UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__se7cf46bf__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__se7cf46bf__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2998 /*"73657472676266"*/), 14UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3016 /*"73657472676266"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s71493111__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s71493111__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2398 /*"5C455B33383A323A25703125643A25703225643A25703325646D"*/), 52UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2412 /*"5C455B33383A323A25703125643A25703225643A25703325646D"*/), 52UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s9a993d1d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s9a993d1d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3084 /*"736772"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3102 /*"736772"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sebab2bfe__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sebab2bfe__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3061 /*"253F25703925745C45283025655C452842253B5C455B30253F25703625743B31253B253F25703525743B32253B253F25703225743B34253B253F257031257033257C25743B37253B253F25703425743B"…*/), 190UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3079 /*"253F25703925745C45283025655C452842253B5C455B30253F25703625743B31253B253F25703525743B32253B253F25703225743B34253B253F257031257033257C25743B37253B253F25703425743B"…*/), 190UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sd27c15f0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sd27c15f0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S839 /*"73677230"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S845 /*"73677230"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sc0206966__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sc0206966__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1941 /*"1B28421B5B6D"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1952 /*"1B28421B5B6D"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s4e511c3f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s4e511c3f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3103 /*"7369746D"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3121 /*"7369746D"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sc6d492c9__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sc6d492c9__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1779 /*"1B5B336D"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1790 /*"1B5B336D"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sf25318a9__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sf25318a9__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S360 /*"736D616373"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S363 /*"736D616373"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s4382c037__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s4382c037__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S630 /*"1B2830"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S635 /*"1B2830"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sb3ead560__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sb3ead560__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S141 /*"736D616D"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s005bafaa__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s005bafaa__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2099 /*"1B5B3F3768"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2110 /*"1B5B3F3768"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sdf47bc49__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sdf47bc49__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S341 /*"736D637570"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S344 /*"736D637570"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sacb187e4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sacb187e4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3087 /*"1B5B3F3130343968"*/), 16UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3105 /*"1B5B3F3130343968"*/), 16UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s74b8e66d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s74b8e66d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1874 /*"736D6972"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1885 /*"736D6972"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sd980083a__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sd980083a__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S877 /*"1B5B3468"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S883 /*"1B5B3468"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s0c98b304__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s0c98b304__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S919 /*"736D6B78"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S926 /*"736D6B78"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s979fe208__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s979fe208__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1119 /*"1B5B3F31681B3D"*/), 14UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1125 /*"1B5B3F31681B3D"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s26efa5e7__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s26efa5e7__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1705 /*"736D736F"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1715 /*"736D736F"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s19e337a0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s19e337a0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2920 /*"736D756C"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2938 /*"736D756C"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s5112fe2e__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s5112fe2e__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S735 /*"1B5B346D"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S741 /*"1B5B346D"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s697de0c5__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s697de0c5__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1344 /*"736D7878"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1351 /*"736D7878"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s9ecfea73__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s9ecfea73__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2738 /*"1B5B396D"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2754 /*"1B5B396D"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s12fb9d35__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s12fb9d35__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1656 /*"746263"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1666 /*"746263"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sb4a5183e__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sb4a5183e__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2874 /*"1B5B3367"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2892 /*"1B5B3367"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s02c6f34f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s02c6f34f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S790 /*"74736C"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S796 /*"74736C"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s10b35fb7__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s10b35fb7__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S788 /*"1B5D323B"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S794 /*"1B5D323B"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sfba36b06__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sfba36b06__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2954 /*"7536"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2972 /*"7536"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s6afd325b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s6afd325b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1345 /*"5C455B256925643B256452"*/), 22UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1352 /*"5C455B256925643B256452"*/), 22UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s1da5df23__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s1da5df23__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1143 /*"7537"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1150 /*"7537"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__scb649101__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__scb649101__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2008 /*"1B5B366E"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2019 /*"1B5B366E"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s0bc61678__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s0bc61678__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2422 /*"7538"*/), 4UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2436 /*"7538"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s725f76f4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s725f76f4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1856 /*"5C455B3F255B3B303132333435363738395D63"*/), 38UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1867 /*"5C455B3F255B3B303132333435363738395D63"*/), 38UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s35c8972d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s35c8972d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S36 /*"7539"*/), 4UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sd38fe4c0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sd38fe4c0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2235 /*"1B5B63"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2248 /*"1B5B63"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sf54679d8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sf54679d8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S718 /*"767061"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S724 /*"767061"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s9e95ed00__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s9e95ed00__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S78 /*"5C455B2569257031256464"*/), 22UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sea81492e__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sea81492e__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S563 /*"6B4443"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S567 /*"6B4443"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sd6f7dadf__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sd6f7dadf__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S152 /*"1B5B333B327E"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s4cbd4cd8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s4cbd4cd8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2118 /*"6B444333"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2129 /*"6B444333"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s7a354db2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s7a354db2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S159 /*"1B5B333B337E"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sceb14d8b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sceb14d8b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2675 /*"6B444334"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2691 /*"6B444334"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sfb081d0d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sfb081d0d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3108 /*"1B5B333B347E"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3126 /*"1B5B333B347E"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s6cae74ae__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s6cae74ae__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2726 /*"6B444335"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2742 /*"6B444335"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s3e375b60__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s3e375b60__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2290 /*"1B5B333B357E"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2304 /*"1B5B333B357E"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sdeb5e3e9__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sdeb5e3e9__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2010 /*"6B444336"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2021 /*"6B444336"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s1d21c84b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s1d21c84b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S177 /*"1B5B333B367E"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sf4b3c7f4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sf4b3c7f4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S325 /*"6B444337"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S328 /*"6B444337"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__se89e65be__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__se89e65be__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S273 /*"1B5B333B377E"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S275 /*"1B5B333B377E"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__seb071508__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__seb071508__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1329 /*"6B444E"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1336 /*"6B444E"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s47fa66bb__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s47fa66bb__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2474 /*"1B5B313B3242"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2488 /*"1B5B313B3242"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sa314084a__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sa314084a__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S869 /*"6B444E33"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S875 /*"6B444E33"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sf86130fe__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sf86130fe__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2786 /*"1B5B313B3342"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2803 /*"1B5B313B3342"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sbd11f2a1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sbd11f2a1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2428 /*"6B444E34"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2442 /*"6B444E34"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s9ef248fd__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s9ef248fd__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2376 /*"1B5B313B3442"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2390 /*"1B5B313B3442"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s930f71ec__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s930f71ec__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2327 /*"6B444E35"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2341 /*"6B444E35"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s59726608__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s59726608__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1450 /*"1B5B313B3542"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1457 /*"1B5B313B3542"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s2d0c92c3__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s2d0c92c3__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S729 /*"6B444E36"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S735 /*"6B444E36"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sa8e9ed4f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sa8e9ed4f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1776 /*"1B5B313B3642"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1787 /*"1B5B313B3642"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s0b0a1ea6__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s0b0a1ea6__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S962 /*"6B444E37"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S969 /*"6B444E37"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sdbbe0662__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sdbbe0662__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1911 /*"1B5B313B3742"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1922 /*"1B5B313B3742"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s9e0ada59__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s9e0ada59__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1570 /*"6B454E44"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1579 /*"6B454E44"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sa003eb9f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sa003eb9f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2178 /*"1B5B313B3246"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2191 /*"1B5B313B3246"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s1bfe400b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s1bfe400b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S185 /*"6B454E4433"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S186 /*"6B454E4433"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s906b1aa2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s906b1aa2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2017 /*"1B5B313B3346"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2028 /*"1B5B313B3346"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s9a0a3f58__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s9a0a3f58__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2315 /*"6B454E4434"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2329 /*"6B454E4434"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s06e85f59__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s06e85f59__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S890 /*"1B5B313B3446"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S896 /*"1B5B313B3446"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sc40cc00d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sc40cc00d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1908 /*"6B454E4435"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1919 /*"6B454E4435"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sc1687c64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sc1687c64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2571 /*"1B5B313B3546"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2585 /*"1B5B313B3546"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s9205b592__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s9205b592__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2640 /*"6B454E4436"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2655 /*"6B454E4436"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s10e003ab__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s10e003ab__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2014 /*"1B5B313B3646"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2025 /*"1B5B313B3646"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sb40829af__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sb40829af__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1716 /*"6B454E4437"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1726 /*"6B454E4437"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s43b41cbe__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s43b41cbe__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2121 /*"1B5B313B3746"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2132 /*"1B5B313B3746"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s30bb0937__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s30bb0937__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S545 /*"6B484F4D"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S549 /*"6B484F4D"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s27eb29d1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s27eb29d1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1426 /*"1B5B313B3248"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1433 /*"1B5B313B3248"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__se071f001__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__se071f001__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1565 /*"6B484F4D33"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1574 /*"6B484F4D33"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s10524c3c__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s10524c3c__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1634 /*"1B5B313B3348"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1644 /*"1B5B313B3348"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s4674cf2a__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s4674cf2a__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1785 /*"6B484F4D34"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1796 /*"6B484F4D34"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s1ed97a97__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s1ed97a97__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S636 /*"1B5B313B3448"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S641 /*"1B5B313B3448"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s68774347__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s68774347__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1988 /*"6B484F4D35"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1999 /*"6B484F4D35"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__se159a43a__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__se159a43a__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1739 /*"1B5B313B3548"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1749 /*"1B5B313B3548"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s4e7958f0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s4e7958f0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1118 /*"6B484F4D36"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1124 /*"6B484F4D36"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s08db79e5__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s08db79e5__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1784 /*"1B5B313B3648"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1795 /*"1B5B313B3648"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sb87c3e65__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sb87c3e65__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1963 /*"6B484F4D37"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1974 /*"6B484F4D37"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s33af8660__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s33af8660__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1203 /*"1B5B313B3748"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1209 /*"1B5B313B3748"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s6f012167__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s6f012167__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1066 /*"6B4943"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1072 /*"6B4943"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sdfcd3682__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sdfcd3682__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2153 /*"1B5B323B327E"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2165 /*"1B5B323B327E"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s4b13ebf1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s4b13ebf1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2753 /*"6B494333"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2769 /*"6B494333"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s44d905ef__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s44d905ef__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S913 /*"1B5B323B337E"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S920 /*"1B5B323B337E"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s7116665a__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s7116665a__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1499 /*"6B494334"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1506 /*"6B494334"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s63dd0170__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s63dd0170__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1747 /*"1B5B323B347E"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1757 /*"1B5B323B347E"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s531875b7__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s531875b7__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S220 /*"6B494335"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S222 /*"6B494335"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s209fa11d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s209fa11d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1543 /*"1B5B323B357E"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1551 /*"1B5B323B357E"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sb91b54e0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sb91b54e0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1991 /*"6B494336"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2002 /*"6B494336"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sd46ad10e__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sd46ad10e__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1127 /*"1B5B323B367E"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1134 /*"1B5B323B367E"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__se31dd595__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__se31dd595__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3074 /*"6B494337"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3092 /*"6B494337"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s1a25695b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s1a25695b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2424 /*"1B5B323B377E"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2438 /*"1B5B323B377E"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__se057829b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__se057829b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2690 /*"6B4C4654"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2706 /*"6B4C4654"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s30094b7d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s30094b7d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2136 /*"1B5B313B3244"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2148 /*"1B5B313B3244"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sc0eb72ed__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sc0eb72ed__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1859 /*"6B4C465433"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1870 /*"6B4C465433"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s18706de8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s18706de8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1033 /*"1B5B313B3344"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1039 /*"1B5B313B3344"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sb6da1a0e__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sb6da1a0e__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2988 /*"6B4C465434"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3006 /*"6B4C465434"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sb6e3643b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sb6e3643b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S888 /*"1B5B313B3444"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S894 /*"1B5B313B3444"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s98dc296b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s98dc296b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S864 /*"6B4C465435"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S870 /*"6B4C465435"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sb963f29e__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sb963f29e__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S275 /*"1B5B313B3544"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S277 /*"1B5B313B3544"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sbedea3d4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sbedea3d4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1270 /*"6B4C465436"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1277 /*"6B4C465436"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sa0e56389__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sa0e56389__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1328 /*"1B5B313B3644"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1335 /*"1B5B313B3644"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s28e18949__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s28e18949__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2992 /*"6B4C465437"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3010 /*"6B4C465437"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__scbb97004__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__scbb97004__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S24 /*"1B5B313B3744"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sc439d650__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sc439d650__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S285 /*"6B4E5854"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S287 /*"6B4E5854"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sb2f89f06__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sb2f89f06__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1480 /*"1B5B363B327E"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1487 /*"1B5B363B327E"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sa53d2d12__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sa53d2d12__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3095 /*"6B4E585433"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3113 /*"6B4E585433"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s8314d1b3__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s8314d1b3__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2568 /*"1B5B363B337E"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2582 /*"1B5B363B337E"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s3f3a4de9__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s3f3a4de9__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S330 /*"6B4E585434"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S333 /*"6B4E585434"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s8059481c__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s8059481c__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1820 /*"1B5B363B347E"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1831 /*"1B5B363B347E"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s553831f4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s553831f4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S497 /*"6B4E585435"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S500 /*"6B4E585435"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s8ffc6e59__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s8ffc6e59__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1413 /*"1B5B363B357E"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1420 /*"1B5B363B357E"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s2f35b78b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s2f35b78b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2818 /*"6B4E585436"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2836 /*"6B4E585436"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s09f96e9a__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s09f96e9a__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S942 /*"1B5B363B367E"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S949 /*"1B5B363B367E"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__scd32deae__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__scd32deae__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2812 /*"6B4E585437"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2830 /*"6B4E585437"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s50f13b67__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s50f13b67__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1689 /*"1B5B363B377E"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1699 /*"1B5B363B377E"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s2a9bbad2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s2a9bbad2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1087 /*"6B505256"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1093 /*"6B505256"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s773e6d5d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s773e6d5d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1822 /*"1B5B353B327E"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1833 /*"1B5B353B327E"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s915857b4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s915857b4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S933 /*"6B50525633"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S940 /*"6B50525633"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sba7bcdb0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sba7bcdb0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1228 /*"1B5B353B337E"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1234 /*"1B5B353B337E"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s035fc6ef__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s035fc6ef__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1465 /*"6B50525634"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1472 /*"6B50525634"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s98fd692f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s98fd692f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2725 /*"1B5B353B347E"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2741 /*"1B5B353B347E"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__se15d52d2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__se15d52d2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S26 /*"6B50525635"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s0a2cf1c2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s0a2cf1c2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2101 /*"1B5B353B357E"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2112 /*"1B5B353B357E"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s13645d4d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s13645d4d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2459 /*"6B50525636"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2473 /*"6B50525636"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s23b660c1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s23b660c1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2978 /*"1B5B353B367E"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2996 /*"1B5B353B367E"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__se961dc98__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__se961dc98__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2758 /*"6B50525637"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2774 /*"6B50525637"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sae0910c4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sae0910c4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2174 /*"1B5B353B377E"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2187 /*"1B5B353B377E"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s397b53c6__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s397b53c6__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1711 /*"6B524954"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1721 /*"6B524954"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s25f7f29e__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s25f7f29e__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2790 /*"1B5B313B3243"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2807 /*"1B5B313B3243"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sda6e60d0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sda6e60d0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S840 /*"6B52495433"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S846 /*"6B52495433"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s1a63a51b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s1a63a51b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3020 /*"1B5B313B3343"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3037 /*"1B5B313B3343"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sdc619803__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sdc619803__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2458 /*"6B52495434"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2472 /*"6B52495434"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s34ef6388__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s34ef6388__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2751 /*"1B5B313B3443"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2767 /*"1B5B313B3443"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sba5f23e6__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sba5f23e6__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2305 /*"6B52495435"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2319 /*"6B52495435"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sc3754b7d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sc3754b7d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S105 /*"1B5B313B3543"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s6c66f7e1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s6c66f7e1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1268 /*"6B52495436"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1275 /*"6B52495436"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s86e77932__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s86e77932__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S610 /*"1B5B313B3643"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S614 /*"1B5B313B3643"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s4264772c__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s4264772c__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S697 /*"6B52495437"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S703 /*"6B52495437"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s3dc0df3f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s3dc0df3f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1377 /*"1B5B313B3743"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1384 /*"1B5B313B3743"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sae8f5960__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sae8f5960__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2074 /*"6B5550"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2085 /*"6B5550"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s2dfc7c64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s2dfc7c64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S838 /*"1B5B313B3241"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S844 /*"1B5B313B3241"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s25e6cde2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s25e6cde2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S444 /*"6B555033"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S447 /*"6B555033"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s6a68a039__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s6a68a039__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S253 /*"1B5B313B3341"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S256 /*"1B5B313B3341"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sffe45379__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sffe45379__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1537 /*"6B555034"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1545 /*"6B555034"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s2cead9c2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s2cead9c2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2179 /*"1B5B313B3441"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2192 /*"1B5B313B3441"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s15e23784__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s15e23784__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2737 /*"6B555035"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2753 /*"6B555035"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s336feb9f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s336feb9f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S137 /*"1B5B313B3541"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__safdf585b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__safdf585b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2038 /*"6B555036"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2049 /*"6B555036"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s0eeccc78__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s0eeccc78__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1639 /*"1B5B313B3641"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1649 /*"1B5B313B3641"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s8ddce43e__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s8ddce43e__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2303 /*"6B555037"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2317 /*"6B555037"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s4dc5759d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s4dc5759d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1576 /*"1B5B313B3741"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1585 /*"1B5B313B3741"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s8db962fb__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s8db962fb__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S173 /*"6B6273"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sbaebb4f2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sbaebb4f2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2824 /*"7F"*/), 2UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2842 /*"7F"*/), 2UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s943ec8a9__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s943ec8a9__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1199 /*"6B636274"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1206 /*"6B636274"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s87880cac__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s87880cac__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1654 /*"6B63756231"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1664 /*"6B63756231"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s2957df8e__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s2957df8e__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1922 /*"1B4F44"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1933 /*"1B4F44"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s9dba28d6__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s9dba28d6__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S349 /*"6B63756431"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S352 /*"6B63756431"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s0966b7b8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s0966b7b8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S823 /*"1B4F42"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S829 /*"1B4F42"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s61caca88__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s61caca88__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1002 /*"6B63756631"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1008 /*"6B63756631"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s3369386d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s3369386d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S787 /*"1B4F43"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S793 /*"1B4F43"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s8b2532b8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s8b2532b8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1284 /*"6B63757531"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1291 /*"6B63757531"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sa363d88f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sa363d88f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S910 /*"1B4F41"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S917 /*"1B4F41"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s97509e28__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s97509e28__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1038 /*"6B64636831"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1044 /*"6B64636831"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s68b2ba5b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s68b2ba5b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1789 /*"1B5B337E"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1800 /*"1B5B337E"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s8a8560ef__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s8a8560ef__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S596 /*"6B656E64"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S600 /*"6B656E64"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s315c6954__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s315c6954__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1968 /*"1B4F46"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1979 /*"1B4F46"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s9bd9c2bc__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s9bd9c2bc__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S42 /*"6B656E74"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s892fd43e__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s892fd43e__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1670 /*"1B4F4D"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1680 /*"1B4F4D"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s22ee3171__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s22ee3171__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1997 /*"6B6631"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2008 /*"6B6631"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s0135ff1d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s0135ff1d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S613 /*"1B4F50"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S617 /*"1B4F50"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s40a958ac__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s40a958ac__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1846 /*"6B663130"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1857 /*"6B663130"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s08f90d42__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s08f90d42__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2401 /*"1B5B32317E"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2415 /*"1B5B32317E"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s6aabd961__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s6aabd961__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1055 /*"6B663131"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1061 /*"6B663131"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sacd52c44__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sacd52c44__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1116 /*"1B5B32337E"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1122 /*"1B5B32337E"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sb8a40566__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sb8a40566__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S604 /*"6B663132"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S608 /*"6B663132"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s16d8141b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s16d8141b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2433 /*"1B5B32347E"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2447 /*"1B5B32347E"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sdaa67983__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sdaa67983__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2091 /*"6B663133"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2102 /*"6B663133"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sd96796ee__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sd96796ee__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S842 /*"1B5B313B3250"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S848 /*"1B5B313B3250"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sd8b34250__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sd8b34250__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1732 /*"6B663134"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1742 /*"6B663134"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s3b6a6fcb__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s3b6a6fcb__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2100 /*"1B5B313B3251"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2111 /*"1B5B313B3251"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sc2b55e45__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sc2b55e45__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1869 /*"6B663135"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1880 /*"6B663135"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s616cea34__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s616cea34__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S73 /*"1B5B313B3252"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s50adef0a__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s50adef0a__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1522 /*"6B663136"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1530 /*"6B663136"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s4b6f0629__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s4b6f0629__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2662 /*"1B5B313B3253"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2677 /*"1B5B313B3253"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s72b06327__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s72b06327__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2533 /*"6B663137"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2547 /*"6B663137"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__saaf79585__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__saaf79585__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1714 /*"1B5B31353B327E"*/), 14UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1724 /*"1B5B31353B327E"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s70bd2bf4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s70bd2bf4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2625 /*"6B663138"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2640 /*"6B663138"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sd494242b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sd494242b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S47 /*"1B5B31373B327E"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s5abf47e9__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s5abf47e9__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1872 /*"6B663139"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1883 /*"6B663139"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s080535cc__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s080535cc__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1454 /*"1B5B31383B327E"*/), 14UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1461 /*"1B5B31383B327E"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sb0e6c236__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sb0e6c236__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S747 /*"6B6632"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S753 /*"6B6632"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s1733e328__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s1733e328__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1744 /*"1B4F51"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1754 /*"1B4F51"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sea091c57__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sea091c57__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2996 /*"6B663230"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3014 /*"6B663230"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s122e7759__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s122e7759__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2657 /*"1B5B31393B327E"*/), 14UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2672 /*"1B5B31393B327E"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s8806437a__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s8806437a__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2572 /*"6B663231"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2586 /*"6B663231"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s0bdbbcc3__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s0bdbbcc3__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1593 /*"1B5B32303B327E"*/), 14UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1602 /*"1B5B32303B327E"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sfa0db2b5__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sfa0db2b5__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S506 /*"6B663232"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S509 /*"6B663232"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__se61c3846__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__se61c3846__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1043 /*"1B5B32313B327E"*/), 14UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1049 /*"1B5B32313B327E"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sd00b3200__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sd00b3200__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S530 /*"6B663233"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S534 /*"6B663233"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sb2c656e0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sb2c656e0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S9 /*"1B5B32333B327E"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s51ff32b3__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s51ff32b3__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S65 /*"6B663234"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s928a9a1f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s928a9a1f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1976 /*"1B5B32343B327E"*/), 14UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1987 /*"1B5B32343B327E"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__seffc59d6__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__seffc59d6__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2464 /*"6B663235"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2478 /*"6B663235"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sd005426d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sd005426d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S825 /*"1B5B313B3550"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S831 /*"1B5B313B3550"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s6203c911__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s6203c911__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S637 /*"6B663236"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S642 /*"6B663236"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sa602c1b8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sa602c1b8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2217 /*"1B5B313B3551"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2230 /*"1B5B313B3551"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s7801ad1c__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s7801ad1c__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3038 /*"6B663237"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3055 /*"6B663237"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s3fffe28f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s3fffe28f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1701 /*"1B5B313B3552"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1711 /*"1B5B313B3552"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sda1c8adf__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sda1c8adf__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2881 /*"6B663238"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2899 /*"6B663238"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s1dfd6e72__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s1dfd6e72__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S765 /*"1B5B313B3553"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S771 /*"1B5B313B3553"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sf81a7b82__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sf81a7b82__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1104 /*"6B663239"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1110 /*"6B663239"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sd97eea0a__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sd97eea0a__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S951 /*"1B5B31353B357E"*/), 14UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S958 /*"1B5B31353B357E"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s92e8d193__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s92e8d193__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1435 /*"6B6633"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1442 /*"6B6633"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sf13168bf__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sf13168bf__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3111 /*"1B4F52"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3129 /*"1B4F52"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s498381ea__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s498381ea__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1956 /*"6B663330"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1967 /*"6B663330"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s132455d4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s132455d4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2035 /*"1B5B31373B357E"*/), 14UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2046 /*"1B5B31373B357E"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s6b85f607__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s6b85f607__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S162 /*"6B663331"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sf208e723__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sf208e723__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2901 /*"1B5B31383B357E"*/), 14UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2919 /*"1B5B31383B357E"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s51880bb0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s51880bb0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1158 /*"6B663332"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1165 /*"6B663332"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s352aa806__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s352aa806__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2133 /*"1B5B31393B357E"*/), 14UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2145 /*"1B5B31393B357E"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sbb8af125__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sbb8af125__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S802 /*"6B663333"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S808 /*"6B663333"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s492097ec__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s492097ec__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1546 /*"1B5B32303B357E"*/), 14UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1554 /*"1B5B32303B357E"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sb1799846__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sb1799846__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1553 /*"6B663334"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1562 /*"6B663334"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sece4af99__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sece4af99__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S653 /*"1B5B32313B357E"*/), 14UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S658 /*"1B5B32313B357E"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sd37c0c63__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sd37c0c63__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S572 /*"6B663335"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S576 /*"6B663335"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s4b86d65f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s4b86d65f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S841 /*"1B5B32333B357E"*/), 14UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S847 /*"1B5B32333B357E"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sb97e220c__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sb97e220c__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2209 /*"6B663336"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2222 /*"6B663336"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s528257a0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s528257a0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S233 /*"1B5B32343B357E"*/), 14UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S236 /*"1B5B32343B357E"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__se380a2c1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__se380a2c1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2345 /*"6B663337"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2359 /*"6B663337"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sba57e702__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sba57e702__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S399 /*"1B5B313B3650"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S402 /*"1B5B313B3650"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s3996f072__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s3996f072__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1781 /*"6B663338"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1792 /*"6B663338"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s9c59f65f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s9c59f65f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1324 /*"1B5B313B3651"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1331 /*"1B5B313B3651"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s5b99648f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s5b99648f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2088 /*"6B663339"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2099 /*"6B663339"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sc25c70c8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sc25c70c8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S576 /*"1B5B313B3652"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S580 /*"1B5B313B3652"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s90f59a60__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s90f59a60__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S515 /*"6B6634"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S519 /*"6B6634"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s8f2e8fe2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s8f2e8fe2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1563 /*"1B4F53"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1572 /*"1B4F53"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sf6b78e1d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sf6b78e1d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2632 /*"6B663430"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2647 /*"6B663430"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s2c5f563d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s2c5f563d__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2321 /*"1B5B313B3653"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2335 /*"1B5B313B3653"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s0cb57228__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s0cb57228__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1495 /*"6B663431"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1502 /*"6B663431"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__scbc15f89__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__scbc15f89__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2975 /*"1B5B31353B367E"*/), 14UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2993 /*"1B5B31353B367E"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__se6b2f7bf__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__se6b2f7bf__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2667 /*"6B663432"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2683 /*"6B663432"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sfe0a8c3f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sfe0a8c3f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2574 /*"1B5B31373B367E"*/), 14UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2588 /*"1B5B31373B367E"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s84b01ee2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s84b01ee2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2983 /*"6B663433"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3001 /*"6B663433"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s546a3578__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s546a3578__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1587 /*"1B5B31383B367E"*/), 14UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1596 /*"1B5B31383B367E"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s5eada479__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s5eada479__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S423 /*"6B663434"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S426 /*"6B663434"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s2eeaa915__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s2eeaa915__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1346 /*"1B5B31393B367E"*/), 14UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1353 /*"1B5B31393B367E"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s74ab8884__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s74ab8884__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1897 /*"6B663435"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1908 /*"6B663435"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s04e5fbf7__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s04e5fbf7__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1683 /*"1B5B32303B367E"*/), 14UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1693 /*"1B5B32303B367E"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s0ea8a95b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s0ea8a95b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2339 /*"6B663436"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2353 /*"6B663436"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s935adbda__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s935adbda__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3075 /*"1B5B32313B367E"*/), 14UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3093 /*"1B5B32313B367E"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__seca6353e__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__seca6353e__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S25 /*"6B663437"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sa661bbf4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sa661bbf4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2794 /*"1B5B32333B367E"*/), 14UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2811 /*"1B5B32333B367E"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s06a41f95__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s06a41f95__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2077 /*"6B663438"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2088 /*"6B663438"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s5b316c8b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s5b316c8b__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1353 /*"1B5B32343B367E"*/), 14UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1360 /*"1B5B32343B367E"*/), 14UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sdca19ee0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sdca19ee0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1342 /*"6B663439"*/), 8UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1349 /*"6B663439"*/), 8UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sfefdea6f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sfefdea6f__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1501 /*"1B5B313B3350"*/), 12UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1508 /*"1B5B313B3350"*/), 12UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__sbaf81b15__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__sbaf81b15__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S554 /*"6B6635"*/), 6UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S558 /*"6B6635"*/), 6UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__s1911dcc9__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__s1911dcc9__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1095 /*"1B5B31357E"*/), 10UL);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1101 /*"1B5B31357E"*/), 10UL);
     }
 
 
 
-    public static unsafe ConstSlice<byte> Source__hexencode__se7a0f7c8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<byte> Source__hexencode__se7a0f7c8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2441 /*"6B663530"*/), 8UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__sdcfb7652__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2114 /*"1B5B313B3351"*/), 12UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s51a3dd3d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3064 /*"6B663531"*/), 8UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s0f0280cd__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1316 /*"1B5B313B3352"*/), 12UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__sdf9c6e02__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1625 /*"6B663532"*/), 8UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__se5000018__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2586 /*"1B5B313B3353"*/), 12UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__sc19e7d5f__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1515 /*"6B663533"*/), 8UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__sf7766938__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S259 /*"1B5B31353B337E"*/), 14UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s4f970e24__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3035 /*"6B663534"*/), 8UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s228bf41e__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1907 /*"1B5B31373B337E"*/), 14UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__sb999f399__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S241 /*"6B663535"*/), 8UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__sfef083c9__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1761 /*"1B5B31383B337E"*/), 14UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s4792845e__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2957 /*"6B663536"*/), 8UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s028b511c__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S209 /*"1B5B31393B337E"*/), 14UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s6994f87b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S237 /*"6B663537"*/), 8UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s418e6356__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1878 /*"1B5B32303B337E"*/), 14UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__sb78d2480__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S328 /*"6B663538"*/), 8UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__sb6386af3__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1631 /*"1B5B32313B337E"*/), 14UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__se18fa535__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2600 /*"6B663539"*/), 8UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s6f97188d__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S142 /*"1B5B32333B337E"*/), 14UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s48f0abda__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2815 /*"6B6636"*/), 6UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__sddcfaed7__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3041 /*"1B5B31377E"*/), 10UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s56e5f0d3__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2144 /*"6B663630"*/), 8UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s35c80cf2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1299 /*"1B5B32343B337E"*/), 14UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s74e3e176__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S903 /*"6B663631"*/), 8UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__sd055e7b4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2048 /*"1B5B313B3450"*/), 12UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__se6eb50b1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2238 /*"6B663632"*/), 8UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__sba5803a9__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S251 /*"1B5B313B3451"*/), 12UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s7ce86b3c__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S499 /*"6B663633"*/), 8UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s4850946e__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1145 /*"1B5B313B3452"*/), 12UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s2af2bb37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2460 /*"6B6637"*/), 6UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s90696790__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S318 /*"1B5B31387E"*/), 10UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s28ff8404__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1642 /*"6B6638"*/), 6UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s4beed2bd__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S190 /*"1B5B31397E"*/), 10UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s13019ff9__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1981 /*"6B6639"*/), 6UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s97c984af__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1001 /*"1B5B32307E"*/), 10UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__sdccc06b6__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S968 /*"6B686F6D65"*/), 10UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s914df5ea__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1303 /*"1B4F48"*/), 6UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s61c5f841__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1735 /*"6B69636831"*/), 10UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s22f8220e__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S775 /*"1B5B327E"*/), 8UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s00d9161b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1291 /*"6B696E64"*/), 8UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s020c45b9__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2546 /*"6B6D6F7573"*/), 10UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s6dd01507__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1875 /*"1B5B3C"*/), 6UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s6daf968b__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1382 /*"6B6E70"*/), 6UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s2e5a8782__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2320 /*"1B5B367E"*/), 8UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s2ab1a6cd__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1451 /*"6B7070"*/), 6UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__sa09c3381__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2504 /*"1B5B357E"*/), 8UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__s698552bd__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2207 /*"6B7269"*/), 6UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__sd7be7b0c__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1960 /*"727331"*/), 6UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__sb78d9fea__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1853 /*"1B5D1B5C5C1B63"*/), 14UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__sc90a0636__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1112 /*"7363"*/), 4UL);
-    }
-
-
-
-    public static unsafe ConstSlice<byte> Source__hexencode__sd8bc8032__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1091 /*"1B37"*/), 4UL);
-    }
-
-
-
-    public static unsafe void static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql_initSortedKVs__p_a273_tuple___const_unsigned_charpa0___const_unsigned_charpa0pu_sentinel_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql* self, global::System.ValueTuple<ConstSlice<byte>, ConstSlice<byte>>* kvs_list, Slice<ConstSlice<byte>> sorted_keys, Slice<ConstSlice<byte>> sorted_vals)
-    {
-        {
-            ConstSlice<global::System.ValueTuple<ConstSlice<byte>, ConstSlice<byte>>> __s = new ConstSlice<global::System.ValueTuple<ConstSlice<byte>, ConstSlice<byte>>>(kvs_list, 273UL);
-            for (ulong __i = 0UL; Cond.B(((CBool)(__i < __s.Len))); __i++)
-            {
-                global::System.ValueTuple<ConstSlice<byte>, ConstSlice<byte>> kv = __s.Ptr[__i];
-                ulong i = __i + (ulong)0;
-                {
-                    sorted_keys.Ptr[i] = kv.Item1;
-                    sorted_vals.Ptr[i] = kv.Item2;
-                    self->min_len = (uint)ZigMath.Min((ulong)self->min_len, (kv.Item1).Len);
-                    self->max_len = (uint)ZigMath.Max((ulong)self->max_len, (kv.Item1).Len);
-                }
-            }
-        }
-        mem__sortUnstableContext__static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(0, sorted_keys.Len, new static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext { keys = sorted_keys, vals = sorted_vals });
-    }
-
-
-
-    public static unsafe void mem__sortUnstableContext__static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong a, ulong b, static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext context)
-    {
-        sort_pdq__pdqContext__static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(a, b, context);
-    }
-
-
-
-    public static unsafe CBool sort_pdq__partialInsertionSort__static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong a, ulong b, static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext context)
-    {
-        int max_steps = 5;
-        int shortest_shifting = 50;
-        ulong i = a + 1UL;
-        for (ulong __range8 = 0; Cond.B(((CBool)(__range8 < (ulong)max_steps))); __range8++)
-        {
-            while (Cond.B(((CBool)(Cond.B(((CBool)(i < b))) && Cond.B((Cond.B(static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, i, i - 1UL)) ? 0 : 1))))))
-                i += (ulong)(1);
-            if (Cond.B(((CBool)(i == b))))
-                return true;
-            if (Cond.B(((CBool)(b - a < 50UL))))
-                return false;
-            static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_swap__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, i, i - 1UL);
-            if (Cond.B(((CBool)(i - a >= 2UL))))
-            {
-                ulong j = i - 1UL;
-                for (; Cond.B(((CBool)(j > a))); j -= (ulong)(1))
-                {
-                    if (Cond.B((Cond.B(static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, j, j - 1UL)) ? 0 : 1)))
-                        break;
-                    static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_swap__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, j, j - 1UL);
-                }
-            }
-            if (Cond.B(((CBool)(b - i >= 2UL))))
-            {
-                ulong j__1 = i + 1UL;
-                for (; Cond.B(((CBool)(j__1 < b))); j__1 += (ulong)(1))
-                {
-                    if (Cond.B((Cond.B(static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, j__1, j__1 - 1UL)) ? 0 : 1)))
-                        break;
-                    static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_swap__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, j__1, j__1 - 1UL);
-                }
-            }
-        }
-        return false;
-    }
-
-
-
-    public static unsafe void sort_pdq__pdqContext__static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong a, ulong b, static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext context)
-    {
-        int max_insertion = 24;
-        byte max_limit = ((byte)(Cond.B(((CBool)(b > a))) ? math__log2_int__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(b - a) : (byte)(0)));
-        sort_pdq__Range* stack = stackalloc sort_pdq__Range[64];
-        sort_pdq__Range range = new sort_pdq__Range { a = a, b = b, limit = max_limit, leftmost = true, balanced = true, partitioned = true };
-        ulong top = 0;
-        while (true)
-        {
-            while (true)
-            {
-                ulong len = range.b - range.a;
-                if (Cond.B(((CBool)(len <= 24UL))))
-                {
-                    if (Cond.B(range.leftmost))
-                    {
-                        {
-                            sort__insertionContext__static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range.a, range.b, context);
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        {
-                            sort_pdq__unguardedInsertionContext__static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range.a, range.b, context);
-                            break;
-                        }
-                    }
-                }
-                if (Cond.B(((CBool)(range.limit == 0UL))))
-                {
-                    {
-                        sort__heapContext__static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range.a, range.b, context);
-                        break;
-                    }
-                }
-                if (Cond.B((Cond.B(range.balanced) ? 0 : 1)))
-                {
-                    sort_pdq__breakPatterns__static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range.a, range.b, context);
-                    range.limit -= (ulong)(1);
-                }
-                ulong pivot = 0;
-                sort_pdq__Hint hint = sort_pdq__chosePivot__static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range.a, range.b, &pivot, context);
-                if (Cond.B(((CBool)((int)hint == (int)__DotCcEnum_736F72745F7064715F5F48696E74.decreasing))))
-                {
-                    sort_pdq__reverseRange__static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range.a, range.b, context);
-                    pivot = range.b - 1UL - (pivot - range.a);
-                    hint = __DotCcEnum_736F72745F7064715F5F48696E74.increasing;
-                }
-                if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(range.balanced) && Cond.B(range.partitioned)))) && Cond.B(((CBool)((int)hint == (int)__DotCcEnum_736F72745F7064715F5F48696E74.increasing)))))))
-                {
-                    if (Cond.B(sort_pdq__partialInsertionSort__static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range.a, range.b, context)))
-                        break;
-                }
-                if (Cond.B(((CBool)(Cond.B(((CBool)(range.a > a))) && Cond.B((Cond.B(static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, range.a - 1UL, pivot)) ? 0 : 1))))))
-                {
-                    range.a = sort_pdq__partitionEqual__static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range.a, range.b, pivot, context);
-                    continue;
-                }
-                ulong mid = pivot;
-                CBool was_partitioned = sort_pdq__partition__static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range.a, range.b, &mid, context);
-                ulong left_len = mid - range.a;
-                ulong right_len = range.b - (mid + 1UL);
-                ulong balanced_threshold = len / 8UL;
-                CBool left_is_smaller = ((CBool)(left_len < right_len));
-                ulong smaller_len = ((ulong)(Cond.B(left_is_smaller) ? left_len : right_len));
-                CBool was_balanced = ((CBool)(smaller_len >= balanced_threshold));
-                ulong smaller_start_offset = ((ulong)(Cond.B(left_is_smaller) ? range.a : mid + 1UL));
-                ulong larger_start_offset = ((ulong)(Cond.B(left_is_smaller) ? mid + 1UL : range.a));
-                ulong smaller_end_exclusive_offset = ((ulong)(Cond.B(left_is_smaller) ? mid : range.b));
-                ulong larger_end_exclusive_offset = ((ulong)(Cond.B(left_is_smaller) ? range.b : mid));
-                CBool smaller_is_leftmost = ((CBool)(Cond.B(left_is_smaller) ? range.leftmost : false));
-                CBool larger_is_leftmost = ((CBool)(Cond.B(left_is_smaller) ? false : range.leftmost));
-                stack[top] = new sort_pdq__Range { a = larger_start_offset, b = larger_end_exclusive_offset, limit = range.limit, leftmost = larger_is_leftmost, balanced = was_balanced, partitioned = was_partitioned };
-                top += (ulong)(1);
-                range.a = smaller_start_offset;
-                range.b = smaller_end_exclusive_offset;
-                range.leftmost = smaller_is_leftmost;
-                range.balanced = true;
-                range.partitioned = was_partitioned;
-            }
-            ErrUnion<ulong> __cf = math__sub__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(top, 1);
-            if (Cond.B(__cf.IsErr))
-            {
-                break;
-            }
-            ulong __anf9 = __cf.Value;
-            top = __anf9;
-            range = stack[top];
-        }
-    }
-
-
-
-    public static unsafe sort_pdq__Hint sort_pdq__chosePivot__static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong a, ulong b, ulong* pivot, static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext context)
-    {
-        int shortest_ninther = 50;
-        int max_swaps = 4 * 3;
-        ulong len = b - a;
-        ulong i = a + len / 4UL * 1UL;
-        ulong j = a + len / 4UL * 2UL;
-        ulong k = a + len / 4UL * 3UL;
-        ulong swaps = 0;
-        if (Cond.B(((CBool)(len >= 8UL))))
-        {
-            if (Cond.B(((CBool)(len >= 50UL))))
-            {
-                sort_pdq__sort3__static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(i - 1UL, i, i + 1UL, &swaps, context);
-                sort_pdq__sort3__static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(j - 1UL, j, j + 1UL, &swaps, context);
-                sort_pdq__sort3__static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(k - 1UL, k, k + 1UL, &swaps, context);
-            }
-            sort_pdq__sort3__static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(i, j, k, &swaps, context);
-        }
-        *pivot = j;
-        return ((swaps) switch { 0 => __DotCcEnum_736F72745F7064715F5F48696E74.increasing, 12UL => __DotCcEnum_736F72745F7064715F5F48696E74.decreasing, _ => __DotCcEnum_736F72745F7064715F5F48696E74.unknown });
-    }
-
-
-
-    public static unsafe CBool static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext ctx, ulong a, ulong b)
-    {
-        return ((CBool)(ctx.keys.Ptr[a].Len < ctx.keys.Ptr[b].Len));
-    }
-
-
-
-    public static unsafe void sort_pdq__sort3__static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong a, ulong b, ulong c, ulong* swaps, static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext context)
-    {
-        if (Cond.B(static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, b, a)))
-        {
-            *swaps += (ulong)(1);
-            static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_swap__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, b, a);
-        }
-        if (Cond.B(static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, c, b)))
-        {
-            *swaps += (ulong)(1);
-            static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_swap__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, c, b);
-        }
-        if (Cond.B(static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, b, a)))
-        {
-            *swaps += (ulong)(1);
-            static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_swap__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, b, a);
-        }
-    }
-
-
-
-    public static unsafe void static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_swap__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext ctx, ulong a, ulong b)
-    {
-        mem__swap____const_unsigned_charpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&ctx.keys.Ptr[a], &ctx.keys.Ptr[b]);
-        mem__swap____const_unsigned_charpa0_s0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&ctx.vals.Ptr[a], &ctx.vals.Ptr[b]);
-    }
-
-
-
-    public static unsafe void mem__swap____const_unsigned_charpa0_s0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ConstSlice<byte>* a, ConstSlice<byte>* b)
-    {
-        {
-            Slice<byte> a_bytes = new Slice<byte>((byte*)a, ((ulong)(sizeof(ConstSlice<byte>))) / ((ulong)(sizeof(byte))));
-            Slice<byte> b_bytes = new Slice<byte>((byte*)b, ((ulong)(sizeof(ConstSlice<byte>))) / ((ulong)(sizeof(byte))));
-            {
-                Slice<byte> __s = a_bytes;
-                Slice<byte> __s__1 = b_bytes;
-                for (ulong __i = 0UL; Cond.B(((CBool)(__i < __s.Len))); __i++)
-                {
-                    byte* ab = &__s.Ptr[__i];
-                    byte* bb = &__s__1.Ptr[__i];
-                    {
-                        byte tmp__1 = *ab;
-                        *ab = *bb;
-                        *bb = tmp__1;
-                    }
-                }
-            }
-        }
-    }
-
-
-
-    public static unsafe CBool sort_pdq__partition__static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong a, ulong b, ulong* pivot, static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext context)
-    {
-        static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_swap__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, a, *pivot);
-        ulong i = a + 1UL;
-        ulong j = b - 1UL;
-        while (Cond.B(((CBool)(Cond.B(((CBool)(i <= j))) && Cond.B(static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, i, a))))))
-            i += (ulong)(1);
-        while (Cond.B(((CBool)(Cond.B(((CBool)(i <= j))) && Cond.B((Cond.B(static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, j, a)) ? 0 : 1))))))
-            j -= (ulong)(1);
-        if (Cond.B(((CBool)(i > j))))
-        {
-            static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_swap__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, j, a);
-            *pivot = j;
-            return true;
-        }
-        static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_swap__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, i, j);
-        i += (ulong)(1);
-        j -= (ulong)(1);
-        int block_size = 64;
-        byte* offsets_l = stackalloc byte[64];
-        byte* offsets_r = stackalloc byte[64];
-        ulong offsets_l_base = i;
-        ulong offsets_r_base = j;
-        ulong num_l = 0;
-        ulong num_r = 0;
-        ulong start_l = 0;
-        ulong start_r = 0;
-        while (Cond.B(((CBool)(i <= j))))
-        {
-            ulong num_unknown = j + 1UL - i;
-            ulong left_split = ((ulong)(Cond.B(((CBool)(num_l == 0UL))) ? ZigMath.Min((ulong)block_size, ((ulong)(Cond.B(((CBool)(num_r == 0UL))) ? num_unknown / 2UL : num_unknown))) : (ulong)(0)));
-            ulong right_split = ((ulong)(Cond.B(((CBool)(num_r == 0UL))) ? ZigMath.Min((ulong)block_size, num_unknown - left_split) : (ulong)(0)));
-            for (ulong k = 0; Cond.B(((CBool)(k < (ulong)left_split))); k++)
-            {
-                offsets_l[num_l] = (byte)k;
-                num_l += (ulong)((int)((Cond.B(static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, i + k, a)) ? 0 : 1)));
-            }
-            i += left_split;
-            for (ulong k__1 = 0; Cond.B(((CBool)(k__1 < (ulong)right_split))); k__1++)
-            {
-                offsets_r[num_r] = (byte)k__1;
-                num_r += (ulong)((int)(int)(static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, j - k__1, a)));
-            }
-            j -= right_split;
-            ulong num = ZigMath.Min(num_l, num_r);
-            for (ulong m = 0; Cond.B(((CBool)(m < (ulong)num))); m++)
-            {
-                static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_swap__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, offsets_l_base + offsets_l[start_l + m], offsets_r_base - offsets_r[start_r + m]);
-            }
-            num_l -= num;
-            num_r -= num;
-            start_l += num;
-            start_r += num;
-            if (Cond.B(((CBool)(num_l == 0UL))))
-            {
-                start_l = 0;
-                offsets_l_base = i;
-            }
-            if (Cond.B(((CBool)(num_r == 0UL))))
-            {
-                start_r = 0;
-                offsets_r_base = j;
-            }
-        }
-        if (Cond.B(((CBool)(num_l > 0UL))))
-        {
-            while (Cond.B(((CBool)(num_l > 0UL))))
-            {
-                num_l -= (ulong)(1);
-                static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_swap__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, offsets_l_base + offsets_l[start_l + num_l], j);
-                j -= (ulong)(1);
-            }
-            i = j + 1UL;
-        }
-        if (Cond.B(((CBool)(num_r > 0UL))))
-        {
-            while (Cond.B(((CBool)(num_r > 0UL))))
-            {
-                num_r -= (ulong)(1);
-                static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_swap__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, offsets_r_base - offsets_r[start_r + num_r], i);
-                i += (ulong)(1);
-            }
-            j = i - 1UL;
-        }
-        static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_swap__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, j, a);
-        *pivot = j;
-        return false;
-    }
-
-
-
-    public static unsafe void sort__insertionContext__static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong a, ulong b, static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext context)
-    {
-        debug__assert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(((CBool)(a <= b)));
-        ulong i = a + 1UL;
-        for (; Cond.B(((CBool)(i < b))); i += (ulong)(1))
-        {
-            ulong j = i;
-            for (; Cond.B(((CBool)(Cond.B(((CBool)(j > a))) && Cond.B(static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, j, j - 1UL))))); j -= (ulong)(1))
-            {
-                static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_swap__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, j, j - 1UL);
-            }
-        }
-    }
-
-
-
-    public static unsafe void sort_pdq__breakPatterns__static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong a, ulong b, static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext context)
-    {
-        ulong len = b - a;
-        if (Cond.B(((CBool)(len < 8UL))))
-            return;
-        ulong rand = (ulong)(ulong)len;
-        ulong modulus = math__ceilPowerOfTwoAssert__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(len);
-        ulong i = a + len / 4UL * 2UL - 1UL;
-        for (; Cond.B(((CBool)(i <= a + len / 4UL * 2UL + 1UL))); i += (ulong)(1))
-        {
-            rand ^= rand << 13;
-            rand ^= rand >> 7;
-            rand ^= rand << 17;
-            ulong other = (ulong)(ulong)(rand & modulus - 1UL);
-            if (Cond.B(((CBool)(other >= len))))
-                other -= len;
-            static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_swap__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, i, a + other);
-        }
-    }
-
-
-
-    public static unsafe ulong sort_pdq__partitionEqual__static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong a, ulong b, ulong pivot, static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext context)
-    {
-        static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_swap__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, a, pivot);
-        ulong i = a + 1UL;
-        ulong j = b - 1UL;
-        while (true)
-        {
-            while (Cond.B(((CBool)(Cond.B(((CBool)(i <= j))) && Cond.B((Cond.B(static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, a, i)) ? 0 : 1))))))
-                i += (ulong)(1);
-            while (Cond.B(((CBool)(Cond.B(((CBool)(i <= j))) && Cond.B(static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, a, j))))))
-                j -= (ulong)(1);
-            if (Cond.B(((CBool)(i > j))))
-                break;
-            static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_swap__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, i, j);
-            i += (ulong)(1);
-            j -= (ulong)(1);
-        }
-        return i;
-    }
-
-
-
-    public static unsafe void sort_pdq__unguardedInsertionContext__static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong a, ulong b, static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext context)
-    {
-        ulong i = a + 1UL;
-        for (; Cond.B(((CBool)(i < b))); i += (ulong)(1))
-        {
-            ulong j = i;
-            for (; Cond.B(static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, j, j - 1UL)); j -= (ulong)(1))
-            {
-                static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql__SortContext_swap__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(context, j, j - 1UL);
-            }
-        }
-    }
-
-
-
-    public static unsafe void static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql_initLenIndexes__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql self, Slice<uint> len_indexes)
-    {
-        ulong len = 0;
-        uint i = 0;
-        for (; Cond.B(((CBool)(len <= self.max_len))); len += (ulong)(1))
-        {
-            while (Cond.B(((CBool)(len > self.kvs->keys[i].Len))))
-            {
-                i += (uint)(1);
-            }
-            len_indexes.Ptr[len] = i;
-        }
-    }
-
-
-
-    public static unsafe static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql_initComptime__ctbea8cca3__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql { kvs = global::Managed.GhosttyVt.__dotcc_owned_array_A68E6E73683134A7FB730A4C3FEA4EE4C166C41DB712688451DB1B18079DF6CE_Create(), len_indexes = Libc.GlobalArrayFrom<uint>(DotCcLiterals.Puint_F770C8D4A0B7266FBCAAB3BA5CEC244E8A48C90033E555518D6630D74E858C2F), len_indexes_len = 15u, min_len = 4u, max_len = 14u };
-    }
-
-
-
-    public static unsafe static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql Source__xtgettcapMap__c30ea7e88__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return new static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql { kvs = global::Managed.GhosttyVt.__dotcc_owned_array_2C2C8BAED88694EBEDD3F1D266A3A1015AF1C638FEFA936631FD1E19836C6684_Create(), len_indexes = Libc.GlobalArrayFrom<uint>(DotCcLiterals.Puint_F770C8D4A0B7266FBCAAB3BA5CEC244E8A48C90033E555518D6630D74E858C2F), len_indexes_len = 15u, min_len = 4u, max_len = 14u };
-    }
-
-
-
-    public static unsafe ErrUnion<Unit> stream_terminal__Handler_dcsCommand__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream_terminal__Handler* self, dcs__Command* cmd)
-    {
-        try
-        {
-            {
-                dcs__Command* __unp = cmd;
-                switch ((int)(*__unp).__tag)
-                {
-                    case (int)__DotCcEnum_6463735F5F436F6D6D616E645F546167.decrqss:
-                        {
-                            dcs__Command__DECRQSS request = (*__unp).__payload.decrqss;
-                            byte* response = stackalloc byte[257];
-                            ConstSlice<byte> encoded = ErrUnion.Try(dcs__Command__DECRQSS_encode__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(request, self->terminal, new Slice<byte>(response + 0, unchecked((ulong)unchecked(unchecked(257UL - 1UL) - (ulong)(0))))));
-                            response[encoded.Len] = 0;
-                            stream_terminal__Handler_writePty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, new Slice<byte>(response + 0, (ulong)(encoded.Len - (ulong)(0))));
-                        }
-                        break;
-                    case (int)__DotCcEnum_6463735F5F436F6D6D616E645F546167.xtgettcap:
-                        {
-                            dcs__Command__XTGETTCAP* gettcap = &(*__unp).__payload.xtgettcap;
-                            if (Cond.B(((CBool)(self->effects.write_pty == null))))
-                                return ErrUnion<Unit>.Ok(default);
-                            while (true)
-                            {
-                                ConstSlice<byte>? __cap = dcs__Command__XTGETTCAP_next__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(gettcap);
-                                if (Cond.B(__cap.HasValue))
-                                {
-                                    ConstSlice<byte> key = __cap.Value;
-                                    {
-                                        if (Cond.B(ZigMem.Eql<byte>(key, new ConstSlice<byte>(fmt__bytesToHex__a2_u8_sentinel_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0((DotCcLiterals.Pointer + DotCcLiterals.S1433 /*"TN"*/), __DotCcEnum_666D745F5F43617365.upper), 4UL))))
-                                        {
-                                            stream_terminal__Handler_writeTerminfoName__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self);
-                                            continue;
-                                        }
-                                        stream_terminal__Handler* __anf13 = self;
-                                        ConstSlice<byte>? __cf = static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql_get__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new static_string_map__StaticStringMapWithEql____const_unsigned_charpa0_s0_fndefaultEql { kvs = global::Managed.GhosttyVt.__dotcc_owned_array_07D40F2711CBD1A159DE9FFD1CECBA5CBA6A2CBA8C6FE6EBCE350DAB342F8142_Create(), len_indexes = Libc.GlobalArrayFrom<uint>(DotCcLiterals.Puint_F770C8D4A0B7266FBCAAB3BA5CEC244E8A48C90033E555518D6630D74E858C2F), len_indexes_len = 15u, min_len = 4u, max_len = 14u }, key);
-                                        if (Cond.B((Cond.B(__cf.HasValue) ? 0 : 1)))
-                                        {
-                                            continue;
-                                        }
-                                        ConstSlice<byte> __anf14 = __cf.Value;
-                                        stream_terminal__Handler_writePty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(__anf13, __anf14);
-                                    }
-                                }
-                                else
-                                    break;
-                            }
-                        }
-                        break;
-                    default:
-                        {
-                        }
-                        break;
-                }
-            }
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
-    }
-
-
-
-    public static unsafe void stream_terminal__Handler_writePty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream_terminal__Handler* self, ConstSlice<byte> data)
-    {
-        delegate*<stream_terminal__Handler*, ConstSlice<byte>, void> __cf = self->effects.write_pty;
-        if (Cond.B(((CBool)(__cf == null))))
-        {
-            return;
-        }
-        delegate*<stream_terminal__Handler*, ConstSlice<byte>, void> func = __cf;
-        func(self, data);
-    }
-
-
-
-    public static unsafe void stream_terminal__Handler_clipboardRead__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream_terminal__Handler* self, clipboard_2__Location location, osc_2__Terminator terminator)
-    {
-        delegate*<stream_terminal__Handler*, clipboard_2__Read, void> __cf = self->effects.clipboard_read;
-        if (Cond.B(((CBool)(__cf == null))))
-        {
-            return;
-        }
-        delegate*<stream_terminal__Handler*, clipboard_2__Read, void> func = __cf;
-        stream_terminal__Handler__ClipboardReadState state = new stream_terminal__Handler__ClipboardReadState { handler = self, location = location, terminator = terminator, replied = false };
-        ConstSlice<byte>* __cl310 = stackalloc ConstSlice<byte>[]{ new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2043 /*"text/plain"*/), 10UL) };
-        func(self, new clipboard_2__Read { location = location, mimes = new ConstSlice<ConstSlice<byte>>(__cl310, 1UL), list = false, name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL), granted = false, can_remember = false, reply_ctx = &state, reply_fn = DotCcPointers.stream_terminal__Handler__ClipboardReadState_reply__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0 });
-        if (Cond.B((Cond.B(state.replied) ? 0 : 1)))
-        {
-            ErrUnion<Unit> __cf__1 = stream_terminal__Handler__ClipboardReadState_respond__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&state, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL));
-            if (Cond.B(__cf__1.IsErr))
-            {
-                ushort err = __cf__1.Code;
-                {
-                    log__scoped__c5c9b9ae6_warn__s7feb588e_tuple_anyerror_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new global::System.ValueTuple<ushort>(err));
-                }
-            }
-        }
-    }
-
-
-
-    public static unsafe void stream_terminal__Handler_ignoreWriteReply__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(void* __zig_discard_param0, clipboard_2__Write__Result __zig_discard_param1)
-    {
-    }
-
-
-
-    public static unsafe ErrUnion<Unit> stream_terminal__Handler_writeXtermColorReport__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__Writer* writer, color__Target target, color_2__RGB c, osc_2__Terminator terminator)
-    {
-        try
-        {
-            switch ((int)target.__tag)
-            {
-                case (int)__DotCcEnum_636F6C6F725F5F5461726765745F546167.palette:
-                    {
-                        byte i = target.__payload.palette;
-                        _ = ErrUnion.Try(Io_Writer__print__s04eeef12_tuple_u8_tw8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(writer, new global::System.ValueTuple<byte>(i)));
-                        _ = ErrUnion.Try(color_2__RGB_encodeRgb16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(c, writer));
-                        _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(writer, osc_2__Terminator_string__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminator)));
-                    }
-                    break;
-                case (int)__DotCcEnum_636F6C6F725F5F5461726765745F546167.dynamic:
-                    {
-                        color_2__Dynamic dynamic = target.__payload.dynamic;
-                        switch ((int)(byte)dynamic)
-                        {
-                            case (byte)__DotCcEnum_636F6C6F725F325F5F44796E616D6963.foreground:
-                            case (byte)__DotCcEnum_636F6C6F725F325F5F44796E616D6963.background:
-                            case (byte)__DotCcEnum_636F6C6F725F325F5F44796E616D6963.cursor:
-                                {
-                                    _ = ErrUnion.Try(Io_Writer__print__sb73ce865_tuple_u8_tw4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(writer, new global::System.ValueTuple<byte>((byte)dynamic)));
-                                    _ = ErrUnion.Try(color_2__RGB_encodeRgb16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(c, writer));
-                                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(writer, osc_2__Terminator_string__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminator)));
-                                }
-                                break;
-                            case (byte)__DotCcEnum_636F6C6F725F325F5F44796E616D6963.pointer_foreground:
-                            case (byte)__DotCcEnum_636F6C6F725F325F5F44796E616D6963.pointer_background:
-                            case (byte)__DotCcEnum_636F6C6F725F325F5F44796E616D6963.tektronix_foreground:
-                            case (byte)__DotCcEnum_636F6C6F725F325F5F44796E616D6963.tektronix_background:
-                            case (byte)__DotCcEnum_636F6C6F725F325F5F44796E616D6963.highlight_background:
-                            case (byte)__DotCcEnum_636F6C6F725F325F5F44796E616D6963.tektronix_cursor:
-                            case (byte)__DotCcEnum_636F6C6F725F325F5F44796E616D6963.highlight_foreground:
-                                {
-                                }
-                                break;
-                            default:
-                                throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
-                        }
-                    }
-                    break;
-                default:
-                    {
-                    }
-                    break;
-            }
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2455 /*"6B663530"*/), 8UL);
     }
 
 

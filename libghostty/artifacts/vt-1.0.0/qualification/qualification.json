@@ -1,0 +1,46 @@
+{
+  "cases": 45,
+  "baseline_cases": 24,
+  "version_feature_cases": 14,
+  "api_delta_cases": 7,
+  "engine": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/engine/engine.csobj",
+  "engine_sha256": "c270ed4fbf1485095d53ef80e0364b51db1843dc132393e1aa881dbc4fcab945",
+  "results": [
+    {
+      "form": "raw",
+      "mode": "jit",
+      "passed": 45,
+      "failed": 0,
+      "exact_native_match": true,
+      "whole_library_rooted": false,
+      "project": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/raw/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj"
+    },
+    {
+      "form": "raw",
+      "mode": "aot",
+      "passed": 45,
+      "failed": 0,
+      "exact_native_match": true,
+      "whole_library_rooted": true,
+      "project": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/raw/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj"
+    },
+    {
+      "form": "processed",
+      "mode": "jit",
+      "passed": 45,
+      "failed": 0,
+      "exact_native_match": true,
+      "whole_library_rooted": false,
+      "project": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/processed/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj"
+    },
+    {
+      "form": "processed",
+      "mode": "aot",
+      "passed": 45,
+      "failed": 0,
+      "exact_native_match": true,
+      "whole_library_rooted": true,
+      "project": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/processed/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj"
+    }
+  ]
+}

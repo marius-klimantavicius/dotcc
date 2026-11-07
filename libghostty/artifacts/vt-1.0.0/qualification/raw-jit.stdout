@@ -1,0 +1,50 @@
+PASS creation grid=10x4 cursor=0,0 text=empty
+PASS ascii-render text=hello\nworld cursor=5,1 cells=h,d
+PASS cursor-cup cell(3,1)=U+005A cursor=4,1
+PASS erase-display text=empty cursor=0,0
+PASS sgr R=bold,palette1 N=default
+PASS utf8-graphemes U+20AC U+4E2D[wide,tail] U+0065+0301 cursor=4,0
+PASS cursor-visibility hidden=0 restored=1
+PASS alternate-screen alternate=ALT primary=PRIMARY cursor=7,0
+PASS resize-reflow grid=6x5 text=ABCDEFGHIJKL pixels=48x80 row1=GHIJKL
+PASS reset grid=6x5 cursor=0,0 text=empty
+PASS callbacks-title reply=ESC[2;3R bell=1 title=DotCC_oracle notifications=1
+PASS formatter-buffer sizing=OUT_OF_SPACE short=OUT_OF_SPACE allocated=freed
+PASS ordinary-errors zero-dimension=NULL-query=invalid null-free/reset=accepted
+PASS allocator-failure new=OUT_OF_MEMORY
+PASS instance-independence first=FIRST second=SECOND first-survives-second-free
+PASS lifecycle cycles=32 allocator-pairs=balanced live=0
+RESULT cases=16 passed=16 failed=0
+PASS boundary-abi pointer=8 style=16 allocator=16 vtable=64
+PASS boundary-workflow cycles=2 utf8=wide snapshot=empty,sized,unwrapped style=all-flags,curly,rgb alternate=restored reset=preserves-resize independent=1
+RESULT boundary-cases=2 passed=2 failed=0
+PASS layout allocator size=16 align=8 ctx=0 vtable=8
+PASS layout vtable size=64 align=8 alloc=0 resize=8 remap=16 free=24 reserved=32
+PASS layout formatter-option size=4 align=4 emit=1 unwrap=2 trim=3 extras=5
+PASS layout grid size=16 align=8 node=0 x=8 y=10
+PASS layout point size=24 align=8 tag=0 value=8
+PASS layout style size=16 align=2 foreground=0 background=4 underline-color=8 flags=12 reserved=14
+RESULT layout-cases=6 passed=6 failed=0
+PASS library-version numeric=1.0.0 string=1.0.0 c-string=1.0.0 pre=0 build=0
+PASS optimize mode=3 release-fast=1
+PASS feature simd=0
+PASS feature kitty_graphics=0
+PASS feature tmux_control_mode=0
+PASS feature snapshot=0
+PASS feature formatter=1
+PASS feature selection=0
+PASS feature search=0
+PASS feature render_state=1
+PASS feature input_encode=0
+PASS feature color=0
+PASS feature grid_introspection=1
+PASS feature glyph_protocol=0
+RESULT version-feature-cases=14 passed=14 failed=0
+PASS color-scheme-report uint8-buffer=ESC[?997;1n
+PASS mode-report uint8-buffer=ESC[?25;1$y
+PASS size-report const-size-pointer=ESC[8;24;80t null=INVALID_VALUE
+PASS sgr const-attribute-pointer=bold
+PASS osc data-result=SUCCESS,NO_VALUE,UNSUPPORTED title=GhosttyString
+PASS viewport return=SUCCESS renamed-bottom-tag
+PASS formatter constructor=3-args option-set=unwrapped allocator=balanced
+RESULT api-delta-cases=7 passed=7 failed=0

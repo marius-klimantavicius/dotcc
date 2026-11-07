@@ -93,10 +93,9 @@ static void cursor(GhosttyTerminal t, uint16_t x, uint16_t y) {
 
 static GhosttyFormatter formatter_new(GhosttyTerminal t) {
     GhosttyFormatter f = NULL;
-    GhosttyFormatterTerminalOptions opts = GHOSTTY_INIT_SIZED(GhosttyFormatterTerminalOptions);
-    opts.emit = GHOSTTY_FORMATTER_FORMAT_PLAIN;
-    opts.unwrap = true; opts.trim = true;
-    OK(ghostty_formatter_terminal_new(&allocator, &f, t, opts));
+    OK(ghostty_formatter_terminal_new(&allocator, &f, t));
+    bool unwrap = true;
+    OK(ghostty_formatter_set(f, GHOSTTY_FORMATTER_OPT_UNWRAP, &unwrap));
     return f;
 }
 
@@ -193,13 +192,12 @@ int main(void) {
     feed(t, "\x1b[1;31mR\x1b[0mN");
     OK(ghostty_render_state_update(v.state, t));
     cell_select(&v, 0, 0);
-    GhosttyStyle style = GHOSTTY_INIT_SIZED(GhosttyStyle);
+    GhosttyStyle style = {0};
     OK(ghostty_render_state_row_cells_get(v.cells, GHOSTTY_RENDER_STATE_ROW_CELLS_DATA_STYLE, &style));
-    CHECK(style.bold && style.fg_color.tag == GHOSTTY_STYLE_COLOR_PALETTE && style.fg_color.value.palette == 1);
+    CHECK((style.flags & GHOSTTY_STYLE_FLAG_BOLD) && style.fg_color.tag == GHOSTTY_STYLE_COLOR_PALETTE && style.fg_color.value.palette == 1);
     cell_select(&v, 1, 0);
-    style.size = sizeof(style);
     OK(ghostty_render_state_row_cells_get(v.cells, GHOSTTY_RENDER_STATE_ROW_CELLS_DATA_STYLE, &style));
-    CHECK(!style.bold && style.fg_color.tag == GHOSTTY_STYLE_COLOR_NONE);
+    CHECK(!(style.flags & GHOSTTY_STYLE_FLAG_BOLD) && style.fg_color.tag == GHOSTTY_STYLE_COLOR_NONE);
     passed("sgr", "R=bold,palette1 N=default");
 
     ghostty_terminal_reset(t);
@@ -216,8 +214,13 @@ int main(void) {
     cell_select(&v, 3, 0); uint32_t count = 0, graphemes[8] = {0};
     OK(ghostty_render_state_row_cells_get(v.cells, GHOSTTY_RENDER_STATE_ROW_CELLS_DATA_GRAPHEMES_LEN, &count));
     CHECK(count == 2);
-    OK(ghostty_render_state_row_cells_get(v.cells, GHOSTTY_RENDER_STATE_ROW_CELLS_DATA_GRAPHEMES_BUF, graphemes));
-    CHECK(graphemes[0] == 'e' && graphemes[1] == 0x301);
+    GhosttyCodepointBuffer buffer = { .ptr = graphemes, .cap = 1 };
+    CHECK(ghostty_render_state_row_cells_get(v.cells,
+          GHOSTTY_RENDER_STATE_ROW_CELLS_DATA_GRAPHEMES_BUF, &buffer) == GHOSTTY_OUT_OF_SPACE);
+    CHECK(buffer.len == 2 && graphemes[0] == 'e');
+    buffer.cap = sizeof(graphemes) / sizeof(graphemes[0]);
+    OK(ghostty_render_state_row_cells_get(v.cells, GHOSTTY_RENDER_STATE_ROW_CELLS_DATA_GRAPHEMES_BUF, &buffer));
+    CHECK(buffer.len == 2 && graphemes[0] == 'e' && graphemes[1] == 0x301);
     passed("utf8-graphemes", "U+20AC U+4E2D[wide,tail] U+0065+0301 cursor=4,0");
 
     feed(t, "\x1b[?25l"); bool visible = true;

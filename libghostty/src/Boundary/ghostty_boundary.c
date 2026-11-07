@@ -115,7 +115,6 @@ int dotcc_ghostty_cell(void *terminal, uint16_t x, uint16_t y,
     point.value.coordinate.x = x;
     point.value.coordinate.y = y;
     GhosttyGridRef ref = {0};
-    ref.size = sizeof(ref);
     GhosttyResult result = ghostty_terminal_grid_ref(terminal, point, &ref);
     if (result != GHOSTTY_SUCCESS) return result;
     GhosttyCell cell;
@@ -124,18 +123,17 @@ int dotcc_ghostty_cell(void *terminal, uint16_t x, uint16_t y,
     result = ghostty_cell_get(cell, GHOSTTY_CELL_DATA_CODEPOINT, codepoint);
     if (result != GHOSTTY_SUCCESS) return result;
     GhosttyStyle style = {0};
-    style.size = sizeof(style);
     result = ghostty_grid_ref_style(&ref, &style);
     if (result != GHOSTTY_SUCCESS) return result;
-    *flags = (style.bold ? DOTCC_STYLE_BOLD : 0)
-           | (style.italic ? DOTCC_STYLE_ITALIC : 0)
-           | (style.faint ? DOTCC_STYLE_FAINT : 0)
-           | (style.blink ? DOTCC_STYLE_BLINK : 0)
-           | (style.inverse ? DOTCC_STYLE_INVERSE : 0)
-           | (style.invisible ? DOTCC_STYLE_INVISIBLE : 0)
-           | (style.strikethrough ? DOTCC_STYLE_STRIKETHROUGH : 0)
-           | (style.overline ? DOTCC_STYLE_OVERLINE : 0);
-    *underline = style.underline;
+    *flags = ((style.flags & GHOSTTY_STYLE_FLAG_BOLD) ? DOTCC_STYLE_BOLD : 0)
+           | ((style.flags & GHOSTTY_STYLE_FLAG_ITALIC) ? DOTCC_STYLE_ITALIC : 0)
+           | ((style.flags & GHOSTTY_STYLE_FLAG_FAINT) ? DOTCC_STYLE_FAINT : 0)
+           | ((style.flags & GHOSTTY_STYLE_FLAG_BLINK) ? DOTCC_STYLE_BLINK : 0)
+           | ((style.flags & GHOSTTY_STYLE_FLAG_INVERSE) ? DOTCC_STYLE_INVERSE : 0)
+           | ((style.flags & GHOSTTY_STYLE_FLAG_INVISIBLE) ? DOTCC_STYLE_INVISIBLE : 0)
+           | ((style.flags & GHOSTTY_STYLE_FLAG_STRIKETHROUGH) ? DOTCC_STYLE_STRIKETHROUGH : 0)
+           | ((style.flags & GHOSTTY_STYLE_FLAG_OVERLINE) ? DOTCC_STYLE_OVERLINE : 0);
+    *underline = GHOSTTY_STYLE_UNDERLINE(style);
     *foreground_palette = style.fg_color.tag == GHOSTTY_STYLE_COLOR_PALETTE
                         ? style.fg_color.value.palette : -1;
     *foreground_rgb = style.fg_color.tag == GHOSTTY_STYLE_COLOR_RGB
@@ -149,17 +147,14 @@ int dotcc_ghostty_cell(void *terminal, uint16_t x, uint16_t y,
 int dotcc_ghostty_snapshot(void *terminal, uint8_t *bytes, size_t capacity,
                          size_t *written) {
     GhosttyFormatter formatter = NULL;
-    GhosttyFormatterTerminalOptions options = {0};
-    options.size = sizeof(options);
-    options.emit = GHOSTTY_FORMATTER_FORMAT_PLAIN;
-    options.unwrap = true;
-    options.trim = true;
-    options.extra.size = sizeof(options.extra);
-    options.extra.screen.size = sizeof(options.extra.screen);
     GhosttyResult result = ghostty_formatter_terminal_new(
-        &boundary_allocator, &formatter, terminal, options);
+        &boundary_allocator, &formatter, terminal);
     if (result != GHOSTTY_SUCCESS) return result;
-    result = ghostty_formatter_format_buf(formatter, bytes, capacity, written);
+    /* The formatter defaults to trimmed plain text; retain soft-line unwrap. */
+    bool unwrap = true;
+    result = ghostty_formatter_set(formatter, GHOSTTY_FORMATTER_OPT_UNWRAP, &unwrap);
+    if (result == GHOSTTY_SUCCESS)
+        result = ghostty_formatter_format_buf(formatter, bytes, capacity, written);
     ghostty_formatter_free(formatter);
     return result;
 }
@@ -167,6 +162,6 @@ int dotcc_ghostty_snapshot(void *terminal, uint8_t *bytes, size_t capacity,
 /* Values originate in the pinned upstream headers rather than managed mirrors. */
 int dotcc_ghostty_out_of_space(void) { return GHOSTTY_OUT_OF_SPACE; }
 size_t dotcc_ghostty_pointer_size(void) { return sizeof(void *); }
-size_t dotcc_ghostty_formatter_options_size(void) {
-    return sizeof(GhosttyFormatterTerminalOptions);
+size_t dotcc_ghostty_style_size(void) {
+    return sizeof(GhosttyStyle);
 }

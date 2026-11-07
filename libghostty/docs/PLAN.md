@@ -4,7 +4,15 @@ Status: C route accepted with the explicit user upstream-test deferral;
 working direct managed products published as the canonical default, with final upstream managed
 acceptance pending. See [C acceptance evidence](C-ROUTE-ACCEPTANCE.md) and
 [direct product status](DIRECT-ZIG.md).
-Campaign: `libghostty/`. Updated: 2026-11-06.
+Campaign: `libghostty/`. Updated: 2026-11-07.
+
+The [official vt-1.0.0 upgrade](VT-1.0.0.md) is published as the canonical direct
+default. Actual engine emission/link/build/execution, owning/factory four-row
+matrices, 45 differential/version/API cases in every row, delivery audits and
+ordinary no-override solution/consumer all pass. The current selected inventory
+has 96 roots. The 92-root results below describe the previous 0.1.0 pin.
+Full upstream managed qualification remains pending and is not claimed by this
+bounded release upgrade.
 
 This plan instantiates the [project template](../../docs/plans/translation-template.md)
 and adopts [translation baseline v4](../../docs/plans/translation-baseline.md)
@@ -101,7 +109,7 @@ or native wrapper cannot satisfy any runtime gate.
 
 | ID | Decision | Choice and reason | Status; evidence/gate |
 | --- | --- | --- | --- |
-| D1 | Source version | Ghostty `1.4.1-dev`, commit `93967b7f9478e94dcbb42125c8a90f34feb40d75`; source and native toolchain pins in JSON. | Decided; `config/source.json`, `config/toolchain.json`. |
+| D1 | Source version | Official libghostty-vt `vt-1.0.0`, commit `0fa3d577a5614150ff8e2c152de5fb9d5c6d2dec`; library version is independent of application `1.4.1-dev`. Signed release source/deps pins in JSON. Canonical direct products and bounded release qualification pass. | Decided; `config/source.json`, `config/toolchain.json`, `VT-1.0.0.md`. |
 | D2 | Configuration | Root `src/lib_vt.zig`, C ABI implementation `src/terminal/c/main.zig`; scalar `simd=false`; formatter, render-state and grid-introspection enabled, other optional feature gates disabled. Unicode dependency/generator closure retained in actual upstream command. | Decided; `config/translation.json`, `docs/UPSTREAM.md`; native parity passes. |
 | D3 | ABI/text | First target Linux x64, little endian LP64; C enum/int widths and actual layouts measured natively and from emitted code; UTF-8 stream and Unicode cells. | Passed actual emitted/native physical layout probes in all four qualification rows; explicit x87 long-double storage is not a numeric ABI promise. |
 | D4 | Host/dependencies | Freestanding x64 C emission, explicit public allocator callbacks using shared `posix_memalign/free`; no product filesystem/OS services, native terminal dependency, graphics or regex provider. | Selected; native control and actual managed workflow pass. Final dependency/import audit passes in `001153-ab4e8deb`. |

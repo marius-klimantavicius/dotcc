@@ -1,0 +1,87 @@
+--- a/src/terminal/c/types.zig
++++ b/src/terminal/c/types.zig
+@@ -620,42 +620,6 @@
+     .initCallback("GhosttyWriterFn", io.WriterFn),
+ };
+ 
+-comptime {
+-    @setEvalBranchQuota(100_000);
+-    for (type_decls, 0..) |decl, i| {
+-        for (type_decls[0..i]) |previous| {
+-            if (std.mem.eql(u8, decl.name, previous.name))
+-                @compileError("duplicate public ABI type: " ++ decl.name);
+-        }
+-
+-        switch (decl.kind) {
+-            .@"opaque" => if (decl.T != *anyopaque) {
+-                if (@sizeOf(decl.T) != @sizeOf(*anyopaque) or !isPointer(decl.T))
+-                    @compileError(decl.name ++ ": a handle type must be a pointer");
+-                if (isAnyopaquePointer(decl.T))
+-                    @compileError(decl.name ++ ": a handle type cannot be an anyopaque pointer");
+-            },
+-            .callback => if (@typeInfo(decl.T) != .pointer or
+-                @typeInfo(@typeInfo(decl.T).pointer.child) != .@"fn")
+-                @compileError(decl.name ++ ": a callback type must be a function pointer"),
+-            else => {},
+-        }
+-
+-        // Key values and callback parameters find their registered name by
+-        // Zig type, so two names for one Zig type would be ambiguous.
+-        // Callbacks are exempt. Zig function pointer types are equal when
+-        // their signatures are, so GhosttyTerminalBellFn and
+-        // GhosttyTerminalResetFn are one Zig type. Keys find their callback
+-        // by name instead, in `Json.keyCallbackName`.
+-        if (!isTypeLookupKind(decl)) continue;
+-        for (type_decls[0..i]) |previous| {
+-            if (!isTypeLookupKind(previous)) continue;
+-            if (previous.T == decl.T)
+-                @compileError(decl.name ++ " and " ++ previous.name ++ " have the same Zig type");
+-        }
+-    }
+-}
+-
+ /// Whether `registeredName` finds this declaration by its Zig type.
+ fn isTypeLookupKind(comptime decl: TypeDecl) bool {
+     return switch (decl.kind) {
+@@ -682,6 +646,41 @@
+ }
+ 
+ pub const json: [:0]const u8 = json: {
++    {
++        @setEvalBranchQuota(100_000);
++        for (type_decls, 0..) |decl, i| {
++            for (type_decls[0..i]) |previous| {
++                if (std.mem.eql(u8, decl.name, previous.name))
++                    @compileError("duplicate public ABI type: " ++ decl.name);
++            }
++
++            switch (decl.kind) {
++                .@"opaque" => if (decl.T != *anyopaque) {
++                    if (@sizeOf(decl.T) != @sizeOf(*anyopaque) or !isPointer(decl.T))
++                        @compileError(decl.name ++ ": a handle type must be a pointer");
++                    if (isAnyopaquePointer(decl.T))
++                        @compileError(decl.name ++ ": a handle type cannot be an anyopaque pointer");
++                },
++                .callback => if (@typeInfo(decl.T) != .pointer or
++                    @typeInfo(@typeInfo(decl.T).pointer.child) != .@"fn")
++                    @compileError(decl.name ++ ": a callback type must be a function pointer"),
++                else => {},
++            }
++
++            // Key values and callback parameters find their registered name by
++            // Zig type, so two names for one Zig type would be ambiguous.
++            // Callbacks are exempt. Zig function pointer types are equal when
++            // their signatures are, so GhosttyTerminalBellFn and
++            // GhosttyTerminalResetFn are one Zig type. Keys find their callback
++            // by name instead, in `Json.keyCallbackName`.
++            if (!isTypeLookupKind(decl)) continue;
++            for (type_decls[0..i]) |previous| {
++                if (!isTypeLookupKind(previous)) continue;
++                if (previous.T == decl.T)
++                    @compileError(decl.name ++ " and " ++ previous.name ++ " have the same Zig type");
++            }
++        }
++    }
+     @setEvalBranchQuota(10_000_000);
+     var counter: std.Io.Writer.Discarding = .init(&.{});
+     Json.writeAll(&counter.writer) catch unreachable;

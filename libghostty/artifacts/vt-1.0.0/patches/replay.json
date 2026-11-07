@@ -1,0 +1,131 @@
+{
+  "upstream_release": "vt-1.0.0",
+  "archive_sha256": "4a6ef758be721923e1969e7b81b443dcc92d8dd3fb5a39600c03a8817a753676",
+  "checks": [
+    {
+      "command": [
+        "python3",
+        "/home/marius/p/dotcc/libghostty/patches/vt-1.0.0/apply.py",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/replay/pristine"
+      ],
+      "exit": 0,
+      "stdout": "patching file src/terminal/stream.zig\npatching file src/terminal/x11_color.zig\npatching file src/simd/vt.zig\npatching file src/terminal/page.zig\npatching file src/terminal/device_status.zig\npatching file src/terminfo/Source.zig\npatching file src/terminal/Parser.zig\npatching file src/terminal/stream.zig\npatching file src/terminal/modes.zig\npatching file src/terminal/dcs.zig\npatching file src/datastruct/comptime_int_set.zig\npatching file src/terminal/Screen.zig\npatching file src/terminal/Terminal.zig\npatching file src/terminal/Terminal.zig\npatching file src/terminal/c/types.zig\npatching file src/lib/struct.zig\npatching file src/terminal/stream.zig\npatching file src/terminal/Terminal.zig\npatching file src/terminal/c/style.zig\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "/home/marius/p/dotcc/libghostty/patches/vt-1.0.0/apply.py",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/replay/pristine",
+        "--check"
+      ],
+      "exit": 0,
+      "stdout": "already applied: 0001-action-value-forwarder.patch\nalready applied: 0002-x11-comptime-dimensions.patch\nalready applied: 0003-ascii-vector-widening.patch\nalready applied: 0004-field-mask-path.patch\nalready applied: 0005-color-scheme-size.patch\nalready applied: 0006-xtgettcap-comptime-bytes.patch\nalready applied: 0007-parser-action-output.patch\nalready applied: 0008-stream-action-output.patch\nalready applied: 0009-mode-report-size.patch\nalready applied: 0010-dcs-hook-result.patch\nalready applied: 0011-comptime-set-duplicate-trap.patch\nalready applied: 0012-cursor-hyperlink-id-result.patch\nalready applied: 0013-rgb-positional-format.patch\nalready applied: 0014-wide-cell-interleave.patch\nalready applied: 0015-lazy-abi-manifest-validation.patch\nalready applied: 0016-explicit-sized-validation.patch\nalready applied: 0017-bounded-print-batches.patch\nalready applied: 0018-scalar-cell-store.patch\nalready applied: 0019-reflected-style-reserved-mask.patch\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "/home/marius/p/dotcc/libghostty/patches/vt-1.0.0/apply.py",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/replay/pristine"
+      ],
+      "exit": 0,
+      "stdout": "already applied: 0001-action-value-forwarder.patch\nalready applied: 0002-x11-comptime-dimensions.patch\nalready applied: 0003-ascii-vector-widening.patch\nalready applied: 0004-field-mask-path.patch\nalready applied: 0005-color-scheme-size.patch\nalready applied: 0006-xtgettcap-comptime-bytes.patch\nalready applied: 0007-parser-action-output.patch\nalready applied: 0008-stream-action-output.patch\nalready applied: 0009-mode-report-size.patch\nalready applied: 0010-dcs-hook-result.patch\nalready applied: 0011-comptime-set-duplicate-trap.patch\nalready applied: 0012-cursor-hyperlink-id-result.patch\nalready applied: 0013-rgb-positional-format.patch\nalready applied: 0014-wide-cell-interleave.patch\nalready applied: 0015-lazy-abi-manifest-validation.patch\nalready applied: 0016-explicit-sized-validation.patch\nalready applied: 0017-bounded-print-batches.patch\nalready applied: 0018-scalar-cell-store.patch\nalready applied: 0019-reflected-style-reserved-mask.patch\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "/home/marius/p/dotcc/libghostty/patches/vt-1.0.0/apply.py",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/replay/partial-7"
+      ],
+      "exit": 0,
+      "stdout": "patching file src/terminal/stream.zig\npatching file src/terminal/modes.zig\npatching file src/terminal/dcs.zig\npatching file src/datastruct/comptime_int_set.zig\npatching file src/terminal/Screen.zig\npatching file src/terminal/Terminal.zig\npatching file src/terminal/Terminal.zig\npatching file src/terminal/c/types.zig\npatching file src/lib/struct.zig\npatching file src/terminal/stream.zig\npatching file src/terminal/Terminal.zig\npatching file src/terminal/c/style.zig\nalready applied: 0001-action-value-forwarder.patch\nalready applied: 0002-x11-comptime-dimensions.patch\nalready applied: 0003-ascii-vector-widening.patch\nalready applied: 0004-field-mask-path.patch\nalready applied: 0005-color-scheme-size.patch\nalready applied: 0006-xtgettcap-comptime-bytes.patch\nalready applied: 0007-parser-action-output.patch\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "/home/marius/p/dotcc/libghostty/patches/vt-1.0.0/apply.py",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/replay/partial-13"
+      ],
+      "exit": 0,
+      "stdout": "patching file src/terminal/Terminal.zig\npatching file src/terminal/c/types.zig\npatching file src/lib/struct.zig\npatching file src/terminal/stream.zig\npatching file src/terminal/Terminal.zig\npatching file src/terminal/c/style.zig\nalready applied: 0001-action-value-forwarder.patch\nalready applied: 0002-x11-comptime-dimensions.patch\nalready applied: 0003-ascii-vector-widening.patch\nalready applied: 0004-field-mask-path.patch\nalready applied: 0005-color-scheme-size.patch\nalready applied: 0006-xtgettcap-comptime-bytes.patch\nalready applied: 0007-parser-action-output.patch\nalready applied: 0008-stream-action-output.patch\nalready applied: 0009-mode-report-size.patch\nalready applied: 0010-dcs-hook-result.patch\nalready applied: 0011-comptime-set-duplicate-trap.patch\nalready applied: 0012-cursor-hyperlink-id-result.patch\nalready applied: 0013-rgb-positional-format.patch\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "/home/marius/p/dotcc/libghostty/patches/vt-1.0.0/apply.py",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/replay/partial-15"
+      ],
+      "exit": 0,
+      "stdout": "patching file src/lib/struct.zig\npatching file src/terminal/stream.zig\npatching file src/terminal/Terminal.zig\npatching file src/terminal/c/style.zig\nalready applied: 0001-action-value-forwarder.patch\nalready applied: 0002-x11-comptime-dimensions.patch\nalready applied: 0003-ascii-vector-widening.patch\nalready applied: 0004-field-mask-path.patch\nalready applied: 0005-color-scheme-size.patch\nalready applied: 0006-xtgettcap-comptime-bytes.patch\nalready applied: 0007-parser-action-output.patch\nalready applied: 0008-stream-action-output.patch\nalready applied: 0009-mode-report-size.patch\nalready applied: 0010-dcs-hook-result.patch\nalready applied: 0011-comptime-set-duplicate-trap.patch\nalready applied: 0012-cursor-hyperlink-id-result.patch\nalready applied: 0013-rgb-positional-format.patch\nalready applied: 0014-wide-cell-interleave.patch\nalready applied: 0015-lazy-abi-manifest-validation.patch\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "/home/marius/p/dotcc/libghostty/patches/vt-1.0.0/apply.py",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/replay/partial-16"
+      ],
+      "exit": 0,
+      "stdout": "patching file src/terminal/stream.zig\npatching file src/terminal/Terminal.zig\npatching file src/terminal/c/style.zig\nalready applied: 0001-action-value-forwarder.patch\nalready applied: 0002-x11-comptime-dimensions.patch\nalready applied: 0003-ascii-vector-widening.patch\nalready applied: 0004-field-mask-path.patch\nalready applied: 0005-color-scheme-size.patch\nalready applied: 0006-xtgettcap-comptime-bytes.patch\nalready applied: 0007-parser-action-output.patch\nalready applied: 0008-stream-action-output.patch\nalready applied: 0009-mode-report-size.patch\nalready applied: 0010-dcs-hook-result.patch\nalready applied: 0011-comptime-set-duplicate-trap.patch\nalready applied: 0012-cursor-hyperlink-id-result.patch\nalready applied: 0013-rgb-positional-format.patch\nalready applied: 0014-wide-cell-interleave.patch\nalready applied: 0015-lazy-abi-manifest-validation.patch\nalready applied: 0016-explicit-sized-validation.patch\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "/home/marius/p/dotcc/libghostty/patches/vt-1.0.0/apply.py",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/replay/partial-17"
+      ],
+      "exit": 0,
+      "stdout": "patching file src/terminal/Terminal.zig\npatching file src/terminal/c/style.zig\nalready applied: 0001-action-value-forwarder.patch\nalready applied: 0002-x11-comptime-dimensions.patch\nalready applied: 0003-ascii-vector-widening.patch\nalready applied: 0004-field-mask-path.patch\nalready applied: 0005-color-scheme-size.patch\nalready applied: 0006-xtgettcap-comptime-bytes.patch\nalready applied: 0007-parser-action-output.patch\nalready applied: 0008-stream-action-output.patch\nalready applied: 0009-mode-report-size.patch\nalready applied: 0010-dcs-hook-result.patch\nalready applied: 0011-comptime-set-duplicate-trap.patch\nalready applied: 0012-cursor-hyperlink-id-result.patch\nalready applied: 0013-rgb-positional-format.patch\nalready applied: 0014-wide-cell-interleave.patch\nalready applied: 0015-lazy-abi-manifest-validation.patch\nalready applied: 0016-explicit-sized-validation.patch\nalready applied: 0017-bounded-print-batches.patch\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "/home/marius/p/dotcc/libghostty/patches/vt-1.0.0/apply.py",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/replay/partial-18"
+      ],
+      "exit": 0,
+      "stdout": "patching file src/terminal/c/style.zig\nalready applied: 0001-action-value-forwarder.patch\nalready applied: 0002-x11-comptime-dimensions.patch\nalready applied: 0003-ascii-vector-widening.patch\nalready applied: 0004-field-mask-path.patch\nalready applied: 0005-color-scheme-size.patch\nalready applied: 0006-xtgettcap-comptime-bytes.patch\nalready applied: 0007-parser-action-output.patch\nalready applied: 0008-stream-action-output.patch\nalready applied: 0009-mode-report-size.patch\nalready applied: 0010-dcs-hook-result.patch\nalready applied: 0011-comptime-set-duplicate-trap.patch\nalready applied: 0012-cursor-hyperlink-id-result.patch\nalready applied: 0013-rgb-positional-format.patch\nalready applied: 0014-wide-cell-interleave.patch\nalready applied: 0015-lazy-abi-manifest-validation.patch\nalready applied: 0016-explicit-sized-validation.patch\nalready applied: 0017-bounded-print-batches.patch\nalready applied: 0018-scalar-cell-store.patch\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "/home/marius/p/dotcc/libghostty/patches/vt-1.0.0/apply.py",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/replay/unknown"
+      ],
+      "exit": 1,
+      "stdout": "",
+      "stderr": "Source differs from this patch baseline; preserving it: /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/replay/unknown/src/terminfo/Source.zig\n"
+    }
+  ],
+  "changed_lines_identical_to_accepted_patches_1_through_14": true,
+  "abi_validation_exact_body_moved_only": true,
+  "sized_validation_exact_body_wrapped_only": true,
+  "print_batch_cap_only_global_lane_helper_unchanged": true,
+  "only_manual_cell_store_guarded_charset_and_scalar_tail_unchanged": true,
+  "only_style_reserved_mask_initializer_changed": true,
+  "unknown_source_preserved_before_any_mutation": true,
+  "patched_source_sha256": {
+    "src/datastruct/comptime_int_set.zig": "170d0bfb524df13bea77834ba94eddec47db0c8775a3fa8b63a0b24a32ea1526",
+    "src/lib/struct.zig": "5d41801182925ce8747da2cc36a0fcb28720e9821a033d9c45835b44b5d40179",
+    "src/simd/vt.zig": "9b9bb954ea90f286d11e6fc27d806ec86af694f6aed4dbe09e39a6f3792c0971",
+    "src/terminal/Parser.zig": "5bb4eed210adee970409c1a3af4c514c83a19298414f89b735d91d79170a3e6f",
+    "src/terminal/Screen.zig": "2c32710ca8bf300bec60e00ab1a7b05946b216a82c3f0b53b27c3df065a328c9",
+    "src/terminal/Terminal.zig": "408d06876bee4fd89eab0f6f414b85429c3b7ef1715d2a6b6a948016ed8a8ac3",
+    "src/terminal/c/style.zig": "dbd5589f5f2876227acaabb074b9e3d132e0380b31282341665bcd8faf91bbc6",
+    "src/terminal/c/types.zig": "871c5c672be5eef5e1eb29053b4096ff0c2aea3c55cf0cb03654114913aabd9a",
+    "src/terminal/dcs.zig": "fda3ee1b76a7bf7481f524e2baab570fc32e3860f7f181cb5e68d2e84b72d406",
+    "src/terminal/device_status.zig": "68abcc73ba85ad6fca2a272769f4918938f45f1e18f4ad81908327d8cff28de4",
+    "src/terminal/modes.zig": "c908665680a603a3af6a89b7fe2c9714dc939f28beae81c9a29e7abe3c63ad69",
+    "src/terminal/page.zig": "357eecdda15e9472e8dfb6fc8ccaef851ac816e253f8b8b6892bd6f1604131c7",
+    "src/terminal/stream.zig": "b64ec8a6ac5cd62f8d2f2273ec636eaddbeb6ca1de64d7c5be36e33f8478aab4",
+    "src/terminal/x11_color.zig": "652cea1d7435d1e118f6dcd2f1170d4478df04fa76d9772e926c123fb5e745ea",
+    "src/terminfo/Source.zig": "30874ffcb03206c69292591f93fb068052a69916e7765c64d2081aede3dbaf69"
+  }
+}

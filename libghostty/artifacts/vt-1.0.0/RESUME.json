@@ -1,0 +1,54 @@
+{
+  "goal": "Complete verified vt-1.0.0 direct Zig -> DotCC -> C# upgrade, then publish canonical raw/processed products and ordinary no-override owning consumer",
+  "status": "vt-1.0.0 upgrade published and verified; full upstream managed campaign remains pending",
+  "base_commit": "51b1be1f59bb351806e724ed58b712f0bdb8e091",
+  "source": "libghostty/ref/libghostty-vt-1.0.0",
+  "revision": "0fa3d577a5614150ff8e2c152de5fb9d5c6d2dec",
+  "provenance": "provenance.json: official signed source+dependency bundle checksums and tag refs verified",
+  "work": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0",
+  "compiler_source": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/compiler-source (small clean accepted source export; pending root compiler/runtime experiments excluded)",
+  "compiler": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/compiler-build/bin/DotCC/release/dotcc.dll",
+  "zig": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+  "graph": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/native/module-graph-managed.json",
+  "actual_latest_frontier": "No release-upgrade blocker. Canonical direct1.0.0 and all bounded delivery checks pass. User authorized the upgrade milestone commit; its isolated scope is VT-1.0.0-COMMIT.md. Full upstream managed qualification and prior unfinished experiments remain pending.",
+  "managed_roots": 96,
+  "new_api_roots": [
+    "ghostty_formatter_get",
+    "ghostty_formatter_set",
+    "ghostty_version",
+    "ghostty_sized_init"
+  ],
+  "upstream_qualification": "pending; previous287/2622 acceptance belongs old pin and must not be claimed for1.0",
+  "native": "Official source+offline deps built;24 boundary/layout/oracle and7 API delta +14 version/feature controls pass",
+  "patches": "19 release patches applied and nativevalidated;oldpendingpatch16untouched",
+  "compiler_fixes_applied_to_both_root_and_clean_export": [
+    "Enum-value type-returning receiver (new EnumTypeReceivers.cs + Generics call dispatch)",
+    "Nonexhaustive enum underscore default plus inline-else explicit known cases",
+    "Comptime mixed array+reflected-list loop uses existing unroller",
+    "Comptime labeled immutable array static ConstGlobalInits + real type-body instance cache key",
+    "@field(module, known-name) uses actual owner exported constant",
+    "Comptime strings bound while dependent generic signatures lower, with scoped cleanup",
+    "Transparent comptime type comparison wrapper",
+    "Full storage-vector integer Or reduction",
+    "Array bitcast local retains actual declared element-width witness",
+    "Untyped integer constants beyond signed-long preserve comptime identity and actual full value"
+  ],
+  "discarded_own_experiments": "TypeBody hoist extension and optional-type metadata projection experiment were reverted; not needed after manifest-specific source adaptation",
+  "qualification": "qualification/qualification.json:180exactnativeobservationsallfourrows;compilerfocused56pass",
+  "auditor": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/audit/build/bin/AggregateFactoryAudit/release/GhosttyVt.AggregateFactoryAudit.dll (built)",
+  "next": "User-directed next work or retained full upstream managed qualification; release upgrade itself complete.",
+  "focused_tests": {
+    "passed": 26,
+    "failed": 0,
+    "skipped": 0,
+    "native_executions": 14,
+    "native_negative_controls": 1
+  },
+  "actual_stages": {
+    "emitted": true,
+    "linked": true,
+    "built": true,
+    "ran": true
+  },
+  "delivery": "DELIVERY.json"
+}

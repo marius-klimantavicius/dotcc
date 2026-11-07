@@ -37,6 +37,41 @@ terminal.Reset();
 Equal(string.Empty, terminal.Snapshot(), "reset content");
 Equal(new TerminalPosition(30, 6, 0, 0), terminal.Position, "reset cursor and dimensions");
 Equal("independent", independent.Snapshot(), "instance isolation after reset");
+using (var styled = new Terminal(10, 3))
+{
+    Equal(string.Empty, styled.Snapshot(), "empty snapshot");
+    styled.Write("\u001b[1;2;3;4:3;5;7;8;9;53;38;2;12;34;56mS\u001b[0mN");
+    var allStyles = TerminalTextStyle.Bold | TerminalTextStyle.Italic | TerminalTextStyle.Faint
+        | TerminalTextStyle.Blink | TerminalTextStyle.Inverse | TerminalTextStyle.Invisible
+        | TerminalTextStyle.Strikethrough | TerminalTextStyle.Overline;
+    Equal(new TerminalCell('S', allStyles, 3, null, 0x0c2238), styled.GetCell(0, 0), "combined style and RGB");
+    Equal(new TerminalCell('N', TerminalTextStyle.None, 0, null, null), styled.GetCell(1, 0), "style reset");
+    styled.Reset();
+    styled.Write("abcdefghijklmn");
+    Equal("abcdefghijklmn", styled.Snapshot(), "soft-line unwrap");
+}
+// Exercise the new 1.0 print-run/store paths around their batch boundaries.
+using (var runs = new Terminal(65, 8))
+{
+    foreach (var length in new[] { 63, 64, 65, 127, 128, 129, 255, 256, 257, 513 })
+    {
+        var text = new string(Enumerable.Range(0, length).Select(i => (char)('A' + i % 26)).ToArray());
+        foreach (var chunked in new[] { false, true })
+        {
+            runs.Reset();
+            runs.Write("\u001b[1;38;2;12;34;56m");
+            if (chunked)
+                for (var offset = 0; offset < text.Length; offset += 64)
+                    runs.Write(text.Substring(offset, Math.Min(64, text.Length - offset)));
+            else
+                runs.Write(text);
+            Equal(text, runs.Snapshot(), "long ASCII batch and soft wrap");
+            var last = length - 1;
+            Equal(new TerminalCell((uint)text[last], TerminalTextStyle.Bold, 0, null, 0x0c2238),
+                runs.GetCell((ushort)(last % 65), (ushort)(last / 65)), "last batch cell and style");
+        }
+    }
+}
 terminal.Dispose();
 terminal.Dispose();
 try

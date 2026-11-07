@@ -1,0 +1,30 @@
+[
+  {
+    "stage": "joint-link",
+    "argv": [
+      "dotnet",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/compiler-build/bin/DotCC/release/dotcc.dll",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/engine/engine.csobj",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/boundary.csobj",
+      "--emit=managedlib",
+      "--nest-types",
+      "--runtime=auto",
+      "--class-name",
+      "GhosttyVt",
+      "--namespace",
+      "Managed",
+      "--split=size",
+      "--split-size=262144",
+      "--literal-pool",
+      "--deduplicate-inline",
+      "--prune-unused-inline",
+      "--export-enum",
+      "DOTCC_STYLE_*",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt"
+    ],
+    "exit_code": 2,
+    "seconds": 9.682250587036833,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/product-link.log"
+  }
+]

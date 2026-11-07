@@ -1,0 +1,29 @@
+{
+  "results": [
+    {
+      "form": "raw",
+      "mode": "jit",
+      "passed": true,
+      "whole_library_rooted": false
+    },
+    {
+      "form": "raw",
+      "mode": "aot",
+      "passed": true,
+      "whole_library_rooted": true
+    },
+    {
+      "form": "processed",
+      "mode": "jit",
+      "passed": true,
+      "whole_library_rooted": false
+    },
+    {
+      "form": "processed",
+      "mode": "aot",
+      "passed": true,
+      "whole_library_rooted": true
+    }
+  ],
+  "complete": true
+}

@@ -1,0 +1,183 @@
+[
+  {
+    "stage": "native-build",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build",
+      "-Demit-lib-vt=true",
+      "-Doptimize=ReleaseFast",
+      "-Dsimd=false",
+      "-Dvt-features=-all,+formatter,+render-state,+grid-introspection",
+      "--prefix",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache",
+      "-j2",
+      "--verbose",
+      "-Dversion-string=1.4.1-dev",
+      "-Dlib-version-string=1.0.0",
+      "--system",
+      "/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/zig-pkg",
+      "-fno-sys=freetype",
+      "-fno-sys=harfbuzz",
+      "-fno-sys=fontconfig",
+      "-fno-sys=libpng",
+      "-fno-sys=zlib",
+      "-fno-sys=oniguruma",
+      "-fno-sys=glslang",
+      "-fno-sys=spirv-cross",
+      "-fno-sys=simdutf",
+      "-fno-sys=gtk4-layer-shell",
+      "-fno-sys=highway"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "info(verbose): /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig build-exe --cache-dir /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache --global-cache-dir /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/global-cache --build-root . --zig-lib-dir /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/lib --name configurer -fsingle-threaded --dep @build --dep @dependencies -Mroot=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/lib/compiler/configurer.zig -Maro-0.0.0-JSD1QtuBNwCASyBtNF3pqTl_W3oAJQGEVyFAtrBSE_Pa=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/zig-pkg/aro-0.0.0-JSD1QtuBNwCASyBtNF3pqTl_W3oAJQGEVyFAtrBSE_Pa/build.zig -Mpkg/android-ndk=pkg/android-ndk/build.zig -Mpkg/apple-sdk=pkg/apple-sdk/build.zig --dep apple_sdk=pkg/apple-sdk -Mpkg/breakpad=pkg/breakpad/build.zig --dep apple_sdk=pkg/apple-sdk --dep freetype=pkg/freetype --dep translate_c=pkg/translate-c -Mpkg/dcimgui=pkg/dcimgui/build.zig --dep freetype=pkg/freetype --dep libxml2=pkg/libxml2 --dep translate_c=pkg/translate-c -Mpkg/fontconfig=pkg/fontconfig/build.zig --dep apple_sdk=pkg/apple-sdk --dep libpng=pkg/libpng --dep translate_c=pkg/translate-c --dep zlib=pkg/zlib -Mpkg/freetype=pkg/freetype/build.zig --dep apple_sdk=pkg/apple-sdk --dep translate_c=pkg/translate-c -Mpkg/glslang=pkg/glslang/build.zig --dep translate_c=pkg/translate-c -Mpkg/gtk4-layer-shell=pkg/gtk4-layer-shell/build.zig --dep freetype=pkg/freetype --dep macos=pkg/macos --dep apple_sdk=pkg/apple-sdk --dep translate_c=pkg/translate-c -Mpkg/harfbuzz=pkg/harfbuzz/build.zig --dep android_ndk=pkg/android-ndk --dep apple_sdk=pkg/apple-sdk -Mpkg/highway=pkg/highway/build.zig --dep apple_sdk=pkg/apple-sdk -Mpkg/libintl=pkg/libintl/build.zig --dep zlib=pkg/zlib --dep apple_sdk=pkg/apple-sdk -Mpkg/libpng=pkg/libpng/build.zig -Mpkg/libxml2=pkg/libxml2/build.zig --dep apple_sdk=pkg/apple-sdk --dep translate_c=pkg/translate-c -Mpkg/macos=pkg/macos/build.zig --dep apple_sdk=pkg/apple-sdk --dep translate_c=pkg/translate-c -Mpkg/oniguruma=pkg/oniguruma/build.zig --dep translate_c=pkg/translate-c -Mpkg/opengl=pkg/opengl/build.zig --dep apple_sdk=pkg/apple-sdk --dep breakpad=pkg/breakpad --dep translate_c=pkg/translate-c -Mpkg/sentry=pkg/sentry/build.zig --dep apple_sdk=pkg/apple-sdk --dep android_ndk=pkg/android-ndk -Mpkg/simdutf=pkg/simdutf/build.zig --dep apple_sdk=pkg/apple-sdk --dep translate_c=pkg/translate-c -Mpkg/spirv-cross=pkg/spirv-cross/build.zig --dep apple_sdk=pkg/apple-sdk --dep translate_c=translate_c-2.0.0-Q_BUWltOBwBYABF84EUL208pIFeUIwbBs29FmVBaafN5 -Mpkg/translate-c=pkg/translate-c/build.zig --dep translate_c=pkg/translate-c -Mpkg/wuffs=pkg/wuffs/build.zig --dep apple_sdk=pkg/apple-sdk -Mpkg/zlib=pkg/zlib/build.zig --dep aro=aro-0.0.0-JSD1QtuBNwCASyBtNF3pqTl_W3oAJQGEVyFAtrBSE_Pa -Mtranslate_c-2.0.0-Q_BUWltOBwBYABF84EUL208pIFeUIwbBs29FmVBaafN5=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/zig-pkg/translate_c-2.0.0-Q_BUWltOBwBYABF84EUL208pIFeUIwbBs29FmVBaafN5/build.zig -Muucode-0.2.0-ZZjBPm6FVgBcY-79AHV8ckQj86z0JwOyVyj89VeZrEiv=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/zig-pkg/uucode-0.2.0-ZZjBPm6FVgBcY-79AHV8ckQj86z0JwOyVyj89VeZrEiv/build.zig --dep aro-0.0.0-JSD1QtuBNwCASyBtNF3pqTl_W3oAJQGEVyFAtrBSE_Pa --dep pkg/android-ndk --dep pkg/apple-sdk --dep pkg/breakpad --dep pkg/dcimgui --dep pkg/fontconfig --dep pkg/freetype --dep pkg/glslang --dep pkg/gtk4-layer-shell --dep pkg/harfbuzz --dep pkg/highway --dep pkg/libintl --dep pkg/libpng --dep pkg/libxml2 --dep pkg/macos --dep pkg/oniguruma --dep pkg/opengl --dep pkg/sentry --dep pkg/simdutf --dep pkg/spirv-cross --dep pkg/translate-c --dep pkg/wuffs --dep pkg/zlib --dep translate_c-2.0.0-Q_BUWltOBwBYABF84EUL208pIFeUIwbBs29FmVBaafN5 --dep uucode-0.2.0-ZZjBPm6FVgBcY-79AHV8ckQj86z0JwOyVyj89VeZrEiv -M@dependencies=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache/o/1fe4361ef3418873b84798644822f1af/dependencies.zig --dep translate_c=pkg/translate-c --dep aro=aro-0.0.0-JSD1QtuBNwCASyBtNF3pqTl_W3oAJQGEVyFAtrBSE_Pa --dep uucode=uucode-0.2.0-ZZjBPm6FVgBcY-79AHV8ckQj86z0JwOyVyj89VeZrEiv --dep dcimgui=pkg/dcimgui --dep fontconfig=pkg/fontconfig --dep freetype=pkg/freetype --dep gtk4_layer_shell=pkg/gtk4-layer-shell --dep harfbuzz=pkg/harfbuzz --dep highway=pkg/highway --dep libintl=pkg/libintl --dep libpng=pkg/libpng --dep macos=pkg/macos --dep oniguruma=pkg/oniguruma --dep opengl=pkg/opengl --dep sentry=pkg/sentry --dep simdutf=pkg/simdutf --dep wuffs=pkg/wuffs --dep zlib=pkg/zlib --dep glslang=pkg/glslang --dep spirv_cross=pkg/spirv-cross --dep apple_sdk=pkg/apple-sdk --dep android_ndk=pkg/android-ndk -M@build=build.zig --listen=-\ninfo(verbose): pkg-config --variable=targets gtk4\ninfo(verbose): /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig build-exe --dep InstallDirs -Mroot=src/build/cmake_package_config.zig -MInstallDirs=src/build/InstallDirs.zig --cache-dir /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache --global-cache-dir /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/global-cache --build-root . --name cmake_package_config --zig-lib-dir /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/lib/ --listen=-\ninfo(verbose): install -C /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache/o/5a684553a35d6187de611c0fe8251ed6/ghostty-vt-config-version.cmake /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/lib/cmake/ghostty-vt/ghostty-vt-config-version.cmake\ninfo(verbose): /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig build-exe -Odebug --dep options --dep InstallDirs -Mroot=src/extra/pkg-config.zig -Moptions=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache/o/ad3419e3189f7ea594f1b9db7a4e02ba/options.zig -MInstallDirs=src/build/InstallDirs.zig --cache-dir /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache --global-cache-dir /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/global-cache --build-root . --name pkg-config-generator --zig-lib-dir /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/lib/ --listen=-\ninfo(verbose): /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig build-exe -fllvm -Odebug --dep config.zig --dep storage.zig --dep build_config -Mroot=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/zig-pkg/uucode-0.2.0-ZZjBPm6FVgBcY-79AHV8ckQj86z0JwOyVyj89VeZrEiv/src/generate.zig -Odebug --dep storage.zig -Mconfig.zig=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/zig-pkg/uucode-0.2.0-ZZjBPm6FVgBcY-79AHV8ckQj86z0JwOyVyj89VeZrEiv/src/config.zig -Odebug --dep config.zig -Mstorage.zig=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/zig-pkg/uucode-0.2.0-ZZjBPm6FVgBcY-79AHV8ckQj86z0JwOyVyj89VeZrEiv/src/storage.zig -Odebug --dep config.zig --dep storage.zig -Mbuild_config=src/build/uucode_config.zig --cache-dir /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache --global-cache-dir /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/global-cache --build-root . --name uucode_generate --zig-lib-dir /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/lib/ --listen=-\ninfo(verbose): /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache/o/49d43cb2fd1c1b81217437923dca6f24/cmake_package_config ./dist/cmake/ghostty-vt-config.cmake.in GHOSTTY_VT_REALNAME=libghostty-vt.so.1.0.0 GHOSTTY_VT_SONAME=libghostty-vt.so.1 GHOSTTY_VT_IMPLIB= GHOSTTY_VT_STATIC_REALNAME=libghostty-vt.a /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/bin /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/lib /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include\ninfo(verbose): /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache/o/984659fe6750388b137f91663a674c8b/pkg-config-generator shared /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/bin /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/lib /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include\ninfo(verbose): install -C /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache/o/ce7c09e30c4bdeb6ee0a226d8611e728/stdout /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/lib/cmake/ghostty-vt/ghostty-vt-config.cmake\ninfo(verbose): install -C /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache/o/880a5fbf55699f97f39fb74e6d769d43/stdout /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/lib/pkgconfig/libghostty-vt.pc\ninfo(verbose): /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache/o/984659fe6750388b137f91663a674c8b/pkg-config-generator static /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/bin /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/lib /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include\ninfo(verbose): install -C /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache/o/ff13e2edad7160b5ca23b9408f40374d/stdout /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/lib/pkgconfig/libghostty-vt-static.pc\ninfo(verbose): cd /home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/zig-pkg/uucode-0.2.0-ZZjBPm6FVgBcY-79AHV8ckQj86z0JwOyVyj89VeZrEiv && /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache/o/9f3bdce6d7056f11022d00250afbd477/uucode_generate /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache/o/1ce6c6d1623068d2ebea631de118bca5/tables.zig\ninfo(verbose): /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig build-exe -fllvm -fno-strip -fno-omit-frame-pointer -funwind-tables --dep uucode -Mroot=src/unicode/symbols_uucode.zig -Odebug --dep types.zig --dep config.zig --dep tables -Muucode=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/zig-pkg/uucode-0.2.0-ZZjBPm6FVgBcY-79AHV8ckQj86z0JwOyVyj89VeZrEiv/src/root.zig -Odebug -Mtypes.zig=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/zig-pkg/uucode-0.2.0-ZZjBPm6FVgBcY-79AHV8ckQj86z0JwOyVyj89VeZrEiv/src/types.zig -Odebug --dep types.zig --dep storage.zig -Mconfig.zig=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/zig-pkg/uucode-0.2.0-ZZjBPm6FVgBcY-79AHV8ckQj86z0JwOyVyj89VeZrEiv/src/config.zig -Odebug --dep config.zig --dep storage.zig --dep build_config -Mtables=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache/o/1ce6c6d1623068d2ebea631de118bca5/tables.zig -Odebug --dep config.zig -Mstorage.zig=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/zig-pkg/uucode-0.2.0-ZZjBPm6FVgBcY-79AHV8ckQj86z0JwOyVyj89VeZrEiv/src/storage.zig --dep config.zig --dep storage.zig -Mbuild_config=src/build/uucode_config.zig --cache-dir /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache --global-cache-dir /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/global-cache --build-root . --name symbols-unigen --zig-lib-dir /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/lib/ --listen=-\ninfo(verbose): /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig build-exe -fllvm -fno-strip -fno-omit-frame-pointer -funwind-tables --dep uucode -Mroot=src/unicode/props_uucode.zig -Odebug --dep types.zig --dep config.zig --dep tables -Muucode=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/zig-pkg/uucode-0.2.0-ZZjBPm6FVgBcY-79AHV8ckQj86z0JwOyVyj89VeZrEiv/src/root.zig -Odebug -Mtypes.zig=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/zig-pkg/uucode-0.2.0-ZZjBPm6FVgBcY-79AHV8ckQj86z0JwOyVyj89VeZrEiv/src/types.zig -Odebug --dep types.zig --dep storage.zig -Mconfig.zig=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/zig-pkg/uucode-0.2.0-ZZjBPm6FVgBcY-79AHV8ckQj86z0JwOyVyj89VeZrEiv/src/config.zig -Odebug --dep config.zig --dep storage.zig --dep build_config -Mtables=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache/o/1ce6c6d1623068d2ebea631de118bca5/tables.zig -Odebug --dep config.zig -Mstorage.zig=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/zig-pkg/uucode-0.2.0-ZZjBPm6FVgBcY-79AHV8ckQj86z0JwOyVyj89VeZrEiv/src/storage.zig --dep config.zig --dep storage.zig -Mbuild_config=src/build/uucode_config.zig --cache-dir /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache --global-cache-dir /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/global-cache --build-root . --name props-unigen --zig-lib-dir /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/lib/ --listen=-\ninfo(verbose): /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache/o/976cab9e5da78eb6e7ffd66c6f5e1c46/props-unigen\ninfo(verbose): /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache/o/ff6f494b589e25816366df12907a9aa3/symbols-unigen\ninfo(verbose): /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig build-lib -fno-strip -fPIC -Ofast --dep build_options --dep terminal_options --dep unicode_tables --dep symbols_tables --dep uucode -Mroot=src/lib_vt.zig -Mbuild_options=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache/o/23290b6e52cd697ce042528dd34b9fa5/options.zig -Mterminal_options=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache/o/0cf3e8d85d05f4315f7070667ad059b6/options.zig -Municode_tables=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache/o/0d1c6bf1445baf53bba30f40a9055c75/props.zig -Msymbols_tables=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache/o/0d1c6bf1445baf53bba30f40a9055c75/symbols.zig -Odebug --dep types.zig --dep config.zig --dep tables -Muucode=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/zig-pkg/uucode-0.2.0-ZZjBPm6FVgBcY-79AHV8ckQj86z0JwOyVyj89VeZrEiv/src/root.zig -Odebug -Mtypes.zig=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/zig-pkg/uucode-0.2.0-ZZjBPm6FVgBcY-79AHV8ckQj86z0JwOyVyj89VeZrEiv/src/types.zig -Odebug --dep types.zig --dep storage.zig -Mconfig.zig=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/zig-pkg/uucode-0.2.0-ZZjBPm6FVgBcY-79AHV8ckQj86z0JwOyVyj89VeZrEiv/src/config.zig -Odebug --dep config.zig --dep storage.zig --dep build_config -Mtables=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache/o/1ce6c6d1623068d2ebea631de118bca5/tables.zig -Odebug --dep config.zig -Mstorage.zig=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/zig-pkg/uucode-0.2.0-ZZjBPm6FVgBcY-79AHV8ckQj86z0JwOyVyj89VeZrEiv/src/storage.zig --dep config.zig --dep storage.zig -Mbuild_config=src/build/uucode_config.zig --cache-dir /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache --global-cache-dir /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/global-cache --build-root . --name ghostty-vt-static -static -fcompiler-rt -fubsan-rt --zig-lib-dir /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/lib/ --listen=-\ninfo(verbose): /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig build-lib -fllvm -flld -fno-strip -fPIC -Ofast --dep build_options --dep terminal_options --dep unicode_tables --dep symbols_tables --dep uucode -Mroot=src/lib_vt.zig -Mbuild_options=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache/o/23290b6e52cd697ce042528dd34b9fa5/options.zig -Mterminal_options=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache/o/0cf3e8d85d05f4315f7070667ad059b6/options.zig -Municode_tables=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache/o/0d1c6bf1445baf53bba30f40a9055c75/props.zig -Msymbols_tables=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache/o/0d1c6bf1445baf53bba30f40a9055c75/symbols.zig -Odebug --dep types.zig --dep config.zig --dep tables -Muucode=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/zig-pkg/uucode-0.2.0-ZZjBPm6FVgBcY-79AHV8ckQj86z0JwOyVyj89VeZrEiv/src/root.zig -Odebug -Mtypes.zig=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/zig-pkg/uucode-0.2.0-ZZjBPm6FVgBcY-79AHV8ckQj86z0JwOyVyj89VeZrEiv/src/types.zig -Odebug --dep types.zig --dep storage.zig -Mconfig.zig=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/zig-pkg/uucode-0.2.0-ZZjBPm6FVgBcY-79AHV8ckQj86z0JwOyVyj89VeZrEiv/src/config.zig -Odebug --dep config.zig --dep storage.zig --dep build_config -Mtables=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache/o/1ce6c6d1623068d2ebea631de118bca5/tables.zig -Odebug --dep config.zig -Mstorage.zig=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/zig-pkg/uucode-0.2.0-ZZjBPm6FVgBcY-79AHV8ckQj86z0JwOyVyj89VeZrEiv/src/storage.zig --dep config.zig --dep storage.zig -Mbuild_config=src/build/uucode_config.zig --cache-dir /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache --global-cache-dir /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/global-cache --build-root . --name ghostty-vt -dynamic --version 1.0.0 --version-script src/terminal/c/ghostty-vt.map --zig-lib-dir /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/lib/ --listen=-\ninfo(verbose): install -C /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache/o/5060aa590ccbcd4d220740298d63f3e3/libghostty-vt.so.1.0.0 /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/lib/libghostty-vt.so.1.0.0\ninfo(verbose): install -C include/ghostty/vt.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt.h\ninfo(verbose): install -C include/ghostty/vt/size_report.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/size_report.h\ninfo(verbose): install -C include/ghostty/vt/mouse.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/mouse.h\ninfo(verbose): install -C include/ghostty/vt/modes.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/modes.h\ninfo(verbose): install -C include/ghostty/vt/formatter.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/formatter.h\ninfo(verbose): install -C include/ghostty/vt/render.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/render.h\ninfo(verbose): install -C include/ghostty/vt/mouse/event.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/mouse/event.h\ninfo(verbose): install -C include/ghostty/vt/mouse/encoder.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/mouse/encoder.h\ninfo(verbose): install -C include/ghostty/vt/version.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/version.h\ninfo(verbose): install -C include/ghostty/vt/color_scheme.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/color_scheme.h\ninfo(verbose): install -C include/ghostty/vt/build_info.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/build_info.h\ninfo(verbose): install -C include/ghostty/vt/wasm.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/wasm.h\ninfo(verbose): install -C include/ghostty/vt/snapshot.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/snapshot.h\ninfo(verbose): install -C include/ghostty/vt/grid_ref_tracked.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/grid_ref_tracked.h\ninfo(verbose): install -C include/ghostty/vt/io.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/io.h\ninfo(verbose): install -C include/ghostty/vt/paste.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/paste.h\ninfo(verbose): install -C include/ghostty/vt/sys.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/sys.h\ninfo(verbose): install -C include/ghostty/vt/sgr.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/sgr.h\ninfo(verbose): install -C include/ghostty/vt/kitty_graphics.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/kitty_graphics.h\ninfo(verbose): install -C include/ghostty/vt/types.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/types.h\ninfo(verbose): install -C include/ghostty/vt/unicode.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/unicode.h\ninfo(verbose): install -C include/ghostty/vt/point.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/point.h\ninfo(verbose): install -C include/ghostty/vt/grid_ref.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/grid_ref.h\ninfo(verbose): install -C include/ghostty/vt/device.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/device.h\ninfo(verbose): install -C include/ghostty/vt/key/event.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/key/event.h\ninfo(verbose): install -C include/ghostty/vt/key/encoder.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/key/encoder.h\ninfo(verbose): install -C include/ghostty/vt/search.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/search.h\ninfo(verbose): install -C include/ghostty/vt/selection.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/selection.h\ninfo(verbose): install -C include/ghostty/vt/style.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/style.h\ninfo(verbose): install -C include/ghostty/vt/color.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/color.h\ninfo(verbose): install -C include/ghostty/vt/terminal.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/terminal.h\ninfo(verbose): install -C include/ghostty/vt/screen.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/screen.h\ninfo(verbose): install -C include/ghostty/vt/focus.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/focus.h\ninfo(verbose): install -C include/ghostty/vt/allocator.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/allocator.h\ninfo(verbose): install -C include/ghostty/vt/key.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/key.h\ninfo(verbose): install -C include/ghostty/vt/osc.h /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/include/ghostty/vt/osc.h\ninfo(verbose): install -C /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/zig-cache/o/bff76ea0d252d080443d5405d542e1ad/libghostty-vt-static.a /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/lib/libghostty-vt.a\n"
+  },
+  {
+    "stage": "oracle-compile",
+    "argv": [
+      "cc",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-I/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/include",
+      "/home/marius/p/dotcc/libghostty/tests/native/oracle.c",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/lib/libghostty-vt.a",
+      "-lm",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/oracle-native"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "stage": "oracle-run",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/oracle-native"
+    ],
+    "exit_code": 0,
+    "stdout": "PASS creation grid=10x4 cursor=0,0 text=empty\nPASS ascii-render text=hello\\nworld cursor=5,1 cells=h,d\nPASS cursor-cup cell(3,1)=U+005A cursor=4,1\nPASS erase-display text=empty cursor=0,0\nPASS sgr R=bold,palette1 N=default\nPASS utf8-graphemes U+20AC U+4E2D[wide,tail] U+0065+0301 cursor=4,0\nPASS cursor-visibility hidden=0 restored=1\nPASS alternate-screen alternate=ALT primary=PRIMARY cursor=7,0\nPASS resize-reflow grid=6x5 text=ABCDEFGHIJKL pixels=48x80 row1=GHIJKL\nPASS reset grid=6x5 cursor=0,0 text=empty\nPASS callbacks-title reply=ESC[2;3R bell=1 title=DotCC_oracle notifications=1\nPASS formatter-buffer sizing=OUT_OF_SPACE short=OUT_OF_SPACE allocated=freed\nPASS ordinary-errors zero-dimension=NULL-query=invalid null-free/reset=accepted\nPASS allocator-failure new=OUT_OF_MEMORY\nPASS instance-independence first=FIRST second=SECOND first-survives-second-free\nPASS lifecycle cycles=32 allocator-pairs=balanced live=0\nRESULT cases=16 passed=16 failed=0\n",
+    "stderr": ""
+  },
+  {
+    "stage": "boundary-compile",
+    "argv": [
+      "cc",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-I/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/include",
+      "/home/marius/p/dotcc/libghostty/tests/native/boundary_control.c",
+      "/home/marius/p/dotcc/libghostty/src/Boundary/ghostty_boundary.c",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/lib/libghostty-vt.a",
+      "-lm",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/boundary-native"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "stage": "boundary-run",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/boundary-native"
+    ],
+    "exit_code": 0,
+    "stdout": "PASS boundary-abi pointer=8 style=16 allocator=16 vtable=64\nPASS boundary-workflow cycles=2 utf8=wide snapshot=empty,sized,unwrapped style=all-flags,curly,rgb alternate=restored reset=preserves-resize independent=1\nRESULT boundary-cases=2 passed=2 failed=0\n",
+    "stderr": ""
+  },
+  {
+    "stage": "abi-layout-compile",
+    "argv": [
+      "cc",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-I/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/include",
+      "/home/marius/p/dotcc/libghostty/tests/native/abi_layout.c",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/abi-layout-native"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "stage": "abi-layout-run",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/abi-layout-native"
+    ],
+    "exit_code": 0,
+    "stdout": "PASS layout allocator size=16 align=8 ctx=0 vtable=8\nPASS layout vtable size=64 align=8 alloc=0 resize=8 remap=16 free=24 reserved=32\nPASS layout formatter-option size=4 align=4 emit=1 unwrap=2 trim=3 extras=5\nPASS layout grid size=16 align=8 node=0 x=8 y=10\nPASS layout point size=24 align=8 tag=0 value=8\nPASS layout style size=16 align=2 foreground=0 background=4 underline-color=8 flags=12 reserved=14\nRESULT layout-cases=6 passed=6 failed=0\n",
+    "stderr": ""
+  },
+  {
+    "stage": "oracle-indirect-compile",
+    "argv": [
+      "cc",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-I/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/include",
+      "-I/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/boundary/indirect-abi",
+      "-DDOTCC_GHOSTTY_INDIRECT_ABI",
+      "/home/marius/p/dotcc/libghostty/tests/native/oracle.c",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/boundary/indirect-abi/native_ghostty_api.c",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/lib/libghostty-vt.a",
+      "-lm",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/oracle-indirect-native"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "stage": "oracle-indirect-run",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/oracle-indirect-native"
+    ],
+    "exit_code": 0,
+    "stdout": "PASS creation grid=10x4 cursor=0,0 text=empty\nPASS ascii-render text=hello\\nworld cursor=5,1 cells=h,d\nPASS cursor-cup cell(3,1)=U+005A cursor=4,1\nPASS erase-display text=empty cursor=0,0\nPASS sgr R=bold,palette1 N=default\nPASS utf8-graphemes U+20AC U+4E2D[wide,tail] U+0065+0301 cursor=4,0\nPASS cursor-visibility hidden=0 restored=1\nPASS alternate-screen alternate=ALT primary=PRIMARY cursor=7,0\nPASS resize-reflow grid=6x5 text=ABCDEFGHIJKL pixels=48x80 row1=GHIJKL\nPASS reset grid=6x5 cursor=0,0 text=empty\nPASS callbacks-title reply=ESC[2;3R bell=1 title=DotCC_oracle notifications=1\nPASS formatter-buffer sizing=OUT_OF_SPACE short=OUT_OF_SPACE allocated=freed\nPASS ordinary-errors zero-dimension=NULL-query=invalid null-free/reset=accepted\nPASS allocator-failure new=OUT_OF_MEMORY\nPASS instance-independence first=FIRST second=SECOND first-survives-second-free\nPASS lifecycle cycles=32 allocator-pairs=balanced live=0\nRESULT cases=16 passed=16 failed=0\n",
+    "stderr": ""
+  },
+  {
+    "stage": "boundary-indirect-compile",
+    "argv": [
+      "cc",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-I/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/include",
+      "-I/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/boundary/indirect-abi",
+      "-DDOTCC_GHOSTTY_INDIRECT_ABI",
+      "/home/marius/p/dotcc/libghostty/tests/native/boundary_control.c",
+      "/home/marius/p/dotcc/libghostty/src/Boundary/ghostty_boundary.c",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/boundary/indirect-abi/native_ghostty_api.c",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/lib/libghostty-vt.a",
+      "-lm",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/boundary-indirect-native"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "stage": "boundary-indirect-run",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/boundary-indirect-native"
+    ],
+    "exit_code": 0,
+    "stdout": "PASS boundary-abi pointer=8 style=16 allocator=16 vtable=64\nPASS boundary-workflow cycles=2 utf8=wide snapshot=empty,sized,unwrapped style=all-flags,curly,rgb alternate=restored reset=preserves-resize independent=1\nRESULT boundary-cases=2 passed=2 failed=0\n",
+    "stderr": ""
+  }
+]

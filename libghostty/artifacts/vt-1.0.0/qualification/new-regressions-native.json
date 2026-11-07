@@ -1,0 +1,242 @@
+[
+  {
+    "name": "comptime-module-arrays",
+    "mode": "debug",
+    "stage": "compile",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-obj",
+      "/home/marius/p/dotcc/DotCC.FunctionalTests/Fixtures/ZigEnumTypeReceivers/comptime-module-arrays.zig",
+      "-Odebug",
+      "-fPIC",
+      "-fcompiler-rt",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/comptime-module-arrays-debug.o",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/global"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "name": "comptime-module-arrays",
+    "mode": "debug",
+    "stage": "link",
+    "argv": [
+      "cc",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/main.c",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/comptime-module-arrays-debug.o",
+      "-lm",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/comptime-module-arrays-debug"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "/usr/bin/ld: warning: /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/comptime-module-arrays-debug.o: missing .note.GNU-stack section implies executable stack\n/usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker\n"
+  },
+  {
+    "name": "comptime-module-arrays",
+    "mode": "debug",
+    "stage": "run",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/comptime-module-arrays-debug"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "name": "comptime-module-arrays",
+    "mode": "fast",
+    "stage": "compile",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-obj",
+      "/home/marius/p/dotcc/DotCC.FunctionalTests/Fixtures/ZigEnumTypeReceivers/comptime-module-arrays.zig",
+      "-Ofast",
+      "-fPIC",
+      "-fcompiler-rt",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/comptime-module-arrays-fast.o",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/global"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "name": "comptime-module-arrays",
+    "mode": "fast",
+    "stage": "link",
+    "argv": [
+      "cc",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/main.c",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/comptime-module-arrays-fast.o",
+      "-lm",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/comptime-module-arrays-fast"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "name": "comptime-module-arrays",
+    "mode": "fast",
+    "stage": "run",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/comptime-module-arrays-fast"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "name": "comptime-mode-operand",
+    "mode": "fast",
+    "stage": "compile",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-obj",
+      "/home/marius/p/dotcc/DotCC.FunctionalTests/Fixtures/ZigEnumTypeReceivers/comptime-mode-operand.zig",
+      "-Ofast",
+      "-fPIC",
+      "-fcompiler-rt",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/comptime-mode-operand-fast.o",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/global"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "name": "comptime-mode-operand",
+    "mode": "fast",
+    "stage": "link",
+    "argv": [
+      "cc",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/main.c",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/comptime-mode-operand-fast.o",
+      "-lm",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/comptime-mode-operand-fast"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "name": "comptime-mode-operand",
+    "mode": "fast",
+    "stage": "run",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/comptime-mode-operand-fast"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "name": "empty-packed-pointer",
+    "mode": "debug",
+    "stage": "compile",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-obj",
+      "/home/marius/p/dotcc/DotCC.FunctionalTests/Fixtures/ZigEnumTypeReceivers/empty-packed-pointer.zig",
+      "-Odebug",
+      "-fPIC",
+      "-fcompiler-rt",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/empty-packed-pointer-debug.o",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/global"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "name": "empty-packed-pointer",
+    "mode": "debug",
+    "stage": "link",
+    "argv": [
+      "cc",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/main.c",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/empty-packed-pointer-debug.o",
+      "-lm",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/empty-packed-pointer-debug"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "/usr/bin/ld: warning: /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/empty-packed-pointer-debug.o: missing .note.GNU-stack section implies executable stack\n/usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker\n"
+  },
+  {
+    "name": "empty-packed-pointer",
+    "mode": "debug",
+    "stage": "run",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/empty-packed-pointer-debug"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "name": "empty-packed-pointer",
+    "mode": "fast",
+    "stage": "compile",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-obj",
+      "/home/marius/p/dotcc/DotCC.FunctionalTests/Fixtures/ZigEnumTypeReceivers/empty-packed-pointer.zig",
+      "-Ofast",
+      "-fPIC",
+      "-fcompiler-rt",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/empty-packed-pointer-fast.o",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/global"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "name": "empty-packed-pointer",
+    "mode": "fast",
+    "stage": "link",
+    "argv": [
+      "cc",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/main.c",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/empty-packed-pointer-fast.o",
+      "-lm",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/empty-packed-pointer-fast"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "name": "empty-packed-pointer",
+    "mode": "fast",
+    "stage": "run",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/empty-packed-pointer-fast"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

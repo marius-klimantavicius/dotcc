@@ -1,0 +1,363 @@
+{
+  "schema_version": 1,
+  "source": "libghostty-vt-1.0.0",
+  "baseline": "93967b7f9478e94dcbb42125c8a90f34feb40d75",
+  "initial_managed_root_count": 92,
+  "managed_root_count": 93,
+  "added_managed_roots": [
+    "ghostty_formatter_set"
+  ],
+  "missing_header_roots": [],
+  "missing_export_roots": [],
+  "missing_main_members": [],
+  "changed_declarations": [
+    {
+      "name": "ghostty_color_scheme_report_encode",
+      "old": "GHOSTTY_API GhosttyResult ghostty_color_scheme_report_encode( GhosttyColorScheme scheme, char* buf, size_t buf_len, size_t* out_written);",
+      "new": "GHOSTTY_API GhosttyResult ghostty_color_scheme_report_encode( GhosttyColorScheme scheme, uint8_t* buf, size_t buf_len, size_t* out_written);",
+      "abi_change": true
+    },
+    {
+      "name": "ghostty_formatter_terminal_new",
+      "old": "GHOSTTY_API GhosttyResult ghostty_formatter_terminal_new( const GhosttyAllocator* allocator, GhosttyFormatter* formatter, GhosttyTerminal terminal, GhosttyFormatterTerminalOptions options);",
+      "new": "GHOSTTY_API GhosttyResult ghostty_formatter_terminal_new( const GhosttyAllocator* allocator, GhosttyFormatter* formatter, GhosttyTerminal terminal);",
+      "abi_change": true
+    },
+    {
+      "name": "ghostty_grid_ref_graphemes",
+      "old": "GHOSTTY_API GhosttyResult ghostty_grid_ref_graphemes(const GhosttyGridRef *ref, uint32_t *buf, size_t buf_len, size_t *out_len);",
+      "new": "GHOSTTY_API GhosttyResult ghostty_grid_ref_graphemes(const GhosttyGridRef *ref, uint32_t *buf, size_t buf_len, size_t *out_written);",
+      "abi_change": false
+    },
+    {
+      "name": "ghostty_grid_ref_hyperlink_uri",
+      "old": "GHOSTTY_API GhosttyResult ghostty_grid_ref_hyperlink_uri( const GhosttyGridRef *ref, uint8_t *buf, size_t buf_len, size_t *out_len);",
+      "new": "GHOSTTY_API GhosttyResult ghostty_grid_ref_hyperlink_uri( const GhosttyGridRef *ref, uint8_t *buf, size_t buf_len, size_t *out_written);",
+      "abi_change": false
+    },
+    {
+      "name": "ghostty_mode_report_encode",
+      "old": "GHOSTTY_API GhosttyResult ghostty_mode_report_encode( GhosttyMode mode, GhosttyModeReportState state, char* buf, size_t buf_len, size_t* out_written);",
+      "new": "GHOSTTY_API GhosttyResult ghostty_mode_report_encode( GhosttyMode mode, GhosttyModeReportState state, uint8_t* buf, size_t buf_len, size_t* out_written);",
+      "abi_change": true
+    },
+    {
+      "name": "ghostty_osc_command_data",
+      "old": "GHOSTTY_API bool ghostty_osc_command_data(GhosttyOscCommand command, GhosttyOscCommandData data, void *out);",
+      "new": "GHOSTTY_API GhosttyResult ghostty_osc_command_data(GhosttyOscCommand command, GhosttyOscCommandData data, void *out);",
+      "abi_change": true
+    },
+    {
+      "name": "ghostty_sgr_attribute_tag",
+      "old": "GHOSTTY_API GhosttySgrAttributeTag ghostty_sgr_attribute_tag(GhosttySgrAttribute attr);",
+      "new": "GHOSTTY_API GhosttySgrAttributeTag ghostty_sgr_attribute_tag( const GhosttySgrAttribute* attr);",
+      "abi_change": true
+    },
+    {
+      "name": "ghostty_size_report_encode",
+      "old": "GHOSTTY_API GhosttyResult ghostty_size_report_encode( GhosttySizeReportStyle style, GhosttySizeReportSize size, char* buf, size_t buf_len, size_t* out_written);",
+      "new": "GHOSTTY_API GhosttyResult ghostty_size_report_encode( GhosttySizeReportStyle style, const GhosttySizeReportSize* size, uint8_t* buf, size_t buf_len, size_t* out_written);",
+      "abi_change": true
+    },
+    {
+      "name": "ghostty_terminal_scroll_viewport",
+      "old": "GHOSTTY_API void ghostty_terminal_scroll_viewport(GhosttyTerminal terminal, GhosttyTerminalScrollViewport behavior);",
+      "new": "GHOSTTY_API GhosttyResult ghostty_terminal_scroll_viewport( GhosttyTerminal terminal, GhosttyTerminalScrollViewport behavior);",
+      "abi_change": true
+    }
+  ],
+  "abi_changing_declaration_count": 7,
+  "x86_64_linux_official_layouts": {
+    "GhosttyAllocator": {
+      "kind": "struct",
+      "size": 16,
+      "align": 8,
+      "fields": {
+        "ctx": {
+          "offset": 0,
+          "size": 8,
+          "type": "pointer",
+          "elem": "opaque",
+          "const": false,
+          "nullable": true
+        },
+        "vtable": {
+          "offset": 8,
+          "size": 8,
+          "type": "pointer",
+          "elem": "GhosttyAllocatorVtable",
+          "const": true
+        }
+      }
+    },
+    "GhosttyAllocatorVtable": {
+      "kind": "struct",
+      "size": 64,
+      "align": 8,
+      "fields": {
+        "alloc": {
+          "offset": 0,
+          "size": 8,
+          "type": "pointer",
+          "elem": "GhosttyAllocatorAllocFn",
+          "const": true
+        },
+        "resize": {
+          "offset": 8,
+          "size": 8,
+          "type": "pointer",
+          "elem": "GhosttyAllocatorResizeFn",
+          "const": true,
+          "nullable": true
+        },
+        "remap": {
+          "offset": 16,
+          "size": 8,
+          "type": "pointer",
+          "elem": "GhosttyAllocatorRemapFn",
+          "const": true,
+          "nullable": true
+        },
+        "free": {
+          "offset": 24,
+          "size": 8,
+          "type": "pointer",
+          "elem": "GhosttyAllocatorFreeFn",
+          "const": true
+        },
+        "reserved": {
+          "offset": 32,
+          "size": 32,
+          "type": "array",
+          "elem": {
+            "type": "pointer",
+            "elem": "opaque",
+            "const": false,
+            "nullable": true
+          },
+          "count": 4
+        }
+      }
+    },
+    "GhosttyGridRef": {
+      "kind": "struct",
+      "size": 16,
+      "align": 8,
+      "fields": {
+        "node": {
+          "offset": 0,
+          "size": 8,
+          "type": "pointer",
+          "elem": "opaque",
+          "const": false,
+          "nullable": true
+        },
+        "x": {
+          "offset": 8,
+          "size": 2,
+          "type": "u16"
+        },
+        "y": {
+          "offset": 10,
+          "size": 2,
+          "type": "u16"
+        }
+      }
+    },
+    "GhosttyStyle": {
+      "kind": "struct",
+      "size": 16,
+      "align": 2,
+      "fields": {
+        "fg_color": {
+          "offset": 0,
+          "size": 4,
+          "type": "GhosttyStyleColor"
+        },
+        "bg_color": {
+          "offset": 4,
+          "size": 4,
+          "type": "GhosttyStyleColor"
+        },
+        "underline_color": {
+          "offset": 8,
+          "size": 4,
+          "type": "GhosttyStyleColor"
+        },
+        "flags": {
+          "offset": 12,
+          "size": 2,
+          "type": "GhosttyStyleFlags"
+        },
+        "reserved": {
+          "offset": 14,
+          "size": 2,
+          "type": "u16"
+        }
+      }
+    },
+    "GhosttyPoint": {
+      "kind": "struct",
+      "size": 24,
+      "align": 8,
+      "fields": {
+        "tag": {
+          "offset": 0,
+          "size": 4,
+          "type": "GhosttyPointTag"
+        },
+        "value": {
+          "offset": 8,
+          "size": 16,
+          "type": "GhosttyPointValue",
+          "tag": "tag",
+          "arms": {
+            "ACTIVE": "coordinate",
+            "VIEWPORT": "coordinate",
+            "SCREEN": "coordinate",
+            "HISTORY": "coordinate"
+          }
+        }
+      }
+    },
+    "GhosttyFormatterOption": {
+      "kind": "enum",
+      "size": 4,
+      "align": 4,
+      "underlying": "i32",
+      "prefix": "GHOSTTY_FORMATTER_OPT_",
+      "values": {
+        "INVALID": 0,
+        "EMIT": 1,
+        "UNWRAP": 2,
+        "TRIM": 3,
+        "SELECTION": 4,
+        "EXTRAS": 5,
+        "MAX_VALUE": 2147483647
+      },
+      "keys": {
+        "EMIT": {
+          "direction": "in",
+          "type": "GhosttyFormatterFormat"
+        },
+        "UNWRAP": {
+          "direction": "in",
+          "type": "bool"
+        },
+        "TRIM": {
+          "direction": "in",
+          "type": "bool"
+        },
+        "SELECTION": {
+          "direction": "in",
+          "type": "GhosttySelection"
+        },
+        "EXTRAS": {
+          "direction": "in",
+          "type": "GhosttyFormatterExtras"
+        }
+      }
+    },
+    "GhosttyCodepointBuffer": {
+      "kind": "struct",
+      "size": 24,
+      "align": 8,
+      "fields": {
+        "ptr": {
+          "offset": 0,
+          "size": 8,
+          "type": "pointer",
+          "elem": "u32",
+          "const": false,
+          "nullable": true
+        },
+        "cap": {
+          "offset": 8,
+          "size": 8,
+          "type": "u64"
+        },
+        "len": {
+          "offset": 16,
+          "size": 8,
+          "type": "u64"
+        }
+      }
+    }
+  },
+  "enum_changes": [
+    "GhosttyResult adds GHOSTTY_UNSUPPORTED=-8",
+    "Terminal, sys, OSC and render setters add INVALID=0 and shift option keys",
+    "Terminal/render cursor visual style use shared GhosttyCursorStyle",
+    "Image layer uses shared GhosttyImageLayer",
+    "Terminal scroll viewport constants gain TERMINAL prefix",
+    "Terminal cursor SGR data key gains SGR infix"
+  ],
+  "owner_api": {
+    "namespace": "Managed",
+    "engine_class": "GhosttyVt",
+    "owner_class": "Terminal",
+    "changed": false
+  },
+  "validation": {
+    "strict_c_syntax_direct": 4,
+    "strict_c_syntax_indirect": 2,
+    "header_only_native_layout_cases": 6,
+    "native_engine_behavior": "24 cases pass; direct and indirect ABI oracle/boundary transcripts identical",
+    "direct_product_behavior": "pending",
+    "standalone_managed_layout_cases": 6,
+    "native_selected_api_delta_cases": 7
+  },
+  "changed_files": [
+    {
+      "path": "src/Boundary/ghostty_boundary.c",
+      "sha256": "09f3f86815b89d4ea1410e3418d8e3bcf94ec518a87d0e7480751167382a285c"
+    },
+    {
+      "path": "samples/ManagedConsumer/Program.cs",
+      "sha256": "c413d516a6c29c8cd93eae502088371eef22bfcf2cc7468dd273047d7cf20625"
+    },
+    {
+      "path": "tests/native/abi_layout.c",
+      "sha256": "470a77956dfd5c0d5ce697ba3a45f37f83e745efed65f6565169d59b7e4f0b6e"
+    },
+    {
+      "path": "tests/native/boundary_control.c",
+      "sha256": "7b01ecf33fffc0929637254e0b61546e8a453b1a5278774364b0f1b91de097b3"
+    },
+    {
+      "path": "tests/native/oracle.c",
+      "sha256": "bda9b8083f3dcfebaee383133f663569fe25a0a461fcdea374c57bd0f7ca692b"
+    },
+    {
+      "path": "config/abi.json",
+      "sha256": "ad7e0f2c20e855f15ad29ea49cd18166a7ecde80e24b99887016a5bb97afad6c"
+    }
+  ],
+  "type_erased_contract_changes": [
+    {
+      "function": "ghostty_render_state_row_cells_get",
+      "key": "GHOSTTY_RENDER_STATE_ROW_CELLS_DATA_GRAPHEMES_BUF",
+      "old": "uint32_t array with caller-prequeried length",
+      "new": "GhosttyCodepointBuffer pointer (ptr, cap, len); short buffers copy prefix and return OUT_OF_SPACE with required len",
+      "qualification": "native oracle UTF-8 case passes full/short buffer checks"
+    },
+    {
+      "function": "ghostty_osc_command_data",
+      "key": "GHOSTTY_OSC_DATA_CHANGE_WINDOW_TITLE_STR",
+      "old": "nul-terminated const uint8_t pointer",
+      "new": "GhosttyString (pointer plus length)"
+    },
+    {
+      "function": "ghostty_render_state_row_cells_get",
+      "key": "GHOSTTY_RENDER_STATE_ROW_CELLS_DATA_BG_COLOR / FG_COLOR",
+      "old": "INVALID_VALUE when no color is set",
+      "new": "NO_VALUE when no color is set"
+    },
+    {
+      "function": "get/set dispatch functions",
+      "key": "unknown non-exhaustive option/data enum value",
+      "old": "runtime-safety-dependent validation",
+      "new": "UNSUPPORTED in every build mode"
+    }
+  ]
+}

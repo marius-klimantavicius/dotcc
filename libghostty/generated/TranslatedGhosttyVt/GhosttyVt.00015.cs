@@ -30,6 +30,7 @@ using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633763323230643365
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633363613433626363 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c3ca43bcc;
 using __DotCcEnum_76616C6772696E645F5F436C69656E7452657175657374 = global::Managed.GhosttyVt.valgrind__ClientRequest;
 using __DotCcEnum_506167654C6973745F5F4E6F64655F5F446174615F546167 = global::Managed.GhosttyVt.PageList__Node__Data_Tag;
+using __DotCcEnum_72656E6465725F5F5365744F7074696F6E = global::Managed.GhosttyVt.render__SetOption;
 using __DotCcEnum_6465766963655F617474726962757465735F5F436F6E666F726D616E63654C6576656C = global::Managed.GhosttyVt.device_attributes__ConformanceLevel;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636164343962373363 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_cad49b73c;
 using __DotCcEnum_506167654C6973745F5F5363726F6C6C5F546167 = global::Managed.GhosttyVt.PageList__Scroll_Tag;
@@ -40,6 +41,7 @@ using __DotCcEnum_5461726765745F5F416269 = global::Managed.GhosttyVt.Target__Abi
 using __DotCcEnum_53637265656E5F5F5F5F416E6F6E456E756D30 = global::Managed.GhosttyVt.Screen____AnonEnum0;
 using __DotCcEnum_6D6574615F5F4669656C64456E756D5F5F506167654C6973745F5F4C696D697473 = global::Managed.GhosttyVt.meta__FieldEnum__PageList__Limits;
 using __DotCcEnum_72656E6465725F5F526F7744617461 = global::Managed.GhosttyVt.render__RowData;
+using __DotCcEnum_72656E6465725F5F526F774F7074696F6E = global::Managed.GhosttyVt.render__RowOption;
 using __DotCcEnum_6F73635F325F5F5061727365725F5F5374617465 = global::Managed.GhosttyVt.osc_2__Parser__State;
 using __DotCcEnum_646E645F636F6D6D616E645F5F526571756573745F546167 = global::Managed.GhosttyVt.dnd_command__Request_Tag;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633566353337626532 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c5f537be2;
@@ -49,6 +51,7 @@ using __DotCcEnum_5461726765745F5F4F735F5F57696E646F777356657273696F6E = global:
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633336613366316236 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c36a3f1b6;
 using __DotCcEnum_5465726D696E616C5F5F5F5F416E6F6E456E756D30 = global::Managed.GhosttyVt.Terminal____AnonEnum0;
 using __DotCcEnum_506167654C6973745F5F496E6372656173654361706163697479 = global::Managed.GhosttyVt.PageList__IncreaseCapacity;
+using __DotCcEnum_53637265656E5F5F5F5F416E6F6E456E756D33 = global::Managed.GhosttyVt.Screen____AnonEnum3;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636661643537633037 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_cfad57c07;
 using __DotCcEnum_686561705F4172656E61416C6C6F6361746F725F5F50757368526573756C745F546167 = global::Managed.GhosttyVt.heap_ArenaAllocator__PushResult_Tag;
 using __DotCcEnum_6D6174685F5F4F72646572 = global::Managed.GhosttyVt.math__Order;
@@ -86,13 +89,13 @@ using __DotCcEnum_7367725F5F4174747269627574655F5F556E6465726C696E65 = global::M
 using __DotCcEnum_646E645F726573706F6E73655F5F456E636F64696E67 = global::Managed.GhosttyVt.dnd_response__Encoding;
 using __DotCcEnum_726573756C745F5F526573756C74 = global::Managed.GhosttyVt.result__Result;
 using __DotCcEnum_53637265656E5F5F5F5F416E6F6E456E756D32 = global::Managed.GhosttyVt.Screen____AnonEnum2;
+using __DotCcEnum_7379735F5F4F7074696F6E = global::Managed.GhosttyVt.sys__Option;
 using __DotCcEnum_6170635F5F53746174655F546167 = global::Managed.GhosttyVt.apc__State_Tag;
 using __DotCcEnum_5461726765745F5F4F626A656374466F726D6174 = global::Managed.GhosttyVt.Target__ObjectFormat;
 using __DotCcEnum_5061727365725F5F416374696F6E5F546167 = global::Managed.GhosttyVt.Parser__Action_Tag;
 using __DotCcEnum_496F5F46696C655F5265616465725F5F4D6F6465 = global::Managed.GhosttyVt.Io_File_Reader__Mode;
 using __DotCcEnum_686561705F4172656E61416C6C6F6361746F725F5F52657365744D6F64655F546167 = global::Managed.GhosttyVt.heap_ArenaAllocator__ResetMode_Tag;
 using __DotCcEnum_7374796C655F325F5F5374796C655F5F436F6C6F725F5F546167 = global::Managed.GhosttyVt.style_2__Style__Color__Tag;
-using __DotCcEnum_5465726D696E616C5F5F5072696E74536C6963655769647468 = global::Managed.GhosttyVt.Terminal__PrintSliceWidth;
 using __DotCcEnum_6465766963655F617474726962757465735F5F5072696D6172795F5F46656174757265 = global::Managed.GhosttyVt.device_attributes__Primary__Feature;
 using __DotCcEnum_5461726765745F68657861676F6E5F5F46656174757265 = global::Managed.GhosttyVt.Target_hexagon__Feature;
 using __DotCcEnum_636F6C6F725F335F5F5370656369616C = global::Managed.GhosttyVt.color_3__Special;
@@ -116,8 +119,8 @@ using __DotCcEnum_6463735F5F436F6D6D616E645F5F44454352515353 = global::Managed.G
 using __DotCcEnum_76616C6772696E645F6D656D636865636B5F5F436C69656E7452657175657374 = global::Managed.GhosttyVt.valgrind_memcheck__ClientRequest;
 using __DotCcEnum_61727261795F686173685F6D61705F5F4361706163697479496E64657854797065 = global::Managed.GhosttyVt.array_hash_map__CapacityIndexType;
 using __DotCcEnum_496F5F46696C655F5F4B696E64 = global::Managed.GhosttyVt.Io_File__Kind;
+using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633164613662336138 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c1da6b3a8;
 using __DotCcEnum_6F73635F325F5F5061727365725F5F436170747572655F5F4261636B696E675F546167 = global::Managed.GhosttyVt.osc_2__Parser__Capture__Backing_Tag;
-using __DotCcEnum_72656E6465725F5F437572736F7256697375616C5374796C65 = global::Managed.GhosttyVt.render__CursorVisualStyle;
 using __DotCcEnum_736F72745F7064715F5F48696E74 = global::Managed.GhosttyVt.sort_pdq__Hint;
 using __DotCcEnum_636C6970626F6172645F325F5F526561645F5F526573756C745F546167 = global::Managed.GhosttyVt.clipboard_2__Read__Result_Tag;
 using __DotCcEnum_616E73695F5F4330 = global::Managed.GhosttyVt.ansi__C0;
@@ -126,7 +129,6 @@ using __DotCcEnum_636F6C6F725F5F4F7065726174696F6E = global::Managed.GhosttyVt.c
 using __DotCcEnum_6B697474795F636C6970626F6172645F70726F746F636F6C5F5F537461747573 = global::Managed.GhosttyVt.kitty_clipboard_protocol__Status;
 using __DotCcEnum_6170635F5F50726F746F636F6C = global::Managed.GhosttyVt.apc__Protocol;
 using __DotCcEnum_73656D616E7469635F70726F6D70745F5F436F6D6D616E645F5F416374696F6E = global::Managed.GhosttyVt.semantic_prompt__Command__Action;
-using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633430323464633238 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c4024dc28;
 using __DotCcEnum_70726F6772616D5F7374617475735F5F436F6D6D616E645F546167 = global::Managed.GhosttyVt.program_status__Command_Tag;
 using __DotCcEnum_636F6C6F725F335F5F4B696E645F546167 = global::Managed.GhosttyVt.color_3__Kind_Tag;
 using __DotCcEnum_6373695F5F4572617365446973706C6179 = global::Managed.GhosttyVt.csi__EraseDisplay;
@@ -138,10 +140,10 @@ using __DotCcEnum_6772617068656D655F5F4772617068656D655769647468456666656374 = g
 using __DotCcEnum_6373695F5F45726173654C696E65 = global::Managed.GhosttyVt.csi__EraseLine;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636130376336633233 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_ca07c6c23;
 using __DotCcEnum_506167654C6973745F5F5F5F416E6F6E556E696F6E305F546167 = global::Managed.GhosttyVt.PageList____AnonUnion0_Tag;
+using __DotCcEnum_74797065735F335F5F437572736F725374796C65 = global::Managed.GhosttyVt.types_3__CursorStyle;
 using __DotCcEnum_666D745F5F416C69676E6D656E74 = global::Managed.GhosttyVt.fmt__Alignment;
 using __DotCcEnum_6275696C645F696E666F5F5F4275696C64496E666F = global::Managed.GhosttyVt.build_info__BuildInfo;
 using __DotCcEnum_506167654C6973745F5F496E6372656D656E74616C436F6D7072657373696F6E526573756C74 = global::Managed.GhosttyVt.PageList__IncrementalCompressionResult;
-using __DotCcEnum_7374796C655F5F436F6C6F72546167 = global::Managed.GhosttyVt.style__ColorTag;
 using __DotCcEnum_506167654C6973745F5F56696577706F72745F546167 = global::Managed.GhosttyVt.PageList__Viewport_Tag;
 using __DotCcEnum_496F5F4469725F5F5265616465725F5F5374617465 = global::Managed.GhosttyVt.Io_Dir__Reader__State;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633834366562383534 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c846eb854;
@@ -162,7 +164,6 @@ using __DotCcEnum_506167654C6973745F5F436F6D7072657373696F6E536372617463685F5461
 using __DotCcEnum_53656C656374696F6E5F5F426F756E64735F546167 = global::Managed.GhosttyVt.Selection__Bounds_Tag;
 using __DotCcEnum_636C6970626F6172645F325F5F57726974655F5F526573756C745F546167 = global::Managed.GhosttyVt.clipboard_2__Write__Result_Tag;
 using __DotCcEnum_6F73635F325F5F5465726D696E61746F72 = global::Managed.GhosttyVt.osc_2__Terminator;
-using __DotCcEnum_7465726D696E616C5F5F5465726D696E616C437572736F725374796C65 = global::Managed.GhosttyVt.terminal__TerminalCursorStyle;
 using __DotCcEnum_506167654C6973745F5F506167654974657261746F725F5F4C696D69745F546167 = global::Managed.GhosttyVt.PageList__PageIterator__Limit_Tag;
 using __DotCcEnum_6C616E675F5F456E6469616E = global::Managed.GhosttyVt.lang__Endian;
 using __DotCcEnum_686561705F5F5F5F416E6F6E556E696F6E305F546167 = global::Managed.GhosttyVt.heap____AnonUnion0_Tag;
@@ -180,7 +181,9 @@ using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633332396663356139
 using __DotCcEnum_6170635F5F436F6D6D616E645F546167 = global::Managed.GhosttyVt.apc__Command_Tag;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636433333364643464 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_cd333dd4d;
 using __DotCcEnum_68797065726C696E6B5F5F50616765456E7472795F5F49645F546167 = global::Managed.GhosttyVt.hyperlink__PageEntry__Id_Tag;
+using __DotCcEnum_666F726D61747465725F5F4F7074696F6E = global::Managed.GhosttyVt.formatter__Option;
 using __DotCcEnum_6F73635F5F436F6D6D616E6444617461 = global::Managed.GhosttyVt.osc__CommandData;
+using __DotCcEnum_7465726D696E616C5F5F4F7074696F6E = global::Managed.GhosttyVt.terminal__Option;
 using __DotCcEnum_706167655F5F43656C6C5F5F53656D616E746963436F6E74656E74 = global::Managed.GhosttyVt.page__Cell__SemanticContent;
 using __DotCcEnum_706167655F5F526F775F5F53656D616E74696350726F6D7074 = global::Managed.GhosttyVt.page__Row__SemanticPrompt;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633437333233396563 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c473239ec;
@@ -210,6 +213,7 @@ using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633363643637393664
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633838303663616564 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c8806caed;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633562326163383131 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c5b2ac811;
 using __DotCcEnum_68797065726C696E6B5F5F48797065726C696E6B5F5F49645F546167 = global::Managed.GhosttyVt.hyperlink__Hyperlink__Id_Tag;
+using __DotCcEnum_5465726D696E616C5F5F5072696E74536C6963654D69786564526F775F5F53746F70 = global::Managed.GhosttyVt.Terminal__PrintSliceMixedRow__Stop;
 using __DotCcEnum_635F5F5F5F416E6F6E456E756D31 = global::Managed.GhosttyVt.c____AnonEnum1;
 using __DotCcEnum_666D745F5F43617365 = global::Managed.GhosttyVt.fmt__Case;
 using __DotCcEnum_78745F636865636B73756D5F5F56616C75655F546167 = global::Managed.GhosttyVt.xt_checksum__Value_Tag;
@@ -226,19 +230,668 @@ using __DotCcEnum_5465726D696E616C5F5F446563636F6C6D4D6F6465 = global::Managed.G
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633262643762326166 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c2bd7b2af;
 using __DotCcEnum_72656E6465725F5F526F7743656C6C7344617461 = global::Managed.GhosttyVt.render__RowCellsData;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636630373331306539 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_cf07310e9;
-using __DotCcEnum_5F5F446F744363547970656465665F34363336323630304243383945323145354234343735414539333242333836343046463531454546393044433731364645303732383746333544313844464434 = global::Managed.GhosttyVt.GhosttyPointTag;
-using __DotCcEnum_5F5F446F744363547970656465665F38453938394341423537343643374443394441454641333130393838363945344542443445423534384635354339323131454534343334343937393039433030 = global::Managed.GhosttyVt.GhosttyTerminalData;
-using __DotCcEnum_5F5F446F744363547970656465665F35424345333530373346314534354637304138443832424132424541383445453036373836383530353132344631313838433532393036363644383545333237 = global::Managed.GhosttyVt.GhosttyCellData;
-using __DotCcEnum_5F5F446F744363547970656465665F43303034443441424233424338313144423537313535393445433345354434323635424239324443303733443239333841413239374231383839424443394333 = global::Managed.GhosttyVt.GhosttyResult;
-using __DotCcEnum_5F5F446F744363547970656465665F34384134363232364635353144443144443032383437454538333644384136373033354239394439463934353844463633383934344137383539413131393341 = global::Managed.GhosttyVt.GhosttyFormatterFormat;
+using __DotCcEnum_5F5F446F744363547970656465665F42343433304439444231373133423442463337353942433732463336343833304138434538304430373237373346423338423245463438354638373034324145 = global::Managed.GhosttyVt.GhosttyResult;
+using __DotCcEnum_5F5F446F744363547970656465665F42393432423136393035383537384536463744353439413132384332363446323836323544433937413445324131363841383533343233333530363945433544 = global::Managed.GhosttyVt.GhosttyPointTag;
+using __DotCcEnum_5F5F446F744363547970656465665F44383133333931433843353335394138414442413938353433363230433636363432353035464446423837373341463337454335383635383333443935394538 = global::Managed.GhosttyVt.GhosttyTerminalData;
+using __DotCcEnum_5F5F446F744363547970656465665F44353335424632413237433246423245304135464634373046434139344436353034454542444646394138463838444636453434333030334643393142303741 = global::Managed.GhosttyVt.GhosttyCellData;
+using __DotCcEnum_5F5F446F744363547970656465665F45313739394335393033333344303646413942333645433635313836453339464242454341414144393434394633453039443837313537424438463246343441 = global::Managed.GhosttyVt.GhosttyFormatterOption;
+using __DotCcEnum_5F5F446F744363547970656465665F45364536453544393039344443313533343543344430414638324245324333354637433942434634364446324233414134383635334135374439413632323638 = global::Managed.GhosttyVt.GhosttyStyleColorTag;
 using __DotCcEnum_446F74636347686F73747479546578745374796C65 = global::Managed.GhosttyVt.DotccGhosttyTextStyle;
-using __DotCcEnum_5F5F446F744363547970656465665F46453531373538343036394442364138303334454138454633344542424634304636383130423745453942424345313931334443444533413633394534443543 = global::Managed.GhosttyVt.GhosttyStyleColorTag;
 using DotCcLiterals = global::Managed.GhosttyVt.GhosttyVtLiterals;
 using DotCcPointers = global::Managed.GhosttyVt.GhosttyVtFunctionPointers;
 
 public static unsafe partial class GhosttyVt
 {
-    public static unsafe ErrUnion<ulong> lz4__decompress__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ConstSlice<byte> input, Slice<byte> output)
+    public static unsafe ErrUnion<ulong> base64_2__Base64Decoder_calcSizeForSlice__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(base64_2__Base64Decoder* decoder, ConstSlice<byte> source)
+    {
+        try
+        {
+            ulong source_len = source.Len;
+            ulong result = ErrUnion.Try(base64_2__Base64Decoder_calcSizeUpperBound__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(decoder, source_len));
+            {
+                byte? __cap = decoder->pad_char;
+                if ((__cap.HasValue))
+                {
+                    byte pad_char = __cap.Value;
+                    {
+                        if (((((source_len >= 1UL)) && ((source.Ptr[source_len - 1UL] == pad_char)))))
+                            result -= (ulong)(1);
+                        if (((((source_len >= 2UL)) && ((source.Ptr[source_len - 2UL] == pad_char)))))
+                            result -= (ulong)(1);
+                    }
+                }
+            }
+            return ErrUnion<ulong>.Ok(result);
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<ulong>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> base64_2__Base64Decoder_decode__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(base64_2__Base64Decoder* decoder, Slice<byte> dest, ConstSlice<byte> source)
+    {
+        try
+        {
+            if (((((decoder->pad_char != null)) && ((source.Len % 4UL != 0UL)))))
+                return ZigErrorUnionZero<Unit>.Err(94);
+            ulong dest_idx = 0;
+            ulong fast_src_idx = 0;
+            ushort acc = 0;
+            byte acc_len = 0;
+            ulong? leftover_idx = default(ulong?);
+            for (; ((((fast_src_idx + 16UL < source.Len)) && ((dest_idx + 15UL < dest.Len)))); fast_src_idx += (ulong)(16), dest_idx += (ulong)(12))
+            {
+                byte* __dotcc_aligned_bits_bytes = stackalloc byte[sizeof(global::System.UInt128) + 15];
+                global::System.UInt128* __dotcc_aligned_bits = (global::System.UInt128*)(((nuint)__dotcc_aligned_bits_bytes + 15) & ~(nuint)15);
+                *__dotcc_aligned_bits = unchecked((global::System.UInt128)(0));
+                {
+                    ulong i = 0UL;
+                    {
+                        byte* __dotcc_aligned_new_bits_bytes = stackalloc byte[sizeof(global::System.UInt128) + 15];
+                        global::System.UInt128* __dotcc_aligned_new_bits = (global::System.UInt128*)(((nuint)__dotcc_aligned_new_bits_bytes + 15) & ~(nuint)15);
+                        *__dotcc_aligned_new_bits = (decoder->fast_char_to_index + 0 * 256)[source.Ptr[fast_src_idx + i * (ulong)(4)]];
+                        (*__dotcc_aligned_new_bits) |= (decoder->fast_char_to_index + 1 * 256)[source.Ptr[fast_src_idx + 1UL + i * (ulong)(4)]];
+                        (*__dotcc_aligned_new_bits) |= (decoder->fast_char_to_index + 2 * 256)[source.Ptr[fast_src_idx + 2UL + i * (ulong)(4)]];
+                        (*__dotcc_aligned_new_bits) |= (decoder->fast_char_to_index + 3 * 256)[source.Ptr[fast_src_idx + 3UL + i * (ulong)(4)]];
+                        if (((((*__dotcc_aligned_new_bits) & (uint)4278190080u) != (global::System.UInt128)0UL)))
+                            return ZigErrorUnionZero<Unit>.Err(65);
+                        (*__dotcc_aligned_bits) |= (*__dotcc_aligned_new_bits) << (int)((ulong)(24) * i);
+                    }
+                }
+                {
+                    ulong i__1 = 1UL;
+                    {
+                        byte* __dotcc_aligned_new_bits__1_bytes = stackalloc byte[sizeof(global::System.UInt128) + 15];
+                        global::System.UInt128* __dotcc_aligned_new_bits__1 = (global::System.UInt128*)(((nuint)__dotcc_aligned_new_bits__1_bytes + 15) & ~(nuint)15);
+                        *__dotcc_aligned_new_bits__1 = (decoder->fast_char_to_index + 0 * 256)[source.Ptr[fast_src_idx + i__1 * (ulong)(4)]];
+                        (*__dotcc_aligned_new_bits__1) |= (decoder->fast_char_to_index + 1 * 256)[source.Ptr[fast_src_idx + 1UL + i__1 * (ulong)(4)]];
+                        (*__dotcc_aligned_new_bits__1) |= (decoder->fast_char_to_index + 2 * 256)[source.Ptr[fast_src_idx + 2UL + i__1 * (ulong)(4)]];
+                        (*__dotcc_aligned_new_bits__1) |= (decoder->fast_char_to_index + 3 * 256)[source.Ptr[fast_src_idx + 3UL + i__1 * (ulong)(4)]];
+                        if (((((*__dotcc_aligned_new_bits__1) & (uint)4278190080u) != (global::System.UInt128)0UL)))
+                            return ZigErrorUnionZero<Unit>.Err(65);
+                        (*__dotcc_aligned_bits) |= (*__dotcc_aligned_new_bits__1) << (int)((ulong)(24) * i__1);
+                    }
+                }
+                {
+                    ulong i__2 = 2UL;
+                    {
+                        byte* __dotcc_aligned_new_bits__2_bytes = stackalloc byte[sizeof(global::System.UInt128) + 15];
+                        global::System.UInt128* __dotcc_aligned_new_bits__2 = (global::System.UInt128*)(((nuint)__dotcc_aligned_new_bits__2_bytes + 15) & ~(nuint)15);
+                        *__dotcc_aligned_new_bits__2 = (decoder->fast_char_to_index + 0 * 256)[source.Ptr[fast_src_idx + i__2 * (ulong)(4)]];
+                        (*__dotcc_aligned_new_bits__2) |= (decoder->fast_char_to_index + 1 * 256)[source.Ptr[fast_src_idx + 1UL + i__2 * (ulong)(4)]];
+                        (*__dotcc_aligned_new_bits__2) |= (decoder->fast_char_to_index + 2 * 256)[source.Ptr[fast_src_idx + 2UL + i__2 * (ulong)(4)]];
+                        (*__dotcc_aligned_new_bits__2) |= (decoder->fast_char_to_index + 3 * 256)[source.Ptr[fast_src_idx + 3UL + i__2 * (ulong)(4)]];
+                        if (((((*__dotcc_aligned_new_bits__2) & (uint)4278190080u) != (global::System.UInt128)0UL)))
+                            return ZigErrorUnionZero<Unit>.Err(65);
+                        (*__dotcc_aligned_bits) |= (*__dotcc_aligned_new_bits__2) << (int)((ulong)(24) * i__2);
+                    }
+                }
+                {
+                    ulong i__3 = 3UL;
+                    {
+                        byte* __dotcc_aligned_new_bits__3_bytes = stackalloc byte[sizeof(global::System.UInt128) + 15];
+                        global::System.UInt128* __dotcc_aligned_new_bits__3 = (global::System.UInt128*)(((nuint)__dotcc_aligned_new_bits__3_bytes + 15) & ~(nuint)15);
+                        *__dotcc_aligned_new_bits__3 = (decoder->fast_char_to_index + 0 * 256)[source.Ptr[fast_src_idx + i__3 * (ulong)(4)]];
+                        (*__dotcc_aligned_new_bits__3) |= (decoder->fast_char_to_index + 1 * 256)[source.Ptr[fast_src_idx + 1UL + i__3 * (ulong)(4)]];
+                        (*__dotcc_aligned_new_bits__3) |= (decoder->fast_char_to_index + 2 * 256)[source.Ptr[fast_src_idx + 2UL + i__3 * (ulong)(4)]];
+                        (*__dotcc_aligned_new_bits__3) |= (decoder->fast_char_to_index + 3 * 256)[source.Ptr[fast_src_idx + 3UL + i__3 * (ulong)(4)]];
+                        if (((((*__dotcc_aligned_new_bits__3) & (uint)4278190080u) != (global::System.UInt128)0UL)))
+                            return ZigErrorUnionZero<Unit>.Err(65);
+                        (*__dotcc_aligned_bits) |= (*__dotcc_aligned_new_bits__3) << (int)((ulong)(24) * i__3);
+                    }
+                }
+                mem__writeInt__u128__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<byte>(new Slice<byte>(dest.Ptr + dest_idx, dest.Len - (ulong)dest_idx).Ptr + 0, unchecked((ulong)(16 - 0))).Ptr, (*__dotcc_aligned_bits), __DotCcEnum_6C616E675F5F456E6469616E.little);
+            }
+            for (; ((((fast_src_idx + 4UL < source.Len)) && ((dest_idx + 3UL < dest.Len)))); fast_src_idx += (ulong)(4), dest_idx += (ulong)(3))
+            {
+                uint bits__1 = (decoder->fast_char_to_index + 0 * 256)[source.Ptr[fast_src_idx]];
+                bits__1 |= (decoder->fast_char_to_index + 1 * 256)[source.Ptr[fast_src_idx + 1UL]];
+                bits__1 |= (decoder->fast_char_to_index + 2 * 256)[source.Ptr[fast_src_idx + 2UL]];
+                bits__1 |= (decoder->fast_char_to_index + 3 * 256)[source.Ptr[fast_src_idx + 3UL]];
+                if ((((bits__1 & (uint)4278190080u) != 0u)))
+                    return ZigErrorUnionZero<Unit>.Err(65);
+                mem__writeInt__u32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<byte>(new Slice<byte>(dest.Ptr + dest_idx, dest.Len - (ulong)dest_idx).Ptr + 0, unchecked((ulong)(4 - 0))).Ptr, bits__1, __DotCcEnum_6C616E675F5F456E6469616E.little);
+            }
+            ConstSlice<byte> remaining = new ConstSlice<byte>(source.Ptr + fast_src_idx, source.Len - (ulong)fast_src_idx);
+            for (ulong __i = 0UL; ((__i < remaining.Len)); __i++)
+            {
+                byte c = remaining.Ptr[__i];
+                ulong src_idx = __i + (ulong)fast_src_idx;
+                {
+                    byte d = decoder->char_to_index[c];
+                    if (((d == (byte)255)))
+                    {
+                        if (((((decoder->pad_char == null)) || ((c != decoder->pad_char.Value)))))
+                            return ZigErrorUnionZero<Unit>.Err(65);
+                        leftover_idx = src_idx;
+                        break;
+                    }
+                    acc = (ushort)((acc << 6) + d);
+                    acc_len += (byte)(6);
+                    if (((acc_len >= (byte)8)))
+                    {
+                        acc_len -= (byte)(8);
+                        dest.Ptr[dest_idx] = (byte)(byte)(acc >> (int)(acc_len));
+                        dest_idx += (ulong)(1);
+                    }
+                }
+            }
+            if (((((acc_len > (byte)4)) || (((ushort)(acc & (ushort)(((ushort)1 << (int)(acc_len)) - (ushort)1)) != (ushort)0)))))
+            {
+                return ZigErrorUnionZero<Unit>.Err(94);
+            }
+            if (((leftover_idx == null)))
+                return ZigErrorUnionZero<Unit>.Ok(default);
+            ConstSlice<byte> leftover = new ConstSlice<byte>(source.Ptr + leftover_idx.Value, source.Len - (ulong)leftover_idx.Value);
+            {
+                byte? __cap = decoder->pad_char;
+                if ((__cap.HasValue))
+                {
+                    byte pad_char = __cap.Value;
+                    {
+                        byte padding_len = (byte)(acc_len / (byte)2);
+                        ulong padding_chars = 0;
+                        for (ulong __i__1 = 0UL; ((__i__1 < leftover.Len)); __i__1++)
+                        {
+                            byte c__1 = leftover.Ptr[__i__1];
+                            {
+                                if (((c__1 != pad_char)))
+                                {
+                                    return (((c__1 == (byte)255)) ? ZigErrorUnionZero<Unit>.Err(65) : ZigErrorUnionZero<Unit>.Err(94));
+                                }
+                                padding_chars += (ulong)(1);
+                            }
+                        }
+                        if (((padding_chars != padding_len)))
+                            return ZigErrorUnionZero<Unit>.Err(94);
+                    }
+                }
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe base64_2__Base64DecoderWithIgnore base64_2__Base64DecoderWithIgnore_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(byte* alphabet_chars, byte? pad_char, ConstSlice<byte> ignore_chars)
+    {
+        base64_2__Base64DecoderWithIgnore __anf4 = default(base64_2__Base64DecoderWithIgnore);
+        __anf4.decoder = base64_2__Base64Decoder_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(alphabet_chars, pad_char);
+        CBool* __cl182 = stackalloc CBool[]{ false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false };
+        memcpy((CBool*)&__anf4.char_is_ignored, __cl182, 256);
+        base64_2__Base64DecoderWithIgnore result = __anf4;
+        for (ulong __i = 0UL; ((__i < ignore_chars.Len)); __i++)
+        {
+            byte c = ignore_chars.Ptr[__i];
+            {
+                debug__assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)(result.decoder.char_to_index[c] == (byte)255)));
+                debug__assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659((((unchecked((int)(((CBool*)&result.char_is_ignored)[c]))) != 0) ? 0 : 1));
+                debug__assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)(result.decoder.pad_char != c)));
+                ((CBool*)&result.char_is_ignored)[c] = true;
+            }
+        }
+        return result;
+    }
+
+
+
+    public static unsafe ErrUnion<ulong> base64_2__Base64Decoder_calcSizeUpperBound__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(base64_2__Base64Decoder* decoder, ulong source_len)
+    {
+        try
+        {
+            ulong result = source_len / 4UL * 3UL;
+            ulong leftover = source_len % 4UL;
+            if (((decoder->pad_char != null)))
+            {
+                if (((leftover % 4UL != 0UL)))
+                    return ErrUnion<ulong>.Err(94);
+            }
+            else
+            {
+                if (((leftover % 4UL == 1UL)))
+                    return ErrUnion<ulong>.Err(94);
+                result += leftover * 3UL / 4UL;
+            }
+            return ErrUnion<ulong>.Ok(result);
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<ulong>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe ErrUnion<byte> unicode_2__utf8Encode__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(uint c, Slice<byte> @out)
+    {
+        try
+        {
+            return unicode_2__utf8EncodeImpl__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(c, @out);
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<byte>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe ErrUnion<unicode_2__Utf8View> unicode_2__Utf8View_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ConstSlice<byte> s)
+    {
+        try
+        {
+            if ((!(((unchecked((int)(unicode_2__utf8ValidateSlice__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(s)))) != 0) )     ))
+            {
+                return ErrUnion<unicode_2__Utf8View>.Err(108);
+            }
+            return ErrUnion<unicode_2__Utf8View>.Ok(unicode_2__Utf8View_initUnchecked__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(s));
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<unicode_2__Utf8View>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe unicode_2__Utf8Iterator unicode_2__Utf8View_iterator__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(unicode_2__Utf8View s)
+    {
+        return new unicode_2__Utf8Iterator { bytes = s.bytes, i = 0 };
+    }
+
+
+
+    public static unsafe uint? unicode_2__Utf8Iterator_nextCodepoint__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(unicode_2__Utf8Iterator* it)
+    {
+        ConstSlice<byte>? __cf = unicode_2__Utf8Iterator_nextCodepointSlice__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(it);
+        if ((!((__cf.HasValue) )     ))
+        {
+            return default(uint?);
+        }
+        ConstSlice<byte> slice = __cf.Value;
+        ErrUnion<uint> __cf__1 = unicode_2__utf8Decode__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slice);
+        if ((__cf__1.IsErr))
+        {
+            throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+        }
+        uint __anf2 = __cf__1.Value;
+        return __anf2;
+    }
+
+
+
+    public static unsafe CBool unicode_2__utf8ValidateSlice__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ConstSlice<byte> input)
+    {
+        return unicode_2__utf8ValidateSliceImpl__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(input);
+    }
+
+
+
+    public static unsafe unicode_2__Utf8View unicode_2__Utf8View_initUnchecked__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ConstSlice<byte> s)
+    {
+        return new unicode_2__Utf8View { bytes = s };
+    }
+
+
+
+    public static unsafe ConstSlice<byte>? unicode_2__Utf8Iterator_nextCodepointSlice__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(unicode_2__Utf8Iterator* it)
+    {
+        if (((it->i >= it->bytes.Len)))
+        {
+            return default(ConstSlice<byte>?);
+        }
+        ErrUnion<byte> __cf = unicode_2__utf8ByteSequenceLength__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(it->bytes.Ptr[it->i]);
+        if ((__cf.IsErr))
+        {
+            throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+        }
+        byte cp_len = __cf.Value;
+        it->i += cp_len;
+        return new ConstSlice<byte>(it->bytes.Ptr + (it->i - cp_len), (ulong)(it->i - (it->i - cp_len)));
+    }
+
+
+
+    public static unsafe ErrUnion<uint> unicode_2__utf8Decode__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ConstSlice<byte> bytes)
+    {
+        try
+        {
+            return ((bytes.Len) switch { 1 => ErrUnion<uint>.Ok(bytes.Ptr[0]), 2 => unicode_2__utf8Decode2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new ConstSlice<byte>(bytes.Ptr + 0, unchecked((ulong)(2 - 0))).Ptr), 3 => unicode_2__utf8Decode3__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new ConstSlice<byte>(bytes.Ptr + 0, unchecked((ulong)(3 - 0))).Ptr), 4 => unicode_2__utf8Decode4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new ConstSlice<byte>(bytes.Ptr + 0, unchecked((ulong)(4 - 0))).Ptr), _ => ErrUnion<uint>.Ok(((global::System.Func<byte>)(() => {     throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+     }))()) });
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<uint>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe ErrUnion<byte> unicode_2__utf8ByteSequenceLength__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(byte first_byte)
+    {
+        try
+        {
+            return (((int)first_byte) switch { >= 0 and <= 127 => ErrUnion<byte>.Ok(1), >= 192 and <= 223 => ErrUnion<byte>.Ok(2), >= 224 and <= 239 => ErrUnion<byte>.Ok(3), >= 240 and <= 247 => ErrUnion<byte>.Ok(4), _ => ErrUnion<byte>.Err(109) });
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<byte>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe ErrUnion<uint> unicode_2__utf8Decode2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(byte* bytes)
+    {
+        try
+        {
+            debug__assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)((byte)(bytes[0] & (byte)224) == (byte)192)));
+            uint value = (byte)(bytes[0] & (byte)31);
+            if ((((byte)(bytes[1] & (byte)192) != (byte)128)))
+                return ErrUnion<uint>.Err(98);
+            value <<= 6;
+            value |= (byte)(bytes[1] & (byte)63);
+            if (((value < 128u)))
+                return ErrUnion<uint>.Err(99);
+            return ErrUnion<uint>.Ok(value);
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<uint>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe ErrUnion<uint> unicode_2__utf8Decode3__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(byte* bytes)
+    {
+        try
+        {
+            uint value = ErrUnion.Try(unicode_2__utf8Decode3AllowSurrogateHalf__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(bytes));
+            if (((((55296u <= value)) && ((value <= 57343u)))))
+                return ErrUnion<uint>.Err(110);
+            return ErrUnion<uint>.Ok(value);
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<uint>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe ErrUnion<uint> unicode_2__utf8Decode4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(byte* bytes)
+    {
+        try
+        {
+            debug__assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)((byte)(bytes[0] & (byte)248) == (byte)240)));
+            uint value = (byte)(bytes[0] & (byte)7);
+            if ((((byte)(bytes[1] & (byte)192) != (byte)128)))
+                return ErrUnion<uint>.Err(98);
+            value <<= 6;
+            value |= (byte)(bytes[1] & (byte)63);
+            if ((((byte)(bytes[2] & (byte)192) != (byte)128)))
+                return ErrUnion<uint>.Err(98);
+            value <<= 6;
+            value |= (byte)(bytes[2] & (byte)63);
+            if ((((byte)(bytes[3] & (byte)192) != (byte)128)))
+                return ErrUnion<uint>.Err(98);
+            value <<= 6;
+            value |= (byte)(bytes[3] & (byte)63);
+            if (((value < 65536u)))
+                return ErrUnion<uint>.Err(99);
+            if (((value > 1114111u)))
+                return ErrUnion<uint>.Err(100);
+            return ErrUnion<uint>.Ok(value);
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<uint>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe ErrUnion<uint> unicode_2__utf8Decode3AllowSurrogateHalf__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(byte* bytes)
+    {
+        try
+        {
+            debug__assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)((byte)(bytes[0] & (byte)240) == (byte)224)));
+            uint value = (byte)(bytes[0] & (byte)15);
+            if ((((byte)(bytes[1] & (byte)192) != (byte)128)))
+                return ErrUnion<uint>.Err(98);
+            value <<= 6;
+            value |= (byte)(bytes[1] & (byte)63);
+            if ((((byte)(bytes[2] & (byte)192) != (byte)128)))
+                return ErrUnion<uint>.Err(98);
+            value <<= 6;
+            value |= (byte)(bytes[2] & (byte)63);
+            if (((value < 2048u)))
+                return ErrUnion<uint>.Err(99);
+            return ErrUnion<uint>.Ok(value);
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<uint>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe byte* unicode_2__utf8EncodeComptime__65533__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        byte* __cl183 = stackalloc byte[]{ default(byte), default(byte), default(byte) };
+        return ZigAlloc.CopyArrayResult<byte>(__cl183, 3);
+    }
+
+
+
+    public static unsafe CBool unicode_2__isSurrogateCodepoint__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(uint c)
+    {
+        return ((c) switch { >= 55296 and <= 57343 => true, _ => false });
+    }
+
+
+
+    public static unsafe ErrUnion<byte> unicode_2__utf8EncodeImpl__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(uint c, Slice<byte> @out)
+    {
+        try
+        {
+            byte length = ErrUnion.Try(unicode_2__utf8CodepointSequenceLength__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(c));
+            debug__assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)(@out.Len >= length)));
+            switch ((int)length)
+            {
+                case 1:
+                    @out.Ptr[0] = (byte)(byte)c;
+                    break;
+                case 2:
+                    {
+                        @out.Ptr[0] = (byte)(byte)(192u | c >> 6);
+                        @out.Ptr[1] = (byte)(byte)(128u | c & 63u);
+                    }
+                    break;
+                case 3:
+                    {
+                        if ((((true) && ((unchecked((int)(unicode_2__isSurrogateCodepoint__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(c)))) != 0))))
+                        {
+                            return ErrUnion<byte>.Err(111);
+                        }
+                        @out.Ptr[0] = (byte)(byte)(224u | c >> 12);
+                        @out.Ptr[1] = (byte)(byte)(128u | c >> 6 & 63u);
+                        @out.Ptr[2] = (byte)(byte)(128u | c & 63u);
+                    }
+                    break;
+                case 4:
+                    {
+                        @out.Ptr[0] = (byte)(byte)(240u | c >> 18);
+                        @out.Ptr[1] = (byte)(byte)(128u | c >> 12 & 63u);
+                        @out.Ptr[2] = (byte)(byte)(128u | c >> 6 & 63u);
+                        @out.Ptr[3] = (byte)(byte)(128u | c & 63u);
+                    }
+                    break;
+                default:
+                    throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+            }
+            return ErrUnion<byte>.Ok(length);
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<byte>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe CBool unicode_2__utf8ValidateSliceImpl__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ConstSlice<byte> input)
+    {
+        ConstSlice<byte> remaining = input;
+        {
+            while (((remaining.Len >= (ulong)(64L))))
+            {
+                System.Runtime.Intrinsics.Vector512<byte> chunk = ZigVec.Load512(new ConstSlice<byte>(remaining.Ptr + 0, unchecked((ulong)(64L - 0))).Ptr);
+                System.Runtime.Intrinsics.Vector512<byte> mask = System.Runtime.Intrinsics.Vector512.Create((byte)128);
+                if (((ZigVec.Eq(chunk & mask, mask) != 0UL)))
+                {
+                    break;
+                }
+                remaining = new ConstSlice<byte>(remaining.Ptr + 64L, remaining.Len - (ulong)64L);
+            }
+        }
+        int lo_cb = 128;
+        int hi_cb = 191;
+        int min_non_ascii_codepoint = 128;
+        int xx = 241;
+        int @as = 240;
+        int s1 = 2;
+        int s2 = 19;
+        int s3 = 3;
+        int s4 = 35;
+        int s5 = 52;
+        int s6 = 4;
+        int s7 = 68;
+        byte* first = stackalloc byte[256];
+        ZigMem.CopyForwards<byte>(new Slice<byte>(first, 256UL), new ConstSlice<byte>(global::Managed.GhosttyVt.Globals.unicode_2____ctblk0, 256UL));
+        ulong n = remaining.Len;
+        ulong i = 0;
+        while (((i < n)))
+        {
+            byte first_byte = remaining.Ptr[i];
+            if (((first_byte < (byte)128)))
+            {
+                i += (ulong)(1);
+                continue;
+            }
+            byte info = first[first_byte];
+            if (((info == xx)))
+            {
+                return false;
+            }
+            int size = info & 7;
+            if (((i + (ulong)(size) > n)))
+            {
+                return false;
+            }
+            byte accept_lo = (byte)(lo_cb);
+            byte accept_hi = (byte)(hi_cb);
+            switch (info >> 4)
+            {
+                case 0:
+                    
+                    
+                    break;
+                case 1:
+                    accept_lo = 160;
+                    break;
+                case 2:
+                    accept_hi = 159;
+                    break;
+                case 3:
+                    accept_lo = 144;
+                    break;
+                case 4:
+                    accept_hi = 143;
+                    break;
+                default:
+                    throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+            }
+            byte c1 = remaining.Ptr[i + 1UL];
+            if (((((c1 < accept_lo)) || ((accept_hi < c1)))))
+            {
+                return false;
+            }
+            switch (size)
+            {
+                case 2:
+                    i += (ulong)(2);
+                    break;
+                case 3:
+                    {
+                        byte c2 = remaining.Ptr[i + 2UL];
+                        if (((((c2 < (byte)128)) || (((byte)191 < c2)))))
+                        {
+                            return false;
+                        }
+                        i += (ulong)(3);
+                    }
+                    break;
+                case 4:
+                    {
+                        byte c2__1 = remaining.Ptr[i + 2UL];
+                        if (((((c2__1 < (byte)128)) || (((byte)191 < c2__1)))))
+                        {
+                            return false;
+                        }
+                        byte c3 = remaining.Ptr[i + 3UL];
+                        if (((((c3 < (byte)128)) || (((byte)191 < c3)))))
+                        {
+                            return false;
+                        }
+                        i += (ulong)(4);
+                    }
+                    break;
+                default:
+                    throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+            }
+        }
+        return true;
+    }
+
+
+
+    public static unsafe ulong fastprint__printDecimal__u21__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<byte> buf, uint v)
+    {
+        {
+            byte* tmp = stackalloc byte[7];
+            uint val = v;
+            ulong i = 7UL;
+            while (true)
+            {
+                i -= (ulong)(1);
+                tmp[i] = (byte)((byte)48 + (byte)(byte)(val % 10u));
+                val /= (uint)(10);
+                if (((val == 0u)))
+                    break;
+            }
+            ulong n = 7UL - i;
+            ZigMem.CopyForwards<byte>(new Slice<byte>(buf.Ptr + 0, (ulong)(n - (ulong)(0))), new Slice<byte>(tmp + i, 7UL - (ulong)i));
+            return n;
+        }
+    }
+
+
+
+    public static unsafe void mem_2__recommit__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<byte> memory)
+    {
+        quirks____AnonStruct0_assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)(memory.Len > 0UL)));
+        quirks____AnonStruct0_assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)((ulong)memory.Ptr % (ulong)4096L == 0UL)));
+        quirks____AnonStruct0_assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)(memory.Len % (ulong)4096L == 0UL)));
+    }
+
+
+
+    public static unsafe CBool mem_2__canReclaim__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        CBool __vcf0 = default(CBool);
+        CBool __blk1 = default(CBool);
+        {
+            Target_x86__Feature* __cl186 = stackalloc Target_x86__Feature[]{ __DotCcEnum_5461726765745F7838365F5F46656174757265.__zig_member_3634626974, __DotCcEnum_5461726765745F7838365F5F46656174757265.allow_light_256_bit, __DotCcEnum_5461726765745F7838365F5F46656174757265.avx512bw, __DotCcEnum_5461726765745F7838365F5F46656174757265.avx512cd, __DotCcEnum_5461726765745F7838365F5F46656174757265.avx512dq, __DotCcEnum_5461726765745F7838365F5F46656174757265.avx512vl, __DotCcEnum_5461726765745F7838365F5F46656174757265.bmi, __DotCcEnum_5461726765745F7838365F5F46656174757265.bmi2, __DotCcEnum_5461726765745F7838365F5F46656174757265.cmov, __DotCcEnum_5461726765745F7838365F5F46656174757265.cx16, __DotCcEnum_5461726765745F7838365F5F46656174757265.false_deps_popcnt, __DotCcEnum_5461726765745F7838365F5F46656174757265.fast_15bytenop, __DotCcEnum_5461726765745F7838365F5F46656174757265.fast_gather, __DotCcEnum_5461726765745F7838365F5F46656174757265.fast_scalar_fsqrt, __DotCcEnum_5461726765745F7838365F5F46656174757265.fast_shld_rotate, __DotCcEnum_5461726765745F7838365F5F46656174757265.fast_variable_crosslane_shuffle, __DotCcEnum_5461726765745F7838365F5F46656174757265.fast_variable_perlane_shuffle, __DotCcEnum_5461726765745F7838365F5F46656174757265.fast_vector_fsqrt, __DotCcEnum_5461726765745F7838365F5F46656174757265.fxsr, __DotCcEnum_5461726765745F7838365F5F46656174757265.idivq_to_divl, __DotCcEnum_5461726765745F7838365F5F46656174757265.lzcnt, __DotCcEnum_5461726765745F7838365F5F46656174757265.macrofusion, __DotCcEnum_5461726765745F7838365F5F46656174757265.mmx, __DotCcEnum_5461726765745F7838365F5F46656174757265.movbe, __DotCcEnum_5461726765745F7838365F5F46656174757265.nopl, __DotCcEnum_5461726765745F7838365F5F46656174757265.popcnt, __DotCcEnum_5461726765745F7838365F5F46656174757265.prefer_256_bit, __DotCcEnum_5461726765745F7838365F5F46656174757265.sahf, __DotCcEnum_5461726765745F7838365F5F46656174757265.slow_3ops_lea, __DotCcEnum_5461726765745F7838365F5F46656174757265.vzeroupper, __DotCcEnum_5461726765745F7838365F5F46656174757265.x87, __DotCcEnum_5461726765745F7838365F5F46656174757265.xsave };
+            Target__Cpu__Model __cl185 = new Target__Cpu__Model { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2859 /*"x86_64_v4"*/), 9UL), llvm_name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S791 /*"x86-64-v4"*/), 9UL), features = Target__Cpu__Feature_FeatureSetFns__Target_x86__Feature_featureSet__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new ConstSlice<Target_x86__Feature>(__cl186, 32UL)) };
+            Target_x86__Feature* __cl187 = stackalloc Target_x86__Feature[]{ __DotCcEnum_5461726765745F7838365F5F46656174757265.__zig_member_3634626974, __DotCcEnum_5461726765745F7838365F5F46656174757265.cmov, __DotCcEnum_5461726765745F7838365F5F46656174757265.cx8, __DotCcEnum_5461726765745F7838365F5F46656174757265.fxsr, __DotCcEnum_5461726765745F7838365F5F46656174757265.mmx, __DotCcEnum_5461726765745F7838365F5F46656174757265.sse, __DotCcEnum_5461726765745F7838365F5F46656174757265.sse2, __DotCcEnum_5461726765745F7838365F5F46656174757265.x87, __DotCcEnum_5461726765745F7838365F5F46656174757265.sse3, __DotCcEnum_5461726765745F7838365F5F46656174757265.ssse3, __DotCcEnum_5461726765745F7838365F5F46656174757265.sse4_1, __DotCcEnum_5461726765745F7838365F5F46656174757265.sse4_2, __DotCcEnum_5461726765745F7838365F5F46656174757265.cx16, __DotCcEnum_5461726765745F7838365F5F46656174757265.popcnt, __DotCcEnum_5461726765745F7838365F5F46656174757265.avx, __DotCcEnum_5461726765745F7838365F5F46656174757265.avx2, __DotCcEnum_5461726765745F7838365F5F46656174757265.fma, __DotCcEnum_5461726765745F7838365F5F46656174757265.bmi, __DotCcEnum_5461726765745F7838365F5F46656174757265.bmi2, __DotCcEnum_5461726765745F7838365F5F46656174757265.lzcnt, __DotCcEnum_5461726765745F7838365F5F46656174757265.aes, __DotCcEnum_5461726765745F7838365F5F46656174757265.pclmul, __DotCcEnum_5461726765745F7838365F5F46656174757265.avx512f, __DotCcEnum_5461726765745F7838365F5F46656174757265.avx512bw, __DotCcEnum_5461726765745F7838365F5F46656174757265.avx512cd, __DotCcEnum_5461726765745F7838365F5F46656174757265.avx512dq, __DotCcEnum_5461726765745F7838365F5F46656174757265.avx512vl, __DotCcEnum_5461726765745F7838365F5F46656174757265.avx512vbmi };
+            Target_x86__Feature* __cl189 = stackalloc Target_x86__Feature[]{ __DotCcEnum_5461726765745F7838365F5F46656174757265.__zig_member_3634626974, __DotCcEnum_5461726765745F7838365F5F46656174757265.allow_light_256_bit, __DotCcEnum_5461726765745F7838365F5F46656174757265.avx512bw, __DotCcEnum_5461726765745F7838365F5F46656174757265.avx512cd, __DotCcEnum_5461726765745F7838365F5F46656174757265.avx512dq, __DotCcEnum_5461726765745F7838365F5F46656174757265.avx512vl, __DotCcEnum_5461726765745F7838365F5F46656174757265.bmi, __DotCcEnum_5461726765745F7838365F5F46656174757265.bmi2, __DotCcEnum_5461726765745F7838365F5F46656174757265.cmov, __DotCcEnum_5461726765745F7838365F5F46656174757265.cx16, __DotCcEnum_5461726765745F7838365F5F46656174757265.false_deps_popcnt, __DotCcEnum_5461726765745F7838365F5F46656174757265.fast_15bytenop, __DotCcEnum_5461726765745F7838365F5F46656174757265.fast_gather, __DotCcEnum_5461726765745F7838365F5F46656174757265.fast_scalar_fsqrt, __DotCcEnum_5461726765745F7838365F5F46656174757265.fast_shld_rotate, __DotCcEnum_5461726765745F7838365F5F46656174757265.fast_variable_crosslane_shuffle, __DotCcEnum_5461726765745F7838365F5F46656174757265.fast_variable_perlane_shuffle, __DotCcEnum_5461726765745F7838365F5F46656174757265.fast_vector_fsqrt, __DotCcEnum_5461726765745F7838365F5F46656174757265.fxsr, __DotCcEnum_5461726765745F7838365F5F46656174757265.idivq_to_divl, __DotCcEnum_5461726765745F7838365F5F46656174757265.lzcnt, __DotCcEnum_5461726765745F7838365F5F46656174757265.macrofusion, __DotCcEnum_5461726765745F7838365F5F46656174757265.mmx, __DotCcEnum_5461726765745F7838365F5F46656174757265.movbe, __DotCcEnum_5461726765745F7838365F5F46656174757265.nopl, __DotCcEnum_5461726765745F7838365F5F46656174757265.popcnt, __DotCcEnum_5461726765745F7838365F5F46656174757265.prefer_256_bit, __DotCcEnum_5461726765745F7838365F5F46656174757265.sahf, __DotCcEnum_5461726765745F7838365F5F46656174757265.slow_3ops_lea, __DotCcEnum_5461726765745F7838365F5F46656174757265.vzeroupper, __DotCcEnum_5461726765745F7838365F5F46656174757265.x87, __DotCcEnum_5461726765745F7838365F5F46656174757265.xsave };
+            Target__Cpu__Model __cl188 = new Target__Cpu__Model { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2859 /*"x86_64_v4"*/), 9UL), llvm_name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S791 /*"x86-64-v4"*/), 9UL), features = Target__Cpu__Feature_FeatureSetFns__Target_x86__Feature_featureSet__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new ConstSlice<Target_x86__Feature>(__cl189, 32UL)) };
+            Target_x86__Feature* __cl190 = stackalloc Target_x86__Feature[]{ __DotCcEnum_5461726765745F7838365F5F46656174757265.__zig_member_3634626974, __DotCcEnum_5461726765745F7838365F5F46656174757265.cmov, __DotCcEnum_5461726765745F7838365F5F46656174757265.cx8, __DotCcEnum_5461726765745F7838365F5F46656174757265.fxsr, __DotCcEnum_5461726765745F7838365F5F46656174757265.mmx, __DotCcEnum_5461726765745F7838365F5F46656174757265.sse, __DotCcEnum_5461726765745F7838365F5F46656174757265.sse2, __DotCcEnum_5461726765745F7838365F5F46656174757265.x87, __DotCcEnum_5461726765745F7838365F5F46656174757265.sse3, __DotCcEnum_5461726765745F7838365F5F46656174757265.ssse3, __DotCcEnum_5461726765745F7838365F5F46656174757265.sse4_1, __DotCcEnum_5461726765745F7838365F5F46656174757265.sse4_2, __DotCcEnum_5461726765745F7838365F5F46656174757265.cx16, __DotCcEnum_5461726765745F7838365F5F46656174757265.popcnt, __DotCcEnum_5461726765745F7838365F5F46656174757265.avx, __DotCcEnum_5461726765745F7838365F5F46656174757265.avx2, __DotCcEnum_5461726765745F7838365F5F46656174757265.fma, __DotCcEnum_5461726765745F7838365F5F46656174757265.bmi, __DotCcEnum_5461726765745F7838365F5F46656174757265.bmi2, __DotCcEnum_5461726765745F7838365F5F46656174757265.lzcnt, __DotCcEnum_5461726765745F7838365F5F46656174757265.aes, __DotCcEnum_5461726765745F7838365F5F46656174757265.pclmul, __DotCcEnum_5461726765745F7838365F5F46656174757265.avx512f, __DotCcEnum_5461726765745F7838365F5F46656174757265.avx512bw, __DotCcEnum_5461726765745F7838365F5F46656174757265.avx512cd, __DotCcEnum_5461726765745F7838365F5F46656174757265.avx512dq, __DotCcEnum_5461726765745F7838365F5F46656174757265.avx512vl, __DotCcEnum_5461726765745F7838365F5F46656174757265.avx512vbmi };
+            Target__Target __cl184 = new Target__Target { cpu = new Target__Cpu { arch = (Target__Cpu__Arch)__DotCcEnum_5461726765745F5F4370755F5F41726368.x86_64, model = &__cl185, features = Target__Cpu__Feature_FeatureSetFns__Target_x86__Feature_featureSet__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new ConstSlice<Target_x86__Feature>(__cl187, 28UL)) }, os = new Target__Os { tag = (Target__Os__Tag)__DotCcEnum_5461726765745F5F4F735F5F546167.linux, version_range = Target__Os__VersionRange_default__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Target__Cpu { arch = (Target__Cpu__Arch)__DotCcEnum_5461726765745F5F4370755F5F41726368.x86_64, model = &__cl188, features = Target__Cpu__Feature_FeatureSetFns__Target_x86__Feature_featureSet__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new ConstSlice<Target_x86__Feature>(__cl190, 28UL)) }.arch, (Target__Os__Tag)__DotCcEnum_5461726765745F5F4F735F5F546167.linux, __DotCcEnum_5461726765745F5F416269.gnu) }, abi = __DotCcEnum_5461726765745F5F416269.gnu, ofmt = (Target__ObjectFormat)__DotCcEnum_5461726765745F5F4F626A656374466F726D6174.elf, dynamic_linker = new Target__DynamicLinker { len = 0 } };
+            if (((Target__ptrBitWidth__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&__cl184) != (ushort)64)))
+            {
+                __blk1 = false;
+                goto __blk1_end;
+            }
+            {
+                __blk1 = true;
+                goto __blk1_end;
+            }
+        }
+        __blk1_end:
+        {
+        }
+        __vcf0 = __blk1;
+        return __vcf0;
+    }
+
+
+
+    public static unsafe ErrUnion<ulong> lz4__decompress__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ConstSlice<byte> input, Slice<byte> output)
     {
         try
         {
@@ -249,7 +902,7 @@ public static unsafe partial class GhosttyVt
                 if (((ip == input.Len)))
                 {
                     if (((op != output.Len)))
-                        return ErrUnion<ulong>.Err(102);
+                        return ErrUnion<ulong>.Err(105);
                     return ErrUnion<ulong>.Ok(op);
                 }
                 byte token = input.Ptr[ip];
@@ -259,17 +912,17 @@ public static unsafe partial class GhosttyVt
                     ulong nibble = (ulong)(token >> 4);
                     if (((((nibble != 15UL)) && ((ZigMath.Min(input.Len - ip, output.Len - op) >= (ulong)(16))))))
                     {
-                        lz4__copyIntAt__u128__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(output, op, input, ip);
+                        lz4__copyIntAt__u128__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(output, op, input, ip);
                         {
                             __blk0 = nibble;
                             goto __blk0_end;
                         }
                     }
-                    ulong len = ErrUnion.Try(lz4__decodeLength__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(input, &ip, nibble));
+                    ulong len = ErrUnion.Try(lz4__decodeLength__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(input, &ip, nibble));
                     if (((len > input.Len - ip)))
-                        return ErrUnion<ulong>.Err(99);
+                        return ErrUnion<ulong>.Err(102);
                     if (((len > output.Len - op)))
-                        return ErrUnion<ulong>.Err(101);
+                        return ErrUnion<ulong>.Err(104);
                     ZigMem.CopyForwards<byte>(new Slice<byte>(new Slice<byte>(output.Ptr + op, output.Len - (ulong)op).Ptr + 0, (ulong)(len - (ulong)(0))), new ConstSlice<byte>(new ConstSlice<byte>(input.Ptr + ip, input.Len - (ulong)ip).Ptr + 0, (ulong)(len - (ulong)(0))));
                     {
                         __blk0 = len;
@@ -285,35 +938,35 @@ public static unsafe partial class GhosttyVt
                 if (((ip == input.Len)))
                 {
                     if (((op != output.Len)))
-                        return ErrUnion<ulong>.Err(102);
+                        return ErrUnion<ulong>.Err(105);
                     return ErrUnion<ulong>.Ok(op);
                 }
                 if (((input.Len - ip < 2UL)))
-                    return ErrUnion<ulong>.Err(99);
-                ushort offset = lz4__readIntAt__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(input, ip);
+                    return ErrUnion<ulong>.Err(102);
+                ushort offset = lz4__readIntAt__u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(input, ip);
                 ip += (ulong)(2);
                 if (((((offset == (ushort)0)) || ((offset > op)))))
-                    return ErrUnion<ulong>.Err(100);
+                    return ErrUnion<ulong>.Err(103);
                 ulong match_nibble = (byte)(token & (byte)15);
                 if (((((((match_nibble != 15UL)) && ((offset >= (ushort)8)))) && ((output.Len - op >= 18UL)))))
                 {
                     ulong match = op - offset;
-                    lz4__copyIntAt__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(output, op, output, match);
-                    lz4__copyIntAt__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(output, op + 8UL, output, match + (ulong)(8));
-                    lz4__copyIntAt__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(output, op + 16UL, output, match + (ulong)(16));
+                    lz4__copyIntAt__u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(output, op, output, match);
+                    lz4__copyIntAt__u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(output, op + 8UL, output, match + 8UL);
+                    lz4__copyIntAt__u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(output, op + 16UL, output, match + 16UL);
                     op += match_nibble + 4UL;
                     continue;
                 }
-                ulong encoded_match_len = ErrUnion.Try(lz4__decodeLength__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(input, &ip, match_nibble));
-                ErrUnion<ulong> __cf = math__add__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(encoded_match_len, 4);
+                ulong encoded_match_len = ErrUnion.Try(lz4__decodeLength__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(input, &ip, match_nibble));
+                ErrUnion<ulong> __cf = math__add__u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(encoded_match_len, 4);
                 if ((__cf.IsErr))
                 {
-                    return ErrUnion<ulong>.Err(101);
+                    return ErrUnion<ulong>.Err(104);
                 }
                 ulong match_len = __cf.Value;
                 if (((match_len > output.Len - op)))
-                    return ErrUnion<ulong>.Err(101);
-                lz4__copyMatch__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(output, op, offset, match_len);
+                    return ErrUnion<ulong>.Err(104);
+                lz4__copyMatch__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(output, op, offset, match_len);
                 op += match_len;
             }
         }
@@ -322,7 +975,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ErrUnion<ulong> lz4__decodeLength__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ConstSlice<byte> input, ulong* ip, ulong nibble)
+    public static unsafe ErrUnion<ulong> lz4__decodeLength__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ConstSlice<byte> input, ulong* ip, ulong nibble)
     {
         try
         {
@@ -332,13 +985,13 @@ public static unsafe partial class GhosttyVt
             while (true)
             {
                 if (((*ip >= input.Len)))
-                    return ErrUnion<ulong>.Err(99);
+                    return ErrUnion<ulong>.Err(102);
                 byte value = input.Ptr[*ip];
                 *ip += (ulong)(1);
-                ErrUnion<ulong> __cf = math__add__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(length, value);
+                ErrUnion<ulong> __cf = math__add__u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(length, value);
                 if ((__cf.IsErr))
                 {
-                    return ErrUnion<ulong>.Err(99);
+                    return ErrUnion<ulong>.Err(102);
                 }
                 ulong __anf0 = __cf.Value;
                 length = __anf0;
@@ -351,7 +1004,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe void lz4__copyMatch__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<byte> output, ulong op_, ulong offset, ulong match_len)
+    public static unsafe void lz4__copyMatch__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<byte> output, ulong op_, ulong offset, ulong match_len)
     {
         ulong op = op_;
         ulong end = op_ + match_len;
@@ -367,11 +1020,11 @@ public static unsafe partial class GhosttyVt
             case 4:
             case 8:
                 {
-                    ulong pattern = ((offset) switch { 1 => (ulong)output.Ptr[op - 1UL] * 72340172838076673UL, 2 => (ulong)lz4__readIntAt__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(output, op - 2UL) * 281479271743489UL, 4 => (ulong)lz4__readIntAt__u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(output, op - 4UL) * 4294967297UL, 8 => lz4__readIntAt__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(output, op - 8UL), _ => ((global::System.Func<ulong>)(() => {     throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+                    ulong pattern = ((offset) switch { 1 => (ulong)output.Ptr[op - 1UL] * 72340172838076673UL, 2 => (ulong)lz4__readIntAt__u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(output, op - 2UL) * 281479271743489UL, 4 => (ulong)lz4__readIntAt__u32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(output, op - 4UL) * 4294967297UL, 8 => lz4__readIntAt__u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(output, op - 8UL), _ => ((global::System.Func<ulong>)(() => {     throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
      }))() });
                     ulong limit = ZigMath.Min(end, ZigMath.SatSub(output.Len, (ulong)7));
                     for (; ((op < limit)); op += (ulong)(8))
-                        lz4__writeIntAt__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(output, op, pattern);
+                        lz4__writeIntAt__u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(output, op, pattern);
                 }
                 break;
             default:
@@ -379,14 +1032,14 @@ public static unsafe partial class GhosttyVt
                 {
                     ulong limit__1 = ZigMath.Min(end, ZigMath.SatSub(output.Len, (ulong)15));
                     for (; ((op < limit__1)); op += (ulong)(16))
-                        lz4__copyIntAt__u128__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(output, op, output, op - offset);
+                        lz4__copyIntAt__u128__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(output, op, output, op - offset);
                 }
                 else
                     if (((offset >= 8UL)))
                     {
                         ulong limit__2 = ZigMath.Min(end, ZigMath.SatSub(output.Len, (ulong)7));
                         for (; ((op < limit__2)); op += (ulong)(8))
-                            lz4__copyIntAt__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(output, op, output, op - offset);
+                            lz4__copyIntAt__u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(output, op, output, op - offset);
                     }
                 break;
         }
@@ -396,164 +1049,164 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe void lz4__copyIntAt__u128__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<byte> output, ulong output_position, ConstSlice<byte> input, ulong input_position)
+    public static unsafe void lz4__copyIntAt__u128__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<byte> output, ulong output_position, ConstSlice<byte> input, ulong input_position)
     {
-        lz4__writeIntAt__u128__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(output, output_position, lz4__readIntAt__u128__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(input, input_position));
+        lz4__writeIntAt__u128__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(output, output_position, lz4__readIntAt__u128__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(input, input_position));
     }
 
 
 
-    public static unsafe ushort lz4__readIntAt__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ConstSlice<byte> input, ulong position)
+    public static unsafe ushort lz4__readIntAt__u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ConstSlice<byte> input, ulong position)
     {
-        return mem__readInt__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new ConstSlice<byte>(new ConstSlice<byte>(input.Ptr + position, input.Len - (ulong)position).Ptr + 0, unchecked((ulong)unchecked(((ulong)(sizeof(ushort))) - (ulong)(0)))).Ptr, __DotCcEnum_6C616E675F5F456E6469616E.little);
+        return mem__readInt__u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new ConstSlice<byte>(new ConstSlice<byte>(input.Ptr + position, input.Len - (ulong)position).Ptr + 0, unchecked((ulong)unchecked(((ulong)(sizeof(ushort))) - (ulong)(0)))).Ptr, __DotCcEnum_6C616E675F5F456E6469616E.little);
     }
 
 
 
-    public static unsafe void lz4__copyIntAt__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<byte> output, ulong output_position, ConstSlice<byte> input, ulong input_position)
+    public static unsafe void lz4__copyIntAt__u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<byte> output, ulong output_position, ConstSlice<byte> input, ulong input_position)
     {
-        lz4__writeIntAt__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(output, output_position, lz4__readIntAt__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(input, input_position));
+        lz4__writeIntAt__u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(output, output_position, lz4__readIntAt__u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(input, input_position));
     }
 
 
 
-    public static unsafe void lz4__copyIntAt__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<byte> output, ulong output_position, ConstSlice<byte> input, ulong input_position)
+    public static unsafe void lz4__copyIntAt__u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<byte> output, ulong output_position, ConstSlice<byte> input, ulong input_position)
     {
-        lz4__writeIntAt__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(output, output_position, lz4__readIntAt__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(input, input_position));
+        lz4__writeIntAt__u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(output, output_position, lz4__readIntAt__u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(input, input_position));
     }
 
 
 
-    public static unsafe uint lz4__readIntAt__u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ConstSlice<byte> input, ulong position)
+    public static unsafe uint lz4__readIntAt__u32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ConstSlice<byte> input, ulong position)
     {
-        return mem__readInt__u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new ConstSlice<byte>(new ConstSlice<byte>(input.Ptr + position, input.Len - (ulong)position).Ptr + 0, unchecked((ulong)unchecked(((ulong)(sizeof(uint))) - (ulong)(0)))).Ptr, __DotCcEnum_6C616E675F5F456E6469616E.little);
+        return mem__readInt__u32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new ConstSlice<byte>(new ConstSlice<byte>(input.Ptr + position, input.Len - (ulong)position).Ptr + 0, unchecked((ulong)unchecked(((ulong)(sizeof(uint))) - (ulong)(0)))).Ptr, __DotCcEnum_6C616E675F5F456E6469616E.little);
     }
 
 
 
-    public static unsafe ulong lz4__readIntAt__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ConstSlice<byte> input, ulong position)
+    public static unsafe ulong lz4__readIntAt__u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ConstSlice<byte> input, ulong position)
     {
-        return mem__readInt__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new ConstSlice<byte>(new ConstSlice<byte>(input.Ptr + position, input.Len - (ulong)position).Ptr + 0, unchecked((ulong)unchecked(((ulong)(sizeof(ulong))) - (ulong)(0)))).Ptr, __DotCcEnum_6C616E675F5F456E6469616E.little);
+        return mem__readInt__u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new ConstSlice<byte>(new ConstSlice<byte>(input.Ptr + position, input.Len - (ulong)position).Ptr + 0, unchecked((ulong)unchecked(((ulong)(sizeof(ulong))) - (ulong)(0)))).Ptr, __DotCcEnum_6C616E675F5F456E6469616E.little);
     }
 
 
 
-    public static unsafe void lz4__writeIntAt__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<byte> output, ulong position, ulong value)
+    public static unsafe void lz4__writeIntAt__u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<byte> output, ulong position, ulong value)
     {
-        mem__writeInt__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<byte>(new Slice<byte>(output.Ptr + position, output.Len - (ulong)position).Ptr + 0, unchecked((ulong)unchecked(((ulong)(sizeof(ulong))) - (ulong)(0)))).Ptr, value, __DotCcEnum_6C616E675F5F456E6469616E.little);
+        mem__writeInt__u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<byte>(new Slice<byte>(output.Ptr + position, output.Len - (ulong)position).Ptr + 0, unchecked((ulong)unchecked(((ulong)(sizeof(ulong))) - (ulong)(0)))).Ptr, value, __DotCcEnum_6C616E675F5F456E6469616E.little);
     }
 
 
 
-    public static unsafe void lz4__writeIntAt__u128__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<byte> output, ulong position, global::System.UInt128 value)
+    public static unsafe void lz4__writeIntAt__u128__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<byte> output, ulong position, global::System.UInt128 value)
     {
         byte* __dotcc_aligned_value_bytes = stackalloc byte[sizeof(global::System.UInt128) + 15];
         global::System.UInt128* __dotcc_aligned_value = (global::System.UInt128*)(((nuint)__dotcc_aligned_value_bytes + 15) & ~(nuint)15);
         *__dotcc_aligned_value = value;
         {
-            mem__writeInt__u128__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<byte>(new Slice<byte>(output.Ptr + position, output.Len - (ulong)position).Ptr + 0, unchecked((ulong)unchecked(((ulong)(sizeof(global::System.UInt128))) - (ulong)(0)))).Ptr, (*__dotcc_aligned_value), __DotCcEnum_6C616E675F5F456E6469616E.little);
+            mem__writeInt__u128__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<byte>(new Slice<byte>(output.Ptr + position, output.Len - (ulong)position).Ptr + 0, unchecked((ulong)unchecked(((ulong)(sizeof(global::System.UInt128))) - (ulong)(0)))).Ptr, (*__dotcc_aligned_value), __DotCcEnum_6C616E675F5F456E6469616E.little);
         }
     }
 
 
 
-    public static unsafe global::System.UInt128 lz4__readIntAt__u128__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ConstSlice<byte> input, ulong position)
+    public static unsafe global::System.UInt128 lz4__readIntAt__u128__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ConstSlice<byte> input, ulong position)
     {
-        return mem__readInt__u128__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new ConstSlice<byte>(new ConstSlice<byte>(input.Ptr + position, input.Len - (ulong)position).Ptr + 0, unchecked((ulong)unchecked(((ulong)(sizeof(global::System.UInt128))) - (ulong)(0)))).Ptr, __DotCcEnum_6C616E675F5F456E6469616E.little);
+        return mem__readInt__u128__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new ConstSlice<byte>(new ConstSlice<byte>(input.Ptr + position, input.Len - (ulong)position).Ptr + 0, unchecked((ulong)unchecked(((ulong)(sizeof(global::System.UInt128))) - (ulong)(0)))).Ptr, __DotCcEnum_6C616E675F5F456E6469616E.little);
     }
 
 
 
-    public static unsafe void lz4__writeIntAt__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<byte> output, ulong position, ushort value)
+    public static unsafe void lz4__writeIntAt__u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<byte> output, ulong position, ushort value)
     {
-        mem__writeInt__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<byte>(new Slice<byte>(output.Ptr + position, output.Len - (ulong)position).Ptr + 0, unchecked((ulong)unchecked(((ulong)(sizeof(ushort))) - (ulong)(0)))).Ptr, value, __DotCcEnum_6C616E675F5F456E6469616E.little);
+        mem__writeInt__u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<byte>(new Slice<byte>(output.Ptr + position, output.Len - (ulong)position).Ptr + 0, unchecked((ulong)unchecked(((ulong)(sizeof(ushort))) - (ulong)(0)))).Ptr, value, __DotCcEnum_6C616E675F5F456E6469616E.little);
     }
 
 
 
-    public static unsafe heap_BufferFirstAllocator__BufferFirstAllocator heap_BufferFirstAllocator__init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<byte> buffer, mem_Allocator__Allocator fallback_allocator)
+    public static unsafe heap_BufferFirstAllocator__BufferFirstAllocator heap_BufferFirstAllocator__init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<byte> buffer, mem_Allocator__Allocator fallback_allocator)
     {
-        return new heap_BufferFirstAllocator__BufferFirstAllocator { fallback_allocator = fallback_allocator, fixed_buffer_allocator = heap_FixedBufferAllocator__init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(buffer) };
+        return new heap_BufferFirstAllocator__BufferFirstAllocator { fallback_allocator = fallback_allocator, fixed_buffer_allocator = heap_FixedBufferAllocator__init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer) };
     }
 
 
 
-    public static unsafe mem_Allocator__Allocator heap_BufferFirstAllocator__allocator__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(heap_BufferFirstAllocator__BufferFirstAllocator* self)
+    public static unsafe mem_Allocator__Allocator heap_BufferFirstAllocator__allocator__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(heap_BufferFirstAllocator__BufferFirstAllocator* self)
     {
         return new mem_Allocator__Allocator { ptr = self, vtable = ((mem_Allocator__VTable*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.GhosttyVt.Globals.heap_BufferFirstAllocator__anon0)) };
     }
 
 
 
-    public static unsafe byte* heap_BufferFirstAllocator__alloc__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(void* ctx, ulong len, mem__Alignment alignment, ulong ra)
+    public static unsafe byte* heap_BufferFirstAllocator__alloc__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(void* ctx, ulong len, mem__Alignment alignment, ulong ra)
     {
         heap_BufferFirstAllocator__BufferFirstAllocator* self = (heap_BufferFirstAllocator__BufferFirstAllocator*)ctx;
-        byte* __cf = heap_FixedBufferAllocator__alloc__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->fixed_buffer_allocator, len, alignment, ra);
+        byte* __cf = heap_FixedBufferAllocator__alloc__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->fixed_buffer_allocator, len, alignment, ra);
         if (((__cf == null)))
         {
-            return mem_Allocator__rawAlloc__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self->fallback_allocator, len, alignment, ra);
+            return mem_Allocator__rawAlloc__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self->fallback_allocator, len, alignment, ra);
         }
-        byte* __anf0 = __cf;
+        byte* __anf0 = (byte*)__cf;
         return __anf0;
     }
 
 
 
-    public static unsafe CBool heap_BufferFirstAllocator__resize__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(void* ctx, Slice<byte> buf, mem__Alignment alignment, ulong new_len, ulong ra)
+    public static unsafe CBool heap_BufferFirstAllocator__resize__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(void* ctx, Slice<byte> buf, mem__Alignment alignment, ulong new_len, ulong ra)
     {
         heap_BufferFirstAllocator__BufferFirstAllocator* self = (heap_BufferFirstAllocator__BufferFirstAllocator*)ctx;
-        if (((unchecked((int)(heap_FixedBufferAllocator__ownsPtr__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->fixed_buffer_allocator, buf.Ptr)))) != 0))
+        if (((unchecked((int)(heap_FixedBufferAllocator__ownsPtr__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->fixed_buffer_allocator, buf.Ptr)))) != 0))
         {
-            return heap_FixedBufferAllocator__resize__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->fixed_buffer_allocator, buf, alignment, new_len, ra);
+            return heap_FixedBufferAllocator__resize__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->fixed_buffer_allocator, buf, alignment, new_len, ra);
         }
         else
         {
-            return mem_Allocator__rawResize__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self->fallback_allocator, buf, alignment, new_len, ra);
+            return mem_Allocator__rawResize__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self->fallback_allocator, buf, alignment, new_len, ra);
         }
     }
 
 
 
-    public static unsafe byte* heap_BufferFirstAllocator__remap__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(void* context, Slice<byte> memory, mem__Alignment alignment, ulong new_len, ulong return_address)
+    public static unsafe byte* heap_BufferFirstAllocator__remap__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(void* context, Slice<byte> memory, mem__Alignment alignment, ulong new_len, ulong return_address)
     {
         heap_BufferFirstAllocator__BufferFirstAllocator* self = (heap_BufferFirstAllocator__BufferFirstAllocator*)context;
-        if (((unchecked((int)(heap_FixedBufferAllocator__ownsPtr__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->fixed_buffer_allocator, memory.Ptr)))) != 0))
+        if (((unchecked((int)(heap_FixedBufferAllocator__ownsPtr__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->fixed_buffer_allocator, memory.Ptr)))) != 0))
         {
-            return heap_FixedBufferAllocator__remap__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->fixed_buffer_allocator, memory, alignment, new_len, return_address);
+            return heap_FixedBufferAllocator__remap__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->fixed_buffer_allocator, memory, alignment, new_len, return_address);
         }
         else
         {
-            return mem_Allocator__rawRemap__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self->fallback_allocator, memory, alignment, new_len, return_address);
+            return mem_Allocator__rawRemap__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self->fallback_allocator, memory, alignment, new_len, return_address);
         }
     }
 
 
 
-    public static unsafe void heap_BufferFirstAllocator__free__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(void* ctx, Slice<byte> buf, mem__Alignment alignment, ulong ra)
+    public static unsafe void heap_BufferFirstAllocator__free__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(void* ctx, Slice<byte> buf, mem__Alignment alignment, ulong ra)
     {
         heap_BufferFirstAllocator__BufferFirstAllocator* self = (heap_BufferFirstAllocator__BufferFirstAllocator*)ctx;
-        if (((unchecked((int)(heap_FixedBufferAllocator__ownsPtr__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->fixed_buffer_allocator, buf.Ptr)))) != 0))
+        if (((unchecked((int)(heap_FixedBufferAllocator__ownsPtr__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->fixed_buffer_allocator, buf.Ptr)))) != 0))
         {
-            heap_FixedBufferAllocator__free__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->fixed_buffer_allocator, buf, alignment, ra);
+            heap_FixedBufferAllocator__free__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->fixed_buffer_allocator, buf, alignment, ra);
             return;
         }
         else
         {
-            mem_Allocator__rawFree__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self->fallback_allocator, buf, alignment, ra);
+            mem_Allocator__rawFree__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self->fallback_allocator, buf, alignment, ra);
             return;
         }
     }
 
 
 
-    public static unsafe CBool Target__Abi_isGnu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Target__Abi abi)
+    public static unsafe CBool Target__Abi_isGnu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Target__Abi abi)
     {
         return (((int)abi) switch { (int)__DotCcEnum_5461726765745F5F416269.gnu or (int)__DotCcEnum_5461726765745F5F416269.gnuabin32 or (int)__DotCcEnum_5461726765745F5F416269.gnuabi64 or (int)__DotCcEnum_5461726765745F5F416269.gnueabi or (int)__DotCcEnum_5461726765745F5F416269.gnueabihf or (int)__DotCcEnum_5461726765745F5F416269.gnuf32 or (int)__DotCcEnum_5461726765745F5F416269.gnusf or (int)__DotCcEnum_5461726765745F5F416269.gnux32 => true, _ => false });
     }
 
 
 
-    public static unsafe ErrUnion<Io_File__File> posix_2__dirOpenFile__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(void* __zig_discard_param0, Io_Dir__Dir dir, ConstSlice<byte> sub_path, Io_Dir__OpenFileOptions options)
+    public static unsafe ErrUnion<Io_File__File> posix_2__dirOpenFile__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(void* __zig_discard_param0, Io_Dir__Dir dir, ConstSlice<byte> sub_path, Io_Dir__OpenFileOptions options)
     {
         static CBool __dotcc_zig_set_0228BF20A9EFA562FF19(ref os_linux____AnonStruct14 root, CBool value)
         {
@@ -575,30 +1228,30 @@ public static unsafe partial class GhosttyVt
         }
         try
         {
-    byte* __dotcc_array_storage187 = null;
-            if (__dotcc_array_storage187 == null)
+    byte* __dotcc_array_storage191 = null;
+            if (__dotcc_array_storage191 == null)
             {
-                byte* __dotcc_array_storage187_new = stackalloc byte[checked(sizeof(byte) * 4096)];
-                __dotcc_array_storage187 = __dotcc_array_storage187_new;
+                byte* __dotcc_array_storage191_new = stackalloc byte[checked(sizeof(byte) * 4096)];
+                __dotcc_array_storage191 = __dotcc_array_storage191_new;
             }
-            byte* path_buffer = (byte*)__dotcc_array_storage187;
+            byte* path_buffer = (byte*)__dotcc_array_storage191;
             new global::System.Span<byte>((void*)path_buffer, checked(sizeof(byte) * 4096)).Clear();
-            Slice<byte> sub_path_posix = ErrUnion.Try(Io_Threaded__pathToPosix__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sub_path, path_buffer));
+            Slice<byte> sub_path_posix = ErrUnion.Try(Io_Threaded__pathToPosix__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sub_path, path_buffer));
             if ((((int)options.@lock != (int)__DotCcEnum_496F5F46696C655F5F4C6F636B.none)))
-                return ErrUnion<Io_File__File>.Err(109);
+                return ErrUnion<Io_File__File>.Err(112);
             os_linux____AnonStruct14 flags = new os_linux____AnonStruct14 { ACCMODE = (((int)options.mode) switch { (int)__DotCcEnum_496F5F4469725F5F4F70656E46696C654F7074696F6E735F5F4D6F6465.read_only => __DotCcEnum_706F7369785F5F5F5F416E6F6E456E756D30.RDONLY, (int)__DotCcEnum_496F5F4469725F5F4F70656E46696C654F7074696F6E735F5F4D6F6465.write_only => __DotCcEnum_706F7369785F5F5F5F416E6F6E456E756D30.WRONLY, _ => __DotCcEnum_706F7369785F5F5F5F416E6F6E456E756D30.RDWR }), NOFOLLOW = (((unchecked((int)(options.follow_symlinks))) != 0) ? 0 : 1), _2 = 0, CREAT = false, EXCL = false, NOCTTY = false, TRUNC = false, APPEND = false, NONBLOCK = false, DSYNC = false, ASYNC = false, DIRECT = false, _15 = 0, DIRECTORY = false, NOATIME = false, CLOEXEC = false, SYNC = false, PATH = false, TMPFILE = false, _23 = 0 };
-            ref os_linux____AnonStruct14 __zig_root188 = ref flags;
-            __dotcc_zig_set_0228BF20A9EFA562FF19(ref __zig_root188, true);
-            ref os_linux____AnonStruct14 __zig_root189 = ref flags;
-            __dotcc_zig_set_402948D1EF7C26B990A9(ref __zig_root189, (((unchecked((int)(options.allow_ctty))) != 0) ? 0 : 1));
-            ref os_linux____AnonStruct14 __zig_root190 = ref flags;
-            __dotcc_zig_set_ADC0E888A8D5987DC89C(ref __zig_root190, options.path_only);
+            ref os_linux____AnonStruct14 __zig_root192 = ref flags;
+            __dotcc_zig_set_0228BF20A9EFA562FF19(ref __zig_root192, true);
+            ref os_linux____AnonStruct14 __zig_root193 = ref flags;
+            __dotcc_zig_set_402948D1EF7C26B990A9(ref __zig_root193, (((unchecked((int)(options.allow_ctty))) != 0) ? 0 : 1));
+            ref os_linux____AnonStruct14 __zig_root194 = ref flags;
+            __dotcc_zig_set_ADC0E888A8D5987DC89C(ref __zig_root194, options.path_only);
             uint mode = 0;
             int __lv0 = default(int);
             while (true)
             {
                 int rc = __dotcc_zig_c_openat64(dir.handle, sub_path_posix.Ptr, ZigBitcastWidth.Scalar<os_linux____AnonStruct14, uint>(flags, 32, false), mode);
-                os_linux____AnonEnum14 __sw0 = c__errno__i32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(rc);
+                os_linux____AnonEnum14 __sw0 = c__errno__i32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(rc);
                 switch ((int)(ushort)__sw0)
                 {
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.SUCCESS:
@@ -613,15 +1266,15 @@ public static unsafe partial class GhosttyVt
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.ACCES:
                         return ErrUnion<Io_File__File>.Err(16);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.FBIG:
-                        return ErrUnion<Io_File__File>.Err(110);
+                        return ErrUnion<Io_File__File>.Err(113);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.OVERFLOW:
-                        return ErrUnion<Io_File__File>.Err(110);
+                        return ErrUnion<Io_File__File>.Err(113);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.ISDIR:
-                        return ErrUnion<Io_File__File>.Err(80);
+                        return ErrUnion<Io_File__File>.Err(83);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.LOOP:
-                        return ErrUnion<Io_File__File>.Err(111);
+                        return ErrUnion<Io_File__File>.Err(114);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.MLINK:
-                        return ErrUnion<Io_File__File>.Err(111);
+                        return ErrUnion<Io_File__File>.Err(114);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.MFILE:
                         return ErrUnion<Io_File__File>.Err(40);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.NAMETOOLONG:
@@ -629,7 +1282,7 @@ public static unsafe partial class GhosttyVt
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.NFILE:
                         return ErrUnion<Io_File__File>.Err(41);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.NODEV:
-                        return ErrUnion<Io_File__File>.Err(112);
+                        return ErrUnion<Io_File__File>.Err(115);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.NOENT:
                         return ErrUnion<Io_File__File>.Err(22);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.SRCH:
@@ -643,25 +1296,25 @@ public static unsafe partial class GhosttyVt
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.PERM:
                         return ErrUnion<Io_File__File>.Err(17);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.EXIST:
-                        return ErrUnion<Io_File__File>.Err(113);
+                        return ErrUnion<Io_File__File>.Err(116);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.BUSY:
-                        return ErrUnion<Io_File__File>.Err(114);
+                        return ErrUnion<Io_File__File>.Err(117);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.OPNOTSUPP:
-                        return ErrUnion<Io_File__File>.Err(109);
+                        return ErrUnion<Io_File__File>.Err(112);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.AGAIN:
-                        return ErrUnion<Io_File__File>.Err(82);
+                        return ErrUnion<Io_File__File>.Err(85);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.TXTBSY:
                         return ErrUnion<Io_File__File>.Err(53);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.NXIO:
-                        return ErrUnion<Io_File__File>.Err(112);
-                    case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.ROFS:
                         return ErrUnion<Io_File__File>.Err(115);
+                    case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.ROFS:
+                        return ErrUnion<Io_File__File>.Err(118);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.ILSEQ:
                         return ErrUnion<Io_File__File>.Err(44);
                     default:
                         {
                             os_linux____AnonEnum14 err = __sw0;
-                            return ErrUnion<Io_File__File>.Err(posix__unexpectedErrno__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(err));
+                            return ErrUnion<Io_File__File>.Err(posix__unexpectedErrno__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(err));
                         }
                 }
             }
@@ -676,7 +1329,7 @@ public static unsafe partial class GhosttyVt
                 {
                     CBool __blk1 = default(CBool);
                     {
-                        ErrUnion<Io_File__Stat> __cf = posix_2__fileStat__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(null, file);
+                        ErrUnion<Io_File__Stat> __cf = posix_2__fileStat__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(null, file);
                         byte* __dotcc_aligned___cfv0_bytes = stackalloc byte[sizeof(Io_File__Stat) + 15];
                         Io_File__Stat* __dotcc_aligned___cfv0 = (Io_File__Stat*)(((nuint)__dotcc_aligned___cfv0_bytes + 15) & ~(nuint)15);
                         *__dotcc_aligned___cfv0 = default;
@@ -688,7 +1341,7 @@ public static unsafe partial class GhosttyVt
                             *__dotcc_aligned___vcf2 = default(Io_File__Stat);
                             switch (err__1)
                             {
-                                case 84:
+                                case 87:
                                     {
                                         {
                                             __blk1 = false;
@@ -720,13 +1373,13 @@ public static unsafe partial class GhosttyVt
                     }
                     CBool is_dir = __blk1;
                     if (((unchecked((int)(is_dir))) != 0))
-                        throw new ZigErrorReturn((ushort)80);
+                        throw new ZigErrorReturn((ushort)83);
                 }
                 return ErrUnion<Io_File__File>.Ok(file);
             }
             catch (ZigErrorReturn)
             {
-                posix_2__closeFd__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(fd);
+                posix_2__closeFd__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(fd);
                 throw;
             }
         }
@@ -735,18 +1388,18 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe void posix_2__dirClose__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(void* __zig_discard_param0, ConstSlice<Io_Dir__Dir> dirs)
+    public static unsafe void posix_2__dirClose__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(void* __zig_discard_param0, ConstSlice<Io_Dir__Dir> dirs)
     {
         for (ulong __i = 0UL; ((__i < dirs.Len)); __i++)
         {
             Io_Dir__Dir dir = dirs.Ptr[__i];
-            posix_2__closeFd__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(dir.handle);
+            posix_2__closeFd__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(dir.handle);
         }
     }
 
 
 
-    public static unsafe ErrUnion<ulong> posix_2__dirRealPathFile__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(void* __zig_discard_param0, Io_Dir__Dir dir, ConstSlice<byte> sub_path, Slice<byte> out_buffer)
+    public static unsafe ErrUnion<ulong> posix_2__dirRealPathFile__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(void* __zig_discard_param0, Io_Dir__Dir dir, ConstSlice<byte> sub_path, Slice<byte> out_buffer)
     {
         static CBool __dotcc_zig_set_74E2DF31288E08DABCF4(ref os_linux____AnonStruct14 root, CBool value)
         {
@@ -768,15 +1421,15 @@ public static unsafe partial class GhosttyVt
         }
         try
         {
-    byte* __dotcc_array_storage191 = null;
-            if (__dotcc_array_storage191 == null)
+    byte* __dotcc_array_storage195 = null;
+            if (__dotcc_array_storage195 == null)
             {
-                byte* __dotcc_array_storage191_new = stackalloc byte[checked(sizeof(byte) * 4096)];
-                __dotcc_array_storage191 = __dotcc_array_storage191_new;
+                byte* __dotcc_array_storage195_new = stackalloc byte[checked(sizeof(byte) * 4096)];
+                __dotcc_array_storage195 = __dotcc_array_storage195_new;
             }
-            byte* path_buffer = (byte*)__dotcc_array_storage191;
+            byte* path_buffer = (byte*)__dotcc_array_storage195;
             new global::System.Span<byte>((void*)path_buffer, checked(sizeof(byte) * 4096)).Clear();
-            Slice<byte> sub_path_posix = ErrUnion.Try(Io_Threaded__pathToPosix__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sub_path, path_buffer));
+            Slice<byte> sub_path_posix = ErrUnion.Try(Io_Threaded__pathToPosix__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sub_path, path_buffer));
             if ((((true) && ((dir.handle == -100)))))
             {
                 if (((out_buffer.Len < 4096UL)))
@@ -789,8 +1442,8 @@ public static unsafe partial class GhosttyVt
                         {
                             byte* redundant_pointer = (byte*)__cap;
                             {
-                                debug__assert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(((CBool)(redundant_pointer == out_buffer.Ptr)));
-                                return ErrUnion<ulong>.Ok((mem__findScalar__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(out_buffer, 0) ?? out_buffer.Len));
+                                debug__assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)(redundant_pointer == out_buffer.Ptr)));
+                                return ErrUnion<ulong>.Ok((mem__findScalar__u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(out_buffer, 0) ?? out_buffer.Len));
                             }
                         }
                     }
@@ -810,30 +1463,30 @@ public static unsafe partial class GhosttyVt
                         case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.NAMETOOLONG:
                             return ErrUnion<ulong>.Err(25);
                         case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.LOOP:
-                            return ErrUnion<ulong>.Err(111);
+                            return ErrUnion<ulong>.Err(114);
                         case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.IO:
-                            return ErrUnion<ulong>.Err(79);
+                            return ErrUnion<ulong>.Err(82);
                         default:
                             {
                                 os_linux____AnonEnum14 err = __sw3;
-                                return ErrUnion<ulong>.Err(posix__unexpectedErrno__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(err));
+                                return ErrUnion<ulong>.Err(posix__unexpectedErrno__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(err));
                             }
                     }
                 }
             }
             os_linux____AnonStruct14 flags = new os_linux____AnonStruct14 { ACCMODE = __DotCcEnum_706F7369785F5F5F5F416E6F6E456E756D30.RDONLY, _2 = 0, CREAT = false, EXCL = false, NOCTTY = false, TRUNC = false, APPEND = false, NONBLOCK = false, DSYNC = false, ASYNC = false, DIRECT = false, _15 = 0, DIRECTORY = false, NOFOLLOW = false, NOATIME = false, CLOEXEC = false, SYNC = false, PATH = false, TMPFILE = false, _23 = 0 };
-            ref os_linux____AnonStruct14 __zig_root192 = ref flags;
-            __dotcc_zig_set_74E2DF31288E08DABCF4(ref __zig_root192, true);
-            ref os_linux____AnonStruct14 __zig_root193 = ref flags;
-            __dotcc_zig_set_0228BF20A9EFA562FF19(ref __zig_root193, true);
-            ref os_linux____AnonStruct14 __zig_root194 = ref flags;
-            __dotcc_zig_set_ADC0E888A8D5987DC89C(ref __zig_root194, true);
+            ref os_linux____AnonStruct14 __zig_root196 = ref flags;
+            __dotcc_zig_set_74E2DF31288E08DABCF4(ref __zig_root196, true);
+            ref os_linux____AnonStruct14 __zig_root197 = ref flags;
+            __dotcc_zig_set_0228BF20A9EFA562FF19(ref __zig_root197, true);
+            ref os_linux____AnonStruct14 __zig_root198 = ref flags;
+            __dotcc_zig_set_ADC0E888A8D5987DC89C(ref __zig_root198, true);
             uint mode = 0;
             int __lv1 = default(int);
             while (true)
             {
                 int rc = __dotcc_zig_c_openat64(dir.handle, sub_path_posix.Ptr, ZigBitcastWidth.Scalar<os_linux____AnonStruct14, uint>(flags, 32, false), mode);
-                os_linux____AnonEnum14 __sw4 = c__errno__i32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(rc);
+                os_linux____AnonEnum14 __sw4 = c__errno__i32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(rc);
                 switch ((int)(ushort)__sw4)
                 {
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.SUCCESS:
@@ -848,7 +1501,7 @@ public static unsafe partial class GhosttyVt
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.ACCES:
                         return ErrUnion<ulong>.Err(16);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.LOOP:
-                        return ErrUnion<ulong>.Err(111);
+                        return ErrUnion<ulong>.Err(114);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.NAMETOOLONG:
                         return ErrUnion<ulong>.Err(25);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.NOENT:
@@ -862,7 +1515,7 @@ public static unsafe partial class GhosttyVt
                     default:
                         {
                             os_linux____AnonEnum14 err__1 = __sw4;
-                            return ErrUnion<ulong>.Err(posix__unexpectedErrno__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(err__1));
+                            return ErrUnion<ulong>.Err(posix__unexpectedErrno__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(err__1));
                         }
                 }
             }
@@ -872,11 +1525,11 @@ public static unsafe partial class GhosttyVt
             int fd = __lv1;
             try
             {
-                return posix_2__realPathFd__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(fd, out_buffer);
+                return posix_2__realPathFd__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(fd, out_buffer);
             }
             finally
             {
-                posix_2__closeFd__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(fd);
+                posix_2__closeFd__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(fd);
             }
         }
         catch (ZigErrorReturn __e) { return ErrUnion<ulong>.Err(__e.Code); }
@@ -884,60 +1537,60 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ErrUnion<Unit> posix_2__dirDeleteFile__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(void* __zig_discard_param0, Io_Dir__Dir dir, ConstSlice<byte> sub_path)
+    public static unsafe ZigErrorUnionZero<Unit> posix_2__dirDeleteFile__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(void* __zig_discard_param0, Io_Dir__Dir dir, ConstSlice<byte> sub_path)
     {
         try
         {
             byte* path_buffer = stackalloc byte[4096];
-            Slice<byte> sub_path_posix = ErrUnion.Try(Io_Threaded__pathToPosix__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sub_path, path_buffer));
+            Slice<byte> sub_path_posix = ErrUnion.Try(Io_Threaded__pathToPosix__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sub_path, path_buffer));
             while (true)
             {
-                os_linux____AnonEnum14 __sw5 = c__errno__i32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(__dotcc_zig_c_unlinkat(dir.handle, sub_path_posix.Ptr, (uint)(0)));
+                os_linux____AnonEnum14 __sw5 = c__errno__i32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(__dotcc_zig_c_unlinkat(dir.handle, sub_path_posix.Ptr, (uint)(0)));
                 switch ((int)(ushort)__sw5)
                 {
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.SUCCESS:
-                        return ErrUnion<Unit>.Ok(default);
+                        return ZigErrorUnionZero<Unit>.Ok(default);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.INTR:
                         continue;
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.PERM:
-                        return ErrUnion<Unit>.Err(17);
+                        return ZigErrorUnionZero<Unit>.Err(17);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.ACCES:
-                        return ErrUnion<Unit>.Err(16);
+                        return ZigErrorUnionZero<Unit>.Err(16);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.BUSY:
-                        return ErrUnion<Unit>.Err(53);
+                        return ZigErrorUnionZero<Unit>.Err(53);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.IO:
-                        return ErrUnion<Unit>.Err(116);
+                        return ZigErrorUnionZero<Unit>.Err(119);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.ISDIR:
-                        return ErrUnion<Unit>.Err(80);
+                        return ZigErrorUnionZero<Unit>.Err(83);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.LOOP:
-                        return ErrUnion<Unit>.Err(111);
+                        return ZigErrorUnionZero<Unit>.Err(114);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.NAMETOOLONG:
-                        return ErrUnion<Unit>.Err(25);
+                        return ZigErrorUnionZero<Unit>.Err(25);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.NOENT:
-                        return ErrUnion<Unit>.Err(22);
+                        return ZigErrorUnionZero<Unit>.Err(22);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.NOTDIR:
-                        return ErrUnion<Unit>.Err(23);
+                        return ZigErrorUnionZero<Unit>.Err(23);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.NOMEM:
-                        return ErrUnion<Unit>.Err(18);
+                        return ZigErrorUnionZero<Unit>.Err(18);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.ROFS:
-                        return ErrUnion<Unit>.Err(115);
+                        return ZigErrorUnionZero<Unit>.Err(118);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.ILSEQ:
-                        return ErrUnion<Unit>.Err(44);
+                        return ZigErrorUnionZero<Unit>.Err(44);
                     default:
                         {
                             os_linux____AnonEnum14 err = __sw5;
-                            return ErrUnion<Unit>.Err(posix__unexpectedErrno__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(err));
+                            return ZigErrorUnionZero<Unit>.Err(posix__unexpectedErrno__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(err));
                         }
                 }
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe ErrUnion<Io_File__Stat> posix_2__fileStat__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(void* __zig_discard_param0, Io_File__File file)
+    public static unsafe ErrUnion<Io_File__Stat> posix_2__fileStat__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(void* __zig_discard_param0, Io_File__File file)
     {
         try
         {
@@ -945,11 +1598,11 @@ public static unsafe partial class GhosttyVt
                 while (true)
                 {
                     os_linux__Statx statx = default(os_linux__Statx);
-                    os_linux____AnonEnum14 __sw6 = os_linux__errno__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(os_linux__statx__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(file.handle, (DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 4096, new os_linux__STATX { TYPE = true, MODE = true, ATIME = true, MTIME = true, CTIME = true, INO = true, SIZE = true, NLINK = true, BLOCKS = true, UID = false, GID = false, BTIME = false, MNT_ID = false, DIOALIGN = false, MNT_ID_UNIQUE = false, SUBVOL = false, WRITE_ATOMIC = false, DIO_READ_ALIGN = false, __pad = 0, __RESERVED = false }, &statx));
+                    os_linux____AnonEnum14 __sw6 = os_linux__errno__u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(os_linux__statx__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(file.handle, (DotCcLiterals.Pointer + DotCcLiterals.S1340 /*""*/), 4096, new os_linux__STATX { TYPE = true, MODE = true, ATIME = true, MTIME = true, CTIME = true, INO = true, SIZE = true, NLINK = true, BLOCKS = true, UID = false, GID = false, BTIME = false, MNT_ID = false, DIOALIGN = false, MNT_ID_UNIQUE = false, SUBVOL = false, WRITE_ATOMIC = false, DIO_READ_ALIGN = false, __pad = 0, __RESERVED = false }, &statx));
                     switch ((int)(ushort)__sw6)
                     {
                         case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.SUCCESS:
-                            return Io_Threaded__statFromLinux__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&statx);
+                            return Io_Threaded__statFromLinux__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&statx);
                         case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.INTR:
                             continue;
                         case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.NOMEM:
@@ -957,7 +1610,7 @@ public static unsafe partial class GhosttyVt
                         default:
                             {
                                 os_linux____AnonEnum14 err = __sw6;
-                                return ErrUnion<Io_File__Stat>.Err(posix__unexpectedErrno__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(err));
+                                return ErrUnion<Io_File__Stat>.Err(posix__unexpectedErrno__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(err));
                             }
                     }
                 }
@@ -968,13 +1621,13 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ErrUnion<ulong> posix_2__fileLength__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(void* userdata, Io_File__File file)
+    public static unsafe ErrUnion<ulong> posix_2__fileLength__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(void* userdata, Io_File__File file)
     {
         try
         {
             byte* __dotcc_aligned_stat_bytes = stackalloc byte[sizeof(Io_File__Stat) + 15];
             Io_File__Stat* __dotcc_aligned_stat = (Io_File__Stat*)(((nuint)__dotcc_aligned_stat_bytes + 15) & ~(nuint)15);
-            *__dotcc_aligned_stat = ErrUnion.Try(posix_2__fileStat__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(userdata, file));
+            *__dotcc_aligned_stat = ErrUnion.Try(posix_2__fileStat__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(userdata, file));
             return ErrUnion<ulong>.Ok((*__dotcc_aligned_stat).size);
         }
         catch (ZigErrorReturn __e) { return ErrUnion<ulong>.Err(__e.Code); }
@@ -982,29 +1635,29 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe void posix_2__fileClose__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(void* __zig_discard_param0, ConstSlice<Io_File__File> files)
+    public static unsafe void posix_2__fileClose__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(void* __zig_discard_param0, ConstSlice<Io_File__File> files)
     {
         for (ulong __i = 0UL; ((__i < files.Len)); __i++)
         {
             Io_File__File file = files.Ptr[__i];
-            posix_2__closeFd__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(file.handle);
+            posix_2__closeFd__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(file.handle);
         }
     }
 
 
 
-    public static unsafe ErrUnion<ulong> posix_2__fileReadPositional__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(void* __zig_discard_param0, Io_File__File file, ConstSlice<Slice<byte>> data, ulong offset)
+    public static unsafe ErrUnion<ulong> posix_2__fileReadPositional__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(void* __zig_discard_param0, Io_File__File file, ConstSlice<Slice<byte>> data, ulong offset)
     {
         try
         {
             posix__iovec* iovecs_buffer = stackalloc posix__iovec[8];
-            Slice<posix__iovec> dest = posix_2__buffersToIovecs__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(data, iovecs_buffer);
+            Slice<posix__iovec> dest = posix_2__buffersToIovecs__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(data, iovecs_buffer);
             if (((dest.Len == 0UL)))
                 return ErrUnion<ulong>.Ok(0);
             while (true)
             {
                 long rc = __dotcc_zig_c_preadv64(file.handle, dest.Ptr, (uint)dest.Len, ZigBitcastWidth.Scalar<ulong, long>(offset, 64, true));
-                os_linux____AnonEnum14 __sw7 = c__errno__i64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(rc);
+                os_linux____AnonEnum14 __sw7 = c__errno__i64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(rc);
                 switch ((int)(ushort)__sw7)
                 {
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.SUCCESS:
@@ -1013,27 +1666,27 @@ public static unsafe partial class GhosttyVt
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.TIMEDOUT:
                         continue;
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.NXIO:
-                        return ErrUnion<ulong>.Err(117);
+                        return ErrUnion<ulong>.Err(120);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.SPIPE:
-                        return ErrUnion<ulong>.Err(117);
+                        return ErrUnion<ulong>.Err(120);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.OVERFLOW:
-                        return ErrUnion<ulong>.Err(117);
+                        return ErrUnion<ulong>.Err(120);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.NOBUFS:
                         return ErrUnion<ulong>.Err(18);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.NOMEM:
                         return ErrUnion<ulong>.Err(18);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.AGAIN:
-                        return ErrUnion<ulong>.Err(82);
+                        return ErrUnion<ulong>.Err(85);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.IO:
-                        return ErrUnion<ulong>.Err(79);
+                        return ErrUnion<ulong>.Err(82);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.ISDIR:
-                        return ErrUnion<ulong>.Err(80);
+                        return ErrUnion<ulong>.Err(83);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.BADF:
-                        return ErrUnion<ulong>.Err(81);
+                        return ErrUnion<ulong>.Err(84);
                     default:
                         {
                             os_linux____AnonEnum14 err = __sw7;
-                            return ErrUnion<ulong>.Err(posix__unexpectedErrno__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(err));
+                            return ErrUnion<ulong>.Err(posix__unexpectedErrno__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(err));
                         }
                 }
             }
@@ -1043,90 +1696,90 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ErrUnion<Unit> posix_2__fileSeekBy__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(void* __zig_discard_param0, Io_File__File file, long offset)
+    public static unsafe ZigErrorUnionZero<Unit> posix_2__fileSeekBy__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(void* __zig_discard_param0, Io_File__File file, long offset)
     {
         try
         {
             while (true)
             {
                 long rc = __dotcc_zig_c_lseek64(file.handle, offset, 1);
-                os_linux____AnonEnum14 __sw8 = c__errno__i64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(rc);
+                os_linux____AnonEnum14 __sw8 = c__errno__i64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(rc);
                 switch ((int)(ushort)__sw8)
                 {
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.SUCCESS:
-                        return ErrUnion<Unit>.Ok(default);
+                        return ZigErrorUnionZero<Unit>.Ok(default);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.INTR:
                         continue;
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.INVAL:
-                        return ErrUnion<Unit>.Err(117);
+                        return ZigErrorUnionZero<Unit>.Err(120);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.OVERFLOW:
-                        return ErrUnion<Unit>.Err(117);
+                        return ZigErrorUnionZero<Unit>.Err(120);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.SPIPE:
-                        return ErrUnion<Unit>.Err(117);
+                        return ZigErrorUnionZero<Unit>.Err(120);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.NXIO:
-                        return ErrUnion<Unit>.Err(117);
+                        return ZigErrorUnionZero<Unit>.Err(120);
                     default:
                         {
                             os_linux____AnonEnum14 err = __sw8;
-                            return ErrUnion<Unit>.Err(posix__unexpectedErrno__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(err));
+                            return ZigErrorUnionZero<Unit>.Err(posix__unexpectedErrno__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(err));
                         }
                 }
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe ErrUnion<Unit> posix_2__fileSeekTo__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(void* __zig_discard_param0, Io_File__File file, ulong offset)
+    public static unsafe ZigErrorUnionZero<Unit> posix_2__fileSeekTo__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(void* __zig_discard_param0, Io_File__File file, ulong offset)
     {
         try
         {
             while (true)
             {
                 long rc = __dotcc_zig_c_lseek64(file.handle, ZigBitcastWidth.Scalar<ulong, long>(offset, 64, true), 0);
-                os_linux____AnonEnum14 __sw9 = c__errno__i64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(rc);
+                os_linux____AnonEnum14 __sw9 = c__errno__i64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(rc);
                 switch ((int)(ushort)__sw9)
                 {
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.SUCCESS:
-                        return ErrUnion<Unit>.Ok(default);
+                        return ZigErrorUnionZero<Unit>.Ok(default);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.INTR:
                         continue;
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.INVAL:
-                        return ErrUnion<Unit>.Err(117);
+                        return ZigErrorUnionZero<Unit>.Err(120);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.OVERFLOW:
-                        return ErrUnion<Unit>.Err(117);
+                        return ZigErrorUnionZero<Unit>.Err(120);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.SPIPE:
-                        return ErrUnion<Unit>.Err(117);
+                        return ZigErrorUnionZero<Unit>.Err(120);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.NXIO:
-                        return ErrUnion<Unit>.Err(117);
+                        return ZigErrorUnionZero<Unit>.Err(120);
                     default:
                         {
                             os_linux____AnonEnum14 err = __sw9;
-                            return ErrUnion<Unit>.Err(posix__unexpectedErrno__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(err));
+                            return ZigErrorUnionZero<Unit>.Err(posix__unexpectedErrno__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(err));
                         }
                 }
             }
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe ErrUnion<ulong> posix_2__fileRealPath__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(void* __zig_discard_param0, Io_File__File file, Slice<byte> out_buffer)
+    public static unsafe ErrUnion<ulong> posix_2__fileRealPath__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(void* __zig_discard_param0, Io_File__File file, Slice<byte> out_buffer)
     {
         try
         {
-            return posix_2__realPathFd__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(file.handle, out_buffer);
+            return posix_2__realPathFd__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(file.handle, out_buffer);
         }
         catch (ZigErrorReturn __e) { return ErrUnion<ulong>.Err(__e.Code); }
     }
 
 
 
-    public static unsafe void posix_2__futexWaitInner__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(uint* ptr, uint expected, ulong? timeout_ns)
+    public static unsafe void posix_2__futexWaitInner__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(uint* ptr, uint expected, ulong? timeout_ns)
     {
         {
             os_linux____AnonStruct0 ts_buffer = default(os_linux____AnonStruct0);
@@ -1152,8 +1805,8 @@ public static unsafe partial class GhosttyVt
                 __ifcap2 = (os_linux____AnonStruct0*)(null);
             }
             os_linux____AnonStruct0* ts = __ifcap2;
-            ulong rc = os_linux__futex_4arg__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ptr, new os_linux__FUTEX_OP { cmd = __DotCcEnum_6F735F6C696E75785F5F46555445585F434F4D4D414E44.WAIT, @private = true, realtime = false, _reserved = 0 }, expected, ts);
-            switch ((int)(ushort)os_linux__errno__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(rc))
+            ulong rc = os_linux__futex_4arg__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ptr, new os_linux__FUTEX_OP { cmd = __DotCcEnum_6F735F6C696E75785F5F46555445585F434F4D4D414E44.WAIT, @private = true, realtime = false, _reserved = 0 }, expected, ts);
+            switch ((int)(ushort)os_linux__errno__u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(rc))
             {
                 case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.SUCCESS:
                     
@@ -1185,28 +1838,28 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe void posix_2__futexWake__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(void* userdata, uint* ptr, uint max_waiters)
+    public static unsafe void posix_2__futexWake__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(void* userdata, uint* ptr, uint max_waiters)
     {
         ;
         {
-            os_linux__futex_3arg__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ptr, new os_linux__FUTEX_OP { cmd = __DotCcEnum_6F735F6C696E75785F5F46555445585F434F4D4D414E44.WAKE, @private = true, realtime = false, _reserved = 0 }, ZigMath.Min(max_waiters, (uint)(global::System.Int128)2147483647UL));
+            os_linux__futex_3arg__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ptr, new os_linux__FUTEX_OP { cmd = __DotCcEnum_6F735F6C696E75785F5F46555445585F434F4D4D414E44.WAKE, @private = true, realtime = false, _reserved = 0 }, ZigMath.Min(max_waiters, (uint)(global::System.Int128)2147483647UL));
         }
     }
 
 
 
-    public static unsafe ErrUnion<ulong> posix_2__fileReadStreaming__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_File__File file, ConstSlice<Slice<byte>> data)
+    public static unsafe ErrUnion<ulong> posix_2__fileReadStreaming__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_File__File file, ConstSlice<Slice<byte>> data)
     {
         try
         {
             posix__iovec* iovecs_buffer = stackalloc posix__iovec[8];
-            Slice<posix__iovec> dest = posix_2__buffersToIovecs__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(data, iovecs_buffer);
+            Slice<posix__iovec> dest = posix_2__buffersToIovecs__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(data, iovecs_buffer);
             if (((dest.Len == 0UL)))
                 return ErrUnion<ulong>.Ok(0);
             while (true)
             {
                 long rc = readv(file.handle, dest.Ptr, (uint)dest.Len);
-                os_linux____AnonEnum14 __sw11 = c__errno__i64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(rc);
+                os_linux____AnonEnum14 __sw11 = c__errno__i64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(rc);
                 switch ((int)(ushort)__sw11)
                 {
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.SUCCESS:
@@ -1219,11 +1872,11 @@ public static unsafe partial class GhosttyVt
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.TIMEDOUT:
                         continue;
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.AGAIN:
-                        return ErrUnion<ulong>.Err(82);
+                        return ErrUnion<ulong>.Err(85);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.IO:
-                        return ErrUnion<ulong>.Err(79);
+                        return ErrUnion<ulong>.Err(82);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.ISDIR:
-                        return ErrUnion<ulong>.Err(80);
+                        return ErrUnion<ulong>.Err(83);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.NOBUFS:
                         return ErrUnion<ulong>.Err(18);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.NOMEM:
@@ -1233,11 +1886,11 @@ public static unsafe partial class GhosttyVt
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.CONNRESET:
                         return ErrUnion<ulong>.Err(30);
                     case (ushort)__DotCcEnum_6F735F6C696E75785F5F5F5F416E6F6E456E756D3134.BADF:
-                        return ErrUnion<ulong>.Err(81);
+                        return ErrUnion<ulong>.Err(84);
                     default:
                         {
                             os_linux____AnonEnum14 err = __sw11;
-                            return ErrUnion<ulong>.Err(posix__unexpectedErrno__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(err));
+                            return ErrUnion<ulong>.Err(posix__unexpectedErrno__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(err));
                         }
                 }
             }
@@ -1247,146 +1900,146 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe CBool Target__isGnuLibC__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Target__Target* target)
+    public static unsafe CBool Target__isGnuLibC__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Target__Target* target)
     {
-        return (((int)target->os.tag) switch { (int)__DotCcEnum_5461726765745F5F4F735F5F546167.hurd or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.linux => Target__Abi_isGnu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(target->abi), _ => false });
+        return (((int)target->os.tag) switch { (int)__DotCcEnum_5461726765745F5F4F735F5F546167.hurd or (int)__DotCcEnum_5461726765745F5F4F735F5F546167.linux => Target__Abi_isGnu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(target->abi), _ => false });
     }
 
 
 
-    public static unsafe ConstSlice<ConstSlice<byte>> meta__fieldNames__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<ConstSlice<byte>> meta__fieldNames__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<ConstSlice<byte>>(global::Managed.GhosttyVt.__dotcc_owned_array_702913FD92888A411F55FE0F672030EB460C3C910D29FF65CD413FCEE035D9BB_Create(), 3UL);
+        return new ConstSlice<ConstSlice<byte>>(global::Managed.GhosttyVt.__dotcc_owned_array_D63868A066199DD10E88C9ADB15E245D93AF2E9DC9572E92D88BF8EFAA2489FF_Create(), 3UL);
     }
 
 
 
-    public static unsafe void mem__sort__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Da__87A9A5FDE266A3D9C064907FE1779CC2448B149B9A75CB123E4B83B295936A15__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data> items)
+    public static unsafe void mem__sort__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Da__87A9A5FDE266A3D9C064907FE1779CC2448B149B9A75CB123E4B83B295936A15__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data> items)
     {
-        sort_block__block__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1____BCAB56E782E66356019579F8C5C6044DB695570FE35E757DB07D758DA80EBAC4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items);
+        sort_block__block__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1____BCAB56E782E66356019579F8C5C6044DB695570FE35E757DB07D758DA80EBAC4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items);
     }
 
 
 
-    public static unsafe CBool multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data lhs, multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data rhs)
+    public static unsafe CBool multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data lhs, multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data rhs)
     {
         return ((CBool)(lhs.alignment > rhs.alignment));
     }
 
 
 
-    public static unsafe void sort_block__block__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1____BCAB56E782E66356019579F8C5C6044DB695570FE35E757DB07D758DA80EBAC4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data> items)
+    public static unsafe void sort_block__block__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1____BCAB56E782E66356019579F8C5C6044DB695570FE35E757DB07D758DA80EBAC4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data> items)
     {
         multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data* cache = stackalloc multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data[512];
         if (((items.Len < 4UL)))
         {
             if (((items.Len == 3UL)))
             {
-                if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[1], items.Ptr[0])))) != 0))
-                    mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&items.Ptr[0], &items.Ptr[1]);
-                if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[2], items.Ptr[1])))) != 0))
+                if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[1], items.Ptr[0])))) != 0))
+                    mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&items.Ptr[0], &items.Ptr[1]);
+                if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[2], items.Ptr[1])))) != 0))
                 {
-                    mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&items.Ptr[1], &items.Ptr[2]);
-                    if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[1], items.Ptr[0])))) != 0))
-                        mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&items.Ptr[0], &items.Ptr[1]);
+                    mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&items.Ptr[1], &items.Ptr[2]);
+                    if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[1], items.Ptr[0])))) != 0))
+                        mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&items.Ptr[0], &items.Ptr[1]);
                 }
             }
             else
                 if (((items.Len == 2UL)))
                 {
-                    if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[1], items.Ptr[0])))) != 0))
-                        mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&items.Ptr[0], &items.Ptr[1]);
+                    if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[1], items.Ptr[0])))) != 0))
+                        mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&items.Ptr[0], &items.Ptr[1]);
                 }
             return;
         }
-        sort_block__Iterator iterator = sort_block__Iterator_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Len, 4);
-        while ((!(((unchecked((int)(sort_block__Iterator_finished__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator)))) != 0) )     ))
+        sort_block__Iterator iterator = sort_block__Iterator_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Len, 4);
+        while ((!(((unchecked((int)(sort_block__Iterator_finished__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator)))) != 0) )     ))
         {
-            byte* __cl195 = stackalloc byte[]{ 0, 1, 2, 3, 4, 5, 6, 7 };
-            byte* order = __cl195;
-            sort_block__Range range = sort_block__Iterator_nextRange__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
+            byte* __cl199 = stackalloc byte[]{ 0, 1, 2, 3, 4, 5, 6, 7 };
+            byte* order = __cl199;
+            sort_block__Range range = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
             Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data> sliced_items = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + range.start, items.Len - (ulong)range.start);
-            switch (sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range))
+            switch (sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(range))
             {
                 case 8:
                     {
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 1);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 2, 3);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 4, 5);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 6, 7);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 2);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 3);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 4, 6);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 5, 7);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 2);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 5, 6);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 4);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 3, 7);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 5);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 2, 6);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 4);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 3, 6);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 2, 4);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 3, 5);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 3, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 1);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 4, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 6, 7);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 2);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 4, 6);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 5, 7);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 2);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 5, 6);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 3, 7);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 6);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 3, 6);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 3, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 3, 4);
                     }
                     break;
                 case 7:
                     {
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 2);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 3, 4);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 5, 6);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 2);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 3, 5);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 4, 6);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 1);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 4, 5);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 2, 6);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 4);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 5);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 3);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 2, 5);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 3);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 2, 4);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 2, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 2);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 3, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 5, 6);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 2);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 3, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 4, 6);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 1);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 4, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 6);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 3);
                     }
                     break;
                 case 6:
                     {
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 2);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 4, 5);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 2);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 3, 5);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 1);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 3, 4);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 2, 5);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 3);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 4);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 2, 4);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 3);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 2, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 2);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 4, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 2);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 3, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 1);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 3, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 3);
                     }
                     break;
                 case 5:
                     {
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 1);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 3, 4);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 2, 4);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 2, 3);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 4);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 3);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 2);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 3);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 2);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 1);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 3, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 2);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 2);
                     }
                     break;
                 case 4:
                     {
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 1);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 2, 3);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 2);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 3);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 2);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 1);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 2);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__D__C27C28269D51551FCDD418E89C3FF50783279C990340203ECD7C6FE296DC082B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 2);
                     }
                     break;
                 default:
@@ -1399,108 +2052,108 @@ public static unsafe partial class GhosttyVt
             return;
         while (true)
         {
-            if (((sort_block__Iterator_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator) < 512UL)))
+            if (((sort_block__Iterator_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator) < 512UL)))
             {
-                if ((((((sort_block__Iterator_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator) + 1UL) * 4UL <= 512UL)) && ((sort_block__Iterator_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator) * 4UL <= items.Len)))))
+                if ((((((sort_block__Iterator_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator) + 1UL) * 4UL <= 512UL)) && ((sort_block__Iterator_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator) * 4UL <= items.Len)))))
                 {
-                    sort_block__Iterator_begin__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
-                    while ((!(((unchecked((int)(sort_block__Iterator_finished__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator)))) != 0) )     ))
+                    sort_block__Iterator_begin__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                    while ((!(((unchecked((int)(sort_block__Iterator_finished__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator)))) != 0) )     ))
                     {
-                        sort_block__Range A1 = sort_block__Iterator_nextRange__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
-                        sort_block__Range B1 = sort_block__Iterator_nextRange__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
-                        sort_block__Range A2 = sort_block__Iterator_nextRange__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
-                        sort_block__Range B2 = sort_block__Iterator_nextRange__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
-                        if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[B1.end - 1UL], items.Ptr[A1.start])))) != 0))
+                        sort_block__Range A1 = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                        sort_block__Range B1 = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                        sort_block__Range A2 = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                        sort_block__Range B2 = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                        if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[B1.end - 1UL], items.Ptr[A1.start])))) != 0))
                         {
                             Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data> a1_items = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + A1.start, (ulong)(A1.end - A1.start));
-                            ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B1), 512UL - (ulong)sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B1)).Ptr + 0, (ulong)(a1_items.Len - (ulong)(0))), a1_items);
+                            ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B1), 512UL - (ulong)sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B1)).Ptr + 0, (ulong)(a1_items.Len - (ulong)(0))), a1_items);
                             Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data> b1_items = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + B1.start, (ulong)(B1.end - B1.start));
                             ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + 0, (ulong)(b1_items.Len - (ulong)(0))), b1_items);
                         }
                         else
-                            if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[B1.start], items.Ptr[A1.end - 1UL])))) != 0))
+                            if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[B1.start], items.Ptr[A1.end - 1UL])))) != 0))
                             {
-                                sort_block__mergeInto__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext__17C8A84F803EA8842F5552FC85A7E78986A98D0AE11EF0B3EE599FB18FB5D218__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, A1, B1, new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + 0, unchecked(512UL - (ulong)0)));
+                                sort_block__mergeInto__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext__17C8A84F803EA8842F5552FC85A7E78986A98D0AE11EF0B3EE599FB18FB5D218__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, A1, B1, new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + 0, unchecked(512UL - (ulong)0)));
                             }
                             else
                             {
-                                if ((((!(((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[B2.start], items.Ptr[A2.end - 1UL])))) != 0) )     ) && (!(((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[A2.start], items.Ptr[B1.end - 1UL])))) != 0) )     ))))
+                                if ((((!(((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[B2.start], items.Ptr[A2.end - 1UL])))) != 0) )     ) && (!(((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[A2.start], items.Ptr[B1.end - 1UL])))) != 0) )     ))))
                                     continue;
                                 Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data> a1_items__1 = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + A1.start, (ulong)(A1.end - A1.start));
                                 ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + 0, (ulong)(a1_items__1.Len - (ulong)(0))), a1_items__1);
                                 Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data> b1_items__1 = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + B1.start, (ulong)(B1.end - B1.start));
-                                ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1), 512UL - (ulong)sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1)).Ptr + 0, (ulong)(b1_items__1.Len - (ulong)(0))), b1_items__1);
+                                ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1), 512UL - (ulong)sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1)).Ptr + 0, (ulong)(b1_items__1.Len - (ulong)(0))), b1_items__1);
                             }
-                        A1 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1.start, B1.end);
-                        if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[B2.end - 1UL], items.Ptr[A2.start])))) != 0))
+                        A1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1.start, B1.end);
+                        if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[B2.end - 1UL], items.Ptr[A2.start])))) != 0))
                         {
                             Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data> a2_items = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + A2.start, (ulong)(A2.end - A2.start));
-                            ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + (sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1) + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B2)), 512UL - (ulong)(sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1) + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B2))).Ptr + 0, (ulong)(a2_items.Len - (ulong)(0))), a2_items);
+                            ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + (sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1) + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B2)), 512UL - (ulong)(sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1) + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B2))).Ptr + 0, (ulong)(a2_items.Len - (ulong)(0))), a2_items);
                             Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data> b2_items = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + B2.start, (ulong)(B2.end - B2.start));
-                            ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1), 512UL - (ulong)sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1)).Ptr + 0, (ulong)(b2_items.Len - (ulong)(0))), b2_items);
+                            ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1), 512UL - (ulong)sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1)).Ptr + 0, (ulong)(b2_items.Len - (ulong)(0))), b2_items);
                         }
                         else
-                            if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[B2.start], items.Ptr[A2.end - 1UL])))) != 0))
+                            if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[B2.start], items.Ptr[A2.end - 1UL])))) != 0))
                             {
-                                sort_block__mergeInto__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext__17C8A84F803EA8842F5552FC85A7E78986A98D0AE11EF0B3EE599FB18FB5D218__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, A2, B2, new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1), 512UL - (ulong)sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1)));
+                                sort_block__mergeInto__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext__17C8A84F803EA8842F5552FC85A7E78986A98D0AE11EF0B3EE599FB18FB5D218__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, A2, B2, new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1), 512UL - (ulong)sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1)));
                             }
                             else
                             {
                                 Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data> a2_items__1 = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + A2.start, (ulong)(A2.end - A2.start));
-                                ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1), 512UL - (ulong)sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1)).Ptr + 0, (ulong)(a2_items__1.Len - (ulong)(0))), a2_items__1);
+                                ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1), 512UL - (ulong)sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1)).Ptr + 0, (ulong)(a2_items__1.Len - (ulong)(0))), a2_items__1);
                                 Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data> b2_items__1 = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + B2.start, (ulong)(B2.end - B2.start));
-                                ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + (sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1) + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A2)), 512UL - (ulong)(sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1) + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A2))).Ptr + 0, (ulong)(b2_items__1.Len - (ulong)(0))), b2_items__1);
+                                ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + (sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1) + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A2)), 512UL - (ulong)(sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1) + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A2))).Ptr + 0, (ulong)(b2_items__1.Len - (ulong)(0))), b2_items__1);
                             }
-                        A2 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A2.start, B2.end);
-                        sort_block__Range A3 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(0, sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1));
-                        sort_block__Range B3 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1), sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1) + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A2));
-                        if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(cache[B3.end - 1UL], cache[A3.start])))) != 0))
+                        A2 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A2.start, B2.end);
+                        sort_block__Range A3 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(0, sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1));
+                        sort_block__Range B3 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1), sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1) + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A2));
+                        if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(cache[B3.end - 1UL], cache[A3.start])))) != 0))
                         {
                             Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data> a3_items = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + A3.start, (ulong)(A3.end - A3.start));
-                            ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + (A1.start + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A2)), items.Len - (ulong)(A1.start + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A2))).Ptr + 0, (ulong)(a3_items.Len - (ulong)(0))), a3_items);
+                            ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + (A1.start + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A2)), items.Len - (ulong)(A1.start + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A2))).Ptr + 0, (ulong)(a3_items.Len - (ulong)(0))), a3_items);
                             Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data> b3_items = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + B3.start, (ulong)(B3.end - B3.start));
                             ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + A1.start, items.Len - (ulong)A1.start).Ptr + 0, (ulong)(b3_items.Len - (ulong)(0))), b3_items);
                         }
                         else
-                            if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(cache[B3.start], cache[A3.end - 1UL])))) != 0))
+                            if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(cache[B3.start], cache[A3.end - 1UL])))) != 0))
                             {
-                                sort_block__mergeInto__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext__17C8A84F803EA8842F5552FC85A7E78986A98D0AE11EF0B3EE599FB18FB5D218__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + 0, unchecked(512UL - (ulong)0)), A3, B3, new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + A1.start, items.Len - (ulong)A1.start));
+                                sort_block__mergeInto__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext__17C8A84F803EA8842F5552FC85A7E78986A98D0AE11EF0B3EE599FB18FB5D218__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + 0, unchecked(512UL - (ulong)0)), A3, B3, new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + A1.start, items.Len - (ulong)A1.start));
                             }
                             else
                             {
                                 Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data> a3_items__1 = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + A3.start, (ulong)(A3.end - A3.start));
                                 ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + A1.start, items.Len - (ulong)A1.start).Ptr + 0, (ulong)(a3_items__1.Len - (ulong)(0))), a3_items__1);
                                 Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data> b3_items__1 = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + B3.start, (ulong)(B3.end - B3.start));
-                                ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + (A1.start + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1)), items.Len - (ulong)(A1.start + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1))).Ptr + 0, (ulong)(b3_items__1.Len - (ulong)(0))), b3_items__1);
+                                ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + (A1.start + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1)), items.Len - (ulong)(A1.start + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1))).Ptr + 0, (ulong)(b3_items__1.Len - (ulong)(0))), b3_items__1);
                             }
                     }
-                    _ = sort_block__Iterator_nextLevel__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
+                    _ = sort_block__Iterator_nextLevel__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
                 }
                 else
                 {
-                    sort_block__Iterator_begin__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
-                    while ((!(((unchecked((int)(sort_block__Iterator_finished__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator)))) != 0) )     ))
+                    sort_block__Iterator_begin__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                    while ((!(((unchecked((int)(sort_block__Iterator_finished__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator)))) != 0) )     ))
                     {
-                        sort_block__Range A = sort_block__Iterator_nextRange__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
-                        sort_block__Range B = sort_block__Iterator_nextRange__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
-                        if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[B.end - 1UL], items.Ptr[A.start])))) != 0))
+                        sort_block__Range A = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                        sort_block__Range B = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                        if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[B.end - 1UL], items.Ptr[A.start])))) != 0))
                         {
-                            mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + A.start, (ulong)(B.end - A.start)), sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A));
+                            mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + A.start, (ulong)(B.end - A.start)), sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A));
                         }
                         else
-                            if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[B.start], items.Ptr[A.end - 1UL])))) != 0))
+                            if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[B.start], items.Ptr[A.end - 1UL])))) != 0))
                             {
                                 Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data> a_items = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + A.start, (ulong)(A.end - A.start));
                                 ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + 0, (ulong)(a_items.Len - (ulong)(0))), a_items);
-                                sort_block__mergeExternal__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringCon__AF2B2043471BD9005B8BB2883A5CA7155E87642504AE0DAF595F41D494BB8267__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, A, B, new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + 0, unchecked(512UL - (ulong)0)));
+                                sort_block__mergeExternal__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringCon__AF2B2043471BD9005B8BB2883A5CA7155E87642504AE0DAF595F41D494BB8267__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, A, B, new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + 0, unchecked(512UL - (ulong)0)));
                             }
                     }
                 }
             }
             else
             {
-                ulong block_size = math_sqrt__sqrt__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sort_block__Iterator_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator));
-                ulong buffer_size = sort_block__Iterator_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator) / block_size + 1UL;
+                ulong block_size = math_sqrt__sqrt__u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sort_block__Iterator_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator));
+                ulong buffer_size = sort_block__Iterator_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator) / block_size + 1UL;
                 sort_block__Range A__1 = default(sort_block__Range);
                 sort_block__Range B__1 = default(sort_block__Range);
                 ulong index = 0;
@@ -1509,10 +2162,10 @@ public static unsafe partial class GhosttyVt
                 ulong find = 0;
                 ulong start = 0;
                 ulong pull_index = 0;
-                sort_block__Pull* __cl196 = stackalloc sort_block__Pull[]{ new sort_block__Pull { from = 0, to = 0, count = 0, range = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(0, 0) }, new sort_block__Pull { from = 0, to = 0, count = 0, range = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(0, 0) } };
-                sort_block__Pull* pull = __cl196;
-                sort_block__Range buffer1 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(0, 0);
-                sort_block__Range buffer2 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(0, 0);
+                sort_block__Pull* __cl200 = stackalloc sort_block__Pull[]{ new sort_block__Pull { from = 0, to = 0, count = 0, range = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(0, 0) }, new sort_block__Pull { from = 0, to = 0, count = 0, range = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(0, 0) } };
+                sort_block__Pull* pull = __cl200;
+                sort_block__Range buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(0, 0);
+                sort_block__Range buffer2 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(0, 0);
                 find = buffer_size + buffer_size;
                 CBool find_separately = false;
                 if (((block_size <= 512UL)))
@@ -1520,115 +2173,115 @@ public static unsafe partial class GhosttyVt
                     find = buffer_size;
                 }
                 else
-                    if (((find > sort_block__Iterator_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator))))
+                    if (((find > sort_block__Iterator_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator))))
                     {
                         find = buffer_size;
                         find_separately = true;
                     }
-                sort_block__Iterator_begin__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
-                while ((!(((unchecked((int)(sort_block__Iterator_finished__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator)))) != 0) )     ))
+                sort_block__Iterator_begin__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                while ((!(((unchecked((int)(sort_block__Iterator_finished__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator)))) != 0) )     ))
                 {
-                    A__1 = sort_block__Iterator_nextRange__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
-                    B__1 = sort_block__Iterator_nextRange__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
+                    A__1 = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                    B__1 = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
                     last = A__1.start;
                     count = 1;
                     for (; ((count < find)); last = index, count += (ulong)(1))
                     {
-                        index = sort_block__findLastForward__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringC__BAD63403EF29B980101E1C58839784FB06665E6957977E29BA2E141275483E39__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, items.Ptr[last], sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(last + 1UL, A__1.end), find - count);
+                        index = sort_block__findLastForward__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringC__BAD63403EF29B980101E1C58839784FB06665E6957977E29BA2E141275483E39__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, items.Ptr[last], sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(last + 1UL, A__1.end), find - count);
                         if (((index == A__1.end)))
                             break;
                     }
                     index = last;
                     if (((count >= buffer_size)))
                     {
-                        pull[pull_index] = new sort_block__Pull { range = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1.start, B__1.end), count = count, from = index, to = A__1.start };
+                        pull[pull_index] = new sort_block__Pull { range = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, B__1.end), count = count, from = index, to = A__1.start };
                         pull_index = 1;
                         if (((count == buffer_size + buffer_size)))
                         {
-                            buffer1 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1.start, A__1.start + buffer_size);
-                            buffer2 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1.start + buffer_size, A__1.start + count);
+                            buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, A__1.start + buffer_size);
+                            buffer2 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start + buffer_size, A__1.start + count);
                             break;
                         }
                         else
                             if (((find == buffer_size + buffer_size)))
                             {
-                                buffer1 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1.start, A__1.start + count);
+                                buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, A__1.start + count);
                                 find = buffer_size;
                             }
                             else
                                 if (((block_size <= 512UL)))
                                 {
-                                    buffer1 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1.start, A__1.start + count);
+                                    buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, A__1.start + count);
                                     break;
                                 }
                                 else
                                     if (((unchecked((int)(find_separately))) != 0))
                                     {
-                                        buffer1 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1.start, A__1.start + count);
+                                        buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, A__1.start + count);
                                         find_separately = false;
                                     }
                                     else
                                     {
-                                        buffer2 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1.start, A__1.start + count);
+                                        buffer2 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, A__1.start + count);
                                         break;
                                     }
                     }
                     else
-                        if (((((pull_index == 0UL)) && ((count > sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(buffer1))))))
+                        if (((((pull_index == 0UL)) && ((count > sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer1))))))
                         {
-                            buffer1 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1.start, A__1.start + count);
-                            pull[pull_index] = new sort_block__Pull { range = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1.start, B__1.end), count = count, from = index, to = A__1.start };
+                            buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, A__1.start + count);
+                            pull[pull_index] = new sort_block__Pull { range = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, B__1.end), count = count, from = index, to = A__1.start };
                         }
                     last = B__1.end - 1UL;
                     count = 1;
                     for (; ((count < find)); last = index - 1UL, count += (ulong)(1))
                     {
-                        index = sort_block__findFirstBackward__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__Strin__AEC5E5189FD366152A9C8E2C258F9FC1FBFD0D014009AAFF96C853C518C6EB1B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, items.Ptr[last], sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B__1.start, last), find - count);
+                        index = sort_block__findFirstBackward__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__Strin__AEC5E5189FD366152A9C8E2C258F9FC1FBFD0D014009AAFF96C853C518C6EB1B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, items.Ptr[last], sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1.start, last), find - count);
                         if (((index == B__1.start)))
                             break;
                     }
                     index = last;
                     if (((count >= buffer_size)))
                     {
-                        pull[pull_index] = new sort_block__Pull { range = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1.start, B__1.end), count = count, from = index, to = B__1.end };
+                        pull[pull_index] = new sort_block__Pull { range = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, B__1.end), count = count, from = index, to = B__1.end };
                         pull_index = 1;
                         if (((count == buffer_size + buffer_size)))
                         {
-                            buffer1 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B__1.end - count, B__1.end - buffer_size);
-                            buffer2 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B__1.end - buffer_size, B__1.end);
+                            buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1.end - count, B__1.end - buffer_size);
+                            buffer2 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1.end - buffer_size, B__1.end);
                             break;
                         }
                         else
                             if (((find == buffer_size + buffer_size)))
                             {
-                                buffer1 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B__1.end - count, B__1.end);
+                                buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1.end - count, B__1.end);
                                 find = buffer_size;
                             }
                             else
                                 if (((block_size <= 512UL)))
                                 {
-                                    buffer1 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B__1.end - count, B__1.end);
+                                    buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1.end - count, B__1.end);
                                     break;
                                 }
                                 else
                                     if (((unchecked((int)(find_separately))) != 0))
                                     {
-                                        buffer1 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B__1.end - count, B__1.end);
+                                        buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1.end - count, B__1.end);
                                         find_separately = false;
                                     }
                                     else
                                     {
                                         if (((pull[0].range.start == A__1.start)))
                                             pull[0].range.end -= pull[1].count;
-                                        buffer2 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B__1.end - count, B__1.end);
+                                        buffer2 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1.end - count, B__1.end);
                                         break;
                                     }
                     }
                     else
-                        if (((((pull_index == 0UL)) && ((count > sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(buffer1))))))
+                        if (((((pull_index == 0UL)) && ((count > sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer1))))))
                         {
-                            buffer1 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B__1.end - count, B__1.end);
-                            pull[pull_index] = new sort_block__Pull { range = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1.start, B__1.end), count = count, from = index, to = B__1.end };
+                            buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1.end - count, B__1.end);
+                            pull[pull_index] = new sort_block__Pull { range = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, B__1.end), count = count, from = index, to = B__1.end };
                         }
                 }
                 pull_index = 0;
@@ -1641,9 +2294,9 @@ public static unsafe partial class GhosttyVt
                         count = 1;
                         for (; ((count < length)); count += (ulong)(1))
                         {
-                            index = sort_block__findFirstBackward__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__Strin__AEC5E5189FD366152A9C8E2C258F9FC1FBFD0D014009AAFF96C853C518C6EB1B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, items.Ptr[index - 1UL], sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(pull[pull_index].to, pull[pull_index].from - (count - 1UL)), length - count);
-                            sort_block__Range range__1 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(index + 1UL, pull[pull_index].from + 1UL);
-                            mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + range__1.start, (ulong)(range__1.end - range__1.start)), sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range__1) - count);
+                            index = sort_block__findFirstBackward__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__Strin__AEC5E5189FD366152A9C8E2C258F9FC1FBFD0D014009AAFF96C853C518C6EB1B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, items.Ptr[index - 1UL], sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(pull[pull_index].to, pull[pull_index].from - (count - 1UL)), length - count);
+                            sort_block__Range range__1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(index + 1UL, pull[pull_index].from + 1UL);
+                            mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + range__1.start, (ulong)(range__1.end - range__1.start)), sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(range__1) - count);
                             pull[pull_index].from = index + count;
                         }
                     }
@@ -1654,34 +2307,34 @@ public static unsafe partial class GhosttyVt
                             count = 1;
                             for (; ((count < length)); count += (ulong)(1))
                             {
-                                index = sort_block__findLastForward__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringC__BAD63403EF29B980101E1C58839784FB06665E6957977E29BA2E141275483E39__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, items.Ptr[index], sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(index, pull[pull_index].to), length - count);
-                                sort_block__Range range__2 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(pull[pull_index].from, index - 1UL);
-                                mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + range__2.start, (ulong)(range__2.end - range__2.start)), count);
+                                index = sort_block__findLastForward__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringC__BAD63403EF29B980101E1C58839784FB06665E6957977E29BA2E141275483E39__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, items.Ptr[index], sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(index, pull[pull_index].to), length - count);
+                                sort_block__Range range__2 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(pull[pull_index].from, index - 1UL);
+                                mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + range__2.start, (ulong)(range__2.end - range__2.start)), count);
                                 pull[pull_index].from = index - 1UL - count;
                             }
                         }
                 }
-                buffer_size = sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(buffer1);
-                block_size = sort_block__Iterator_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator) / buffer_size + 1UL;
-                sort_block__Iterator_begin__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
-                while ((!(((unchecked((int)(sort_block__Iterator_finished__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator)))) != 0) )     ))
+                buffer_size = sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer1);
+                block_size = sort_block__Iterator_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator) / buffer_size + 1UL;
+                sort_block__Iterator_begin__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                while ((!(((unchecked((int)(sort_block__Iterator_finished__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator)))) != 0) )     ))
                 {
-                    A__1 = sort_block__Iterator_nextRange__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
-                    B__1 = sort_block__Iterator_nextRange__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
+                    A__1 = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                    B__1 = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
                     start = A__1.start;
                     if (((start == pull[0].range.start)))
                     {
                         if (((pull[0].from > pull[0].to)))
                         {
                             A__1.start += pull[0].count;
-                            if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1) == 0UL)))
+                            if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1) == 0UL)))
                                 continue;
                         }
                         else
                             if (((pull[0].from < pull[0].to)))
                             {
                                 B__1.end -= pull[0].count;
-                                if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B__1) == 0UL)))
+                                if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1) == 0UL)))
                                     continue;
                             }
                     }
@@ -1690,82 +2343,82 @@ public static unsafe partial class GhosttyVt
                         if (((pull[1].from > pull[1].to)))
                         {
                             A__1.start += pull[1].count;
-                            if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1) == 0UL)))
+                            if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1) == 0UL)))
                                 continue;
                         }
                         else
                             if (((pull[1].from < pull[1].to)))
                             {
                                 B__1.end -= pull[1].count;
-                                if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B__1) == 0UL)))
+                                if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1) == 0UL)))
                                     continue;
                             }
                     }
-                    if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[B__1.end - 1UL], items.Ptr[A__1.start])))) != 0))
+                    if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[B__1.end - 1UL], items.Ptr[A__1.start])))) != 0))
                     {
-                        mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + A__1.start, (ulong)(B__1.end - A__1.start)), sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1));
+                        mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + A__1.start, (ulong)(B__1.end - A__1.start)), sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1));
                     }
                     else
-                        if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[A__1.end], items.Ptr[A__1.end - 1UL])))) != 0))
+                        if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[A__1.end], items.Ptr[A__1.end - 1UL])))) != 0))
                         {
                             ulong findA = default(ulong);
-                            sort_block__Range blockA = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1.start, A__1.end);
-                            sort_block__Range firstA = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1.start, A__1.start + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(blockA) % block_size);
+                            sort_block__Range blockA = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, A__1.end);
+                            sort_block__Range firstA = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, A__1.start + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockA) % block_size);
                             ulong indexA = buffer1.start;
                             index = firstA.end;
                             for (; ((index < blockA.end)); indexA += (ulong)(1), index += block_size)
                             {
-                                mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&items.Ptr[indexA], &items.Ptr[index]);
+                                mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&items.Ptr[indexA], &items.Ptr[index]);
                             }
                             sort_block__Range lastA = firstA;
-                            sort_block__Range lastB = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(0, 0);
-                            sort_block__Range blockB = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B__1.start, B__1.start + ZigMath.Min(block_size, sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B__1)));
-                            blockA.start += sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(firstA);
+                            sort_block__Range lastB = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(0, 0);
+                            sort_block__Range blockB = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1.start, B__1.start + ZigMath.Min(block_size, sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1)));
+                            blockA.start += sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(firstA);
                             indexA = buffer1.start;
-                            if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(lastA) <= 512UL)))
+                            if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA) <= 512UL)))
                             {
                                 Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data> last_a_items = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + lastA.start, (ulong)(lastA.end - lastA.start));
                                 ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + 0, (ulong)(last_a_items.Len - (ulong)(0))), last_a_items);
                             }
                             else
-                                if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(buffer2) > 0UL)))
+                                if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer2) > 0UL)))
                                 {
-                                    sort_block__blockSwap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, lastA.start, buffer2.start, sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(lastA));
+                                    sort_block__blockSwap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, lastA.start, buffer2.start, sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA));
                                 }
-                            if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(blockA) > 0UL)))
+                            if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockA) > 0UL)))
                             {
                                 while (true)
                                 {
-                                    if (((((((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(lastB) > 0UL)) && (!(((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[lastB.end - 1UL], items.Ptr[indexA])))) != 0) )     ))) || ((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(blockB) == 0UL)))))
+                                    if (((((((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastB) > 0UL)) && (!(((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[lastB.end - 1UL], items.Ptr[indexA])))) != 0) )     ))) || ((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockB) == 0UL)))))
                                     {
-                                        ulong B_split = sort_block__binaryFirst__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringConte__DE9C91C41416EAFBDBAAE676DAC19760DEB011CC6AB987C6E430F8D63248519B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, items.Ptr[indexA], lastB);
+                                        ulong B_split = sort_block__binaryFirst__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringConte__DE9C91C41416EAFBDBAAE676DAC19760DEB011CC6AB987C6E430F8D63248519B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, items.Ptr[indexA], lastB);
                                         ulong B_remaining = lastB.end - B_split;
                                         ulong minA = blockA.start;
                                         findA = minA + block_size;
                                         for (; ((findA < blockA.end)); findA += block_size)
                                         {
-                                            if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[findA], items.Ptr[minA])))) != 0))
+                                            if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[findA], items.Ptr[minA])))) != 0))
                                             {
                                                 minA = findA;
                                             }
                                         }
-                                        sort_block__blockSwap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, blockA.start, minA, block_size);
-                                        mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&items.Ptr[blockA.start], &items.Ptr[indexA]);
+                                        sort_block__blockSwap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, blockA.start, minA, block_size);
+                                        mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&items.Ptr[blockA.start], &items.Ptr[indexA]);
                                         indexA += (ulong)(1);
-                                        if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(lastA) <= 512UL)))
+                                        if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA) <= 512UL)))
                                         {
-                                            sort_block__mergeExternal__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringCon__AF2B2043471BD9005B8BB2883A5CA7155E87642504AE0DAF595F41D494BB8267__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, lastA, sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(lastA.end, B_split), new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + 0, unchecked(512UL - (ulong)0)));
+                                            sort_block__mergeExternal__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringCon__AF2B2043471BD9005B8BB2883A5CA7155E87642504AE0DAF595F41D494BB8267__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, lastA, sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA.end, B_split), new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + 0, unchecked(512UL - (ulong)0)));
                                         }
                                         else
-                                            if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(buffer2) > 0UL)))
+                                            if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer2) > 0UL)))
                                             {
-                                                sort_block__mergeInternal__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringCon__B56D2142D67353550B2E278414B44C120360C518D42C4BB2E4B36880624827CB__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, lastA, sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(lastA.end, B_split), buffer2);
+                                                sort_block__mergeInternal__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringCon__B56D2142D67353550B2E278414B44C120360C518D42C4BB2E4B36880624827CB__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, lastA, sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA.end, B_split), buffer2);
                                             }
                                             else
                                             {
-                                                sort_block__mergeInPlace__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringCont__E140BED5E3F6275A4139DA34AA41EF3ACA67D3D6633DC710DB9F5934FE357A30__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, lastA, sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(lastA.end, B_split));
+                                                sort_block__mergeInPlace__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringCont__E140BED5E3F6275A4139DA34AA41EF3ACA67D3D6633DC710DB9F5934FE357A30__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, lastA, sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA.end, B_split));
                                             }
-                                        if (((((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(buffer2) > 0UL)) || ((block_size <= 512UL)))))
+                                        if (((((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer2) > 0UL)) || ((block_size <= 512UL)))))
                                         {
                                             if (((block_size <= 512UL)))
                                             {
@@ -1773,33 +2426,33 @@ public static unsafe partial class GhosttyVt
                                             }
                                             else
                                             {
-                                                sort_block__blockSwap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, blockA.start, buffer2.start, block_size);
+                                                sort_block__blockSwap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, blockA.start, buffer2.start, block_size);
                                             }
-                                            sort_block__blockSwap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, B_split, blockA.start + block_size - B_remaining, B_remaining);
+                                            sort_block__blockSwap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, B_split, blockA.start + block_size - B_remaining, B_remaining);
                                         }
                                         else
                                         {
-                                            mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + B_split, (ulong)(blockA.start + block_size - B_split)), blockA.start - B_split);
+                                            mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + B_split, (ulong)(blockA.start + block_size - B_split)), blockA.start - B_split);
                                         }
-                                        lastA = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(blockA.start - B_remaining, blockA.start - B_remaining + block_size);
-                                        lastB = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(lastA.end, lastA.end + B_remaining);
+                                        lastA = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockA.start - B_remaining, blockA.start - B_remaining + block_size);
+                                        lastB = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA.end, lastA.end + B_remaining);
                                         blockA.start += block_size;
-                                        if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(blockA) == 0UL)))
+                                        if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockA) == 0UL)))
                                             break;
                                     }
                                     else
-                                        if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(blockB) < block_size)))
+                                        if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockB) < block_size)))
                                         {
-                                            mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + blockA.start, (ulong)(blockB.end - blockA.start)), blockB.start - blockA.start);
-                                            lastB = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(blockA.start, blockA.start + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(blockB));
-                                            blockA.start += sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(blockB);
-                                            blockA.end += sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(blockB);
+                                            mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + blockA.start, (ulong)(blockB.end - blockA.start)), blockB.start - blockA.start);
+                                            lastB = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockA.start, blockA.start + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockB));
+                                            blockA.start += sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockB);
+                                            blockA.end += sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockB);
                                             blockB.end = blockB.start;
                                         }
                                         else
                                         {
-                                            sort_block__blockSwap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, blockA.start, blockB.start, block_size);
-                                            lastB = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(blockA.start, blockA.start + block_size);
+                                            sort_block__blockSwap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, blockA.start, blockB.start, block_size);
+                                            lastB = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockA.start, blockA.start + block_size);
                                             blockA.start += block_size;
                                             blockA.end += block_size;
                                             blockB.start += block_size;
@@ -1814,34 +2467,34 @@ public static unsafe partial class GhosttyVt
                                         }
                                 }
                             }
-                            if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(lastA) <= 512UL)))
+                            if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA) <= 512UL)))
                             {
-                                sort_block__mergeExternal__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringCon__AF2B2043471BD9005B8BB2883A5CA7155E87642504AE0DAF595F41D494BB8267__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, lastA, sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(lastA.end, B__1.end), new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + 0, unchecked(512UL - (ulong)0)));
+                                sort_block__mergeExternal__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringCon__AF2B2043471BD9005B8BB2883A5CA7155E87642504AE0DAF595F41D494BB8267__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, lastA, sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA.end, B__1.end), new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(cache + 0, unchecked(512UL - (ulong)0)));
                             }
                             else
-                                if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(buffer2) > 0UL)))
+                                if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer2) > 0UL)))
                                 {
-                                    sort_block__mergeInternal__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringCon__B56D2142D67353550B2E278414B44C120360C518D42C4BB2E4B36880624827CB__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, lastA, sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(lastA.end, B__1.end), buffer2);
+                                    sort_block__mergeInternal__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringCon__B56D2142D67353550B2E278414B44C120360C518D42C4BB2E4B36880624827CB__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, lastA, sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA.end, B__1.end), buffer2);
                                 }
                                 else
                                 {
-                                    sort_block__mergeInPlace__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringCont__E140BED5E3F6275A4139DA34AA41EF3ACA67D3D6633DC710DB9F5934FE357A30__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, lastA, sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(lastA.end, B__1.end));
+                                    sort_block__mergeInPlace__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringCont__E140BED5E3F6275A4139DA34AA41EF3ACA67D3D6633DC710DB9F5934FE357A30__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, lastA, sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA.end, B__1.end));
                                 }
                         }
                 }
-                sort__insertion__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Da__802B26A08EB03D9F9F667F96513718B27B55043D41F88180E3D8C65A2E5374D7__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + buffer2.start, (ulong)(buffer2.end - buffer2.start)));
+                sort__insertion__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Da__802B26A08EB03D9F9F667F96513718B27B55043D41F88180E3D8C65A2E5374D7__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + buffer2.start, (ulong)(buffer2.end - buffer2.start)));
                 pull_index = 0;
                 for (; ((pull_index < 2UL)); pull_index += (ulong)(1))
                 {
                     ulong unique = pull[pull_index].count * 2UL;
                     if (((pull[pull_index].from > pull[pull_index].to)))
                     {
-                        sort_block__Range buffer = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(pull[pull_index].range.start, pull[pull_index].range.start + pull[pull_index].count);
-                        while (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(buffer) > 0UL)))
+                        sort_block__Range buffer = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(pull[pull_index].range.start, pull[pull_index].range.start + pull[pull_index].count);
+                        while (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer) > 0UL)))
                         {
-                            index = sort_block__findFirstForward__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__String__364AD6D9DD6164C77FE102C1774BCE2A33A5F5B689FDD28CD6297B989B3A5AB4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, items.Ptr[buffer.start], sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(buffer.end, pull[pull_index].range.end), unique);
+                            index = sort_block__findFirstForward__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__String__364AD6D9DD6164C77FE102C1774BCE2A33A5F5B689FDD28CD6297B989B3A5AB4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, items.Ptr[buffer.start], sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer.end, pull[pull_index].range.end), unique);
                             ulong amount = index - buffer.end;
-                            mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + buffer.start, (ulong)(index - buffer.start)), sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(buffer));
+                            mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + buffer.start, (ulong)(index - buffer.start)), sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer));
                             buffer.start += amount + 1UL;
                             buffer.end += amount;
                             unique -= (ulong)(2);
@@ -1850,12 +2503,12 @@ public static unsafe partial class GhosttyVt
                     else
                         if (((pull[pull_index].from < pull[pull_index].to)))
                         {
-                            sort_block__Range buffer__1 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(pull[pull_index].range.end - pull[pull_index].count, pull[pull_index].range.end);
-                            while (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(buffer__1) > 0UL)))
+                            sort_block__Range buffer__1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(pull[pull_index].range.end - pull[pull_index].count, pull[pull_index].range.end);
+                            while (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer__1) > 0UL)))
                             {
-                                index = sort_block__findLastBackward__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__String__2AF54D8E1626F60367DF06FF726905592774235C74F1DF0074F06C39F2589D89__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, items.Ptr[buffer__1.end - 1UL], sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(pull[pull_index].range.start, buffer__1.start), unique);
+                                index = sort_block__findLastBackward__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__String__2AF54D8E1626F60367DF06FF726905592774235C74F1DF0074F06C39F2589D89__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, items.Ptr[buffer__1.end - 1UL], sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(pull[pull_index].range.start, buffer__1.start), unique);
                                 ulong amount__1 = buffer__1.start - index;
-                                mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + index, (ulong)(buffer__1.end - index)), amount__1);
+                                mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data>(items.Ptr + index, (ulong)(buffer__1.end - index)), amount__1);
                                 buffer__1.start -= amount__1;
                                 buffer__1.end -= amount__1 + 1UL;
                                 unique -= (ulong)(2);
@@ -1863,14 +2516,14 @@ public static unsafe partial class GhosttyVt
                         }
                 }
             }
-            if ((!(((unchecked((int)(sort_block__Iterator_nextLevel__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator)))) != 0) )     ))
+            if ((!(((unchecked((int)(sort_block__Iterator_nextLevel__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator)))) != 0) )     ))
                 break;
         }
     }
 
 
 
-    public static unsafe void mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data* a, multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data* b)
+    public static unsafe void mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data* a, multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data* b)
     {
         {
             Slice<byte> a_bytes = new Slice<byte>((byte*)a, ((ulong)(sizeof(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__Data))) / ((ulong)(sizeof(byte))));
@@ -1894,7 +2547,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe Anon__0 multi_array_list____init_multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__sizes__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe Anon__0 multi_array_list____init_multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_Build__SystemLibraryMode_array_hash_map__StringContext_1__Data__sizes__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         Anon__0 __ctv = new Anon__0 { big_align = unchecked((mem__Alignment)(byte)3) };
         memcpy(__ctv.bytes, Libc.GlobalArrayFrom<ulong>(DotCcLiterals.Pulong_93062D5171F3840381A92DDCFF0F2FC70A6761B9666B6158908ABA77FCBDD57E), 24);
@@ -1904,139 +2557,139 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ConstSlice<ConstSlice<byte>> meta__fieldNames__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ConstSlice<ConstSlice<byte>> meta__fieldNames__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return new ConstSlice<ConstSlice<byte>>(global::Managed.GhosttyVt.__dotcc_owned_array_D63868A066199DD10E88C9ADB15E245D93AF2E9DC9572E92D88BF8EFAA2489FF_Create(), 3UL);
+        return new ConstSlice<ConstSlice<byte>>(global::Managed.GhosttyVt.__dotcc_owned_array_F8D5097ED1343D2940A7A83E77DF5B84982413733C0CA08FE32A26D06814F5B0_Create(), 3UL);
     }
 
 
 
-    public static unsafe void mem__sort__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi_array___F3356A1EEA05094075B16556D538C380637C88F04BC3D259A6CB6E7D251EDF6D__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data> items)
+    public static unsafe void mem__sort__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi_array___F3356A1EEA05094075B16556D538C380637C88F04BC3D259A6CB6E7D251EDF6D__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data> items)
     {
-        sort_block__block__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_mult__B26EEE8F182C7577DE7E48CC998518C1FCE9178687197115FD8D069EBEB61323__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items);
+        sort_block__block__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_mult__B26EEE8F182C7577DE7E48CC998518C1FCE9178687197115FD8D069EBEB61323__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items);
     }
 
 
 
-    public static unsafe CBool multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data lhs, multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data rhs)
+    public static unsafe CBool multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data lhs, multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data rhs)
     {
         return ((CBool)(lhs.alignment > rhs.alignment));
     }
 
 
 
-    public static unsafe void sort_block__block__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_mult__B26EEE8F182C7577DE7E48CC998518C1FCE9178687197115FD8D069EBEB61323__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data> items)
+    public static unsafe void sort_block__block__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_mult__B26EEE8F182C7577DE7E48CC998518C1FCE9178687197115FD8D069EBEB61323__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data> items)
     {
         multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data* cache = stackalloc multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data[512];
         if (((items.Len < 4UL)))
         {
             if (((items.Len == 3UL)))
             {
-                if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[1], items.Ptr[0])))) != 0))
-                    mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&items.Ptr[0], &items.Ptr[1]);
-                if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[2], items.Ptr[1])))) != 0))
+                if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[1], items.Ptr[0])))) != 0))
+                    mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&items.Ptr[0], &items.Ptr[1]);
+                if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[2], items.Ptr[1])))) != 0))
                 {
-                    mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&items.Ptr[1], &items.Ptr[2]);
-                    if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[1], items.Ptr[0])))) != 0))
-                        mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&items.Ptr[0], &items.Ptr[1]);
+                    mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&items.Ptr[1], &items.Ptr[2]);
+                    if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[1], items.Ptr[0])))) != 0))
+                        mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&items.Ptr[0], &items.Ptr[1]);
                 }
             }
             else
                 if (((items.Len == 2UL)))
                 {
-                    if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[1], items.Ptr[0])))) != 0))
-                        mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&items.Ptr[0], &items.Ptr[1]);
+                    if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[1], items.Ptr[0])))) != 0))
+                        mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&items.Ptr[0], &items.Ptr[1]);
                 }
             return;
         }
-        sort_block__Iterator iterator = sort_block__Iterator_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Len, 4);
-        while ((!(((unchecked((int)(sort_block__Iterator_finished__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator)))) != 0) )     ))
+        sort_block__Iterator iterator = sort_block__Iterator_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Len, 4);
+        while ((!(((unchecked((int)(sort_block__Iterator_finished__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator)))) != 0) )     ))
         {
-            byte* __cl197 = stackalloc byte[]{ 0, 1, 2, 3, 4, 5, 6, 7 };
-            byte* order = __cl197;
-            sort_block__Range range = sort_block__Iterator_nextRange__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
+            byte* __cl201 = stackalloc byte[]{ 0, 1, 2, 3, 4, 5, 6, 7 };
+            byte* order = __cl201;
+            sort_block__Range range = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
             Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data> sliced_items = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + range.start, items.Len - (ulong)range.start);
-            switch (sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range))
+            switch (sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(range))
             {
                 case 8:
                     {
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 1);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 2, 3);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 4, 5);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 6, 7);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 2);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 3);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 4, 6);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 5, 7);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 2);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 5, 6);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 4);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 3, 7);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 5);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 2, 6);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 4);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 3, 6);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 2, 4);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 3, 5);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 3, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 1);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 4, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 6, 7);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 2);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 4, 6);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 5, 7);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 2);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 5, 6);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 3, 7);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 6);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 3, 6);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 3, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 3, 4);
                     }
                     break;
                 case 7:
                     {
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 2);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 3, 4);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 5, 6);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 2);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 3, 5);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 4, 6);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 1);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 4, 5);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 2, 6);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 4);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 5);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 3);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 2, 5);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 3);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 2, 4);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 2, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 2);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 3, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 5, 6);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 2);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 3, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 4, 6);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 1);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 4, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 6);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 3);
                     }
                     break;
                 case 6:
                     {
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 2);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 4, 5);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 2);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 3, 5);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 1);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 3, 4);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 2, 5);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 3);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 4);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 2, 4);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 3);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 2, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 2);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 4, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 2);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 3, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 1);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 3, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 3);
                     }
                     break;
                 case 5:
                     {
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 1);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 3, 4);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 2, 4);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 2, 3);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 4);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 3);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 2);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 3);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 2);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 1);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 3, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 2);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 2);
                     }
                     break;
                 case 4:
                     {
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 1);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 2, 3);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 0, 2);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 3);
-                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sliced_items, order, 1, 2);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 1);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 2);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi__918150B4EC2AACD0B4FEB20767C2CD287087E7D12853713A606142A7FA7DCCE4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 2);
                     }
                     break;
                 default:
@@ -2049,108 +2702,108 @@ public static unsafe partial class GhosttyVt
             return;
         while (true)
         {
-            if (((sort_block__Iterator_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator) < 512UL)))
+            if (((sort_block__Iterator_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator) < 512UL)))
             {
-                if ((((((sort_block__Iterator_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator) + 1UL) * 4UL <= 512UL)) && ((sort_block__Iterator_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator) * 4UL <= items.Len)))))
+                if ((((((sort_block__Iterator_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator) + 1UL) * 4UL <= 512UL)) && ((sort_block__Iterator_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator) * 4UL <= items.Len)))))
                 {
-                    sort_block__Iterator_begin__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
-                    while ((!(((unchecked((int)(sort_block__Iterator_finished__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator)))) != 0) )     ))
+                    sort_block__Iterator_begin__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                    while ((!(((unchecked((int)(sort_block__Iterator_finished__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator)))) != 0) )     ))
                     {
-                        sort_block__Range A1 = sort_block__Iterator_nextRange__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
-                        sort_block__Range B1 = sort_block__Iterator_nextRange__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
-                        sort_block__Range A2 = sort_block__Iterator_nextRange__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
-                        sort_block__Range B2 = sort_block__Iterator_nextRange__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
-                        if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[B1.end - 1UL], items.Ptr[A1.start])))) != 0))
+                        sort_block__Range A1 = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                        sort_block__Range B1 = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                        sort_block__Range A2 = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                        sort_block__Range B2 = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                        if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[B1.end - 1UL], items.Ptr[A1.start])))) != 0))
                         {
                             Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data> a1_items = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + A1.start, (ulong)(A1.end - A1.start));
-                            ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B1), 512UL - (ulong)sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B1)).Ptr + 0, (ulong)(a1_items.Len - (ulong)(0))), a1_items);
+                            ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B1), 512UL - (ulong)sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B1)).Ptr + 0, (ulong)(a1_items.Len - (ulong)(0))), a1_items);
                             Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data> b1_items = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + B1.start, (ulong)(B1.end - B1.start));
                             ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + 0, (ulong)(b1_items.Len - (ulong)(0))), b1_items);
                         }
                         else
-                            if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[B1.start], items.Ptr[A1.end - 1UL])))) != 0))
+                            if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[B1.start], items.Ptr[A1.end - 1UL])))) != 0))
                             {
-                                sort_block__mergeInto__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void___E3370DC8B4C46B2E501E640CACA378DB295C5FD66C9B969149C73480CB4C719E__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, A1, B1, new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + 0, unchecked(512UL - (ulong)0)));
+                                sort_block__mergeInto__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void___E3370DC8B4C46B2E501E640CACA378DB295C5FD66C9B969149C73480CB4C719E__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, A1, B1, new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + 0, unchecked(512UL - (ulong)0)));
                             }
                             else
                             {
-                                if ((((!(((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[B2.start], items.Ptr[A2.end - 1UL])))) != 0) )     ) && (!(((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[A2.start], items.Ptr[B1.end - 1UL])))) != 0) )     ))))
+                                if ((((!(((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[B2.start], items.Ptr[A2.end - 1UL])))) != 0) )     ) && (!(((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[A2.start], items.Ptr[B1.end - 1UL])))) != 0) )     ))))
                                     continue;
                                 Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data> a1_items__1 = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + A1.start, (ulong)(A1.end - A1.start));
                                 ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + 0, (ulong)(a1_items__1.Len - (ulong)(0))), a1_items__1);
                                 Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data> b1_items__1 = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + B1.start, (ulong)(B1.end - B1.start));
-                                ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1), 512UL - (ulong)sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1)).Ptr + 0, (ulong)(b1_items__1.Len - (ulong)(0))), b1_items__1);
+                                ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1), 512UL - (ulong)sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1)).Ptr + 0, (ulong)(b1_items__1.Len - (ulong)(0))), b1_items__1);
                             }
-                        A1 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1.start, B1.end);
-                        if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[B2.end - 1UL], items.Ptr[A2.start])))) != 0))
+                        A1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1.start, B1.end);
+                        if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[B2.end - 1UL], items.Ptr[A2.start])))) != 0))
                         {
                             Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data> a2_items = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + A2.start, (ulong)(A2.end - A2.start));
-                            ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + (sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1) + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B2)), 512UL - (ulong)(sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1) + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B2))).Ptr + 0, (ulong)(a2_items.Len - (ulong)(0))), a2_items);
+                            ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + (sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1) + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B2)), 512UL - (ulong)(sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1) + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B2))).Ptr + 0, (ulong)(a2_items.Len - (ulong)(0))), a2_items);
                             Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data> b2_items = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + B2.start, (ulong)(B2.end - B2.start));
-                            ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1), 512UL - (ulong)sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1)).Ptr + 0, (ulong)(b2_items.Len - (ulong)(0))), b2_items);
+                            ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1), 512UL - (ulong)sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1)).Ptr + 0, (ulong)(b2_items.Len - (ulong)(0))), b2_items);
                         }
                         else
-                            if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[B2.start], items.Ptr[A2.end - 1UL])))) != 0))
+                            if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[B2.start], items.Ptr[A2.end - 1UL])))) != 0))
                             {
-                                sort_block__mergeInto__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void___E3370DC8B4C46B2E501E640CACA378DB295C5FD66C9B969149C73480CB4C719E__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, A2, B2, new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1), 512UL - (ulong)sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1)));
+                                sort_block__mergeInto__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void___E3370DC8B4C46B2E501E640CACA378DB295C5FD66C9B969149C73480CB4C719E__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, A2, B2, new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1), 512UL - (ulong)sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1)));
                             }
                             else
                             {
                                 Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data> a2_items__1 = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + A2.start, (ulong)(A2.end - A2.start));
-                                ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1), 512UL - (ulong)sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1)).Ptr + 0, (ulong)(a2_items__1.Len - (ulong)(0))), a2_items__1);
+                                ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1), 512UL - (ulong)sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1)).Ptr + 0, (ulong)(a2_items__1.Len - (ulong)(0))), a2_items__1);
                                 Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data> b2_items__1 = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + B2.start, (ulong)(B2.end - B2.start));
-                                ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + (sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1) + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A2)), 512UL - (ulong)(sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1) + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A2))).Ptr + 0, (ulong)(b2_items__1.Len - (ulong)(0))), b2_items__1);
+                                ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + (sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1) + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A2)), 512UL - (ulong)(sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1) + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A2))).Ptr + 0, (ulong)(b2_items__1.Len - (ulong)(0))), b2_items__1);
                             }
-                        A2 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A2.start, B2.end);
-                        sort_block__Range A3 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(0, sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1));
-                        sort_block__Range B3 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1), sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1) + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A2));
-                        if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(cache[B3.end - 1UL], cache[A3.start])))) != 0))
+                        A2 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A2.start, B2.end);
+                        sort_block__Range A3 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(0, sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1));
+                        sort_block__Range B3 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1), sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1) + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A2));
+                        if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(cache[B3.end - 1UL], cache[A3.start])))) != 0))
                         {
                             Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data> a3_items = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + A3.start, (ulong)(A3.end - A3.start));
-                            ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + (A1.start + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A2)), items.Len - (ulong)(A1.start + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A2))).Ptr + 0, (ulong)(a3_items.Len - (ulong)(0))), a3_items);
+                            ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + (A1.start + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A2)), items.Len - (ulong)(A1.start + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A2))).Ptr + 0, (ulong)(a3_items.Len - (ulong)(0))), a3_items);
                             Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data> b3_items = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + B3.start, (ulong)(B3.end - B3.start));
                             ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + A1.start, items.Len - (ulong)A1.start).Ptr + 0, (ulong)(b3_items.Len - (ulong)(0))), b3_items);
                         }
                         else
-                            if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(cache[B3.start], cache[A3.end - 1UL])))) != 0))
+                            if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(cache[B3.start], cache[A3.end - 1UL])))) != 0))
                             {
-                                sort_block__mergeInto__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void___E3370DC8B4C46B2E501E640CACA378DB295C5FD66C9B969149C73480CB4C719E__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + 0, unchecked(512UL - (ulong)0)), A3, B3, new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + A1.start, items.Len - (ulong)A1.start));
+                                sort_block__mergeInto__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void___E3370DC8B4C46B2E501E640CACA378DB295C5FD66C9B969149C73480CB4C719E__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + 0, unchecked(512UL - (ulong)0)), A3, B3, new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + A1.start, items.Len - (ulong)A1.start));
                             }
                             else
                             {
                                 Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data> a3_items__1 = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + A3.start, (ulong)(A3.end - A3.start));
                                 ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + A1.start, items.Len - (ulong)A1.start).Ptr + 0, (ulong)(a3_items__1.Len - (ulong)(0))), a3_items__1);
                                 Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data> b3_items__1 = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + B3.start, (ulong)(B3.end - B3.start));
-                                ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + (A1.start + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1)), items.Len - (ulong)(A1.start + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A1))).Ptr + 0, (ulong)(b3_items__1.Len - (ulong)(0))), b3_items__1);
+                                ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + (A1.start + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1)), items.Len - (ulong)(A1.start + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1))).Ptr + 0, (ulong)(b3_items__1.Len - (ulong)(0))), b3_items__1);
                             }
                     }
-                    _ = sort_block__Iterator_nextLevel__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
+                    _ = sort_block__Iterator_nextLevel__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
                 }
                 else
                 {
-                    sort_block__Iterator_begin__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
-                    while ((!(((unchecked((int)(sort_block__Iterator_finished__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator)))) != 0) )     ))
+                    sort_block__Iterator_begin__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                    while ((!(((unchecked((int)(sort_block__Iterator_finished__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator)))) != 0) )     ))
                     {
-                        sort_block__Range A = sort_block__Iterator_nextRange__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
-                        sort_block__Range B = sort_block__Iterator_nextRange__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
-                        if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[B.end - 1UL], items.Ptr[A.start])))) != 0))
+                        sort_block__Range A = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                        sort_block__Range B = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                        if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[B.end - 1UL], items.Ptr[A.start])))) != 0))
                         {
-                            mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + A.start, (ulong)(B.end - A.start)), sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A));
+                            mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + A.start, (ulong)(B.end - A.start)), sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A));
                         }
                         else
-                            if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[B.start], items.Ptr[A.end - 1UL])))) != 0))
+                            if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[B.start], items.Ptr[A.end - 1UL])))) != 0))
                             {
                                 Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data> a_items = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + A.start, (ulong)(A.end - A.start));
                                 ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + 0, (ulong)(a_items.Len - (ulong)(0))), a_items);
-                                sort_block__mergeExternal__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_v__95F4C865DFCD1BC953169FEEF204B9B66C5E61E4C649898741C63D86CB96E019__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, A, B, new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + 0, unchecked(512UL - (ulong)0)));
+                                sort_block__mergeExternal__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_v__95F4C865DFCD1BC953169FEEF204B9B66C5E61E4C649898741C63D86CB96E019__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, A, B, new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + 0, unchecked(512UL - (ulong)0)));
                             }
                     }
                 }
             }
             else
             {
-                ulong block_size = math_sqrt__sqrt__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(sort_block__Iterator_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator));
-                ulong buffer_size = sort_block__Iterator_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator) / block_size + 1UL;
+                ulong block_size = math_sqrt__sqrt__u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sort_block__Iterator_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator));
+                ulong buffer_size = sort_block__Iterator_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator) / block_size + 1UL;
                 sort_block__Range A__1 = default(sort_block__Range);
                 sort_block__Range B__1 = default(sort_block__Range);
                 ulong index = 0;
@@ -2159,10 +2812,10 @@ public static unsafe partial class GhosttyVt
                 ulong find = 0;
                 ulong start = 0;
                 ulong pull_index = 0;
-                sort_block__Pull* __cl198 = stackalloc sort_block__Pull[]{ new sort_block__Pull { from = 0, to = 0, count = 0, range = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(0, 0) }, new sort_block__Pull { from = 0, to = 0, count = 0, range = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(0, 0) } };
-                sort_block__Pull* pull = __cl198;
-                sort_block__Range buffer1 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(0, 0);
-                sort_block__Range buffer2 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(0, 0);
+                sort_block__Pull* __cl202 = stackalloc sort_block__Pull[]{ new sort_block__Pull { from = 0, to = 0, count = 0, range = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(0, 0) }, new sort_block__Pull { from = 0, to = 0, count = 0, range = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(0, 0) } };
+                sort_block__Pull* pull = __cl202;
+                sort_block__Range buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(0, 0);
+                sort_block__Range buffer2 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(0, 0);
                 find = buffer_size + buffer_size;
                 CBool find_separately = false;
                 if (((block_size <= 512UL)))
@@ -2170,115 +2823,115 @@ public static unsafe partial class GhosttyVt
                     find = buffer_size;
                 }
                 else
-                    if (((find > sort_block__Iterator_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator))))
+                    if (((find > sort_block__Iterator_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator))))
                     {
                         find = buffer_size;
                         find_separately = true;
                     }
-                sort_block__Iterator_begin__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
-                while ((!(((unchecked((int)(sort_block__Iterator_finished__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator)))) != 0) )     ))
+                sort_block__Iterator_begin__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                while ((!(((unchecked((int)(sort_block__Iterator_finished__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator)))) != 0) )     ))
                 {
-                    A__1 = sort_block__Iterator_nextRange__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
-                    B__1 = sort_block__Iterator_nextRange__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
+                    A__1 = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                    B__1 = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
                     last = A__1.start;
                     count = 1;
                     for (; ((count < find)); last = index, count += (ulong)(1))
                     {
-                        index = sort_block__findLastForward__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__28EE634C566FB7FD9159CFA9FC763E0CDF59F821A4B6323C53CF64B5B0E29DD9__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, items.Ptr[last], sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(last + 1UL, A__1.end), find - count);
+                        index = sort_block__findLastForward__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__28EE634C566FB7FD9159CFA9FC763E0CDF59F821A4B6323C53CF64B5B0E29DD9__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, items.Ptr[last], sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(last + 1UL, A__1.end), find - count);
                         if (((index == A__1.end)))
                             break;
                     }
                     index = last;
                     if (((count >= buffer_size)))
                     {
-                        pull[pull_index] = new sort_block__Pull { range = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1.start, B__1.end), count = count, from = index, to = A__1.start };
+                        pull[pull_index] = new sort_block__Pull { range = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, B__1.end), count = count, from = index, to = A__1.start };
                         pull_index = 1;
                         if (((count == buffer_size + buffer_size)))
                         {
-                            buffer1 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1.start, A__1.start + buffer_size);
-                            buffer2 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1.start + buffer_size, A__1.start + count);
+                            buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, A__1.start + buffer_size);
+                            buffer2 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start + buffer_size, A__1.start + count);
                             break;
                         }
                         else
                             if (((find == buffer_size + buffer_size)))
                             {
-                                buffer1 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1.start, A__1.start + count);
+                                buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, A__1.start + count);
                                 find = buffer_size;
                             }
                             else
                                 if (((block_size <= 512UL)))
                                 {
-                                    buffer1 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1.start, A__1.start + count);
+                                    buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, A__1.start + count);
                                     break;
                                 }
                                 else
                                     if (((unchecked((int)(find_separately))) != 0))
                                     {
-                                        buffer1 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1.start, A__1.start + count);
+                                        buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, A__1.start + count);
                                         find_separately = false;
                                     }
                                     else
                                     {
-                                        buffer2 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1.start, A__1.start + count);
+                                        buffer2 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, A__1.start + count);
                                         break;
                                     }
                     }
                     else
-                        if (((((pull_index == 0UL)) && ((count > sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(buffer1))))))
+                        if (((((pull_index == 0UL)) && ((count > sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer1))))))
                         {
-                            buffer1 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1.start, A__1.start + count);
-                            pull[pull_index] = new sort_block__Pull { range = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1.start, B__1.end), count = count, from = index, to = A__1.start };
+                            buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, A__1.start + count);
+                            pull[pull_index] = new sort_block__Pull { range = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, B__1.end), count = count, from = index, to = A__1.start };
                         }
                     last = B__1.end - 1UL;
                     count = 1;
                     for (; ((count < find)); last = index - 1UL, count += (ulong)(1))
                     {
-                        index = sort_block__findFirstBackward__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Da__8513C8C60C4C2391B6DBC827488EC7BFFCBBEA8A1EA4B3BDFA6E1B0A45A2A6ED__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, items.Ptr[last], sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B__1.start, last), find - count);
+                        index = sort_block__findFirstBackward__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Da__8513C8C60C4C2391B6DBC827488EC7BFFCBBEA8A1EA4B3BDFA6E1B0A45A2A6ED__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, items.Ptr[last], sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1.start, last), find - count);
                         if (((index == B__1.start)))
                             break;
                     }
                     index = last;
                     if (((count >= buffer_size)))
                     {
-                        pull[pull_index] = new sort_block__Pull { range = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1.start, B__1.end), count = count, from = index, to = B__1.end };
+                        pull[pull_index] = new sort_block__Pull { range = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, B__1.end), count = count, from = index, to = B__1.end };
                         pull_index = 1;
                         if (((count == buffer_size + buffer_size)))
                         {
-                            buffer1 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B__1.end - count, B__1.end - buffer_size);
-                            buffer2 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B__1.end - buffer_size, B__1.end);
+                            buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1.end - count, B__1.end - buffer_size);
+                            buffer2 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1.end - buffer_size, B__1.end);
                             break;
                         }
                         else
                             if (((find == buffer_size + buffer_size)))
                             {
-                                buffer1 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B__1.end - count, B__1.end);
+                                buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1.end - count, B__1.end);
                                 find = buffer_size;
                             }
                             else
                                 if (((block_size <= 512UL)))
                                 {
-                                    buffer1 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B__1.end - count, B__1.end);
+                                    buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1.end - count, B__1.end);
                                     break;
                                 }
                                 else
                                     if (((unchecked((int)(find_separately))) != 0))
                                     {
-                                        buffer1 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B__1.end - count, B__1.end);
+                                        buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1.end - count, B__1.end);
                                         find_separately = false;
                                     }
                                     else
                                     {
                                         if (((pull[0].range.start == A__1.start)))
                                             pull[0].range.end -= pull[1].count;
-                                        buffer2 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B__1.end - count, B__1.end);
+                                        buffer2 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1.end - count, B__1.end);
                                         break;
                                     }
                     }
                     else
-                        if (((((pull_index == 0UL)) && ((count > sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(buffer1))))))
+                        if (((((pull_index == 0UL)) && ((count > sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer1))))))
                         {
-                            buffer1 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B__1.end - count, B__1.end);
-                            pull[pull_index] = new sort_block__Pull { range = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1.start, B__1.end), count = count, from = index, to = B__1.end };
+                            buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1.end - count, B__1.end);
+                            pull[pull_index] = new sort_block__Pull { range = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, B__1.end), count = count, from = index, to = B__1.end };
                         }
                 }
                 pull_index = 0;
@@ -2291,9 +2944,9 @@ public static unsafe partial class GhosttyVt
                         count = 1;
                         for (; ((count < length)); count += (ulong)(1))
                         {
-                            index = sort_block__findFirstBackward__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Da__8513C8C60C4C2391B6DBC827488EC7BFFCBBEA8A1EA4B3BDFA6E1B0A45A2A6ED__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, items.Ptr[index - 1UL], sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(pull[pull_index].to, pull[pull_index].from - (count - 1UL)), length - count);
-                            sort_block__Range range__1 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(index + 1UL, pull[pull_index].from + 1UL);
-                            mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + range__1.start, (ulong)(range__1.end - range__1.start)), sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range__1) - count);
+                            index = sort_block__findFirstBackward__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Da__8513C8C60C4C2391B6DBC827488EC7BFFCBBEA8A1EA4B3BDFA6E1B0A45A2A6ED__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, items.Ptr[index - 1UL], sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(pull[pull_index].to, pull[pull_index].from - (count - 1UL)), length - count);
+                            sort_block__Range range__1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(index + 1UL, pull[pull_index].from + 1UL);
+                            mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + range__1.start, (ulong)(range__1.end - range__1.start)), sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(range__1) - count);
                             pull[pull_index].from = index + count;
                         }
                     }
@@ -2304,34 +2957,34 @@ public static unsafe partial class GhosttyVt
                             count = 1;
                             for (; ((count < length)); count += (ulong)(1))
                             {
-                                index = sort_block__findLastForward__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__28EE634C566FB7FD9159CFA9FC763E0CDF59F821A4B6323C53CF64B5B0E29DD9__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, items.Ptr[index], sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(index, pull[pull_index].to), length - count);
-                                sort_block__Range range__2 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(pull[pull_index].from, index - 1UL);
-                                mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + range__2.start, (ulong)(range__2.end - range__2.start)), count);
+                                index = sort_block__findLastForward__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__28EE634C566FB7FD9159CFA9FC763E0CDF59F821A4B6323C53CF64B5B0E29DD9__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, items.Ptr[index], sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(index, pull[pull_index].to), length - count);
+                                sort_block__Range range__2 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(pull[pull_index].from, index - 1UL);
+                                mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + range__2.start, (ulong)(range__2.end - range__2.start)), count);
                                 pull[pull_index].from = index - 1UL - count;
                             }
                         }
                 }
-                buffer_size = sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(buffer1);
-                block_size = sort_block__Iterator_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator) / buffer_size + 1UL;
-                sort_block__Iterator_begin__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
-                while ((!(((unchecked((int)(sort_block__Iterator_finished__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator)))) != 0) )     ))
+                buffer_size = sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer1);
+                block_size = sort_block__Iterator_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator) / buffer_size + 1UL;
+                sort_block__Iterator_begin__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                while ((!(((unchecked((int)(sort_block__Iterator_finished__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator)))) != 0) )     ))
                 {
-                    A__1 = sort_block__Iterator_nextRange__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
-                    B__1 = sort_block__Iterator_nextRange__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator);
+                    A__1 = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                    B__1 = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
                     start = A__1.start;
                     if (((start == pull[0].range.start)))
                     {
                         if (((pull[0].from > pull[0].to)))
                         {
                             A__1.start += pull[0].count;
-                            if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1) == 0UL)))
+                            if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1) == 0UL)))
                                 continue;
                         }
                         else
                             if (((pull[0].from < pull[0].to)))
                             {
                                 B__1.end -= pull[0].count;
-                                if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B__1) == 0UL)))
+                                if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1) == 0UL)))
                                     continue;
                             }
                     }
@@ -2340,82 +2993,82 @@ public static unsafe partial class GhosttyVt
                         if (((pull[1].from > pull[1].to)))
                         {
                             A__1.start += pull[1].count;
-                            if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1) == 0UL)))
+                            if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1) == 0UL)))
                                 continue;
                         }
                         else
                             if (((pull[1].from < pull[1].to)))
                             {
                                 B__1.end -= pull[1].count;
-                                if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B__1) == 0UL)))
+                                if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1) == 0UL)))
                                     continue;
                             }
                     }
-                    if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[B__1.end - 1UL], items.Ptr[A__1.start])))) != 0))
+                    if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[B__1.end - 1UL], items.Ptr[A__1.start])))) != 0))
                     {
-                        mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + A__1.start, (ulong)(B__1.end - A__1.start)), sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1));
+                        mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + A__1.start, (ulong)(B__1.end - A__1.start)), sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1));
                     }
                     else
-                        if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[A__1.end], items.Ptr[A__1.end - 1UL])))) != 0))
+                        if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[A__1.end], items.Ptr[A__1.end - 1UL])))) != 0))
                         {
                             ulong findA = default(ulong);
-                            sort_block__Range blockA = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1.start, A__1.end);
-                            sort_block__Range firstA = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A__1.start, A__1.start + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(blockA) % block_size);
+                            sort_block__Range blockA = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, A__1.end);
+                            sort_block__Range firstA = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, A__1.start + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockA) % block_size);
                             ulong indexA = buffer1.start;
                             index = firstA.end;
                             for (; ((index < blockA.end)); indexA += (ulong)(1), index += block_size)
                             {
-                                mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&items.Ptr[indexA], &items.Ptr[index]);
+                                mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&items.Ptr[indexA], &items.Ptr[index]);
                             }
                             sort_block__Range lastA = firstA;
-                            sort_block__Range lastB = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(0, 0);
-                            sort_block__Range blockB = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B__1.start, B__1.start + ZigMath.Min(block_size, sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B__1)));
-                            blockA.start += sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(firstA);
+                            sort_block__Range lastB = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(0, 0);
+                            sort_block__Range blockB = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1.start, B__1.start + ZigMath.Min(block_size, sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1)));
+                            blockA.start += sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(firstA);
                             indexA = buffer1.start;
-                            if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(lastA) <= 512UL)))
+                            if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA) <= 512UL)))
                             {
                                 Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data> last_a_items = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + lastA.start, (ulong)(lastA.end - lastA.start));
                                 ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + 0, (ulong)(last_a_items.Len - (ulong)(0))), last_a_items);
                             }
                             else
-                                if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(buffer2) > 0UL)))
+                                if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer2) > 0UL)))
                                 {
-                                    sort_block__blockSwap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, lastA.start, buffer2.start, sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(lastA));
+                                    sort_block__blockSwap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, lastA.start, buffer2.start, sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA));
                                 }
-                            if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(blockA) > 0UL)))
+                            if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockA) > 0UL)))
                             {
                                 while (true)
                                 {
-                                    if (((((((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(lastB) > 0UL)) && (!(((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[lastB.end - 1UL], items.Ptr[indexA])))) != 0) )     ))) || ((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(blockB) == 0UL)))))
+                                    if (((((((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastB) > 0UL)) && (!(((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[lastB.end - 1UL], items.Ptr[indexA])))) != 0) )     ))) || ((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockB) == 0UL)))))
                                     {
-                                        ulong B_split = sort_block__binaryFirst__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_voi__B4BC678AE05D5BA5F5DF36FDA210612EF1802359A04FEA580EEE75AC7C68282C__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, items.Ptr[indexA], lastB);
+                                        ulong B_split = sort_block__binaryFirst__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_voi__B4BC678AE05D5BA5F5DF36FDA210612EF1802359A04FEA580EEE75AC7C68282C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, items.Ptr[indexA], lastB);
                                         ulong B_remaining = lastB.end - B_split;
                                         ulong minA = blockA.start;
                                         findA = minA + block_size;
                                         for (; ((findA < blockA.end)); findA += block_size)
                                         {
-                                            if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[findA], items.Ptr[minA])))) != 0))
+                                            if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[findA], items.Ptr[minA])))) != 0))
                                             {
                                                 minA = findA;
                                             }
                                         }
-                                        sort_block__blockSwap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, blockA.start, minA, block_size);
-                                        mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&items.Ptr[blockA.start], &items.Ptr[indexA]);
+                                        sort_block__blockSwap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, blockA.start, minA, block_size);
+                                        mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&items.Ptr[blockA.start], &items.Ptr[indexA]);
                                         indexA += (ulong)(1);
-                                        if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(lastA) <= 512UL)))
+                                        if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA) <= 512UL)))
                                         {
-                                            sort_block__mergeExternal__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_v__95F4C865DFCD1BC953169FEEF204B9B66C5E61E4C649898741C63D86CB96E019__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, lastA, sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(lastA.end, B_split), new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + 0, unchecked(512UL - (ulong)0)));
+                                            sort_block__mergeExternal__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_v__95F4C865DFCD1BC953169FEEF204B9B66C5E61E4C649898741C63D86CB96E019__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, lastA, sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA.end, B_split), new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + 0, unchecked(512UL - (ulong)0)));
                                         }
                                         else
-                                            if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(buffer2) > 0UL)))
+                                            if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer2) > 0UL)))
                                             {
-                                                sort_block__mergeInternal__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_v__F17047BD9A75495D3F107158B5C793BC90D898B295202313D51D80A2B70D51C6__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, lastA, sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(lastA.end, B_split), buffer2);
+                                                sort_block__mergeInternal__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_v__F17047BD9A75495D3F107158B5C793BC90D898B295202313D51D80A2B70D51C6__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, lastA, sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA.end, B_split), buffer2);
                                             }
                                             else
                                             {
-                                                sort_block__mergeInPlace__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_vo__1B3177237B290C738C3B530D868BB011221184A2788E0F0088FEF386540D95F9__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, lastA, sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(lastA.end, B_split));
+                                                sort_block__mergeInPlace__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_vo__1B3177237B290C738C3B530D868BB011221184A2788E0F0088FEF386540D95F9__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, lastA, sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA.end, B_split));
                                             }
-                                        if (((((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(buffer2) > 0UL)) || ((block_size <= 512UL)))))
+                                        if (((((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer2) > 0UL)) || ((block_size <= 512UL)))))
                                         {
                                             if (((block_size <= 512UL)))
                                             {
@@ -2423,33 +3076,33 @@ public static unsafe partial class GhosttyVt
                                             }
                                             else
                                             {
-                                                sort_block__blockSwap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, blockA.start, buffer2.start, block_size);
+                                                sort_block__blockSwap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, blockA.start, buffer2.start, block_size);
                                             }
-                                            sort_block__blockSwap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, B_split, blockA.start + block_size - B_remaining, B_remaining);
+                                            sort_block__blockSwap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, B_split, blockA.start + block_size - B_remaining, B_remaining);
                                         }
                                         else
                                         {
-                                            mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + B_split, (ulong)(blockA.start + block_size - B_split)), blockA.start - B_split);
+                                            mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + B_split, (ulong)(blockA.start + block_size - B_split)), blockA.start - B_split);
                                         }
-                                        lastA = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(blockA.start - B_remaining, blockA.start - B_remaining + block_size);
-                                        lastB = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(lastA.end, lastA.end + B_remaining);
+                                        lastA = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockA.start - B_remaining, blockA.start - B_remaining + block_size);
+                                        lastB = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA.end, lastA.end + B_remaining);
                                         blockA.start += block_size;
-                                        if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(blockA) == 0UL)))
+                                        if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockA) == 0UL)))
                                             break;
                                     }
                                     else
-                                        if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(blockB) < block_size)))
+                                        if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockB) < block_size)))
                                         {
-                                            mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + blockA.start, (ulong)(blockB.end - blockA.start)), blockB.start - blockA.start);
-                                            lastB = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(blockA.start, blockA.start + sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(blockB));
-                                            blockA.start += sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(blockB);
-                                            blockA.end += sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(blockB);
+                                            mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + blockA.start, (ulong)(blockB.end - blockA.start)), blockB.start - blockA.start);
+                                            lastB = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockA.start, blockA.start + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockB));
+                                            blockA.start += sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockB);
+                                            blockA.end += sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockB);
                                             blockB.end = blockB.start;
                                         }
                                         else
                                         {
-                                            sort_block__blockSwap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, blockA.start, blockB.start, block_size);
-                                            lastB = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(blockA.start, blockA.start + block_size);
+                                            sort_block__blockSwap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, blockA.start, blockB.start, block_size);
+                                            lastB = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockA.start, blockA.start + block_size);
                                             blockA.start += block_size;
                                             blockA.end += block_size;
                                             blockB.start += block_size;
@@ -2464,34 +3117,34 @@ public static unsafe partial class GhosttyVt
                                         }
                                 }
                             }
-                            if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(lastA) <= 512UL)))
+                            if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA) <= 512UL)))
                             {
-                                sort_block__mergeExternal__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_v__95F4C865DFCD1BC953169FEEF204B9B66C5E61E4C649898741C63D86CB96E019__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, lastA, sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(lastA.end, B__1.end), new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + 0, unchecked(512UL - (ulong)0)));
+                                sort_block__mergeExternal__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_v__95F4C865DFCD1BC953169FEEF204B9B66C5E61E4C649898741C63D86CB96E019__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, lastA, sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA.end, B__1.end), new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(cache + 0, unchecked(512UL - (ulong)0)));
                             }
                             else
-                                if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(buffer2) > 0UL)))
+                                if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer2) > 0UL)))
                                 {
-                                    sort_block__mergeInternal__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_v__F17047BD9A75495D3F107158B5C793BC90D898B295202313D51D80A2B70D51C6__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, lastA, sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(lastA.end, B__1.end), buffer2);
+                                    sort_block__mergeInternal__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_v__F17047BD9A75495D3F107158B5C793BC90D898B295202313D51D80A2B70D51C6__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, lastA, sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA.end, B__1.end), buffer2);
                                 }
                                 else
                                 {
-                                    sort_block__mergeInPlace__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_vo__1B3177237B290C738C3B530D868BB011221184A2788E0F0088FEF386540D95F9__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, lastA, sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(lastA.end, B__1.end));
+                                    sort_block__mergeInPlace__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_vo__1B3177237B290C738C3B530D868BB011221184A2788E0F0088FEF386540D95F9__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, lastA, sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA.end, B__1.end));
                                 }
                         }
                 }
-                sort__insertion__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi___9356784F25507A93329FE269CC10533177C3B3E6B968321092AA5A4029EF51E6__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + buffer2.start, (ulong)(buffer2.end - buffer2.start)));
+                sort__insertion__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data_void_multi___9356784F25507A93329FE269CC10533177C3B3E6B968321092AA5A4029EF51E6__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + buffer2.start, (ulong)(buffer2.end - buffer2.start)));
                 pull_index = 0;
                 for (; ((pull_index < 2UL)); pull_index += (ulong)(1))
                 {
                     ulong unique = pull[pull_index].count * 2UL;
                     if (((pull[pull_index].from > pull[pull_index].to)))
                     {
-                        sort_block__Range buffer = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(pull[pull_index].range.start, pull[pull_index].range.start + pull[pull_index].count);
-                        while (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(buffer) > 0UL)))
+                        sort_block__Range buffer = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(pull[pull_index].range.start, pull[pull_index].range.start + pull[pull_index].count);
+                        while (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer) > 0UL)))
                         {
-                            index = sort_block__findFirstForward__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Dat__E14AD7E5520B44A75E93123595C78A0DB5D2720B2C6250C1822523D253EA8840__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, items.Ptr[buffer.start], sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(buffer.end, pull[pull_index].range.end), unique);
+                            index = sort_block__findFirstForward__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Dat__E14AD7E5520B44A75E93123595C78A0DB5D2720B2C6250C1822523D253EA8840__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, items.Ptr[buffer.start], sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer.end, pull[pull_index].range.end), unique);
                             ulong amount = index - buffer.end;
-                            mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + buffer.start, (ulong)(index - buffer.start)), sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(buffer));
+                            mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + buffer.start, (ulong)(index - buffer.start)), sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer));
                             buffer.start += amount + 1UL;
                             buffer.end += amount;
                             unique -= (ulong)(2);
@@ -2500,12 +3153,12 @@ public static unsafe partial class GhosttyVt
                     else
                         if (((pull[pull_index].from < pull[pull_index].to)))
                         {
-                            sort_block__Range buffer__1 = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(pull[pull_index].range.end - pull[pull_index].count, pull[pull_index].range.end);
-                            while (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(buffer__1) > 0UL)))
+                            sort_block__Range buffer__1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(pull[pull_index].range.end - pull[pull_index].count, pull[pull_index].range.end);
+                            while (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer__1) > 0UL)))
                             {
-                                index = sort_block__findLastBackward__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Dat__42360F8FFD3E7CAC6C31857A7DE5D880308E8EA2DBC929B3E25AC6D03B6B545D__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, items.Ptr[buffer__1.end - 1UL], sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(pull[pull_index].range.start, buffer__1.start), unique);
+                                index = sort_block__findLastBackward__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Dat__42360F8FFD3E7CAC6C31857A7DE5D880308E8EA2DBC929B3E25AC6D03B6B545D__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, items.Ptr[buffer__1.end - 1UL], sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(pull[pull_index].range.start, buffer__1.start), unique);
                                 ulong amount__1 = buffer__1.start - index;
-                                mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + index, (ulong)(buffer__1.end - index)), amount__1);
+                                mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0_void_array_hash_map__StringContext_1__Data__Data>(items.Ptr + index, (ulong)(buffer__1.end - index)), amount__1);
                                 buffer__1.start -= amount__1;
                                 buffer__1.end -= amount__1 + 1UL;
                                 unique -= (ulong)(2);
@@ -2513,7 +3166,7 @@ public static unsafe partial class GhosttyVt
                         }
                 }
             }
-            if ((!(((unchecked((int)(sort_block__Iterator_nextLevel__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&iterator)))) != 0) )     ))
+            if ((!(((unchecked((int)(sort_block__Iterator_nextLevel__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator)))) != 0) )     ))
                 break;
         }
     }

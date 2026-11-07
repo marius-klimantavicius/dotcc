@@ -1,0 +1,7 @@
+PASS layout allocator size=16 align=8 ctx=0 vtable=8
+PASS layout vtable size=64 align=8 alloc=0 resize=8 remap=16 free=24 reserved=32
+PASS layout formatter-option size=4 align=4 emit=1 unwrap=2 trim=3 extras=5
+PASS layout grid size=16 align=8 node=0 x=8 y=10
+PASS layout point size=24 align=8 tag=0 value=8
+PASS layout style size=16 align=2 foreground=0 background=4 underline-color=8 flags=12 reserved=14
+RESULT layout-cases=6 passed=6 failed=0

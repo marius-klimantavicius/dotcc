@@ -107,7 +107,8 @@ def main():
                         processed_project, "--in-place"])
     run("processed-build", ["dotnet", "build", processed_project, "-c", "Release", "--nologo"])
     for directory in (raw, processed):
-        owned = sorted(p.relative_to(directory).as_posix() for p in directory.iterdir() if p.is_file())
+        owned = sorted(p.relative_to(directory).as_posix() for p in directory.iterdir()
+                       if p.is_file() and p.name != ".campaign-files.json")
         (directory / ".campaign-files.json").write_text(json.dumps(owned, indent=2) + "\n")
     (evidence / "products.json").write_text(json.dumps(dict(raw=str(project),
         processed=str(processed_project), graph=str(graph), delivery_qualified=False), indent=2) + "\n")

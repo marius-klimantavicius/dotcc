@@ -337,6 +337,10 @@ internal sealed partial class ZigLowering
         }
         switch (rhs.Content)
         {
+            // The parser can place comptime on the type operand of a
+            // comparison (`comptime T == u8`). A type remains that same type.
+            case Zig.PreComptime forced:
+                return TryTypeAliasRhs(forced.Arg1, out type);
             case Zig.OrElse optional when TryOptionalTypeValue(optional.Arg0, out var present):
                 type = SelectOptionalType(rhs, present, optional.Arg2);
                 return true;

@@ -1,0 +1,56 @@
+--- a/src/terminal/x11_color.zig
++++ b/src/terminal/x11_color.zig
+@@ -26,7 +26,22 @@
+ 
+ fn entriesArray() []const Entry {
+     @setEvalBranchQuota(1_000_000);
+-    const len = std.mem.count(u8, data, "\n");
++    const len = comptime count: {
++        var total: usize = 0;
++        for (data) |byte| total += @intFromBool(byte == '\n');
++        break :count total;
++    };
++    const name_capacity = comptime longest_line: {
++        var longest: usize = 0;
++        var length: usize = 0;
++        for (data) |byte| {
++            if (byte == '\n') {
++                longest = @max(longest, length);
++                length = 0;
++            } else length += 1;
++        }
++        break :longest_line @max(longest, length);
++    };
+     var result: [len]Entry = undefined;
+     // Parse the line. This is not very robust parsing, because we expect
+     // a very exact format for rgb.txt. However, this is all done at comptime
+@@ -46,7 +61,7 @@
+         const g = try std.fmt.parseInt(u8, std.mem.trim(u8, line[4..7], " "), 10);
+         const b = try std.fmt.parseInt(u8, std.mem.trim(u8, line[8..11], " "), 10);
+         const name = std.mem.trim(u8, line[12..], " \t");
+-        var name_z: [name.len:0]u8 = undefined;
++        var name_z: [name_capacity:0]u8 = undefined;
+         @memcpy(name_z[0..name.len], name);
+         name_z[name.len] = 0;
+         const final_name = name_z;
+@@ -63,13 +78,15 @@
+ }
+ 
+ fn colorMap() ColorMap {
+-    @setEvalBranchQuota(1_000_000);
++    comptime {
++        @setEvalBranchQuota(1_000_000);
+ 
+-    const KV = struct { []const u8, RGB };
+-    var kvs: [entries.len]KV = undefined;
+-    for (entries, 0..) |entry, i| kvs[i] = .{ entry.name, entry.color };
++        const KV = struct { []const u8, RGB };
++        var kvs: [entries.len]KV = undefined;
++        for (entries, 0..) |entry, i| kvs[i] = .{ entry.name, entry.color };
+ 
+-    return .initComptime(kvs);
++        return .initComptime(kvs);
++    }
+ }
+ 
+ /// This is the rgb.txt file from the X11 project. This was last sourced

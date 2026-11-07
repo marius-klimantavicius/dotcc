@@ -30,6 +30,7 @@ using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633763323230643365
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633363613433626363 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c3ca43bcc;
 using __DotCcEnum_76616C6772696E645F5F436C69656E7452657175657374 = global::Managed.GhosttyVt.valgrind__ClientRequest;
 using __DotCcEnum_506167654C6973745F5F4E6F64655F5F446174615F546167 = global::Managed.GhosttyVt.PageList__Node__Data_Tag;
+using __DotCcEnum_72656E6465725F5F5365744F7074696F6E = global::Managed.GhosttyVt.render__SetOption;
 using __DotCcEnum_6465766963655F617474726962757465735F5F436F6E666F726D616E63654C6576656C = global::Managed.GhosttyVt.device_attributes__ConformanceLevel;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636164343962373363 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_cad49b73c;
 using __DotCcEnum_506167654C6973745F5F5363726F6C6C5F546167 = global::Managed.GhosttyVt.PageList__Scroll_Tag;
@@ -40,6 +41,7 @@ using __DotCcEnum_5461726765745F5F416269 = global::Managed.GhosttyVt.Target__Abi
 using __DotCcEnum_53637265656E5F5F5F5F416E6F6E456E756D30 = global::Managed.GhosttyVt.Screen____AnonEnum0;
 using __DotCcEnum_6D6574615F5F4669656C64456E756D5F5F506167654C6973745F5F4C696D697473 = global::Managed.GhosttyVt.meta__FieldEnum__PageList__Limits;
 using __DotCcEnum_72656E6465725F5F526F7744617461 = global::Managed.GhosttyVt.render__RowData;
+using __DotCcEnum_72656E6465725F5F526F774F7074696F6E = global::Managed.GhosttyVt.render__RowOption;
 using __DotCcEnum_6F73635F325F5F5061727365725F5F5374617465 = global::Managed.GhosttyVt.osc_2__Parser__State;
 using __DotCcEnum_646E645F636F6D6D616E645F5F526571756573745F546167 = global::Managed.GhosttyVt.dnd_command__Request_Tag;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633566353337626532 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c5f537be2;
@@ -49,6 +51,7 @@ using __DotCcEnum_5461726765745F5F4F735F5F57696E646F777356657273696F6E = global:
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633336613366316236 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c36a3f1b6;
 using __DotCcEnum_5465726D696E616C5F5F5F5F416E6F6E456E756D30 = global::Managed.GhosttyVt.Terminal____AnonEnum0;
 using __DotCcEnum_506167654C6973745F5F496E6372656173654361706163697479 = global::Managed.GhosttyVt.PageList__IncreaseCapacity;
+using __DotCcEnum_53637265656E5F5F5F5F416E6F6E456E756D33 = global::Managed.GhosttyVt.Screen____AnonEnum3;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636661643537633037 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_cfad57c07;
 using __DotCcEnum_686561705F4172656E61416C6C6F6361746F725F5F50757368526573756C745F546167 = global::Managed.GhosttyVt.heap_ArenaAllocator__PushResult_Tag;
 using __DotCcEnum_6D6174685F5F4F72646572 = global::Managed.GhosttyVt.math__Order;
@@ -86,13 +89,13 @@ using __DotCcEnum_7367725F5F4174747269627574655F5F556E6465726C696E65 = global::M
 using __DotCcEnum_646E645F726573706F6E73655F5F456E636F64696E67 = global::Managed.GhosttyVt.dnd_response__Encoding;
 using __DotCcEnum_726573756C745F5F526573756C74 = global::Managed.GhosttyVt.result__Result;
 using __DotCcEnum_53637265656E5F5F5F5F416E6F6E456E756D32 = global::Managed.GhosttyVt.Screen____AnonEnum2;
+using __DotCcEnum_7379735F5F4F7074696F6E = global::Managed.GhosttyVt.sys__Option;
 using __DotCcEnum_6170635F5F53746174655F546167 = global::Managed.GhosttyVt.apc__State_Tag;
 using __DotCcEnum_5461726765745F5F4F626A656374466F726D6174 = global::Managed.GhosttyVt.Target__ObjectFormat;
 using __DotCcEnum_5061727365725F5F416374696F6E5F546167 = global::Managed.GhosttyVt.Parser__Action_Tag;
 using __DotCcEnum_496F5F46696C655F5265616465725F5F4D6F6465 = global::Managed.GhosttyVt.Io_File_Reader__Mode;
 using __DotCcEnum_686561705F4172656E61416C6C6F6361746F725F5F52657365744D6F64655F546167 = global::Managed.GhosttyVt.heap_ArenaAllocator__ResetMode_Tag;
 using __DotCcEnum_7374796C655F325F5F5374796C655F5F436F6C6F725F5F546167 = global::Managed.GhosttyVt.style_2__Style__Color__Tag;
-using __DotCcEnum_5465726D696E616C5F5F5072696E74536C6963655769647468 = global::Managed.GhosttyVt.Terminal__PrintSliceWidth;
 using __DotCcEnum_6465766963655F617474726962757465735F5F5072696D6172795F5F46656174757265 = global::Managed.GhosttyVt.device_attributes__Primary__Feature;
 using __DotCcEnum_5461726765745F68657861676F6E5F5F46656174757265 = global::Managed.GhosttyVt.Target_hexagon__Feature;
 using __DotCcEnum_636F6C6F725F335F5F5370656369616C = global::Managed.GhosttyVt.color_3__Special;
@@ -116,8 +119,8 @@ using __DotCcEnum_6463735F5F436F6D6D616E645F5F44454352515353 = global::Managed.G
 using __DotCcEnum_76616C6772696E645F6D656D636865636B5F5F436C69656E7452657175657374 = global::Managed.GhosttyVt.valgrind_memcheck__ClientRequest;
 using __DotCcEnum_61727261795F686173685F6D61705F5F4361706163697479496E64657854797065 = global::Managed.GhosttyVt.array_hash_map__CapacityIndexType;
 using __DotCcEnum_496F5F46696C655F5F4B696E64 = global::Managed.GhosttyVt.Io_File__Kind;
+using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633164613662336138 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c1da6b3a8;
 using __DotCcEnum_6F73635F325F5F5061727365725F5F436170747572655F5F4261636B696E675F546167 = global::Managed.GhosttyVt.osc_2__Parser__Capture__Backing_Tag;
-using __DotCcEnum_72656E6465725F5F437572736F7256697375616C5374796C65 = global::Managed.GhosttyVt.render__CursorVisualStyle;
 using __DotCcEnum_736F72745F7064715F5F48696E74 = global::Managed.GhosttyVt.sort_pdq__Hint;
 using __DotCcEnum_636C6970626F6172645F325F5F526561645F5F526573756C745F546167 = global::Managed.GhosttyVt.clipboard_2__Read__Result_Tag;
 using __DotCcEnum_616E73695F5F4330 = global::Managed.GhosttyVt.ansi__C0;
@@ -126,7 +129,6 @@ using __DotCcEnum_636F6C6F725F5F4F7065726174696F6E = global::Managed.GhosttyVt.c
 using __DotCcEnum_6B697474795F636C6970626F6172645F70726F746F636F6C5F5F537461747573 = global::Managed.GhosttyVt.kitty_clipboard_protocol__Status;
 using __DotCcEnum_6170635F5F50726F746F636F6C = global::Managed.GhosttyVt.apc__Protocol;
 using __DotCcEnum_73656D616E7469635F70726F6D70745F5F436F6D6D616E645F5F416374696F6E = global::Managed.GhosttyVt.semantic_prompt__Command__Action;
-using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633430323464633238 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c4024dc28;
 using __DotCcEnum_70726F6772616D5F7374617475735F5F436F6D6D616E645F546167 = global::Managed.GhosttyVt.program_status__Command_Tag;
 using __DotCcEnum_636F6C6F725F335F5F4B696E645F546167 = global::Managed.GhosttyVt.color_3__Kind_Tag;
 using __DotCcEnum_6373695F5F4572617365446973706C6179 = global::Managed.GhosttyVt.csi__EraseDisplay;
@@ -138,10 +140,10 @@ using __DotCcEnum_6772617068656D655F5F4772617068656D655769647468456666656374 = g
 using __DotCcEnum_6373695F5F45726173654C696E65 = global::Managed.GhosttyVt.csi__EraseLine;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636130376336633233 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_ca07c6c23;
 using __DotCcEnum_506167654C6973745F5F5F5F416E6F6E556E696F6E305F546167 = global::Managed.GhosttyVt.PageList____AnonUnion0_Tag;
+using __DotCcEnum_74797065735F335F5F437572736F725374796C65 = global::Managed.GhosttyVt.types_3__CursorStyle;
 using __DotCcEnum_666D745F5F416C69676E6D656E74 = global::Managed.GhosttyVt.fmt__Alignment;
 using __DotCcEnum_6275696C645F696E666F5F5F4275696C64496E666F = global::Managed.GhosttyVt.build_info__BuildInfo;
 using __DotCcEnum_506167654C6973745F5F496E6372656D656E74616C436F6D7072657373696F6E526573756C74 = global::Managed.GhosttyVt.PageList__IncrementalCompressionResult;
-using __DotCcEnum_7374796C655F5F436F6C6F72546167 = global::Managed.GhosttyVt.style__ColorTag;
 using __DotCcEnum_506167654C6973745F5F56696577706F72745F546167 = global::Managed.GhosttyVt.PageList__Viewport_Tag;
 using __DotCcEnum_496F5F4469725F5F5265616465725F5F5374617465 = global::Managed.GhosttyVt.Io_Dir__Reader__State;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633834366562383534 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c846eb854;
@@ -162,7 +164,6 @@ using __DotCcEnum_506167654C6973745F5F436F6D7072657373696F6E536372617463685F5461
 using __DotCcEnum_53656C656374696F6E5F5F426F756E64735F546167 = global::Managed.GhosttyVt.Selection__Bounds_Tag;
 using __DotCcEnum_636C6970626F6172645F325F5F57726974655F5F526573756C745F546167 = global::Managed.GhosttyVt.clipboard_2__Write__Result_Tag;
 using __DotCcEnum_6F73635F325F5F5465726D696E61746F72 = global::Managed.GhosttyVt.osc_2__Terminator;
-using __DotCcEnum_7465726D696E616C5F5F5465726D696E616C437572736F725374796C65 = global::Managed.GhosttyVt.terminal__TerminalCursorStyle;
 using __DotCcEnum_506167654C6973745F5F506167654974657261746F725F5F4C696D69745F546167 = global::Managed.GhosttyVt.PageList__PageIterator__Limit_Tag;
 using __DotCcEnum_6C616E675F5F456E6469616E = global::Managed.GhosttyVt.lang__Endian;
 using __DotCcEnum_686561705F5F5F5F416E6F6E556E696F6E305F546167 = global::Managed.GhosttyVt.heap____AnonUnion0_Tag;
@@ -180,7 +181,9 @@ using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633332396663356139
 using __DotCcEnum_6170635F5F436F6D6D616E645F546167 = global::Managed.GhosttyVt.apc__Command_Tag;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636433333364643464 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_cd333dd4d;
 using __DotCcEnum_68797065726C696E6B5F5F50616765456E7472795F5F49645F546167 = global::Managed.GhosttyVt.hyperlink__PageEntry__Id_Tag;
+using __DotCcEnum_666F726D61747465725F5F4F7074696F6E = global::Managed.GhosttyVt.formatter__Option;
 using __DotCcEnum_6F73635F5F436F6D6D616E6444617461 = global::Managed.GhosttyVt.osc__CommandData;
+using __DotCcEnum_7465726D696E616C5F5F4F7074696F6E = global::Managed.GhosttyVt.terminal__Option;
 using __DotCcEnum_706167655F5F43656C6C5F5F53656D616E746963436F6E74656E74 = global::Managed.GhosttyVt.page__Cell__SemanticContent;
 using __DotCcEnum_706167655F5F526F775F5F53656D616E74696350726F6D7074 = global::Managed.GhosttyVt.page__Row__SemanticPrompt;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633437333233396563 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c473239ec;
@@ -210,6 +213,7 @@ using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633363643637393664
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633838303663616564 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c8806caed;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633562326163383131 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c5b2ac811;
 using __DotCcEnum_68797065726C696E6B5F5F48797065726C696E6B5F5F49645F546167 = global::Managed.GhosttyVt.hyperlink__Hyperlink__Id_Tag;
+using __DotCcEnum_5465726D696E616C5F5F5072696E74536C6963654D69786564526F775F5F53746F70 = global::Managed.GhosttyVt.Terminal__PrintSliceMixedRow__Stop;
 using __DotCcEnum_635F5F5F5F416E6F6E456E756D31 = global::Managed.GhosttyVt.c____AnonEnum1;
 using __DotCcEnum_666D745F5F43617365 = global::Managed.GhosttyVt.fmt__Case;
 using __DotCcEnum_78745F636865636B73756D5F5F56616C75655F546167 = global::Managed.GhosttyVt.xt_checksum__Value_Tag;
@@ -226,62 +230,1795 @@ using __DotCcEnum_5465726D696E616C5F5F446563636F6C6D4D6F6465 = global::Managed.G
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633262643762326166 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c2bd7b2af;
 using __DotCcEnum_72656E6465725F5F526F7743656C6C7344617461 = global::Managed.GhosttyVt.render__RowCellsData;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636630373331306539 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_cf07310e9;
-using __DotCcEnum_5F5F446F744363547970656465665F34363336323630304243383945323145354234343735414539333242333836343046463531454546393044433731364645303732383746333544313844464434 = global::Managed.GhosttyVt.GhosttyPointTag;
-using __DotCcEnum_5F5F446F744363547970656465665F38453938394341423537343643374443394441454641333130393838363945344542443445423534384635354339323131454534343334343937393039433030 = global::Managed.GhosttyVt.GhosttyTerminalData;
-using __DotCcEnum_5F5F446F744363547970656465665F35424345333530373346314534354637304138443832424132424541383445453036373836383530353132344631313838433532393036363644383545333237 = global::Managed.GhosttyVt.GhosttyCellData;
-using __DotCcEnum_5F5F446F744363547970656465665F43303034443441424233424338313144423537313535393445433345354434323635424239324443303733443239333841413239374231383839424443394333 = global::Managed.GhosttyVt.GhosttyResult;
-using __DotCcEnum_5F5F446F744363547970656465665F34384134363232364635353144443144443032383437454538333644384136373033354239394439463934353844463633383934344137383539413131393341 = global::Managed.GhosttyVt.GhosttyFormatterFormat;
+using __DotCcEnum_5F5F446F744363547970656465665F42343433304439444231373133423442463337353942433732463336343833304138434538304430373237373346423338423245463438354638373034324145 = global::Managed.GhosttyVt.GhosttyResult;
+using __DotCcEnum_5F5F446F744363547970656465665F42393432423136393035383537384536463744353439413132384332363446323836323544433937413445324131363841383533343233333530363945433544 = global::Managed.GhosttyVt.GhosttyPointTag;
+using __DotCcEnum_5F5F446F744363547970656465665F44383133333931433843353335394138414442413938353433363230433636363432353035464446423837373341463337454335383635383333443935394538 = global::Managed.GhosttyVt.GhosttyTerminalData;
+using __DotCcEnum_5F5F446F744363547970656465665F44353335424632413237433246423245304135464634373046434139344436353034454542444646394138463838444636453434333030334643393142303741 = global::Managed.GhosttyVt.GhosttyCellData;
+using __DotCcEnum_5F5F446F744363547970656465665F45313739394335393033333344303646413942333645433635313836453339464242454341414144393434394633453039443837313537424438463246343441 = global::Managed.GhosttyVt.GhosttyFormatterOption;
+using __DotCcEnum_5F5F446F744363547970656465665F45364536453544393039344443313533343543344430414638324245324333354637433942434634364446324233414134383635334135374439413632323638 = global::Managed.GhosttyVt.GhosttyStyleColorTag;
 using __DotCcEnum_446F74636347686F73747479546578745374796C65 = global::Managed.GhosttyVt.DotccGhosttyTextStyle;
-using __DotCcEnum_5F5F446F744363547970656465665F46453531373538343036394442364138303334454138454633344542424634304636383130423745453942424345313931334443444533413633394534443543 = global::Managed.GhosttyVt.GhosttyStyleColorTag;
 using DotCcLiterals = global::Managed.GhosttyVt.GhosttyVtLiterals;
 using DotCcPointers = global::Managed.GhosttyVt.GhosttyVtFunctionPointers;
 
 public static unsafe partial class GhosttyVt
 {
-    public static unsafe CBool formatter_2__PageFormatter_sameBackground__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(page__Cell* a, page__Cell* b)
+    public static unsafe ErrUnion<ulong> formatter_2__PageFormatter_writeCellRun__0_0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter* self, CBool track_points, Io_Writer__Writer* writer, ConstSlice<page__Cell> cells, ushort run_x, ushort run_y, uint run_style_id, ushort? run_hyperlink_id, ulong* blank_cells)
     {
-        if (Cond.B(((CBool)((byte)a->content_tag != (byte)b->content_tag))))
-            return false;
-        return (((int)(byte)a->content_tag) switch { (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.bg_color_palette => ((CBool)(a->content.color_palette.data == b->content.color_palette.data)), (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.bg_color_rgb => meta__eql__page__Cell__RGB__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(a->content.color_rgb, b->content.color_rgb), _ => false });
+        try
+        {
+    byte* __dotcc_array_storage138 = null;
+            quirks____AnonStruct0_assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)((int)((int)(track_points)) == ((CBool)(self->point_map != null)))));
+            int max_encoding_len = 16;
+            if (__dotcc_array_storage138 == null)
+            {
+                byte* __dotcc_array_storage138_new = stackalloc byte[checked(sizeof(byte) * 512)];
+                __dotcc_array_storage138 = __dotcc_array_storage138_new;
+            }
+            byte* buf = (byte*)__dotcc_array_storage138;
+            new global::System.Span<byte>((void*)buf, checked(sizeof(byte) * 512)).Clear();
+            ulong len = 0;
+            ulong pending = *blank_cells;
+            ulong i = 0;
+            for (; Cond.B(((CBool)(i < cells.Len))); i += (ulong)(1))
+            {
+                page__Cell* cell = &cells.Ptr[i];
+                switch ((int)(byte)cell->wide)
+                {
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F57696465.narrow:
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F57696465.wide:
+                        {
+                        }
+                        break;
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F57696465.spacer_head:
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F57696465.spacer_tail:
+                        continue;
+                    default:
+                        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+                }
+                switch ((int)(byte)cell->content_tag)
+                {
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.codepoint:
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.codepoint_grapheme:
+                        {
+                        }
+                        break;
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.bg_color_palette:
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.bg_color_rgb:
+                        goto __loop36_swbrk;
+                    default:
+                        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+                }
+                uint cp = cell->content.codepoint.data;
+                {
+                    if (Cond.B(((CBool)(cp == 0u))))
+                    {
+                        pending += (ulong)(1);
+                        continue;
+                    }
+                    if (Cond.B(((CBool)(Cond.B(((CBool)(cp == 32u))) && Cond.B(self->opts.trim)))))
+                    {
+                        pending += (ulong)(1);
+                        continue;
+                    }
+                }
+                ushort x = (ushort)(run_x + i);
+                if (Cond.B(((CBool)(pending > 0UL))))
+                {
+                    if (Cond.B(track_points))
+                        _ = ErrUnion.Try(formatter_2__PageFormatter_appendBlankPoints__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, ZigMem.OptionalPayload(&self->point_map), pending, x, run_y));
+                    while (Cond.B(((CBool)(pending > 0UL))))
+                    {
+                        if (Cond.B(((CBool)(len == 512UL))))
+                        {
+                            _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new Slice<byte>(buf + 0, (ulong)(len - (ulong)(0)))));
+                            len = 0;
+                        }
+                        ulong n = ZigMath.Min(pending, 512UL - len);
+                        ZigMem.Set<byte>(new Slice<byte>(new Slice<byte>(buf + len, 512UL - (ulong)len).Ptr + 0, (ulong)(n - (ulong)(0))), 32);
+                        len += n;
+                        pending -= n;
+                    }
+                }
+                if (Cond.B(((CBool)(len + 16UL > 512UL))))
+                {
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new Slice<byte>(buf + 0, (ulong)(len - (ulong)(0)))));
+                    len = 0;
+                }
+                ulong cell_bytes = 0;
+                if (Cond.B(((CBool)(cp == 0u))))
+                {
+                    buf[len] = 32;
+                    len += (ulong)(1);
+                    cell_bytes = 1;
+                }
+                else
+                {
+                    cell_bytes = formatter_2__PageFormatter_encodeCodepoint__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buf, &len, cp);
+                    if (Cond.B(((CBool)((byte)cell->content_tag == (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.codepoint_grapheme))))
+                    {
+                        cell_bytes += ErrUnion.Try(formatter_2__PageFormatter_writeGraphemeCps__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, writer, cell, buf, &len));
+                    }
+                }
+                if (Cond.B(track_points))
+                {
+                    formatter_2__PageFormatter__PointMap* map = ZigMem.OptionalPayload(&self->point_map);
+                    ZigErrorUnionZero<Unit> __cf = array_list__Aligned__point__Coordinate_optnull_appendNTimes__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(map->map, map->alloc, new point__Coordinate { x = x, y = run_y }, cell_bytes);
+                    if (Cond.B(__cf.IsErr))
+                    {
+                        return ErrUnion<ulong>.Err(26);
+                    }
+                }
+            }
+            __loop36_swbrk:
+            {
+            }
+            if (Cond.B(((CBool)(len > 0UL))))
+                _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new Slice<byte>(buf + 0, (ulong)(len - (ulong)(0)))));
+            *blank_cells = pending;
+            return ErrUnion<ulong>.Ok(i);
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<ulong>.Err(__e.Code); }
     }
 
 
 
-    public static unsafe PageList__Pin? PageList__pin__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(PageList__PageList* self, point__Point pt)
+    public static unsafe ZigErrorUnionZero<Unit> formatter_2__PageFormatter_writeCell__0_0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter self, Io_Writer__Writer* writer, page__Cell* cell)
     {
-        ushort x = point__Point_coord__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(pt).x;
+        try
+        {
+            if (Cond.B((Cond.B(page__Cell_hasText__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*cell)) ? 0 : 1)))
+            {
+                _ = ErrUnion.Try(Io_Writer__writeByte__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, 32));
+                return ZigErrorUnionZero<Unit>.Ok(default);
+            }
+            _ = ErrUnion.Try(formatter_2__PageFormatter_writeCodepointWithReplacement__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, writer, cell->content.codepoint.data));
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> formatter_2__PageFormatter_writeCell__1_0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter self, Io_Writer__Writer* writer, page__Cell* cell)
+    {
+        try
+        {
+            if (Cond.B((Cond.B(page__Cell_hasText__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*cell)) ? 0 : 1)))
+            {
+                _ = ErrUnion.Try(Io_Writer__writeByte__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, 32));
+                return ZigErrorUnionZero<Unit>.Ok(default);
+            }
+            _ = ErrUnion.Try(formatter_2__PageFormatter_writeCodepointWithReplacement__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, writer, cell->content.codepoint.data));
+            {
+                {
+                    Slice<uint> __s = page__Page_lookupGrapheme__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self.page, cell).Value;
+                    for (ulong __i = 0UL; Cond.B(((CBool)(__i < __s.Len))); __i++)
+                    {
+                        uint cp = __s.Ptr[__i];
+                        {
+                            _ = ErrUnion.Try(formatter_2__PageFormatter_writeCodepointWithReplacement__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, writer, cp));
+                        }
+                    }
+                }
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> formatter_2__PageFormatter_formatHyperlinkClose__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter self, Io_Writer__Writer* writer)
+    {
+        try
+        {
+            ConstSlice<byte> __vcf16 = default(ConstSlice<byte>);
+            return ZigErrorUnionZero<Unit>.Ok(default);
+            ConstSlice<byte> str = __vcf16;
+            _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, str));
+            if (Cond.B(self.point_map.HasValue))
+            {
+                formatter_2__PageFormatter__PointMap* m = ZigMem.OptionalPayload(&self.point_map);
+                {
+                    quirks____AnonStruct0_assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)(m->map->items.Len > 0UL)));
+                    ZigErrorUnionZero<Unit> __cf = array_list__Aligned__point__Coordinate_optnull_ensureUnusedCapacity__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(m->map, m->alloc, str.Len);
+                    if (Cond.B(__cf.IsErr))
+                    {
+                        return ZigErrorUnionZero<Unit>.Err(26);
+                    }
+                    array_list__Aligned__point__Coordinate_optnull_appendNTimesAssumeCapacity__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(m->map, m->map->items.Ptr[m->map->items.Len - 1UL], str.Len);
+                }
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> formatter_2__PageFormatter_formatStyleClose__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter self, Io_Writer__Writer* writer)
+    {
+        try
+        {
+            ConstSlice<byte> __vcf17 = default(ConstSlice<byte>);
+            __vcf17 = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1976 /*"\u001B[0m"*/), 4UL);
+            ConstSlice<byte> str = __vcf17;
+            _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, str));
+            if (Cond.B(self.point_map.HasValue))
+            {
+                formatter_2__PageFormatter__PointMap* m = ZigMem.OptionalPayload(&self.point_map);
+                {
+                    quirks____AnonStruct0_assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)(m->map->items.Len > 0UL)));
+                    ZigErrorUnionZero<Unit> __cf = array_list__Aligned__point__Coordinate_optnull_ensureUnusedCapacity__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(m->map, m->alloc, str.Len);
+                    if (Cond.B(__cf.IsErr))
+                    {
+                        return ZigErrorUnionZero<Unit>.Err(26);
+                    }
+                    array_list__Aligned__point__Coordinate_optnull_appendNTimesAssumeCapacity__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(m->map, m->map->items.Ptr[m->map->items.Len - 1UL], str.Len);
+                }
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ErrUnion<ulong> formatter_2__PageFormatter_writeCellRun__1_1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter* self, CBool track_points, Io_Writer__Writer* writer, ConstSlice<page__Cell> cells, ushort run_x, ushort run_y, uint run_style_id, ushort? run_hyperlink_id, ulong* blank_cells)
+    {
+        try
+        {
+    byte* __dotcc_array_storage139 = null;
+            quirks____AnonStruct0_assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)((int)((int)(track_points)) == ((CBool)(self->point_map != null)))));
+            int max_encoding_len = 16;
+            if (__dotcc_array_storage139 == null)
+            {
+                byte* __dotcc_array_storage139_new = stackalloc byte[checked(sizeof(byte) * 512)];
+                __dotcc_array_storage139 = __dotcc_array_storage139_new;
+            }
+            byte* buf = (byte*)__dotcc_array_storage139;
+            new global::System.Span<byte>((void*)buf, checked(sizeof(byte) * 512)).Clear();
+            ulong len = 0;
+            ulong pending = *blank_cells;
+            ulong i = 0;
+            for (; Cond.B(((CBool)(i < cells.Len))); i += (ulong)(1))
+            {
+                page__Cell* cell = &cells.Ptr[i];
+                switch ((int)(byte)cell->wide)
+                {
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F57696465.narrow:
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F57696465.wide:
+                        {
+                        }
+                        break;
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F57696465.spacer_head:
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F57696465.spacer_tail:
+                        continue;
+                    default:
+                        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+                }
+                switch ((int)(byte)cell->content_tag)
+                {
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.codepoint:
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.codepoint_grapheme:
+                        {
+                        }
+                        break;
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.bg_color_palette:
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.bg_color_rgb:
+                        goto __loop39_swbrk;
+                    default:
+                        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+                }
+                {
+                    if (Cond.B(((CBool)(cell->style_id != run_style_id))))
+                        break;
+                }
+                uint cp = cell->content.codepoint.data;
+                {
+                    if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(cp == 0u))) && Cond.B(((CBool)((byte)cell->wide == (byte)__DotCcEnum_706167655F5F43656C6C5F5F57696465.narrow)))))) && Cond.B(((CBool)(run_style_id == 0u)))))))
+                    {
+                        pending += (ulong)(1);
+                        continue;
+                    }
+                }
+                {
+                    if (Cond.B(cell->hyperlink))
+                    {
+                        if (Cond.B((Cond.B(run_hyperlink_id.HasValue) ? 0 : 1)))
+                        {
+                            break;
+                        }
+                        ushort run_id = run_hyperlink_id.Value;
+                        ushort? __cf = page__Page_lookupHyperlink__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self->page, cell);
+                        if (Cond.B((Cond.B(__cf.HasValue) ? 0 : 1)))
+                        {
+                            break;
+                        }
+                        ushort cell_id = __cf.Value;
+                        if (Cond.B(((CBool)(cell_id != run_id))))
+                            break;
+                    }
+                    else
+                        if (Cond.B(((CBool)(run_hyperlink_id != null))))
+                            break;
+                }
+                ushort x = (ushort)(run_x + i);
+                if (Cond.B(((CBool)(pending > 0UL))))
+                {
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new Slice<byte>(buf + 0, (ulong)(len - (ulong)(0)))));
+                    len = 0;
+                    _ = ErrUnion.Try(formatter_2__PageFormatter_writeBlankStep__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, writer, pending, x, run_y));
+                    pending = 0;
+                }
+                if (Cond.B(((CBool)(pending > 0UL))))
+                {
+                    if (Cond.B(track_points))
+                        _ = ErrUnion.Try(formatter_2__PageFormatter_appendBlankPoints__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, ZigMem.OptionalPayload(&self->point_map), pending, x, run_y));
+                    while (Cond.B(((CBool)(pending > 0UL))))
+                    {
+                        if (Cond.B(((CBool)(len == 512UL))))
+                        {
+                            _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new Slice<byte>(buf + 0, (ulong)(len - (ulong)(0)))));
+                            len = 0;
+                        }
+                        ulong n = ZigMath.Min(pending, 512UL - len);
+                        ZigMem.Set<byte>(new Slice<byte>(new Slice<byte>(buf + len, 512UL - (ulong)len).Ptr + 0, (ulong)(n - (ulong)(0))), 32);
+                        len += n;
+                        pending -= n;
+                    }
+                }
+                if (Cond.B(((CBool)(len + 16UL > 512UL))))
+                {
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new Slice<byte>(buf + 0, (ulong)(len - (ulong)(0)))));
+                    len = 0;
+                }
+                ulong cell_bytes = 0;
+                if (Cond.B(((CBool)(cp == 0u))))
+                {
+                    buf[len] = 32;
+                    len += (ulong)(1);
+                    cell_bytes = 1;
+                }
+                else
+                {
+                    cell_bytes = formatter_2__PageFormatter_encodeCodepoint__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buf, &len, cp);
+                    if (Cond.B(((CBool)((byte)cell->content_tag == (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.codepoint_grapheme))))
+                    {
+                        cell_bytes += ErrUnion.Try(formatter_2__PageFormatter_writeGraphemeCps__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, writer, cell, buf, &len));
+                    }
+                }
+                if (Cond.B(track_points))
+                {
+                    formatter_2__PageFormatter__PointMap* map = ZigMem.OptionalPayload(&self->point_map);
+                    ZigErrorUnionZero<Unit> __cf__1 = array_list__Aligned__point__Coordinate_optnull_appendNTimes__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(map->map, map->alloc, new point__Coordinate { x = x, y = run_y }, cell_bytes);
+                    if (Cond.B(__cf__1.IsErr))
+                    {
+                        return ErrUnion<ulong>.Err(26);
+                    }
+                }
+            }
+            __loop39_swbrk:
+            {
+            }
+            if (Cond.B(((CBool)(len > 0UL))))
+                _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new Slice<byte>(buf + 0, (ulong)(len - (ulong)(0)))));
+            *blank_cells = pending;
+            return ErrUnion<ulong>.Ok(i);
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<ulong>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe ErrUnion<ulong> formatter_2__PageFormatter_writeCellRun__1_0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter* self, CBool track_points, Io_Writer__Writer* writer, ConstSlice<page__Cell> cells, ushort run_x, ushort run_y, uint run_style_id, ushort? run_hyperlink_id, ulong* blank_cells)
+    {
+        try
+        {
+    byte* __dotcc_array_storage140 = null;
+            quirks____AnonStruct0_assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)((int)((int)(track_points)) == ((CBool)(self->point_map != null)))));
+            int max_encoding_len = 16;
+            if (__dotcc_array_storage140 == null)
+            {
+                byte* __dotcc_array_storage140_new = stackalloc byte[checked(sizeof(byte) * 512)];
+                __dotcc_array_storage140 = __dotcc_array_storage140_new;
+            }
+            byte* buf = (byte*)__dotcc_array_storage140;
+            new global::System.Span<byte>((void*)buf, checked(sizeof(byte) * 512)).Clear();
+            ulong len = 0;
+            ulong pending = *blank_cells;
+            ulong i = 0;
+            for (; Cond.B(((CBool)(i < cells.Len))); i += (ulong)(1))
+            {
+                page__Cell* cell = &cells.Ptr[i];
+                switch ((int)(byte)cell->wide)
+                {
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F57696465.narrow:
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F57696465.wide:
+                        {
+                        }
+                        break;
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F57696465.spacer_head:
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F57696465.spacer_tail:
+                        continue;
+                    default:
+                        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+                }
+                switch ((int)(byte)cell->content_tag)
+                {
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.codepoint:
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.codepoint_grapheme:
+                        {
+                        }
+                        break;
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.bg_color_palette:
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.bg_color_rgb:
+                        goto __loop41_swbrk;
+                    default:
+                        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+                }
+                {
+                    if (Cond.B(((CBool)(cell->style_id != run_style_id))))
+                        break;
+                }
+                uint cp = cell->content.codepoint.data;
+                {
+                    if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(cp == 0u))) && Cond.B(((CBool)((byte)cell->wide == (byte)__DotCcEnum_706167655F5F43656C6C5F5F57696465.narrow)))))) && Cond.B(((CBool)(run_style_id == 0u)))))))
+                    {
+                        pending += (ulong)(1);
+                        continue;
+                    }
+                }
+                ushort x = (ushort)(run_x + i);
+                if (Cond.B(((CBool)(pending > 0UL))))
+                {
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new Slice<byte>(buf + 0, (ulong)(len - (ulong)(0)))));
+                    len = 0;
+                    _ = ErrUnion.Try(formatter_2__PageFormatter_writeBlankStep__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, writer, pending, x, run_y));
+                    pending = 0;
+                }
+                if (Cond.B(((CBool)(pending > 0UL))))
+                {
+                    if (Cond.B(track_points))
+                        _ = ErrUnion.Try(formatter_2__PageFormatter_appendBlankPoints__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, ZigMem.OptionalPayload(&self->point_map), pending, x, run_y));
+                    while (Cond.B(((CBool)(pending > 0UL))))
+                    {
+                        if (Cond.B(((CBool)(len == 512UL))))
+                        {
+                            _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new Slice<byte>(buf + 0, (ulong)(len - (ulong)(0)))));
+                            len = 0;
+                        }
+                        ulong n = ZigMath.Min(pending, 512UL - len);
+                        ZigMem.Set<byte>(new Slice<byte>(new Slice<byte>(buf + len, 512UL - (ulong)len).Ptr + 0, (ulong)(n - (ulong)(0))), 32);
+                        len += n;
+                        pending -= n;
+                    }
+                }
+                if (Cond.B(((CBool)(len + 16UL > 512UL))))
+                {
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new Slice<byte>(buf + 0, (ulong)(len - (ulong)(0)))));
+                    len = 0;
+                }
+                ulong cell_bytes = 0;
+                if (Cond.B(((CBool)(cp == 0u))))
+                {
+                    buf[len] = 32;
+                    len += (ulong)(1);
+                    cell_bytes = 1;
+                }
+                else
+                {
+                    cell_bytes = formatter_2__PageFormatter_encodeCodepoint__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buf, &len, cp);
+                    if (Cond.B(((CBool)((byte)cell->content_tag == (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.codepoint_grapheme))))
+                    {
+                        cell_bytes += ErrUnion.Try(formatter_2__PageFormatter_writeGraphemeCps__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, writer, cell, buf, &len));
+                    }
+                }
+                if (Cond.B(track_points))
+                {
+                    formatter_2__PageFormatter__PointMap* map = ZigMem.OptionalPayload(&self->point_map);
+                    ZigErrorUnionZero<Unit> __cf = array_list__Aligned__point__Coordinate_optnull_appendNTimes__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(map->map, map->alloc, new point__Coordinate { x = x, y = run_y }, cell_bytes);
+                    if (Cond.B(__cf.IsErr))
+                    {
+                        return ErrUnion<ulong>.Err(26);
+                    }
+                }
+            }
+            __loop41_swbrk:
+            {
+            }
+            if (Cond.B(((CBool)(len > 0UL))))
+                _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new Slice<byte>(buf + 0, (ulong)(len - (ulong)(0)))));
+            *blank_cells = pending;
+            return ErrUnion<ulong>.Ok(i);
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<ulong>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> formatter_2__PageFormatter_formatHyperlinkClose__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter self, Io_Writer__Writer* writer)
+    {
+        try
+        {
+            ConstSlice<byte> __vcf18 = default(ConstSlice<byte>);
+            __vcf18 = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S364 /*"\u001B]8;;\u001B\\"*/), 7UL);
+            ConstSlice<byte> str = __vcf18;
+            _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, str));
+            if (Cond.B(self.point_map.HasValue))
+            {
+                formatter_2__PageFormatter__PointMap* m = ZigMem.OptionalPayload(&self.point_map);
+                {
+                    quirks____AnonStruct0_assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)(m->map->items.Len > 0UL)));
+                    ZigErrorUnionZero<Unit> __cf = array_list__Aligned__point__Coordinate_optnull_ensureUnusedCapacity__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(m->map, m->alloc, str.Len);
+                    if (Cond.B(__cf.IsErr))
+                    {
+                        return ZigErrorUnionZero<Unit>.Err(26);
+                    }
+                    array_list__Aligned__point__Coordinate_optnull_appendNTimesAssumeCapacity__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(m->map, m->map->items.Ptr[m->map->items.Len - 1UL], str.Len);
+                }
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> formatter_2__PageFormatter_formatStyleOpen__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter self, Io_Writer__Writer* writer, style_2__Style* style)
+    {
+        try
+        {
+            {
+                style_2__Style__VTFormatter formatter = style_2__Style_formatterVt__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(style);
+                formatter.palette = self.opts.palette;
+                _ = ErrUnion.Try(style_2__Style__VTFormatter_format__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter, writer));
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> formatter_2__PageFormatter_formatHyperlinkOpen__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter self, Io_Writer__Writer* writer, hyperlink__PageEntry* link)
+    {
+        try
+        {
+            Slice<byte> uri = size__Offset__u8__Slice_slice____unsigned_charpa4096__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(link->uri, self.page->memory);
+            {
+                hyperlink__PageEntry__Id __un = link->id;
+                switch ((int)__un.__tag)
+                {
+                    case (int)__DotCcEnum_68797065726C696E6B5F5F50616765456E7472795F5F49645F546167.@explicit:
+                        {
+                            size__Offset__u8__Slice id = __un.__payload.@explicit;
+                            _ = ErrUnion.Try(Io_Writer__print__s07cc0760_tuple___unsigned_charpa0___unsigned_charpa0_twu_u__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new global::System.ValueTuple<Slice<byte>, Slice<byte>>(size__Offset__u8__Slice_slice____unsigned_charpa4096__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(id, self.page->memory), uri)));
+                        }
+                        break;
+                    default:
+                        _ = ErrUnion.Try(Io_Writer__print__s2508792b_tuple___unsigned_charpa0_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new global::System.ValueTuple<Slice<byte>>(uri)));
+                        break;
+                }
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ErrUnion<ulong> formatter_2__PageFormatter_hyperlinkOpenLen__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter self, hyperlink__PageEntry* link)
+    {
+        try
+        {
+            ulong __vsw19 = default(ulong);
+            {
+                hyperlink__PageEntry__Id __un = link->id;
+                switch ((int)__un.__tag)
+                {
+                    case (int)__DotCcEnum_68797065726C696E6B5F5F50616765456E7472795F5F49645F546167.@explicit:
+                        {
+                            size__Offset__u8__Slice id = __un.__payload.@explicit;
+                            __vsw19 = id.len + 10UL;
+                        }
+                        break;
+                    default:
+                        __vsw19 = 7;
+                        break;
+                }
+            }
+            return ErrUnion<ulong>.Ok(link->uri.len + __vsw19);
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<ulong>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> formatter_2__PageFormatter_writeCell__0_1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter self, Io_Writer__Writer* writer, page__Cell* cell)
+    {
+        try
+        {
+            if (Cond.B((Cond.B(page__Cell_hasText__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*cell)) ? 0 : 1)))
+            {
+                _ = ErrUnion.Try(Io_Writer__writeByte__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, 32));
+                return ZigErrorUnionZero<Unit>.Ok(default);
+            }
+            _ = ErrUnion.Try(formatter_2__PageFormatter_writeCodepointWithReplacement__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, writer, cell->content.codepoint.data));
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> formatter_2__PageFormatter_writeCell__1_1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter self, Io_Writer__Writer* writer, page__Cell* cell)
+    {
+        try
+        {
+            if (Cond.B((Cond.B(page__Cell_hasText__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*cell)) ? 0 : 1)))
+            {
+                _ = ErrUnion.Try(Io_Writer__writeByte__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, 32));
+                return ZigErrorUnionZero<Unit>.Ok(default);
+            }
+            _ = ErrUnion.Try(formatter_2__PageFormatter_writeCodepointWithReplacement__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, writer, cell->content.codepoint.data));
+            {
+                {
+                    Slice<uint> __s = page__Page_lookupGrapheme__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self.page, cell).Value;
+                    for (ulong __i = 0UL; Cond.B(((CBool)(__i < __s.Len))); __i++)
+                    {
+                        uint cp = __s.Ptr[__i];
+                        {
+                            _ = ErrUnion.Try(formatter_2__PageFormatter_writeCodepointWithReplacement__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, writer, cp));
+                        }
+                    }
+                }
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> formatter_2__PageFormatter_formatStyleClose__2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter self, Io_Writer__Writer* writer)
+    {
+        try
+        {
+            ConstSlice<byte> __vcf20 = default(ConstSlice<byte>);
+            __vcf20 = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S863 /*"</div>"*/), 6UL);
+            ConstSlice<byte> str = __vcf20;
+            _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, str));
+            if (Cond.B(self.point_map.HasValue))
+            {
+                formatter_2__PageFormatter__PointMap* m = ZigMem.OptionalPayload(&self.point_map);
+                {
+                    quirks____AnonStruct0_assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)(m->map->items.Len > 0UL)));
+                    ZigErrorUnionZero<Unit> __cf = array_list__Aligned__point__Coordinate_optnull_ensureUnusedCapacity__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(m->map, m->alloc, str.Len);
+                    if (Cond.B(__cf.IsErr))
+                    {
+                        return ZigErrorUnionZero<Unit>.Err(26);
+                    }
+                    array_list__Aligned__point__Coordinate_optnull_appendNTimesAssumeCapacity__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(m->map, m->map->items.Ptr[m->map->items.Len - 1UL], str.Len);
+                }
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ErrUnion<ulong> formatter_2__PageFormatter_writeCellRun__2_1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter* self, CBool track_points, Io_Writer__Writer* writer, ConstSlice<page__Cell> cells, ushort run_x, ushort run_y, uint run_style_id, ushort? run_hyperlink_id, ulong* blank_cells)
+    {
+        try
+        {
+    byte* __dotcc_array_storage141 = null;
+            quirks____AnonStruct0_assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)((int)((int)(track_points)) == ((CBool)(self->point_map != null)))));
+            int max_encoding_len = 16;
+            if (__dotcc_array_storage141 == null)
+            {
+                byte* __dotcc_array_storage141_new = stackalloc byte[checked(sizeof(byte) * 512)];
+                __dotcc_array_storage141 = __dotcc_array_storage141_new;
+            }
+            byte* buf = (byte*)__dotcc_array_storage141;
+            new global::System.Span<byte>((void*)buf, checked(sizeof(byte) * 512)).Clear();
+            ulong len = 0;
+            ulong pending = *blank_cells;
+            ulong i = 0;
+            for (; Cond.B(((CBool)(i < cells.Len))); i += (ulong)(1))
+            {
+                page__Cell* cell = &cells.Ptr[i];
+                switch ((int)(byte)cell->wide)
+                {
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F57696465.narrow:
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F57696465.wide:
+                        {
+                        }
+                        break;
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F57696465.spacer_head:
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F57696465.spacer_tail:
+                        continue;
+                    default:
+                        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+                }
+                switch ((int)(byte)cell->content_tag)
+                {
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.codepoint:
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.codepoint_grapheme:
+                        {
+                        }
+                        break;
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.bg_color_palette:
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.bg_color_rgb:
+                        goto __loop44_swbrk;
+                    default:
+                        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+                }
+                {
+                    if (Cond.B(((CBool)(cell->style_id != run_style_id))))
+                        break;
+                }
+                uint cp = cell->content.codepoint.data;
+                {
+                    if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(cp == 0u))) && Cond.B(((CBool)((byte)cell->wide == (byte)__DotCcEnum_706167655F5F43656C6C5F5F57696465.narrow)))))) && Cond.B(((CBool)(run_style_id == 0u)))))))
+                    {
+                        pending += (ulong)(1);
+                        continue;
+                    }
+                }
+                {
+                    if (Cond.B(cell->hyperlink))
+                    {
+                        if (Cond.B((Cond.B(run_hyperlink_id.HasValue) ? 0 : 1)))
+                        {
+                            break;
+                        }
+                        ushort run_id = run_hyperlink_id.Value;
+                        ushort? __cf = page__Page_lookupHyperlink__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self->page, cell);
+                        if (Cond.B((Cond.B(__cf.HasValue) ? 0 : 1)))
+                        {
+                            break;
+                        }
+                        ushort cell_id = __cf.Value;
+                        if (Cond.B(((CBool)(cell_id != run_id))))
+                            break;
+                    }
+                    else
+                        if (Cond.B(((CBool)(run_hyperlink_id != null))))
+                            break;
+                }
+                ushort x = (ushort)(run_x + i);
+                if (Cond.B(((CBool)(pending > 0UL))))
+                {
+                    if (Cond.B(track_points))
+                        _ = ErrUnion.Try(formatter_2__PageFormatter_appendBlankPoints__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, ZigMem.OptionalPayload(&self->point_map), pending, x, run_y));
+                    while (Cond.B(((CBool)(pending > 0UL))))
+                    {
+                        if (Cond.B(((CBool)(len == 512UL))))
+                        {
+                            _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new Slice<byte>(buf + 0, (ulong)(len - (ulong)(0)))));
+                            len = 0;
+                        }
+                        ulong n = ZigMath.Min(pending, 512UL - len);
+                        ZigMem.Set<byte>(new Slice<byte>(new Slice<byte>(buf + len, 512UL - (ulong)len).Ptr + 0, (ulong)(n - (ulong)(0))), 32);
+                        len += n;
+                        pending -= n;
+                    }
+                }
+                if (Cond.B(((CBool)(len + 16UL > 512UL))))
+                {
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new Slice<byte>(buf + 0, (ulong)(len - (ulong)(0)))));
+                    len = 0;
+                }
+                ulong cell_bytes = 0;
+                if (Cond.B(((CBool)(cp == 0u))))
+                {
+                    buf[len] = 32;
+                    len += (ulong)(1);
+                    cell_bytes = 1;
+                }
+                else
+                {
+                    cell_bytes = formatter_2__PageFormatter_encodeCodepoint__2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buf, &len, cp);
+                    if (Cond.B(((CBool)((byte)cell->content_tag == (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.codepoint_grapheme))))
+                    {
+                        cell_bytes += ErrUnion.Try(formatter_2__PageFormatter_writeGraphemeCps__2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, writer, cell, buf, &len));
+                    }
+                }
+                if (Cond.B(track_points))
+                {
+                    formatter_2__PageFormatter__PointMap* map = ZigMem.OptionalPayload(&self->point_map);
+                    ZigErrorUnionZero<Unit> __cf__1 = array_list__Aligned__point__Coordinate_optnull_appendNTimes__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(map->map, map->alloc, new point__Coordinate { x = x, y = run_y }, cell_bytes);
+                    if (Cond.B(__cf__1.IsErr))
+                    {
+                        return ErrUnion<ulong>.Err(26);
+                    }
+                }
+            }
+            __loop44_swbrk:
+            {
+            }
+            if (Cond.B(((CBool)(len > 0UL))))
+                _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new Slice<byte>(buf + 0, (ulong)(len - (ulong)(0)))));
+            *blank_cells = pending;
+            return ErrUnion<ulong>.Ok(i);
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<ulong>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe ErrUnion<ulong> formatter_2__PageFormatter_writeCellRun__2_0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter* self, CBool track_points, Io_Writer__Writer* writer, ConstSlice<page__Cell> cells, ushort run_x, ushort run_y, uint run_style_id, ushort? run_hyperlink_id, ulong* blank_cells)
+    {
+        try
+        {
+    byte* __dotcc_array_storage142 = null;
+            quirks____AnonStruct0_assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)((int)((int)(track_points)) == ((CBool)(self->point_map != null)))));
+            int max_encoding_len = 16;
+            if (__dotcc_array_storage142 == null)
+            {
+                byte* __dotcc_array_storage142_new = stackalloc byte[checked(sizeof(byte) * 512)];
+                __dotcc_array_storage142 = __dotcc_array_storage142_new;
+            }
+            byte* buf = (byte*)__dotcc_array_storage142;
+            new global::System.Span<byte>((void*)buf, checked(sizeof(byte) * 512)).Clear();
+            ulong len = 0;
+            ulong pending = *blank_cells;
+            ulong i = 0;
+            for (; Cond.B(((CBool)(i < cells.Len))); i += (ulong)(1))
+            {
+                page__Cell* cell = &cells.Ptr[i];
+                switch ((int)(byte)cell->wide)
+                {
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F57696465.narrow:
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F57696465.wide:
+                        {
+                        }
+                        break;
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F57696465.spacer_head:
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F57696465.spacer_tail:
+                        continue;
+                    default:
+                        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+                }
+                switch ((int)(byte)cell->content_tag)
+                {
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.codepoint:
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.codepoint_grapheme:
+                        {
+                        }
+                        break;
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.bg_color_palette:
+                    case (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.bg_color_rgb:
+                        goto __loop46_swbrk;
+                    default:
+                        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+                }
+                {
+                    if (Cond.B(((CBool)(cell->style_id != run_style_id))))
+                        break;
+                }
+                uint cp = cell->content.codepoint.data;
+                {
+                    if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(cp == 0u))) && Cond.B(((CBool)((byte)cell->wide == (byte)__DotCcEnum_706167655F5F43656C6C5F5F57696465.narrow)))))) && Cond.B(((CBool)(run_style_id == 0u)))))))
+                    {
+                        pending += (ulong)(1);
+                        continue;
+                    }
+                }
+                ushort x = (ushort)(run_x + i);
+                if (Cond.B(((CBool)(pending > 0UL))))
+                {
+                    if (Cond.B(track_points))
+                        _ = ErrUnion.Try(formatter_2__PageFormatter_appendBlankPoints__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, ZigMem.OptionalPayload(&self->point_map), pending, x, run_y));
+                    while (Cond.B(((CBool)(pending > 0UL))))
+                    {
+                        if (Cond.B(((CBool)(len == 512UL))))
+                        {
+                            _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new Slice<byte>(buf + 0, (ulong)(len - (ulong)(0)))));
+                            len = 0;
+                        }
+                        ulong n = ZigMath.Min(pending, 512UL - len);
+                        ZigMem.Set<byte>(new Slice<byte>(new Slice<byte>(buf + len, 512UL - (ulong)len).Ptr + 0, (ulong)(n - (ulong)(0))), 32);
+                        len += n;
+                        pending -= n;
+                    }
+                }
+                if (Cond.B(((CBool)(len + 16UL > 512UL))))
+                {
+                    _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new Slice<byte>(buf + 0, (ulong)(len - (ulong)(0)))));
+                    len = 0;
+                }
+                ulong cell_bytes = 0;
+                if (Cond.B(((CBool)(cp == 0u))))
+                {
+                    buf[len] = 32;
+                    len += (ulong)(1);
+                    cell_bytes = 1;
+                }
+                else
+                {
+                    cell_bytes = formatter_2__PageFormatter_encodeCodepoint__2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buf, &len, cp);
+                    if (Cond.B(((CBool)((byte)cell->content_tag == (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.codepoint_grapheme))))
+                    {
+                        cell_bytes += ErrUnion.Try(formatter_2__PageFormatter_writeGraphemeCps__2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, writer, cell, buf, &len));
+                    }
+                }
+                if (Cond.B(track_points))
+                {
+                    formatter_2__PageFormatter__PointMap* map = ZigMem.OptionalPayload(&self->point_map);
+                    ZigErrorUnionZero<Unit> __cf = array_list__Aligned__point__Coordinate_optnull_appendNTimes__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(map->map, map->alloc, new point__Coordinate { x = x, y = run_y }, cell_bytes);
+                    if (Cond.B(__cf.IsErr))
+                    {
+                        return ErrUnion<ulong>.Err(26);
+                    }
+                }
+            }
+            __loop46_swbrk:
+            {
+            }
+            if (Cond.B(((CBool)(len > 0UL))))
+                _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new Slice<byte>(buf + 0, (ulong)(len - (ulong)(0)))));
+            *blank_cells = pending;
+            return ErrUnion<ulong>.Ok(i);
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<ulong>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> formatter_2__PageFormatter_formatStyleOpen__2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter self, Io_Writer__Writer* writer, style_2__Style* style)
+    {
+        try
+        {
+            {
+                style_2__Style__HtmlFormatter formatter = style_2__Style_formatterHtml__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(style);
+                formatter.palette = self.opts.palette;
+                _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1910 /*"<div style=\"display: inline;"*/), 28UL)));
+                _ = ErrUnion.Try(style_2__Style__HtmlFormatter_format__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter, writer));
+                _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1617 /*"\">"*/), 2UL)));
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> formatter_2__PageFormatter_formatHyperlinkClose__2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter self, Io_Writer__Writer* writer)
+    {
+        try
+        {
+            ConstSlice<byte> __vcf21 = default(ConstSlice<byte>);
+            __vcf21 = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2534 /*"</a>"*/), 4UL);
+            ConstSlice<byte> str = __vcf21;
+            _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, str));
+            if (Cond.B(self.point_map.HasValue))
+            {
+                formatter_2__PageFormatter__PointMap* m = ZigMem.OptionalPayload(&self.point_map);
+                {
+                    quirks____AnonStruct0_assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)(m->map->items.Len > 0UL)));
+                    ZigErrorUnionZero<Unit> __cf = array_list__Aligned__point__Coordinate_optnull_ensureUnusedCapacity__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(m->map, m->alloc, str.Len);
+                    if (Cond.B(__cf.IsErr))
+                    {
+                        return ZigErrorUnionZero<Unit>.Err(26);
+                    }
+                    array_list__Aligned__point__Coordinate_optnull_appendNTimesAssumeCapacity__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(m->map, m->map->items.Ptr[m->map->items.Len - 1UL], str.Len);
+                }
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> formatter_2__PageFormatter_formatHyperlinkOpen__2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter self, Io_Writer__Writer* writer, hyperlink__PageEntry* link)
+    {
+        try
+        {
+            Slice<byte> uri = size__Offset__u8__Slice_slice____unsigned_charpa4096__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(link->uri, self.page->memory);
+            {
+                _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S422 /*"<a href=\""*/), 9UL)));
+                for (ulong __i = 0UL; Cond.B(((CBool)(__i < uri.Len))); __i++)
+                {
+                    byte @byte = uri.Ptr[__i];
+                    _ = ErrUnion.Try(formatter_2__PageFormatter_writeCodepoint__2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, writer, @byte));
+                }
+                _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1617 /*"\">"*/), 2UL)));
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ErrUnion<ulong> formatter_2__PageFormatter_hyperlinkOpenLen__2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter self, hyperlink__PageEntry* link)
+    {
+        try
+        {
+            {
+                Io_Writer__Discarding discarding = Io_Writer__Discarding_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<byte>(null, 0UL));
+                _ = ErrUnion.Try(formatter_2__PageFormatter_formatHyperlinkOpen__2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, &discarding.writer, link));
+                return ErrUnion.OrError(math__cast__u64_u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(discarding.count), 26);
+            }
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<ulong>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> formatter_2__PageFormatter_writeCell__0_2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter self, Io_Writer__Writer* writer, page__Cell* cell)
+    {
+        try
+        {
+            if (Cond.B((Cond.B(page__Cell_hasText__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*cell)) ? 0 : 1)))
+            {
+                _ = ErrUnion.Try(Io_Writer__writeByte__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, 32));
+                return ZigErrorUnionZero<Unit>.Ok(default);
+            }
+            _ = ErrUnion.Try(formatter_2__PageFormatter_writeCodepointWithReplacement__2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, writer, cell->content.codepoint.data));
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> formatter_2__PageFormatter_writeCell__1_2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter self, Io_Writer__Writer* writer, page__Cell* cell)
+    {
+        try
+        {
+            if (Cond.B((Cond.B(page__Cell_hasText__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*cell)) ? 0 : 1)))
+            {
+                _ = ErrUnion.Try(Io_Writer__writeByte__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, 32));
+                return ZigErrorUnionZero<Unit>.Ok(default);
+            }
+            _ = ErrUnion.Try(formatter_2__PageFormatter_writeCodepointWithReplacement__2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, writer, cell->content.codepoint.data));
+            {
+                {
+                    Slice<uint> __s = page__Page_lookupGrapheme__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self.page, cell).Value;
+                    for (ulong __i = 0UL; Cond.B(((CBool)(__i < __s.Len))); __i++)
+                    {
+                        uint cp = __s.Ptr[__i];
+                        {
+                            _ = ErrUnion.Try(formatter_2__PageFormatter_writeCodepointWithReplacement__2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, writer, cp));
+                        }
+                    }
+                }
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ErrUnion<byte> unicode_2__utf8CodepointSequenceLength__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(uint c)
+    {
+        try
+        {
+            if (Cond.B(((CBool)(c < 128u))))
+                return ErrUnion<byte>.Ok((byte)1);
+            if (Cond.B(((CBool)(c < 2048u))))
+                return ErrUnion<byte>.Ok((byte)2);
+            if (Cond.B(((CBool)(c < 65536u))))
+                return ErrUnion<byte>.Ok((byte)3);
+            if (Cond.B(((CBool)(c < 1114112u))))
+                return ErrUnion<byte>.Ok((byte)4);
+            return ErrUnion<byte>.Err(101);
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<byte>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe ulong formatter_2__PageFormatter_encodeCodepoint__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(byte* buf, ulong* len, uint cp)
+    {
+        ulong start = *len;
+        if (Cond.B(((CBool)(cp < 128u))))
+        {
+            (buf)[start] = (byte)cp;
+            *len += (ulong)(1);
+        }
+        else
+        {
+            ErrUnion<byte> __cf = unicode_2__utf8Encode__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(cp, new Slice<byte>(new Slice<byte>(buf + start, 512UL - (ulong)start).Ptr + 0, unchecked((ulong)(4 - 0))));
+            byte __cfv62 = default;
+            if (Cond.B(__cf.IsErr))
+            {
+                byte __blk22 = default(byte);
+                {
+                    ZigMem.CopyForwards<byte>(new Slice<byte>(new Slice<byte>(buf + start, 512UL - (ulong)start).Ptr + 0, unchecked((ulong)(3 - 0))), new ConstSlice<byte>(unicode_2__utf8EncodeComptime__65533__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(), 3UL));
+                    {
+                        __blk22 = 3;
+                        goto __blk22_end;
+                    }
+                }
+                __blk22_end:
+                {
+                }
+                __cfv62 = __blk22;
+            }
+            else
+            {
+                __cfv62 = __cf.Value;
+            }
+            byte __anf63 = __cfv62;
+            *len += __anf63;
+        }
+        return *len - start;
+    }
+
+
+
+    public static unsafe ErrUnion<ulong> formatter_2__PageFormatter_writeGraphemeCps__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter* self, Io_Writer__Writer* writer, page__Cell* cell, byte* buf, ulong* len)
+    {
+        try
+        {
+            int max_encoding_len = 16;
+            ulong bytes = 0;
+            {
+                Slice<uint> __s = page__Page_lookupGrapheme__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self->page, cell).Value;
+                for (ulong __i = 0UL; Cond.B(((CBool)(__i < __s.Len))); __i++)
+                {
+                    uint gcp = __s.Ptr[__i];
+                    {
+                        if (Cond.B(((CBool)(*len + 16UL > 512UL))))
+                        {
+                            _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new Slice<byte>(buf + 0, (ulong)(*len - (ulong)(0)))));
+                            *len = 0;
+                        }
+                        bytes += formatter_2__PageFormatter_encodeCodepoint__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buf, len, gcp);
+                    }
+                }
+            }
+            return ErrUnion<ulong>.Ok(bytes);
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<ulong>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> formatter_2__PageFormatter_writeCodepointWithReplacement__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter self, Io_Writer__Writer* writer, uint codepoint)
+    {
+        try
+        {
+    byte* __dotcc_array_storage143 = null;
+            formatter_2__CodepointMap__Replacement? __blk23 = default(formatter_2__CodepointMap__Replacement?);
+            {
+                multi_array_list__MultiArrayList__formatter_2__CodepointMap? __cf = self.opts.codepoint_map;
+                if (Cond.B((Cond.B(__cf.HasValue) ? 0 : 1)))
+                {
+                    {
+                        __blk23 = default(formatter_2__CodepointMap__Replacement?);
+                        goto __blk23_end;
+                    }
+                }
+                multi_array_list__MultiArrayList__formatter_2__CodepointMap map = __cf.Value;
+                Slice<uint> items = multi_array_list__MultiArrayList__formatter_2__CodepointMap_items__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(map);
+                for (ulong forward_i = 0; Cond.B(((CBool)(forward_i < (ulong)items.Len))); forward_i++)
+                {
+                    ulong i = items.Len - forward_i - 1UL;
+                    if (__dotcc_array_storage143 == null)
+                    {
+                        byte* __dotcc_array_storage143_new = stackalloc byte[checked(sizeof(uint) * 2)];
+                        __dotcc_array_storage143 = __dotcc_array_storage143_new;
+                    }
+                    uint* range = (uint*)__dotcc_array_storage143;
+                    new global::System.Span<byte>((void*)range, checked(sizeof(uint) * 2)).Clear();
+                    ZigMem.CopyForwards<uint>(new Slice<uint>(range, 2UL), new ConstSlice<uint>(items.Ptr + i * 2, 2UL));
+                    if (Cond.B(((CBool)(Cond.B(((CBool)(range[0] <= codepoint))) && Cond.B(((CBool)(codepoint <= range[1])))))))
+                    {
+                        Slice<formatter_2__CodepointMap__Replacement> replacements = multi_array_list__MultiArrayList__formatter_2__CodepointMap_items__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(map);
+                        {
+                            __blk23 = replacements.Ptr[i];
+                            goto __blk23_end;
+                        }
+                    }
+                }
+                {
+                    __blk23 = default(formatter_2__CodepointMap__Replacement?);
+                    goto __blk23_end;
+                }
+            }
+            __blk23_end:
+            {
+            }
+            formatter_2__CodepointMap__Replacement? r_ = __blk23;
+            if (Cond.B((Cond.B(r_.HasValue) ? 0 : 1)))
+            {
+                return ZigErrorUnionZero<Unit>.Ok(ErrUnion.Try(formatter_2__PageFormatter_writeCodepoint__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, writer, codepoint)));
+            }
+            formatter_2__CodepointMap__Replacement r = r_.Value;
+            switch ((int)r.__tag)
+            {
+                case (int)__DotCcEnum_666F726D61747465725F325F5F436F6465706F696E744D61705F5F5265706C6163656D656E745F546167.codepoint:
+                    {
+                        uint v = r.__payload.codepoint;
+                        _ = ErrUnion.Try(formatter_2__PageFormatter_writeCodepoint__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, writer, v));
+                    }
+                    break;
+                default:
+                    {
+                        ConstSlice<byte> s = r.__payload.@string;
+                        ErrUnion<unicode_2__Utf8View> __cf__1 = unicode_2__Utf8View_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(s);
+                        if (Cond.B(__cf__1.IsErr))
+                        {
+                            throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+                        }
+                        unicode_2__Utf8View view = __cf__1.Value;
+                        unicode_2__Utf8Iterator it = unicode_2__Utf8View_iterator__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(view);
+                        while (true)
+                        {
+                            uint? __cap = unicode_2__Utf8Iterator_nextCodepoint__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&it);
+                            if (Cond.B(__cap.HasValue))
+                            {
+                                uint cp = __cap.Value;
+                                _ = ErrUnion.Try(formatter_2__PageFormatter_writeCodepoint__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, writer, cp));
+                            }
+                            else
+                                break;
+                        }
+                    }
+                    break;
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ulong formatter_2__PageFormatter_encodeCodepoint__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(byte* buf, ulong* len, uint cp)
+    {
+        ulong start = *len;
+        if (Cond.B(((CBool)(cp < 128u))))
+        {
+            (buf)[start] = (byte)cp;
+            *len += (ulong)(1);
+        }
+        else
+        {
+            ErrUnion<byte> __cf = unicode_2__utf8Encode__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(cp, new Slice<byte>(new Slice<byte>(buf + start, 512UL - (ulong)start).Ptr + 0, unchecked((ulong)(4 - 0))));
+            byte __cfv64 = default;
+            if (Cond.B(__cf.IsErr))
+            {
+                byte __blk24 = default(byte);
+                {
+                    ZigMem.CopyForwards<byte>(new Slice<byte>(new Slice<byte>(buf + start, 512UL - (ulong)start).Ptr + 0, unchecked((ulong)(3 - 0))), new ConstSlice<byte>(unicode_2__utf8EncodeComptime__65533__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(), 3UL));
+                    {
+                        __blk24 = 3;
+                        goto __blk24_end;
+                    }
+                }
+                __blk24_end:
+                {
+                }
+                __cfv64 = __blk24;
+            }
+            else
+            {
+                __cfv64 = __cf.Value;
+            }
+            byte __anf65 = __cfv64;
+            *len += __anf65;
+        }
+        return *len - start;
+    }
+
+
+
+    public static unsafe ErrUnion<ulong> formatter_2__PageFormatter_writeGraphemeCps__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter* self, Io_Writer__Writer* writer, page__Cell* cell, byte* buf, ulong* len)
+    {
+        try
+        {
+            int max_encoding_len = 16;
+            ulong bytes = 0;
+            {
+                Slice<uint> __s = page__Page_lookupGrapheme__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self->page, cell).Value;
+                for (ulong __i = 0UL; Cond.B(((CBool)(__i < __s.Len))); __i++)
+                {
+                    uint gcp = __s.Ptr[__i];
+                    {
+                        if (Cond.B(((CBool)(*len + 16UL > 512UL))))
+                        {
+                            _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new Slice<byte>(buf + 0, (ulong)(*len - (ulong)(0)))));
+                            *len = 0;
+                        }
+                        bytes += formatter_2__PageFormatter_encodeCodepoint__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buf, len, gcp);
+                    }
+                }
+            }
+            return ErrUnion<ulong>.Ok(bytes);
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<ulong>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> formatter_2__PageFormatter_writeCodepointWithReplacement__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter self, Io_Writer__Writer* writer, uint codepoint)
+    {
+        try
+        {
+    byte* __dotcc_array_storage144 = null;
+            formatter_2__CodepointMap__Replacement? __blk25 = default(formatter_2__CodepointMap__Replacement?);
+            {
+                multi_array_list__MultiArrayList__formatter_2__CodepointMap? __cf = self.opts.codepoint_map;
+                if (Cond.B((Cond.B(__cf.HasValue) ? 0 : 1)))
+                {
+                    {
+                        __blk25 = default(formatter_2__CodepointMap__Replacement?);
+                        goto __blk25_end;
+                    }
+                }
+                multi_array_list__MultiArrayList__formatter_2__CodepointMap map = __cf.Value;
+                Slice<uint> items = multi_array_list__MultiArrayList__formatter_2__CodepointMap_items__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(map);
+                for (ulong forward_i = 0; Cond.B(((CBool)(forward_i < (ulong)items.Len))); forward_i++)
+                {
+                    ulong i = items.Len - forward_i - 1UL;
+                    if (__dotcc_array_storage144 == null)
+                    {
+                        byte* __dotcc_array_storage144_new = stackalloc byte[checked(sizeof(uint) * 2)];
+                        __dotcc_array_storage144 = __dotcc_array_storage144_new;
+                    }
+                    uint* range = (uint*)__dotcc_array_storage144;
+                    new global::System.Span<byte>((void*)range, checked(sizeof(uint) * 2)).Clear();
+                    ZigMem.CopyForwards<uint>(new Slice<uint>(range, 2UL), new ConstSlice<uint>(items.Ptr + i * 2, 2UL));
+                    if (Cond.B(((CBool)(Cond.B(((CBool)(range[0] <= codepoint))) && Cond.B(((CBool)(codepoint <= range[1])))))))
+                    {
+                        Slice<formatter_2__CodepointMap__Replacement> replacements = multi_array_list__MultiArrayList__formatter_2__CodepointMap_items__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(map);
+                        {
+                            __blk25 = replacements.Ptr[i];
+                            goto __blk25_end;
+                        }
+                    }
+                }
+                {
+                    __blk25 = default(formatter_2__CodepointMap__Replacement?);
+                    goto __blk25_end;
+                }
+            }
+            __blk25_end:
+            {
+            }
+            formatter_2__CodepointMap__Replacement? r_ = __blk25;
+            if (Cond.B((Cond.B(r_.HasValue) ? 0 : 1)))
+            {
+                return ZigErrorUnionZero<Unit>.Ok(ErrUnion.Try(formatter_2__PageFormatter_writeCodepoint__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, writer, codepoint)));
+            }
+            formatter_2__CodepointMap__Replacement r = r_.Value;
+            switch ((int)r.__tag)
+            {
+                case (int)__DotCcEnum_666F726D61747465725F325F5F436F6465706F696E744D61705F5F5265706C6163656D656E745F546167.codepoint:
+                    {
+                        uint v = r.__payload.codepoint;
+                        _ = ErrUnion.Try(formatter_2__PageFormatter_writeCodepoint__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, writer, v));
+                    }
+                    break;
+                default:
+                    {
+                        ConstSlice<byte> s = r.__payload.@string;
+                        ErrUnion<unicode_2__Utf8View> __cf__1 = unicode_2__Utf8View_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(s);
+                        if (Cond.B(__cf__1.IsErr))
+                        {
+                            throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+                        }
+                        unicode_2__Utf8View view = __cf__1.Value;
+                        unicode_2__Utf8Iterator it = unicode_2__Utf8View_iterator__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(view);
+                        while (true)
+                        {
+                            uint? __cap = unicode_2__Utf8Iterator_nextCodepoint__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&it);
+                            if (Cond.B(__cap.HasValue))
+                            {
+                                uint cp = __cap.Value;
+                                _ = ErrUnion.Try(formatter_2__PageFormatter_writeCodepoint__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, writer, cp));
+                            }
+                            else
+                                break;
+                        }
+                    }
+                    break;
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ulong formatter_2__PageFormatter_encodeCodepoint__2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(byte* buf, ulong* len, uint cp)
+    {
+        ulong start = *len;
+        {
+            ConstSlice<byte>? esc = ((cp) switch { 60 => new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3049 /*"&lt;"*/), 4UL), 62 => new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1813 /*"&gt;"*/), 4UL), 38 => new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3028 /*"&amp;"*/), 5UL), 34 => new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2350 /*"&quot;"*/), 6UL), 39 => new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S130 /*"&#39;"*/), 5UL), _ => default(ConstSlice<byte>?) });
+            if (Cond.B(esc.HasValue))
+            {
+                ConstSlice<byte> s = esc.Value;
+                {
+                    ZigMem.CopyForwards<byte>(new Slice<byte>(new Slice<byte>(buf + start, 512UL - (ulong)start).Ptr + 0, (ulong)(s.Len - (ulong)(0))), s);
+                    *len += s.Len;
+                    goto __blk56_brk;
+                }
+            }
+            if (Cond.B(((CBool)(cp < 128u))))
+            {
+                (buf)[start] = (byte)cp;
+                *len += (ulong)(1);
+                goto __blk56_brk;
+            }
+            ZigMem.CopyForwards<byte>(new Slice<byte>(new Slice<byte>(buf + start, 512UL - (ulong)start).Ptr + 0, unchecked((ulong)(2 - 0))), new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2810 /*"&#"*/), 2UL));
+            *len += (ulong)(2);
+            *len += fastprint__printDecimal__u21__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<byte>(buf + *len, 512UL - (ulong)(*len)), cp);
+            (buf)[*len] = 59;
+            *len += (ulong)(1);
+        }
+        __blk56_brk:
+        {
+        }
+        return *len - start;
+    }
+
+
+
+    public static unsafe ErrUnion<ulong> formatter_2__PageFormatter_writeGraphemeCps__2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter* self, Io_Writer__Writer* writer, page__Cell* cell, byte* buf, ulong* len)
+    {
+        try
+        {
+            int max_encoding_len = 16;
+            ulong bytes = 0;
+            {
+                Slice<uint> __s = page__Page_lookupGrapheme__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self->page, cell).Value;
+                for (ulong __i = 0UL; Cond.B(((CBool)(__i < __s.Len))); __i++)
+                {
+                    uint gcp = __s.Ptr[__i];
+                    {
+                        if (Cond.B(((CBool)(*len + 16UL > 512UL))))
+                        {
+                            _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new Slice<byte>(buf + 0, (ulong)(*len - (ulong)(0)))));
+                            *len = 0;
+                        }
+                        bytes += formatter_2__PageFormatter_encodeCodepoint__2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buf, len, gcp);
+                    }
+                }
+            }
+            return ErrUnion<ulong>.Ok(bytes);
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<ulong>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> formatter_2__PageFormatter_writeCodepoint__2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter self, Io_Writer__Writer* writer, uint codepoint)
+    {
+        try
+        {
+            ;
+            {
+                switch (codepoint)
+                {
+                    case 60:
+                        _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3049 /*"&lt;"*/), 4UL)));
+                        break;
+                    case 62:
+                        _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1813 /*"&gt;"*/), 4UL)));
+                        break;
+                    case 38:
+                        _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3028 /*"&amp;"*/), 5UL)));
+                        break;
+                    case 34:
+                        _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2350 /*"&quot;"*/), 6UL)));
+                        break;
+                    case 39:
+                        _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S130 /*"&#39;"*/), 5UL)));
+                        break;
+                    default:
+                        {
+                            if (Cond.B(((CBool)(codepoint < 128u))))
+                            {
+                                _ = ErrUnion.Try(Io_Writer__writeByte__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, (byte)codepoint));
+                            }
+                            else
+                            {
+                                byte* buf = stackalloc byte[16];
+                                ZigMem.CopyForwards<byte>(new Slice<byte>(buf + 0, unchecked((ulong)(2 - 0))), new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2810 /*"&#"*/), 2UL));
+                                ulong len = 2UL + fastprint__printDecimal__u21__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<byte>(buf + 2, unchecked(16UL - (ulong)2)), codepoint);
+                                buf[len] = 59;
+                                len += (ulong)(1);
+                                _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, new Slice<byte>(buf + 0, (ulong)(len - (ulong)(0)))));
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> formatter_2__PageFormatter_writeCodepointWithReplacement__2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter self, Io_Writer__Writer* writer, uint codepoint)
+    {
+        try
+        {
+    byte* __dotcc_array_storage145 = null;
+            formatter_2__CodepointMap__Replacement? __blk26 = default(formatter_2__CodepointMap__Replacement?);
+            {
+                multi_array_list__MultiArrayList__formatter_2__CodepointMap? __cf = self.opts.codepoint_map;
+                if (Cond.B((Cond.B(__cf.HasValue) ? 0 : 1)))
+                {
+                    {
+                        __blk26 = default(formatter_2__CodepointMap__Replacement?);
+                        goto __blk26_end;
+                    }
+                }
+                multi_array_list__MultiArrayList__formatter_2__CodepointMap map = __cf.Value;
+                Slice<uint> items = multi_array_list__MultiArrayList__formatter_2__CodepointMap_items__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(map);
+                for (ulong forward_i = 0; Cond.B(((CBool)(forward_i < (ulong)items.Len))); forward_i++)
+                {
+                    ulong i = items.Len - forward_i - 1UL;
+                    if (__dotcc_array_storage145 == null)
+                    {
+                        byte* __dotcc_array_storage145_new = stackalloc byte[checked(sizeof(uint) * 2)];
+                        __dotcc_array_storage145 = __dotcc_array_storage145_new;
+                    }
+                    uint* range = (uint*)__dotcc_array_storage145;
+                    new global::System.Span<byte>((void*)range, checked(sizeof(uint) * 2)).Clear();
+                    ZigMem.CopyForwards<uint>(new Slice<uint>(range, 2UL), new ConstSlice<uint>(items.Ptr + i * 2, 2UL));
+                    if (Cond.B(((CBool)(Cond.B(((CBool)(range[0] <= codepoint))) && Cond.B(((CBool)(codepoint <= range[1])))))))
+                    {
+                        Slice<formatter_2__CodepointMap__Replacement> replacements = multi_array_list__MultiArrayList__formatter_2__CodepointMap_items__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(map);
+                        {
+                            __blk26 = replacements.Ptr[i];
+                            goto __blk26_end;
+                        }
+                    }
+                }
+                {
+                    __blk26 = default(formatter_2__CodepointMap__Replacement?);
+                    goto __blk26_end;
+                }
+            }
+            __blk26_end:
+            {
+            }
+            formatter_2__CodepointMap__Replacement? r_ = __blk26;
+            if (Cond.B((Cond.B(r_.HasValue) ? 0 : 1)))
+            {
+                return ZigErrorUnionZero<Unit>.Ok(ErrUnion.Try(formatter_2__PageFormatter_writeCodepoint__2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, writer, codepoint)));
+            }
+            formatter_2__CodepointMap__Replacement r = r_.Value;
+            switch ((int)r.__tag)
+            {
+                case (int)__DotCcEnum_666F726D61747465725F325F5F436F6465706F696E744D61705F5F5265706C6163656D656E745F546167.codepoint:
+                    {
+                        uint v = r.__payload.codepoint;
+                        _ = ErrUnion.Try(formatter_2__PageFormatter_writeCodepoint__2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, writer, v));
+                    }
+                    break;
+                default:
+                    {
+                        ConstSlice<byte> s = r.__payload.@string;
+                        ErrUnion<unicode_2__Utf8View> __cf__1 = unicode_2__Utf8View_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(s);
+                        if (Cond.B(__cf__1.IsErr))
+                        {
+                            throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+                        }
+                        unicode_2__Utf8View view = __cf__1.Value;
+                        unicode_2__Utf8Iterator it = unicode_2__Utf8View_iterator__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(view);
+                        while (true)
+                        {
+                            uint? __cap = unicode_2__Utf8Iterator_nextCodepoint__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&it);
+                            if (Cond.B(__cap.HasValue))
+                            {
+                                uint cp = __cap.Value;
+                                _ = ErrUnion.Try(formatter_2__PageFormatter_writeCodepoint__2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, writer, cp));
+                            }
+                            else
+                                break;
+                        }
+                    }
+                    break;
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> formatter_2__PageFormatter_writeCodepoint__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter self, Io_Writer__Writer* writer, uint codepoint)
+    {
+        try
+        {
+            ;
+            _ = ErrUnion.Try(Io_Writer__printUnicodeCodepoint__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, codepoint));
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> formatter_2__PageFormatter_writeCodepoint__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter self, Io_Writer__Writer* writer, uint codepoint)
+    {
+        try
+        {
+            ;
+            _ = ErrUnion.Try(Io_Writer__printUnicodeCodepoint__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, codepoint));
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> formatter_2__PageFormatter_appendBlankPoints__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter* self, formatter_2__PageFormatter__PointMap* map, ulong count, ushort x, ushort y)
+    {
+        try
+        {
+            ZigErrorUnionZero<Unit> __cf = array_list__Aligned__point__Coordinate_optnull_ensureUnusedCapacity__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(map->map, map->alloc, count);
+            if (Cond.B(__cf.IsErr))
+            {
+                return ZigErrorUnionZero<Unit>.Err(26);
+            }
+            ulong remaining = count;
+            ushort blank_x = x;
+            ushort blank_y = y;
+            for (; Cond.B(((CBool)(remaining > 0UL))); remaining -= (ulong)(1))
+            {
+                if (Cond.B(((CBool)(blank_x > (ushort)0))))
+                {
+                    blank_x -= (ushort)(1);
+                }
+                else
+                    if (Cond.B(((CBool)(blank_y > (ushort)0))))
+                    {
+                        blank_y -= (ushort)(1);
+                        blank_x = (ushort)(self->page->size.cols - (ushort)1);
+                    }
+                    else
+                    {
+                        blank_x = 0;
+                        blank_y = 0;
+                    }
+                array_list__Aligned__point__Coordinate_optnull_appendAssumeCapacity__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(map->map, new point__Coordinate { x = blank_x, y = blank_y });
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe CBool formatter_2__PageFormatter_hasBackgroundAny__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ConstSlice<page__Cell> cells)
+    {
+        for (ulong __i = 0UL; Cond.B(((CBool)(__i < cells.Len))); __i++)
+        {
+            page__Cell* cell = &cells.Ptr[__i];
+            switch ((int)(byte)cell->content_tag)
+            {
+                case (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.bg_color_palette:
+                case (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.bg_color_rgb:
+                    return true;
+                case (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.codepoint:
+                case (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.codepoint_grapheme:
+                    {
+                    }
+                    break;
+                default:
+                    throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+            }
+        }
+        return false;
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> formatter_2__PageFormatter_writeBlankStep__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter* self, Io_Writer__Writer* writer, ulong count, ushort x, ushort y)
+    {
+        try
+        {
+            byte* buf = stackalloc byte[32];
+            ErrUnion<Slice<byte>> __cf = fmt__bufPrint__sa081114b_tuple_u64_tw64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<byte>(buf, 32UL), new global::System.ValueTuple<ulong>(count));
+            if (Cond.B(__cf.IsErr))
+            {
+                throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+            }
+            Slice<byte> seq = __cf.Value;
+            _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(writer, seq));
+            if (Cond.B(self->point_map.HasValue))
+            {
+                formatter_2__PageFormatter__PointMap* map = ZigMem.OptionalPayload(&self->point_map);
+                ZigErrorUnionZero<Unit> __cf__1 = array_list__Aligned__point__Coordinate_optnull_appendNTimes__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(map->map, map->alloc, new point__Coordinate { x = (ushort)(x - (ushort)(ushort)count), y = y }, seq.Len);
+                if (Cond.B(__cf__1.IsErr))
+                {
+                    return ZigErrorUnionZero<Unit>.Err(26);
+                }
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe style_2__Style formatter_2__PageFormatter_cellStyle__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(formatter_2__PageFormatter* self, page__Cell* cell)
+    {
+        byte* __dotcc_aligned___vcf27_bytes = stackalloc byte[sizeof(style_2__Style) + 15];
+        style_2__Style* __dotcc_aligned___vcf27 = (style_2__Style*)(((nuint)__dotcc_aligned___vcf27_bytes + 15) & ~(nuint)15);
+        *__dotcc_aligned___vcf27 = default(style_2__Style);
+        switch ((int)(byte)cell->content_tag)
+        {
+            case (byte)(page__Cell__ContentTag)0u:
+                (*__dotcc_aligned___vcf27) = (Cond.B((Cond.B(page__Cell_hasStyling__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*cell)) ? 0 : 1)) ? new style_2__Style { fg_color = new style_2__Style__Color { tag = __DotCcEnum_7374796C655F325F5F5374796C655F5F436F6C6F725F5F546167.none, data = 0 }, bg_color = new style_2__Style__Color { tag = __DotCcEnum_7374796C655F325F5F5374796C655F5F436F6C6F725F5F546167.none, data = 0 }, underline_color = new style_2__Style__Color { tag = __DotCcEnum_7374796C655F325F5F5374796C655F5F436F6C6F725F5F546167.none, data = 0 }, flags = new style_2__Style__Flags { bold = false, italic = false, faint = false, blink = false, inverse = false, invisible = false, strikethrough = false, overline = false, underline = __DotCcEnum_7367725F5F4174747269627574655F5F556E6465726C696E65.none, _padding = 0 }, _padding = 0 } : *ref_counted_set__RefCountedSet__style_2__Style_u16_u16_style_2____AnonStruct0_get____unsigned_charpa4096__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->page->styles, self->page->memory, cell->style_id));
+                break;
+            case (byte)(page__Cell__ContentTag)1u:
+                (*__dotcc_aligned___vcf27) = (Cond.B((Cond.B(page__Cell_hasStyling__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*cell)) ? 0 : 1)) ? new style_2__Style { fg_color = new style_2__Style__Color { tag = __DotCcEnum_7374796C655F325F5F5374796C655F5F436F6C6F725F5F546167.none, data = 0 }, bg_color = new style_2__Style__Color { tag = __DotCcEnum_7374796C655F325F5F5374796C655F5F436F6C6F725F5F546167.none, data = 0 }, underline_color = new style_2__Style__Color { tag = __DotCcEnum_7374796C655F325F5F5374796C655F5F436F6C6F725F5F546167.none, data = 0 }, flags = new style_2__Style__Flags { bold = false, italic = false, faint = false, blink = false, inverse = false, invisible = false, strikethrough = false, overline = false, underline = __DotCcEnum_7367725F5F4174747269627574655F5F556E6465726C696E65.none, _padding = 0 }, _padding = 0 } : *ref_counted_set__RefCountedSet__style_2__Style_u16_u16_style_2____AnonStruct0_get____unsigned_charpa4096__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->page->styles, self->page->memory, cell->style_id));
+                break;
+            case (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.bg_color_palette:
+                {
+                    (*__dotcc_aligned___vcf27) = new style_2__Style { bg_color = style_2__Style__Color_palette__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(cell->content.color_palette.data), fg_color = new style_2__Style__Color { tag = __DotCcEnum_7374796C655F325F5F5374796C655F5F436F6C6F725F5F546167.none, data = 0 }, underline_color = new style_2__Style__Color { tag = __DotCcEnum_7374796C655F325F5F5374796C655F5F436F6C6F725F5F546167.none, data = 0 }, flags = new style_2__Style__Flags { bold = false, italic = false, faint = false, blink = false, inverse = false, invisible = false, strikethrough = false, overline = false, underline = __DotCcEnum_7367725F5F4174747269627574655F5F556E6465726C696E65.none, _padding = 0 }, _padding = 0 };
+                    break;
+                }
+            case (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.bg_color_rgb:
+                {
+                    (*__dotcc_aligned___vcf27) = new style_2__Style { bg_color = style_2__Style__Color_rgb__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new color_2__RGB { r = cell->content.color_rgb.r, g = cell->content.color_rgb.g, b = cell->content.color_rgb.b }), fg_color = new style_2__Style__Color { tag = __DotCcEnum_7374796C655F325F5F5374796C655F5F436F6C6F725F5F546167.none, data = 0 }, underline_color = new style_2__Style__Color { tag = __DotCcEnum_7374796C655F325F5F5374796C655F5F436F6C6F725F5F546167.none, data = 0 }, flags = new style_2__Style__Flags { bold = false, italic = false, faint = false, blink = false, inverse = false, invisible = false, strikethrough = false, overline = false, underline = __DotCcEnum_7367725F5F4174747269627574655F5F556E6465726C696E65.none, _padding = 0 }, _padding = 0 };
+                    break;
+                }
+        }
+        return (*__dotcc_aligned___vcf27);
+    }
+
+
+
+    public static unsafe CBool formatter_2__PageFormatter_sameBackground__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(page__Cell* a, page__Cell* b)
+    {
+        if (Cond.B(((CBool)((byte)a->content_tag != (byte)b->content_tag))))
+            return false;
+        return (((int)(byte)a->content_tag) switch { (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.bg_color_palette => ((CBool)(a->content.color_palette.data == b->content.color_palette.data)), (byte)__DotCcEnum_706167655F5F43656C6C5F5F436F6E74656E74546167.bg_color_rgb => meta__eql__page__Cell__RGB__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(a->content.color_rgb, b->content.color_rgb), _ => false });
+    }
+
+
+
+    public static unsafe PageList__Pin? PageList__pin__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(PageList__PageList* self, point__Point pt)
+    {
+        ushort x = point__Point_coord__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(pt).x;
         if (Cond.B(((CBool)(x >= self->cols))))
-            return null;
-        PageList__Pin? __cf = PageList__Pin_down__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(PageList__getTopLeft__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, pt.__tag), point__Point_coord__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(pt).y);
+            return default(PageList__Pin?);
+        PageList__Pin? __cf = PageList__Pin_down__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(PageList__getTopLeft__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, pt.__tag), point__Point_coord__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(pt).y);
         if (Cond.B((Cond.B(__cf.HasValue) ? 0 : 1)))
         {
-            return null;
+            return default(PageList__Pin?);
         }
         PageList__Pin p = __cf.Value;
-        if (Cond.B(((CBool)(x >= PageList__Node_cols__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(p.node)))))
-            return null;
+        if (Cond.B(((CBool)(x >= PageList__Node_cols__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(p.node)))))
+            return default(PageList__Pin?);
         p.x = x;
         return p;
     }
 
 
 
-    public static unsafe point__Point? PageList__pointFromPin__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(PageList__PageList* self, enum__Enum__c1cd10fd6_cb7bf9e86 tag, PageList__Pin p)
+    public static unsafe point__Point? PageList__pointFromPin__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(PageList__PageList* self, enum__Enum__c1cd10fd6_cb7bf9e86 tag, PageList__Pin p)
     {
-        PageList__Pin tl = PageList__getTopLeft__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, tag);
+        PageList__Pin tl = PageList__getTopLeft__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, tag);
         point__Coordinate coord = new point__Coordinate { x = p.x, y = 0 };
         if (Cond.B(((CBool)(p.node == tl.node))))
         {
             if (Cond.B(((CBool)(tl.y > p.y))))
-                return null;
-            coord.y = (uint)(p.y - tl.y);
+                return default(point__Point?);
+            coord.y = (ushort)(p.y - tl.y);
         }
         else
         {
-            ErrUnion<uint> __cf = math__add__u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(coord.y, (uint)(PageList__Node_rows__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(tl.node) - tl.y));
+            ErrUnion<uint> __cf = math__add__u32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(coord.y, (ushort)(PageList__Node_rows__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(tl.node) - tl.y));
             if (Cond.B(__cf.IsErr))
             {
-                return null;
+                return default(point__Point?);
             }
             uint __anf0 = __cf.Value;
             coord.y = __anf0;
@@ -295,19 +2032,19 @@ public static unsafe partial class GhosttyVt
                     {
                         if (Cond.B(((CBool)(node == p.node))))
                         {
-                            ErrUnion<uint> __cf__1 = math__add__u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(coord.y, p.y);
+                            ErrUnion<uint> __cf__1 = math__add__u32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(coord.y, p.y);
                             if (Cond.B(__cf__1.IsErr))
                             {
-                                return null;
+                                return default(point__Point?);
                             }
                             uint __anf1 = __cf__1.Value;
                             coord.y = __anf1;
                             break;
                         }
-                        ErrUnion<uint> __cf__2 = math__add__u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(coord.y, PageList__Node_rows__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(node));
+                        ErrUnion<uint> __cf__2 = math__add__u32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(coord.y, PageList__Node_rows__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(node));
                         if (Cond.B(__cf__2.IsErr))
                         {
-                            return null;
+                            return default(point__Point?);
                         }
                         uint __anf2 = __cf__2.Value;
                         coord.y = __anf2;
@@ -316,7 +2053,7 @@ public static unsafe partial class GhosttyVt
                 else
                 {
                     {
-                        return null;
+                        return default(point__Point?);
                     }
                     break;
                 }
@@ -343,20 +2080,20 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ErrUnion<nuint> PageList__trackPin__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(PageList__PageList* self, PageList__Pin p)
+    public static unsafe ErrUnion<nuint> PageList__trackPin__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(PageList__PageList* self, PageList__Pin p)
     {
         try
         {
-            PageList__Pin* tracked = (PageList__Pin*)ErrUnion.Try(heap_memory_pool__Extra__PageList__Pin_c8de3f42f_create__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->pool.pins, self->pool.alloc));
+            PageList__Pin* tracked = (PageList__Pin*)ErrUnion.Try(heap_memory_pool__Extra__PageList__Pin_c8de3f42f_create__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->pool.pins, self->pool.alloc));
             try
             {
                 *tracked = p;
-                _ = ErrUnion.Try(array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0_putNoClobber__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->tracked_pins, self->pool.alloc, tracked));
+                _ = ErrUnion.Try(array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0_putNoClobber__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->tracked_pins, self->pool.alloc, tracked));
                 return ErrUnion<nuint>.Ok((nuint)(tracked));
             }
             catch (ZigErrorReturn)
             {
-                heap_memory_pool__Extra__PageList__Pin_c8de3f42f_destroy__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->pool.pins, tracked);
+                heap_memory_pool__Extra__PageList__Pin_c8de3f42f_destroy__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->pool.pins, tracked);
                 throw;
             }
         }
@@ -365,33 +2102,33 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe void PageList__untrackPin__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(PageList__PageList* self, PageList__Pin* p)
+    public static unsafe void PageList__untrackPin__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(PageList__PageList* self, PageList__Pin* p)
     {
-        quirks____AnonStruct0_assert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(((CBool)(p != self->viewport_pin)));
-        if (Cond.B(array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0_swapRemove__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->tracked_pins, p)))
+        quirks____AnonStruct0_assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)(p != self->viewport_pin)));
+        if (Cond.B(array_hash_map__Custom__p_PageList__Pinpa0_void_array_hash_map__AutoContext__p_PageList__Pinpa0_0_swapRemove__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->tracked_pins, p)))
         {
-            heap_memory_pool__Extra__PageList__Pin_c8de3f42f_destroy__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->pool.pins, p);
+            heap_memory_pool__Extra__PageList__Pin_c8de3f42f_destroy__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->pool.pins, p);
         }
     }
 
 
 
-    public static unsafe PageList____AnonStruct3 PageList__Pin_rowAndCell__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(PageList__Pin self)
+    public static unsafe PageList____AnonStruct3 PageList__Pin_rowAndCell__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(PageList__Pin self)
     {
-        page____AnonStruct2 rac = page__Page_getRowAndCell__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(PageList__Node_page__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self.node), self.x, self.y);
+        page____AnonStruct2 rac = page__Page_getRowAndCell__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(PageList__Node_page__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self.node), self.x, self.y);
         return new PageList____AnonStruct3 { row = rac.row, cell = rac.cell };
     }
 
 
 
-    public static unsafe Slice<uint>? PageList__Pin_grapheme__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(PageList__Pin self, page__Cell* cell)
+    public static unsafe Slice<uint>? PageList__Pin_grapheme__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(PageList__Pin self, page__Cell* cell)
     {
-        return page__Page_lookupGrapheme__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(PageList__Node_page__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self.node), cell);
+        return page__Page_lookupGrapheme__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(PageList__Node_page__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self.node), cell);
     }
 
 
 
-    public static unsafe page__Page* PageList__Node_page__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(PageList__Node* self)
+    public static unsafe page__Page* PageList__Node_page__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(PageList__Node* self)
     {
         page__Page* __vcf1 = default(page__Page*);
         {
@@ -405,7 +2142,7 @@ public static unsafe partial class GhosttyVt
                     }
                     break;
                 default:
-                    __vcf1 = PageList__Node_restore__0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self);
+                    __vcf1 = PageList__Node_restore__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self);
                     break;
             }
         }
@@ -414,7 +2151,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe PageList__Pin PageList__getTopLeft__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(PageList__PageList* self, enum__Enum__c1cd10fd6_cb7bf9e86 tag)
+    public static unsafe PageList__Pin PageList__getTopLeft__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(PageList__PageList* self, enum__Enum__c1cd10fd6_cb7bf9e86 tag)
     {
         PageList__Pin __vcf2 = default(PageList__Pin);
         {
@@ -434,7 +2171,7 @@ public static unsafe partial class GhosttyVt
             }
             __sw_flat_6_2: ;
             {
-                __vcf2 = (((int)self->viewport.__tag) switch { (int)__DotCcEnum_506167654C6973745F5F56696577706F72745F546167.active => PageList__getTopLeft__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636237626639653836.active), (int)__DotCcEnum_506167654C6973745F5F56696577706F72745F546167.top => PageList__getTopLeft__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636237626639653836.screen), _ => *self->viewport_pin });
+                __vcf2 = (((int)self->viewport.__tag) switch { (int)__DotCcEnum_506167654C6973745F5F56696577706F72745F546167.active => PageList__getTopLeft__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636237626639653836.active), (int)__DotCcEnum_506167654C6973745F5F56696577706F72745F546167.top => PageList__getTopLeft__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636237626639653836.screen), _ => *self->viewport_pin });
                 goto __sw_flat_6_0;
             }
             __sw_flat_6_3: ;
@@ -449,12 +2186,12 @@ public static unsafe partial class GhosttyVt
                     {
                         node = (PageList__Node*)__cap;
                         {
-                            if (Cond.B(((CBool)(rem <= PageList__Node_rows__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(node)))))
+                            if (Cond.B(((CBool)(rem <= PageList__Node_rows__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(node)))))
                             {
-                                __blk3 = new PageList__Pin { node = node, y = (ushort)(PageList__Node_rows__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(node) - rem), x = 0, garbage = false };
+                                __blk3 = new PageList__Pin { node = node, y = (ushort)(PageList__Node_rows__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(node) - rem), x = 0, garbage = false };
                                 goto __blk3_end;
                             }
-                            rem -= PageList__Node_rows__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(node);
+                            rem -= PageList__Node_rows__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(node);
                         }
                     }
                     else
@@ -474,7 +2211,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe PageList__Pin? PageList__getBottomRight__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(PageList__PageList* self, enum__Enum__c1cd10fd6_cb7bf9e86 tag)
+    public static unsafe PageList__Pin? PageList__getBottomRight__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(PageList__PageList* self, enum__Enum__c1cd10fd6_cb7bf9e86 tag)
     {
         PageList__Pin? __vcf4 = default(PageList__Pin?);
         {
@@ -492,7 +2229,7 @@ public static unsafe partial class GhosttyVt
             {
                 PageList__Node* node = (PageList__Node*)self->pages.last;
                 {
-                    __blk5 = new PageList__Pin { node = node, y = (ushort)(PageList__Node_rows__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(node) - (ushort)1), x = (ushort)(PageList__Node_cols__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(node) - (ushort)1), garbage = false };
+                    __blk5 = new PageList__Pin { node = node, y = (ushort)(PageList__Node_rows__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(node) - (ushort)1), x = (ushort)(PageList__Node_cols__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(node) - (ushort)1), garbage = false };
                     goto __blk5_end;
                 }
             }
@@ -504,9 +2241,9 @@ public static unsafe partial class GhosttyVt
             __sw_flat_7_2: ;
             __blk6 = default(PageList__Pin?);
             {
-                PageList__Pin br = PageList__getTopLeft__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636237626639653836.viewport);
-                br = PageList__Pin_down__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(br, (ushort)(self->rows - (ushort)1)).Value;
-                br.x = (ushort)(PageList__Node_cols__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(br.node) - (ushort)1);
+                PageList__Pin br = PageList__getTopLeft__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636237626639653836.viewport);
+                br = PageList__Pin_down__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(br, (ushort)(self->rows - (ushort)1)).Value;
+                br.x = (ushort)(PageList__Node_cols__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(br.node) - (ushort)1);
                 {
                     __blk6 = br;
                     goto __blk6_end;
@@ -520,15 +2257,15 @@ public static unsafe partial class GhosttyVt
             __sw_flat_7_3: ;
             __blk7 = default(PageList__Pin?);
             {
-                PageList__Pin br__1 = PageList__getTopLeft__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636237626639653836.active);
-                PageList__Pin? __cf = PageList__Pin_up__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(br__1, 1);
+                PageList__Pin br__1 = PageList__getTopLeft__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636237626639653836.active);
+                PageList__Pin? __cf = PageList__Pin_up__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(br__1, 1);
                 if (Cond.B((Cond.B(__cf.HasValue) ? 0 : 1)))
                 {
-                    return null;
+                    return default(PageList__Pin?);
                 }
                 PageList__Pin __anf3 = __cf.Value;
                 br__1 = __anf3;
-                br__1.x = (ushort)(PageList__Node_cols__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(br__1.node) - (ushort)1);
+                br__1.x = (ushort)(PageList__Node_cols__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(br__1.node) - (ushort)1);
                 {
                     __blk7 = br__1;
                     goto __blk7_end;
@@ -546,23 +2283,23 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe PageList__Pin? PageList__Pin_rightWrap__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(PageList__Pin self, ulong n)
+    public static unsafe PageList__Pin? PageList__Pin_rightWrap__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(PageList__Pin self, ulong n)
     {
         PageList__Pin result = self;
         ulong remaining = n;
         while (true)
         {
-            ushort row_remaining = (ushort)(PageList__Node_cols__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(result.node) - result.x - (ushort)1);
+            ushort row_remaining = (ushort)((ushort)(PageList__Node_cols__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(result.node) - result.x) - (ushort)1);
             if (Cond.B(((CBool)(remaining <= row_remaining))))
             {
                 result.x += (ushort)remaining;
                 return result;
             }
             remaining -= (ulong)row_remaining + 1UL;
-            PageList__Pin? __cf = PageList__Pin_down__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(result, 1);
+            PageList__Pin? __cf = PageList__Pin_down__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(result, 1);
             if (Cond.B((Cond.B(__cf.HasValue) ? 0 : 1)))
             {
-                return null;
+                return default(PageList__Pin?);
             }
             PageList__Pin __anf4 = __cf.Value;
             result = __anf4;
@@ -572,7 +2309,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe PageList__PageIterator PageList__Pin_pageIterator__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(PageList__Pin self, PageList__Direction direction, PageList__Pin? limit)
+    public static unsafe PageList__PageIterator PageList__Pin_pageIterator__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(PageList__Pin self, PageList__Direction direction, PageList__Pin? limit)
     {
         PageList__PageIterator__Limit __ifcap6 = default;
         if (Cond.B(limit.HasValue))
@@ -589,18 +2326,18 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe PageList__PageIterator__Chunk? PageList__PageIterator_next__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(PageList__PageIterator* self)
+    public static unsafe PageList__PageIterator__Chunk? PageList__PageIterator_next__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(PageList__PageIterator* self)
     {
-        return (((int)self->direction) switch { (int)__DotCcEnum_506167654C6973745F5F446972656374696F6E.left_up => PageList__PageIterator_nextUp__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self), _ => PageList__PageIterator_nextDown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self) });
+        return (((int)self->direction) switch { (int)__DotCcEnum_506167654C6973745F5F446972656374696F6E.left_up => PageList__PageIterator_nextUp__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self), _ => PageList__PageIterator_nextDown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self) });
     }
 
 
 
-    public static unsafe PageList__Pin? PageList__Pin_up__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(PageList__Pin self, ulong n)
+    public static unsafe PageList__Pin? PageList__Pin_up__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(PageList__Pin self, ulong n)
     {
         PageList__Pin? __vcf8 = default(PageList__Pin?);
         {
-            PageList____AnonUnion0 __un = PageList__Pin_upOverflow__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, n);
+            PageList____AnonUnion0 __un = PageList__Pin_upOverflow__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, n);
             switch ((int)__un.__tag)
             {
                 case (int)__DotCcEnum_506167654C6973745F5F5F5F416E6F6E556E696F6E305F546167.offset:
@@ -610,7 +2347,7 @@ public static unsafe partial class GhosttyVt
                     }
                     break;
                 default:
-                    __vcf8 = null;
+                    __vcf8 = default(PageList__Pin?);
                     break;
             }
         }
@@ -619,11 +2356,11 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe PageList__Pin? PageList__Pin_down__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(PageList__Pin self, ulong n)
+    public static unsafe PageList__Pin? PageList__Pin_down__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(PageList__Pin self, ulong n)
     {
         PageList__Pin? __vcf9 = default(PageList__Pin?);
         {
-            PageList____AnonUnion1 __un = PageList__Pin_downOverflow__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, n);
+            PageList____AnonUnion1 __un = PageList__Pin_downOverflow__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, n);
             switch ((int)__un.__tag)
             {
                 case (int)__DotCcEnum_506167654C6973745F5F5F5F416E6F6E556E696F6E315F546167.offset:
@@ -633,7 +2370,7 @@ public static unsafe partial class GhosttyVt
                     }
                     break;
                 default:
-                    __vcf9 = null;
+                    __vcf9 = default(PageList__Pin?);
                     break;
             }
         }
@@ -642,26 +2379,26 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ushort PageList__Node_cols__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(PageList__Node* self)
+    public static unsafe ushort PageList__Node_cols__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(PageList__Node* self)
     {
-        return PageList__Node_metadata__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self)->size.cols;
+        return PageList__Node_metadata__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self)->size.cols;
     }
 
 
 
-    public static unsafe ushort PageList__Node_rows__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(PageList__Node* self)
+    public static unsafe ushort PageList__Node_rows__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(PageList__Node* self)
     {
-        return PageList__Node_metadata__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self)->size.rows;
+        return PageList__Node_metadata__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self)->size.rows;
     }
 
 
 
-    public static unsafe PageList__PageIterator__Chunk? PageList__PageIterator_nextUp__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(PageList__PageIterator* self)
+    public static unsafe PageList__PageIterator__Chunk? PageList__PageIterator_nextUp__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(PageList__PageIterator* self)
     {
         PageList__Pin? __cf = self->row;
         if (Cond.B((Cond.B(__cf.HasValue) ? 0 : 1)))
         {
-            return null;
+            return default(PageList__PageIterator__Chunk?);
         }
         PageList__Pin row = __cf.Value;
         PageList__PageIterator__Chunk? __vcf10 = default(PageList__PageIterator__Chunk?);
@@ -689,13 +2426,13 @@ public static unsafe partial class GhosttyVt
                     if (Cond.B(((CBool)(__cf__1 == null))))
                     {
                         {
-                            __blk12 = null;
+                            __blk12 = default(PageList__Pin?);
                             goto __blk12_end;
                         }
                     }
-                    PageList__Node* next_page = __cf__1;
+                    PageList__Node* next_page = (PageList__Node*)__cf__1;
                     {
-                        __blk12 = new PageList__Pin { node = next_page, y = (ushort)(PageList__Node_rows__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(next_page) - (ushort)1), x = 0, garbage = false };
+                        __blk12 = new PageList__Pin { node = next_page, y = (ushort)(PageList__Node_rows__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(next_page) - (ushort)1), x = 0, garbage = false };
                         goto __blk12_end;
                     }
                 }
@@ -716,11 +2453,11 @@ public static unsafe partial class GhosttyVt
                 limit = &(*__unp).__payload.count;
                 __blk13 = default(PageList__PageIterator__Chunk?);
                 {
-                    quirks____AnonStruct0_assert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(((CBool)(*limit > 0UL)));
+                    quirks____AnonStruct0_assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)(*limit > 0UL)));
                     ulong available = (ulong)row.y + 1UL;
                     ulong len = ZigMath.Min(available, *limit);
                     *limit -= len;
-                    self->row = (Cond.B(((CBool)(*limit > 0UL))) ? PageList__Pin_up__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(row, len) : (PageList__Pin?)null);
+                    self->row = (Cond.B(((CBool)(*limit > 0UL))) ? PageList__Pin_up__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(row, len) : default(PageList__Pin?));
                     {
                         __blk13 = new PageList__PageIterator__Chunk { node = row.node, start = (ushort)(available - len), end = (ushort)available };
                         goto __blk13_end;
@@ -741,13 +2478,13 @@ public static unsafe partial class GhosttyVt
                     if (Cond.B(((CBool)(__cf__2 == null))))
                     {
                         {
-                            __blk15 = null;
+                            __blk15 = default(PageList__Pin?);
                             goto __blk15_end;
                         }
                     }
-                    PageList__Node* next_page__1 = __cf__2;
+                    PageList__Node* next_page__1 = (PageList__Node*)__cf__2;
                     {
-                        __blk15 = new PageList__Pin { node = next_page__1, y = (ushort)(PageList__Node_rows__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(next_page__1) - (ushort)1), x = 0, garbage = false };
+                        __blk15 = new PageList__Pin { node = next_page__1, y = (ushort)(PageList__Node_rows__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(next_page__1) - (ushort)1), x = 0, garbage = false };
                         goto __blk15_end;
                     }
                 }
@@ -762,9 +2499,9 @@ public static unsafe partial class GhosttyVt
                 goto __sw_flat_8_5;
                 __sw_flat_8_4: ;
                 __sw_flat_8_5: ;
-                self->row = null;
+                self->row = default(PageList__Pin?);
                 if (Cond.B(((CBool)(row.y < limit_row.y))))
-                    return null;
+                    return default(PageList__PageIterator__Chunk?);
                 {
                     __blk14 = new PageList__PageIterator__Chunk { node = row.node, start = limit_row.y, end = (ushort)(row.y + (ushort)1) };
                     goto __blk14_end;
@@ -782,12 +2519,12 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe PageList__PageIterator__Chunk? PageList__PageIterator_nextDown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(PageList__PageIterator* self)
+    public static unsafe PageList__PageIterator__Chunk? PageList__PageIterator_nextDown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(PageList__PageIterator* self)
     {
         PageList__Pin? __cf = self->row;
         if (Cond.B((Cond.B(__cf.HasValue) ? 0 : 1)))
         {
-            return null;
+            return default(PageList__PageIterator__Chunk?);
         }
         PageList__Pin row = __cf.Value;
         PageList__PageIterator__Chunk? __vcf16 = default(PageList__PageIterator__Chunk?);
@@ -815,11 +2552,11 @@ public static unsafe partial class GhosttyVt
                     if (Cond.B(((CBool)(__cf__1 == null))))
                     {
                         {
-                            __blk18 = null;
+                            __blk18 = default(PageList__Pin?);
                             goto __blk18_end;
                         }
                     }
-                    PageList__Node* next_page = __cf__1;
+                    PageList__Node* next_page = (PageList__Node*)__cf__1;
                     {
                         __blk18 = new PageList__Pin { node = next_page, y = 0, x = 0, garbage = false };
                         goto __blk18_end;
@@ -830,7 +2567,7 @@ public static unsafe partial class GhosttyVt
                 }
                 self->row = __blk18;
                 {
-                    __blk17 = new PageList__PageIterator__Chunk { node = row.node, start = row.y, end = PageList__Node_rows__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(row.node) };
+                    __blk17 = new PageList__PageIterator__Chunk { node = row.node, start = row.y, end = PageList__Node_rows__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(row.node) };
                     goto __blk17_end;
                 }
                 __blk17_end: ;
@@ -842,11 +2579,11 @@ public static unsafe partial class GhosttyVt
                 limit = &(*__unp).__payload.count;
                 __blk19 = default(PageList__PageIterator__Chunk?);
                 {
-                    quirks____AnonStruct0_assert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(((CBool)(*limit > 0UL)));
-                    ulong available = (ulong)(PageList__Node_rows__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(row.node) - row.y);
+                    quirks____AnonStruct0_assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)(*limit > 0UL)));
+                    ulong available = (ushort)(PageList__Node_rows__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(row.node) - row.y);
                     ulong len = ZigMath.Min(available, *limit);
                     *limit -= len;
-                    self->row = (Cond.B(((CBool)(*limit > 0UL))) ? PageList__Pin_down__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(row, len) : (PageList__Pin?)null);
+                    self->row = (Cond.B(((CBool)(*limit > 0UL))) ? PageList__Pin_down__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(row, len) : default(PageList__Pin?));
                     {
                         __blk19 = new PageList__PageIterator__Chunk { node = row.node, start = row.y, end = (ushort)((ulong)row.y + len) };
                         goto __blk19_end;
@@ -867,11 +2604,11 @@ public static unsafe partial class GhosttyVt
                     if (Cond.B(((CBool)(__cf__2 == null))))
                     {
                         {
-                            __blk21 = null;
+                            __blk21 = default(PageList__Pin?);
                             goto __blk21_end;
                         }
                     }
-                    PageList__Node* next_page__1 = __cf__2;
+                    PageList__Node* next_page__1 = (PageList__Node*)__cf__2;
                     {
                         __blk21 = new PageList__Pin { node = next_page__1, y = 0, x = 0, garbage = false };
                         goto __blk21_end;
@@ -882,15 +2619,15 @@ public static unsafe partial class GhosttyVt
                 }
                 self->row = __blk21;
                 {
-                    __blk20 = new PageList__PageIterator__Chunk { node = row.node, start = row.y, end = PageList__Node_rows__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(row.node) };
+                    __blk20 = new PageList__PageIterator__Chunk { node = row.node, start = row.y, end = PageList__Node_rows__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(row.node) };
                     goto __blk20_end;
                 }
                 goto __sw_flat_9_5;
                 __sw_flat_9_4: ;
                 __sw_flat_9_5: ;
-                self->row = null;
+                self->row = default(PageList__Pin?);
                 if (Cond.B(((CBool)(row.y > limit_row.y))))
-                    return null;
+                    return default(PageList__PageIterator__Chunk?);
                 {
                     __blk20 = new PageList__PageIterator__Chunk { node = row.node, start = row.y, end = (ushort)(limit_row.y + (ushort)1) };
                     goto __blk20_end;
@@ -908,10 +2645,10 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe PageList____AnonUnion0 PageList__Pin_upOverflow__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(PageList__Pin self, ulong n)
+    public static unsafe PageList____AnonUnion0 PageList__Pin_upOverflow__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(PageList__Pin self, ulong n)
     {
         if (Cond.B(((CBool)(n <= self.y))))
-            return new PageList____AnonUnion0 { __tag = __DotCcEnum_506167654C6973745F5F5F5F416E6F6E556E696F6E305F546167.offset, __payload = new PageList____AnonUnion0_Payload { offset = new PageList__Pin { node = self.node, y = (math__cast__u16_u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self.y - n) ?? 65535), x = self.x, garbage = false } } };
+            return new PageList____AnonUnion0 { __tag = __DotCcEnum_506167654C6973745F5F5F5F416E6F6E556E696F6E305F546167.offset, __payload = new PageList____AnonUnion0_Payload { offset = new PageList__Pin { node = self.node, y = (math__cast__u16_u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self.y - n) ?? 65535), x = self.x, garbage = false } } };
         PageList__Node* node = self.node;
         ulong n_left = n - self.y;
         while (true)
@@ -919,43 +2656,43 @@ public static unsafe partial class GhosttyVt
             PageList__Node* __cf = node->prev;
             if (Cond.B(((CBool)(__cf == null))))
             {
-                return new PageList____AnonUnion0 { __tag = __DotCcEnum_506167654C6973745F5F5F5F416E6F6E556E696F6E305F546167.overflow, __payload = new PageList____AnonUnion0_Payload { overflow = new PageList____AnonStruct4 { end = new PageList__Pin { node = node, y = 0, x = ZigMath.Min(self.x, (ushort)(PageList__Node_cols__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(node) - (ushort)1)), garbage = false }, remaining = n_left } } };
+                return new PageList____AnonUnion0 { __tag = __DotCcEnum_506167654C6973745F5F5F5F416E6F6E556E696F6E305F546167.overflow, __payload = new PageList____AnonUnion0_Payload { overflow = new PageList____AnonStruct4 { end = new PageList__Pin { node = node, y = 0, x = ZigMath.Min(self.x, (ushort)(PageList__Node_cols__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(node) - (ushort)1)), garbage = false }, remaining = n_left } } };
             }
-            PageList__Node* __anf7 = __cf;
+            PageList__Node* __anf7 = (PageList__Node*)__cf;
             node = __anf7;
-            if (Cond.B(((CBool)(n_left <= PageList__Node_rows__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(node)))))
-                return new PageList____AnonUnion0 { __tag = __DotCcEnum_506167654C6973745F5F5F5F416E6F6E556E696F6E305F546167.offset, __payload = new PageList____AnonUnion0_Payload { offset = new PageList__Pin { node = node, y = (math__cast__u16_u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(PageList__Node_rows__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(node) - n_left) ?? 65535), x = ZigMath.Min(self.x, (ushort)(PageList__Node_cols__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(node) - (ushort)1)), garbage = false } } };
-            n_left -= PageList__Node_rows__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(node);
+            if (Cond.B(((CBool)(n_left <= PageList__Node_rows__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(node)))))
+                return new PageList____AnonUnion0 { __tag = __DotCcEnum_506167654C6973745F5F5F5F416E6F6E556E696F6E305F546167.offset, __payload = new PageList____AnonUnion0_Payload { offset = new PageList__Pin { node = node, y = (math__cast__u16_u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(PageList__Node_rows__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(node) - n_left) ?? 65535), x = ZigMath.Min(self.x, (ushort)(PageList__Node_cols__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(node) - (ushort)1)), garbage = false } } };
+            n_left -= PageList__Node_rows__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(node);
         }
     }
 
 
 
-    public static unsafe PageList____AnonUnion1 PageList__Pin_downOverflow__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(PageList__Pin self, ulong n)
+    public static unsafe PageList____AnonUnion1 PageList__Pin_downOverflow__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(PageList__Pin self, ulong n)
     {
-        int rows = PageList__Node_rows__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self.node) - (ushort)(self.y + (ushort)1);
-        if (Cond.B(((CBool)(n <= (ulong)(rows)))))
-            return new PageList____AnonUnion1 { __tag = __DotCcEnum_506167654C6973745F5F5F5F416E6F6E556E696F6E315F546167.offset, __payload = new PageList____AnonUnion1_Payload { offset = new PageList__Pin { node = self.node, y = (math__cast__u16_u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self.y + n) ?? 65535), x = self.x, garbage = false } } };
+        ushort rows = (ushort)(PageList__Node_rows__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self.node) - (ushort)(self.y + (ushort)1));
+        if (Cond.B(((CBool)(n <= rows))))
+            return new PageList____AnonUnion1 { __tag = __DotCcEnum_506167654C6973745F5F5F5F416E6F6E556E696F6E315F546167.offset, __payload = new PageList____AnonUnion1_Payload { offset = new PageList__Pin { node = self.node, y = (math__cast__u16_u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self.y + n) ?? 65535), x = self.x, garbage = false } } };
         PageList__Node* node = self.node;
-        ulong n_left = n - (ulong)(rows);
+        ulong n_left = n - rows;
         while (true)
         {
             PageList__Node* __cf = node->next;
             if (Cond.B(((CBool)(__cf == null))))
             {
-                return new PageList____AnonUnion1 { __tag = __DotCcEnum_506167654C6973745F5F5F5F416E6F6E556E696F6E315F546167.overflow, __payload = new PageList____AnonUnion1_Payload { overflow = new PageList____AnonStruct5 { end = new PageList__Pin { node = node, y = (ushort)(PageList__Node_rows__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(node) - (ushort)1), x = ZigMath.Min(self.x, (ushort)(PageList__Node_cols__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(node) - (ushort)1)), garbage = false }, remaining = n_left } } };
+                return new PageList____AnonUnion1 { __tag = __DotCcEnum_506167654C6973745F5F5F5F416E6F6E556E696F6E315F546167.overflow, __payload = new PageList____AnonUnion1_Payload { overflow = new PageList____AnonStruct5 { end = new PageList__Pin { node = node, y = (ushort)(PageList__Node_rows__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(node) - (ushort)1), x = ZigMath.Min(self.x, (ushort)(PageList__Node_cols__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(node) - (ushort)1)), garbage = false }, remaining = n_left } } };
             }
-            PageList__Node* __anf8 = __cf;
+            PageList__Node* __anf8 = (PageList__Node*)__cf;
             node = __anf8;
-            if (Cond.B(((CBool)(n_left <= PageList__Node_rows__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(node)))))
-                return new PageList____AnonUnion1 { __tag = __DotCcEnum_506167654C6973745F5F5F5F416E6F6E556E696F6E315F546167.offset, __payload = new PageList____AnonUnion1_Payload { offset = new PageList__Pin { node = node, y = (math__cast__u16_u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(n_left - 1UL) ?? 65535), x = ZigMath.Min(self.x, (ushort)(PageList__Node_cols__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(node) - (ushort)1)), garbage = false } } };
-            n_left -= PageList__Node_rows__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(node);
+            if (Cond.B(((CBool)(n_left <= PageList__Node_rows__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(node)))))
+                return new PageList____AnonUnion1 { __tag = __DotCcEnum_506167654C6973745F5F5F5F416E6F6E556E696F6E315F546167.offset, __payload = new PageList____AnonUnion1_Payload { offset = new PageList__Pin { node = node, y = (math__cast__u16_u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(n_left - 1UL) ?? 65535), x = ZigMath.Min(self.x, (ushort)(PageList__Node_cols__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(node) - (ushort)1)), garbage = false } } };
+            n_left -= PageList__Node_rows__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(node);
         }
     }
 
 
 
-    public static unsafe page__Page* PageList__Node_metadata__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(PageList__Node* self)
+    public static unsafe page__Page* PageList__Node_metadata__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(PageList__Node* self)
     {
         page__Page* __vcf22 = default(page__Page*);
         {
@@ -981,7 +2718,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe page__Page* PageList__Node_restore__0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(PageList__Node* self)
+    public static unsafe page__Page* PageList__Node_restore__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(PageList__Node* self)
     {
         Page__Page* __vcf23 = default(Page__Page*);
         {
@@ -1002,46 +2739,46 @@ public static unsafe partial class GhosttyVt
             }
         }
         Page__Page* compressed = __vcf23;
-        mem_2__recommit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(compressed->page.memory);
-        ErrUnion<page__Page> __cf = Page__restore__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(compressed);
+        mem_2__recommit__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(compressed->page.memory);
+        ErrUnion<page__Page> __cf = Page__restore__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(compressed);
         if (Cond.B(__cf.IsErr))
         {
             ushort err = __cf.Code;
             {
                 switch (err)
                 {
-                    case 99:
-                    case 100:
-                    case 101:
                     case 102:
+                    case 103:
+                    case 104:
+                    case 105:
                         {
                         }
                         break;
                     default:
                         throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
                 }
-                log__scoped__ce51059ed_err__s704bbf97_tuple_anyerror_twu__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new global::System.ValueTuple<ushort>(err));
+                log__scoped__ce51059ed_err__s704bbf97_tuple_anyerror_twu__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new global::System.ValueTuple<ushort>(err));
                 {
-                    _ = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S489 /*"failed to restore compressed terminal page"*/), 42UL);
+                    _ = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S492 /*"failed to restore compressed terminal page"*/), 42UL);
                     throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
                 }
             }
         }
         page__Page __anf9 = __cf.Value;
         page__Page restored = __anf9;
-        Page__deinit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(compressed);
+        Page__deinit__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(compressed);
         self->data = new PageList__Node__Data { __tag = __DotCcEnum_506167654C6973745F5F4E6F64655F5F446174615F546167.resident, __payload = new PageList__Node__Data_Payload { resident = restored } };
         return &self->data.__payload.resident;
     }
 
 
 
-    public static unsafe ErrUnion<page__Page> Page__restore__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Page__Page* self)
+    public static unsafe ErrUnion<page__Page> Page__restore__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Page__Page* self)
     {
         try
         {
             page__Page result = self->page;
-            _ = ErrUnion.Try(lz4__decompress__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self->encoded, result.memory));
+            _ = ErrUnion.Try(lz4__decompress__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self->encoded, result.memory));
             return ErrUnion<page__Page>.Ok(result);
         }
         catch (ZigErrorReturn __e) { return ErrUnion<page__Page>.Err(__e.Code); }
@@ -1049,19 +2786,19 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe void Page__deinit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Page__Page* self)
+    public static unsafe void Page__deinit__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Page__Page* self)
     {
-        mem_Allocator__free____unsigned_charpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self->alloc, self->encoded);
+        mem_Allocator__free____unsigned_charpa0_e8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self->alloc, self->encoded);
         *self = default(Page__Page);
     }
 
 
 
-    public static unsafe ErrUnion<nuint> heap_memory_pool__Extra__PageList__Pin_c8de3f42f_create__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(heap_memory_pool__Extra__PageList__Pin_c8de3f42f* pool, mem_Allocator__Allocator allocator)
+    public static unsafe ErrUnion<nuint> heap_memory_pool__Extra__PageList__Pin_c8de3f42f_create__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(heap_memory_pool__Extra__PageList__Pin_c8de3f42f* pool, mem_Allocator__Allocator allocator)
     {
         try
         {
-            SinglyLinkedList__Node* __ifcapc0 = SinglyLinkedList__popFirst__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&pool->free_list);
+            SinglyLinkedList__Node* __ifcapc0 = SinglyLinkedList__popFirst__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&pool->free_list);
             PageList__Pin* __ifcap1 = default;
             if (Cond.B(__ifcapc0))
             {
@@ -1070,7 +2807,7 @@ public static unsafe partial class GhosttyVt
             }
             else
             {
-                __ifcap1 = (PageList__Pin*)(byte*)ErrUnion.Try(heap_memory_pool__Extra__PageList__Pin_c8de3f42f_allocNew__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(pool, allocator));
+                __ifcap1 = (PageList__Pin*)(byte*)ErrUnion.Try(heap_memory_pool__Extra__PageList__Pin_c8de3f42f_allocNew__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(pool, allocator));
             }
             PageList__Pin* ptr = __ifcap1;
             *ptr = default(PageList__Pin);
@@ -1081,22 +2818,22 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe void heap_memory_pool__Extra__PageList__Pin_c8de3f42f_destroy__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(heap_memory_pool__Extra__PageList__Pin_c8de3f42f* pool, PageList__Pin* ptr)
+    public static unsafe void heap_memory_pool__Extra__PageList__Pin_c8de3f42f_destroy__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(heap_memory_pool__Extra__PageList__Pin_c8de3f42f* pool, PageList__Pin* ptr)
     {
         *ptr = default(PageList__Pin);
-        SinglyLinkedList__prepend__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&pool->free_list, (SinglyLinkedList__Node*)ptr);
+        SinglyLinkedList__prepend__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&pool->free_list, (SinglyLinkedList__Node*)ptr);
     }
 
 
 
-    public static unsafe ErrUnion<nuint> heap_memory_pool__Extra__PageList__Pin_c8de3f42f_allocNew__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(heap_memory_pool__Extra__PageList__Pin_c8de3f42f* pool, mem_Allocator__Allocator allocator)
+    public static unsafe ErrUnion<nuint> heap_memory_pool__Extra__PageList__Pin_c8de3f42f_allocNew__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(heap_memory_pool__Extra__PageList__Pin_c8de3f42f* pool, mem_Allocator__Allocator allocator)
     {
         try
         {
-            heap_ArenaAllocator__ArenaAllocator arena = heap_ArenaAllocator__State_promote__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(pool->arena_state, allocator);
+            heap_ArenaAllocator__ArenaAllocator arena = heap_ArenaAllocator__State_promote__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(pool->arena_state, allocator);
             try
             {
-                Slice<byte> memory = ErrUnion.Try(mem_Allocator__alignedAlloc__u8_opt3__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(heap_ArenaAllocator__allocator__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&arena), 16UL));
+                Slice<byte> memory = ErrUnion.Try(mem_Allocator__alignedAlloc__u8_opt3__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(heap_ArenaAllocator__allocator__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&arena), 16UL));
                 return ErrUnion<nuint>.Ok((nuint)(new Slice<byte>(memory.Ptr + 0, unchecked((ulong)unchecked(16UL - (ulong)(0)))).Ptr));
             }
             finally
@@ -1109,14 +2846,21 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe point__Point point__Point_fromC__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(union____AnonStruct4 pt)
+    public static unsafe point__Point? point__Point_fromC__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(union____AnonStruct4 pt)
     {
-        return (((int)pt.tag) switch { (int)__DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636237626639653836.active => new point__Point { __tag = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636237626639653836.active, __payload = new point__Point_Payload { active = pt.value.active } }, (int)__DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636237626639653836.viewport => new point__Point { __tag = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636237626639653836.viewport, __payload = new point__Point_Payload { viewport = pt.value.viewport } }, (int)__DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636237626639653836.screen => new point__Point { __tag = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636237626639653836.screen, __payload = new point__Point_Payload { screen = pt.value.screen } }, _ => new point__Point { __tag = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636237626639653836.history, __payload = new point__Point_Payload { history = pt.value.history } } });
+        int* raw = (int*)(&pt.tag);
+        enum__Enum__c1cd10fd6_cb7bf9e86? __cf = enums__fromInt__enum__Enum__c1cd10fd6_cb7bf9e86_i32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*raw);
+        if (Cond.B((Cond.B(__cf.HasValue) ? 0 : 1)))
+        {
+            return default(point__Point?);
+        }
+        enum__Enum__c1cd10fd6_cb7bf9e86 tag = __cf.Value;
+        return (((int)tag) switch { (int)__DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636237626639653836.active => new point__Point { __tag = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636237626639653836.active, __payload = new point__Point_Payload { active = pt.value.active } }, (int)__DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636237626639653836.viewport => new point__Point { __tag = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636237626639653836.viewport, __payload = new point__Point_Payload { viewport = pt.value.viewport } }, (int)__DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636237626639653836.screen => new point__Point { __tag = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636237626639653836.screen, __payload = new point__Point_Payload { screen = pt.value.screen } }, _ => new point__Point { __tag = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636237626639653836.history, __payload = new point__Point_Payload { history = pt.value.history } } });
     }
 
 
 
-    public static unsafe point__Coordinate point__Point_coord__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(point__Point self)
+    public static unsafe point__Coordinate point__Point_coord__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(point__Point self)
     {
         point__Coordinate __vcf0 = default(point__Coordinate);
         switch ((int)self.__tag)
@@ -1133,42 +2877,42 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe delegate*<hash_map__AutoContext__size__Offset__page__Cell, size__Offset__page__Cell, size__Offset__page__Cell, CBool> hash_map_2__getAutoEqlFn__size__Offset__page__Cell_hash_map__AutoContext__size__Offset__page__Cell__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe delegate*<hash_map__AutoContext__size__Offset__page__Cell, size__Offset__page__Cell, size__Offset__page__Cell, CBool> hash_map_2__getAutoEqlFn__size__Offset__page__Cell_hash_map__AutoContext__size__Offset__page__Cell__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return DotCcPointers.getAutoEqlFn__size__Offset__page__Cell_hash_map__AutoContext__size__Offset__page__Cell__Anon_eql__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0;
+        return DotCcPointers.getAutoEqlFn__size__Offset__page__Cell_hash_map__AutoContext__size__Offset__page__Cell__Anon_eql__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659;
     }
 
 
 
-    public static unsafe CBool getAutoEqlFn__size__Offset__page__Cell_hash_map__AutoContext__size__Offset__page__Cell__Anon_eql__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(hash_map__AutoContext__size__Offset__page__Cell ctx, size__Offset__page__Cell a, size__Offset__page__Cell b)
+    public static unsafe CBool getAutoEqlFn__size__Offset__page__Cell_hash_map__AutoContext__size__Offset__page__Cell__Anon_eql__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(hash_map__AutoContext__size__Offset__page__Cell ctx, size__Offset__page__Cell a, size__Offset__page__Cell b)
     {
         ;
-        return meta__eql__size__Offset__page__Cell__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(a, b);
+        return meta__eql__size__Offset__page__Cell__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(a, b);
     }
 
 
 
-    public static unsafe mem_Allocator__Allocator Terminal__gpa__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Terminal__Terminal* self)
+    public static unsafe mem_Allocator__Allocator Terminal__gpa__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Terminal__Terminal* self)
     {
         return self->screens.active->alloc;
     }
 
 
 
-    public static unsafe void Terminal__deinit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Terminal__Terminal* self, mem_Allocator__Allocator alloc)
+    public static unsafe void Terminal__deinit__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Terminal__Terminal* self, mem_Allocator__Allocator alloc)
     {
-        Tabstops__deinit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->tabstops, alloc);
-        ScreenSet__deinit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->screens, alloc);
-        color_2__DynamicPalette_deinit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->colors.palette, alloc);
-        array_list__Aligned__u8_optnull_deinit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->pwd, alloc);
-        array_list__Aligned__u8_optnull_deinit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->title, alloc);
-        Glossary__deinit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->glyph_glossary, alloc);
+        Tabstops__deinit__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->tabstops, alloc);
+        ScreenSet__deinit__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->screens, alloc);
+        color_2__DynamicPalette_deinit__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->colors.palette, alloc);
+        array_list__Aligned__u8_optnull_deinit__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->pwd, alloc);
+        array_list__Aligned__u8_optnull_deinit__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->title, alloc);
+        Glossary__deinit__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->glyph_glossary, alloc);
         {
             dnd_drop__State* __cap = self->kitty_dnd;
             if (Cond.B(__cap))
             {
                 dnd_drop__State* dnd = (dnd_drop__State*)__cap;
-                dnd_drop__State_destroy__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(dnd, alloc);
+                dnd_drop__State_destroy__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(dnd, alloc);
             }
         }
         *self = default(Terminal__Terminal);
@@ -1176,7 +2920,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe void Terminal__fullReset__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Terminal__Terminal* self)
+    public static unsafe void Terminal__fullReset__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Terminal__Terminal* self)
     {
         static CBool __dotcc_zig_set_3F34E39471CEC6A3B32C(ref Terminal____AnonStruct1 root, CBool value)
         {
@@ -1184,35 +2928,35 @@ public static unsafe partial class GhosttyVt
             root.__dotcc_zig_storage = unchecked((global::System.UInt128)(((global::System.UInt128)root.__dotcc_zig_storage & ~(((global::System.UInt128.One << 1) - global::System.UInt128.One) << 82)) | ((((global::System.UInt128)(ulong)(updated)) & ((global::System.UInt128.One << 1) - global::System.UInt128.One)) << 82)));
             return ((CBool)((((global::System.UInt128)root.__dotcc_zig_storage >> 82) & ((global::System.UInt128.One << 1) - global::System.UInt128.One)) != 0));
         }
-        ScreenSet__switchTo__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->screens, __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633834366562383534.primary);
-        ScreenSet__remove__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->screens, self->screens.active->alloc, __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633834366562383534.alternate);
-        Screen__reset__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self->screens.active);
+        ScreenSet__switchTo__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->screens, __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633834366562383534.primary);
+        ScreenSet__remove__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->screens, self->screens.active->alloc, __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633834366562383534.alternate);
+        Screen__reset__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self->screens.active);
         self->flags = new Terminal____AnonStruct1 { visible = self->flags.visible, resize_pull_scrollback = self->flags.resize_pull_scrollback, xt_checksum = self->default_xt_checksum, shell_redraws_prompt = __DotCcEnum_73656D616E7469635F70726F6D70745F5F526564726177.@true, modify_other_keys_2 = false, mouse_event = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633762333933353164.none, mouse_format = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633437333233396563.x10, mouse_shift_capture = __DotCcEnum_5465726D696E616C5F5F5F5F416E6F6E456E756D30.@null, focused = true, password_input = false, selection_scroll = false, search_viewport_dirty = false, dirty = new Terminal__Dirty { palette = false, reverse_colors = false, clear = false, preedit = false, glyph_glossary = false } };
-        modes_2__ModeState_reset__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->modes);
-        Tabstops__reset__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->tabstops, 8);
-        self->previous_char = null;
-        array_list__Aligned__u8_optnull_clearRetainingCapacity__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->pwd);
-        array_list__Aligned__u8_optnull_clearRetainingCapacity__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->title);
-        Glossary__clearAndFree__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->glyph_glossary, Terminal__gpa__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self));
+        modes_2__ModeState_reset__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->modes);
+        Tabstops__reset__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->tabstops, 8);
+        self->previous_char = default(uint?);
+        array_list__Aligned__u8_optnull_clearRetainingCapacity__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->pwd);
+        array_list__Aligned__u8_optnull_clearRetainingCapacity__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->title);
+        Glossary__clearAndFree__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->glyph_glossary, Terminal__gpa__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self));
         {
             dnd_drop__State* __cap = self->kitty_dnd;
             if (Cond.B(__cap))
             {
                 dnd_drop__State* dnd = (dnd_drop__State*)__cap;
-                dnd->chunking = new dnd_command__Chunking { active = false, metadata = new dnd_command__Metadata { type = null, more = false, client_id = 0, operation = 0, cell_x = 0, cell_y = 0, pixel_x = 0, pixel_y = 0 } };
+                dnd->chunking = new dnd_command__Chunking { active = false, metadata = new dnd_command__Metadata { type = default(dnd_command__EventType?), more = false, client_id = 0, operation = 0, cell_x = 0, cell_y = 0, pixel_x = 0, pixel_y = 0 } };
             }
         }
         self->status_display = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633336613366316236.main;
         self->scrolling_region = new Terminal__ScrollingRegion { top = 0, bottom = (ushort)(self->rows - (ushort)1), left = 0, right = (ushort)(self->cols - (ushort)1) };
-        Terminal__setCursorStyle__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633538336364613430.@default);
-        color_2__DynamicPalette_resetAll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->colors.palette);
-        ref Terminal____AnonStruct1 __zig_root144 = ref self->flags;
-        __dotcc_zig_set_3F34E39471CEC6A3B32C(ref __zig_root144, true);
+        Terminal__setCursorStyle__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633538336364613430.@default);
+        color_2__DynamicPalette_resetAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->colors.palette);
+        ref Terminal____AnonStruct1 __zig_root146 = ref self->flags;
+        __dotcc_zig_set_3F34E39471CEC6A3B32C(ref __zig_root146, true);
     }
 
 
 
-    public static unsafe void Terminal__scrollViewport__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Terminal__Terminal* self, Terminal__ScrollViewport behavior)
+    public static unsafe void Terminal__scrollViewport__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Terminal__Terminal* self, Terminal__ScrollViewport behavior)
     {
         Screen__Screen* __anf0 = self->screens.active;
         Screen__Scroll __vsw0 = default(Screen__Scroll);
@@ -1243,112 +2987,112 @@ public static unsafe partial class GhosttyVt
                 }
                 break;
         }
-        Screen__scroll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(__anf0, __vsw0);
+        Screen__scroll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(__anf0, __vsw0);
     }
 
 
 
-    public static unsafe ulong Terminal__compressionActivity__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Terminal__Terminal* self)
+    public static unsafe ulong Terminal__compressionActivity__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Terminal__Terminal* self)
     {
-        PageList__IncrementalCompressionState* state = &((Screen__Screen*)ScreenSet__get__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->screens, __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633834366562383534.primary))->pages.page_compression;
+        PageList__IncrementalCompressionState* state = &((Screen__Screen*)ScreenSet__get__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->screens, __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633834366562383534.primary))->pages.page_compression;
         return (ulong)state->activity_serial;
     }
 
 
 
-    public static unsafe enum__Enum__c1cd10fd6_c6f57f58f Terminal__compress__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Terminal__Terminal* self, enum__Enum__c1cd10fd6_cbfe55595 mode)
+    public static unsafe enum__Enum__c1cd10fd6_c6f57f58f Terminal__compress__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Terminal__Terminal* self, enum__Enum__c1cd10fd6_cbfe55595 mode)
     {
-        PageList__PageList* pages = &((Screen__Screen*)ScreenSet__get__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->screens, __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633834366562383534.primary))->pages;
-        PageList__IncrementalCompressionResult result = (((int)mode) switch { (int)__DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636266653535353935.incremental => PageList__compress__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(pages, __DotCcEnum_506167654C6973745F5F5F5F416E6F6E456E756D32.incremental), _ => PageList__compress__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(pages, __DotCcEnum_506167654C6973745F5F5F5F416E6F6E456E756D32.full) });
+        PageList__PageList* pages = &((Screen__Screen*)ScreenSet__get__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->screens, __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633834366562383534.primary))->pages;
+        PageList__IncrementalCompressionResult result = (((int)mode) switch { (int)__DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636266653535353935.incremental => PageList__compress__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(pages, __DotCcEnum_506167654C6973745F5F5F5F416E6F6E456E756D32.incremental), _ => PageList__compress__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(pages, __DotCcEnum_506167654C6973745F5F5F5F416E6F6E456E756D32.full) });
         return (((int)result) switch { (int)__DotCcEnum_506167654C6973745F5F496E6372656D656E74616C436F6D7072657373696F6E526573756C74.unsupported => __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633666353766353866.unsupported, (int)__DotCcEnum_506167654C6973745F5F496E6372656D656E74616C436F6D7072657373696F6E526573756C74.pending => __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633666353766353866.pending, _ => __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633666353766353866.complete });
     }
 
 
 
-    public static unsafe void Terminal__setCursorStyle__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Terminal__Terminal* self, enum__Enum__c1cd10fd6_c583cda40 value)
+    public static unsafe void Terminal__setCursorStyle__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Terminal__Terminal* self, enum__Enum__c1cd10fd6_c583cda40 value)
     {
         self->cursor.is_default = ((CBool)((int)value == (int)__DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633538336364613430.@default));
-        modes_2__ModeState_set__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->modes, __DotCcEnum_6D6F6465735F325F5F5F5F426C6F636B5479706531.cursor_blinking, (((int)value) switch { (int)__DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633538336364613430.@default => (self->cursor.default_blink ?? true), (int)__DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633538336364613430.steady_block or (int)__DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633538336364613430.steady_bar or (int)__DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633538336364613430.steady_underline => false, _ => true }));
+        modes_2__ModeState_set__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->modes, __DotCcEnum_6D6F6465735F325F5F5F5F426C6F636B5479706531.cursor_blinking, (((int)value) switch { (int)__DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633538336364613430.@default => (self->cursor.default_blink ?? true), (int)__DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633538336364613430.steady_block or (int)__DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633538336364613430.steady_bar or (int)__DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633538336364613430.steady_underline => false, _ => true }));
         self->screens.active->cursor.cursor_style = (((int)value) switch { (int)__DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633538336364613430.@default => self->cursor.default_style, (int)__DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633538336364613430.blinking_block or (int)__DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633538336364613430.steady_block => __DotCcEnum_656E756D5F5F456E756D5F5F6338393435633736395F633839633165333136.block, (int)__DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633538336364613430.blinking_bar or (int)__DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633538336364613430.steady_bar => __DotCcEnum_656E756D5F5F456E756D5F5F6338393435633736395F633839633165333136.bar, _ => __DotCcEnum_656E756D5F5F456E756D5F5F6338393435633736395F633839633165333136.underline });
     }
 
 
 
-    public static unsafe enum__Enum__c1cd10fd6_cf5151998 Screen__CharsetState__CharsetArray_get__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Screen__CharsetState__CharsetArray* self, enum__Enum__c1cd10fd6_cd333dd4d slot)
+    public static unsafe enum__Enum__c1cd10fd6_cf5151998 Screen__CharsetState__CharsetArray_get__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Screen__CharsetState__CharsetArray* self, enum__Enum__c1cd10fd6_cd333dd4d slot)
     {
         return (((int)slot) switch { (int)__DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636433333364643464.G0 => self->g0, (int)__DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636433333364643464.G1 => self->g1, (int)__DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636433333364643464.G2 => self->g2, _ => self->g3 });
     }
 
 
 
-    public static unsafe void Screen__reset__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Screen__Screen* self)
+    public static unsafe void Screen__reset__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Screen__Screen* self)
     {
-        PageList__reset__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->pages);
+        PageList__reset__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->pages);
         PageList__Pin* cursor_pin = self->cursor.page_pin;
-        quirks____AnonStruct0_assert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(((CBool)(cursor_pin->node == (PageList__Node*)self->pages.pages.first)));
-        quirks____AnonStruct0_assert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(((CBool)(cursor_pin->x == (ushort)0)));
-        quirks____AnonStruct0_assert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(((CBool)(cursor_pin->y == (ushort)0)));
+        quirks____AnonStruct0_assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)(cursor_pin->node == (PageList__Node*)self->pages.pages.first)));
+        quirks____AnonStruct0_assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)(cursor_pin->x == (ushort)0)));
+        quirks____AnonStruct0_assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)(cursor_pin->y == (ushort)0)));
         cursor_pin->garbage = false;
-        PageList____AnonStruct3 cursor_rac = PageList__Pin_rowAndCell__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*cursor_pin);
-        Screen__Cursor_deinit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->cursor, self->alloc);
-        self->cursor = new Screen__Cursor { page_pin = cursor_pin, page_row = cursor_rac.row, page_cell = cursor_rac.cell, x = 0, y = 0, cursor_style = __DotCcEnum_656E756D5F5F456E756D5F5F6338393435633736395F633839633165333136.block, pending_wrap = false, @protected = false, style = new style_2__Style { fg_color = new style_2__Style__Color { __tag = __DotCcEnum_7374796C655F325F5F5374796C655F5F436F6C6F725F5F546167.none }, bg_color = new style_2__Style__Color { __tag = __DotCcEnum_7374796C655F325F5F5374796C655F5F436F6C6F725F5F546167.none }, underline_color = new style_2__Style__Color { __tag = __DotCcEnum_7374796C655F325F5F5374796C655F5F436F6C6F725F5F546167.none }, flags = new style_2__Style__Flags { bold = false, italic = false, faint = false, blink = false, inverse = false, invisible = false, strikethrough = false, overline = false, underline = __DotCcEnum_7367725F5F4174747269627574655F5F556E6465726C696E65.none, _padding = 0 } }, style_id = 0, hyperlink_id = 0, hyperlink_implicit_id = 0, hyperlink = (hyperlink__Hyperlink*)(null), semantic_content = __DotCcEnum_706167655F5F43656C6C5F5F53656D616E746963436F6E74656E74.output, semantic_content_clear_eol = false };
-        self->saved_cursor = null;
-        self->charset = new Screen__CharsetState { charsets = new Screen__CharsetState__CharsetArray { g0 = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636635313531393938.utf8, g1 = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636635313531393938.utf8, g2 = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636635313531393938.utf8, g3 = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636635313531393938.utf8 }, gl = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636433333364643464.G0, gr = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636433333364643464.G2, single_shift = null };
+        PageList____AnonStruct3 cursor_rac = PageList__Pin_rowAndCell__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*cursor_pin);
+        Screen__Cursor_deinit__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->cursor, self->alloc);
+        self->cursor = new Screen__Cursor { page_pin = cursor_pin, page_row = cursor_rac.row, page_cell = cursor_rac.cell, x = 0, y = 0, cursor_style = __DotCcEnum_656E756D5F5F456E756D5F5F6338393435633736395F633839633165333136.block, pending_wrap = false, @protected = false, style = new style_2__Style { fg_color = new style_2__Style__Color { tag = __DotCcEnum_7374796C655F325F5F5374796C655F5F436F6C6F725F5F546167.none, data = 0 }, bg_color = new style_2__Style__Color { tag = __DotCcEnum_7374796C655F325F5F5374796C655F5F436F6C6F725F5F546167.none, data = 0 }, underline_color = new style_2__Style__Color { tag = __DotCcEnum_7374796C655F325F5F5374796C655F5F436F6C6F725F5F546167.none, data = 0 }, flags = new style_2__Style__Flags { bold = false, italic = false, faint = false, blink = false, inverse = false, invisible = false, strikethrough = false, overline = false, underline = __DotCcEnum_7367725F5F4174747269627574655F5F556E6465726C696E65.none, _padding = 0 }, _padding = 0 }, style_id = (ushort)0, hyperlink_id = 0, hyperlink_implicit_id = 0, hyperlink = (hyperlink__Hyperlink*)(null), semantic_content = __DotCcEnum_706167655F5F43656C6C5F5F53656D616E746963436F6E74656E74.output, semantic_content_clear_eol = false };
+        self->saved_cursor = default(__DotCcAlignedOptional_3DD3DEF589A3CE9E30C3EE971B30CB9C8FE1A2BB9470447E13F4384082808D6D);
+        self->charset = new Screen__CharsetState { charsets = new Screen__CharsetState__CharsetArray { g0 = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636635313531393938.utf8, g1 = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636635313531393938.utf8, g2 = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636635313531393938.utf8, g3 = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636635313531393938.utf8 }, gl = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636433333364643464.G0, gr = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636433333364643464.G2, single_shift = default(enum__Enum__c1cd10fd6_cd333dd4d?) };
         self->kitty_keyboard = new key__FlagStack { idx = 0 };
         self->protected_mode = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633665633762303436.off;
         self->semantic_prompt = new Screen__SemanticPrompt { seen = false, click = new Screen__SemanticPrompt__SemanticClick { __tag = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636266633736313637.none } };
-        Screen__clearSelection__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self);
+        Screen__clearSelection__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self);
     }
 
 
 
-    public static unsafe void Screen__scroll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Screen__Screen* self, Screen__Scroll behavior)
+    public static unsafe void Screen__scroll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Screen__Screen* self, Screen__Scroll behavior)
     {
         try
         {
             switch ((int)behavior.__tag)
             {
                 case (int)__DotCcEnum_53637265656E5F5F5363726F6C6C5F546167.active:
-                    PageList__scroll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->pages, new PageList__Scroll { __tag = __DotCcEnum_506167654C6973745F5F5363726F6C6C5F546167.active });
+                    PageList__scroll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->pages, new PageList__Scroll { __tag = __DotCcEnum_506167654C6973745F5F5363726F6C6C5F546167.active });
                     break;
                 case (int)__DotCcEnum_53637265656E5F5F5363726F6C6C5F546167.top:
-                    PageList__scroll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->pages, new PageList__Scroll { __tag = __DotCcEnum_506167654C6973745F5F5363726F6C6C5F546167.top });
+                    PageList__scroll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->pages, new PageList__Scroll { __tag = __DotCcEnum_506167654C6973745F5F5363726F6C6C5F546167.top });
                     break;
                 case (int)__DotCcEnum_53637265656E5F5F5363726F6C6C5F546167.pin:
                     {
                         PageList__Pin p = behavior.__payload.pin;
-                        PageList__scroll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->pages, new PageList__Scroll { __tag = __DotCcEnum_506167654C6973745F5F5363726F6C6C5F546167.pin, __payload = new PageList__Scroll_Payload { pin = p } });
+                        PageList__scroll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->pages, new PageList__Scroll { __tag = __DotCcEnum_506167654C6973745F5F5363726F6C6C5F546167.pin, __payload = new PageList__Scroll_Payload { pin = p } });
                     }
                     break;
                 case (int)__DotCcEnum_53637265656E5F5F5363726F6C6C5F546167.row:
                     {
                         ulong v = behavior.__payload.row;
-                        PageList__scroll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->pages, new PageList__Scroll { __tag = __DotCcEnum_506167654C6973745F5F5363726F6C6C5F546167.row, __payload = new PageList__Scroll_Payload { row = v } });
+                        PageList__scroll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->pages, new PageList__Scroll { __tag = __DotCcEnum_506167654C6973745F5F5363726F6C6C5F546167.row, __payload = new PageList__Scroll_Payload { row = v } });
                     }
                     break;
                 case (int)__DotCcEnum_53637265656E5F5F5363726F6C6C5F546167.delta_row:
                     {
                         long v__1 = behavior.__payload.delta_row;
-                        PageList__scroll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->pages, new PageList__Scroll { __tag = __DotCcEnum_506167654C6973745F5F5363726F6C6C5F546167.delta_row, __payload = new PageList__Scroll_Payload { delta_row = v__1 } });
+                        PageList__scroll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->pages, new PageList__Scroll { __tag = __DotCcEnum_506167654C6973745F5F5363726F6C6C5F546167.delta_row, __payload = new PageList__Scroll_Payload { delta_row = v__1 } });
                     }
                     break;
                 default:
                     {
                         long v__2 = behavior.__payload.delta_prompt;
-                        PageList__scroll__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->pages, new PageList__Scroll { __tag = __DotCcEnum_506167654C6973745F5F5363726F6C6C5F546167.delta_prompt, __payload = new PageList__Scroll_Payload { delta_prompt = v__2 } });
+                        PageList__scroll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->pages, new PageList__Scroll { __tag = __DotCcEnum_506167654C6973745F5F5363726F6C6C5F546167.delta_prompt, __payload = new PageList__Scroll_Payload { delta_prompt = v__2 } });
                     }
                     break;
             }
         }
         finally
         {
-            Screen__assertIntegrity__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self);
+            Screen__assertIntegrity__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self);
         }
     }
 
 
 
-    public static unsafe void Screen__Cursor_deinit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Screen__Cursor* self, mem_Allocator__Allocator alloc)
+    public static unsafe void Screen__Cursor_deinit__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Screen__Cursor* self, mem_Allocator__Allocator alloc)
     {
         {
             hyperlink__Hyperlink* __cap = self->hyperlink;
@@ -1356,8 +3100,8 @@ public static unsafe partial class GhosttyVt
             {
                 hyperlink__Hyperlink* link = (hyperlink__Hyperlink*)__cap;
                 {
-                    hyperlink__Hyperlink_deinit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(link, alloc);
-                    mem_Allocator__destroy__p_hyperlink__Hyperlinkpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(alloc, link);
+                    hyperlink__Hyperlink_deinit__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(link, alloc);
+                    mem_Allocator__destroy__p_hyperlink__Hyperlinkpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(alloc, link);
                 }
             }
         }
@@ -1365,7 +3109,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe void Screen__clearSelection__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Screen__Screen* self)
+    public static unsafe void Screen__clearSelection__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Screen__Screen* self)
     {
         static CBool __dotcc_zig_set_E17ABC3124951C90F6E8(ref Screen__Dirty root, CBool value)
         {
@@ -1377,28 +3121,28 @@ public static unsafe partial class GhosttyVt
         {
             Selection__Selection* sel = ZigMem.OptionalPayload(&self->selection);
             {
-                Selection__deinit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*sel, self);
-                ref Screen__Dirty __zig_root145 = ref self->dirty;
-                __dotcc_zig_set_E17ABC3124951C90F6E8(ref __zig_root145, true);
+                Selection__deinit__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*sel, self);
+                ref Screen__Dirty __zig_root147 = ref self->dirty;
+                __dotcc_zig_set_E17ABC3124951C90F6E8(ref __zig_root147, true);
             }
         }
-        self->selection = null;
+        self->selection = default(Selection__Selection?);
     }
 
 
 
-    public static unsafe void Screen__assertIntegrity__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Screen__Screen* self)
+    public static unsafe void Screen__assertIntegrity__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Screen__Screen* self)
     {
     }
 
 
 
-    public static unsafe PageList__Pin Selection__topLeft__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Selection__Selection self, Screen__Screen* s)
+    public static unsafe PageList__Pin Selection__topLeft__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Selection__Selection self, Screen__Screen* s)
     {
         PageList__Pin __vcf0 = default(PageList__Pin);
         {
             PageList__Pin __blk1 = default, __blk2 = default;
-            switch ((int)Selection__order__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, s))
+            switch ((int)Selection__order__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, s))
             {
                 case (int)__DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636661643537633037.forward: goto __sw_flat_10_1;
                 case (int)__DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636661643537633037.reverse: goto __sw_flat_10_2;
@@ -1408,19 +3152,19 @@ public static unsafe partial class GhosttyVt
             }
             __sw_flat_10_1: ;
             {
-                __vcf0 = Selection__start__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self);
+                __vcf0 = Selection__start__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self);
                 goto __sw_flat_10_0;
             }
             __sw_flat_10_2: ;
             {
-                __vcf0 = Selection__end__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self);
+                __vcf0 = Selection__end__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self);
                 goto __sw_flat_10_0;
             }
             __sw_flat_10_3: ;
             __blk1 = default(PageList__Pin);
             {
-                PageList__Pin p = Selection__start__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self);
-                p.x = ZigMath.Min(Selection__end__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self).x, (ushort)(PageList__Node_cols__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(p.node) - (ushort)1));
+                PageList__Pin p = Selection__start__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self);
+                p.x = ZigMath.Min(Selection__end__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self).x, (ushort)(PageList__Node_cols__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(p.node) - (ushort)1));
                 {
                     __blk1 = p;
                     goto __blk1_end;
@@ -1434,8 +3178,8 @@ public static unsafe partial class GhosttyVt
             __sw_flat_10_4: ;
             __blk2 = default(PageList__Pin);
             {
-                PageList__Pin p__1 = Selection__end__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self);
-                p__1.x = ZigMath.Min(Selection__start__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self).x, (ushort)(PageList__Node_cols__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(p__1.node) - (ushort)1));
+                PageList__Pin p__1 = Selection__end__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self);
+                p__1.x = ZigMath.Min(Selection__start__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self).x, (ushort)(PageList__Node_cols__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(p__1.node) - (ushort)1));
                 {
                     __blk2 = p__1;
                     goto __blk2_end;
@@ -1453,12 +3197,12 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe PageList__Pin Selection__bottomRight__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Selection__Selection self, Screen__Screen* s)
+    public static unsafe PageList__Pin Selection__bottomRight__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Selection__Selection self, Screen__Screen* s)
     {
         PageList__Pin __vcf3 = default(PageList__Pin);
         {
             PageList__Pin __blk4 = default, __blk5 = default;
-            switch ((int)Selection__order__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, s))
+            switch ((int)Selection__order__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, s))
             {
                 case (int)__DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636661643537633037.forward: goto __sw_flat_11_1;
                 case (int)__DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636661643537633037.reverse: goto __sw_flat_11_2;
@@ -1468,19 +3212,19 @@ public static unsafe partial class GhosttyVt
             }
             __sw_flat_11_1: ;
             {
-                __vcf3 = Selection__end__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self);
+                __vcf3 = Selection__end__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self);
                 goto __sw_flat_11_0;
             }
             __sw_flat_11_2: ;
             {
-                __vcf3 = Selection__start__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self);
+                __vcf3 = Selection__start__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self);
                 goto __sw_flat_11_0;
             }
             __sw_flat_11_3: ;
             __blk4 = default(PageList__Pin);
             {
-                PageList__Pin p = Selection__end__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self);
-                p.x = ZigMath.Min(Selection__start__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self).x, (ushort)(PageList__Node_cols__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(p.node) - (ushort)1));
+                PageList__Pin p = Selection__end__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self);
+                p.x = ZigMath.Min(Selection__start__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self).x, (ushort)(PageList__Node_cols__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(p.node) - (ushort)1));
                 {
                     __blk4 = p;
                     goto __blk4_end;
@@ -1494,8 +3238,8 @@ public static unsafe partial class GhosttyVt
             __sw_flat_11_4: ;
             __blk5 = default(PageList__Pin);
             {
-                PageList__Pin p__1 = Selection__start__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self);
-                p__1.x = ZigMath.Min(Selection__end__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self).x, (ushort)(PageList__Node_cols__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(p__1.node) - (ushort)1));
+                PageList__Pin p__1 = Selection__start__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self);
+                p__1.x = ZigMath.Min(Selection__end__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self).x, (ushort)(PageList__Node_cols__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(p__1.node) - (ushort)1));
                 {
                     __blk5 = p__1;
                     goto __blk5_end;
@@ -1513,7 +3257,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe void Selection__deinit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Selection__Selection self, Screen__Screen* s)
+    public static unsafe void Selection__deinit__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Selection__Selection self, Screen__Screen* s)
     {
         {
             Selection__Bounds __un = self.bounds;
@@ -1522,8 +3266,8 @@ public static unsafe partial class GhosttyVt
                 case (int)__DotCcEnum_53656C656374696F6E5F5F426F756E64735F546167.tracked:
                     {
                         Selection____AnonStruct1 v = __un.__payload.tracked;
-                        PageList__untrackPin__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&s->pages, v.start);
-                        PageList__untrackPin__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&s->pages, v.end);
+                        PageList__untrackPin__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&s->pages, v.start);
+                        PageList__untrackPin__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&s->pages, v.end);
                     }
                     break;
                 default:
@@ -1536,10 +3280,10 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe enum__Enum__c1cd10fd6_cfad57c07 Selection__order__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Selection__Selection self, Screen__Screen* s)
+    public static unsafe enum__Enum__c1cd10fd6_cfad57c07 Selection__order__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Selection__Selection self, Screen__Screen* s)
     {
-        point__Coordinate start_pt = PageList__pointFromPin__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&s->pages, __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636237626639653836.screen, Selection__start__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self)).Value.__payload.screen;
-        point__Coordinate end_pt = PageList__pointFromPin__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&s->pages, __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636237626639653836.screen, Selection__end__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self)).Value.__payload.screen;
+        point__Coordinate start_pt = PageList__pointFromPin__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&s->pages, __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636237626639653836.screen, Selection__start__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self)).Value.__payload.screen;
+        point__Coordinate end_pt = PageList__pointFromPin__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&s->pages, __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636237626639653836.screen, Selection__end__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self)).Value.__payload.screen;
         if (Cond.B(self.rectangle))
         {
             if (Cond.B(((CBool)(Cond.B(((CBool)(start_pt.y > end_pt.y))) && Cond.B(((CBool)(start_pt.x >= end_pt.x)))))))
@@ -1563,7 +3307,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe PageList__Pin Selection__start__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Selection__Selection self)
+    public static unsafe PageList__Pin Selection__start__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Selection__Selection self)
     {
         PageList__Pin __vcf6 = default(PageList__Pin);
         {
@@ -1589,7 +3333,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe PageList__Pin Selection__end__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Selection__Selection self)
+    public static unsafe PageList__Pin Selection__end__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Selection__Selection self)
     {
         PageList__Pin __vcf7 = default(PageList__Pin);
         {
@@ -1615,66 +3359,29 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe Selection__Selection? selection__CSelection_toZig__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(selection__CSelection self)
-    {
-        PageList__Pin? __cf = grid_ref__CGridRef_toPin__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self.start);
-        if (Cond.B((Cond.B(__cf.HasValue) ? 0 : 1)))
-        {
-            return null;
-        }
-        PageList__Pin start_pin = __cf.Value;
-        PageList__Pin? __cf__1 = grid_ref__CGridRef_toPin__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self.end);
-        if (Cond.B((Cond.B(__cf__1.HasValue) ? 0 : 1)))
-        {
-            return null;
-        }
-        PageList__Pin end_pin = __cf__1.Value;
-        return Selection__init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(start_pin, end_pin, self.rectangle);
-    }
-
-
-
-    public static unsafe grid_ref__CGridRef grid_ref__CGridRef_fromPin__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(PageList__Pin pin)
-    {
-        return new grid_ref__CGridRef { node = pin.node, x = pin.x, y = pin.y, size = ((ulong)(sizeof(grid_ref__CGridRef))) };
-    }
-
-
-
-    public static unsafe PageList__Pin? grid_ref__CGridRef_toPin__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(grid_ref__CGridRef self)
-    {
-        PageList__Node* __cf = self.node;
-        if (Cond.B(((CBool)(__cf == null))))
-        {
-            return null;
-        }
-        PageList__Node* __anf6 = __cf;
-        return new PageList__Pin { node = __anf6, x = self.x, y = self.y, garbage = false };
-    }
-
-
-
-    public static unsafe ErrUnion<color_2__RGB> color_2__Name_default__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(color_2__Name self)
+    public static unsafe ErrUnion<color_2__RGB> color_2__Name_default__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(color_2__Name self)
     {
         try
         {
-            return (((int)(byte)self) switch { (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.black => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 29, g = 31, b = 33 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.red => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 204, g = 102, b = 102 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.green => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 181, g = 189, b = 104 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.yellow => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 240, g = 198, b = 116 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.blue => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 129, g = 162, b = 190 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.magenta => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 178, g = 148, b = 187 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.cyan => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 138, g = 190, b = 183 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.white => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 197, g = 200, b = 198 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.bright_black => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 102, g = 102, b = 102 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.bright_red => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 213, g = 78, b = 83 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.bright_green => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 185, g = 202, b = 74 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.bright_yellow => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 231, g = 197, b = 71 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.bright_blue => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 122, g = 166, b = 218 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.bright_magenta => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 195, g = 151, b = 216 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.bright_cyan => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 112, g = 192, b = 177 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.bright_white => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 234, g = 234, b = 234 }), _ => ErrUnion<color_2__RGB>.Err(104) });
+            return (((int)(byte)self) switch { (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.black => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 29, g = 31, b = 33 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.red => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 204, g = 102, b = 102 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.green => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 181, g = 189, b = 104 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.yellow => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 240, g = 198, b = 116 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.blue => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 129, g = 162, b = 190 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.magenta => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 178, g = 148, b = 187 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.cyan => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 138, g = 190, b = 183 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.white => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 197, g = 200, b = 198 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.bright_black => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 102, g = 102, b = 102 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.bright_red => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 213, g = 78, b = 83 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.bright_green => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 185, g = 202, b = 74 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.bright_yellow => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 231, g = 197, b = 71 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.bright_blue => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 122, g = 166, b = 218 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.bright_magenta => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 195, g = 151, b = 216 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.bright_cyan => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 112, g = 192, b = 177 }), (byte)__DotCcEnum_636F6C6F725F325F5F4E616D65.bright_white => ErrUnion<color_2__RGB>.Ok(new color_2__RGB { r = 234, g = 234, b = 234 }), _ => ErrUnion<color_2__RGB>.Err(107) });
         }
         catch (ZigErrorReturn __e) { return ErrUnion<color_2__RGB>.Err(__e.Code); }
     }
 
 
 
-    public static unsafe color_2__DynamicPalette color_2____init_color_2__DynamicPalette__default__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe color_2__DynamicPalette color_2____init_color_2__DynamicPalette__default__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        color_2__DynamicPalette __anf5 = new color_2__DynamicPalette { original = global::Managed.GhosttyVt.Globals.color_2__default__static, mask = new bit_set__Array__u64_256 {  } };
-        memcpy((color_2__RGB*)&__anf5.current, global::Managed.GhosttyVt.Globals.color_2__default__static, 256 * unchecked((int)((ulong)(sizeof(color_2__RGB)))));
-        return __anf5;
+        color_2__DynamicPalette __anf4 = default(color_2__DynamicPalette);
+        memcpy((color_2__RGB*)&__anf4.current, global::Managed.GhosttyVt.Globals.color_2__default__static, 256 * unchecked((int)((ulong)(sizeof(color_2__RGB)))));
+        __anf4.original = global::Managed.GhosttyVt.Globals.color_2__default__static;
+        __anf4.mask = new bit_set__Array__u64_256 {  };
+        return __anf4;
     }
 
 
 
-    public static unsafe ErrUnion<nuint> terminal__new___unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(allocator__Allocator* alloc_, ushort cols, ushort rows)
+    public static unsafe ErrUnion<nuint> terminal__new___unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(allocator__Allocator* alloc_, ushort cols, ushort rows)
     {
         static semantic_prompt__Redraw __dotcc_zig_set_BBF0C905DF9DE0863FF0(ref Terminal____AnonStruct1 root, semantic_prompt__Redraw value)
         {
@@ -1685,9 +3392,9 @@ public static unsafe partial class GhosttyVt
         try
         {
             if (Cond.B(((CBool)(Cond.B(((CBool)(cols == (ushort)0))) || Cond.B(((CBool)(rows == (ushort)0)))))))
-                return ErrUnion<nuint>.Err(71);
-            mem_Allocator__Allocator alloc = allocator__default__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(alloc_);
-            ErrUnion<nuint> __cf = mem_Allocator__create__Terminal__Terminal__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(alloc);
+                return ErrUnion<nuint>.Err(74);
+            mem_Allocator__Allocator alloc = allocator__default__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(alloc_);
+            ErrUnion<nuint> __cf = mem_Allocator__create__Terminal__Terminal__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(alloc);
             if (Cond.B(__cf.IsErr))
             {
                 return ErrUnion<nuint>.Err(5);
@@ -1696,22 +3403,22 @@ public static unsafe partial class GhosttyVt
             try
             {
                 terminal__Io io = new terminal__Io { impl = new TinyIo__TinyIo {  } };
-                *t = ErrUnion.Try(Terminal__init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__Io_io__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(io), alloc, new Terminal__Options { cols = cols, rows = rows, max_scrollback_bytes = (ulong)10000, max_scrollback_lines = null, colors = new Terminal__Colors { background = new color_2__DynamicRGB { @override = null, @default = null }, foreground = new color_2__DynamicRGB { @override = null, @default = null }, cursor = new color_2__DynamicRGB { @override = null, @default = null }, palette = global::Managed.GhosttyVt.Globals.color_2__DynamicPalette__default__static }, default_modes = new modes_2____BlockType0 { disable_keyboard = false, insert = false, send_receive_mode = true, linefeed = false, cursor_keys = false, __zig_member_3133325F636F6C756D6E = false, slow_scroll = false, reverse_colors = false, origin = false, wraparound = true, autorepeat = false, mouse_event_x10 = false, cursor_blinking = false, cursor_visible = true, enable_mode_3 = false, reverse_wrap = false, alt_screen_legacy = false, keypad_keys = false, backarrow_key_mode = false, enable_left_and_right_margin = false, mouse_event_normal = false, mouse_event_button = false, mouse_event_any = false, focus_event = false, mouse_format_utf8 = false, mouse_format_sgr = false, mouse_alternate_scroll = true, mouse_format_urxvt = false, mouse_format_sgr_pixels = false, ignore_keypad_with_numlock = true, alt_esc_prefix = true, alt_sends_escape = false, reverse_wrap_extended = false, alt_screen = false, save_cursor = false, alt_screen_save_cursor_clear_enter = false, bracketed_paste = false, synchronized_output = false, grapheme_cluster = false, report_color_scheme = false, report_visibility = false, in_band_size_reports = false, kitty_paste_events = false }, default_cursor_style = __DotCcEnum_656E756D5F5F456E756D5F5F6338393435633736395F633839633165333136.block, default_cursor_blink = false, default_xt_checksum = new xt_checksum__Flags { positive = false, no_attributes = false, no_trim = false, undrawn = false, full = false }, kitty_image_storage_limit = unchecked((ulong)(10 * 1000 * 1000)) }));
+                *t = ErrUnion.Try(Terminal__init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(terminal__Io_io__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(io), alloc, new Terminal__Options { cols = cols, rows = rows, max_scrollback_bytes = (ulong)10000, max_scrollback_lines = default(ulong?), colors = new Terminal__Colors { background = new color_2__DynamicRGB { @override = default(color_2__RGB?), @default = default(color_2__RGB?) }, foreground = new color_2__DynamicRGB { @override = default(color_2__RGB?), @default = default(color_2__RGB?) }, cursor = new color_2__DynamicRGB { @override = default(color_2__RGB?), @default = default(color_2__RGB?) }, palette = global::Managed.GhosttyVt.Globals.color_2__DynamicPalette__default__static }, default_modes = new modes_2____BlockType0 { disable_keyboard = false, insert = false, send_receive_mode = true, linefeed = false, cursor_keys = false, __zig_member_3133325F636F6C756D6E = false, slow_scroll = false, reverse_colors = false, origin = false, wraparound = true, autorepeat = false, mouse_event_x10 = false, cursor_blinking = false, cursor_visible = true, enable_mode_3 = false, reverse_wrap = false, alt_screen_legacy = false, keypad_keys = false, backarrow_key_mode = false, enable_left_and_right_margin = false, mouse_event_normal = false, mouse_event_button = false, mouse_event_any = false, focus_event = false, mouse_format_utf8 = false, mouse_format_sgr = false, mouse_alternate_scroll = true, mouse_format_urxvt = false, mouse_format_sgr_pixels = false, ignore_keypad_with_numlock = true, alt_esc_prefix = true, alt_sends_escape = false, reverse_wrap_extended = false, alt_screen = false, save_cursor = false, alt_screen_save_cursor_clear_enter = false, bracketed_paste = false, synchronized_output = false, grapheme_cluster = false, report_color_scheme = false, report_visibility = false, in_band_size_reports = false, kitty_paste_events = false }, default_cursor_style = __DotCcEnum_656E756D5F5F456E756D5F5F6338393435633736395F633839633165333136.block, default_cursor_blink = false, default_xt_checksum = new xt_checksum__Flags { positive = false, no_attributes = false, no_trim = false, undrawn = false, full = false }, kitty_image_storage_limit = unchecked((ulong)(10 * 1000 * 1000)) }));
                 try
                 {
-                    ref Terminal____AnonStruct1 __zig_root146 = ref t->flags;
-                    __dotcc_zig_set_BBF0C905DF9DE0863FF0(ref __zig_root146, __DotCcEnum_73656D616E7469635F70726F6D70745F5F526564726177.@false);
-                    return ErrUnion<nuint>.Ok((nuint)((terminal__TerminalWrapper*)ErrUnion.Try(terminal__wrap__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(alloc, t, io, 0))));
+                    ref Terminal____AnonStruct1 __zig_root148 = ref t->flags;
+                    __dotcc_zig_set_BBF0C905DF9DE0863FF0(ref __zig_root148, __DotCcEnum_73656D616E7469635F70726F6D70745F5F526564726177.@false);
+                    return ErrUnion<nuint>.Ok((nuint)((terminal__TerminalWrapper*)ErrUnion.Try(terminal__wrap__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(alloc, t, io, (ulong)0))));
                 }
                 catch (ZigErrorReturn)
                 {
-                    Terminal__deinit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(t, alloc);
+                    Terminal__deinit__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(t, alloc);
                     throw;
                 }
             }
             catch (ZigErrorReturn)
             {
-                mem_Allocator__destroy__p_Terminal__Terminalpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(alloc, t);
+                mem_Allocator__destroy__p_Terminal__Terminalpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(alloc, t);
                 throw;
             }
         }
@@ -1720,33 +3427,33 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe void terminal__Effects_renderHoldTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream_terminal__Handler* handler, CBool held)
+    public static unsafe void terminal__Effects_renderHoldTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(stream_terminal__Handler* handler, CBool held)
     {
-        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(handler);
+        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(handler);
         delegate*<terminal__TerminalWrapper*, void*, CBool, void> __cf = wrapper->effects.render_hold;
         if (Cond.B(((CBool)(__cf == null))))
         {
             return;
         }
-        delegate*<terminal__TerminalWrapper*, void*, CBool, void> func = __cf;
+        delegate*<terminal__TerminalWrapper*, void*, CBool, void> func = (delegate*<terminal__TerminalWrapper*, void*, CBool, void>)__cf;
         func((terminal__TerminalWrapper*)wrapper, wrapper->effects.userdata, held);
     }
 
 
 
-    public static unsafe enums__EnumSet__stream__Boundary? terminal__Boundary_setFromBits__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(uint bits)
+    public static unsafe enums__EnumSet__stream__Boundary? terminal__Boundary_setFromBits__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(uint bits)
     {
         if (Cond.B(((CBool)(Cond.B(((CBool)(bits == 0u))) || Cond.B(((CBool)((bits & ~unchecked((uint)((1 << (int)(7UL)) - 1))) != 0u)))))))
-            return null;
+            return default(enums__EnumSet__stream__Boundary?);
         enums__EnumSet__stream__Boundary result = new enums__EnumSet__stream__Boundary { bits = new bit_set__Integer__7 { mask = 0 } };
         {
-            ConstSlice<stream__Boundary> __s = enums__values__stream__Boundary__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0();
+            ConstSlice<stream__Boundary> __s = enums__values__stream__Boundary__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659();
             for (ulong __i = 0UL; Cond.B(((CBool)(__i < __s.Len))); __i++)
             {
                 stream__Boundary b = __s.Ptr[__i];
                 {
-                    if (Cond.B(((CBool)((bits & terminal__Boundary_bit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(b)) != 0u))))
-                        enums__EnumSet__stream__Boundary_insert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&result, b);
+                    if (Cond.B(((CBool)((bits & terminal__Boundary_bit__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(b)) != 0u))))
+                        enums__EnumSet__stream__Boundary_insert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&result, b);
                 }
             }
         }
@@ -1755,17 +3462,17 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe uint terminal__Boundary_bitsFromSet__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(enums__EnumSet__stream__Boundary set_)
+    public static unsafe uint terminal__Boundary_bitsFromSet__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(enums__EnumSet__stream__Boundary set_)
     {
         uint bits = 0;
-        enums__EnumSet__stream__Boundary__Iterator it = enums__EnumSet__stream__Boundary_iterator__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&set_);
+        enums__EnumSet__stream__Boundary__Iterator it = enums__EnumSet__stream__Boundary_iterator__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&set_);
         while (true)
         {
-            stream__Boundary? __cap = enums__EnumSet__stream__Boundary__Iterator_next__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&it);
+            stream__Boundary? __cap = enums__EnumSet__stream__Boundary__Iterator_next__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&it);
             if (Cond.B(__cap.HasValue))
             {
                 stream__Boundary b = __cap.Value;
-                bits |= terminal__Boundary_bit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(b);
+                bits |= terminal__Boundary_bit__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(b);
             }
             else
                 break;
@@ -1775,75 +3482,75 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ErrUnion<Unit> terminal__continuationWriteIo__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, Io_Writer__Writer* writer)
+    public static unsafe ZigErrorUnionZero<Unit> terminal__continuationWriteIo__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(terminal__TerminalWrapper* terminal_, Io_Writer__Writer* writer)
     {
         try
         {
             if (Cond.B(((CBool)(terminal_ == null))))
             {
-                return ErrUnion<Unit>.Err(71);
+                return ZigErrorUnionZero<Unit>.Err(74);
             }
-            terminal__TerminalWrapper* wrapper = terminal_;
-            _ = ErrUnion.Try(stream__Stream__stream_terminal__Handler_writeContinuation__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&wrapper->stream, writer));
+            terminal__TerminalWrapper* wrapper = (terminal__TerminalWrapper*)terminal_;
+            _ = ErrUnion.Try(stream__Stream__stream_terminal__Handler_writeContinuation__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&wrapper->stream, writer));
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe result__Result terminal__continuationErrorResult__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ushort err)
+    public static unsafe result__Result terminal__continuationErrorResult__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ushort err)
     {
-        return ((err) switch { 71 => __DotCcEnum_726573756C745F5F526573756C74.invalid_value, 26 => __DotCcEnum_726573756C745F5F526573756C74.io_error, 72 => __DotCcEnum_726573756C745F5F526573756C74.invalid_value, _ => __DotCcEnum_726573756C745F5F526573756C74.invalid_value });
+        return ((err) switch { 74 => __DotCcEnum_726573756C745F5F526573756C74.invalid_value, 26 => __DotCcEnum_726573756C745F5F526573756C74.io_error, 75 => __DotCcEnum_726573756C745F5F526573756C74.invalid_value, _ => __DotCcEnum_726573756C745F5F526573756C74.invalid_value });
     }
 
 
 
-    public static unsafe ErrUnion<Slice<byte>> terminal__continuationAllocIo__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, mem_Allocator__Allocator alloc, CBool allow_untracked_ground)
+    public static unsafe ErrUnion<Slice<byte>> terminal__continuationAllocIo__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(terminal__TerminalWrapper* terminal_, mem_Allocator__Allocator alloc, CBool allow_untracked_ground)
     {
         try
         {
             if (Cond.B(((CBool)(terminal_ == null))))
             {
-                return ErrUnion<Slice<byte>>.Err(71);
+                return ErrUnion<Slice<byte>>.Err(74);
             }
-            terminal__TerminalWrapper* wrapper = terminal_;
-            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(allow_untracked_ground) && Cond.B(((CBool)(wrapper->stream.continuation == null)))))) && Cond.B(stream__Stream__stream_terminal__Handler_ground__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&wrapper->stream))))))
+            terminal__TerminalWrapper* wrapper = (terminal__TerminalWrapper*)terminal_;
+            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(allow_untracked_ground) && Cond.B(((CBool)(wrapper->stream.continuation == null)))))) && Cond.B(stream__Stream__stream_terminal__Handler_ground__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&wrapper->stream))))))
             {
-                ErrUnion<Slice<byte>> __cE = mem_Allocator__dupe__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(alloc, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL));
-                ErrUnion<Slice<byte>> __anf8 = (Cond.B(__cE.IsErr) ? ErrUnion<Slice<byte>>.Err(5) : ErrUnion<Slice<byte>>.Ok(__cE.Value));
-                ErrUnion<Slice<byte>> __anf9 = __anf8;
-                return __anf9;
+                ErrUnion<Slice<byte>> __cE = mem_Allocator__dupe__u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(alloc, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1340 /*""*/), 0UL));
+                ErrUnion<Slice<byte>> __anf58 = (Cond.B(__cE.IsErr) ? ErrUnion<Slice<byte>>.Err(5) : ErrUnion<Slice<byte>>.Ok(__cE.Value));
+                ErrUnion<Slice<byte>> __anf59 = __anf58;
+                return __anf59;
             }
-            Io_Writer__Allocating aw = Io_Writer__Allocating_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(alloc);
+            Io_Writer__Allocating aw = Io_Writer__Allocating_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(alloc);
             try
             {
-                ErrUnion<Unit> __cf = terminal__continuationWriteIo__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal_, &aw.writer);
+                ZigErrorUnionZero<Unit> __cf = terminal__continuationWriteIo__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(terminal_, &aw.writer);
                 if (Cond.B(__cf.IsErr))
                 {
                     ushort err = __cf.Code;
                     switch (err)
                     {
-                        case 71:
-                            return ErrUnion<Slice<byte>>.Err(71);
+                        case 74:
+                            return ErrUnion<Slice<byte>>.Err(74);
                         case 26:
                             return ErrUnion<Slice<byte>>.Err(5);
-                        case 72:
-                            return ErrUnion<Slice<byte>>.Err(72);
-                        case 73:
-                            return ErrUnion<Slice<byte>>.Err(73);
+                        case 75:
+                            return ErrUnion<Slice<byte>>.Err(75);
+                        case 76:
+                            return ErrUnion<Slice<byte>>.Err(76);
                         default:
                             throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
                     }
                 }
-                ErrUnion<Slice<byte>> __cE__1 = Io_Writer__Allocating_toOwnedSlice__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&aw);
-                ErrUnion<Slice<byte>> __anf10 = (Cond.B(__cE__1.IsErr) ? ErrUnion<Slice<byte>>.Err(5) : ErrUnion<Slice<byte>>.Ok(__cE__1.Value));
-                ErrUnion<Slice<byte>> __anf11 = __anf10;
-                return __anf11;
+                ErrUnion<Slice<byte>> __cE__1 = Io_Writer__Allocating_toOwnedSlice__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&aw);
+                ErrUnion<Slice<byte>> __anf60 = (Cond.B(__cE__1.IsErr) ? ErrUnion<Slice<byte>>.Err(5) : ErrUnion<Slice<byte>>.Ok(__cE__1.Value));
+                ErrUnion<Slice<byte>> __anf61 = __anf60;
+                return __anf61;
             }
             finally
             {
-                Io_Writer__Allocating_deinit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&aw);
+                Io_Writer__Allocating_deinit__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&aw);
             }
         }
         catch (ZigErrorReturn __e) { return ErrUnion<Slice<byte>>.Err(__e.Code); }
@@ -1851,27 +3558,28 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe Io__Io terminal__Io_io__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__Io self)
+    public static unsafe Io__Io terminal__Io_io__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(terminal__Io self)
     {
-        ref terminal__Io __zig_zero_base147 = ref self;
-        return TinyIo__io__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(TinyIo__TinyIo.__dotcc_zero_owner(ref __zig_zero_base147, default(TinyIo__TinyIo)));
+        ref terminal__Io __zig_zero_base149 = ref self;
+        return TinyIo__io__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(TinyIo__TinyIo.__dotcc_zero_owner(ref __zig_zero_base149, default(TinyIo__TinyIo)));
     }
 
 
 
-    public static unsafe ErrUnion<nuint> terminal__wrap__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mem_Allocator__Allocator alloc, Terminal__Terminal* t, terminal__Io io, ulong continuation_max_bytes)
+    public static unsafe ErrUnion<nuint> terminal__wrap__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator alloc, Terminal__Terminal* t, terminal__Io io, ulong continuation_max_bytes)
     {
         try
         {
-            ErrUnion<nuint> __cf = mem_Allocator__create__terminal__TerminalWrapper__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(alloc);
+            ErrUnion<nuint> __cf = mem_Allocator__create__terminal__TerminalWrapper__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(alloc);
             if (Cond.B(__cf.IsErr))
             {
                 return ErrUnion<nuint>.Err(5);
             }
             terminal__TerminalWrapper* wrapper = (terminal__TerminalWrapper*)(terminal__TerminalWrapper*)(__cf.Value);
-            stream_terminal__Handler handler = Terminal__vtHandler__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(t);
-            handler.effects = new stream_terminal__Handler__Effects { write_pty = DotCcPointers.terminal__Effects_writePtyTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0, bell = DotCcPointers.terminal__Effects_bellTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0, color_scheme = DotCcPointers.terminal__Effects_colorSchemeTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0, desktop_notification = DotCcPointers.terminal__Effects_desktopNotificationTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0, drag_and_drop = (delegate*<stream_terminal__Handler*, dnd_drop__Event, void>)(null), device_attributes = DotCcPointers.terminal__Effects_deviceAttributesTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0, enquiry = DotCcPointers.terminal__Effects_enquiryTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0, xtversion = DotCcPointers.terminal__Effects_xtversionTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0, title_changed = DotCcPointers.terminal__Effects_titleChangedTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0, pwd_changed = DotCcPointers.terminal__Effects_pwdChangedTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0, progress_report = DotCcPointers.terminal__Effects_progressReportTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0, semantic_prompt = DotCcPointers.terminal__Effects_semanticPromptTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0, reset = DotCcPointers.terminal__Effects_resetTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0, size = DotCcPointers.terminal__Effects_sizeTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0, render_hold = DotCcPointers.terminal__Effects_renderHoldTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0, resize_window = DotCcPointers.terminal__Effects_resizeWindowTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0, clipboard_write = (delegate*<stream_terminal__Handler*, clipboard_2__Write, void>)(null), clipboard_read = (delegate*<stream_terminal__Handler*, clipboard_2__Read, void>)(null), program_status = (delegate*<stream_terminal__Handler*, program_status__Report, void>)(null) };
-            *wrapper = new terminal__TerminalWrapper { terminal = t, io = io, stream = stream__Stream__stream_terminal__Handler_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new stream__Stream__stream_terminal__Handler__Options { allocator = alloc, handler = handler, continuation_max_bytes = continuation_max_bytes, osc_unknown_max_bytes = 0 }), tmp_dir_path = null, effects = new terminal__Effects { userdata = null, write_pty = (delegate*<terminal__TerminalWrapper*, void*, byte*, ulong, void>)(null), bell = (delegate*<terminal__TerminalWrapper*, void*, void>)(null), color_scheme = (delegate*<terminal__TerminalWrapper*, void*, enum__Enum__c1cd10fd6_c37464d09*, CBool>)(null), desktop_notification = (delegate*<terminal__TerminalWrapper*, void*, terminal__DesktopNotification*, void>)(null), device_attributes_cb = (delegate*<terminal__TerminalWrapper*, void*, terminal__Effects__CDeviceAttributes*, CBool>)(null), enquiry = (delegate*<terminal__TerminalWrapper*, void*, types__String>)(null), xtversion = (delegate*<terminal__TerminalWrapper*, void*, types__String>)(null), title_changed = (delegate*<terminal__TerminalWrapper*, void*, void>)(null), pwd_changed = (delegate*<terminal__TerminalWrapper*, void*, void>)(null), progress_report = (delegate*<terminal__TerminalWrapper*, void*, terminal__ProgressReport*, void>)(null), program_status = (delegate*<terminal__TerminalWrapper*, void*, terminal__ProgramStatus*, void>)(null), semantic_prompt = (delegate*<terminal__TerminalWrapper*, void*, terminal__SemanticPrompt*, void>)(null), reset = (delegate*<terminal__TerminalWrapper*, void*, void>)(null), size_cb = (delegate*<terminal__TerminalWrapper*, void*, struct____BlockType0*, CBool>)(null), clipboard_write = (delegate*<terminal__TerminalWrapper*, void*, terminal__ClipboardWrite*, void>)(null), clipboard_read = (delegate*<terminal__TerminalWrapper*, void*, terminal__ClipboardRead*, void>)(null), unknown_sequence = (delegate*<terminal__TerminalWrapper*, void*, union____AnonStruct1*, void>)(null), render_hold = (delegate*<terminal__TerminalWrapper*, void*, CBool, void>)(null), resize_window = (delegate*<terminal__TerminalWrapper*, void*, union____AnonStruct2*, void>)(null) }, tracked_grid_refs = new array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0 { entries = new multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data { bytes = default(byte*), len = 0, capacity = 0 }, index_header = (array_hash_map__IndexHeader*)(null), pointer_stability = new debug__SafetyLock { state = __DotCcEnum_64656275675F5F5F5F416E6F6E456E756D30.unknown } }, searches = new array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0 { entries = new multi_array_list__MultiArrayList__array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0__Data { bytes = default(byte*), len = 0, capacity = 0 }, index_header = (array_hash_map__IndexHeader*)(null), pointer_stability = new debug__SafetyLock { state = __DotCcEnum_64656275675F5F5F5F416E6F6E456E756D30.unknown } } };
+            stream_terminal__Handler handler = Terminal__vtHandler__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(t);
+            handler.effects = new stream_terminal__Handler__Effects { write_pty = DotCcPointers.terminal__Effects_writePtyTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659, bell = DotCcPointers.terminal__Effects_bellTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659, color_scheme = DotCcPointers.terminal__Effects_colorSchemeTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659, desktop_notification = DotCcPointers.terminal__Effects_desktopNotificationTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659, drag_and_drop = (delegate*<stream_terminal__Handler*, dnd_drop__Event, void>)(null), device_attributes = DotCcPointers.terminal__Effects_deviceAttributesTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659, enquiry = DotCcPointers.terminal__Effects_enquiryTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659, xtversion = DotCcPointers.terminal__Effects_xtversionTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659, title_changed = DotCcPointers.terminal__Effects_titleChangedTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659, pwd_changed = DotCcPointers.terminal__Effects_pwdChangedTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659, progress_report = DotCcPointers.terminal__Effects_progressReportTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659, semantic_prompt = DotCcPointers.terminal__Effects_semanticPromptTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659, reset = DotCcPointers.terminal__Effects_resetTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659, size = DotCcPointers.terminal__Effects_sizeTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659, render_hold = DotCcPointers.terminal__Effects_renderHoldTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659, resize_window = DotCcPointers.terminal__Effects_resizeWindowTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659, clipboard_write = (delegate*<stream_terminal__Handler*, clipboard_2__Write, void>)(null), clipboard_read = (delegate*<stream_terminal__Handler*, clipboard_2__Read, void>)(null), program_status = (delegate*<stream_terminal__Handler*, program_status__Report, void>)(null) };
+            apc__Handler_enable__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&handler.apc_handler, __DotCcEnum_6170635F5F50726F746F636F6C.glyph, false);
+            *wrapper = new terminal__TerminalWrapper { terminal = t, io = io, stream = stream__Stream__stream_terminal__Handler_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new stream__Stream__stream_terminal__Handler__Options { allocator = alloc, handler = handler, continuation_max_bytes = continuation_max_bytes, osc_unknown_max_bytes = 0 }), tmp_dir_path = default(Slice<byte>?), effects = new terminal__Effects { userdata = null, write_pty = (delegate*<terminal__TerminalWrapper*, void*, byte*, ulong, void>)(null), bell = (delegate*<terminal__TerminalWrapper*, void*, void>)(null), color_scheme = (delegate*<terminal__TerminalWrapper*, void*, enum__Enum__c1cd10fd6_c37464d09*, CBool>)(null), desktop_notification = (delegate*<terminal__TerminalWrapper*, void*, terminal__DesktopNotification*, void>)(null), device_attributes_cb = (delegate*<terminal__TerminalWrapper*, void*, terminal__Effects__CDeviceAttributes*, CBool>)(null), enquiry = (delegate*<terminal__TerminalWrapper*, void*, types__String>)(null), xtversion = (delegate*<terminal__TerminalWrapper*, void*, types__String>)(null), title_changed = (delegate*<terminal__TerminalWrapper*, void*, void>)(null), pwd_changed = (delegate*<terminal__TerminalWrapper*, void*, void>)(null), progress_report = (delegate*<terminal__TerminalWrapper*, void*, terminal__ProgressReport*, void>)(null), program_status = (delegate*<terminal__TerminalWrapper*, void*, terminal__ProgramStatus*, void>)(null), semantic_prompt = (delegate*<terminal__TerminalWrapper*, void*, terminal__SemanticPrompt*, void>)(null), reset = (delegate*<terminal__TerminalWrapper*, void*, void>)(null), size_cb = (delegate*<terminal__TerminalWrapper*, void*, struct____BlockType0*, CBool>)(null), clipboard_write = (delegate*<terminal__TerminalWrapper*, void*, terminal__ClipboardWrite*, void>)(null), clipboard_read = (delegate*<terminal__TerminalWrapper*, void*, terminal__ClipboardRead*, void>)(null), unknown_sequence = (delegate*<terminal__TerminalWrapper*, void*, union____AnonStruct1*, void>)(null), render_hold = (delegate*<terminal__TerminalWrapper*, void*, CBool, void>)(null), resize_window = (delegate*<terminal__TerminalWrapper*, void*, union____AnonStruct2*, void>)(null) }, tracked_grid_refs = new array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0 { entries = new multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data { bytes = default(byte*), len = 0, capacity = 0 }, index_header = (array_hash_map__IndexHeader*)(null), pointer_stability = new debug__SafetyLock { state = __DotCcEnum_64656275675F5F5F5F416E6F6E456E756D30.unknown } }, searches = new array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0 { entries = new multi_array_list__MultiArrayList__array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0__Data { bytes = default(byte*), len = 0, capacity = 0 }, index_header = (array_hash_map__IndexHeader*)(null), pointer_stability = new debug__SafetyLock { state = __DotCcEnum_64656275675F5F5F5F416E6F6E456E756D30.unknown } } };
             return ErrUnion<nuint>.Ok((nuint)(wrapper));
         }
         catch (ZigErrorReturn __e) { return ErrUnion<nuint>.Err(__e.Code); }
@@ -1879,7 +3587,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe terminal__TerminalWrapper* terminal__TerminalWrapper_fromHandler__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream_terminal__Handler* handler)
+    public static unsafe terminal__TerminalWrapper* terminal__TerminalWrapper_fromHandler__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(stream_terminal__Handler* handler)
     {
         stream__Stream__stream_terminal__Handler* stream_ptr = (stream__Stream__stream_terminal__Handler*)((ulong)handler - __DotccOffset_73747265616D5F5F53747265616D5F5F73747265616D5F7465726D696E616C5F5F48616E646C65722E68616E646C6572.Value);
         return (terminal__TerminalWrapper*)((ulong)stream_ptr - __DotccOffset_7465726D696E616C5F5F5465726D696E616C577261707065722E73747265616D.Value);
@@ -1887,88 +3595,88 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe uint terminal__Boundary_bit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream__Boundary b)
+    public static unsafe uint terminal__Boundary_bit__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(stream__Boundary b)
     {
         return (uint)1 << (int)(byte)b;
     }
 
 
 
-    public static unsafe void terminal__Effects_writePtyTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream_terminal__Handler* handler, ConstSlice<byte> data)
+    public static unsafe void terminal__Effects_writePtyTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(stream_terminal__Handler* handler, ConstSlice<byte> data)
     {
-        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(handler);
+        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(handler);
         delegate*<terminal__TerminalWrapper*, void*, byte*, ulong, void> __cf = wrapper->effects.write_pty;
         if (Cond.B(((CBool)(__cf == null))))
         {
             return;
         }
-        delegate*<terminal__TerminalWrapper*, void*, byte*, ulong, void> func = __cf;
+        delegate*<terminal__TerminalWrapper*, void*, byte*, ulong, void> func = (delegate*<terminal__TerminalWrapper*, void*, byte*, ulong, void>)__cf;
         func((terminal__TerminalWrapper*)wrapper, wrapper->effects.userdata, data.Ptr, data.Len);
     }
 
 
 
-    public static unsafe void terminal__Effects_bellTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream_terminal__Handler* handler)
+    public static unsafe void terminal__Effects_bellTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(stream_terminal__Handler* handler)
     {
-        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(handler);
+        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(handler);
         delegate*<terminal__TerminalWrapper*, void*, void> __cf = wrapper->effects.bell;
         if (Cond.B(((CBool)(__cf == null))))
         {
             return;
         }
-        delegate*<terminal__TerminalWrapper*, void*, void> func = __cf;
+        delegate*<terminal__TerminalWrapper*, void*, void> func = (delegate*<terminal__TerminalWrapper*, void*, void>)__cf;
         func((terminal__TerminalWrapper*)wrapper, wrapper->effects.userdata);
     }
 
 
 
-    public static unsafe enum__Enum__c1cd10fd6_c37464d09? terminal__Effects_colorSchemeTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream_terminal__Handler* handler)
+    public static unsafe enum__Enum__c1cd10fd6_c37464d09? terminal__Effects_colorSchemeTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(stream_terminal__Handler* handler)
     {
-        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(handler);
+        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(handler);
         delegate*<terminal__TerminalWrapper*, void*, enum__Enum__c1cd10fd6_c37464d09*, CBool> __cf = wrapper->effects.color_scheme;
         if (Cond.B(((CBool)(__cf == null))))
         {
-            return null;
+            return default(enum__Enum__c1cd10fd6_c37464d09?);
         }
-        delegate*<terminal__TerminalWrapper*, void*, enum__Enum__c1cd10fd6_c37464d09*, CBool> func = __cf;
+        delegate*<terminal__TerminalWrapper*, void*, enum__Enum__c1cd10fd6_c37464d09*, CBool> func = (delegate*<terminal__TerminalWrapper*, void*, enum__Enum__c1cd10fd6_c37464d09*, CBool>)__cf;
         enum__Enum__c1cd10fd6_c37464d09 scheme = default(enum__Enum__c1cd10fd6_c37464d09);
-        if (Cond.B(func((terminal__TerminalWrapper*)wrapper, wrapper->effects.userdata, &scheme)))
-            return scheme;
-        return null;
+        if (Cond.B((Cond.B(func((terminal__TerminalWrapper*)wrapper, wrapper->effects.userdata, &scheme)) ? 0 : 1)))
+            return default(enum__Enum__c1cd10fd6_c37464d09?);
+        return lib__enumFromPtr__enum__Enum__c1cd10fd6_c37464d09__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&scheme);
     }
 
 
 
-    public static unsafe void terminal__Effects_desktopNotificationTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream_terminal__Handler* handler, stream__Action__ShowDesktopNotification notification)
+    public static unsafe void terminal__Effects_desktopNotificationTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(stream_terminal__Handler* handler, stream__Action__ShowDesktopNotification notification)
     {
-        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(handler);
+        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(handler);
         delegate*<terminal__TerminalWrapper*, void*, terminal__DesktopNotification*, void> __cf = wrapper->effects.desktop_notification;
         if (Cond.B(((CBool)(__cf == null))))
         {
             return;
         }
-        delegate*<terminal__TerminalWrapper*, void*, terminal__DesktopNotification*, void> func = __cf;
-        terminal__DesktopNotification request = new terminal__DesktopNotification { size = ((ulong)(sizeof(terminal__DesktopNotification))), title = types__String_init____const_unsigned_charpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(notification.title), body = types__String_init____const_unsigned_charpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(notification.body) };
+        delegate*<terminal__TerminalWrapper*, void*, terminal__DesktopNotification*, void> func = (delegate*<terminal__TerminalWrapper*, void*, terminal__DesktopNotification*, void>)__cf;
+        terminal__DesktopNotification request = new terminal__DesktopNotification { title = types__String_init____const_unsigned_charpa0_e8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(notification.title), body = types__String_init____const_unsigned_charpa0_e8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(notification.body) };
         func((terminal__TerminalWrapper*)wrapper, wrapper->effects.userdata, &request);
     }
 
 
 
-    public static unsafe device_attributes__Attributes terminal__Effects_deviceAttributesTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream_terminal__Handler* handler)
+    public static unsafe device_attributes__Attributes terminal__Effects_deviceAttributesTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(stream_terminal__Handler* handler)
     {
-        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(handler);
+        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(handler);
         delegate*<terminal__TerminalWrapper*, void*, terminal__Effects__CDeviceAttributes*, CBool> __cf = wrapper->effects.device_attributes_cb;
         if (Cond.B(((CBool)(__cf == null))))
         {
-            device_attributes__Primary__Feature* __cl148 = stackalloc device_attributes__Primary__Feature[]{ __DotCcEnum_6465766963655F617474726962757465735F5F5072696D6172795F5F46656174757265.ansi_color };
-            return new device_attributes__Attributes { primary = new device_attributes__Primary { conformance_level = __DotCcEnum_6465766963655F617474726962757465735F5F436F6E666F726D616E63654C6576656C.level_2, features = new ConstSlice<device_attributes__Primary__Feature>(__cl148, 1UL) }, secondary = new device_attributes__Secondary { device_type = __DotCcEnum_6465766963655F617474726962757465735F5F44657669636554797065.vt220, firmware_version = 0, rom_cartridge = 0 }, tertiary = new device_attributes__Tertiary { unit_id = 0 } };
+            device_attributes__Primary__Feature* __cl150 = stackalloc device_attributes__Primary__Feature[]{ __DotCcEnum_6465766963655F617474726962757465735F5F5072696D6172795F5F46656174757265.ansi_color };
+            return new device_attributes__Attributes { primary = new device_attributes__Primary { conformance_level = __DotCcEnum_6465766963655F617474726962757465735F5F436F6E666F726D616E63654C6576656C.level_2, features = new ConstSlice<device_attributes__Primary__Feature>(__cl150, 1UL) }, secondary = new device_attributes__Secondary { device_type = __DotCcEnum_6465766963655F617474726962757465735F5F44657669636554797065.vt220, firmware_version = 0, rom_cartridge = 0 }, tertiary = new device_attributes__Tertiary { unit_id = 0 } };
         }
-        delegate*<terminal__TerminalWrapper*, void*, terminal__Effects__CDeviceAttributes*, CBool> func = __cf;
+        delegate*<terminal__TerminalWrapper*, void*, terminal__Effects__CDeviceAttributes*, CBool> func = (delegate*<terminal__TerminalWrapper*, void*, terminal__Effects__CDeviceAttributes*, CBool>)__cf;
         terminal__Effects__CDeviceAttributes c_attrs = default(terminal__Effects__CDeviceAttributes);
         if (Cond.B((Cond.B(func((terminal__TerminalWrapper*)wrapper, wrapper->effects.userdata, &c_attrs)) ? 0 : 1)))
         {
-            device_attributes__Primary__Feature* __cl149 = stackalloc device_attributes__Primary__Feature[]{ __DotCcEnum_6465766963655F617474726962757465735F5F5072696D6172795F5F46656174757265.ansi_color };
-            return new device_attributes__Attributes { primary = new device_attributes__Primary { conformance_level = __DotCcEnum_6465766963655F617474726962757465735F5F436F6E666F726D616E63654C6576656C.level_2, features = new ConstSlice<device_attributes__Primary__Feature>(__cl149, 1UL) }, secondary = new device_attributes__Secondary { device_type = __DotCcEnum_6465766963655F617474726962757465735F5F44657669636554797065.vt220, firmware_version = 0, rom_cartridge = 0 }, tertiary = new device_attributes__Tertiary { unit_id = 0 } };
+            device_attributes__Primary__Feature* __cl151 = stackalloc device_attributes__Primary__Feature[]{ __DotCcEnum_6465766963655F617474726962757465735F5F5072696D6172795F5F46656174757265.ansi_color };
+            return new device_attributes__Attributes { primary = new device_attributes__Primary { conformance_level = __DotCcEnum_6465766963655F617474726962757465735F5F436F6E666F726D616E63654C6576656C.level_2, features = new ConstSlice<device_attributes__Primary__Feature>(__cl151, 1UL) }, secondary = new device_attributes__Secondary { device_type = __DotCcEnum_6465766963655F617474726962757465735F5F44657669636554797065.vt220, firmware_version = 0, rom_cartridge = 0 }, tertiary = new device_attributes__Tertiary { unit_id = 0 } };
         }
         ulong n = ZigMath.Min(c_attrs.primary.num_features, (ulong)64);
         for (ulong i = 0; Cond.B(((CBool)(i < (ulong)n))); i++)
@@ -1978,149 +3686,149 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ConstSlice<byte> terminal__Effects_enquiryTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream_terminal__Handler* handler)
+    public static unsafe ConstSlice<byte> terminal__Effects_enquiryTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(stream_terminal__Handler* handler)
     {
-        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(handler);
+        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(handler);
         delegate*<terminal__TerminalWrapper*, void*, types__String> __cf = wrapper->effects.enquiry;
         if (Cond.B(((CBool)(__cf == null))))
         {
-            return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL);
+            return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1340 /*""*/), 0UL);
         }
-        delegate*<terminal__TerminalWrapper*, void*, types__String> func = __cf;
+        delegate*<terminal__TerminalWrapper*, void*, types__String> func = (delegate*<terminal__TerminalWrapper*, void*, types__String>)__cf;
         types__String result = func((terminal__TerminalWrapper*)wrapper, wrapper->effects.userdata);
         if (Cond.B(((CBool)(result.len == 0UL))))
-            return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL);
+            return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1340 /*""*/), 0UL);
         return new ConstSlice<byte>(result.ptr + 0, (ulong)(result.len - (ulong)(0)));
     }
 
 
 
-    public static unsafe ConstSlice<byte> terminal__Effects_xtversionTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream_terminal__Handler* handler)
+    public static unsafe ConstSlice<byte> terminal__Effects_xtversionTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(stream_terminal__Handler* handler)
     {
-        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(handler);
+        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(handler);
         delegate*<terminal__TerminalWrapper*, void*, types__String> __cf = wrapper->effects.xtversion;
         if (Cond.B(((CBool)(__cf == null))))
         {
-            return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL);
+            return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1340 /*""*/), 0UL);
         }
-        delegate*<terminal__TerminalWrapper*, void*, types__String> func = __cf;
+        delegate*<terminal__TerminalWrapper*, void*, types__String> func = (delegate*<terminal__TerminalWrapper*, void*, types__String>)__cf;
         types__String result = func((terminal__TerminalWrapper*)wrapper, wrapper->effects.userdata);
         if (Cond.B(((CBool)(result.len == 0UL))))
-            return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL);
+            return new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1340 /*""*/), 0UL);
         return new ConstSlice<byte>(result.ptr + 0, (ulong)(result.len - (ulong)(0)));
     }
 
 
 
-    public static unsafe void terminal__Effects_titleChangedTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream_terminal__Handler* handler)
+    public static unsafe void terminal__Effects_titleChangedTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(stream_terminal__Handler* handler)
     {
-        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(handler);
+        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(handler);
         delegate*<terminal__TerminalWrapper*, void*, void> __cf = wrapper->effects.title_changed;
         if (Cond.B(((CBool)(__cf == null))))
         {
             return;
         }
-        delegate*<terminal__TerminalWrapper*, void*, void> func = __cf;
+        delegate*<terminal__TerminalWrapper*, void*, void> func = (delegate*<terminal__TerminalWrapper*, void*, void>)__cf;
         func((terminal__TerminalWrapper*)wrapper, wrapper->effects.userdata);
     }
 
 
 
-    public static unsafe void terminal__Effects_pwdChangedTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream_terminal__Handler* handler)
+    public static unsafe void terminal__Effects_pwdChangedTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(stream_terminal__Handler* handler)
     {
-        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(handler);
+        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(handler);
         delegate*<terminal__TerminalWrapper*, void*, void> __cf = wrapper->effects.pwd_changed;
         if (Cond.B(((CBool)(__cf == null))))
         {
             return;
         }
-        delegate*<terminal__TerminalWrapper*, void*, void> func = __cf;
+        delegate*<terminal__TerminalWrapper*, void*, void> func = (delegate*<terminal__TerminalWrapper*, void*, void>)__cf;
         func((terminal__TerminalWrapper*)wrapper, wrapper->effects.userdata);
     }
 
 
 
-    public static unsafe void terminal__Effects_progressReportTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream_terminal__Handler* handler, osc_2__Command__ProgressReport report)
+    public static unsafe void terminal__Effects_progressReportTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(stream_terminal__Handler* handler, osc_2__Command__ProgressReport report)
     {
-        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(handler);
+        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(handler);
         delegate*<terminal__TerminalWrapper*, void*, terminal__ProgressReport*, void> __cf = wrapper->effects.progress_report;
         if (Cond.B(((CBool)(__cf == null))))
         {
             return;
         }
-        delegate*<terminal__TerminalWrapper*, void*, terminal__ProgressReport*, void> func = __cf;
-        byte? __ifcapc12 = report.progress;
-        sbyte __ifcap13 = default;
-        if (Cond.B(__ifcapc12.HasValue))
+        delegate*<terminal__TerminalWrapper*, void*, terminal__ProgressReport*, void> func = (delegate*<terminal__TerminalWrapper*, void*, terminal__ProgressReport*, void>)__cf;
+        byte? __ifcapc62 = report.progress;
+        sbyte __ifcap63 = default;
+        if (Cond.B(__ifcapc62.HasValue))
         {
-            byte value = __ifcapc12.Value;
-            __ifcap13 = (sbyte)value;
+            byte value = __ifcapc62.Value;
+            __ifcap63 = (sbyte)value;
         }
         else
         {
-            __ifcap13 = (sbyte)(-1);
+            __ifcap63 = (sbyte)(-1);
         }
-        terminal__ProgressReport c_report = new terminal__ProgressReport { size = ((ulong)(sizeof(terminal__ProgressReport))), state = (enum__Enum__c1cd10fd6_c4a38b76f)(byte)report.state, progress = __ifcap13 };
+        terminal__ProgressReport c_report = new terminal__ProgressReport { state = (enum__Enum__c1cd10fd6_c4a38b76f)(int)report.state, progress = __ifcap63 };
         func((terminal__TerminalWrapper*)wrapper, wrapper->effects.userdata, &c_report);
     }
 
 
 
-    public static unsafe void terminal__Effects_semanticPromptTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream_terminal__Handler* handler, stream_terminal__Handler__SemanticPrompt @event)
+    public static unsafe void terminal__Effects_semanticPromptTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(stream_terminal__Handler* handler, stream_terminal__Handler__SemanticPrompt @event)
     {
-        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(handler);
+        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(handler);
         delegate*<terminal__TerminalWrapper*, void*, terminal__SemanticPrompt*, void> __cf = wrapper->effects.semantic_prompt;
         if (Cond.B(((CBool)(__cf == null))))
         {
             return;
         }
-        delegate*<terminal__TerminalWrapper*, void*, terminal__SemanticPrompt*, void> func = __cf;
-        terminal__SemanticPrompt c_event = new terminal__SemanticPrompt { size = ((ulong)(sizeof(terminal__SemanticPrompt))), kind = @event.kind, prompt_kind = @event.prompt_kind, has_exit_code = ((CBool)(@event.exit_code != null)), exit_code = (@event.exit_code ?? 0), command = types__String_init____const_unsigned_charpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(@event.command), error = types__String_init____const_unsigned_charpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(@event.err) };
+        delegate*<terminal__TerminalWrapper*, void*, terminal__SemanticPrompt*, void> func = (delegate*<terminal__TerminalWrapper*, void*, terminal__SemanticPrompt*, void>)__cf;
+        terminal__SemanticPrompt c_event = new terminal__SemanticPrompt { kind = @event.kind, prompt_kind = @event.prompt_kind, has_exit_code = ((CBool)(@event.exit_code != null)), exit_code = (@event.exit_code ?? 0), command = types__String_init____const_unsigned_charpa0_e8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(@event.command), error = types__String_init____const_unsigned_charpa0_e8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(@event.err) };
         func((terminal__TerminalWrapper*)wrapper, wrapper->effects.userdata, &c_event);
     }
 
 
 
-    public static unsafe void terminal__Effects_resetTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream_terminal__Handler* handler)
+    public static unsafe void terminal__Effects_resetTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(stream_terminal__Handler* handler)
     {
-        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(handler);
+        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(handler);
         delegate*<terminal__TerminalWrapper*, void*, void> __cf = wrapper->effects.reset;
         if (Cond.B(((CBool)(__cf == null))))
         {
             return;
         }
-        delegate*<terminal__TerminalWrapper*, void*, void> func = __cf;
+        delegate*<terminal__TerminalWrapper*, void*, void> func = (delegate*<terminal__TerminalWrapper*, void*, void>)__cf;
         func((terminal__TerminalWrapper*)wrapper, wrapper->effects.userdata);
     }
 
 
 
-    public static unsafe struct____BlockType0? terminal__Effects_sizeTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream_terminal__Handler* handler)
+    public static unsafe struct____BlockType0? terminal__Effects_sizeTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(stream_terminal__Handler* handler)
     {
-        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(handler);
+        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(handler);
         delegate*<terminal__TerminalWrapper*, void*, struct____BlockType0*, CBool> __cf = wrapper->effects.size_cb;
         if (Cond.B(((CBool)(__cf == null))))
         {
-            return null;
+            return default(struct____BlockType0?);
         }
-        delegate*<terminal__TerminalWrapper*, void*, struct____BlockType0*, CBool> func = __cf;
+        delegate*<terminal__TerminalWrapper*, void*, struct____BlockType0*, CBool> func = (delegate*<terminal__TerminalWrapper*, void*, struct____BlockType0*, CBool>)__cf;
         struct____BlockType0 s = default(struct____BlockType0);
         if (Cond.B(func((terminal__TerminalWrapper*)wrapper, wrapper->effects.userdata, &s)))
             return s;
-        return null;
+        return default(struct____BlockType0?);
     }
 
 
 
-    public static unsafe void terminal__Effects_resizeWindowTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream_terminal__Handler* handler, stream_terminal__Handler__ResizeWindow request)
+    public static unsafe void terminal__Effects_resizeWindowTrampoline__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(stream_terminal__Handler* handler, stream_terminal__Handler__ResizeWindow request)
     {
-        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(handler);
+        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(handler);
         delegate*<terminal__TerminalWrapper*, void*, union____AnonStruct2*, void> __cf = wrapper->effects.resize_window;
         if (Cond.B(((CBool)(__cf == null))))
         {
             return;
         }
-        delegate*<terminal__TerminalWrapper*, void*, union____AnonStruct2*, void> func = __cf;
+        delegate*<terminal__TerminalWrapper*, void*, union____AnonStruct2*, void> func = (delegate*<terminal__TerminalWrapper*, void*, union____AnonStruct2*, void>)__cf;
         terminal__ResizeWindow __vsw2 = default(terminal__ResizeWindow);
         switch ((int)request.__tag)
         {
@@ -2131,13 +3839,13 @@ public static unsafe partial class GhosttyVt
                 }
                 break;
         }
-        union____AnonStruct2 value = union__TaggedUnion__c1cd10fd6_terminal__ResizeWindow_c97776e1a_cval__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(__vsw2);
+        union____AnonStruct2 value = union__TaggedUnion__c1cd10fd6_terminal__ResizeWindow_c97776e1a_cval__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(__vsw2);
         func((terminal__TerminalWrapper*)wrapper, wrapper->effects.userdata, &value);
     }
 
 
 
-    public static unsafe result__Result terminal__setTyped__0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, void* value)
+    public static unsafe result__Result terminal__setTyped__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(terminal__TerminalWrapper* wrapper, void* value)
     {
         wrapper->effects.userdata = (void*)value;
         return __DotCcEnum_726573756C745F5F526573756C74.success;
@@ -2145,7 +3853,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe result__Result terminal__setTyped__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, delegate*<terminal__TerminalWrapper*, void*, byte*, ulong, void> value)
+    public static unsafe result__Result terminal__setTyped__2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(terminal__TerminalWrapper* wrapper, delegate*<terminal__TerminalWrapper*, void*, byte*, ulong, void> value)
     {
         wrapper->effects.write_pty = value;
         return __DotCcEnum_726573756C745F5F526573756C74.success;
@@ -2153,7 +3861,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe result__Result terminal__setTyped__2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, delegate*<terminal__TerminalWrapper*, void*, void> value)
+    public static unsafe result__Result terminal__setTyped__3__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(terminal__TerminalWrapper* wrapper, delegate*<terminal__TerminalWrapper*, void*, void> value)
     {
         wrapper->effects.bell = value;
         return __DotCcEnum_726573756C745F5F526573756C74.success;
@@ -2161,7 +3869,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe result__Result terminal__setTyped__3__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, delegate*<terminal__TerminalWrapper*, void*, types__String> value)
+    public static unsafe result__Result terminal__setTyped__4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(terminal__TerminalWrapper* wrapper, delegate*<terminal__TerminalWrapper*, void*, types__String> value)
     {
         wrapper->effects.enquiry = value;
         return __DotCcEnum_726573756C745F5F526573756C74.success;
@@ -2169,7 +3877,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe result__Result terminal__setTyped__4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, delegate*<terminal__TerminalWrapper*, void*, types__String> value)
+    public static unsafe result__Result terminal__setTyped__5__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(terminal__TerminalWrapper* wrapper, delegate*<terminal__TerminalWrapper*, void*, types__String> value)
     {
         wrapper->effects.xtversion = value;
         return __DotCcEnum_726573756C745F5F526573756C74.success;
@@ -2177,7 +3885,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe result__Result terminal__setTyped__5__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, delegate*<terminal__TerminalWrapper*, void*, void> value)
+    public static unsafe result__Result terminal__setTyped__6__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(terminal__TerminalWrapper* wrapper, delegate*<terminal__TerminalWrapper*, void*, void> value)
     {
         wrapper->effects.title_changed = value;
         return __DotCcEnum_726573756C745F5F526573756C74.success;
@@ -2185,7 +3893,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe result__Result terminal__setTyped__6__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, delegate*<terminal__TerminalWrapper*, void*, struct____BlockType0*, CBool> value)
+    public static unsafe result__Result terminal__setTyped__7__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(terminal__TerminalWrapper* wrapper, delegate*<terminal__TerminalWrapper*, void*, struct____BlockType0*, CBool> value)
     {
         wrapper->effects.size_cb = value;
         return __DotCcEnum_726573756C745F5F526573756C74.success;
@@ -2193,7 +3901,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe result__Result terminal__setTyped__7__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, delegate*<terminal__TerminalWrapper*, void*, enum__Enum__c1cd10fd6_c37464d09*, CBool> value)
+    public static unsafe result__Result terminal__setTyped__8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(terminal__TerminalWrapper* wrapper, delegate*<terminal__TerminalWrapper*, void*, enum__Enum__c1cd10fd6_c37464d09*, CBool> value)
     {
         wrapper->effects.color_scheme = value;
         return __DotCcEnum_726573756C745F5F526573756C74.success;
@@ -2201,7 +3909,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe result__Result terminal__setTyped__8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, delegate*<terminal__TerminalWrapper*, void*, terminal__Effects__CDeviceAttributes*, CBool> value)
+    public static unsafe result__Result terminal__setTyped__9__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(terminal__TerminalWrapper* wrapper, delegate*<terminal__TerminalWrapper*, void*, terminal__Effects__CDeviceAttributes*, CBool> value)
     {
         wrapper->effects.device_attributes_cb = value;
         return __DotCcEnum_726573756C745F5F526573756C74.success;
@@ -2209,21 +3917,21 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe result__Result terminal__setTyped__9__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, types__String* value)
+    public static unsafe result__Result terminal__setTyped__10__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(terminal__TerminalWrapper* wrapper, types__String* value)
     {
         {
-            ConstSlice<byte> __ifcap15 = default;
+            ConstSlice<byte> __ifcap65 = default;
             if (Cond.B(value))
             {
                 types__String* v = (types__String*)value;
-                __ifcap15 = (ConstSlice<byte>)new ConstSlice<byte>(v->ptr + 0, (ulong)(v->len - (ulong)(0)));
+                __ifcap65 = new ConstSlice<byte>(v->ptr + 0, (ulong)(v->len - (ulong)(0)));
             }
             else
             {
-                __ifcap15 = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL);
+                __ifcap65 = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1340 /*""*/), 0UL);
             }
-            ConstSlice<byte> str = __ifcap15;
-            ErrUnion<Unit> __cf = Terminal__setTitle__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(wrapper->terminal, str);
+            ConstSlice<byte> str = __ifcap65;
+            ZigErrorUnionZero<Unit> __cf = Terminal__setTitle__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(wrapper->terminal, str);
             if (Cond.B(__cf.IsErr))
             {
                 return __DotCcEnum_726573756C745F5F526573756C74.out_of_memory;
@@ -2234,21 +3942,21 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe result__Result terminal__setTyped__10__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, types__String* value)
+    public static unsafe result__Result terminal__setTyped__11__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(terminal__TerminalWrapper* wrapper, types__String* value)
     {
         {
-            ConstSlice<byte> __ifcap17 = default;
+            ConstSlice<byte> __ifcap67 = default;
             if (Cond.B(value))
             {
                 types__String* v = (types__String*)value;
-                __ifcap17 = (ConstSlice<byte>)new ConstSlice<byte>(v->ptr + 0, (ulong)(v->len - (ulong)(0)));
+                __ifcap67 = new ConstSlice<byte>(v->ptr + 0, (ulong)(v->len - (ulong)(0)));
             }
             else
             {
-                __ifcap17 = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL);
+                __ifcap67 = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1340 /*""*/), 0UL);
             }
-            ConstSlice<byte> str = __ifcap17;
-            ErrUnion<Unit> __cf = Terminal__setPwd__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(wrapper->terminal, str);
+            ConstSlice<byte> str = __ifcap67;
+            ZigErrorUnionZero<Unit> __cf = Terminal__setPwd__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(wrapper->terminal, str);
             if (Cond.B(__cf.IsErr))
             {
                 return __DotCcEnum_726573756C745F5F526573756C74.out_of_memory;
@@ -2259,7 +3967,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe result__Result terminal__setTyped__11__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, color_2__RGB__C* value)
+    public static unsafe result__Result terminal__setTyped__12__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(terminal__TerminalWrapper* wrapper, color_2__RGB__C* value)
     {
         static CBool __dotcc_zig_set_578918F2043462EA4204(ref Terminal____AnonStruct1 root, CBool value)
         {
@@ -2268,73 +3976,17 @@ public static unsafe partial class GhosttyVt
             return ((CBool)((((global::System.UInt128)root.__dotcc_zig_storage >> 80) & ((global::System.UInt128.One << 1) - global::System.UInt128.One)) != 0));
         }
         {
-            color_2__RGB? __ifcap19 = default;
+            color_2__RGB? __ifcap69 = default;
             if (Cond.B(value))
             {
                 color_2__RGB__C* v = (color_2__RGB__C*)value;
-                __ifcap19 = color_2__RGB_fromC__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*v);
+                __ifcap69 = color_2__RGB_fromC__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*v);
             }
             else
             {
-                __ifcap19 = null;
+                __ifcap69 = default(color_2__RGB?);
             }
-            wrapper->terminal->colors.foreground.@default = __ifcap19;
-            ref Terminal____AnonStruct1 __zig_root150 = ref wrapper->terminal->flags;
-            __dotcc_zig_set_578918F2043462EA4204(ref __zig_root150, true);
-        }
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__12__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, color_2__RGB__C* value)
-    {
-        static CBool __dotcc_zig_set_578918F2043462EA4204(ref Terminal____AnonStruct1 root, CBool value)
-        {
-            CBool updated = value;
-            root.__dotcc_zig_storage = unchecked((global::System.UInt128)(((global::System.UInt128)root.__dotcc_zig_storage & ~(((global::System.UInt128.One << 1) - global::System.UInt128.One) << 80)) | ((((global::System.UInt128)(ulong)(updated)) & ((global::System.UInt128.One << 1) - global::System.UInt128.One)) << 80)));
-            return ((CBool)((((global::System.UInt128)root.__dotcc_zig_storage >> 80) & ((global::System.UInt128.One << 1) - global::System.UInt128.One)) != 0));
-        }
-        {
-            color_2__RGB? __ifcap21 = default;
-            if (Cond.B(value))
-            {
-                color_2__RGB__C* v = (color_2__RGB__C*)value;
-                __ifcap21 = color_2__RGB_fromC__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*v);
-            }
-            else
-            {
-                __ifcap21 = null;
-            }
-            wrapper->terminal->colors.background.@default = __ifcap21;
-            ref Terminal____AnonStruct1 __zig_root151 = ref wrapper->terminal->flags;
-            __dotcc_zig_set_578918F2043462EA4204(ref __zig_root151, true);
-        }
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__13__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, color_2__RGB__C* value)
-    {
-        static CBool __dotcc_zig_set_578918F2043462EA4204(ref Terminal____AnonStruct1 root, CBool value)
-        {
-            CBool updated = value;
-            root.__dotcc_zig_storage = unchecked((global::System.UInt128)(((global::System.UInt128)root.__dotcc_zig_storage & ~(((global::System.UInt128.One << 1) - global::System.UInt128.One) << 80)) | ((((global::System.UInt128)(ulong)(updated)) & ((global::System.UInt128.One << 1) - global::System.UInt128.One)) << 80)));
-            return ((CBool)((((global::System.UInt128)root.__dotcc_zig_storage >> 80) & ((global::System.UInt128.One << 1) - global::System.UInt128.One)) != 0));
-        }
-        {
-            color_2__RGB? __ifcap23 = default;
-            if (Cond.B(value))
-            {
-                color_2__RGB__C* v = (color_2__RGB__C*)value;
-                __ifcap23 = color_2__RGB_fromC__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*v);
-            }
-            else
-            {
-                __ifcap23 = null;
-            }
-            wrapper->terminal->colors.cursor.@default = __ifcap23;
+            wrapper->terminal->colors.foreground.@default = __ifcap69;
             ref Terminal____AnonStruct1 __zig_root152 = ref wrapper->terminal->flags;
             __dotcc_zig_set_578918F2043462EA4204(ref __zig_root152, true);
         }
@@ -2343,7 +3995,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe result__Result terminal__setTyped__14__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, color_2__RGB__C* value)
+    public static unsafe result__Result terminal__setTyped__13__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(terminal__TerminalWrapper* wrapper, color_2__RGB__C* value)
     {
         static CBool __dotcc_zig_set_578918F2043462EA4204(ref Terminal____AnonStruct1 root, CBool value)
         {
@@ -2352,23 +4004,17 @@ public static unsafe partial class GhosttyVt
             return ((CBool)((((global::System.UInt128)root.__dotcc_zig_storage >> 80) & ((global::System.UInt128.One << 1) - global::System.UInt128.One)) != 0));
         }
         {
-            color_2__DynamicPalette* __anf24 = &wrapper->terminal->colors.palette;
-            mem_Allocator__Allocator __anf25 = Terminal__gpa__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(wrapper->terminal);
-            color_2__RGB* __ifcap27 = default;
+            color_2__RGB? __ifcap71 = default;
             if (Cond.B(value))
             {
                 color_2__RGB__C* v = (color_2__RGB__C*)value;
-                __ifcap27 = color_2__paletteZval__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(v);
+                __ifcap71 = color_2__RGB_fromC__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*v);
             }
             else
             {
-                __ifcap27 = global::Managed.GhosttyVt.Globals.color_2__default__static;
+                __ifcap71 = default(color_2__RGB?);
             }
-            ErrUnion<Unit> __cf = color_2__DynamicPalette_changeDefault__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(__anf24, __anf25, __ifcap27);
-            if (Cond.B(__cf.IsErr))
-            {
-                return __DotCcEnum_726573756C745F5F526573756C74.out_of_memory;
-            }
+            wrapper->terminal->colors.background.@default = __ifcap71;
             ref Terminal____AnonStruct1 __zig_root153 = ref wrapper->terminal->flags;
             __dotcc_zig_set_578918F2043462EA4204(ref __zig_root153, true);
         }
@@ -2377,1971 +4023,107 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe result__Result terminal__setTyped__15__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, ulong* value)
+    public static unsafe result__Result terminal__setTyped__14__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(terminal__TerminalWrapper* wrapper, color_2__RGB__C* value)
     {
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.success;
-        }
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, CBool* value)
-    {
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.success;
-        }
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__17__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, types__String* value)
-    {
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.success;
-        }
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__18__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, CBool* value)
-    {
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.success;
-        }
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__19__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, ulong* value)
-    {
-        {
-            enums__EnumMap__apc__Protocol_u64 __ifcap29 = default;
-            if (Cond.B(value))
-            {
-                ulong* ptr = (ulong*)value;
-                __ifcap29 = enums__EnumMap__apc__Protocol_u64_initFull__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*ptr);
-            }
-            else
-            {
-                __ifcap29 = new enums__EnumMap__apc__Protocol_u64 { bits = new bit_set__Integer__2 { mask = 0 } };
-            }
-            wrapper->stream.handler.apc_handler.max_bytes = __ifcap29;
-        }
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__20__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, ulong* value)
-    {
-        {
-            if (Cond.B(value))
-            {
-                ulong* ptr = (ulong*)value;
-                {
-                    enums__EnumMap__apc__Protocol_u64_put__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&wrapper->stream.handler.apc_handler.max_bytes, __DotCcEnum_6170635F5F50726F746F636F6C.kitty, *ptr);
-                }
-            }
-            else
-            {
-                enums__EnumMap__apc__Protocol_u64_remove__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&wrapper->stream.handler.apc_handler.max_bytes, __DotCcEnum_6170635F5F50726F746F636F6C.kitty);
-            }
-        }
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__21__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, selection__CSelection* value)
-    {
-        {
-            if (Cond.B(value))
-            {
-                selection__CSelection* ptr = (selection__CSelection*)value;
-                {
-                    Selection__Selection? __cf = selection__CSelection_toZig__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*ptr);
-                    if (Cond.B((Cond.B(__cf.HasValue) ? 0 : 1)))
-                    {
-                        return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-                    }
-                    Selection__Selection sel = __cf.Value;
-                    ErrUnion<Unit> __cf__1 = Screen__select__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(wrapper->terminal->screens.active, sel);
-                    if (Cond.B(__cf__1.IsErr))
-                    {
-                        return __DotCcEnum_726573756C745F5F526573756C74.out_of_memory;
-                    }
-                }
-            }
-            else
-            {
-                Screen__clearSelection__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(wrapper->terminal->screens.active);
-            }
-        }
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__22__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, terminal__TerminalCursorStyle* value)
-    {
-        {
-            terminal__TerminalCursorStyle __ifcap31 = default;
-            if (Cond.B(value))
-            {
-                terminal__TerminalCursorStyle* ptr = (terminal__TerminalCursorStyle*)value;
-                __ifcap31 = *ptr;
-            }
-            else
-            {
-                __ifcap31 = __DotCcEnum_7465726D696E616C5F5F5465726D696E616C437572736F725374796C65.block;
-            }
-            enum__Enum__c8945c769_c89c1e316? __cf = terminal__TerminalCursorStyle_toZig__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(__ifcap31);
-            if (Cond.B((Cond.B(__cf.HasValue) ? 0 : 1)))
-            {
-                return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-            }
-            enum__Enum__c8945c769_c89c1e316 style = __cf.Value;
-            Terminal__setDefaultCursorStyle__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(wrapper->terminal, style);
-        }
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__23__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, CBool* value)
-    {
-        {
-            CBool __ifcap33 = default;
-            if (Cond.B(value))
-            {
-                CBool* ptr = (CBool*)value;
-                __ifcap33 = *ptr;
-            }
-            else
-            {
-                __ifcap33 = false;
-            }
-            CBool blink = __ifcap33;
-            Terminal__setDefaultCursorBlink__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(wrapper->terminal, blink);
-        }
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__24__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, CBool* value)
-    {
-        {
-            if (Cond.B(((CBool)(value == null))))
-            {
-                return __DotCcEnum_726573756C745F5F526573756C74.success;
-            }
-            CBool* __anf34 = value;
-            CBool enabled = *__anf34;
-            apc__Handler_enable__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&wrapper->stream.handler.apc_handler, __DotCcEnum_6170635F5F50726F746F636F6C.glyph, enabled);
-            if (Cond.B((Cond.B(enabled) ? 0 : 1)))
-                Glossary__clearAndFree__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&wrapper->terminal->glyph_glossary, Terminal__gpa__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(wrapper->terminal));
-        }
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__25__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, delegate*<terminal__TerminalWrapper*, void*, void> value)
-    {
-        wrapper->effects.pwd_changed = value;
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__26__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, delegate*<terminal__TerminalWrapper*, void*, terminal__ClipboardWrite*, void> value)
-    {
-        {
-            wrapper->effects.clipboard_write = value;
-            wrapper->stream.handler.effects.clipboard_write = ((delegate*<stream_terminal__Handler*, clipboard_2__Write, void>)(Cond.B(((CBool)(value != null))) ? (delegate*<stream_terminal__Handler*, clipboard_2__Write, void>)(DotCcPointers.terminal__Effects_clipboardWriteTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0) : (delegate*<stream_terminal__Handler*, clipboard_2__Write, void>)(null)));
-        }
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__27__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, ulong* value)
-    {
-        Terminal__Terminal* __anf35 = wrapper->terminal;
-        ulong? __ifcap37 = default;
-        if (Cond.B(value))
-        {
-            ulong* ptr = (ulong*)value;
-            __ifcap37 = *ptr;
-        }
-        else
-        {
-            __ifcap37 = null;
-        }
-        Terminal__setScrollbackMaxBytes__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(__anf35, __ifcap37);
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__28__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, ulong* value)
-    {
-        Terminal__Terminal* __anf38 = wrapper->terminal;
-        ulong? __ifcap40 = default;
-        if (Cond.B(value))
-        {
-            ulong* ptr = (ulong*)value;
-            __ifcap40 = *ptr;
-        }
-        else
-        {
-            __ifcap40 = null;
-        }
-        Terminal__setScrollbackMaxLines__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(__anf38, __ifcap40);
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__29__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, delegate*<terminal__TerminalWrapper*, void*, terminal__DesktopNotification*, void> value)
-    {
-        wrapper->effects.desktop_notification = value;
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__30__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, delegate*<terminal__TerminalWrapper*, void*, terminal__ProgressReport*, void> value)
-    {
-        wrapper->effects.progress_report = value;
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__31__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, ulong* value)
-    {
-        terminal__TerminalWrapper* __anf41 = wrapper;
-        ulong __ifcap43 = default;
-        if (Cond.B(value))
-        {
-            ulong* ptr = (ulong*)value;
-            __ifcap43 = *ptr;
-        }
-        else
-        {
-            __ifcap43 = 0;
-        }
-        terminal__setContinuationMaxBytes__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(__anf41, __ifcap43);
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, CBool* value)
-    {
-        CBool __ifcap45 = default;
-        if (Cond.B(value))
-        {
-            CBool* ptr = (CBool*)value;
-            __ifcap45 = *ptr;
-        }
-        else
-        {
-            __ifcap45 = false;
-        }
-        wrapper->stream.handler.title_report = __ifcap45;
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__33__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, terminal__ModeConfig* value)
-    {
-        {
-            if (Cond.B(((CBool)(value == null))))
-            {
-                return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-            }
-            terminal__ModeConfig* __anf46 = value;
-            terminal__ModeConfig config = *__anf46;
-            modes_2____BlockType1? __cf = terminal__ModeConfig_toMode__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(config);
-            if (Cond.B((Cond.B(__cf.HasValue) ? 0 : 1)))
-            {
-                return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-            }
-            modes_2____BlockType1 mode = __cf.Value;
-            {
-                if (Cond.B((Cond.B(modes_2__defaultConfigurable__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mode)) ? 0 : 1)))
-                    return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-                modes_2__ModeState_setDefault__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&wrapper->terminal->modes, mode, config.value);
-            }
-        }
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__34__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, terminal__ModeConfig* value)
-    {
-        {
-            if (Cond.B(((CBool)(value == null))))
-            {
-                return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-            }
-            terminal__ModeConfig* __anf47 = value;
-            terminal__ModeConfig config = *__anf47;
-            modes_2____BlockType1? __cf = terminal__ModeConfig_toMode__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(config);
-            if (Cond.B((Cond.B(__cf.HasValue) ? 0 : 1)))
-            {
-                return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-            }
-            modes_2____BlockType1 mode = __cf.Value;
-            modes_2__ModeState_set__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&wrapper->terminal->modes, mode, config.value);
-        }
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__35__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, delegate*<terminal__TerminalWrapper*, void*, union____AnonStruct1*, void> value)
-    {
-        {
-            wrapper->effects.unknown_sequence = value;
-            wrapper->stream.handler.unknown_sequence = ((delegate*<stream_terminal__Handler*, stream_terminal__Handler__UnknownSequence, void>)(Cond.B(((CBool)(value != null))) ? (delegate*<stream_terminal__Handler*, stream_terminal__Handler__UnknownSequence, void>)(DotCcPointers.terminal__Effects_unknownSequenceTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0) : (delegate*<stream_terminal__Handler*, stream_terminal__Handler__UnknownSequence, void>)(null)));
-        }
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__36__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, ulong* value)
-    {
-        {
-            ulong __ifcap49 = default;
-            if (Cond.B(value))
-            {
-                ulong* ptr = (ulong*)value;
-                __ifcap49 = *ptr;
-            }
-            else
-            {
-                __ifcap49 = 0;
-            }
-            ulong max_bytes = __ifcap49;
-            wrapper->stream.handler.apc_handler.unknown_max_bytes = max_bytes;
-            wrapper->stream.parser.osc_parser.unknown_max_bytes = max_bytes;
-        }
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, types__String* value)
-    {
-        {
-            ConstSlice<byte> __ifcap51 = default;
-            if (Cond.B(value))
-            {
-                types__String* v = (types__String*)value;
-                __ifcap51 = (ConstSlice<byte>)new ConstSlice<byte>(v->ptr + 0, (ulong)(v->len - (ulong)(0)));
-            }
-            else
-            {
-                __ifcap51 = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL);
-            }
-            ConstSlice<byte> str = __ifcap51;
-            if (Cond.B(((CBool)(str.Len > 128UL))))
-                return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-            ZigMem.CopyForwards<byte>(new Slice<byte>(wrapper->terminfo_name_buf + 0, (ulong)(str.Len - (ulong)(0))), str);
-            wrapper->stream.handler.terminfo_name = (Cond.B(((CBool)(str.Len > 0UL))) ? (ConstSlice<byte>?)new Slice<byte>(wrapper->terminfo_name_buf + 0, (ulong)(str.Len - (ulong)(0))) : (ConstSlice<byte>?)null);
-        }
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__38__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, delegate*<terminal__TerminalWrapper*, void*, terminal__ClipboardRead*, void> value)
-    {
-        {
-            wrapper->effects.clipboard_read = value;
-            wrapper->stream.handler.effects.clipboard_read = ((delegate*<stream_terminal__Handler*, clipboard_2__Read, void>)(Cond.B(((CBool)(value != null))) ? (delegate*<stream_terminal__Handler*, clipboard_2__Read, void>)(DotCcPointers.terminal__Effects_clipboardReadTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0) : (delegate*<stream_terminal__Handler*, clipboard_2__Read, void>)(null)));
-        }
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__39__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, ulong* value)
-    {
-        ulong __ifcap53 = default;
-        if (Cond.B(value))
-        {
-            ulong* ptr = (ulong*)value;
-            __ifcap53 = *ptr;
-        }
-        else
-        {
-            __ifcap53 = unchecked((ulong)(64 * 1024 * 1024));
-        }
-        wrapper->stream.handler.kitty_clipboard_write_max_bytes = __ifcap53;
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__40__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, CBool* value)
-    {
-        static CBool __dotcc_zig_set_9C2645B5B94CCE33DB09(ref Terminal____AnonStruct1 root, CBool value)
+        static CBool __dotcc_zig_set_578918F2043462EA4204(ref Terminal____AnonStruct1 root, CBool value)
         {
             CBool updated = value;
-            root.__dotcc_zig_storage = unchecked((global::System.UInt128)(((global::System.UInt128)root.__dotcc_zig_storage & ~(((global::System.UInt128.One << 1) - global::System.UInt128.One) << 76)) | ((((global::System.UInt128)(ulong)(updated)) & ((global::System.UInt128.One << 1) - global::System.UInt128.One)) << 76)));
-            return ((CBool)((((global::System.UInt128)root.__dotcc_zig_storage >> 76) & ((global::System.UInt128.One << 1) - global::System.UInt128.One)) != 0));
+            root.__dotcc_zig_storage = unchecked((global::System.UInt128)(((global::System.UInt128)root.__dotcc_zig_storage & ~(((global::System.UInt128.One << 1) - global::System.UInt128.One) << 80)) | ((((global::System.UInt128)(ulong)(updated)) & ((global::System.UInt128.One << 1) - global::System.UInt128.One)) << 80)));
+            return ((CBool)((((global::System.UInt128)root.__dotcc_zig_storage >> 80) & ((global::System.UInt128.One << 1) - global::System.UInt128.One)) != 0));
         }
-        CBool __ifcap55 = default;
-        if (Cond.B(value))
         {
-            CBool* ptr = (CBool*)value;
-            __ifcap55 = *ptr;
-        }
-        else
-        {
-            __ifcap55 = true;
-        }
-        ref Terminal____AnonStruct1 __zig_root154 = ref wrapper->terminal->flags;
-        __dotcc_zig_set_9C2645B5B94CCE33DB09(ref __zig_root154, __ifcap55);
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__41__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, delegate*<terminal__TerminalWrapper*, void*, CBool, void> value)
-    {
-        wrapper->effects.render_hold = value;
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__42__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, delegate*<terminal__TerminalWrapper*, void*, terminal__SemanticPrompt*, void> value)
-    {
-        wrapper->effects.semantic_prompt = value;
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__43__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, delegate*<terminal__TerminalWrapper*, void*, void> value)
-    {
-        wrapper->effects.reset = value;
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__44__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, CBool* value)
-    {
-        CBool __ifcap57 = default;
-        if (Cond.B(value))
-        {
-            CBool* ptr = (CBool*)value;
-            __ifcap57 = *ptr;
-        }
-        else
-        {
-            __ifcap57 = false;
-        }
-        wrapper->stream.handler.xt_checksum_report = __ifcap57;
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__45__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, byte* value)
-    {
-        {
-            byte __ifcap59 = default;
+            color_2__RGB? __ifcap73 = default;
             if (Cond.B(value))
             {
-                byte* ptr = (byte*)value;
-                __ifcap59 = *ptr;
+                color_2__RGB__C* v = (color_2__RGB__C*)value;
+                __ifcap73 = color_2__RGB_fromC__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*v);
             }
             else
             {
-                __ifcap59 = 0;
+                __ifcap73 = default(color_2__RGB?);
             }
-            byte bits = __ifcap59;
-            byte? __cf = math__cast__u5_u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(bits);
-            if (Cond.B((Cond.B(__cf.HasValue) ? 0 : 1)))
+            wrapper->terminal->colors.cursor.@default = __ifcap73;
+            ref Terminal____AnonStruct1 __zig_root154 = ref wrapper->terminal->flags;
+            __dotcc_zig_set_578918F2043462EA4204(ref __zig_root154, true);
+        }
+        return __DotCcEnum_726573756C745F5F526573756C74.success;
+    }
+
+
+
+    public static unsafe result__Result terminal__setTyped__15__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(terminal__TerminalWrapper* wrapper, color_2__RGB__C* value)
+    {
+        static CBool __dotcc_zig_set_578918F2043462EA4204(ref Terminal____AnonStruct1 root, CBool value)
+        {
+            CBool updated = value;
+            root.__dotcc_zig_storage = unchecked((global::System.UInt128)(((global::System.UInt128)root.__dotcc_zig_storage & ~(((global::System.UInt128.One << 1) - global::System.UInt128.One) << 80)) | ((((global::System.UInt128)(ulong)(updated)) & ((global::System.UInt128.One << 1) - global::System.UInt128.One)) << 80)));
+            return ((CBool)((((global::System.UInt128)root.__dotcc_zig_storage >> 80) & ((global::System.UInt128.One << 1) - global::System.UInt128.One)) != 0));
+        }
+        {
+            color_2__DynamicPalette* __anf74 = &wrapper->terminal->colors.palette;
+            mem_Allocator__Allocator __anf75 = Terminal__gpa__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(wrapper->terminal);
+            color_2__RGB* __ifcap77 = default;
+            if (Cond.B(value))
             {
-                return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-            }
-            byte flags = __cf.Value;
-            Terminal__setDefaultXtChecksum__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(wrapper->terminal, ZigBitcastWidth.Scalar<byte, xt_checksum__Flags>(flags, 5, false));
-        }
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__46__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, delegate*<terminal__TerminalWrapper*, void*, terminal__ProgramStatus*, void> value)
-    {
-        {
-            wrapper->effects.program_status = value;
-            wrapper->stream.handler.effects.program_status = ((delegate*<stream_terminal__Handler*, program_status__Report, void>)(Cond.B(((CBool)(value != null))) ? (delegate*<stream_terminal__Handler*, program_status__Report, void>)(DotCcPointers.terminal__Effects_programStatusTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0) : (delegate*<stream_terminal__Handler*, program_status__Report, void>)(null)));
-        }
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__setTyped__47__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, delegate*<terminal__TerminalWrapper*, void*, union____AnonStruct2*, void> value)
-    {
-        wrapper->effects.resize_window = value;
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, ushort* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        *@out = t->cols;
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, ushort* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        *@out = t->rows;
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__3__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, ushort* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        *@out = t->screens.active->cursor.x;
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, ushort* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        *@out = t->screens.active->cursor.y;
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__5__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, CBool* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        *@out = t->screens.active->cursor.pending_wrap;
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__6__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, enum__Enum__c1cd10fd6_c846eb854* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        *@out = t->screens.active_key;
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__7__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, CBool* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        *@out = modes_2__ModeState_get__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&t->modes, __DotCcEnum_6D6F6465735F325F5F5F5F426C6F636B5479706531.cursor_visible);
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, byte* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        *@out = (byte)key__Flags_int__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(key__FlagStack_current__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(t->screens.active->kitty_keyboard));
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__9__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, PageList__Scrollbar__C* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        *@out = PageList__Scrollbar_cval__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(PageList__scrollbar__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&t->screens.active->pages));
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__10__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, style__Style* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        *@out = style__Style_fromStyle__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(t->screens.active->cursor.style);
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__11__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, CBool* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        *@out = ((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(modes_2__ModeState_get__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&t->modes, __DotCcEnum_6D6F6465735F325F5F5F5F426C6F636B5479706531.mouse_event_x10)) || Cond.B(modes_2__ModeState_get__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&t->modes, __DotCcEnum_6D6F6465735F325F5F5F5F426C6F636B5479706531.mouse_event_normal))))) || Cond.B(modes_2__ModeState_get__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&t->modes, __DotCcEnum_6D6F6465735F325F5F5F5F426C6F636B5479706531.mouse_event_button))))) || Cond.B(modes_2__ModeState_get__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&t->modes, __DotCcEnum_6D6F6465735F325F5F5F5F426C6F636B5479706531.mouse_event_any))));
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__12__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, types__String* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        {
-            ConstSlice<byte> title = (Terminal__getTitle__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(t) ?? new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL));
-            *@out = new types__String { ptr = title.Ptr, len = title.Len };
-        }
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__13__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, types__String* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        {
-            ConstSlice<byte> pwd = (Terminal__getPwd__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(t) ?? new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL));
-            *@out = new types__String { ptr = pwd.Ptr, len = pwd.Len };
-        }
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__14__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, ulong* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        *@out = t->screens.active->pages.total_rows;
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__15__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, ulong* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        *@out = t->screens.active->pages.total_rows - t->rows;
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, uint* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        *@out = t->width_px;
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__17__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, uint* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        *@out = t->height_px;
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__18__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, color_2__RGB__C* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        color_2__RGB? __cf = color_2__DynamicRGB_get__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&t->colors.foreground);
-        if (Cond.B((Cond.B(__cf.HasValue) ? 0 : 1)))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.no_value;
-        }
-        color_2__RGB __anf60 = __cf.Value;
-        *@out = color_2__RGB_cval__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(__anf60);
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__19__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, color_2__RGB__C* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        color_2__RGB? __cf = color_2__DynamicRGB_get__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&t->colors.background);
-        if (Cond.B((Cond.B(__cf.HasValue) ? 0 : 1)))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.no_value;
-        }
-        color_2__RGB __anf61 = __cf.Value;
-        *@out = color_2__RGB_cval__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(__anf61);
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__20__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, color_2__RGB__C* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        color_2__RGB? __cf = color_2__DynamicRGB_get__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&t->colors.cursor);
-        if (Cond.B((Cond.B(__cf.HasValue) ? 0 : 1)))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.no_value;
-        }
-        color_2__RGB __anf62 = __cf.Value;
-        *@out = color_2__RGB_cval__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(__anf62);
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__21__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, color_2__RGB__C* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        ZigMem.CopyForwards<color_2__RGB__C>(new Slice<color_2__RGB__C>(@out, 256UL), new ConstSlice<color_2__RGB__C>(color_2__paletteCval__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0((color_2__RGB*)&t->colors.palette.current), 256UL));
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__22__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, color_2__RGB__C* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        color_2__RGB? __cf = t->colors.foreground.@default;
-        if (Cond.B((Cond.B(__cf.HasValue) ? 0 : 1)))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.no_value;
-        }
-        color_2__RGB __anf63 = __cf.Value;
-        *@out = color_2__RGB_cval__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(__anf63);
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__23__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, color_2__RGB__C* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        color_2__RGB? __cf = t->colors.background.@default;
-        if (Cond.B((Cond.B(__cf.HasValue) ? 0 : 1)))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.no_value;
-        }
-        color_2__RGB __anf64 = __cf.Value;
-        *@out = color_2__RGB_cval__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(__anf64);
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__24__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, color_2__RGB__C* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        color_2__RGB? __cf = t->colors.cursor.@default;
-        if (Cond.B((Cond.B(__cf.HasValue) ? 0 : 1)))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.no_value;
-        }
-        color_2__RGB __anf65 = __cf.Value;
-        *@out = color_2__RGB_cval__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(__anf65);
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__25__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, color_2__RGB__C* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        ZigMem.CopyForwards<color_2__RGB__C>(new Slice<color_2__RGB__C>(@out, 256UL), new ConstSlice<color_2__RGB__C>(color_2__paletteCval__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(t->colors.palette.original), 256UL));
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__26__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, ulong* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.no_value;
-        }
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__27__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, CBool* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.no_value;
-        }
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__28__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, types__String* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.no_value;
-        }
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__29__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, CBool* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.no_value;
-        }
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__30__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, void** @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.no_value;
-        }
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__31__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, selection__CSelection* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        Selection__Selection? __cf = t->screens.active->selection;
-        if (Cond.B((Cond.B(__cf.HasValue) ? 0 : 1)))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.no_value;
-        }
-        Selection__Selection __anf66 = __cf.Value;
-        *@out = selection__CSelection_fromZig__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(__anf66);
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, CBool* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        *@out = ((CBool)((int)t->screens.active->pages.viewport.__tag == (int)__DotCcEnum_506167654C6973745F5F56696577706F72745F546167.active));
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__33__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, CBool* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        *@out = wrapper->stream.handler.semantic_failure;
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__34__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, ulong* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        {
-            ulong max = ((Screen__Screen*)ScreenSet__get__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&t->screens, __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633834366562383534.primary))->pages.limits.bytes.@explicit;
-            if (Cond.B(((CBool)(max == 18446744073709551615UL))))
-                return __DotCcEnum_726573756C745F5F526573756C74.no_value;
-            *@out = max;
-        }
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__35__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, ulong* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        {
-            ulong max = ((Screen__Screen*)ScreenSet__get__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&t->screens, __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633834366562383534.primary))->pages.limits.lines.@explicit;
-            if (Cond.B(((CBool)(max == 18446744073709551615UL))))
-                return __DotCcEnum_726573756C745F5F526573756C74.no_value;
-            *@out = max;
-        }
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__36__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, ulong* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        *@out = terminal__continuationMaxBytes__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(wrapper);
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__37__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, terminal__ModeConfig* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        {
-            modes_2____BlockType1? __cf = terminal__ModeConfig_toMode__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*@out);
-            if (Cond.B((Cond.B(__cf.HasValue) ? 0 : 1)))
-            {
-                return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-            }
-            modes_2____BlockType1 mode = __cf.Value;
-            @out->value = modes_2__ModeState_get__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&t->modes, mode);
-        }
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__38__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, CBool* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        *@out = stream__Stream__stream_terminal__Handler_ground__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&wrapper->stream);
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__39__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, CBool* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        *@out = Terminal__cursorIsAtPrompt__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(t);
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__40__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, ulong* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        *@out = wrapper->stream.handler.kitty_clipboard_write_max_bytes;
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__41__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, mouse__Shape* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        *@out = t->mouse_shape;
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe result__Result terminal__getTyped__42__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* terminal_, terminal__TerminalMemoryUsage* @out)
-    {
-        if (Cond.B(((CBool)(terminal_ == null))))
-        {
-            return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-        }
-        terminal__TerminalWrapper* wrapper = terminal_;
-        Terminal__Terminal* t = wrapper->terminal;
-        {
-            if (Cond.B(((CBool)(@out->size < 112UL))))
-                return __DotCcEnum_726573756C745F5F526573756C74.invalid_value;
-            *@out = terminal__TerminalMemoryUsage_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(t, @out->size);
-        }
-        return __DotCcEnum_726573756C745F5F526573756C74.success;
-    }
-
-
-
-    public static unsafe enum__Enum__c8945c769_c89c1e316? terminal__TerminalCursorStyle_toZig__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalCursorStyle self)
-    {
-        return (((int)self) switch { (int)__DotCcEnum_7465726D696E616C5F5F5465726D696E616C437572736F725374796C65.bar => __DotCcEnum_656E756D5F5F456E756D5F5F6338393435633736395F633839633165333136.bar, (int)__DotCcEnum_7465726D696E616C5F5F5465726D696E616C437572736F725374796C65.block => __DotCcEnum_656E756D5F5F456E756D5F5F6338393435633736395F633839633165333136.block, (int)__DotCcEnum_7465726D696E616C5F5F5465726D696E616C437572736F725374796C65.underline => __DotCcEnum_656E756D5F5F456E756D5F5F6338393435633736395F633839633165333136.underline, (int)__DotCcEnum_7465726D696E616C5F5F5465726D696E616C437572736F725374796C65.block_hollow => __DotCcEnum_656E756D5F5F456E756D5F5F6338393435633736395F633839633165333136.block_hollow, _ => null });
-    }
-
-
-
-    public static unsafe void terminal__Effects_clipboardWriteTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream_terminal__Handler* handler, clipboard_2__Write write)
-    {
-        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(handler);
-        delegate*<terminal__TerminalWrapper*, void*, terminal__ClipboardWrite*, void> __cf = wrapper->effects.clipboard_write;
-        if (Cond.B(((CBool)(__cf == null))))
-        {
-            clipboard_2__Write_reply__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(write, new clipboard_2__Write__Result { __tag = __DotCcEnum_636C6970626F6172645F325F5F57726974655F5F526573756C745F546167.unsupported });
-            return;
-        }
-        delegate*<terminal__TerminalWrapper*, void*, terminal__ClipboardWrite*, void> func = __cf;
-        terminal__ClipboardContent* stack_contents = stackalloc terminal__ClipboardContent[4];
-        Slice<terminal__ClipboardContent> __anf68 = default;
-        if (Cond.B(((CBool)(write.contents.Len <= 4UL))))
-        {
-            __anf68 = new Slice<terminal__ClipboardContent>(stack_contents + 0, (ulong)(write.contents.Len - (ulong)(0)));
-        }
-        else
-        {
-            ErrUnion<Slice<terminal__ClipboardContent>> __cf__1 = mem_Allocator__alloc__terminal__ClipboardContent__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Terminal__gpa__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(wrapper->terminal), write.contents.Len);
-            if (Cond.B(__cf__1.IsErr))
-            {
-                clipboard_2__Write_reply__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(write, new clipboard_2__Write__Result { __tag = __DotCcEnum_636C6970626F6172645F325F5F57726974655F5F526573756C745F546167.io_error });
-                return;
-            }
-            Slice<terminal__ClipboardContent> __anf67 = __cf__1.Value;
-            __anf68 = __anf67;
-        }
-        Slice<terminal__ClipboardContent> contents = __anf68;
-        try
-        {
-            {
-                Slice<terminal__ClipboardContent> __s = contents;
-                ConstSlice<clipboard_2__Content> __s__1 = write.contents;
-                for (ulong __i = 0UL; Cond.B(((CBool)(__i < __s.Len))); __i++)
-                {
-                    terminal__ClipboardContent* c_content = &__s.Ptr[__i];
-                    clipboard_2__Content content = __s__1.Ptr[__i];
-                    {
-                        *c_content = new terminal__ClipboardContent { mime = types__String_init____const_unsigned_charpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(content.mime), data = types__String_init____const_unsigned_charpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(content.data) };
-                    }
-                }
-            }
-            terminal__Effects__ClipboardWriteCtx ctx = new terminal__Effects__ClipboardWriteCtx { write = write };
-            terminal__ClipboardWrite request = new terminal__ClipboardWrite { size = ((ulong)(sizeof(terminal__ClipboardWrite))), location = write.location, contents = ((terminal__ClipboardContent*)(Cond.B(((CBool)(contents.Len > 0UL))) ? contents.Ptr : (terminal__ClipboardContent*)(null))), contents_len = contents.Len, name = types__String_init____const_unsigned_charpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(write.name), granted = write.granted, can_remember = write.can_remember, ctx = &ctx, reply = DotCcPointers.terminal__Effects_clipboardWriteReplyTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0 };
-            func((terminal__TerminalWrapper*)wrapper, wrapper->effects.userdata, &request);
-        }
-        finally
-        {
-            if (Cond.B(((CBool)(write.contents.Len > 4UL))))
-                mem_Allocator__free____terminal__ClipboardContentpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Terminal__gpa__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(wrapper->terminal), contents);
-        }
-    }
-
-
-
-    public static unsafe void terminal__setContinuationMaxBytes__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper, ulong max_bytes)
-    {
-        if (Cond.B(((CBool)(max_bytes == 0UL))))
-        {
-            if (Cond.B(wrapper->stream.continuation.HasValue))
-            {
-                stream_continuation__Tracker* tracker = ZigMem.OptionalPayload(&wrapper->stream.continuation);
-                stream_continuation__Tracker_deinit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(tracker);
-            }
-            wrapper->stream.continuation = null;
-            return;
-        }
-        if (Cond.B(wrapper->stream.continuation.HasValue))
-        {
-            stream_continuation__Tracker* tracker__1 = ZigMem.OptionalPayload(&wrapper->stream.continuation);
-            {
-                tracker__1->max_bytes = max_bytes;
-                if (Cond.B(((CBool)(tracker__1->bytes.items.Len > max_bytes))))
-                {
-                    array_list__Aligned__u8_optnull_clearRetainingCapacity__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&tracker__1->bytes);
-                    tracker__1->broken = true;
-                }
-                return;
-            }
-        }
-        wrapper->stream.continuation = stream_continuation__Tracker_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Terminal__gpa__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(wrapper->terminal), max_bytes);
-        if (Cond.B((Cond.B(stream__Stream__stream_terminal__Handler_ground__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&wrapper->stream)) ? 0 : 1)))
-        {
-            (*ZigMem.OptionalPayload(&wrapper->stream.continuation)).broken = true;
-        }
-    }
-
-
-
-    public static unsafe modes_2____BlockType1? terminal__ModeConfig_toMode__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__ModeConfig self)
-    {
-        modes_2__ModeTag tag = ZigBitcastWidth.Scalar<ushort, modes_2__ModeTag>(self.mode, 16, false);
-        return modes_2__modeFromInt__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(tag.value, tag.ansi);
-    }
-
-
-
-    public static unsafe void terminal__Effects_unknownSequenceTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream_terminal__Handler* handler, stream_terminal__Handler__UnknownSequence sequence)
-    {
-        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(handler);
-        delegate*<terminal__TerminalWrapper*, void*, union____AnonStruct1*, void> __cf = wrapper->effects.unknown_sequence;
-        if (Cond.B(((CBool)(__cf == null))))
-        {
-            return;
-        }
-        delegate*<terminal__TerminalWrapper*, void*, union____AnonStruct1*, void> func = __cf;
-        terminal__UnknownSequence __vsw3 = default(terminal__UnknownSequence);
-        switch ((int)sequence.__tag)
-        {
-            case (int)__DotCcEnum_73747265616D5F7465726D696E616C5F5F48616E646C65725F5F556E6B6E6F776E53657175656E63655F546167.apc:
-                {
-                    stream_terminal__Handler__UnknownSequence__String apc_value = sequence.__payload.apc;
-                    __vsw3 = new terminal__UnknownSequence { __tag = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636130376336633233.apc, __payload = new terminal__UnknownSequence_Payload { apc = new terminal__UnknownStringSequence { truncated = apc_value.truncated, content = types__String_init____const_unsigned_charpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(apc_value.content) } } };
-                }
-                break;
-            default:
-                {
-                    osc_2__Command__Unknown osc_value = sequence.__payload.osc;
-                    __vsw3 = new terminal__UnknownSequence { __tag = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636130376336633233.osc, __payload = new terminal__UnknownSequence_Payload { osc = osc_2__Command__Unknown_cval__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(osc_value) } };
-                }
-                break;
-        }
-        union____AnonStruct1 value = union__TaggedUnion__c1cd10fd6_terminal__UnknownSequence_c9514c736_cval__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(__vsw3);
-        func((terminal__TerminalWrapper*)wrapper, wrapper->effects.userdata, &value);
-    }
-
-
-
-    public static unsafe void terminal__Effects_clipboardReadTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream_terminal__Handler* handler, clipboard_2__Read read)
-    {
-        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(handler);
-        delegate*<terminal__TerminalWrapper*, void*, terminal__ClipboardRead*, void> __cf = wrapper->effects.clipboard_read;
-        if (Cond.B(((CBool)(__cf == null))))
-        {
-            return;
-        }
-        delegate*<terminal__TerminalWrapper*, void*, terminal__ClipboardRead*, void> func = __cf;
-        byte* sfa_buf = stackalloc byte[128];
-        heap_BufferFirstAllocator__BufferFirstAllocator sfa = heap_BufferFirstAllocator__init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<byte>(sfa_buf, 128UL), Terminal__gpa__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(wrapper->terminal));
-        mem_Allocator__Allocator alloc = heap_BufferFirstAllocator__allocator__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&sfa);
-        ErrUnion<Slice<types__String>> __cf__1 = mem_Allocator__alloc__types__String__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(alloc, read.mimes.Len);
-        if (Cond.B(__cf__1.IsErr))
-        {
-            {
-                log__scoped__cfd790e9b_warn__s7711a0bf_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(default(global::System.ValueTuple));
-                return;
-            }
-        }
-        Slice<types__String> mimes = __cf__1.Value;
-        try
-        {
-            {
-                Slice<types__String> __s = mimes;
-                ConstSlice<ConstSlice<byte>> __s__1 = read.mimes;
-                for (ulong __i = 0UL; Cond.B(((CBool)(__i < __s.Len))); __i++)
-                {
-                    types__String* c_mime = &__s.Ptr[__i];
-                    ConstSlice<byte> mime = __s__1.Ptr[__i];
-                    *c_mime = types__String_init____const_unsigned_charpa0_sentinel_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mime);
-                }
-            }
-            terminal__Effects__ClipboardReadCtx ctx = new terminal__Effects__ClipboardReadCtx { read = read, wrapper = wrapper };
-            terminal__ClipboardRead request = new terminal__ClipboardRead { size = ((ulong)(sizeof(terminal__ClipboardRead))), location = read.location, mimes = ((types__String*)(Cond.B(((CBool)(mimes.Len > 0UL))) ? mimes.Ptr : (types__String*)(null))), mimes_len = mimes.Len, list = read.list, name = types__String_init____const_unsigned_charpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(read.name), granted = read.granted, can_remember = read.can_remember, ctx = &ctx, reply = DotCcPointers.terminal__Effects_clipboardReadReplyTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0 };
-            func((terminal__TerminalWrapper*)wrapper, wrapper->effects.userdata, &request);
-        }
-        finally
-        {
-            mem_Allocator__free____types__Stringpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(alloc, mimes);
-        }
-    }
-
-
-
-    public static unsafe void terminal__Effects_programStatusTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream_terminal__Handler* handler, program_status__Report report)
-    {
-        terminal__TerminalWrapper* wrapper = terminal__TerminalWrapper_fromHandler__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(handler);
-        delegate*<terminal__TerminalWrapper*, void*, terminal__ProgramStatus*, void> __cf = wrapper->effects.program_status;
-        if (Cond.B(((CBool)(__cf == null))))
-        {
-            return;
-        }
-        delegate*<terminal__TerminalWrapper*, void*, terminal__ProgramStatus*, void> func = __cf;
-        byte* title_buf = stackalloc byte[192];
-        Io_Writer__Writer title = Io_Writer__fixed__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<byte>(title_buf, 192UL));
-        ErrUnion<Unit> __cE = program_status__Report_writeText__4__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(report, &title);
-        if (Cond.B(__cE.IsErr))
-        {
-            {
-        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
-    };
-            ((global::System.Action)(() => { }))();
-        }
-        else
-            ;
-        ;
-        byte* message_buf = stackalloc byte[2048];
-        Io_Writer__Writer message = Io_Writer__fixed__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<byte>(message_buf, 2048UL));
-        ErrUnion<Unit> __cE__1 = program_status__Report_writeText__5__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(report, &message);
-        if (Cond.B(__cE__1.IsErr))
-        {
-            {
-        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
-    };
-            ((global::System.Action)(() => { }))();
-        }
-        else
-            ;
-        ;
-        enum__Enum__c1cd10fd6_c4bc1de74? __ifcapc69 = program_status__Report_readOption__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(report);
-        enum__Enum__c1cd10fd6_c3cd6796d __ifcap70 = default;
-        if (Cond.B(__ifcapc69.HasValue))
-        {
-            enum__Enum__c1cd10fd6_c4bc1de74 kind = __ifcapc69.Value;
-            enum__Enum__c1cd10fd6_c3cd6796d __vsw4 = default(enum__Enum__c1cd10fd6_c3cd6796d);
-            switch ((int)kind)
-            {
-                case (int)(enum__Enum__c1cd10fd6_c4bc1de74)0:
-                    __vsw4 = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633363643637393664.permission;
-                    break;
-                case (int)(enum__Enum__c1cd10fd6_c4bc1de74)1:
-                    __vsw4 = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633363643637393664.question;
-                    break;
-                case (int)(enum__Enum__c1cd10fd6_c4bc1de74)2:
-                    __vsw4 = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633363643637393664.auth;
-                    break;
-            }
-            __ifcap70 = __vsw4;
-        }
-        else
-        {
-            __ifcap70 = __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633363643637393664.none;
-        }
-        byte? __ifcapc71 = program_status__Report_readOption__2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(report);
-        sbyte __ifcap72 = default;
-        if (Cond.B(__ifcapc71.HasValue))
-        {
-            byte value = __ifcapc71.Value;
-            __ifcap72 = (sbyte)value;
-        }
-        else
-        {
-            __ifcap72 = (sbyte)(-1);
-        }
-        terminal__ProgramStatus c_report = new terminal__ProgramStatus { size = ((ulong)(sizeof(terminal__ProgramStatus))), state = report.state, kind = __ifcap70, progress = __ifcap72, id = types__String_init____const_unsigned_charpa0_sentinel_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0((program_status__Report_readOption__0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(report) ?? new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL))), app = types__String_init____const_unsigned_charpa0_sentinel_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0((program_status__Report_readOption__3__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(report) ?? new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1333 /*""*/), 0UL))), title = types__String_init____unsigned_charpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__buffered__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&title)), message = types__String_init____unsigned_charpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io_Writer__buffered__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&message)) };
-        func((terminal__TerminalWrapper*)wrapper, wrapper->effects.userdata, &c_report);
-    }
-
-
-
-    public static unsafe ulong terminal__continuationMaxBytes__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__TerminalWrapper* wrapper)
-    {
-        stream_continuation__Tracker? __ifcapc73 = wrapper->stream.continuation;
-        ulong __ifcap74 = default;
-        if (Cond.B(__ifcapc73.HasValue))
-        {
-            stream_continuation__Tracker tracker = __ifcapc73.Value;
-            __ifcap74 = tracker.max_bytes;
-        }
-        else
-        {
-            __ifcap74 = 0;
-        }
-        return __ifcap74;
-    }
-
-
-
-    public static unsafe terminal__TerminalMemoryUsage terminal__TerminalMemoryUsage_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Terminal__Terminal* t, ulong caller_size)
-    {
-        terminal__TerminalMemoryUsage result = new terminal__TerminalMemoryUsage { size = caller_size, compression_supported = mem_2__canReclaim__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(), primary_pages = 0, primary_virtual_bytes = 0, primary_resident_bytes = 0, primary_compressed_pages = 0, primary_compressed_bytes = 0, primary_image_bytes = 0, alternate_pages = 0, alternate_virtual_bytes = 0, alternate_resident_bytes = 0, alternate_compressed_pages = 0, alternate_compressed_bytes = 0, alternate_image_bytes = 0 };
-        Screen__MemoryUsage primary = Screen__memoryUsage__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0((Screen__Screen*)ScreenSet__get__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&t->screens, __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633834366562383534.primary));
-        result.primary_pages = primary.pages.pages;
-        result.primary_virtual_bytes = primary.pages.virtual_bytes;
-        result.primary_resident_bytes = primary.pages.resident_bytes;
-        result.primary_compressed_pages = primary.pages.compressed_pages;
-        result.primary_compressed_bytes = primary.pages.compressed_bytes;
-        result.primary_image_bytes = primary.image_bytes;
-        {
-            Screen__Screen* __cap = ScreenSet__get__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&t->screens, __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633834366562383534.alternate);
-            if (Cond.B(__cap))
-            {
-                Screen__Screen* screen = (Screen__Screen*)__cap;
-                {
-                    Screen__MemoryUsage alternate = Screen__memoryUsage__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(screen);
-                    result.alternate_pages = alternate.pages.pages;
-                    result.alternate_virtual_bytes = alternate.pages.virtual_bytes;
-                    result.alternate_resident_bytes = alternate.pages.resident_bytes;
-                    result.alternate_compressed_pages = alternate.pages.compressed_pages;
-                    result.alternate_compressed_bytes = alternate.pages.compressed_bytes;
-                    result.alternate_image_bytes = alternate.image_bytes;
-                }
-            }
-        }
-        return result;
-    }
-
-
-
-    public static unsafe void terminal__Effects_clipboardWriteReplyTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__ClipboardWrite* request, terminal__ClipboardWriteReply* reply)
-    {
-        terminal__Effects__ClipboardWriteCtx* ctx = (terminal__Effects__ClipboardWriteCtx*)request->ctx;
-        clipboard_2__Write write = ctx->write;
-        switch ((int)reply->result)
-        {
-            case (int)__DotCcEnum_636C6970626F6172645F325F5F57726974655F5F537461747573.success:
-                clipboard_2__Write_reply__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(write, new clipboard_2__Write__Result { __tag = __DotCcEnum_636C6970626F6172645F325F5F57726974655F5F526573756C745F546167.success, __payload = new clipboard_2__Write__Result_Payload { success = new clipboard_2__Write__Result__Success { remember = reply->remember } } });
-                break;
-            case (int)__DotCcEnum_636C6970626F6172645F325F5F57726974655F5F537461747573.denied:
-                clipboard_2__Write_reply__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(write, new clipboard_2__Write__Result { __tag = __DotCcEnum_636C6970626F6172645F325F5F57726974655F5F526573756C745F546167.denied });
-                break;
-            case (int)__DotCcEnum_636C6970626F6172645F325F5F57726974655F5F537461747573.busy:
-                clipboard_2__Write_reply__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(write, new clipboard_2__Write__Result { __tag = __DotCcEnum_636C6970626F6172645F325F5F57726974655F5F526573756C745F546167.busy });
-                break;
-            case (int)__DotCcEnum_636C6970626F6172645F325F5F57726974655F5F537461747573.invalid_data:
-                clipboard_2__Write_reply__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(write, new clipboard_2__Write__Result { __tag = __DotCcEnum_636C6970626F6172645F325F5F57726974655F5F526573756C745F546167.invalid_data });
-                break;
-            case (int)__DotCcEnum_636C6970626F6172645F325F5F57726974655F5F537461747573.io_error:
-                clipboard_2__Write_reply__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(write, new clipboard_2__Write__Result { __tag = __DotCcEnum_636C6970626F6172645F325F5F57726974655F5F526573756C745F546167.io_error });
-                break;
-            case (int)__DotCcEnum_636C6970626F6172645F325F5F57726974655F5F537461747573.unsupported:
-            default:
-                clipboard_2__Write_reply__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(write, new clipboard_2__Write__Result { __tag = __DotCcEnum_636C6970626F6172645F325F5F57726974655F5F526573756C745F546167.unsupported });
-                break;
-        }
-    }
-
-
-
-    public static unsafe void terminal__Effects_clipboardReadReplyTrampoline__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(terminal__ClipboardRead* request, terminal__ClipboardReadReply* reply)
-    {
-        terminal__Effects__ClipboardReadCtx* ctx = (terminal__Effects__ClipboardReadCtx*)request->ctx;
-        clipboard_2__Read read = ctx->read;
-        switch ((int)reply->result)
-        {
-            case (int)__DotCcEnum_636C6970626F6172645F325F5F526561645F5F537461747573.success:
-                {
-                }
-                break;
-            case (int)__DotCcEnum_636C6970626F6172645F325F5F526561645F5F537461747573.denied:
-                clipboard_2__Read_reply__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(read, new clipboard_2__Read__Result { __tag = __DotCcEnum_636C6970626F6172645F325F5F526561645F5F526573756C745F546167.denied });
-                return;
-                goto case (int)__DotCcEnum_636C6970626F6172645F325F5F526561645F5F537461747573.busy;
-            case (int)__DotCcEnum_636C6970626F6172645F325F5F526561645F5F537461747573.busy:
-                clipboard_2__Read_reply__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(read, new clipboard_2__Read__Result { __tag = __DotCcEnum_636C6970626F6172645F325F5F526561645F5F526573756C745F546167.busy });
-                return;
-                goto case (int)__DotCcEnum_636C6970626F6172645F325F5F526561645F5F537461747573.io_error;
-            case (int)__DotCcEnum_636C6970626F6172645F325F5F526561645F5F537461747573.io_error:
-                clipboard_2__Read_reply__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(read, new clipboard_2__Read__Result { __tag = __DotCcEnum_636C6970626F6172645F325F5F526561645F5F526573756C745F546167.io_error });
-                return;
-                goto case (int)__DotCcEnum_636C6970626F6172645F325F5F526561645F5F537461747573.unsupported;
-            case (int)__DotCcEnum_636C6970626F6172645F325F5F526561645F5F537461747573.unsupported:
-            default:
-                clipboard_2__Read_reply__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(read, new clipboard_2__Read__Result { __tag = __DotCcEnum_636C6970626F6172645F325F5F526561645F5F526573756C745F546167.unsupported });
-                return;
-                break;
-        }
-        terminal__ClipboardContent* __ifcapc75 = reply->contents;
-        ConstSlice<terminal__ClipboardContent> __ifcap76 = default;
-        if (Cond.B(__ifcapc75))
-        {
-            terminal__ClipboardContent* ptr = (terminal__ClipboardContent*)__ifcapc75;
-            __ifcap76 = (ConstSlice<terminal__ClipboardContent>)new ConstSlice<terminal__ClipboardContent>(ptr + 0, (ulong)(reply->contents_len - (ulong)(0)));
-        }
-        else
-        {
-            __ifcap76 = (ConstSlice<terminal__ClipboardContent>)new ConstSlice<terminal__ClipboardContent>(null, 0UL);
-        }
-        ConstSlice<terminal__ClipboardContent> c_contents = __ifcap76;
-        types__String* __ifcapc77 = reply->available;
-        ConstSlice<types__String> __ifcap78 = default;
-        if (Cond.B(__ifcapc77))
-        {
-            types__String* ptr__1 = (types__String*)__ifcapc77;
-            __ifcap78 = (ConstSlice<types__String>)new ConstSlice<types__String>(ptr__1 + 0, (ulong)(reply->available_len - (ulong)(0)));
-        }
-        else
-        {
-            __ifcap78 = (ConstSlice<types__String>)new ConstSlice<types__String>(null, 0UL);
-        }
-        ConstSlice<types__String> c_available = __ifcap78;
-        byte* sfa_buf = stackalloc byte[256];
-        heap_BufferFirstAllocator__BufferFirstAllocator sfa = heap_BufferFirstAllocator__init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<byte>(sfa_buf, 256UL), Terminal__gpa__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ctx->wrapper->terminal));
-        mem_Allocator__Allocator alloc = heap_BufferFirstAllocator__allocator__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&sfa);
-        ErrUnion<Slice<clipboard_2__Content>> __cf = mem_Allocator__alloc__clipboard_2__Content__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(alloc, c_contents.Len);
-        if (Cond.B(__cf.IsErr))
-        {
-            {
-                log__scoped__cfd790e9b_warn__sae62fc9c_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(default(global::System.ValueTuple));
-                return;
-            }
-        }
-        Slice<clipboard_2__Content> contents = __cf.Value;
-        try
-        {
-            {
-                Slice<clipboard_2__Content> __s = contents;
-                ConstSlice<terminal__ClipboardContent> __s__1 = c_contents;
-                for (ulong __i = 0UL; Cond.B(((CBool)(__i < __s.Len))); __i++)
-                {
-                    clipboard_2__Content* content = &__s.Ptr[__i];
-                    terminal__ClipboardContent c_content = __s__1.Ptr[__i];
-                    {
-                        *content = new clipboard_2__Content { mime = new ConstSlice<byte>(c_content.mime.ptr + 0, (ulong)(c_content.mime.len - (ulong)(0))), data = new ConstSlice<byte>(c_content.data.ptr + 0, (ulong)(c_content.data.len - (ulong)(0))) };
-                    }
-                }
-            }
-            ErrUnion<Slice<ConstSlice<byte>>> __cf__1 = mem_Allocator__alloc____const_unsigned_charpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(alloc, c_available.Len);
-            if (Cond.B(__cf__1.IsErr))
-            {
-                {
-                    log__scoped__cfd790e9b_warn__sae62fc9c_tuple__tuple_unknown__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(default(global::System.ValueTuple));
-                    return;
-                }
-            }
-            Slice<ConstSlice<byte>> available = __cf__1.Value;
-            try
-            {
-                {
-                    Slice<ConstSlice<byte>> __s__2 = available;
-                    ConstSlice<types__String> __s__3 = c_available;
-                    for (ulong __i__1 = 0UL; Cond.B(((CBool)(__i__1 < __s__2.Len))); __i__1++)
-                    {
-                        ConstSlice<byte>* mime = &__s__2.Ptr[__i__1];
-                        types__String c_mime = __s__3.Ptr[__i__1];
-                        {
-                            *mime = new ConstSlice<byte>(c_mime.ptr + 0, (ulong)(c_mime.len - (ulong)(0)));
-                        }
-                    }
-                }
-                clipboard_2__Read_reply__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(read, new clipboard_2__Read__Result { __tag = __DotCcEnum_636C6970626F6172645F325F5F526561645F5F526573756C745F546167.success, __payload = new clipboard_2__Read__Result_Payload { success = new clipboard_2__Read__Result__Success { contents = contents, available = available, remember = reply->remember } } });
-            }
-            finally
-            {
-                mem_Allocator__free______const_unsigned_charpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(alloc, available);
-            }
-        }
-        finally
-        {
-            mem_Allocator__free____clipboard_2__Contentpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(alloc, contents);
-        }
-    }
-
-
-
-    public static unsafe Io__Io TinyIo__io__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(TinyIo__TinyIo self)
-    {
-        ;
-        return new Io__Io { userdata = null, vtable = ((Io__VTable*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.GhosttyVt.Globals.TinyIo__vtable__static)) };
-    }
-
-
-
-    public static unsafe void TinyIo__recancel__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(void* __zig_discard_param0)
-    {
-    }
-
-
-
-    public static unsafe Io__CancelProtection TinyIo__swapCancelProtection__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(void* __zig_discard_param0, Io__CancelProtection @new)
-    {
-        ;
-        return __DotCcEnum_496F5F5F43616E63656C50726F74656374696F6E.blocked;
-    }
-
-
-
-    public static unsafe ErrUnion<Unit> TinyIo__checkCancel__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(void* __zig_discard_param0)
-    {
-        try
-        {
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
-    }
-
-
-
-    public static unsafe ErrUnion<Unit> TinyIo__futexWait__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(void* userdata, uint* ptr, uint expected, Io__Timeout timeout)
-    {
-        byte* __dotcc_aligned_timeout_bytes = stackalloc byte[sizeof(Io__Timeout) + 15];
-        Io__Timeout* __dotcc_aligned_timeout = (Io__Timeout*)(((nuint)__dotcc_aligned_timeout_bytes + 15) & ~(nuint)15);
-        *__dotcc_aligned_timeout = timeout;
-        try
-        {
-            ;
-            posix_2__futexWaitInner__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ptr, expected, TinyIo__timeoutToNs__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0((*__dotcc_aligned_timeout)));
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
-    }
-
-
-
-    public static unsafe void TinyIo__futexWaitUncancelable__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(void* userdata, uint* ptr, uint expected)
-    {
-        ;
-        posix_2__futexWaitInner__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ptr, expected, null);
-    }
-
-
-
-    public static unsafe void TinyIo__futexWake__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(void* userdata, uint* ptr, uint max_waiters)
-    {
-        posix_2__futexWake__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(userdata, ptr, max_waiters);
-        return;
-    }
-
-
-
-    public static unsafe ErrUnion<Io____ReflectedUnion0> TinyIo__operate__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(void* userdata, Io__Operation operation)
-    {
-        try
-        {
-            switch ((int)operation.__tag)
-            {
-                case (int)__DotCcEnum_496F5F5F4F7065726174696F6E5F546167.file_read_streaming:
-                    {
-                        Io__Operation__FileReadStreaming o = operation.__payload.file_read_streaming;
-                        return ErrUnion<Io____ReflectedUnion0>.Ok(new Io____ReflectedUnion0 { __tag = __DotCcEnum_496F5F5F4F7065726174696F6E5F546167.file_read_streaming, __payload = new Io____ReflectedUnion0_Payload { file_read_streaming = posix_2__fileReadStreaming__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(o.file, o.data) } });
-                    }
-                default:
-                    return Io__failingOperate__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(userdata, operation);
-            }
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<Io____ReflectedUnion0>.Err(__e.Code); }
-    }
-
-
-
-    public static unsafe ErrUnion<Unit> TinyIo__randomSecure__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(void* __zig_discard_param0, Slice<byte> buffer)
-    {
-        try
-        {
-            if (Cond.B(((CBool)(buffer.Len == 0UL))))
-                return ErrUnion<Unit>.Ok(default);
-            return posix_2__randomSecure__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(buffer);
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-    }
-
-
-
-    public static unsafe ulong? TinyIo__timeoutToNs__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Io__Timeout timeout)
-    {
-        byte* __dotcc_aligned_timeout_bytes = stackalloc byte[sizeof(Io__Timeout) + 15];
-        Io__Timeout* __dotcc_aligned_timeout = (Io__Timeout*)(((nuint)__dotcc_aligned_timeout_bytes + 15) & ~(nuint)15);
-        *__dotcc_aligned_timeout = timeout;
-        {
-            ulong? __vcf0 = default(ulong?);
-            switch ((int)(*__dotcc_aligned_timeout).__tag)
-            {
-                case (int)__DotCcEnum_496F5F5F54696D656F75745F546167.none:
-                    __vcf0 = null;
-                    break;
-                case (int)__DotCcEnum_496F5F5F54696D656F75745F546167.duration:
-                    {
-                        byte* __dotcc_aligned_d_bytes = stackalloc byte[sizeof(Io__Clock__Duration) + 15];
-                        Io__Clock__Duration* __dotcc_aligned_d = (Io__Clock__Duration*)(((nuint)__dotcc_aligned_d_bytes + 15) & ~(nuint)15);
-                        *__dotcc_aligned_d = (*__dotcc_aligned_timeout).__payload.duration;
-                        __vcf0 = (ulong?)ZigMath.Max(unchecked((global::System.Int128)0), Io__Duration_toNanoseconds__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0((*__dotcc_aligned_d).raw));
-                    }
-                    break;
-                default:
-                    __vcf0 = unchecked((ulong)(10 * (1000 * (int)(global::System.Int128)1000UL)));
-                    break;
-            }
-            return __vcf0;
-        }
-    }
-
-
-
-    public static unsafe ErrUnion<Unit> stream_terminal__Handler_resize__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream_terminal__Handler* self, Terminal__Resize value)
-    {
-        try
-        {
-            CBool sync = modes_2__ModeState_get__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->terminal->modes, __DotCcEnum_6D6F6465735F325F5F5F5F426C6F636B5479706531.synchronized_output);
-            _ = ErrUnion.Try(Terminal__resize__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self->terminal, Terminal__gpa__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self->terminal), value));
-            if (Cond.B(sync))
-                stream_terminal__Handler_renderHold__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, false);
-            Terminal____AnonStruct0? __cf = value.cell_size_px;
-            if (Cond.B((Cond.B(__cf.HasValue) ? 0 : 1)))
-            {
-                return ErrUnion<Unit>.Ok(default);
-            }
-            Terminal____AnonStruct0 cell_size = __cf.Value;
-            if (Cond.B((Cond.B(modes_2__ModeState_get__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->terminal->modes, __DotCcEnum_6D6F6465735F325F5F5F5F426C6F636B5479706531.in_band_size_reports)) ? 0 : 1)))
-                return ErrUnion<Unit>.Ok(default);
-            delegate*<stream_terminal__Handler*, ConstSlice<byte>, void> __cf__1 = self->effects.write_pty;
-            if (Cond.B(((CBool)(__cf__1 == null))))
-            {
-                return ErrUnion<Unit>.Ok(default);
-            }
-            delegate*<stream_terminal__Handler*, ConstSlice<byte>, void> write_pty = __cf__1;
-            byte* buf = stackalloc byte[128];
-            Io_Writer__Writer writer = Io_Writer__fixed__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<byte>(buf + 0, unchecked((ulong)unchecked(unchecked(128UL - 1UL) - (ulong)(0)))));
-            ErrUnion<Unit> __cE = size_report_2__encode__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&writer, __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633938353230383338.mode_2048, new struct____BlockType0 { rows = value.rows, columns = value.cols, cell_width = cell_size.width, cell_height = cell_size.height });
-            if (Cond.B(__cE.IsErr))
-            {
-                {
-        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
-    };
-                ((global::System.Action)(() => { }))();
+                color_2__RGB__C* v = (color_2__RGB__C*)value;
+                __ifcap77 = color_2__paletteZval__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(v);
             }
             else
-                ;
-            ;
-            buf[writer.end] = 0;
-            write_pty(self, new Slice<byte>(buf + 0, (ulong)(writer.end - (ulong)(0))));
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
-    }
-
-
-
-    public static unsafe void stream_terminal__Handler_renderHold__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream_terminal__Handler* self, CBool held)
-    {
-        delegate*<stream_terminal__Handler*, CBool, void> __cf = self->effects.render_hold;
-        if (Cond.B(((CBool)(__cf == null))))
-        {
-            return;
-        }
-        delegate*<stream_terminal__Handler*, CBool, void> func = __cf;
-        func(self, held);
-    }
-
-
-
-    public static unsafe void apc__Handler_enable__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(apc__Handler* self, apc__Protocol protocol, CBool enabled)
-    {
-        enums__EnumSet__apc__Protocol_setPresent__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->enabled, protocol, enabled);
-    }
-
-
-
-    public static unsafe void clipboard_2__Write_reply__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(clipboard_2__Write self, clipboard_2__Write__Result result)
-    {
-        self.reply_fn(self.reply_ctx, result);
-    }
-
-
-
-    public static unsafe void clipboard_2__Read_reply__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(clipboard_2__Read self, clipboard_2__Read__Result result)
-    {
-        self.reply_fn(self.reply_ctx, result);
-    }
-
-
-
-    public static unsafe void stream__Stream__stream_terminal__Handler_deinit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream__Stream__stream_terminal__Handler* self)
-    {
-        if (Cond.B(self->continuation.HasValue))
-        {
-            stream_continuation__Tracker* tracker = ZigMem.OptionalPayload(&self->continuation);
-            stream_continuation__Tracker_deinit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(tracker);
-        }
-        Parser__deinit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->parser);
-        stream_terminal__Handler_deinit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->handler);
-    }
-
-
-
-    public static unsafe void stream__Stream__stream_terminal__Handler_nextSlice__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream__Stream__stream_terminal__Handler* self, ConstSlice<byte> input)
-    {
-        stream__Stream__stream_terminal__Handler_nextSliceUntracked__0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, input);
-        if (Cond.B(((CBool)(self->continuation != null))))
-            stream__Stream__stream_terminal__Handler_trackContinuation__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, input);
-    }
-
-
-
-    public static unsafe CBool enums__EnumSet__stream__Boundary_contains__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(enums__EnumSet__stream__Boundary self, stream__Boundary key)
-    {
-        return bit_set__Integer__7_isSet__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self.bits, enums__EnumIndexer__stream__Boundary_indexOf__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(key));
-    }
-
-
-
-    public static unsafe CBool stream__Stream__stream_terminal__Handler_ground__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream__Stream__stream_terminal__Handler* self)
-    {
-        return ((CBool)(Cond.B(((CBool)((int)self->parser.state == (int)__DotCcEnum_5061727365725F5F5374617465.ground))) && Cond.B(((CBool)(self->utf8decoder.state == (byte)0)))));
-    }
-
-
-
-    public static unsafe stream__Boundary__Stop? stream__Stream__stream_terminal__Handler_nextSliceUntil__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream__Stream__stream_terminal__Handler* self, ConstSlice<byte> input, enums__EnumSet__stream__Boundary boundaries)
-    {
-        if (Cond.B(((CBool)(Cond.B(enums__EnumSet__stream__Boundary_contains__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(boundaries, __DotCcEnum_73747265616D5F5F426F756E64617279.ground)) && Cond.B(stream__Stream__stream_terminal__Handler_ground__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self))))))
-            return new stream__Boundary__Stop { consumed = 0, reached = enums__EnumSet__stream__Boundary_initOne__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(__DotCcEnum_73747265616D5F5F426F756E64617279.ground), start = null, end = null };
-        stream__Until u = new stream__Until { boundaries = boundaries, @base = input.Ptr, stop = null };
-        stream__Stream__stream_terminal__Handler_nextSliceUntracked__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, input, &u);
-        stream__Boundary__Stop? __ifcapc0 = u.stop;
-        ulong __ifcap1 = default;
-        if (Cond.B(__ifcapc0.HasValue))
-        {
-            stream__Boundary__Stop stop = __ifcapc0.Value;
-            __ifcap1 = stop.consumed;
-        }
-        else
-        {
-            __ifcap1 = input.Len;
-        }
-        ulong consumed = __ifcap1;
-        if (Cond.B(((CBool)(Cond.B(((CBool)(self->continuation != null))) && Cond.B(((CBool)(consumed > (ulong)(0))))))))
-        {
-            stream__Stream__stream_terminal__Handler_trackContinuation__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, new ConstSlice<byte>(input.Ptr + 0, (ulong)(consumed - (ulong)(0))));
-        }
-        return u.stop;
-    }
-
-
-
-    public static unsafe ErrUnion<Unit> stream__Stream__stream_terminal__Handler_writeContinuation__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream__Stream__stream_terminal__Handler* self, Io_Writer__Writer* writer)
-    {
-        try
-        {
-            stream_continuation__Tracker? __cf = self->continuation;
-            if (Cond.B((Cond.B(__cf.HasValue) ? 0 : 1)))
             {
-                return ErrUnion<Unit>.Err(72);
+                __ifcap77 = global::Managed.GhosttyVt.Globals.color_2__default__static;
             }
-            stream_continuation__Tracker tracker = __cf.Value;
-            if (Cond.B(tracker.broken))
-                return ErrUnion<Unit>.Err(73);
-            _ = ErrUnion.Try(stream_continuation__Tracker_write__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&tracker, writer));
+            ZigErrorUnionZero<Unit> __cf = color_2__DynamicPalette_changeDefault__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(__anf74, __anf75, __ifcap77);
+            if (Cond.B(__cf.IsErr))
+            {
+                return __DotCcEnum_726573756C745F5F526573756C74.out_of_memory;
+            }
+            ref Terminal____AnonStruct1 __zig_root155 = ref wrapper->terminal->flags;
+            __dotcc_zig_set_578918F2043462EA4204(ref __zig_root155, true);
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        return __DotCcEnum_726573756C745F5F526573756C74.success;
     }
 
 
 
-    public static unsafe stream__Stream__stream_terminal__Handler stream__Stream__stream_terminal__Handler_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(stream__Stream__stream_terminal__Handler__Options options)
+    public static unsafe CBool lib__feature__9__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        Parser__Parser parser = Parser__init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0();
+        return false;
+    }
+
+
+
+    public static unsafe result__Result terminal__setTyped__16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(terminal__TerminalWrapper* wrapper, ulong* value)
+    {
         {
-            mem_Allocator__Allocator? __cap = options.allocator;
-            if (Cond.B(__cap.HasValue))
-            {
-                mem_Allocator__Allocator alloc = __cap.Value;
-                parser.osc_parser.alloc = alloc;
-            }
+            return __DotCcEnum_726573756C745F5F526573756C74.unsupported;
         }
-        parser.osc_parser.unknown_max_bytes = options.osc_unknown_max_bytes;
-        stream_continuation__Tracker? tracker = null;
+    }
+
+
+
+    public static unsafe result__Result terminal__setTyped__17__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(terminal__TerminalWrapper* wrapper, CBool* value)
+    {
         {
-            mem_Allocator__Allocator? __cap__1 = options.allocator;
-            if (Cond.B(__cap__1.HasValue))
-            {
-                mem_Allocator__Allocator alloc__1 = __cap__1.Value;
-                {
-                    {
-                        ulong? __cap__2 = options.continuation_max_bytes;
-                        if (Cond.B(__cap__2.HasValue))
-                        {
-                            ulong max_bytes = __cap__2.Value;
-                            {
-                                if (Cond.B(((CBool)(max_bytes > 0UL))))
-                                    tracker = stream_continuation__Tracker_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(alloc__1, max_bytes);
-                            }
-                        }
-                    }
-                }
-            }
+            return __DotCcEnum_726573756C745F5F526573756C74.unsupported;
         }
-        return new stream__Stream__stream_terminal__Handler { handler = options.handler, parser = parser, utf8decoder = new UTF8Decoder__UTF8Decoder { accumulator = 0, state = 0 }, continuation = tracker };
+    }
+
+
+
+    public static unsafe result__Result terminal__setTyped__18__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(terminal__TerminalWrapper* wrapper, types__String* value)
+    {
+        {
+            return __DotCcEnum_726573756C745F5F526573756C74.unsupported;
+        }
+    }
+
+
+
+    public static unsafe result__Result terminal__setTyped__19__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(terminal__TerminalWrapper* wrapper, CBool* value)
+    {
+        {
+            return __DotCcEnum_726573756C745F5F526573756C74.unsupported;
+        }
     }
 
 

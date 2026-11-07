@@ -30,6 +30,7 @@ using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633763323230643365
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633363613433626363 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c3ca43bcc;
 using __DotCcEnum_76616C6772696E645F5F436C69656E7452657175657374 = global::Managed.GhosttyVt.valgrind__ClientRequest;
 using __DotCcEnum_506167654C6973745F5F4E6F64655F5F446174615F546167 = global::Managed.GhosttyVt.PageList__Node__Data_Tag;
+using __DotCcEnum_72656E6465725F5F5365744F7074696F6E = global::Managed.GhosttyVt.render__SetOption;
 using __DotCcEnum_6465766963655F617474726962757465735F5F436F6E666F726D616E63654C6576656C = global::Managed.GhosttyVt.device_attributes__ConformanceLevel;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636164343962373363 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_cad49b73c;
 using __DotCcEnum_506167654C6973745F5F5363726F6C6C5F546167 = global::Managed.GhosttyVt.PageList__Scroll_Tag;
@@ -40,6 +41,7 @@ using __DotCcEnum_5461726765745F5F416269 = global::Managed.GhosttyVt.Target__Abi
 using __DotCcEnum_53637265656E5F5F5F5F416E6F6E456E756D30 = global::Managed.GhosttyVt.Screen____AnonEnum0;
 using __DotCcEnum_6D6574615F5F4669656C64456E756D5F5F506167654C6973745F5F4C696D697473 = global::Managed.GhosttyVt.meta__FieldEnum__PageList__Limits;
 using __DotCcEnum_72656E6465725F5F526F7744617461 = global::Managed.GhosttyVt.render__RowData;
+using __DotCcEnum_72656E6465725F5F526F774F7074696F6E = global::Managed.GhosttyVt.render__RowOption;
 using __DotCcEnum_6F73635F325F5F5061727365725F5F5374617465 = global::Managed.GhosttyVt.osc_2__Parser__State;
 using __DotCcEnum_646E645F636F6D6D616E645F5F526571756573745F546167 = global::Managed.GhosttyVt.dnd_command__Request_Tag;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633566353337626532 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c5f537be2;
@@ -49,6 +51,7 @@ using __DotCcEnum_5461726765745F5F4F735F5F57696E646F777356657273696F6E = global:
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633336613366316236 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c36a3f1b6;
 using __DotCcEnum_5465726D696E616C5F5F5F5F416E6F6E456E756D30 = global::Managed.GhosttyVt.Terminal____AnonEnum0;
 using __DotCcEnum_506167654C6973745F5F496E6372656173654361706163697479 = global::Managed.GhosttyVt.PageList__IncreaseCapacity;
+using __DotCcEnum_53637265656E5F5F5F5F416E6F6E456E756D33 = global::Managed.GhosttyVt.Screen____AnonEnum3;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636661643537633037 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_cfad57c07;
 using __DotCcEnum_686561705F4172656E61416C6C6F6361746F725F5F50757368526573756C745F546167 = global::Managed.GhosttyVt.heap_ArenaAllocator__PushResult_Tag;
 using __DotCcEnum_6D6174685F5F4F72646572 = global::Managed.GhosttyVt.math__Order;
@@ -86,13 +89,13 @@ using __DotCcEnum_7367725F5F4174747269627574655F5F556E6465726C696E65 = global::M
 using __DotCcEnum_646E645F726573706F6E73655F5F456E636F64696E67 = global::Managed.GhosttyVt.dnd_response__Encoding;
 using __DotCcEnum_726573756C745F5F526573756C74 = global::Managed.GhosttyVt.result__Result;
 using __DotCcEnum_53637265656E5F5F5F5F416E6F6E456E756D32 = global::Managed.GhosttyVt.Screen____AnonEnum2;
+using __DotCcEnum_7379735F5F4F7074696F6E = global::Managed.GhosttyVt.sys__Option;
 using __DotCcEnum_6170635F5F53746174655F546167 = global::Managed.GhosttyVt.apc__State_Tag;
 using __DotCcEnum_5461726765745F5F4F626A656374466F726D6174 = global::Managed.GhosttyVt.Target__ObjectFormat;
 using __DotCcEnum_5061727365725F5F416374696F6E5F546167 = global::Managed.GhosttyVt.Parser__Action_Tag;
 using __DotCcEnum_496F5F46696C655F5265616465725F5F4D6F6465 = global::Managed.GhosttyVt.Io_File_Reader__Mode;
 using __DotCcEnum_686561705F4172656E61416C6C6F6361746F725F5F52657365744D6F64655F546167 = global::Managed.GhosttyVt.heap_ArenaAllocator__ResetMode_Tag;
 using __DotCcEnum_7374796C655F325F5F5374796C655F5F436F6C6F725F5F546167 = global::Managed.GhosttyVt.style_2__Style__Color__Tag;
-using __DotCcEnum_5465726D696E616C5F5F5072696E74536C6963655769647468 = global::Managed.GhosttyVt.Terminal__PrintSliceWidth;
 using __DotCcEnum_6465766963655F617474726962757465735F5F5072696D6172795F5F46656174757265 = global::Managed.GhosttyVt.device_attributes__Primary__Feature;
 using __DotCcEnum_5461726765745F68657861676F6E5F5F46656174757265 = global::Managed.GhosttyVt.Target_hexagon__Feature;
 using __DotCcEnum_636F6C6F725F335F5F5370656369616C = global::Managed.GhosttyVt.color_3__Special;
@@ -116,8 +119,8 @@ using __DotCcEnum_6463735F5F436F6D6D616E645F5F44454352515353 = global::Managed.G
 using __DotCcEnum_76616C6772696E645F6D656D636865636B5F5F436C69656E7452657175657374 = global::Managed.GhosttyVt.valgrind_memcheck__ClientRequest;
 using __DotCcEnum_61727261795F686173685F6D61705F5F4361706163697479496E64657854797065 = global::Managed.GhosttyVt.array_hash_map__CapacityIndexType;
 using __DotCcEnum_496F5F46696C655F5F4B696E64 = global::Managed.GhosttyVt.Io_File__Kind;
+using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633164613662336138 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c1da6b3a8;
 using __DotCcEnum_6F73635F325F5F5061727365725F5F436170747572655F5F4261636B696E675F546167 = global::Managed.GhosttyVt.osc_2__Parser__Capture__Backing_Tag;
-using __DotCcEnum_72656E6465725F5F437572736F7256697375616C5374796C65 = global::Managed.GhosttyVt.render__CursorVisualStyle;
 using __DotCcEnum_736F72745F7064715F5F48696E74 = global::Managed.GhosttyVt.sort_pdq__Hint;
 using __DotCcEnum_636C6970626F6172645F325F5F526561645F5F526573756C745F546167 = global::Managed.GhosttyVt.clipboard_2__Read__Result_Tag;
 using __DotCcEnum_616E73695F5F4330 = global::Managed.GhosttyVt.ansi__C0;
@@ -126,7 +129,6 @@ using __DotCcEnum_636F6C6F725F5F4F7065726174696F6E = global::Managed.GhosttyVt.c
 using __DotCcEnum_6B697474795F636C6970626F6172645F70726F746F636F6C5F5F537461747573 = global::Managed.GhosttyVt.kitty_clipboard_protocol__Status;
 using __DotCcEnum_6170635F5F50726F746F636F6C = global::Managed.GhosttyVt.apc__Protocol;
 using __DotCcEnum_73656D616E7469635F70726F6D70745F5F436F6D6D616E645F5F416374696F6E = global::Managed.GhosttyVt.semantic_prompt__Command__Action;
-using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633430323464633238 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c4024dc28;
 using __DotCcEnum_70726F6772616D5F7374617475735F5F436F6D6D616E645F546167 = global::Managed.GhosttyVt.program_status__Command_Tag;
 using __DotCcEnum_636F6C6F725F335F5F4B696E645F546167 = global::Managed.GhosttyVt.color_3__Kind_Tag;
 using __DotCcEnum_6373695F5F4572617365446973706C6179 = global::Managed.GhosttyVt.csi__EraseDisplay;
@@ -138,10 +140,10 @@ using __DotCcEnum_6772617068656D655F5F4772617068656D655769647468456666656374 = g
 using __DotCcEnum_6373695F5F45726173654C696E65 = global::Managed.GhosttyVt.csi__EraseLine;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636130376336633233 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_ca07c6c23;
 using __DotCcEnum_506167654C6973745F5F5F5F416E6F6E556E696F6E305F546167 = global::Managed.GhosttyVt.PageList____AnonUnion0_Tag;
+using __DotCcEnum_74797065735F335F5F437572736F725374796C65 = global::Managed.GhosttyVt.types_3__CursorStyle;
 using __DotCcEnum_666D745F5F416C69676E6D656E74 = global::Managed.GhosttyVt.fmt__Alignment;
 using __DotCcEnum_6275696C645F696E666F5F5F4275696C64496E666F = global::Managed.GhosttyVt.build_info__BuildInfo;
 using __DotCcEnum_506167654C6973745F5F496E6372656D656E74616C436F6D7072657373696F6E526573756C74 = global::Managed.GhosttyVt.PageList__IncrementalCompressionResult;
-using __DotCcEnum_7374796C655F5F436F6C6F72546167 = global::Managed.GhosttyVt.style__ColorTag;
 using __DotCcEnum_506167654C6973745F5F56696577706F72745F546167 = global::Managed.GhosttyVt.PageList__Viewport_Tag;
 using __DotCcEnum_496F5F4469725F5F5265616465725F5F5374617465 = global::Managed.GhosttyVt.Io_Dir__Reader__State;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633834366562383534 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c846eb854;
@@ -162,7 +164,6 @@ using __DotCcEnum_506167654C6973745F5F436F6D7072657373696F6E536372617463685F5461
 using __DotCcEnum_53656C656374696F6E5F5F426F756E64735F546167 = global::Managed.GhosttyVt.Selection__Bounds_Tag;
 using __DotCcEnum_636C6970626F6172645F325F5F57726974655F5F526573756C745F546167 = global::Managed.GhosttyVt.clipboard_2__Write__Result_Tag;
 using __DotCcEnum_6F73635F325F5F5465726D696E61746F72 = global::Managed.GhosttyVt.osc_2__Terminator;
-using __DotCcEnum_7465726D696E616C5F5F5465726D696E616C437572736F725374796C65 = global::Managed.GhosttyVt.terminal__TerminalCursorStyle;
 using __DotCcEnum_506167654C6973745F5F506167654974657261746F725F5F4C696D69745F546167 = global::Managed.GhosttyVt.PageList__PageIterator__Limit_Tag;
 using __DotCcEnum_6C616E675F5F456E6469616E = global::Managed.GhosttyVt.lang__Endian;
 using __DotCcEnum_686561705F5F5F5F416E6F6E556E696F6E305F546167 = global::Managed.GhosttyVt.heap____AnonUnion0_Tag;
@@ -180,7 +181,9 @@ using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633332396663356139
 using __DotCcEnum_6170635F5F436F6D6D616E645F546167 = global::Managed.GhosttyVt.apc__Command_Tag;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636433333364643464 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_cd333dd4d;
 using __DotCcEnum_68797065726C696E6B5F5F50616765456E7472795F5F49645F546167 = global::Managed.GhosttyVt.hyperlink__PageEntry__Id_Tag;
+using __DotCcEnum_666F726D61747465725F5F4F7074696F6E = global::Managed.GhosttyVt.formatter__Option;
 using __DotCcEnum_6F73635F5F436F6D6D616E6444617461 = global::Managed.GhosttyVt.osc__CommandData;
+using __DotCcEnum_7465726D696E616C5F5F4F7074696F6E = global::Managed.GhosttyVt.terminal__Option;
 using __DotCcEnum_706167655F5F43656C6C5F5F53656D616E746963436F6E74656E74 = global::Managed.GhosttyVt.page__Cell__SemanticContent;
 using __DotCcEnum_706167655F5F526F775F5F53656D616E74696350726F6D7074 = global::Managed.GhosttyVt.page__Row__SemanticPrompt;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633437333233396563 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c473239ec;
@@ -210,6 +213,7 @@ using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633363643637393664
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633838303663616564 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c8806caed;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633562326163383131 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c5b2ac811;
 using __DotCcEnum_68797065726C696E6B5F5F48797065726C696E6B5F5F49645F546167 = global::Managed.GhosttyVt.hyperlink__Hyperlink__Id_Tag;
+using __DotCcEnum_5465726D696E616C5F5F5072696E74536C6963654D69786564526F775F5F53746F70 = global::Managed.GhosttyVt.Terminal__PrintSliceMixedRow__Stop;
 using __DotCcEnum_635F5F5F5F416E6F6E456E756D31 = global::Managed.GhosttyVt.c____AnonEnum1;
 using __DotCcEnum_666D745F5F43617365 = global::Managed.GhosttyVt.fmt__Case;
 using __DotCcEnum_78745F636865636B73756D5F5F56616C75655F546167 = global::Managed.GhosttyVt.xt_checksum__Value_Tag;
@@ -226,19 +230,999 @@ using __DotCcEnum_5465726D696E616C5F5F446563636F6C6D4D6F6465 = global::Managed.G
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633262643762326166 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c2bd7b2af;
 using __DotCcEnum_72656E6465725F5F526F7743656C6C7344617461 = global::Managed.GhosttyVt.render__RowCellsData;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636630373331306539 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_cf07310e9;
-using __DotCcEnum_5F5F446F744363547970656465665F34363336323630304243383945323145354234343735414539333242333836343046463531454546393044433731364645303732383746333544313844464434 = global::Managed.GhosttyVt.GhosttyPointTag;
-using __DotCcEnum_5F5F446F744363547970656465665F38453938394341423537343643374443394441454641333130393838363945344542443445423534384635354339323131454534343334343937393039433030 = global::Managed.GhosttyVt.GhosttyTerminalData;
-using __DotCcEnum_5F5F446F744363547970656465665F35424345333530373346314534354637304138443832424132424541383445453036373836383530353132344631313838433532393036363644383545333237 = global::Managed.GhosttyVt.GhosttyCellData;
-using __DotCcEnum_5F5F446F744363547970656465665F43303034443441424233424338313144423537313535393445433345354434323635424239324443303733443239333841413239374231383839424443394333 = global::Managed.GhosttyVt.GhosttyResult;
-using __DotCcEnum_5F5F446F744363547970656465665F34384134363232364635353144443144443032383437454538333644384136373033354239394439463934353844463633383934344137383539413131393341 = global::Managed.GhosttyVt.GhosttyFormatterFormat;
+using __DotCcEnum_5F5F446F744363547970656465665F42343433304439444231373133423442463337353942433732463336343833304138434538304430373237373346423338423245463438354638373034324145 = global::Managed.GhosttyVt.GhosttyResult;
+using __DotCcEnum_5F5F446F744363547970656465665F42393432423136393035383537384536463744353439413132384332363446323836323544433937413445324131363841383533343233333530363945433544 = global::Managed.GhosttyVt.GhosttyPointTag;
+using __DotCcEnum_5F5F446F744363547970656465665F44383133333931433843353335394138414442413938353433363230433636363432353035464446423837373341463337454335383635383333443935394538 = global::Managed.GhosttyVt.GhosttyTerminalData;
+using __DotCcEnum_5F5F446F744363547970656465665F44353335424632413237433246423245304135464634373046434139344436353034454542444646394138463838444636453434333030334643393142303741 = global::Managed.GhosttyVt.GhosttyCellData;
+using __DotCcEnum_5F5F446F744363547970656465665F45313739394335393033333344303646413942333645433635313836453339464242454341414144393434394633453039443837313537424438463246343441 = global::Managed.GhosttyVt.GhosttyFormatterOption;
+using __DotCcEnum_5F5F446F744363547970656465665F45364536453544393039344443313533343543344430414638324245324333354637433942434634364446324233414134383635334135374439413632323638 = global::Managed.GhosttyVt.GhosttyStyleColorTag;
 using __DotCcEnum_446F74636347686F73747479546578745374796C65 = global::Managed.GhosttyVt.DotccGhosttyTextStyle;
-using __DotCcEnum_5F5F446F744363547970656465665F46453531373538343036394442364138303334454138454633344542424634304636383130423745453942424345313931334443444533413633394534443543 = global::Managed.GhosttyVt.GhosttyStyleColorTag;
 using DotCcLiterals = global::Managed.GhosttyVt.GhosttyVtLiterals;
 using DotCcPointers = global::Managed.GhosttyVt.GhosttyVtFunctionPointers;
 
 public static unsafe partial class GhosttyVt
 {
-    public static unsafe void mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data* a, multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data* b)
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__printValue__se4bc98db_a6_i8_sentinel_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, fmt__Options options, byte* value, ulong max_depth)
+    {
+        try
+        {
+            {
+                ConstSlice<byte> slice = new ConstSlice<byte>(value, 6UL);
+                return Io_Writer__alignBufferOptions__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, slice, options);
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__printValue__se4bc98db___const_unsigned_charpa0_sentinel_unknown__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, fmt__Options options, ConstSlice<byte> value, ulong max_depth)
+    {
+        try
+        {
+            {
+                ConstSlice<byte> slice = value;
+                return Io_Writer__alignBufferOptions__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, slice, options);
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, ConstSlice<byte> bytes)
+    {
+        try
+        {
+            ulong index = 0;
+            while (((index < bytes.Len)))
+                index += ErrUnion.Try(Io_Writer__write__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<byte>(bytes.Ptr + index, bytes.Len - (ulong)index)));
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__alignBufferOptions__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, ConstSlice<byte> buffer, fmt__Options options)
+    {
+        try
+        {
+            return Io_Writer__alignBuffer__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, buffer, (options.width ?? buffer.Len), options.alignment, options.fill);
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe ErrUnion<ulong> Io_Writer__write__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, ConstSlice<byte> bytes)
+    {
+        try
+        {
+            if (((w->end + bytes.Len <= w->buffer.Len)))
+            {
+                ZigMem.CopyForwards<byte>(new Slice<byte>(new Slice<byte>(w->buffer.Ptr + w->end, w->buffer.Len - (ulong)w->end).Ptr + 0, (ulong)(bytes.Len - (ulong)(0))), bytes);
+                w->end += bytes.Len;
+                return ErrUnion<ulong>.Ok(bytes.Len);
+            }
+            ConstSlice<byte>* __cl20 = stackalloc ConstSlice<byte>[]{ bytes };
+            return w->vtable->drain(w, new ConstSlice<ConstSlice<byte>>(__cl20, 1UL), 1);
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<ulong>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__alignBuffer__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, ConstSlice<byte> buffer, ulong width, fmt__Alignment alignment, byte fill)
+    {
+        try
+        {
+            ulong padding = ((ulong)(((buffer.Len < width)) ? width - buffer.Len : 0UL));
+            if (((padding == 0UL)))
+            {
+                return Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, buffer);
+            }
+            switch ((int)alignment)
+            {
+                case (int)__DotCcEnum_666D745F5F416C69676E6D656E74.left:
+                    {
+                        _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, buffer));
+                        _ = ErrUnion.Try(Io_Writer__splatByteAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, fill, padding));
+                    }
+                    break;
+                case (int)__DotCcEnum_666D745F5F416C69676E6D656E74.center:
+                    {
+                        ulong left_padding = padding / 2UL;
+                        ulong right_padding = (padding + 1UL) / 2UL;
+                        _ = ErrUnion.Try(Io_Writer__splatByteAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, fill, left_padding));
+                        _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, buffer));
+                        _ = ErrUnion.Try(Io_Writer__splatByteAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, fill, right_padding));
+                    }
+                    break;
+                case (int)__DotCcEnum_666D745F5F416C69676E6D656E74.right:
+                    {
+                        _ = ErrUnion.Try(Io_Writer__splatByteAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, fill, padding));
+                        _ = ErrUnion.Try(Io_Writer__writeAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, buffer));
+                    }
+                    break;
+                default:
+                    throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+            }
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ZigErrorUnionZero<Unit> Io_Writer__splatByteAll__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, byte @byte, ulong n)
+    {
+        try
+        {
+            ulong remaining = n;
+            while (((remaining > 0UL)))
+                remaining -= ErrUnion.Try(Io_Writer__splatByte__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, @byte, remaining));
+        }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
+    }
+
+
+
+    public static unsafe ErrUnion<ulong> Io_Writer__splatByte__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, byte @byte, ulong n)
+    {
+        try
+        {
+            if (((w->end + n <= w->buffer.Len)))
+            {
+                ZigMem.Set<byte>(new Slice<byte>(new Slice<byte>(w->buffer.Ptr + w->end, w->buffer.Len - (ulong)w->end).Ptr + 0, (ulong)(n - (ulong)(0))), @byte);
+                w->end += n;
+                return ErrUnion<ulong>.Ok(n);
+            }
+            byte* __cl21 = stackalloc byte[]{ @byte };
+            ConstSlice<byte>* __cl22 = stackalloc ConstSlice<byte>[]{ new ConstSlice<byte>(__cl21, 1UL) };
+            return Io_Writer__writeSplat__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(w, new ConstSlice<ConstSlice<byte>>(__cl22, 1UL), n);
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<ulong>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe ErrUnion<ulong> Io_Writer__writeSplat__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Io_Writer__Writer* w, ConstSlice<ConstSlice<byte>> data, ulong splat)
+    {
+        try
+        {
+            debug__assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)(data.Len > 0UL)));
+            Slice<byte> buffer = w->buffer;
+            ulong count = Io_Writer__countSplat__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(data, splat);
+            if (((w->end + count > buffer.Len)))
+                return w->vtable->drain(w, data, splat);
+            {
+                ConstSlice<ConstSlice<byte>> __s = new ConstSlice<ConstSlice<byte>>(data.Ptr + 0, (ulong)(data.Len - 1UL - (ulong)(0)));
+                for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
+                {
+                    ConstSlice<byte> bytes = __s.Ptr[__i];
+                    {
+                        ZigMem.CopyForwards<byte>(new Slice<byte>(new Slice<byte>(buffer.Ptr + w->end, buffer.Len - (ulong)w->end).Ptr + 0, (ulong)(bytes.Len - (ulong)(0))), bytes);
+                        w->end += bytes.Len;
+                    }
+                }
+            }
+            ConstSlice<byte> pattern = data.Ptr[data.Len - 1UL];
+            switch (pattern.Len)
+            {
+                case 0:
+                    
+                    
+                    break;
+                case 1:
+                    {
+                        ZigMem.Set<byte>(new Slice<byte>(new Slice<byte>(buffer.Ptr + w->end, buffer.Len - (ulong)w->end).Ptr + 0, (ulong)(splat - (ulong)(0))), pattern.Ptr[0]);
+                        w->end += splat;
+                    }
+                    break;
+                default:
+                    for (ulong __range5 = 0; ((__range5 < (ulong)splat)); __range5++)
+                    {
+                        ZigMem.CopyForwards<byte>(new Slice<byte>(new Slice<byte>(buffer.Ptr + w->end, buffer.Len - (ulong)w->end).Ptr + 0, (ulong)(pattern.Len - (ulong)(0))), pattern);
+                        w->end += pattern.Len;
+                    }
+                    break;
+            }
+            return ErrUnion<ulong>.Ok(count);
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<ulong>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe void mem_Allocator__rawFree__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator a, Slice<byte> memory, mem__Alignment alignment, ulong ret_addr)
+    {
+        a.vtable->free(a.ptr, memory, alignment, ret_addr);
+        return;
+    }
+
+
+
+    public static unsafe byte* mem_Allocator__rawRemap__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator a, Slice<byte> memory, mem__Alignment alignment, ulong new_len, ulong ret_addr)
+    {
+        return a.vtable->remap(a.ptr, memory, alignment, new_len, ret_addr);
+    }
+
+
+
+    public static unsafe byte* mem_Allocator__rawAlloc__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator a, ulong len, mem__Alignment alignment, ulong ret_addr)
+    {
+        return a.vtable->alloc(a.ptr, len, alignment, ret_addr);
+    }
+
+
+
+    public static unsafe ErrUnion<nuint> mem_Allocator__create__osc_2__Parser__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator a)
+    {
+        try
+        {
+            return mem_Allocator__createAdvancedWithRetAddr__osc_2__Parser_optnull__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(a, 0UL);
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<nuint>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe void mem_Allocator__destroy__p_osc_2__Parserpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator self, osc_2__Parser* ptr)
+    {
+        byte* non_const_ptr = (byte*)(byte*)ptr;
+        mem_Allocator__rawFree__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, new Slice<byte>(non_const_ptr + 0, unchecked((ulong)unchecked(((ulong)(sizeof(osc_2__Parser))) - (ulong)(0)))), mem__Alignment_fromByteUnits__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(8UL), 0UL);
+    }
+
+
+
+    public static unsafe ErrUnion<nuint> mem_Allocator__create__sgr_2__ParserWrapper__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator a)
+    {
+        try
+        {
+            return mem_Allocator__createAdvancedWithRetAddr__sgr_2__ParserWrapper_optnull__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(a, 0UL);
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<nuint>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe void mem_Allocator__free____const_unsigned_shortpa0_e16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator self, ConstSlice<ushort> memory)
+    {
+        Slice<ushort> __anf0 = ZigMem.ConstCast<ushort>(mem__absorbSentinel____const_unsigned_shortpa0_e16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(memory));
+        Slice<byte> bytes = new Slice<byte>((byte*)__anf0.Ptr, __anf0.Len * ((ulong)(sizeof(ushort))) / ((ulong)(sizeof(byte))));
+        if (((bytes.Len == 0UL)))
+            return;
+        ZigMem.Set<byte>(bytes, default(byte));
+        mem_Allocator__rawFree__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, bytes, mem__Alignment_fromByteUnits__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(2UL), 0UL);
+    }
+
+
+
+    public static unsafe void mem_Allocator__destroy__p_sgr_2__ParserWrapperpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator self, sgr_2__ParserWrapper* ptr)
+    {
+        byte* non_const_ptr = (byte*)(byte*)ptr;
+        mem_Allocator__rawFree__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, new Slice<byte>(non_const_ptr + 0, unchecked((ulong)unchecked(((ulong)(sizeof(sgr_2__ParserWrapper))) - (ulong)(0)))), mem__Alignment_fromByteUnits__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(8UL), 0UL);
+    }
+
+
+
+    public static unsafe ErrUnion<Slice<ushort>> mem_Allocator__dupe__u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator allocator, ConstSlice<ushort> m)
+    {
+        try
+        {
+            Slice<ushort> new_buf = ErrUnion.Try(mem_Allocator__alloc__u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(allocator, m.Len));
+            ZigMem.CopyForwards<ushort>(new_buf, m);
+            return ErrUnion<Slice<ushort>>.Ok(new_buf);
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<Slice<ushort>>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe void mem_Allocator__destroy__p_formatter__FormatterWrapperpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator self, formatter__FormatterWrapper* ptr)
+    {
+        byte* non_const_ptr = (byte*)(byte*)ptr;
+        mem_Allocator__rawFree__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, new Slice<byte>(non_const_ptr + 0, unchecked((ulong)unchecked(((ulong)(sizeof(formatter__FormatterWrapper))) - (ulong)(0)))), mem__Alignment_fromByteUnits__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(8UL), 0UL);
+    }
+
+
+
+    public static unsafe ErrUnion<nuint> mem_Allocator__create__render__RowIteratorWrapper__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator a)
+    {
+        try
+        {
+            return mem_Allocator__createAdvancedWithRetAddr__render__RowIteratorWrapper_optnull__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(a, 0UL);
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<nuint>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe void mem_Allocator__destroy__p_render__RowIteratorWrapperpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator self, render__RowIteratorWrapper* ptr)
+    {
+        byte* non_const_ptr = (byte*)(byte*)ptr;
+        mem_Allocator__rawFree__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, new Slice<byte>(non_const_ptr + 0, unchecked((ulong)unchecked(((ulong)(sizeof(render__RowIteratorWrapper))) - (ulong)(0)))), mem__Alignment_fromByteUnits__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(8UL), 0UL);
+    }
+
+
+
+    public static unsafe ErrUnion<nuint> mem_Allocator__create__render__RowCellsWrapper__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator a)
+    {
+        try
+        {
+            return mem_Allocator__createAdvancedWithRetAddr__render__RowCellsWrapper_optnull__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(a, 0UL);
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<nuint>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe void mem_Allocator__destroy__p_render__RowCellsWrapperpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator self, render__RowCellsWrapper* ptr)
+    {
+        byte* non_const_ptr = (byte*)(byte*)ptr;
+        mem_Allocator__rawFree__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, new Slice<byte>(non_const_ptr + 0, unchecked((ulong)unchecked(((ulong)(sizeof(render__RowCellsWrapper))) - (ulong)(0)))), mem__Alignment_fromByteUnits__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(8UL), 0UL);
+    }
+
+
+
+    public static unsafe ErrUnion<nuint> mem_Allocator__create__render__ImageIteratorWrapper__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator a)
+    {
+        try
+        {
+            return mem_Allocator__createAdvancedWithRetAddr__render__ImageIteratorWrapper_optnull__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(a, 0UL);
+        }
+        catch (ZigErrorReturn __e) { return ErrUnion<nuint>.Err(__e.Code); }
+    }
+
+
+
+    public static unsafe void mem_Allocator__destroy__p_render__ImageIteratorWrapperpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator self, render__ImageIteratorWrapper* ptr)
+    {
+        byte* non_const_ptr = (byte*)(byte*)ptr;
+        mem_Allocator__rawFree__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, new Slice<byte>(non_const_ptr + 0, unchecked((ulong)unchecked(((ulong)(sizeof(render__ImageIteratorWrapper))) - (ulong)(0)))), mem__Alignment_fromByteUnits__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(8UL), 0UL);
+    }
+
+
+
+    public static unsafe void mem_Allocator__destroy__p_render__RenderStateWrapperpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator self, render__RenderStateWrapper* ptr)
+    {
+        byte* non_const_ptr = (byte*)(byte*)ptr;
+        mem_Allocator__rawFree__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, new Slice<byte>(non_const_ptr + 0, unchecked((ulong)unchecked(((ulong)(sizeof(render__RenderStateWrapper))) - (ulong)(0)))), mem__Alignment_fromByteUnits__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(16UL), 0UL);
+    }
+
+
+
+    public static unsafe void mem_Allocator__free____unsigned_charpa0_e8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator self, Slice<byte> memory)
+    {
+        Slice<byte> __anf1 = mem__absorbSentinel____unsigned_charpa0_e8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(memory);
+        Slice<byte> bytes = new Slice<byte>((byte*)__anf1.Ptr, __anf1.Len * ((ulong)(sizeof(byte))) / ((ulong)(sizeof(byte))));
+        if (((bytes.Len == 0UL)))
+            return;
+        ZigMem.Set<byte>(bytes, default(byte));
+        mem_Allocator__rawFree__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, bytes, mem__Alignment_fromByteUnits__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(1UL), 0UL);
+    }
+
+
+
+    public static unsafe ConstSlice<ConstSlice<byte>> meta__fieldNames__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        return new ConstSlice<ConstSlice<byte>>(global::Managed.GhosttyVt.__dotcc_owned_array_CED48B66F602CABAE44688722BD7356B686AB86FFECB30B68061356B58B74CB9_Create(), 3UL);
+    }
+
+
+
+    public static unsafe void mem__sort__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array_list__M__B1FBA2E656AB56DCDF80BBBC360D82C2257DD64ECBE624B3CBEC58196B04C405__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data> items)
+    {
+        sort_block__block__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array__506D81099EEE733C6994219DCC64D060479369269E0FABE9342D91C37DE363B8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items);
+    }
+
+
+
+    public static unsafe CBool multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data lhs, multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data rhs)
+    {
+        return ((CBool)(lhs.alignment > rhs.alignment));
+    }
+
+
+
+    public static unsafe void sort_block__block__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array__506D81099EEE733C6994219DCC64D060479369269E0FABE9342D91C37DE363B8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data> items)
+    {
+        multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data* cache = stackalloc multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data[512];
+        if (((items.Len < 4UL)))
+        {
+            if (((items.Len == 3UL)))
+            {
+                if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[1], items.Ptr[0])))) != 0))
+                    mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&items.Ptr[0], &items.Ptr[1]);
+                if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[2], items.Ptr[1])))) != 0))
+                {
+                    mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&items.Ptr[1], &items.Ptr[2]);
+                    if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[1], items.Ptr[0])))) != 0))
+                        mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&items.Ptr[0], &items.Ptr[1]);
+                }
+            }
+            else
+                if (((items.Len == 2UL)))
+                {
+                    if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[1], items.Ptr[0])))) != 0))
+                        mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&items.Ptr[0], &items.Ptr[1]);
+                }
+            return;
+        }
+        sort_block__Iterator iterator = sort_block__Iterator_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Len, 4);
+        while ((!(((unchecked((int)(sort_block__Iterator_finished__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator)))) != 0) )     ))
+        {
+            byte* __cl23 = stackalloc byte[]{ 0, 1, 2, 3, 4, 5, 6, 7 };
+            byte* order = __cl23;
+            sort_block__Range range = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+            Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data> sliced_items = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + range.start, items.Len - (ulong)range.start);
+            switch (sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(range))
+            {
+                case 8:
+                    {
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 1);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 4, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 6, 7);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 2);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 4, 6);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 5, 7);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 2);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 5, 6);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 3, 7);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 6);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 3, 6);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 3, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 3, 4);
+                    }
+                    break;
+                case 7:
+                    {
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 2);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 3, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 5, 6);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 2);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 3, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 4, 6);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 1);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 4, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 6);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 3);
+                    }
+                    break;
+                case 6:
+                    {
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 2);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 4, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 2);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 3, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 1);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 3, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 5);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 3);
+                    }
+                    break;
+                case 5:
+                    {
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 1);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 3, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 4);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 2);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 2);
+                    }
+                    break;
+                case 4:
+                    {
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 1);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 2, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 0, 2);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 3);
+                        sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array___BA9B4E3EA76B198CD4CC8581133589AF050FF64B22D560256E70D1C43F13F06C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sliced_items, order, 1, 2);
+                    }
+                    break;
+                default:
+                    
+                    
+                    break;
+            }
+        }
+        if (((items.Len < 8UL)))
+            return;
+        while (true)
+        {
+            if (((sort_block__Iterator_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator) < 512UL)))
+            {
+                if ((((((sort_block__Iterator_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator) + 1UL) * 4UL <= 512UL)) && ((sort_block__Iterator_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator) * 4UL <= items.Len)))))
+                {
+                    sort_block__Iterator_begin__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                    while ((!(((unchecked((int)(sort_block__Iterator_finished__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator)))) != 0) )     ))
+                    {
+                        sort_block__Range A1 = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                        sort_block__Range B1 = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                        sort_block__Range A2 = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                        sort_block__Range B2 = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                        if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[B1.end - 1UL], items.Ptr[A1.start])))) != 0))
+                        {
+                            Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data> a1_items = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + A1.start, (ulong)(A1.end - A1.start));
+                            ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(cache + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B1), 512UL - (ulong)sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B1)).Ptr + 0, (ulong)(a1_items.Len - (ulong)(0))), a1_items);
+                            Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data> b1_items = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + B1.start, (ulong)(B1.end - B1.start));
+                            ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(cache + 0, (ulong)(b1_items.Len - (ulong)(0))), b1_items);
+                        }
+                        else
+                            if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[B1.start], items.Ptr[A1.end - 1UL])))) != 0))
+                            {
+                                sort_block__mergeInto__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_a__B4E7066018A2D3CC4A6686B3880D5219E2F78999619E85BD17A9E0A5D7792FE1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, A1, B1, new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(cache + 0, unchecked(512UL - (ulong)0)));
+                            }
+                            else
+                            {
+                                if ((((!(((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[B2.start], items.Ptr[A2.end - 1UL])))) != 0) )     ) && (!(((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[A2.start], items.Ptr[B1.end - 1UL])))) != 0) )     ))))
+                                    continue;
+                                Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data> a1_items__1 = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + A1.start, (ulong)(A1.end - A1.start));
+                                ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(cache + 0, (ulong)(a1_items__1.Len - (ulong)(0))), a1_items__1);
+                                Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data> b1_items__1 = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + B1.start, (ulong)(B1.end - B1.start));
+                                ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(cache + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1), 512UL - (ulong)sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1)).Ptr + 0, (ulong)(b1_items__1.Len - (ulong)(0))), b1_items__1);
+                            }
+                        A1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1.start, B1.end);
+                        if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[B2.end - 1UL], items.Ptr[A2.start])))) != 0))
+                        {
+                            Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data> a2_items = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + A2.start, (ulong)(A2.end - A2.start));
+                            ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(cache + (sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1) + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B2)), 512UL - (ulong)(sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1) + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B2))).Ptr + 0, (ulong)(a2_items.Len - (ulong)(0))), a2_items);
+                            Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data> b2_items = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + B2.start, (ulong)(B2.end - B2.start));
+                            ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(cache + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1), 512UL - (ulong)sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1)).Ptr + 0, (ulong)(b2_items.Len - (ulong)(0))), b2_items);
+                        }
+                        else
+                            if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[B2.start], items.Ptr[A2.end - 1UL])))) != 0))
+                            {
+                                sort_block__mergeInto__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_a__B4E7066018A2D3CC4A6686B3880D5219E2F78999619E85BD17A9E0A5D7792FE1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, A2, B2, new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(cache + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1), 512UL - (ulong)sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1)));
+                            }
+                            else
+                            {
+                                Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data> a2_items__1 = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + A2.start, (ulong)(A2.end - A2.start));
+                                ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(cache + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1), 512UL - (ulong)sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1)).Ptr + 0, (ulong)(a2_items__1.Len - (ulong)(0))), a2_items__1);
+                                Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data> b2_items__1 = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + B2.start, (ulong)(B2.end - B2.start));
+                                ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(cache + (sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1) + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A2)), 512UL - (ulong)(sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1) + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A2))).Ptr + 0, (ulong)(b2_items__1.Len - (ulong)(0))), b2_items__1);
+                            }
+                        A2 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A2.start, B2.end);
+                        sort_block__Range A3 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(0, sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1));
+                        sort_block__Range B3 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1), sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1) + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A2));
+                        if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(cache[B3.end - 1UL], cache[A3.start])))) != 0))
+                        {
+                            Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data> a3_items = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(cache + A3.start, (ulong)(A3.end - A3.start));
+                            ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + (A1.start + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A2)), items.Len - (ulong)(A1.start + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A2))).Ptr + 0, (ulong)(a3_items.Len - (ulong)(0))), a3_items);
+                            Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data> b3_items = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(cache + B3.start, (ulong)(B3.end - B3.start));
+                            ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + A1.start, items.Len - (ulong)A1.start).Ptr + 0, (ulong)(b3_items.Len - (ulong)(0))), b3_items);
+                        }
+                        else
+                            if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(cache[B3.start], cache[A3.end - 1UL])))) != 0))
+                            {
+                                sort_block__mergeInto__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_a__B4E7066018A2D3CC4A6686B3880D5219E2F78999619E85BD17A9E0A5D7792FE1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(cache + 0, unchecked(512UL - (ulong)0)), A3, B3, new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + A1.start, items.Len - (ulong)A1.start));
+                            }
+                            else
+                            {
+                                Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data> a3_items__1 = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(cache + A3.start, (ulong)(A3.end - A3.start));
+                                ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + A1.start, items.Len - (ulong)A1.start).Ptr + 0, (ulong)(a3_items__1.Len - (ulong)(0))), a3_items__1);
+                                Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data> b3_items__1 = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(cache + B3.start, (ulong)(B3.end - B3.start));
+                                ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + (A1.start + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1)), items.Len - (ulong)(A1.start + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A1))).Ptr + 0, (ulong)(b3_items__1.Len - (ulong)(0))), b3_items__1);
+                            }
+                    }
+                    _ = sort_block__Iterator_nextLevel__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                }
+                else
+                {
+                    sort_block__Iterator_begin__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                    while ((!(((unchecked((int)(sort_block__Iterator_finished__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator)))) != 0) )     ))
+                    {
+                        sort_block__Range A = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                        sort_block__Range B = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                        if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[B.end - 1UL], items.Ptr[A.start])))) != 0))
+                        {
+                            mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + A.start, (ulong)(B.end - A.start)), sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A));
+                        }
+                        else
+                            if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[B.start], items.Ptr[A.end - 1UL])))) != 0))
+                            {
+                                Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data> a_items = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + A.start, (ulong)(A.end - A.start));
+                                ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(cache + 0, (ulong)(a_items.Len - (ulong)(0))), a_items);
+                                sort_block__mergeExternal__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_mul__5A69FAA990F4256A4550C10F46F9CC4BF560D2C8675031B46938DA7EB16045A5__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, A, B, new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(cache + 0, unchecked(512UL - (ulong)0)));
+                            }
+                    }
+                }
+            }
+            else
+            {
+                ulong block_size = math_sqrt__sqrt__u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(sort_block__Iterator_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator));
+                ulong buffer_size = sort_block__Iterator_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator) / block_size + 1UL;
+                sort_block__Range A__1 = default(sort_block__Range);
+                sort_block__Range B__1 = default(sort_block__Range);
+                ulong index = 0;
+                ulong last = 0;
+                ulong count = 0;
+                ulong find = 0;
+                ulong start = 0;
+                ulong pull_index = 0;
+                sort_block__Pull* __cl24 = stackalloc sort_block__Pull[]{ new sort_block__Pull { from = 0, to = 0, count = 0, range = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(0, 0) }, new sort_block__Pull { from = 0, to = 0, count = 0, range = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(0, 0) } };
+                sort_block__Pull* pull = __cl24;
+                sort_block__Range buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(0, 0);
+                sort_block__Range buffer2 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(0, 0);
+                find = buffer_size + buffer_size;
+                CBool find_separately = false;
+                if (((block_size <= 512UL)))
+                {
+                    find = buffer_size;
+                }
+                else
+                    if (((find > sort_block__Iterator_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator))))
+                    {
+                        find = buffer_size;
+                        find_separately = true;
+                    }
+                sort_block__Iterator_begin__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                while ((!(((unchecked((int)(sort_block__Iterator_finished__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator)))) != 0) )     ))
+                {
+                    A__1 = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                    B__1 = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                    last = A__1.start;
+                    count = 1;
+                    for (; ((count < find)); last = index, count += (ulong)(1))
+                    {
+                        index = sort_block__findLastForward__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_m__D475EA0CFEE1326CA6B108BE7B71EE4F8A7C79E1C7D6216AC98BFC9595E75B29__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, items.Ptr[last], sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(last + 1UL, A__1.end), find - count);
+                        if (((index == A__1.end)))
+                            break;
+                    }
+                    index = last;
+                    if (((count >= buffer_size)))
+                    {
+                        pull[pull_index] = new sort_block__Pull { range = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, B__1.end), count = count, from = index, to = A__1.start };
+                        pull_index = 1;
+                        if (((count == buffer_size + buffer_size)))
+                        {
+                            buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, A__1.start + buffer_size);
+                            buffer2 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start + buffer_size, A__1.start + count);
+                            break;
+                        }
+                        else
+                            if (((find == buffer_size + buffer_size)))
+                            {
+                                buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, A__1.start + count);
+                                find = buffer_size;
+                            }
+                            else
+                                if (((block_size <= 512UL)))
+                                {
+                                    buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, A__1.start + count);
+                                    break;
+                                }
+                                else
+                                    if (((unchecked((int)(find_separately))) != 0))
+                                    {
+                                        buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, A__1.start + count);
+                                        find_separately = false;
+                                    }
+                                    else
+                                    {
+                                        buffer2 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, A__1.start + count);
+                                        break;
+                                    }
+                    }
+                    else
+                        if (((((pull_index == 0UL)) && ((count > sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer1))))))
+                        {
+                            buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, A__1.start + count);
+                            pull[pull_index] = new sort_block__Pull { range = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, B__1.end), count = count, from = index, to = A__1.start };
+                        }
+                    last = B__1.end - 1UL;
+                    count = 1;
+                    for (; ((count < find)); last = index - 1UL, count += (ulong)(1))
+                    {
+                        index = sort_block__findFirstBackward__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void__D52CFA72368AB749F5D775844A72BAF19E4ADE8446055195FBC5C02C8A7E4263__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, items.Ptr[last], sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1.start, last), find - count);
+                        if (((index == B__1.start)))
+                            break;
+                    }
+                    index = last;
+                    if (((count >= buffer_size)))
+                    {
+                        pull[pull_index] = new sort_block__Pull { range = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, B__1.end), count = count, from = index, to = B__1.end };
+                        pull_index = 1;
+                        if (((count == buffer_size + buffer_size)))
+                        {
+                            buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1.end - count, B__1.end - buffer_size);
+                            buffer2 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1.end - buffer_size, B__1.end);
+                            break;
+                        }
+                        else
+                            if (((find == buffer_size + buffer_size)))
+                            {
+                                buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1.end - count, B__1.end);
+                                find = buffer_size;
+                            }
+                            else
+                                if (((block_size <= 512UL)))
+                                {
+                                    buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1.end - count, B__1.end);
+                                    break;
+                                }
+                                else
+                                    if (((unchecked((int)(find_separately))) != 0))
+                                    {
+                                        buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1.end - count, B__1.end);
+                                        find_separately = false;
+                                    }
+                                    else
+                                    {
+                                        if (((pull[0].range.start == A__1.start)))
+                                            pull[0].range.end -= pull[1].count;
+                                        buffer2 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1.end - count, B__1.end);
+                                        break;
+                                    }
+                    }
+                    else
+                        if (((((pull_index == 0UL)) && ((count > sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer1))))))
+                        {
+                            buffer1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1.end - count, B__1.end);
+                            pull[pull_index] = new sort_block__Pull { range = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, B__1.end), count = count, from = index, to = B__1.end };
+                        }
+                }
+                pull_index = 0;
+                for (; ((pull_index < 2UL)); pull_index += (ulong)(1))
+                {
+                    ulong length = pull[pull_index].count;
+                    if (((pull[pull_index].to < pull[pull_index].from)))
+                    {
+                        index = pull[pull_index].from;
+                        count = 1;
+                        for (; ((count < length)); count += (ulong)(1))
+                        {
+                            index = sort_block__findFirstBackward__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void__D52CFA72368AB749F5D775844A72BAF19E4ADE8446055195FBC5C02C8A7E4263__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, items.Ptr[index - 1UL], sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(pull[pull_index].to, pull[pull_index].from - (count - 1UL)), length - count);
+                            sort_block__Range range__1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(index + 1UL, pull[pull_index].from + 1UL);
+                            mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + range__1.start, (ulong)(range__1.end - range__1.start)), sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(range__1) - count);
+                            pull[pull_index].from = index + count;
+                        }
+                    }
+                    else
+                        if (((pull[pull_index].to > pull[pull_index].from)))
+                        {
+                            index = pull[pull_index].from + 1UL;
+                            count = 1;
+                            for (; ((count < length)); count += (ulong)(1))
+                            {
+                                index = sort_block__findLastForward__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_m__D475EA0CFEE1326CA6B108BE7B71EE4F8A7C79E1C7D6216AC98BFC9595E75B29__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, items.Ptr[index], sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(index, pull[pull_index].to), length - count);
+                                sort_block__Range range__2 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(pull[pull_index].from, index - 1UL);
+                                mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + range__2.start, (ulong)(range__2.end - range__2.start)), count);
+                                pull[pull_index].from = index - 1UL - count;
+                            }
+                        }
+                }
+                buffer_size = sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer1);
+                block_size = sort_block__Iterator_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator) / buffer_size + 1UL;
+                sort_block__Iterator_begin__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                while ((!(((unchecked((int)(sort_block__Iterator_finished__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator)))) != 0) )     ))
+                {
+                    A__1 = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                    B__1 = sort_block__Iterator_nextRange__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator);
+                    start = A__1.start;
+                    if (((start == pull[0].range.start)))
+                    {
+                        if (((pull[0].from > pull[0].to)))
+                        {
+                            A__1.start += pull[0].count;
+                            if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1) == 0UL)))
+                                continue;
+                        }
+                        else
+                            if (((pull[0].from < pull[0].to)))
+                            {
+                                B__1.end -= pull[0].count;
+                                if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1) == 0UL)))
+                                    continue;
+                            }
+                    }
+                    if (((start == pull[1].range.start)))
+                    {
+                        if (((pull[1].from > pull[1].to)))
+                        {
+                            A__1.start += pull[1].count;
+                            if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1) == 0UL)))
+                                continue;
+                        }
+                        else
+                            if (((pull[1].from < pull[1].to)))
+                            {
+                                B__1.end -= pull[1].count;
+                                if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1) == 0UL)))
+                                    continue;
+                            }
+                    }
+                    if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[B__1.end - 1UL], items.Ptr[A__1.start])))) != 0))
+                    {
+                        mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + A__1.start, (ulong)(B__1.end - A__1.start)), sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1));
+                    }
+                    else
+                        if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[A__1.end], items.Ptr[A__1.end - 1UL])))) != 0))
+                        {
+                            ulong findA = default(ulong);
+                            sort_block__Range blockA = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, A__1.end);
+                            sort_block__Range firstA = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(A__1.start, A__1.start + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockA) % block_size);
+                            ulong indexA = buffer1.start;
+                            index = firstA.end;
+                            for (; ((index < blockA.end)); indexA += (ulong)(1), index += block_size)
+                            {
+                                mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&items.Ptr[indexA], &items.Ptr[index]);
+                            }
+                            sort_block__Range lastA = firstA;
+                            sort_block__Range lastB = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(0, 0);
+                            sort_block__Range blockB = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1.start, B__1.start + ZigMath.Min(block_size, sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(B__1)));
+                            blockA.start += sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(firstA);
+                            indexA = buffer1.start;
+                            if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA) <= 512UL)))
+                            {
+                                Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data> last_a_items = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + lastA.start, (ulong)(lastA.end - lastA.start));
+                                ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(cache + 0, (ulong)(last_a_items.Len - (ulong)(0))), last_a_items);
+                            }
+                            else
+                                if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer2) > 0UL)))
+                                {
+                                    sort_block__blockSwap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, lastA.start, buffer2.start, sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA));
+                                }
+                            if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockA) > 0UL)))
+                            {
+                                while (true)
+                                {
+                                    if (((((((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastB) > 0UL)) && (!(((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[lastB.end - 1UL], items.Ptr[indexA])))) != 0) )     ))) || ((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockB) == 0UL)))))
+                                    {
+                                        ulong B_split = sort_block__binaryFirst__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi__F1C939EA5F738AEF736A57061DF023A670977337D84E97559636D49B3933364D__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, items.Ptr[indexA], lastB);
+                                        ulong B_remaining = lastB.end - B_split;
+                                        ulong minA = blockA.start;
+                                        findA = minA + block_size;
+                                        for (; ((findA < blockA.end)); findA += block_size)
+                                        {
+                                            if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Sort_lessThan__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items.Ptr[findA], items.Ptr[minA])))) != 0))
+                                            {
+                                                minA = findA;
+                                            }
+                                        }
+                                        sort_block__blockSwap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, blockA.start, minA, block_size);
+                                        mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&items.Ptr[blockA.start], &items.Ptr[indexA]);
+                                        indexA += (ulong)(1);
+                                        if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA) <= 512UL)))
+                                        {
+                                            sort_block__mergeExternal__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_mul__5A69FAA990F4256A4550C10F46F9CC4BF560D2C8675031B46938DA7EB16045A5__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, lastA, sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA.end, B_split), new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(cache + 0, unchecked(512UL - (ulong)0)));
+                                        }
+                                        else
+                                            if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer2) > 0UL)))
+                                            {
+                                                sort_block__mergeInternal__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_mul__C5555AAE9DECBDD52F24A9AF0DF649F4EA10B96D3AF8BB1B357F3539EA7BEB5C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, lastA, sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA.end, B_split), buffer2);
+                                            }
+                                            else
+                                            {
+                                                sort_block__mergeInPlace__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_mult__681BB62142E36ADCEAEC0FC9E8E71570FCBB42C36E7076F81F68E93F0207A7CF__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, lastA, sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA.end, B_split));
+                                            }
+                                        if (((((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer2) > 0UL)) || ((block_size <= 512UL)))))
+                                        {
+                                            if (((block_size <= 512UL)))
+                                            {
+                                                ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(cache + 0, (ulong)(block_size - (ulong)(0))), new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + blockA.start, items.Len - (ulong)blockA.start).Ptr + 0, (ulong)(block_size - (ulong)(0))));
+                                            }
+                                            else
+                                            {
+                                                sort_block__blockSwap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, blockA.start, buffer2.start, block_size);
+                                            }
+                                            sort_block__blockSwap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, B_split, blockA.start + block_size - B_remaining, B_remaining);
+                                        }
+                                        else
+                                        {
+                                            mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + B_split, (ulong)(blockA.start + block_size - B_split)), blockA.start - B_split);
+                                        }
+                                        lastA = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockA.start - B_remaining, blockA.start - B_remaining + block_size);
+                                        lastB = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA.end, lastA.end + B_remaining);
+                                        blockA.start += block_size;
+                                        if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockA) == 0UL)))
+                                            break;
+                                    }
+                                    else
+                                        if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockB) < block_size)))
+                                        {
+                                            mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + blockA.start, (ulong)(blockB.end - blockA.start)), blockB.start - blockA.start);
+                                            lastB = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockA.start, blockA.start + sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockB));
+                                            blockA.start += sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockB);
+                                            blockA.end += sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockB);
+                                            blockB.end = blockB.start;
+                                        }
+                                        else
+                                        {
+                                            sort_block__blockSwap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, blockA.start, blockB.start, block_size);
+                                            lastB = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(blockA.start, blockA.start + block_size);
+                                            blockA.start += block_size;
+                                            blockA.end += block_size;
+                                            blockB.start += block_size;
+                                            if (((blockB.end > B__1.end - block_size)))
+                                            {
+                                                blockB.end = B__1.end;
+                                            }
+                                            else
+                                            {
+                                                blockB.end += block_size;
+                                            }
+                                        }
+                                }
+                            }
+                            if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA) <= 512UL)))
+                            {
+                                sort_block__mergeExternal__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_mul__5A69FAA990F4256A4550C10F46F9CC4BF560D2C8675031B46938DA7EB16045A5__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, lastA, sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA.end, B__1.end), new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(cache + 0, unchecked(512UL - (ulong)0)));
+                            }
+                            else
+                                if (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer2) > 0UL)))
+                                {
+                                    sort_block__mergeInternal__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_mul__C5555AAE9DECBDD52F24A9AF0DF649F4EA10B96D3AF8BB1B357F3539EA7BEB5C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, lastA, sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA.end, B__1.end), buffer2);
+                                }
+                                else
+                                {
+                                    sort_block__mergeInPlace__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_mult__681BB62142E36ADCEAEC0FC9E8E71570FCBB42C36E7076F81F68E93F0207A7CF__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, lastA, sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(lastA.end, B__1.end));
+                                }
+                        }
+                }
+                sort__insertion__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void_multi_array_l__01B825397D9B52CF6ED48FC268B0B86571AA05EC4498A77790C30E082CAC1E65__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + buffer2.start, (ulong)(buffer2.end - buffer2.start)));
+                pull_index = 0;
+                for (; ((pull_index < 2UL)); pull_index += (ulong)(1))
+                {
+                    ulong unique = pull[pull_index].count * 2UL;
+                    if (((pull[pull_index].from > pull[pull_index].to)))
+                    {
+                        sort_block__Range buffer = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(pull[pull_index].range.start, pull[pull_index].range.start + pull[pull_index].count);
+                        while (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer) > 0UL)))
+                        {
+                            index = sort_block__findFirstForward__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void___651547BFF5114A2E4B7260755F75B51C0FC893BB5EF27110A851B87FE65C41ED__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, items.Ptr[buffer.start], sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer.end, pull[pull_index].range.end), unique);
+                            ulong amount = index - buffer.end;
+                            mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + buffer.start, (ulong)(index - buffer.start)), sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer));
+                            buffer.start += amount + 1UL;
+                            buffer.end += amount;
+                            unique -= (ulong)(2);
+                        }
+                    }
+                    else
+                        if (((pull[pull_index].from < pull[pull_index].to)))
+                        {
+                            sort_block__Range buffer__1 = sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(pull[pull_index].range.end - pull[pull_index].count, pull[pull_index].range.end);
+                            while (((sort_block__Range_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(buffer__1) > 0UL)))
+                            {
+                                index = sort_block__findLastBackward__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data_void___F85670839C4C2A04A02C5393A1480D99F3F393066AB77828D9A0BF828A7BC3A4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(items, items.Ptr[buffer__1.end - 1UL], sort_block__Range_init__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(pull[pull_index].range.start, buffer__1.start), unique);
+                                ulong amount__1 = buffer__1.start - index;
+                                mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data>(items.Ptr + index, (ulong)(buffer__1.end - index)), amount__1);
+                                buffer__1.start -= amount__1;
+                                buffer__1.end -= amount__1 + 1UL;
+                                unique -= (ulong)(2);
+                            }
+                        }
+                }
+            }
+            if ((!(((unchecked((int)(sort_block__Iterator_nextLevel__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&iterator)))) != 0) )     ))
+                break;
+        }
+    }
+
+
+
+    public static unsafe void mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data* a, multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data* b)
     {
         {
             Slice<byte> a_bytes = new Slice<byte>((byte*)a, ((ulong)(sizeof(multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__Data))) / ((ulong)(sizeof(byte))));
@@ -262,7 +1246,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe Anon__0 multi_array_list____init_multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__sizes__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe Anon__0 multi_array_list____init_multi_array_list__MultiArrayList__array_hash_map__Custom__u21_Glossary__Entry_array_hash_map__AutoContext__u21_0__Data__sizes__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         Anon__0 __ctv = new Anon__0 { big_align = unchecked((mem__Alignment)(byte)3) };
         memcpy(__ctv.bytes, Libc.GlobalArrayFrom<ulong>(DotCcLiterals.Pulong_35B5D8FCFFD3774F5ED79DB3766B1201592A664DD438E1D814B5C4849E37F483), 24);
@@ -272,65 +1256,77 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe void mem_Allocator__destroy__p_Terminal__Terminalpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mem_Allocator__Allocator self, Terminal__Terminal* ptr)
+    public static unsafe void mem_Allocator__destroy__p_Terminal__Terminalpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator self, Terminal__Terminal* ptr)
     {
         byte* non_const_ptr = (byte*)(byte*)ptr;
-        mem_Allocator__rawFree__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, new Slice<byte>(non_const_ptr + 0, unchecked((ulong)unchecked(((ulong)(sizeof(Terminal__Terminal))) - (ulong)(0)))), mem__Alignment_fromByteUnits__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(16UL), 0UL);
+        mem_Allocator__rawFree__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, new Slice<byte>(non_const_ptr + 0, unchecked((ulong)unchecked(((ulong)(sizeof(Terminal__Terminal))) - (ulong)(0)))), mem__Alignment_fromByteUnits__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(16UL), 0UL);
     }
 
 
 
-    public static unsafe void mem_Allocator__destroy__p_terminal__TerminalWrapperpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mem_Allocator__Allocator self, terminal__TerminalWrapper* ptr)
+    public static unsafe void mem_Allocator__destroy__p_terminal__TerminalWrapperpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator self, terminal__TerminalWrapper* ptr)
     {
         byte* non_const_ptr = (byte*)(byte*)ptr;
-        mem_Allocator__rawFree__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, new Slice<byte>(non_const_ptr + 0, unchecked((ulong)unchecked(((ulong)(sizeof(terminal__TerminalWrapper))) - (ulong)(0)))), mem__Alignment_fromByteUnits__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(8UL), 0UL);
+        mem_Allocator__rawFree__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, new Slice<byte>(non_const_ptr + 0, unchecked((ulong)unchecked(((ulong)(sizeof(terminal__TerminalWrapper))) - (ulong)(0)))), mem__Alignment_fromByteUnits__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(8UL), 0UL);
     }
 
 
 
-    public static unsafe ErrUnion<nuint> mem_Allocator__create__grid_ref_tracked__TrackedGridRef__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mem_Allocator__Allocator a)
+    public static unsafe ErrUnion<nuint> mem_Allocator__create__grid_ref_tracked__TrackedGridRef__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator a)
     {
         try
         {
-            return mem_Allocator__createAdvancedWithRetAddr__grid_ref_tracked__TrackedGridRef_optnull__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(a, 0UL);
+            return mem_Allocator__createAdvancedWithRetAddr__grid_ref_tracked__TrackedGridRef_optnull__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(a, 0UL);
         }
         catch (ZigErrorReturn __e) { return ErrUnion<nuint>.Err(__e.Code); }
     }
 
 
 
-    public static unsafe void mem_Allocator__destroy__p_grid_ref_tracked__TrackedGridRefpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mem_Allocator__Allocator self, grid_ref_tracked__TrackedGridRef* ptr)
+    public static unsafe void mem_Allocator__destroy__p_grid_ref_tracked__TrackedGridRefpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator self, grid_ref_tracked__TrackedGridRef* ptr)
     {
         byte* non_const_ptr = (byte*)(byte*)ptr;
-        mem_Allocator__rawFree__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, new Slice<byte>(non_const_ptr + 0, unchecked((ulong)unchecked(((ulong)(sizeof(grid_ref_tracked__TrackedGridRef))) - (ulong)(0)))), mem__Alignment_fromByteUnits__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(8UL), 0UL);
+        mem_Allocator__rawFree__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, new Slice<byte>(non_const_ptr + 0, unchecked((ulong)unchecked(((ulong)(sizeof(grid_ref_tracked__TrackedGridRef))) - (ulong)(0)))), mem__Alignment_fromByteUnits__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(8UL), 0UL);
     }
 
 
 
-    public static unsafe ErrUnion<Slice<byte>> mem_Allocator__alloc__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mem_Allocator__Allocator self, ulong n)
+    public static unsafe ErrUnion<Slice<byte>> mem_Allocator__alloc__u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator self, ulong n)
     {
         try
         {
-            return mem_Allocator__allocAdvancedWithRetAddr__u8_optnull__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, n, 0UL);
+            return mem_Allocator__allocAdvancedWithRetAddr__u8_optnull__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, n, 0UL);
         }
         catch (ZigErrorReturn __e) { return ErrUnion<Slice<byte>>.Err(__e.Code); }
     }
 
 
 
-    public static unsafe mem__Alignment mem__Alignment_of__osc_2__Parser__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe void mem_Allocator__free____unsigned_charpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator self, Slice<byte> memory)
+    {
+        Slice<byte> __anf2 = mem__absorbSentinel____unsigned_charpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(memory);
+        Slice<byte> bytes = new Slice<byte>((byte*)__anf2.Ptr, __anf2.Len * ((ulong)(sizeof(byte))) / ((ulong)(sizeof(byte))));
+        if (((bytes.Len == 0UL)))
+            return;
+        ZigMem.Set<byte>(bytes, default(byte));
+        mem_Allocator__rawFree__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, bytes, mem__Alignment_fromByteUnits__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(1UL), 0UL);
+    }
+
+
+
+    public static unsafe mem__Alignment mem__Alignment_of__osc_2__Parser__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return unchecked((mem__Alignment)(byte)3);
     }
 
 
 
-    public static unsafe ErrUnion<nuint> mem_Allocator__createAdvancedWithRetAddr__osc_2__Parser_optnull__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mem_Allocator__Allocator self, ulong return_address)
+    public static unsafe ErrUnion<nuint> mem_Allocator__createAdvancedWithRetAddr__osc_2__Parser_optnull__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator self, ulong return_address)
     {
         try
         {
             mem__Alignment a = unchecked((mem__Alignment)(byte)3);
-            osc_2__Parser* ptr = (osc_2__Parser*)(byte*)ErrUnion.Try(mem_Allocator__allocBytesAligned__3__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, ((ulong)(sizeof(osc_2__Parser))), return_address));
+            osc_2__Parser* ptr = (osc_2__Parser*)(byte*)ErrUnion.Try(mem_Allocator__allocBytesAligned__3__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, ((ulong)(sizeof(osc_2__Parser))), return_address));
             return ErrUnion<nuint>.Ok((nuint)(ptr));
         }
         catch (ZigErrorReturn __e) { return ErrUnion<nuint>.Err(__e.Code); }
@@ -338,19 +1334,19 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe mem__Alignment mem__Alignment_of__sgr_2__ParserWrapper__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe mem__Alignment mem__Alignment_of__sgr_2__ParserWrapper__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return unchecked((mem__Alignment)(byte)3);
     }
 
 
 
-    public static unsafe ErrUnion<nuint> mem_Allocator__createAdvancedWithRetAddr__sgr_2__ParserWrapper_optnull__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mem_Allocator__Allocator self, ulong return_address)
+    public static unsafe ErrUnion<nuint> mem_Allocator__createAdvancedWithRetAddr__sgr_2__ParserWrapper_optnull__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator self, ulong return_address)
     {
         try
         {
             mem__Alignment a = unchecked((mem__Alignment)(byte)3);
-            sgr_2__ParserWrapper* ptr = (sgr_2__ParserWrapper*)(byte*)ErrUnion.Try(mem_Allocator__allocBytesAligned__3__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, ((ulong)(sizeof(sgr_2__ParserWrapper))), return_address));
+            sgr_2__ParserWrapper* ptr = (sgr_2__ParserWrapper*)(byte*)ErrUnion.Try(mem_Allocator__allocBytesAligned__3__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, ((ulong)(sizeof(sgr_2__ParserWrapper))), return_address));
             return ErrUnion<nuint>.Ok((nuint)(ptr));
         }
         catch (ZigErrorReturn __e) { return ErrUnion<nuint>.Err(__e.Code); }
@@ -358,30 +1354,30 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ErrUnion<Slice<ushort>> mem_Allocator__alloc__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mem_Allocator__Allocator self, ulong n)
+    public static unsafe ErrUnion<Slice<ushort>> mem_Allocator__alloc__u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator self, ulong n)
     {
         try
         {
-            return mem_Allocator__allocAdvancedWithRetAddr__u16_optnull__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, n, 0UL);
+            return mem_Allocator__allocAdvancedWithRetAddr__u16_optnull__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, n, 0UL);
         }
         catch (ZigErrorReturn __e) { return ErrUnion<Slice<ushort>>.Err(__e.Code); }
     }
 
 
 
-    public static unsafe mem__Alignment mem__Alignment_of__render__RowIteratorWrapper__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe mem__Alignment mem__Alignment_of__render__RowIteratorWrapper__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return unchecked((mem__Alignment)(byte)3);
     }
 
 
 
-    public static unsafe ErrUnion<nuint> mem_Allocator__createAdvancedWithRetAddr__render__RowIteratorWrapper_optnull__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mem_Allocator__Allocator self, ulong return_address)
+    public static unsafe ErrUnion<nuint> mem_Allocator__createAdvancedWithRetAddr__render__RowIteratorWrapper_optnull__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator self, ulong return_address)
     {
         try
         {
             mem__Alignment a = unchecked((mem__Alignment)(byte)3);
-            render__RowIteratorWrapper* ptr = (render__RowIteratorWrapper*)(byte*)ErrUnion.Try(mem_Allocator__allocBytesAligned__3__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, ((ulong)(sizeof(render__RowIteratorWrapper))), return_address));
+            render__RowIteratorWrapper* ptr = (render__RowIteratorWrapper*)(byte*)ErrUnion.Try(mem_Allocator__allocBytesAligned__3__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, ((ulong)(sizeof(render__RowIteratorWrapper))), return_address));
             return ErrUnion<nuint>.Ok((nuint)(ptr));
         }
         catch (ZigErrorReturn __e) { return ErrUnion<nuint>.Err(__e.Code); }
@@ -389,19 +1385,19 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe mem__Alignment mem__Alignment_of__render__RowCellsWrapper__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe mem__Alignment mem__Alignment_of__render__RowCellsWrapper__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return unchecked((mem__Alignment)(byte)3);
     }
 
 
 
-    public static unsafe ErrUnion<nuint> mem_Allocator__createAdvancedWithRetAddr__render__RowCellsWrapper_optnull__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mem_Allocator__Allocator self, ulong return_address)
+    public static unsafe ErrUnion<nuint> mem_Allocator__createAdvancedWithRetAddr__render__RowCellsWrapper_optnull__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator self, ulong return_address)
     {
         try
         {
             mem__Alignment a = unchecked((mem__Alignment)(byte)3);
-            render__RowCellsWrapper* ptr = (render__RowCellsWrapper*)(byte*)ErrUnion.Try(mem_Allocator__allocBytesAligned__3__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, ((ulong)(sizeof(render__RowCellsWrapper))), return_address));
+            render__RowCellsWrapper* ptr = (render__RowCellsWrapper*)(byte*)ErrUnion.Try(mem_Allocator__allocBytesAligned__3__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, ((ulong)(sizeof(render__RowCellsWrapper))), return_address));
             return ErrUnion<nuint>.Ok((nuint)(ptr));
         }
         catch (ZigErrorReturn __e) { return ErrUnion<nuint>.Err(__e.Code); }
@@ -409,19 +1405,19 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe mem__Alignment mem__Alignment_of__render__ImageIteratorWrapper__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe mem__Alignment mem__Alignment_of__render__ImageIteratorWrapper__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return unchecked((mem__Alignment)(byte)3);
     }
 
 
 
-    public static unsafe ErrUnion<nuint> mem_Allocator__createAdvancedWithRetAddr__render__ImageIteratorWrapper_optnull__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mem_Allocator__Allocator self, ulong return_address)
+    public static unsafe ErrUnion<nuint> mem_Allocator__createAdvancedWithRetAddr__render__ImageIteratorWrapper_optnull__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator self, ulong return_address)
     {
         try
         {
             mem__Alignment a = unchecked((mem__Alignment)(byte)3);
-            render__ImageIteratorWrapper* ptr = (render__ImageIteratorWrapper*)(byte*)ErrUnion.Try(mem_Allocator__allocBytesAligned__3__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, ((ulong)(sizeof(render__ImageIteratorWrapper))), return_address));
+            render__ImageIteratorWrapper* ptr = (render__ImageIteratorWrapper*)(byte*)ErrUnion.Try(mem_Allocator__allocBytesAligned__3__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, ((ulong)(sizeof(render__ImageIteratorWrapper))), return_address));
             return ErrUnion<nuint>.Ok((nuint)(ptr));
         }
         catch (ZigErrorReturn __e) { return ErrUnion<nuint>.Err(__e.Code); }
@@ -429,19 +1425,19 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe mem__Alignment mem__Alignment_of__grid_ref_tracked__TrackedGridRef__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe mem__Alignment mem__Alignment_of__grid_ref_tracked__TrackedGridRef__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return unchecked((mem__Alignment)(byte)3);
     }
 
 
 
-    public static unsafe ErrUnion<nuint> mem_Allocator__createAdvancedWithRetAddr__grid_ref_tracked__TrackedGridRef_optnull__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mem_Allocator__Allocator self, ulong return_address)
+    public static unsafe ErrUnion<nuint> mem_Allocator__createAdvancedWithRetAddr__grid_ref_tracked__TrackedGridRef_optnull__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator self, ulong return_address)
     {
         try
         {
             mem__Alignment a = unchecked((mem__Alignment)(byte)3);
-            grid_ref_tracked__TrackedGridRef* ptr = (grid_ref_tracked__TrackedGridRef*)(byte*)ErrUnion.Try(mem_Allocator__allocBytesAligned__3__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, ((ulong)(sizeof(grid_ref_tracked__TrackedGridRef))), return_address));
+            grid_ref_tracked__TrackedGridRef* ptr = (grid_ref_tracked__TrackedGridRef*)(byte*)ErrUnion.Try(mem_Allocator__allocBytesAligned__3__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, ((ulong)(sizeof(grid_ref_tracked__TrackedGridRef))), return_address));
             return ErrUnion<nuint>.Ok((nuint)(ptr));
         }
         catch (ZigErrorReturn __e) { return ErrUnion<nuint>.Err(__e.Code); }
@@ -449,19 +1445,19 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe mem__Alignment mem__Alignment_of__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe mem__Alignment mem__Alignment_of__u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return unchecked((mem__Alignment)(byte)0);
     }
 
 
 
-    public static unsafe ErrUnion<Slice<byte>> mem_Allocator__allocAdvancedWithRetAddr__u8_optnull__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mem_Allocator__Allocator self, ulong n, ulong return_address)
+    public static unsafe ErrUnion<Slice<byte>> mem_Allocator__allocAdvancedWithRetAddr__u8_optnull__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator self, ulong n, ulong return_address)
     {
         try
         {
             mem__Alignment a = unchecked((mem__Alignment)(byte)0);
-            byte* ptr = (byte*)(byte*)ErrUnion.Try(mem_Allocator__allocWithSizeAndAlignment__1_0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, n, return_address));
+            byte* ptr = (byte*)(byte*)ErrUnion.Try(mem_Allocator__allocWithSizeAndAlignment__1_0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, n, return_address));
             return ErrUnion<Slice<byte>>.Ok(new Slice<byte>(ptr + 0, (ulong)(n - (ulong)(0))));
         }
         catch (ZigErrorReturn __e) { return ErrUnion<Slice<byte>>.Err(__e.Code); }
@@ -469,7 +1465,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ulong mem__Alignment_backward__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mem__Alignment a, ulong address)
+    public static unsafe ulong mem__Alignment_backward__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem__Alignment a, ulong address)
     {
         ulong x = ((ulong)1 << (int)((byte)a)) - 1UL;
         return address & ~x;
@@ -477,7 +1473,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ErrUnion<nuint> mem_Allocator__allocBytesAligned__3__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mem_Allocator__Allocator self, ulong byte_count, ulong return_address)
+    public static unsafe ErrUnion<nuint> mem_Allocator__allocBytesAligned__3__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator self, ulong byte_count, ulong return_address)
     {
         try
         {
@@ -486,12 +1482,12 @@ public static unsafe partial class GhosttyVt
                 ulong ptr = 18446744073709551608UL;
                 return ErrUnion<nuint>.Ok((nuint)((byte*)(byte*)ptr));
             }
-            byte* __cf = mem_Allocator__rawAlloc__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, byte_count, (mem__Alignment)3, return_address);
+            byte* __cf = mem_Allocator__rawAlloc__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, byte_count, (mem__Alignment)3, return_address);
             if (((__cf == null)))
             {
                 return ErrUnion<nuint>.Err(5);
             }
-            byte* byte_ptr = __cf;
+            byte* byte_ptr = (byte*)__cf;
             ZigMem.Set<byte>(new Slice<byte>(byte_ptr + 0, (ulong)(byte_count - (ulong)(0))), default(byte));
             return ErrUnion<nuint>.Ok((nuint)(byte_ptr));
         }
@@ -500,19 +1496,19 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe mem__Alignment mem__Alignment_of__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe mem__Alignment mem__Alignment_of__u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
         return unchecked((mem__Alignment)(byte)1);
     }
 
 
 
-    public static unsafe ErrUnion<Slice<ushort>> mem_Allocator__allocAdvancedWithRetAddr__u16_optnull__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mem_Allocator__Allocator self, ulong n, ulong return_address)
+    public static unsafe ErrUnion<Slice<ushort>> mem_Allocator__allocAdvancedWithRetAddr__u16_optnull__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator self, ulong n, ulong return_address)
     {
         try
         {
             mem__Alignment a = unchecked((mem__Alignment)(byte)1);
-            ushort* ptr = (ushort*)(byte*)ErrUnion.Try(mem_Allocator__allocWithSizeAndAlignment__2_1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, n, return_address));
+            ushort* ptr = (ushort*)(byte*)ErrUnion.Try(mem_Allocator__allocWithSizeAndAlignment__2_1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, n, return_address));
             return ErrUnion<Slice<ushort>>.Ok(new Slice<ushort>(ptr + 0, (ulong)(n - (ulong)(0))));
         }
         catch (ZigErrorReturn __e) { return ErrUnion<Slice<ushort>>.Err(__e.Code); }
@@ -520,41 +1516,41 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ErrUnion<nuint> mem_Allocator__allocWithSizeAndAlignment__1_0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mem_Allocator__Allocator self, ulong n, ulong return_address)
+    public static unsafe ErrUnion<nuint> mem_Allocator__allocWithSizeAndAlignment__1_0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator self, ulong n, ulong return_address)
     {
         try
         {
-            ErrUnion<ulong> __cf = math__mul__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(1UL, n);
+            ErrUnion<ulong> __cf = math__mul__u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(1UL, n);
             if ((__cf.IsErr))
             {
                 return ErrUnion<nuint>.Err(5);
             }
             ulong byte_count = __cf.Value;
-            return mem_Allocator__allocBytesAligned__0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, byte_count, return_address);
+            return mem_Allocator__allocBytesAligned__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, byte_count, return_address);
         }
         catch (ZigErrorReturn __e) { return ErrUnion<nuint>.Err(__e.Code); }
     }
 
 
 
-    public static unsafe ErrUnion<nuint> mem_Allocator__allocWithSizeAndAlignment__2_1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mem_Allocator__Allocator self, ulong n, ulong return_address)
+    public static unsafe ErrUnion<nuint> mem_Allocator__allocWithSizeAndAlignment__2_1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator self, ulong n, ulong return_address)
     {
         try
         {
-            ErrUnion<ulong> __cf = math__mul__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(2UL, n);
+            ErrUnion<ulong> __cf = math__mul__u64__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(2UL, n);
             if ((__cf.IsErr))
             {
                 return ErrUnion<nuint>.Err(5);
             }
             ulong byte_count = __cf.Value;
-            return mem_Allocator__allocBytesAligned__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, byte_count, return_address);
+            return mem_Allocator__allocBytesAligned__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, byte_count, return_address);
         }
         catch (ZigErrorReturn __e) { return ErrUnion<nuint>.Err(__e.Code); }
     }
 
 
 
-    public static unsafe ErrUnion<nuint> mem_Allocator__allocBytesAligned__0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mem_Allocator__Allocator self, ulong byte_count, ulong return_address)
+    public static unsafe ErrUnion<nuint> mem_Allocator__allocBytesAligned__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator self, ulong byte_count, ulong return_address)
     {
         try
         {
@@ -563,12 +1559,12 @@ public static unsafe partial class GhosttyVt
                 ulong ptr = 18446744073709551615UL;
                 return ErrUnion<nuint>.Ok((nuint)((byte*)(byte*)ptr));
             }
-            byte* __cf = mem_Allocator__rawAlloc__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, byte_count, (mem__Alignment)0, return_address);
+            byte* __cf = mem_Allocator__rawAlloc__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, byte_count, (mem__Alignment)0, return_address);
             if (((__cf == null)))
             {
                 return ErrUnion<nuint>.Err(5);
             }
-            byte* byte_ptr = __cf;
+            byte* byte_ptr = (byte*)__cf;
             ZigMem.Set<byte>(new Slice<byte>(byte_ptr + 0, (ulong)(byte_count - (ulong)(0))), default(byte));
             return ErrUnion<nuint>.Ok((nuint)(byte_ptr));
         }
@@ -577,7 +1573,7 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ErrUnion<nuint> mem_Allocator__allocBytesAligned__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mem_Allocator__Allocator self, ulong byte_count, ulong return_address)
+    public static unsafe ErrUnion<nuint> mem_Allocator__allocBytesAligned__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(mem_Allocator__Allocator self, ulong byte_count, ulong return_address)
     {
         try
         {
@@ -586,12 +1582,12 @@ public static unsafe partial class GhosttyVt
                 ulong ptr = 18446744073709551614UL;
                 return ErrUnion<nuint>.Ok((nuint)((byte*)(byte*)ptr));
             }
-            byte* __cf = mem_Allocator__rawAlloc__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, byte_count, (mem__Alignment)1, return_address);
+            byte* __cf = mem_Allocator__rawAlloc__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, byte_count, (mem__Alignment)1, return_address);
             if (((__cf == null)))
             {
                 return ErrUnion<nuint>.Err(5);
             }
-            byte* byte_ptr = __cf;
+            byte* byte_ptr = (byte*)__cf;
             ZigMem.Set<byte>(new Slice<byte>(byte_ptr + 0, (ulong)(byte_count - (ulong)(0))), default(byte));
             return ErrUnion<nuint>.Ok((nuint)(byte_ptr));
         }
@@ -600,28 +1596,28 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ulong array_list__Aligned__u8_optnull_growCapacity__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong minimum)
+    public static unsafe ulong array_list__Aligned__u8_optnull_growCapacity__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ulong minimum)
     {
         return ZigMath.SatAdd(minimum, minimum / 2UL + (ulong)(128L));
     }
 
 
 
-    public static unsafe CBool Target__Abi_isAndroid__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Target__Abi abi)
+    public static unsafe CBool Target__Abi_isAndroid__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(Target__Abi abi)
     {
         return (((int)abi) switch { (int)__DotCcEnum_5461726765745F5F416269.android or (int)__DotCcEnum_5461726765745F5F416269.androideabi => true, _ => false });
     }
 
 
 
-    public static unsafe ulong heap__defaultQueryPageSize__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe ulong heap__defaultQueryPageSize__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        ulong size = atomic__Value__u64_load__0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::Managed.GhosttyVt.__dotcc_globalAddress_defaultQueryPageSize__global_cached_result);
+        ulong size = atomic__Value__u64_load__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::Managed.GhosttyVt.__dotcc_globalAddress_defaultQueryPageSize__global_cached_result);
         if (((size > 0UL)))
             return size;
         ulong __blk0 = default(ulong);
         {
-            __blk0 = (ulong)(ZigMath.Max(sysconf((byte)__DotCcEnum_635F5F5F5F416E6F6E456E756D31.PAGESIZE), (long)0));
+            __blk0 = (ulong)(ZigMath.Max(sysconf((int)__DotCcEnum_635F5F5F5F416E6F6E456E756D31.PAGESIZE), (long)0));
             goto __blk0_end;
         }
         __blk0_end:
@@ -630,32 +1626,32 @@ public static unsafe partial class GhosttyVt
         size = __blk0;
         if (((size == 0UL)))
             size = (ulong)4096L;
-        debug__assert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(((CBool)(size >= (ulong)4096L)));
-        debug__assert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(((CBool)(size <= (ulong)4096L)));
-        atomic__Value__u64_store__0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(global::Managed.GhosttyVt.__dotcc_globalAddress_defaultQueryPageSize__global_cached_result, size);
+        debug__assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)(size >= (ulong)4096L)));
+        debug__assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)(size <= (ulong)4096L)));
+        atomic__Value__u64_store__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(global::Managed.GhosttyVt.__dotcc_globalAddress_defaultQueryPageSize__global_cached_result, size);
         return size;
     }
 
 
 
-    public static unsafe PtrSlice<grid_ref_tracked__TrackedGridRef> array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_keys__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0 self)
+    public static unsafe PtrSlice<grid_ref_tracked__TrackedGridRef> array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_keys__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0 self)
     {
-        return multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_items__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self.entries);
+        return multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_items__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self.entries);
     }
 
 
 
-    public static unsafe void array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_deinit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, mem_Allocator__Allocator gpa)
+    public static unsafe void array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_deinit__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, mem_Allocator__Allocator gpa)
     {
-        debug__SafetyLock_assertUnlocked__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self->pointer_stability);
-        multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_deinit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->entries, gpa);
+        debug__SafetyLock_assertUnlocked__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self->pointer_stability);
+        multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_deinit__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->entries, gpa);
         {
             array_hash_map__IndexHeader* __cap = self->index_header;
             if ((((void*)(__cap)) != null))
             {
                 array_hash_map__IndexHeader* header = (array_hash_map__IndexHeader*)__cap;
                 {
-                    array_hash_map__IndexHeader_free__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(header, gpa);
+                    array_hash_map__IndexHeader_free__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(header, gpa);
                 }
             }
         }
@@ -664,24 +1660,24 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe PtrSlice<search__SearchWrapper> array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0_keys__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0 self)
+    public static unsafe PtrSlice<search__SearchWrapper> array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0_keys__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0 self)
     {
-        return multi_array_list__MultiArrayList__array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0__Data_items__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self.entries);
+        return multi_array_list__MultiArrayList__array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0__Data_items__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self.entries);
     }
 
 
 
-    public static unsafe void array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0_deinit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0* self, mem_Allocator__Allocator gpa)
+    public static unsafe void array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0_deinit__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0* self, mem_Allocator__Allocator gpa)
     {
-        debug__SafetyLock_assertUnlocked__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self->pointer_stability);
-        multi_array_list__MultiArrayList__array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0__Data_deinit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->entries, gpa);
+        debug__SafetyLock_assertUnlocked__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self->pointer_stability);
+        multi_array_list__MultiArrayList__array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0__Data_deinit__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->entries, gpa);
         {
             array_hash_map__IndexHeader* __cap = self->index_header;
             if ((((void*)(__cap)) != null))
             {
                 array_hash_map__IndexHeader* header = (array_hash_map__IndexHeader*)__cap;
                 {
-                    array_hash_map__IndexHeader_free__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(header, gpa);
+                    array_hash_map__IndexHeader_free__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(header, gpa);
                 }
             }
         }
@@ -690,49 +1686,49 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ErrUnion<Unit> array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_putNoClobber__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, mem_Allocator__Allocator gpa, grid_ref_tracked__TrackedGridRef* key)
+    public static unsafe ZigErrorUnionZero<Unit> array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_putNoClobber__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, mem_Allocator__Allocator gpa, grid_ref_tracked__TrackedGridRef* key)
     {
         try
         {
-            return array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_putNoClobberContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, gpa, key, default(array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0));
+            return array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_putNoClobberContext__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, gpa, key, default(array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0));
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
     }
 
 
 
-    public static unsafe CBool array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_swapRemove__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, grid_ref_tracked__TrackedGridRef* key)
+    public static unsafe CBool array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_swapRemove__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, grid_ref_tracked__TrackedGridRef* key)
     {
-        return array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_swapRemoveContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, key, default(array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0));
+        return array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_swapRemoveContext__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, key, default(array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0));
     }
 
 
 
-    public static unsafe ErrUnion<Unit> array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_putNoClobberContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, mem_Allocator__Allocator gpa, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx)
+    public static unsafe ZigErrorUnionZero<Unit> array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_putNoClobberContext__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, mem_Allocator__Allocator gpa, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx)
     {
         try
         {
-            array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult result = ErrUnion.Try(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getOrPutContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, gpa, key, ctx));
-            debug__assert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0((((unchecked((int)(result.found_existing))) != 0) ? 0 : 1));
+            array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult result = ErrUnion.Try(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getOrPutContext__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, gpa, key, ctx));
+            debug__assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659((((unchecked((int)(result.found_existing))) != 0) ? 0 : 1));
         }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
+        catch (ZigErrorReturn __e) { return ZigErrorUnionZero<Unit>.Err(__e.Code); }
+        return ZigErrorUnionZero<Unit>.Ok(default);
     }
 
 
 
-    public static unsafe CBool array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_swapRemoveContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx)
+    public static unsafe CBool array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_swapRemoveContext__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx)
     {
-        return array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_swapRemoveContextAdapted__49BCD4AF3E714BBDF3A6D3D019ABF1CB064F4ACFAE9FAF9CF7A1FDA4DED99969__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, key, ctx, ctx);
+        return array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_swapRemoveContextAdapted__49BCD4AF3E714BBDF3A6D3D019ABF1CB064F4ACFAE9FAF9CF7A1FDA4DED99969__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, key, ctx, ctx);
     }
 
 
 
-    public static unsafe ErrUnion<array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult> array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getOrPutContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, mem_Allocator__Allocator gpa, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx)
+    public static unsafe ErrUnion<array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult> array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getOrPutContext__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, mem_Allocator__Allocator gpa, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx)
     {
         try
         {
-            array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult gop = ErrUnion.Try(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getOrPutContextAdapted____B159E7AE4F0E462D7210A78D51014A328F4525AAEDBAC284B1CCD482E95988AE__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, gpa, key, ctx, ctx));
+            array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult gop = ErrUnion.Try(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getOrPutContextAdapted____B159E7AE4F0E462D7210A78D51014A328F4525AAEDBAC284B1CCD482E95988AE__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, gpa, key, ctx, ctx));
             if ((!(((unchecked((int)(gop.found_existing))) != 0) )     ))
             {
                 *gop.key_ptr = key;
@@ -744,19 +1740,19 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe void array_hash_map__IndexHeader_free__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__IndexHeader* header, mem_Allocator__Allocator gpa)
+    public static unsafe void array_hash_map__IndexHeader_free__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__IndexHeader* header, mem_Allocator__Allocator gpa)
     {
-        ulong index_size = array_hash_map__capacityIndexSize__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(header->bit_index);
+        ulong index_size = array_hash_map__capacityIndexSize__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(header->bit_index);
         byte* ptr = (byte*)header;
-        Slice<byte> slice = new Slice<byte>(ptr + 0, (ulong)(1UL + array_hash_map__IndexHeader_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*header) * index_size - (ulong)(0)));
-        mem_Allocator__free____unsigned_charpa1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(gpa, slice);
+        Slice<byte> slice = new Slice<byte>(ptr + 0, (ulong)(4UL + array_hash_map__IndexHeader_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*header) * index_size - (ulong)(0)));
+        mem_Allocator__free____unsigned_charpa4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(gpa, slice);
     }
 
 
 
-    public static unsafe ulong array_hash_map__capacityIndexSize__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(byte bit_index)
+    public static unsafe ulong array_hash_map__capacityIndexSize__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(byte bit_index)
     {
-        switch ((int)array_hash_map__capacityIndexType__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(bit_index))
+        switch ((int)array_hash_map__capacityIndexType__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(bit_index))
         {
             case (int)__DotCcEnum_61727261795F686173685F6D61705F5F4361706163697479496E64657854797065.u8:
                 return ((ulong)(sizeof(array_hash_map__Index__u8)));
@@ -771,92 +1767,92 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ulong array_hash_map__IndexHeader_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__IndexHeader self)
+    public static unsafe ulong array_hash_map__IndexHeader_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__IndexHeader self)
     {
         return (ulong)1 << (int)((byte)(byte)self.bit_index);
     }
 
 
 
-    public static unsafe array_hash_map__CapacityIndexType array_hash_map__capacityIndexType__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(byte bit_index)
+    public static unsafe array_hash_map__CapacityIndexType array_hash_map__capacityIndexType__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(byte bit_index)
     {
         if (((bit_index <= (byte)8)))
             return __DotCcEnum_61727261795F686173685F6D61705F5F4361706163697479496E64657854797065.u8;
         if (((bit_index <= (byte)16)))
             return __DotCcEnum_61727261795F686173685F6D61705F5F4361706163697479496E64657854797065.u16;
-        debug__assert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(((CBool)(bit_index <= (byte)32)));
+        debug__assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)(bit_index <= (byte)32)));
         return __DotCcEnum_61727261795F686173685F6D61705F5F4361706163697479496E64657854797065.u32;
     }
 
 
 
-    public static unsafe CBool array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_swapRemoveContextAdapted__49BCD4AF3E714BBDF3A6D3D019ABF1CB064F4ACFAE9FAF9CF7A1FDA4DED99969__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 key_ctx, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx)
+    public static unsafe CBool array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_swapRemoveContextAdapted__49BCD4AF3E714BBDF3A6D3D019ABF1CB064F4ACFAE9FAF9CF7A1FDA4DED99969__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 key_ctx, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx)
     {
-        debug__SafetyLock_lock__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->pointer_stability);
+        debug__SafetyLock_lock__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->pointer_stability);
         try
         {
-            return array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeByKey__p_grid_ref_tracked__TrackedGridRefpa0_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, key, key_ctx, ctx);
+            return array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeByKey__p_grid_ref_tracked__TrackedGridRefpa0_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, key, key_ctx, ctx);
         }
         finally
         {
-            debug__SafetyLock_unlock__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->pointer_stability);
+            debug__SafetyLock_unlock__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->pointer_stability);
         }
     }
 
 
 
-    public static unsafe ErrUnion<array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult> array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getOrPutContextAdapted____B159E7AE4F0E462D7210A78D51014A328F4525AAEDBAC284B1CCD482E95988AE__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, mem_Allocator__Allocator gpa, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 key_ctx, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx)
+    public static unsafe ErrUnion<array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult> array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getOrPutContextAdapted____B159E7AE4F0E462D7210A78D51014A328F4525AAEDBAC284B1CCD482E95988AE__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, mem_Allocator__Allocator gpa, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 key_ctx, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx)
     {
         try
         {
-            ErrUnion<Unit> __cf = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_ensureTotalCapacityContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, gpa, self->entries.len + 1UL, ctx);
+            ZigErrorUnionZero<Unit> __cf = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_ensureTotalCapacityContext__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, gpa, self->entries.len + 1UL, ctx);
             if ((__cf.IsErr))
             {
                 ushort err = __cf.Code;
                 {
-                    ulong? __cf__1 = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getIndexAdapted__p_grid___A73771BFA3EA94ACEE0E2686F0148980487AD05B1D72BB24F8F3700B24691483__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*self, key, key_ctx);
+                    ulong? __cf__1 = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getIndexAdapted__p_grid___A73771BFA3EA94ACEE0E2686F0148980487AD05B1D72BB24F8F3700B24691483__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*self, key, key_ctx);
                     if ((!((__cf__1.HasValue) )     ))
                     {
                         return ErrUnion<array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult>.Err(err);
                     }
                     ulong index = __cf__1.Value;
-                    multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self->entries);
-                    return ErrUnion<array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult>.Ok(new array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult { key_ptr = &multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slice).Ptr[index], value_ptr = &multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slice).Ptr[index], found_existing = true, index = index });
+                    multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self->entries);
+                    return ErrUnion<array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult>.Ok(new array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult { key_ptr = &multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slice).Ptr[index], value_ptr = &multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slice).Ptr[index], found_existing = true, index = index });
                 }
             }
-            return ErrUnion<array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult>.Ok(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getOrPutAssumeCapacityAd__8113FE965D5A8CF9AAACD02E35CAE070680EA5084B302568FA720C806253D65F__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, key, key_ctx));
+            return ErrUnion<array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult>.Ok(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getOrPutAssumeCapacityAd__8113FE965D5A8CF9AAACD02E35CAE070680EA5084B302568FA720C806253D65F__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, key, key_ctx));
         }
         catch (ZigErrorReturn __e) { return ErrUnion<array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult>.Err(__e.Code); }
     }
 
 
 
-    public static unsafe CBool getAutoEqlFn__p_grid_ref_tracked__TrackedGridRefpa0_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0__Anon_eql__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, grid_ref_tracked__TrackedGridRef* a, grid_ref_tracked__TrackedGridRef* b, ulong b_index)
+    public static unsafe CBool getAutoEqlFn__p_grid_ref_tracked__TrackedGridRefpa0_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0__Anon_eql__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, grid_ref_tracked__TrackedGridRef* a, grid_ref_tracked__TrackedGridRef* b, ulong b_index)
     {
         ;
         ;
-        return meta__eql__p_grid_ref_tracked__TrackedGridRefpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(a, b);
+        return meta__eql__p_grid_ref_tracked__TrackedGridRefpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(a, b);
     }
 
 
 
-    public static unsafe CBool array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeByKey__p_grid_ref_tracked__TrackedGridRefpa0_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 key_ctx, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx)
+    public static unsafe CBool array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeByKey__p_grid_ref_tracked__TrackedGridRefpa0_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 key_ctx, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx)
     {
         array_hash_map__IndexHeader* __cf = self->index_header;
         if (((__cf == null)))
         {
             {
-                multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self->entries);
-                PtrSlice<grid_ref_tracked__TrackedGridRef> keys_array = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slice);
+                multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self->entries);
+                PtrSlice<grid_ref_tracked__TrackedGridRef> keys_array = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slice);
                 for (ulong __i = 0UL; ((__i < keys_array.Len)); __i++)
                 {
                     grid_ref_tracked__TrackedGridRef** item_key = &keys_array.Ptr[__i];
                     ulong i = __i + (ulong)0;
                     {
                         CBool hash_match = true;
-                        if (((((unchecked((int)(hash_match))) != 0) && ((unchecked((int)(getAutoEqlFn__p_grid_ref_tracked__TrackedGridRefpa0_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0__Anon_eql__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(key_ctx, key, *item_key, i)))) != 0))))
+                        if (((((unchecked((int)(hash_match))) != 0) && ((unchecked((int)(getAutoEqlFn__p_grid_ref_tracked__TrackedGridRefpa0_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0__Anon_eql__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(key_ctx, key, *item_key, i)))) != 0))))
                         {
-                            multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_swapRemove__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->entries, i);
+                            multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_swapRemove__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->entries, i);
                             return true;
                         }
                     }
@@ -864,51 +1860,51 @@ public static unsafe partial class GhosttyVt
                 return false;
             }
         }
-        array_hash_map__IndexHeader* header = __cf;
-        return (((int)array_hash_map__IndexHeader_capacityIndexType__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*header)) switch { (int)__DotCcEnum_61727261795F686173685F6D61705F5F4361706163697479496E64657854797065.u8 => array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeByKeyGeneric__p_gr__5C98EBF4494ECBD4B56D4BA6148B3D994EC2EB9CC602ED15072C47A77AA99833__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, key, key_ctx, ctx, header), (int)__DotCcEnum_61727261795F686173685F6D61705F5F4361706163697479496E64657854797065.u16 => array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeByKeyGeneric__p_gr__68F8151F48B12781E42FD52DC113A6DF6A845ECEEC77303FF8212B4F03BE0712__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, key, key_ctx, ctx, header), _ => array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeByKeyGeneric__p_gr__7F9A02C2DB9A778D017B997FBE103ABB5C5EC1697939E157A744E897729F2244__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, key, key_ctx, ctx, header) });
+        array_hash_map__IndexHeader* header = (array_hash_map__IndexHeader*)__cf;
+        return (((int)array_hash_map__IndexHeader_capacityIndexType__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*header)) switch { (int)__DotCcEnum_61727261795F686173685F6D61705F5F4361706163697479496E64657854797065.u8 => array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeByKeyGeneric__p_gr__5C98EBF4494ECBD4B56D4BA6148B3D994EC2EB9CC602ED15072C47A77AA99833__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, key, key_ctx, ctx, header), (int)__DotCcEnum_61727261795F686173685F6D61705F5F4361706163697479496E64657854797065.u16 => array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeByKeyGeneric__p_gr__68F8151F48B12781E42FD52DC113A6DF6A845ECEEC77303FF8212B4F03BE0712__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, key, key_ctx, ctx, header), _ => array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeByKeyGeneric__p_gr__7F9A02C2DB9A778D017B997FBE103ABB5C5EC1697939E157A744E897729F2244__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, key, key_ctx, ctx, header) });
     }
 
 
 
-    public static unsafe CBool array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedEql__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, grid_ref_tracked__TrackedGridRef* a, grid_ref_tracked__TrackedGridRef* b, ulong b_index)
+    public static unsafe CBool array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedEql__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, grid_ref_tracked__TrackedGridRef* a, grid_ref_tracked__TrackedGridRef* b, ulong b_index)
     {
-        return getAutoEqlFn__p_grid_ref_tracked__TrackedGridRefpa0_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0__Anon_eql__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ctx, a, b, b_index);
+        return getAutoEqlFn__p_grid_ref_tracked__TrackedGridRefpa0_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0__Anon_eql__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ctx, a, b, b_index);
     }
 
 
 
-    public static unsafe ulong? array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getIndexAdapted__p_grid___A73771BFA3EA94ACEE0E2686F0148980487AD05B1D72BB24F8F3700B24691483__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0 self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx)
+    public static unsafe ulong? array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getIndexAdapted__p_grid___A73771BFA3EA94ACEE0E2686F0148980487AD05B1D72BB24F8F3700B24691483__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0 self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx)
     {
         array_hash_map__IndexHeader* __cf = self.index_header;
         if (((__cf == null)))
         {
             {
-                multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self.entries);
-                Slice<Unit> hashes_array = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slice);
-                PtrSlice<grid_ref_tracked__TrackedGridRef> keys_array = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slice);
+                multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self.entries);
+                Slice<Unit> hashes_array = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slice);
+                PtrSlice<grid_ref_tracked__TrackedGridRef> keys_array = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slice);
                 for (ulong __i = 0UL; ((__i < keys_array.Len)); __i++)
                 {
                     grid_ref_tracked__TrackedGridRef** item_key = &keys_array.Ptr[__i];
                     ulong i = __i + (ulong)0;
                     {
-                        if ((((true) && ((unchecked((int)(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedEql__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ctx, key, *item_key, i)))) != 0))))
+                        if ((((true) && ((unchecked((int)(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedEql__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ctx, key, *item_key, i)))) != 0))))
                         {
                             return i;
                         }
                     }
                 }
-                return null;
+                return default(ulong?);
             }
         }
-        array_hash_map__IndexHeader* header = __cf;
-        switch ((int)array_hash_map__IndexHeader_capacityIndexType__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*header))
+        array_hash_map__IndexHeader* header = (array_hash_map__IndexHeader*)__cf;
+        switch ((int)array_hash_map__IndexHeader_capacityIndexType__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*header))
         {
             case (int)__DotCcEnum_61727261795F686173685F6D61705F5F4361706163697479496E64657854797065.u8:
-                return array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getIndexWithHeaderGeneri__42C026E942B8EE9DBD9F7EB81B6E26233A1AE4BE75237F320FADDE9183735A58__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, key, ctx, header);
+                return array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getIndexWithHeaderGeneri__42C026E942B8EE9DBD9F7EB81B6E26233A1AE4BE75237F320FADDE9183735A58__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, key, ctx, header);
             case (int)__DotCcEnum_61727261795F686173685F6D61705F5F4361706163697479496E64657854797065.u16:
-                return array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getIndexWithHeaderGeneri__6C7DC27AAA37B8BB7F9F4BCE0FB1F60F1F0EA40C41B851E0FFAEC4210756DA6B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, key, ctx, header);
+                return array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getIndexWithHeaderGeneri__6C7DC27AAA37B8BB7F9F4BCE0FB1F60F1F0EA40C41B851E0FFAEC4210756DA6B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, key, ctx, header);
             case (int)__DotCcEnum_61727261795F686173685F6D61705F5F4361706163697479496E64657854797065.u32:
-                return array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getIndexWithHeaderGeneri__FC3F9A347399359780A5995D4AD09C1EC34D1846427C10C737A6713381409438__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, key, ctx, header);
+                return array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getIndexWithHeaderGeneri__FC3F9A347399359780A5995D4AD09C1EC34D1846427C10C737A6713381409438__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, key, ctx, header);
             default:
                 throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
         }
@@ -916,39 +1912,39 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getOrPutAssumeCapacityAd__8113FE965D5A8CF9AAACD02E35CAE070680EA5084B302568FA720C806253D65F__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx)
+    public static unsafe array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getOrPutAssumeCapacityAd__8113FE965D5A8CF9AAACD02E35CAE070680EA5084B302568FA720C806253D65F__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx)
     {
         array_hash_map__IndexHeader* __cf = self->index_header;
         if (((__cf == null)))
         {
             {
-                multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self->entries);
-                Slice<Unit> hashes_array = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slice);
-                PtrSlice<grid_ref_tracked__TrackedGridRef> keys_array = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slice);
+                multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self->entries);
+                Slice<Unit> hashes_array = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slice);
+                PtrSlice<grid_ref_tracked__TrackedGridRef> keys_array = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slice);
                 for (ulong __i = 0UL; ((__i < keys_array.Len)); __i++)
                 {
                     grid_ref_tracked__TrackedGridRef** item_key = &keys_array.Ptr[__i];
                     ulong i = __i + (ulong)0;
                     {
-                        if ((((true) && ((unchecked((int)(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedEql__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ctx, key, *item_key, i)))) != 0))))
+                        if ((((true) && ((unchecked((int)(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedEql__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ctx, key, *item_key, i)))) != 0))))
                         {
-                            return new array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult { key_ptr = item_key, value_ptr = &multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slice).Ptr[i], found_existing = true, index = i };
+                            return new array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult { key_ptr = item_key, value_ptr = &multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slice).Ptr[i], found_existing = true, index = i };
                         }
                     }
                 }
-                ulong index = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_addOneAssumeCapacity__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->entries);
-                return new array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult { key_ptr = &keys_array.Ptr[index], value_ptr = &multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slice).Ptr[index], found_existing = false, index = index };
+                ulong index = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_addOneAssumeCapacity__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->entries);
+                return new array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult { key_ptr = &keys_array.Ptr[index], value_ptr = &multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slice).Ptr[index], found_existing = false, index = index };
             }
         }
-        array_hash_map__IndexHeader* header = __cf;
-        switch ((int)array_hash_map__IndexHeader_capacityIndexType__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*header))
+        array_hash_map__IndexHeader* header = (array_hash_map__IndexHeader*)__cf;
+        switch ((int)array_hash_map__IndexHeader_capacityIndexType__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*header))
         {
             case (int)__DotCcEnum_61727261795F686173685F6D61705F5F4361706163697479496E64657854797065.u8:
-                return array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getOrPutInternal__p_grid__18EC1473BFD5F01899460AEF97E88CB05045E82C3BA57EDFDF749EE9CBAE285C__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, key, ctx, header);
+                return array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getOrPutInternal__p_grid__18EC1473BFD5F01899460AEF97E88CB05045E82C3BA57EDFDF749EE9CBAE285C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, key, ctx, header);
             case (int)__DotCcEnum_61727261795F686173685F6D61705F5F4361706163697479496E64657854797065.u16:
-                return array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getOrPutInternal__p_grid__1EB8951E5A086F534BFEAB1C8511A306BFA264154CA3245A5591E6B779C0611F__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, key, ctx, header);
+                return array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getOrPutInternal__p_grid__1EB8951E5A086F534BFEAB1C8511A306BFA264154CA3245A5591E6B779C0611F__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, key, ctx, header);
             case (int)__DotCcEnum_61727261795F686173685F6D61705F5F4361706163697479496E64657854797065.u32:
-                return array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getOrPutInternal__p_grid__22D1256A0F31C6D4CE4DC989A2E52322600317C3A0BE8085EDFEFA8F75061635__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, key, ctx, header);
+                return array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getOrPutInternal__p_grid__22D1256A0F31C6D4CE4DC989A2E52322600317C3A0BE8085EDFEFA8F75061635__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, key, ctx, header);
             default:
                 throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
         }
@@ -956,65 +1952,65 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe delegate*<array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0, grid_ref_tracked__TrackedGridRef*, grid_ref_tracked__TrackedGridRef*, ulong, CBool> array_hash_map__getAutoEqlFn__p_grid_ref_tracked__TrackedGridRefpa0_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe delegate*<array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0, grid_ref_tracked__TrackedGridRef*, grid_ref_tracked__TrackedGridRef*, ulong, CBool> array_hash_map__getAutoEqlFn__p_grid_ref_tracked__TrackedGridRefpa0_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return DotCcPointers.getAutoEqlFn__p_grid_ref_tracked__TrackedGridRefpa0_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0__Anon_eql__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0;
+        return DotCcPointers.getAutoEqlFn__p_grid_ref_tracked__TrackedGridRefpa0_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0__Anon_eql__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659;
     }
 
 
 
-    public static unsafe CBool array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeByKeyGeneric__p_gr__5C98EBF4494ECBD4B56D4BA6148B3D994EC2EB9CC602ED15072C47A77AA99833__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 key_ctx, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header)
+    public static unsafe CBool array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeByKeyGeneric__p_gr__5C98EBF4494ECBD4B56D4BA6148B3D994EC2EB9CC602ED15072C47A77AA99833__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 key_ctx, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header)
     {
-        Slice<array_hash_map__Index__u8> indexes = array_hash_map__IndexHeader_indexes__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(header);
-        ulong? __cf = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeFromIndexByKey__p___F26E7E993D18342ABA94AC8E1664F6D3A54301BE499F40B57C7CFDE8653BC28B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, key, key_ctx, header, indexes);
+        Slice<array_hash_map__Index__u8> indexes = array_hash_map__IndexHeader_indexes__u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(header);
+        ulong? __cf = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeFromIndexByKey__p___F26E7E993D18342ABA94AC8E1664F6D3A54301BE499F40B57C7CFDE8653BC28B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, key, key_ctx, header, indexes);
         if ((!((__cf.HasValue) )     ))
         {
             return false;
         }
         ulong entry_index = __cf.Value;
-        array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeFromArrayAndUpdateIndex__u8_0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, entry_index, ctx, header, indexes);
+        array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeFromArrayAndUpdateIndex__u8_0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, entry_index, ctx, header, indexes);
         return true;
     }
 
 
 
-    public static unsafe CBool array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeByKeyGeneric__p_gr__68F8151F48B12781E42FD52DC113A6DF6A845ECEEC77303FF8212B4F03BE0712__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 key_ctx, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header)
+    public static unsafe CBool array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeByKeyGeneric__p_gr__68F8151F48B12781E42FD52DC113A6DF6A845ECEEC77303FF8212B4F03BE0712__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 key_ctx, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header)
     {
-        Slice<array_hash_map__Index__u16> indexes = array_hash_map__IndexHeader_indexes__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(header);
-        ulong? __cf = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeFromIndexByKey__p___A661380C2408E802CC0A0974AEEC1362B701EB49BB1E424E417737AFAF7D84B0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, key, key_ctx, header, indexes);
+        Slice<array_hash_map__Index__u16> indexes = array_hash_map__IndexHeader_indexes__u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(header);
+        ulong? __cf = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeFromIndexByKey__p___A661380C2408E802CC0A0974AEEC1362B701EB49BB1E424E417737AFAF7D84B0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, key, key_ctx, header, indexes);
         if ((!((__cf.HasValue) )     ))
         {
             return false;
         }
         ulong entry_index = __cf.Value;
-        array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeFromArrayAndUpdateIndex__u16_0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, entry_index, ctx, header, indexes);
+        array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeFromArrayAndUpdateIndex__u16_0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, entry_index, ctx, header, indexes);
         return true;
     }
 
 
 
-    public static unsafe CBool array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeByKeyGeneric__p_gr__7F9A02C2DB9A778D017B997FBE103ABB5C5EC1697939E157A744E897729F2244__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 key_ctx, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header)
+    public static unsafe CBool array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeByKeyGeneric__p_gr__7F9A02C2DB9A778D017B997FBE103ABB5C5EC1697939E157A744E897729F2244__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 key_ctx, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header)
     {
-        Slice<array_hash_map__Index__u32> indexes = array_hash_map__IndexHeader_indexes__u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(header);
-        ulong? __cf = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeFromIndexByKey__p___824158E4347EA08A69B911D470762B38C48FDC190B3C6348C99B3A8D33D04F46__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, key, key_ctx, header, indexes);
+        Slice<array_hash_map__Index__u32> indexes = array_hash_map__IndexHeader_indexes__u32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(header);
+        ulong? __cf = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeFromIndexByKey__p___824158E4347EA08A69B911D470762B38C48FDC190B3C6348C99B3A8D33D04F46__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, key, key_ctx, header, indexes);
         if ((!((__cf.HasValue) )     ))
         {
             return false;
         }
         ulong entry_index = __cf.Value;
-        array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeFromArrayAndUpdateIndex__u32_0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, entry_index, ctx, header, indexes);
+        array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeFromArrayAndUpdateIndex__u32_0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, entry_index, ctx, header, indexes);
         return true;
     }
 
 
 
-    public static unsafe ulong? array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getIndexWithHeaderGeneri__42C026E942B8EE9DBD9F7EB81B6E26233A1AE4BE75237F320FADDE9183735A58__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0 self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header)
+    public static unsafe ulong? array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getIndexWithHeaderGeneri__42C026E942B8EE9DBD9F7EB81B6E26233A1AE4BE75237F320FADDE9183735A58__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0 self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header)
     {
-        Slice<array_hash_map__Index__u8> indexes = array_hash_map__IndexHeader_indexes__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(header);
-        ulong? __cf = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getSlotByKey__p_grid_ref__E4A296888B46A1C8135E49A97F08FEAD7EC96B8FE48272B13889384688A7D39A__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, key, ctx, header, indexes);
+        Slice<array_hash_map__Index__u8> indexes = array_hash_map__IndexHeader_indexes__u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(header);
+        ulong? __cf = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getSlotByKey__p_grid_ref__E4A296888B46A1C8135E49A97F08FEAD7EC96B8FE48272B13889384688A7D39A__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, key, ctx, header, indexes);
         if ((!((__cf.HasValue) )     ))
         {
-            return null;
+            return default(ulong?);
         }
         ulong slot = __cf.Value;
         return (ulong)indexes.Ptr[slot].entry_index;
@@ -1022,13 +2018,13 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ulong? array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getIndexWithHeaderGeneri__6C7DC27AAA37B8BB7F9F4BCE0FB1F60F1F0EA40C41B851E0FFAEC4210756DA6B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0 self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header)
+    public static unsafe ulong? array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getIndexWithHeaderGeneri__6C7DC27AAA37B8BB7F9F4BCE0FB1F60F1F0EA40C41B851E0FFAEC4210756DA6B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0 self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header)
     {
-        Slice<array_hash_map__Index__u16> indexes = array_hash_map__IndexHeader_indexes__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(header);
-        ulong? __cf = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getSlotByKey__p_grid_ref__D80848D452EFF4B5B55E4A0FEF79CBB306BFEB834725ECCF01A6796A0999021B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, key, ctx, header, indexes);
+        Slice<array_hash_map__Index__u16> indexes = array_hash_map__IndexHeader_indexes__u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(header);
+        ulong? __cf = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getSlotByKey__p_grid_ref__D80848D452EFF4B5B55E4A0FEF79CBB306BFEB834725ECCF01A6796A0999021B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, key, ctx, header, indexes);
         if ((!((__cf.HasValue) )     ))
         {
-            return null;
+            return default(ulong?);
         }
         ulong slot = __cf.Value;
         return (ulong)indexes.Ptr[slot].entry_index;
@@ -1036,13 +2032,13 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ulong? array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getIndexWithHeaderGeneri__FC3F9A347399359780A5995D4AD09C1EC34D1846427C10C737A6713381409438__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0 self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header)
+    public static unsafe ulong? array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getIndexWithHeaderGeneri__FC3F9A347399359780A5995D4AD09C1EC34D1846427C10C737A6713381409438__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0 self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header)
     {
-        Slice<array_hash_map__Index__u32> indexes = array_hash_map__IndexHeader_indexes__u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(header);
-        ulong? __cf = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getSlotByKey__p_grid_ref__34654E540BCC5CDB25AC13A43928B7301B9346CF3C9FDB025F78328457DC9EBC__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, key, ctx, header, indexes);
+        Slice<array_hash_map__Index__u32> indexes = array_hash_map__IndexHeader_indexes__u32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(header);
+        ulong? __cf = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getSlotByKey__p_grid_ref__34654E540BCC5CDB25AC13A43928B7301B9346CF3C9FDB025F78328457DC9EBC__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, key, ctx, header, indexes);
         if ((!((__cf.HasValue) )     ))
         {
-            return null;
+            return default(ulong?);
         }
         ulong slot = __cf.Value;
         return (ulong)indexes.Ptr[slot].entry_index;
@@ -1050,43 +2046,43 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe CBool array_hash_map__Index__u8_isEmpty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Index__u8 idx)
+    public static unsafe CBool array_hash_map__Index__u8_isEmpty__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Index__u8 idx)
     {
         return ((CBool)(idx.entry_index == unchecked((byte)(~(byte)0))));
     }
 
 
 
-    public static unsafe array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getOrPutInternal__p_grid__18EC1473BFD5F01899460AEF97E88CB05045E82C3BA57EDFDF749EE9CBAE285C__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header)
+    public static unsafe array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getOrPutInternal__p_grid__18EC1473BFD5F01899460AEF97E88CB05045E82C3BA57EDFDF749EE9CBAE285C__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header)
     {
-        multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self->entries);
-        PtrSlice<grid_ref_tracked__TrackedGridRef> keys_array = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slice);
-        Slice<Unit> values_array = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slice);
-        Slice<array_hash_map__Index__u8> indexes = array_hash_map__IndexHeader_indexes__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(header);
-        uint h = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedHash__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ctx, key);
-        ulong start_index = array_hash_map__safeTruncate__u64_u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(h);
+        multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self->entries);
+        PtrSlice<grid_ref_tracked__TrackedGridRef> keys_array = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slice);
+        Slice<Unit> values_array = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slice);
+        Slice<array_hash_map__Index__u8> indexes = array_hash_map__IndexHeader_indexes__u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(header);
+        uint h = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedHash__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ctx, key);
+        ulong start_index = array_hash_map__safeTruncate__u64_u32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(h);
         ulong end_index = start_index + indexes.Len;
         ulong index = start_index;
         byte distance_from_start_index = 0;
         for (; ((index != end_index)); index += (ulong)(1), distance_from_start_index += (byte)(1))
         {
-            ulong slot = array_hash_map__IndexHeader_constrainIndex__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*header, index);
+            ulong slot = array_hash_map__IndexHeader_constrainIndex__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*header, index);
             array_hash_map__Index__u8 slot_data = indexes.Ptr[slot];
-            if (((unchecked((int)(array_hash_map__Index__u8_isEmpty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slot_data)))) != 0))
+            if (((unchecked((int)(array_hash_map__Index__u8_isEmpty__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slot_data)))) != 0))
             {
-                ulong new_index = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_addOneAssumeCapacity__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->entries);
+                ulong new_index = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_addOneAssumeCapacity__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->entries);
                 indexes.Ptr[slot] = new array_hash_map__Index__u8 { distance_from_start_index = distance_from_start_index, entry_index = (byte)(byte)new_index };
                 return new array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult { found_existing = false, key_ptr = &keys_array.Ptr[new_index], value_ptr = &values_array.Ptr[new_index], index = new_index };
             }
             byte i = slot_data.entry_index;
             CBool hash_match = true;
-            if (((((unchecked((int)(hash_match))) != 0) && ((unchecked((int)(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedEql__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ctx, key, keys_array.Ptr[i], i)))) != 0))))
+            if (((((unchecked((int)(hash_match))) != 0) && ((unchecked((int)(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedEql__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ctx, key, keys_array.Ptr[i], i)))) != 0))))
             {
                 return new array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult { found_existing = true, key_ptr = &keys_array.Ptr[slot_data.entry_index], value_ptr = &values_array.Ptr[slot_data.entry_index], index = slot_data.entry_index };
             }
             if (((slot_data.distance_from_start_index < distance_from_start_index)))
             {
-                ulong new_index__1 = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_addOneAssumeCapacity__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->entries);
+                ulong new_index__1 = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_addOneAssumeCapacity__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->entries);
                 indexes.Ptr[slot] = new array_hash_map__Index__u8 { entry_index = (byte)(byte)new_index__1, distance_from_start_index = distance_from_start_index };
                 distance_from_start_index = slot_data.distance_from_start_index;
                 byte displaced_index = slot_data.entry_index;
@@ -1094,9 +2090,9 @@ public static unsafe partial class GhosttyVt
                 distance_from_start_index += (byte)(1);
                 for (; ((index != end_index)); index += (ulong)(1), distance_from_start_index += (byte)(1))
                 {
-                    slot = array_hash_map__IndexHeader_constrainIndex__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*header, index);
+                    slot = array_hash_map__IndexHeader_constrainIndex__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*header, index);
                     slot_data = indexes.Ptr[slot];
-                    if (((unchecked((int)(array_hash_map__Index__u8_isEmpty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slot_data)))) != 0))
+                    if (((unchecked((int)(array_hash_map__Index__u8_isEmpty__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slot_data)))) != 0))
                     {
                         indexes.Ptr[slot] = new array_hash_map__Index__u8 { entry_index = displaced_index, distance_from_start_index = distance_from_start_index };
                         return new array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult { found_existing = false, key_ptr = &keys_array.Ptr[new_index__1], value_ptr = &values_array.Ptr[new_index__1], index = new_index__1 };
@@ -1116,43 +2112,43 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe CBool array_hash_map__Index__u16_isEmpty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Index__u16 idx)
+    public static unsafe CBool array_hash_map__Index__u16_isEmpty__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Index__u16 idx)
     {
         return ((CBool)(idx.entry_index == unchecked((ushort)(~(ushort)0))));
     }
 
 
 
-    public static unsafe array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getOrPutInternal__p_grid__1EB8951E5A086F534BFEAB1C8511A306BFA264154CA3245A5591E6B779C0611F__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header)
+    public static unsafe array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getOrPutInternal__p_grid__1EB8951E5A086F534BFEAB1C8511A306BFA264154CA3245A5591E6B779C0611F__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header)
     {
-        multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self->entries);
-        PtrSlice<grid_ref_tracked__TrackedGridRef> keys_array = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slice);
-        Slice<Unit> values_array = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slice);
-        Slice<array_hash_map__Index__u16> indexes = array_hash_map__IndexHeader_indexes__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(header);
-        uint h = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedHash__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ctx, key);
-        ulong start_index = array_hash_map__safeTruncate__u64_u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(h);
+        multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self->entries);
+        PtrSlice<grid_ref_tracked__TrackedGridRef> keys_array = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slice);
+        Slice<Unit> values_array = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slice);
+        Slice<array_hash_map__Index__u16> indexes = array_hash_map__IndexHeader_indexes__u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(header);
+        uint h = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedHash__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ctx, key);
+        ulong start_index = array_hash_map__safeTruncate__u64_u32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(h);
         ulong end_index = start_index + indexes.Len;
         ulong index = start_index;
         ushort distance_from_start_index = 0;
         for (; ((index != end_index)); index += (ulong)(1), distance_from_start_index += (ushort)(1))
         {
-            ulong slot = array_hash_map__IndexHeader_constrainIndex__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*header, index);
+            ulong slot = array_hash_map__IndexHeader_constrainIndex__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*header, index);
             array_hash_map__Index__u16 slot_data = indexes.Ptr[slot];
-            if (((unchecked((int)(array_hash_map__Index__u16_isEmpty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slot_data)))) != 0))
+            if (((unchecked((int)(array_hash_map__Index__u16_isEmpty__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slot_data)))) != 0))
             {
-                ulong new_index = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_addOneAssumeCapacity__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->entries);
+                ulong new_index = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_addOneAssumeCapacity__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->entries);
                 indexes.Ptr[slot] = new array_hash_map__Index__u16 { distance_from_start_index = distance_from_start_index, entry_index = (ushort)(ushort)new_index };
                 return new array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult { found_existing = false, key_ptr = &keys_array.Ptr[new_index], value_ptr = &values_array.Ptr[new_index], index = new_index };
             }
             ushort i = slot_data.entry_index;
             CBool hash_match = true;
-            if (((((unchecked((int)(hash_match))) != 0) && ((unchecked((int)(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedEql__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ctx, key, keys_array.Ptr[i], i)))) != 0))))
+            if (((((unchecked((int)(hash_match))) != 0) && ((unchecked((int)(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedEql__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ctx, key, keys_array.Ptr[i], i)))) != 0))))
             {
                 return new array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult { found_existing = true, key_ptr = &keys_array.Ptr[slot_data.entry_index], value_ptr = &values_array.Ptr[slot_data.entry_index], index = slot_data.entry_index };
             }
             if (((slot_data.distance_from_start_index < distance_from_start_index)))
             {
-                ulong new_index__1 = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_addOneAssumeCapacity__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->entries);
+                ulong new_index__1 = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_addOneAssumeCapacity__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->entries);
                 indexes.Ptr[slot] = new array_hash_map__Index__u16 { entry_index = (ushort)(ushort)new_index__1, distance_from_start_index = distance_from_start_index };
                 distance_from_start_index = slot_data.distance_from_start_index;
                 ushort displaced_index = slot_data.entry_index;
@@ -1160,9 +2156,9 @@ public static unsafe partial class GhosttyVt
                 distance_from_start_index += (ushort)(1);
                 for (; ((index != end_index)); index += (ulong)(1), distance_from_start_index += (ushort)(1))
                 {
-                    slot = array_hash_map__IndexHeader_constrainIndex__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*header, index);
+                    slot = array_hash_map__IndexHeader_constrainIndex__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*header, index);
                     slot_data = indexes.Ptr[slot];
-                    if (((unchecked((int)(array_hash_map__Index__u16_isEmpty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slot_data)))) != 0))
+                    if (((unchecked((int)(array_hash_map__Index__u16_isEmpty__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slot_data)))) != 0))
                     {
                         indexes.Ptr[slot] = new array_hash_map__Index__u16 { entry_index = displaced_index, distance_from_start_index = distance_from_start_index };
                         return new array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult { found_existing = false, key_ptr = &keys_array.Ptr[new_index__1], value_ptr = &values_array.Ptr[new_index__1], index = new_index__1 };
@@ -1182,43 +2178,43 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe CBool array_hash_map__Index__u32_isEmpty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Index__u32 idx)
+    public static unsafe CBool array_hash_map__Index__u32_isEmpty__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Index__u32 idx)
     {
         return ((CBool)(idx.entry_index == ~(uint)0));
     }
 
 
 
-    public static unsafe array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getOrPutInternal__p_grid__22D1256A0F31C6D4CE4DC989A2E52322600317C3A0BE8085EDFEFA8F75061635__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header)
+    public static unsafe array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getOrPutInternal__p_grid__22D1256A0F31C6D4CE4DC989A2E52322600317C3A0BE8085EDFEFA8F75061635__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header)
     {
-        multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self->entries);
-        PtrSlice<grid_ref_tracked__TrackedGridRef> keys_array = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slice);
-        Slice<Unit> values_array = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slice);
-        Slice<array_hash_map__Index__u32> indexes = array_hash_map__IndexHeader_indexes__u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(header);
-        uint h = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedHash__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ctx, key);
-        ulong start_index = array_hash_map__safeTruncate__u64_u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(h);
+        multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self->entries);
+        PtrSlice<grid_ref_tracked__TrackedGridRef> keys_array = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slice);
+        Slice<Unit> values_array = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__2__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slice);
+        Slice<array_hash_map__Index__u32> indexes = array_hash_map__IndexHeader_indexes__u32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(header);
+        uint h = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedHash__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ctx, key);
+        ulong start_index = array_hash_map__safeTruncate__u64_u32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(h);
         ulong end_index = start_index + indexes.Len;
         ulong index = start_index;
         uint distance_from_start_index = 0;
         for (; ((index != end_index)); index += (ulong)(1), distance_from_start_index += (uint)(1))
         {
-            ulong slot = array_hash_map__IndexHeader_constrainIndex__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*header, index);
+            ulong slot = array_hash_map__IndexHeader_constrainIndex__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*header, index);
             array_hash_map__Index__u32 slot_data = indexes.Ptr[slot];
-            if (((unchecked((int)(array_hash_map__Index__u32_isEmpty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slot_data)))) != 0))
+            if (((unchecked((int)(array_hash_map__Index__u32_isEmpty__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slot_data)))) != 0))
             {
-                ulong new_index = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_addOneAssumeCapacity__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->entries);
+                ulong new_index = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_addOneAssumeCapacity__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->entries);
                 indexes.Ptr[slot] = new array_hash_map__Index__u32 { distance_from_start_index = distance_from_start_index, entry_index = (uint)(uint)new_index };
                 return new array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult { found_existing = false, key_ptr = &keys_array.Ptr[new_index], value_ptr = &values_array.Ptr[new_index], index = new_index };
             }
             uint i = slot_data.entry_index;
             CBool hash_match = true;
-            if (((((unchecked((int)(hash_match))) != 0) && ((unchecked((int)(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedEql__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ctx, key, keys_array.Ptr[i], i)))) != 0))))
+            if (((((unchecked((int)(hash_match))) != 0) && ((unchecked((int)(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedEql__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ctx, key, keys_array.Ptr[i], i)))) != 0))))
             {
                 return new array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult { found_existing = true, key_ptr = &keys_array.Ptr[slot_data.entry_index], value_ptr = &values_array.Ptr[slot_data.entry_index], index = slot_data.entry_index };
             }
             if (((slot_data.distance_from_start_index < distance_from_start_index)))
             {
-                ulong new_index__1 = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_addOneAssumeCapacity__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->entries);
+                ulong new_index__1 = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_addOneAssumeCapacity__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->entries);
                 indexes.Ptr[slot] = new array_hash_map__Index__u32 { entry_index = (uint)(uint)new_index__1, distance_from_start_index = distance_from_start_index };
                 distance_from_start_index = slot_data.distance_from_start_index;
                 uint displaced_index = slot_data.entry_index;
@@ -1226,9 +2222,9 @@ public static unsafe partial class GhosttyVt
                 distance_from_start_index += (uint)(1);
                 for (; ((index != end_index)); index += (ulong)(1), distance_from_start_index += (uint)(1))
                 {
-                    slot = array_hash_map__IndexHeader_constrainIndex__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*header, index);
+                    slot = array_hash_map__IndexHeader_constrainIndex__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*header, index);
                     slot_data = indexes.Ptr[slot];
-                    if (((unchecked((int)(array_hash_map__Index__u32_isEmpty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slot_data)))) != 0))
+                    if (((unchecked((int)(array_hash_map__Index__u32_isEmpty__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slot_data)))) != 0))
                     {
                         indexes.Ptr[slot] = new array_hash_map__Index__u32 { entry_index = displaced_index, distance_from_start_index = distance_from_start_index };
                         return new array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__GetOrPutResult { found_existing = false, key_ptr = &keys_array.Ptr[new_index__1], value_ptr = &values_array.Ptr[new_index__1], index = new_index__1 };
@@ -1248,135 +2244,135 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe Slice<array_hash_map__Index__u8> array_hash_map__IndexHeader_indexes__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__IndexHeader* header)
+    public static unsafe Slice<array_hash_map__Index__u8> array_hash_map__IndexHeader_indexes__u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__IndexHeader* header)
     {
         array_hash_map__Index__u8* start_ptr = (array_hash_map__Index__u8*)((byte*)(byte*)header + ((ulong)(sizeof(array_hash_map__IndexHeader))));
-        return new Slice<array_hash_map__Index__u8>(start_ptr + 0, (ulong)(array_hash_map__IndexHeader_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*header) - (ulong)(0)));
+        return new Slice<array_hash_map__Index__u8>(start_ptr + 0, (ulong)(array_hash_map__IndexHeader_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*header) - (ulong)(0)));
     }
 
 
 
-    public static unsafe ulong? array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeFromIndexByKey__p___F26E7E993D18342ABA94AC8E1664F6D3A54301BE499F40B57C7CFDE8653BC28B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header, Slice<array_hash_map__Index__u8> indexes)
+    public static unsafe ulong? array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeFromIndexByKey__p___F26E7E993D18342ABA94AC8E1664F6D3A54301BE499F40B57C7CFDE8653BC28B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header, Slice<array_hash_map__Index__u8> indexes)
     {
-        ulong? __cf = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getSlotByKey__p_grid_ref__E4A296888B46A1C8135E49A97F08FEAD7EC96B8FE48272B13889384688A7D39A__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*self, key, ctx, header, indexes);
+        ulong? __cf = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getSlotByKey__p_grid_ref__E4A296888B46A1C8135E49A97F08FEAD7EC96B8FE48272B13889384688A7D39A__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*self, key, ctx, header, indexes);
         if ((!((__cf.HasValue) )     ))
         {
-            return null;
+            return default(ulong?);
         }
         ulong slot = __cf.Value;
         byte removed_entry_index = indexes.Ptr[slot].entry_index;
-        array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeSlot__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slot, header, indexes);
+        array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeSlot__u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slot, header, indexes);
         return (ulong)removed_entry_index;
     }
 
 
 
-    public static unsafe void array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeFromArrayAndUpdateIndex__u8_0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, ulong entry_index, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header, Slice<array_hash_map__Index__u8> indexes)
+    public static unsafe void array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeFromArrayAndUpdateIndex__u8_0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, ulong entry_index, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header, Slice<array_hash_map__Index__u8> indexes)
     {
         ulong last_index = self->entries.len - 1UL;
         {
             if (((last_index != entry_index)))
             {
-                array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_updateEntryIndex__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, header, last_index, entry_index, ctx, indexes);
+                array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_updateEntryIndex__u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, header, last_index, entry_index, ctx, indexes);
             }
-            multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_swapRemove__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->entries, entry_index);
+            multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_swapRemove__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->entries, entry_index);
         }
     }
 
 
 
-    public static unsafe Slice<array_hash_map__Index__u16> array_hash_map__IndexHeader_indexes__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__IndexHeader* header)
+    public static unsafe Slice<array_hash_map__Index__u16> array_hash_map__IndexHeader_indexes__u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__IndexHeader* header)
     {
         array_hash_map__Index__u16* start_ptr = (array_hash_map__Index__u16*)((byte*)(byte*)header + ((ulong)(sizeof(array_hash_map__IndexHeader))));
-        return new Slice<array_hash_map__Index__u16>(start_ptr + 0, (ulong)(array_hash_map__IndexHeader_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*header) - (ulong)(0)));
+        return new Slice<array_hash_map__Index__u16>(start_ptr + 0, (ulong)(array_hash_map__IndexHeader_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*header) - (ulong)(0)));
     }
 
 
 
-    public static unsafe ulong? array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeFromIndexByKey__p___A661380C2408E802CC0A0974AEEC1362B701EB49BB1E424E417737AFAF7D84B0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header, Slice<array_hash_map__Index__u16> indexes)
+    public static unsafe ulong? array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeFromIndexByKey__p___A661380C2408E802CC0A0974AEEC1362B701EB49BB1E424E417737AFAF7D84B0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header, Slice<array_hash_map__Index__u16> indexes)
     {
-        ulong? __cf = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getSlotByKey__p_grid_ref__D80848D452EFF4B5B55E4A0FEF79CBB306BFEB834725ECCF01A6796A0999021B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*self, key, ctx, header, indexes);
+        ulong? __cf = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getSlotByKey__p_grid_ref__D80848D452EFF4B5B55E4A0FEF79CBB306BFEB834725ECCF01A6796A0999021B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*self, key, ctx, header, indexes);
         if ((!((__cf.HasValue) )     ))
         {
-            return null;
+            return default(ulong?);
         }
         ulong slot = __cf.Value;
         ushort removed_entry_index = indexes.Ptr[slot].entry_index;
-        array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeSlot__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slot, header, indexes);
+        array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeSlot__u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slot, header, indexes);
         return (ulong)removed_entry_index;
     }
 
 
 
-    public static unsafe void array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeFromArrayAndUpdateIndex__u16_0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, ulong entry_index, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header, Slice<array_hash_map__Index__u16> indexes)
+    public static unsafe void array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeFromArrayAndUpdateIndex__u16_0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, ulong entry_index, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header, Slice<array_hash_map__Index__u16> indexes)
     {
         ulong last_index = self->entries.len - 1UL;
         {
             if (((last_index != entry_index)))
             {
-                array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_updateEntryIndex__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, header, last_index, entry_index, ctx, indexes);
+                array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_updateEntryIndex__u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, header, last_index, entry_index, ctx, indexes);
             }
-            multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_swapRemove__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->entries, entry_index);
+            multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_swapRemove__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->entries, entry_index);
         }
     }
 
 
 
-    public static unsafe Slice<array_hash_map__Index__u32> array_hash_map__IndexHeader_indexes__u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__IndexHeader* header)
+    public static unsafe Slice<array_hash_map__Index__u32> array_hash_map__IndexHeader_indexes__u32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__IndexHeader* header)
     {
         array_hash_map__Index__u32* start_ptr = (array_hash_map__Index__u32*)((byte*)(byte*)header + ((ulong)(sizeof(array_hash_map__IndexHeader))));
-        return new Slice<array_hash_map__Index__u32>(start_ptr + 0, (ulong)(array_hash_map__IndexHeader_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*header) - (ulong)(0)));
+        return new Slice<array_hash_map__Index__u32>(start_ptr + 0, (ulong)(array_hash_map__IndexHeader_length__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*header) - (ulong)(0)));
     }
 
 
 
-    public static unsafe ulong? array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeFromIndexByKey__p___824158E4347EA08A69B911D470762B38C48FDC190B3C6348C99B3A8D33D04F46__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header, Slice<array_hash_map__Index__u32> indexes)
+    public static unsafe ulong? array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeFromIndexByKey__p___824158E4347EA08A69B911D470762B38C48FDC190B3C6348C99B3A8D33D04F46__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header, Slice<array_hash_map__Index__u32> indexes)
     {
-        ulong? __cf = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getSlotByKey__p_grid_ref__34654E540BCC5CDB25AC13A43928B7301B9346CF3C9FDB025F78328457DC9EBC__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*self, key, ctx, header, indexes);
+        ulong? __cf = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getSlotByKey__p_grid_ref__34654E540BCC5CDB25AC13A43928B7301B9346CF3C9FDB025F78328457DC9EBC__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*self, key, ctx, header, indexes);
         if ((!((__cf.HasValue) )     ))
         {
-            return null;
+            return default(ulong?);
         }
         ulong slot = __cf.Value;
         uint removed_entry_index = indexes.Ptr[slot].entry_index;
-        array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeSlot__u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slot, header, indexes);
+        array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeSlot__u32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slot, header, indexes);
         return (ulong)removed_entry_index;
     }
 
 
 
-    public static unsafe void array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeFromArrayAndUpdateIndex__u32_0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, ulong entry_index, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header, Slice<array_hash_map__Index__u32> indexes)
+    public static unsafe void array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeFromArrayAndUpdateIndex__u32_0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, ulong entry_index, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header, Slice<array_hash_map__Index__u32> indexes)
     {
         ulong last_index = self->entries.len - 1UL;
         {
             if (((last_index != entry_index)))
             {
-                array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_updateEntryIndex__u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, header, last_index, entry_index, ctx, indexes);
+                array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_updateEntryIndex__u32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, header, last_index, entry_index, ctx, indexes);
             }
-            multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_swapRemove__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->entries, entry_index);
+            multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_swapRemove__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&self->entries, entry_index);
         }
     }
 
 
 
-    public static unsafe ulong? array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getSlotByKey__p_grid_ref__E4A296888B46A1C8135E49A97F08FEAD7EC96B8FE48272B13889384688A7D39A__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0 self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header, Slice<array_hash_map__Index__u8> indexes)
+    public static unsafe ulong? array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getSlotByKey__p_grid_ref__E4A296888B46A1C8135E49A97F08FEAD7EC96B8FE48272B13889384688A7D39A__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0 self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header, Slice<array_hash_map__Index__u8> indexes)
     {
-        multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self.entries);
-        PtrSlice<grid_ref_tracked__TrackedGridRef> keys_array = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slice);
-        uint h = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedHash__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ctx, key);
-        ulong start_index = array_hash_map__safeTruncate__u64_u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(h);
+        multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self.entries);
+        PtrSlice<grid_ref_tracked__TrackedGridRef> keys_array = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slice);
+        uint h = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedHash__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ctx, key);
+        ulong start_index = array_hash_map__safeTruncate__u64_u32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(h);
         ulong end_index = start_index + indexes.Len;
         ulong index = start_index;
         byte distance_from_start_index = 0;
         for (; ((index != end_index)); index += (ulong)(1), distance_from_start_index += (byte)(1))
         {
-            ulong slot = array_hash_map__IndexHeader_constrainIndex__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*header, index);
+            ulong slot = array_hash_map__IndexHeader_constrainIndex__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*header, index);
             array_hash_map__Index__u8 slot_data = indexes.Ptr[slot];
-            if (((((unchecked((int)(array_hash_map__Index__u8_isEmpty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slot_data)))) != 0) || ((slot_data.distance_from_start_index < distance_from_start_index)))))
-                return null;
+            if (((((unchecked((int)(array_hash_map__Index__u8_isEmpty__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slot_data)))) != 0) || ((slot_data.distance_from_start_index < distance_from_start_index)))))
+                return default(ulong?);
             byte i = slot_data.entry_index;
             CBool hash_match = true;
-            if (((((unchecked((int)(hash_match))) != 0) && ((unchecked((int)(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedEql__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ctx, key, keys_array.Ptr[i], i)))) != 0))))
+            if (((((unchecked((int)(hash_match))) != 0) && ((unchecked((int)(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedEql__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ctx, key, keys_array.Ptr[i], i)))) != 0))))
                 return slot;
         }
         throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
@@ -1384,24 +2380,24 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ulong? array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getSlotByKey__p_grid_ref__D80848D452EFF4B5B55E4A0FEF79CBB306BFEB834725ECCF01A6796A0999021B__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0 self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header, Slice<array_hash_map__Index__u16> indexes)
+    public static unsafe ulong? array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getSlotByKey__p_grid_ref__D80848D452EFF4B5B55E4A0FEF79CBB306BFEB834725ECCF01A6796A0999021B__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0 self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header, Slice<array_hash_map__Index__u16> indexes)
     {
-        multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self.entries);
-        PtrSlice<grid_ref_tracked__TrackedGridRef> keys_array = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slice);
-        uint h = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedHash__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ctx, key);
-        ulong start_index = array_hash_map__safeTruncate__u64_u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(h);
+        multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self.entries);
+        PtrSlice<grid_ref_tracked__TrackedGridRef> keys_array = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slice);
+        uint h = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedHash__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ctx, key);
+        ulong start_index = array_hash_map__safeTruncate__u64_u32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(h);
         ulong end_index = start_index + indexes.Len;
         ulong index = start_index;
         ushort distance_from_start_index = 0;
         for (; ((index != end_index)); index += (ulong)(1), distance_from_start_index += (ushort)(1))
         {
-            ulong slot = array_hash_map__IndexHeader_constrainIndex__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*header, index);
+            ulong slot = array_hash_map__IndexHeader_constrainIndex__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*header, index);
             array_hash_map__Index__u16 slot_data = indexes.Ptr[slot];
-            if (((((unchecked((int)(array_hash_map__Index__u16_isEmpty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slot_data)))) != 0) || ((slot_data.distance_from_start_index < distance_from_start_index)))))
-                return null;
+            if (((((unchecked((int)(array_hash_map__Index__u16_isEmpty__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slot_data)))) != 0) || ((slot_data.distance_from_start_index < distance_from_start_index)))))
+                return default(ulong?);
             ushort i = slot_data.entry_index;
             CBool hash_match = true;
-            if (((((unchecked((int)(hash_match))) != 0) && ((unchecked((int)(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedEql__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ctx, key, keys_array.Ptr[i], i)))) != 0))))
+            if (((((unchecked((int)(hash_match))) != 0) && ((unchecked((int)(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedEql__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ctx, key, keys_array.Ptr[i], i)))) != 0))))
                 return slot;
         }
         throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
@@ -1409,24 +2405,24 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ulong? array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getSlotByKey__p_grid_ref__34654E540BCC5CDB25AC13A43928B7301B9346CF3C9FDB025F78328457DC9EBC__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0 self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header, Slice<array_hash_map__Index__u32> indexes)
+    public static unsafe ulong? array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getSlotByKey__p_grid_ref__34654E540BCC5CDB25AC13A43928B7301B9346CF3C9FDB025F78328457DC9EBC__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0 self, grid_ref_tracked__TrackedGridRef* key, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header, Slice<array_hash_map__Index__u32> indexes)
     {
-        multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self.entries);
-        PtrSlice<grid_ref_tracked__TrackedGridRef> keys_array = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slice);
-        uint h = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedHash__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ctx, key);
-        ulong start_index = array_hash_map__safeTruncate__u64_u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(h);
+        multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self.entries);
+        PtrSlice<grid_ref_tracked__TrackedGridRef> keys_array = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slice);
+        uint h = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedHash__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ctx, key);
+        ulong start_index = array_hash_map__safeTruncate__u64_u32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(h);
         ulong end_index = start_index + indexes.Len;
         ulong index = start_index;
         uint distance_from_start_index = 0;
         for (; ((index != end_index)); index += (ulong)(1), distance_from_start_index += (uint)(1))
         {
-            ulong slot = array_hash_map__IndexHeader_constrainIndex__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*header, index);
+            ulong slot = array_hash_map__IndexHeader_constrainIndex__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*header, index);
             array_hash_map__Index__u32 slot_data = indexes.Ptr[slot];
-            if (((((unchecked((int)(array_hash_map__Index__u32_isEmpty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slot_data)))) != 0) || ((slot_data.distance_from_start_index < distance_from_start_index)))))
-                return null;
+            if (((((unchecked((int)(array_hash_map__Index__u32_isEmpty__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slot_data)))) != 0) || ((slot_data.distance_from_start_index < distance_from_start_index)))))
+                return default(ulong?);
             uint i = slot_data.entry_index;
             CBool hash_match = true;
-            if (((((unchecked((int)(hash_match))) != 0) && ((unchecked((int)(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedEql__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ctx, key, keys_array.Ptr[i], i)))) != 0))))
+            if (((((unchecked((int)(hash_match))) != 0) && ((unchecked((int)(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedEql__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ctx, key, keys_array.Ptr[i], i)))) != 0))))
                 return slot;
         }
         throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
@@ -1434,21 +2430,21 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe uint array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedHash__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, grid_ref_tracked__TrackedGridRef* key)
+    public static unsafe uint array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedHash__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, grid_ref_tracked__TrackedGridRef* key)
     {
-        return getAutoHashFn__p_grid_ref_tracked__TrackedGridRefpa0_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0__Anon_hash__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ctx, key);
+        return getAutoHashFn__p_grid_ref_tracked__TrackedGridRefpa0_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0__Anon_hash__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ctx, key);
     }
 
 
 
-    public static unsafe ulong array_hash_map__safeTruncate__u64_u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(uint val)
+    public static unsafe ulong array_hash_map__safeTruncate__u64_u32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(uint val)
     {
         return val;
     }
 
 
 
-    public static unsafe void array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeSlot__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong removed_slot, array_hash_map__IndexHeader* header, Slice<array_hash_map__Index__u8> indexes)
+    public static unsafe void array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeSlot__u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ulong removed_slot, array_hash_map__IndexHeader* header, Slice<array_hash_map__Index__u8> indexes)
     {
         ulong start_index = removed_slot + (ulong)(1);
         ulong end_index = start_index + indexes.Len;
@@ -1456,11 +2452,11 @@ public static unsafe partial class GhosttyVt
         ulong index = start_index;
         for (; ((index != end_index)); index += (ulong)(1))
         {
-            ulong slot = array_hash_map__IndexHeader_constrainIndex__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*header, index);
+            ulong slot = array_hash_map__IndexHeader_constrainIndex__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*header, index);
             array_hash_map__Index__u8 slot_data = indexes.Ptr[slot];
-            if (((((unchecked((int)(array_hash_map__Index__u8_isEmpty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slot_data)))) != 0) || ((slot_data.distance_from_start_index == (byte)0)))))
+            if (((((unchecked((int)(array_hash_map__Index__u8_isEmpty__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slot_data)))) != 0) || ((slot_data.distance_from_start_index == (byte)0)))))
             {
-                array_hash_map__Index__u8_setEmpty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&indexes.Ptr[last_slot]);
+                array_hash_map__Index__u8_setEmpty__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&indexes.Ptr[last_slot]);
                 return;
             }
             indexes.Ptr[last_slot] = new array_hash_map__Index__u8 { entry_index = slot_data.entry_index, distance_from_start_index = (byte)(slot_data.distance_from_start_index - (byte)1) };
@@ -1471,15 +2467,15 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe void array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_updateEntryIndex__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, array_hash_map__IndexHeader* header, ulong old_entry_index, ulong new_entry_index, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, Slice<array_hash_map__Index__u8> indexes)
+    public static unsafe void array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_updateEntryIndex__u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, array_hash_map__IndexHeader* header, ulong old_entry_index, ulong new_entry_index, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, Slice<array_hash_map__Index__u8> indexes)
     {
-        ulong slot = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getSlotByIndex__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, old_entry_index, ctx, header, indexes);
+        ulong slot = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getSlotByIndex__u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, old_entry_index, ctx, header, indexes);
         indexes.Ptr[slot].entry_index = (byte)(byte)new_entry_index;
     }
 
 
 
-    public static unsafe void array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeSlot__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong removed_slot, array_hash_map__IndexHeader* header, Slice<array_hash_map__Index__u16> indexes)
+    public static unsafe void array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeSlot__u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ulong removed_slot, array_hash_map__IndexHeader* header, Slice<array_hash_map__Index__u16> indexes)
     {
         ulong start_index = removed_slot + (ulong)(1);
         ulong end_index = start_index + indexes.Len;
@@ -1487,11 +2483,11 @@ public static unsafe partial class GhosttyVt
         ulong index = start_index;
         for (; ((index != end_index)); index += (ulong)(1))
         {
-            ulong slot = array_hash_map__IndexHeader_constrainIndex__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*header, index);
+            ulong slot = array_hash_map__IndexHeader_constrainIndex__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*header, index);
             array_hash_map__Index__u16 slot_data = indexes.Ptr[slot];
-            if (((((unchecked((int)(array_hash_map__Index__u16_isEmpty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slot_data)))) != 0) || ((slot_data.distance_from_start_index == (ushort)0)))))
+            if (((((unchecked((int)(array_hash_map__Index__u16_isEmpty__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slot_data)))) != 0) || ((slot_data.distance_from_start_index == (ushort)0)))))
             {
-                array_hash_map__Index__u16_setEmpty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&indexes.Ptr[last_slot]);
+                array_hash_map__Index__u16_setEmpty__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&indexes.Ptr[last_slot]);
                 return;
             }
             indexes.Ptr[last_slot] = new array_hash_map__Index__u16 { entry_index = slot_data.entry_index, distance_from_start_index = (ushort)(slot_data.distance_from_start_index - (ushort)1) };
@@ -1502,15 +2498,15 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe void array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_updateEntryIndex__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, array_hash_map__IndexHeader* header, ulong old_entry_index, ulong new_entry_index, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, Slice<array_hash_map__Index__u16> indexes)
+    public static unsafe void array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_updateEntryIndex__u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, array_hash_map__IndexHeader* header, ulong old_entry_index, ulong new_entry_index, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, Slice<array_hash_map__Index__u16> indexes)
     {
-        ulong slot = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getSlotByIndex__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, old_entry_index, ctx, header, indexes);
+        ulong slot = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getSlotByIndex__u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, old_entry_index, ctx, header, indexes);
         indexes.Ptr[slot].entry_index = (ushort)(ushort)new_entry_index;
     }
 
 
 
-    public static unsafe void array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeSlot__u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong removed_slot, array_hash_map__IndexHeader* header, Slice<array_hash_map__Index__u32> indexes)
+    public static unsafe void array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_removeSlot__u32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ulong removed_slot, array_hash_map__IndexHeader* header, Slice<array_hash_map__Index__u32> indexes)
     {
         ulong start_index = removed_slot + (ulong)(1);
         ulong end_index = start_index + indexes.Len;
@@ -1518,11 +2514,11 @@ public static unsafe partial class GhosttyVt
         ulong index = start_index;
         for (; ((index != end_index)); index += (ulong)(1))
         {
-            ulong slot = array_hash_map__IndexHeader_constrainIndex__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*header, index);
+            ulong slot = array_hash_map__IndexHeader_constrainIndex__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*header, index);
             array_hash_map__Index__u32 slot_data = indexes.Ptr[slot];
-            if (((((unchecked((int)(array_hash_map__Index__u32_isEmpty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slot_data)))) != 0) || ((slot_data.distance_from_start_index == 0u)))))
+            if (((((unchecked((int)(array_hash_map__Index__u32_isEmpty__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slot_data)))) != 0) || ((slot_data.distance_from_start_index == 0u)))))
             {
-                array_hash_map__Index__u32_setEmpty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&indexes.Ptr[last_slot]);
+                array_hash_map__Index__u32_setEmpty__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(&indexes.Ptr[last_slot]);
                 return;
             }
             indexes.Ptr[last_slot] = new array_hash_map__Index__u32 { entry_index = slot_data.entry_index, distance_from_start_index = slot_data.distance_from_start_index - 1u };
@@ -1533,35 +2529,35 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe void array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_updateEntryIndex__u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, array_hash_map__IndexHeader* header, ulong old_entry_index, ulong new_entry_index, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, Slice<array_hash_map__Index__u32> indexes)
+    public static unsafe void array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_updateEntryIndex__u32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, array_hash_map__IndexHeader* header, ulong old_entry_index, ulong new_entry_index, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, Slice<array_hash_map__Index__u32> indexes)
     {
-        ulong slot = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getSlotByIndex__u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, old_entry_index, ctx, header, indexes);
+        ulong slot = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getSlotByIndex__u32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self, old_entry_index, ctx, header, indexes);
         indexes.Ptr[slot].entry_index = (uint)(uint)new_entry_index;
     }
 
 
 
-    public static unsafe delegate*<array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0, grid_ref_tracked__TrackedGridRef*, uint> array_hash_map__getAutoHashFn__p_grid_ref_tracked__TrackedGridRefpa0_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe delegate*<array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0, grid_ref_tracked__TrackedGridRef*, uint> array_hash_map__getAutoHashFn__p_grid_ref_tracked__TrackedGridRefpa0_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        return DotCcPointers.getAutoHashFn__p_grid_ref_tracked__TrackedGridRefpa0_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0__Anon_hash__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0;
+        return DotCcPointers.getAutoHashFn__p_grid_ref_tracked__TrackedGridRefpa0_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0__Anon_hash__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659;
     }
 
 
 
-    public static unsafe ulong array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getSlotByIndex__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, ulong entry_index, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header, Slice<array_hash_map__Index__u8> indexes)
+    public static unsafe ulong array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getSlotByIndex__u8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, ulong entry_index, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header, Slice<array_hash_map__Index__u8> indexes)
     {
-        multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self->entries);
-        uint h = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedHash__array_hash___7EC438E9FD52BD8E37B1C1EDAFCC37C105EC978AB58F8B581BE3FB43323B9314__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ctx, multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slice).Ptr[entry_index]);
-        ulong start_index = array_hash_map__safeTruncate__u64_u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(h);
+        multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self->entries);
+        uint h = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedHash__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ctx, multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slice).Ptr[entry_index]);
+        ulong start_index = array_hash_map__safeTruncate__u64_u32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(h);
         ulong end_index = start_index + indexes.Len;
         ulong index = start_index;
         byte distance_from_start_index = 0;
         for (; ((index != end_index)); index += (ulong)(1), distance_from_start_index += (byte)(1))
         {
-            ulong slot = array_hash_map__IndexHeader_constrainIndex__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*header, index);
+            ulong slot = array_hash_map__IndexHeader_constrainIndex__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*header, index);
             array_hash_map__Index__u8 slot_data = indexes.Ptr[slot];
-            debug__assert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0((((unchecked((int)(array_hash_map__Index__u8_isEmpty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slot_data)))) != 0) ? 0 : 1));
-            debug__assert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(((CBool)(slot_data.distance_from_start_index >= distance_from_start_index)));
+            debug__assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659((((unchecked((int)(array_hash_map__Index__u8_isEmpty__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slot_data)))) != 0) ? 0 : 1));
+            debug__assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)(slot_data.distance_from_start_index >= distance_from_start_index)));
             if (((slot_data.entry_index == entry_index)))
             {
                 return slot;
@@ -1572,1333 +2568,26 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe ulong array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getSlotByIndex__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, ulong entry_index, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header, Slice<array_hash_map__Index__u16> indexes)
+    public static unsafe ulong array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getSlotByIndex__u16__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, ulong entry_index, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header, Slice<array_hash_map__Index__u16> indexes)
     {
-        multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self->entries);
-        uint h = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedHash__array_hash___7EC438E9FD52BD8E37B1C1EDAFCC37C105EC978AB58F8B581BE3FB43323B9314__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ctx, multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slice).Ptr[entry_index]);
-        ulong start_index = array_hash_map__safeTruncate__u64_u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(h);
+        multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(self->entries);
+        uint h = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedHash__array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_p_grid_ref_tracked__TrackedGridRefpa0__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(ctx, multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slice).Ptr[entry_index]);
+        ulong start_index = array_hash_map__safeTruncate__u64_u32__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(h);
         ulong end_index = start_index + indexes.Len;
         ulong index = start_index;
         ushort distance_from_start_index = 0;
         for (; ((index != end_index)); index += (ulong)(1), distance_from_start_index += (ushort)(1))
         {
-            ulong slot = array_hash_map__IndexHeader_constrainIndex__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*header, index);
+            ulong slot = array_hash_map__IndexHeader_constrainIndex__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(*header, index);
             array_hash_map__Index__u16 slot_data = indexes.Ptr[slot];
-            debug__assert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0((((unchecked((int)(array_hash_map__Index__u16_isEmpty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slot_data)))) != 0) ? 0 : 1));
-            debug__assert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(((CBool)(slot_data.distance_from_start_index >= distance_from_start_index)));
+            debug__assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659((((unchecked((int)(array_hash_map__Index__u16_isEmpty__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(slot_data)))) != 0) ? 0 : 1));
+            debug__assert__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659(((CBool)(slot_data.distance_from_start_index >= distance_from_start_index)));
             if (((slot_data.entry_index == entry_index)))
             {
                 return slot;
             }
         }
         throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
-    }
-
-
-
-    public static unsafe ulong array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_getSlotByIndex__u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, ulong entry_index, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header, Slice<array_hash_map__Index__u32> indexes)
-    {
-        multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self->entries);
-        uint h = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedHash__array_hash___7EC438E9FD52BD8E37B1C1EDAFCC37C105EC978AB58F8B581BE3FB43323B9314__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ctx, multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slice).Ptr[entry_index]);
-        ulong start_index = array_hash_map__safeTruncate__u64_u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(h);
-        ulong end_index = start_index + indexes.Len;
-        ulong index = start_index;
-        uint distance_from_start_index = 0;
-        for (; ((index != end_index)); index += (ulong)(1), distance_from_start_index += (uint)(1))
-        {
-            ulong slot = array_hash_map__IndexHeader_constrainIndex__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*header, index);
-            array_hash_map__Index__u32 slot_data = indexes.Ptr[slot];
-            debug__assert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0((((unchecked((int)(array_hash_map__Index__u32_isEmpty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slot_data)))) != 0) ? 0 : 1));
-            debug__assert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(((CBool)(slot_data.distance_from_start_index >= distance_from_start_index)));
-            if (((slot_data.entry_index == entry_index)))
-            {
-                return slot;
-            }
-        }
-        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
-    }
-
-
-
-    public static unsafe uint array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedHash__array_hash___7EC438E9FD52BD8E37B1C1EDAFCC37C105EC978AB58F8B581BE3FB43323B9314__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, grid_ref_tracked__TrackedGridRef* key)
-    {
-        return getAutoHashFn__p_grid_ref_tracked__TrackedGridRefpa0_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0__Anon_hash__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ctx, key);
-    }
-
-
-
-    public static unsafe ErrUnion<Unit> array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_ensureTotalCapacityContext__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, mem_Allocator__Allocator gpa, ulong new_capacity, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx)
-    {
-        try
-        {
-            debug__SafetyLock_lock__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->pointer_stability);
-            try
-            {
-                _ = ErrUnion.Try(multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_ensureTotalCapacity__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->entries, gpa, new_capacity));
-                if (((new_capacity <= (ulong)(16))))
-                    return ErrUnion<Unit>.Ok(default);
-                {
-                    array_hash_map__IndexHeader* __cap = self->index_header;
-                    if ((((void*)(__cap)) != null))
-                    {
-                        array_hash_map__IndexHeader* header = (array_hash_map__IndexHeader*)__cap;
-                        if (((new_capacity <= array_hash_map__IndexHeader_capacity__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*header))))
-                            return ErrUnion<Unit>.Ok(default);
-                    }
-                }
-                byte new_bit_index = ErrUnion.Try(array_hash_map__IndexHeader_findBitIndex__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new_capacity));
-                array_hash_map__IndexHeader* new_header = (array_hash_map__IndexHeader*)ErrUnion.Try(array_hash_map__IndexHeader_alloc__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(gpa, new_bit_index));
-                {
-                    array_hash_map__IndexHeader* __cap__1 = self->index_header;
-                    if ((((void*)(__cap__1)) != null))
-                    {
-                        array_hash_map__IndexHeader* old_header = (array_hash_map__IndexHeader*)__cap__1;
-                        array_hash_map__IndexHeader_free__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(old_header, gpa);
-                    }
-                }
-                array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_insertAllEntriesIntoNewHeader__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, ctx, new_header);
-                self->index_header = new_header;
-            }
-            finally
-            {
-                debug__SafetyLock_unlock__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&self->pointer_stability);
-            }
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
-    }
-
-
-
-    public static unsafe CBool meta__hasUniqueRepresentation__p_grid_ref_tracked__TrackedGridRefpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        CBool __vcf0 = default(CBool);
-        __vcf0 = true;
-        return __vcf0;
-    }
-
-
-
-    public static unsafe uint getAutoHashFn__p_grid_ref_tracked__TrackedGridRefpa0_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0__Anon_hash__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, grid_ref_tracked__TrackedGridRef* key)
-    {
-        ;
-        _ = meta__hasUniqueRepresentation__p_grid_ref_tracked__TrackedGridRefpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0();
-        {
-            return (uint)hash_wyhash__Wyhash_hash__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(0, new ConstSlice<byte>((byte*)(&key), 8UL));
-        }
-    }
-
-
-
-    public static unsafe void array_hash_map__Index__u8_setEmpty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Index__u8* idx)
-    {
-        idx->entry_index = unchecked((byte)(~(byte)0));
-        idx->distance_from_start_index = default(byte);
-    }
-
-
-
-    public static unsafe void array_hash_map__Index__u16_setEmpty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Index__u16* idx)
-    {
-        idx->entry_index = unchecked((ushort)(~(ushort)0));
-        idx->distance_from_start_index = default(ushort);
-    }
-
-
-
-    public static unsafe void array_hash_map__Index__u32_setEmpty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Index__u32* idx)
-    {
-        idx->entry_index = ~(uint)0;
-        idx->distance_from_start_index = default(uint);
-    }
-
-
-
-    public static unsafe void array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_insertAllEntriesIntoNewHeader__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header)
-    {
-        switch ((int)array_hash_map__IndexHeader_capacityIndexType__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*header))
-        {
-            case (int)__DotCcEnum_61727261795F686173685F6D61705F5F4361706163697479496E64657854797065.u8:
-                array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_insertAllEntriesIntoNewHeaderGeneric__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, ctx, header);
-                return;
-                goto case (int)__DotCcEnum_61727261795F686173685F6D61705F5F4361706163697479496E64657854797065.u16;
-            case (int)__DotCcEnum_61727261795F686173685F6D61705F5F4361706163697479496E64657854797065.u16:
-                array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_insertAllEntriesIntoNewHeaderGeneric__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, ctx, header);
-                return;
-                goto case (int)__DotCcEnum_61727261795F686173685F6D61705F5F4361706163697479496E64657854797065.u32;
-            case (int)__DotCcEnum_61727261795F686173685F6D61705F5F4361706163697479496E64657854797065.u32:
-                array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_insertAllEntriesIntoNewHeaderGeneric__u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, ctx, header);
-                return;
-                goto default;
-            default:
-                throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
-        }
-    }
-
-
-
-    public static unsafe array_hash_map__CapacityIndexType array_hash_map__IndexHeader_capacityIndexType__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__IndexHeader header)
-    {
-        return array_hash_map__capacityIndexType__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(header.bit_index);
-    }
-
-
-
-    public static unsafe ulong array_hash_map__IndexHeader_constrainIndex__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__IndexHeader header, ulong i)
-    {
-        return (ulong)(ulong)(i & array_hash_map__IndexHeader_mask__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(header));
-    }
-
-
-
-    public static unsafe uint array_hash_map__IndexHeader_capacity__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__IndexHeader self)
-    {
-        return global::Managed.GhosttyVt.Globals.array_hash_map__index_capacities__static[self.bit_index];
-    }
-
-
-
-    public static unsafe ErrUnion<byte> array_hash_map__IndexHeader_findBitIndex__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong desired_capacity)
-    {
-        try
-        {
-            if (((desired_capacity > 4294967295UL)))
-                return ErrUnion<byte>.Err(5);
-            byte new_bit_index = (byte)math__log2_int_ceil__u64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(desired_capacity);
-            if (((desired_capacity > global::Managed.GhosttyVt.Globals.array_hash_map__index_capacities__static[new_bit_index])))
-                new_bit_index += (byte)(1);
-            if (((new_bit_index < (byte)5)))
-                new_bit_index = 5;
-            debug__assert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(((CBool)(desired_capacity <= global::Managed.GhosttyVt.Globals.array_hash_map__index_capacities__static[new_bit_index])));
-            return ErrUnion<byte>.Ok(new_bit_index);
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<byte>.Err(__e.Code); }
-    }
-
-
-
-    public static unsafe mem__Alignment mem__Alignment_of__array_hash_map__IndexHeader__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        return unchecked((mem__Alignment)(byte)0);
-    }
-
-
-
-    public static unsafe ErrUnion<nuint> array_hash_map__IndexHeader_alloc__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mem_Allocator__Allocator gpa, byte new_bit_index)
-    {
-        try
-        {
-            ulong len = (ulong)1 << (int)((byte)(byte)new_bit_index);
-            ulong index_size = array_hash_map__capacityIndexSize__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new_bit_index);
-            ulong nbytes = 1UL + index_size * len;
-            Slice<byte> bytes = ErrUnion.Try(mem_Allocator__alignedAlloc__u8_opt0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(gpa, nbytes));
-            ZigMem.Set<byte>(new Slice<byte>(bytes.Ptr + ((ulong)(sizeof(array_hash_map__IndexHeader))), bytes.Len - unchecked((ulong)((ulong)(sizeof(array_hash_map__IndexHeader))))), 255);
-            array_hash_map__IndexHeader* result = (array_hash_map__IndexHeader*)bytes.Ptr;
-            *result = new array_hash_map__IndexHeader { bit_index = new_bit_index };
-            return ErrUnion<nuint>.Ok((nuint)(result));
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<nuint>.Err(__e.Code); }
-    }
-
-
-
-    public static unsafe uint array_hash_map__IndexHeader_mask__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__IndexHeader self)
-    {
-        return (uint)(uint)(array_hash_map__IndexHeader_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self) - 1UL);
-    }
-
-
-
-    public static unsafe void array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_insertAllEntriesIntoNewHeaderGeneric__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header)
-    {
-        multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self->entries);
-        PtrSlice<grid_ref_tracked__TrackedGridRef> items = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slice);
-        for (ulong __i = 0UL; ((__i < items.Len)); __i++)
-        {
-            grid_ref_tracked__TrackedGridRef* hash_or_key = items.Ptr[__i];
-            ulong i = __i + (ulong)0;
-            {
-                uint h = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedHash__array_hash___7EC438E9FD52BD8E37B1C1EDAFCC37C105EC978AB58F8B581BE3FB43323B9314__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ctx, hash_or_key);
-                array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_insertEntryIntoNewHeaderGeneric__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(header, h, i);
-            }
-        }
-    }
-
-
-
-    public static unsafe void array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_insertAllEntriesIntoNewHeaderGeneric__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header)
-    {
-        multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self->entries);
-        PtrSlice<grid_ref_tracked__TrackedGridRef> items = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slice);
-        for (ulong __i = 0UL; ((__i < items.Len)); __i++)
-        {
-            grid_ref_tracked__TrackedGridRef* hash_or_key = items.Ptr[__i];
-            ulong i = __i + (ulong)0;
-            {
-                uint h = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedHash__array_hash___7EC438E9FD52BD8E37B1C1EDAFCC37C105EC978AB58F8B581BE3FB43323B9314__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ctx, hash_or_key);
-                array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_insertEntryIntoNewHeaderGeneric__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(header, h, i);
-            }
-        }
-    }
-
-
-
-    public static unsafe void array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_insertAllEntriesIntoNewHeaderGeneric__u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0* self, array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0 ctx, array_hash_map__IndexHeader* header)
-    {
-        multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self->entries);
-        PtrSlice<grid_ref_tracked__TrackedGridRef> items = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slice);
-        for (ulong __i = 0UL; ((__i < items.Len)); __i++)
-        {
-            grid_ref_tracked__TrackedGridRef* hash_or_key = items.Ptr[__i];
-            ulong i = __i + (ulong)0;
-            {
-                uint h = array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_checkedHash__array_hash___7EC438E9FD52BD8E37B1C1EDAFCC37C105EC978AB58F8B581BE3FB43323B9314__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ctx, hash_or_key);
-                array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_insertEntryIntoNewHeaderGeneric__u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(header, h, i);
-            }
-        }
-    }
-
-
-
-    public static unsafe void array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_insertEntryIntoNewHeaderGeneric__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__IndexHeader* header, uint h, ulong i)
-    {
-        Slice<array_hash_map__Index__u8> indexes = array_hash_map__IndexHeader_indexes__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(header);
-        ulong start_index = array_hash_map__safeTruncate__u64_u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(h);
-        ulong end_index = start_index + indexes.Len;
-        ulong index = start_index;
-        byte entry_index = (byte)i;
-        byte distance_from_start_index = 0;
-        for (; ((index != end_index)); index += (ulong)(1), distance_from_start_index += (byte)(1))
-        {
-            ulong slot = array_hash_map__IndexHeader_constrainIndex__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*header, index);
-            array_hash_map__Index__u8 next_index = indexes.Ptr[slot];
-            if (((unchecked((int)(array_hash_map__Index__u8_isEmpty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(next_index)))) != 0))
-            {
-                indexes.Ptr[slot] = new array_hash_map__Index__u8 { distance_from_start_index = distance_from_start_index, entry_index = entry_index };
-                return;
-            }
-            if (((next_index.distance_from_start_index < distance_from_start_index)))
-            {
-                indexes.Ptr[slot] = new array_hash_map__Index__u8 { distance_from_start_index = distance_from_start_index, entry_index = entry_index };
-                distance_from_start_index = next_index.distance_from_start_index;
-                entry_index = next_index.entry_index;
-            }
-        }
-        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
-    }
-
-
-
-    public static unsafe void array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_insertEntryIntoNewHeaderGeneric__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__IndexHeader* header, uint h, ulong i)
-    {
-        Slice<array_hash_map__Index__u16> indexes = array_hash_map__IndexHeader_indexes__u16__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(header);
-        ulong start_index = array_hash_map__safeTruncate__u64_u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(h);
-        ulong end_index = start_index + indexes.Len;
-        ulong index = start_index;
-        ushort entry_index = (ushort)i;
-        ushort distance_from_start_index = 0;
-        for (; ((index != end_index)); index += (ulong)(1), distance_from_start_index += (ushort)(1))
-        {
-            ulong slot = array_hash_map__IndexHeader_constrainIndex__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*header, index);
-            array_hash_map__Index__u16 next_index = indexes.Ptr[slot];
-            if (((unchecked((int)(array_hash_map__Index__u16_isEmpty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(next_index)))) != 0))
-            {
-                indexes.Ptr[slot] = new array_hash_map__Index__u16 { distance_from_start_index = distance_from_start_index, entry_index = entry_index };
-                return;
-            }
-            if (((next_index.distance_from_start_index < distance_from_start_index)))
-            {
-                indexes.Ptr[slot] = new array_hash_map__Index__u16 { distance_from_start_index = distance_from_start_index, entry_index = entry_index };
-                distance_from_start_index = next_index.distance_from_start_index;
-                entry_index = next_index.entry_index;
-            }
-        }
-        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
-    }
-
-
-
-    public static unsafe void array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0_insertEntryIntoNewHeaderGeneric__u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(array_hash_map__IndexHeader* header, uint h, ulong i)
-    {
-        Slice<array_hash_map__Index__u32> indexes = array_hash_map__IndexHeader_indexes__u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(header);
-        ulong start_index = array_hash_map__safeTruncate__u64_u32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(h);
-        ulong end_index = start_index + indexes.Len;
-        ulong index = start_index;
-        uint entry_index = (uint)i;
-        uint distance_from_start_index = 0;
-        for (; ((index != end_index)); index += (ulong)(1), distance_from_start_index += (uint)(1))
-        {
-            ulong slot = array_hash_map__IndexHeader_constrainIndex__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*header, index);
-            array_hash_map__Index__u32 next_index = indexes.Ptr[slot];
-            if (((unchecked((int)(array_hash_map__Index__u32_isEmpty__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(next_index)))) != 0))
-            {
-                indexes.Ptr[slot] = new array_hash_map__Index__u32 { distance_from_start_index = distance_from_start_index, entry_index = entry_index };
-                return;
-            }
-            if (((next_index.distance_from_start_index < distance_from_start_index)))
-            {
-                indexes.Ptr[slot] = new array_hash_map__Index__u32 { distance_from_start_index = distance_from_start_index, entry_index = entry_index };
-                distance_from_start_index = next_index.distance_from_start_index;
-                entry_index = next_index.entry_index;
-            }
-        }
-        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
-    }
-
-
-
-    public static unsafe PtrSlice<grid_ref_tracked__TrackedGridRef> multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_items__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data self)
-    {
-        return multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self));
-    }
-
-
-
-    public static unsafe PtrSlice<search__SearchWrapper> multi_array_list__MultiArrayList__array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0__Data_items__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(multi_array_list__MultiArrayList__array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0__Data self)
-    {
-        return multi_array_list__MultiArrayList__array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0__Data__Slice_items__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(multi_array_list__MultiArrayList__array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0__Data_slice__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self));
-    }
-
-
-
-    public static unsafe PtrSlice<grid_ref_tracked__TrackedGridRef> multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice self)
-    {
-        if (((self.capacity == 0UL)))
-        {
-            return new PtrSlice<grid_ref_tracked__TrackedGridRef>(null, 0UL);
-        }
-        byte* byte_ptr = ((byte**)&self.ptrs)[unchecked((byte)(meta__FieldEnum__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data)1)];
-        grid_ref_tracked__TrackedGridRef** casted_ptr = (grid_ref_tracked__TrackedGridRef**)byte_ptr;
-        return new PtrSlice<grid_ref_tracked__TrackedGridRef>(casted_ptr + 0, (ulong)(self.len - (ulong)(0)));
-    }
-
-
-
-    public static unsafe Slice<Unit> multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice self)
-    {
-        if (((self.capacity == 0UL)))
-        {
-            return new Slice<Unit>(null, 0UL);
-        }
-        byte* byte_ptr = ((byte**)&self.ptrs)[unchecked((byte)(meta__FieldEnum__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data)2)];
-        Unit* casted_ptr = default(Unit*);
-        return new Slice<Unit>(casted_ptr + 0, (ulong)(self.len - (ulong)(0)));
-    }
-
-
-
-    public static unsafe Slice<Unit> multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice self)
-    {
-        if (((self.capacity == 0UL)))
-        {
-            return new Slice<Unit>(null, 0UL);
-        }
-        byte* byte_ptr = ((byte**)&self.ptrs)[unchecked((byte)(meta__FieldEnum__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data)0)];
-        Unit* casted_ptr = default(Unit*);
-        return new Slice<Unit>(casted_ptr + 0, (ulong)(self.len - (ulong)(0)));
-    }
-
-
-
-    public static unsafe PtrSlice<search__SearchWrapper> multi_array_list__MultiArrayList__array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0__Data__Slice_items__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(multi_array_list__MultiArrayList__array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0__Data__Slice self)
-    {
-        if (((self.capacity == 0UL)))
-        {
-            return new PtrSlice<search__SearchWrapper>(null, 0UL);
-        }
-        byte* byte_ptr = ((byte**)&self.ptrs)[unchecked((byte)(meta__FieldEnum__array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0__Data)1)];
-        search__SearchWrapper** casted_ptr = (search__SearchWrapper**)byte_ptr;
-        return new PtrSlice<search__SearchWrapper>(casted_ptr + 0, (ulong)(self.len - (ulong)(0)));
-    }
-
-
-
-    public static unsafe void multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_deinit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data* self, mem_Allocator__Allocator gpa)
-    {
-        mem_Allocator__free____unsigned_charpa8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(gpa, multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_allocatedBytes__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*self));
-        *self = default(multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data);
-    }
-
-
-
-    public static unsafe void multi_array_list__MultiArrayList__array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0__Data_deinit__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(multi_array_list__MultiArrayList__array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0__Data* self, mem_Allocator__Allocator gpa)
-    {
-        mem_Allocator__free____unsigned_charpa8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(gpa, multi_array_list__MultiArrayList__array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0__Data_allocatedBytes__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*self));
-        *self = default(multi_array_list__MultiArrayList__array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0__Data);
-    }
-
-
-
-    public static unsafe multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data self)
-    {
-        multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice result = new multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice { len = self.len, capacity = self.capacity };
-        byte* ptr = self.bytes;
-        {
-            Slice<ulong> __s = new Slice<ulong>((((Anon__0*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.GhosttyVt.Globals.multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__sizes__static)))->bytes, 3UL);
-            Slice<ulong> __s__1 = new Slice<ulong>((((Anon__0*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.GhosttyVt.Globals.multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__sizes__static)))->fields, 3UL);
-            for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
-            {
-                ulong field_size = __s.Ptr[__i];
-                ulong i = __s__1.Ptr[__i];
-                {
-                    ((byte**)&result.ptrs)[i] = ptr;
-                    ptr += field_size * self.capacity;
-                }
-            }
-        }
-        return result;
-    }
-
-
-
-    public static unsafe void multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_swapRemove__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data* self, ulong index)
-    {
-        multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice slices = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*self);
-        {
-            {
-                Slice<Unit> field_slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slices);
-                Unit __statementExpression11;
-                {
-        ;
-        ;
-        ;
-        __statementExpression11 = default(Unit);
-    };
-                _ = __statementExpression11;
-                Unit __statementExpression12;
-                {
-        ;
-        ;
-        _ = default(Unit);
-        __statementExpression12 = default(Unit);
-    };
-                _ = __statementExpression12;
-            }
-        }
-        {
-            {
-                PtrSlice<grid_ref_tracked__TrackedGridRef> field_slice__1 = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slices);
-                field_slice__1.Ptr[index] = field_slice__1.Ptr[self->len - 1UL];
-                field_slice__1.Ptr[self->len - 1UL] = default(grid_ref_tracked__TrackedGridRef*);
-            }
-        }
-        {
-            {
-                Slice<Unit> field_slice__2 = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__2__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(slices);
-                Unit __statementExpression13;
-                {
-        ;
-        ;
-        ;
-        __statementExpression13 = default(Unit);
-    };
-                _ = __statementExpression13;
-                Unit __statementExpression14;
-                {
-        ;
-        ;
-        _ = default(Unit);
-        __statementExpression14 = default(Unit);
-    };
-                _ = __statementExpression14;
-            }
-        }
-        self->len -= (ulong)(1);
-    }
-
-
-
-    public static unsafe ulong multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_addOneAssumeCapacity__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data* self)
-    {
-        debug__assert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(((CBool)(self->len < self->capacity)));
-        ulong index = self->len;
-        self->len += (ulong)(1);
-        return index;
-    }
-
-
-
-    public static unsafe ErrUnion<Unit> multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_ensureTotalCapacity__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data* self, mem_Allocator__Allocator gpa, ulong new_capacity)
-    {
-        try
-        {
-            if (((self->capacity >= new_capacity)))
-                return ErrUnion<Unit>.Ok(default);
-            return multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_setCapacity__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self, gpa, multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_growCapacity__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new_capacity));
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-    }
-
-
-
-    public static unsafe multi_array_list__MultiArrayList__array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0__Data__Slice multi_array_list__MultiArrayList__array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0__Data_slice__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(multi_array_list__MultiArrayList__array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0__Data self)
-    {
-        multi_array_list__MultiArrayList__array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0__Data__Slice result = new multi_array_list__MultiArrayList__array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0__Data__Slice { len = self.len, capacity = self.capacity };
-        byte* ptr = self.bytes;
-        {
-            Slice<ulong> __s = new Slice<ulong>((((Anon__0*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.GhosttyVt.Globals.multi_array_list__MultiArrayList__array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0__Data__sizes__static)))->bytes, 3UL);
-            Slice<ulong> __s__1 = new Slice<ulong>((((Anon__0*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.GhosttyVt.Globals.multi_array_list__MultiArrayList__array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0__Data__sizes__static)))->fields, 3UL);
-            for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
-            {
-                ulong field_size = __s.Ptr[__i];
-                ulong i = __s__1.Ptr[__i];
-                {
-                    ((byte**)&result.ptrs)[i] = ptr;
-                    ptr += field_size * self.capacity;
-                }
-            }
-        }
-        return result;
-    }
-
-
-
-    public static unsafe Slice<byte> multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_allocatedBytes__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data self)
-    {
-        return new Slice<byte>(self.bytes + 0, (ulong)(multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_capacityInBytes__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self.capacity) - (ulong)(0)));
-    }
-
-
-
-    public static unsafe Slice<byte> multi_array_list__MultiArrayList__array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0__Data_allocatedBytes__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(multi_array_list__MultiArrayList__array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0__Data self)
-    {
-        return new Slice<byte>(self.bytes + 0, (ulong)(multi_array_list__MultiArrayList__array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0__Data_capacityInBytes__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self.capacity) - (ulong)(0)));
-    }
-
-
-
-    public static unsafe ErrUnion<Unit> multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_setCapacity__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data* self, mem_Allocator__Allocator gpa, ulong new_capacity)
-    {
-        try
-        {
-            debug__assert__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(((CBool)(new_capacity >= self->len)));
-            Slice<byte> new_bytes = ErrUnion.Try(mem_Allocator__alignedAlloc__u8_opt3__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(gpa, multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_capacityInBytes__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new_capacity)));
-            if (((self->len == 0UL)))
-            {
-                mem_Allocator__free____unsigned_charpa8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(gpa, multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_allocatedBytes__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*self));
-                self->bytes = new_bytes.Ptr;
-                self->capacity = new_capacity;
-                return ErrUnion<Unit>.Ok(default);
-            }
-            multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data other = new multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data { bytes = new_bytes.Ptr, capacity = new_capacity, len = self->len };
-            multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice self_slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*self);
-            multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice other_slice = multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_slice__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(other);
-            
-                
-                
-            
-            {
-                {
-                    {
-                        meta__FieldEnum__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data field = unchecked((meta__FieldEnum__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data)unchecked((meta__FieldEnum__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data)(byte)1));
-                        ZigMem.CopyForwards<grid_ref_tracked__TrackedGridRef>(multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(other_slice), multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Slice_items__1__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(self_slice));
-                    }
-                }
-            }
-            
-                
-                
-            
-            mem_Allocator__free____unsigned_charpa8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(gpa, multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_allocatedBytes__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(*self));
-            *self = other;
-        }
-        catch (ZigErrorReturn __e) { return ErrUnion<Unit>.Err(__e.Code); }
-        return ErrUnion<Unit>.Ok(default);
-    }
-
-
-
-    public static unsafe ulong multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_growCapacity__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong minimum)
-    {
-        return ZigMath.SatAdd(minimum, minimum / 2UL + (ulong)(16));
-    }
-
-
-
-    public static unsafe ulong multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data_capacityInBytes__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong capacity)
-    {
-        {
-            ulong size = 8UL;
-        }
-        {
-            ulong size__1 = 0UL;
-        }
-        {
-            ulong size__2 = 0UL;
-        }
-        return 8UL * capacity;
-    }
-
-
-
-    public static unsafe ulong multi_array_list__MultiArrayList__array_hash_map__Custom__p_search__SearchWrapperpa0_void_array_hash_map__AutoContext__p_search__SearchWrapperpa0_0__Data_capacityInBytes__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong capacity)
-    {
-        {
-            ulong size = 8UL;
-        }
-        {
-            ulong size__1 = 0UL;
-        }
-        {
-            ulong size__2 = 0UL;
-        }
-        return 8UL * capacity;
-    }
-
-
-
-    public static unsafe CBool meta__eql__p_grid_ref_tracked__TrackedGridRefpa0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(grid_ref_tracked__TrackedGridRef* a, grid_ref_tracked__TrackedGridRef* b)
-    {
-        {
-            return ((CBool)(a == b));
-        }
-    }
-
-
-
-    public static unsafe byte? simd__firstTrue__v64_bool__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong vec)
-    {
-        int len = 64;
-        if ((!(((vec != 0UL)) )     ))
-        {
-            return null;
-        }
-        System.Runtime.Intrinsics.Vector512<byte> all_max = System.Runtime.Intrinsics.Vector512.Create(unchecked((byte)unchecked((byte)(~(byte)0 & 63))));
-        System.Runtime.Intrinsics.Vector512<byte> indices = ZigVec.Select(vec, simd__iota__u6_64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(), all_max);
-        return ZigVec.ReduceMin(indices);
-    }
-
-
-
-    public static unsafe byte? simd__firstTrue__v32_bool__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong vec)
-    {
-        int len = 32;
-        if ((!(((vec != 0UL)) )     ))
-        {
-            return null;
-        }
-        System.Runtime.Intrinsics.Vector256<byte> all_max = System.Runtime.Intrinsics.Vector256.Create(unchecked((byte)unchecked((byte)(~(byte)0 & 31))));
-        System.Runtime.Intrinsics.Vector256<byte> indices = ZigVec.Select(vec, simd__iota__u5_32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(), all_max);
-        return ZigVec.ReduceMin(indices);
-    }
-
-
-
-    public static unsafe System.Runtime.Intrinsics.Vector512<byte> simd__iota__u6_64__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        {
-            byte* @out = stackalloc byte[64];
-            {
-                Slice<byte> __s = new Slice<byte>(@out, 64UL);
-                for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
-                {
-                    byte* element = &__s.Ptr[__i];
-                    ulong i = __i + (ulong)0;
-                    {
-                        *element = (byte)(byte)i;
-                    }
-                }
-            }
-            return (System.Runtime.Intrinsics.Vector512<byte>)ZigVec.Load512(@out);
-        }
-    }
-
-
-
-    public static unsafe System.Runtime.Intrinsics.Vector256<byte> simd__iota__u5_32__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        {
-            byte* @out = stackalloc byte[32];
-            {
-                Slice<byte> __s = new Slice<byte>(@out, 32UL);
-                for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
-                {
-                    byte* element = &__s.Ptr[__i];
-                    ulong i = __i + (ulong)0;
-                    {
-                        *element = (byte)(byte)i;
-                    }
-                }
-            }
-            return (System.Runtime.Intrinsics.Vector256<byte>)ZigVec.Load256(@out);
-        }
-    }
-
-
-
-    public static unsafe sort_block__Range sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(ulong start, ulong end)
-    {
-        return new sort_block__Range { start = start, end = end };
-    }
-
-
-
-    public static unsafe void sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashC__FCD0890CFDA4E40D0519912DC1404AF0F2830DDACD9F252C3A312DA4E4846DFC__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data> items, byte* order, ulong x, ulong y)
-    {
-        if (((((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[y], items.Ptr[x])))) != 0) || (((((order)[x] > (order)[y])) && (!(((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[x], items.Ptr[y])))) != 0) )     ))))))
-        {
-            mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&items.Ptr[x], &items.Ptr[y]);
-            mem__swap__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&(order)[x], &(order)[y]);
-        }
-    }
-
-
-
-    public static unsafe void sort_block__mergeInto__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvName__63ACEC7358C045E5BB67FB4FA709CF06B50BAFC49A4DF13DE0FB4D3B03B09BEF__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data> from, sort_block__Range A, sort_block__Range B, Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data> into)
-    {
-        ulong A_index = A.start;
-        ulong B_index = B.start;
-        ulong A_last = A.end;
-        ulong B_last = B.end;
-        ulong insert_index = 0;
-        while (true)
-        {
-            if ((!(((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(from.Ptr[B_index], from.Ptr[A_index])))) != 0) )     ))
-            {
-                into.Ptr[insert_index] = from.Ptr[A_index];
-                A_index += (ulong)(1);
-                insert_index += (ulong)(1);
-                if (((A_index == A_last)))
-                {
-                    Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data> from_b = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data>(from.Ptr + B_index, (ulong)(B_last - B_index));
-                    ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data>(into.Ptr + insert_index, into.Len - (ulong)insert_index).Ptr + 0, (ulong)(from_b.Len - (ulong)(0))), from_b);
-                    break;
-                }
-            }
-            else
-            {
-                into.Ptr[insert_index] = from.Ptr[B_index];
-                B_index += (ulong)(1);
-                insert_index += (ulong)(1);
-                if (((B_index == B_last)))
-                {
-                    Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data> from_a = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data>(from.Ptr + A_index, (ulong)(A_last - A_index));
-                    ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data>(into.Ptr + insert_index, into.Len - (ulong)insert_index).Ptr + 0, (ulong)(from_a.Len - (ulong)(0))), from_a);
-                    break;
-                }
-            }
-        }
-    }
-
-
-
-    public static unsafe void sort_block__mergeExternal__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__Env__4BDE68B6E2012DF72603DD27573F763C75F92F43BE0297BA368ED09484883DD6__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data> items, sort_block__Range A, sort_block__Range B, Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data> cache)
-    {
-        ulong A_index = 0;
-        ulong B_index = B.start;
-        ulong insert_index = A.start;
-        ulong A_last = sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A);
-        ulong B_last = B.end;
-        if (((((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B) > 0UL)) && ((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A) > 0UL)))))
-        {
-            while (true)
-            {
-                if ((!(((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[B_index], cache.Ptr[A_index])))) != 0) )     ))
-                {
-                    items.Ptr[insert_index] = cache.Ptr[A_index];
-                    A_index += (ulong)(1);
-                    insert_index += (ulong)(1);
-                    if (((A_index == A_last)))
-                        break;
-                }
-                else
-                {
-                    items.Ptr[insert_index] = items.Ptr[B_index];
-                    B_index += (ulong)(1);
-                    insert_index += (ulong)(1);
-                    if (((B_index == B_last)))
-                        break;
-                }
-            }
-        }
-        Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data> cache_a = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data>(cache.Ptr + A_index, (ulong)(A_last - A_index));
-        ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data>(items.Ptr + insert_index, items.Len - (ulong)insert_index).Ptr + 0, (ulong)(cache_a.Len - (ulong)(0))), cache_a);
-    }
-
-
-
-    public static unsafe ulong sort_block__findLastForward__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__E__4D4AFDC9722BF40C5CE71346387F20C55D513785BB2CCB5955DDD19C9DFA2601__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data> items, multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data value, sort_block__Range range, ulong unique)
-    {
-        if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range) == 0UL)))
-            return range.start;
-        ulong skip = ZigMath.Max(sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range) / unique, (ulong)1);
-        ulong index = range.start + skip;
-        for (; (!(((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(value, items.Ptr[index - (ulong)(1)])))) != 0) )     ); index += skip)
-        {
-            if (((index >= range.end - skip)))
-            {
-                return sort_block__binaryLast__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNam__5852D28F0FC3D0BE8371DCAB1458890722D4584AACB084120958F32F17837583__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, value, sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(index, range.end));
-            }
-        }
-        return sort_block__binaryLast__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNam__5852D28F0FC3D0BE8371DCAB1458890722D4584AACB084120958F32F17837583__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, value, sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(index - skip, index));
-    }
-
-
-
-    public static unsafe ulong sort_block__findFirstBackward__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map___F6C4C4884C9D963E12C87A421792AAA67334BC8D1D13728AEAB0925414BE84DB__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data> items, multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data value, sort_block__Range range, ulong unique)
-    {
-        if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range) == 0UL)))
-            return range.start;
-        ulong skip = ZigMath.Max(sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range) / unique, (ulong)1);
-        ulong index = range.end - skip;
-        for (; ((((index > range.start)) && (!(((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[index - (ulong)(1)], value)))) != 0) )     ))); index -= skip)
-        {
-            if (((index < range.start + skip)))
-            {
-                return sort_block__binaryFirst__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNa__0AB16217DBEF2A9D139D1F90BD267EA47E70EB7FD4EF8624DC85912A7540CCDB__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, value, sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range.start, index));
-            }
-        }
-        return sort_block__binaryFirst__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNa__0AB16217DBEF2A9D139D1F90BD267EA47E70EB7FD4EF8624DC85912A7540CCDB__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, value, sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(index, index + skip));
-    }
-
-
-
-    public static unsafe void sort_block__blockSwap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data> items, ulong start1, ulong start2, ulong block_size)
-    {
-        ulong index = 0;
-        for (; ((index < block_size)); index += (ulong)(1))
-        {
-            mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&items.Ptr[start1 + index], &items.Ptr[start2 + index]);
-        }
-    }
-
-
-
-    public static unsafe ulong sort_block__binaryFirst__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNa__0AB16217DBEF2A9D139D1F90BD267EA47E70EB7FD4EF8624DC85912A7540CCDB__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data> items, multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data value, sort_block__Range range)
-    {
-        ulong curr = range.start;
-        ulong size = sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range);
-        if (((range.start >= range.end)))
-            return range.end;
-        while (((size > 0UL)))
-        {
-            ulong offset = size % 2UL;
-            size /= (ulong)(2);
-            multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data mid_item = items.Ptr[curr + size];
-            if (((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mid_item, value)))) != 0))
-            {
-                curr += size + offset;
-            }
-        }
-        return curr;
-    }
-
-
-
-    public static unsafe void sort_block__mergeInternal__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__Env__DD054A93AE4CBB568F342D10422D0EAABDD2ACC8D5F2C376394C724F1A7FF35C__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data> items, sort_block__Range A, sort_block__Range B, sort_block__Range buffer)
-    {
-        ulong A_count = 0;
-        ulong B_count = 0;
-        ulong insert = 0;
-        if (((((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B) > 0UL)) && ((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A) > 0UL)))))
-        {
-            while (true)
-            {
-                if ((!(((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[B.start + B_count], items.Ptr[buffer.start + A_count])))) != 0) )     ))
-                {
-                    mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&items.Ptr[A.start + insert], &items.Ptr[buffer.start + A_count]);
-                    A_count += (ulong)(1);
-                    insert += (ulong)(1);
-                    if (((A_count >= sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A))))
-                        break;
-                }
-                else
-                {
-                    mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&items.Ptr[A.start + insert], &items.Ptr[B.start + B_count]);
-                    B_count += (ulong)(1);
-                    insert += (ulong)(1);
-                    if (((B_count >= sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B))))
-                        break;
-                }
-            }
-        }
-        sort_block__blockSwap__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, buffer.start + A_count, A.start + insert, sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A) - A_count);
-    }
-
-
-
-    public static unsafe void sort_block__mergeInPlace__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvN__B93DF49982A533FAA95D8E8AE58FACC7EC35FA2EB6E354E5902A24E0E52414FE__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data> items, sort_block__Range A_arg, sort_block__Range B_arg)
-    {
-        if (((((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A_arg) == 0UL)) || ((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B_arg) == 0UL)))))
-            return;
-        sort_block__Range A = A_arg;
-        sort_block__Range B = B_arg;
-        while (true)
-        {
-            ulong mid = sort_block__binaryFirst__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNa__0AB16217DBEF2A9D139D1F90BD267EA47E70EB7FD4EF8624DC85912A7540CCDB__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, items.Ptr[A.start], B);
-            ulong amount = mid - A.end;
-            mem__rotate__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data>(items.Ptr + A.start, (ulong)(mid - A.start)), sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A));
-            if (((B.end == mid)))
-                break;
-            B.start = mid;
-            A = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A.start + amount, B.start);
-            A.start = sort_block__binaryLast__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNam__5852D28F0FC3D0BE8371DCAB1458890722D4584AACB084120958F32F17837583__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, items.Ptr[A.start], A);
-            if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A) == 0UL)))
-                break;
-        }
-    }
-
-
-
-    public static unsafe ulong sort_block__findFirstForward__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map____BAA5D9D4832BE2E3DE9DB0B50EFDCC79911AA2E6C597478F1BE5EA6890F9D3C7__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data> items, multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data value, sort_block__Range range, ulong unique)
-    {
-        if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range) == 0UL)))
-            return range.start;
-        ulong skip = ZigMath.Max(sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range) / unique, (ulong)1);
-        ulong index = range.start + skip;
-        for (; ((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[index - (ulong)(1)], value)))) != 0); index += skip)
-        {
-            if (((index >= range.end - skip)))
-            {
-                return sort_block__binaryFirst__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNa__0AB16217DBEF2A9D139D1F90BD267EA47E70EB7FD4EF8624DC85912A7540CCDB__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, value, sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(index, range.end));
-            }
-        }
-        return sort_block__binaryFirst__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNa__0AB16217DBEF2A9D139D1F90BD267EA47E70EB7FD4EF8624DC85912A7540CCDB__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, value, sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(index - skip, index));
-    }
-
-
-
-    public static unsafe ulong sort_block__findLastBackward__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map____A1573D74D3CBD2EEFF8C0270DF218F706FC7837DDFB796D3B6FF2ECBCB182FFF__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data> items, multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Data value, sort_block__Range range, ulong unique)
-    {
-        if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range) == 0UL)))
-            return range.start;
-        ulong skip = ZigMath.Max(sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range) / unique, (ulong)1);
-        ulong index = range.end - skip;
-        for (; ((((index > range.start)) && ((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNameHashContext_0__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(value, items.Ptr[index - (ulong)(1)])))) != 0))); index -= skip)
-        {
-            if (((index < range.start + skip)))
-            {
-                return sort_block__binaryLast__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNam__5852D28F0FC3D0BE8371DCAB1458890722D4584AACB084120958F32F17837583__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, value, sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range.start, index));
-            }
-        }
-        return sort_block__binaryLast__multi_array_list__MultiArrayList__array_hash_map__Custom____const_unsigned_charpa0___const_unsigned_charpa0_process_Environ__Map__EnvNam__5852D28F0FC3D0BE8371DCAB1458890722D4584AACB084120958F32F17837583__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, value, sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(index, index + skip));
-    }
-
-
-
-    public static unsafe void sort_block__swap__multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data_void_multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data> items, byte* order, ulong x, ulong y)
-    {
-        if (((((unchecked((int)(multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[y], items.Ptr[x])))) != 0) || (((((order)[x] > (order)[y])) && (!(((unchecked((int)(multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[x], items.Ptr[y])))) != 0) )     ))))))
-        {
-            mem__swap__multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&items.Ptr[x], &items.Ptr[y]);
-            mem__swap__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&(order)[x], &(order)[y]);
-        }
-    }
-
-
-
-    public static unsafe void sort_block__mergeInto__multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data_void_multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data> from, sort_block__Range A, sort_block__Range B, Slice<multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data> into)
-    {
-        ulong A_index = A.start;
-        ulong B_index = B.start;
-        ulong A_last = A.end;
-        ulong B_last = B.end;
-        ulong insert_index = 0;
-        while (true)
-        {
-            if ((!(((unchecked((int)(multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(from.Ptr[B_index], from.Ptr[A_index])))) != 0) )     ))
-            {
-                into.Ptr[insert_index] = from.Ptr[A_index];
-                A_index += (ulong)(1);
-                insert_index += (ulong)(1);
-                if (((A_index == A_last)))
-                {
-                    Slice<multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data> from_b = new Slice<multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data>(from.Ptr + B_index, (ulong)(B_last - B_index));
-                    ZigMem.CopyForwards<multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data>(new Slice<multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data>(new Slice<multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data>(into.Ptr + insert_index, into.Len - (ulong)insert_index).Ptr + 0, (ulong)(from_b.Len - (ulong)(0))), from_b);
-                    break;
-                }
-            }
-            else
-            {
-                into.Ptr[insert_index] = from.Ptr[B_index];
-                B_index += (ulong)(1);
-                insert_index += (ulong)(1);
-                if (((B_index == B_last)))
-                {
-                    Slice<multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data> from_a = new Slice<multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data>(from.Ptr + A_index, (ulong)(A_last - A_index));
-                    ZigMem.CopyForwards<multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data>(new Slice<multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data>(new Slice<multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data>(into.Ptr + insert_index, into.Len - (ulong)insert_index).Ptr + 0, (ulong)(from_a.Len - (ulong)(0))), from_a);
-                    break;
-                }
-            }
-        }
-    }
-
-
-
-    public static unsafe void sort_block__mergeExternal__multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data_void_multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data> items, sort_block__Range A, sort_block__Range B, Slice<multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data> cache)
-    {
-        ulong A_index = 0;
-        ulong B_index = B.start;
-        ulong insert_index = A.start;
-        ulong A_last = sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A);
-        ulong B_last = B.end;
-        if (((((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B) > 0UL)) && ((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A) > 0UL)))))
-        {
-            while (true)
-            {
-                if ((!(((unchecked((int)(multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[B_index], cache.Ptr[A_index])))) != 0) )     ))
-                {
-                    items.Ptr[insert_index] = cache.Ptr[A_index];
-                    A_index += (ulong)(1);
-                    insert_index += (ulong)(1);
-                    if (((A_index == A_last)))
-                        break;
-                }
-                else
-                {
-                    items.Ptr[insert_index] = items.Ptr[B_index];
-                    B_index += (ulong)(1);
-                    insert_index += (ulong)(1);
-                    if (((B_index == B_last)))
-                        break;
-                }
-            }
-        }
-        Slice<multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data> cache_a = new Slice<multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data>(cache.Ptr + A_index, (ulong)(A_last - A_index));
-        ZigMem.CopyForwards<multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data>(new Slice<multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data>(new Slice<multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data>(items.Ptr + insert_index, items.Len - (ulong)insert_index).Ptr + 0, (ulong)(cache_a.Len - (ulong)(0))), cache_a);
-    }
-
-
-
-    public static unsafe ulong sort_block__findLastForward__multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data_void_multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data> items, multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data value, sort_block__Range range, ulong unique)
-    {
-        if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range) == 0UL)))
-            return range.start;
-        ulong skip = ZigMath.Max(sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range) / unique, (ulong)1);
-        ulong index = range.start + skip;
-        for (; (!(((unchecked((int)(multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(value, items.Ptr[index - (ulong)(1)])))) != 0) )     ); index += skip)
-        {
-            if (((index >= range.end - skip)))
-            {
-                return sort_block__binaryLast__multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data_void_multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, value, sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(index, range.end));
-            }
-        }
-        return sort_block__binaryLast__multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data_void_multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, value, sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(index - skip, index));
-    }
-
-
-
-    public static unsafe ulong sort_block__findFirstBackward__multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data_void_multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data> items, multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data value, sort_block__Range range, ulong unique)
-    {
-        if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range) == 0UL)))
-            return range.start;
-        ulong skip = ZigMath.Max(sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range) / unique, (ulong)1);
-        ulong index = range.end - skip;
-        for (; ((((index > range.start)) && (!(((unchecked((int)(multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[index - (ulong)(1)], value)))) != 0) )     ))); index -= skip)
-        {
-            if (((index < range.start + skip)))
-            {
-                return sort_block__binaryFirst__multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data_void_multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, value, sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range.start, index));
-            }
-        }
-        return sort_block__binaryFirst__multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data_void_multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, value, sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(index, index + skip));
-    }
-
-
-
-    public static unsafe void sort_block__blockSwap__multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data> items, ulong start1, ulong start2, ulong block_size)
-    {
-        ulong index = 0;
-        for (; ((index < block_size)); index += (ulong)(1))
-        {
-            mem__swap__multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&items.Ptr[start1 + index], &items.Ptr[start2 + index]);
-        }
-    }
-
-
-
-    public static unsafe ulong sort_block__binaryFirst__multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data_void_multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data> items, multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data value, sort_block__Range range)
-    {
-        ulong curr = range.start;
-        ulong size = sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range);
-        if (((range.start >= range.end)))
-            return range.end;
-        while (((size > 0UL)))
-        {
-            ulong offset = size % 2UL;
-            size /= (ulong)(2);
-            multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data mid_item = items.Ptr[curr + size];
-            if (((unchecked((int)(multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(mid_item, value)))) != 0))
-            {
-                curr += size + offset;
-            }
-        }
-        return curr;
-    }
-
-
-
-    public static unsafe void sort_block__mergeInternal__multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data_void_multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data> items, sort_block__Range A, sort_block__Range B, sort_block__Range buffer)
-    {
-        ulong A_count = 0;
-        ulong B_count = 0;
-        ulong insert = 0;
-        if (((((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B) > 0UL)) && ((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A) > 0UL)))))
-        {
-            while (true)
-            {
-                if ((!(((unchecked((int)(multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[B.start + B_count], items.Ptr[buffer.start + A_count])))) != 0) )     ))
-                {
-                    mem__swap__multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&items.Ptr[A.start + insert], &items.Ptr[buffer.start + A_count]);
-                    A_count += (ulong)(1);
-                    insert += (ulong)(1);
-                    if (((A_count >= sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A))))
-                        break;
-                }
-                else
-                {
-                    mem__swap__multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&items.Ptr[A.start + insert], &items.Ptr[B.start + B_count]);
-                    B_count += (ulong)(1);
-                    insert += (ulong)(1);
-                    if (((B_count >= sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B))))
-                        break;
-                }
-            }
-        }
-        sort_block__blockSwap__multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, buffer.start + A_count, A.start + insert, sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A) - A_count);
-    }
-
-
-
-    public static unsafe void sort_block__mergeInPlace__multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data_void_multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data> items, sort_block__Range A_arg, sort_block__Range B_arg)
-    {
-        if (((((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A_arg) == 0UL)) || ((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B_arg) == 0UL)))))
-            return;
-        sort_block__Range A = A_arg;
-        sort_block__Range B = B_arg;
-        while (true)
-        {
-            ulong mid = sort_block__binaryFirst__multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data_void_multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, items.Ptr[A.start], B);
-            ulong amount = mid - A.end;
-            mem__rotate__multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(new Slice<multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data>(items.Ptr + A.start, (ulong)(mid - A.start)), sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A));
-            if (((B.end == mid)))
-                break;
-            B.start = mid;
-            A = sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A.start + amount, B.start);
-            A.start = sort_block__binaryLast__multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data_void_multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, items.Ptr[A.start], A);
-            if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A) == 0UL)))
-                break;
-        }
-    }
-
-
-
-    public static unsafe ulong sort_block__findFirstForward__multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data_void_multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data> items, multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data value, sort_block__Range range, ulong unique)
-    {
-        if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range) == 0UL)))
-            return range.start;
-        ulong skip = ZigMath.Max(sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range) / unique, (ulong)1);
-        ulong index = range.start + skip;
-        for (; ((unchecked((int)(multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[index - (ulong)(1)], value)))) != 0); index += skip)
-        {
-            if (((index >= range.end - skip)))
-            {
-                return sort_block__binaryFirst__multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data_void_multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, value, sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(index, range.end));
-            }
-        }
-        return sort_block__binaryFirst__multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data_void_multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, value, sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(index - skip, index));
-    }
-
-
-
-    public static unsafe ulong sort_block__findLastBackward__multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data_void_multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data> items, multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data value, sort_block__Range range, ulong unique)
-    {
-        if (((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range) == 0UL)))
-            return range.start;
-        ulong skip = ZigMath.Max(sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range) / unique, (ulong)1);
-        ulong index = range.end - skip;
-        for (; ((((index > range.start)) && ((unchecked((int)(multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(value, items.Ptr[index - (ulong)(1)])))) != 0))); index -= skip)
-        {
-            if (((index < range.start + skip)))
-            {
-                return sort_block__binaryLast__multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data_void_multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, value, sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(range.start, index));
-            }
-        }
-        return sort_block__binaryLast__multi_array_list__MultiArrayList__formatter_2__CodepointMap__Data_void_multi_array_list__MultiArrayList__formatter_2__CodepointMap__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items, value, sort_block__Range_init__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(index, index + skip));
-    }
-
-
-
-    public static unsafe void sort_block__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_t__59AA42B8D59393B9D19A9C06FC60D9FAFD922578C2CF415311355FE769707EE0__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Data> items, byte* order, ulong x, ulong y)
-    {
-        if (((((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[y], items.Ptr[x])))) != 0) || (((((order)[x] > (order)[y])) && (!(((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[x], items.Ptr[y])))) != 0) )     ))))))
-        {
-            mem__swap__multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Data__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&items.Ptr[x], &items.Ptr[y]);
-            mem__swap__u8__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(&(order)[x], &(order)[y]);
-        }
-    }
-
-
-
-    public static unsafe void sort_block__mergeInto__multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid___69854247C6081B5ECFFDD60B8DE643F9C257776E4056BE45FC592024DFFB8539__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Data> from, sort_block__Range A, sort_block__Range B, Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Data> into)
-    {
-        ulong A_index = A.start;
-        ulong B_index = B.start;
-        ulong A_last = A.end;
-        ulong B_last = B.end;
-        ulong insert_index = 0;
-        while (true)
-        {
-            if ((!(((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(from.Ptr[B_index], from.Ptr[A_index])))) != 0) )     ))
-            {
-                into.Ptr[insert_index] = from.Ptr[A_index];
-                A_index += (ulong)(1);
-                insert_index += (ulong)(1);
-                if (((A_index == A_last)))
-                {
-                    Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Data> from_b = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Data>(from.Ptr + B_index, (ulong)(B_last - B_index));
-                    ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Data>(into.Ptr + insert_index, into.Len - (ulong)insert_index).Ptr + 0, (ulong)(from_b.Len - (ulong)(0))), from_b);
-                    break;
-                }
-            }
-            else
-            {
-                into.Ptr[insert_index] = from.Ptr[B_index];
-                B_index += (ulong)(1);
-                insert_index += (ulong)(1);
-                if (((B_index == B_last)))
-                {
-                    Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Data> from_a = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Data>(from.Ptr + A_index, (ulong)(A_last - A_index));
-                    ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Data>(into.Ptr + insert_index, into.Len - (ulong)insert_index).Ptr + 0, (ulong)(from_a.Len - (ulong)(0))), from_a);
-                    break;
-                }
-            }
-        }
-    }
-
-
-
-    public static unsafe void sort_block__mergeExternal__multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_g__D7C6EE8D36459580F330640A1B4150976C436F71B54FF624AF46628FACCC00CF__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Data> items, sort_block__Range A, sort_block__Range B, Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Data> cache)
-    {
-        ulong A_index = 0;
-        ulong B_index = B.start;
-        ulong insert_index = A.start;
-        ulong A_last = sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A);
-        ulong B_last = B.end;
-        if (((((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(B) > 0UL)) && ((sort_block__Range_length__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(A) > 0UL)))))
-        {
-            while (true)
-            {
-                if ((!(((unchecked((int)(multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Sort_lessThan__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0(items.Ptr[B_index], cache.Ptr[A_index])))) != 0) )     ))
-                {
-                    items.Ptr[insert_index] = cache.Ptr[A_index];
-                    A_index += (ulong)(1);
-                    insert_index += (ulong)(1);
-                    if (((A_index == A_last)))
-                        break;
-                }
-                else
-                {
-                    items.Ptr[insert_index] = items.Ptr[B_index];
-                    B_index += (ulong)(1);
-                    insert_index += (ulong)(1);
-                    if (((B_index == B_last)))
-                        break;
-                }
-            }
-        }
-        Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Data> cache_a = new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Data>(cache.Ptr + A_index, (ulong)(A_last - A_index));
-        ZigMem.CopyForwards<multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Data>(new Slice<multi_array_list__MultiArrayList__array_hash_map__Custom__p_grid_ref_tracked__TrackedGridRefpa0_void_array_hash_map__AutoContext__p_grid_ref_tracked__TrackedGridRefpa0_0__Data__Data>(items.Ptr + insert_index, items.Len - (ulong)insert_index).Ptr + 0, (ulong)(cache_a.Len - (ulong)(0))), cache_a);
     }
 
 

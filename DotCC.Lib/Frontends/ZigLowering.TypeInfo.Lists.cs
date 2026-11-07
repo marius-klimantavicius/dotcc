@@ -607,6 +607,11 @@ internal sealed partial class ZigLowering
                 "zig `@field`: the field name must be a comptime string — a literal, or an `inline for` capture "
                 + $"over a member list ({_module?.Path ?? _fileStem}:{bargs[1].Position.Line}, function '{_currentFnName}')");
         }
+        // A module namespace is not a runtime value. A computed, known name
+        // selects the same owner-scoped constant as ordinary module.member.
+        if (!IsCuratedStdPath(bargs[0]) && FieldBaseModule(bargs[0]) is { } namespaceOwner
+            && namespaceOwner.LowerExportedValueConst(fieldName) is { } namespaceValue)
+            return namespaceValue;
         // `@field(T, name)` with `T` an enum TYPE (std.meta.stringToEnum's `.{ name, @field(T, name) }`, task #116): the member
         // it names, as `T.name` is. `T` may be a type const of an enclosing container (std.MultiArrayList.Slice.swap's
         // `@field(Field, field_name)`, `Field` declared on the instance, task #108).

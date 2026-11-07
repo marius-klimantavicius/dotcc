@@ -1,0 +1,32 @@
+{
+  "checks": [
+    {
+      "stage": "compile",
+      "argv": [
+        "cc",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-I/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/include",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/boundary/api-delta-probe.c",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/native/install/lib/libghostty-vt.a",
+        "-lm",
+        "-o",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/boundary/api-delta-probe"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "stage": "run",
+      "argv": [
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/boundary/api-delta-probe"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS color-scheme-report uint8-buffer=ESC[?997;1n\nPASS mode-report uint8-buffer=ESC[?25;1$y\nPASS size-report const-size-pointer=ESC[8;24;80t null=INVALID_VALUE\nPASS sgr const-attribute-pointer=bold\nPASS osc data-result=SUCCESS,NO_VALUE,UNSUPPORTED title=GhosttyString\nPASS viewport return=SUCCESS renamed-bottom-tag\nPASS formatter constructor=3-args option-set=unwrapped allocator=balanced\nRESULT api-delta-cases=7 passed=7 failed=0\n",
+      "stderr": ""
+    }
+  ]
+}

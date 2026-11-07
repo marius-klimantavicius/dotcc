@@ -30,6 +30,7 @@ using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633763323230643365
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633363613433626363 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c3ca43bcc;
 using __DotCcEnum_76616C6772696E645F5F436C69656E7452657175657374 = global::Managed.GhosttyVt.valgrind__ClientRequest;
 using __DotCcEnum_506167654C6973745F5F4E6F64655F5F446174615F546167 = global::Managed.GhosttyVt.PageList__Node__Data_Tag;
+using __DotCcEnum_72656E6465725F5F5365744F7074696F6E = global::Managed.GhosttyVt.render__SetOption;
 using __DotCcEnum_6465766963655F617474726962757465735F5F436F6E666F726D616E63654C6576656C = global::Managed.GhosttyVt.device_attributes__ConformanceLevel;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636164343962373363 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_cad49b73c;
 using __DotCcEnum_506167654C6973745F5F5363726F6C6C5F546167 = global::Managed.GhosttyVt.PageList__Scroll_Tag;
@@ -40,6 +41,7 @@ using __DotCcEnum_5461726765745F5F416269 = global::Managed.GhosttyVt.Target__Abi
 using __DotCcEnum_53637265656E5F5F5F5F416E6F6E456E756D30 = global::Managed.GhosttyVt.Screen____AnonEnum0;
 using __DotCcEnum_6D6574615F5F4669656C64456E756D5F5F506167654C6973745F5F4C696D697473 = global::Managed.GhosttyVt.meta__FieldEnum__PageList__Limits;
 using __DotCcEnum_72656E6465725F5F526F7744617461 = global::Managed.GhosttyVt.render__RowData;
+using __DotCcEnum_72656E6465725F5F526F774F7074696F6E = global::Managed.GhosttyVt.render__RowOption;
 using __DotCcEnum_6F73635F325F5F5061727365725F5F5374617465 = global::Managed.GhosttyVt.osc_2__Parser__State;
 using __DotCcEnum_646E645F636F6D6D616E645F5F526571756573745F546167 = global::Managed.GhosttyVt.dnd_command__Request_Tag;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633566353337626532 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c5f537be2;
@@ -49,6 +51,7 @@ using __DotCcEnum_5461726765745F5F4F735F5F57696E646F777356657273696F6E = global:
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633336613366316236 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c36a3f1b6;
 using __DotCcEnum_5465726D696E616C5F5F5F5F416E6F6E456E756D30 = global::Managed.GhosttyVt.Terminal____AnonEnum0;
 using __DotCcEnum_506167654C6973745F5F496E6372656173654361706163697479 = global::Managed.GhosttyVt.PageList__IncreaseCapacity;
+using __DotCcEnum_53637265656E5F5F5F5F416E6F6E456E756D33 = global::Managed.GhosttyVt.Screen____AnonEnum3;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636661643537633037 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_cfad57c07;
 using __DotCcEnum_686561705F4172656E61416C6C6F6361746F725F5F50757368526573756C745F546167 = global::Managed.GhosttyVt.heap_ArenaAllocator__PushResult_Tag;
 using __DotCcEnum_6D6174685F5F4F72646572 = global::Managed.GhosttyVt.math__Order;
@@ -86,13 +89,13 @@ using __DotCcEnum_7367725F5F4174747269627574655F5F556E6465726C696E65 = global::M
 using __DotCcEnum_646E645F726573706F6E73655F5F456E636F64696E67 = global::Managed.GhosttyVt.dnd_response__Encoding;
 using __DotCcEnum_726573756C745F5F526573756C74 = global::Managed.GhosttyVt.result__Result;
 using __DotCcEnum_53637265656E5F5F5F5F416E6F6E456E756D32 = global::Managed.GhosttyVt.Screen____AnonEnum2;
+using __DotCcEnum_7379735F5F4F7074696F6E = global::Managed.GhosttyVt.sys__Option;
 using __DotCcEnum_6170635F5F53746174655F546167 = global::Managed.GhosttyVt.apc__State_Tag;
 using __DotCcEnum_5461726765745F5F4F626A656374466F726D6174 = global::Managed.GhosttyVt.Target__ObjectFormat;
 using __DotCcEnum_5061727365725F5F416374696F6E5F546167 = global::Managed.GhosttyVt.Parser__Action_Tag;
 using __DotCcEnum_496F5F46696C655F5265616465725F5F4D6F6465 = global::Managed.GhosttyVt.Io_File_Reader__Mode;
 using __DotCcEnum_686561705F4172656E61416C6C6F6361746F725F5F52657365744D6F64655F546167 = global::Managed.GhosttyVt.heap_ArenaAllocator__ResetMode_Tag;
 using __DotCcEnum_7374796C655F325F5F5374796C655F5F436F6C6F725F5F546167 = global::Managed.GhosttyVt.style_2__Style__Color__Tag;
-using __DotCcEnum_5465726D696E616C5F5F5072696E74536C6963655769647468 = global::Managed.GhosttyVt.Terminal__PrintSliceWidth;
 using __DotCcEnum_6465766963655F617474726962757465735F5F5072696D6172795F5F46656174757265 = global::Managed.GhosttyVt.device_attributes__Primary__Feature;
 using __DotCcEnum_5461726765745F68657861676F6E5F5F46656174757265 = global::Managed.GhosttyVt.Target_hexagon__Feature;
 using __DotCcEnum_636F6C6F725F335F5F5370656369616C = global::Managed.GhosttyVt.color_3__Special;
@@ -116,8 +119,8 @@ using __DotCcEnum_6463735F5F436F6D6D616E645F5F44454352515353 = global::Managed.G
 using __DotCcEnum_76616C6772696E645F6D656D636865636B5F5F436C69656E7452657175657374 = global::Managed.GhosttyVt.valgrind_memcheck__ClientRequest;
 using __DotCcEnum_61727261795F686173685F6D61705F5F4361706163697479496E64657854797065 = global::Managed.GhosttyVt.array_hash_map__CapacityIndexType;
 using __DotCcEnum_496F5F46696C655F5F4B696E64 = global::Managed.GhosttyVt.Io_File__Kind;
+using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633164613662336138 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c1da6b3a8;
 using __DotCcEnum_6F73635F325F5F5061727365725F5F436170747572655F5F4261636B696E675F546167 = global::Managed.GhosttyVt.osc_2__Parser__Capture__Backing_Tag;
-using __DotCcEnum_72656E6465725F5F437572736F7256697375616C5374796C65 = global::Managed.GhosttyVt.render__CursorVisualStyle;
 using __DotCcEnum_736F72745F7064715F5F48696E74 = global::Managed.GhosttyVt.sort_pdq__Hint;
 using __DotCcEnum_636C6970626F6172645F325F5F526561645F5F526573756C745F546167 = global::Managed.GhosttyVt.clipboard_2__Read__Result_Tag;
 using __DotCcEnum_616E73695F5F4330 = global::Managed.GhosttyVt.ansi__C0;
@@ -126,7 +129,6 @@ using __DotCcEnum_636F6C6F725F5F4F7065726174696F6E = global::Managed.GhosttyVt.c
 using __DotCcEnum_6B697474795F636C6970626F6172645F70726F746F636F6C5F5F537461747573 = global::Managed.GhosttyVt.kitty_clipboard_protocol__Status;
 using __DotCcEnum_6170635F5F50726F746F636F6C = global::Managed.GhosttyVt.apc__Protocol;
 using __DotCcEnum_73656D616E7469635F70726F6D70745F5F436F6D6D616E645F5F416374696F6E = global::Managed.GhosttyVt.semantic_prompt__Command__Action;
-using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633430323464633238 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c4024dc28;
 using __DotCcEnum_70726F6772616D5F7374617475735F5F436F6D6D616E645F546167 = global::Managed.GhosttyVt.program_status__Command_Tag;
 using __DotCcEnum_636F6C6F725F335F5F4B696E645F546167 = global::Managed.GhosttyVt.color_3__Kind_Tag;
 using __DotCcEnum_6373695F5F4572617365446973706C6179 = global::Managed.GhosttyVt.csi__EraseDisplay;
@@ -138,10 +140,10 @@ using __DotCcEnum_6772617068656D655F5F4772617068656D655769647468456666656374 = g
 using __DotCcEnum_6373695F5F45726173654C696E65 = global::Managed.GhosttyVt.csi__EraseLine;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636130376336633233 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_ca07c6c23;
 using __DotCcEnum_506167654C6973745F5F5F5F416E6F6E556E696F6E305F546167 = global::Managed.GhosttyVt.PageList____AnonUnion0_Tag;
+using __DotCcEnum_74797065735F335F5F437572736F725374796C65 = global::Managed.GhosttyVt.types_3__CursorStyle;
 using __DotCcEnum_666D745F5F416C69676E6D656E74 = global::Managed.GhosttyVt.fmt__Alignment;
 using __DotCcEnum_6275696C645F696E666F5F5F4275696C64496E666F = global::Managed.GhosttyVt.build_info__BuildInfo;
 using __DotCcEnum_506167654C6973745F5F496E6372656D656E74616C436F6D7072657373696F6E526573756C74 = global::Managed.GhosttyVt.PageList__IncrementalCompressionResult;
-using __DotCcEnum_7374796C655F5F436F6C6F72546167 = global::Managed.GhosttyVt.style__ColorTag;
 using __DotCcEnum_506167654C6973745F5F56696577706F72745F546167 = global::Managed.GhosttyVt.PageList__Viewport_Tag;
 using __DotCcEnum_496F5F4469725F5F5265616465725F5F5374617465 = global::Managed.GhosttyVt.Io_Dir__Reader__State;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633834366562383534 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c846eb854;
@@ -162,7 +164,6 @@ using __DotCcEnum_506167654C6973745F5F436F6D7072657373696F6E536372617463685F5461
 using __DotCcEnum_53656C656374696F6E5F5F426F756E64735F546167 = global::Managed.GhosttyVt.Selection__Bounds_Tag;
 using __DotCcEnum_636C6970626F6172645F325F5F57726974655F5F526573756C745F546167 = global::Managed.GhosttyVt.clipboard_2__Write__Result_Tag;
 using __DotCcEnum_6F73635F325F5F5465726D696E61746F72 = global::Managed.GhosttyVt.osc_2__Terminator;
-using __DotCcEnum_7465726D696E616C5F5F5465726D696E616C437572736F725374796C65 = global::Managed.GhosttyVt.terminal__TerminalCursorStyle;
 using __DotCcEnum_506167654C6973745F5F506167654974657261746F725F5F4C696D69745F546167 = global::Managed.GhosttyVt.PageList__PageIterator__Limit_Tag;
 using __DotCcEnum_6C616E675F5F456E6469616E = global::Managed.GhosttyVt.lang__Endian;
 using __DotCcEnum_686561705F5F5F5F416E6F6E556E696F6E305F546167 = global::Managed.GhosttyVt.heap____AnonUnion0_Tag;
@@ -180,7 +181,9 @@ using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633332396663356139
 using __DotCcEnum_6170635F5F436F6D6D616E645F546167 = global::Managed.GhosttyVt.apc__Command_Tag;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636433333364643464 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_cd333dd4d;
 using __DotCcEnum_68797065726C696E6B5F5F50616765456E7472795F5F49645F546167 = global::Managed.GhosttyVt.hyperlink__PageEntry__Id_Tag;
+using __DotCcEnum_666F726D61747465725F5F4F7074696F6E = global::Managed.GhosttyVt.formatter__Option;
 using __DotCcEnum_6F73635F5F436F6D6D616E6444617461 = global::Managed.GhosttyVt.osc__CommandData;
+using __DotCcEnum_7465726D696E616C5F5F4F7074696F6E = global::Managed.GhosttyVt.terminal__Option;
 using __DotCcEnum_706167655F5F43656C6C5F5F53656D616E746963436F6E74656E74 = global::Managed.GhosttyVt.page__Cell__SemanticContent;
 using __DotCcEnum_706167655F5F526F775F5F53656D616E74696350726F6D7074 = global::Managed.GhosttyVt.page__Row__SemanticPrompt;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633437333233396563 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c473239ec;
@@ -210,6 +213,7 @@ using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633363643637393664
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633838303663616564 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c8806caed;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633562326163383131 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c5b2ac811;
 using __DotCcEnum_68797065726C696E6B5F5F48797065726C696E6B5F5F49645F546167 = global::Managed.GhosttyVt.hyperlink__Hyperlink__Id_Tag;
+using __DotCcEnum_5465726D696E616C5F5F5072696E74536C6963654D69786564526F775F5F53746F70 = global::Managed.GhosttyVt.Terminal__PrintSliceMixedRow__Stop;
 using __DotCcEnum_635F5F5F5F416E6F6E456E756D31 = global::Managed.GhosttyVt.c____AnonEnum1;
 using __DotCcEnum_666D745F5F43617365 = global::Managed.GhosttyVt.fmt__Case;
 using __DotCcEnum_78745F636865636B73756D5F5F56616C75655F546167 = global::Managed.GhosttyVt.xt_checksum__Value_Tag;
@@ -226,67 +230,595 @@ using __DotCcEnum_5465726D696E616C5F5F446563636F6C6D4D6F6465 = global::Managed.G
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F633262643762326166 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_c2bd7b2af;
 using __DotCcEnum_72656E6465725F5F526F7743656C6C7344617461 = global::Managed.GhosttyVt.render__RowCellsData;
 using __DotCcEnum_656E756D5F5F456E756D5F5F6331636431306664365F636630373331306539 = global::Managed.GhosttyVt.enum__Enum__c1cd10fd6_cf07310e9;
-using __DotCcEnum_5F5F446F744363547970656465665F34363336323630304243383945323145354234343735414539333242333836343046463531454546393044433731364645303732383746333544313844464434 = global::Managed.GhosttyVt.GhosttyPointTag;
-using __DotCcEnum_5F5F446F744363547970656465665F38453938394341423537343643374443394441454641333130393838363945344542443445423534384635354339323131454534343334343937393039433030 = global::Managed.GhosttyVt.GhosttyTerminalData;
-using __DotCcEnum_5F5F446F744363547970656465665F35424345333530373346314534354637304138443832424132424541383445453036373836383530353132344631313838433532393036363644383545333237 = global::Managed.GhosttyVt.GhosttyCellData;
-using __DotCcEnum_5F5F446F744363547970656465665F43303034443441424233424338313144423537313535393445433345354434323635424239324443303733443239333841413239374231383839424443394333 = global::Managed.GhosttyVt.GhosttyResult;
-using __DotCcEnum_5F5F446F744363547970656465665F34384134363232364635353144443144443032383437454538333644384136373033354239394439463934353844463633383934344137383539413131393341 = global::Managed.GhosttyVt.GhosttyFormatterFormat;
+using __DotCcEnum_5F5F446F744363547970656465665F42343433304439444231373133423442463337353942433732463336343833304138434538304430373237373346423338423245463438354638373034324145 = global::Managed.GhosttyVt.GhosttyResult;
+using __DotCcEnum_5F5F446F744363547970656465665F42393432423136393035383537384536463744353439413132384332363446323836323544433937413445324131363841383533343233333530363945433544 = global::Managed.GhosttyVt.GhosttyPointTag;
+using __DotCcEnum_5F5F446F744363547970656465665F44383133333931433843353335394138414442413938353433363230433636363432353035464446423837373341463337454335383635383333443935394538 = global::Managed.GhosttyVt.GhosttyTerminalData;
+using __DotCcEnum_5F5F446F744363547970656465665F44353335424632413237433246423245304135464634373046434139344436353034454542444646394138463838444636453434333030334643393142303741 = global::Managed.GhosttyVt.GhosttyCellData;
+using __DotCcEnum_5F5F446F744363547970656465665F45313739394335393033333344303646413942333645433635313836453339464242454341414144393434394633453039443837313537424438463246343441 = global::Managed.GhosttyVt.GhosttyFormatterOption;
+using __DotCcEnum_5F5F446F744363547970656465665F45364536453544393039344443313533343543344430414638324245324333354637433942434634364446324233414134383635334135374439413632323638 = global::Managed.GhosttyVt.GhosttyStyleColorTag;
 using __DotCcEnum_446F74636347686F73747479546578745374796C65 = global::Managed.GhosttyVt.DotccGhosttyTextStyle;
-using __DotCcEnum_5F5F446F744363547970656465665F46453531373538343036394442364138303334454138454633344542424634304636383130423745453942424345313931334443444533413633394534443543 = global::Managed.GhosttyVt.GhosttyStyleColorTag;
 using DotCcLiterals = global::Managed.GhosttyVt.GhosttyVtLiterals;
 using DotCcPointers = global::Managed.GhosttyVt.GhosttyVtFunctionPointers;
 
 public static unsafe partial class GhosttyVt
 {
-    public static unsafe modes_2__ModeEntry modes_2__entryForMode__9__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe modes_2__ModeEntry modes_2__entryForMode__32772__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S1194 /*"mouse_event_x10"*/);
+        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S480 /*"insert"*/);
+        {
+            byte* __cl28_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) * 43 + 15];
+            modes_2__ModeEntry* __cl28 = (modes_2__ModeEntry*)(((nuint)__cl28_bytes + 15) & ~(nuint)15);
+            __cl28[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S513 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl28[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S480 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl28[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2667 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
+            __cl28[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1622 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl28[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S814 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl28[5] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/), 10UL), value = 3, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl28[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1043 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl28[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2128 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl28[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3067 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl28[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2710 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl28[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S929 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl28[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1201 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl28[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1954 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl28[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2820 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl28[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S991 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl28[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2832 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl28[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2489 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl28[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1875 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl28[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1283 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl28[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S788 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl28[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1735 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl28[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1012 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl28[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1495 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl28[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1357 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl28[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1672 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl28[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3097 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl28[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S977 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl28[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2633 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl28[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1829 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl28[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S338 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl28[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S203 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl28[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2098 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl28[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1315 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl28[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S395 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl28[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2509 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl28[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3013 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl28[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1878 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl28[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2639 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl28[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2945 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl28[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1474 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl28[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2173 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl28[41] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S127 /*"in_band_size_reports"*/), 20UL), value = 2048, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl28[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1694 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
+            ConstSlice<modes_2__ModeEntry> __s = new ConstSlice<modes_2__ModeEntry>(__cl28, 43UL);
+            for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
+            {
+                byte* __dotcc_aligned_entry_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) + 15];
+                modes_2__ModeEntry* __dotcc_aligned_entry = (modes_2__ModeEntry*)(((nuint)__dotcc_aligned_entry_bytes + 15) & ~(nuint)15);
+                *__dotcc_aligned_entry = __s.Ptr[__i];
+                {
+                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S480 /*"insert"*/), 6UL))))
+                        return (*__dotcc_aligned_entry);
+                }
+            }
+        }
+        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+    }
+
+
+
+    public static unsafe modes_2__ModeEntry modes_2__entryForMode__32780__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S2667 /*"send_receive_mode"*/);
+        {
+            byte* __cl29_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) * 43 + 15];
+            modes_2__ModeEntry* __cl29 = (modes_2__ModeEntry*)(((nuint)__cl29_bytes + 15) & ~(nuint)15);
+            __cl29[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S513 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl29[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S480 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl29[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2667 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
+            __cl29[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1622 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl29[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S814 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl29[5] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/), 10UL), value = 3, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl29[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1043 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl29[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2128 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl29[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3067 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl29[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2710 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl29[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S929 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl29[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1201 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl29[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1954 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl29[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2820 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl29[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S991 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl29[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2832 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl29[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2489 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl29[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1875 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl29[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1283 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl29[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S788 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl29[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1735 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl29[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1012 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl29[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1495 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl29[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1357 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl29[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1672 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl29[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3097 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl29[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S977 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl29[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2633 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl29[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1829 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl29[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S338 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl29[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S203 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl29[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2098 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl29[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1315 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl29[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S395 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl29[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2509 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl29[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3013 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl29[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1878 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl29[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2639 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl29[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2945 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl29[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1474 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl29[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2173 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl29[41] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S127 /*"in_band_size_reports"*/), 20UL), value = 2048, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl29[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1694 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
+            ConstSlice<modes_2__ModeEntry> __s = new ConstSlice<modes_2__ModeEntry>(__cl29, 43UL);
+            for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
+            {
+                byte* __dotcc_aligned_entry_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) + 15];
+                modes_2__ModeEntry* __dotcc_aligned_entry = (modes_2__ModeEntry*)(((nuint)__dotcc_aligned_entry_bytes + 15) & ~(nuint)15);
+                *__dotcc_aligned_entry = __s.Ptr[__i];
+                {
+                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2667 /*"send_receive_mode"*/), 17UL))))
+                        return (*__dotcc_aligned_entry);
+                }
+            }
+        }
+        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+    }
+
+
+
+    public static unsafe modes_2__ModeEntry modes_2__entryForMode__32788__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S1622 /*"linefeed"*/);
+        {
+            byte* __cl30_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) * 43 + 15];
+            modes_2__ModeEntry* __cl30 = (modes_2__ModeEntry*)(((nuint)__cl30_bytes + 15) & ~(nuint)15);
+            __cl30[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S513 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl30[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S480 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl30[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2667 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
+            __cl30[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1622 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl30[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S814 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl30[5] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/), 10UL), value = 3, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl30[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1043 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl30[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2128 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl30[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3067 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl30[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2710 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl30[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S929 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl30[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1201 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl30[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1954 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl30[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2820 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl30[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S991 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl30[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2832 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl30[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2489 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl30[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1875 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl30[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1283 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl30[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S788 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl30[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1735 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl30[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1012 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl30[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1495 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl30[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1357 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl30[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1672 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl30[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3097 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl30[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S977 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl30[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2633 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl30[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1829 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl30[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S338 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl30[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S203 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl30[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2098 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl30[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1315 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl30[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S395 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl30[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2509 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl30[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3013 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl30[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1878 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl30[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2639 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl30[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2945 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl30[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1474 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl30[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2173 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl30[41] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S127 /*"in_band_size_reports"*/), 20UL), value = 2048, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl30[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1694 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
+            ConstSlice<modes_2__ModeEntry> __s = new ConstSlice<modes_2__ModeEntry>(__cl30, 43UL);
+            for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
+            {
+                byte* __dotcc_aligned_entry_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) + 15];
+                modes_2__ModeEntry* __dotcc_aligned_entry = (modes_2__ModeEntry*)(((nuint)__dotcc_aligned_entry_bytes + 15) & ~(nuint)15);
+                *__dotcc_aligned_entry = __s.Ptr[__i];
+                {
+                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1622 /*"linefeed"*/), 8UL))))
+                        return (*__dotcc_aligned_entry);
+                }
+            }
+        }
+        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+    }
+
+
+
+    public static unsafe modes_2__ModeEntry modes_2__entryForMode__1__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S814 /*"cursor_keys"*/);
+        {
+            byte* __cl31_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) * 43 + 15];
+            modes_2__ModeEntry* __cl31 = (modes_2__ModeEntry*)(((nuint)__cl31_bytes + 15) & ~(nuint)15);
+            __cl31[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S513 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl31[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S480 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl31[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2667 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
+            __cl31[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1622 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl31[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S814 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl31[5] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/), 10UL), value = 3, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl31[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1043 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl31[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2128 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl31[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3067 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl31[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2710 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl31[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S929 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl31[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1201 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl31[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1954 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl31[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2820 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl31[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S991 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl31[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2832 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl31[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2489 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl31[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1875 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl31[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1283 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl31[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S788 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl31[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1735 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl31[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1012 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl31[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1495 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl31[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1357 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl31[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1672 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl31[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3097 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl31[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S977 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl31[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2633 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl31[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1829 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl31[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S338 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl31[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S203 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl31[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2098 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl31[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1315 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl31[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S395 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl31[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2509 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl31[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3013 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl31[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1878 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl31[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2639 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl31[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2945 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl31[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1474 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl31[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2173 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl31[41] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S127 /*"in_band_size_reports"*/), 20UL), value = 2048, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl31[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1694 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
+            ConstSlice<modes_2__ModeEntry> __s = new ConstSlice<modes_2__ModeEntry>(__cl31, 43UL);
+            for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
+            {
+                byte* __dotcc_aligned_entry_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) + 15];
+                modes_2__ModeEntry* __dotcc_aligned_entry = (modes_2__ModeEntry*)(((nuint)__dotcc_aligned_entry_bytes + 15) & ~(nuint)15);
+                *__dotcc_aligned_entry = __s.Ptr[__i];
+                {
+                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S814 /*"cursor_keys"*/), 11UL))))
+                        return (*__dotcc_aligned_entry);
+                }
+            }
+        }
+        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+    }
+
+
+
+    public static unsafe modes_2__ModeEntry modes_2__entryForMode__3__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/);
+        {
+            byte* __cl32_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) * 43 + 15];
+            modes_2__ModeEntry* __cl32 = (modes_2__ModeEntry*)(((nuint)__cl32_bytes + 15) & ~(nuint)15);
+            __cl32[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S513 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl32[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S480 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl32[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2667 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
+            __cl32[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1622 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl32[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S814 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl32[5] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/), 10UL), value = 3, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl32[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1043 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl32[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2128 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl32[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3067 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl32[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2710 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl32[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S929 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl32[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1201 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl32[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1954 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl32[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2820 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl32[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S991 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl32[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2832 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl32[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2489 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl32[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1875 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl32[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1283 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl32[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S788 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl32[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1735 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl32[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1012 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl32[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1495 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl32[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1357 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl32[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1672 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl32[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3097 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl32[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S977 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl32[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2633 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl32[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1829 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl32[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S338 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl32[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S203 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl32[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2098 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl32[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1315 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl32[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S395 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl32[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2509 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl32[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3013 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl32[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1878 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl32[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2639 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl32[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2945 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl32[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1474 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl32[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2173 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl32[41] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S127 /*"in_band_size_reports"*/), 20UL), value = 2048, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl32[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1694 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
+            ConstSlice<modes_2__ModeEntry> __s = new ConstSlice<modes_2__ModeEntry>(__cl32, 43UL);
+            for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
+            {
+                byte* __dotcc_aligned_entry_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) + 15];
+                modes_2__ModeEntry* __dotcc_aligned_entry = (modes_2__ModeEntry*)(((nuint)__dotcc_aligned_entry_bytes + 15) & ~(nuint)15);
+                *__dotcc_aligned_entry = __s.Ptr[__i];
+                {
+                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/), 10UL))))
+                        return (*__dotcc_aligned_entry);
+                }
+            }
+        }
+        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+    }
+
+
+
+    public static unsafe modes_2__ModeEntry modes_2__entryForMode__4__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S1043 /*"slow_scroll"*/);
+        {
+            byte* __cl33_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) * 43 + 15];
+            modes_2__ModeEntry* __cl33 = (modes_2__ModeEntry*)(((nuint)__cl33_bytes + 15) & ~(nuint)15);
+            __cl33[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S513 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl33[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S480 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl33[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2667 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
+            __cl33[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1622 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl33[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S814 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl33[5] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/), 10UL), value = 3, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl33[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1043 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl33[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2128 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl33[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3067 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl33[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2710 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl33[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S929 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl33[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1201 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl33[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1954 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl33[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2820 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl33[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S991 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl33[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2832 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl33[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2489 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl33[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1875 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl33[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1283 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl33[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S788 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl33[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1735 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl33[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1012 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl33[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1495 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl33[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1357 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl33[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1672 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl33[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3097 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl33[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S977 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl33[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2633 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl33[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1829 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl33[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S338 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl33[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S203 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl33[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2098 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl33[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1315 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl33[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S395 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl33[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2509 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl33[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3013 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl33[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1878 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl33[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2639 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl33[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2945 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl33[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1474 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl33[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2173 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl33[41] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S127 /*"in_band_size_reports"*/), 20UL), value = 2048, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl33[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1694 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
+            ConstSlice<modes_2__ModeEntry> __s = new ConstSlice<modes_2__ModeEntry>(__cl33, 43UL);
+            for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
+            {
+                byte* __dotcc_aligned_entry_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) + 15];
+                modes_2__ModeEntry* __dotcc_aligned_entry = (modes_2__ModeEntry*)(((nuint)__dotcc_aligned_entry_bytes + 15) & ~(nuint)15);
+                *__dotcc_aligned_entry = __s.Ptr[__i];
+                {
+                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1043 /*"slow_scroll"*/), 11UL))))
+                        return (*__dotcc_aligned_entry);
+                }
+            }
+        }
+        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+    }
+
+
+
+    public static unsafe modes_2__ModeEntry modes_2__entryForMode__5__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S2128 /*"reverse_colors"*/);
+        {
+            byte* __cl34_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) * 43 + 15];
+            modes_2__ModeEntry* __cl34 = (modes_2__ModeEntry*)(((nuint)__cl34_bytes + 15) & ~(nuint)15);
+            __cl34[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S513 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl34[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S480 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl34[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2667 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
+            __cl34[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1622 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl34[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S814 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl34[5] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/), 10UL), value = 3, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl34[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1043 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl34[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2128 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl34[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3067 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl34[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2710 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl34[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S929 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl34[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1201 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl34[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1954 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl34[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2820 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl34[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S991 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl34[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2832 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl34[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2489 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl34[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1875 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl34[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1283 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl34[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S788 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl34[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1735 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl34[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1012 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl34[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1495 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl34[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1357 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl34[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1672 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl34[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3097 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl34[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S977 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl34[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2633 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl34[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1829 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl34[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S338 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl34[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S203 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl34[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2098 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl34[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1315 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl34[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S395 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl34[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2509 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl34[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3013 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl34[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1878 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl34[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2639 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl34[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2945 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl34[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1474 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl34[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2173 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl34[41] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S127 /*"in_band_size_reports"*/), 20UL), value = 2048, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl34[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1694 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
+            ConstSlice<modes_2__ModeEntry> __s = new ConstSlice<modes_2__ModeEntry>(__cl34, 43UL);
+            for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
+            {
+                byte* __dotcc_aligned_entry_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) + 15];
+                modes_2__ModeEntry* __dotcc_aligned_entry = (modes_2__ModeEntry*)(((nuint)__dotcc_aligned_entry_bytes + 15) & ~(nuint)15);
+                *__dotcc_aligned_entry = __s.Ptr[__i];
+                {
+                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2128 /*"reverse_colors"*/), 14UL))))
+                        return (*__dotcc_aligned_entry);
+                }
+            }
+        }
+        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+    }
+
+
+
+    public static unsafe modes_2__ModeEntry modes_2__entryForMode__6__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S3067 /*"origin"*/);
+        {
+            byte* __cl35_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) * 43 + 15];
+            modes_2__ModeEntry* __cl35 = (modes_2__ModeEntry*)(((nuint)__cl35_bytes + 15) & ~(nuint)15);
+            __cl35[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S513 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl35[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S480 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl35[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2667 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
+            __cl35[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1622 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl35[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S814 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl35[5] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/), 10UL), value = 3, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl35[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1043 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl35[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2128 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl35[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3067 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl35[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2710 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl35[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S929 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl35[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1201 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl35[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1954 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl35[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2820 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl35[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S991 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl35[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2832 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl35[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2489 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl35[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1875 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl35[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1283 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl35[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S788 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl35[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1735 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl35[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1012 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl35[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1495 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl35[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1357 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl35[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1672 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl35[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3097 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl35[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S977 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl35[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2633 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl35[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1829 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl35[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S338 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl35[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S203 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl35[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2098 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl35[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1315 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl35[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S395 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl35[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2509 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl35[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3013 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl35[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1878 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl35[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2639 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl35[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2945 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl35[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1474 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl35[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2173 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl35[41] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S127 /*"in_band_size_reports"*/), 20UL), value = 2048, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl35[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1694 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
+            ConstSlice<modes_2__ModeEntry> __s = new ConstSlice<modes_2__ModeEntry>(__cl35, 43UL);
+            for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
+            {
+                byte* __dotcc_aligned_entry_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) + 15];
+                modes_2__ModeEntry* __dotcc_aligned_entry = (modes_2__ModeEntry*)(((nuint)__dotcc_aligned_entry_bytes + 15) & ~(nuint)15);
+                *__dotcc_aligned_entry = __s.Ptr[__i];
+                {
+                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3067 /*"origin"*/), 6UL))))
+                        return (*__dotcc_aligned_entry);
+                }
+            }
+        }
+        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
+    }
+
+
+
+    public static unsafe modes_2__ModeEntry modes_2__entryForMode__7__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
+    {
+        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S2710 /*"wraparound"*/);
         {
             byte* __cl36_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) * 43 + 15];
             modes_2__ModeEntry* __cl36 = (modes_2__ModeEntry*)(((nuint)__cl36_bytes + 15) & ~(nuint)15);
-            __cl36[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S510 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl36[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S477 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl36[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2652 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
-            __cl36[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1612 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl36[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S808 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl36[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S513 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl36[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S480 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl36[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2667 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
+            __cl36[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1622 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl36[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S814 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
             __cl36[5] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/), 10UL), value = 3, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl36[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1037 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl36[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2117 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl36[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3049 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl36[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2694 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl36[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S922 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl36[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1194 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl36[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1943 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl36[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2803 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl36[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S985 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl36[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2814 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl36[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2475 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl36[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1864 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl36[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1276 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl36[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S782 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl36[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1725 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl36[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1006 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl36[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1488 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl36[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1350 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl36[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl36[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3079 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl36[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S971 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl36[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2618 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl36[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1818 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl36[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S335 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl36[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S202 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl36[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2087 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl36[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1308 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl36[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S392 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl36[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2495 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl36[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2995 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl36[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1867 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl36[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2624 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl36[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2927 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl36[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1467 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl36[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2161 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl36[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1043 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl36[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2128 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl36[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3067 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl36[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2710 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl36[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S929 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl36[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1201 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl36[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1954 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl36[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2820 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl36[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S991 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl36[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2832 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl36[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2489 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl36[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1875 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl36[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1283 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl36[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S788 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl36[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1735 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl36[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1012 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl36[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1495 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl36[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1357 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl36[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1672 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl36[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3097 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl36[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S977 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl36[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2633 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl36[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1829 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl36[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S338 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl36[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S203 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl36[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2098 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl36[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1315 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl36[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S395 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl36[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2509 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl36[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3013 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl36[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1878 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl36[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2639 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl36[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2945 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl36[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1474 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl36[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2173 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
             __cl36[41] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S127 /*"in_band_size_reports"*/), 20UL), value = 2048, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl36[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1684 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl36[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1694 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
             ConstSlice<modes_2__ModeEntry> __s = new ConstSlice<modes_2__ModeEntry>(__cl36, 43UL);
             for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
             {
@@ -294,7 +826,7 @@ public static unsafe partial class GhosttyVt
                 modes_2__ModeEntry* __dotcc_aligned_entry = (modes_2__ModeEntry*)(((nuint)__dotcc_aligned_entry_bytes + 15) & ~(nuint)15);
                 *__dotcc_aligned_entry = __s.Ptr[__i];
                 {
-                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1194 /*"mouse_event_x10"*/), 15UL))))
+                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2710 /*"wraparound"*/), 10UL))))
                         return (*__dotcc_aligned_entry);
                 }
             }
@@ -304,55 +836,55 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe modes_2__ModeEntry modes_2__entryForMode__12__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe modes_2__ModeEntry modes_2__entryForMode__8__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S1943 /*"cursor_blinking"*/);
+        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S929 /*"autorepeat"*/);
         {
             byte* __cl37_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) * 43 + 15];
             modes_2__ModeEntry* __cl37 = (modes_2__ModeEntry*)(((nuint)__cl37_bytes + 15) & ~(nuint)15);
-            __cl37[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S510 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl37[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S477 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl37[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2652 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
-            __cl37[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1612 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl37[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S808 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl37[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S513 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl37[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S480 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl37[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2667 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
+            __cl37[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1622 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl37[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S814 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
             __cl37[5] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/), 10UL), value = 3, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl37[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1037 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl37[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2117 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl37[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3049 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl37[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2694 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl37[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S922 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl37[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1194 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl37[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1943 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl37[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2803 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl37[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S985 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl37[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2814 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl37[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2475 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl37[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1864 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl37[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1276 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl37[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S782 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl37[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1725 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl37[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1006 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl37[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1488 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl37[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1350 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl37[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl37[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3079 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl37[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S971 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl37[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2618 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl37[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1818 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl37[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S335 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl37[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S202 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl37[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2087 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl37[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1308 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl37[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S392 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl37[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2495 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl37[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2995 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl37[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1867 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl37[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2624 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl37[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2927 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl37[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1467 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl37[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2161 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl37[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1043 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl37[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2128 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl37[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3067 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl37[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2710 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl37[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S929 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl37[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1201 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl37[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1954 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl37[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2820 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl37[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S991 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl37[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2832 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl37[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2489 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl37[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1875 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl37[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1283 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl37[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S788 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl37[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1735 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl37[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1012 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl37[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1495 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl37[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1357 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl37[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1672 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl37[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3097 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl37[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S977 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl37[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2633 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl37[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1829 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl37[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S338 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl37[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S203 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl37[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2098 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl37[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1315 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl37[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S395 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl37[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2509 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl37[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3013 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl37[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1878 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl37[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2639 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl37[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2945 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl37[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1474 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl37[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2173 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
             __cl37[41] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S127 /*"in_band_size_reports"*/), 20UL), value = 2048, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl37[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1684 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl37[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1694 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
             ConstSlice<modes_2__ModeEntry> __s = new ConstSlice<modes_2__ModeEntry>(__cl37, 43UL);
             for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
             {
@@ -360,7 +892,7 @@ public static unsafe partial class GhosttyVt
                 modes_2__ModeEntry* __dotcc_aligned_entry = (modes_2__ModeEntry*)(((nuint)__dotcc_aligned_entry_bytes + 15) & ~(nuint)15);
                 *__dotcc_aligned_entry = __s.Ptr[__i];
                 {
-                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1943 /*"cursor_blinking"*/), 15UL))))
+                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S929 /*"autorepeat"*/), 10UL))))
                         return (*__dotcc_aligned_entry);
                 }
             }
@@ -370,55 +902,55 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe modes_2__ModeEntry modes_2__entryForMode__25__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe modes_2__ModeEntry modes_2__entryForMode__9__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S2803 /*"cursor_visible"*/);
+        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S1201 /*"mouse_event_x10"*/);
         {
             byte* __cl38_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) * 43 + 15];
             modes_2__ModeEntry* __cl38 = (modes_2__ModeEntry*)(((nuint)__cl38_bytes + 15) & ~(nuint)15);
-            __cl38[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S510 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl38[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S477 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl38[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2652 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
-            __cl38[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1612 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl38[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S808 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl38[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S513 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl38[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S480 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl38[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2667 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
+            __cl38[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1622 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl38[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S814 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
             __cl38[5] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/), 10UL), value = 3, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl38[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1037 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl38[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2117 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl38[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3049 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl38[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2694 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl38[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S922 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl38[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1194 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl38[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1943 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl38[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2803 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl38[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S985 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl38[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2814 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl38[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2475 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl38[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1864 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl38[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1276 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl38[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S782 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl38[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1725 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl38[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1006 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl38[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1488 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl38[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1350 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl38[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl38[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3079 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl38[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S971 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl38[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2618 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl38[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1818 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl38[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S335 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl38[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S202 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl38[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2087 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl38[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1308 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl38[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S392 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl38[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2495 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl38[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2995 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl38[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1867 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl38[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2624 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl38[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2927 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl38[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1467 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl38[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2161 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl38[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1043 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl38[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2128 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl38[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3067 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl38[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2710 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl38[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S929 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl38[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1201 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl38[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1954 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl38[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2820 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl38[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S991 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl38[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2832 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl38[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2489 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl38[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1875 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl38[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1283 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl38[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S788 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl38[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1735 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl38[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1012 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl38[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1495 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl38[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1357 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl38[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1672 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl38[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3097 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl38[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S977 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl38[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2633 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl38[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1829 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl38[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S338 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl38[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S203 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl38[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2098 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl38[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1315 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl38[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S395 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl38[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2509 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl38[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3013 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl38[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1878 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl38[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2639 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl38[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2945 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl38[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1474 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl38[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2173 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
             __cl38[41] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S127 /*"in_band_size_reports"*/), 20UL), value = 2048, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl38[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1684 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl38[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1694 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
             ConstSlice<modes_2__ModeEntry> __s = new ConstSlice<modes_2__ModeEntry>(__cl38, 43UL);
             for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
             {
@@ -426,7 +958,7 @@ public static unsafe partial class GhosttyVt
                 modes_2__ModeEntry* __dotcc_aligned_entry = (modes_2__ModeEntry*)(((nuint)__dotcc_aligned_entry_bytes + 15) & ~(nuint)15);
                 *__dotcc_aligned_entry = __s.Ptr[__i];
                 {
-                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2803 /*"cursor_visible"*/), 14UL))))
+                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1201 /*"mouse_event_x10"*/), 15UL))))
                         return (*__dotcc_aligned_entry);
                 }
             }
@@ -436,55 +968,55 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe modes_2__ModeEntry modes_2__entryForMode__40__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe modes_2__ModeEntry modes_2__entryForMode__12__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S985 /*"enable_mode_3"*/);
+        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S1954 /*"cursor_blinking"*/);
         {
             byte* __cl39_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) * 43 + 15];
             modes_2__ModeEntry* __cl39 = (modes_2__ModeEntry*)(((nuint)__cl39_bytes + 15) & ~(nuint)15);
-            __cl39[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S510 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl39[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S477 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl39[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2652 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
-            __cl39[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1612 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl39[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S808 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl39[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S513 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl39[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S480 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl39[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2667 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
+            __cl39[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1622 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl39[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S814 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
             __cl39[5] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/), 10UL), value = 3, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl39[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1037 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl39[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2117 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl39[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3049 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl39[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2694 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl39[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S922 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl39[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1194 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl39[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1943 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl39[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2803 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl39[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S985 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl39[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2814 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl39[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2475 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl39[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1864 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl39[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1276 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl39[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S782 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl39[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1725 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl39[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1006 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl39[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1488 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl39[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1350 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl39[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl39[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3079 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl39[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S971 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl39[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2618 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl39[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1818 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl39[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S335 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl39[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S202 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl39[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2087 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl39[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1308 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl39[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S392 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl39[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2495 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl39[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2995 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl39[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1867 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl39[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2624 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl39[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2927 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl39[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1467 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl39[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2161 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl39[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1043 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl39[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2128 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl39[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3067 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl39[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2710 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl39[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S929 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl39[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1201 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl39[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1954 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl39[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2820 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl39[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S991 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl39[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2832 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl39[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2489 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl39[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1875 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl39[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1283 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl39[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S788 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl39[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1735 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl39[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1012 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl39[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1495 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl39[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1357 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl39[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1672 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl39[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3097 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl39[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S977 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl39[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2633 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl39[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1829 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl39[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S338 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl39[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S203 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl39[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2098 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl39[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1315 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl39[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S395 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl39[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2509 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl39[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3013 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl39[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1878 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl39[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2639 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl39[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2945 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl39[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1474 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl39[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2173 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
             __cl39[41] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S127 /*"in_band_size_reports"*/), 20UL), value = 2048, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl39[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1684 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl39[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1694 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
             ConstSlice<modes_2__ModeEntry> __s = new ConstSlice<modes_2__ModeEntry>(__cl39, 43UL);
             for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
             {
@@ -492,7 +1024,7 @@ public static unsafe partial class GhosttyVt
                 modes_2__ModeEntry* __dotcc_aligned_entry = (modes_2__ModeEntry*)(((nuint)__dotcc_aligned_entry_bytes + 15) & ~(nuint)15);
                 *__dotcc_aligned_entry = __s.Ptr[__i];
                 {
-                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S985 /*"enable_mode_3"*/), 13UL))))
+                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1954 /*"cursor_blinking"*/), 15UL))))
                         return (*__dotcc_aligned_entry);
                 }
             }
@@ -502,55 +1034,55 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe modes_2__ModeEntry modes_2__entryForMode__45__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe modes_2__ModeEntry modes_2__entryForMode__25__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S2814 /*"reverse_wrap"*/);
+        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S2820 /*"cursor_visible"*/);
         {
             byte* __cl40_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) * 43 + 15];
             modes_2__ModeEntry* __cl40 = (modes_2__ModeEntry*)(((nuint)__cl40_bytes + 15) & ~(nuint)15);
-            __cl40[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S510 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl40[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S477 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl40[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2652 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
-            __cl40[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1612 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl40[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S808 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl40[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S513 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl40[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S480 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl40[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2667 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
+            __cl40[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1622 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl40[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S814 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
             __cl40[5] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/), 10UL), value = 3, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl40[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1037 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl40[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2117 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl40[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3049 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl40[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2694 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl40[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S922 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl40[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1194 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl40[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1943 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl40[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2803 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl40[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S985 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl40[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2814 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl40[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2475 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl40[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1864 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl40[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1276 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl40[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S782 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl40[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1725 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl40[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1006 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl40[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1488 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl40[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1350 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl40[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl40[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3079 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl40[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S971 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl40[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2618 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl40[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1818 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl40[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S335 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl40[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S202 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl40[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2087 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl40[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1308 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl40[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S392 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl40[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2495 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl40[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2995 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl40[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1867 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl40[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2624 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl40[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2927 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl40[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1467 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl40[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2161 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl40[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1043 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl40[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2128 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl40[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3067 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl40[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2710 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl40[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S929 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl40[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1201 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl40[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1954 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl40[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2820 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl40[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S991 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl40[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2832 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl40[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2489 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl40[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1875 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl40[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1283 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl40[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S788 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl40[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1735 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl40[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1012 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl40[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1495 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl40[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1357 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl40[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1672 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl40[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3097 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl40[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S977 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl40[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2633 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl40[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1829 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl40[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S338 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl40[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S203 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl40[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2098 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl40[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1315 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl40[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S395 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl40[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2509 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl40[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3013 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl40[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1878 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl40[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2639 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl40[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2945 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl40[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1474 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl40[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2173 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
             __cl40[41] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S127 /*"in_band_size_reports"*/), 20UL), value = 2048, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl40[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1684 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl40[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1694 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
             ConstSlice<modes_2__ModeEntry> __s = new ConstSlice<modes_2__ModeEntry>(__cl40, 43UL);
             for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
             {
@@ -558,7 +1090,7 @@ public static unsafe partial class GhosttyVt
                 modes_2__ModeEntry* __dotcc_aligned_entry = (modes_2__ModeEntry*)(((nuint)__dotcc_aligned_entry_bytes + 15) & ~(nuint)15);
                 *__dotcc_aligned_entry = __s.Ptr[__i];
                 {
-                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2814 /*"reverse_wrap"*/), 12UL))))
+                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2820 /*"cursor_visible"*/), 14UL))))
                         return (*__dotcc_aligned_entry);
                 }
             }
@@ -568,55 +1100,55 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe modes_2__ModeEntry modes_2__entryForMode__47__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe modes_2__ModeEntry modes_2__entryForMode__40__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S2475 /*"alt_screen_legacy"*/);
+        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S991 /*"enable_mode_3"*/);
         {
             byte* __cl41_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) * 43 + 15];
             modes_2__ModeEntry* __cl41 = (modes_2__ModeEntry*)(((nuint)__cl41_bytes + 15) & ~(nuint)15);
-            __cl41[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S510 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl41[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S477 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl41[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2652 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
-            __cl41[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1612 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl41[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S808 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl41[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S513 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl41[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S480 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl41[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2667 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
+            __cl41[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1622 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl41[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S814 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
             __cl41[5] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/), 10UL), value = 3, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl41[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1037 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl41[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2117 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl41[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3049 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl41[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2694 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl41[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S922 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl41[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1194 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl41[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1943 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl41[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2803 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl41[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S985 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl41[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2814 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl41[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2475 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl41[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1864 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl41[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1276 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl41[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S782 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl41[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1725 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl41[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1006 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl41[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1488 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl41[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1350 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl41[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl41[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3079 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl41[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S971 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl41[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2618 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl41[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1818 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl41[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S335 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl41[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S202 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl41[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2087 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl41[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1308 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl41[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S392 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl41[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2495 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl41[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2995 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl41[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1867 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl41[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2624 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl41[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2927 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl41[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1467 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl41[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2161 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl41[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1043 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl41[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2128 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl41[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3067 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl41[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2710 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl41[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S929 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl41[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1201 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl41[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1954 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl41[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2820 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl41[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S991 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl41[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2832 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl41[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2489 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl41[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1875 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl41[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1283 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl41[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S788 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl41[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1735 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl41[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1012 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl41[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1495 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl41[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1357 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl41[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1672 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl41[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3097 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl41[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S977 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl41[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2633 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl41[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1829 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl41[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S338 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl41[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S203 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl41[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2098 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl41[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1315 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl41[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S395 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl41[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2509 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl41[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3013 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl41[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1878 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl41[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2639 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl41[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2945 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl41[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1474 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl41[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2173 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
             __cl41[41] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S127 /*"in_band_size_reports"*/), 20UL), value = 2048, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl41[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1684 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl41[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1694 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
             ConstSlice<modes_2__ModeEntry> __s = new ConstSlice<modes_2__ModeEntry>(__cl41, 43UL);
             for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
             {
@@ -624,7 +1156,7 @@ public static unsafe partial class GhosttyVt
                 modes_2__ModeEntry* __dotcc_aligned_entry = (modes_2__ModeEntry*)(((nuint)__dotcc_aligned_entry_bytes + 15) & ~(nuint)15);
                 *__dotcc_aligned_entry = __s.Ptr[__i];
                 {
-                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2475 /*"alt_screen_legacy"*/), 17UL))))
+                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S991 /*"enable_mode_3"*/), 13UL))))
                         return (*__dotcc_aligned_entry);
                 }
             }
@@ -634,55 +1166,55 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe modes_2__ModeEntry modes_2__entryForMode__66__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe modes_2__ModeEntry modes_2__entryForMode__45__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S1864 /*"keypad_keys"*/);
+        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S2832 /*"reverse_wrap"*/);
         {
             byte* __cl42_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) * 43 + 15];
             modes_2__ModeEntry* __cl42 = (modes_2__ModeEntry*)(((nuint)__cl42_bytes + 15) & ~(nuint)15);
-            __cl42[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S510 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl42[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S477 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl42[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2652 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
-            __cl42[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1612 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl42[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S808 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl42[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S513 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl42[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S480 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl42[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2667 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
+            __cl42[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1622 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl42[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S814 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
             __cl42[5] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/), 10UL), value = 3, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl42[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1037 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl42[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2117 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl42[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3049 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl42[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2694 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl42[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S922 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl42[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1194 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl42[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1943 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl42[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2803 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl42[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S985 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl42[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2814 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl42[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2475 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl42[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1864 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl42[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1276 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl42[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S782 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl42[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1725 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl42[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1006 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl42[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1488 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl42[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1350 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl42[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl42[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3079 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl42[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S971 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl42[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2618 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl42[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1818 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl42[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S335 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl42[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S202 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl42[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2087 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl42[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1308 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl42[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S392 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl42[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2495 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl42[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2995 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl42[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1867 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl42[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2624 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl42[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2927 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl42[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1467 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl42[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2161 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl42[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1043 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl42[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2128 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl42[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3067 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl42[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2710 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl42[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S929 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl42[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1201 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl42[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1954 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl42[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2820 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl42[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S991 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl42[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2832 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl42[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2489 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl42[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1875 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl42[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1283 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl42[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S788 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl42[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1735 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl42[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1012 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl42[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1495 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl42[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1357 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl42[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1672 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl42[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3097 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl42[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S977 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl42[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2633 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl42[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1829 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl42[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S338 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl42[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S203 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl42[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2098 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl42[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1315 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl42[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S395 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl42[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2509 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl42[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3013 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl42[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1878 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl42[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2639 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl42[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2945 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl42[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1474 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl42[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2173 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
             __cl42[41] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S127 /*"in_band_size_reports"*/), 20UL), value = 2048, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl42[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1684 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl42[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1694 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
             ConstSlice<modes_2__ModeEntry> __s = new ConstSlice<modes_2__ModeEntry>(__cl42, 43UL);
             for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
             {
@@ -690,7 +1222,7 @@ public static unsafe partial class GhosttyVt
                 modes_2__ModeEntry* __dotcc_aligned_entry = (modes_2__ModeEntry*)(((nuint)__dotcc_aligned_entry_bytes + 15) & ~(nuint)15);
                 *__dotcc_aligned_entry = __s.Ptr[__i];
                 {
-                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1864 /*"keypad_keys"*/), 11UL))))
+                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2832 /*"reverse_wrap"*/), 12UL))))
                         return (*__dotcc_aligned_entry);
                 }
             }
@@ -700,55 +1232,55 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe modes_2__ModeEntry modes_2__entryForMode__67__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe modes_2__ModeEntry modes_2__entryForMode__47__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S1276 /*"backarrow_key_mode"*/);
+        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S2489 /*"alt_screen_legacy"*/);
         {
             byte* __cl43_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) * 43 + 15];
             modes_2__ModeEntry* __cl43 = (modes_2__ModeEntry*)(((nuint)__cl43_bytes + 15) & ~(nuint)15);
-            __cl43[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S510 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl43[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S477 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl43[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2652 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
-            __cl43[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1612 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl43[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S808 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl43[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S513 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl43[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S480 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl43[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2667 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
+            __cl43[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1622 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl43[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S814 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
             __cl43[5] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/), 10UL), value = 3, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl43[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1037 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl43[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2117 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl43[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3049 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl43[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2694 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl43[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S922 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl43[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1194 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl43[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1943 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl43[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2803 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl43[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S985 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl43[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2814 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl43[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2475 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl43[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1864 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl43[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1276 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl43[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S782 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl43[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1725 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl43[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1006 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl43[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1488 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl43[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1350 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl43[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl43[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3079 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl43[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S971 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl43[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2618 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl43[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1818 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl43[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S335 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl43[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S202 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl43[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2087 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl43[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1308 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl43[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S392 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl43[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2495 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl43[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2995 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl43[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1867 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl43[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2624 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl43[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2927 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl43[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1467 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl43[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2161 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl43[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1043 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl43[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2128 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl43[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3067 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl43[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2710 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl43[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S929 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl43[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1201 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl43[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1954 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl43[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2820 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl43[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S991 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl43[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2832 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl43[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2489 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl43[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1875 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl43[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1283 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl43[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S788 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl43[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1735 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl43[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1012 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl43[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1495 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl43[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1357 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl43[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1672 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl43[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3097 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl43[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S977 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl43[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2633 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl43[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1829 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl43[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S338 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl43[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S203 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl43[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2098 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl43[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1315 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl43[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S395 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl43[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2509 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl43[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3013 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl43[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1878 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl43[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2639 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl43[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2945 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl43[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1474 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl43[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2173 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
             __cl43[41] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S127 /*"in_band_size_reports"*/), 20UL), value = 2048, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl43[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1684 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl43[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1694 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
             ConstSlice<modes_2__ModeEntry> __s = new ConstSlice<modes_2__ModeEntry>(__cl43, 43UL);
             for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
             {
@@ -756,7 +1288,7 @@ public static unsafe partial class GhosttyVt
                 modes_2__ModeEntry* __dotcc_aligned_entry = (modes_2__ModeEntry*)(((nuint)__dotcc_aligned_entry_bytes + 15) & ~(nuint)15);
                 *__dotcc_aligned_entry = __s.Ptr[__i];
                 {
-                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1276 /*"backarrow_key_mode"*/), 18UL))))
+                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2489 /*"alt_screen_legacy"*/), 17UL))))
                         return (*__dotcc_aligned_entry);
                 }
             }
@@ -766,55 +1298,55 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe modes_2__ModeEntry modes_2__entryForMode__69__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe modes_2__ModeEntry modes_2__entryForMode__66__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S782 /*"enable_left_and_right_margin"*/);
+        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S1875 /*"keypad_keys"*/);
         {
             byte* __cl44_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) * 43 + 15];
             modes_2__ModeEntry* __cl44 = (modes_2__ModeEntry*)(((nuint)__cl44_bytes + 15) & ~(nuint)15);
-            __cl44[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S510 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl44[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S477 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl44[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2652 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
-            __cl44[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1612 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl44[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S808 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl44[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S513 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl44[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S480 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl44[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2667 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
+            __cl44[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1622 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl44[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S814 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
             __cl44[5] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/), 10UL), value = 3, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl44[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1037 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl44[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2117 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl44[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3049 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl44[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2694 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl44[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S922 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl44[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1194 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl44[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1943 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl44[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2803 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl44[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S985 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl44[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2814 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl44[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2475 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl44[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1864 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl44[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1276 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl44[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S782 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl44[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1725 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl44[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1006 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl44[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1488 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl44[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1350 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl44[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl44[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3079 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl44[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S971 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl44[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2618 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl44[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1818 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl44[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S335 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl44[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S202 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl44[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2087 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl44[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1308 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl44[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S392 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl44[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2495 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl44[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2995 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl44[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1867 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl44[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2624 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl44[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2927 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl44[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1467 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl44[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2161 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl44[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1043 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl44[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2128 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl44[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3067 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl44[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2710 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl44[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S929 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl44[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1201 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl44[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1954 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl44[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2820 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl44[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S991 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl44[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2832 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl44[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2489 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl44[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1875 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl44[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1283 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl44[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S788 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl44[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1735 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl44[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1012 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl44[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1495 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl44[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1357 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl44[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1672 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl44[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3097 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl44[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S977 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl44[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2633 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl44[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1829 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl44[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S338 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl44[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S203 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl44[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2098 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl44[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1315 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl44[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S395 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl44[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2509 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl44[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3013 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl44[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1878 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl44[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2639 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl44[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2945 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl44[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1474 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl44[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2173 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
             __cl44[41] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S127 /*"in_band_size_reports"*/), 20UL), value = 2048, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl44[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1684 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl44[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1694 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
             ConstSlice<modes_2__ModeEntry> __s = new ConstSlice<modes_2__ModeEntry>(__cl44, 43UL);
             for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
             {
@@ -822,7 +1354,7 @@ public static unsafe partial class GhosttyVt
                 modes_2__ModeEntry* __dotcc_aligned_entry = (modes_2__ModeEntry*)(((nuint)__dotcc_aligned_entry_bytes + 15) & ~(nuint)15);
                 *__dotcc_aligned_entry = __s.Ptr[__i];
                 {
-                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S782 /*"enable_left_and_right_margin"*/), 28UL))))
+                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1875 /*"keypad_keys"*/), 11UL))))
                         return (*__dotcc_aligned_entry);
                 }
             }
@@ -832,55 +1364,55 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe modes_2__ModeEntry modes_2__entryForMode__1000__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe modes_2__ModeEntry modes_2__entryForMode__67__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S1725 /*"mouse_event_normal"*/);
+        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S1283 /*"backarrow_key_mode"*/);
         {
             byte* __cl45_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) * 43 + 15];
             modes_2__ModeEntry* __cl45 = (modes_2__ModeEntry*)(((nuint)__cl45_bytes + 15) & ~(nuint)15);
-            __cl45[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S510 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl45[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S477 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl45[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2652 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
-            __cl45[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1612 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl45[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S808 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl45[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S513 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl45[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S480 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl45[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2667 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
+            __cl45[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1622 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl45[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S814 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
             __cl45[5] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/), 10UL), value = 3, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl45[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1037 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl45[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2117 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl45[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3049 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl45[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2694 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl45[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S922 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl45[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1194 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl45[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1943 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl45[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2803 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl45[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S985 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl45[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2814 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl45[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2475 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl45[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1864 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl45[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1276 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl45[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S782 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl45[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1725 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl45[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1006 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl45[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1488 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl45[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1350 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl45[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl45[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3079 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl45[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S971 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl45[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2618 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl45[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1818 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl45[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S335 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl45[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S202 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl45[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2087 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl45[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1308 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl45[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S392 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl45[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2495 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl45[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2995 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl45[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1867 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl45[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2624 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl45[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2927 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl45[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1467 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl45[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2161 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl45[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1043 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl45[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2128 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl45[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3067 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl45[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2710 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl45[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S929 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl45[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1201 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl45[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1954 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl45[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2820 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl45[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S991 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl45[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2832 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl45[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2489 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl45[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1875 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl45[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1283 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl45[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S788 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl45[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1735 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl45[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1012 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl45[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1495 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl45[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1357 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl45[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1672 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl45[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3097 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl45[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S977 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl45[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2633 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl45[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1829 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl45[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S338 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl45[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S203 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl45[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2098 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl45[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1315 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl45[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S395 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl45[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2509 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl45[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3013 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl45[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1878 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl45[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2639 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl45[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2945 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl45[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1474 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl45[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2173 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
             __cl45[41] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S127 /*"in_band_size_reports"*/), 20UL), value = 2048, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl45[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1684 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl45[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1694 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
             ConstSlice<modes_2__ModeEntry> __s = new ConstSlice<modes_2__ModeEntry>(__cl45, 43UL);
             for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
             {
@@ -888,7 +1420,7 @@ public static unsafe partial class GhosttyVt
                 modes_2__ModeEntry* __dotcc_aligned_entry = (modes_2__ModeEntry*)(((nuint)__dotcc_aligned_entry_bytes + 15) & ~(nuint)15);
                 *__dotcc_aligned_entry = __s.Ptr[__i];
                 {
-                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1725 /*"mouse_event_normal"*/), 18UL))))
+                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1283 /*"backarrow_key_mode"*/), 18UL))))
                         return (*__dotcc_aligned_entry);
                 }
             }
@@ -898,55 +1430,55 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe modes_2__ModeEntry modes_2__entryForMode__1002__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe modes_2__ModeEntry modes_2__entryForMode__69__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S1006 /*"mouse_event_button"*/);
+        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S788 /*"enable_left_and_right_margin"*/);
         {
             byte* __cl46_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) * 43 + 15];
             modes_2__ModeEntry* __cl46 = (modes_2__ModeEntry*)(((nuint)__cl46_bytes + 15) & ~(nuint)15);
-            __cl46[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S510 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl46[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S477 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl46[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2652 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
-            __cl46[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1612 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl46[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S808 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl46[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S513 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl46[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S480 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl46[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2667 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
+            __cl46[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1622 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl46[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S814 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
             __cl46[5] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/), 10UL), value = 3, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl46[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1037 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl46[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2117 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl46[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3049 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl46[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2694 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl46[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S922 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl46[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1194 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl46[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1943 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl46[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2803 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl46[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S985 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl46[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2814 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl46[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2475 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl46[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1864 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl46[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1276 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl46[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S782 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl46[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1725 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl46[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1006 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl46[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1488 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl46[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1350 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl46[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl46[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3079 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl46[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S971 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl46[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2618 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl46[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1818 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl46[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S335 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl46[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S202 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl46[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2087 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl46[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1308 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl46[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S392 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl46[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2495 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl46[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2995 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl46[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1867 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl46[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2624 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl46[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2927 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl46[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1467 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl46[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2161 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl46[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1043 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl46[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2128 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl46[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3067 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl46[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2710 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl46[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S929 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl46[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1201 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl46[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1954 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl46[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2820 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl46[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S991 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl46[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2832 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl46[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2489 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl46[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1875 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl46[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1283 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl46[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S788 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl46[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1735 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl46[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1012 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl46[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1495 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl46[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1357 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl46[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1672 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl46[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3097 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl46[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S977 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl46[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2633 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl46[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1829 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl46[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S338 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl46[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S203 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl46[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2098 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl46[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1315 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl46[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S395 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl46[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2509 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl46[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3013 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl46[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1878 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl46[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2639 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl46[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2945 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl46[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1474 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl46[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2173 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
             __cl46[41] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S127 /*"in_band_size_reports"*/), 20UL), value = 2048, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl46[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1684 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl46[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1694 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
             ConstSlice<modes_2__ModeEntry> __s = new ConstSlice<modes_2__ModeEntry>(__cl46, 43UL);
             for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
             {
@@ -954,7 +1486,7 @@ public static unsafe partial class GhosttyVt
                 modes_2__ModeEntry* __dotcc_aligned_entry = (modes_2__ModeEntry*)(((nuint)__dotcc_aligned_entry_bytes + 15) & ~(nuint)15);
                 *__dotcc_aligned_entry = __s.Ptr[__i];
                 {
-                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1006 /*"mouse_event_button"*/), 18UL))))
+                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S788 /*"enable_left_and_right_margin"*/), 28UL))))
                         return (*__dotcc_aligned_entry);
                 }
             }
@@ -964,55 +1496,55 @@ public static unsafe partial class GhosttyVt
 
 
 
-    public static unsafe modes_2__ModeEntry modes_2__entryForMode__1003__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
+    public static unsafe modes_2__ModeEntry modes_2__entryForMode__1000__unit_14BF914546F1C30EA246715FF6B5687EA6C6D4765E2ECBFC61788B610E588659()
     {
-        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S1488 /*"mouse_event_any"*/);
+        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S1735 /*"mouse_event_normal"*/);
         {
             byte* __cl47_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) * 43 + 15];
             modes_2__ModeEntry* __cl47 = (modes_2__ModeEntry*)(((nuint)__cl47_bytes + 15) & ~(nuint)15);
-            __cl47[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S510 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl47[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S477 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl47[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2652 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
-            __cl47[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1612 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl47[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S808 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl47[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S513 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl47[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S480 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl47[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2667 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
+            __cl47[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1622 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
+            __cl47[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S814 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
             __cl47[5] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/), 10UL), value = 3, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl47[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1037 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl47[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2117 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl47[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3049 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl47[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2694 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl47[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S922 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl47[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1194 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl47[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1943 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl47[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2803 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl47[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S985 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl47[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2814 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl47[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2475 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl47[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1864 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl47[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1276 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl47[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S782 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl47[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1725 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl47[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1006 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl47[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1488 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl47[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1350 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl47[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl47[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3079 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl47[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S971 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl47[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2618 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl47[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1818 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl47[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S335 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl47[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S202 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl47[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2087 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl47[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1308 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl47[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S392 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl47[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2495 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl47[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2995 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl47[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1867 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl47[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2624 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl47[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2927 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl47[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1467 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl47[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2161 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl47[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1043 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl47[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2128 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl47[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3067 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl47[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2710 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl47[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S929 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl47[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1201 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl47[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1954 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl47[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2820 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl47[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S991 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl47[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2832 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl47[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2489 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl47[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1875 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl47[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1283 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl47[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S788 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl47[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1735 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl47[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1012 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl47[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1495 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl47[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1357 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl47[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1672 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl47[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3097 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl47[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S977 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl47[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2633 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl47[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1829 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl47[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S338 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl47[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S203 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
+            __cl47[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2098 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl47[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1315 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl47[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S395 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl47[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2509 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl47[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3013 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl47[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1878 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl47[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2639 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
+            __cl47[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2945 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl47[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1474 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl47[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2173 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
             __cl47[41] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S127 /*"in_band_size_reports"*/), 20UL), value = 2048, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl47[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1684 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
+            __cl47[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1694 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
             ConstSlice<modes_2__ModeEntry> __s = new ConstSlice<modes_2__ModeEntry>(__cl47, 43UL);
             for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
             {
@@ -1020,535 +1552,7 @@ public static unsafe partial class GhosttyVt
                 modes_2__ModeEntry* __dotcc_aligned_entry = (modes_2__ModeEntry*)(((nuint)__dotcc_aligned_entry_bytes + 15) & ~(nuint)15);
                 *__dotcc_aligned_entry = __s.Ptr[__i];
                 {
-                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1488 /*"mouse_event_any"*/), 15UL))))
-                        return (*__dotcc_aligned_entry);
-                }
-            }
-        }
-        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
-    }
-
-
-
-    public static unsafe modes_2__ModeEntry modes_2__entryForMode__1004__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S1350 /*"focus_event"*/);
-        {
-            byte* __cl48_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) * 43 + 15];
-            modes_2__ModeEntry* __cl48 = (modes_2__ModeEntry*)(((nuint)__cl48_bytes + 15) & ~(nuint)15);
-            __cl48[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S510 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl48[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S477 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl48[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2652 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
-            __cl48[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1612 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl48[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S808 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl48[5] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/), 10UL), value = 3, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl48[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1037 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl48[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2117 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl48[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3049 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl48[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2694 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl48[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S922 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl48[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1194 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl48[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1943 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl48[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2803 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl48[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S985 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl48[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2814 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl48[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2475 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl48[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1864 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl48[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1276 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl48[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S782 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl48[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1725 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl48[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1006 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl48[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1488 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl48[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1350 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl48[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl48[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3079 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl48[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S971 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl48[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2618 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl48[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1818 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl48[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S335 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl48[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S202 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl48[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2087 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl48[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1308 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl48[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S392 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl48[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2495 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl48[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2995 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl48[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1867 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl48[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2624 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl48[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2927 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl48[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1467 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl48[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2161 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl48[41] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S127 /*"in_band_size_reports"*/), 20UL), value = 2048, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl48[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1684 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
-            ConstSlice<modes_2__ModeEntry> __s = new ConstSlice<modes_2__ModeEntry>(__cl48, 43UL);
-            for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
-            {
-                byte* __dotcc_aligned_entry_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) + 15];
-                modes_2__ModeEntry* __dotcc_aligned_entry = (modes_2__ModeEntry*)(((nuint)__dotcc_aligned_entry_bytes + 15) & ~(nuint)15);
-                *__dotcc_aligned_entry = __s.Ptr[__i];
-                {
-                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1350 /*"focus_event"*/), 11UL))))
-                        return (*__dotcc_aligned_entry);
-                }
-            }
-        }
-        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
-    }
-
-
-
-    public static unsafe modes_2__ModeEntry modes_2__entryForMode__1005__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"mouse_format_utf8"*/);
-        {
-            byte* __cl49_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) * 43 + 15];
-            modes_2__ModeEntry* __cl49 = (modes_2__ModeEntry*)(((nuint)__cl49_bytes + 15) & ~(nuint)15);
-            __cl49[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S510 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl49[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S477 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl49[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2652 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
-            __cl49[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1612 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl49[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S808 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl49[5] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/), 10UL), value = 3, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl49[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1037 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl49[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2117 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl49[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3049 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl49[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2694 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl49[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S922 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl49[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1194 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl49[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1943 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl49[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2803 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl49[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S985 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl49[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2814 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl49[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2475 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl49[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1864 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl49[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1276 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl49[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S782 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl49[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1725 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl49[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1006 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl49[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1488 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl49[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1350 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl49[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl49[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3079 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl49[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S971 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl49[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2618 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl49[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1818 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl49[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S335 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl49[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S202 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl49[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2087 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl49[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1308 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl49[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S392 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl49[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2495 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl49[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2995 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl49[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1867 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl49[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2624 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl49[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2927 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl49[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1467 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl49[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2161 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl49[41] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S127 /*"in_band_size_reports"*/), 20UL), value = 2048, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl49[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1684 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
-            ConstSlice<modes_2__ModeEntry> __s = new ConstSlice<modes_2__ModeEntry>(__cl49, 43UL);
-            for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
-            {
-                byte* __dotcc_aligned_entry_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) + 15];
-                modes_2__ModeEntry* __dotcc_aligned_entry = (modes_2__ModeEntry*)(((nuint)__dotcc_aligned_entry_bytes + 15) & ~(nuint)15);
-                *__dotcc_aligned_entry = __s.Ptr[__i];
-                {
-                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"mouse_format_utf8"*/), 17UL))))
-                        return (*__dotcc_aligned_entry);
-                }
-            }
-        }
-        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
-    }
-
-
-
-    public static unsafe modes_2__ModeEntry modes_2__entryForMode__1006__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S3079 /*"mouse_format_sgr"*/);
-        {
-            byte* __cl50_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) * 43 + 15];
-            modes_2__ModeEntry* __cl50 = (modes_2__ModeEntry*)(((nuint)__cl50_bytes + 15) & ~(nuint)15);
-            __cl50[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S510 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl50[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S477 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl50[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2652 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
-            __cl50[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1612 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl50[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S808 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl50[5] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/), 10UL), value = 3, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl50[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1037 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl50[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2117 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl50[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3049 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl50[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2694 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl50[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S922 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl50[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1194 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl50[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1943 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl50[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2803 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl50[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S985 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl50[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2814 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl50[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2475 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl50[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1864 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl50[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1276 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl50[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S782 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl50[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1725 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl50[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1006 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl50[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1488 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl50[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1350 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl50[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl50[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3079 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl50[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S971 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl50[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2618 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl50[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1818 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl50[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S335 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl50[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S202 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl50[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2087 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl50[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1308 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl50[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S392 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl50[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2495 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl50[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2995 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl50[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1867 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl50[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2624 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl50[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2927 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl50[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1467 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl50[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2161 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl50[41] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S127 /*"in_band_size_reports"*/), 20UL), value = 2048, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl50[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1684 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
-            ConstSlice<modes_2__ModeEntry> __s = new ConstSlice<modes_2__ModeEntry>(__cl50, 43UL);
-            for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
-            {
-                byte* __dotcc_aligned_entry_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) + 15];
-                modes_2__ModeEntry* __dotcc_aligned_entry = (modes_2__ModeEntry*)(((nuint)__dotcc_aligned_entry_bytes + 15) & ~(nuint)15);
-                *__dotcc_aligned_entry = __s.Ptr[__i];
-                {
-                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3079 /*"mouse_format_sgr"*/), 16UL))))
-                        return (*__dotcc_aligned_entry);
-                }
-            }
-        }
-        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
-    }
-
-
-
-    public static unsafe modes_2__ModeEntry modes_2__entryForMode__1007__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S971 /*"mouse_alternate_scroll"*/);
-        {
-            byte* __cl51_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) * 43 + 15];
-            modes_2__ModeEntry* __cl51 = (modes_2__ModeEntry*)(((nuint)__cl51_bytes + 15) & ~(nuint)15);
-            __cl51[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S510 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl51[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S477 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl51[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2652 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
-            __cl51[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1612 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl51[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S808 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl51[5] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/), 10UL), value = 3, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl51[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1037 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl51[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2117 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl51[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3049 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl51[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2694 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl51[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S922 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl51[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1194 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl51[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1943 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl51[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2803 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl51[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S985 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl51[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2814 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl51[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2475 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl51[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1864 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl51[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1276 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl51[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S782 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl51[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1725 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl51[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1006 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl51[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1488 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl51[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1350 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl51[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl51[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3079 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl51[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S971 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl51[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2618 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl51[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1818 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl51[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S335 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl51[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S202 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl51[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2087 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl51[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1308 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl51[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S392 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl51[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2495 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl51[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2995 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl51[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1867 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl51[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2624 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl51[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2927 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl51[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1467 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl51[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2161 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl51[41] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S127 /*"in_band_size_reports"*/), 20UL), value = 2048, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl51[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1684 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
-            ConstSlice<modes_2__ModeEntry> __s = new ConstSlice<modes_2__ModeEntry>(__cl51, 43UL);
-            for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
-            {
-                byte* __dotcc_aligned_entry_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) + 15];
-                modes_2__ModeEntry* __dotcc_aligned_entry = (modes_2__ModeEntry*)(((nuint)__dotcc_aligned_entry_bytes + 15) & ~(nuint)15);
-                *__dotcc_aligned_entry = __s.Ptr[__i];
-                {
-                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S971 /*"mouse_alternate_scroll"*/), 22UL))))
-                        return (*__dotcc_aligned_entry);
-                }
-            }
-        }
-        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
-    }
-
-
-
-    public static unsafe modes_2__ModeEntry modes_2__entryForMode__1015__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S2618 /*"mouse_format_urxvt"*/);
-        {
-            byte* __cl52_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) * 43 + 15];
-            modes_2__ModeEntry* __cl52 = (modes_2__ModeEntry*)(((nuint)__cl52_bytes + 15) & ~(nuint)15);
-            __cl52[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S510 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl52[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S477 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl52[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2652 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
-            __cl52[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1612 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl52[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S808 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl52[5] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/), 10UL), value = 3, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl52[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1037 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl52[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2117 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl52[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3049 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl52[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2694 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl52[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S922 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl52[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1194 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl52[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1943 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl52[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2803 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl52[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S985 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl52[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2814 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl52[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2475 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl52[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1864 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl52[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1276 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl52[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S782 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl52[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1725 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl52[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1006 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl52[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1488 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl52[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1350 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl52[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl52[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3079 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl52[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S971 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl52[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2618 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl52[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1818 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl52[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S335 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl52[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S202 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl52[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2087 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl52[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1308 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl52[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S392 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl52[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2495 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl52[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2995 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl52[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1867 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl52[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2624 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl52[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2927 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl52[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1467 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl52[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2161 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl52[41] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S127 /*"in_band_size_reports"*/), 20UL), value = 2048, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl52[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1684 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
-            ConstSlice<modes_2__ModeEntry> __s = new ConstSlice<modes_2__ModeEntry>(__cl52, 43UL);
-            for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
-            {
-                byte* __dotcc_aligned_entry_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) + 15];
-                modes_2__ModeEntry* __dotcc_aligned_entry = (modes_2__ModeEntry*)(((nuint)__dotcc_aligned_entry_bytes + 15) & ~(nuint)15);
-                *__dotcc_aligned_entry = __s.Ptr[__i];
-                {
-                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2618 /*"mouse_format_urxvt"*/), 18UL))))
-                        return (*__dotcc_aligned_entry);
-                }
-            }
-        }
-        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
-    }
-
-
-
-    public static unsafe modes_2__ModeEntry modes_2__entryForMode__1016__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S1818 /*"mouse_format_sgr_pixels"*/);
-        {
-            byte* __cl53_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) * 43 + 15];
-            modes_2__ModeEntry* __cl53 = (modes_2__ModeEntry*)(((nuint)__cl53_bytes + 15) & ~(nuint)15);
-            __cl53[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S510 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl53[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S477 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl53[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2652 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
-            __cl53[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1612 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl53[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S808 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl53[5] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/), 10UL), value = 3, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl53[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1037 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl53[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2117 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl53[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3049 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl53[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2694 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl53[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S922 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl53[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1194 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl53[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1943 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl53[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2803 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl53[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S985 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl53[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2814 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl53[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2475 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl53[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1864 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl53[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1276 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl53[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S782 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl53[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1725 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl53[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1006 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl53[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1488 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl53[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1350 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl53[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl53[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3079 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl53[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S971 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl53[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2618 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl53[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1818 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl53[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S335 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl53[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S202 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl53[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2087 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl53[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1308 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl53[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S392 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl53[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2495 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl53[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2995 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl53[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1867 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl53[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2624 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl53[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2927 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl53[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1467 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl53[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2161 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl53[41] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S127 /*"in_band_size_reports"*/), 20UL), value = 2048, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl53[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1684 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
-            ConstSlice<modes_2__ModeEntry> __s = new ConstSlice<modes_2__ModeEntry>(__cl53, 43UL);
-            for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
-            {
-                byte* __dotcc_aligned_entry_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) + 15];
-                modes_2__ModeEntry* __dotcc_aligned_entry = (modes_2__ModeEntry*)(((nuint)__dotcc_aligned_entry_bytes + 15) & ~(nuint)15);
-                *__dotcc_aligned_entry = __s.Ptr[__i];
-                {
-                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1818 /*"mouse_format_sgr_pixels"*/), 23UL))))
-                        return (*__dotcc_aligned_entry);
-                }
-            }
-        }
-        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
-    }
-
-
-
-    public static unsafe modes_2__ModeEntry modes_2__entryForMode__1035__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S335 /*"ignore_keypad_with_numlock"*/);
-        {
-            byte* __cl54_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) * 43 + 15];
-            modes_2__ModeEntry* __cl54 = (modes_2__ModeEntry*)(((nuint)__cl54_bytes + 15) & ~(nuint)15);
-            __cl54[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S510 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl54[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S477 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl54[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2652 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
-            __cl54[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1612 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl54[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S808 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl54[5] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/), 10UL), value = 3, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl54[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1037 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl54[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2117 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl54[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3049 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl54[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2694 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl54[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S922 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl54[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1194 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl54[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1943 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl54[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2803 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl54[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S985 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl54[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2814 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl54[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2475 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl54[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1864 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl54[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1276 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl54[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S782 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl54[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1725 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl54[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1006 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl54[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1488 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl54[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1350 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl54[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl54[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3079 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl54[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S971 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl54[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2618 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl54[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1818 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl54[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S335 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl54[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S202 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl54[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2087 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl54[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1308 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl54[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S392 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl54[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2495 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl54[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2995 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl54[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1867 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl54[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2624 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl54[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2927 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl54[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1467 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl54[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2161 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl54[41] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S127 /*"in_band_size_reports"*/), 20UL), value = 2048, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl54[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1684 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
-            ConstSlice<modes_2__ModeEntry> __s = new ConstSlice<modes_2__ModeEntry>(__cl54, 43UL);
-            for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
-            {
-                byte* __dotcc_aligned_entry_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) + 15];
-                modes_2__ModeEntry* __dotcc_aligned_entry = (modes_2__ModeEntry*)(((nuint)__dotcc_aligned_entry_bytes + 15) & ~(nuint)15);
-                *__dotcc_aligned_entry = __s.Ptr[__i];
-                {
-                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S335 /*"ignore_keypad_with_numlock"*/), 26UL))))
-                        return (*__dotcc_aligned_entry);
-                }
-            }
-        }
-        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
-    }
-
-
-
-    public static unsafe modes_2__ModeEntry modes_2__entryForMode__1036__unit_5B2DCA1941971BF74436CC1B204C442C501B20A0E52D41B6866871F2A16B45E0()
-    {
-        byte* name = (DotCcLiterals.Pointer + DotCcLiterals.S202 /*"alt_esc_prefix"*/);
-        {
-            byte* __cl55_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) * 43 + 15];
-            modes_2__ModeEntry* __cl55 = (modes_2__ModeEntry*)(((nuint)__cl55_bytes + 15) & ~(nuint)15);
-            __cl55[0] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S510 /*"disable_keyboard"*/), 16UL), value = 2, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl55[1] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S477 /*"insert"*/), 6UL), value = 4, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl55[2] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2652 /*"send_receive_mode"*/), 17UL), value = 12, ansi = true, @default = true, disabled = false, default_configurable = true };
-            __cl55[3] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1612 /*"linefeed"*/), 8UL), value = 20, ansi = true, @default = false, disabled = false, default_configurable = true };
-            __cl55[4] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S808 /*"cursor_keys"*/), 11UL), value = 1, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl55[5] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S100 /*"132_column"*/), 10UL), value = 3, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl55[6] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1037 /*"slow_scroll"*/), 11UL), value = 4, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl55[7] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2117 /*"reverse_colors"*/), 14UL), value = 5, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl55[8] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3049 /*"origin"*/), 6UL), value = 6, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl55[9] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2694 /*"wraparound"*/), 10UL), value = 7, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl55[10] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S922 /*"autorepeat"*/), 10UL), value = 8, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl55[11] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1194 /*"mouse_event_x10"*/), 15UL), value = 9, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl55[12] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1943 /*"cursor_blinking"*/), 15UL), value = 12, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl55[13] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2803 /*"cursor_visible"*/), 14UL), value = 25, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl55[14] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S985 /*"enable_mode_3"*/), 13UL), value = 40, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl55[15] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2814 /*"reverse_wrap"*/), 12UL), value = 45, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl55[16] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2475 /*"alt_screen_legacy"*/), 17UL), value = 47, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl55[17] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1864 /*"keypad_keys"*/), 11UL), value = 66, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl55[18] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1276 /*"backarrow_key_mode"*/), 18UL), value = 67, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl55[19] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S782 /*"enable_left_and_right_margin"*/), 28UL), value = 69, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl55[20] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1725 /*"mouse_event_normal"*/), 18UL), value = 1000, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl55[21] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1006 /*"mouse_event_button"*/), 18UL), value = 1002, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl55[22] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1488 /*"mouse_event_any"*/), 15UL), value = 1003, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl55[23] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1350 /*"focus_event"*/), 11UL), value = 1004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl55[24] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1662 /*"mouse_format_utf8"*/), 17UL), value = 1005, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl55[25] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S3079 /*"mouse_format_sgr"*/), 16UL), value = 1006, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl55[26] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S971 /*"mouse_alternate_scroll"*/), 22UL), value = 1007, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl55[27] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2618 /*"mouse_format_urxvt"*/), 18UL), value = 1015, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl55[28] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1818 /*"mouse_format_sgr_pixels"*/), 23UL), value = 1016, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl55[29] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S335 /*"ignore_keypad_with_numlock"*/), 26UL), value = 1035, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl55[30] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S202 /*"alt_esc_prefix"*/), 14UL), value = 1036, @default = true, ansi = false, disabled = false, default_configurable = true };
-            __cl55[31] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2087 /*"alt_sends_escape"*/), 16UL), value = 1039, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl55[32] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1308 /*"reverse_wrap_extended"*/), 21UL), value = 1045, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl55[33] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S392 /*"alt_screen"*/), 10UL), value = 1047, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl55[34] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2495 /*"save_cursor"*/), 11UL), value = 1048, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl55[35] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2995 /*"alt_screen_save_cursor_clear_enter"*/), 34UL), value = 1049, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl55[36] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1867 /*"bracketed_paste"*/), 15UL), value = 2004, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl55[37] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2624 /*"synchronized_output"*/), 19UL), value = 2026, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl55[38] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2927 /*"grapheme_cluster"*/), 16UL), value = 2027, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl55[39] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1467 /*"report_color_scheme"*/), 19UL), value = 2031, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl55[40] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S2161 /*"report_visibility"*/), 17UL), value = 2033, default_configurable = false, @default = false, ansi = false, disabled = false };
-            __cl55[41] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S127 /*"in_band_size_reports"*/), 20UL), value = 2048, @default = false, ansi = false, disabled = false, default_configurable = true };
-            __cl55[42] = new modes_2__ModeEntry { name = new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1684 /*"kitty_paste_events"*/), 18UL), value = 5522, @default = false, ansi = false, disabled = false, default_configurable = true };
-            ConstSlice<modes_2__ModeEntry> __s = new ConstSlice<modes_2__ModeEntry>(__cl55, 43UL);
-            for (ulong __i = 0UL; ((__i < __s.Len)); __i++)
-            {
-                byte* __dotcc_aligned_entry_bytes = stackalloc byte[sizeof(modes_2__ModeEntry) + 15];
-                modes_2__ModeEntry* __dotcc_aligned_entry = (modes_2__ModeEntry*)(((nuint)__dotcc_aligned_entry_bytes + 15) & ~(nuint)15);
-                *__dotcc_aligned_entry = __s.Ptr[__i];
-                {
-                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S202 /*"alt_esc_prefix"*/), 14UL))))
+                    if ((ZigMem.Eql<byte>((*__dotcc_aligned_entry).name, new ConstSlice<byte>((DotCcLiterals.Pointer + DotCcLiterals.S1735 /*"mouse_event_normal"*/), 18UL))))
                         return (*__dotcc_aligned_entry);
                 }
             }

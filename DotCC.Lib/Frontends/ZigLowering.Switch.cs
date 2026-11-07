@@ -423,9 +423,11 @@ internal sealed partial class ZigLowering
         if (prong.CaseVals.Content is Zig.CaseElse)
         {
             if (subject.Type.Unqualified is not CType.Enum enumeration
+                || !_enumMembers.TryGetValue(enumeration.Name, out var members)
                 || _nonExhaustiveEnums.Contains(enumeration.Name)
-                || !_enumMembers.TryGetValue(enumeration.Name, out var members))
-                throw new IrUnsupportedException("zig `inline else =>` requires a source-known exhaustive enum");
+                    && !allProngs.Select(DecomposeProng).Any(p => p.CaseVals.Content is not Zig.CaseElse
+                        && WalkCaseValItems(p.CaseVals).Any(v => v.Hi is null && IsEnumCatchAllItem(v.Lo))))
+                throw new IrUnsupportedException("zig `inline else =>` requires a source-known enum and an explicit `_` prong for unnamed values");
             var excluded = allProngs.Select(DecomposeProng).Where(p => p.CaseVals.Content is not Zig.CaseElse)
                 .SelectMany(p => LowerCaseVals(p.CaseVals, subject.Type)).ToList();
             foreach (var member in members.Values)

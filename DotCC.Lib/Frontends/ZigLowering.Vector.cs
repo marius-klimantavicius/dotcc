@@ -347,7 +347,7 @@ internal sealed partial class ZigLowering
         {
             throw new IrUnsupportedException($"zig `@reduce` needs a vector operand; got {v.Type.Describe()}");
         }
-        if (vector.UsesStorage) { throw UnsupportedStorageVector(vector, "@reduce"); }
+        if (vector.UsesStorage && op != "Or") { throw UnsupportedStorageVector(vector, "@reduce"); }
         if (vector.IsMask)
         {
             var zero = new LitInt("0", 0) { Type = CType.ULong };

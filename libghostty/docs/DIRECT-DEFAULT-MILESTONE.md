@@ -1,5 +1,8 @@
 # Direct Zig default milestone, 2026-11-06
 
+This is the historical 0.1.0 milestone at `51b1be1f59bb351806e724ed58b712f0bdb8e091`.
+The current canonical product is the qualified [vt-1.0.0 upgrade](VT-1.0.0.md).
+
 The ordinary product is the working managed C# libghostty translated directly
 from pinned Zig by DotCC. The default reference chain is
 `ManagedConsumer` → `Managed.GhosttyVt` →

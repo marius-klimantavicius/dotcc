@@ -1,0 +1,17 @@
+PASS creation grid=10x4 cursor=0,0 text=empty
+PASS ascii-render text=hello\nworld cursor=5,1 cells=h,d
+PASS cursor-cup cell(3,1)=U+005A cursor=4,1
+PASS erase-display text=empty cursor=0,0
+PASS sgr R=bold,palette1 N=default
+PASS utf8-graphemes U+20AC U+4E2D[wide,tail] U+0065+0301 cursor=4,0
+PASS cursor-visibility hidden=0 restored=1
+PASS alternate-screen alternate=ALT primary=PRIMARY cursor=7,0
+PASS resize-reflow grid=6x5 text=ABCDEFGHIJKL pixels=48x80 row1=GHIJKL
+PASS reset grid=6x5 cursor=0,0 text=empty
+PASS callbacks-title reply=ESC[2;3R bell=1 title=DotCC_oracle notifications=1
+PASS formatter-buffer sizing=OUT_OF_SPACE short=OUT_OF_SPACE allocated=freed
+PASS ordinary-errors zero-dimension=NULL-query=invalid null-free/reset=accepted
+PASS allocator-failure new=OUT_OF_MEMORY
+PASS instance-independence first=FIRST second=SECOND first-survives-second-free
+PASS lifecycle cycles=32 allocator-pairs=balanced live=0
+RESULT cases=16 passed=16 failed=0

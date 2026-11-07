@@ -1,0 +1,143 @@
+{
+  "exact_engine_observations_equal": true,
+  "patch_manifest_sha256": "7493d2c50db93c326e282dfd0acbdeac93e7d7dd6ec3063b54e32fbe96d6b179",
+  "source_sha256": "b64ec8a6ac5cd62f8d2f2273ec636eaddbeb6ca1de64d7c5be36e33f8478aab4",
+  "harness_sha256": "43fe6275be6d217b0a3a4e71938d06626e4f06b9ec64938839d38c2183e81f80",
+  "baseline": {
+    "native_backend": "LLVM shared library (128 byte lanes on this target)",
+    "uncapped_original_shared_library_sha256": "fa3514b4f1811227cbc1c344a77fbf774733536a26efcf664d059fc106fe5445",
+    "snapshot": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/print-batches/uncapped/libghostty-vt.so.1.0.0",
+    "snapshot_sha256": "fa3514b4f1811227cbc1c344a77fbf774733536a26efcf664d059fc106fe5445",
+    "original_library": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/native/install/lib/libghostty-vt.so.1.0.0"
+  },
+  "global_lane_helper_sha256": "4251b82a672d05c28db142597466de1592f273a72aa588ba4c6e456f809bcd5c",
+  "native_engines": [
+    {
+      "command": [
+        "cc",
+        "-std=c11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-I/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/include",
+        "/home/marius/p/dotcc/libghostty/artifacts/vt-1.0.0/patches/print-batches/parity.c",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/print-batches/uncapped/libghostty-vt.so.1.0.0",
+        "-Wl,-rpath,/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/print-batches/uncapped",
+        "-lm",
+        "-o",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/print-batches/old-parity"
+      ],
+      "compile_exit": 0,
+      "library_sha256": "fa3514b4f1811227cbc1c344a77fbf774733536a26efcf664d059fc106fe5445",
+      "run_exit": 0,
+      "library_search_path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/print-batches/uncapped",
+      "observations_sha256": "9f0933700f7a6cd7a88af313fad8be08343e4ea22127eb8f3d9c3481998c4203",
+      "observation_bytes": 236398202,
+      "summary": "cases=2940 snapshots=5670 cells=4322970 stops=2730 input_bytes=3212468\n"
+    },
+    {
+      "command": [
+        "cc",
+        "-std=c11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-I/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/include",
+        "/home/marius/p/dotcc/libghostty/artifacts/vt-1.0.0/patches/print-batches/parity.c",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/print-batches/install/lib/libghostty-vt.so.1.0.0",
+        "-Wl,-rpath,/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/print-batches/install/lib",
+        "-lm",
+        "-o",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/print-batches/capped-parity"
+      ],
+      "compile_exit": 0,
+      "library_sha256": "dfc869ce5e0457845be825b2028961a48ad40fc8791381ba563d7d9fdf52d01b",
+      "run_exit": 0,
+      "library_search_path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/print-batches/install/lib",
+      "observations_sha256": "9f0933700f7a6cd7a88af313fad8be08343e4ea22127eb8f3d9c3481998c4203",
+      "observation_bytes": 236398202,
+      "summary": "cases=2940 snapshots=5670 cells=4322970 stops=2730 input_bytes=3212468\n"
+    }
+  ],
+  "lane_control": {
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "run",
+      "-fllvm",
+      "-OReleaseFast",
+      "-mcpu=native",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/print-batches/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/print-batches/global",
+      "--dep",
+      "simd",
+      "-Mroot=/home/marius/p/dotcc/libghostty/artifacts/vt-1.0.0/patches/print-batches/lanes.zig",
+      "-mcpu=native",
+      "-Msimd=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/print-batches/lanes-helper.zig"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "u8=128 capped=64 u16=64 u32=32\n"
+  },
+  "coverage": {
+    "lengths": [
+      0,
+      1,
+      63,
+      64,
+      65,
+      127,
+      128,
+      129,
+      255,
+      256,
+      257,
+      511,
+      512,
+      513,
+      1023
+    ],
+    "columns": [
+      17,
+      63,
+      64,
+      65,
+      127,
+      128,
+      129
+    ],
+    "patterns": [
+      "ASCII",
+      "C0 controls",
+      "ESC/CSI/SGR/query",
+      "upper bytes/UTF-8/wide/graphemes",
+      "OSC/DCS/APC",
+      "standalone long u32/Unicode/wide/graphemes",
+      "DEC charset mapping"
+    ],
+    "write_modes": [
+      "whole slice",
+      "varied chunks",
+      "write_until strings",
+      "write_until strings/ground"
+    ],
+    "observations": [
+      "snapshots",
+      "cursor",
+      "all viewport cells/graphemes/styles",
+      "callbacks/replies",
+      "stop result/consumed offset/reached flags/kind/introducer/end/byte"
+    ]
+  },
+  "cell_store_source_sha256": "408d06876bee4fd89eab0f6f414b85429c3b7ef1715d2a6b6a948016ed8a8ac3",
+  "counts": {
+    "cases": 2940,
+    "snapshots": 5670,
+    "cells": 4322970,
+    "stops": 2730,
+    "input_bytes": 3212468
+  }
+}

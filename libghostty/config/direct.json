@@ -15,6 +15,8 @@
     "ghostty_formatter_format_alloc",
     "ghostty_formatter_format_buf",
     "ghostty_formatter_free",
+    "ghostty_formatter_get",
+    "ghostty_formatter_set",
     "ghostty_formatter_terminal_new",
     "ghostty_free",
     "ghostty_grid_ref_cell",
@@ -70,6 +72,7 @@
     "ghostty_sgr_unknown_full",
     "ghostty_sgr_unknown_partial",
     "ghostty_size_report_encode",
+    "ghostty_sized_init",
     "ghostty_style_default",
     "ghostty_style_is_default",
     "ghostty_sys_log_stderr",
@@ -97,7 +100,8 @@
     "ghostty_tracked_grid_ref_point",
     "ghostty_tracked_grid_ref_set",
     "ghostty_unicode_codepoint_width",
-    "ghostty_unicode_grapheme_width"
+    "ghostty_unicode_grapheme_width",
+    "ghostty_version"
   ],
   "expected_modules": [
     "root",

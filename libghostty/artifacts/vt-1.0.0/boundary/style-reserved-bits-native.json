@@ -1,0 +1,11 @@
+{
+  "source": "libghostty/tests/native/boundary_control.c",
+  "source_sha256": "df93e03829e93c355ebf01d9b518aac5f4c4969952a260ef2c9779d7adbd0e0c",
+  "scope": "65536 flags combinations with all reserved storage bits set, zero default initialization, null input; existing full boundary terminal workflow",
+  "native_library": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/native/install/lib/libghostty-vt.a",
+  "compile": "cc -std=c11 -O2 -Wall -Wextra -Werror -Ilibghostty/ref/libghostty-vt-1.0.0/include libghostty/tests/native/boundary_control.c libghostty/src/Boundary/ghostty_boundary.c <native_library> -lm -lpthread -o <work>/boundary-style-flags-native",
+  "compile_exit": 0,
+  "run_exit": 0,
+  "exact_transcript": "tests/native/boundary-expected.txt",
+  "managed_execution": "PASS: all65536flag/reserved cases execute as part of the45-case qualification in raw/processed JIT and rooted NativeAOT"
+}

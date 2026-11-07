@@ -1,0 +1,19 @@
+--- a/src/terminal/dcs.zig
++++ b/src/terminal/dcs.zig
+@@ -48,7 +48,7 @@
+     };
+ 
+     fn tryHook(self: Handler, alloc: Allocator, dcs: DCS) !?Hook {
+-        return switch (dcs.intermediates.len) {
++        const result: ?Hook = switch (dcs.intermediates.len) {
+             0 => switch (dcs.final) {
+                 // Tmux control mode
+                 'p' => tmux: {
+@@ -107,6 +107,7 @@
+ 
+             else => null,
+         };
++        return result;
+     }
+ 
+     /// Put a byte into the DCS handler. This will return a command

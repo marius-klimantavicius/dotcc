@@ -14,6 +14,10 @@ def sources(root):
     yield Source("product", pin["url"], root / "ref" / pin["archive"],
                  root / "ref" / pin["directory"], pin["directory"],
                  pin.get("sha256"), tuple(pin["required"]))
+    if bundle := pin.get("dependency_bundle"):
+        yield Source("dependencies", bundle["url"], Path(bundle["archive"]),
+                     Path(bundle["directory"]), bundle["prefix"], bundle["sha256"],
+                     tuple(bundle["required"]))
     for item in pin.get("license_sources", []):
         yield Source(item["name"], item["url"], root / "ref" / item["archive"],
                      root / "ref" / item["directory"], item["prefix"],
@@ -41,8 +45,17 @@ def prepare(ctx):
     if not isinstance(policy.get("aggregate_data", False), bool):
         raise RuntimeError("translation.aggregate_data must be Boolean")
     compile_options = ["--aggregate-data"] if policy.get("aggregate_data", False) else []
+    pin = json_file(ctx.root / "config/source.json")
+    if "dependencies" in ctx.sources:
+        dependencies = ctx.sources["product"] / "zig-pkg"
+        expected = ctx.sources["dependencies"].resolve()
+        if dependencies.exists() and dependencies.resolve() != expected:
+            raise RuntimeError("Release dependency path differs; preserving existing inputs")
+        if not dependencies.exists():
+            dependencies.symlink_to(expected, target_is_directory=True)
     if ctx.profile == "direct":
-        ctx.run(["python3", ctx.root / "patches/direct/apply.py", ctx.sources["product"]],
+        compatibility = ctx.root / pin.get("compatibility_directory", "patches/direct")
+        ctx.run(["python3", compatibility / "apply.py", ctx.sources["product"]],
                 "direct-compatibility")
         zig = ctx.sources["zig"] / ("zig.exe" if os.name == "nt" else "zig")
         graph = helper(ctx.root / "scripts/prepare_direct.py").prepare(
@@ -233,5 +246,5 @@ recipe = Recipe(
     # ordinary C-route verification prepares only product qualification.
     verify_suites=tuple(_verification["verify_suites"]),
     validate_options=validate_options,
-    work_root=Path("/mnt/storage/dotcc-libghostty-disposable/campaign"),
+    work_root=Path("/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/campaign"),
 )

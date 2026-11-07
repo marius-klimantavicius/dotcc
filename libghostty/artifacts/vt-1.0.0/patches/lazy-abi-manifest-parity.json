@@ -1,0 +1,11 @@
+{
+  "manifest_bytes": 75223,
+  "manifest_sha256": "715c2af072a2ac2a671258a9bd5f8d1747d5aa33b7e41b2b0bdc25218e0a2c5a",
+  "exact_manifest_bytes_equal": true,
+  "original_library_sha256": "fa3514b4f1811227cbc1c344a77fbf774733536a26efcf664d059fc106fe5445",
+  "patched_library": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/install/lib/libghostty-vt.so.1.0.0",
+  "patched_library_sha256": "42e0f32b495ad7aacfb75a90c88f848aec17bfc73fd949ff0024dceb7ecdfc3c",
+  "native_cases": 24,
+  "native_passed": 24,
+  "direct_and_indirect_outputs_identical_to_pre_patch": true
+}

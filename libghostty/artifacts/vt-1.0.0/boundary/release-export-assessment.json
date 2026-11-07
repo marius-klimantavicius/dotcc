@@ -1,0 +1,44 @@
+{
+  "baseline_roots": 92,
+  "current_roots": 93,
+  "recommended_new_roots": [
+    "ghostty_formatter_get",
+    "ghostty_version",
+    "ghostty_sized_init"
+  ],
+  "already_added": [
+    "ghostty_formatter_set"
+  ],
+  "recommended_total_roots": 96,
+  "added_exports": [
+    "ghostty_key_encoder_set",
+    "ghostty_key_encoder_set_from_terminal",
+    "ghostty_mouse_encoder_set",
+    "ghostty_mouse_encoder_set_from_terminal",
+    "ghostty_formatter_set",
+    "ghostty_formatter_get",
+    "ghostty_search_select_next",
+    "ghostty_search_select_prev",
+    "ghostty_version",
+    "ghostty_sized_init"
+  ],
+  "removed_exports": [
+    "ghostty_key_encoder_setopt",
+    "ghostty_key_encoder_setopt_from_terminal",
+    "ghostty_mouse_encoder_setopt",
+    "ghostty_mouse_encoder_setopt_from_terminal",
+    "ghostty_terminal_selection_format_buf",
+    "ghostty_terminal_selection_format_alloc"
+  ],
+  "excluded_additions": {
+    "ghostty_key_encoder_set": "input_encode",
+    "ghostty_key_encoder_set_from_terminal": "input_encode",
+    "ghostty_mouse_encoder_set": "input_encode",
+    "ghostty_mouse_encoder_set_from_terminal": "input_encode",
+    "ghostty_search_select_next": "search",
+    "ghostty_search_select_prev": "search"
+  },
+  "new_render_grid_exports": [],
+  "probe_source": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/boundary/version_build_info.c",
+  "native_version_feature_cases": 14
+}

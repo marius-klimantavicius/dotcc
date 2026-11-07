@@ -1,0 +1,11 @@
+{
+  "reason": "Normal default recipe keeps managed build artifacts outside project obj; SDK generated editorconfig must match evaluated GeneratedMSBuildEditorConfigFile instead of guessed local path.",
+  "tests": "dotnet test DotCC.PostProcess.Tests/DotCC.PostProcess.Tests.csproj --filter FullyQualifiedName~ProjectInputOptionsTests",
+  "focused_passed": 2,
+  "focused_failed": 0,
+  "custom_configuration_rejection_preserved": true,
+  "source": "DotCC.PostProcess/ProjectInput.cs",
+  "actual_failed_input": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/campaign/20261107-151734-ce5789b5/processed/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+  "actual_retry_status": "passed",
+  "actual_retry_log": "Rewrote 11593 Cond.B calls; skipped 0.\nSimplified 932 boolean comparisons.\nRemoved 18102 standalone empty blocks.\nUpdated 42 source files in place.\n"
+}

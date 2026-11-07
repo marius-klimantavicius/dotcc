@@ -1,0 +1,63 @@
+{
+  "explicit_TranslatedProject_override": false,
+  "api": {
+    "Properties": {
+      "TranslatedProject": "/home/marius/p/dotcc/libghostty/src/Managed.GhosttyVt/../../generated/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj"
+    },
+    "Items": {
+      "ProjectReference": [
+        {
+          "Identity": "/home/marius/p/dotcc/libghostty/src/Managed.GhosttyVt/../../generated/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+          "Targets": "",
+          "OutputItemType": "",
+          "ReferenceSourceTarget": "ProjectReference",
+          "FullPath": "/home/marius/p/dotcc/libghostty/generated/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+          "RootDir": "/",
+          "Filename": "TranslatedGhosttyVt",
+          "Extension": ".csproj",
+          "RelativeDir": "/home/marius/p/dotcc/libghostty/src/Managed.GhosttyVt/../../generated/TranslatedGhosttyVt/",
+          "Directory": "home/marius/p/dotcc/libghostty/generated/TranslatedGhosttyVt/",
+          "RecursiveDir": "",
+          "ModifiedTime": "2026-11-05 23:32:14.1967358",
+          "CreatedTime": "2026-11-05 23:32:14.1967358",
+          "AccessedTime": "2026-11-07 14:13:54.5801835",
+          "DefiningProjectFullPath": "/home/marius/p/dotcc/libghostty/src/Managed.GhosttyVt/Managed.GhosttyVt.csproj",
+          "DefiningProjectDirectory": "/home/marius/p/dotcc/libghostty/src/Managed.GhosttyVt/",
+          "DefiningProjectName": "Managed.GhosttyVt",
+          "DefiningProjectExtension": ".csproj"
+        }
+      ]
+    }
+  },
+  "sample": {
+    "Properties": {
+      "TranslatedProject": "/home/marius/p/dotcc/libghostty/samples/ManagedConsumer/../../generated/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj"
+    },
+    "Items": {
+      "ProjectReference": [
+        {
+          "Identity": "../../src/Managed.GhosttyVt/Managed.GhosttyVt.csproj",
+          "Targets": "",
+          "OutputItemType": "",
+          "ReferenceSourceTarget": "ProjectReference",
+          "FullPath": "/home/marius/p/dotcc/libghostty/src/Managed.GhosttyVt/Managed.GhosttyVt.csproj",
+          "RootDir": "/",
+          "Filename": "Managed.GhosttyVt",
+          "Extension": ".csproj",
+          "RelativeDir": "../../src/Managed.GhosttyVt/",
+          "Directory": "home/marius/p/dotcc/libghostty/src/Managed.GhosttyVt/",
+          "RecursiveDir": "",
+          "ModifiedTime": "",
+          "CreatedTime": "",
+          "AccessedTime": "",
+          "DefiningProjectFullPath": "/home/marius/p/dotcc/libghostty/samples/ManagedConsumer/ManagedConsumer.csproj",
+          "DefiningProjectDirectory": "/home/marius/p/dotcc/libghostty/samples/ManagedConsumer/",
+          "DefiningProjectName": "ManagedConsumer",
+          "DefiningProjectExtension": ".csproj"
+        }
+      ]
+    }
+  },
+  "ordinary_solution": "libghostty/ManagedConsumer.slnx",
+  "scope": "MSBuild default evaluation plus actual post-publication ordinary solution build/run (DELIVERY.json)"
+}

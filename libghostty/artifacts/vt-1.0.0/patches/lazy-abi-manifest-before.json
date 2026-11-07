@@ -1,0 +1,8 @@
+{
+  "stage": "before_patch",
+  "library": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/native/install/lib/libghostty-vt.so.1.0.0",
+  "library_sha256": "fa3514b4f1811227cbc1c344a77fbf774733536a26efcf664d059fc106fe5445",
+  "manifest_bytes": 75223,
+  "manifest_sha256": "715c2af072a2ac2a671258a9bd5f8d1747d5aa33b7e41b2b0bdc25218e0a2c5a",
+  "snapshot": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/lazy-abi-manifest/before.json"
+}

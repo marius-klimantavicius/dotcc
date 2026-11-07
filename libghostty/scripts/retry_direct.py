@@ -40,7 +40,9 @@ def main():
                    engine_object_emitted=output.is_file(), linked=False, built=False, ran=False,
                    root=str(root), root_sha256=hashlib.sha256(root.read_bytes()).hexdigest(),
                    graph=graph, compiler=str(args.compiler.resolve()))
-    patch_manifest = Path(__file__).resolve().parents[1] / "patches/direct/manifest.json"
+    campaign = Path(__file__).resolve().parents[1]
+    pin = json.loads((campaign / "config/source.json").read_text())
+    patch_manifest = campaign / pin.get("compatibility_directory", "patches/direct") / "manifest.json"
     if patch_manifest.is_file():
         patch_data = json.loads(patch_manifest.read_text())
         final_hashes = {entry["source"]: entry["patched_sha256"] for entry in patch_data["patches"]}

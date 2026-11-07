@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "upstream_release": "vt-1.0.0",
+  "upstream_archive": "libghostty-vt-1.0.0.tar.gz",
+  "upstream_archive_sha256": "4a6ef758be721923e1969e7b81b443dcc92d8dd3fb5a39600c03a8817a753676",
+  "ported_from_commit": "93967b7f9478e94dcbb42125c8a90f34feb40d75",
+  "patches": [
+    {
+      "patch": "0001-action-value-forwarder.patch",
+      "source": "src/terminal/stream.zig",
+      "original_sha256": "e2b3b39458af262cf40ff8eec4e39f157606c42b4d2cdc9b815c156c47a623af",
+      "patched_sha256": "381b2e64c8851a16ea1a9c3696919f3c690dd4de6c5d9fbbac49c850ba7341a2",
+      "patch_sha256": "ecc0f28cffb32324df819b07b410c38862d206c1685f86cd5b288f1c07f1481a",
+      "reason": "Forward Action.Value to the same c_union.Value helper without a generic function alias."
+    },
+    {
+      "patch": "0002-x11-comptime-dimensions.patch",
+      "source": "src/terminal/x11_color.zig",
+      "original_sha256": "da47d2b30770b34f4604d258fc2fecdb570d0f047fd9ca5eb0090f433ca3830c",
+      "patched_sha256": "652cea1d7435d1e118f6dcd2f1170d4478df04fa76d9772e926c123fb5e745ea",
+      "patch_sha256": "50c972f7f088b3936a5d41c262204b9e8b746d4d3d3683cd99bfc02a8eb77bcd",
+      "reason": "Use explicit scalar comptime dimensions, a data-derived bounded name buffer and an explicit comptime map-construction block while preserving X11 parser, sort, lookup, names, order and RGB values."
+    },
+    {
+      "patch": "0003-ascii-vector-widening.patch",
+      "source": "src/simd/vt.zig",
+      "original_sha256": "4d416758c6ab99307fcbb98f3098a2833172871f985e0ab5eef49807dcfa2673",
+      "patched_sha256": "9b9bb954ea90f286d11e6fc27d806ec86af694f6aed4dbe09e39a6f3792c0971",
+      "patch_sha256": "14b92606aec342e73ec2d2ec5f0d93eeb1e81027957bd2667eb401d5db64ffe7",
+      "reason": "Widen verified ASCII vector lanes into the same u32 output one lane at a time; preserve vector scan, fallback decoder, counts, and error handling without requiring a single four-times-wider vector."
+    },
+    {
+      "patch": "0004-field-mask-path.patch",
+      "source": "src/terminal/page.zig",
+      "original_sha256": "2dbcfedcd0470c1ff2aacb8ae296128a068b3743a120cb793d222ab07cec7e49",
+      "patched_sha256": "357eecdda15e9472e8dfb6fc8ccaef851ac816e253f8b8b6892bd6f1604131c7",
+      "patch_sha256": "f6f3b4076d8fd9da004f47ebfac3b5b5cfda81fc51387931c3ba0a47ba1cef8d",
+      "reason": "Express the same packed field-path mask traversal recursively with const intermediate types instead of a mutable comptime type and split iterator; retain source offsets, types, widths and union checks."
+    },
+    {
+      "patch": "0005-color-scheme-size.patch",
+      "source": "src/terminal/device_status.zig",
+      "original_sha256": "57605f5dc22687b1926654664475d3d05c74e0bff12bfe8a9cc955596e8fae92",
+      "patched_sha256": "68abcc73ba85ad6fca2a272769f4918938f45f1e18f4ad81908327d8cff28de4",
+      "patch_sha256": "cd495e79a7865152cb0c7ea64daebd64e1936d7b637457496e26629b32cc070b",
+      "reason": "Share the unchanged color-scheme encoded byte selection between the real Writer encoder and its comptime maximum; avoid constructing and invoking a discarding Writer at comptime."
+    },
+    {
+      "patch": "0006-xtgettcap-comptime-bytes.patch",
+      "source": "src/terminfo/Source.zig",
+      "original_sha256": "49c9c5678af9800e5cf829c7050ef24dc741d470a6bbeeef0fe06665e37c15a2",
+      "patched_sha256": "30874ffcb03206c69292591f93fb068052a69916e7765c64d2081aede3dbaf69",
+      "patch_sha256": "4ed6864442f59961faec2f4727483f08cf516983019fb840db478df8bde1b38c",
+      "reason": "Make XTGETTCAP construction explicitly comptime; preserve every capability response, uppercase hex digit, u32 decimal value, control/parameter escape rule, sentinel and StaticStringMap runtime lookup using source-order helpers and exact byte copies instead of incidental comptime Writer machinery."
+    },
+    {
+      "patch": "0007-parser-action-output.patch",
+      "source": "src/terminal/Parser.zig",
+      "original_sha256": "92e0f0fe1939f2030c83a3d7e2f334d90fa6d5e4988760c4b465da54ef57c808",
+      "patched_sha256": "5bb4eed210adee970409c1a3af4c514c83a19298414f89b735d91d79170a3e6f",
+      "patch_sha256": "d90af352209d685d92843a3bc913ec9b8efafb90a011b1323f21afb727043209",
+      "reason": "Retain public Parser.next while evaluating the unchanged ordered exit/transition/entry actions into caller-owned storage with the original deferred state update."
+    },
+    {
+      "patch": "0008-stream-action-output.patch",
+      "source": "src/terminal/stream.zig",
+      "original_sha256": "381b2e64c8851a16ea1a9c3696919f3c690dd4de6c5d9fbbac49c850ba7341a2",
+      "patched_sha256": "4eaffdc6eea560fa813990752023f6dd454f5913546cc123dfa2ae9f13130a88",
+      "patch_sha256": "f12aee1c48f6247efc3937d33b6dc6faf8797e6c824fab0aced16bf429d0f219",
+      "reason": "Use bounded caller-owned parser action output in the actual stream path; preserve transition observation, action order, payload borrowing and dispatch without per-byte retained array-return allocations."
+    },
+    {
+      "patch": "0009-mode-report-size.patch",
+      "source": "src/terminal/modes.zig",
+      "original_sha256": "7bd7a9ae6a53a1f46dd375102151a56ec5397233baef8107dac61f6686d5add6",
+      "patched_sha256": "c908665680a603a3af6a89b7fe2c9714dc939f28beae81c9a29e7abe3c63ad69",
+      "patch_sha256": "3da3e85a719d5123d923b9779c5bde03ca36b77b1ef14b3567536ebe08ec2bca",
+      "reason": "Derive the exact maximal DECRPM report size from the same maximal Report, decimal digit counts and unchanged encoder framing lengths; preserve the real runtime encoder while avoiding incidental comptime Discarding Writer construction."
+    },
+    {
+      "patch": "0010-dcs-hook-result.patch",
+      "source": "src/terminal/dcs.zig",
+      "original_sha256": "b6e3220efbdc68001f72d193865723bcc634b1ae05d8e44f251aa137e4a18ef8",
+      "patched_sha256": "fda3ee1b76a7bf7481f524e2baab570fc32e3860f7f181cb5e68d2e84b72d406",
+      "patch_sha256": "9a04e1b51bc015bda3fc4908cdf68f31ff110a688fa2bc3fb5e6b6096936a478",
+      "reason": "Result-locate the unchanged DCS hook switch in ?Hook before returning success from !?Hook; preserve all branches, scopes, allocation tries and caller-visible failure handling."
+    },
+    {
+      "patch": "0011-comptime-set-duplicate-trap.patch",
+      "source": "src/datastruct/comptime_int_set.zig",
+      "original_sha256": "eb7fb5f360cfcbd0b31024507b5c93c10b3b426c893a68bf75a57f5224a6ec6b",
+      "patched_sha256": "170d0bfb524df13bea77834ba94eddec47db0c8775a3fa8b63a0b24a32ea1526",
+      "patch_sha256": "3575b141c9e20f43f70ed8e5a61f99cf3c56426f6c634b34a34180fc84f295a9",
+      "reason": "Retain unconditional comptime duplicate-key rejection via unreachable, allowing the interpreter to evaluate its data-dependent guard before rejecting. Original sorting, table construction, keys and lookup remain unchanged; duplicate diagnostic becomes unreachable instead of the custom message."
+    },
+    {
+      "patch": "0012-cursor-hyperlink-id-result.patch",
+      "source": "src/terminal/Screen.zig",
+      "original_sha256": "3fe5a4c22d76c28a6a478fe553b460d3edd734408a379f646791eb6e0f5f8796",
+      "patched_sha256": "2c32710ca8bf300bec60e00ab1a7b05946b216a82c3f0b53b27c3df065a328c9",
+      "patch_sha256": "08f030dfe0f6d6acdf3cb2c27f6ff3e867142c88ba5ecb4125ec73f8f6abd9ea",
+      "reason": "Give cursorCopy hyperlink ID its existing optional const-byte-slice result type explicitly; preserve both original union branches, borrowed memory, empty IDs, null and startHyperlink behavior. Avoid general capturing-switch optional peer inference for this incidental local."
+    },
+    {
+      "patch": "0013-rgb-positional-format.patch",
+      "source": "src/terminal/Terminal.zig",
+      "original_sha256": "03ef3a999a2b195746195933ce3cd945b4a9f188e53198b073a4de581d6096ef",
+      "patched_sha256": "43e0c7e6493d7a48723a7c0a82defd8534f8b8fc193e4ba9432fefeac430e91f",
+      "patch_sha256": "01804a4527a3f6d991283e4428426addb2418df25f315d9285104f79322362a2",
+      "reason": "Pass RGB r, g and b as the same ordered positional Writer arguments for foreground/background DECRQSS attribute encoding. Preserve decimal bytes, framing, channel order and Writer error propagation while avoiding incidental named-argument reflection."
+    },
+    {
+      "patch": "0014-wide-cell-interleave.patch",
+      "source": "src/terminal/Terminal.zig",
+      "original_sha256": "43e0c7e6493d7a48723a7c0a82defd8534f8b8fc193e4ba9432fefeac430e91f",
+      "patched_sha256": "923d8d2c379355dc189757cc3423a92ee8cbd0cd4dddfc3916fdb5aba2e143b2",
+      "patch_sha256": "396cde0bd6dd9052395d30caf4dcbf347e2cb6abfde083083afee0d3a605d712",
+      "reason": "Materialize the same fixed-size wide-cell/spacer interleave by source-order lane assignments instead of std.simd.interlace comptime vector-mask machinery. Preserve all lanes, vector arithmetic, loop bounds, packed cell stores and scalar tail."
+    },
+    {
+      "patch": "0015-lazy-abi-manifest-validation.patch",
+      "source": "src/terminal/c/types.zig",
+      "original_sha256": "de9d08c6b8a59e77c35d0d6336071d8476b920d50549ad53d0fae254186da5d9",
+      "patched_sha256": "871c5c672be5eef5e1eb29053b4096ff0c2aea3c55cf0cb03654114913aabd9a",
+      "patch_sha256": "faa801186c0f7f1f7d2a86b133026c9d6c3725d69f9a65eee9079b58bb7c606d",
+      "reason": "Move the unchanged ABI-manifest validation block into the existing lazy json initializer as an ordinary nested block. Preserve every declaration, validation, order, quota, JSON byte, writer and get_json export. Header-based runtime consumers of CursorStyle and sized_init do not require the standalone type manifest; consumers of json, including the full native library ghostty_type_json export, still evaluate all validations."
+    },
+    {
+      "patch": "0016-explicit-sized-validation.patch",
+      "source": "src/lib/struct.zig",
+      "original_sha256": "84f7028346399821dc5adf610e691c09c8baaff7e20d311f78202c10a747d2a6",
+      "patched_sha256": "5d41801182925ce8747da2cc36a0fcb28720e9821a033d9c45835b44b5d40179",
+      "patch_sha256": "d4a694b818ef6ff0b6ab5dfb3958fc9ad71fd2efdd77860e270b0d32c9cc2524",
+      "reason": "Keep the existing const info reflection binding in function scope and wrap every following validateSized statement in an explicit comptime block. Its type parameter and every caller already require compile-time validation. Preserve all extern/size/base/padding checks, source order and diagnostics, sized-struct layout/size/runtime helpers and exported behavior. The normal const binding resolves reflection metadata before the lexical comptime validator executes its original checks."
+    },
+    {
+      "patch": "0017-bounded-print-batches.patch",
+      "source": "src/terminal/stream.zig",
+      "original_sha256": "4eaffdc6eea560fa813990752023f6dd454f5913546cc123dfa2ae9f13130a88",
+      "patched_sha256": "b64ec8a6ac5cd62f8d2f2273ec636eaddbeb6ca1de64d7c5be36e33f8478aab4",
+      "patch_sha256": "8314274d084cadd0ab2a8dd78d9b6c548cd8b5904c4f95ddc357035f8619b9c7",
+      "reason": "Cap only Stream.printRuns local scan batches at 64 lanes, retaining the global simd.lanes policy. Preserve every per-element printable/control predicate, first-stop ctz result, scalar tail, state transition, printAscii/print_slice dispatch and stream boundary consumption. This splits the same runs into smaller scan iterations on AVX-512 u8 targets, avoiding incidental 128-bit masks; u16/u32 lane counts at or below 64 remain unchanged."
+    },
+    {
+      "patch": "0018-scalar-cell-store.patch",
+      "source": "src/terminal/Terminal.zig",
+      "original_sha256": "923d8d2c379355dc189757cc3423a92ee8cbd0cd4dddfc3916fdb5aba2e143b2",
+      "patched_sha256": "408d06876bee4fd89eab0f6f414b85429c3b7ef1715d2a6b6a948016ed8a8ac3",
+      "patch_sha256": "d65ee5e67fba304dc457ad800d09beffa9b1909c1e740cec2062ed74df327492",
+      "reason": "Guard only printSliceStoreRun manual vectorized cell-store block with the existing comptime terminal_options.simd policy. Retain the exact vector body for enabled SIMD, unchanged charset branch, and byte-identical scalar tail. For the selected simd=false product the original scalar tail processes the full run using the same cell template/codepoint merge, preserving all cells and terminal behavior while avoiding incidental wide-vector construction/widening."
+    },
+    {
+      "patch": "0019-reflected-style-reserved-mask.patch",
+      "source": "src/terminal/c/style.zig",
+      "original_sha256": "6df59553c5a400574cf25a28f33be4402a5f584912ba6652f0ccdb272e692363",
+      "patched_sha256": "dbd5589f5f2876227acaabb074b9e3d132e0380b31282341665bcd8faf91bbc6",
+      "patch_sha256": "5df2e8c04f6df5d01bf1e3cb7a42e5d3873db129d0e0b34ddcaeea7b269dabef",
+      "reason": "Derive the same native-u128 C Style reserved-bit mask from actual field types, byte offsets, packed flag padding offset and target byte order. Replace only incidental comptime mutation/pointer reinterpretation used to construct this constant. No offsets or widths are hardcoded; native endian field positions preserve both target byte orders. Runtime toBits, write, conversions, default/style_is_default behavior and all layouts remain unchanged."
+    }
+  ]
+}

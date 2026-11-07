@@ -1,0 +1,2267 @@
+{
+  "assembly": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/default-check/bin/TranslatedGhosttyVt/release/TranslatedGhosttyVt.dll",
+  "assembly_sha256": "A4B150547B31206FB79A2290053E2976713F64C64298434EA3BFF0A29499DB33",
+  "source_directory": "/home/marius/p/dotcc/libghostty/generated/TranslatedGhosttyVt",
+  "source_files": 44,
+  "source_bytes": 17576752,
+  "main_bytes": 6146159,
+  "assembly_references": [
+    "System.Collections",
+    "System.Collections.Concurrent",
+    "System.Console",
+    "System.Diagnostics.Process",
+    "System.Memory",
+    "System.Net.NameResolution",
+    "System.Net.NetworkInformation",
+    "System.Net.Primitives",
+    "System.Net.Sockets",
+    "System.Runtime",
+    "System.Runtime.InteropServices",
+    "System.Runtime.Intrinsics",
+    "System.Runtime.Numerics",
+    "System.Security.Cryptography",
+    "System.Threading",
+    "System.Threading.Thread"
+  ],
+  "public_api": [
+    {
+      "name": "ghostty_alloc",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_build_info",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_cell_get",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_cell_get_multi",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 12
+    },
+    {
+      "name": "ghostty_color_scheme_report_encode",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 10
+    },
+    {
+      "name": "ghostty_formatter_format",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_formatter_format_alloc",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 10
+    },
+    {
+      "name": "ghostty_formatter_format_buf",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 10
+    },
+    {
+      "name": "ghostty_formatter_free",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_formatter_get",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_formatter_set",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_formatter_terminal_new",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_free",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_grid_ref_cell",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_grid_ref_graphemes",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 10
+    },
+    {
+      "name": "ghostty_grid_ref_hyperlink_uri",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 10
+    },
+    {
+      "name": "ghostty_grid_ref_row",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_grid_ref_style",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_mode_new",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 20
+    },
+    {
+      "name": "ghostty_mode_report_encode",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 12
+    },
+    {
+      "name": "ghostty_osc_command_data",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_osc_command_type",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_osc_end",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_osc_free",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_osc_new",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_osc_next",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_osc_reset",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_osc_set",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_render_state_begin_update",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_render_state_clean",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_render_state_end_update",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_render_state_free",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_render_state_get",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_render_state_get_multi",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 12
+    },
+    {
+      "name": "ghostty_render_state_image_get",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_render_state_image_get_multi",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 12
+    },
+    {
+      "name": "ghostty_render_state_image_iterator_free",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_render_state_image_iterator_new",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_render_state_image_iterator_next",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_render_state_new",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_render_state_row_cells_free",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_render_state_row_cells_get",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_render_state_row_cells_get_multi",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 12
+    },
+    {
+      "name": "ghostty_render_state_row_cells_new",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_render_state_row_cells_next",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_render_state_row_cells_select",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_render_state_row_get",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_render_state_row_get_multi",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 12
+    },
+    {
+      "name": "ghostty_render_state_row_iterator_free",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_render_state_row_iterator_new",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_render_state_row_iterator_next",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_render_state_row_iterator_next_dirty",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_render_state_row_set",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_render_state_set",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_render_state_update",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_row_get",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_row_get_multi",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 12
+    },
+    {
+      "name": "ghostty_sgr_attribute_tag",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_sgr_attribute_value",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_sgr_free",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_sgr_new",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_sgr_next",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_sgr_reset",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_sgr_set_params",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 10
+    },
+    {
+      "name": "ghostty_sgr_unknown_full",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_sgr_unknown_partial",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_size_report_encode",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 12
+    },
+    {
+      "name": "ghostty_sized_init",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_style_default",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_style_is_default",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_sys_log_stderr",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 14
+    },
+    {
+      "name": "ghostty_sys_set",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_terminal_compress",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_terminal_compression_activity",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_terminal_continuation_alloc",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 10
+    },
+    {
+      "name": "ghostty_terminal_continuation_buf",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 10
+    },
+    {
+      "name": "ghostty_terminal_continuation_write",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_terminal_free",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_terminal_get",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_terminal_get_multi",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 12
+    },
+    {
+      "name": "ghostty_terminal_grid_ref",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_terminal_grid_ref_track",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_terminal_new",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 10
+    },
+    {
+      "name": "ghostty_terminal_point_from_grid_ref",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 10
+    },
+    {
+      "name": "ghostty_terminal_reset",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_terminal_resize",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 12
+    },
+    {
+      "name": "ghostty_terminal_scroll_viewport",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 8
+    },
+    {
+      "name": "ghostty_terminal_set",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_terminal_vt_write",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_terminal_vt_write_until",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 12
+    },
+    {
+      "name": "ghostty_tracked_grid_ref_free",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_tracked_grid_ref_has_value",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_tracked_grid_ref_point",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_tracked_grid_ref_set",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_unicode_codepoint_width",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 7
+    },
+    {
+      "name": "ghostty_unicode_grapheme_width",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 9
+    },
+    {
+      "name": "ghostty_version",
+      "owner": "Managed.GhosttyVt",
+      "has_body": true,
+      "il_bytes": 6
+    }
+  ],
+  "before": {
+    "release": "vt-1.0.0",
+    "revision": "0fa3d577a5614150ff8e2c152de5fb9d5c6d2dec",
+    "route": "direct Zig -\u003E DotCC -\u003E C#",
+    "purpose": "Independent aggregate PE/RVA and warmed allocation audit; full upstream managed qualification remains pending"
+  },
+  "helper_method_count": 0,
+  "helper_type_count": 0,
+  "max_parameters": 0,
+  "maximum_helper_il_bytes": 0,
+  "maximum_allowed_parameters": 2,
+  "bounded_parameters": true,
+  "factories": [],
+  "storage_helper_method_count": 144,
+  "maximum_storage_helper_parameters": 1,
+  "bounded_storage_helper_parameters": true,
+  "storage_helpers": [
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_029C7F0B46756B2978013779137BF07079C5934E5C82BB926078B78C2ABBA915_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 333
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_0AE0464BAA9141FC8C8A7B1632520E78C80645089675EF44467295A34C3DB68F_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 3479
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_0AE0464BAA9141FC8C8A7B1632520E78C80645089675EF44467295A34C3DB68F_Fill_0_1",
+      "parameters": 1,
+      "il_bytes": 3679
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_0AE0464BAA9141FC8C8A7B1632520E78C80645089675EF44467295A34C3DB68F_Fill_0_2",
+      "parameters": 1,
+      "il_bytes": 2874
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_0C5F08267DDD06160D6E43E3EB6B6A79F55CA22A2F8190DCEF40C9D42262E99A_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 4161
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_0C5F08267DDD06160D6E43E3EB6B6A79F55CA22A2F8190DCEF40C9D42262E99A_Fill_0_1",
+      "parameters": 1,
+      "il_bytes": 4370
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_0C5F08267DDD06160D6E43E3EB6B6A79F55CA22A2F8190DCEF40C9D42262E99A_Fill_0_2",
+      "parameters": 1,
+      "il_bytes": 3093
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_12E73C3D710E62B208E4FC026FEC46D643A2E60DB38D68AB47E45B22CFAD4473_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 90
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_1A12558D48874414ACA88548AF4A30BEB9F37B00ECD0C1C96C63216447AD2D77_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 3409
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_1A12558D48874414ACA88548AF4A30BEB9F37B00ECD0C1C96C63216447AD2D77_Fill_0_1",
+      "parameters": 1,
+      "il_bytes": 3635
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_1A12558D48874414ACA88548AF4A30BEB9F37B00ECD0C1C96C63216447AD2D77_Fill_0_2",
+      "parameters": 1,
+      "il_bytes": 2988
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_2B7D4C07979116CA6B772B6D26EAEC03BB1A1178EE7459210ED958B9F4204FDF_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 4579
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_2B7D4C07979116CA6B772B6D26EAEC03BB1A1178EE7459210ED958B9F4204FDF_Fill_0_1",
+      "parameters": 1,
+      "il_bytes": 4864
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_2B7D4C07979116CA6B772B6D26EAEC03BB1A1178EE7459210ED958B9F4204FDF_Fill_0_2",
+      "parameters": 1,
+      "il_bytes": 4903
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_2B7D4C07979116CA6B772B6D26EAEC03BB1A1178EE7459210ED958B9F4204FDF_Fill_0_3",
+      "parameters": 1,
+      "il_bytes": 4969
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_2B7D4C07979116CA6B772B6D26EAEC03BB1A1178EE7459210ED958B9F4204FDF_Fill_0_4",
+      "parameters": 1,
+      "il_bytes": 4973
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_2B7D4C07979116CA6B772B6D26EAEC03BB1A1178EE7459210ED958B9F4204FDF_Fill_0_5",
+      "parameters": 1,
+      "il_bytes": 4967
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_2B7D4C07979116CA6B772B6D26EAEC03BB1A1178EE7459210ED958B9F4204FDF_Fill_0_6",
+      "parameters": 1,
+      "il_bytes": 4351
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_329928D86AB7BB2D4E2BDE304342D3204BD37CF5D423C1CD449ADA3C48AE5EB2_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 5290
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_329928D86AB7BB2D4E2BDE304342D3204BD37CF5D423C1CD449ADA3C48AE5EB2_Fill_0_1",
+      "parameters": 1,
+      "il_bytes": 5526
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_329928D86AB7BB2D4E2BDE304342D3204BD37CF5D423C1CD449ADA3C48AE5EB2_Fill_0_2",
+      "parameters": 1,
+      "il_bytes": 5713
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_329928D86AB7BB2D4E2BDE304342D3204BD37CF5D423C1CD449ADA3C48AE5EB2_Fill_0_3",
+      "parameters": 1,
+      "il_bytes": 5775
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_329928D86AB7BB2D4E2BDE304342D3204BD37CF5D423C1CD449ADA3C48AE5EB2_Fill_0_4",
+      "parameters": 1,
+      "il_bytes": 5743
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_329928D86AB7BB2D4E2BDE304342D3204BD37CF5D423C1CD449ADA3C48AE5EB2_Fill_0_5",
+      "parameters": 1,
+      "il_bytes": 5759
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_329928D86AB7BB2D4E2BDE304342D3204BD37CF5D423C1CD449ADA3C48AE5EB2_Fill_0_6",
+      "parameters": 1,
+      "il_bytes": 5745
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_329928D86AB7BB2D4E2BDE304342D3204BD37CF5D423C1CD449ADA3C48AE5EB2_Fill_0_7",
+      "parameters": 1,
+      "il_bytes": 5793
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_329928D86AB7BB2D4E2BDE304342D3204BD37CF5D423C1CD449ADA3C48AE5EB2_Fill_0_8",
+      "parameters": 1,
+      "il_bytes": 2284
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_355C99C1A98DB5C76B97AC56E31EA06EC59A1F87C59DC0FBAD59142ADD01C618_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 192
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_4E4EBB0ACC2371744BD833402306CC2952DF7F3EC76D3252642D20F8571B7B6A_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 4079
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_4E4EBB0ACC2371744BD833402306CC2952DF7F3EC76D3252642D20F8571B7B6A_Fill_0_1",
+      "parameters": 1,
+      "il_bytes": 4276
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_4E4EBB0ACC2371744BD833402306CC2952DF7F3EC76D3252642D20F8571B7B6A_Fill_0_2",
+      "parameters": 1,
+      "il_bytes": 3269
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_4EF2818E1D2EBF172EBCFDC6C08396D0C9E837FEFEF73DDD37DC9F53F6C2BBEE_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 4459
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_4EF2818E1D2EBF172EBCFDC6C08396D0C9E837FEFEF73DDD37DC9F53F6C2BBEE_Fill_0_1",
+      "parameters": 1,
+      "il_bytes": 4769
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_4EF2818E1D2EBF172EBCFDC6C08396D0C9E837FEFEF73DDD37DC9F53F6C2BBEE_Fill_0_2",
+      "parameters": 1,
+      "il_bytes": 4817
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_4EF2818E1D2EBF172EBCFDC6C08396D0C9E837FEFEF73DDD37DC9F53F6C2BBEE_Fill_0_3",
+      "parameters": 1,
+      "il_bytes": 4874
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_4EF2818E1D2EBF172EBCFDC6C08396D0C9E837FEFEF73DDD37DC9F53F6C2BBEE_Fill_0_4",
+      "parameters": 1,
+      "il_bytes": 4885
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_4EF2818E1D2EBF172EBCFDC6C08396D0C9E837FEFEF73DDD37DC9F53F6C2BBEE_Fill_0_5",
+      "parameters": 1,
+      "il_bytes": 4879
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_4EF2818E1D2EBF172EBCFDC6C08396D0C9E837FEFEF73DDD37DC9F53F6C2BBEE_Fill_0_6",
+      "parameters": 1,
+      "il_bytes": 4879
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_4EF2818E1D2EBF172EBCFDC6C08396D0C9E837FEFEF73DDD37DC9F53F6C2BBEE_Fill_0_7",
+      "parameters": 1,
+      "il_bytes": 45
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_538600356E5BB8201F356B423D1680288741A541C4AC8BC12A1D29D9D180AA87_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 90
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_589E2A51F90D8AE8C55301CCB1E3903319788AF3A77FD78DB8BD3710D2FF0162_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 90
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_597B641C4DB3E9295BACDEF8624C59E6796DF9A279689BA9DC606FF8997804FF_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 5228
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_597B641C4DB3E9295BACDEF8624C59E6796DF9A279689BA9DC606FF8997804FF_Fill_0_1",
+      "parameters": 1,
+      "il_bytes": 5475
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_597B641C4DB3E9295BACDEF8624C59E6796DF9A279689BA9DC606FF8997804FF_Fill_0_2",
+      "parameters": 1,
+      "il_bytes": 5566
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_597B641C4DB3E9295BACDEF8624C59E6796DF9A279689BA9DC606FF8997804FF_Fill_0_3",
+      "parameters": 1,
+      "il_bytes": 5669
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_597B641C4DB3E9295BACDEF8624C59E6796DF9A279689BA9DC606FF8997804FF_Fill_0_4",
+      "parameters": 1,
+      "il_bytes": 5693
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_597B641C4DB3E9295BACDEF8624C59E6796DF9A279689BA9DC606FF8997804FF_Fill_0_5",
+      "parameters": 1,
+      "il_bytes": 5618
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_597B641C4DB3E9295BACDEF8624C59E6796DF9A279689BA9DC606FF8997804FF_Fill_0_6",
+      "parameters": 1,
+      "il_bytes": 5688
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_597B641C4DB3E9295BACDEF8624C59E6796DF9A279689BA9DC606FF8997804FF_Fill_0_7",
+      "parameters": 1,
+      "il_bytes": 5661
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_597B641C4DB3E9295BACDEF8624C59E6796DF9A279689BA9DC606FF8997804FF_Fill_0_8",
+      "parameters": 1,
+      "il_bytes": 3030
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_62B6BC93D89750E5DDE52486948E758076F83C43C8F0662A4DCF9A1C451F6187_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 90
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_640DD770C96A1E9BE42E489B6FCFBA0369DAD04930E91334CB51E97E05B5A67F_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 267
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_7010B5B75931FBE1663234E5CE1C12B4FBE99967C6B918157E0CCA4667495A57_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 90
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_726D763EB24D20E0471A64057C8F4BC064A796E5D8E53BC6E74B679976283400_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 91
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_80AA64EA22C4D39D134CA9A4322DA9464966EA0655352F664EB6F33FFA1A6E4C_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 35
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_88AC5A17C17B138FB8A852DCB88C9D07831F79E3A07C6B640E7DC7536A5AD2C3_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 2352
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_8C0DF910BB7217ECCF7BE81B71383438330303860B0DFF8018C16275A749A13E_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 90
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_9465F8FB61FC7760314199A6721445CCAFEB79A89D7A6B94B1EA22F7300802A8_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 1965
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_980561AD47DD25066C737654545042FDE713DB5E98C06D97A6219D5550EE5EA5_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 35
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_A2BB93D381D0E23D904117B96F953741F479736950D06C14964DBA3AA165EDA2_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 34
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_A53C17EB8A27B27C3D15E62622D35A34EDEF8550A9EA26962734A49860F18074_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 34
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_AD00694A9E6FA4B5184F2CE2ED9B42F7E97857550C0FB646CB7758D679798EB0_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 36
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_AFB0923D14EA8808CECC138827790E367EFD0C25652A2FF4ACC816AA31D65344_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 57
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_B5E470634CCEA5D3AC8E04E42192D69D3C7C17A14E933AB65620CE8DDE5680F6_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 34
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_B8C7DCFE77A7CEE3A1831B0B029A824AA8BEE875C0359172DE3021FCF1E9851B_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 90
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_B8EA181DD23C2A916E17DF8744EE4C8C3F09DC2B322764FB063AF855E4BFF860_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 124
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_BA0904C520DA31FB3F1B84B899F35F47B46671B1E2088C4DAA4BF7DB9FE9A919_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 35
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_BA1415D3C07DE301D907A128DA7A86785EE946C41667DB826FDF31C3A70751A0_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 36
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_C0873FC994ACAC655E819A064A302DD642CB73A4014D21B04F8444B52E30E326_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 35
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_C58D8805E36DC95C1DDEB804FE1ECB09FA25078A28313393E8C1C16B39485ED3_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 336
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_CBF14A6E8171C1480EE30193A71D1EBBCC0016D0BC1F69C7350A13628E908294_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 3374
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_CBF14A6E8171C1480EE30193A71D1EBBCC0016D0BC1F69C7350A13628E908294_Fill_0_1",
+      "parameters": 1,
+      "il_bytes": 3556
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_CBF14A6E8171C1480EE30193A71D1EBBCC0016D0BC1F69C7350A13628E908294_Fill_0_2",
+      "parameters": 1,
+      "il_bytes": 3102
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_CED48B66F602CABAE44688722BD7356B686AB86FFECB30B68061356B58B74CB9_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 90
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_D078BC61C6ABD16E9C0717B084F33C2A7539F91BD326D5749A32330A0AF4ED50_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 56
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_D29B46E14CC48E3B41C7AC3AF9ACF89E4C2E5DA7B3651AB18325A49D66629BE0_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 34
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_D5440C42DD7D8581CCD334EBDE85D4CDF2F0DFDB685462F97EEA7DB909899642_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 124
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_D63868A066199DD10E88C9ADB15E245D93AF2E9DC9572E92D88BF8EFAA2489FF_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 90
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_DFE3B7202E160B2E11EF40481C765D4DE13C2C557FE321120C214CD0E35F74A1_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 3997
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_DFE3B7202E160B2E11EF40481C765D4DE13C2C557FE321120C214CD0E35F74A1_Fill_0_1",
+      "parameters": 1,
+      "il_bytes": 4226
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_DFE3B7202E160B2E11EF40481C765D4DE13C2C557FE321120C214CD0E35F74A1_Fill_0_2",
+      "parameters": 1,
+      "il_bytes": 3401
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_E368CAC8EC2D69184C7D3F85DEB7EE63124713A73D2478103E72E784932CB0D8_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 90
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_E9EBCC97BFF10386D8AD15FB30800C92F078974DF6C6087548B4B40B020D1A97_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 34
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_EF042850D1DC734E6FBEDE999125E0FE5B46479F7A91C756F7AD659384E1AD73_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 1264
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_F243A24900325A25EA737325F886815D0E2C01D75D5D1B8731753BE414CB532B_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 90
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_F8D5097ED1343D2940A7A83E77DF5B84982413733C0CA08FE32A26D06814F5B0_Fill_0_0",
+      "parameters": 1,
+      "il_bytes": 90
+    },
+    {
+      "type": "Managed.GhosttyVt\u002B__DotccPrimitiveInit_0B91A4618EF2F71F604F43174C681171826FAA819AC989A1701F78A985C61A5C",
+      "method": "Copy_0_0",
+      "parameters": 1,
+      "il_bytes": 58
+    },
+    {
+      "type": "Managed.GhosttyVt\u002B__DotccPrimitiveInit_627882A0620F2DF4B0D331C640018F5CDBFA61944A7D0A249E75184CB2668585",
+      "method": "Copy_0_0",
+      "parameters": 1,
+      "il_bytes": 256
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_029C7F0B46756B2978013779137BF07079C5934E5C82BB926078B78C2ABBA915_Create",
+      "parameters": 0,
+      "il_bytes": 14
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_0AE0464BAA9141FC8C8A7B1632520E78C80645089675EF44467295A34C3DB68F_Create",
+      "parameters": 0,
+      "il_bytes": 29
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_0C5F08267DDD06160D6E43E3EB6B6A79F55CA22A2F8190DCEF40C9D42262E99A_Create",
+      "parameters": 0,
+      "il_bytes": 29
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_12B06E814EC47E57ABCECEAB7AE3E054FAB0995DB2E37360E5D77CA49D461E28_Create",
+      "parameters": 0,
+      "il_bytes": 7
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_12E73C3D710E62B208E4FC026FEC46D643A2E60DB38D68AB47E45B22CFAD4473_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_15022A225D8154F28740588746B6F53DCBFE432C35D65CAFDB3D8C8C41C3985A_Create",
+      "parameters": 0,
+      "il_bytes": 7
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_1A12558D48874414ACA88548AF4A30BEB9F37B00ECD0C1C96C63216447AD2D77_Create",
+      "parameters": 0,
+      "il_bytes": 29
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_208850521AC35D24CF32E834E89FB2D441906BC805604CB0A2D4909F3E05ADA6_Create",
+      "parameters": 0,
+      "il_bytes": 7
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_2B7D4C07979116CA6B772B6D26EAEC03BB1A1178EE7459210ED958B9F4204FDF_Create",
+      "parameters": 0,
+      "il_bytes": 53
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_329928D86AB7BB2D4E2BDE304342D3204BD37CF5D423C1CD449ADA3C48AE5EB2_Create",
+      "parameters": 0,
+      "il_bytes": 65
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_355C99C1A98DB5C76B97AC56E31EA06EC59A1F87C59DC0FBAD59142ADD01C618_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_4E4EBB0ACC2371744BD833402306CC2952DF7F3EC76D3252642D20F8571B7B6A_Create",
+      "parameters": 0,
+      "il_bytes": 29
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_4EF2818E1D2EBF172EBCFDC6C08396D0C9E837FEFEF73DDD37DC9F53F6C2BBEE_Create",
+      "parameters": 0,
+      "il_bytes": 59
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_538600356E5BB8201F356B423D1680288741A541C4AC8BC12A1D29D9D180AA87_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_589E2A51F90D8AE8C55301CCB1E3903319788AF3A77FD78DB8BD3710D2FF0162_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_597B641C4DB3E9295BACDEF8624C59E6796DF9A279689BA9DC606FF8997804FF_Create",
+      "parameters": 0,
+      "il_bytes": 65
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_5F37446600CF37A9A173D019F927F94DE7A2C6F90669919A3255E86013F592F5_Create",
+      "parameters": 0,
+      "il_bytes": 7
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_62B6BC93D89750E5DDE52486948E758076F83C43C8F0662A4DCF9A1C451F6187_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_640DD770C96A1E9BE42E489B6FCFBA0369DAD04930E91334CB51E97E05B5A67F_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_64812ADEB017B7312AF8DEB7A52D28720E61085FB4630A3BB84A98AE7651C091_Create",
+      "parameters": 0,
+      "il_bytes": 7
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_7010B5B75931FBE1663234E5CE1C12B4FBE99967C6B918157E0CCA4667495A57_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_726D763EB24D20E0471A64057C8F4BC064A796E5D8E53BC6E74B679976283400_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_80AA64EA22C4D39D134CA9A4322DA9464966EA0655352F664EB6F33FFA1A6E4C_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_88564FB0DB5AF5F7F8A1493027A24EBB64217F3A1198715CB5B9746E357A1127_Create",
+      "parameters": 0,
+      "il_bytes": 7
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_88AC5A17C17B138FB8A852DCB88C9D07831F79E3A07C6B640E7DC7536A5AD2C3_Create",
+      "parameters": 0,
+      "il_bytes": 14
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_8C0DF910BB7217ECCF7BE81B71383438330303860B0DFF8018C16275A749A13E_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_9465F8FB61FC7760314199A6721445CCAFEB79A89D7A6B94B1EA22F7300802A8_Create",
+      "parameters": 0,
+      "il_bytes": 14
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_980561AD47DD25066C737654545042FDE713DB5E98C06D97A6219D5550EE5EA5_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_A2BB93D381D0E23D904117B96F953741F479736950D06C14964DBA3AA165EDA2_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_A53C17EB8A27B27C3D15E62622D35A34EDEF8550A9EA26962734A49860F18074_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_AB921805455766D50CD827E74675EFCEA0670E53685E377B74B5D93375E78E8D_Create",
+      "parameters": 0,
+      "il_bytes": 7
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_AD00694A9E6FA4B5184F2CE2ED9B42F7E97857550C0FB646CB7758D679798EB0_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_AFB0923D14EA8808CECC138827790E367EFD0C25652A2FF4ACC816AA31D65344_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_B5E470634CCEA5D3AC8E04E42192D69D3C7C17A14E933AB65620CE8DDE5680F6_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_B8C7DCFE77A7CEE3A1831B0B029A824AA8BEE875C0359172DE3021FCF1E9851B_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_B8EA181DD23C2A916E17DF8744EE4C8C3F09DC2B322764FB063AF855E4BFF860_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_BA0904C520DA31FB3F1B84B899F35F47B46671B1E2088C4DAA4BF7DB9FE9A919_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_BA1415D3C07DE301D907A128DA7A86785EE946C41667DB826FDF31C3A70751A0_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_C0873FC994ACAC655E819A064A302DD642CB73A4014D21B04F8444B52E30E326_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_C58D8805E36DC95C1DDEB804FE1ECB09FA25078A28313393E8C1C16B39485ED3_Create",
+      "parameters": 0,
+      "il_bytes": 14
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_CBF14A6E8171C1480EE30193A71D1EBBCC0016D0BC1F69C7350A13628E908294_Create",
+      "parameters": 0,
+      "il_bytes": 29
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_CED48B66F602CABAE44688722BD7356B686AB86FFECB30B68061356B58B74CB9_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_D078BC61C6ABD16E9C0717B084F33C2A7539F91BD326D5749A32330A0AF4ED50_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_D29B46E14CC48E3B41C7AC3AF9ACF89E4C2E5DA7B3651AB18325A49D66629BE0_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_D5440C42DD7D8581CCD334EBDE85D4CDF2F0DFDB685462F97EEA7DB909899642_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_D63868A066199DD10E88C9ADB15E245D93AF2E9DC9572E92D88BF8EFAA2489FF_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_DA204D8759E3C554DE64EC8C21A4DA178E92D86952ABFCC135CE451CB55B7A3E_Create",
+      "parameters": 0,
+      "il_bytes": 7
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_DE55E92F1862C3DCE08EE4D10137B45C5586A468AC79356E11CF51C24E1D80A6_Create",
+      "parameters": 0,
+      "il_bytes": 7
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_DFE3B7202E160B2E11EF40481C765D4DE13C2C557FE321120C214CD0E35F74A1_Create",
+      "parameters": 0,
+      "il_bytes": 29
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_E368CAC8EC2D69184C7D3F85DEB7EE63124713A73D2478103E72E784932CB0D8_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_E9EBCC97BFF10386D8AD15FB30800C92F078974DF6C6087548B4B40B020D1A97_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_EF042850D1DC734E6FBEDE999125E0FE5B46479F7A91C756F7AD659384E1AD73_Create",
+      "parameters": 0,
+      "il_bytes": 14
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_F243A24900325A25EA737325F886815D0E2C01D75D5D1B8731753BE414CB532B_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt",
+      "method": "__dotcc_owned_array_F8D5097ED1343D2940A7A83E77DF5B84982413733C0CA08FE32A26D06814F5B0_Create",
+      "parameters": 0,
+      "il_bytes": 13
+    },
+    {
+      "type": "Managed.GhosttyVt\u002B__DotccPrimitiveInit_0B91A4618EF2F71F604F43174C681171826FAA819AC989A1701F78A985C61A5C",
+      "method": "Create",
+      "parameters": 0,
+      "il_bytes": 17
+    },
+    {
+      "type": "Managed.GhosttyVt\u002B__DotccPrimitiveInit_627882A0620F2DF4B0D331C640018F5CDBFA61944A7D0A249E75184CB2668585",
+      "method": "Create",
+      "parameters": 0,
+      "il_bytes": 17
+    }
+  ],
+  "storage_helper_scope": "Pointer-returning primitive/owned array storage helpers are arity-inspected separately; their source-owned allocations are not value-factory allocation probes",
+  "global_getter_warmup_rounds": 1,
+  "global_getter_warmup_runtime_allocated_bytes": 0,
+  "payload_getters": 63,
+  "getter_logical_bytes": 84566,
+  "maximum_getter_il_bytes": 16,
+  "getters": [
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_B08BB5E5D6EAAC1049EDE0893D30ED022B1A4D9B5B48DB414871F51C9CB35283D",
+      "Backing": "Byte",
+      "Elements": 5,
+      "Bytes": 5,
+      "IlBytes": 12,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "08BB5E5D6EAAC1049EDE0893D30ED022B1A4D9B5B48DB414871F51C9CB35283D"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_B5AC9831B2E30EB285EF34F8501620F878432D5C04331AD1AE47F977A83BA41A5",
+      "Backing": "Byte",
+      "Elements": 8,
+      "Bytes": 8,
+      "IlBytes": 12,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "5AC9831B2E30EB285EF34F8501620F878432D5C04331AD1AE47F977A83BA41A5"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_B5D91ED26A12C7A7DA134DE3F1E7FAFD259955312FB343489E80DBE29C30075D0",
+      "Backing": "Byte",
+      "Elements": 43,
+      "Bytes": 43,
+      "IlBytes": 13,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "5D91ED26A12C7A7DA134DE3F1E7FAFD259955312FB343489E80DBE29C30075D0"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_B69AA14D3A320DA49C4DD9551F83B0C6239B2F5473DA1E283D57E17EBBADC11F3",
+      "Backing": "Byte",
+      "Elements": 256,
+      "Bytes": 256,
+      "IlBytes": 16,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "69AA14D3A320DA49C4DD9551F83B0C6239B2F5473DA1E283D57E17EBBADC11F3"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_B7F3ECA3698213F7E68FFD32501DC86B5C1C9359B34E2E8956A71DC39512BEC85",
+      "Backing": "Byte",
+      "Elements": 256,
+      "Bytes": 256,
+      "IlBytes": 16,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "7F3ECA3698213F7E68FFD32501DC86B5C1C9359B34E2E8956A71DC39512BEC85"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_B8F3DC984E498A3715CC98371E2418810B3CC8B1A152579F6DB3F2D42C2F47EB3",
+      "Backing": "Byte",
+      "Elements": 5,
+      "Bytes": 5,
+      "IlBytes": 12,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "8F3DC984E498A3715CC98371E2418810B3CC8B1A152579F6DB3F2D42C2F47EB3"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_BB3FC882E2C40AE57537921EB748AD64E2983D29BB2B7829A433D67C1A82DC119",
+      "Backing": "Byte",
+      "Elements": 13,
+      "Bytes": 13,
+      "IlBytes": 13,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "B3FC882E2C40AE57537921EB748AD64E2983D29BB2B7829A433D67C1A82DC119"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_BBF0070D8CDE6A1173987796177950669806EFD2CB9F3377676C7B7BC930AFBEC",
+      "Backing": "Byte",
+      "Elements": 6,
+      "Bytes": 6,
+      "IlBytes": 12,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "BF0070D8CDE6A1173987796177950669806EFD2CB9F3377676C7B7BC930AFBEC"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_BC3A3674842D925C4A400B5B98383F894363E98BF1D328BBA0DCF44852AE9A0E2",
+      "Backing": "Byte",
+      "Elements": 10,
+      "Bytes": 10,
+      "IlBytes": 13,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "C3A3674842D925C4A400B5B98383F894363E98BF1D328BBA0DCF44852AE9A0E2"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_BF0DE9826B1EC0F51B1E733D77E3EB17417A2AC01197DA818139137420F57DA17",
+      "Backing": "Byte",
+      "Elements": 108,
+      "Bytes": 108,
+      "IlBytes": 13,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "F0DE9826B1EC0F51B1E733D77E3EB17417A2AC01197DA818139137420F57DA17"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_01ACECB507ABFE1A354AA8064F4AF5D3F1ACD019E37DB3C11C97523B71C76E9D",
+      "Backing": "UInt32",
+      "Elements": 2,
+      "Bytes": 8,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "01ACECB507ABFE1A354AA8064F4AF5D3F1ACD019E37DB3C11C97523B71C76E9D"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_12CDF0432663831374DA02E4FEB1797DB336537321C3BE8449FFD68AE9745310",
+      "Backing": "UInt32",
+      "Elements": 6,
+      "Bytes": 24,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "12CDF0432663831374DA02E4FEB1797DB336537321C3BE8449FFD68AE9745310"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_1DFE7EB69B5B24084F642CA9D1ECC6D1C58544AD14E433883932D162488A894D",
+      "Backing": "UInt32",
+      "Elements": 56,
+      "Bytes": 224,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "1DFE7EB69B5B24084F642CA9D1ECC6D1C58544AD14E433883932D162488A894D"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_227D7BBE810149B5A39923238CCC1297FB8C2503AFC96B5C8AB02DDD37687D77",
+      "Backing": "UInt32",
+      "Elements": 24,
+      "Bytes": 96,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "227D7BBE810149B5A39923238CCC1297FB8C2503AFC96B5C8AB02DDD37687D77"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_2A3B5F7679B95109A70840E95228B48A7989BEAEFB77D86382384721D2F43CCD",
+      "Backing": "UInt32",
+      "Elements": 8,
+      "Bytes": 32,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "2A3B5F7679B95109A70840E95228B48A7989BEAEFB77D86382384721D2F43CCD"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_363F012B74B9C88D828C809A568DC50627214866415AEB36EF6EFFBC3061741F",
+      "Backing": "UInt32",
+      "Elements": 3,
+      "Bytes": 12,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "363F012B74B9C88D828C809A568DC50627214866415AEB36EF6EFFBC3061741F"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_40302C271E7D2CE9203B4AF14BE1EB346175156AE5E3FFD90171BF0498308082",
+      "Backing": "UInt32",
+      "Elements": 23,
+      "Bytes": 92,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "40302C271E7D2CE9203B4AF14BE1EB346175156AE5E3FFD90171BF0498308082"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_5CCB1E242514771CD24F2813C698D8EA19E283B2BB46F882254971B7DD64B632",
+      "Backing": "UInt32",
+      "Elements": 8,
+      "Bytes": 32,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "5CCB1E242514771CD24F2813C698D8EA19E283B2BB46F882254971B7DD64B632"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_7AA877887B42A89E842F39316984E430348FB949C60728DA491E02F952A0143D",
+      "Backing": "UInt32",
+      "Elements": 4,
+      "Bytes": 16,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "7AA877887B42A89E842F39316984E430348FB949C60728DA491E02F952A0143D"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_9234580CB315299F17AD77E62DBE350D9FF3CA5406488E20823FBF108B4A16E6",
+      "Backing": "UInt32",
+      "Elements": 33,
+      "Bytes": 132,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "9234580CB315299F17AD77E62DBE350D9FF3CA5406488E20823FBF108B4A16E6"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_951CDA222BCEFB9974F9CCE0A467DEA90AFE72A989D0253EE66CEAFF900980AC",
+      "Backing": "UInt32",
+      "Elements": 11,
+      "Bytes": 44,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "951CDA222BCEFB9974F9CCE0A467DEA90AFE72A989D0253EE66CEAFF900980AC"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_A6A0ECB78DB3F28FF070A6E8F772D80F103468F5321EFDF01778F5067A7817D8",
+      "Backing": "UInt32",
+      "Elements": 7,
+      "Bytes": 28,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "A6A0ECB78DB3F28FF070A6E8F772D80F103468F5321EFDF01778F5067A7817D8"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_AD5DC1478DE06A4C2728EA528BD9361A4B945E92A414BF4D180CEDAAEAA5F4CC",
+      "Backing": "UInt32",
+      "Elements": 3,
+      "Bytes": 12,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "AD5DC1478DE06A4C2728EA528BD9361A4B945E92A414BF4D180CEDAAEAA5F4CC"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_BAED642339816AFFB3FE8719792D0E4CE82F12DB72B7373D244EAA65445800FE",
+      "Backing": "UInt32",
+      "Elements": 4,
+      "Bytes": 16,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "BAED642339816AFFB3FE8719792D0E4CE82F12DB72B7373D244EAA65445800FE"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_BF6B4BE04C1F936B313E76329144CB84EB8909F50A9B2A2CEF608F0DC25FAD24",
+      "Backing": "UInt32",
+      "Elements": 20,
+      "Bytes": 80,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "BF6B4BE04C1F936B313E76329144CB84EB8909F50A9B2A2CEF608F0DC25FAD24"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_E1A613AA4B331588D97B5FEEF1FAABE8E8138D8C488EE9122B8533BFDDA3C189",
+      "Backing": "UInt32",
+      "Elements": 7,
+      "Bytes": 28,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "E1A613AA4B331588D97B5FEEF1FAABE8E8138D8C488EE9122B8533BFDDA3C189"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_E528F4309E1413E6BC35AEA5D8DB8519384D2FCC33F9DD5D1126D73F104CF92A",
+      "Backing": "UInt32",
+      "Elements": 5,
+      "Bytes": 20,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "E528F4309E1413E6BC35AEA5D8DB8519384D2FCC33F9DD5D1126D73F104CF92A"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_EABC8F6CBA27917FA9DD6FB40169BE36F8B0485FB56DF799DDD58688964C47A2",
+      "Backing": "UInt32",
+      "Elements": 30,
+      "Bytes": 120,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "EABC8F6CBA27917FA9DD6FB40169BE36F8B0485FB56DF799DDD58688964C47A2"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_F770C8D4A0B7266FBCAAB3BA5CEC244E8A48C90033E555518D6630D74E858C2F",
+      "Backing": "UInt32",
+      "Elements": 15,
+      "Bytes": 60,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "F770C8D4A0B7266FBCAAB3BA5CEC244E8A48C90033E555518D6630D74E858C2F"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Puint_F77510E541A71CA944669FA22641C76D86D94ECF5C4C42B4A750DF4657A7578A",
+      "Backing": "UInt32",
+      "Elements": 36,
+      "Bytes": 144,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "F77510E541A71CA944669FA22641C76D86D94ECF5C4C42B4A750DF4657A7578A"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_083D0BB345C114AF916E5BDA2FF5495753DB646C52771A1BE48CB3FFD449B79B",
+      "Backing": "UInt64",
+      "Elements": 3,
+      "Bytes": 24,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "083D0BB345C114AF916E5BDA2FF5495753DB646C52771A1BE48CB3FFD449B79B"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_0DA8E1CB942F0BB8D7C37CC11FEB64F730D4474A72EB19C38685C6C28E6507E4",
+      "Backing": "UInt64",
+      "Elements": 2,
+      "Bytes": 16,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "0DA8E1CB942F0BB8D7C37CC11FEB64F730D4474A72EB19C38685C6C28E6507E4"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_23E8D60B496F9E373AC6805EF95C5C0BC9769A2A1A60CF4E17E849EA02F89088",
+      "Backing": "UInt64",
+      "Elements": 3,
+      "Bytes": 24,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "23E8D60B496F9E373AC6805EF95C5C0BC9769A2A1A60CF4E17E849EA02F89088"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_301D430E10E4E04A2D5B003BE8F65C19A0FAC1EF6FBA7BA68F0127D352FBCE6A",
+      "Backing": "UInt64",
+      "Elements": 3,
+      "Bytes": 24,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "301D430E10E4E04A2D5B003BE8F65C19A0FAC1EF6FBA7BA68F0127D352FBCE6A"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_35B5D8FCFFD3774F5ED79DB3766B1201592A664DD438E1D814B5C4849E37F483",
+      "Backing": "UInt64",
+      "Elements": 3,
+      "Bytes": 24,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "35B5D8FCFFD3774F5ED79DB3766B1201592A664DD438E1D814B5C4849E37F483"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_41ECDB3B0FAA77651E5A5517CAE50D3CCFFBC4C70F0972CFF008C8503B9C6BEA",
+      "Backing": "UInt64",
+      "Elements": 10,
+      "Bytes": 80,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "41ECDB3B0FAA77651E5A5517CAE50D3CCFFBC4C70F0972CFF008C8503B9C6BEA"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_4BDC4962907A6CCE2D3F263E7C4774F0D2B093EDD144E27B074F6ED74ECB50A2",
+      "Backing": "UInt64",
+      "Elements": 10,
+      "Bytes": 80,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "4BDC4962907A6CCE2D3F263E7C4774F0D2B093EDD144E27B074F6ED74ECB50A2"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_4CBBD8CA5215B8D161AEC181A74B694F4E24B001D5B081DC0030ED797A8973E0",
+      "Backing": "UInt64",
+      "Elements": 2,
+      "Bytes": 16,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "4CBBD8CA5215B8D161AEC181A74B694F4E24B001D5B081DC0030ED797A8973E0"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_53AFEA624A503A0BF39E469E8979F67FCB1890EA0392ADF9E155124F5EDE9EBB",
+      "Backing": "UInt64",
+      "Elements": 3,
+      "Bytes": 24,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "53AFEA624A503A0BF39E469E8979F67FCB1890EA0392ADF9E155124F5EDE9EBB"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_88D0CC78AB04B5EE63DE41A391DB39598ABFF3C1A480DD7D4B364B4044F6459E",
+      "Backing": "UInt64",
+      "Elements": 3,
+      "Bytes": 24,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "88D0CC78AB04B5EE63DE41A391DB39598ABFF3C1A480DD7D4B364B4044F6459E"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_93062D5171F3840381A92DDCFF0F2FC70A6761B9666B6158908ABA77FCBDD57E",
+      "Backing": "UInt64",
+      "Elements": 3,
+      "Bytes": 24,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "93062D5171F3840381A92DDCFF0F2FC70A6761B9666B6158908ABA77FCBDD57E"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_A1E03200F1F82AD2C1CEC8795C271AAECF98F5AA2D151D2229EC5FA0C177CF77",
+      "Backing": "UInt64",
+      "Elements": 4,
+      "Bytes": 32,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "A1E03200F1F82AD2C1CEC8795C271AAECF98F5AA2D151D2229EC5FA0C177CF77"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_A50C3B90D33E72501A570C3E53D7D8D278248A19CFCFDE8B599125AAAA7D9FF0",
+      "Backing": "UInt64",
+      "Elements": 3,
+      "Bytes": 24,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "A50C3B90D33E72501A570C3E53D7D8D278248A19CFCFDE8B599125AAAA7D9FF0"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_B3DB6650E4598CA51942F83E2B5F5ADC1D65B806FB1224619D7C385D3642DE1C",
+      "Backing": "UInt64",
+      "Elements": 3,
+      "Bytes": 24,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "B3DB6650E4598CA51942F83E2B5F5ADC1D65B806FB1224619D7C385D3642DE1C"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_B97F04A7B2553FFE229DEB26F42FF91EE2EAB9E5F91C5761F898E52F8D7E5A2C",
+      "Backing": "UInt64",
+      "Elements": 3,
+      "Bytes": 24,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "B97F04A7B2553FFE229DEB26F42FF91EE2EAB9E5F91C5761F898E52F8D7E5A2C"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_E92B80D2EE5AB0F63D286728DC9849450B7CF439C2C2718D3BAC632A510FD50C",
+      "Backing": "UInt64",
+      "Elements": 3,
+      "Bytes": 24,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "E92B80D2EE5AB0F63D286728DC9849450B7CF439C2C2718D3BAC632A510FD50C"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_EB27F3D354581AB8A5D624ED4E1D2C35C67E965041E160650B1EE51B2A091259",
+      "Backing": "UInt64",
+      "Elements": 3,
+      "Bytes": 24,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "EB27F3D354581AB8A5D624ED4E1D2C35C67E965041E160650B1EE51B2A091259"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pulong_F5EEB0CBD4D1BD0350BBCCD06B3B422751BFEF1C822D4E8F24F05B33739D968E",
+      "Backing": "UInt64",
+      "Elements": 4,
+      "Bytes": 32,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "F5EEB0CBD4D1BD0350BBCCD06B3B422751BFEF1C822D4E8F24F05B33739D968E"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pushort_16CC5B109FD43582102B86FFE7510326F0DE62335A427F4F7DAFF96781AEF187",
+      "Backing": "UInt16",
+      "Elements": 256,
+      "Bytes": 512,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "16CC5B109FD43582102B86FFE7510326F0DE62335A427F4F7DAFF96781AEF187"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pushort_6F2CCA8B63A731B890437E911F209BC3D39F85CC508A7F939AADFA8EB119FF90",
+      "Backing": "UInt16",
+      "Elements": 3328,
+      "Bytes": 6656,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "6F2CCA8B63A731B890437E911F209BC3D39F85CC508A7F939AADFA8EB119FF90"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pushort_8F12E21BF38AF5CB6A32A3C5D7C10E4A86A60C25629BA384E2E208F3F86492AC",
+      "Backing": "UInt16",
+      "Elements": 4096,
+      "Bytes": 8192,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "8F12E21BF38AF5CB6A32A3C5D7C10E4A86A60C25629BA384E2E208F3F86492AC"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pushort_98736598B24AA7F10B44DF9C0513A04084C151FC1D9D5F81B804C11D56F206E1",
+      "Backing": "UInt16",
+      "Elements": 43,
+      "Bytes": 86,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "98736598B24AA7F10B44DF9C0513A04084C151FC1D9D5F81B804C11D56F206E1"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pushort_AF62A145D4D2733CC357CB7DF29B053913C899667E112F6B4A06A3EB0DD5C8CC",
+      "Backing": "UInt16",
+      "Elements": 4096,
+      "Bytes": 8192,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "AF62A145D4D2733CC357CB7DF29B053913C899667E112F6B4A06A3EB0DD5C8CC"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pushort_B1B74812BB6E17F6CBB7FFD9CAA526D542363F4AA3914520A3D3D07328CEDF57",
+      "Backing": "UInt16",
+      "Elements": 4096,
+      "Bytes": 8192,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "B1B74812BB6E17F6CBB7FFD9CAA526D542363F4AA3914520A3D3D07328CEDF57"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pushort_B5AB19606AD1199733E09C22D0F8AB5AE864F65E0BB0FDB74116E27DDE058E8C",
+      "Backing": "UInt16",
+      "Elements": 43,
+      "Bytes": 86,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "B5AB19606AD1199733E09C22D0F8AB5AE864F65E0BB0FDB74116E27DDE058E8C"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pushort_C33BBDF98CC4BA2514613DC59DBA960078D57B43678DC7360BCCF9D3912387E7",
+      "Backing": "UInt16",
+      "Elements": 4096,
+      "Bytes": 8192,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "C33BBDF98CC4BA2514613DC59DBA960078D57B43678DC7360BCCF9D3912387E7"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pushort_C59B563AF1817EBF613010D404646705BC1DEBCCB2A699C296A1EDBAC3A953AB",
+      "Backing": "UInt16",
+      "Elements": 4096,
+      "Bytes": 8192,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "C59B563AF1817EBF613010D404646705BC1DEBCCB2A699C296A1EDBAC3A953AB"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pushort_C8905D1C6D04BBC62715FE8DDD34B958981E64E456ABC53D57B0C0AF8C796243",
+      "Backing": "UInt16",
+      "Elements": 256,
+      "Bytes": 512,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "C8905D1C6D04BBC62715FE8DDD34B958981E64E456ABC53D57B0C0AF8C796243"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pushort_D77F9EED8CC275A33C0AC6AAF97C434165D65C1FF7DB7787502E65F652F421EC",
+      "Backing": "UInt16",
+      "Elements": 4096,
+      "Bytes": 8192,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "D77F9EED8CC275A33C0AC6AAF97C434165D65C1FF7DB7787502E65F652F421EC"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pushort_D93BF0591D37628E5F4AABEC5C1969B05014FE5A19478BA3A1C7F2799E6DC84F",
+      "Backing": "UInt16",
+      "Elements": 256,
+      "Bytes": 512,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "D93BF0591D37628E5F4AABEC5C1969B05014FE5A19478BA3A1C7F2799E6DC84F"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pushort_E2A54A1309B53FC6F597A6AEECF679521E9B03734A5843EC4BDBE3574B181BC5",
+      "Backing": "UInt16",
+      "Elements": 4096,
+      "Bytes": 8192,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "E2A54A1309B53FC6F597A6AEECF679521E9B03734A5843EC4BDBE3574B181BC5"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pushort_F1CC0381CD94720F74A647DB89D0DFA862D796AFF71C8C40B74DA1D74381462A",
+      "Backing": "UInt16",
+      "Elements": 4096,
+      "Bytes": 8192,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "F1CC0381CD94720F74A647DB89D0DFA862D796AFF71C8C40B74DA1D74381462A"
+    },
+    {
+      "Getter": "Managed.GhosttyVt\u002BGhosttyVtLiterals.get_Pushort_FB94BDE0169AD8906234DCF10E715C636744C6749559300F1D0A93BA990E32FB",
+      "Backing": "UInt16",
+      "Elements": 4096,
+      "Bytes": 8192,
+      "IlBytes": 11,
+      "NewArrayInstructions": 0,
+      "MatchingRvaFields": 1,
+      "AllocatedBytesAfterWarmup": 0,
+      "ReadIterations": 10000,
+      "Sha256": "FB94BDE0169AD8906234DCF10E715C636744C6749559300F1D0A93BA990E32FB"
+    }
+  ],
+  "zero_argument_factory_probes": 0,
+  "zero_argument_factory_probes_passed": 0,
+  "zero_argument_factory_probes_not_passed": 0,
+  "factory_measurements": [],
+  "factory_helper_il": [],
+  "runtime_tiering": "default",
+  "measurement_code": "Auditor measurement methods use NoInlining|AggressiveOptimization before allocation counting; emitted getter/factory attributes and process tiering unchanged",
+  "allocation_measurement": "JIT: 256 warmup iterations; 10000 reads/copies per getter; 1000 factory calls for \u003E=4096-byte values, otherwise 10000; every returned byte consumed in no-inline checksum. Reflection/delegates/destinations/type initialization excluded",
+  "factory_probe_scope": "Every zero-argument Create with closed unmanaged return \u003C=1MiB; unsupported/errors explicit and fail audit; factories taking Args are IL/callgraph audited but not dynamically invoked",
+  "il_policy": "No newarr, ordinary reference constructors, known native/managed allocation service calls, unresolved/indirect calls in factory/helper graph. Exception constructors are separately recorded guarded failure paths; successful executed paths must allocate zero bytes",
+  "qualification": "PE RVA and executed JIT getter/factory audit; not NativeAOT execution or terminal qualification"
+}

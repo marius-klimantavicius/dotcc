@@ -1,0 +1,12 @@
+--- a/src/terminal/stream.zig
++++ b/src/terminal/stream.zig
+@@ -980,7 +980,8 @@
+                 // scan).
+                 var end = i + 1;
+                 scan: {
+-                    if (simd.lanes(Cp)) |lanes| {
++                    if (simd.lanes(Cp)) |native_lanes| {
++                        const lanes = @min(64, native_lanes);
+                         const V = @Vector(lanes, Cp);
+                         while (end + lanes <= cps.len) {
+                             const v: V = cps[end..][0..lanes].*;

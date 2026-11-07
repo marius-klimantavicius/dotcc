@@ -691,7 +691,10 @@ public readonly record struct StructField(string Name, CType Type, int? BitWidth
 /// renders it into the top-level type-declarations section as a real
 /// <c>enum Name : Underlying { … }</c>. <see cref="Members"/> pairs each
 /// enumerator with its (auto-incremented or explicit) integer value.</summary>
-public sealed record EnumTypeDef(string Name, CType Underlying, IReadOnlyList<EnumMember> Members);
+public sealed record EnumTypeDef(string Name, CType Underlying, IReadOnlyList<EnumMember> Members)
+{
+    public bool IsNonExhaustive { get; init; }
+}
 
 /// <summary>One enumerator of an <see cref="EnumTypeDef"/>: its C name and value.</summary>
 public readonly record struct EnumMember(string Name, long Value)

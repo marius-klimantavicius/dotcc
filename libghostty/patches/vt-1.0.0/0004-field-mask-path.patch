@@ -1,0 +1,65 @@
+--- a/src/terminal/page.zig
++++ b/src/terminal/page.zig
+@@ -2707,34 +2707,37 @@
+ 
+     comptime var mask: Int = 0;
+     inline for (fields) |path| {
+-        // Walk the path to find the total bit offset and the type of
+-        // the (possibly nested) field.
+-        comptime var offset = 0;
+-        comptime var Field = T;
+-        comptime var it = std.mem.splitScalar(u8, path, '.');
+-        inline while (comptime it.next()) |name| {
+-            offset += switch (@typeInfo(Field)) {
+-                .@"struct" => @bitOffsetOf(Field, name),
+-
+-                // Packed union members all share bit offset zero.
+-                .@"union" => |u| offset: {
+-                    comptime assert(u.layout == .@"packed");
+-                    break :offset 0;
+-                },
+-
+-                else => @compileError("invalid field path: " ++ path),
+-            };
+-            Field = @FieldType(Field, name);
+-        }
+-
+-        // The type that fits all the bits we need to set.
+-        const Ones = @Int(.unsigned, @bitSizeOf(Field));
+-
+-        // Mask out the ones
+-        mask |= @as(Int, std.math.maxInt(Ones)) << offset;
++        mask |= fieldMaskPath(T, path, 0, Int);
+     }
+ 
+     return mask;
++}
++
++// Recursively walk the same dot-separated path, retaining each intermediate
++// type as a const rather than mutating a comptime type and split iterator.
++fn fieldMaskPath(
++    comptime T: type,
++    comptime path: []const u8,
++    comptime offset: comptime_int,
++    comptime Int: type,
++) Int {
++    const end = comptime std.mem.indexOfScalar(u8, path, '.') orelse path.len;
++    const name = path[0..end];
++    comptime assert(switch (@typeInfo(T)) {
++        .@"union" => |u| u.layout == .@"packed",
++        else => true,
++    });
++    const field_offset = switch (@typeInfo(T)) {
++        .@"struct" => @bitOffsetOf(T, name),
++        .@"union" => 0,
++        else => @compileError("invalid field path: " ++ path),
++    };
++    const Field = @FieldType(T, name);
++    if (comptime end < path.len) {
++        return fieldMaskPath(Field, path[end + 1 ..], offset + field_offset, Int);
++    }
++    const Ones = @Int(.unsigned, @bitSizeOf(Field));
++    return @as(Int, std.math.maxInt(Ones)) << (offset + field_offset);
+ }
+ 
+ /// A comptime-generated helper for classifying and comparing packed

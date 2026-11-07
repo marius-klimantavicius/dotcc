@@ -1,0 +1,62 @@
+{
+  "compiler": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/compiler-build/bin/DotCC/release/dotcc.dll",
+  "compiler_sha256": "bcbf7bea970c5d82430f2d7ba1754ef458ec504aaecc1773a0c3121c847b0134",
+  "include": "/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/include",
+  "cases": 45,
+  "inputs": [
+    {
+      "name": "oracle",
+      "source": "/home/marius/p/dotcc/libghostty/tests/native/oracle.c",
+      "source_sha256": "bda9b8083f3dcfebaee383133f663569fe25a0a461fcdea374c57bd0f7ca692b",
+      "entry": "dotcc_oracle_main",
+      "object": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/objects/oracle.csobj",
+      "object_sha256": "67a6e550095cebc897453a3d6c04d7f33fbe64d480380e08016a1508adcff6c4",
+      "object_bytes": 856839
+    },
+    {
+      "name": "boundary-control",
+      "source": "/home/marius/p/dotcc/libghostty/tests/native/boundary_control.c",
+      "source_sha256": "df93e03829e93c355ebf01d9b518aac5f4c4969952a260ef2c9779d7adbd0e0c",
+      "entry": "dotcc_boundary_main",
+      "object": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/objects/boundary-control.csobj",
+      "object_sha256": "41c116fe682b85c06a9a315e791a68be47fc6a8eecba3b1ab49a099b29e8c160",
+      "object_bytes": 716239
+    },
+    {
+      "name": "abi-layout",
+      "source": "/home/marius/p/dotcc/libghostty/tests/native/abi_layout.c",
+      "source_sha256": "470a77956dfd5c0d5ce697ba3a45f37f83e745efed65f6565169d59b7e4f0b6e",
+      "entry": "dotcc_abi_main",
+      "object": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/objects/abi-layout.csobj",
+      "object_sha256": "32fc561cdc13d084f3265e8cb45c2e4aecf78731bcb3b6b50c5fba11952d8888",
+      "object_bytes": 680149
+    },
+    {
+      "name": "version-build-info",
+      "source": "/home/marius/p/dotcc/libghostty/artifacts/vt-1.0.0/boundary/version_build_info.c",
+      "source_sha256": "808253657cec98bfabda750346a3ca864a834bf541af39f25b44470ba22bf2a4",
+      "entry": "dotcc_version_build_info_main",
+      "object": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/objects/version-build-info.csobj",
+      "object_sha256": "81fe92aea71e42167c8cff7372b538ddc5655c718cba2c84269ea73a0d8a573d",
+      "object_bytes": 699072
+    },
+    {
+      "name": "api-delta",
+      "source": "/home/marius/p/dotcc/libghostty/artifacts/vt-1.0.0/boundary/api-delta-probe.c",
+      "source_sha256": "03ddae9f13d7054d358ec73b1b4e0dc88cc230ea8659801fadf871d76f3a8d9b",
+      "entry": "dotcc_api_delta_main",
+      "object": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/objects/api-delta.csobj",
+      "object_sha256": "4fa915e3ff99d017de27052ec7a14ef3dc920e7457751858cf0db9f66bd9e95c",
+      "object_bytes": 740433
+    },
+    {
+      "name": "boundary",
+      "source": "/home/marius/p/dotcc/libghostty/src/Boundary/ghostty_boundary.c",
+      "source_sha256": "09f3f86815b89d4ea1410e3418d8e3bcf94ec518a87d0e7480751167382a285c",
+      "object": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/objects/boundary.csobj",
+      "object_sha256": "1c583994c7e312fbcb192895a8b8f7f3561b759f688e8f04825bcd88e422c8ff",
+      "object_bytes": 440284
+    }
+  ],
+  "expected_sha256": "2da7b4bcb910ebff9fabd5ee83f0e6c54e3cec73982dcd7e91b914b803b07ae9"
+}

@@ -1,0 +1,11 @@
+--- a/src/datastruct/comptime_int_set.zig
++++ b/src/datastruct/comptime_int_set.zig
+@@ -83,7 +83,7 @@
+                 result.sorted[i] = keys[orig];
+                 result.original[i] = orig;
+                 if (i > 0 and result.sorted[i - 1] == result.sorted[i]) {
+-                    @compileError("ComptimeIntSet keys must be unique");
++                    unreachable; // Duplicate keys are invalid during comptime evaluation.
+                 }
+             }
+ 

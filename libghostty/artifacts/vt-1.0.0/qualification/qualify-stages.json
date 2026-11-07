@@ -1,0 +1,214 @@
+[
+  {
+    "stage": "link",
+    "argv": [
+      "dotnet",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/compiler-build/bin/DotCC/release/dotcc.dll",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/engine/engine.csobj",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/objects/oracle.csobj",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/objects/boundary-control.csobj",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/objects/abi-layout.csobj",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/objects/version-build-info.csobj",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/objects/api-delta.csobj",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/objects/boundary.csobj",
+      "--emit=managedlib",
+      "--nest-types",
+      "--runtime=auto",
+      "--class-name",
+      "GhosttyVt",
+      "--namespace",
+      "Managed",
+      "--split=size",
+      "--split-size=262144",
+      "--literal-pool",
+      "--deduplicate-inline",
+      "--prune-unused-inline",
+      "--export-enum",
+      "DOTCC_STYLE_*",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/raw/TranslatedGhosttyVt"
+    ],
+    "exit_code": 0,
+    "seconds": 18.2,
+    "stdout": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/link.log",
+    "stderr": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/link.stderr"
+  },
+  {
+    "stage": "raw-build",
+    "argv": [
+      "dotnet",
+      "build",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/raw/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+      "-c",
+      "Release",
+      "--nologo",
+      "-m:1"
+    ],
+    "exit_code": 0,
+    "seconds": 11.439,
+    "stdout": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/raw-build.log",
+    "stderr": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/raw-build.stderr"
+  },
+  {
+    "stage": "processed-restore",
+    "argv": [
+      "dotnet",
+      "restore",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/processed/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+      "--nologo"
+    ],
+    "exit_code": 0,
+    "seconds": 0.665,
+    "stdout": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/processed-restore.log",
+    "stderr": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/processed-restore.stderr"
+  },
+  {
+    "stage": "postprocess",
+    "argv": [
+      "dotnet",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/postprocessor/bin/DotCC.PostProcess/release/dotcc-postprocess.dll",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/processed/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+      "--in-place"
+    ],
+    "exit_code": 0,
+    "seconds": 32.127,
+    "stdout": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/postprocess.log",
+    "stderr": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/postprocess.stderr"
+  },
+  {
+    "stage": "processed-build",
+    "argv": [
+      "dotnet",
+      "build",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/processed/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+      "-c",
+      "Release",
+      "--nologo",
+      "-m:1"
+    ],
+    "exit_code": 0,
+    "seconds": 9.94,
+    "stdout": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/processed-build.log",
+    "stderr": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/processed-build.stderr"
+  },
+  {
+    "stage": "raw-jit-build",
+    "argv": [
+      "dotnet",
+      "build",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/raw/runner/DirectQualification.csproj",
+      "-c",
+      "Release",
+      "--nologo",
+      "-m:1",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/runs/raw-jit"
+    ],
+    "exit_code": 0,
+    "seconds": 1.216,
+    "stdout": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/raw-jit-build.log",
+    "stderr": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/raw-jit-build.stderr"
+  },
+  {
+    "stage": "raw-jit-run",
+    "argv": [
+      "dotnet",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/runs/raw-jit/GhosttyVt.DirectQualification.dll"
+    ],
+    "exit_code": 0,
+    "seconds": 0.414,
+    "stdout": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/raw-jit-run.log",
+    "stderr": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/raw-jit-run.stderr"
+  },
+  {
+    "stage": "raw-aot-publish",
+    "argv": [
+      "dotnet",
+      "publish",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/raw/runner/DirectQualification.csproj",
+      "-c",
+      "Release",
+      "--nologo",
+      "-m:1",
+      "-r",
+      "linux-x64",
+      "-p:PublishAot=true",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/runs/raw-aot"
+    ],
+    "exit_code": 0,
+    "seconds": 20.312,
+    "stdout": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/raw-aot-publish.log",
+    "stderr": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/raw-aot-publish.stderr"
+  },
+  {
+    "stage": "raw-aot-run",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/runs/raw-aot/GhosttyVt.DirectQualification"
+    ],
+    "exit_code": 0,
+    "seconds": 0.064,
+    "stdout": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/raw-aot-run.log",
+    "stderr": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/raw-aot-run.stderr"
+  },
+  {
+    "stage": "processed-jit-build",
+    "argv": [
+      "dotnet",
+      "build",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/processed/runner/DirectQualification.csproj",
+      "-c",
+      "Release",
+      "--nologo",
+      "-m:1",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/runs/processed-jit"
+    ],
+    "exit_code": 0,
+    "seconds": 1.166,
+    "stdout": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/processed-jit-build.log",
+    "stderr": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/processed-jit-build.stderr"
+  },
+  {
+    "stage": "processed-jit-run",
+    "argv": [
+      "dotnet",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/runs/processed-jit/GhosttyVt.DirectQualification.dll"
+    ],
+    "exit_code": 0,
+    "seconds": 0.414,
+    "stdout": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/processed-jit-run.log",
+    "stderr": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/processed-jit-run.stderr"
+  },
+  {
+    "stage": "processed-aot-publish",
+    "argv": [
+      "dotnet",
+      "publish",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/processed/runner/DirectQualification.csproj",
+      "-c",
+      "Release",
+      "--nologo",
+      "-m:1",
+      "-r",
+      "linux-x64",
+      "-p:PublishAot=true",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/runs/processed-aot"
+    ],
+    "exit_code": 0,
+    "seconds": 19.012,
+    "stdout": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/processed-aot-publish.log",
+    "stderr": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/processed-aot-publish.stderr"
+  },
+  {
+    "stage": "processed-aot-run",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/runs/processed-aot/GhosttyVt.DirectQualification"
+    ],
+    "exit_code": 0,
+    "seconds": 0.064,
+    "stdout": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/processed-aot-run.log",
+    "stderr": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/processed-aot-run.stderr"
+  }
+]

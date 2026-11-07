@@ -1,0 +1,92 @@
+{
+  "status": "published and verified",
+  "release": "vt-1.0.0",
+  "revision": "0fa3d577a5614150ff8e2c152de5fb9d5c6d2dec",
+  "route": "direct Zig -> DotCC -> C#; authored C ABI boundary separately translated",
+  "managed_class": "Managed.GhosttyVt",
+  "owning_api": "Managed.Terminal",
+  "actual_engine": {
+    "emitted": true,
+    "linked": true,
+    "built": true,
+    "ran": true
+  },
+  "selected_roots": 96,
+  "module_count": 11,
+  "products": {
+    "raw": {
+      "project": "libghostty/generated/TranslatedGhosttyVt.Raw/TranslatedGhosttyVt.csproj",
+      "source_files": 44,
+      "source_bytes": 17695019,
+      "rva_getters": 63,
+      "warmed_getter_allocations": 0,
+      "storage_helpers": 144,
+      "maximum_storage_helper_parameters": 1,
+      "maximum_factory_parameters": 0,
+      "zero_argument_factories_present": 0
+    },
+    "processed": {
+      "project": "libghostty/generated/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+      "source_files": 44,
+      "source_bytes": 17576752,
+      "rva_getters": 63,
+      "warmed_getter_allocations": 0,
+      "storage_helpers": 144,
+      "maximum_storage_helper_parameters": 1,
+      "maximum_factory_parameters": 0,
+      "zero_argument_factories_present": 0
+    }
+  },
+  "normal_default_regeneration_receipt": "/home/marius/p/dotcc/libghostty/artifacts/campaign/20261107-152442-5b74d86b/receipt.json",
+  "normal_engine_object": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/campaign/20261107-152442-5b74d86b/objects/000-lib_vt.cs",
+  "normal_engine_sha256": "12e38eb9fc60130502184f0c48a6eff03ab988e7013ab80f4019758a291c812a",
+  "qualified_engine_sha256": "c270ed4fbf1485095d53ef80e0364b51db1843dc132393e1aa881dbc4fcab945",
+  "ordinary_default": {
+    "solution": "libghostty/ManagedConsumer.slnx",
+    "explicit_TranslatedProject_override": false,
+    "reference_chain": [
+      "samples/ManagedConsumer/ManagedConsumer.csproj",
+      "src/Managed.GhosttyVt/Managed.GhosttyVt.csproj",
+      "generated/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj"
+    ],
+    "build_exit": 0,
+    "build_warnings": 0,
+    "build_errors": 0,
+    "consumer_exit": 0,
+    "stdout": "PASS owning terminal transcript, UTF-8 chunking, screens, resize/reset, concurrent isolation and disposal\n",
+    "raw_project_build_exit": 0
+  },
+  "qualified_source_files_identical_to_publication": true,
+  "owning_execution_rows": 4,
+  "differential_cases_per_row": 45,
+  "differential_rows": 4,
+  "differential_exact_native_matches": 180,
+  "whole_library_rooted_AOT": true,
+  "allocation_rows": 4,
+  "all_allocation_rows_pass": true,
+  "source_compatibility_patches": 19,
+  "focused_compiler_tests_passed": 56,
+  "delivery_rollback_tests_passed": 9,
+  "postprocessor_external_artifact_config_tests_passed": 2,
+  "full_upstream_managed_qualification": "pending; no old-pin results transferred",
+  "pending_preexisting_experiments": "preserved and excluded from qualified compiler/source patch chain",
+  "commit_created": true,
+  "push_or_PR": false,
+  "evidence": [
+    "provenance.json",
+    "compiler-source.json",
+    "qualification/qualification.json",
+    "owning/consumer.json",
+    "factory-allocation.json",
+    "canonical-raw-audit.json",
+    "canonical-processed-audit.json",
+    "canonical-delivery-audit.json",
+    "canonical-source-comparison.json",
+    "default-regeneration.json",
+    "default-reference-evaluation.json",
+    "publication-tests.json",
+    "postprocess-validation.json"
+  ],
+  "qualification_applies_to": "Exact published C# sources, projects and notices match the products executed in the JIT/AOT matrices. The normal recipe regenerates module-input locations, so serialized object identity is recorded separately.",
+  "commit_scope": "docs/VT-1.0.0-COMMIT.md; qualified mixed-file isolation, full upstream acceptance pending"
+}

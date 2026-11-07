@@ -1,0 +1,20 @@
+--- a/src/terminal/Terminal.zig
++++ b/src/terminal/Terminal.zig
+@@ -4804,7 +4804,7 @@
+             try writer.print(";9{}", .{idx - 8})
+         else
+             try writer.print(";3{}", .{idx}),
+-        .rgb => |rgb| try writer.print(";38:2::{[r]}:{[g]}:{[b]}", rgb),
++        .rgb => |rgb| try writer.print(";38:2::{}:{}:{}", .{ rgb.r, rgb.g, rgb.b }),
+     }
+ 
+     switch (pen.bg_color.value()) {
+@@ -4815,7 +4815,7 @@
+             try writer.print(";10{}", .{idx - 8})
+         else
+             try writer.print(";4{}", .{idx}),
+-        .rgb => |rgb| try writer.print(";48:2::{[r]}:{[g]}:{[b]}", rgb),
++        .rgb => |rgb| try writer.print(";48:2::{}:{}:{}", .{ rgb.r, rgb.g, rgb.b }),
+     }
+ 
+     return writer.buffered();

@@ -1,0 +1,15 @@
+{
+  "compiler_build": "private clean accepted baseline plus bounded reached fixes;0warnings/errors",
+  "functional_filter": [
+    "ZigEnumTypeReceiverExecutionTests",
+    "ZigComptimeRecordArrayCaptureExecutionTests",
+    "ZigComptimeFieldParentPointerExecutionTests"
+  ],
+  "functional_summary": "Passed!  - Failed:     0, Passed:    26, Skipped:     0, Total:    26, Duration: 23 s - DotCC.FunctionalTests.dll (net10.0)",
+  "functional_project_build": "existing unrelated xunit analyzer warnings present; no compiler build warning",
+  "native_positive_count": 19,
+  "native_negative_count": 1,
+  "native_receipt": "native-regressions.json",
+  "scope": "Focused semantics reached by actual1.0engine, not full upstream qualification",
+  "later_boundary_enum_focused": "qualification/compiler-boundary-fixes.json:56passed0failed0skipped with final compiler"
+}

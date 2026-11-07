@@ -1,0 +1,110 @@
+[
+  {
+    "stage": "emit-oracle",
+    "argv": [
+      "dotnet",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/compiler-build/bin/DotCC/release/dotcc.dll",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/controls/oracle.c",
+      "--emit=obj",
+      "--aggregate-data",
+      "-std=c11",
+      "-I/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/include",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/objects/oracle.csobj"
+    ],
+    "exit_code": 0,
+    "seconds": 0.765,
+    "stdout": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/emit-oracle.log",
+    "stderr": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/emit-oracle.stderr"
+  },
+  {
+    "stage": "emit-boundary-control",
+    "argv": [
+      "dotnet",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/compiler-build/bin/DotCC/release/dotcc.dll",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/controls/boundary-control.c",
+      "--emit=obj",
+      "--aggregate-data",
+      "-std=c11",
+      "-I/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/include",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/objects/boundary-control.csobj"
+    ],
+    "exit_code": 0,
+    "seconds": 0.715,
+    "stdout": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/emit-boundary-control.log",
+    "stderr": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/emit-boundary-control.stderr"
+  },
+  {
+    "stage": "emit-abi-layout",
+    "argv": [
+      "dotnet",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/compiler-build/bin/DotCC/release/dotcc.dll",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/controls/abi-layout.c",
+      "--emit=obj",
+      "--aggregate-data",
+      "-std=c11",
+      "-I/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/include",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/objects/abi-layout.csobj"
+    ],
+    "exit_code": 0,
+    "seconds": 0.772,
+    "stdout": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/emit-abi-layout.log",
+    "stderr": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/emit-abi-layout.stderr"
+  },
+  {
+    "stage": "emit-version-build-info",
+    "argv": [
+      "dotnet",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/compiler-build/bin/DotCC/release/dotcc.dll",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/controls/version-build-info.c",
+      "--emit=obj",
+      "--aggregate-data",
+      "-std=c11",
+      "-I/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/include",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/objects/version-build-info.csobj"
+    ],
+    "exit_code": 0,
+    "seconds": 0.715,
+    "stdout": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/emit-version-build-info.log",
+    "stderr": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/emit-version-build-info.stderr"
+  },
+  {
+    "stage": "emit-api-delta",
+    "argv": [
+      "dotnet",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/compiler-build/bin/DotCC/release/dotcc.dll",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/controls/api-delta.c",
+      "--emit=obj",
+      "--aggregate-data",
+      "-std=c11",
+      "-I/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/include",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/objects/api-delta.csobj"
+    ],
+    "exit_code": 0,
+    "seconds": 0.715,
+    "stdout": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/emit-api-delta.log",
+    "stderr": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/emit-api-delta.stderr"
+  },
+  {
+    "stage": "emit-boundary",
+    "argv": [
+      "dotnet",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/compiler-build/bin/DotCC/release/dotcc.dll",
+      "/home/marius/p/dotcc/libghostty/src/Boundary/ghostty_boundary.c",
+      "--emit=obj",
+      "--aggregate-data",
+      "-std=c11",
+      "-I/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/include",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/objects/boundary.csobj"
+    ],
+    "exit_code": 0,
+    "seconds": 0.665,
+    "stdout": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/emit-boundary.log",
+    "stderr": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/emit-boundary.stderr"
+  }
+]

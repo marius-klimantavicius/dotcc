@@ -959,6 +959,7 @@ internal sealed partial class ZigLowering
         tag = "";
         payload = null;
         if (expr.Content is Zig.Grouped g) { return TryEvalComptimeTag(g.Arg1, out tag, out payload); }
+        if (expr.Content is Zig.PreComptime forced) { return TryEvalComptimeTag(forced.Arg1, out tag, out payload); }
         if (expr.Content is Zig.EnumLit selectedLiteral)
         {
             tag = SourceMemberName(selectedLiteral.Arg1);

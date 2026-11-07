@@ -1,0 +1,9 @@
+{
+  "raw": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+  "processed": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+  "graph": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/native/module-graph-managed.json",
+  "delivery_qualified": true,
+  "qualification": "../qualification/qualification.json",
+  "owning": "../owning/consumer.json",
+  "factory_allocation": "../factory-allocation.json"
+}

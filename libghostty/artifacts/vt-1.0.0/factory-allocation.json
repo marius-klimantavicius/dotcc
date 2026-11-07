@@ -1,0 +1,829 @@
+{
+  "created_utc": "2026-11-07T12:58:32.339570+00:00",
+  "work": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation",
+  "status": "pass",
+  "driver": "/home/marius/p/dotcc/libghostty/tests/FactoryAllocation/Driver.cs",
+  "driver_sha256": "C630ABB7E25ED73A2F137CE20396C4480428A1A1698C1346485AD3893F211A69",
+  "generator_sha256": "4D2E4EBB32A2C70A006C37A1B559D93CEA133C0CD48AE28994BB807FB816B0F1",
+  "environment": {
+    "DOTNET_PROCESSOR_COUNT": "1",
+    "DOTNET_TieredCompilation": null,
+    "DOTNET_TieredPGO": null,
+    "COMPlus_TieredCompilation": null,
+    "TMPDIR": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/tmp"
+  },
+  "measurement": "Full-set warmup pass, then strict zero allocated bytes per getter/factory; each pass includes 256 local warmups and 10000 measured iterations (1000 for factories >=4096 bytes). All bytes consumed by no-inline checksum. BCL/hash/JSON setup, destinations, positive control excluded.",
+  "limits": "Private same-source diagnostic executable, not a product binary. Managed per-thread allocation counters only; accepted PE audit covers IL/RVA and allocation services. Argument-taking Create is not executed; no fabricated Args. No terminal qualification or translation/upstream phase.",
+  "forms": [
+    {
+      "form": "raw",
+      "canonical": {
+        "project": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+        "project_sha256": "E2436F509CFB64547BC45E5195CF1F1BB275A655C501B16BAE7F54100EFBDE32",
+        "manifest": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/Dotcc.SourceFiles.txt",
+        "manifest_sha256": "F3AF6734EE093CBDBC4A5F2F07B93A3A987253725CA3D99DCF658B2D8CA597BA",
+        "source_fingerprint": "A3B99F90D67429EF8EEF2659A208F9E41A33144CC42F2F3543F2A048649E1326",
+        "files": [
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00000.cs",
+            "name": "GhosttyVt.00000.cs",
+            "bytes": 298756,
+            "sha256": "9D97BC86C9631B6194F6DFDF9B7BA11B91CA320A84D47E093BA7CB5E18EBDE94"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00001.cs",
+            "name": "GhosttyVt.00001.cs",
+            "bytes": 339357,
+            "sha256": "C0162BF051A714594884D303506D8FF167A2DEFA85B594E7A34884596FBCE591"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00002.cs",
+            "name": "GhosttyVt.00002.cs",
+            "bytes": 262243,
+            "sha256": "447DC93821CC00EB2E61CD7C530B492A9BE6CCFD9D7293F23AFF5DA0C5415F58"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00003.cs",
+            "name": "GhosttyVt.00003.cs",
+            "bytes": 264731,
+            "sha256": "052EAB0F71EB79DC792B62341E9EF6AD017DF53CA22FDA9AB3DB9F3000065984"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00004.cs",
+            "name": "GhosttyVt.00004.cs",
+            "bytes": 262939,
+            "sha256": "98E05F18E35F5E18532363CBBB93A27EA0E513685E3136F0FEFAE7C10CF60C68"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00005.cs",
+            "name": "GhosttyVt.00005.cs",
+            "bytes": 262341,
+            "sha256": "631EF5EB4F2EF561B93963CB85AC32299F24030653514998335078732FD7A6DA"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00006.cs",
+            "name": "GhosttyVt.00006.cs",
+            "bytes": 264104,
+            "sha256": "459905072208F130EAEBBB18832CE14D392812E5620AB319888F959043C7CA9B"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00007.cs",
+            "name": "GhosttyVt.00007.cs",
+            "bytes": 267742,
+            "sha256": "4F1CA124A190EE46D910D5DDB95F966F4C18F5DB2E978C9771A384A4DDA54604"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00008.cs",
+            "name": "GhosttyVt.00008.cs",
+            "bytes": 267974,
+            "sha256": "B00BC4467D537CEBB19098080611CA97363D3AA5E4651CB700A5C554E16ACD76"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00009.cs",
+            "name": "GhosttyVt.00009.cs",
+            "bytes": 297547,
+            "sha256": "B8CF43F6982D458EAE1959D3C84C0464CCEAF3ABFAF685224E234B648947A4D6"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00010.cs",
+            "name": "GhosttyVt.00010.cs",
+            "bytes": 266074,
+            "sha256": "97BDCA767F0F52483FB610F7BB7700C6981912E6D625969CB39FD0C0FA58F6B9"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00011.cs",
+            "name": "GhosttyVt.00011.cs",
+            "bytes": 261777,
+            "sha256": "A8E24C0309BF46F628B8E4D3978AD48A52E016B93C83B3554B93DB5BC2BF2875"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00012.cs",
+            "name": "GhosttyVt.00012.cs",
+            "bytes": 339375,
+            "sha256": "74EC7D6B49AA312DE5594EEFE377527E6E748B346B2B3F9A24810740DABDE170"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00013.cs",
+            "name": "GhosttyVt.00013.cs",
+            "bytes": 263049,
+            "sha256": "F4AE526F82342A638F9927CD8906B3BE910E5D025951EEA90927EFD612E916DC"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00014.cs",
+            "name": "GhosttyVt.00014.cs",
+            "bytes": 285713,
+            "sha256": "7FF655AD08508B36D3E6C2F077FBE440231BC56B393FDDB2E3D0503E65A1B614"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00015.cs",
+            "name": "GhosttyVt.00015.cs",
+            "bytes": 323230,
+            "sha256": "4A6DF6128CD30FDFD51819CB1AA3BB6DBDB21C09A13A54A97FCBB6CC2DEB1C80"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00016.cs",
+            "name": "GhosttyVt.00016.cs",
+            "bytes": 266039,
+            "sha256": "6230A6186BB09E01A96DADCDB95A3EC03D8DDD8D1C166A32D7E95599223A7B4E"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00017.cs",
+            "name": "GhosttyVt.00017.cs",
+            "bytes": 261998,
+            "sha256": "DA27C77897F62A017CEFA6735A3974A439C4459A45014D66778A4B27EEB634C4"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00018.cs",
+            "name": "GhosttyVt.00018.cs",
+            "bytes": 264249,
+            "sha256": "35EFC9817F12E0F18B9E808DC0C5258B7A3519C5EB708C164447F264E2C42BBA"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00019.cs",
+            "name": "GhosttyVt.00019.cs",
+            "bytes": 274695,
+            "sha256": "89238381E26E5D97BC06CFF54BC13883465751B6934472AE4169F110DDA995D2"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00020.cs",
+            "name": "GhosttyVt.00020.cs",
+            "bytes": 262019,
+            "sha256": "37C5A39A8950504AF20017B31B269B3CF82D6CD03B43F1C9E6F7DF0B47649D8F"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00021.cs",
+            "name": "GhosttyVt.00021.cs",
+            "bytes": 262619,
+            "sha256": "F3F10DBF5D3C3A8B10EC4EAB4AB68B8F67EA89330BEAEDC79601E1A17E634255"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00022.cs",
+            "name": "GhosttyVt.00022.cs",
+            "bytes": 261965,
+            "sha256": "9ACFE38A3CCF43E0E8C2993C2DF32A9E8F35DAB17441535D04567957698DE769"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00023.cs",
+            "name": "GhosttyVt.00023.cs",
+            "bytes": 270371,
+            "sha256": "F59C58AD0885F36B59C9DF870E84057D3CD33A426235A5031D31FF7CC81CED5E"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00024.cs",
+            "name": "GhosttyVt.00024.cs",
+            "bytes": 261882,
+            "sha256": "EFE4B77509B1803A089FC7D06C1180BF0F5A77897225E432C40CAAE1C5F0070E"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00025.cs",
+            "name": "GhosttyVt.00025.cs",
+            "bytes": 261801,
+            "sha256": "85D7F34B8FE8E3A951CADC79AB04E0192CD6EA36244D944142559071F4FC24F2"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00026.cs",
+            "name": "GhosttyVt.00026.cs",
+            "bytes": 262037,
+            "sha256": "897255489F1C7E2D3AAF756A3BF144CA23E92B2FF4A231861A9BC972535A4BFA"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00027.cs",
+            "name": "GhosttyVt.00027.cs",
+            "bytes": 265509,
+            "sha256": "3D6FE754CD8DFBD3C8715723C49E38C17E751EF9B1036BB1FC6EC9DB73CCAC74"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00028.cs",
+            "name": "GhosttyVt.00028.cs",
+            "bytes": 262773,
+            "sha256": "EB99CCA57AD9D1CEAA1D9DFA4E838F03EA4C1C84D29C775E21681BBDA27B02BE"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00029.cs",
+            "name": "GhosttyVt.00029.cs",
+            "bytes": 264805,
+            "sha256": "9E099F36FF55FCC674E6DB67D6D5543B809F1403E600FC1958217E305CFA2F92"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00030.cs",
+            "name": "GhosttyVt.00030.cs",
+            "bytes": 262569,
+            "sha256": "CB9C05B5B0AFC44A959E61FB9085D3808C7359113FCD3CCA849C0C8A04E6A8F2"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00031.cs",
+            "name": "GhosttyVt.00031.cs",
+            "bytes": 263861,
+            "sha256": "0F34D90DB8452981FB589B14FBFCEC36E225853981D9F247E54000FE5C69190A"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00032.cs",
+            "name": "GhosttyVt.00032.cs",
+            "bytes": 262186,
+            "sha256": "2E682F61B8B687B2107429D990052EA7858BF1BEE713E3096EFF0BAF5D6BA775"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00033.cs",
+            "name": "GhosttyVt.00033.cs",
+            "bytes": 262020,
+            "sha256": "E21AE7FD14A7579161CFC01404C469C3B0CDE56219B38F15436E12BFBBD1A1BA"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00034.cs",
+            "name": "GhosttyVt.00034.cs",
+            "bytes": 264749,
+            "sha256": "2CAF8B9C260A0033A3C546B924AFF12CF49AD53D2484DEB1FC3A56E4D2AE2DFA"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00035.cs",
+            "name": "GhosttyVt.00035.cs",
+            "bytes": 261980,
+            "sha256": "E465C2702E30A8EB86410CBEC2C3698CBCF571DA72999FBA66FC0E4795B4B043"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00036.cs",
+            "name": "GhosttyVt.00036.cs",
+            "bytes": 262631,
+            "sha256": "5BFDCCB51D23CE8AA984E2036BC5A87CC48587E974439868CDAB6ED5A77C2574"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00037.cs",
+            "name": "GhosttyVt.00037.cs",
+            "bytes": 262824,
+            "sha256": "D2B6E4D033445DCEB969BE6ADF045F891E5CED4FAC9DDB5A2DAA5EFF3E78CEBA"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00038.cs",
+            "name": "GhosttyVt.00038.cs",
+            "bytes": 267418,
+            "sha256": "86296F0A169405CB6760070BD7943BC463636C27BCD599E720B94F9BC984A570"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00039.cs",
+            "name": "GhosttyVt.00039.cs",
+            "bytes": 261981,
+            "sha256": "5BB9A78D3A80E604BEAAF363DEF4F049B62F71FF54D7026BEE93C7DD88406B1D"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00040.cs",
+            "name": "GhosttyVt.00040.cs",
+            "bytes": 263416,
+            "sha256": "B92D626A04D926BEADB700D95398E85D8DCBE02E0776D1DB4B0325782471D048"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00041.cs",
+            "name": "GhosttyVt.00041.cs",
+            "bytes": 266189,
+            "sha256": "FD1E44D485F074B67320DFF89507D5E78E7EFC454131A400F362AB6D0F4805C7"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.00042.cs",
+            "name": "GhosttyVt.00042.cs",
+            "bytes": 157322,
+            "sha256": "59E10CA23F9B7194939CFC51A67916AB9649F549779EFCDCB2767832B129E5AF"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/GhosttyVt.cs",
+            "name": "GhosttyVt.cs",
+            "bytes": 6146159,
+            "sha256": "7FD546E8B3198069F75D50E8AD41BD8D4EE39EEBE0E91D9A28F8B90C73998EA1"
+          }
+        ],
+        "source_files": 44,
+        "source_bytes": 17695019
+      },
+      "accepted_audit": "/home/marius/p/dotcc/libghostty/artifacts/vt-1.0.0/raw-audit.json",
+      "accepted_audit_sha256": "2CCE96322507AECA70E9B4C45434AE387548DB4242AC45CE4ECD51CFD284DE8C",
+      "accepted_assembly": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/bin/Release/net10.0/TranslatedGhosttyVt.dll",
+      "accepted_assembly_sha256": "C1F6C303294D4E17D07D356D17743F31E02A7D4217431D0BA088569551B32CED",
+      "project": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/raw/FactoryAllocation.csproj",
+      "project_sha256": "E050F8A160011B498E42B46EF7B426E0F9C4FEFEDB34E87C7F15C80BC923655F",
+      "calls_sha256": "35AA2D3A5FFDA2847CA0E4812C4424F4AFD5BC69D362E86E89DE69409E87558F",
+      "cases_sha256": "E82F7FE8EBA722491AAEA9E5E6B9B093DD6B299525169904EF0933FB673F94FC",
+      "getters": 63,
+      "factories": 0,
+      "excluded_argument_factories": [],
+      "group_count": 1,
+      "maximum_calls_per_group": 63,
+      "maximum_probe_parameters": 2,
+      "maximum_wrapper_parameters": 0,
+      "nativeaot_root": "entire diagnostic assembly FactoryAllocation.raw, including every canonical translated source",
+      "runs": [
+        {
+          "mode": "jit",
+          "status": "pass",
+          "build": {
+            "argv": [
+              "dotnet",
+              "build",
+              "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/raw/FactoryAllocation.csproj",
+              "-c",
+              "Release",
+              "--artifacts-path",
+              "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/raw/artifacts-jit",
+              "--output",
+              "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/raw/outputs/jit",
+              "-m:1",
+              "-nodeReuse:false",
+              "-p:BuildInParallel=false",
+              "-p:UseSharedCompilation=false"
+            ],
+            "cwd": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/raw",
+            "log": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/raw/jit-build.log",
+            "started_utc": "2026-11-07T12:58:32.658332+00:00",
+            "exit_code": 0,
+            "elapsed_seconds": 16.202,
+            "log_sha256": "1E14ABB8C234967C3B6E9A0998C12CE11C96DE51E930AB585D36D0D15712B456"
+          },
+          "binary": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/raw/outputs/jit/FactoryAllocation.raw.dll",
+          "binary_sha256": "6AC9F0AD418909C4D5424B0B9DAACF26D92424665B4F48BEEC42FBA29ED68118",
+          "execution": {
+            "argv": [
+              "dotnet",
+              "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/raw/outputs/jit/FactoryAllocation.raw.dll",
+              "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/raw/outputs/jit-result.json",
+              "jit"
+            ],
+            "cwd": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/raw",
+            "log": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/raw/jit-run.log",
+            "started_utc": "2026-11-07T12:58:48.872996+00:00",
+            "exit_code": 0,
+            "elapsed_seconds": 2.619,
+            "log_sha256": "9F7A277C803C9AFB5996C7CF432D2E86E7EF11704209BCD9332BDB62F3B4DC1A"
+          },
+          "getters": 63,
+          "factories": 0,
+          "allocated_bytes": 0,
+          "positive_control_bytes": 288,
+          "result": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/raw/outputs/jit-result.json",
+          "result_sha256": "5D4BBCF4EB8BE4D3F21129F9C22E87EE51CF7B254C4CD86BF281EB4E8F01AA2E",
+          "canonical_unchanged": true
+        },
+        {
+          "mode": "nativeaot",
+          "status": "pass",
+          "build": {
+            "argv": [
+              "dotnet",
+              "publish",
+              "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/raw/FactoryAllocation.csproj",
+              "-c",
+              "Release",
+              "--artifacts-path",
+              "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/raw/artifacts-nativeaot",
+              "--output",
+              "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/raw/outputs/nativeaot",
+              "-m:1",
+              "-nodeReuse:false",
+              "-p:BuildInParallel=false",
+              "-p:UseSharedCompilation=false",
+              "-r",
+              "linux-x64",
+              "-p:PublishAot=true",
+              "-p:IlcSingleThreaded=true"
+            ],
+            "cwd": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/raw",
+            "log": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/raw/nativeaot-build.log",
+            "started_utc": "2026-11-07T12:58:51.512476+00:00",
+            "exit_code": 0,
+            "elapsed_seconds": 40.791,
+            "log_sha256": "D83A311608A4D8012C1EB8DC5679DF52F608422AA1375C84A2692810BC0E2F02"
+          },
+          "binary": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/raw/outputs/nativeaot/FactoryAllocation.raw",
+          "binary_sha256": "957C524BD159E310B68D779AF828394FB20354E29575D5451C043F695B9FE32B",
+          "execution": {
+            "argv": [
+              "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/raw/outputs/nativeaot/FactoryAllocation.raw",
+              "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/raw/outputs/nativeaot-result.json",
+              "nativeaot"
+            ],
+            "cwd": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/raw",
+            "log": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/raw/nativeaot-run.log",
+            "started_utc": "2026-11-07T12:59:32.320947+00:00",
+            "exit_code": 0,
+            "elapsed_seconds": 1.366,
+            "log_sha256": "6126B6B714EA1722E1D58C84A2DFE88CE19113835AE7C063E5E092BD8810C60A"
+          },
+          "getters": 63,
+          "factories": 0,
+          "allocated_bytes": 0,
+          "positive_control_bytes": 288,
+          "result": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/raw/outputs/nativeaot-result.json",
+          "result_sha256": "1DC39D7502888B29A7750684C8CBE96CDA98AC32E6415A29D8F31F82D70D2553",
+          "canonical_unchanged": true
+        }
+      ]
+    },
+    {
+      "form": "processed",
+      "canonical": {
+        "project": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+        "project_sha256": "E2436F509CFB64547BC45E5195CF1F1BB275A655C501B16BAE7F54100EFBDE32",
+        "manifest": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/Dotcc.SourceFiles.txt",
+        "manifest_sha256": "F3AF6734EE093CBDBC4A5F2F07B93A3A987253725CA3D99DCF658B2D8CA597BA",
+        "source_fingerprint": "401A2B0660E7A2896EF5291CD8B2BCC97CC77046C22A9BEFC32EE359C94FE3DD",
+        "files": [
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00000.cs",
+            "name": "GhosttyVt.00000.cs",
+            "bytes": 296556,
+            "sha256": "347A65109B1E9787346DA4BCC1851856B5E9E5807374112FEE0E2264D67899C6"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00001.cs",
+            "name": "GhosttyVt.00001.cs",
+            "bytes": 337207,
+            "sha256": "BD7F6D0DF2D8A76B98AC56EFCAE724C7ACD6D8A87FF5BDBEB103B31E04F034AA"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00002.cs",
+            "name": "GhosttyVt.00002.cs",
+            "bytes": 259619,
+            "sha256": "85F42D3B0956033593943476DB6633929B391D16F20123C3EA423BB220D89C4A"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00003.cs",
+            "name": "GhosttyVt.00003.cs",
+            "bytes": 261017,
+            "sha256": "920D76744FB16AF3027D1F0667D6C9AF7271C92DF773BDEDC3A0A489EAA958FE"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00004.cs",
+            "name": "GhosttyVt.00004.cs",
+            "bytes": 261658,
+            "sha256": "50871E2E91184A613D0451670DCB444540A639FF9F75D3502C2C1CEB26C3C455"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00005.cs",
+            "name": "GhosttyVt.00005.cs",
+            "bytes": 259229,
+            "sha256": "D4BC13914534DE38321B437E1843515BAE150A49F5D15A5C863AD259A6455857"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00006.cs",
+            "name": "GhosttyVt.00006.cs",
+            "bytes": 261954,
+            "sha256": "8F64E754DD47133DC217A7F692EBB03F4CC41364524E34DD5FA272B1E5D194DA"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00007.cs",
+            "name": "GhosttyVt.00007.cs",
+            "bytes": 267322,
+            "sha256": "5C8B3FB755CB0D0360C5B976674209A3F9C2072E8CD29BAD35697AE80FBE1A4A"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00008.cs",
+            "name": "GhosttyVt.00008.cs",
+            "bytes": 267554,
+            "sha256": "5AD86D7E10A136DB35679169C91B8C1164C5D84DE2BD680BE5E6F75F5203EBC4"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00009.cs",
+            "name": "GhosttyVt.00009.cs",
+            "bytes": 297378,
+            "sha256": "B1DAE6BC4340A9FA9BB7F42324C13510E246A0F6CA1719D5E6EB2865B179630D"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00010.cs",
+            "name": "GhosttyVt.00010.cs",
+            "bytes": 263517,
+            "sha256": "B5F3F01B953108C58A9D3215A9765F82C446FB5FA378A971C19E484593BE30C7"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00011.cs",
+            "name": "GhosttyVt.00011.cs",
+            "bytes": 259206,
+            "sha256": "FBA793E1772BAF690A2D36BB2105C6E5AD4C19A0D01BFE7F9A30A257963EE0B7"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00012.cs",
+            "name": "GhosttyVt.00012.cs",
+            "bytes": 335691,
+            "sha256": "5674E34325111D1528993A6DFEDE54136C49638E79D6A6F6C7B4C1A533D103E9"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00013.cs",
+            "name": "GhosttyVt.00013.cs",
+            "bytes": 259506,
+            "sha256": "66B83637B69CE404E21D074FE3669BF64532893266C85ECF84498DE98DF4A170"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00014.cs",
+            "name": "GhosttyVt.00014.cs",
+            "bytes": 281495,
+            "sha256": "98C04486AF3812F8555B0836C5E1930E4E90C7FACD801B5EB7040C051F015BFF"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00015.cs",
+            "name": "GhosttyVt.00015.cs",
+            "bytes": 320365,
+            "sha256": "D8DE7B2D3E09B010F16AE0F134C3B2187BF0FB2C0A5BCEEA55704DBD1955D32C"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00016.cs",
+            "name": "GhosttyVt.00016.cs",
+            "bytes": 263620,
+            "sha256": "6A34192558B4EE45DAA1B9AF8E896C8AEE44096A9B14077EFDE3CE9B3FBBF5B1"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00017.cs",
+            "name": "GhosttyVt.00017.cs",
+            "bytes": 259978,
+            "sha256": "72DE0478A3BFD228E135D7430E58C3AD9488DF8E6F39EDD1864D166A5E698822"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00018.cs",
+            "name": "GhosttyVt.00018.cs",
+            "bytes": 261872,
+            "sha256": "F52F79A5B5416A24A70907AD05D20E7DD10B331FD5C4E66B5DC4692840CE724E"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00019.cs",
+            "name": "GhosttyVt.00019.cs",
+            "bytes": 272398,
+            "sha256": "4B65E406AA96D0B8218A2A210A37B2E13EEAFBCDAC1254D7D3E0CE48BEF44F64"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00020.cs",
+            "name": "GhosttyVt.00020.cs",
+            "bytes": 260533,
+            "sha256": "DD398575C6736FA4AFC35B9B2154E88414A2C921C95630ED91593A5149695303"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00021.cs",
+            "name": "GhosttyVt.00021.cs",
+            "bytes": 260043,
+            "sha256": "1938318932A56598F61E795E0AA6357EC0BFED62A8D11DF8EC4F8BCF464001BD"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00022.cs",
+            "name": "GhosttyVt.00022.cs",
+            "bytes": 260322,
+            "sha256": "5941DE5E212BF4B27E93E08D212A186D17906278198F6E49529B4519BEB8B07A"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00023.cs",
+            "name": "GhosttyVt.00023.cs",
+            "bytes": 266499,
+            "sha256": "7C69E3C8A85EF1E26EF32CC459A7FB6C1859A9E81030F01ED2D12B152AE32AFA"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00024.cs",
+            "name": "GhosttyVt.00024.cs",
+            "bytes": 260513,
+            "sha256": "B3F03B6F7B03004EF4A96C5DF7CF106757604E44E06F2FC4D9B7072EEEDDBC69"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00025.cs",
+            "name": "GhosttyVt.00025.cs",
+            "bytes": 260720,
+            "sha256": "1AE42B0590DA81EC6C8C7323572AC3077DD328657D98DE28BEAB2E2530220416"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00026.cs",
+            "name": "GhosttyVt.00026.cs",
+            "bytes": 262037,
+            "sha256": "897255489F1C7E2D3AAF756A3BF144CA23E92B2FF4A231861A9BC972535A4BFA"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00027.cs",
+            "name": "GhosttyVt.00027.cs",
+            "bytes": 263275,
+            "sha256": "3243AD65D3E36DE3941ECCA958C6CF16CBD4A0CCE801804B5FCF9C8EB58FEA9C"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00028.cs",
+            "name": "GhosttyVt.00028.cs",
+            "bytes": 260174,
+            "sha256": "0C640B54E8FF7FC872165AE311B77AD5E697CF7C1695499C101D5B29C1D515AF"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00029.cs",
+            "name": "GhosttyVt.00029.cs",
+            "bytes": 260098,
+            "sha256": "E8F70913FEA3E31F63ACD3E5E5A9FD84ECBCE72B339630364A078AC45438D07F"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00030.cs",
+            "name": "GhosttyVt.00030.cs",
+            "bytes": 256079,
+            "sha256": "E5BCEC9DCBA59BB2948EE01A659F6949259A9B8D476DB2A1D65183BD792EDBA4"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00031.cs",
+            "name": "GhosttyVt.00031.cs",
+            "bytes": 257605,
+            "sha256": "4A84418805D1D9B2F867AB2D36D263A8C9A902104E063A4DE3F9AE1E888CD011"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00032.cs",
+            "name": "GhosttyVt.00032.cs",
+            "bytes": 256362,
+            "sha256": "A0DD107DF1C4097C8BD3FE86F053CA573A05BDE7E7FB89BECAC5BC5871C18FDF"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00033.cs",
+            "name": "GhosttyVt.00033.cs",
+            "bytes": 260082,
+            "sha256": "E1483F523FFC1F34AAF85542AF2C39E6E71E7C5BFBA8F5BAC3636DF797E97614"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00034.cs",
+            "name": "GhosttyVt.00034.cs",
+            "bytes": 262876,
+            "sha256": "3FF07B4155471062CC12ADEF2701E9BF67AC76025DA6F1A7FFD95DAE4F4EE93D"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00035.cs",
+            "name": "GhosttyVt.00035.cs",
+            "bytes": 258166,
+            "sha256": "A9BB3591003A05CDD55213E6871EF531CE354286E622AFB18FB5786C24DB79AD"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00036.cs",
+            "name": "GhosttyVt.00036.cs",
+            "bytes": 260388,
+            "sha256": "208B45985139E6DEFEDBB4A92BEE429317802561C01C98649075EE5377087F42"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00037.cs",
+            "name": "GhosttyVt.00037.cs",
+            "bytes": 258597,
+            "sha256": "4F989EC568C6643DBC8AA2505349B65FA938FD182F1F5839022E0463D73430E2"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00038.cs",
+            "name": "GhosttyVt.00038.cs",
+            "bytes": 264478,
+            "sha256": "724E206B39EA9E1ACFDA3A5763700FDFC4F664AB64BD4B7E48F05E0D49E15051"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00039.cs",
+            "name": "GhosttyVt.00039.cs",
+            "bytes": 255883,
+            "sha256": "7E87D7416DF29BEA1CAF33DE4C570CC8F64F357FB39A288D4B705D1F9ACF2B3A"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00040.cs",
+            "name": "GhosttyVt.00040.cs",
+            "bytes": 261835,
+            "sha256": "C597542858D1BADA68E7A6F26644B809863EDA1331263B48245E14C39FB1837B"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00041.cs",
+            "name": "GhosttyVt.00041.cs",
+            "bytes": 262444,
+            "sha256": "A9D17E86248096C16279452F09D2ADA008007C517B4B17FE9357577479EB17C4"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.00042.cs",
+            "name": "GhosttyVt.00042.cs",
+            "bytes": 154442,
+            "sha256": "B450C4D69265ED118CED4F3CABAAB74670BD0FD26F414B018897B23BD378BDAE"
+          },
+          {
+            "path": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/GhosttyVt.cs",
+            "name": "GhosttyVt.cs",
+            "bytes": 6146159,
+            "sha256": "7FD546E8B3198069F75D50E8AD41BD8D4EE39EEBE0E91D9A28F8B90C73998EA1"
+          }
+        ],
+        "source_files": 44,
+        "source_bytes": 17576752
+      },
+      "accepted_audit": "/home/marius/p/dotcc/libghostty/artifacts/vt-1.0.0/processed-audit.json",
+      "accepted_audit_sha256": "329D21A90AB9386FA37B4C7AF8AEAD5585FCD51B2B41E6EAE595B672A19D05CC",
+      "accepted_assembly": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/bin/Release/net10.0/TranslatedGhosttyVt.dll",
+      "accepted_assembly_sha256": "F42A41C231BCB7C3F204512DCC164E1441FD074AC2110749D0B54666495B7599",
+      "project": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/processed/FactoryAllocation.csproj",
+      "project_sha256": "CCB6A4076D924B97745E189BB91F735687A504552CEED3B38BA9FC0C07FF6EFC",
+      "calls_sha256": "C10B0760F657E21A28304979A2B1084FC2CFBC486012AB50A387E7761828A170",
+      "cases_sha256": "E82F7FE8EBA722491AAEA9E5E6B9B093DD6B299525169904EF0933FB673F94FC",
+      "getters": 63,
+      "factories": 0,
+      "excluded_argument_factories": [],
+      "group_count": 1,
+      "maximum_calls_per_group": 63,
+      "maximum_probe_parameters": 2,
+      "maximum_wrapper_parameters": 0,
+      "nativeaot_root": "entire diagnostic assembly FactoryAllocation.processed, including every canonical translated source",
+      "runs": [
+        {
+          "mode": "jit",
+          "status": "pass",
+          "build": {
+            "argv": [
+              "dotnet",
+              "build",
+              "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/processed/FactoryAllocation.csproj",
+              "-c",
+              "Release",
+              "--artifacts-path",
+              "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/processed/artifacts-jit",
+              "--output",
+              "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/processed/outputs/jit",
+              "-m:1",
+              "-nodeReuse:false",
+              "-p:BuildInParallel=false",
+              "-p:UseSharedCompilation=false"
+            ],
+            "cwd": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/processed",
+            "log": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/processed/jit-build.log",
+            "started_utc": "2026-11-07T12:59:33.709666+00:00",
+            "exit_code": 0,
+            "elapsed_seconds": 14.193,
+            "log_sha256": "670A368E2C1B401EE397FFFCFC41137FAAEEC73ACE88D124A966590DF4D0AED9"
+          },
+          "binary": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/processed/outputs/jit/FactoryAllocation.processed.dll",
+          "binary_sha256": "436F6FAAE4B587C2EF4C2037E2DEB532F050B6BE733FF4FF8104283EA52BF662",
+          "execution": {
+            "argv": [
+              "dotnet",
+              "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/processed/outputs/jit/FactoryAllocation.processed.dll",
+              "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/processed/outputs/jit-result.json",
+              "jit"
+            ],
+            "cwd": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/processed",
+            "log": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/processed/jit-run.log",
+            "started_utc": "2026-11-07T12:59:47.914890+00:00",
+            "exit_code": 0,
+            "elapsed_seconds": 2.518,
+            "log_sha256": "DEDB9B7745C8B4CCF20A4C915F9A717171EBDBAA43F0792C0B73EF677AE42951"
+          },
+          "getters": 63,
+          "factories": 0,
+          "allocated_bytes": 0,
+          "positive_control_bytes": 288,
+          "result": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/processed/outputs/jit-result.json",
+          "result_sha256": "0B56CF387FE83C995721416911F579E1562E76000848D90FCD537232BFC25EBF",
+          "canonical_unchanged": true
+        },
+        {
+          "mode": "nativeaot",
+          "status": "pass",
+          "build": {
+            "argv": [
+              "dotnet",
+              "publish",
+              "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/processed/FactoryAllocation.csproj",
+              "-c",
+              "Release",
+              "--artifacts-path",
+              "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/processed/artifacts-nativeaot",
+              "--output",
+              "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/processed/outputs/nativeaot",
+              "-m:1",
+              "-nodeReuse:false",
+              "-p:BuildInParallel=false",
+              "-p:UseSharedCompilation=false",
+              "-r",
+              "linux-x64",
+              "-p:PublishAot=true",
+              "-p:IlcSingleThreaded=true"
+            ],
+            "cwd": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/processed",
+            "log": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/processed/nativeaot-build.log",
+            "started_utc": "2026-11-07T12:59:50.453254+00:00",
+            "exit_code": 0,
+            "elapsed_seconds": 43.095,
+            "log_sha256": "E50E31A3DB057D35DD088B828E33E1E67DA40BEF657D2AAA69975138CC61F911"
+          },
+          "binary": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/processed/outputs/nativeaot/FactoryAllocation.processed",
+          "binary_sha256": "0A277227332CBCE78DBDE601C1688F8D59DD55AD7E4557A70FB9012977C4310A",
+          "execution": {
+            "argv": [
+              "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/processed/outputs/nativeaot/FactoryAllocation.processed",
+              "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/processed/outputs/nativeaot-result.json",
+              "nativeaot"
+            ],
+            "cwd": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/processed",
+            "log": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/processed/nativeaot-run.log",
+            "started_utc": "2026-11-07T13:00:33.563017+00:00",
+            "exit_code": 0,
+            "elapsed_seconds": 1.366,
+            "log_sha256": "3DC4D5D529825FECAE01DE03C94DE65BFE6E2897104A9ED24B95D3AFEF436B98"
+          },
+          "getters": 63,
+          "factories": 0,
+          "allocated_bytes": 0,
+          "positive_control_bytes": 288,
+          "result": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/processed/outputs/nativeaot-result.json",
+          "result_sha256": "3D60346480EBF0EDF28D90A3A2236DE7192625A385EC529FF672ADD50AB214B8",
+          "canonical_unchanged": true
+        }
+      ]
+    }
+  ],
+  "sdk": {
+    "argv": [
+      "dotnet",
+      "--info"
+    ],
+    "cwd": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation",
+    "log": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/factory-allocation/dotnet-info.log",
+    "started_utc": "2026-11-07T12:58:32.479097+00:00",
+    "exit_code": 0,
+    "elapsed_seconds": 0.168,
+    "log_sha256": "CCDBD09D4F8FB65BA39B3B244000148CF067595FCCB1F46A062442D04C458A0A"
+  }
+}

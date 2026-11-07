@@ -5,13 +5,15 @@ incremental VT input, Unicode terminal state, grid/style observation, formatting
 resize and reset. GUI and GPU rendering are excluded. The source and Zig
 toolchain are pinned under `config/`.
 
-The default product is translated directly from Zig to C# and runs the selected
-terminal workflow. Its canonical projects are
+The default product is official **libghostty-vt 1.0.0**, translated directly from
+Zig to C# by DotCC. It runs the selected terminal workflow. See the
+[upgrade evidence and reproduction](docs/VT-1.0.0.md). Its canonical projects are
 [processed](generated/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj) and
 [raw](generated/TranslatedGhosttyVt.Raw/TranslatedGhosttyVt.csproj).
-Both forms pass the owning consumer, 24 differential cases and allocation checks
-under JIT and NativeAOT. The retained 2,622 upstream tests pass natively; their
-managed execution and final campaign acceptance remain in progress. See
+Both forms pass the owning consumer, 45 differential/version/API cases and
+allocation checks under JIT and whole-library-rooted NativeAOT. Full upstream
+managed qualification remains pending; the old pin's 2,622-case native and
+287-case managed results are not 1.0.0 acceptance. See
 [direct status and reproduction](docs/DIRECT-ZIG.md).
 
 Build and run the ordinary owning solution; no project override is needed:
@@ -26,7 +28,7 @@ dotnet build libghostty/ManagedConsumer.slnx -c Release \
 dotnet /mnt/storage/dotcc-libghostty-disposable/direct-sample/bin/ManagedConsumer/release/GhosttyVt.Consumer.dll
 ```
 
-The C route is accepted for the selected Linux x64 terminal-core scope with the
+The historical 0.1.0 C route was accepted for the selected Linux x64 terminal-core scope with the
 explicit upstream-test deferral below. Current native controls, consumer and
 24-case differential/physical-ABI qualification in all four rows, factory checks,
 audit, root solution and warn/off reproduction pass. See
@@ -64,13 +66,13 @@ the canonical raw/processed paths. The accepted C translator remains available
 with `--profile scalar`, which publishes to a nondefault profile directory.
 Default direct `verify.sh` currently checks the owning consumer; it does not
 claim the pending full upstream qualification. Campaign intermediates stay under
-`/mnt/storage/dotcc-libghostty-disposable/campaign/`.
+`/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/campaign/`.
 
 Python 3.11+, .NET 10 and the pinned Zig toolchain are required. Native controls
 also require a GNU-compatible C compiler and libm on Linux x64. Source acquisition
-uses the shared framework. Zig acquires its pinned build dependencies on the
-first online native preparation; subsequent `--fetch never` uses Zig's offline
-package mode. Fetch and NuGet restore are independent (`--restore` controls the
+uses the shared framework and official signed source/dependency archives.
+The matching five-package bundle supplies Zig's offline `--system` package
+layout; `--fetch never` requires those pinned local inputs. Fetch and NuGet restore are independent (`--restore` controls the
 latter). Existing usable source trees are preserved under default `warn` and
 `off` provenance policies.
 

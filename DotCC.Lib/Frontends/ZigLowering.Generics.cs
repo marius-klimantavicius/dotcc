@@ -815,9 +815,19 @@ internal sealed partial class ZigLowering
                 CType ret;
                 Action<Symbol> captureSignature;
                 int? signatureReturnBits;
+                var signatureStrings = new List<Symbol>();
                 _symbols.EnterScope();
                 try
                 {
+                    // Later parameter/return types can depend on a comptime
+                    // string (for example @FieldType(T, name)). Bind the actual
+                    // argument in this definition's signature scope as for values.
+                    foreach (var (name, value, type) in stringSeeds)
+                    {
+                        var symbol = _symbols.Declare(new Symbol { Name = name, Kind = SymKind.Var, Type = type });
+                        _comptimeStringVars[symbol] = value;
+                        signatureStrings.Add(symbol);
+                    }
                     foreach (var seed in valueSeeds) { DeclareValueSeed(seed); }
                     foreach (var (name, hasValue, value, inner) in optionalSeeds)
                     {
@@ -872,6 +882,7 @@ internal sealed partial class ZigLowering
                 }
                 finally
                 {
+                    foreach (var symbol in signatureStrings) _comptimeStringVars.Remove(symbol);
                     _symbols.ExitScope();
                 }
                 if (g.ErrUnion) { ret = new CType.ErrorUnion(ret); }
@@ -1509,9 +1520,9 @@ internal sealed partial class ZigLowering
         // A comptime receiver can choose the returned type (`kind.OutType()`).
         // Keep the receiver as the first source argument so the ordinary definition-
         // scoped evaluator validates and binds its declared comptime parameter.
-        if (calleeItem.Content is Zig.Field { Arg0.Content: Zig.Ident receiverId } receiverField
-            && _symbols.Resolve(Tok(receiverId.Arg0)) is { } receiver
-            && ContainerTypeName(receiver.Type) is { } receiverContainer)
+        if (calleeItem.Content is Zig.Field receiverField
+            && TypeReturningValueReceiverType(receiverField.Arg0) is { } receiverType
+            && ContainerTypeName(receiverType) is { } receiverContainer)
         {
             var receiverOwner = _moduleGraph?.OwnerOfContainer(receiverContainer) ?? this;
             // This is a type-result probe, not a value use of the method.

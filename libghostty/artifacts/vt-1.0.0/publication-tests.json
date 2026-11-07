@@ -1,0 +1,15 @@
+{
+  "reason": "Normal campaign candidates are on disposable storage; canonical products are on a different filesystem. rename alone raises EXDEV.",
+  "source_device": 2097,
+  "canonical_device": 66306,
+  "same_filesystem": false,
+  "tests": "python3 -m unittest Scripts.campaigns.tests.test_framework.DeliveryTests",
+  "passed": 9,
+  "failed": 0,
+  "new_cases": [
+    "cross-device promotion preserves unowned files",
+    "two-form final-build failure restores old products",
+    "partial-copy failure preserves candidate and restores old product"
+  ],
+  "log": ".........\n----------------------------------------------------------------------\nRan 9 tests in 0.016s\n\nOK\n"
+}

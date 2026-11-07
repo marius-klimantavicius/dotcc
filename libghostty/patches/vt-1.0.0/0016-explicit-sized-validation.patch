@@ -1,0 +1,72 @@
+--- a/src/lib/struct.zig
++++ b/src/lib/struct.zig
+@@ -183,37 +183,39 @@
+ /// and with no later field inside the base layout's trailing padding.
+ fn validateSized(comptime T: type) void {
+     const info = @typeInfo(T).@"struct";
+-    if (info.layout != .@"extern") {
+-        @compileError(@typeName(T) ++ " is a sized struct and must be extern");
+-    }
+-    if (!std.mem.eql(u8, info.field_names[0], "size") or info.field_types[0] != usize) {
+-        @compileError(@typeName(T) ++ " is a sized struct and must start with size: usize");
+-    }
+-    if (!@hasDecl(T, "sized_base")) {
+-        @compileError(@typeName(T) ++ " must declare its base layout as `pub const sized_base = \"<last field>\";`");
+-    }
+-
+-    // Fields after the base must start past the base layout's @sizeOf,
+-    // which is its end rounded up to the alignment of its fields.
+-    var base_align: usize = 1;
+-    var past_base = false;
+-    for (info.field_names, info.field_types) |name, FieldT| {
+-        if (past_base) {
+-            const base_size = std.mem.alignForward(
+-                usize,
+-                @offsetOf(T, T.sized_base) + @sizeOf(@FieldType(T, T.sized_base)),
+-                base_align,
+-            );
+-            if (@offsetOf(T, name) < base_size) {
+-                @compileError(@typeName(T) ++ "." ++ name ++ " is placed in the padding of the base layout");
++    comptime {
++        if (info.layout != .@"extern") {
++            @compileError(@typeName(T) ++ " is a sized struct and must be extern");
++        }
++        if (!std.mem.eql(u8, info.field_names[0], "size") or info.field_types[0] != usize) {
++            @compileError(@typeName(T) ++ " is a sized struct and must start with size: usize");
++        }
++        if (!@hasDecl(T, "sized_base")) {
++            @compileError(@typeName(T) ++ " must declare its base layout as `pub const sized_base = \"<last field>\";`");
++        }
++
++        // Fields after the base must start past the base layout's @sizeOf,
++        // which is its end rounded up to the alignment of its fields.
++        var base_align: usize = 1;
++        var past_base = false;
++        for (info.field_names, info.field_types) |name, FieldT| {
++            if (past_base) {
++                const base_size = std.mem.alignForward(
++                    usize,
++                    @offsetOf(T, T.sized_base) + @sizeOf(@FieldType(T, T.sized_base)),
++                    base_align,
++                );
++                if (@offsetOf(T, name) < base_size) {
++                    @compileError(@typeName(T) ++ "." ++ name ++ " is placed in the padding of the base layout");
++                }
++            } else {
++                base_align = @max(base_align, @alignOf(FieldT));
++                if (std.mem.eql(u8, name, T.sized_base)) past_base = true;
+             }
+-        } else {
+-            base_align = @max(base_align, @alignOf(FieldT));
+-            if (std.mem.eql(u8, name, T.sized_base)) past_base = true;
+-        }
+-    }
+-    if (!past_base) {
+-        @compileError(@typeName(T) ++ ".sized_base names no field");
++        }
++        if (!past_base) {
++            @compileError(@typeName(T) ++ ".sized_base names no field");
++        }
+     }
+ }
+ 

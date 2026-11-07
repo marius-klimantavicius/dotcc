@@ -33,7 +33,7 @@ def main():
     spec.loader.exec_module(audit)
     required = json.loads((root / "config/direct.json").read_text())
     names = required["managed_roots"]
-    audit._require(len(names) == len(set(names)) == 92, "Direct scope needs 92 unique selected roots")
+    audit._require(len(names) == len(set(names)) == 96, "Direct vt-1.0.0 scope needs 96 unique selected roots")
     products = json.loads(args.products.read_text())
     graph_path = Path(products["graph"])
     graph = json.loads(graph_path.read_text())
@@ -111,7 +111,7 @@ def main():
                           "Import selection is lexical; runtime/physical ABI and rooted NativeAOT are separate checks."])
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2) + "\n")
-    print("direct delivery audit PASS: raw/processed92 source+PE bodies, notices, ownership and host imports")
+    print(f"direct delivery audit PASS: raw/processed{len(names)} source+PE bodies, notices, ownership and host imports")
 
 
 if __name__ == "__main__":

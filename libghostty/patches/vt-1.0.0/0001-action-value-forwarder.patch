@@ -1,0 +1,13 @@
+--- a/src/terminal/stream.zig
++++ b/src/terminal/stream.zig
+@@ -266,7 +266,9 @@
+         .{ .padding = [16]u64 },
+     );
+     pub const Tag = c_union.Tag;
+-    pub const Value = c_union.Value;
++    pub fn Value(comptime tag: Tag) type {
++        return c_union.Value(tag);
++    }
+     pub const C = c_union.C;
+     pub const CValue = c_union.CValue;
+     pub const cval = c_union.cval;

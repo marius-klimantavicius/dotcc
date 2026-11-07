@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "receipt": "/home/marius/p/dotcc/libghostty/artifacts/campaign/20261107-152442-5b74d86b/receipt.json",
+  "profile": "direct",
+  "inputs": [
+    "/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/src/lib_vt.zig",
+    "/home/marius/p/dotcc/libghostty/src/Boundary/ghostty_boundary.c"
+  ],
+  "warnings": [],
+  "work": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/campaign/20261107-152442-5b74d86b",
+  "explicit_profile_override": false,
+  "selected_compiler": "qualified isolated compiler-source build",
+  "selected_postprocessor": "same source postprocessor plus exact evaluated SDKconfigpath repair",
+  "native_engine_runtime": false
+}

@@ -1,0 +1,92 @@
+[
+  {
+    "mode": "debug",
+    "stage": "compile",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-obj",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/packed-boundary.zig",
+      "-Odebug",
+      "-fPIC",
+      "-fcompiler-rt",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/packed-boundary-debug.o",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/global"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "mode": "debug",
+    "stage": "link",
+    "argv": [
+      "cc",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/packed-boundary.c",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/packed-boundary-debug.o",
+      "-lm",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/packed-boundary-debug"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "/usr/bin/ld: warning: /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/packed-boundary-debug.o: missing .note.GNU-stack section implies executable stack\n/usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker\n"
+  },
+  {
+    "mode": "debug",
+    "stage": "run",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/packed-boundary-debug"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "mode": "fast",
+    "stage": "compile",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-obj",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/packed-boundary.zig",
+      "-Ofast",
+      "-fPIC",
+      "-fcompiler-rt",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/packed-boundary-fast.o",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/global"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "mode": "fast",
+    "stage": "link",
+    "argv": [
+      "cc",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/packed-boundary.c",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/packed-boundary-fast.o",
+      "-lm",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/packed-boundary-fast"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "mode": "fast",
+    "stage": "run",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/qualification/native-regressions/packed-boundary-fast"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

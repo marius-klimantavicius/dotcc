@@ -1,0 +1,252 @@
+[
+  {
+    "name": "original-five-native-sized-tests",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "test",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/original.zig",
+      "--test-filter",
+      "sized",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/global"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "1/5 original.test.sizedFieldFits boundary checks...OK\n2/5 original.test.sizedFieldFits respects alignment padding...OK\n3/5 original.test.sizedCheck boundaries...OK\n4/5 original.test.sizedField reads fields past the caller's size as zero...OK\n5/5 original.test.sizedWrite skips fields past the caller's size...OK\nAll 5 tests passed.\n"
+  },
+  {
+    "name": "original-reject-layout",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "test",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/global",
+      "--dep",
+      "sized",
+      "-Mroot=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/layout.zig",
+      "-Msized=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/original.zig"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/original.zig:187:9: error: layout.Invalid is a sized struct and must be extern\n        @compileError(@typeName(T) ++ \" is a sized struct and must be extern\");\n        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/original.zig:167:27: note: called at comptime here\n    comptime validateSized(T);\n             ~~~~~~~~~~~~~^~~\n/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/layout.zig:1:132: note: called at comptime here\nconst lib=@import(\"sized\"); const Invalid=struct { size: usize, a: u8, pub const sized_base = \"a\"; }; comptime { _=lib.sizedBaseEnd(Invalid); }\n                                                                                                                   ~~~~~~~~~~~~~~~~^~~~~~~~~\n"
+  },
+  {
+    "name": "original-reject-size-type",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "test",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/global",
+      "--dep",
+      "sized",
+      "-Mroot=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/size-type.zig",
+      "-Msized=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/original.zig"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/original.zig:190:9: error: size-type.Invalid is a sized struct and must start with size: usize\n        @compileError(@typeName(T) ++ \" is a sized struct and must start with size: usize\");\n        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/original.zig:167:27: note: called at comptime here\n    comptime validateSized(T);\n             ~~~~~~~~~~~~~^~~\n/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/size-type.zig:1:137: note: called at comptime here\nconst lib=@import(\"sized\"); const Invalid=extern struct { size: u32, a: u8, pub const sized_base = \"a\"; }; comptime { _=lib.sizedBaseEnd(Invalid); }\n                                                                                                                        ~~~~~~~~~~~~~~~~^~~~~~~~~\n"
+  },
+  {
+    "name": "original-reject-size-order",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "test",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/global",
+      "--dep",
+      "sized",
+      "-Mroot=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/size-order.zig",
+      "-Msized=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/original.zig"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/original.zig:190:9: error: size-order.Invalid is a sized struct and must start with size: usize\n        @compileError(@typeName(T) ++ \" is a sized struct and must start with size: usize\");\n        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/original.zig:167:27: note: called at comptime here\n    comptime validateSized(T);\n             ~~~~~~~~~~~~~^~~\n/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/size-order.zig:1:142: note: called at comptime here\nconst lib=@import(\"sized\"); const Invalid=extern struct { a: u8, size: usize, pub const sized_base = \"size\"; }; comptime { _=lib.sizedBaseEnd(Invalid); }\n                                                                                                                             ~~~~~~~~~~~~~~~~^~~~~~~~~\n"
+  },
+  {
+    "name": "original-reject-missing-base",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "test",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/global",
+      "--dep",
+      "sized",
+      "-Mroot=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/missing-base.zig",
+      "-Msized=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/original.zig"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/original.zig:193:9: error: missing-base.Invalid must declare its base layout as `pub const sized_base = \"<last field>\";`\n        @compileError(@typeName(T) ++ \" must declare its base layout as `pub const sized_base = \\\"<last field>\\\";`\");\n        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/original.zig:167:27: note: called at comptime here\n    comptime validateSized(T);\n             ~~~~~~~~~~~~~^~~\n/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/missing-base.zig:1:110: note: called at comptime here\nconst lib=@import(\"sized\"); const Invalid=extern struct { size: usize, a: u8 }; comptime { _=lib.sizedBaseEnd(Invalid); }\n                                                                                             ~~~~~~~~~~~~~~~~^~~~~~~~~\n"
+  },
+  {
+    "name": "original-reject-unknown-base",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "test",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/global",
+      "--dep",
+      "sized",
+      "-Mroot=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/unknown-base.zig",
+      "-Msized=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/original.zig"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/original.zig:216:9: error: unknown-base.Invalid.sized_base names no field\n        @compileError(@typeName(T) ++ \".sized_base names no field\");\n        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/original.zig:167:27: note: called at comptime here\n    comptime validateSized(T);\n             ~~~~~~~~~~~~~^~~\n/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/unknown-base.zig:1:145: note: called at comptime here\nconst lib=@import(\"sized\"); const Invalid=extern struct { size: usize, a: u8, pub const sized_base = \"missing\"; }; comptime { _=lib.sizedBaseEnd(Invalid); }\n                                                                                                                                ~~~~~~~~~~~~~~~~^~~~~~~~~\n"
+  },
+  {
+    "name": "original-reject-base-padding",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "test",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/global",
+      "--dep",
+      "sized",
+      "-Mroot=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/base-padding.zig",
+      "-Msized=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/original.zig"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/original.zig:208:17: error: base-padding.Invalid.b is placed in the padding of the base layout\n                @compileError(@typeName(T) ++ \".\" ++ name ++ \" is placed in the padding of the base layout\");\n                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/original.zig:167:27: note: called at comptime here\n    comptime validateSized(T);\n             ~~~~~~~~~~~~~^~~\n/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/base-padding.zig:1:146: note: called at comptime here\nconst lib=@import(\"sized\"); const Invalid=extern struct { size: usize, a: u8, b: u8, pub const sized_base = \"a\"; }; comptime { _=lib.sizedBaseEnd(Invalid); }\n                                                                                                                                 ~~~~~~~~~~~~~~~~^~~~~~~~~\n"
+  },
+  {
+    "name": "adapted-five-native-sized-tests",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "test",
+      "/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/src/lib/struct.zig",
+      "--test-filter",
+      "sized",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/global"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "1/5 struct.test.sizedFieldFits boundary checks...OK\n2/5 struct.test.sizedFieldFits respects alignment padding...OK\n3/5 struct.test.sizedCheck boundaries...OK\n4/5 struct.test.sizedField reads fields past the caller's size as zero...OK\n5/5 struct.test.sizedWrite skips fields past the caller's size...OK\nAll 5 tests passed.\n"
+  },
+  {
+    "name": "adapted-reject-layout",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "test",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/global",
+      "--dep",
+      "sized",
+      "-Mroot=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/layout.zig",
+      "-Msized=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/src/lib/struct.zig"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "libghostty/ref/libghostty-vt-1.0.0/src/lib/struct.zig:188:13: error: layout.Invalid is a sized struct and must be extern\n            @compileError(@typeName(T) ++ \" is a sized struct and must be extern\");\n            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nlibghostty/ref/libghostty-vt-1.0.0/src/lib/struct.zig:167:27: note: called at comptime here\n    comptime validateSized(T);\n             ~~~~~~~~~~~~~^~~\n/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/layout.zig:1:132: note: called at comptime here\nconst lib=@import(\"sized\"); const Invalid=struct { size: usize, a: u8, pub const sized_base = \"a\"; }; comptime { _=lib.sizedBaseEnd(Invalid); }\n                                                                                                                   ~~~~~~~~~~~~~~~~^~~~~~~~~\n"
+  },
+  {
+    "name": "adapted-reject-size-type",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "test",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/global",
+      "--dep",
+      "sized",
+      "-Mroot=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/size-type.zig",
+      "-Msized=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/src/lib/struct.zig"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "libghostty/ref/libghostty-vt-1.0.0/src/lib/struct.zig:191:13: error: size-type.Invalid is a sized struct and must start with size: usize\n            @compileError(@typeName(T) ++ \" is a sized struct and must start with size: usize\");\n            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nlibghostty/ref/libghostty-vt-1.0.0/src/lib/struct.zig:167:27: note: called at comptime here\n    comptime validateSized(T);\n             ~~~~~~~~~~~~~^~~\n/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/size-type.zig:1:137: note: called at comptime here\nconst lib=@import(\"sized\"); const Invalid=extern struct { size: u32, a: u8, pub const sized_base = \"a\"; }; comptime { _=lib.sizedBaseEnd(Invalid); }\n                                                                                                                        ~~~~~~~~~~~~~~~~^~~~~~~~~\n"
+  },
+  {
+    "name": "adapted-reject-size-order",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "test",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/global",
+      "--dep",
+      "sized",
+      "-Mroot=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/size-order.zig",
+      "-Msized=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/src/lib/struct.zig"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "libghostty/ref/libghostty-vt-1.0.0/src/lib/struct.zig:191:13: error: size-order.Invalid is a sized struct and must start with size: usize\n            @compileError(@typeName(T) ++ \" is a sized struct and must start with size: usize\");\n            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nlibghostty/ref/libghostty-vt-1.0.0/src/lib/struct.zig:167:27: note: called at comptime here\n    comptime validateSized(T);\n             ~~~~~~~~~~~~~^~~\n/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/size-order.zig:1:142: note: called at comptime here\nconst lib=@import(\"sized\"); const Invalid=extern struct { a: u8, size: usize, pub const sized_base = \"size\"; }; comptime { _=lib.sizedBaseEnd(Invalid); }\n                                                                                                                             ~~~~~~~~~~~~~~~~^~~~~~~~~\n"
+  },
+  {
+    "name": "adapted-reject-missing-base",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "test",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/global",
+      "--dep",
+      "sized",
+      "-Mroot=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/missing-base.zig",
+      "-Msized=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/src/lib/struct.zig"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "libghostty/ref/libghostty-vt-1.0.0/src/lib/struct.zig:194:13: error: missing-base.Invalid must declare its base layout as `pub const sized_base = \"<last field>\";`\n            @compileError(@typeName(T) ++ \" must declare its base layout as `pub const sized_base = \\\"<last field>\\\";`\");\n            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nlibghostty/ref/libghostty-vt-1.0.0/src/lib/struct.zig:167:27: note: called at comptime here\n    comptime validateSized(T);\n             ~~~~~~~~~~~~~^~~\n/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/missing-base.zig:1:110: note: called at comptime here\nconst lib=@import(\"sized\"); const Invalid=extern struct { size: usize, a: u8 }; comptime { _=lib.sizedBaseEnd(Invalid); }\n                                                                                             ~~~~~~~~~~~~~~~~^~~~~~~~~\n"
+  },
+  {
+    "name": "adapted-reject-unknown-base",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "test",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/global",
+      "--dep",
+      "sized",
+      "-Mroot=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/unknown-base.zig",
+      "-Msized=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/src/lib/struct.zig"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "libghostty/ref/libghostty-vt-1.0.0/src/lib/struct.zig:217:13: error: unknown-base.Invalid.sized_base names no field\n            @compileError(@typeName(T) ++ \".sized_base names no field\");\n            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nlibghostty/ref/libghostty-vt-1.0.0/src/lib/struct.zig:167:27: note: called at comptime here\n    comptime validateSized(T);\n             ~~~~~~~~~~~~~^~~\n/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/unknown-base.zig:1:145: note: called at comptime here\nconst lib=@import(\"sized\"); const Invalid=extern struct { size: usize, a: u8, pub const sized_base = \"missing\"; }; comptime { _=lib.sizedBaseEnd(Invalid); }\n                                                                                                                                ~~~~~~~~~~~~~~~~^~~~~~~~~\n"
+  },
+  {
+    "name": "adapted-reject-base-padding",
+    "argv": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "test",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/global",
+      "--dep",
+      "sized",
+      "-Mroot=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/base-padding.zig",
+      "-Msized=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/src/lib/struct.zig"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "libghostty/ref/libghostty-vt-1.0.0/src/lib/struct.zig:209:21: error: base-padding.Invalid.b is placed in the padding of the base layout\n                    @compileError(@typeName(T) ++ \".\" ++ name ++ \" is placed in the padding of the base layout\");\n                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nlibghostty/ref/libghostty-vt-1.0.0/src/lib/struct.zig:167:27: note: called at comptime here\n    comptime validateSized(T);\n             ~~~~~~~~~~~~~^~~\n/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/sized-validation/base-padding.zig:1:146: note: called at comptime here\nconst lib=@import(\"sized\"); const Invalid=extern struct { size: usize, a: u8, b: u8, pub const sized_base = \"a\"; }; comptime { _=lib.sizedBaseEnd(Invalid); }\n                                                                                                                                 ~~~~~~~~~~~~~~~~^~~~~~~~~\n"
+  }
+]

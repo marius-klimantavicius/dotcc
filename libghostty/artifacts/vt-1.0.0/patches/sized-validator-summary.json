@@ -1,0 +1,8 @@
+{
+  "source_sha256": "5d41801182925ce8747da2cc36a0fcb28720e9821a033d9c45835b44b5d40179",
+  "patch_manifest_sha256": "4c0b7be734ffbaf3d734ed09f811ec6e6c8e11f000a0f77bb8e2a4cae18545ee",
+  "original_and_adapted_sized_tests": 5,
+  "original_and_adapted_rejections": 6,
+  "const_info_in_function_scope": true,
+  "all_remaining_validation_explicit_comptime": true
+}

@@ -495,6 +495,7 @@ internal sealed partial class ZigLowering
                         $"zig: @bitCast size mismatch: '{Tok(nameTok)}' holds {destBytes} bytes, its operand {(sourceBytes is { } sb ? sb + " bytes" : "an unknown size")}");
                 }
                 var bitSym = _symbols.Declare(new Symbol { Name = Tok(nameTok), Kind = SymKind.Var, Type = arr });
+                RememberBitcastValue(bitSym, bitcastLocation);
                 var flatCount = (arr.Count ?? 0) * RowFlatCount(arr);
                 var bitStmts = new List<CStmt>
                 {
@@ -703,7 +704,14 @@ internal sealed partial class ZigLowering
             _ir.ComptimeGlobals[sym2] = optionalSliceValue;
         // `const value = 42;` is a comptime_int in zig (the lowered local is an `int` carrier): an `anytype` it is
         // passed to binds it as a comptime value (ComptimeIntArgValue).
-        if (declared is null && isConst && folded is not null && IsSourceComptimeInteger(initExpr, init)) { _comptimeIntLocals.Add(sym2); }
+        if (declared is null && isConst && IsSourceComptimeInteger(initExpr, init))
+        {
+            _comptimeIntLocals.Add(sym2);
+            // Source integer constants keep their comptime identity beyond the
+            // signed-long fast fold, including u64 peers above long.MaxValue.
+            if (folded is null && _ir.EvalComptimeValue(init) is IrBuilder.CtInt integerValue)
+                _ir.ComptimeGlobals[sym2] = integerValue;
+        }
         // A `comptime_int` const whose initializer is a CALL (std.sort.pdq's `const stack_size = math.log2(math.maxInt(usize) + 1);`)
         // does not fold here; an array extent that names it runs the call then (task #73, see ConstEvalArraySize). Only a
         // comptime_int: zig rejects a runtime-typed call result (`const n = f(3);`) as an extent, and so does dotcc.

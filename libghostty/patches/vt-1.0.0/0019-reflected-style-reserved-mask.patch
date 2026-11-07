@@ -1,0 +1,26 @@
+--- a/src/terminal/c/style.zig
++++ b/src/terminal/c/style.zig
+@@ -129,10 +129,19 @@
+     /// The bits of the C layout that are reserved and must be zero, as
+     /// they appear when the struct is viewed as a native u128.
+     const reserved_bits: u128 = bits: {
+-        var s: Style = .default;
+-        s.flags = .{ ._padding = std.math.maxInt(u5) };
+-        s.reserved = 0xFFFF;
+-        break :bits s.toBits();
++        const FlagPadding = @FieldType(@FieldType(Style, "flags"), "_padding");
++        const Reserved = @FieldType(Style, "reserved");
++        const flags_byte = if (little_endian)
++            @offsetOf(Style, "flags")
++        else
++            @sizeOf(Style) - @offsetOf(Style, "flags") - @sizeOf(Flags);
++        const reserved_byte = if (little_endian)
++            @offsetOf(Style, "reserved")
++        else
++            @sizeOf(Style) - @offsetOf(Style, "reserved") - @sizeOf(Reserved);
++        break :bits (@as(u128, std.math.maxInt(FlagPadding)) <<
++            (flags_byte * 8 + @bitOffsetOf(Flags, "_padding"))) |
++            (@as(u128, std.math.maxInt(Reserved)) << (reserved_byte * 8));
+     };
+ 
+     /// The struct as a native u128. Zig does not allow @bitCast on an

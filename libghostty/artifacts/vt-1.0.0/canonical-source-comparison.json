@@ -1,0 +1,12 @@
+{
+  "raw": {
+    "source_project_notice_differences": [],
+    "canonical_project": "libghostty/generated/TranslatedGhosttyVt.Raw/TranslatedGhosttyVt.csproj",
+    "sources": 44
+  },
+  "processed": {
+    "source_project_notice_differences": [],
+    "canonical_project": "libghostty/generated/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+    "sources": 44
+  }
+}

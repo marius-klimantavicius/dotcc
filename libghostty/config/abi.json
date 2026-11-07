@@ -140,6 +140,11 @@
       "id": 27,
       "name": "ghostty_terminal_set",
       "zig_member": "terminal_set"
+    },
+    {
+      "id": 28,
+      "name": "ghostty_formatter_set",
+      "zig_member": "formatter_set"
     }
   ]
 }

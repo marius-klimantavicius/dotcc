@@ -1,0 +1,310 @@
+[
+  {
+    "fixture": "positive.zig",
+    "mode": "Debug",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/positive.zig",
+      "-ODebug",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/global-cache",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/control"
+    ],
+    "exit": 42
+  },
+  {
+    "fixture": "positive.zig",
+    "mode": "ReleaseFast",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/positive.zig",
+      "-OReleaseFast",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/global-cache",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/control"
+    ],
+    "exit": 42
+  },
+  {
+    "fixture": "nonexhaustive.zig",
+    "mode": "Debug",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/nonexhaustive.zig",
+      "-ODebug",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/global-cache",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/control"
+    ],
+    "exit": 42
+  },
+  {
+    "fixture": "nonexhaustive.zig",
+    "mode": "ReleaseFast",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/nonexhaustive.zig",
+      "-OReleaseFast",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/global-cache",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/control"
+    ],
+    "exit": 42
+  },
+  {
+    "fixture": "comptime-enum-copy.zig",
+    "mode": "Debug",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/comptime-enum-copy.zig",
+      "-ODebug",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/global-cache",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/control"
+    ],
+    "exit": 42
+  },
+  {
+    "fixture": "comptime-enum-copy.zig",
+    "mode": "ReleaseFast",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/comptime-enum-copy.zig",
+      "-OReleaseFast",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/global-cache",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/control"
+    ],
+    "exit": 42
+  },
+  {
+    "fixture": "dependent-field-name.zig",
+    "mode": "Debug",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/dependent-field-name.zig",
+      "-ODebug",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/global-cache",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/control"
+    ],
+    "exit": 42
+  },
+  {
+    "fixture": "dependent-field-name.zig",
+    "mode": "ReleaseFast",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/dependent-field-name.zig",
+      "-OReleaseFast",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/global-cache",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/control"
+    ],
+    "exit": 42
+  },
+  {
+    "fixture": "comptime-type-comparison.zig",
+    "mode": "Debug",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/comptime-type-comparison.zig",
+      "-ODebug",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/global-cache",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/control"
+    ],
+    "exit": 42
+  },
+  {
+    "fixture": "comptime-type-comparison.zig",
+    "mode": "ReleaseFast",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/comptime-type-comparison.zig",
+      "-OReleaseFast",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/global-cache",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/control"
+    ],
+    "exit": 42
+  },
+  {
+    "fixture": "storage-reduce-or.zig",
+    "mode": "Debug",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/storage-reduce-or.zig",
+      "-ODebug",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/global-cache",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/control"
+    ],
+    "exit": 42
+  },
+  {
+    "fixture": "storage-reduce-or.zig",
+    "mode": "ReleaseFast",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/storage-reduce-or.zig",
+      "-OReleaseFast",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/global-cache",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/control"
+    ],
+    "exit": 42
+  },
+  {
+    "fixture": "wide-constant-peer.zig",
+    "mode": "Debug",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/wide-constant-peer.zig",
+      "-ODebug",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/global-cache",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/control"
+    ],
+    "exit": 42
+  },
+  {
+    "fixture": "wide-constant-peer.zig",
+    "mode": "ReleaseFast",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/wide-constant-peer.zig",
+      "-OReleaseFast",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/global-cache",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/control"
+    ],
+    "exit": 42
+  },
+  {
+    "fixture": "comptime-module-arrays.zig",
+    "mode": "Debug",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/comptime-module-arrays.zig",
+      "-ODebug",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/global-cache",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/control"
+    ],
+    "exit": 42
+  },
+  {
+    "fixture": "comptime-module-arrays.zig",
+    "mode": "ReleaseFast",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/comptime-module-arrays.zig",
+      "-OReleaseFast",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/global-cache",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/control"
+    ],
+    "exit": 42
+  },
+  {
+    "fixture": "comptime-mode-operand.zig",
+    "mode": "ReleaseFast",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/comptime-mode-operand.zig",
+      "-OReleaseFast",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/global-cache",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/control"
+    ],
+    "exit": 42
+  },
+  {
+    "fixture": "empty-packed-pointer.zig",
+    "mode": "Debug",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/empty-packed-pointer.zig",
+      "-ODebug",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/global-cache",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/control"
+    ],
+    "exit": 42
+  },
+  {
+    "fixture": "empty-packed-pointer.zig",
+    "mode": "ReleaseFast",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/empty-packed-pointer.zig",
+      "-OReleaseFast",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/global-cache",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/enum-native/control"
+    ],
+    "exit": 42
+  },
+  {
+    "fixture": "missing.zig",
+    "rejected": true
+  }
+]

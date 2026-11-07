@@ -1,0 +1,124 @@
+[
+  {
+    "stage": "raw-jit-build",
+    "command": [
+      "dotnet",
+      "build",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/owning/OwningConsumer.csproj",
+      "-c",
+      "Release",
+      "-p:PublishAot=false",
+      "-p:TranslatedProject=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+      "-p:UseArtifactsOutput=true",
+      "-p:ArtifactsPath=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/owning/raw-jit-build",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/owning/raw-jit",
+      "--nologo"
+    ],
+    "exit": 0,
+    "seconds": 14.370442416053265,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/owning/raw-jit-build.log"
+  },
+  {
+    "stage": "raw-jit-run",
+    "command": [
+      "dotnet",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/owning/raw-jit/GhosttyVt.DirectConsumer.dll"
+    ],
+    "exit": 0,
+    "seconds": 0.33036972989793867,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/owning/raw-jit-run.log"
+  },
+  {
+    "stage": "raw-aot-build",
+    "command": [
+      "dotnet",
+      "publish",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/owning/OwningConsumer.csproj",
+      "-c",
+      "Release",
+      "-p:PublishAot=true",
+      "-p:TranslatedProject=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/raw/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+      "-p:UseArtifactsOutput=true",
+      "-p:ArtifactsPath=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/owning/raw-aot-build",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/owning/raw-aot",
+      "--nologo",
+      "-r",
+      "linux-x64"
+    ],
+    "exit": 0,
+    "seconds": 23.900406150030904,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/owning/raw-aot-build.log"
+  },
+  {
+    "stage": "raw-aot-run",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/owning/raw-aot/GhosttyVt.DirectConsumer"
+    ],
+    "exit": 0,
+    "seconds": 0.018582795979455113,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/owning/raw-aot-run.log"
+  },
+  {
+    "stage": "processed-jit-build",
+    "command": [
+      "dotnet",
+      "build",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/owning/OwningConsumer.csproj",
+      "-c",
+      "Release",
+      "-p:PublishAot=false",
+      "-p:TranslatedProject=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+      "-p:UseArtifactsOutput=true",
+      "-p:ArtifactsPath=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/owning/processed-jit-build",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/owning/processed-jit",
+      "--nologo"
+    ],
+    "exit": 0,
+    "seconds": 11.04805940296501,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/owning/processed-jit-build.log"
+  },
+  {
+    "stage": "processed-jit-run",
+    "command": [
+      "dotnet",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/owning/processed-jit/GhosttyVt.DirectConsumer.dll"
+    ],
+    "exit": 0,
+    "seconds": 0.3144801720045507,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/owning/processed-jit-run.log"
+  },
+  {
+    "stage": "processed-aot-build",
+    "command": [
+      "dotnet",
+      "publish",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/owning/OwningConsumer.csproj",
+      "-c",
+      "Release",
+      "-p:PublishAot=true",
+      "-p:TranslatedProject=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/translation/processed/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+      "-p:UseArtifactsOutput=true",
+      "-p:ArtifactsPath=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/owning/processed-aot-build",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/owning/processed-aot",
+      "--nologo",
+      "-r",
+      "linux-x64"
+    ],
+    "exit": 0,
+    "seconds": 21.44736461096909,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/owning/processed-aot-build.log"
+  },
+  {
+    "stage": "processed-aot-run",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/owning/processed-aot/GhosttyVt.DirectConsumer"
+    ],
+    "exit": 0,
+    "seconds": 0.017785973963327706,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/owning/processed-aot-run.log"
+  }
+]

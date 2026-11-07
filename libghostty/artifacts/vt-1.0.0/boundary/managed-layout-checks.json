@@ -1,0 +1,46 @@
+{
+  "checks": [
+    {
+      "stage": "translate",
+      "argv": [
+        "dotnet",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/compiler-build/bin/DotCC/release/dotcc.dll",
+        "/home/marius/p/dotcc/libghostty/tests/native/abi_layout.c",
+        "--emit=csproj",
+        "--runtime=c",
+        "-std=c11",
+        "-I/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/include",
+        "-o",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/boundary/layout-managed"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "dotcc: wrote 1 C# source file(s) + /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/boundary/layout-managed/layout-managed.csproj\n"
+    },
+    {
+      "stage": "build",
+      "argv": [
+        "dotnet",
+        "build",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/boundary/layout-managed/layout-managed.csproj",
+        "-c",
+        "Release",
+        "--nologo",
+        "-m:1"
+      ],
+      "exit_code": 0,
+      "stdout": "  Determining projects to restore...\n  Restored /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/boundary/layout-managed/layout-managed.csproj (in 55 ms).\n  layout-managed -> /mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/boundary/layout-managed/bin/Release/net10.0/layout-managed.dll\n\nBuild succeeded.\n    0 Warning(s)\n    0 Error(s)\n\nTime Elapsed 00:00:01.65\n",
+      "stderr": ""
+    },
+    {
+      "stage": "run",
+      "argv": [
+        "dotnet",
+        "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/boundary/layout-managed/bin/Release/net10.0/layout-managed.dll"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS layout allocator size=16 align=8 ctx=0 vtable=8\nPASS layout vtable size=64 align=8 alloc=0 resize=8 remap=16 free=24 reserved=32\nPASS layout formatter-option size=4 align=4 emit=1 unwrap=2 trim=3 extras=5\nPASS layout grid size=16 align=8 node=0 x=8 y=10\nPASS layout point size=24 align=8 tag=0 value=8\nPASS layout style size=16 align=2 foreground=0 background=4 underline-color=8 flags=12 reserved=14\nRESULT layout-cases=6 passed=6 failed=0\n",
+      "stderr": ""
+    }
+  ]
+}

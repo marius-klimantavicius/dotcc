@@ -1,0 +1,583 @@
+--- a/DotCC.Lib/AggregateIdentities.cs
++++ b/DotCC.Lib/AggregateIdentities.cs
+@@ -72,7 +72,8 @@
+     {
+         var shape = "enum|" + ObjectAggregateMetadata.Describe(type.Underlying) + "|"
+             + string.Join("|", type.Members.OrderBy(m => m.Name, StringComparer.Ordinal)
+-                .Select(m => Encode(m.Name) + ":" + m.Value.ToString(CultureInfo.InvariantCulture)));
++                .Select(m => Encode(m.Name) + ":" + m.Value.ToString(CultureInfo.InvariantCulture)))
++            + (type.IsNonExhaustive ? "|nonexhaustive:1" : "");
+         return new(false, false, Hash(shape)) { SourceShape = shape };
+     }
+ 
+--- a/DotCC.Lib/Frontends/ZigLowering.Decls.cs
++++ b/DotCC.Lib/Frontends/ZigLowering.Decls.cs
+@@ -1419,7 +1419,7 @@
+             next++;
+         }
+         members = AnnotateEnumMembers(name, members);
+-        _ir.RegisterEnumType(name, underlying, members);
++        _ir.RegisterEnumType(name, underlying, members, _nonExhaustiveEnums.Contains(name));
+         _containerTypes[name] = enumType;
+         _enumMembers[name] = memberSyms;
+         RegisterContainerConsts(name, consts);   // e.g. `const Self = @This();` → the enum type
+@@ -2454,7 +2454,7 @@
+                 return CoerceToSlice(LowerExprSink(listAddr.Arg1, new CType.Array(listSlice.Element, null)), listSlice);
+             // `&.{ … }` at a `*const S` sink (std.Io.Writer.fixed's `.vtable = &.{ .drain = fixedDrain, … }`):
+             // the literal is result-located at `S`, and a comptime-known one lives in static storage.
+-            case Zig.PreAddrOf pa when pa.Arg1.Content is Zig.AnonStructInit
++            case Zig.PreAddrOf pa when pa.Arg1.Content is Zig.AnonStructInit or Zig.AnonStructInitEmpty
+                                     && sink?.Unqualified is CType.Pointer { Pointee: var pointee }
+                                     && pointee.Unqualified is CType.Named:
+                 return LowerAddressOfStructLiteral(pa.Arg1, pointee);
+--- /dev/null
++++ b/DotCC.Lib/Frontends/ZigLowering.EnumTypeReceivers.cs
+@@ -0,0 +1,25 @@
++#nullable enable
++using DotCC.Ir;
++using LALR.CC.LexicalGrammar;
++
++namespace DotCC.Frontends;
++
++internal sealed partial class ZigLowering
++{
++    // A named enum tag is a real comptime receiver, just like a bound enum
++    // parameter. Restrict this probe to declared tags; don't evaluate arbitrary
++    // runtime expressions while deciding whether a call returns a type.
++    private CType? TypeReturningValueReceiverType(Item receiver)
++    {
++        if (receiver.Content is Zig.Ident name && _symbols.Resolve(Tok(name.Arg0)) is { } value)
++            return value.Type;
++        if (receiver.Content is Zig.Field tag && MemberBaseType(tag.Arg0)?.Unqualified is CType.Enum type)
++        {
++            var owner = _moduleGraph?.OwnerOfContainer(type.Name) ?? this;
++            if (owner._enumMembers.TryGetValue(type.Name, out var members)
++                && members.ContainsKey(SourceMemberName(tag.Arg2)))
++                return type;
++        }
++        return null;
++    }
++}
+--- a/DotCC.Lib/Frontends/ZigLowering.Generics.cs
++++ b/DotCC.Lib/Frontends/ZigLowering.Generics.cs
+@@ -815,9 +815,19 @@
+                 CType ret;
+                 Action<Symbol> captureSignature;
+                 int? signatureReturnBits;
++                var signatureStrings = new List<Symbol>();
+                 _symbols.EnterScope();
+                 try
+                 {
++                    // Later parameter/return types can depend on a comptime
++                    // string (for example @FieldType(T, name)). Bind the actual
++                    // argument in this definition's signature scope as for values.
++                    foreach (var (name, value, type) in stringSeeds)
++                    {
++                        var symbol = _symbols.Declare(new Symbol { Name = name, Kind = SymKind.Var, Type = type });
++                        _comptimeStringVars[symbol] = value;
++                        signatureStrings.Add(symbol);
++                    }
+                     foreach (var seed in valueSeeds) { DeclareValueSeed(seed); }
+                     foreach (var (name, hasValue, value, inner) in optionalSeeds)
+                     {
+@@ -872,6 +882,7 @@
+                 }
+                 finally
+                 {
++                    foreach (var symbol in signatureStrings) _comptimeStringVars.Remove(symbol);
+                     _symbols.ExitScope();
+                 }
+                 if (g.ErrUnion) { ret = new CType.ErrorUnion(ret); }
+@@ -1509,9 +1520,9 @@
+         // A comptime receiver can choose the returned type (`kind.OutType()`).
+         // Keep the receiver as the first source argument so the ordinary definition-
+         // scoped evaluator validates and binds its declared comptime parameter.
+-        if (calleeItem.Content is Zig.Field { Arg0.Content: Zig.Ident receiverId } receiverField
+-            && _symbols.Resolve(Tok(receiverId.Arg0)) is { } receiver
+-            && ContainerTypeName(receiver.Type) is { } receiverContainer)
++        if (calleeItem.Content is Zig.Field receiverField
++            && TypeReturningValueReceiverType(receiverField.Arg0) is { } receiverType
++            && ContainerTypeName(receiverType) is { } receiverContainer)
+         {
+             var receiverOwner = _moduleGraph?.OwnerOfContainer(receiverContainer) ?? this;
+             // This is a type-result probe, not a value use of the method.
+--- a/DotCC.Lib/Frontends/ZigLowering.LocalDecls.cs
++++ b/DotCC.Lib/Frontends/ZigLowering.LocalDecls.cs
+@@ -495,6 +495,7 @@
+                         $"zig: @bitCast size mismatch: '{Tok(nameTok)}' holds {destBytes} bytes, its operand {(sourceBytes is { } sb ? sb + " bytes" : "an unknown size")}");
+                 }
+                 var bitSym = _symbols.Declare(new Symbol { Name = Tok(nameTok), Kind = SymKind.Var, Type = arr });
++                RememberBitcastValue(bitSym, bitcastLocation);
+                 var flatCount = (arr.Count ?? 0) * RowFlatCount(arr);
+                 var bitStmts = new List<CStmt>
+                 {
+@@ -703,7 +704,14 @@
+             _ir.ComptimeGlobals[sym2] = optionalSliceValue;
+         // `const value = 42;` is a comptime_int in zig (the lowered local is an `int` carrier): an `anytype` it is
+         // passed to binds it as a comptime value (ComptimeIntArgValue).
+-        if (declared is null && isConst && folded is not null && IsSourceComptimeInteger(initExpr, init)) { _comptimeIntLocals.Add(sym2); }
++        if (declared is null && isConst && IsSourceComptimeInteger(initExpr, init))
++        {
++            _comptimeIntLocals.Add(sym2);
++            // Source integer constants keep their comptime identity beyond the
++            // signed-long fast fold, including u64 peers above long.MaxValue.
++            if (folded is null && _ir.EvalComptimeValue(init) is IrBuilder.CtInt integerValue)
++                _ir.ComptimeGlobals[sym2] = integerValue;
++        }
+         // A `comptime_int` const whose initializer is a CALL (std.sort.pdq's `const stack_size = math.log2(math.maxInt(usize) + 1);`)
+         // does not fold here; an array extent that names it runs the call then (task #73, see ConstEvalArraySize). Only a
+         // comptime_int: zig rejects a runtime-typed call result (`const n = f(3);`) as an extent, and so does dotcc.
+--- a/DotCC.Lib/Frontends/ZigLowering.Loops.cs
++++ b/DotCC.Lib/Frontends/ZigLowering.Loops.cs
+@@ -231,11 +231,15 @@
+         // { for (@typeInfo(T).@"enum".field_names, 0..) |name, i| kvs_array[i] = .{ name, @field(T, name) }; … }`, task
+         // #116): zig runs the loop at compile time, so each capture is comptime-known, which is what `inline for`'s unroll
+         // gives; a runtime loop would have nothing to iterate.
+-        if (_comptimeDepth > 0 && objects[0] is { IsRange: false } ctFirst && TryComptimeIterable(ctFirst.Expr, out var ctList))
+-        {
+-            return objects.Count == 1
+-                ? UnrollComptimeFor(new[] { (ctList, captures[0].Name) }, body, elseBody)
+-                : UnrollComptimeMultiFor(objsItem, capsItem, body, elseBody);
++        if (_comptimeDepth > 0 && objects.Any(obj => !obj.IsRange && TryComptimeIterable(obj.Expr, out _)))
++        {
++            if (objects[0] is { IsRange: false } ctFirst && TryComptimeIterable(ctFirst.Expr, out var ctList))
++                return objects.Count == 1
++                    ? UnrollComptimeFor(new[] { (ctList, captures[0].Name) }, body, elseBody)
++                    : UnrollComptimeMultiFor(objsItem, capsItem, body, elseBody);
++            // An array can precede a reflected list (CEnum copies field_values
++            // through &result). Reuse the bounded mixed-loop path and its aliases.
++            return UnrollMixedInlineFor(objsItem, capsItem, body, elseBody);
+         }
+         // `for (…) |…| body else elsebody` (task #108): the else runs when the loop ends without a `break`.
+         if (elseBody is not null) { return LowerForParallel(objects, captures, body, elseBody); }
+--- a/DotCC.Lib/Frontends/ZigLowering.Reify.cs
++++ b/DotCC.Lib/Frontends/ZigLowering.Reify.cs
+@@ -394,7 +394,7 @@
+             };
+         }
+         members = AnnotateEnumMembers(name, members);
+-        _ir.RegisterEnumType(name, reified.Tag, members);
++        _ir.RegisterEnumType(name, reified.Tag, members, reified.NonExhaustive);
+         _containerTypes[name] = enumType;
+         _enumMembers[name] = memberSyms;
+         _enumsWithSpelledTag.Add(name);
+--- a/DotCC.Lib/Frontends/ZigLowering.Switch.NonExhaustive.cs
++++ b/DotCC.Lib/Frontends/ZigLowering.Switch.NonExhaustive.cs
+@@ -20,8 +20,13 @@
+         if (subject.Unqualified is not CType.Enum en || !_nonExhaustiveEnums.Contains(en.Name)
+             || !_enumMembers.TryGetValue(en.Name, out var members))
+             throw new IrUnsupportedException($"zig `_` switch prong requires a source-known nonexhaustive enum (got {subject.Describe()}, {_module?.Path ?? _fileStem}, function '{_currentFnName}')");
+-        if (catchAlls != 1 || prongs.Any(p => p.CaseVals.Content is Zig.CaseElse))
+-            throw new IrUnsupportedException("zig nonexhaustive enum catch-all with another default prong is not supported");
++        var remaining = Flatten(prongsItem).Where(p => DecomposeProng(p).CaseVals.Content is Zig.CaseElse).ToList();
++        if (catchAlls != 1 || remaining.Count > 1
++            || remaining.Count == 1 && remaining[0].Content is not Zig.InlineProng)
++            throw new IrUnsupportedException("zig nonexhaustive enum catch-all requires at most one distinct inline else prong");
++        // `_` handles unnamed backing values. Inline else expands the remaining
++        // declared tags into explicit cases, so it is not a second default.
++        if (remaining.Count == 1) return;
+         var labels = prongs.SelectMany(p => LowerCaseVals(p.CaseVals, subject)).Where(l => l.CaseExpr is not null).ToList();
+         foreach (var member in members.Values)
+         {
+--- a/DotCC.Lib/Frontends/ZigLowering.Switch.cs
++++ b/DotCC.Lib/Frontends/ZigLowering.Switch.cs
+@@ -423,9 +423,11 @@
+         if (prong.CaseVals.Content is Zig.CaseElse)
+         {
+             if (subject.Type.Unqualified is not CType.Enum enumeration
++                || !_enumMembers.TryGetValue(enumeration.Name, out var members)
+                 || _nonExhaustiveEnums.Contains(enumeration.Name)
+-                || !_enumMembers.TryGetValue(enumeration.Name, out var members))
+-                throw new IrUnsupportedException("zig `inline else =>` requires a source-known exhaustive enum");
++                    && !allProngs.Select(DecomposeProng).Any(p => p.CaseVals.Content is not Zig.CaseElse
++                        && WalkCaseValItems(p.CaseVals).Any(v => v.Hi is null && IsEnumCatchAllItem(v.Lo))))
++                throw new IrUnsupportedException("zig `inline else =>` requires a source-known enum and an explicit `_` prong for unnamed values");
+             var excluded = allProngs.Select(DecomposeProng).Where(p => p.CaseVals.Content is not Zig.CaseElse)
+                 .SelectMany(p => LowerCaseVals(p.CaseVals, subject.Type)).ToList();
+             foreach (var member in members.Values)
+--- a/DotCC.Lib/Frontends/ZigLowering.TypeInfo.Lists.cs
++++ b/DotCC.Lib/Frontends/ZigLowering.TypeInfo.Lists.cs
+@@ -607,6 +607,11 @@
+                 "zig `@field`: the field name must be a comptime string — a literal, or an `inline for` capture "
+                 + $"over a member list ({_module?.Path ?? _fileStem}:{bargs[1].Position.Line}, function '{_currentFnName}')");
+         }
++        // A module namespace is not a runtime value. A computed, known name
++        // selects the same owner-scoped constant as ordinary module.member.
++        if (!IsCuratedStdPath(bargs[0]) && FieldBaseModule(bargs[0]) is { } namespaceOwner
++            && namespaceOwner.LowerExportedValueConst(fieldName) is { } namespaceValue)
++            return namespaceValue;
+         // `@field(T, name)` with `T` an enum TYPE (std.meta.stringToEnum's `.{ name, @field(T, name) }`, task #116): the member
+         // it names, as `T.name` is. `T` may be a type const of an enclosing container (std.MultiArrayList.Slice.swap's
+         // `@field(Field, field_name)`, `Field` declared on the instance, task #108).
+--- a/DotCC.Lib/Frontends/ZigLowering.TypeInfo.cs
++++ b/DotCC.Lib/Frontends/ZigLowering.TypeInfo.cs
+@@ -959,6 +959,7 @@
+         tag = "";
+         payload = null;
+         if (expr.Content is Zig.Grouped g) { return TryEvalComptimeTag(g.Arg1, out tag, out payload); }
++        if (expr.Content is Zig.PreComptime forced) { return TryEvalComptimeTag(forced.Arg1, out tag, out payload); }
+         if (expr.Content is Zig.EnumLit selectedLiteral)
+         {
+             tag = SourceMemberName(selectedLiteral.Arg1);
+--- a/DotCC.Lib/Frontends/ZigLowering.Types.cs
++++ b/DotCC.Lib/Frontends/ZigLowering.Types.cs
+@@ -337,6 +337,10 @@
+         }
+         switch (rhs.Content)
+         {
++            // The parser can place comptime on the type operand of a
++            // comparison (`comptime T == u8`). A type remains that same type.
++            case Zig.PreComptime forced:
++                return TryTypeAliasRhs(forced.Arg1, out type);
+             case Zig.OrElse optional when TryOptionalTypeValue(optional.Arg0, out var present):
+                 type = SelectOptionalType(rhs, present, optional.Arg2);
+                 return true;
+--- a/DotCC.Lib/Frontends/ZigLowering.Vector.cs
++++ b/DotCC.Lib/Frontends/ZigLowering.Vector.cs
+@@ -347,7 +347,7 @@
+         {
+             throw new IrUnsupportedException($"zig `@reduce` needs a vector operand; got {v.Type.Describe()}");
+         }
+-        if (vector.UsesStorage) { throw UnsupportedStorageVector(vector, "@reduce"); }
++        if (vector.UsesStorage && op != "Or") { throw UnsupportedStorageVector(vector, "@reduce"); }
+         if (vector.IsMask)
+         {
+             var zero = new LitInt("0", 0) { Type = CType.ULong };
+--- a/DotCC.Lib/Frontends/ZigLowering.cs
++++ b/DotCC.Lib/Frontends/ZigLowering.cs
+@@ -2537,15 +2537,16 @@
+     /// else is its literal.</summary>
+     private CExpr ComptimeLabeledBlockValue(Item labeled, CType? sink)
+     {
+-        var key = (labeled, _currentFnName);
++        var key = (labeled, _typeBodyInstance ?? _currentFnName);
+         if (_comptimeBlockStatics.TryGetValue(key, out var memo)) { return new VarRef(memo) { Type = memo.Type, IsLValue = true }; }
+-        var (type, init) = ComptimeLabeledBlockInit("a `comptime` block", "__ctblk" + _comptimeBlockStatics.Count, labeled, sink);
++        var (type, init) = ComptimeLabeledBlockInit("a `comptime` block", QualifyTypeName("__ctblk" + _comptimeBlockStatics.Count), labeled, sink);
+         if (init is not PinnedArray) { return init; }
+         var sym = _symbols.Declare(new Symbol
+         {
+-            Name = "__ctblk" + _comptimeBlockStatics.Count, Kind = SymKind.Var, Type = type, Storage = Storage.Static, IsGlobal = true,
++            Name = QualifyTypeName("__ctblk" + _comptimeBlockStatics.Count), Kind = SymKind.Var, Type = type, Storage = Storage.Static, IsGlobal = true,
+         });
+         _ir.Globals.Add(new GlobalVar(sym, init));
++        _ir.ConstGlobalInits[sym] = init;
+         _comptimeBlockStatics[key] = sym;
+         return new VarRef(sym) { Type = type, IsLValue = true };
+     }
+--- a/DotCC.Lib/Ir/IrBuilder.cs
++++ b/DotCC.Lib/Ir/IrBuilder.cs
+@@ -1393,11 +1393,11 @@
+     /// integer type and members, mapping the name to its <see cref="CType.Enum"/> (so the
+     /// name resolves as a real enum type) and emitting an <see cref="EnumTypeDef"/>. Returns
+     /// the <see cref="CType.Enum"/>. Idempotent on the name.</summary>
+-    internal CType.Enum RegisterEnumType(string name, CType underlying, List<EnumMember> members)
++    internal CType.Enum RegisterEnumType(string name, CType underlying, List<EnumMember> members, bool nonExhaustive = false)
+     {
+         var enumType = new CType.Enum(name, underlying);
+         _enumTypes[name] = enumType;
+-        if (Enums.All(e => e.Name != name)) { Enums.Add(new EnumTypeDef(name, underlying, members)); }
++        if (Enums.All(e => e.Name != name)) { Enums.Add(new EnumTypeDef(name, underlying, members) { IsNonExhaustive = nonExhaustive }); }
+         return enumType;
+     }
+ 
+--- a/DotCC.Lib/Ir/IrNodes.cs
++++ b/DotCC.Lib/Ir/IrNodes.cs
+@@ -691,7 +691,10 @@
+ /// renders it into the top-level type-declarations section as a real
+ /// <c>enum Name : Underlying { … }</c>. <see cref="Members"/> pairs each
+ /// enumerator with its (auto-incremented or explicit) integer value.</summary>
+-public sealed record EnumTypeDef(string Name, CType Underlying, IReadOnlyList<EnumMember> Members);
++public sealed record EnumTypeDef(string Name, CType Underlying, IReadOnlyList<EnumMember> Members)
++{
++    public bool IsNonExhaustive { get; init; }
++}
+ 
+ /// <summary>One enumerator of an <see cref="EnumTypeDef"/>: its C name and value.</summary>
+ public readonly record struct EnumMember(string Name, long Value)
+--- a/DotCC.Lib/ManagedBoundaryContracts.cs
++++ b/DotCC.Lib/ManagedBoundaryContracts.cs
+@@ -89,7 +89,7 @@
+     }
+ 
+     internal sealed record Bridge(int Caller, int Definition, string Symbol, string Name, IrType.Func CallerType,
+-        IrType.Func DefinitionType, IReadOnlyList<(string C, string Zig, int Size)> Storage);
++        IrType.Func DefinitionType, IReadOnlyList<(IrType C, IrType Zig, int Size)> Storage);
+     internal sealed record Plan(IReadOnlyList<Bridge> Bridges, IReadOnlyDictionary<string, string>[] Renames);
+ 
+     internal static Plan Prepare(IReadOnlyList<string> texts, IReadOnlyList<string> paths,
+@@ -173,7 +173,7 @@
+         var ct = new CSharpTarget(aggregateNames: variants[bridge.Caller]);
+         var zt = new CSharpTarget(aggregateNames: variants[bridge.Definition]);
+         string ConvertValue(IrType from, IrType to, string value, CSharpTarget target)
+-            => from is IrType.Named && to is IrType.Named
++            => from is IrType.Named || to is IrType.Named
+                 ? "*(" + target.RenderType(to) + "*)&" + value
+                 : "(" + target.RenderType(to) + ")(" + value + ")";
+         // Library shells promote the backend's ordinary `static unsafe`
+@@ -183,13 +183,13 @@
+         // Validate the emitted unmanaged storage before any copy or alias. This
+         // catches a backend/layout-model disagreement without inventing bytes.
+         foreach (var item in bridge.Storage.Distinct())
+-            code.Append("    if (sizeof(").Append(ct.RenderType(new IrType.Named(item.C))).Append(") != ").Append(item.Size)
+-                .Append(" || sizeof(").Append(zt.RenderType(new IrType.Named(item.Zig))).Append(") != ").Append(item.Size)
++            code.Append("    if (sizeof(").Append(ct.RenderType(item.C)).Append(") != ").Append(item.Size)
++                .Append(" || sizeof(").Append(zt.RenderType(item.Zig)).Append(") != ").Append(item.Size)
+                 .Append(") throw new global::System.InvalidOperationException(\"managed C/Zig boundary layout mismatch\");\n");
+         string call = EmitHelpers.Id(bridge.Symbol) + "(" + string.Join(", ", bridge.CallerType.Params.Select((p, i) =>
+             ConvertValue(p, bridge.DefinitionType.Params[i], "p" + i, zt))) + ")";
+         if (bridge.CallerType.Return is IrType.VoidType) code.Append("    ").Append(call).Append(";\n");
+-        else if (bridge.CallerType.Return is IrType.Named)
++        else if (bridge.CallerType.Return is IrType.Named || bridge.DefinitionType.Return is IrType.Named)
+             code.Append("    var result = ").Append(call).Append(";\n    return ").Append(ConvertValue(bridge.DefinitionType.Return, bridge.CallerType.Return, "result", ct)).Append(";\n");
+         else code.Append("    return ").Append(ConvertValue(bridge.DefinitionType.Return, bridge.CallerType.Return, call, ct)).Append(";\n");
+         return new(bridge.Name, code.Append("}\n").ToString());
+@@ -201,7 +201,7 @@
+         private readonly Dictionary<string, AggregateIdentity> c = cgraph.ToDictionary(n => n.Name, StringComparer.Ordinal);
+         private readonly Dictionary<string, AggregateIdentity> z = zgraph.ToDictionary(n => n.Name, StringComparer.Ordinal);
+         private readonly HashSet<(string, string)> visited = [];
+-        internal readonly List<(string C, string Zig, int Size)> Storage = [];
++        internal readonly List<(IrType C, IrType Zig, int Size)> Storage = [];
+         private void Fail(string reason) => throw new CompileException("conflicting managed C/Zig boundary contracts for '" + symbol
+             + "' in '" + cpath + "' and '" + zpath + "': " + reason);
+         private AggregateIdentity Node(Dictionary<string, AggregateIdentity> nodes, string name, bool requireShape = true)
+@@ -216,10 +216,22 @@
+         internal void Compare(IrType left, IrType right, bool pointee = false, bool parameter = false)
+         {
+             if (!parameter && left.Quals != right.Quals) Fail("different qualifiers");
++            // An explicit Zig packed integer backing is its declared scalar
++            // representation, including when embedded in an extern record.
++            // Preserve the named type; certify the exact signed full-width
++            // backing from the validated storage proof before aliasing bytes.
++            if (left is IrType.Prim scalar && right is IrType.Named packed
++                && TryPackedScalar(scalar, packed)) return;
+             switch (left, right)
+             {
+                 case (IrType.VoidType, IrType.VoidType): return;
+                 case (IrType.Prim a, IrType.Prim b):
++                    // Plain C char buffers are byte object representations;
++                    // Zig's C-facing byte APIs spell those elements u8. This
++                    // applies only through a pointer, with qualifiers already
++                    // checked, never to signed-char values or record fields.
++                    if (pointee && a is { Name: "char", Bytes: 1, Integer: true }
++                        && b is { Name: "unsigned char", Bytes: 1, Integer: true, Signed: false }) return;
+                     if (a.Name != b.Name || a.Bytes != b.Bytes || a.Integer != b.Integer || a.Signed != b.Signed) Fail("different scalar representation");
+                     return;
+                 case (IrType.Pointer a, IrType.Pointer b):
+@@ -251,7 +263,19 @@
+                     // C's INT_MAX sentinel reserves the representation without
+                     // adding an engine state. All real integer values must agree;
+                     // member spellings remain in their own nominal source enum.
+-                    if (!EnumValues(cm).SequenceEqual(EnumValues(zm))) Fail("different enum value domains");
++                    // A declared nonexhaustive Zig enum accepts every value of
++                    // its exact backing integer. C API wrappers intentionally
++                    // use enum(c_int) { _ } and validate values in their body.
++                    // Closed enums still require the identical finite domain.
++                    if (!zm.IsNonExhaustive && !EnumValues(cm).SequenceEqual(EnumValues(zm))) Fail("different enum value domains");
++                    return;
++                case (IrType.Enum a, IrType.Prim b):
++                    // A C-facing Zig alias can intentionally expose c_int
++                    // rather than the core enum (for example Underline.C).
++                    // Keep C's declared enum witness and its exact integer
++                    // representation; no target enum or members are invented.
++                    if (!Node(c, a.Name).IsEnum) Fail("different enum kind");
++                    Compare(a.Underlying, b);
+                     return;
+                 case (IrType.Named a, IrType.Named b):
+                     var cn = Node(c, a.Name, false); var zn = Node(z, b.Name, false);
+@@ -281,8 +305,18 @@
+                         // enum domains and nested layouts remain in each key.
+                         foreach (var common in cs.Fields.Join(zs.Fields, f => f.Name, f => f.Name, (x, y) => (x, y)))
+                             Compare(common.x.Type, common.y.Type);
+-                        var cfields = cs.Fields.GroupBy(f => AlternativeKey(f.Type, c)).ToDictionary(g => g.Key, g => g.ToArray(), StringComparer.Ordinal);
+-                        var zfields = zs.Fields.GroupBy(f => AlternativeKey(f.Type, z)).ToDictionary(g => g.Key, g => g.ToArray(), StringComparer.Ordinal);
++                        string CallerAlternative(StructField field) => field.Type is IrType.Enum enumeration
++                            && zs.Fields.Any(other => other.Type is IrType.Prim
++                                && other.Type.Unqualified == enumeration.Underlying.Unqualified)
++                                ? AlternativeKey(enumeration.Underlying, c) : AlternativeKey(field.Type, c);
++                        // Reflected tagged unions retain void alternatives for
++                        // tags with no payload. C omits those members. They
++                        // contribute no bytes; complete union storage and every
++                        // actual payload alternative are still proved above.
++                        var cfields = cs.Fields.Where(f => f.Type is not IrType.VoidType).GroupBy(CallerAlternative)
++                            .ToDictionary(g => g.Key, g => g.ToArray(), StringComparer.Ordinal);
++                        var zfields = zs.Fields.Where(f => f.Type is not IrType.VoidType).GroupBy(f => AlternativeKey(f.Type, z))
++                            .ToDictionary(g => g.Key, g => g.ToArray(), StringComparer.Ordinal);
+                         if (!cfields.Keys.Order(StringComparer.Ordinal).SequenceEqual(zfields.Keys.Order(StringComparer.Ordinal)))
+                             Fail("different union alternatives");
+                         foreach (var pair in cfields)
+@@ -302,10 +336,25 @@
+                             Compare(cf.Type, zf.Type);
+                         }
+                     }
+-                    Storage.Add((a.Name, b.Name, cl.Size));
++                    Storage.Add((a, b, cl.Size));
+                     return;
+                 default: Fail("different or unsupported source type kinds"); return;
+             }
++        }
++        private bool TryPackedScalar(IrType.Prim scalar, IrType.Named packed)
++        {
++            if (!scalar.Integer || scalar.Name == "_Bool" || scalar.Bytes is not (1 or 2 or 4 or 8)
++                || Node(z, packed.Name).Shape.ZigStorageContract is not { } contract) return false;
++            var proof = ZigStorageObjectMetadata.ReadContract(contract);
++            if (proof.Kind != ZigStorageKind.PackedInteger || proof.IsPackedUnion || proof.IsZeroOwner
++                || proof.Bits != scalar.Bytes * 8 || proof.Size != scalar.Bytes || proof.Alignment != scalar.Bytes
++                || proof.BackingSigned != scalar.Signed
++                || proof.BackingKind != "explicit-" + (scalar.Signed ? "i" : "u") + proof.Bits)
++                return false;
++            var layout = Layout(packed.Name, z);
++            if (layout.Size != proof.Size || layout.Alignment != proof.Alignment) Fail("different packed integer backing storage");
++            Storage.Add((scalar, packed, proof.Size));
++            return true;
+         }
+         private string AlternativeKey(IrType type, Dictionary<string, AggregateIdentity> nodes, int depth = 0)
+         {
+@@ -324,7 +373,8 @@
+             string EnumKey(string shape)
+             {
+                 var enumeration = ParseEnum(shape);
+-                return "enum:" + Key(enumeration.Underlying) + ":" + string.Join(",", EnumValues(enumeration));
++                return "enum:" + Key(enumeration.Underlying) + ":" + (enumeration.IsNonExhaustive ? "open:" : "")
++                    + string.Join(",", EnumValues(enumeration));
+             }
+             string AggregateKey(string name)
+             {
+@@ -346,9 +396,22 @@
+             var model = new OffsetLayoutModel(n => {
+                 if (!nodes.TryGetValue(n, out var node) || node.Shape.IsIncomplete || node.Shape.SourceShape is null)
+                     throw new CompileException("missing managed boundary aggregate storage witness: " + n);
+-                var type = ParseStruct(n, node.Shape.SourceShape);
++                // The object loader has already bound this storage contract to
++                // the source-shape hash. Use its established layout model for
++                // nested packed fields rather than treating bitfields as a C
++                // aggregate or discarding the declared backing representation.
++                var shape = node.Shape.SourceShape;
++                if (node.Shape.ZigStorageContract is { } storage)
++                {
++                    int marker = shape.IndexOf("|zig-storage:1|", StringComparison.Ordinal);
++                    if (marker < 0 || shape[(marker + "|zig-storage:1|".Length)..] != storage)
++                        throw new CompileException("missing managed boundary Zig storage shape witness: " + n);
++                    shape = shape[..marker];
++                }
++                var type = ParseStruct(n, shape);
+                 var aggregate = new LayoutAggregate { Name = n, Union = type.IsUnion, Packed = type.Layout == AggregateLayout.Packed,
+-                    Pack = type.Pack, Alignment = type.Alignment };
++                    Pack = type.Pack, Alignment = type.Alignment, ZigStorage = node.Shape.ZigStorageContract,
++                    ZigSourceIdentity = n };
+                 foreach (var f in type.Fields) aggregate.Fields.Add(new LayoutField { Name = f.Name,
+                     Type = IrBuilder.LayoutType(f.Type), BitWidth = f.BitWidth, Alignment = f.Alignment });
+                 return aggregate;
+@@ -362,11 +425,12 @@
+     {
+         var parts = shape.Split('|');
+         if (parts.Length < 3 || parts[0] != "enum") throw new CompileException("invalid managed boundary enum witness");
+-        return new("", ParseType(parts[1]), parts.Skip(2).Where(p => p.Length != 0).Select(p => {
++        bool nonExhaustive = parts[^1] == "nonexhaustive:1";
++        return new("", ParseType(parts[1]), parts.Skip(2).Where(p => p.Length != 0 && p != "nonexhaustive:1").Select(p => {
+             var pair = p.Split(':');
+             if (pair.Length != 2) throw new CompileException("invalid managed boundary enum member witness");
+             return new EnumMember(Decode(pair[0]), long.Parse(pair[1], CultureInfo.InvariantCulture));
+-        }).ToArray());
++        }).ToArray()) { IsNonExhaustive = nonExhaustive };
+     }
+     private static StructTypeDef ParseStruct(string name, string shape)
+     {
+--- a/DotCC.Lib/ZigStorageObjectMetadata.cs
++++ b/DotCC.Lib/ZigStorageObjectMetadata.cs
+@@ -38,7 +38,11 @@
+ 
+     internal sealed record FieldProof(string Name, int Offset, int Width, string SourceType, string TargetName, bool Signed = false);
+     internal sealed record ContractProof(ZigStorageKind Kind, string Identity, int Bits, int Size, int Alignment,
+-        string Profile, string Reason, FieldProof[] Fields, bool IsZeroOwner = false, bool IsPackedUnion = false);
++        string Profile, string Reason, FieldProof[] Fields, bool IsZeroOwner = false, bool IsPackedUnion = false)
++    {
++        internal string BackingKind { get; init; } = "";
++        internal bool BackingSigned { get; init; }
++    }
+     internal static ContractProof ReadContract(string contract)
+     {
+         try
+@@ -107,7 +111,7 @@
+ 
+     private static ContractProof ValidateContract(ContractProof proof, string backing, bool backingSigned, string origin)
+     {
+-        proof = proof with { IsPackedUnion = backing == "packed-union"
++        proof = proof with { BackingKind = backing, BackingSigned = backingSigned, IsPackedUnion = backing == "packed-union"
+             || backing.StartsWith("packed-union-explicit-", StringComparison.Ordinal) };
+         void Invalid() => throw new CompileException("invalid Zig storage semantic descriptor (range/type/target/physical proof)");
+         if (!SourceName(proof.Identity) || proof.Profile != ZigStorageLayout.AcceptedProfile || origin.Length == 0
+--- a/DotCC.Libc/ZigVec.Reduce.cs
++++ b/DotCC.Libc/ZigVec.Reduce.cs
+@@ -2,6 +2,26 @@
+ 
+ public static partial class ZigVec
+ {
++    /// <summary>OR every lane of exact-size vector value storage.</summary>
++    public static unsafe T ReduceOr<T>(ZigVector1024<T> v)
++        where T : unmanaged, System.Numerics.IBinaryInteger<T>
++    {
++        var result = System.Runtime.CompilerServices.Unsafe.ReadUnaligned<T>(ref v[0]);
++        for (var i = 1; i < 128 / sizeof(T); i++)
++            result |= System.Runtime.CompilerServices.Unsafe.ReadUnaligned<T>(ref v[i * sizeof(T)]);
++        return result;
++    }
++
++    /// <summary>OR every lane of four-byte vector value storage.</summary>
++    public static unsafe T ReduceOr<T>(ZigVector32<T> v)
++        where T : unmanaged, System.Numerics.IBinaryInteger<T>
++    {
++        var result = System.Runtime.CompilerServices.Unsafe.ReadUnaligned<T>(ref v[0]);
++        for (var i = 1; i < 4 / sizeof(T); i++)
++            result |= System.Runtime.CompilerServices.Unsafe.ReadUnaligned<T>(ref v[i * sizeof(T)]);
++        return result;
++    }
++
+     // Fold in T so unsigned high bits and signed lanes keep their exact
+     // representation. Start with lane zero and visit every remaining lane,
+     // including the upper halves of Vector256 and Vector512.
+--- a/DotCC.PostProcess/ProjectInput.cs
++++ b/DotCC.PostProcess/ProjectInput.cs
+@@ -13,6 +13,7 @@
+     IReadOnlyList<string> RuntimeReferencePaths) : IDisposable
+ {
+     internal Dictionary<string, string> SourceHashes { get; } = new(StringComparer.Ordinal);
++    internal string? SdkGeneratedAnalyzerConfigPath { get; init; }
+ 
+     internal GeneratorHost? Generators { get; private set; }
+     internal bool IsProjectSource(SyntaxTree tree) => SourceHashes.ContainsKey(tree.FilePath);
+@@ -33,7 +34,7 @@
+             "-p:Configuration=" + configuration, "-p:SkipCompilerExecution=true", "-p:ProvideCommandLineArgs=true",
+             "-p:NonExistentFile=" + Path.Combine(Path.GetTempPath(), "dotcc-postprocess-evaluate-" + Guid.NewGuid().ToString("N")),
+             "-p:BuildProjectReferences=false", "-getItem:CscCommandLineArgs,ReferenceCopyLocalPaths",
+-            "-getProperty:TargetPath,AssemblyName,OutputType,TargetFramework" })
++            "-getProperty:TargetPath,AssemblyName,OutputType,TargetFramework,GeneratedMSBuildEditorConfigFile" })
+             start.ArgumentList.Add(argument);
+         using var process = Process.Start(start) ?? throw new InvalidOperationException("Could not start dotnet msbuild.");
+         var outputTask = process.StandardOutput.ReadToEndAsync(cancellationToken);
+@@ -67,7 +68,12 @@
+         var runtime = root.GetProperty("Items").GetProperty("ReferenceCopyLocalPaths").EnumerateArray()
+             .Select(item => item.TryGetProperty("FullPath", out var full) ? full.GetString()! : item.GetProperty("Identity").GetString()!)
+             .Select(path => Path.GetFullPath(path, start.WorkingDirectory)).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray();
+-        return new(project, assemblyName, framework, configuration, parsed, arguments, runtime);
++        var generatedConfig = properties.GetProperty("GeneratedMSBuildEditorConfigFile").GetString();
++        return new(project, assemblyName, framework, configuration, parsed, arguments, runtime)
++        {
++            SdkGeneratedAnalyzerConfigPath = string.IsNullOrEmpty(generatedConfig) ? null
++                : Path.GetFullPath(generatedConfig, start.WorkingDirectory).Replace('\\', '/'),
++        };
+     }
+ 
+     internal CSharpCompilation CreateCompilation(CancellationToken cancellationToken)
+@@ -150,8 +156,9 @@
+         {
+             var path = Path.GetFullPath(config, BaseDirectory).Replace('\\', '/');
+             bool sdk = path.Contains("/sdk/", StringComparison.OrdinalIgnoreCase) && path.EndsWith(".globalconfig", StringComparison.Ordinal);
+-            bool generated = path.StartsWith(BaseDirectory.Replace('\\', '/') + "/obj/", StringComparison.Ordinal)
+-                && path.EndsWith(".GeneratedMSBuildEditorConfig.editorconfig", StringComparison.Ordinal);
++            bool generated = path == SdkGeneratedAnalyzerConfigPath
++                || path.StartsWith(BaseDirectory.Replace('\\', '/') + "/obj/", StringComparison.Ordinal)
++                    && path.EndsWith(".GeneratedMSBuildEditorConfig.editorconfig", StringComparison.Ordinal);
+             if (!sdk && !generated)
+                 throw new InvalidOperationException("Custom analyzer configuration is unsupported because source paths are relocated: " + config);
+         }

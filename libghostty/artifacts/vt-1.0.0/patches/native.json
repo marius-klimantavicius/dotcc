@@ -1,0 +1,261 @@
+[
+  {
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/rgb.zig",
+      "-O",
+      "Debug",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/global",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/rgb-Debug"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/rgb-Debug"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "comparison_cases": 85184
+  },
+  {
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/rgb.zig",
+      "-O",
+      "ReleaseFast",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/global",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/rgb-ReleaseFast"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/rgb-ReleaseFast"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "comparison_cases": 85184
+  },
+  {
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/interleave.zig",
+      "-O",
+      "Debug",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/global",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/interleave-Debug"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/interleave-Debug"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "comparison_cases": 1028
+  },
+  {
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/interleave.zig",
+      "-O",
+      "ReleaseFast",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/global",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/interleave-ReleaseFast"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/interleave-ReleaseFast"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "comparison_cases": 1028
+  },
+  {
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/global",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/decoder",
+      "-OReleaseFast",
+      "-mcpu=native",
+      "--dep",
+      "original",
+      "--dep",
+      "patched",
+      "-Mroot=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/decoder-probe.zig",
+      "-OReleaseFast",
+      "-mcpu=native",
+      "--dep",
+      "build_options",
+      "--dep",
+      "indexof",
+      "-Moriginal=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/original.zig",
+      "-OReleaseFast",
+      "-mcpu=native",
+      "--dep",
+      "build_options",
+      "--dep",
+      "indexof",
+      "-Mpatched=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/patched.zig",
+      "-Mbuild_options=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/options.zig",
+      "-OReleaseFast",
+      "--dep",
+      "build_options",
+      "-Mindexof=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/src/simd/index_of.zig"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/decoder"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "comparison_cases": 4112
+  },
+  {
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "test",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/global",
+      "--dep",
+      "original",
+      "--dep",
+      "caps",
+      "-Mroot=/home/marius/p/dotcc/libghostty/artifacts/direct-resume-20261104/actual-xtgettcap-worker/native-map-oracle.zig",
+      "-Moriginal=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/OriginalSource.zig",
+      "--dep",
+      "source",
+      "-Mcaps=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/caps.zig",
+      "-Msource=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/src/terminfo/Source.zig"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "1/2 native-map-oracle.test.all original ghostty capability keys response bytes and sentinels...compared 273 keys, every response byte and sentinel\nOK\n2/2 native-map-oracle.test.numeric boundaries booleans parameter strings escapes and controls...compared 20 keys, every response byte and sentinel\nOK\nAll 2 tests passed.\n",
+    "comparison_cases": 293
+  },
+  {
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "test",
+      "/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/src/terminfo/Source.zig",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/global"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "1/2 Source.test.xtgettcap map...OK\n2/2 Source.test.encode...OK\nAll 2 tests passed.\n"
+  },
+  {
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "test",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/global",
+      "--dep",
+      "source",
+      "-Mroot=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/negative-canceled.zig",
+      "-Msource=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/OriginalSource.zig"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/OriginalSource.zig:91:30: error: canceled not handled yet\n                .canceled => @compileError(\"canceled not handled yet\"),\n                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/negative-canceled.zig:1:172: note: called at comptime here\nconst Source=@import(\"source\"); const src: Source=.{ .names=&.{\"probe\"}, .capabilities=&.{ .{ .name=\"case\", .value=.{ .canceled = {} } } } }; comptime { _=src.xtgettcapMap(); }\n                                                                                                                                                           ~~~~~~~~~~~~~~~~^~\n"
+  },
+  {
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "test",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/global",
+      "--dep",
+      "source",
+      "-Mroot=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/negative-canceled.zig",
+      "-Msource=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/src/terminfo/Source.zig"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "libghostty/ref/libghostty-vt-1.0.0/src/terminfo/Source.zig:92:34: error: canceled not handled yet\n                    .canceled => @compileError(\"canceled not handled yet\"),\n                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/negative-canceled.zig:1:172: note: called at comptime here\nconst Source=@import(\"source\"); const src: Source=.{ .names=&.{\"probe\"}, .capabilities=&.{ .{ .name=\"case\", .value=.{ .canceled = {} } } } }; comptime { _=src.xtgettcapMap(); }\n                                                                                                                                                           ~~~~~~~~~~~~~~~~^~\n"
+  },
+  {
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "test",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/global",
+      "--dep",
+      "source",
+      "-Mroot=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/negative-middle-control.zig",
+      "-Msource=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/OriginalSource.zig"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/OriginalSource.zig:108:38: error: handle control-char in middle of string\n                        if (idx > 0) @compileError(\"handle control-char in middle of string\");\n                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/negative-middle-control.zig:1:173: note: called at comptime here\nconst Source=@import(\"source\"); const src: Source=.{ .names=&.{\"probe\"}, .capabilities=&.{ .{ .name=\"case\", .value=.{ .string = \"x^H\" } } } }; comptime { _=src.xtgettcapMap(); }\n                                                                                                                                                            ~~~~~~~~~~~~~~~~^~\n"
+  },
+  {
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "test",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/global",
+      "--dep",
+      "source",
+      "-Mroot=/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/negative-middle-control.zig",
+      "-Msource=/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/src/terminfo/Source.zig"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "libghostty/ref/libghostty-vt-1.0.0/src/terminfo/Source.zig:153:26: error: handle control-char in middle of string\n            if (idx > 0) @compileError(\"handle control-char in middle of string\");\n                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nlibghostty/ref/libghostty-vt-1.0.0/src/terminfo/Source.zig:94:51: note: called at comptime here\n                    .string => |v| xtgettcapString(v),\n                                   ~~~~~~~~~~~~~~~^~~\n/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/patches/native/negative-middle-control.zig:1:173: note: called at comptime here\nconst Source=@import(\"source\"); const src: Source=.{ .names=&.{\"probe\"}, .capabilities=&.{ .{ .name=\"case\", .value=.{ .string = \"x^H\" } } } }; comptime { _=src.xtgettcapMap(); }\n                                                                                                                                                            ~~~~~~~~~~~~~~~~^~\n"
+  }
+]

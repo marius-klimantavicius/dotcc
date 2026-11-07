@@ -38,7 +38,11 @@ internal static class ZigStorageObjectMetadata
 
     internal sealed record FieldProof(string Name, int Offset, int Width, string SourceType, string TargetName, bool Signed = false);
     internal sealed record ContractProof(ZigStorageKind Kind, string Identity, int Bits, int Size, int Alignment,
-        string Profile, string Reason, FieldProof[] Fields, bool IsZeroOwner = false, bool IsPackedUnion = false);
+        string Profile, string Reason, FieldProof[] Fields, bool IsZeroOwner = false, bool IsPackedUnion = false)
+    {
+        internal string BackingKind { get; init; } = "";
+        internal bool BackingSigned { get; init; }
+    }
     internal static ContractProof ReadContract(string contract)
     {
         try
@@ -107,7 +111,7 @@ internal static class ZigStorageObjectMetadata
 
     private static ContractProof ValidateContract(ContractProof proof, string backing, bool backingSigned, string origin)
     {
-        proof = proof with { IsPackedUnion = backing == "packed-union"
+        proof = proof with { BackingKind = backing, BackingSigned = backingSigned, IsPackedUnion = backing == "packed-union"
             || backing.StartsWith("packed-union-explicit-", StringComparison.Ordinal) };
         void Invalid() => throw new CompileException("invalid Zig storage semantic descriptor (range/type/target/physical proof)");
         if (!SourceName(proof.Identity) || proof.Profile != ZigStorageLayout.AcceptedProfile || origin.Length == 0

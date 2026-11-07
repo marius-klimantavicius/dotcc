@@ -1393,11 +1393,11 @@ internal sealed partial class IrBuilder
     /// integer type and members, mapping the name to its <see cref="CType.Enum"/> (so the
     /// name resolves as a real enum type) and emitting an <see cref="EnumTypeDef"/>. Returns
     /// the <see cref="CType.Enum"/>. Idempotent on the name.</summary>
-    internal CType.Enum RegisterEnumType(string name, CType underlying, List<EnumMember> members)
+    internal CType.Enum RegisterEnumType(string name, CType underlying, List<EnumMember> members, bool nonExhaustive = false)
     {
         var enumType = new CType.Enum(name, underlying);
         _enumTypes[name] = enumType;
-        if (Enums.All(e => e.Name != name)) { Enums.Add(new EnumTypeDef(name, underlying, members)); }
+        if (Enums.All(e => e.Name != name)) { Enums.Add(new EnumTypeDef(name, underlying, members) { IsNonExhaustive = nonExhaustive }); }
         return enumType;
     }
 

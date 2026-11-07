@@ -1,0 +1,201 @@
+--- a/src/terminfo/Source.zig
++++ b/src/terminfo/Source.zig
+@@ -73,98 +73,112 @@
+ /// to APIs that require a sentinel (e.g. the libghostty-vt write_pty
+ /// callback) without copying.
+ pub fn xtgettcapMap(comptime self: Source) std.StaticStringMap([:0]const u8) {
+-    const KV = struct { []const u8, [:0]const u8 };
+-
+-    // We have all of our capabilities plus To, TN, and RGB which aren't
+-    // in the capabilities list but are query-able.
+-    const len = self.capabilities.len + 3;
+-    var kvs: [len]KV = @splat(.{ "", "" });
+-
+-    // We first build all of our entries with raw K=V pairs.
+-    kvs[0] = .{ "TN", self.names[0] };
+-    kvs[1] = .{ "Co", "256" };
+-    kvs[2] = .{ "RGB", "8" };
+-    for (self.capabilities, 3..) |cap, i| {
+-        kvs[i] = .{
+-            cap.name,
+-            switch (cap.value) {
+-                .canceled => @compileError("canceled not handled yet"),
+-                .boolean => "",
+-                .string => |v| string: {
+-                    @setEvalBranchQuota(100_000);
+-                    // If a string contains parameters, then we do not escape
+-                    // anything within the string. I BELIEVE the history here is
+-                    // xterm initially only supported specific capabilities and none
+-                    // had parameters so it returned the tcap encoded form. Later,
+-                    // Kitty added support for more capabilities some of which
+-                    // have parameters. But Kitty returned them in terminfo source
+-                    // format. So we need to handle both cases.
+-                    if (std.mem.indexOfScalar(u8, v, '%') != null) break :string v;
+-                    // No-parameters. Encode and return.
+-                    // First replace \E with the escape char (0x1B)
+-                    var result = comptimeReplace(v, "\\E", "\x1b");
+-                    // Replace '^' with the control char version of that char.
+-                    while (std.mem.indexOfScalar(u8, result, '^')) |idx| {
+-                        if (idx > 0) @compileError("handle control-char in middle of string");
+-                        const replacement = switch (result[idx + 1]) {
+-                            '?' => 0x7F, // DEL, special cased from ncurses
+-                            else => |c| c - 64,
+-                        };
+-                        result = comptimeReplace(
+-                            result,
+-                            result[idx .. idx + 2],
+-                            &.{replacement},
+-                        );
+-                    }
+-                    break :string result;
++    comptime {
++        const KV = struct { []const u8, [:0]const u8 };
++
++        // We have all of our capabilities plus To, TN, and RGB which aren't
++        // in the capabilities list but are query-able.
++        const len = self.capabilities.len + 3;
++        var kvs: [len]KV = @splat(.{ "", "" });
++
++        // We first build all of our entries with raw K=V pairs.
++        kvs[0] = .{ "TN", self.names[0] };
++        kvs[1] = .{ "Co", "256" };
++        kvs[2] = .{ "RGB", "8" };
++        for (self.capabilities, 3..) |cap, i| {
++            kvs[i] = .{
++                cap.name,
++                switch (cap.value) {
++                    .canceled => @compileError("canceled not handled yet"),
++                    .boolean => "",
++                    .string => |v| xtgettcapString(v),
++                    .numeric => |v| numeric: {
++                        var buf: [11]u8 = @splat(0);
++                        var remaining = v;
++                        var end: usize = 10;
++                        while (true) {
++                            end -= 1;
++                            buf[end] = @intCast('0' + remaining % 10);
++                            remaining /= 10;
++                            if (remaining == 0) break;
++                        }
++                        const final = buf;
++                        break :numeric final[end..10 :0];
++                    },
+                 },
+-                .numeric => |v| numeric: {
+-                    var buf: [11]u8 = @splat(0);
+-                    var writer: std.Io.Writer = .fixed(buf[0..10]);
+-                    writer.printInt(v, 10, .upper, .{}) catch unreachable;
+-                    const final = buf;
+-                    break :numeric final[0..writer.end :0];
+-                },
+-            },
+-        };
+-    }
+-
+-    // Now go through and convert them all to hex-encoded strings.
+-    for (&kvs) |*entry| {
+-        // The key is just the raw hex-encoded string
+-        entry[0] = hexencode(entry[0]);
+-
+-        // The value is more complex. The buffer is zeroed so the byte
+-        // after the response is already the null terminator.
+-        var buf: [5 + entry[0].len + 1 + (entry[1].len * 2) + 2 + 1]u8 = @splat(0);
+-        const out = if (std.mem.eql(u8, entry[1], "")) std.mem.print(
+-            &buf,
+-            "\x1bP1+r{s}\x1b\\",
+-            .{entry[0]}, // important: hex-encoded name
+-        ) catch unreachable else std.mem.print(
+-            &buf,
+-            "\x1bP1+r{s}={s}\x1b\\",
+-            .{ entry[0], hexencode(entry[1]) }, // important: hex-encoded name
+-        ) catch unreachable;
+-
+-        const final = buf;
+-        entry[1] = final[0..out.len :0];
+-    }
+-
+-    const kvs_final = kvs;
+-    return std.StaticStringMap([:0]const u8).initComptime(&kvs_final);
+-}
+-
+-fn hexencode(comptime input: []const u8) []const u8 {
+-    return comptime &(std.fmt.bytesToHex(input, .upper));
++            };
++        }
++
++        // Now go through and convert them all to hex-encoded strings.
++        for (&kvs) |*entry| {
++            // The key is just the raw hex-encoded string
++            entry[0] = hexencode(entry[0]);
++
++            // The value is more complex. The buffer is zeroed so the byte
++            // after the response is already the null terminator.
++            var buf: [5 + entry[0].len + 1 + (entry[1].len * 2) + 2 + 1]u8 = @splat(0);
++            @memcpy(buf[0..5], "\x1bP1+r");
++            var out: usize = 5;
++            @memcpy(buf[out..][0..entry[0].len], entry[0]);
++            out += entry[0].len;
++            if (entry[1].len != 0) {
++                buf[out] = '=';
++                out += 1;
++                const value = hexencode(entry[1]);
++                @memcpy(buf[out..][0..value.len], value);
++                out += value.len;
++            }
++            @memcpy(buf[out..][0..2], "\x1b\\");
++            out += 2;
++
++            const final = buf;
++            entry[1] = final[0..out :0];
++        }
++
++        const kvs_final = kvs;
++        return std.StaticStringMap([:0]const u8).initComptime(&kvs_final);
++    }
++}
++
++fn xtgettcapString(comptime input: [:0]const u8) [:0]const u8 {
++    comptime {
++        @setEvalBranchQuota(100_000);
++        // Parameterized strings retain terminfo source syntax, matching xterm/Kitty.
++        if (std.mem.indexOfScalar(u8, input, '%') != null) return input;
++        var result = comptimeReplace(input, "\\E", "\x1b");
++        while (true) {
++            const found = std.mem.indexOfScalar(u8, result, '^');
++            if (found == null) break;
++            const idx = found.?;
++            if (idx > 0) @compileError("handle control-char in middle of string");
++            const replacement = switch (result[idx + 1]) {
++                '?' => 0x7F,
++                else => |c| c - 64,
++            };
++            result = comptimeReplace(result, result[idx .. idx + 2], &.{replacement});
++        }
++        return result;
++    }
++}
++
++inline fn hexencode(comptime input: []const u8) []const u8 {
++    comptime {
++        var output: [input.len * 2]u8 = undefined;
++        for (input, 0..) |byte, i| {
++            output[i * 2] = "0123456789ABCDEF"[byte >> 4];
++            output[i * 2 + 1] = "0123456789ABCDEF"[byte & 15];
++        }
++        const final = output;
++        return &final;
++    }
+ }
+ 
+ /// std.mem.replace but comptime-only so we can return the string
+ /// allocated in comptime memory.
+ fn comptimeReplace(
+-    input: []const u8,
+-    needle: []const u8,
+-    replacement: []const u8,
++    comptime input: []const u8,
++    comptime needle: []const u8,
++    comptime replacement: []const u8,
+ ) [:0]const u8 {
+     comptime {
+         const len = std.mem.replacementSize(u8, input, needle, replacement);

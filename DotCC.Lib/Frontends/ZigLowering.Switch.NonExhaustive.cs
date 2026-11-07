@@ -20,8 +20,13 @@ internal sealed partial class ZigLowering
         if (subject.Unqualified is not CType.Enum en || !_nonExhaustiveEnums.Contains(en.Name)
             || !_enumMembers.TryGetValue(en.Name, out var members))
             throw new IrUnsupportedException($"zig `_` switch prong requires a source-known nonexhaustive enum (got {subject.Describe()}, {_module?.Path ?? _fileStem}, function '{_currentFnName}')");
-        if (catchAlls != 1 || prongs.Any(p => p.CaseVals.Content is Zig.CaseElse))
-            throw new IrUnsupportedException("zig nonexhaustive enum catch-all with another default prong is not supported");
+        var remaining = Flatten(prongsItem).Where(p => DecomposeProng(p).CaseVals.Content is Zig.CaseElse).ToList();
+        if (catchAlls != 1 || remaining.Count > 1
+            || remaining.Count == 1 && remaining[0].Content is not Zig.InlineProng)
+            throw new IrUnsupportedException("zig nonexhaustive enum catch-all requires at most one distinct inline else prong");
+        // `_` handles unnamed backing values. Inline else expands the remaining
+        // declared tags into explicit cases, so it is not a second default.
+        if (remaining.Count == 1) return;
         var labels = prongs.SelectMany(p => LowerCaseVals(p.CaseVals, subject)).Where(l => l.CaseExpr is not null).ToList();
         foreach (var member in members.Values)
         {

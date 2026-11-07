@@ -394,7 +394,7 @@ internal sealed partial class ZigLowering
             };
         }
         members = AnnotateEnumMembers(name, members);
-        _ir.RegisterEnumType(name, reified.Tag, members);
+        _ir.RegisterEnumType(name, reified.Tag, members, reified.NonExhaustive);
         _containerTypes[name] = enumType;
         _enumMembers[name] = memberSyms;
         _enumsWithSpelledTag.Add(name);
