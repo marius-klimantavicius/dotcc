@@ -1,0 +1,41 @@
+{
+  "status": "REQUIRED_RETAINED_INPUTS_NOT_DISPOSABLE",
+  "producer_archive": "native14-processed.zip",
+  "sha256": "e75000b2f921bffb8afaf83ec8730d2e60db7464595581ac7439f10f1181acef",
+  "current_workspace_copy": "blink/src/Managed.Emulation.FullCore/Producer/native14-processed.zip",
+  "generated_archive_committed": false,
+  "original_shared_caches": "/home/marius/.nuget/packages and SDK/tool caches untouched",
+  "service_inputs": {
+    "aot": {
+      "root": "/home/marius/p/dotcc/blink/artifacts/jit-opportunities/astra-20261026-r1/images-aot",
+      "files": 6,
+      "closure_sha256": "4aed482595e33f707ddeb546cc4dd8c92af6876d54d98c118af453a02784cf76"
+    },
+    "il": {
+      "root": "/home/marius/p/dotcc/blink/artifacts/jit-opportunities/astra-20261026-r1/images-il",
+      "files": 361,
+      "closure_sha256": "a3e25756cad361c2c41c8c791c5f9504bf8cdaa5c5a34555f95bb3abfad3583f"
+    }
+  },
+  "local_evidence_archives": {
+    "checkpoint-local-evidence/frozen-authored-handoffs.tar.gz": "6f47cf9f3cf550159733f1b5a5812bd4953b3e49f917b52dd2818b519d263160",
+    "checkpoint-local-evidence/historical-logs-and-service-records.tar.gz": "b6a1e0f07fd192fec83bad62dea261ddec0b04102151f232603fc6c606815548"
+  },
+  "unfinished_source": "D/checkpoint-unfinished-r209; never integrated or qualified",
+  "absolute_root": "/mnt/storage/blink-full-jit-checkpoint-inputs-20261107",
+  "adapter_preclone_inputs": {
+    "path": "checkpoint-inputs/x87-adapter-bound",
+    "units": 98,
+    "pins": "checkpoint-inputs/x87-adapter-bound-pins.json",
+    "committed": false
+  },
+  "retained_input_contents": [
+    "native14-processed.zip: exact required default-build input backup",
+    "native14-producer-authored-inputs.tar.gz and resource-compiler/: original compiler resource/producer reproduction inputs",
+    "producer-tools-retention/: original selected producer tools, not disposable build consumers",
+    "native14-producer/blink/ref/: exact upstream input archive/source",
+    "fixtures/ and atomic-family-r156*.elf: portable historical Linux inputs",
+    "primary-references/ and primary-reference-index.json: deduplicated pinned primary manuals",
+    "retained-caches/: task package/http caches moved intact; global shared caches untouched"
+  ]
+}

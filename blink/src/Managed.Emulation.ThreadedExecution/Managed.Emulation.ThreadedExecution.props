@@ -1,0 +1,11 @@
+<Project>
+  <!-- BlinkProject remains the explicit producer override. ThreadedBlinkProject
+       changes the default for threaded consumers without affecting legacy ones. -->
+  <PropertyGroup>
+    <!-- Qualified finite canonical state profile; an explicit false remains available. -->
+    <BlinkX87StateOwner Condition="'$(BlinkX87StateOwner)' == ''">true</BlinkX87StateOwner>
+    <DefineConstants Condition="'$(BlinkX87StateOwner)' == 'true'">$(DefineConstants);BLINK_FULL_X87_STATE_OWNER</DefineConstants>
+    <ThreadedBlinkProject Condition="'$(ThreadedBlinkProject)' == ''">$([MSBuild]::NormalizePath('$(MSBuildThisFileDirectory)', '../Managed.Emulation.FullCore/Managed.Emulation.FullCore.csproj'))</ThreadedBlinkProject>
+    <BlinkProject Condition="'$(BlinkProject)' == ''">$(ThreadedBlinkProject)</BlinkProject>
+  </PropertyGroup>
+</Project>

@@ -59,11 +59,16 @@ public sealed partial class InstanceIo
 
     public HostResult<int> MappingReadAt(MappingTransaction transaction, Span<byte> destination, long offset)
     {
-        lock (sync)
+        var retry = new SpinWait();
+        while (true)
         {
-            if (!FindMapping(transaction, out var description)) return Fail<int>(GuestError.BadDescriptor);
-            return description.Kind == Kind.MemoryFile ? ReadMemoryFile(description.MemoryFile!, destination, offset)
-                : files.ReadAt(description.Handle, destination, offset);
+            lock (sync)
+            {
+                if (!FindMapping(transaction, out var description)) return Fail<int>(GuestError.BadDescriptor);
+                if (description.Kind != Kind.MemoryFile) return files.ReadAt(description.Handle, destination, offset);
+                if (TryReadMemoryFile(description.MemoryFile!, destination, offset, out var result)) return result;
+            }
+            retry.SpinOnce();
         }
     }
 

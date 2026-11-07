@@ -15,10 +15,14 @@ public static partial class Blink
         endpoint = default;
         if (address == null) { IoError(14); return false; }
         if (length < 16) { IoError(22); return false; }
-        byte* bytes = (byte*)address;
+        Span<byte> snapshot = stackalloc byte[16];
+        SnapshotGuestBytes(address, snapshot);
+        fixed (byte* bytes = snapshot)
+        {
         if (bytes[0] != 2 || bytes[1] != 0) { IoError(97); return false; }
         endpoint = new(((uint)bytes[4] << 24) | ((uint)bytes[5] << 16) | ((uint)bytes[6] << 8) | bytes[7], (ushort)((bytes[2] << 8) | bytes[3]));
         return true;
+        }
     }
     private static unsafe void WriteEndpoint(blink_host_sockaddr* address, uint* length, Managed.Emulation.Host.GuestEndpoint endpoint)
     {
@@ -27,8 +31,10 @@ public static partial class Blink
         bytes[2] = (byte)(endpoint.Port >> 8); bytes[3] = (byte)endpoint.Port;
         bytes[4] = (byte)(endpoint.Address >> 24); bytes[5] = (byte)(endpoint.Address >> 16);
         bytes[6] = (byte)(endpoint.Address >> 8); bytes[7] = (byte)endpoint.Address;
-        int count = (int)global::System.Math.Min(*length, 16u);
-        bytes[..count].CopyTo(new Span<byte>(address, count)); *length = 16;
+        uint available = 0; SnapshotGuestBytes(length, new Span<byte>(&available, 4));
+        int count = (int)global::System.Math.Min(available, 16u);
+        StoreGuestBytes(address, bytes[..count]);
+        uint full = 16; StoreGuestBytes(length, new ReadOnlySpan<byte>(&full, 4));
     }
     public static int blink_host_socket(int domain, int type, int protocol)
     {
@@ -106,12 +112,13 @@ public static partial class Blink
             if (writing ? flags != 0 : (flags & ~2) != 0) return IoError(95);
             if (pointer == null && length != 0) return IoError(14);
             int count = (int)global::System.Math.Min(length, (ulong)IoChunk);
-            byte[] buffer = new byte[count];
-            if (writing) new ReadOnlySpan<byte>(pointer, count).CopyTo(buffer);
+            using var staging = new GuestIoBuffer(count);
+            byte[] buffer = staging.Bytes;
+            if (writing) SnapshotGuestBytes(pointer, buffer);
             using var wake = BeginIoOperation();
             var token = wake?.Token ?? ioCancellation;
             var result = (writing ? io.SendAsync(fd, buffer, token) : io.ReceiveAsync(fd, buffer, token, peek: (flags & 2) != 0)).GetAwaiter().GetResult();
-            if (!writing && result.Succeeded) buffer.AsSpan(0, result.Value).CopyTo(new Span<byte>(pointer, count));
+            if (!writing && result.Succeeded) StoreGuestBytes(pointer, buffer.AsSpan(0, result.Value));
             return IoResult(result, wake);
         }
         catch (Exception error) { return IoException(error); }
@@ -135,7 +142,8 @@ public static partial class Blink
             if (level == 1 && option == 13)
             {
                 if (length < 8) return IoError(22);
-                var lingerBytes = new ReadOnlySpan<byte>(value, 8);
+                Span<byte> lingerBytes = stackalloc byte[8];
+                SnapshotGuestBytes(value, lingerBytes);
                 var linger = new Managed.Emulation.Host.SocketLinger(
                     BinaryPrimitives.ReadInt32LittleEndian(lingerBytes) != 0,
                     BinaryPrimitives.ReadInt32LittleEndian(lingerBytes[4..]));
@@ -145,7 +153,8 @@ public static partial class Blink
             {
                 // Reviewed LP64 timeval: signed seconds and microseconds, 16 bytes.
                 if (length < 16) return IoError(22);
-                var timeoutBytes = new ReadOnlySpan<byte>(value, 16);
+                Span<byte> timeoutBytes = stackalloc byte[16];
+                SnapshotGuestBytes(value, timeoutBytes);
                 var timeout = new Managed.Emulation.Host.SocketTimeout(
                     BinaryPrimitives.ReadInt64LittleEndian(timeoutBytes),
                     BinaryPrimitives.ReadInt64LittleEndian(timeoutBytes[8..]));
@@ -158,8 +167,9 @@ public static partial class Blink
             else if (level == 1 && option == 8) selected = Managed.Emulation.Host.TcpHostOption.ReceiveBufferSize;
             else if (level == 6 && option == 1) selected = Managed.Emulation.Host.TcpHostOption.NoDelay;
             else return IoError(92);
-            byte* bytes = (byte*)value;
-            int setting = bytes[0] | bytes[1] << 8 | bytes[2] << 16 | bytes[3] << 24;
+            Span<byte> settingBytes = stackalloc byte[4];
+            SnapshotGuestBytes(value, settingBytes);
+            int setting = BinaryPrimitives.ReadInt32LittleEndian(settingBytes);
             return (int)IoResult(io.SetOption(fd, selected, setting));
         }
         catch (Exception error) { return IoException(error); }

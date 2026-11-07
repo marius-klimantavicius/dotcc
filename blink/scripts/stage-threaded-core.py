@@ -17,6 +17,10 @@ from core_inputs import compiler_directory, compiler_identity, emission_identity
 import memory_bindings
 import signal_bindings
 import cpu_bindings
+import full_jit_bindings
+import full_jit_memory_bindings
+import full_jit_copy_bindings
+import full_jit_x87_state_bindings
 
 ROOT = Path(__file__).resolve().parents[1]
 REPO = ROOT.parent
@@ -314,6 +318,7 @@ def main():
 
         overrides = {}
         rows = []
+        full_jit_sources = {}
         old_rows = {row['source']: row for row in base_binding['upstream_preambles']}
         upstream_entries = [entry for entry in base_entries if entry['path'].startswith('blink/')]
         if set(old_rows) != {entry['path'] for entry in upstream_entries}:
@@ -330,6 +335,9 @@ def main():
             expected_body = memory_bindings.adapt(name, expected_body)
             expected_body = signal_bindings.adapt(name, expected_body)
             expected_body = cpu_bindings.adapt(name, expected_body)
+            expected_body = full_jit_memory_bindings.adapt(name, expected_body)
+            pre_full = expected_body
+            expected_body = full_jit_bindings.adapt(name, expected_body)
             if (digest(original) != old_row['pre_binding_sha256'] or old_bound != PREFIX + expected_body
                     or old_row['original_sha256'] != pins[name] or old_row['staged_sha256'] != entry['sha256']):
                 raise RuntimeError('Exact base preamble/source chain differs: ' + name)
@@ -347,9 +355,16 @@ def main():
                 content = memory_bindings.adapt(name, content)
                 content = signal_bindings.adapt(name, content)
                 content = cpu_bindings.adapt(name, content)
+                content = full_jit_memory_bindings.adapt(name, content)
             else:
-                content = old_bound[len(PREFIX):]
+                content = pre_full
                 previous = old_row['previous_adaptation']
+            # Apply to every final threaded unit, including unchanged base
+            # units. Ordinary base-chain authentication remains independent.
+            content = full_jit_copy_bindings.adapt(name, content)
+            content = full_jit_x87_state_bindings.adapt(name, content)
+            full_jit_sources[name] = content
+            content = full_jit_bindings.adapt(name, content)
             target = profile / 'bound' / filename
             target.write_bytes(PREFIX + content)
             overrides[name] = dict(staged_path=str(target.relative_to(ROOT)), sha256=sha(target),
@@ -362,6 +377,7 @@ def main():
         if set(boundary['sources']) != {'syscall.c', 'memorymalloc.c', 'signal.c'}:
             raise RuntimeError('Unexpected thread stage replacement set')
         write_json(profile / 'binding-overrides.json', overrides)
+        write_json(profile / 'full-jit-inventory.json', full_jit_bindings.inventory(full_jit_sources))
         for path in sorted((profile / 'authored').glob('*.c')):
             original = path.read_bytes()
             path.write_bytes(AUTHORED_PREFIX + original)

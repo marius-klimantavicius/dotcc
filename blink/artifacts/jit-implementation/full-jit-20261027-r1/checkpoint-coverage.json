@@ -1,0 +1,57 @@
+{
+  "status": "FULL_NATIVE_MISSING_FINITE_PROFILE_ONLY",
+  "source": "native7c179",
+  "default": "Interpreter; Full opt-in",
+  "executed_families": [
+    "Scalar integer, address and sign/zero extension, flags/checksum/bit operations",
+    "Checked memory/stack and near-control branches, source\u2192stack\u2192target CALL fault priority",
+    "Baseline vector/SIMD, MMX and software optional-ISA computation",
+    "Finite canonical raw80 x87 stack/arithmetic/conversion/comparison/reduction/state/BCD and all-eight portable transcendental catalog",
+    "Scalar and pair atomic family with checked/exclusive fallbacks",
+    "Ordinary strings and precise issued REP continuation",
+    "CPUID/LSL/RDPID and clock/entropy native effects with authenticated data sampling assists"
+  ],
+  "exact_form_inventory": {
+    "path": "native-complete-lowering-gap-inventory-r110.json.gz",
+    "sha256": "9154919dab11057d5b8b946b8a4cd600f0dc62d3d049f4d2e0bcfac3817eaaae",
+    "rows": 538,
+    "selector_tuples": 3854,
+    "x87_tuples": 2048,
+    "interpretation": "Historical exact domain inventory and all exclusions/UNKNOWNs retained; subsequent family receipts are separate scoped dispositions. Witnessed handler counts never prove all encoding, operand, prefix, addressing or fault forms."
+  },
+  "bounded_sampler": {
+    "source": "native7c172",
+    "candidates": 8912896,
+    "decoded": 8764350,
+    "native": 2961160,
+    "invalidIR": 0,
+    "arms_with_native_witness_other_forms_unknown": 413,
+    "named_UD_arms": 116,
+    "unwitnessed": 8,
+    "syscall_arms": 1,
+    "not_complete": true,
+    "later_R206_R207_coverage_delta": "No new opcode/form credit"
+  },
+  "visible_limits": [
+    "Unenumerated valid-form/context cells remain UNKNOWN; no all-encodings proof",
+    "Nonzero nested ENTER remains unsupported in selected Linux profile",
+    "INS/OUTS Linux fault/recovery is not qualified; INT/HLT/debug/privileged events are named special boundaries",
+    "Nonempty GDT production descriptor-owner lease is not qualified",
+    "AM1/AC1 and broader execution contexts remain outside the finite canonical profile",
+    "Undefined/reserved prefix aliases and selected SALC/SWAPGS/hint extensions earn no architectural ordinary-opcode credit",
+    "Explicit CPU software policies include PC01\u2192PC64 arithmetic with raw CW retained, protected16 omitted FOP\u21920, selected FX416 effects after full512 permission proof; they are not universal hardware identity",
+    "Independent host-private transcendental experiment remains unqualified and is not the portable production catalog"
+  ],
+  "allowed_runtime_boundaries": [
+    "Linux syscall",
+    "Mapping/permission/fault materialization, alias exclusion and Linux signal delivery",
+    "Clock/entropy data sampling after admission; emitted code computes effects",
+    "Named architectural invalid/privileged/debug exceptions"
+  ],
+  "ordinary_semantic_helpers": "Any retained ordinary semantic helper is visibly a coverage gap; typed helper routing or native wrappers do not count as native computation.",
+  "R101-04": "OPEN terminal generation-exhaustion cleanup",
+  "Windows_execution": "UNVERIFIED",
+  "generated_async_unwind": "UNQUALIFIED",
+  "performance": "FAIL",
+  "unfinished_not_integrated": "R209 private regular-file ownership experiment preserved under checkpoint-unfinished-r209; unbuilt/unrun/not READY"
+}

@@ -189,7 +189,7 @@ def translate(ctx):
                       AssemblyName="TranslatedBlink", RootNamespace="Managed.Emulation",
                       AllowUnsafeBlocks="true", Nullable="disable", ImplicitUsings="enable",
                       EnableDefaultCompileItems="false", WarningsAsErrors="$(WarningsAsErrors);CS8500",
-                      DefineConstants="$(DefineConstants);BLINK_FULL_CORE" + (";DOTCC_INSTANCE_FOR_HOST" if ctx.profile == "threaded" else ""))
+                      DefineConstants="$(DefineConstants);BLINK_FULL_CORE" + (";DOTCC_INSTANCE_FOR_HOST;BLINK_GUEST_THREAD_COPIES" if ctx.profile == "threaded" else ""))
         for key, value in values.items():
             ET.SubElement(props, key).text = value
         items = ET.SubElement(tree, "ItemGroup")

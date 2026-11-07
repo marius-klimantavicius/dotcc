@@ -1,0 +1,65 @@
+<Project>
+  <!-- Exact processed native14 producer. This file is an executable source
+       manifest; Producer/manifest.json also records provenance and legal data. -->
+  <ItemGroup>
+    <_BlinkFullCoreSource Include="Sources/BlinkCore.00000.cs" ExpectedSha256="4af102ef81dcb21d62b3a88650cb0efb3ec7ffed8a372fadc8f660830cb62f2a" />
+    <_BlinkFullCoreSource Include="Sources/BlinkCore.00001.cs" ExpectedSha256="21f91698709a46ee42f0f5b8535ae5585430ef57885a2bc183b75f0c35a9f0d7" />
+    <_BlinkFullCoreSource Include="Sources/BlinkCore.00002.cs" ExpectedSha256="89fbaff46c31bacc370c1d38bfdc56bf3c5e751bffd4f8208b1e8112607c3676" />
+    <_BlinkFullCoreSource Include="Sources/BlinkCore.00003.cs" ExpectedSha256="ff4305ad33e65d93f4943071beafe0fe03c1080b8c36bd0986e4919ea81c0b3c" />
+    <_BlinkFullCoreSource Include="Sources/BlinkCore.00004.cs" ExpectedSha256="3347e9672393a8e8ab8cdf6422a18c7a904df8d18156f3c0060da40b5dfc22e4" />
+    <_BlinkFullCoreSource Include="Sources/BlinkCore.00005.cs" ExpectedSha256="9d1a6247ef5edff286a55e09c5b0a4f5c005c03f5cb47d1b492f6c92ff724d1c" />
+    <_BlinkFullCoreSource Include="Sources/BlinkCore.00006.cs" ExpectedSha256="30c8826ce3e82555c72ceef879b0329ae9efa5cf8907ffd96df40e0e7b932d9c" />
+    <_BlinkFullCoreSource Include="Sources/BlinkCore.00007.cs" ExpectedSha256="5798fb472c6f35cb2fd7d4a20a6331723f08281c7891330adfcac708ba6748ac" />
+    <_BlinkFullCoreSource Include="Sources/BlinkCore.00008.cs" ExpectedSha256="fcd7132b5237f30f1645278a800bb0d22323761b2c1aaf245295adec4d4df5a2" />
+    <_BlinkFullCoreSource Include="Sources/BlinkCore.00009.cs" ExpectedSha256="3ace4ea92799789f2cbd4679e2e8a380010c3e9e796c6d5b212b508aa9af0d32" />
+    <_BlinkFullCoreSource Include="Sources/BlinkCore.00010.cs" ExpectedSha256="9c56ff2693dc2e09c322d23fb4fe20069a0bea47b6e724b7d484d1bae51bad84" />
+    <_BlinkFullCoreSource Include="Sources/BlinkCore.00011.cs" ExpectedSha256="0275c370a3c1d36bee738d105714180d47879d83de3211567fa622acc0809f36" />
+    <_BlinkFullCoreSource Include="Sources/BlinkCore.00012.cs" ExpectedSha256="d60b4acf63a4d199b2c61d1f4d3789408089e8e39d550bdc38e7730a9e0a6fa7" />
+    <_BlinkFullCoreSource Include="Sources/BlinkCore.00013.cs" ExpectedSha256="3832b554fc1f7144a361e8d26cd51755b902d6af6bbac6030cd3c3c8fac65b6f" />
+    <_BlinkFullCoreSource Include="Sources/BlinkCore.00014.cs" ExpectedSha256="be804438d3e572ee49cd81d5f0f171d3f1b289d16fc62c3566663c51e0152721" />
+    <_BlinkFullCoreSource Include="Sources/BlinkCore.00015.cs" ExpectedSha256="b01a565ed72cfbe118ec6f56824c7593a5eba29464fefd9e7beb78d765269257" />
+    <_BlinkFullCoreSource Include="Sources/BlinkCore.00016.cs" ExpectedSha256="86c742f35acbb5aad6fe181f6a68a4dafde25518bd4fbb2060523f48345800bf" />
+    <_BlinkFullCoreSource Include="Sources/BlinkCore.00017.cs" ExpectedSha256="fb5fda5e22ce8691c0fad9fafefb1d0b453db6fc2c25772c56ee5ebecb795397" />
+    <_BlinkFullCoreSource Include="Sources/BlinkCore.00018.cs" ExpectedSha256="fc526259ae3b276c6745f8f166b4e81132b29eafe7eb43ed6e8171b225357803" />
+    <_BlinkFullCoreSource Include="Sources/BlinkCore.00019.cs" ExpectedSha256="a860982343431a81a70abb8c7e81b389ca925b9269e501cae0cafb9a94a35bda" />
+    <_BlinkFullCoreSource Include="Sources/BlinkCore.00020.cs" ExpectedSha256="5bfc90bd18b3460fe1ab509f086379d46cc7c5acac64be92d128a10d85df203b" />
+    <_BlinkFullCoreSource Include="Sources/BlinkCore.00021.cs" ExpectedSha256="d10825e5e8dd802f2061a4657e54f2ecab8ae486a12f3999989c6713efaa5dac" />
+    <_BlinkFullCoreSource Include="Sources/BlinkCore.00022.cs" ExpectedSha256="7d7b056e5ef64ebe427ecb277cd4dc259b25ecb9906c63627b34c71158e0c41f" />
+    <_BlinkFullCoreSource Include="Sources/BlinkCore.00023.cs" ExpectedSha256="1ad909c14c06095d63e7bdd9954544b5ff9ca9dec944d1eb0458fed9578f00bd" />
+    <_BlinkFullCoreSource Include="Sources/BlinkCore.cs" ExpectedSha256="a1d558449a5f4d99ba9d4a7cec825cadcb1e3e1dc173983cdef9110f5dd9057f" />
+  </ItemGroup>
+  <!-- No Inputs/Outputs: verification and Compile enrollment run on EVERY
+       build, including when CoreCompile itself is considered up to date.
+       AssignTargetPaths runs before compilation dependency caches are made.
+       CoreCompile also covers an explicit invocation of that target. -->
+  <Target Name="PrepareBlinkFullCoreSources" BeforeTargets="AssignTargetPaths;CoreCompile">
+    <PropertyGroup>
+      <_BlinkFullCoreArchive>$(MSBuildThisFileDirectory)Producer/native14-processed.zip</_BlinkFullCoreArchive>
+      <!-- Evaluate here, after SDK configuration/TFM/RID/artifacts path setup. -->
+      <_BlinkFullCoreExtractRoot>$([MSBuild]::NormalizeDirectory('$(MSBuildProjectDirectory)', '$(IntermediateOutputPath)', 'qualified-producer/native14-processed'))</_BlinkFullCoreExtractRoot>
+    </PropertyGroup>
+    <VerifyFileHash File="$(_BlinkFullCoreArchive)" Algorithm="SHA256" Hash="e75000b2f921bffb8afaf83ec8730d2e60db7464595581ac7439f10f1181acef" />
+    <!-- Detect local drift before Unzip can silently repair a modified source.
+         Missing files are restored; existing incorrect bytes fail closed. -->
+    <VerifyFileHash File="$(_BlinkFullCoreExtractRoot)%(_BlinkFullCoreSource.Identity)"
+                    Hash="%(_BlinkFullCoreSource.ExpectedSha256)" Algorithm="SHA256"
+                    Condition="Exists('$(_BlinkFullCoreExtractRoot)%(_BlinkFullCoreSource.Identity)')" />
+    <Unzip SourceFiles="$(_BlinkFullCoreArchive)" DestinationFolder="$(_BlinkFullCoreExtractRoot)"
+           SkipUnchangedFiles="true" />
+    <VerifyFileHash File="$(_BlinkFullCoreExtractRoot)%(_BlinkFullCoreSource.Identity)"
+                    Hash="%(_BlinkFullCoreSource.ExpectedSha256)" Algorithm="SHA256" />
+    <ItemGroup>
+      <!-- Explicit ordered manifest, never a glob over stale extraction files.
+           Preserve the selected project's source-before-bridge order and all
+           metadata on the existing authored/SDK Compile items. -->
+      <Compile Remove="@(_BlinkFullCoreSource->'$(_BlinkFullCoreExtractRoot)%(Identity)')" />
+      <_BlinkFullCoreExistingCompile Include="@(Compile)" />
+      <Compile Remove="@(Compile)" />
+      <Compile Include="@(_BlinkFullCoreSource->'$(_BlinkFullCoreExtractRoot)%(Identity)')"
+               Link="Producer/%(Filename)%(Extension)" />
+      <Compile Include="@(_BlinkFullCoreExistingCompile)" />
+      <_BlinkFullCoreExistingCompile Remove="@(_BlinkFullCoreExistingCompile)" />
+      <FileWrites Include="$(_BlinkFullCoreExtractRoot)**/*" />
+    </ItemGroup>
+  </Target>
+</Project>

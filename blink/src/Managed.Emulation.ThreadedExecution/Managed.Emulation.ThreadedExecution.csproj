@@ -5,8 +5,8 @@
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <IsAotCompatible>true</IsAotCompatible>
-    <BlinkProject Condition="'$(BlinkProject)' == ''">$(MSBuildThisFileDirectory)../../generated/TranslatedBlink/TranslatedBlink.csproj</BlinkProject>
   </PropertyGroup>
+  <Import Project="Managed.Emulation.ThreadedExecution.props" />
   <ItemGroup>
     <ProjectReference Include="$(BlinkProject)" />
   </ItemGroup>

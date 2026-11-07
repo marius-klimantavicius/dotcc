@@ -27,7 +27,7 @@ public sealed record ThreadedSyscallObservation(int GuestThreadId, ulong Instruc
 /// <summary>One guest process, one dedicated C# worker per upstream Machine.
 /// Run is blocking and must itself run on a dedicated caller thread. The caller
 /// owns IO/stop until IsQuiescent; failure to quiesce retains the owner and backing for quarantine.</summary>
-public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
+public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads, IHostGuestInstructionMemory, IHostGuestCodeRevocation
 {
     private readonly InstanceIo io;
     private readonly HostExecutionStop stop;
@@ -58,7 +58,7 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
     public ulong InstructionsCompleted => (ulong)Volatile.Read(ref completed);
     public ulong InstructionsIssued => (ulong)Volatile.Read(ref issued);
 
-    private sealed class Worker
+    private sealed partial class Worker
     {
         public required ThreadedGuestExecution Owner;
         public required HostExecutionStop Stop;
@@ -78,6 +78,12 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
         public HostExecutionStop.NativePoll? NativePoll;
         public bool JitBlockEntry = true;
         public int JitStraightLine, JitNegativeInstructions;
+        public bool FullFetchActive, FullHelperActive, FullDataBorrow, FullAuthorityBorrow, FullMappingBorrow;
+        public int FullMappingScopeDepth;
+        public TranslationWorkerCache FullCache;
+        public TranslationToken FullResume;
+        public uint FullResumeIndex;
+        public FullWorkerNativeState? FullNativeState;
         public JitNegativeHint[]? JitNegatives;
         public JitEntryHint[]? JitEntries;
         public ulong JitNegativeIp;
@@ -131,7 +137,7 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
         workers.Add(main);
         threadResults.Add(null);
         List<nint> strings = new();
-        bool processState = false, exitState = false, memoryReleased = false, joined = false;
+        bool processState = false, exitState = false, memoryReleased = false, joined = false, fullMutationBound = false, fullReadBound = false;
         ulong retainedBytes = 0, retainedMappings = 0;
         HostExecutionStopReason outcome = HostExecutionStopReason.None;
         Exception? failure = null;
@@ -152,7 +158,18 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
         }
         try
         {
-            if (jitOptions.Enabled)
+            if (jitOptions.EffectiveMode == GuestJitMode.Full)
+            {
+                fullJit = FullTranslationJit.Create(io, jitOptions, maximumWorkers, memoryLimitBytes);
+                fullJit.CheckProducer(program!);
+#if BLINK_FULL_X87_STATE_OWNER
+                CheckX87StateProducer(program!);
+#endif
+                _ = fullJit.PrepareCanonicalX87Production(jitOptions.AllowUnverifiedWindows);
+                io.BindMemoryFileMutation(fullJit); fullMutationBound = true;
+                io.BindMemoryFileRead(this); fullReadBound = true;
+            }
+            else if (jitOptions.EffectiveMode == GuestJitMode.Hybrid)
             {
                 guestJit = new GuestBlockJit(this, jitOptions);
                 guestJitActive = guestJit.CanEnter(trace != null);
@@ -174,12 +191,14 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
                 : program!.BlinkHostInitializeBoundResourceLimits(system)) == 0, "Initialize guest limits");
             main.Machine = program!.NewMachine(system, null);
             Require(main.Machine != null, "NewMachine");
+            InitializeX87Worker(main); // BEFORE current-Machine publication/LoadProgram
             main.GuestId = main.Machine->tid;
             program!.SetHostGuestCurrentMachine(main.Machine);
             main.Machine->thread = main.HostIdentity;
             system->trapexit = true;
             byte* path = Text(imagePath);
-            program!.LoadProgram(main.Machine, path, path, Vector(argv), Vector(env), null);
+            using (new FullDataScope(this, main))
+                program!.LoadProgram(main.Machine, path, path, Vector(argv), Vector(env), null);
             Require((int)system->loaded != 0, "Load guest image");
             if (!allowElfInterpreter && system->elf.interpreter != null)
                 throw new InvalidOperationException("ELF PT_INTERP requires ExecutionOptions.AllowElfInterpreter=true; no guest instructions executed.");
@@ -192,6 +211,9 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
         catch (Exception error) { failure = error; StopGroup(); }
         finally
         {
+            // Explicit terminal main-thread boundary, independent of Joined.
+            // An uncertain native exit keeps the sidecar inaccessible forever.
+            main.X87TerminalQuiescent = !main.X87NativeInFlight;
             // Every main-loop unwind releases page/syscall locks before joining.
             if (main.Machine != null)
             {
@@ -222,7 +244,7 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
                         upstreamReleased = main.Released;
                     }
                     else if (system != null && workers.Count == 1)
-                        Cleanup(() => { program!.FreeSystem(system); upstreamReleased = true; });
+                        Cleanup(() => { using var data = new FullDataScope(this, main); program!.FreeSystem(system); upstreamReleased = true; });
                     else upstreamReleased = main.Released || system == null;
                     if (upstreamReleased)
                     {
@@ -249,14 +271,42 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
                     else failure ??= new InvalidOperationException("Upstream cleanup failed; shared memory remains live with this execution owner.");
                 }
                 else failure ??= new InvalidOperationException("A child Machine remains owned; retain this execution owner.");
-                if (memoryReleased)
+                if (memoryReleased && GuestCopyBytes != 0)
+                    failure ??= new InvalidOperationException("Owned guest-copy snapshots remain charged; retain this execution owner.");
+                if (memoryReleased && GuestCopyBytes == 0)
                 {
-                    foreach (nint pointer in strings) Marshal.FreeCoTaskMem(pointer);
-                    Cleanup(() => directories.Dispose()); Cleanup(() => variables.Dispose()); Cleanup(() => barrier.Dispose());
-                    foreach (Worker worker in workers)
-                        Cleanup(() => DisposeWorkerResources(worker));
-                    current.Dispose();
-                    IsQuiescent = true;
+                    // Keep backing mutation observation alive through final
+                    // C-owner/file-lease retirement, then detach under IO.sync
+                    // before releasing any authority/store memory.
+                    if (fullReadBound) Cleanup(() => { io.UnbindMemoryFileRead(this); fullReadBound = false; });
+                    if (fullMutationBound) Cleanup(() => { io.UnbindMemoryFileMutation(fullJit!); fullMutationBound = false; });
+                    foreach (Worker worker in workers) Cleanup(() => RetireX87Worker(worker));
+                    Cleanup(RetirePendingX87Rollbacks);
+                    bool x87Retired = pendingX87Rollback == null && workers.All(w => w.FullNativeState == null || w.X87Retired);
+                    if (x87Retired)
+                    {
+                        if (fullJit != null)
+                            foreach (var worker in workers) Cleanup(() => worker.FullCache.Dispose());
+                        foreach (Worker worker in workers)
+                            Cleanup(() => DisposeWorkerResources(worker));
+                        bool x87StorageFreed = workers.All(w => w.FullNativeState == null || w.FullNativeState.NativeStorageBytes == 0);
+                        if (x87StorageFreed)
+                        {
+                            // Release the fixed owner reservation only AFTER
+                            // every retired native slab was actually freed.
+                            Cleanup(() => fullJit?.Dispose());
+                            if (fullJit == null || fullJit.IsDisposed)
+                            {
+                                foreach (nint pointer in strings) Marshal.FreeCoTaskMem(pointer);
+                                Cleanup(() => directories.Dispose()); Cleanup(() => variables.Dispose()); Cleanup(() => barrier.Dispose());
+                                current.Dispose();
+                                IsQuiescent = true;
+                            }
+                            else failure ??= new InvalidOperationException("Native code ownership remains pending; retain this execution owner.");
+                        }
+                        else failure ??= new InvalidOperationException("Canonical x87 native storage remains charged to this owner.");
+                    }
+                    else failure ??= new InvalidOperationException("Canonical x87 retirement remains an owned pending obligation; native storage and owner reservation retained.");
                 }
             }
         }
@@ -277,23 +327,51 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
             { JitStatistics = JitStatistics, IssuedInstructions = InstructionsIssued };
     }
 
-    private Worker NewWorker(bool main, Blink.Machine* machine) => new()
+    private Worker NewWorker(bool main, Blink.Machine* machine)
     {
-        Owner = this, Main = main, Machine = machine,
-        Stop = new HostExecutionStop(cancellation: stop.Token), Sleep = new HostSleep()
-    };
+        var worker = new Worker
+        {
+            Owner = this, Main = main, Machine = machine,
+            Stop = new HostExecutionStop(cancellation: stop.Token), Sleep = new HostSleep()
+        };
+        try
+        {
+            // Child: reserve/initialize before Start. Main is created before
+            // fullJit, so Bind reserves storage and NewMachine supplies identity.
+            EnsureX87Storage(worker);
+            if (machine != null) InitializeX87Worker(worker);
+            return worker;
+        }
+        catch (Exception error)
+        {
+            worker.X87TerminalQuiescent = true; // never published or started
+            try { DisposeWorkerResources(worker); } // never frees caller's Machine
+            catch (Exception cleanup)
+            {
+                worker.Error = error; worker.X87RetirementError = cleanup;
+                worker.Machine = null; // caller/C retains ownership; integer identity survives
+                worker.X87PendingRollbackNext = pendingX87Rollback;
+                pendingX87Rollback = worker;
+            }
+            throw;
+        }
+    }
     private void Bind(Worker worker)
     {
         if (guestJit != null) worker.JitEntries ??= guestJit.NegativeHintSlots == 0 ? Array.Empty<JitEntryHint>() : new JitEntryHint[16];
         if (guestJit != null) worker.JitNegatives ??= guestJit.NegativeHintSlots == 0 ? Array.Empty<JitNegativeHint>() : new JitNegativeHint[guestJit.NegativeHintSlots];
+        if (fullJit != null && !fullJit.Store.TryCreateWorkerCache(out worker.FullCache))
+            throw new InvalidOperationException("Full-JIT worker lookup quota exhausted.");
+        EnsureX87Storage(worker);
         worker.ContextBinding = program!.__DotCcEnter();
         worker.ThreadId = Environment.CurrentManagedThreadId;
         worker.HostIdentity = Blink.Libc.pthread_self();
         current.Value = worker;
         void BindOne(Action bind, Action unbind) { bind(); worker.Unbind.Push(unbind); }
+        if (fullJit != null) worker.Unbind.Push(() => worker.FullCache.Dispose());
         barrier!.AttachCurrentThread(); worker.Unbind.Push(barrier.DetachCurrentThread);
         BindOne(() => Blink.BindHostMembarrier(barrier), Blink.UnbindHostMembarrier);
-        BindOne(() => Blink.BindHostGuestThreads(this, program!, guestJit), Blink.UnbindHostGuestThreads);
+        BindOne(() => Blink.BindHostGuestThreads(this, program!, fullJit != null || guestJit != null ? this : null), Blink.UnbindHostGuestThreads);
         BindOne(() => Blink.BindHostGuestSignals(OnSignal), Blink.UnbindHostGuestSignals);
         BindOne(() => Blink.BindHostExecutionStop(worker.Stop), Blink.UnbindHostExecutionStop);
         BindOne(() => Blink.BindHostIo(io, worker.Stop.Token, worker.Wake), Blink.UnbindHostIo);
@@ -305,6 +383,7 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
         BindOne(() => Blink.BindHostIdentity(identity), Blink.UnbindHostIdentity);
         Require(program!.BlinkHostMemoryAttach(memoryToken) == 0, "Attach shared memory"); worker.Attached = true;
         worker.Bound = true;
+        BindX87Worker(worker); // child reuses cloned values; main has no Machine yet
     }
     private void Unbind(Worker worker)
     {
@@ -340,7 +419,8 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
                 {
                     while (worker.Stop.Reason == HostExecutionStopReason.None)
                     {
-                        if ((int)Blink.Atomic.Load(ref machine->attention) != 0) { program!.CheckForSignals(machine); continue; }
+                        if ((int)Blink.Atomic.Load(ref machine->attention) != 0) { CheckSignals(worker); continue; }
+                        if (fullJit != null) { if (!ExecuteFullInstruction(worker)) break; continue; }
                         if (guestJitActive && ShouldProbeGuestJit(worker) && TryExecuteGuestBlock(worker)) continue;
                         if (guestJitActive && worker.JitNegativeInstructions > 0)
                         {
@@ -366,7 +446,7 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
                     }
                 }
                 catch (Blink.Libc.JumpBufferException jump) when (jump.Identity == jumpIdentity &&
-                    jump.Value is -1 or -2 or -3 or -4 or -6 or -7 or -8 or -9 or 1 or 3 or 4)
+                    jump.Value is -1 or -2 or -3 or -4 or -6 or -7 or -8 or -9 or 1 or 3 or 4 or 13)
                 {
                     // Upstream HaltMachine has already installed the guest's
                     // signal frame. Blink() cleans up and resumes Actor at that
@@ -400,6 +480,7 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
     // escape the process-wide budget or the worker's monotonic stop token.
     private bool ExecuteOne(Worker worker, bool observeJit = true)
     {
+        AssertInterpreterAllowed(worker.Machine);
         if (worker.Stop.Reason != HostExecutionStopReason.None) return false;
         if ((ulong)Interlocked.Increment(ref issued) > instructionBudget)
         { stop.RequestBudgetStop(); return false; }
@@ -441,16 +522,20 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
     {
         Worker worker = RequireCurrent();
         Require((nint)worker.Machine == pointer, "Recursive signal execution owner");
+        if (fullJit != null && worker.FullMappingBorrow)
+            throw new InvalidOperationException("A mapping mutation cannot invoke guest execution.");
+        using var semanticSuspension = fullJit == null ? default :
+            fullJit.Authority.PauseCpuSemanticRead(worker.FullCache.Worker);
         var machine = worker.Machine;
         // Preserve upstream SignalActor ordering: execute, then test restored
         // before consuming attention. On stop, return through its original
         // DeliverSignalRecursively/syscall cleanup rather than throw across it.
-        while (ExecuteOne(worker))
+        while (fullJit != null ? ExecuteFullInstruction(worker, signalActor: true) : ExecuteOne(worker))
         {
             if ((int)Blink.Atomic.Load(ref machine->attention) != 0)
             {
                 if ((int)machine->restored != 0) break;
-                program!.CheckForSignals(machine);
+                CheckSignals(worker);
             }
         }
     }
@@ -458,13 +543,18 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
     {
         var machine = worker.Machine;
         if (machine == null) return;
+        using var data = new FullDataScope(this, worker);
         machine->sysdepth = 0; machine->sigdepth = 0;
         machine->canhalt = false; machine->nofault = false; machine->insyscall = false;
+        // A fault abandoned the instruction's stash before normal completion.
+        // It must never be committed by the first successful handler operation.
+        machine->stashaddr = 0;
         program!.CollectPageLocks(machine); program!.CollectGarbage(machine, 0);
     }
     private void ClearWorkerTid(Worker worker)
     {
         if (worker.Machine == null || worker.TidCleared) return;
+        using var data = new FullDataScope(this, worker);
         program!.ClearChildTid(worker.Machine);
         worker.TidCleared = true;
     }
@@ -472,7 +562,9 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
     {
         var machine = worker.Machine;
         if (machine == null) return;
+        using var data = new FullDataScope(this, worker);
         ClearWorkerTid(worker);
+        DetachX87Worker(worker); // validate quiescence BEFORE Machine free/null
         program!.SetHostGuestCurrentMachine(null);
         // FreeMachine removes the target under upstream machines_lock. Until
         // then, a concurrent SysTkill may still legitimately enumerate it and
@@ -489,6 +581,11 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
         Worker parent = RequireCurrent();
         var child = (Blink.Machine*)pointer;
         if (child == null || child->blink_host_system != system) return 22;
+        // NewMachine memcpy includes the parent's transient decoded pointer.
+        // Each worker installs its own decoded snapshot before any operation.
+        child->xedd = null;
+        try
+        {
         // Start is reached through an interpreted syscall. Restrict native
         // admission to initially enrolled, unrevoked code before publication.
         guestJit?.DisableForWorkers();
@@ -502,25 +599,47 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
             try
             {
                 worker = NewWorker(false, child);
+                CloneX87Worker(parent, worker);
                 worker.ResultIndex = threadResults.Count;
                 worker.Thread = new Thread(() => ChildMain(worker)) { IsBackground = true, Name = "translated-guest-child" };
                 workers.Add(worker);
                 threadResults.Add(null); historyAdded = true;
                 parent.PendingStarts.Add(worker);
+                X87ThreadStarting(); // erased in production; failure precedes Start
                 worker.Thread.Start();
+                worker.X87ThreadStarted = true; // nonthrowing; child waits for publication
                 return 0; // No throwing work may follow successful Start.
             }
-            catch (Exception error) when (error is OutOfMemoryException or ThreadStateException)
+            catch (Exception error)
             {
                 if (worker != null)
                 {
-                    parent.PendingStarts.Remove(worker); workers.Remove(worker);
+                    parent.PendingStarts.Remove(worker);
                     if (historyAdded) threadResults.RemoveAt(worker.ResultIndex);
-                    worker.Wake.Dispose(); worker.Sleep.Dispose(); worker.Stop.Dispose(); worker.SpawnReady.Dispose();
+                    worker.X87TerminalQuiescent = true; // failed prepublication/start
+                    try
+                    {
+                        DisposeWorkerResources(worker);
+                        workers.Remove(worker);
+                    }
+                    catch (Exception cleanup)
+                    {
+                        // Keep the charge/pointer reachable even on rollback
+                        // failure. C still owns child and frees it on Start!=0.
+                        worker.Error = error; worker.X87RetirementError = cleanup;
+                        worker.Machine = null; // integer binding identity retained
+                        worker.Released = true;
+                        workers.Remove(worker);
+                        worker.X87PendingRollbackNext = pendingX87Rollback;
+                        pendingX87Rollback = worker;
+                        closing = true;
+                    }
                 }
                 return 11;
             }
         }
+        }
+        catch (Exception) { return 11; } // no sidecar exists before guarded NewWorker
     }
     private void ChildMain(Worker worker)
     {
@@ -607,7 +726,7 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
             "Immediate signal sender");
         var previous = worker.ImmediateSignal;
         worker.ImmediateSignal = (signal, new(processId, userId));
-        try { program!.DeliverSignal(worker.Machine, signal, -6); } // SI_TKILL_LINUX
+        try { using var data = new FullDataScope(this, worker); program!.DeliverSignal(worker.Machine, signal, -6); } // SI_TKILL_LINUX
         finally { worker.ImmediateSignal = previous; }
     }
     HostGuestSignalInfo? IHostGuestThreads.TakeSignalInfo(nint pointer, int signal, bool discard)
@@ -652,9 +771,11 @@ public sealed unsafe partial class ThreadedGuestExecution : IHostGuestThreads
     private static void DisposeWorkerResources(Worker worker)
     {
         if (worker.ResourcesDisposed) return;
+        worker.Owner.RetireX87Worker(worker); // throws BEFORE any native free on failure
         List<Exception> errors = new();
         void Dispose(Action action) { try { action(); } catch (Exception error) { errors.Add(error); } }
         if (worker.NativePoll != null) Dispose(worker.NativePoll.Dispose);
+        if (worker.FullNativeState != null) Dispose(worker.FullNativeState.Dispose);
         Dispose(worker.Wake.Dispose); Dispose(worker.Sleep.Dispose);
         Dispose(worker.Stop.Dispose); Dispose(worker.SpawnReady.Dispose);
         if (worker.Wake.NotificationFailure is { } wakeError) errors.Add(wakeError);

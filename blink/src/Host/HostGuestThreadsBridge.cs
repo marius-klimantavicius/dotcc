@@ -6,6 +6,45 @@ namespace Managed.Emulation;
 
 public partial class BlinkCore
 {
+#if DOTCC_INSTANCE_FOR_HOST
+    public static unsafe ulong blink_host_guest_page_table_entry(BlinkCore program, Machine* machine, ulong page)
+        => GuestOwner(program) is IHostGuestInstructionMemory memory
+            ? memory.FindPageTableEntry((nint)machine, page) : program.BlinkGuestFindPageTableEntry(machine, page);
+#else
+    public static unsafe ulong blink_host_guest_page_table_entry(Machine* machine, ulong page)
+        => BlinkGuestFindPageTableEntry(machine, page);
+#endif
+#if DOTCC_INSTANCE_FOR_HOST
+    public static unsafe void blink_host_guest_recycle_page(BlinkCore program, System* system, byte* page, int clear)
+    {
+        if (GuestOwner(program) is IHostGuestInstructionMemory memory)
+            memory.RecycleAnonymousPage((nint)system, (nint)page, clear != 0);
+        else program.BlinkGuestRecycleAnonymousPage(system, page, clear);
+    }
+#else
+    public static unsafe void blink_host_guest_recycle_page(System* system, byte* page, int clear)
+        => BlinkGuestRecycleAnonymousPage(system, page, clear);
+#endif
+#if DOTCC_INSTANCE_FOR_HOST
+    public static unsafe void blink_host_guest_interpreter_dispatch(BlinkCore program, Machine* machine)
+        => GuestOwner(program).InterpreterDispatch((nint)machine);
+#else
+    public static unsafe void blink_host_guest_interpreter_dispatch(Machine* machine)
+        => guestThreads?.InterpreterDispatch((nint)machine);
+#endif
+#if DOTCC_INSTANCE_FOR_HOST
+    public static unsafe void blink_host_guest_physical_expose(BlinkCore program, Machine* machine, byte* page)
+    {
+        if (GuestOwner(program) is IHostGuestInstructionMemory memory)
+            memory.PhysicalDataExposed((nint)machine, (nint)page);
+    }
+#else
+    public static unsafe void blink_host_guest_physical_expose(Machine* machine, byte* page)
+    {
+        if (guestThreads is IHostGuestInstructionMemory memory)
+            memory.PhysicalDataExposed((nint)machine, (nint)page);
+    }
+#endif
     [ThreadStatic] private static IHostGuestThreads? guestThreads;
     [ThreadStatic] private static IHostGuestCodeRevocation? guestCodeRevocation;
     // The threaded upstream profile declares g_machine as TLS. Keep access to
@@ -79,11 +118,16 @@ public partial class BlinkCore
 #endif
     {
         var revocation = guestCodeRevocation;
-        if (revocation == null || !GuestRevocationRange(ref address, ref size)) return;
+        if (revocation == null) return;
+        const long limit = 0x800000000000L;
+        bool finite = address >= 0 && address < limit && size > 0 && size < limit && size <= limit - address;
+        if (!GuestRevocationRange(ref address, ref size)) return;
 #if DOTCC_INSTANCE_FOR_HOST
         _ = GuestOwner(program);
 #endif
-        revocation.RevokeMapping(address, size);
+        // Clipping a logical teardown or an unknown range cannot certify it as
+        // finite. Preserve its global meaning for the full-JIT owner.
+        revocation.RevokeMapping(finite ? address : 0, finite ? size : limit);
     }
 #if DOTCC_INSTANCE_FOR_HOST
     public static unsafe int blink_host_guest_thread_start(BlinkCore program, Machine* child)

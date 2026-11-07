@@ -10,14 +10,500 @@ unsafe partial class Program
     static void Check(bool condition, string name)
     { if (!condition) throw new InvalidOperationException(name); ++checks; }
 
-    static int Main()
+    static int Main(string[] args)
     {
+        if (args is ["native-inventory", var input, var output]) return WriteNativeLoweringInventory(input, output);
         string? unavailable = NativeCodePlatform.UnavailableReason(allowUnverifiedWindows: true);
         if (unavailable != null) { Console.WriteLine("SKIP native contract: " + unavailable); return 0; }
         byte* machine = (byte*)NativeMemory.AllocZeroed((nuint)sizeof(Blink.Machine));
         byte* data = (byte*)NativeMemory.AlignedAlloc(4096, 4096);
         try
         {
+            if (args is ["owned-shared-read-family"])
+            {
+                CheckFullNativeCompletionR189();
+                CheckFullOwnedSharedReadR207(machine);
+                CheckFullRetainedCostR205(machine);
+                PrintQualificationCounts("R207 owned shared READ mapping family (source-authored, no speed claim)");
+                Console.WriteLine($"PASS owned shared READ mapping family checks={checks}"); return 0;
+            }
+            if (args is ["retained-ticket-cost-family"])
+            {
+                CheckFullCodeRoleMappingsR204(machine);
+                CheckFullRetainedCostR205(machine);
+                PrintQualificationCounts("combined R204/R205 mapping and retained-ticket cost family");
+                Console.WriteLine($"PASS combined mapping/retained-ticket cost family checks={checks}"); return 0;
+            }
+            if (args is ["code-role-mapping-authority-family"])
+            {
+                CheckFullCodeRoleMappingsR204(machine);
+                PrintQualificationCounts("R204 code-role/data-cache authority family (no speed claim)");
+                Console.WriteLine($"PASS code-role mapping authority family checks={checks}"); return 0;
+            }
+            if (args is ["authority-guard-family"])
+            {
+                var failures = new List<Exception>();
+                try { CheckFullImmutableGuardR202(machine); }
+                catch (Exception error) { failures.Add(error); Console.Error.WriteLine(error); }
+                try { CheckFullPreciseMappingsR203(machine); }
+                catch (Exception error) { failures.Add(error); Console.Error.WriteLine(error); }
+                PrintQualificationCounts("combined immutable guard and precise mapping authority family");
+                if (failures.Count != 0) throw new AggregateException("Authority/guard family failed", failures);
+                Console.WriteLine($"PASS authority/guard family checks={checks}"); return 0;
+            }
+            if (args is ["precise-mapping-authority-family"])
+            {
+                CheckFullPreciseMappingsR203(machine);
+                PrintQualificationCounts("R203 precise mapping/code authority family");
+                Console.WriteLine($"PASS precise mapping authority family checks={checks}"); return 0;
+            }
+            if (args is ["immutable-guard-family"])
+                return CheckFullImmutableGuardR202(machine);
+            if (args is ["code-snapshot-epoch-family"])
+            {
+                CheckFullCodeSnapshotsR201(machine);
+                PrintQualificationCounts("R201 code snapshot/content/eligibility epoch family");
+                Console.WriteLine($"PASS code snapshot epoch family checks={checks}"); return 0;
+            }
+            if (args is ["retained-native-entry-family"])
+                return CheckFullRetainedNativeEntryR195(machine);
+            if (args is ["mapping-cache-epoch-family"])
+            {
+                CheckFullMappingCacheEpochR193(machine);
+                PrintQualificationCounts("mapping cache lifetime/epoch family");
+                Console.WriteLine($"PASS mapping cache epoch family checks={checks}"); return 0;
+            }
+            if (args is ["address-extension-family"])
+            {
+                CheckFullAddressExtensionsR192(machine);
+                PrintQualificationCounts("R192 ordinary address and integer-extension family");
+                Console.WriteLine($"PASS address-extension family checks={checks}"); return 0;
+            }
+            if (args is ["native-completion-family" or "owner-private-completion-family"])
+            {
+                CheckFullNativeCompletionR189();
+                Console.WriteLine($"PASS native completion family checks={checks}"); return 0;
+            }
+            if (args is ["native-memory-cache-family"])
+            {
+                CheckFullNativeMemoryCacheR181(machine);
+                Console.WriteLine($"PASS native memory-cache family checks={checks}"); return 0;
+            }
+            if (args is ["processor-environment-family"])
+            {
+                var failures=new List<Exception>();
+                try { CheckFullOwnerScaffoldEncodingAndAllocation(); CheckFullOwnerScaffoldReuse(machine); }
+                catch(Exception error) { failures.Add(error); Console.Error.WriteLine(error); }
+                try { CheckFullNativeProcessorEnvironment(machine); }
+                catch(Exception error) { failures.Add(error); Console.Error.WriteLine(error); }
+                PrintQualificationCounts("processor clock/entropy data assist and emitted computation family");
+                if(failures.Count!=0)throw new AggregateException("Processor environment family batch failed",failures);
+                Console.WriteLine($"PASS native processor environment family checks={checks}"); return 0;
+            }
+            if (args is ["portable-computation-family"])
+            {
+                var failures=new List<Exception>();
+                try { CheckFullNativeNearControl(machine); }
+                catch(Exception error) { failures.Add(error); Console.Error.WriteLine(error); }
+                try { CheckFullNativeResidualScalars(machine); }
+                catch(Exception error) { failures.Add(error); Console.Error.WriteLine(error); }
+                try { CheckFullX87KernelCatalog(); CheckFullX87KernelOwner(); }
+                catch(Exception error) { failures.Add(error); Console.Error.WriteLine(error); }
+                try { CheckFullCanonicalX87PortableFamily(machine); }
+                catch(Exception error) { failures.Add(error); Console.Error.WriteLine(error); }
+                PrintQualificationCounts("near-control and portable all8 canonical/catalog/controller family");
+                if(failures.Count!=0)throw new AggregateException("Portable computation family batch failed",failures);
+                Console.WriteLine($"PASS native portable computation family checks={checks}"); return 0;
+            }
+            if (args is ["near-control-software-family"])
+            {
+                var failures=new List<Exception>();
+                try { CheckFullNativeNearControl(machine); }
+                catch(Exception error) { failures.Add(error); Console.Error.WriteLine(error); }
+                try { Trans168SoftwareCodeSizes(); Trans168SoftwareFamilySuite(); }
+                catch(Exception error) { failures.Add(error); Console.Error.WriteLine(error); }
+                PrintQualificationCounts("near-control family and standalone portable transcendental correspondence");
+                if(failures.Count!=0)throw new AggregateException("Near-control/software family batch failed",failures);
+                Console.WriteLine($"PASS native near-control and standalone software family checks={checks}"); return 0;
+            }
+            if (args is ["native-remaining-family"])
+            {
+                var failures=new List<Exception>();
+                try { CheckFullNativeProcessorQueries(machine); }
+                catch(Exception error) { failures.Add(error); Console.Error.WriteLine(error); }
+                try { CheckFullCanonicalX87Controls(machine); CheckFullX87State(); CheckFullCanonicalX87Prefixes(machine); CheckR159ProjectionCells(); }
+                catch(Exception error) { failures.Add(error); Console.Error.WriteLine(error); }
+                try { CheckFullCanonicalX87Transcendentals(machine, integerOnly:true); }
+                catch(Exception error) { failures.Add(error); Console.Error.WriteLine(error); }
+                PrintQualificationCounts("processor queries, x87 state and integer transcendental subdomains");
+                if(failures.Count!=0)throw new AggregateException("Remaining native family batch failed",failures);
+                Console.WriteLine($"PASS native remaining family batch checks={checks}"); return 0;
+            }
+            if (args is ["ordinary-form-family"])
+            {
+                var failures=new List<Exception>();
+                try { CheckFullNativeStrings(machine); CheckFullStringFormsR162(machine); }
+                catch(Exception error) { failures.Add(error); Console.Error.WriteLine(error); }
+                try { CheckFullCanonicalX87Controls(machine); CheckFullCanonicalX87Prefixes(machine); CheckR159ProjectionCells(); }
+                catch(Exception error) { failures.Add(error); Console.Error.WriteLine(error); }
+                PrintQualificationCounts("ordinary string and x87 state form families");
+                if(failures.Count!=0)throw new AggregateException("Ordinary form family batch failed",failures);
+                Console.WriteLine($"PASS ordinary string and x87 state form families checks={checks}"); return 0;
+            }
+            if (args is ["canonical-encoding-family"])
+            { CheckFullCanonicalEncodingR159(machine); PrintQualificationCounts("prefix/encoding family"); return 0; }
+            if (args is ["canonical-x87-controls"])
+            {
+                CheckFullCanonicalX87Controls(machine); PrintQualificationCounts("control/state family");
+                Console.WriteLine($"PASS native complete x87 control/state family checks={checks}"); return 0;
+            }
+            if (args is ["canonical-x87-family"]) return CheckFullCanonicalX87Family(machine);
+            if (args is ["atomic-family", var registeredGuest])
+            {
+                CheckFullAtomicFamilyR156(machine); CheckFullAtomicRegisteredR156(registeredGuest);
+                Console.WriteLine($"PASS coherent atomic family checks={checks}");
+                return 0;
+            }
+            if (args is ["dynamic-control-cache-family"])
+            {
+                CheckFullJumpCacheIndex(machine);
+                Console.WriteLine($"PASS dynamic control cache family checks={checks}");
+                return 0;
+            }
+            if (args is ["native-family-batch", var atomicGuest])
+            {
+                var failures = new List<Exception>();
+                try { CheckFullCanonicalX87Family(machine); }
+                catch (Exception error) { failures.Add(error); Console.Error.WriteLine(error); }
+                try { CheckFullAtomicFamilyR156(machine); CheckFullAtomicRegisteredR156(atomicGuest); }
+                catch (Exception error) { failures.Add(error); Console.Error.WriteLine(error); }
+                try { CheckFullCanonicalEncodingR159(machine); }
+                catch (Exception error) { failures.Add(error); Console.Error.WriteLine(error); }
+                try { CheckFullStringFormsR162(machine); }
+                catch (Exception error) { failures.Add(error); Console.Error.WriteLine(error); }
+                try { CheckFullNativeNearControl(machine); CheckFullNativeResidualScalars(machine); CheckFullNativeProcessorQueries(machine); }
+                catch (Exception error) { failures.Add(error); Console.Error.WriteLine(error); }
+                try { CheckFullNativeProcessorEnvironment(machine); }
+                catch (Exception error) { failures.Add(error); Console.Error.WriteLine(error); }
+                try { CheckFullNativeMemoryCacheR181(machine); CheckFullRetainedAdmissionR185(machine); }
+                catch (Exception error) { failures.Add(error); Console.Error.WriteLine(error); }
+                try { CheckFullNativeCompletionR189(); }
+                catch (Exception error) { failures.Add(error); Console.Error.WriteLine(error); }
+                try { CheckFullBoundedCopiesR190(); }
+                catch (Exception error) { failures.Add(error); Console.Error.WriteLine(error); }
+                try { CheckFullAddressExtensionsR192(machine); }
+                catch (Exception error) { failures.Add(error); Console.Error.WriteLine(error); }
+                try { CheckFullMappingCacheEpochR193(machine); }
+                catch (Exception error) { failures.Add(error); Console.Error.WriteLine(error); }
+                try { CheckFullSharedMemoryGuardsR188(machine); }
+                catch (Exception error) { failures.Add(error); Console.Error.WriteLine(error); }
+                try { CheckFullJumpCacheIndex(machine); }
+                catch (Exception error) { failures.Add(error); Console.Error.WriteLine(error); }
+                PrintQualificationCounts("complete native family batch");
+                if (failures.Count != 0) throw new AggregateException("Native family integration batch failed.", failures);
+                Console.WriteLine($"PASS native x87 and atomic family batch checks={checks}");
+                return 0;
+            }
+            if (args is ["enter-materialization"])
+            {
+                CheckFullEnterDemandMaterialization();
+                Console.WriteLine($"PASS native ENTER mapping-only demand checks={checks}");
+                return 0;
+            }
+            if (args is ["enter"])
+            {
+                CheckFullNativeEnter(machine); CheckFullEnterDemandMaterialization();
+                Console.WriteLine($"PASS native ENTER checks={checks}");
+                return 0;
+            }
+            if (args is ["extended80-transforms"])
+            {
+                CheckFullExtended80Transforms();
+                Console.WriteLine($"PASS standalone binary80 transforms checks={checks}");
+                return 0;
+            }
+            if (args is ["x87-owned-frame"])
+            {
+                CheckFullX87OwnedFrame();
+                Console.WriteLine($"PASS exact canonical workframe and fatal-return ownership checks={checks}");
+                return 0;
+            }
+            if (args is ["extended80-bcd"])
+            {
+                CheckFullExtended80Bcd();
+                Console.WriteLine($"PASS standalone binary80 packed BCD checks={checks}");
+                return 0;
+            }
+            if (args is ["x87-memory-materialization"])
+            {
+                CheckFullCanonicalX87ProbeMaterialization();
+                Console.WriteLine($"PASS canonical x87 permission-only materialization checks={checks}");
+                return 0;
+            }
+            if (args is ["canonical-x87-memory"])
+            {
+                CheckFullCanonicalX87Memory(machine);
+                Console.WriteLine($"PASS native canonical x87 memory conversions checks={checks}");
+                return 0;
+            }
+            if (args is ["canonical-x87-arithmetic"])
+            {
+                CheckFullCanonicalX87Arithmetic(machine);
+                Console.WriteLine($"PASS native canonical x87 arithmetic checks={checks}");
+                return 0;
+            }
+            if (args is ["x87-catalog"])
+            {
+                CheckFullX87KernelCatalog(); CheckFullX87KernelOwner();
+                Console.WriteLine($"PASS immutable x87 kernel catalog and owner checks={checks}");
+                return 0;
+            }
+            if (args is ["x87-work-storage"])
+            {
+                CheckFullX87WorkStorage();
+                Console.WriteLine($"PASS charged canonical x87 native scratch checks={checks}");
+                return 0;
+            }
+            if (args is ["canonical-x87-stack"])
+            {
+                CheckFullCanonicalX87Stack(machine);
+                Console.WriteLine($"PASS native canonical x87 stack/control checks={checks}");
+                return 0;
+            }
+            if (args is ["scaffold"])
+            {
+                CheckFullBlockEmitter(machine);
+                Console.WriteLine($"PASS native scaffold/issue contracts checks={checks}");
+                return 0;
+            }
+            if (args is ["canonical-mmx"])
+            {
+                CheckFullCanonicalMmx(machine);
+                Console.WriteLine($"PASS canonical physical80 MMX checks={checks}");
+                return 0;
+            }
+            if (args is ["x87-transport"])
+            {
+                CheckFullX87SignalTransport();
+                Console.WriteLine($"PASS actual canonical x87 signal transport checks={checks}");
+                return 0;
+            }
+            if (args is ["x87-rep-owner"])
+            {
+                CheckFullRepControllerR104();
+                CheckFullRepOrdinaryState();
+                Console.WriteLine($"PASS REP owner return integration checks={checks}");
+                return 0;
+            }
+            if (args is ["x87-frame"])
+            {
+                CheckFullX87Frame(machine);
+                Console.WriteLine($"PASS canonical x87 ABI7 frame checks={checks}");
+                return 0;
+            }
+            if (args is ["x87-ownership"])
+            {
+                CheckFullX87Ownership();
+                Console.WriteLine($"PASS inactive x87 ownership checks={checks}");
+                return 0;
+            }
+            if (args is ["x87-state"])
+            {
+                CheckFullX87State();
+                Console.WriteLine($"PASS canonical x87 state codecs checks={checks}");
+                return 0;
+            }
+            if (args is ["extended80-controls"])
+            {
+                CheckFullExtended80Controls();
+                Console.WriteLine($"PASS standalone binary80 controls checks={checks}");
+                return 0;
+            }
+            if (args is ["extended80-conversions"])
+            {
+                CheckFullExtended80Conversions();
+                Console.WriteLine($"PASS standalone binary80 conversions checks={checks}");
+                return 0;
+            }
+            if (args is ["extended80"])
+            {
+                CheckFullExtended80Native();
+                Console.WriteLine($"PASS standalone binary80 foundation checks={checks}");
+                return 0;
+            }
+            if (args is ["masked-store"])
+            {
+                CheckFullNativeMaskedStore(machine); CheckFullMaskedStoreUnion(machine); CheckFullMaskedStoreControllerBoundaries();
+                Console.WriteLine($"PASS native masked stores checks={checks}");
+                return 0;
+            }
+            if (args is ["checksum"])
+            {
+                CheckFullNativeChecksum(machine);
+                Console.WriteLine($"PASS native checksum checks={checks}");
+                return 0;
+            }
+            if (args is ["flag-stack"])
+            {
+                CheckFullNativeFlagStack(machine);
+                Console.WriteLine($"PASS native flag stack checks={checks}");
+                return 0;
+            }
+            if (args is ["coverage-wave"])
+            {
+                CheckFullNativeFlagStack(machine); CheckFullNativeChecksum(machine);
+                CheckFullNativeScalarMisc(machine); CheckFullNativeBitCounts(machine);
+                CheckFullNativeUnlockedBits(machine); CheckFullNativeVectorExtended(machine);
+                CheckFullNativeMmx(machine); CheckFullNativeFloatMmx(machine);
+                CheckFullNativeFloatExtended(machine); CheckFullNativeSystemState(machine);
+                CheckFullNativeSegmentFaults(machine); CheckFullNativeDenseMemory(); CheckFullNativeR118(machine);
+                Console.WriteLine($"PASS targeted native coverage wave checks={checks}");
+                return 0;
+            }
+            if (args is ["r118-response"])
+            {
+                CheckFullNativeR118(machine);
+                Console.WriteLine($"PASS isolated R118 native response checks={checks}");
+                return 0;
+            }
+            if (args is ["system-state"])
+            {
+                CheckFullNativeSystemState(machine);
+                Console.WriteLine($"PASS isolated native state checks={checks}");
+                return 0;
+            }
+            if (args is ["dense-memory"])
+            {
+                CheckFullNativeDenseMemory();
+                Console.WriteLine($"PASS isolated dense native mapping checks={checks}");
+                return 0;
+            }
+            if (args is ["mmx"])
+            {
+                CheckFullNativeMmx(machine);
+                Console.WriteLine($"PASS isolated native MMX checks={checks}");
+                return 0;
+            }
+            if (args is ["float-extended"])
+            {
+                CheckFullNativeFloatExtended(machine);
+                Console.WriteLine($"PASS isolated native extended-float checks={checks}");
+                return 0;
+            }
+            if (args is ["segment-faults"])
+            {
+                CheckFullNativeSegmentFaults(machine);
+                Console.WriteLine($"PASS isolated native segment-fault checks={checks}");
+                return 0;
+            }
+            if (args is ["coverage-new"])
+            {
+                CheckFullNativeScalarMisc(machine);
+                CheckFullNativeUnlockedBits(machine);
+                CheckFullNativeBitCounts(machine);
+                CheckFullNativeVectorExtended(machine);
+                CheckFullNativeFloatMmx(machine);
+                Console.WriteLine($"PASS targeted new native coverage checks={checks}");
+                return 0;
+            }
+            if (args is ["float-mmx"])
+            {
+                CheckFullNativeFloatMmx(machine);
+                Console.WriteLine($"PASS isolated native MMX-FP-conversion checks={checks}");
+                return 0;
+            }
+            if (args is ["bit-counts"])
+            {
+                CheckFullNativeBitCounts(machine);
+                Console.WriteLine($"PASS isolated native bit-count checks={checks}");
+                return 0;
+            }
+            if (args is ["vector-extended"])
+            {
+                CheckFullNativeVectorExtended(machine);
+                Console.WriteLine($"PASS isolated native extended-vector checks={checks}");
+                return 0;
+            }
+            if (args is ["unlocked-bits"])
+            {
+                CheckFullNativeUnlockedBits(machine);
+                Console.WriteLine($"PASS isolated native unlocked-bit checks={checks}");
+                return 0;
+            }
+            if (args is ["scalar-misc"])
+            {
+                CheckFullNativeScalarMisc(machine);
+                Console.WriteLine($"PASS isolated native scalar-misc checks={checks}");
+                return 0;
+            }
+            if (args is ["rep-kernel"])
+            {
+                CheckFullRepKernelStore();
+                CheckFullRepKernels(machine);
+                CheckRepSharedYieldCleanup(machine);
+                Console.WriteLine($"PASS isolated REP kernel/storage checks={checks}; controller qualification excluded");
+                return 0;
+            }
+            CheckRetainedTranslationStore();
+            CheckFullRepKernelStore();
+            CheckFullSemanticAuthority();
+            CheckFullMemoryMissDiagnostics();
+            CheckFullNativeDenseMemory();
+            CheckFullLastExitLinks(machine);
+            CheckFullStaticExitMetadata();
+            CheckFullRetainedAuthority(machine);
+            CheckFullNativeStrings(machine);
+            Console.WriteLine("native-string contracts passed");
+            CheckFullRepContracts(machine);
+            CheckFullRepControllerR104();
+            CheckFullRepOrdinaryState();
+            CheckRepSharedYieldCleanup(machine);
+            Console.WriteLine("native-REP contracts passed");
+            Console.WriteLine("native-last-exit-link contracts passed");
+            CheckFullNativeScalarMisc(machine);
+            CheckFullNativeBitCounts(machine);
+            CheckFullNativeSystemState(machine);
+            CheckFullNativeSegmentFaults(machine);
+            CheckFullNativeControlFlags(machine);
+            Console.WriteLine("native-control-flag contracts passed");
+            CheckFullNativeHints(machine);
+            CheckFullNativeResidualScalars(machine);
+            Console.WriteLine("native-hint contracts passed");
+            CheckFullAddressExtensionsR192(machine);
+            CheckFullNativeInteger(machine);
+            Console.WriteLine("native-integer contracts passed");
+            CheckFullNativeMemory(machine);
+            CheckFullNativeStackMemory(machine);
+            CheckFullStackMemoryAdmission();
+            Console.WriteLine("native-stack-memory contracts passed");
+            Console.WriteLine("native-memory contracts passed");
+            CheckFullNativeMemoryInteger(machine);
+            CheckFullNativeUnlockedBits(machine);
+            Console.WriteLine("native-memory-integer contracts passed");
+            CheckFullNativeController();
+            CheckFullNativeCompletionR189();
+            Console.WriteLine("native-controller contracts passed");
+            CheckFullNativeVector(machine);
+            CheckFullNativeMmx(machine);
+            CheckFullNativeVectorExtended(machine);
+            Console.WriteLine("native-vector contracts passed");
+            CheckFullNativeVectorMove(machine);
+            Console.WriteLine("native-vector-move contracts passed");
+            CheckFullNativeFloat(machine);
+            CheckFullNativeFloatExtended(machine);
+            CheckFullNativeFloatMmx(machine);
+            Console.WriteLine("native-float contracts passed");
+            CheckFullBlockEmitter(machine);
+            CheckFullCodeEpochs(machine);
+            CheckHostMemoryFileMutation();
+            CheckHostMemoryFileRead();
+            CheckFullController();
+            CheckQemuAuthorityScopes();
+            CheckQemuProvenanceMigration();
+            CheckQemuLinkPreparation();
+            CheckQemuOwnerScaffoldLifetime();
+            CheckQemuBlockPolicy();
+            CheckQemuPublicationProgress();
             for (int i = 0; i < 4096; ++i) data[i] = (byte)(i * 37 + 0x91);
             JitDataDescriptor* descriptors = stackalloc JitDataDescriptor[4];
             foreach (var form in new[] { (JitOperation.LoadMov, 32, 32), (JitOperation.LoadMov, 64, 64),
@@ -102,6 +588,8 @@ unsafe partial class Program
                 Check(new ReadOnlySpan<byte>(machine, sizeof(Blink.Machine)).SequenceEqual(expected), "partial-block miss full state");
             }
             CheckNativeLimits(machine, data);
+            CheckFullNativeDispatcher(machine);
+            CheckSemanticReadLifetime();
             CheckAddressPlans(machine);
             CheckStoresAndStack(machine, data, descriptors);
             CheckMemorySequences(machine, data, descriptors);

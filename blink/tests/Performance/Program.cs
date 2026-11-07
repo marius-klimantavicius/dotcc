@@ -59,10 +59,12 @@ for (int trial = 0; trial < trials; ++trial)
     var owner = new ThreadedGuestExecution(io, stop, mode == "loop" ? 32UL << 20 : 256UL << 20,
         maximumWorkers: 64, virtualMemoryLimitBytes: mode == "loop" ? null : 4UL << 30,
         jitOptions: new() { Enabled = args.Length > 6 && args[6] == "guest-jit", AllowUnverifiedWindows = true,
+            Mode = args.Length > 6 && args[6] == "full-jit" ? GuestJitMode.Full : GuestJitMode.Interpreter,
             HotBlockThreshold = args.Length > 7 ? int.Parse(args[7]) : 16 });
     row.ImportMs = import.Elapsed.TotalMilliseconds;
     ulong budget = mode == "prefix" ? 2_000_000UL : mode == "service" ? serviceBudget : 40_000_000UL;
     long allocated = GC.GetTotalAllocatedBytes(true);
+    int[] collections = Enumerable.Range(0, 3).Select(GC.CollectionCount).ToArray();
     using var process = Process.GetCurrentProcess();
     var cpu = process.TotalProcessorTime;
     var wall = Stopwatch.StartNew();
@@ -87,6 +89,8 @@ for (int trial = 0; trial < trials; ++trial)
             row.ReadinessInstructions = owner.InstructionsCompleted;
             row.ReadinessJitStatistics = owner.JitStatistics;
             row.ReadinessMs = wall.Elapsed.TotalMilliseconds;
+            row.ReadinessGcCollections = Enumerable.Range(0, 3).Select(i => GC.CollectionCount(i)-collections[i]).ToArray();
+            row.ReadinessAllocatedBytes = GC.GetTotalAllocatedBytes(false)-allocated;
             row.ReadinessCpuMs = (process.TotalProcessorTime - cpu).TotalMilliseconds;
             IPEndPoint? endpoint = null;
             for (int fd = 0; fd < 1024; ++fd)
@@ -104,6 +108,7 @@ for (int trial = 0; trial < trials; ++trial)
             {
                 ulong startInstructions = owner.InstructionsCompleted;
                 var startJit = owner.JitStatistics;
+                int[] requestCollections = Enumerable.Range(0, 3).Select(GC.CollectionCount).ToArray();
                 long startAllocated = GC.GetTotalAllocatedBytes(false);
                 var requestTime = Stopwatch.StartNew(); var requestCpu = process.TotalProcessorTime;
                 using var client = new HttpClient(new SocketsHttpHandler { UseProxy = false }) { Timeout = TimeSpan.FromSeconds(seconds) };
@@ -117,7 +122,15 @@ for (int trial = 0; trial < trials; ++trial)
                     (process.TotalProcessorTime - requestCpu).TotalMilliseconds, owner.InstructionsCompleted - startInstructions, body,
                     endJit.GuestInstructions - startJit.GuestInstructions, endJit.NativeEntries - startJit.NativeEntries,
                     endJit.CompiledBlocks - startJit.CompiledBlocks, endJit.CompileMilliseconds - startJit.CompileMilliseconds,
-                    GC.GetTotalAllocatedBytes(false) - startAllocated));
+                    GC.GetTotalAllocatedBytes(false) - startAllocated,
+                    endJit.SemanticHelperInstructions - startJit.SemanticHelperInstructions,
+                    endJit.SemanticHelperCalls - startJit.SemanticHelperCalls,
+                    endJit.NativeTailJumps - startJit.NativeTailJumps,
+                    endJit.TranslationMisses - startJit.TranslationMisses,
+                    endJit.SemanticDataBorrows - startJit.SemanticDataBorrows,
+                    endJit.PageTableReadBorrows - startJit.PageTableReadBorrows,
+                    endJit.DeferredAnonymousRecycles - startJit.DeferredAnonymousRecycles,
+                    Enumerable.Range(0, 3).Select(i => GC.CollectionCount(i)-requestCollections[i]).ToArray()));
             }
         }
     }
@@ -136,6 +149,7 @@ for (int trial = 0; trial < trials; ++trial)
     wall.Stop(); process.Refresh();
     row.WallMs = wall.Elapsed.TotalMilliseconds;
     row.CpuMs = (process.TotalProcessorTime - cpu).TotalMilliseconds;
+    row.GcCollections = Enumerable.Range(0, 3).Select(i => GC.CollectionCount(i)-collections[i]).ToArray();
     row.AllocatedBytes = GC.GetTotalAllocatedBytes(true) - allocated;
     row.PeakWorkingSet = process.PeakWorkingSet64;
     row.Instructions = result?.Instructions ?? 0;
@@ -156,6 +170,9 @@ for (int trial = 0; trial < trials; ++trial)
             result.Exited && result.ExitStatus == 0 && result.StopReason == HostExecutionStopReason.None) &&
         (mode != "host" || row.Stdout.Contains("10.0.12", StringComparison.Ordinal)) &&
         (mode != "service" || row.Stdout == "SERVICE READY\nSERVICE STOPPED\n");
+    if (args.Length > 6 && args[6] == "full-jit")
+        row.Passed &= row.JitStatistics is { Mode: "Full", InterpreterInstructions: 0, InterpreterAttempts: 0 } strict &&
+            strict.InlineNativeInstructions + strict.SemanticHelperInstructions == (long)row.Instructions;
     await io.DisposeAsync();
     row.Passed &= io.OpenDescriptors == 0 && io.PendingPipeOperations == 0;
     rows.Add(row);
@@ -179,6 +196,9 @@ internal sealed class Measurement
     public double ReadinessMs { get; set; }
     public double ReadinessCpuMs { get; set; }
     public ulong ReadinessInstructions { get; set; }
+    public int[] GcCollections { get; set; } = [];
+    public int[] ReadinessGcCollections { get; set; } = [];
+    public long ReadinessAllocatedBytes { get; set; }
     public long AllocatedBytes { get; set; }
     public long PeakWorkingSet { get; set; }
     public ulong Instructions { get; set; }
@@ -195,7 +215,9 @@ internal sealed class Measurement
     public List<ThreadMeasurement> Threads { get; set; } = [];
 }
 internal sealed record RequestMeasurement(string Path, double WallMs, double CpuMs, ulong Instructions, string Body,
-    long NativeInstructions, long NativeEntries, long CompiledBlocks, double CompileMs, long AllocatedBytes);
+    long NativeInstructions, long NativeEntries, long CompiledBlocks, double CompileMs, long AllocatedBytes,
+    long HelperInstructions, long HelperCalls, long NativeTailJumps, long TranslationMisses,
+    long DataBorrows, long PageWalkBorrows, long DeferredRecycles, int[] GcCollections);
 internal sealed record ThreadMeasurement(int Id, string Termination, int Status, int Halt, int Signal, ulong IP, string? FirstTrap);
 [JsonSerializable(typeof(List<Measurement>))]
 internal partial class BenchJson : JsonSerializerContext;

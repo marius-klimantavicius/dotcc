@@ -28,6 +28,8 @@ public sealed partial class InstanceIo
         internal long Length;
         internal bool Open = true;
         internal bool Regular;
+        internal bool Published;
+        internal bool BackingUnavailable;
         internal Description? Reader;
         internal int Leases;
         internal long AccessTicks = DateTime.UtcNow.Ticks, ModifyTicks = DateTime.UtcNow.Ticks,
@@ -37,6 +39,7 @@ public sealed partial class InstanceIo
     {
         internal readonly nint Address = address;
         internal int Leases;
+        internal bool Published;
     }
     private sealed record MemoryLease(InstanceIo Owner, MemoryFile File, long Offset, MemoryPage Page);
     private readonly Dictionary<ulong, MemoryLease> memoryFileLeases = new();
@@ -170,9 +173,12 @@ public sealed partial class InstanceIo
         description.Position = basis + offset;
         return HostResult<long>.Success(description.Position);
     }
-    private unsafe HostResult<int> ReadMemoryFile(MemoryFile file, Span<byte> destination, long offset)
+    // Caller holds sync. False means retry only after dropping sync; no pending
+    // wait is allowed here or under memoryLeaseGate. Each counted copy is <=4KiB.
+    private unsafe bool TryReadMemoryFile(MemoryFile file, Span<byte> destination, long offset,
+        out HostResult<int> result)
     {
-        if (offset < 0) return Fail<int>(GuestError.Invalid);
+        if (offset < 0) { result = Fail<int>(GuestError.Invalid); return true; }
         int count = offset < file.Length ? (int)Math.Min(destination.Length, file.Length - offset) : 0;
         destination[..count].Clear();
         for (int copied = 0; copied < count;)
@@ -180,17 +186,26 @@ public sealed partial class InstanceIo
             long position = offset + copied, pageOffset = position & ~4095L;
             int skew = (int)(position & 4095), bytes = Math.Min(4096 - skew, count - copied);
             if (file.Pages.TryGetValue(pageOffset, out var page))
-                new ReadOnlySpan<byte>((void*)(page.Address + skew), bytes).CopyTo(destination.Slice(copied, bytes));
+            {
+                var observer = memoryFileRead;
+                if (observer != null && !observer.TryBeginMemoryFileRead())
+                { result = default; return false; }
+                try { new ReadOnlySpan<byte>((void*)(page.Address + skew), bytes).CopyTo(destination.Slice(copied, bytes)); }
+                finally { observer?.EndMemoryFileRead(); }
+            }
             copied += bytes;
         }
         file.AccessTicks = DateTime.UtcNow.Ticks;
-        return HostResult<int>.Success(count);
+        result = HostResult<int>.Success(count);
+        return true;
     }
     private unsafe MemoryPage AllocateMemoryPage(MemoryFile file, long offset)
     {
         if (!CanChargeMemoryFile(MemoryFilePageCharge)) throw new OutOfMemoryException();
         void* pointer = NativeMemory.AlignedAlloc(4096, 4096);
         if (pointer == null) throw new OutOfMemoryException();
+        // No lease has exposed this address. Initial zeroing (and the regular-file
+        // load before first publication) cannot modify retained executable backing.
         NativeMemory.Clear(pointer, 4096);
         try
         {
@@ -203,6 +218,7 @@ public sealed partial class InstanceIo
     }
     private unsafe void FreeMemoryPage(MemoryFile file, long offset, MemoryPage page)
     {
+        using var mutation = page.Published ? BeginMemoryFileMutation(page.Address, 4096, logical: true) : default;
         file.Pages.Remove(offset);
         NativeMemory.AlignedFree((void*)page.Address);
         memoryFileBytes -= MemoryFilePageCharge;
@@ -234,20 +250,30 @@ public sealed partial class InstanceIo
                 if (file.Pages.TryGetValue(page, out var allocation)) FreeMemoryPage(file, page, allocation);
             return Fail<int>(GuestError.NoMemory);
         }
+        long end = offset + source.Length;
+        bool changesLength = end > file.Length;
+        using var lengthMutation = file.Published && changesLength
+            ? BeginMemoryFileMutation(0, 0, logical: true) : default;
         for (int copied = 0; copied < source.Length;)
         {
             long position = offset + copied;
             int skew = (int)(position & 4095), count = Math.Min(4096 - skew, source.Length - copied);
-            source.Slice(copied, count).CopyTo(new Span<byte>((void*)(file.Pages[position & ~4095L].Address + skew), count));
+            var page = file.Pages[position & ~4095L];
+            // A length barrier already covers the whole write when EOF changes.
+            using var mutation = page.Published && !changesLength
+                ? BeginMemoryFileMutation(page.Address, 4096, logical: false) : default;
+            source.Slice(copied, count).CopyTo(new Span<byte>((void*)(page.Address + skew), count));
             copied += count;
         }
-        file.Length = Math.Max(file.Length, offset + source.Length);
+        file.Length = Math.Max(file.Length, end);
         file.ModifyTicks = file.ChangeTicks = DateTime.UtcNow.Ticks;
         return HostResult<int>.Success(source.Length);
     }
     private unsafe HostResult<int> TruncateMemoryFile(MemoryFile file, long length)
     {
         if (length < 0) return Fail<int>(GuestError.Invalid);
+        using var mutation = file.Published && length != file.Length
+            ? BeginMemoryFileMutation(0, 0, logical: true) : default;
         if (length < file.Length)
         {
             // Keep leased addresses stable, zeroing all removed bytes so regrow
@@ -277,6 +303,7 @@ public sealed partial class InstanceIo
     private void ReclaimMemoryFile(MemoryFile file)
     {
         if (file.Open || file.Leases != 0) return;
+        using var mutation = file.Published ? BeginMemoryFileMutation(0, 0, logical: true) : default;
         if (file.Regular)
         {
             regularSharedFiles.Remove(file.Inode);
@@ -337,6 +364,7 @@ public sealed partial class InstanceIo
             memoryFileLeases.Add(token, lease);
             ++file.Leases; ++page.Leases;
             memoryFileBytes += MemoryFileLeaseCharge;
+            file.Published = page.Published = true;
             return HostResult<MemoryFilePage>.Success(new(page.Address, token));
         }
         catch (OutOfMemoryException)
@@ -353,7 +381,11 @@ public sealed partial class InstanceIo
         if (lease == null) return Fail<int>(GuestError.Invalid);
         lock (lease.Owner.sync)
         {
-            if (!lease.Owner.memoryFileLeases.Remove(token)) return Fail<int>(GuestError.Invalid);
+            if (!lease.Owner.memoryFileLeases.ContainsKey(token)) return Fail<int>(GuestError.Invalid);
+            // Revoke the trusted backing identity before removing its lease. In
+            // particular, never invoke the observer while holding the registry gate.
+            using var mutation = lease.Owner.BeginMemoryFileMutation(lease.Page.Address, 4096, logical: true);
+            lease.Owner.memoryFileLeases.Remove(token);
             lock (memoryLeaseGate) memoryLeases.Remove(token);
             --lease.File.Leases; --lease.Page.Leases;
             lease.Owner.memoryFileBytes -= MemoryFileLeaseCharge;
@@ -370,6 +402,13 @@ public sealed partial class InstanceIo
         MemoryLease? lease;
         lock (memoryLeaseGate) memoryLeases.TryGetValue(token, out lease);
         if (lease == null) return false;
-        lock (lease.Owner.sync) return lease.Owner.memoryFileLeases.ContainsKey(token) && lease.Offset < lease.File.Length;
+        lock (lease.Owner.sync)
+        {
+            if (!lease.Owner.memoryFileLeases.ContainsKey(token)) return false;
+            // A regular-file length refresh can zero/free sparse backing. It
+            // must use the same mutation barrier as explicit truncate, even
+            // though this entry point appears to be an availability query.
+            return lease.Owner.RefreshRegularSharedFile(lease.File) && lease.Offset < lease.File.Length;
+        }
     }
 }

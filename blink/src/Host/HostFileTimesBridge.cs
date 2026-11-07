@@ -11,8 +11,10 @@ public static partial class Blink
         out VirtualFileTimeUpdate access, out VirtualFileTimeUpdate modify)
     {
         if (times == null) { access = modify = new(FileTimeSelection.Now); return true; }
-        access = FileTimeRequest(times[0]);
-        modify = FileTimeRequest(times[1]);
+        Libc.timespec* snapshot = stackalloc Libc.timespec[2];
+        SnapshotGuestBytes(times, new Span<byte>(snapshot, 2 * sizeof(Libc.timespec)));
+        access = FileTimeRequest(snapshot[0]);
+        modify = FileTimeRequest(snapshot[1]);
         return access.IsValid && modify.IsValid;
     }
     private static VirtualFileTimeUpdate FileTimeRequest(Libc.timespec value)
@@ -40,12 +42,7 @@ public static partial class Blink
                 return (int)IoResult(io.SetFileTimesAt(directoryFd, "", access, modify, flags));
             if (path == null) return IoError(14); // Linux null-path fd extension is not selected.
             if ((flags & ~256) != 0) return IoError(95);
-            int length = 0;
-            while (length < PathLimit && path[length] != 0) ++length;
-            if (length == PathLimit) return IoError(36);
-            string name;
-            try { name = PathEncoding.GetString(new ReadOnlySpan<byte>(path, length)); }
-            catch (global::System.Text.DecoderFallbackException) { return IoError(22); }
+            if (!ReadGuestPath(path, out string name)) return -1;
             return (int)IoResult(io.SetFileTimesAt(directoryFd, name, access, modify, flags));
         } catch (Exception error) { return IoException(error); }
     }

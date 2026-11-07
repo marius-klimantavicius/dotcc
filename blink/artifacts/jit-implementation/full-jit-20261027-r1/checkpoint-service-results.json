@@ -1,0 +1,267 @@
+{
+  "status": "PAUSED_CHECKPOINT_PERFORMANCE_UNMET",
+  "source": "native7c179",
+  "Full": "OPT_IN",
+  "performance": "FAIL_NOT_REPEATABILITY_QUALIFIED",
+  "scope": "CoreCLR and NativeAOT guests on both hosts, one matched pair/two fresh owners per process/exact46requests; all16 owners functional pass and all8processes reaped. No current failed/censored observations removed. One pair not repeatability acceptance. No build/producer/profiler concurrent with timings; independent source-only review bounded reads overlapped.",
+  "metric_limits": "Owner Run CPU/wall includes startup/compilation; import separate, whole process receipts include host/reporting. Warm40requests perowner plus gaps counters. Compile milliseconds are wall sums, never subtracted asCPU. Onepair notacceptance.",
+  "comparisons": [
+    {
+      "host": "coreclr",
+      "guest": "aot",
+      "pairs": 1,
+      "run": {
+        "interpreter": {
+          "CpuMs": 12127.433,
+          "WallMs": 8671.7205,
+          "AllocatedBytes": 9717776
+        },
+        "full": {
+          "CpuMs": 14480.469000000001,
+          "WallMs": 9651.7063,
+          "AllocatedBytes": 73421352
+        },
+        "cpu_ratio": 1.1940258915468756,
+        "wall_ratio": 1.113009384931168,
+        "allocation_ratio": 7.555365754468924
+      },
+      "warm": {
+        "interpreter": {
+          "CpuMs": 2587.376,
+          "WallMs": 1081.191,
+          "AllocatedBytes": 2034184
+        },
+        "full": {
+          "CpuMs": 3502.657,
+          "WallMs": 1465.4412,
+          "AllocatedBytes": 2088960
+        },
+        "cpu_ratio": 1.3537487400362374,
+        "wall_ratio": 1.3553953001828538,
+        "allocation_ratio": 1.0269277508819261
+      }
+    },
+    {
+      "host": "coreclr",
+      "guest": "il",
+      "pairs": 1,
+      "run": {
+        "interpreter": {
+          "CpuMs": 307650.109,
+          "WallMs": 190405.53100000002,
+          "AllocatedBytes": 65680624
+        },
+        "full": {
+          "CpuMs": 811242.853,
+          "WallMs": 535129.8426,
+          "AllocatedBytes": 160191512
+        },
+        "cpu_ratio": 2.6369009120032523,
+        "wall_ratio": 2.810474253502646,
+        "allocation_ratio": 2.4389462560526223
+      },
+      "warm": {
+        "interpreter": {
+          "CpuMs": 46195.762,
+          "WallMs": 15400.7663,
+          "AllocatedBytes": 4977264
+        },
+        "full": {
+          "CpuMs": 32252.779000000002,
+          "WallMs": 12845.088899999999,
+          "AllocatedBytes": 4422360
+        },
+        "cpu_ratio": 0.6981761443831146,
+        "wall_ratio": 0.8340551794490901,
+        "allocation_ratio": 0.888512242870782
+      }
+    },
+    {
+      "host": "nativeaot",
+      "guest": "aot",
+      "pairs": 1,
+      "run": {
+        "interpreter": {
+          "CpuMs": 10873.045,
+          "WallMs": 8886.612799999999,
+          "AllocatedBytes": 8872304
+        },
+        "full": {
+          "CpuMs": 10536.519,
+          "WallMs": 8212.0204,
+          "AllocatedBytes": 72565800
+        },
+        "cpu_ratio": 0.9690495164877916,
+        "wall_ratio": 0.9240889172081403,
+        "allocation_ratio": 8.178912715344289
+      },
+      "warm": {
+        "interpreter": {
+          "CpuMs": 2419.308,
+          "WallMs": 1115.1123,
+          "AllocatedBytes": 1979648
+        },
+        "full": {
+          "CpuMs": 2736.085,
+          "WallMs": 1390.8919999999998,
+          "AllocatedBytes": 1942600
+        },
+        "cpu_ratio": 1.1309370282742008,
+        "wall_ratio": 1.2473111452541594,
+        "allocation_ratio": 0.9812855618776671
+      }
+    },
+    {
+      "host": "nativeaot",
+      "guest": "il",
+      "pairs": 1,
+      "run": {
+        "interpreter": {
+          "CpuMs": 341176.79099999997,
+          "WallMs": 203869.2956,
+          "AllocatedBytes": 62007504
+        },
+        "full": {
+          "CpuMs": 719934.308,
+          "WallMs": 473435.0088,
+          "AllocatedBytes": 145853480
+        },
+        "cpu_ratio": 2.1101503003467785,
+        "wall_ratio": 2.3222477293927533,
+        "allocation_ratio": 2.3521907929079036
+      },
+      "warm": {
+        "interpreter": {
+          "CpuMs": 63475.397,
+          "WallMs": 17004.8031,
+          "AllocatedBytes": 4536304
+        },
+        "full": {
+          "CpuMs": 33373.738,
+          "WallMs": 13583.2101,
+          "AllocatedBytes": 4150552
+        },
+        "cpu_ratio": 0.525774387830926,
+        "wall_ratio": 0.7987866733958242,
+        "allocation_ratio": 0.9149633710615515
+      }
+    }
+  ],
+  "processes": [
+    {
+      "host": "coreclr",
+      "guest": "aot",
+      "mode": "off",
+      "process": {
+        "cpu_seconds": 12.337446,
+        "wall_seconds": 8.97901968297083,
+        "max_child_rss_kib": 207944
+      },
+      "receipt_sha256": "aa6d88c3b07eef869d9df9e1433ff42f4d57848afa2e79e608b68574c2837cbe",
+      "report_sha256": "522445da04af1314dcc009c6f1b964feed8891d30c907f9f8cb0664a6d2a67f6",
+      "reaper_sha256": "6b95f10e21f41920535862bfa45ad0a38bd80f14986a32ac5697b56f03d2c8f1"
+    },
+    {
+      "host": "coreclr",
+      "guest": "aot",
+      "mode": "full-jit",
+      "process": {
+        "cpu_seconds": 14.712986999999998,
+        "wall_seconds": 9.97946460894309,
+        "max_child_rss_kib": 418100
+      },
+      "receipt_sha256": "a1b7798f51fc7a6c312ba67c0c2e7730c5f722ea6c0ad7cd5b0c062c77920417",
+      "report_sha256": "bc69c76b7af5dd182d96a02b9f787cd906442595d457ecbebcb55b4587959d05",
+      "reaper_sha256": "b021c2889cc5d5b0bafd9c503f7d667e6c480479ecdc94b56fbeb620bebe4cc2"
+    },
+    {
+      "host": "nativeaot",
+      "guest": "aot",
+      "mode": "full-jit",
+      "process": {
+        "cpu_seconds": 10.631619,
+        "wall_seconds": 8.3780156300636,
+        "max_child_rss_kib": 342716
+      },
+      "receipt_sha256": "710925d3f7d564d6fbdec870e9a78f380d8b6e0f47dac0ce738f023c6bc64029",
+      "report_sha256": "a14f3325a4cb8e25e8b4263bd186a61407c6830ba27345df63653db98aafaeed",
+      "reaper_sha256": "6f04972af6163ef2477ec470eafb306529292e4d9c74c8abf560ceca42991206"
+    },
+    {
+      "host": "nativeaot",
+      "guest": "aot",
+      "mode": "off",
+      "process": {
+        "cpu_seconds": 10.962332,
+        "wall_seconds": 9.07787668693345,
+        "max_child_rss_kib": 135484
+      },
+      "receipt_sha256": "17a532849760cd1f1c7b86cbcb9797013130776ee424b1c7867922bdd15d2645",
+      "report_sha256": "7d581f82857101b17729cf47c9b3a2b477bb253446be36dcfdf310b05acf6a28",
+      "reaper_sha256": "1f5723443f380d8f0433bf79244ae579b3b398ca6063de876da21c2be7d41bf0"
+    },
+    {
+      "host": "coreclr",
+      "guest": "il",
+      "mode": "off",
+      "process": {
+        "cpu_seconds": 308.26777100000004,
+        "wall_seconds": 191.00701583002228,
+        "max_child_rss_kib": 832424
+      },
+      "receipt_sha256": "8ffb40d8e0d10443d5997cc1984cbf227ead1e1f58cafe46413aeb1613362805",
+      "report_sha256": "cc1cbf8c01af9b80193a210d105256f82c147045d4d99c3e274777fa8f87d62f",
+      "reaper_sha256": "6978d21cb042ba44e55216ade14ccd525ecc3a0b7ec2f9e0a675e26bb94ee42f"
+    },
+    {
+      "host": "coreclr",
+      "guest": "il",
+      "mode": "full-jit",
+      "process": {
+        "cpu_seconds": 812.228743,
+        "wall_seconds": 535.7015628139488,
+        "max_child_rss_kib": 1513628
+      },
+      "receipt_sha256": "1eb572bd95a8215bd0dcf94250056e9f231a5fe1f78a5336ef7fcfb754c96958",
+      "report_sha256": "664d59043048b1e10bcb9d4b95be23de64dd5165d776f9c988c8c36e1e464608",
+      "reaper_sha256": "6cc6aebda449a605df701ba5fe2ef133da08055e7533ab52f9fad9ee593f7a4f"
+    },
+    {
+      "host": "nativeaot",
+      "guest": "il",
+      "mode": "full-jit",
+      "process": {
+        "cpu_seconds": 720.6381600000001,
+        "wall_seconds": 473.8127225829521,
+        "max_child_rss_kib": 1423380
+      },
+      "receipt_sha256": "601b16c74d1f7dc18b5bc9f39cd0fcc9faa1803bec0f81c7ff3503b3ed7f59c3",
+      "report_sha256": "9e3426dfc6865ae910188eb981ffccd737511d5c8ee27720d68ef7f0f2712a70",
+      "reaper_sha256": "ac3dc23833d0c4bf702b4a7c3644ed04a0b4f5db4cc0e68e0e3640ebd6e0dd62"
+    },
+    {
+      "host": "nativeaot",
+      "guest": "il",
+      "mode": "off",
+      "process": {
+        "cpu_seconds": 341.6376,
+        "wall_seconds": 204.33796602801885,
+        "max_child_rss_kib": 752416
+      },
+      "receipt_sha256": "9e0ac97f7d3c3f17273bd9beb5727c5034e7d93b6bb41a49cc64344b257e7ec8",
+      "report_sha256": "4a6b8ccb23a84b4ece0331050dc4f14cc862b5326073de5122bf97d2ea56d982",
+      "reaper_sha256": "3f51845afba492aeb2ccacda618d72d597950c2992dd81e2fab3809ce588a2b3"
+    }
+  ],
+  "all_processes_reaped": true,
+  "coverage": "MISSING",
+  "Windows": "UNVERIFIED",
+  "async_unwind": "UNQUALIFIED",
+  "R101-04": "OPEN",
+  "next_work_deferred": [
+    "Authenticated private regular-file read ownership; R209 partial remains unbuilt/unapplied",
+    "Exact physical write footprints instead of page-wide code alias revocation",
+    "Avoid runtime/topology pulses for metadata-only data identity registration"
+  ],
+  "no_more_measurements_scheduled": true
+}

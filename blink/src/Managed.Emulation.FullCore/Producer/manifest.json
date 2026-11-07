@@ -1,0 +1,511 @@
+{
+  "schema_version": 1,
+  "kind": "byte-exact-selected-producer-source-delivery",
+  "producer": "native14-producer",
+  "form": "processed",
+  "archive": {
+    "path": "Producer/native14-processed.zip",
+    "sha256": "e75000b2f921bffb8afaf83ec8730d2e60db7464595581ac7439f10f1181acef",
+    "bytes": 4409099,
+    "uncompressed_bytes": 28299016,
+    "format": "ZIP DEFLATE; sorted POSIX names; 1980-01-01T00:00:00 DOS timestamp; regular mode 0644"
+  },
+  "generated_compilation_units": 25,
+  "numbered_chunks": 24,
+  "support_source": "Sources/BlinkCore.cs",
+  "selected_defines": [
+    "BLINK_FULL_CORE",
+    "DOTCC_INSTANCE_FOR_HOST",
+    "BLINK_GUEST_THREAD_COPIES"
+  ],
+  "assembly_name": "TranslatedBlink",
+  "full_jit_frame_abi": "0x46420007",
+  "x87_producer_protocol": 1,
+  "producer_receipt": {
+    "archive_entry": "Metadata/producer-receipt.json",
+    "sha256": "1d9e6efa7d7a486ff6940b50d96f4315a2f0be347ba7590928dfa283a859fd32",
+    "run_id": "20261107-131753-d32f41c8",
+    "status": "passed",
+    "scope": "translation and project builds; behavioral tests separate",
+    "profile": "threaded",
+    "selection": {
+      "fast": true,
+      "fetch": "never",
+      "form": "all",
+      "jobs": 2,
+      "mode": "jit",
+      "restore": "normal",
+      "rid": "linux-x64",
+      "suite": null,
+      "tools": "reuse"
+    },
+    "fresh_objects_requested": true,
+    "object_count": 110,
+    "hash_policy": "strict"
+  },
+  "baseline": {
+    "name": "native7c162-source",
+    "source_manifest_sha256": "28ecb9f57b3c24e443858d91f99fb125c113951b86479ea932319c410d8cf98c",
+    "producer_pointer_sha256": "33aeecab33cb34d1caad6f4ea307aa177efb88b655a30ba043d07cebe666e74d"
+  },
+  "linked_sources": [
+    {
+      "path": "blink/src/Host/HostIoBridge.cs",
+      "sha256": "9dfc64d0ecee02165099ab0c060b4c77513c01e58dbfb69b43550a4252508d73",
+      "link": "Bindings/HostIoBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostGuestCopyBridge.cs",
+      "sha256": "d3a12314d4656ff450b4c4aa79b67560a040c4db8c8171572d575e3d7285523a",
+      "link": "Bindings/HostGuestCopyBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostGuestX87StateBridge.cs",
+      "sha256": "7d39994b387cea813f4455ee2211018fb2ccf6f24cdf7b62ada17a15fa748590",
+      "link": "Bindings/HostGuestX87StateBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostGuestSnapshotBridge.cs",
+      "sha256": "e5bfb77ed8bc983c36713c1153f8054a2ac2c82a89f52636ef42dd481a7c7825",
+      "link": "Bindings/HostGuestSnapshotBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostFileMappingBridge.cs",
+      "sha256": "730e34093a11ee3df05abbcc50d42241a5799f7d27474c8ad91227325905d19f",
+      "link": "Bindings/HostFileMappingBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostNetworkBridge.cs",
+      "sha256": "b1c099a24bbda207963f6740929f75588fca6b93de909686f308139e92ab2a7d",
+      "link": "Bindings/HostNetworkBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostReadinessBridge.cs",
+      "sha256": "8cadbb3564e41b5e8cb8cea219188be437f0cf9b011b0c1fa39364a26713412b",
+      "link": "Bindings/HostReadinessBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostFileMetadataBridge.cs",
+      "sha256": "1208b33fa465d979dc17284f00681b81b09bf974c12f482f84f4917fcb5f2a31",
+      "link": "Bindings/HostFileMetadataBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostEnvironmentBridge.cs",
+      "sha256": "bf7fcae71d99fa5e7edb4c941677e32bd9e4d55d747951984bf81301c8d6ccf2",
+      "link": "Bindings/HostEnvironmentBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostIdentityBridge.cs",
+      "sha256": "25acac38c055dce97184b3c31ba162205a93eddd31e0a382fc4e1df8ef995a5f",
+      "link": "Bindings/HostIdentityBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostTerminationBridge.cs",
+      "sha256": "fb000c7a015f7765161343659bd9acf81fd4cc93df94b8f37c017927e437ae09",
+      "link": "Bindings/HostTerminationBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostClockBridge.cs",
+      "sha256": "9e6cb957c1994ffb1f6de4042a48f1f5ab7edec692a122705ba6cc7f3f927237",
+      "link": "Bindings/HostClockBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostTerminalBridge.cs",
+      "sha256": "5bf5435811164bd760cae54daff4a3b5cfad51e4f0e61c8c56fd2642857fa278",
+      "link": "Bindings/HostTerminalBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostPathsBridge.cs",
+      "sha256": "27ba37385beb19204a12d6650b9992faa83f1e12e50ffc1d4d5fee836403ffe8",
+      "link": "Bindings/HostPathsBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostVariablesBridge.cs",
+      "sha256": "ff178d6cc734357ff283243e8d17ff4dcc29f190d982f8317f17987391826f26",
+      "link": "Bindings/HostVariablesBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostCalendarBridge.cs",
+      "sha256": "5c09f6f001877ad530c3494cd92d2e234f17e01ea12c7d4ea7a0f4471f191852",
+      "link": "Bindings/HostCalendarBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostIdentityDetailsBridge.cs",
+      "sha256": "f525c7dcf07a9c863f5be9b716583d322204416eabb73ae3065ba54b7ba4708e",
+      "link": "Bindings/HostIdentityDetailsBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostAccessBridge.cs",
+      "sha256": "27aae334742ea1d2a83e767f8d866cdc1af156dd49e2a705a367a51c3f924006",
+      "link": "Bindings/HostAccessBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostProcessPolicyBridge.cs",
+      "sha256": "aa2e69b6fba69d03b4fafa1920e776d2b4bb65922128aee68b125ced58b2bf80",
+      "link": "Bindings/HostProcessPolicyBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostSleepBridge.cs",
+      "sha256": "d3043a8a2f7feb79e4513be1aa61b18d3e40ada6c4b0c9f3845194d4b46de949",
+      "link": "Bindings/HostSleepBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostFileUpdatesBridge.cs",
+      "sha256": "072852c8e81bcaf9ac124a917e5707eb0294cfb004e67118788f6cfaa009a820",
+      "link": "Bindings/HostFileUpdatesBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostDescriptorsBridge.cs",
+      "sha256": "89b8d46ae9e88c7bda324585941b18ac19a09016ec700d149aa9780cd0b063f8",
+      "link": "Bindings/HostDescriptorsBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostCapacityBridge.cs",
+      "sha256": "4f3af5b6ee67c08f9f128b1ece9871f1825c11e31e20bfce1d5b43d3233a3ecc",
+      "link": "Bindings/HostCapacityBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostSocketQueriesBridge.cs",
+      "sha256": "4fd368a1ce3f29c4f38ac14e53aa633b587378f278d49c8961f88921a7e78073",
+      "link": "Bindings/HostSocketQueriesBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostYieldBridge.cs",
+      "sha256": "3744314b6791efd9b7fd3c76d9adb9781444da1225ace0d8077ad2edba141f84",
+      "link": "Bindings/HostYieldBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostDirectoriesBridge.cs",
+      "sha256": "3baae9ef188c27a57993d1a72ac9238e8d7d347452cfe94572ab8c00375b2be9",
+      "link": "Bindings/HostDirectoriesBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostMessagesBridge.cs",
+      "sha256": "a5966e26a58c77467f89f87e682b38cf5d336b8cdf36d6d5e65082f827bde236",
+      "link": "Bindings/HostMessagesBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostFileTimesBridge.cs",
+      "sha256": "082109679f4ad6b65d88b420086619d3102efeb7fac6ca3f6334f419f2009b32",
+      "link": "Bindings/HostFileTimesBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostResourcesBridge.cs",
+      "sha256": "0bb7829408e4f1b09237fac1266a416edc565b536aea69689c6a8409377d2334",
+      "link": "Bindings/HostResourcesBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostSignalPolicyBridge.cs",
+      "sha256": "14136389f05c6d93cf0d6fba352f1ed962e1bf76ef271a8b0a32c466287f20c3",
+      "link": "Bindings/HostSignalPolicyBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostNamespaceBridge.cs",
+      "sha256": "fda20e18c28eb80e6579d64b431bcd80d7a956aa74ee5dd232eb3967c018b2bc",
+      "link": "Bindings/HostNamespaceBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostPermissionsBridge.cs",
+      "sha256": "e1bdecb05e447fcb3dc0f80479201cdf46c05e92c2f479ec6dc3f5bd65b9f450",
+      "link": "Bindings/HostPermissionsBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostLocksBridge.cs",
+      "sha256": "7042ce50e7350633c34b8027cef9fe6f8b33c150b2e66b5c1b3de26755913745",
+      "link": "Bindings/HostLocksBridge.cs"
+    },
+    {
+      "path": "blink/src/GuestResources/GuestResourcesBridge.cs",
+      "sha256": "891544acabb1216ad2375b96497762728214027755c73ea395c7b02b3367a7e7",
+      "link": "Bindings/GuestResourcesBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostNamespacePolicyBridge.cs",
+      "sha256": "0ef66b3292312eeb79c7389fd9d712e2e3b1fa7bc12c7ab9502358dbe4e6c0af",
+      "link": "Bindings/HostNamespacePolicyBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostPipesBridge.cs",
+      "sha256": "700f7b932fcac3ed4a2059b32edaf14f98a8362fed2c47053b72663601cb17aa",
+      "link": "Bindings/HostPipesBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostExecutionStopBridge.cs",
+      "sha256": "330f08c7b33274c1ca182f7e798df3d5edc0ede7ebbb7f0aa24914a1786e2a4d",
+      "link": "Bindings/HostExecutionStopBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostGuestSignalsBridge.cs",
+      "sha256": "00409c53949cdddc205d2c48b30f20bc2e2f22cefa116e0a86c05e283bcb71a5",
+      "link": "Bindings/HostGuestSignalsBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostMembarrierBridge.cs",
+      "sha256": "45f29f29f01d716fbc61e344163be0e238b77091742077e089f235b93b0da86d",
+      "link": "Bindings/HostMembarrierBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostPageTableBridge.cs",
+      "sha256": "4c508749eecee4adecae57cfd4e45c439597d2f3a22284ba35ca9ba19723cc85",
+      "link": "Bindings/HostPageTableBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostGuestThreadsBridge.cs",
+      "sha256": "37e05bf344f05e29b85f4987cedfdff98d2202a23cd0430dd2cde3366bacc9eb",
+      "link": "Bindings/HostGuestThreadsBridge.cs"
+    },
+    {
+      "path": "blink/src/Host/HostEpollBridge.cs",
+      "sha256": "9fc32f9cc1518c9ada47eec44f340f6c7261d19697ad2e0df960f07b32bfecd8",
+      "link": "Bindings/HostEpollBridge.cs"
+    }
+  ],
+  "project_references": [
+    "../Managed.Emulation.Host/Managed.Emulation.Host.csproj"
+  ],
+  "qualification": {
+    "delivery": "SOURCE_PACKAGED_GATE_PENDING",
+    "runtime_verification": "c162 fresh-producer code-snapshot family pending; no performance credit",
+    "owner_activation": "parent-owned; unchanged by delivery",
+    "performance": "STILL_FAIL (parent-reported baseline)",
+    "full_native": "NOT_QUALIFIED",
+    "platform": "No new Windows/Linux or architecture runtime qualification"
+  },
+  "entries": {
+    "Metadata/.campaign-files.json": {
+      "sha256": "31008286f12b01b981816c4ffe354fb9faeda7e801ba99da2c63f6c96427c147",
+      "bytes": 825,
+      "origin": "/mnt/storage/blink-full-jit-20261027/native14-producer/blink/generated/TranslatedBlink/.campaign-files.json"
+    },
+    "Metadata/Licenses/dotcc-LICENSE": {
+      "sha256": "796d42772a2d2e122f4652e9ed3ad8845832d8adebb690d80e962e12f58fcb54",
+      "bytes": 1074,
+      "origin": "unchanged legal provenance from native12 delivery"
+    },
+    "Metadata/Licenses/upstream-source-notices.txt": {
+      "sha256": "2b1ed056f6d87a6b2738ff0b668854eab863bc9a08d3d7780db13d44e4086aff",
+      "bytes": 277405,
+      "origin": "unchanged legal provenance from native12 delivery"
+    },
+    "Metadata/Licenses/upstream/LICENSE": {
+      "sha256": "033bd16010e133a62454e26853ed6a8f5fad39bf07e70e133eadbe6ccadfb2a7",
+      "bytes": 759,
+      "origin": "unchanged legal provenance from native12 delivery"
+    },
+    "Metadata/Licenses/upstream/third_party/coi-serviceworker/LICENSE": {
+      "sha256": "3ee2c88cec9f3036fd4b0cba94e94485bb8b4673be7b8e0f3b1496c5baff75cb",
+      "bytes": 1070,
+      "origin": "unchanged legal provenance from native12 delivery"
+    },
+    "Metadata/Licenses/upstream/third_party/libz/LICENSE": {
+      "sha256": "845efc77857d485d91fb3e0b884aaa929368c717ae8186b66fe1ed2495753243",
+      "bytes": 1002,
+      "origin": "unchanged legal provenance from native12 delivery"
+    },
+    "Metadata/Licenses/upstream/third_party/sectorlisp/LICENSE": {
+      "sha256": "923bb053d883b9cb2f68d0441fa5382bd36d4ddf2839be99b1c427516e942006",
+      "bytes": 775,
+      "origin": "unchanged legal provenance from native12 delivery"
+    },
+    "Metadata/Licenses/upstream/third_party/xterm.js/LICENSE": {
+      "sha256": "3699413fb9ca7f5dd7513800aec575c226f86a27ee9a90cc40e061d20c6b2c83",
+      "bytes": 1406,
+      "origin": "unchanged legal provenance from native12 delivery"
+    },
+    "Metadata/TranslatedBlink.csproj": {
+      "sha256": "e073d4dc794ec4651ace239e3c86d6b78c4f7dac1a5ab19f5a5fd7548651e2d2",
+      "bytes": 5218,
+      "origin": "/mnt/storage/blink-full-jit-20261027/native14-producer/blink/generated/TranslatedBlink/TranslatedBlink.csproj"
+    },
+    "Metadata/compiler-resource-proof.json": {
+      "sha256": "95a1b8e7ddbc93faea8362de6a326404513fbe23492916f7b72471517b01a5d7",
+      "bytes": 1070,
+      "origin": "/mnt/storage/blink-full-jit-20261027/native-r197/compiler-resource-proof.json"
+    },
+    "Metadata/instance-abi.json": {
+      "sha256": "331b6d3c5d3b83eb37cf3a9317f5e90f39cb46d622183a88f06d94f975cb668b",
+      "bytes": 27,
+      "origin": "/mnt/storage/blink-full-jit-20261027/native14-producer/blink/generated/threaded-core/20261107-131753-d32f41c8/instance-abi.json"
+    },
+    "Metadata/native14-producer-pointer.json": {
+      "sha256": "33aeecab33cb34d1caad6f4ea307aa177efb88b655a30ba043d07cebe666e74d",
+      "bytes": 6208,
+      "origin": "/mnt/storage/blink-full-jit-20261027/native14-producer/blink/artifacts/campaign/current-threaded.json"
+    },
+    "Metadata/native7c162-source-sha256.json": {
+      "sha256": "28ecb9f57b3c24e443858d91f99fb125c113951b86479ea932319c410d8cf98c",
+      "bytes": 90317,
+      "origin": "/home/marius/p/dotcc/blink/artifacts/jit-implementation/full-jit-20261027-r1/native7c162-source-sha256.json"
+    },
+    "Metadata/producer-receipt.json": {
+      "sha256": "1d9e6efa7d7a486ff6940b50d96f4315a2f0be347ba7590928dfa283a859fd32",
+      "bytes": 14658429,
+      "origin": "/mnt/storage/blink-full-jit-20261027/native14-producer/blink/artifacts/campaign/20261107-131753-d32f41c8/receipt.json"
+    },
+    "Metadata/runtime-source-inputs.json": {
+      "sha256": "107573847326ad692181e1ba91cbd3f9f9d3dade62c58cfffb44c72a6c5a3a86",
+      "bytes": 10070,
+      "origin": "/mnt/storage/blink-full-jit-20261027/native-r197/isolated-compiler-runtime-inputs.json"
+    },
+    "Metadata/source-inventory.json": {
+      "sha256": "ab340c6bb3f2df2d52fff4ae933209279aebdd2a57277a18c99df26faa58782c",
+      "bytes": 98412,
+      "origin": "/mnt/storage/blink-full-jit-20261027/native14-producer/blink/config/source-inventory.json"
+    },
+    "Metadata/source-manifest.json": {
+      "sha256": "8d3cf014002e3d563a42e048cdf60efd1ca60fb2c9ae1c07a84bfdcb8e2436ce",
+      "bytes": 5289,
+      "origin": "/mnt/storage/blink-full-jit-20261027/native14-producer/blink/config/source-manifest.json"
+    },
+    "Metadata/threaded-derivation.json": {
+      "sha256": "cd48f426abae9d88f9f2a2f983280c9d79cb20fd6c00dcabe61883273250cc85",
+      "bytes": 48461,
+      "origin": "/mnt/storage/blink-full-jit-20261027/native14-producer/blink/generated/threaded-core/20261107-131753-d32f41c8/threaded-derivation.json"
+    },
+    "Sources/BlinkCore.00000.cs": {
+      "sha256": "4af102ef81dcb21d62b3a88650cb0efb3ec7ffed8a372fadc8f660830cb62f2a",
+      "bytes": 281508,
+      "origin": "native14-producer processed output; byte exact"
+    },
+    "Sources/BlinkCore.00001.cs": {
+      "sha256": "21f91698709a46ee42f0f5b8535ae5585430ef57885a2bc183b75f0c35a9f0d7",
+      "bytes": 257379,
+      "origin": "native14-producer processed output; byte exact"
+    },
+    "Sources/BlinkCore.00002.cs": {
+      "sha256": "89fbaff46c31bacc370c1d38bfdc56bf3c5e751bffd4f8208b1e8112607c3676",
+      "bytes": 261327,
+      "origin": "native14-producer processed output; byte exact"
+    },
+    "Sources/BlinkCore.00003.cs": {
+      "sha256": "ff4305ad33e65d93f4943071beafe0fe03c1080b8c36bd0986e4919ea81c0b3c",
+      "bytes": 264832,
+      "origin": "native14-producer processed output; byte exact"
+    },
+    "Sources/BlinkCore.00004.cs": {
+      "sha256": "3347e9672393a8e8ab8cdf6422a18c7a904df8d18156f3c0060da40b5dfc22e4",
+      "bytes": 267001,
+      "origin": "native14-producer processed output; byte exact"
+    },
+    "Sources/BlinkCore.00005.cs": {
+      "sha256": "9d1a6247ef5edff286a55e09c5b0a4f5c005c03f5cb47d1b492f6c92ff724d1c",
+      "bytes": 267262,
+      "origin": "native14-producer processed output; byte exact"
+    },
+    "Sources/BlinkCore.00006.cs": {
+      "sha256": "30c8826ce3e82555c72ceef879b0329ae9efa5cf8907ffd96df40e0e7b932d9c",
+      "bytes": 266275,
+      "origin": "native14-producer processed output; byte exact"
+    },
+    "Sources/BlinkCore.00007.cs": {
+      "sha256": "5798fb472c6f35cb2fd7d4a20a6331723f08281c7891330adfcac708ba6748ac",
+      "bytes": 285518,
+      "origin": "native14-producer processed output; byte exact"
+    },
+    "Sources/BlinkCore.00008.cs": {
+      "sha256": "fcd7132b5237f30f1645278a800bb0d22323761b2c1aaf245295adec4d4df5a2",
+      "bytes": 280664,
+      "origin": "native14-producer processed output; byte exact"
+    },
+    "Sources/BlinkCore.00009.cs": {
+      "sha256": "3ace4ea92799789f2cbd4679e2e8a380010c3e9e796c6d5b212b508aa9af0d32",
+      "bytes": 266328,
+      "origin": "native14-producer processed output; byte exact"
+    },
+    "Sources/BlinkCore.00010.cs": {
+      "sha256": "9c56ff2693dc2e09c322d23fb4fe20069a0bea47b6e724b7d484d1bae51bad84",
+      "bytes": 265421,
+      "origin": "native14-producer processed output; byte exact"
+    },
+    "Sources/BlinkCore.00011.cs": {
+      "sha256": "0275c370a3c1d36bee738d105714180d47879d83de3211567fa622acc0809f36",
+      "bytes": 266894,
+      "origin": "native14-producer processed output; byte exact"
+    },
+    "Sources/BlinkCore.00012.cs": {
+      "sha256": "d60b4acf63a4d199b2c61d1f4d3789408089e8e39d550bdc38e7730a9e0a6fa7",
+      "bytes": 267070,
+      "origin": "native14-producer processed output; byte exact"
+    },
+    "Sources/BlinkCore.00013.cs": {
+      "sha256": "3832b554fc1f7144a361e8d26cd51755b902d6af6bbac6030cd3c3c8fac65b6f",
+      "bytes": 588138,
+      "origin": "native14-producer processed output; byte exact"
+    },
+    "Sources/BlinkCore.00014.cs": {
+      "sha256": "be804438d3e572ee49cd81d5f0f171d3f1b289d16fc62c3566663c51e0152721",
+      "bytes": 261156,
+      "origin": "native14-producer processed output; byte exact"
+    },
+    "Sources/BlinkCore.00015.cs": {
+      "sha256": "b01a565ed72cfbe118ec6f56824c7593a5eba29464fefd9e7beb78d765269257",
+      "bytes": 262739,
+      "origin": "native14-producer processed output; byte exact"
+    },
+    "Sources/BlinkCore.00016.cs": {
+      "sha256": "86c742f35acbb5aad6fe181f6a68a4dafde25518bd4fbb2060523f48345800bf",
+      "bytes": 257826,
+      "origin": "native14-producer processed output; byte exact"
+    },
+    "Sources/BlinkCore.00017.cs": {
+      "sha256": "fb5fda5e22ce8691c0fad9fafefb1d0b453db6fc2c25772c56ee5ebecb795397",
+      "bytes": 258929,
+      "origin": "native14-producer processed output; byte exact"
+    },
+    "Sources/BlinkCore.00018.cs": {
+      "sha256": "fc526259ae3b276c6745f8f166b4e81132b29eafe7eb43ed6e8171b225357803",
+      "bytes": 260580,
+      "origin": "native14-producer processed output; byte exact"
+    },
+    "Sources/BlinkCore.00019.cs": {
+      "sha256": "a860982343431a81a70abb8c7e81b389ca925b9269e501cae0cafb9a94a35bda",
+      "bytes": 258796,
+      "origin": "native14-producer processed output; byte exact"
+    },
+    "Sources/BlinkCore.00020.cs": {
+      "sha256": "5bfc90bd18b3460fe1ab509f086379d46cc7c5acac64be92d128a10d85df203b",
+      "bytes": 257013,
+      "origin": "native14-producer processed output; byte exact"
+    },
+    "Sources/BlinkCore.00021.cs": {
+      "sha256": "d10825e5e8dd802f2061a4657e54f2ecab8ae486a12f3999989c6713efaa5dac",
+      "bytes": 388716,
+      "origin": "native14-producer processed output; byte exact"
+    },
+    "Sources/BlinkCore.00022.cs": {
+      "sha256": "7d7b056e5ef64ebe427ecb277cd4dc259b25ecb9906c63627b34c71158e0c41f",
+      "bytes": 254130,
+      "origin": "native14-producer processed output; byte exact"
+    },
+    "Sources/BlinkCore.00023.cs": {
+      "sha256": "1ad909c14c06095d63e7bdd9954544b5ff9ca9dec944d1eb0458fed9578f00bd",
+      "bytes": 154506,
+      "origin": "native14-producer processed output; byte exact"
+    },
+    "Sources/BlinkCore.cs": {
+      "sha256": "a1d558449a5f4d99ba9d4a7cec825cadcb1e3e1dc173983cdef9110f5dd9057f",
+      "bytes": 6391191,
+      "origin": "native14-producer processed output; byte exact"
+    }
+  },
+  "runtime_variant": {
+    "basis": "Authenticated selected compiler IL unchanged; only two embedded authored runtime-source resources changed",
+    "changed": [
+      "PthreadLib.cs",
+      "RuntimeContextLib.cs"
+    ],
+    "proof": "Metadata/compiler-resource-proof.json",
+    "identifier_note": "New absolute source paths change private generated identifiers and chunk ordering; no byte-equivalence claim across producers"
+  },
+  "authored_linked_source_update": {
+    "batch": "R203",
+    "changes": [
+      {
+        "path": "blink/src/Host/HostGuestThreadsBridge.cs",
+        "before": "514a1b369566e538ed0584d1995d8a33e9efd969bcd900de7a92bad27b098597",
+        "after": "37e05bf344f05e29b85f4987cedfdff98d2202a23cd0430dd2cde3366bacc9eb"
+      }
+    ],
+    "generated_archive": "unchanged byte-exact native14; managed bridge exported signature/C ABI unchanged; no authored C or translator adapter changes"
+  }
+}

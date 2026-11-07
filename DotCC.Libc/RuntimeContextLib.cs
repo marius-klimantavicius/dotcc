@@ -39,7 +39,6 @@ public static unsafe partial class Libc
         // Stable IDs are never reused. Cache only a bounded set of this runtime's
         // states; each operation still checks Destroyed under the state lock.
         internal readonly PthreadMutex?[] MutexCache = new PthreadMutex?[64];
-        internal bool MutexCacheEnabled = true;
         internal readonly Dictionary<int, PthreadCondition> Conditions = new();
         internal int NextMutex, NextCondition;
         internal readonly ConcurrentDictionary<int, IntPtr> Keys = new();

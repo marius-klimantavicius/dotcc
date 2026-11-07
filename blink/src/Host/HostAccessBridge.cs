@@ -18,12 +18,7 @@ public static partial class Blink
         {
             if (io == null) return IoError(19);
             if (path == null) return IoError(14);
-            int length = 0;
-            while (length < PathLimit && path[length] != 0) ++length;
-            if (length == PathLimit) return IoError(36);
-            string name;
-            try { name = PathEncoding.GetString(new ReadOnlySpan<byte>(path, length)); }
-            catch (DecoderFallbackException) { return IoError(22); }
+            if (!ReadGuestPath(path, out string name)) return -1;
             return (int)IoResult(io.AccessAt(directory, name, mode, flags));
         }
         catch (Exception error) { return IoException(error); }

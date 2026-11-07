@@ -8,6 +8,7 @@
 #include <sys/mman.h>
 
 struct OwnedMapping {
+  struct OwnedMapping *retired_next;
   struct OwnedMapping *left;
   struct OwnedMapping *right;
   void *address;
@@ -16,6 +17,8 @@ struct OwnedMapping {
 };
 struct MemoryOwner {
   struct OwnedMapping *root;
+  struct OwnedMapping *retired;
+  size_t instruction_readers;
   size_t limit;
   size_t bytes;
   size_t mappings;
@@ -43,12 +46,14 @@ static struct SharedMemoryOwner *shared_memory_owners;
 static uint64_t shared_memory_next_token;
 static _Thread_local struct MemoryOwner legacy_memory_owner;
 static _Thread_local struct SharedMemoryOwner *shared_memory_owner;
+static _Thread_local size_t instruction_read_depth;
 #define owner (*(shared_memory_owner ? &shared_memory_owner->memory : &legacy_memory_owner))
 /* Keep the allocation algorithms common. Public shared-profile entrypoints below
  * serialize complete operations, including synchronous file callbacks. */
 #define MEMORY_LOCAL static
 #define BlinkHostMemoryProtection MemoryImplProtection
 #define BlinkHostMemoryFilePageShared MemoryImplFilePageShared
+#define BlinkHostMemoryFilePageLease MemoryImplFilePageLease
 #define BlinkHostMemoryFilePageAvailable MemoryImplFilePageAvailable
 #define BlinkHostMemoryFilePageWritable MemoryImplFilePageWritable
 #define BlinkHostMemoryBegin MemoryImplBegin
@@ -242,6 +247,12 @@ MEMORY_LOCAL int BlinkHostMemoryFilePageShared(const void *pointer) {
               (FILE_PAGE_SHARED | FILE_PAGE_READONLY_SHARED));
   return 0;
 }
+/* Exact lease identity only; managed owner decides whether ALL writers are
+ * enrolled. Never infer coherence merely from page permissions or a memfd name. */
+MEMORY_LOCAL uint64_t BlinkHostMemoryFilePageLease(const void *pointer) {
+  struct OwnedMapping *record = FindMapping((uintptr_t)pointer);
+  return record ? SharedLease(record) : 0;
+}
 MEMORY_LOCAL int BlinkHostMemoryFilePageAvailable(const void *pointer) {
   uintptr_t address = (uintptr_t)pointer;
   struct OwnedMapping *record = FindMapping(address);
@@ -322,7 +333,7 @@ MEMORY_LOCAL int BlinkHostMemoryContains(const void *pointer, size_t length) {
 }
 MEMORY_LOCAL int BlinkHostMemoryEnd(void) {
   if (!owner.limit) return Fail(ENODEV);
-  if (owner.root) return Fail(EBUSY);
+  if (owner.root || owner.retired || owner.instruction_readers) return Fail(EBUSY);
   if (ReleaseBudget(&owner)) return -1;
   owner.limit = 0;
   owner.read_at = 0;
@@ -445,6 +456,15 @@ MEMORY_LOCAL int blink_host_munmap(void *address, size_t length) {
     uint64_t lease;
     if (record->length != rounded) return Fail(EINVAL);
     lease = SharedLease(record);
+    if (owner.instruction_readers) {
+      /* PTE removal/publication is still serialized by upstream. Retain only
+       * physical backing while fetch readers copy their predecoded values.
+       * The retired record no longer authorizes a new mapping lookup. */
+      owner.root = RemoveMapping(owner.root, (uintptr_t)address, &removed);
+      record->retired_next = owner.retired;
+      owner.retired = record;
+      return 0;
+    }
     if (lease && owner.release_shared(lease)) return -1;
     owner.root = RemoveMapping(owner.root, (uintptr_t)address, &removed);
     owner.bytes -= record->length + MappingMetadataSize(record);
@@ -516,6 +536,7 @@ MEMORY_LOCAL void BlinkHostMemoryDisposeWorker(void) {
 #ifdef BLINK_MANAGED_GUEST_THREADS
 #undef BlinkHostMemoryProtection
 #undef BlinkHostMemoryFilePageShared
+#undef BlinkHostMemoryFilePageLease
 #undef BlinkHostMemoryFilePageAvailable
 #undef BlinkHostMemoryFilePageWritable
 #undef BlinkHostMemoryBegin
@@ -590,6 +611,9 @@ int BlinkHostMemoryAttach(uint64_t token) {
 int BlinkHostMemoryDetach(void) {
   if (!shared_memory_owner) return Fail(ENODEV);
   if (SharedMemoryLock()) return -1;
+  if (instruction_read_depth) {
+    SharedMemoryUnlock(); return Fail(EBUSY);
+  }
   --shared_memory_owner->attachments;
   shared_memory_owner = 0;
   SharedMemoryUnlock();
@@ -620,6 +644,9 @@ int BlinkHostMemoryDestroyShared(uint64_t token) {
     SharedMemoryUnlock(); return Fail(EPERM);
   }
   if (record->attachments) { SharedMemoryUnlock(); return Fail(EBUSY); }
+  if (record->memory.instruction_readers || record->memory.retired) {
+    SharedMemoryUnlock(); return Fail(EBUSY);
+  }
   /* Caller has joined all workers and discarded every upstream pointer before
    * this final retained-pool release. Attachments alone do not prove joins. */
   while ((mapping = record->memory.root)) {
@@ -639,6 +666,40 @@ int BlinkHostMemoryDestroyShared(uint64_t token) {
   if (previous) previous->next = record->next;
   else shared_memory_owners = record->next;
   free(record);
+  SharedMemoryUnlock();
+  return 0;
+}
+
+int BlinkHostMemoryInstructionReadBegin(void) {
+  if (!shared_memory_owner) return Fail(ENODEV);
+  if (SharedMemoryLock()) return -1;
+  if (owner.instruction_readers == SIZE_MAX || instruction_read_depth == SIZE_MAX) {
+    SharedMemoryUnlock(); return Fail(EOVERFLOW);
+  }
+  ++owner.instruction_readers;
+  ++instruction_read_depth;
+  SharedMemoryUnlock();
+  return 0;
+}
+
+int BlinkHostMemoryInstructionReadEnd(void) {
+  if (!shared_memory_owner || !instruction_read_depth) return Fail(EINVAL);
+  if (SharedMemoryLock()) return -1;
+  --instruction_read_depth;
+  --owner.instruction_readers;
+  while (!owner.instruction_readers && owner.retired) {
+    struct OwnedMapping *record = owner.retired;
+    uint64_t lease = SharedLease(record);
+    if (lease && owner.release_shared(lease)) {
+      SharedMemoryUnlock(); return -1;
+    }
+    owner.retired = record->retired_next;
+    owner.bytes -= record->length + MappingMetadataSize(record);
+    AccountBudget(&owner, owner.bytes);
+    --owner.mappings;
+    if (!lease) free(record->address);
+    free(record);
+  }
   SharedMemoryUnlock();
   return 0;
 }
@@ -671,6 +732,8 @@ MEMORY_WRAPPER(size_t, BlinkHostMemoryMappings, MemoryImplMappings, (void), (), 
 MEMORY_WRAPPER(int, BlinkHostMemoryProtection, MemoryImplProtection,
                (const void *pointer), (pointer), -1)
 MEMORY_WRAPPER(int, BlinkHostMemoryFilePageShared, MemoryImplFilePageShared,
+               (const void *pointer), (pointer), 0)
+MEMORY_WRAPPER(uint64_t, BlinkHostMemoryFilePageLease, MemoryImplFilePageLease,
                (const void *pointer), (pointer), 0)
 MEMORY_WRAPPER(int, BlinkHostMemoryFilePageAvailable, MemoryImplFilePageAvailable,
                (const void *pointer), (pointer), 0)

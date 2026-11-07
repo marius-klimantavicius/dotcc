@@ -8,6 +8,7 @@
     "HAVE_MKFIFOAT": "1"
   },
   "headers": [
+    "src/Host/include/host-x87-state.h",
     "src/Host/include/host-io.h",
     "src/Host/include/host-identity.h",
     "src/Host/include/host-termination.h",
@@ -38,6 +39,7 @@
     "src/Host/include/host-membarrier.h"
   ],
   "includeHeaders": [
+    "host-x87-state.h",
     "host-profile-constants.h",
     "host-errors.h",
     "host-io.h",
@@ -80,6 +82,9 @@
   ],
   "managedSources": [
     "src/Host/HostIoBridge.cs",
+    "src/Host/HostGuestCopyBridge.cs",
+    "src/Host/HostGuestX87StateBridge.cs",
+    "src/Host/HostGuestSnapshotBridge.cs",
     "src/Host/HostFileMappingBridge.cs",
     "src/Host/HostNetworkBridge.cs",
     "src/Host/HostReadinessBridge.cs",

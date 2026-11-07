@@ -1,0 +1,142 @@
+{
+  "status": "PASS_FINITE_LINUX_SCOPE",
+  "source": "native7c179",
+  "producer_sha256": "e75000b2f921bffb8afaf83ec8730d2e60db7464595581ac7439f10f1181acef",
+  "checks": [
+    {
+      "label": "native7c179-family-coreclr",
+      "exit": 0,
+      "group_gone": true,
+      "timeout": false,
+      "cpu_seconds": 8.790510000000001,
+      "wall_seconds": 7.727916068979539,
+      "receipt_sha256": "db53d28b6618381e37f2c8bd303051e99627e4eec94025f5f640832768ff73da",
+      "logs_sha256": {
+        "stdout": "11c051281c84a0298c385d350229bff8b5139a8f7215aa1c5145711a9ab328cd",
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "terminal_stdout": "PASS owned shared READ mapping family checks=9758014",
+      "stdout_lines": 878,
+      "raw_output": "checkpoint-local-evidence/historical-logs-and-service-records.tar.gz (local ignored evidence)",
+      "stderr_empty": true
+    },
+    {
+      "label": "native7c179-family-nativeaot",
+      "exit": 0,
+      "group_gone": true,
+      "timeout": false,
+      "cpu_seconds": 5.0730129999999996,
+      "wall_seconds": 5.173102563014254,
+      "receipt_sha256": "87295e4ab3453ed1d8095dba0df7a8518e158858cc562ce23c37f4446e22f388",
+      "logs_sha256": {
+        "stdout": "fe20a2c1c51637e70aba5c35061da826e3b6b85e0d8a8f06aee57916abcbf94e",
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "terminal_stdout": "PASS owned shared READ mapping family checks=9758008",
+      "stdout_lines": 878,
+      "raw_output": "checkpoint-local-evidence/historical-logs-and-service-records.tar.gz (local ignored evidence)",
+      "stderr_empty": true
+    },
+    {
+      "label": "native7c179-broad-default-coreclr",
+      "exit": 0,
+      "group_gone": true,
+      "timeout": false,
+      "cpu_seconds": 45.190109,
+      "wall_seconds": 43.43858679092955,
+      "receipt_sha256": "3d8e28bda5df97e3f110385261dbc5355312cc91fb980a38126dfc7b241b1fdd",
+      "logs_sha256": {
+        "stdout": "4b620d1892d4622d58fa53d021e1b8dcc2d3b0c0e2b57987766d79acf12aeb4d",
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "terminal_stdout": "PASS native x87 and atomic family batch checks=67084789",
+      "stdout_lines": 3898,
+      "raw_output": "checkpoint-local-evidence/historical-logs-and-service-records.tar.gz (local ignored evidence)",
+      "stderr_empty": true
+    },
+    {
+      "label": "native7c179-broad-default-nativeaot",
+      "exit": 0,
+      "group_gone": true,
+      "timeout": false,
+      "cpu_seconds": 44.289715,
+      "wall_seconds": 45.41760489100125,
+      "receipt_sha256": "b22365fe53b4720f0683385ceb5cf10f40f55fc68c2e61b67c8bd9ab23a013b6",
+      "logs_sha256": {
+        "stdout": "4b620d1892d4622d58fa53d021e1b8dcc2d3b0c0e2b57987766d79acf12aeb4d",
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "terminal_stdout": "PASS native x87 and atomic family batch checks=67084789",
+      "stdout_lines": 3898,
+      "raw_output": "checkpoint-local-evidence/historical-logs-and-service-records.tar.gz (local ignored evidence)",
+      "stderr_empty": true
+    },
+    {
+      "label": "checkpoint-c179-atomic-current-coreclr",
+      "exit": 0,
+      "group_gone": true,
+      "timeout": false,
+      "cpu_seconds": 1.635004,
+      "wall_seconds": 1.6663390679750592,
+      "receipt_sha256": "a4247f8e80a8e6a78bcb2b34980fda27f8c3be7e5e1ff21accf08331a5ecb758",
+      "logs_sha256": {
+        "stdout": "45be88fe435578ef1d99de2624fbdbb3c858e56a5a264ed66dc9ad1461567db3",
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "terminal_stdout": "PASS coherent atomic family checks=107657",
+      "stdout_lines": 3034,
+      "raw_output": "checkpoint-local-evidence/historical-logs-and-service-records.tar.gz (local ignored evidence)",
+      "stderr_empty": true
+    },
+    {
+      "label": "checkpoint-c179-atomic-current-nativeaot",
+      "exit": 0,
+      "group_gone": true,
+      "timeout": false,
+      "cpu_seconds": 0.567955,
+      "wall_seconds": 0.6149376280372962,
+      "receipt_sha256": "a24f00397e968c0ae122995632f99ca4fb7159a42a59a4811e1335c515046a21",
+      "logs_sha256": {
+        "stdout": "45be88fe435578ef1d99de2624fbdbb3c858e56a5a264ed66dc9ad1461567db3",
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "terminal_stdout": "PASS coherent atomic family checks=107657",
+      "stdout_lines": 3034,
+      "raw_output": "checkpoint-local-evidence/historical-logs-and-service-records.tar.gz (local ignored evidence)",
+      "stderr_empty": true
+    }
+  ],
+  "review_R199": "NO_NEW_SOURCE_P1_P2; prior scope only",
+  "review_R208": "NO_NEW_SCOPED_P1_P2; R101-04 OPEN",
+  "original_failures": "Retained separately; c178 fixture failure and c177/c172/c169 failed or censored campaigns not relabelled",
+  "fixture_label_correction": "checkpoint-c179-atomic-r1-coreclr used original guest bytes (00938447...); only atomic-current labels use current expanded source (de0f89b1...). Old label retained, not used as expanded-fixture acceptance.",
+  "source_adapter_tests": [
+    {
+      "suite": "test_full_jit_bindings.py",
+      "tests": 6,
+      "status": "PASS"
+    },
+    {
+      "suite": "test_full_jit_x87_state_bindings.py",
+      "tests": 15,
+      "status": "PASS",
+      "retained_inputs": "Complete 98-unit preclone corpus; first packaging attempt retained only8units and failed corpus-count fixture. Incomplete export corrected without test weakening."
+    }
+  ],
+  "source_adapter_tests_initial_failure_preserved": "checkpoint-local-evidence/checkpoint-x87-bindings-incomplete.stdout",
+  "post_gate_whitespace_cleanup": [
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullExtended80MemoryCompareEmitter.cs",
+      "before": "23de157ad6dd891cf861305e2510fae4bb6b9192a1f85d429dfe03b8940fcb78",
+      "after": "ba68ee9136e79fe7beca160909128172d5d7b37ef449c0f042f4fa252941b76c",
+      "proof": "Only line-end spaces removed; all nontrivia source bytes unchanged."
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullCanonicalX87MemoryArithmeticTests.cs",
+      "before": "865bfe35aec5b5c4ff6c3198e54369a98fab53f03d716effe73c2591f7de8832",
+      "after": "2f032087d69da8928456235e97ab71e587cfa324c8bf3fd329d65b083f276a39",
+      "proof": "Only line-end spaces removed; all nontrivia source bytes unchanged."
+    }
+  ],
+  "staging_check": "git diff --cached --check; no binary/generated bulk files selected"
+}

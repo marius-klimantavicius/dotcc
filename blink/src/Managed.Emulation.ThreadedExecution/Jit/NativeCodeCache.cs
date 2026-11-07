@@ -18,13 +18,14 @@ internal unsafe sealed class NativeCodeAllocation : IDisposable
     private NativeCodeAllocation(nint entry, nuint length, bool windows)
     { this.entry = entry; this.length = length; this.windows = windows; }
 
-    public static bool TryCreate(ReadOnlySpan<byte> code, out NativeCodeAllocation? allocation, out string reason)
+    public static bool TryCreate(ReadOnlySpan<byte> code, out NativeCodeAllocation? allocation, out string reason,
+        bool requireNativeFlags = true)
     {
         allocation = null;
         reason = "";
         // Opt-in/qualification is checked by the owner; never bypass an actual
         // mitigation denial even when it explicitly allows unverified Windows.
-        string? unavailable = NativeCodePlatform.UnavailableReason(allowUnverifiedWindows: true);
+        string? unavailable = NativeCodePlatform.UnavailableReason(allowUnverifiedWindows: true, requireNativeFlags);
         if (unavailable != null) { reason = unavailable; return false; }
         if (code.IsEmpty || code.Length > 1 << 20) { reason = "Invalid native block size"; return false; }
         nuint page = (nuint)Environment.SystemPageSize;
@@ -103,12 +104,12 @@ internal unsafe sealed class NativeCodeAllocation : IDisposable
 
 internal static class NativeCodePlatform
 {
-    public static string? UnavailableReason(bool allowUnverifiedWindows)
+    public static string? UnavailableReason(bool allowUnverifiedWindows, bool requireNativeFlags = true)
     {
         if (RuntimeInformation.ProcessArchitecture != Architecture.X64) return "Native backend requires x64";
         if (!OperatingSystem.IsLinux() && !OperatingSystem.IsWindows()) return "Native backend requires Linux or Windows";
-        if (!X86Base.IsSupported || (uint)X86Base.CpuId(unchecked((int)0x80000000), 0).Eax < 0x80000001u ||
-            (X86Base.CpuId(unchecked((int)0x80000001), 0).Ecx & 1) == 0)
+        if (requireNativeFlags && (!X86Base.IsSupported || (uint)X86Base.CpuId(unchecked((int)0x80000000), 0).Eax < 0x80000001u ||
+            (X86Base.CpuId(unchecked((int)0x80000001), 0).Ecx & 1) == 0))
             return "Native backend requires LAHF/SAHF in 64-bit mode";
         try
         {

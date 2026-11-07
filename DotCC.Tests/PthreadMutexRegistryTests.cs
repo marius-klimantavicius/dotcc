@@ -74,33 +74,50 @@ public unsafe class PthreadMutexRegistryTests
     }
 
     [Fact]
-    public void registry_larger_than_cache_bypasses_publication_and_reenables_after_destroy()
+    public void large_registry_keeps_exact_hot_ids_cached_without_the_registry_gate()
     {
         using var context = new RuntimeContext();
         using var binding = context.Enter();
         int count = context.MutexCache.Length * 4 + 1;
         int* handles = stackalloc int[count];
         for (int i = 0; i < count; i++) pthread_mutex_init(&handles[i], null).ShouldBe(0);
-        context.MutexCacheEnabled.ShouldBeFalse();
-        foreach (var cached in context.MutexCache) cached.ShouldBeNull();
+        int hot = handles[count - 1];
+        var hotState = context.Mutexes[hot];
+        context.MutexCache[hot & (context.MutexCache.Length - 1)].ShouldBeSameAs(hotState);
+        using var done = new ManualResetEventSlim(false);
+        Exception? failure = null;
+        var worker = new Thread(() =>
+        {
+            try
+            {
+                using var scope = context.Enter();
+                int copy = hot;
+                pthread_mutex_trylock(&copy).ShouldBe(0);
+                pthread_mutex_unlock(&copy).ShouldBe(0);
+            }
+            catch (Exception error) { failure = error; }
+            finally { done.Set(); }
+        }) { IsBackground = true };
+        bool finishedUnderRegistryGate;
+        lock (context.Objects)
+        {
+            worker.Start();
+            finishedUnderRegistryGate = done.Wait(TimeSpan.FromSeconds(10));
+        }
+        worker.Join(TimeSpan.FromSeconds(10)).ShouldBeTrue();
+        finishedUnderRegistryGate.ShouldBeTrue();
+        failure.ShouldBeNull();
+        // Sweep colliding IDs. Every miss must recover its exact state; a
+        // destroy must not clear an unrelated colliding live publication.
         for (int pass = 0; pass < 2; pass++)
             for (int i = 0; i < count; i++)
             {
                 pthread_mutex_lock(&handles[i]).ShouldBe(0);
                 pthread_mutex_unlock(&handles[i]).ShouldBe(0);
+                int id = handles[i];
+                context.MutexCache[id & (context.MutexCache.Length - 1)].ShouldBeSameAs(context.Mutexes[id]);
             }
-        foreach (var cached in context.MutexCache) cached.ShouldBeNull();
-        int removed = count - context.MutexCache.Length;
-        for (int i = 0; i < removed; i++) pthread_mutex_destroy(&handles[i]).ShouldBe(0);
-        context.MutexCacheEnabled.ShouldBeTrue();
-        for (int i = removed; i < count; i++)
-        {
-            int id = handles[i];
-            context.MutexCache[id & (context.MutexCache.Length - 1)].ShouldBeSameAs(context.Mutexes[id]);
-            pthread_mutex_lock(&handles[i]).ShouldBe(0);
-            pthread_mutex_unlock(&handles[i]).ShouldBe(0);
-            pthread_mutex_destroy(&handles[i]).ShouldBe(0);
-        }
+        for (int i = 0; i < count; i++) pthread_mutex_destroy(&handles[i]).ShouldBe(0);
         context.Mutexes.Count.ShouldBe(0);
         context.MutexCache.Length.ShouldBe(64);
         foreach (var cached in context.MutexCache) cached.ShouldBeNull();
@@ -131,7 +148,7 @@ public unsafe class PthreadMutexRegistryTests
     }
 
     [Fact]
-    public void static_initializers_also_disable_cache_above_capacity()
+    public void static_initializers_above_capacity_publish_exact_colliding_ids()
     {
         using var context = new RuntimeContext();
         using var binding = context.Enter();
@@ -143,15 +160,13 @@ public unsafe class PthreadMutexRegistryTests
             pthread_mutex_lock(&handles[i]).ShouldBe(0);
             pthread_mutex_unlock(&handles[i]).ShouldBe(0);
         }
-        context.MutexCacheEnabled.ShouldBeFalse();
-        foreach (var cached in context.MutexCache) cached.ShouldBeNull();
+        context.MutexCache[handles[count - 1] & 63].ShouldBeSameAs(context.Mutexes[handles[count - 1]]);
         for (int i = 0; i < count; i++) pthread_mutex_destroy(&handles[i]).ShouldBe(0);
-        context.MutexCacheEnabled.ShouldBeTrue();
         foreach (var cached in context.MutexCache) cached.ShouldBeNull();
     }
 
     [Fact]
-    public void cache_capacity_transitions_preserve_an_active_owner_and_blocked_waiter()
+    public void cache_collisions_in_a_large_registry_preserve_an_active_owner_and_blocked_waiter()
     {
         using var context = new RuntimeContext();
         using var binding = context.Enter();
@@ -177,12 +192,10 @@ public unsafe class PthreadMutexRegistryTests
             SpinWait.SpinUntil(() => { lock (state) return state.Waiters == 1; }, TimeSpan.FromSeconds(10)).ShouldBeTrue();
             int* temporary = stackalloc int[context.MutexCache.Length];
             for (int i = 0; i < context.MutexCache.Length; i++) pthread_mutex_init(&temporary[i], null).ShouldBe(0);
-            context.MutexCacheEnabled.ShouldBeFalse();
-            foreach (var cached in context.MutexCache) cached.ShouldBeNull();
+            context.MutexCache[temporary[context.MutexCache.Length - 1] & 63].ShouldBeSameAs(context.Mutexes[temporary[context.MutexCache.Length - 1]]);
             for (int i = 0; i < context.MutexCache.Length; i++) pthread_mutex_destroy(&temporary[i]).ShouldBe(0);
-            context.MutexCacheEnabled.ShouldBeTrue();
             // A temporary colliding ID may have evicted this entry during
-            // repopulation. The next lookup must resolve the original state.
+            // publication. The next lookup must resolve the original state.
             pthread_mutex_trylock(&mutex).ShouldBe(EBUSY);
             context.MutexCache[id & (context.MutexCache.Length - 1)].ShouldBeSameAs(state);
             lock (state) state.Waiters.ShouldBe(1);

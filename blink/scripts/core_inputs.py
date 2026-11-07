@@ -89,7 +89,7 @@ def stage_managed_boundaries(campaign: Path, profile: Path, instance_methods: bo
     if instance_methods:
         spec['headers'].append('blink/signal.h')
         spec['required_units']['blink/signal.c'] = ['TerminateSignal']
-        spec['required_units']['blink/memory.c'] = ['blink_host_guest_code_revoke']
+        spec['required_units']['blink/memory.c'] = ['blink_host_guest_code_revoke', 'blink_host_guest_page_table_entry', 'blink_host_guest_physical_expose']
         spec['required_units']['blink/memorymalloc.c'].append('blink_host_guest_mapping_revoke')
         spec['required_units']['blink/loader.c'] = ['blink_host_guest_mapping_revoke']
     upstream = campaign / ("ref/" + _CAMPAIGN_SOURCE["directory"])
@@ -106,8 +106,29 @@ def stage_managed_boundaries(campaign: Path, profile: Path, instance_methods: bo
             signature=dict(returnType='int', parameterTypes=['void (*)(void)'] * 3, variadic=False),
             target=dict(kind='managedMethod', method='global::Managed.Emulation.BlinkCore.blink_host_guest_pthread_atfork', passInstance=True),
             requireMatch=False))
+        from full_jit_x87_state_bindings import BOUNDARY_SIGNATURES
         for name, result, parameters in [
+            *BOUNDARY_SIGNATURES,
             ('blink_host_guest_thread_start', 'int', ['struct Machine *']),
+            ('blink_host_guest_interpreter_dispatch', 'void', ['struct Machine *']),
+            ('blink_host_guest_page_table_entry', 'unsigned long', ['struct Machine *', 'unsigned long']),
+            ('blink_host_guest_recycle_page', 'void', ['struct System *', 'unsigned char *', 'int']),
+            ('blink_host_guest_physical_expose', 'void', ['struct Machine *', 'unsigned char *']),
+            ('blink_host_guest_read_copy', 'void', ['struct Machine *', 'void *', 'void *', 'unsigned long']),
+            ('blink_host_guest_write_copy', 'void', ['struct Machine *', 'void *', 'void *', 'unsigned long']),
+            ('blink_host_guest_string_copy', 'unsigned long', ['struct Machine *', 'unsigned char *', 'unsigned char *', 'unsigned long']),
+            ('blink_host_guest_store32', 'void', ['struct Machine *', 'unsigned char *', 'unsigned int', 'int']),
+            ('blink_host_guest_futex_enqueue', 'int', ['struct Machine *', 'unsigned char *', 'unsigned int', 'unsigned long', 'int', 'unsigned int', 'void *', 'void **']),
+            ('blink_host_guest_snapshot_alloc', 'void *', ['struct Machine *', 'unsigned long']),
+            ('blink_host_guest_snapshot_resize', 'void *', ['struct Machine *', 'void *', 'unsigned long', 'int']),
+            ('blink_host_guest_snapshot_free', 'void', ['struct Machine *', 'void *']),
+            ('blink_host_guest_freelist_append', 'void *', ['struct Machine *', 'void *']),
+            ('blink_host_guest_freelist_free', 'void', ['struct Machine *']),
+            ('blink_host_guest_consume_signal', 'int', ['struct Machine *', 'int *', '_Bool *']),
+            ('blink_host_guest_deliver_signal_user', 'void', ['struct Machine *', 'int', 'int']),
+            ('blink_host_guest_handle_sigpipe', 'long', ['struct Machine *', 'long', 'int']),
+            ('blink_host_guest_tkill_self', 'int', ['struct Machine *', 'int']),
+            ('blink_host_guest_sigaction', 'int', ['struct Machine *', 'int', 'long', 'long', 'unsigned long']),
             ('blink_host_guest_code_revoke', 'void', ['long', 'long']),
             ('blink_host_guest_mapping_revoke', 'void', ['long', 'long']),
             ('blink_host_guest_signal_checkpoint', 'void', ['struct Machine *']),
@@ -126,6 +147,10 @@ def stage_managed_boundaries(campaign: Path, profile: Path, instance_methods: bo
             requireMatch=False))
         header = campaign / 'src/Host/include/host-guest-threads.h'
         spec['authored_headers'] = {'host-guest-threads.h': hashlib.sha256(header.read_bytes()).hexdigest()}
+        x87_header = campaign / 'src/Host/include/host-x87-state.h'
+        spec['authored_headers']['host-x87-state.h'] = hashlib.sha256(x87_header.read_bytes()).hexdigest()
+        spec['required_units']['blink/fpu.c'] = [name for name, _, _ in BOUNDARY_SIGNATURES]
+        spec['required_units']['blink/signal.c'] += [name for name, _, _ in BOUNDARY_SIGNATURES[:2]]
 
     existing = {rule['name'] for rule in overrides['functionOverrides']}
     if existing.intersection(rule['name'] for rule in rules):
@@ -177,7 +202,7 @@ def managed_boundary_selection(profile: Path, report: Path, source: str) -> dict
                 raise RuntimeError('Authored callback declaration identity differs: ' + source)
         if (row['target'] != 'managedMethod:' + rule['target']['method'] or row['matches'] != '1'
                 or ('declarationFile' in rule and row['declarationFile'] != rule['declarationFile'])
-                or (not source_defined and 'declarationFile' not in rule and Path(row['declarationFile']).name != 'host-guest-threads.h')
+                or (not source_defined and 'declarationFile' not in rule and Path(row['declarationFile']).name != ('host-x87-state.h' if rule['name'] in ('blink_host_guest_x87_active', 'blink_host_guest_x87_state', 'blink_host_guest_x87_reject_legacy') else 'host-guest-threads.h'))
                 or row.get('passInstance', 'false') != str(rule['target'].get('passInstance', False)).lower()
                 or row.get('doesNotReturn', 'false') != str(rule['target'].get('doesNotReturn', False)).lower()):
             raise RuntimeError('Managed boundary target/declaration differs: ' + source)

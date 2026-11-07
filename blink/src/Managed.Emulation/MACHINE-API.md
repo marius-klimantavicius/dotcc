@@ -1,8 +1,9 @@
 # Machine API source contract
 
-This API passes the selected Linux x64 P6 qualification under JIT and NativeAOT
-in both execution modes. The public fixture covers eleven normal cases per mode;
-the actual Kestrel and console/folder samples pass separately. See
+This API has selected Linux x64 host P6 qualification under CoreCLR and NativeAOT
+host runtimes in both execution modes. That earlier public fixture covers eleven
+normal cases per mode; the actual Kestrel and console/folder samples pass
+separately. Those receipts do not qualify the newer Full guest JIT. See
 [the validation ledger](../../docs/VALIDATION.md) for exact receipts and limits.
 
 `MachineOptions.Metadata` enables [private IMDSv2 simulation](IMDSV2.md),
@@ -132,9 +133,9 @@ executing a translated guest. Raising quotas does not extend guest compatibility
 the default remains static Linux x86-64 ELF, including the pinned musl NativeAOT
 Kestrel service, with explicitly granted numeric IPv4 TCP. Explicit dynamic ELF
 execution requires the finite guest loader/libc qualification described above
-and in its actual suite receipts. CoreCLR, general Linux userspace, ambient DNS, UDP and
-IPv6 remain outside this profile. Fresh full-product qualification is separate
-from these host tests.
+and in its actual suite receipts. General CoreCLR guest compatibility, general
+Linux userspace, ambient DNS, UDP and IPv6 remain outside this profile. Fresh
+full-product qualification is separate from these host tests.
 
 Create a fresh run on the same machine to reuse its private filesystem. Machine
 configuration and mount changes are allowed only while idle. Independent machines
@@ -192,7 +193,7 @@ reparse-point checks. They are not atomic containment against hostile concurrent
 host mutation, hard-link aliases or special files. Use trusted host roots. Windows
 does not provide persistent Unix modes through this backend: unsupported chmod and
 executable imports fail explicitly. BCL-only implementation is not a claim of
-Windows guest execution qualification or an OS security sandbox.
+Windows host execution qualification for Linux guests or an OS security sandbox.
 
 Network access is denied by default. Explicit numeric IPv4 publication and outbound
 grants are enforced before host bind/connect; DNS is not an ambient capability.
@@ -202,14 +203,81 @@ ceiling, terminating there rather than allowing overflow. A null deadline means 
 deadline. In-process limits govern guest resources, not an OS process-wide hard
 memory or CPU sandbox.
 
-## Experimental guest native JIT
+## Experimental guest JIT modes
 
-The default remains interpreted execution. `MachineOptions.GuestJit = new() {
-Enabled = true }` opts into the bounded x64 native backend; optional
-`ExecutionOptions.GuestJit` overrides it per run. Unsupported instructions,
-capabilities and difficult paths interpret and later supported blocks can resume
-native execution. `MachineRunResult.JitStatistics` reports actual native guest
-instructions, compiled blocks, cache use and fallback decisions in both process
-modes. See [experimental architecture, coverage and qualification](../../docs/EXPERIMENTAL-GUEST-JIT.md).
-Windows native emission remains unverified and requires the separate explicit
-`AllowUnverifiedWindows` test opt-in; denied policies still interpret.
+`MachineOptions.GuestJit` and the per-run replacement
+`ExecutionOptions.GuestJit` expose public `GuestJitMode.Interpreter`, `Hybrid`
+and `Full` through `GuestJitOptions.Mode`. Interpreter is the default. Legacy
+`Enabled = true` selects Hybrid when Mode is its default Interpreter value;
+nondefault Mode takes precedence. To force Interpreter, use an options record
+with `Mode = GuestJitMode.Interpreter` and `Enabled = false`.
+
+```csharp
+var fullJitOptions = new MachineOptions
+{
+    GuestJit = new GuestJitOptions { Mode = GuestJitMode.Full }
+};
+```
+
+Hybrid opportunistically executes allowlisted inline native blocks and interprets
+unsupported forms, unsuitable mappings or denied native capabilities. Full uses
+definition B: inline native operations plus operation-specific, predecoded typed
+semantic helpers selected at translation time. Those helpers execute the selected
+software guest CPU semantics without fetching/decoding again or reentering the old
+interpreter opcode dispatcher. An old-dispatch tripwire records an attempt and
+fails Full rather than falling back to interpretation.
+
+Full's native tail chains contain only authenticated register-only cached entries;
+other inline entries still execute checked private-memory operations. Mutable,
+anonymous/JIT, shared/aliased and later-library code use the conservative semantic
+tier through checked execute fetch and byte validation. All mapping classes still
+obey guest permissions and faults. Helpers execute only after native frames return
+and JIT gates and code/data read leases release, so blocking, faults, mapping
+changes and nonlocal guest signal transfers cannot unwind through emitted frames.
+Semantic data access retains passive reclamation protection through the access,
+without a mapping lock across the helper. Syscall page walks release their short
+protection after PAGE_LOCK acquisition and before I/O. Recursive Linux guest signal
+handlers also use Full, one instruction per exit.
+
+`MachineRunResult.JitStatistics` is returned in both execution modes. In Full,
+`InlineNativeInstructions + SemanticHelperInstructions` equals completed run
+`Instructions`, while `InterpreterAttempts` and `InterpreterInstructions` must be
+zero. Legacy `GuestInstructions` counts only inline work; helper calls can exceed
+helper completions on faults/unwind. `NativeEntries` includes semantic
+continuations and inline leaves, so it is not an inline instruction count.
+`NativeTailJumps` specifically witnesses native successor jumps; translation
+misses and inline fallback decisions can select semantic work without interpreting.
+`SemanticPlanBindings` counts decoded instruction/helper metadata installations;
+legacy `CompiledBlocks` combines those with inline native emissions. Immutable
+token trampolines are reused, so neither count is a count of newly optimized
+native blocks. Semantic hit, capacity-eviction, residency and directory-probe
+statistics distinguish cache turnover from actual byte/access revalidation.
+
+The guest CPU and Linux guest SIGILL, sigaction/ucontext, signal masks and
+rt_sigreturn remain software Linux guest behavior on **both Linux and Windows
+hosts**. No host SIGILL/UD2 or Windows SEH recovery implements those guest signals.
+CoreCLR/NativeAOT host runtimes are independent of CoreCLR/NativeAOT Linux guests.
+`GuestJitHostFeatures.BaselineOnly` is a **SIMULATED** exclusion policy for optional
+host emission, with unchanged guest CPUID/software semantics; it does not prove
+execution on physical feature-limited hardware.
+
+Actual Windows x64 **CoreCLR and NativeAOT host execution is UNVERIFIED**.
+`AllowUnverifiedWindows` is an explicit qualification opt-in and does not bypass
+dynamic-code, CFG/XFG or shadow-stack policy. No mitigation is disabled. Denied
+native admission leaves Hybrid interpreted; Full reports a capability/configuration
+error before guest execution. Linux runs, cross-builds and static review do not
+qualify Windows.
+
+The final4 Linux raw/processed consumers pass the finite CPU differential,
+precise-state, signal, strict-dispatch and native contract matrices on CoreCLR
+and NativeAOT hosts. The bounded worker profile passes 106 public observations
+per cell; original busy-loop/shared-budget failures remain retained separately.
+NativeAOT-guest services pass on the CoreCLR host; remaining service cells and
+paired performance qualification are active. Earlier short CoreCLR-guest
+service attempts failed readiness and are retained under separate profiles.
+These observations and complete selected-source lowering coverage do not certify
+every encoding or schedule. Preexisting ISA/FP/signal deviations remain in the
+[CPU/signal audit](../../artifacts/jit-implementation/full-jit-20261027-r1/cpu-signal-audit.md).
+See [architecture and exact evidence scopes](../../docs/EXPERIMENTAL-GUEST-JIT.md)
+and the [durable full-JIT report](../../artifacts/jit-implementation/full-jit-20261027-r1/report.md)
+for final-source qualification, retained failures and pending runtime work.

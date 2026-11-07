@@ -12,7 +12,10 @@ public static partial class Blink
             if(io==null)return IoError(19);
             if(source==null && length!=0)return IoError(14);
             int count=(int)global::System.Math.Min(length,(ulong)IoChunk);
-            return IoResult(io.WriteAt(fd,new ReadOnlySpan<byte>(source,count),offset));
+            using var staging = new GuestIoBuffer(count);
+            byte[] buffer = staging.Bytes;
+            SnapshotGuestBytes(source, buffer);
+            return IoResult(io.WriteAt(fd,buffer,offset));
         } catch(Exception e){return IoException(e);}
     }
     public static int blink_host_ftruncate(int fd,long length)
@@ -25,11 +28,7 @@ public static partial class Blink
         try {
             if(io==null)return IoError(19);
             if(path==null)return IoError(14);
-            int count=0;while(count<=PathLimit && path[count]!=0)++count;
-            if(count>PathLimit)return IoError(36);
-            string name;
-            try{name=PathEncoding.GetString(new ReadOnlySpan<byte>(path,count));}
-            catch(global::System.Text.DecoderFallbackException){return IoError(22);}
+            if (!ReadGuestPath(path, out string name)) return -1;
             return (int)IoResult(io.TruncateFile(name,length));
         }catch(Exception e){return IoException(e);}
     }

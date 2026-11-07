@@ -7,6 +7,7 @@ public sealed unsafe partial class ThreadedGuestExecution
 {
     private readonly GuestJitOptions jitOptions;
     private GuestBlockJit? guestJit;
+    private FullTranslationJit? fullJit;
     private volatile bool guestJitActive;
     private long reapedJitBlockEntries, reapedJitNegativeSkips, reapedJitColdEntries, reapedJitHintCollisions;
     internal int JitWorkerCapacity => maximumWorkers;
@@ -95,8 +96,11 @@ public sealed unsafe partial class ThreadedGuestExecution
                 { entries += Volatile.Read(ref worker.JitObservedEntries); negatives += Volatile.Read(ref worker.JitNegativeSkips); cold += Volatile.Read(ref worker.JitColdEntries); collisions += Volatile.Read(ref worker.JitHintCollisions); }
                 var fallbacks = new Dictionary<string, long>(snapshot.Fallbacks, StringComparer.Ordinal);
                 if (cold != 0) fallbacks["ColdBlock"] = cold;
-                return snapshot with { BlockEntries = entries, NegativeCacheHits = snapshot.NegativeCacheHits + negatives,
+                snapshot = snapshot with { Mode = jitOptions.EffectiveMode.ToString(), HostFeatures = jitOptions.HostFeatures.ToString(), InlineNativeInstructions = snapshot.GuestInstructions,
+                    InterpreterAttempts = Volatile.Read(ref interpreterAttempts),
+                    BlockEntries = entries, NegativeCacheHits = snapshot.NegativeCacheHits + negatives,
                     HotnessCollisions = collisions, Fallbacks = fallbacks };
+                return fullJit?.Snapshot(snapshot) ?? snapshot;
             }
         }
     }
@@ -148,6 +152,10 @@ public sealed unsafe partial class ThreadedGuestExecution
         {
             case JitExit.Budget: stop.RequestBudgetStop(); break;
             case JitExit.MemoryMiss:
+                // In strict mode the guard has not issued the faulting
+                // instruction. Resolve it through its compiled semantic
+                // continuation immediately, preserving any completed prefix.
+                if (fullJit != null) return false;
                 // Guards precede issuance and effects. Return to the ordinary
                 // checkpoint, then interpret this IP exactly once. No native
                 // retry or preissued ExecuteOne continuation is needed.
@@ -230,6 +238,9 @@ public sealed unsafe partial class ThreadedGuestExecution
 
     private GuestCpuState CaptureCpuState(Blink.Machine* machine)
     {
+#if BLINK_FULL_X87_STATE_OWNER
+        CurrentX87((nint)machine)?.RejectLegacy((nint)machine, 1);
+#endif
         byte* address = (byte*)machine;
         return new(machine->ip, machine->oplen, machine->flags, program!.ExportFlags(machine->flags),
             new ReadOnlySpan<byte>(address + 24, 128).ToArray(),

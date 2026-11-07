@@ -7,6 +7,8 @@ public readonly record struct HostGuestSignalInfo(int ProcessId, uint UserId);
 /// ownership. Exit callbacks must unwind, never return or free the Machine.</summary>
 public interface IHostGuestThreads
 {
+    /// <summary>Tripwire at every old instruction-dispatch entry, including recursive paths.</summary>
+    void InterpreterDispatch(nint machine) { }
     int Start(nint machine);
     void Exit(nint machine, int status, bool group);
     void StopOthers(nint system);

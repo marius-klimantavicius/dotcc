@@ -1,0 +1,52 @@
+{
+  "status": "DELETED_VERIFIED_DISPOSABLE_TASK_TREES",
+  "roots": [
+    {
+      "path": "/mnt/storage/blink-full-jit-20261027",
+      "allocated_bytes_before_delete": 85702901760
+    },
+    {
+      "path": "/mnt/storage/blink-jit-ir-20261027",
+      "allocated_bytes_before_delete": 4289269760
+    },
+    {
+      "path": "/mnt/storage/blink-jit-only-research-20261027",
+      "allocated_bytes_before_delete": 12288
+    },
+    {
+      "path": "/mnt/storage/blink-jit-research-20261027",
+      "allocated_bytes_before_delete": 625844224
+    },
+    {
+      "path": "/mnt/storage/blink-jit-service-20261026",
+      "allocated_bytes_before_delete": 19833139200
+    }
+  ],
+  "allocated_bytes_to_reclaim": 110451167232,
+  "process_path_uses": [],
+  "live_source_symlinks_to_deleted_trees": [],
+  "older_source_records_exported": 28002,
+  "primary_reference_paths_preserved": 51,
+  "primary_reference_unique_files": 34,
+  "retained_inputs_root": "/mnt/storage/blink-full-jit-checkpoint-inputs-20261107",
+  "retained_local_ledger": "/home/marius/p/dotcc/blink/artifacts/jit-implementation/full-jit-20261027-r1",
+  "global_shared_caches": "UNTOUCHED; task top-level package/http caches retained intact under inputs/retained-caches",
+  "archive_sha256": {
+    "checkpoint-local-evidence/frozen-authored-handoffs.tar.gz": "6f47cf9f3cf550159733f1b5a5812bd4953b3e49f917b52dd2818b519d263160",
+    "checkpoint-local-evidence/older-authored-inputs-and-records.tar.gz": "a95b142ac2a799d51c21d2292fb9b5ea7305e2b32bc664785ccef3129555f65f",
+    "checkpoint-local-evidence/historical-logs-and-service-records.tar.gz": "b6a1e0f07fd192fec83bad62dea261ddec0b04102151f232603fc6c606815548"
+  },
+  "note": "Historical receipts retain absolute deleted paths as provenance. Current build uses installed hash-pinned producer archive. Needed fixture/source/reference inputs exported; unqualified R209 partial preserved separately.",
+  "all_designated_trees_removed": true,
+  "deleted_allocated_bytes": 110451167232,
+  "filesystem_available_before_bytes": 73271345152,
+  "filesystem_available_after_bytes": 183285817344,
+  "filesystem_available_increase_bytes": 110014472192,
+  "filesystem_delta_limit": "df availability observation includes any unrelated concurrent filesystem activity; removed-tree allocated blocks are separately reported",
+  "retained_input_allocated_bytes": 435859456,
+  "owned_runtime_processes": [],
+  "active_children": [],
+  "future_turns_cancelled": 194,
+  "automatic_continuations": false,
+  "cleanup_failure_preserved": "Initial deletion encountered read-only frozen directories after partial deletion; resumed only exact audited roots with owner-directory write permission. No input/shared-cache paths added to deletion scope."
+}

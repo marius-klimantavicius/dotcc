@@ -264,38 +264,51 @@ public sealed partial class InstanceIo : IAsyncDisposable
     }
     public Task<HostResult<int>> ReadAsync(int fd, Memory<byte> destination, CancellationToken cancellation = default)
     {
-        lock (sync)
+        var retry = new SpinWait();
+        while (true)
         {
-            if (cancellation.IsCancellationRequested) return Task.FromResult(Fail<int>(GuestError.Canceled));
-            if (!Find(fd, out var description)) return Task.FromResult(Fail<int>(GuestError.BadDescriptor));
-            if (description.Kind == Kind.Socket) return network.ReceiveAsync(description.Handle, destination, cancellation);
-            if (description.Kind == Kind.Pipe) return pipes.ReadAsync(description.Handle, destination, (description.StatusFlags & 2048) != 0, cancellation);
-            if (description.Kind == Kind.Epoll) return Task.FromResult(Fail<int>(GuestError.Invalid));
-            HostResult<int> result;
-            if (description.Kind == Kind.MemoryFile)
+            lock (sync)
             {
-                result = ReadMemoryFile(description.MemoryFile!, destination.Span, description.Position);
-                if (result.Succeeded) description.Position += result.Value;
+                if (cancellation.IsCancellationRequested) return Task.FromResult(Fail<int>(GuestError.Canceled));
+                if (!Find(fd, out var description)) return Task.FromResult(Fail<int>(GuestError.BadDescriptor));
+                if (description.Kind == Kind.Socket) return network.ReceiveAsync(description.Handle, destination, cancellation);
+                if (description.Kind == Kind.Pipe) return pipes.ReadAsync(description.Handle, destination, (description.StatusFlags & 2048) != 0, cancellation);
+                if (description.Kind == Kind.Epoll) return Task.FromResult(Fail<int>(GuestError.Invalid));
+                HostResult<int> result;
+                if (description.Kind == Kind.MemoryFile)
+                {
+                    if (!TryReadMemoryFile(description.MemoryFile!, destination.Span, description.Position, out result))
+                        goto RetryRead;
+                    if (result.Succeeded) description.Position += result.Value;
+                }
+                else if (description.Kind == Kind.File) result = files.Read(description.Handle, destination.Span);
+                else if (description.Kind == Kind.Input)
+                {
+                    if (console != null) return RunConsole(token => console.ReadInputAsync(destination, token, (description.StatusFlags & 2048) != 0), cancellation);
+                    int count = Math.Min(destination.Length, input.Length - inputPosition);
+                    input.AsSpan(inputPosition, count).CopyTo(destination.Span); inputPosition += count;
+                    result = HostResult<int>.Success(count);
+                }
+                else result = Fail<int>(GuestError.BadDescriptor);
+                return Task.FromResult(result);
             }
-            else if (description.Kind == Kind.File) result = files.Read(description.Handle, destination.Span);
-            else if (description.Kind == Kind.Input)
-            {
-                if (console != null) return RunConsole(token => console.ReadInputAsync(destination, token, (description.StatusFlags & 2048) != 0), cancellation);
-                int count = Math.Min(destination.Length, input.Length - inputPosition);
-                input.AsSpan(inputPosition, count).CopyTo(destination.Span); inputPosition += count;
-                result = HostResult<int>.Success(count);
-            }
-            else result = Fail<int>(GuestError.BadDescriptor);
-            return Task.FromResult(result);
+        RetryRead:
+            retry.SpinOnce(); // Outside sync; never retains admission over async I/O.
         }
     }
     public HostResult<int> ReadAt(int fd, Span<byte> destination, long offset)
     {
-        lock (sync)
+        var retry = new SpinWait();
+        while (true)
         {
-            if (!Find(fd, out var description)) return Fail<int>(GuestError.BadDescriptor);
-            return description.Kind == Kind.MemoryFile ? ReadMemoryFile(description.MemoryFile!, destination, offset)
-                : description.Kind == Kind.File ? files.ReadAt(description.Handle, destination, offset) : Fail<int>(GuestError.IllegalSeek);
+            lock (sync)
+            {
+                if (!Find(fd, out var description)) return Fail<int>(GuestError.BadDescriptor);
+                if (description.Kind != Kind.MemoryFile)
+                    return description.Kind == Kind.File ? files.ReadAt(description.Handle, destination, offset) : Fail<int>(GuestError.IllegalSeek);
+                if (TryReadMemoryFile(description.MemoryFile!, destination, offset, out var result)) return result;
+            }
+            retry.SpinOnce(); // Nonblocking observer rejected under sync; retry outside.
         }
     }
     public HostResult<long> ReadAtLength(int fd)
@@ -424,6 +437,11 @@ public sealed partial class InstanceIo : IAsyncDisposable
         lock (sync)
         {
             owner = shutdown == null;
+            // Withdraw retained-read ownership before disposal publication. A
+            // rejected Begin must leave shutdown retryable, not a pending task.
+            // With no leases, all old hints were already revoked at release.
+            using var mutation = owner && memoryFileLeases.Count != 0 && memoryFileMutation is IHostMemoryFileNativeReadOwner
+                ? BeginMemoryFileMutation(0, 0, logical: true) : default;
             shutdown ??= new(TaskCreationOptions.RunContinuationsAsynchronously); completion = shutdown;
             if (owner)
             {

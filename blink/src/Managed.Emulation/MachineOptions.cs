@@ -52,8 +52,8 @@ public sealed record MachineOptions
     public int PendingPipeOperations { get; init; } = 128;
     public long? InstructionLimit { get; init; }
     public TimeSpan? ExecutionDeadline { get; init; }
-    /// <summary>Explicit experimental guest native JIT. The interpreter remains
-    /// the default and the fallback for unsupported blocks or host capabilities.</summary>
+    /// <summary>Interpreter (default), opportunistic hybrid, or strict Full-JIT.
+    /// Full mode reports unavailable host/code resources without interpreting.</summary>
     public GuestJitOptions GuestJit { get; init; } = new();
     public IReadOnlyDictionary<string, string> Environment { get; init; } = new Dictionary<string, string>();
     public NetworkPolicy Network { get; init; } = NetworkPolicy.Isolated;

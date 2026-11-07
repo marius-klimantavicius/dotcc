@@ -26,6 +26,11 @@ int BlinkHostMemoryDetach(void);
 int BlinkHostMemoryDestroyShared(uint64_t);
 int BlinkHostMemorySharedSnapshot(uint64_t, size_t *, size_t *, size_t *);
 size_t BlinkHostMemorySharedOverhead(void);
+/* Short instruction-fetch lifetime pin. Mapping removal remains logical and
+ * nonblocking; physical allocations/shared leases retire until the last reader
+ * leaves. Retired bytes remain charged. No owner/mapping gate is retained. */
+int BlinkHostMemoryInstructionReadBegin(void);
+int BlinkHostMemoryInstructionReadEnd(void);
 #endif
 
 /* One active allocation owner per worker. The limit includes rounded payload
@@ -76,6 +81,7 @@ int BlinkHostMemoryProtection(const void *);
 /* Read-only sharing metadata query. Both mutable and immutable shared file
  * pages return 1; private or unowned pages return 0. Does not probe backing. */
 int BlinkHostMemoryFilePageShared(const void *);
+uint64_t BlinkHostMemoryFilePageLease(const void *);
 /* File page availability, independent of protection. Private files use their
  * snapshot EOF; shared memfds use their current length, including after close.
  * Whole file pages

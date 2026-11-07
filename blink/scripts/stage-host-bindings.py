@@ -9,6 +9,10 @@ from pathlib import Path
 import memory_bindings
 import signal_bindings
 import cpu_bindings
+import full_jit_bindings
+import full_jit_memory_bindings
+import full_jit_copy_bindings
+import full_jit_x87_state_bindings
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'src/Host/scripts'))
 import stage_elf_entry
@@ -26,7 +30,7 @@ shutil.copyfile(Path(__file__),profile/'stage-host-bindings.py')
 authored=profile/'authored';authored.mkdir(exist_ok=True)
 managed=profile/'managed';managed.mkdir(exist_ok=True)
 inputs={}
-for relative in (*memory_bindings.INPUTS, *signal_bindings.INPUTS, *cpu_bindings.INPUTS):
+for relative in (*memory_bindings.INPUTS, *signal_bindings.INPUTS, *cpu_bindings.INPUTS, *full_jit_bindings.INPUTS, *full_jit_memory_bindings.INPUTS, *full_jit_copy_bindings.INPUTS, *full_jit_x87_state_bindings.INPUTS):
     original=ROOT/relative
     inputs[relative]=sha(original)
     shutil.copyfile(original,profile/original.name)
@@ -68,6 +72,7 @@ for name in manifest['includeHeaders']:
 closure=json.loads((profile/'closure.json').read_text())
 overrides=json.loads(a.overrides.read_text())
 rows=[]
+full_jit_sources={}
 entries=list(closure['sources'])
 for entry in json.loads((profile/'managed-additions.json').read_text())['sources']:
     entries.append(dict(entry,staged_path=str(profile/'additional'/Path(entry['path']).name)))
@@ -82,6 +87,11 @@ for entry in entries:
     content=memory_bindings.adapt(entry['path'],content)
     content=signal_bindings.adapt(entry['path'],content)
     content=cpu_bindings.adapt(entry['path'],content)
+    content=full_jit_memory_bindings.adapt(entry['path'],content)
+    # Actual-use copy boundaries depend on the final guest-thread derivation.
+    # Retain the adapter as a producer input here; apply it in threaded staging.
+    full_jit_sources[entry['path']]=content
+    content=full_jit_bindings.adapt(entry['path'],content)
     target.parent.mkdir(exist_ok=True)
     target.write_bytes(b'#include "host-bindings.h"\n'+content)
     overrides[entry['path']]=dict(staged_path=str(target.relative_to(ROOT)),sha256=sha(target),original_sha256=entry['sha256'])
@@ -94,6 +104,7 @@ for entry in entries:
             flat_binary_rdx='upstream program string',
             evidence='tests/ElfRuntime/README.md')
 a.overrides.write_text(json.dumps(overrides,indent=2)+'\n')
+(profile/'full-jit-inventory.json').write_text(json.dumps(full_jit_bindings.inventory(full_jit_sources),indent=2)+'\n')
 (profile/'binding-sources.json').write_text(json.dumps(dict(
     authored_c=['authored/HostSignals.c','authored/HostMemory.c']
         + ['authored/'+Path(name).name for name in manifest['cSources']],

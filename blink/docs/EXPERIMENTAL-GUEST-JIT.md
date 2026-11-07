@@ -1,294 +1,171 @@
-# Experimental native guest JIT
+# Experimental guest JIT modes
 
-This uncommitted, opt-in x64 backend emits native machine code from a strict
-allowlist of Blink-decoded instructions. Hybrid interpretation is intended:
-unsupported instructions, unavailable leases and denied host capabilities return
-to the established interpreter. The interpreter remains the default.
+`GuestJitOptions.Mode` selects `Interpreter`, `Hybrid` or `Full`. Interpreter is
+the default. Both JIT modes are experimental and opt in. Full's retained mixed
+translation-block implementation is under qualification; current results,
+failures and source pins are in the [paused checkpoint](../artifacts/jit-implementation/full-jit-20261027-r1/CHECKPOINT.md).
+No complete Linux compatibility or acceleration claim is made.
 
 ```csharp
 await using var machine = new BlinkMachine(new MachineOptions {
-    GuestJit = new GuestJitOptions { Enabled = true },
+    GuestJit = new GuestJitOptions {
+        Mode = GuestJitMode.Full,
+        CacheLimitBytes = 128L << 20
+    },
     InstructionLimit = 100_000_000,
     ExecutionDeadline = TimeSpan.FromSeconds(30)
 });
 ```
 
-A run can override `MachineOptions.GuestJit` through `ExecutionOptions.GuestJit`,
-including disabling it. Options and statistics pass through SeparateProcess;
-the consumer and worker must come from the same source closure. NativeAOT **host**
-and NativeAOT **guest** are independent axes. This backend requires neither
-Reflection.Emit nor a native Blink library.
+- Interpreter uses the existing translated instruction interpreter.
+- Hybrid opportunistically executes its native allowlist, with interpretation
+  for other instructions or unavailable native admission.
+- Full compiles retained blocks with generated native ordinary computation.
+  Syscall, mapping/fault and authenticated clock/entropy data services are
+  separate runtime boundaries. Remaining ordinary helper forms are coverage
+  gaps. It has no interpreter fallback, including recursive signal execution.
+  Unsupported executable publication fails explicitly; the old interpreter
+  entry points have strict tripwires.
 
-## Initial private backing and worker safety
+Legacy `Enabled=true` selects Hybrid when Mode is Interpreter. A nondefault Mode
+wins. A per-run `ExecutionOptions.GuestJit` replaces all machine JIT options.
+Both InProcess and SeparateProcess carry options and statistics; controller and
+worker must use the same closure. CoreCLR/NativeAOT host and guest runtimes are
+independent axes. Guests always use Linux x86-64 ELF and the Linux guest ABI,
+including on Windows hosts. Actual Windows x64 CoreCLR and NativeAOT execution
+remains **UNVERIFIED**; no mitigation is disabled to enable it.
 
-The first worker transition restricts native code to initially enrolled private,
-non-writable ELF executable pages. Enrollment happens once after `LoadProgram`
-finishes and before the first guest instruction or child publication. Reserved code pages become eligible only after ordinary guest fetch commits
-them; enrollment does not change guest RSS or reservation accounting. The initial
-main ELF executable range is used; later libraries and anonymous code heaps are
-not enrolled. Shared executable backing, including memfd aliases, interprets.
+## Retained blocks and reuse
 
-The protocol protects content, identity and lifetime through native return:
+Full separates a small per-worker nonowning lookup cache from an exact
+owner-wide retained directory. Lookup collisions can require a directory lookup;
+they cannot evict or recompile a fitting resident body. A retained body has up to
+512 contiguous decoded instructions on one checked page, selected typed helper
+plans, one native body, a generation and two optional successor links. The first
+instruction may cross a page through ordinary checked demand fetch; such a body
+uses bounded single-instruction admission.
 
-* Every non-fetch `LookupAddress2` revokes overlapping enrolled code **before** a
-  data pointer can escape. This includes benign reads and unchecked interpreter,
-  stack, REP, syscall-buffer and cleanup writers. Only the exact execute lookup
-  used by instruction fetch is exempt. The JIT decodes protected bytes with
-  Blink's decoder; its former debugger helper uses data lookup and is unsuitable.
-* Protect, remove, fixed replacement, reservation/publication, advice discard,
-  reload and whole-space cleanup revoke overlapping initial code before their
-  first effect and invalidate cached data identities. Initial code eligibility
-  is permanently removed. Live mapping writers retain `System.mmap_lock` through
-  all permission, identity and lifetime effects; loader and final cleanup run
-  only while the execution owner is quiescent.
-* The gate serializes native calls and cache retirement within an owner. Other
-  workers can interpret. No gate is carried into subsequent helper work or a
-  blocking syscall. Data-capable calls first try the mapping mutex without
-  waiting, then acquire the native gate, and hold both through descriptor
-  resolution and native return. A busy mapping mutex selects interpretation.
-  Cached register-only blocks with a live initial-code lease and unexpired
-  negative decisions need only the native gate; that path never acquires the
-  mapping mutex or compiles a data block. The lifecycle statistics lock is
-  acquired only after the native snapshot releases its gate. Final backing/cache
-  release follows worker joins.
+Trusted resident lookup can reuse checked authority without comparing the entire
+body again. The key and trust marker require a validated flat long/protected
+context; nonflat and legacy contexts retain checked byte validation. Mapping,
+physical-borrow and observed host-write generations revoke this shortcut.
 
-This is a narrow, audited mapping class, not a claim that current read-only bits,
-TLB entries or generation checks alone make arbitrary code immutable. Before
-child creation, the original single-worker byte-validated path can also execute
-private anonymous code. After publication, revoked/noninitial code interprets.
-Recursive signal actors, tracing and exceptional machine modes interpret.
+Admitted scalar, memory, atomic, vector/MMX, floating-point, canonical x87 and
+ordinary/REP string operations compute in emitted native code. Exact valid-form
+coverage remains incomplete. Selected special helpers return from native code,
+copy their precise typed plan and release native capabilities before managed
+execution. No managed call, blocking syscall, GC transition or guest exception
+unwind crosses a generated native frame. REP computation uses an independent
+issued native kernel and precise mapping/fault continuations.
 
-The authored memory adaptation also corrects anonymous fault CAS-loss recycling
-to resolve the host page from its registry identity. It fixes `VirtualCopy` output lookup to require
-user write permission before each copy. `CopyToUserWrite` bookkeeping alone did
-not enforce that permission. The source-derived uname buffer case was not run as
-an invalid-access experiment. Fresh producer receipts and approved ordinary
-mapping/permission controls must accompany this change; generated C# is never
-hand edited. The writer inventory and lock argument are retained in the attempt.
+Compiler IR and emission scratch use four preallocated owner-wide unmanaged
+slots for serialized translation and bounded recursion. Code staging is bounded
+to64KiB; oversized emission halves/retries a decoded prefix before publication.
+Code,
+mutable descriptors, indices and payload append to dynamically charged arenas.
+Tiny bodies share code pages; a staging transaction closes native admission,
+requires all native epochs to drain, then seals the affected pages RW→RX before
+publication. There is no writable executable alias or per-body code-page run.
 
-## Coverage, checked loads and exact boundaries
+Buffer exhaustion requests a quiescent whole-buffer flush, following QEMU TCG's
+storage/reclamation principles without reusing its source. The flush unlinks
+bodies, clears the retained index and worker hints, then rewinds reusable arenas.
+Managed leases, native epochs and escaped drafts must all drain before reset.
+Busy admission returns to the controller for an approved-issue retry. No
+probation/protected or other per-body capacity replacement policy remains.
+Content invalidation removes lookup/link authority but does not individually
+recycle arena bytes. Identical-byte authority revalidation can retain emission.
 
-Register/immediate MOV, ADD, SUB, CMP, AND, OR, XOR, TEST, INC/DEC, Jcc, JMP and NOP
-retain their 8/16/32/64-bit behavior, high bytes, zero extension and Blink flags.
-New pure forms include 32/64-bit LEA with 64-bit base/index/scale/displacement or
-RIP addressing, register MOVZX/MOVSX/MOVSXD, ordinary padding and ENDBR64. Blink's
-instrumentation NOP encodings still interpret. Address-size and FS/GS prefixes
-interpret; guest segment bases are never host segment bases.
+Full defaults to a charged 1 GiB owner quota; Hybrid retains its 8 MiB default.
+Explicit quotas are never silently raised. Charge includes owner/worker metadata,
+physical authority tracking, compiler scratch, unused arena/region reservation and
+page slack. An underfunded configuration fails before guest execution; a tiny
+legacy quota is not guaranteed to admit the new engine. Capacity pressure has
+explicit reclamation/denial paths and cannot escape to interpretation.
 
-Checked MOV32/64 and MOVZX byte/word loads use at most four invocation-owned,
-unmanaged descriptors. Current committed private non-executable mappings,
-including later heap and worker stacks, qualify under the live mapping mutex.
-A bounded 64-entry, four-way descriptor cache reuses positive identities only
-within the current mapping epoch. Every mapping callback invalidates it; wrap
-clears all tags before recycling an epoch. Generation equality is useful only
-while the live mutex excludes writers. Fresh resolution walks authenticated page
-tables without a TLB or fault helper and checks owner extent, private identity,
-read/write permission and file availability. Reserved pages wait for ordinary
-interpreter commitment. Shared backing, EOF-unavailable pages and cross-page
-operations interpret. Data contents may change concurrently. No unchecked
-retained TLB pointer, managed callback or host-fault translation is used.
+## Execution authority and precision
 
-Native guards check the address, page, extent, read permission and authenticated
-identity before issuing the instruction. A miss returns at its original IP with
-no effect or issuance. The ordinary checkpoint then executes that instruction
-once through `ExecuteOne`. Descriptor construction neither faults nor commits
-lazy guest pages. Checked MOV32/64 stores and register64 PUSH/POP use the same private nonexec
-leases, with exact write permission and guest-RSP semantics. Checked memory
-CMP/TEST cover scalar 8/16/32/64-bit operands, register/immediate comparison,
-reverse CMP, SIB and RIP addressing while retaining exact Blink flags.
-Unprefixed direct CALL rel32 and RET near64 use checked private guest stack
-memory and return through the dispatcher after updating guest RSP/IP. CALL stores
-the guest fall-through address; RET reads the guest target. Neither emits a host
-CALL or adjusts host RSP. Indirect/far/prefixed calls and returns, writing memory
-ALU, atomics, REP, SIMD and x87 remain interpreted in this slice.
+Retained native entry authenticates immutable body identity; mutable code/global
+epoch, stop state and remaining issue allowance remain execution checks. Links are authenticated RW data
+cells; invalidation unlinks them before body retirement. One global native epoch
+protects every chained target from recycling. Normal invocation cap0 permits
+linked execution until a real budget, stop, attention, authority or helper exit;
+explicit nonzero caps accumulate across tail jumps. Recursive signal actors exit
+after one. A designated compiler closes new native admission before draining old
+readers through publication or cancellation. Native execution retains its epoch,
+body lease and physical lifetime pin outside the authority gate.
 
-Blocks contain at most 32 static instructions in one page. Calls execute at most
-32 dynamic instructions; simple internal loops return at a complete iteration
-boundary within that cap. Forward conditional fall-through can stay in the same
-bounded trace. Taken early branches return to the dispatcher even when their
-target is a later trace label; only the final branch can loop internally. This
-keeps each committed operation prefix, including memory-work accounting, exact. Every instruction polls stop/attention, atomically
-issues against the shared budget, commits exact state and atomically completes.
-There are no counter credits or suppressed GC transitions. Known exhausted
-budgets retain the interpreter's rejected-issuance path. Private frame fields
-materialize on every exit; guest state is current at every boundary.
+Mapping mutation scope remains active until the C helper/cleanup transaction
+finishes. Writable and unknown data-pointer borrows are tracked per worker and backing page,
+including aliases and exposure before first code registration. Audited read-only
+paths retain physical lifetime protection without revoking code. In
+unconditionally paged machine modes, early virtual data writes avoid unrelated
+global code revocation; successful writable resolution still applies the physical
+code authority callback before exposing a pointer. Other modes remain conservative. Fetch provenance
+records actual virtual/physical pages; writes revoke the affected aliases, and
+identical-byte remaps refresh those links before reuse. A writer drains
+polled native execution before its pointer escapes; a page with active borrowers
+cannot acquire multi-instruction authority. No mapping/native gate spans a helper
+or blocking I/O. Registry exhaustion fails closed for multiple execution.
 
-## Entry-value address plans
+Host memory-file writes and logical changes use scoped mutation observation.
+Writer admission and native enrollment use a counter/epoch handshake without an
+I/O lock in native code. Shared multi-instruction admission additionally requires
+an exact active local memfd lease whose writers this owner observes. Mutable
+regular-file backing can have unobserved external writers and remains on checked
+single-instruction entries/resumes into retained bodies. This is a qualification
+limit, not an external-file coherence guarantee.
 
-The independently authored C# backend now retains a bounded value/address/effect
-IR for admitted blocks. It propagates MOV, constants, LEA, stack deltas and
-pure scalar integer expressions from entry registers, including width wrapping,
-32-bit zero extension and partial/high-byte aliases. Descriptor preparation uses
-the reaching value at each memory instruction. A prologue that copies RDI to
-RBX therefore prepares the object page used by the later RBX load.
+Demand fetch reserves its issue before possible guest faults. An already approved
+first instruction executes before attention handling, preserving recursive
+execute-then-check ordering; later native boundaries poll attention normally.
+Rejected budget attempts remain issued but uncompleted, matching the interpreter.
+Helpers materialize precise IP/oplen/decoded state, commit once on normal return
+and preserve fault/unwind cleanup. Passive memory pins retain anonymous backing
+and page tables without holding a mapping mutex over helpers.
 
-Loads, POP and RET produce unknown memory values. Preparation never reads guest
-memory, forwards a stored value, commits a reserved page or assumes a loaded
-pointer. Loop-written registers conservatively become unknown at an internal
-backedge header; invariant overwrites may recover recipes. This can reduce stack
-loop coverage and is a measured performance consideration. Native guards still
-recompute every actual address and authorize each operation independently.
+## Guest CPU, counters and qualification
 
-Plans retain before/after register definitions, flag inputs and explicit
-poll/guard/atomic-issue/memory/commit/atomic-completion effects. Exit descriptions
-distinguish pre-instruction stop/miss, rejected issuance and completed exits.
-Guest state remains materialized at every instruction; the maps do not authorize
-lazy register/flag writes. No QEMU code, extraction, linkage or dependency is used.
+Helper selection derives from the selected software CPU dispatch closure.
+`BlinkFullJitSelect` runs during translation; runtime invokes the retained typed
+pointer. It never reenters `GetOp`, `JitlessDispatch` or `ExecuteInstruction`.
+The selected source inventory is separate from runtime encoding/operand/fault
+coverage. See the [CPU/signal audit](../artifacts/jit-implementation/full-jit-20261027-r1/cpu-signal-audit.md)
+for inherited ISA/FP deviations. Complete routing does not repair those semantics.
 
-Known full-width affine recipes evaluate directly from at most two entry
-registers and a displacement. Generic recipes retain width/alias/truncation
-semantics; unknown load-derived values remain unknown.
+Guest CPUID and optional host emitter capabilities remain separate. BaselineOnly
+excludes optional native operations while retaining software guest semantics.
+Guest #UD is Linux SIGILL with guest context recovery; host SIGILL is not used as
+an instruction implementation. Signal frame/return preserves the audited guest
+flags, selectors and MXCSR. Linux asynchronous native stack walking is unqualified.
 
-A plan has at most 32 instructions/memory recipes, 512 value nodes, 80
-definitions and 512 preparation slots. Its conservative maximum retained charge
-is 20,280 bytes; evaluation uses at most 4,096 stack bytes and no managed
-allocation. The owner charges actual retained lengths, including exit/effect
-metadata. The emitter writes through bounded stack spans (16,872 bytes of buffer
-payload), with one independent result array and no pooled owner references.
-Layout checks run once per compiled emitter/producer type identity.
+Statistics distinguish inline completions, helper calls/completions, actual block
+compilations, worker-hint misses, explicit shared-index queries, token resumes,
+resident/peak blocks, whole-flush/content retirements,
+publication/emitted bytes and charged resources. `UniqueBlockKeys` is the current
+retained directory count, not a lifetime distinct-PC claim. Arena diagnostics
+separate useful/aligned code, payload, descriptors, indices, fixed owner charge,
+reservation slack and cumulative emission. `BudgetEvictions` is a compatibility
+count of bodies discarded by whole flushes; `TotalFlushes` counts reset events.
+Managed allocation
+windows separate owner setup, worker compilation, publication, helper/host-service
+work and caller diagnostics; they do not count guest malloc or every host-runtime
+allocation. Native reservations are a separate resource. Zero warm lookup or
+binding allocation never means the whole application is allocation-free.
 
-Sixteen bounded worker hints retain only scalar owner/IP/slot/generation/type
-information. A data hint selects mmap-before-gate directly, then authenticates
-under the gate before allocation or descriptor use. Stale hints use the ordinary
-validated lookup. Register-only gate entry still requires an immutable enrolled
-code lease. Positive and negative tables are separately bounded. Completed useful
-work per charged byte and age guide positive retention; positive admission can
-reclaim cold negative storage. Structural negatives persist only for the same
-unchanged enrolled code identity. Expired mutable/revoked negatives decode again,
-including when a relevant suffix changes behind an unchanged first 15 bytes.
+Retained failures and prior cache8 results remain historical evidence. New source
+requires fresh consumers, differential/native controls, signal and lifetime tests,
+and matched serial service CPU/wall observations. Finite tests do not prove every
+encoding, alias schedule or inherited software CPU behavior.
 
-The current implementation and actual qualification/performance result are
-recorded in `artifacts/jit-implementation/ir-20261027-r1/`. The r16 measurements
-below remain historical controls; new allocation or native-coverage results do
-not establish service acceleration.
+The current default threaded project requires the separately retained exact
+[FullCore source archive](../src/Managed.Emulation.FullCore/README.md). Generated
+bulk is excluded from the checkpoint commit. The workspace has that input
+installed; a fresh checkout must restore it explicitly before building.
 
-## Admission, accounting and ABI
-
-Hotness observes executed branch/backedge and bounded continuation entries.
-Default admission waits for sixteen visits and an internal loop or four static
-instructions. A separate bounded compilation budget prevents a hotness threshold
-from authorizing unlimited compilation. Four-way entries, two-way history,
-positive/negative replacement and same-IP worker-local negative cooldown contain
-fallback overhead. A known negative entry can defer observation for at most 256
-interpreted instructions while IP stays within its 64-byte area; leaving that
-area restores boundary observation immediately. Interpreter issue, stop and
-signal checks remain per instruction. Four consecutive short continuation or memory-miss
-exits below four completed instructions trigger a worker-local cooldown while
-retaining the positive entry. Such dynamic short exits and early data misses use
-at most 256 candidate observations of cooldown; structural negative decisions
-retain their separate longer bound. `ShortNativeExits` records actual short work.
-Threshold one bypasses this profitability response and remains a diagnostic override, not a service performance setting.
-
-A bounded same-owner continuation experiment reuses the existing read leases
-across at most eight authenticated cached leaves and at most 32 total dynamic
-instructions. It uses materialized IR exit descriptions to check successor IPs;
-RET targets still require normal cached-code authentication. A gate-only call
-cannot continue into a data entry. It neither compiles a successor nor acquires
-the mapping mutex while holding the gate. Each target prepares descriptors from
-its actual current entry state. Stop, attention, guards and atomic counters remain
-per instruction. Memory work is summed from each leaf's actual prefix, so an
-arbitrary sequence never indexes one old linear prefix. `NativeDispatches` and
-`Continuations` distinguish this from the number of native leaf calls.
-
-The owner cache defaults to 8 MiB, configurable from 64 KiB to 64 MiB. Rounded
-native allocations, tables, entries, enrollment metadata and conservative maximum
-worker JIT metadata/poll storage are globally charged. Workers do not receive
-independent 8 MiB caches. Statistics retain peak charge, compilation/fragment and
-collision counts, first-child/native counts, revocations and fallback decisions.
-Native memory instructions are counted from each block's exact committed dynamic
-prefix, including repeated internal backedges; a guard miss excludes its missed
-instruction. The bounded prefix metadata is charged with each cache entry.
-`CacheBytes` becomes zero after successful teardown. Counts describe work, not a
-CPU speedup forecast.
-
-ABI v4 uses a 96-byte unmanaged frame and 48-byte descriptors. The native function
-remains a leaf on SysV and Win64: no host CALL, stack adjustment, nonvolatile
-register use or managed reference. Only volatile integer scratch registers are
-used. Offset 60, formerly padding, carries the remaining invocation limit; native
-entry clamps it to the compiled cap and every exit reports its exact work. The rooted owner and pinned counters live through the ordinary synchronous
-interop transition; exceptions never cross an emitted frame.
-
-Linux publishes separately allocated RW storage only after changing it to RX.
-Windows retains VirtualAlloc/VirtualProtect/FlushInstructionCache/VirtualFree and
-its conservative dynamic-code, CFG/XFG and shadow-stack policy checks. Guest
-backing stays RW/NX. No mitigation is disabled. Windows native execution still
-requires `AllowUnverifiedWindows=true` and remains **UNVERIFIED** without a real
-Windows runner. PowerShell syntax or Linux tests do not qualify it. Linux
-asynchronous stack walking through generated ranges also remains unqualified.
-
-## Reproduction and evidence
-
-Run `python3 blink/tests/GuestJit/run.py --output /absolute/new-attempt --aot
---emitter-contract --bench` on Linux; `--form raw` selects raw translation. The
-runner builds ordinary ELF witnesses, freezes inputs, then builds and executes
-serial qualification. It records an available producer pointer as provenance;
-source-snapshot execution alone is not full producer qualification.
-
-Adaptation changes additionally require a fresh strict producer, followed by
-applicable raw/processed ordinary permission/mapping tests. This attempt used
-`DOTCC_BLINK_FRESH_OBJECTS=1 bash blink/scripts/translate.sh --profile threaded
---offline --hashes strict --tools build --form all --jobs 1 --timeout 600`.
-Windows assets accept the same frozen source and ELF fixtures and exercise both
-public modes, both host runtimes and descriptor contracts on a real runner.
-
-Current work and retained failures are indexed under
-`artifacts/jit-implementation/ir-20261027-r1/`; the prior r16 handoff remains under
-`artifacts/jit-implementation/sol-20261026-r2/`. The prior implementation index
-and prior research report were absent on entry; historical numbers in retained
-documents are context, not reverified receipts. The current Astra opportunity
-report is `artifacts/jit-opportunities/astra-20261027-r2/report.md`.
-
-Service acceleration requires actual native work after child publication and in
-health/echo phases, paired serial CPU/wall measurements on identical guest
-closures, at least 5% median CPU improvement with consistent paired direction,
-and no material fallback regression. See the attempt's acceptance and final
-report for the actual pass/fail result. Synthetic speedup or nonzero coverage
-alone does not satisfy that gate.
-
-The final r16 Linux attempt **failed service acceleration acceptance**. Five
-alternating pairs on the identical NativeAOT guest measured warm-host whole-service
-CPU overhead of 2.43% on the CoreCLR host and 1.85% on the NativeAOT host; wall
-overhead was 1.86% on both. Only one of five CPU pairs improved on each host.
-Approximately 6.3–6.6 million instructions executed natively after child creation,
-with positive health/echo deltas, but this did not amortize entry, lease,
-admission and compilation costs. The two selected full CoreCLR-guest controls
-completed through hybrid execution with zero native instructions after their
-first child; their anonymous JIT code remains interpreted. These are functional
-compatibility results, not CoreCLR service acceleration.
-
-Raw and processed final sources passed 729 public/state rows and 24,813 native
-contract assertions per Linux host/runtime combination. This is a selected
-experimental qualification, not full product qualification. Keep the backend
-opt-in; use the durable attempt report for phase measurements, retained failures,
-source/producer hashes, platform limits and exact reproduction commands.
-
-Large reconstructible snapshots, binaries and traces use caller-owned scratch.
-The entire `/mnt/storage/blink-jit-ir-20261027/` tree is disposable once its
-README is marked COMPLETE. Compact reports, hashes, receipts and scoped rollback
-source are retained in the real repository evidence directory. No required
-product or test asset depends on that scratch tree after completion.
-
-The IR/entry/continuation attempt also **fails service acceleration acceptance**.
-Five alternating matched pairs measured warm whole-service CPU +0.84% on CoreCLR
-(3/5 favorable) and -3.43% on NativeAOT (5/5 favorable), below the required 5%
-reduction. Wall medians improved 2.54% and 3.52%. Compilation allocation fell to
-about 12.4 MB per warm owner; selected predictable prologue misses became zero.
-Those improvements do not establish the required CPU result. The declared
-second-experiment stop condition applies: no additional ISA or private-library
-enrollment was added. Keep this backend opt-in.
-
-The final combined Linux raw/processed × CoreCLR/NativeAOT host matrix passed
-936 public/state rows, 52,877 native contract assertions and 1,344 IR assertions
-per cell, covering both public modes. All eight NativeAOT-guest public service
-cells passed requests and cleanup. These are selected experimental checks;
-Windows execution and Linux asynchronous stackwalking remain unqualified.
-Use the current report for the retained failures, phase/fallback results,
-component-measurement limits and remaining deterministic scheduling gaps.
-
-All changes remain locally discardable. The current attempt retains exact initial
-sources (including the pre-existing r16/prototype), final hashes, scoped diffs and
-a guarded rollback manifest. Restore only listed matching bytes and remove only
-explicitly added matching files after stopping owners; rebuild derived consumers.
-Generated C and producer adaptations were unchanged in this managed milestone.
-Never use a broad reset or clean. No commit, push, PR or branch change is part of
-this work. The current `reproduce.py` rebuilds in new disposable caller scratch.
+At the c179 checkpoint, Linux CoreCLR/NativeAOT family and broad gates pass.
+The completed four-cell service pilot still fails the performance goal and has
+only one matched pair per cell. Full remains opt-in, Windows execution is
+unverified, asynchronous unwind is unqualified, and R101-04 cleanup remains open.
+Development is paused until the user resumes. See the checkpoint for current
+coverage limits, CPU/wall/allocation results, preserved failures and resume commands.

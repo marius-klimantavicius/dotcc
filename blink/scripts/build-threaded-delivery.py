@@ -34,7 +34,7 @@ def project(path, bridges=None):
     for name, value in dict(TargetFramework='net10.0', LangVersion='14', OutputType='Library',
                            AssemblyName='TranslatedBlink', AllowUnsafeBlocks='true', Nullable='disable',
                            ImplicitUsings='enable', EnableDefaultCompileItems='false',
-                           DefineConstants='$(DefineConstants);BLINK_FULL_CORE',
+                           DefineConstants='$(DefineConstants);BLINK_FULL_CORE;BLINK_GUEST_THREAD_COPIES',
                            WarningsAsErrors='$(WarningsAsErrors);CS8500').items():
         ET.SubElement(props, name).text = value
     items = ET.SubElement(root, 'ItemGroup')

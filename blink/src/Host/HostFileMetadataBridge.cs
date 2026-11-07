@@ -20,12 +20,7 @@ public static partial class Blink
         {
             if (io == null) return IoError(19);
             if (path == null || destination == null) return IoError(14);
-            int length = 0;
-            while (length < PathLimit && path[length] != 0) ++length;
-            if (length == PathLimit) return IoError(36);
-            string name;
-            try { name = PathEncoding.GetString(new ReadOnlySpan<byte>(path, length)); }
-            catch (DecoderFallbackException) { return IoError(22); }
+            if (!ReadGuestPath(path, out string name)) return -1;
             var result = io.StatAt(directoryFd, name);
             if (!result.Succeeded) return IoError((int)result.Error);
             FillFileMetadata(destination, result.Value);
@@ -53,7 +48,8 @@ public static partial class Blink
             if (io == null) return IoError(19);
             if (path == null || destination == null) return IoError(14);
             if ((flags & ~256) != 0) return IoError(95); // AT_SYMLINK_NOFOLLOW only.
-            if (path[0] == 0) return IoError(2);
+            byte first = 0; SnapshotGuestBytes(path, new Span<byte>(&first, 1));
+            if (first == 0) return IoError(2);
             return FileMetadataPath(path, destination, fd);
         }
         catch (Exception error) { return IoException(error); }

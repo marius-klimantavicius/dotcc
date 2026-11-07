@@ -6,6 +6,49 @@ struct Machine;
 struct System;
 struct siginfo_linux;
 
+/* Strict compiled execution rejects the old instruction dispatcher even from
+ * nested signal/syscall paths. Non-full modes leave this callback inert. */
+void blink_host_guest_interpreter_dispatch(struct Machine *);
+unsigned long blink_host_guest_page_table_entry(struct Machine *, unsigned long);
+void blink_host_guest_recycle_page(struct System *, unsigned char *, int);
+/* Resolved physical page, before any data pointer escapes (including aliases). */
+void blink_host_guest_physical_expose(struct Machine *, unsigned char *);
+
+/* Actual byte access only. Caller retains independent PAGE_LOCK/passive lifetime.
+ * Managed finally releases exclusion before any blocking I/O or guest callback. */
+void blink_host_guest_read_copy(struct Machine *, void *, void *, unsigned long);
+void blink_host_guest_write_copy(struct Machine *, void *, void *, unsigned long);
+unsigned long blink_host_guest_string_copy(struct Machine *, unsigned char *,
+                                           unsigned char *, unsigned long);
+void blink_host_guest_store32(struct Machine *, unsigned char *, unsigned int, int);
+void BlinkGuestTidStoreRaw(struct Machine *, unsigned char *, unsigned int, int);
+int blink_host_guest_futex_enqueue(struct Machine *, unsigned char *, unsigned int,
+                                   unsigned long, int, unsigned int, void *, void **);
+/* Charged owning snapshots; tagged freelist cleanup releases only after free. */
+void *blink_host_guest_snapshot_alloc(struct Machine *, unsigned long);
+void *blink_host_guest_snapshot_resize(struct Machine *, void *, unsigned long, int);
+void blink_host_guest_snapshot_free(struct Machine *, void *);
+void *blink_host_guest_freelist_append(struct Machine *, void *);
+void blink_host_guest_freelist_free(struct Machine *);
+int blink_host_guest_consume_signal(struct Machine *, int *, _Bool *);
+int BlinkGuestConsumeSignal(struct Machine *, int *, _Bool *);
+void blink_host_guest_deliver_signal_user(struct Machine *, int, int);
+void BlinkGuestDeliverSignalToUser(struct Machine *, int, int);
+long blink_host_guest_handle_sigpipe(struct Machine *, long, int);
+long BlinkGuestHandleSigpipe(struct Machine *, long, int);
+int blink_host_guest_tkill_self(struct Machine *, int);
+int BlinkGuestTkillSelf(struct Machine *, int);
+int blink_host_guest_sigaction(struct Machine *, int, long, long, unsigned long);
+int BlinkGuestSigaction(struct Machine *, int, long, long, unsigned long);
+/* Exported authored helpers, selected by the version-checked copy adapter. */
+unsigned char *BlinkGuestLookupAddressCopy(struct Machine *, long,
+                                          unsigned long, unsigned long);
+void *BlinkGuestSnapshot(struct Machine *, long, unsigned long,
+                         unsigned long, unsigned long);
+int BlinkGuestFutexEnqueue(struct Machine *, unsigned char *, unsigned int,
+                           unsigned long, int, unsigned int, void *, void **);
+
+
 /* Before any non-fetch guest pointer escapes, or a mapping identity changes,
  * synchronously drain native execution and permanently revoke this range.
  * No lock is retained across the subsequent operation. The sole exemption is

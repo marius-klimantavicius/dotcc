@@ -53,7 +53,8 @@ public static partial class Blink
                 total += length;
             }
             int count = (int)global::System.Math.Min(total, (ulong)IoChunk);
-            byte[] buffer = new byte[count];
+            using var staging = new GuestIoBuffer(count);
+            byte[] buffer = staging.Bytes;
             if (writing) CopyVectors(vectors, (int)vectorCount, buffer, true);
             // Preserve native stream readiness even for zero-capacity receives:
             // Linux recvmsg may wait until data or EOF is observable.

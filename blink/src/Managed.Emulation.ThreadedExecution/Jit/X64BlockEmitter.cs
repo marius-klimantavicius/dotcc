@@ -14,10 +14,14 @@ internal static class X64BlockEmitter
     // Conservative bounds: at most 512 bytes per instruction, plus the
     // 40-byte entry and five 28-byte exits. Fixup links live in their rel32
     // placeholders until the corresponding label is bound.
-    internal const int CodeCapacity = MaximumInstructions * 512 + 192;
+    internal const int CodeCapacity = MaximumInstructions * 512 + 512;
     internal const int ScratchBytes = CodeCapacity + (MaximumInstructions + ExitCount) * sizeof(int) * 2;
 
-    public static byte[] Emit(ReadOnlySpan<JitInstruction> instructions, int maxInstructions = 32)
+    // Full shares the same verified scalar register/flags layout, without
+    // changing Hybrid's frame ABI, code bytes, or emission path.
+    internal static bool IsLayoutSupported => Layout.Supported;
+
+    public static byte[] Emit(ReadOnlySpan<JitInstruction> instructions, int maxInstructions = 32, bool nativeChaining = false)
     {
         if (instructions.Length is < 1 or > MaximumInstructions) throw new ArgumentOutOfRangeException(nameof(instructions));
         if (maxInstructions is < 1 or > 32) throw new ArgumentOutOfRangeException(nameof(maxInstructions));
@@ -28,7 +32,13 @@ internal static class X64BlockEmitter
         Span<byte> code = stackalloc byte[CodeCapacity];
         Span<int> labels = stackalloc int[MaximumInstructions + ExitCount];
         Span<int> fixupHeads = stackalloc int[MaximumInstructions + ExitCount];
-        var writer = new Writer(instructions, maxInstructions, code, labels, fixupHeads);
+        if (nativeChaining)
+            foreach (var instruction in instructions)
+                if (instruction.Operation is JitOperation.LoadMov or JitOperation.LoadMovzx or JitOperation.StoreMov or
+                    JitOperation.Push or JitOperation.Pop or JitOperation.Call or JitOperation.Ret or JitOperation.MemoryCmp or
+                    JitOperation.MemoryCmpReverse or JitOperation.MemoryTest)
+                    throw new ArgumentException("Native dispatcher targets must have no data descriptors.");
+        var writer = new Writer(instructions, maxInstructions, code, labels, fixupHeads, nativeChaining);
         return writer.Emit();
     }
 
@@ -62,19 +72,12 @@ internal static class X64BlockEmitter
     {
         Blink.Machine m = default;
         byte* p = (byte*)&m;
-        // Fixed buffers promoted out of anonymous C unions retain their exact
-        // translated field paths. Compile against the real producer layout.
-        var r = &m.__anon___Anon37641D7941AF5F1FE58967576BC28A4841304ED904916BBE35E5A7FCC406FC9D
-            .__anon___Anon5C063FEB9777807268733BCDB385F747165DC2D589C0D0C27891DEC268C9BC0E;
+        // Anonymous aggregate identities can change with a fresh compiler.
+        // Validate actual register placement through the selected pure MOV
+        // semantic bindings, rather than depending on generated type hashes.
+        if (!HasExpectedRegisters()) return false;
         return !((byte*)&m.ip - p != 0 || (byte*)&m.oplen - p != 8 || (byte*)&m.mode - p != 9 ||
             (byte*)&m.attention - p != 11 || (byte*)&m.flags - p != 12 ||
-            r->__anon___Anon445E5DCBC7730421B53C86C8BE1EE5E07432263145DA093F727790ECADFE7DE4.ax - p != 24 ||
-            r->__anon___AnonB069B6D4620B81265902ABA36EEBE5D5AC161682C44CDBB372A1A9982EF23E25.cx - p != 32 ||
-            r->__anon___Anon83A5E445BF934F401681EA099D0AFF547485A839D028D7AD2B4DB983694F409C.dx - p != 40 ||
-            r->__anon___AnonDA484378C5DE77BD535940C5F81948C8A2246D0E9C98BA1321C1909A06761000.bx - p != 48 ||
-            r->sp - p != 56 || r->bp - p != 64 || r->si - p != 72 || r->di - p != 80 ||
-            r->r8 - p != 88 || r->r9 - p != 96 || r->r10 - p != 104 || r->r11 - p != 112 ||
-            r->r12 - p != 120 || r->r13 - p != 128 || r->r14 - p != 136 || r->r15 - p != 144 ||
             sizeof(JitFrame) != 96 || Marshal.OffsetOf<JitFrame>(nameof(JitFrame.NativeLimit)).ToInt32() != 60 || Marshal.OffsetOf<JitFrame>(nameof(JitFrame.NextIp)).ToInt32() != 72 ||
             Marshal.OffsetOf<JitFrame>(nameof(JitFrame.DataDescriptors)).ToInt32() != 80 ||
             Marshal.OffsetOf<JitFrame>(nameof(JitFrame.DataDescriptorCount)).ToInt32() != 88 ||
@@ -89,6 +92,28 @@ internal static class X64BlockEmitter
             Marshal.OffsetOf<JitDataDescriptor>(nameof(JitDataDescriptor.Permissions)).ToInt32() != 40);
     }
 
+    private static unsafe bool HasExpectedRegisters()
+    {
+        using var program = new Blink();
+        using var binding = program.__DotCcEnter();
+        Blink.Machine machine = default;
+        Span<byte> bytes = stackalloc byte[10];
+        for (int register = 0; register < 16; ++register)
+        {
+            ulong value = 0x1122334455667700UL + (uint)register;
+            bytes[0] = register < 8 ? (byte)0x48 : (byte)0x49;
+            bytes[1] = (byte)(0xb8 + (register & 7));
+            BinaryPrimitives.WriteUInt64LittleEndian(bytes[2..], value);
+            Blink.XedDecodedInst decoded = default;
+            fixed (byte* source = bytes)
+                if (program.DecodeInstruction(&decoded, source, (ulong)bytes.Length, Blink.XED_MODE_LONG) != 0) return false;
+            var operation = program.BlinkFullJitSelect(decoded.op.rde, decoded.op.disp, decoded.op.uimm0);
+            operation(program, &machine, decoded.op.rde, decoded.op.disp, decoded.op.uimm0);
+            if (*(ulong*)((byte*)&machine + 24 + register * 8) != value) return false;
+        }
+        return true;
+    }
+
     private ref struct Writer
     {
         private readonly ReadOnlySpan<JitInstruction> instructions;
@@ -96,16 +121,18 @@ internal static class X64BlockEmitter
         private readonly Span<byte> code;
         private readonly Span<int> labels;
         private readonly Span<int> fixupHeads;
+        private readonly bool nativeChaining;
         private int position;
 
         public Writer(ReadOnlySpan<JitInstruction> instructions, int maxInstructions,
-            Span<byte> code, Span<int> labels, Span<int> fixupHeads)
+            Span<byte> code, Span<int> labels, Span<int> fixupHeads, bool nativeChaining)
         {
             this.instructions = instructions;
             this.maxInstructions = maxInstructions;
             this.code = code;
             this.labels = labels;
             this.fixupHeads = fixupHeads;
+            this.nativeChaining = nativeChaining;
             position = 0;
             labels.Fill(-1);
             fixupHeads.Fill(-1);
@@ -241,10 +268,25 @@ internal static class X64BlockEmitter
             {
                 Bind(MaximumInstructions + exit);
                 Bytes(0x41, 0x8b, 0x42, 0x3c); // eax=effective invocation cap
-                Bytes(0x44, 0x29, 0xc8, 0x49, 0x89, 0x42, 0x30); // Executed = limit-r9d
+                Bytes(0x44, 0x29, 0xc8); // eax = leaf limit-r9d
+                if (nativeChaining)
+                {
+                    Bytes(0x4d, 0x8b, 0x42, 0x40); // r8 = versioned native dispatch context
+                    Bytes(0x41, 0x29, 0x40, 40); // shared remaining -= this leaf's exact part
+                    Bytes(0x49, 0x03, 0x40, 32, 0x49, 0x89, 0x40, 32); // accumulate exact executed
+                }
+                Bytes(0x49, 0x89, 0x42, 0x30); // invocation Executed
                 Bytes(0x49, 0x8b, 0x03, 0x49, 0x89, 0x42, 0x48); // NextIp = machine.ip
                 Bytes(0xb8); U32((uint)exit);
-                Bytes(0x41, 0x89, 0x42, 0x38, 0xc3); // frame.Exit=eax; ret
+                Bytes(0x41, 0x89, 0x42, 0x38); // frame.Exit=eax
+                if (nativeChaining && exit == (int)JitExit.Continue)
+                {
+                    Bytes(0x41, 0x83, 0x78, 40, 0); // aggregate cap exhausted returns
+                    int exhausted = NearCondition(0x84);
+                    Bytes(0x41, 0xff, 0x60, 24); // leaf tail-jump, no native CALL/frame
+                    Patch(exhausted, position);
+                }
+                Bytes(0xc3);
             }
             return code[..position].ToArray();
         }
@@ -420,7 +462,7 @@ internal static class X64BlockEmitter
             Bytes(0xc1, 0xe8, 8); // eax = captured host status
             uint captureMask = op switch
             {
-                JitOperation.Inc => 0xc0, // Blink passes y=0: INC clears AF
+                JitOperation.Inc => 0xd0, // selected integer adapter preserves hardware INC AF
                 JitOperation.Dec => 0xd0, // preserve guest CF
                 JitOperation.And or JitOperation.Or or JitOperation.Xor or JitOperation.Test => 0xc0, // AF=0
                 _ => 0xd1

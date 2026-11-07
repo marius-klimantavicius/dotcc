@@ -242,7 +242,8 @@ public static unsafe partial class Libc
         error = EINVAL;
         if (mutex == null) return null;
         RuntimeContext context = RuntimeState;
-        if (Volatile.Read(ref context.MutexCacheEnabled))
+        // Registry size does not invalidate an exact ID hit. Collisions take
+        // the registry path; the state lock still resolves racing destruction.
         {
             int cachedId = Volatile.Read(ref *mutex);
             if (cachedId > 0)
@@ -264,29 +265,18 @@ public static unsafe partial class Libc
                     id = checked(++context.NextMutex);
                     state = new PthreadMutex(id);
                     context.Mutexes.Add(id, state);
-                    PthreadCheckMutexCacheCapacity(context);
                     Volatile.Write(ref *mutex, id);
                 }
                 else state = context.Mutexes.GetValueOrDefault(id);
                 // Publish under the registry gate so a miss cannot republish a
                 // destroyed state after destroy has removed its cache reference.
-                if (state != null && context.MutexCacheEnabled)
+                if (state != null)
                     Volatile.Write(ref context.MutexCache[id & (context.MutexCache.Length - 1)], state);
                 return state;
             }
         }
         catch (OutOfMemoryException) { error = ENOMEM; return null; }
         catch (OverflowException) { error = EAGAIN; return null; }
-    }
-    // Called under Objects after insertion. Beyond capacity, preserve the
-    // registry path without shared cache reads/publications on each lookup.
-    private static void PthreadCheckMutexCacheCapacity(RuntimeContext context)
-    {
-        if (context.Mutexes.Count == context.MutexCache.Length + 1)
-        {
-            Volatile.Write(ref context.MutexCacheEnabled, false);
-            Array.Clear(context.MutexCache);
-        }
     }
     public static int pthread_mutex_init(int* mutex, int* attr)
     {
@@ -299,9 +289,7 @@ public static unsafe partial class Libc
                 int id = checked(++context.NextMutex);
                 var state = new PthreadMutex(id, attr == null ? 0 : *attr);
                 context.Mutexes.Add(id, state);
-                PthreadCheckMutexCacheCapacity(context);
-                if (context.MutexCacheEnabled)
-                    Volatile.Write(ref context.MutexCache[id & (context.MutexCache.Length - 1)], state);
+                Volatile.Write(ref context.MutexCache[id & (context.MutexCache.Length - 1)], state);
                 Volatile.Write(ref *mutex, id);
             }
             return 0;
@@ -325,15 +313,6 @@ public static unsafe partial class Libc
                 context.Mutexes.Remove(id);
                 ref var cached = ref context.MutexCache[id & (context.MutexCache.Length - 1)];
                 if (ReferenceEquals(Volatile.Read(ref cached), state)) Volatile.Write(ref cached, null);
-                if (!context.MutexCacheEnabled && context.Mutexes.Count <= context.MutexCache.Length)
-                {
-                    // Bounded lifecycle work; publish the populated cache before
-                    // permitting lock-free reads again. Objects excludes misses
-                    // and registry mutations throughout this transition.
-                    foreach (var entry in context.Mutexes)
-                        Volatile.Write(ref context.MutexCache[entry.Key & (context.MutexCache.Length - 1)], entry.Value);
-                    Volatile.Write(ref context.MutexCacheEnabled, true);
-                }
                 Volatile.Write(ref *mutex, -1);
             }
         }

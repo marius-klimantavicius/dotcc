@@ -23,6 +23,9 @@ internal sealed unsafe class GuestBlockJit : IDisposable, Managed.Emulation.Host
     private readonly Entry?[] negatives;
     private readonly int hotBlockThreshold;
     private readonly long limit;
+    private readonly bool fullMode;
+    private FullNativeDispatcher? nativeDispatcher;
+    private long nativeTailJumps, nativeChainedInstructions;
     internal int NegativeHintSlots { get; }
     private readonly Dictionary<string, long> fallbacks = new(StringComparer.Ordinal);
     private GCHandle ownerRoot;
@@ -54,11 +57,13 @@ internal sealed unsafe class GuestBlockJit : IDisposable, Managed.Emulation.Host
         internal long Calls, Instructions, Misses;
         internal JitAddressPlan AddressPlan = JitAddressPlan.Empty;
         internal byte[] MemoryPrefixes = Array.Empty<byte>();
+        internal bool NativeChaining;
     }
 
     internal GuestBlockJit(ThreadedGuestExecution owner, GuestJitOptions options)
     {
         this.owner = owner; limit = options.CacheLimitBytes;
+        fullMode = options.EffectiveMode == GuestJitMode.Full;
         int count = 1;
         while (count < 1024 && count * 2 <= limit / 512) count *= 2;
         entries = new Entry?[count];
@@ -74,7 +79,8 @@ internal sealed unsafe class GuestBlockJit : IDisposable, Managed.Emulation.Host
         // Precharge all possible worker policy fields, NativePoll objects,
         // cells and stop-list references. Reaping can only reduce actual use.
         bytes = peakBytes = OwnerCharge + 512 + GuestDataLeaseCache.Charge + (count + negatives.Length) * sizeof(nint) + owner.JitWorkerCapacity * (1152L + hintSlots * sizeof(JitNegativeHint));
-        capability = NativeCodePlatform.UnavailableReason(options.AllowUnverifiedWindows) ?? "Available";
+        capability = options.HostFeatures == GuestJitHostFeatures.BaselineOnly ? "Optional host instructions masked by policy" :
+            NativeCodePlatform.UnavailableReason(options.AllowUnverifiedWindows) ?? "Available";
         if (bytes > limit)
         {
             // A small cache with a very large worker ceiling cannot promise
@@ -84,6 +90,11 @@ internal sealed unsafe class GuestBlockJit : IDisposable, Managed.Emulation.Host
             if (capability == "Available") capability = "Cache limit cannot cover worker JIT metadata";
         }
         active = capability == "Available";
+        if (active && fullMode && bytes + count * 32L + 8192 < limit)
+        {
+            nativeDispatcher = new FullNativeDispatcher(count);
+            bytes += nativeDispatcher.Charge; peakBytes = bytes;
+        }
         ownerRoot = GCHandle.Alloc(owner);
     }
 
@@ -157,6 +168,7 @@ internal sealed unsafe class GuestBlockJit : IDisposable, Managed.Emulation.Host
         {
             Capability = capability, CompiledBlocks = compiledBlocks, NativeEntries = nativeEntries,
             NativeDispatches = nativeDispatches, Continuations = continuations,
+            NativeTailJumps = nativeTailJumps, NativeChainedInstructions = nativeChainedInstructions,
             GuestInstructions = nativeInstructions, NativeMemoryInstructions = nativeMemoryInstructions, NativeMemoryInstructionsAtFirstChild = memoryAtFirstChild, CacheHits = hits, CacheBytes = bytes,
             PeakCacheBytes = peakBytes, ValidationFailures = validations,
             FirstChildInstructions = firstChildInstructions, NativeInstructionsAtFirstChild = nativeAtFirstChild,
@@ -263,6 +275,12 @@ internal sealed unsafe class GuestBlockJit : IDisposable, Managed.Emulation.Host
                 }
             }
             bool leasedCode = staticCode?.Contains(ip) == true;
+            if (found?.NativeChaining == true && !leasedCode)
+            {
+                // Byte equality cannot restore permanent code authority. A
+                // chaining leaf must never enter a table that omits its start.
+                Retire(slot); Fallback("NativeCodeRevoked"); return false;
+            }
             Span<byte> current = stackalloc byte[found?.Allocation != null && leasedCode ? 0 : MaximumBytes];
             Entry? entry = found;
             if (entry != null && entry.Ip == ip)
@@ -333,6 +351,28 @@ internal sealed unsafe class GuestBlockJit : IDisposable, Managed.Emulation.Host
                 HasData = entry.AddressPlan.HasMemory };
             frame->OwnerHandle = GCHandle.ToIntPtr(ownerRoot);
             ++nativeDispatches;
+            if (entry.NativeChaining)
+            {
+                // Register-only native chaining keeps the existing permanent
+                // code read lease and cache gate. Build a private bounded
+                // table from authenticated live entries for this invocation.
+                var dispatcher = nativeDispatcher!;
+                dispatcher.Begin((ulong)ownerIdentity);
+                for (int i = 0; i < entries.Length; ++i)
+                    if (entries[i] is { NativeChaining: true, Allocation: not null } target &&
+                        staticCode?.Validate(owner.JitProgram, machine, target.Ip) == true)
+                        dispatcher.Set(i, target.Ip, target.Allocation.Entry);
+                dispatcher.Run(frame);
+                ulong total = dispatcher.Executed;
+                int nativeCalls = checked((int)dispatcher.Blocks);
+                if (nativeCalls == 0) throw new InvalidOperationException("Full-JIT authenticated entry missing from native code table.");
+                nativeEntries += nativeCalls; continuations += nativeCalls - 1; nativeTailJumps += nativeCalls - 1;
+                nativeChainedInstructions += checked((long)total); nativeInstructions += checked((long)total);
+                ++entry.Calls; entry.Instructions += checked((long)total);
+                entry.UsefulCredit = Math.Min(65535u, entry.UsefulCredit + (uint)total);
+                frame->NativeLimit = 0;
+                return true;
+            }
             // Each leaf retains all architectural writes and per-instruction
             // effects. Continuation reuses only the owner/mapping read leases;
             // it never follows an unauthenticated guest number as host code.
@@ -382,6 +422,7 @@ internal sealed unsafe class GuestBlockJit : IDisposable, Managed.Emulation.Host
                 Entry? successor = null;
                 for (int i = nextFirst; i < nextFirst + Ways; ++i)
                     if (entries[i] is { Allocation: not null } candidate && candidate.Ip == next &&
+                        !candidate.NativeChaining &&
                         (mappingHeld || !candidate.AddressPlan.HasMemory) &&
                         (hotBlockThreshold == 1 || candidate.ShortExitStreak < 4))
                     { successor = candidate; break; }
@@ -467,13 +508,14 @@ internal sealed unsafe class GuestBlockJit : IDisposable, Managed.Emulation.Host
             // first instruction. This avoids an unprofitable suffix between calls.
             int dynamicLimit = internalBackedge && instructions[instructionCount - 1].Target == ip ?
                 MaximumInstructions / instructionCount * instructionCount : MaximumInstructions;
-            byte[] emitted = X64BlockEmitter.Emit(instructions[..instructionCount], dynamicLimit);
+            var plan = JitAddressPlan.Build(instructions[..instructionCount]);
+            bool nativeChaining = nativeDispatcher != null && !plan.HasMemory && staticCode?.Contains(ip) == true;
+            byte[] emitted = X64BlockEmitter.Emit(instructions[..instructionCount], dynamicLimit, nativeChaining);
             emittedCodeBytes += emitted.Length;
             // Preflight the same rounded page charge before allocating RX
             // storage. Allocation's actual charge is checked again on publish.
             long expectedAllocation = ((emitted.LongLength + Environment.SystemPageSize - 1) /
                 Environment.SystemPageSize) * Environment.SystemPageSize;
-            var plan = JitAddressPlan.Build(instructions[..instructionCount]);
             if (!MakeRoom(EntryCharge + size + expectedAllocation + plan.Charge, slot)) return null;
             if (!NativeCodeAllocation.TryCreate(emitted, out var allocation, out string allocationReason))
             {
@@ -481,7 +523,7 @@ internal sealed unsafe class GuestBlockJit : IDisposable, Managed.Emulation.Host
                 return Publish(slot, ip, code[..size], null, "Capability");
             }
             Entry? entry = Publish(slot, ip, code[..size], allocation, null, plan,
-                !plan.HasMemory ? null : JitMemoryCounts.Build(instructions[..instructionCount]));
+                !plan.HasMemory ? null : JitMemoryCounts.Build(instructions[..instructionCount]), nativeChaining);
             if (entry != null) ++compiledBlocks;
             return entry;
         }
@@ -537,7 +579,8 @@ internal sealed unsafe class GuestBlockJit : IDisposable, Managed.Emulation.Host
         return true;
     }
 
-    private Entry? Publish(int slot, ulong ip, ReadOnlySpan<byte> code, NativeCodeAllocation? allocation, string? fallback, JitAddressPlan? plan = null, byte[]? memoryPrefixes = null)
+    private Entry? Publish(int slot, ulong ip, ReadOnlySpan<byte> code, NativeCodeAllocation? allocation, string? fallback, JitAddressPlan? plan = null, byte[]? memoryPrefixes = null,
+        bool nativeChaining = false)
     {
         long charge = EntryCharge + code.Length + (allocation?.AllocatedBytes ?? 0) + (plan?.Instructions.Length > 0 ? plan.Charge : 0);
         bool negative = allocation == null;
@@ -561,6 +604,7 @@ internal sealed unsafe class GuestBlockJit : IDisposable, Managed.Emulation.Host
                 Generation = ++entryGeneration,
                 StableNegative = negative && (fallback is "UnsupportedInstruction" or "UnprofitableBlock" or "Prefix" or "MemoryInstruction") && staticCode?.Contains(ip) == true,
                 AddressPlan = plan ?? JitAddressPlan.Empty,
+                NativeChaining = nativeChaining,
                 MemoryPrefixes = memoryPrefixes ?? Array.Empty<byte>() };
         }
         catch { allocation?.Dispose(); throw; }
@@ -600,6 +644,7 @@ internal sealed unsafe class GuestBlockJit : IDisposable, Managed.Emulation.Host
         {
             if (disposed) return;
             for (int i = 0; i < entries.Length; ++i) Retire(i);
+            nativeDispatcher?.Dispose(); nativeDispatcher = null;
             Array.Clear(negatives);
             retiredStaticPages = staticCode?.PageCount ?? 0; retiredRevokedPages = staticCode?.RevokedPages ?? 0;
             ownerRoot.Free(); staticCode = null; bytes = 0; active = false; disposed = true;

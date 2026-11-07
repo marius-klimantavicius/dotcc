@@ -1,0 +1,2614 @@
+{
+  "status": "SCOPED_CHECKPOINT_MANIFEST",
+  "qualified_source": "native7c179",
+  "files": [
+    {
+      "path": "DotCC.Libc/PthreadLib.cs",
+      "sha256": "bca8ffe7994df04151f3528c925194866eeb5696e48b48aff4ccde87d8740e49",
+      "bytes": 27154,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "DotCC.Libc/RuntimeContextLib.cs",
+      "sha256": "95cfdaa5799c7ead52f33abb13a807d1e88f76987a7a36c68ad3a870173f9f9e",
+      "bytes": 7896,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "DotCC.Tests/PthreadMutexRegistryTests.cs",
+      "sha256": "b02fcc8e8702b8cbf2d2ae517041e217913dff31a8c6e011f0f962d61d2a1789",
+      "bytes": 14939,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/ManagedConsumer.slnx",
+      "sha256": "70d672ac27ccb42db916da57a83a7e61160dba1c3dfbfc76b87009ab1ae3980d",
+      "bytes": 509,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/artifacts/jit-implementation/full-jit-20261027-r1/CHECKPOINT.md",
+      "sha256": "93291b85d804d0044b5c589b7fb60cdb36b9873341103eab022d08ce8a441acf",
+      "bytes": 8999,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/artifacts/jit-implementation/full-jit-20261027-r1/checkpoint-coverage.json",
+      "sha256": "954aa506a4177310f97fa2de1da574b9d415b4b7cd884e5c52063df8608ffaee",
+      "bytes": 3373,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/artifacts/jit-implementation/full-jit-20261027-r1/checkpoint-retained-inputs.json",
+      "sha256": "cac69287e844c10bd5b2fb1e4ea132a373d654b0de0915dd062bfcb7ea783deb",
+      "bytes": 2244,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/artifacts/jit-implementation/full-jit-20261027-r1/checkpoint-review-dispositions.json",
+      "sha256": "b76b8dfc507ae800c2734c019500657eefc3cd5b277ecb192f20e1435a675aa9",
+      "bytes": 796,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/artifacts/jit-implementation/full-jit-20261027-r1/checkpoint-service-results.json",
+      "sha256": "525ab7604fc2ecd8a17d8df7339ecaeca7659e677e592627d8aaab1494f72b7c",
+      "bytes": 9002,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/artifacts/jit-implementation/full-jit-20261027-r1/checkpoint-validation.json",
+      "sha256": "3d35922307f904341bcfd37758da8acf4f07b88a7aaf7105661c5927770df923",
+      "bytes": 6587,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/artifacts/jit-implementation/full-jit-20261027-r1/cpu-signal-audit.md",
+      "sha256": "3ab476bc36b4c2b4663be7c237adf31433224ea186e89d7ba3074a06fd74b2e2",
+      "bytes": 14458,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/artifacts/jit-implementation/full-jit-20261027-r1/native-generation-exhaustion-cleanup-open.json",
+      "sha256": "9db34a5b0ac8ede594fb6175f6396bfa76825b57033c273d29cefcccfad99988",
+      "bytes": 699,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/artifacts/jit-implementation/full-jit-20261027-r1/qemu-tcg-blink-design-mapping.md",
+      "sha256": "3e4ef00c8d417d16bee57118ca50ff9b8e110606e98eecac381f0467f4460162",
+      "bytes": 10455,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/config/host-bindings.json",
+      "sha256": "a69973779039fa6acce445a169635d332f3ad97b454b2080021a13f243093998",
+      "bytes": 5256,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/docs/EXPERIMENTAL-GUEST-JIT.md",
+      "sha256": "d32831ba17ff1cf77b109b4cbfb42d8b0a7301786ba6e552771606f8fc994d8b",
+      "bytes": 10757,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/scripts/build-threaded-delivery.py",
+      "sha256": "30bef00838c66489e6412fcca63135fe965d1ea8431fc695248128fb7ea15151",
+      "bytes": 12017,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/scripts/campaign.py",
+      "sha256": "1279a81b134117e13791a81b6ebe10c86be52d370b5291f045a4df4b5e3e75ec",
+      "bytes": 15620,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/scripts/core_inputs.py",
+      "sha256": "d33ced1a5d33038a895c69d6b3028787d7190406ea2e6eb6d10896aa1e76cef2",
+      "bytes": 23287,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/scripts/full_jit_bindings.py",
+      "sha256": "dbe63313f6883eba817e77fb2098bdf8bceef1e2c5cdb71cba2c51d9effd5956",
+      "bytes": 32330,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/scripts/full_jit_copy_bindings.py",
+      "sha256": "7ac196ebad672e6dcf9c30c6ab3fb20b408268ef5e128bbce69796f4d886c798",
+      "bytes": 23480,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/scripts/full_jit_memory_bindings.py",
+      "sha256": "beff2229857c98594718f57ed2174c26255c4364fa6d2203cb8b767f9bd916ef",
+      "bytes": 12764,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/scripts/full_jit_x87_state_bindings.py",
+      "sha256": "ad4b50664c5a62d569f64e2afa46a66bb95e909dde22d797e6f4e703fc9ba5a5",
+      "bytes": 26907,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/scripts/restore-full-core-input.py",
+      "sha256": "223aae3d7356bce25c700b7111d86328488fd10382ace64dc80329e01c9af116",
+      "bytes": 1559,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/scripts/signal_bindings.py",
+      "sha256": "aea8b8989ccb03b015f76e623e14be4851ae1955d37578c11b187f80a46f6d67",
+      "bytes": 9296,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/scripts/stage-host-bindings.py",
+      "sha256": "43b2e316ea994a9040a2166969c9b3c81e03fb00653b0e299488fa1139632326",
+      "bytes": 7292,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/scripts/stage-threaded-core.py",
+      "sha256": "0f1c19460dce40145238f0e6987d1c970109d85f95ddea958f461242f930369b",
+      "bytes": 27681,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/scripts/test_full_jit_bindings.py",
+      "sha256": "94d483123eff2361312ddb59d4a87d58f292d0cf917316de8fbbea7783b10cd2",
+      "bytes": 9370,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/scripts/test_full_jit_x87_state_bindings.py",
+      "sha256": "d92265a01633f27f947c4aaa3c73a02f4fd1b2ccb598119cca0461a2c84bf4f2",
+      "bytes": 15542,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/src/Host/HostAccessBridge.cs",
+      "sha256": "27aae334742ea1d2a83e767f8d866cdc1af156dd49e2a705a367a51c3f924006",
+      "bytes": 781,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Host/HostFileMetadataBridge.cs",
+      "sha256": "1208b33fa465d979dc17284f00681b81b09bf974c12f482f84f4917fcb5f2a31",
+      "bytes": 3515,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Host/HostFileTimesBridge.cs",
+      "sha256": "082109679f4ad6b65d88b420086619d3102efeb7fac6ca3f6334f419f2009b32",
+      "bytes": 2408,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Host/HostFileUpdatesBridge.cs",
+      "sha256": "072852c8e81bcaf9ac124a917e5707eb0294cfb004e67118788f6cfaa009a820",
+      "bytes": 1560,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Host/HostGuestCopyBridge.cs",
+      "sha256": "d3a12314d4656ff450b4c4aa79b67560a040c4db8c8171572d575e3d7285523a",
+      "bytes": 11419,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Host/HostGuestSnapshotBridge.cs",
+      "sha256": "e5bfb77ed8bc983c36713c1153f8054a2ac2c82a89f52636ef42dd481a7c7825",
+      "bytes": 7078,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Host/HostGuestThreadsBridge.cs",
+      "sha256": "37e05bf344f05e29b85f4987cedfdff98d2202a23cd0430dd2cde3366bacc9eb",
+      "bytes": 13430,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Host/HostGuestX87StateBridge.cs",
+      "sha256": "7d39994b387cea813f4455ee2211018fb2ccf6f24cdf7b62ada17a15fa748590",
+      "bytes": 3666,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Host/HostIoBridge.cs",
+      "sha256": "9dfc64d0ecee02165099ab0c060b4c77513c01e58dbfb69b43550a4252508d73",
+      "bytes": 11138,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Host/HostMemory.c",
+      "sha256": "f28971791d198ffa39ca70dcb534fa605746c76561b5fc5332f52909b823c68f",
+      "bytes": 30550,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Host/HostMessagesBridge.cs",
+      "sha256": "a5966e26a58c77467f89f87e682b38cf5d336b8cdf36d6d5e65082f827bde236",
+      "bytes": 3910,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Host/HostNetworkBridge.cs",
+      "sha256": "b1c099a24bbda207963f6740929f75588fca6b93de909686f308139e92ab2a7d",
+      "bytes": 8548,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Host/HostSocketQueriesBridge.cs",
+      "sha256": "4fd368a1ce3f29c4f38ac14e53aa633b587378f278d49c8961f88921a7e78073",
+      "bytes": 2572,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Host/include/HostMemory.h",
+      "sha256": "eb692cc8571e9a50f254eb486413346d4ae7f092ab6bc96967412db42240dbc1",
+      "bytes": 6488,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Host/include/host-guest-threads.h",
+      "sha256": "6c819e223f5fbad9631b7123673a030309afc8e1261c738c72ac9b8b35e68f1d",
+      "bytes": 6960,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Host/include/host-x87-state.h",
+      "sha256": "a0c7c0797ec6dccbf0a465498f3748f3f16186a4b334f3d26b6935d1a98e077c",
+      "bytes": 378,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.FullCore/Managed.Emulation.FullCore.csproj",
+      "sha256": "a91772f6fa4139e1990d15c4b58fceb57d657891469b7ad939f536204fadd85c",
+      "bytes": 4925,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.FullCore/Producer/.gitignore",
+      "sha256": "0704b3011db456bc32999c45428037ff0ac04b1e2e11c7d555a3add649922581",
+      "bytes": 104,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/src/Managed.Emulation.FullCore/Producer/manifest.json",
+      "sha256": "2bbc4d7b150faa981deef1122e267cd9c2cb3019a6d197e63d81e0cac66af798",
+      "bytes": 21679,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.FullCore/QualifiedProducer.targets",
+      "sha256": "669f6c3e4a067ce7c966e6473f5fcbd4c98331e32e62fd824539dada399cee48",
+      "bytes": 6447,
+      "qualified_c179_match": false
+    },
+    {
+      "path": "blink/src/Managed.Emulation.FullCore/README.md",
+      "sha256": "abb35dc9d823c10f5bba6a6f9ca7d2e23d0cebdd5105ac07e8fef7c509e6c2bf",
+      "bytes": 1833,
+      "qualified_c179_match": false
+    },
+    {
+      "path": "blink/src/Managed.Emulation.Host/IHostGuestInstructionMemory.cs",
+      "sha256": "0768e3561b438bf789f8bbc61e4015eff7e8ff51df62f903476c4fcbaaac39c4",
+      "bytes": 435,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.Host/IHostGuestMemoryCopies.cs",
+      "sha256": "e4f6e707acbfe42e87dabeaa18f77ed94e1f641a3fb54f7a993064135662b630",
+      "bytes": 1132,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.Host/IHostGuestThreads.cs",
+      "sha256": "6990ccb0bf2ef81fc54dc825eb1d6b204462b17fb8e589f098ada231445485e1",
+      "bytes": 1065,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.Host/IHostGuestX87State.cs",
+      "sha256": "23324c379f2aea871a72fce45aead63998ed1dc3db14328bd37ab26fee68a0c0",
+      "bytes": 2724,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.Host/IHostMemoryFileMutation.cs",
+      "sha256": "887b463bdd4bca41adac8f846762477355b76e9ee061c4d6caa85f467ace6331",
+      "bytes": 1589,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.Host/IHostMemoryFileNativeReadOwner.cs",
+      "sha256": "231f2a6ce3df7ccb359e798094ae1acb0bb4d970bd899a4a1b7bfaa996a62a01",
+      "bytes": 642,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.Host/IHostMemoryFileRead.cs",
+      "sha256": "33f15793b4f61171be9455e23a5bccd9e287e2234d83e4054c816b4a31d554fb",
+      "bytes": 728,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.Host/InstanceIo.MappingTransactions.cs",
+      "sha256": "efad905d90b7d720db0a7ae86621f8b9e9469849fde148cfb06a34864b498dca",
+      "bytes": 4816,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.Host/InstanceIo.MemoryFileMutation.cs",
+      "sha256": "006cd220e643803164395bcb670d49673b9658fe4205e4cf7b8b9c84aed1556a",
+      "bytes": 4342,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.Host/InstanceIo.MemoryFileRead.cs",
+      "sha256": "950089693c9ce2c71d1e7cb1075665234c88769880faa18d796279caa4c1ed06",
+      "bytes": 956,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.Host/InstanceIo.MemoryFiles.cs",
+      "sha256": "7d6c192a251737832510cab3db4a66c6b034242929519ede53d12a4b418c19e2",
+      "bytes": 20576,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.Host/InstanceIo.RegularSharedFiles.cs",
+      "sha256": "f62527cd6ef98b092acfec1654cb3e6cc5985afdeac96a5ea264c97e8b4848dd",
+      "bytes": 7548,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.Host/InstanceIo.cs",
+      "sha256": "5d9eb75e3c5c32c9dcab6959a6ff82e6b3b5ba6ca9d72447ba301a1918f7532a",
+      "bytes": 26920,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullAddressExtensionLowering.cs",
+      "sha256": "d9a9b9ec51f81edf304db5b12e22f64a38c71cfe64f5702cf98dac08ea47b3ab",
+      "bytes": 4277,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullAllocationMeter.cs",
+      "sha256": "a5a44cb939462ddea3f20c06dd71d0c3d7a50e53b196febc2d75435716700f6d",
+      "bytes": 2130,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullAtomicLowering.cs",
+      "sha256": "8fe06d94279f1a8af2f0caa4a0dfc0edaf231e15ee67c302d00ef37095d04396",
+      "bytes": 7970,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBitCountLowering.cs",
+      "sha256": "1613ee1aa024a81e2d90d702f73a28bd4383f54fa66a73059dd2175623e9a98d",
+      "bytes": 1979,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockContracts.cs",
+      "sha256": "d55bc1a4fef3477b94f0a9b201d7788ca81cf8c2703276cd4ea998130a111d28",
+      "bytes": 7538,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.AddressExtension.cs",
+      "sha256": "bad4c24e5b2422beb9b34e61e0ff5187ee2fd9f31ba5c51a8900688db625f2d6",
+      "bytes": 4031,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.Atomic.cs",
+      "sha256": "ff4e6a2955c4b11c6541cfa6531f847350d2af0633cab416d4f8997e3b2b2602",
+      "bytes": 13150,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.AtomicFast.cs",
+      "sha256": "b1d225ec75224ddd7581d1ed2fc6a55f57162e5692aa2c46122fb4d6293ca85b",
+      "bytes": 3548,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.BitCounts.cs",
+      "sha256": "0cf98864784212dc55df00cbc7ffb249e65ac17382bc29b483ac655b9f4d8fd9",
+      "bytes": 3803,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.CanonicalX87Arithmetic.cs",
+      "sha256": "13e35561391ba8666de104e3fd4d6caf4422067863c8ed04c19af9af2dfca50c",
+      "bytes": 12687,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.CanonicalX87Control.cs",
+      "sha256": "fce6b73e1023d71eea90bc871f3c7cbbf4e23762bde18006cdfc1e7c0db6f92d",
+      "bytes": 59225,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.CanonicalX87Invalid.cs",
+      "sha256": "a056c73c4559098fa244a323fead6a7e51e0c8462273f5264f9c26d455f3d5b1",
+      "bytes": 1957,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.CanonicalX87Memory.cs",
+      "sha256": "00ca0ec206dc3f754e081d21501bd12f694b5da5cd0d549921e8f807191780b2",
+      "bytes": 18019,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.CanonicalX87MemoryArithmetic.cs",
+      "sha256": "548518c317b7458d904c07ec3635de741e6191d060708e8f8bc4cc618205ecab",
+      "bytes": 11069,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.CanonicalX87MemoryBcd.cs",
+      "sha256": "b3bc24369fff771da90202e7ff170184d4873f687bb327cae07f2dab4c52e932",
+      "bytes": 8456,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.CanonicalX87Stack.cs",
+      "sha256": "5fe6d1af32554e2573247b9c567053af42f32d819af2574b1d2e010820ff68cc",
+      "bytes": 17576,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.CanonicalX87Transcendental.cs",
+      "sha256": "940d1aa964a79dfba7d306efa4503c9c9427d8248452ccc9241b0ccc88d12dfd",
+      "bytes": 15575,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.CanonicalX87TranscendentalInteger.cs",
+      "sha256": "afeae95ebd4930d01ddafc28362faceb1a5e7ea91f3b9cacc583985d58aca1e0",
+      "bytes": 11013,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.CanonicalX87TranscendentalSoftware.cs",
+      "sha256": "a54b692ffc6de06cd14888dda048c99a4fd966d1270ba21a4ea6c9905449d9a3",
+      "bytes": 35185,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.Checksum.cs",
+      "sha256": "625cc1fefb8c5c9ca196134004af5ffa65f69436dae21e6b48359c528c602a57",
+      "bytes": 2778,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.ControlFlags.cs",
+      "sha256": "63972e3450ee18c837041e72f755b5927cec67a6d318df6e9fc209916bbd1e63",
+      "bytes": 4198,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.Enter.cs",
+      "sha256": "533d9bd4693f94ee530739102ef7eb2107ba406c14b28d7c34883fe013a3aa59",
+      "bytes": 13173,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.FlagStack.cs",
+      "sha256": "35c54c4c76df225614a11678ecdfc4e72cdaeb7054c7428f9b1e32b01e731203",
+      "bytes": 3831,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.Float.cs",
+      "sha256": "9a6ec85753b35ec4af061840d7b4de51981f3aa3738590e4c496b092b253cc95",
+      "bytes": 28609,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.FloatExtended.cs",
+      "sha256": "cb06f608d86fe3aeb447a3f0ef5f2d2a2cd6f9a6efc5d571b705fbc6cd552efe",
+      "bytes": 4573,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.Hints.cs",
+      "sha256": "717692da27133a6f793529feb7b36522b63cb383bdabf5a0a56729022d51d372",
+      "bytes": 1565,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.Integer.cs",
+      "sha256": "f976432d305d1164617ce4198d24a21c1dcc7c79003658472628876f1ae046ad",
+      "bytes": 28220,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.MaskedStore.cs",
+      "sha256": "67fe248bbcaf022c0987bcde7b29dd37ff13ed5f3d08f23c313f6f660e442177",
+      "bytes": 16807,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.Memory.cs",
+      "sha256": "f40a0213aeb71b36d3e6f5f9efeb5a2aa7d1bd7699477d2aea32f19ae7aeaf2e",
+      "bytes": 26896,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.MemoryDescriptors.cs",
+      "sha256": "64f28fea8120e0918d26d93c76272a121be132705b5ff97c9f970ab600126328",
+      "bytes": 1334,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.MemoryInteger.cs",
+      "sha256": "f2d24ce22a03722b820625a62142be8b855da7724c44e8a51865b0ac52259b8f",
+      "bytes": 8410,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.Mmx.cs",
+      "sha256": "a8d29ad2e1042b4eb5bc41deb2925bbfae180bdf782d7330832e1277f7906700",
+      "bytes": 22258,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.MmxState.cs",
+      "sha256": "6cde226d9a2fb97dbddd08037ed702d8f52378bd298e69a15c4c03b6d92c2e29",
+      "bytes": 3317,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.NearControl.cs",
+      "sha256": "c3b2d822bf5b600414823d3cfb4f015f3c9f3e1d63a30acb0e26a492c8ce5e80",
+      "bytes": 9514,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.ProcessorEnvironment.cs",
+      "sha256": "51d831a5efbce32b67fa982f30863d0b9971c75a9514d1eb871fd7f62d57cbd9",
+      "bytes": 14245,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.ProcessorQuery.cs",
+      "sha256": "76fc44fbeea9f09aeab17954e319382107b713140b94e1831d894db6f414518f",
+      "bytes": 11883,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.Rep.cs",
+      "sha256": "e7cd1d2e8e4e49aee24fa4d255a9e7d802258223e7eb43bdf75ee0e0aa5b4e63",
+      "bytes": 22497,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.ResidualScalar.cs",
+      "sha256": "de651730ee768dcb8c472edad26e2843a9d584272c18478a52d31cdde4cc4f59",
+      "bytes": 2257,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.ScalarMisc.cs",
+      "sha256": "46563c5034fc7afd4b4c059e1e490ba87988f067563a6fac85183d204c7ce8dc",
+      "bytes": 6620,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.SharedMemory.cs",
+      "sha256": "73f4858889748bbfe0057e593c2e49ee9dc7c5d0036eb6974e185da7999b6e27",
+      "bytes": 2322,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.StackMemory.cs",
+      "sha256": "da3404703b9db264b068b9839946c02f15dd31fe54f32842305a78d72fc152ff",
+      "bytes": 16591,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.Strings.cs",
+      "sha256": "8710073a71052de2eb29317aa3c7a642eaae1244ca1a0c4a5ad677d5a53ca0e1",
+      "bytes": 10178,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.SystemState.cs",
+      "sha256": "1ee3eb9f399312d2b438b0e946e24836dd5a60eb0a21e20e2ebfd518b4832bfc",
+      "bytes": 5574,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.Vector.cs",
+      "sha256": "2223aa7c857fb028fd456aa301ecbd72b7a864d621584d6dd7ca8e8e004c2ee0",
+      "bytes": 20261,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.VectorExtended.cs",
+      "sha256": "3a53b997cf5ac437cf1c66695b67e327313c6bc5f55f3513bec422683f5eb0fc",
+      "bytes": 14024,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.VectorMove.cs",
+      "sha256": "f72bac5e35735fda0f5990c9c8cc4e8dc80aa366aa3f5028a93b625fb589ce2b",
+      "bytes": 10673,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.X87.cs",
+      "sha256": "64f76a57f1600a8e7730be46944af4449a2a13cc983229375cce490c9ef4eebd",
+      "bytes": 54451,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.X87Frame.cs",
+      "sha256": "005f7e47c7451e687462a19892d076c8b405cc617c13277630cccb3fe99633be",
+      "bytes": 2430,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.X87Kernels.cs",
+      "sha256": "0568b7edeb47af6aa160c8ceacc1612da1cdad9c7784e977f3a10cf99effb218",
+      "bytes": 1043,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullBlockEmitter.cs",
+      "sha256": "0859c679eb7b3410443282b7fffd919751e821203212a108631190b700427e85",
+      "bytes": 65351,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullCanonicalEncoding.cs",
+      "sha256": "95239472015ee7a8f1a22ff2fb40e1fbf31e0bedb6f398c93287bc51507b4c1b",
+      "bytes": 18539,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullCanonicalX87Activation.cs",
+      "sha256": "3bb7e4d5c7c13267b59ed985ead18016743040ec539cd06014d8a820707ea767",
+      "bytes": 2596,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullCanonicalX87ArithmeticLowering.cs",
+      "sha256": "28a9358ec188be032877359989e6ddd635bc2adbccd54509468ce0a445ce0c08",
+      "bytes": 3084,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullCanonicalX87ControlLowering.cs",
+      "sha256": "552434fc0bcd7c35b07c95645d4be0d91a046fd610218ac21d08feb442fc8bc2",
+      "bytes": 10265,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullCanonicalX87ExecutionProfile.cs",
+      "sha256": "e793aaf6a444fee99874ff6fc534dd5bcc64e62ab93cd03189128f3e0ae29a82",
+      "bytes": 2319,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullCanonicalX87HelperPolicy.cs",
+      "sha256": "00743e66d80b6bddd58b5e0765b94576bf070451d099b26247acd1b93fcfc60a",
+      "bytes": 1974,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullCanonicalX87InvalidLowering.cs",
+      "sha256": "9ac8e510a828df84038641062fea627dffa9250fbff0a7c98bcb310a46596dbe",
+      "bytes": 3039,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullCanonicalX87MemoryArithmeticLowering.cs",
+      "sha256": "39f86a08f2b911a01c3efea8e21e92cb28fc68baa610a172736752de71b36a85",
+      "bytes": 5901,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullCanonicalX87MemoryLowering.cs",
+      "sha256": "9f43e7fcf7f12595c55c2a119546e997e07cf2dfd0eb93c2f5f50ac5449cb220",
+      "bytes": 5583,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullCanonicalX87PrecisionProfile.cs",
+      "sha256": "acaa75351f377765cb1389371068e8df6da515048225741982c9ab0ac9ce471d",
+      "bytes": 538,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullCanonicalX87StackLowering.cs",
+      "sha256": "6a30ce9fb0e0f8cf42306033d52518000756c429c64c086f72f359549011dc87",
+      "bytes": 5624,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullCanonicalX87TranscendentalLowering.cs",
+      "sha256": "c8590780beaff7585f517e715d1b9fd6c906ceaee82418577e1430587491dde2",
+      "bytes": 2680,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullChecksumLowering.cs",
+      "sha256": "fe255394c6feb9f17bb124062a84cd8dc24c653191e0b09616f594bd030dacf6",
+      "bytes": 1808,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullCodeAuthority.BoundedCopies.cs",
+      "sha256": "48ce8c2b1b0ada349b39eddfe85150a6559b43132a1004adf96c132b8c42cb17",
+      "bytes": 1486,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullCodeAuthority.CodeSnapshots.cs",
+      "sha256": "059b1346ce3661b1ee81d3ad51a171547c15e8c8a0eaf76c7c7c951c595ba112",
+      "bytes": 3285,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullCodeAuthority.MappingCache.cs",
+      "sha256": "2588815a37a7d429b7e3b5c8e570d8edaee6b483e787d0e37044e1dbf62c0d3a",
+      "bytes": 8116,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullCodeAuthority.PreciseMappings.cs",
+      "sha256": "3a26c77779b1ded55bba3d67e8f77e917b4961509ba392d5635ce4363af87fab",
+      "bytes": 6384,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullCodeAuthority.ProcessorEnvironment.cs",
+      "sha256": "08af98f52d58e653f1dfa9c305c0487c46cd1b12e286fd170097a6cb675bda70",
+      "bytes": 2917,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullCodeAuthority.RetainedNativeEntry.cs",
+      "sha256": "fed59ba04363ffc2cd18971d7df7440dc76917665a656eaa8770ef51bbc6bd60",
+      "bytes": 704,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullCodeAuthority.RetainedTrust.cs",
+      "sha256": "0d5a006ce3846e149ecac2ca82c2af83dc256837880e333767270ac6d31c458b",
+      "bytes": 2561,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullCodeAuthority.Semantics.cs",
+      "sha256": "9499284f31575deafc27f329722eee43a18e7cb720084511527252f5ac013dac",
+      "bytes": 16974,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullCodeAuthority.SharedReads.cs",
+      "sha256": "2bf84fd2cbe4346d042598c6576497f730331e908ab94b213fa770e152850d68",
+      "bytes": 466,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullCodeAuthority.cs",
+      "sha256": "db11787393ae249b814905faa420d6a8156d9be9224d6ed686ac03f6d4159b5e",
+      "bytes": 21427,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullCompilerScratch.cs",
+      "sha256": "9d2172cbf581e27840d8411544983a89ccf1a6a5091d0449d26d790e087ff7c8",
+      "bytes": 2086,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullControlFlagLowering.cs",
+      "sha256": "ec2dc92cd78128b1ac4dc9cd1bdba77154834be50941ecf8bdfbaa80118a5171",
+      "bytes": 3459,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullEnterLowering.cs",
+      "sha256": "47724e9ec7fa5adf0177285c51bebadc596330bf1fa95d09214d1544f667b5e5",
+      "bytes": 1919,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullExtended80BcdEmitter.cs",
+      "sha256": "6354080468fe1eccf3b642a14ef428c14ac0d49e14b04ef6bda590262f544b69",
+      "bytes": 11338,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullExtended80BcdProtocol.cs",
+      "sha256": "390a3b76a6d843c5ab8c986481c15f7eb7e3924df55a153474e12003329bb1f2",
+      "bytes": 959,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullExtended80Control.cs",
+      "sha256": "aa471178538408455789f9c0bc4a9de86c830795e80834b355b2af334d372b8a",
+      "bytes": 1966,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullExtended80ControlEmitter.cs",
+      "sha256": "5d0796e0b5e06477b888f635923b84e5bf43a8e2a185a143a5c85e8f91171a11",
+      "bytes": 17425,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullExtended80Conversion.cs",
+      "sha256": "66eea9ac57fd787592f474520df6e3bb9a8186c5f2b3af13e111d01ed6e7f921",
+      "bytes": 1313,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullExtended80ConversionEmitter.cs",
+      "sha256": "735174e285bb6af5f05e90d0f83c8829db621780951f715b60cb69afddb54eac",
+      "bytes": 18081,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullExtended80Emitter.cs",
+      "sha256": "351a89933bb0424ad32b477864e5c119eec24a4934495c8b61c6925666377599",
+      "bytes": 27618,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullExtended80MemoryArithmeticEmitter.cs",
+      "sha256": "eadaf967411c5950f8d6e155c43ab47eff8938a4ed5da5b6f9e3d754d90bae11",
+      "bytes": 32112,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullExtended80MemoryCompareEmitter.cs",
+      "sha256": "ba68ee9136e79fe7beca160909128172d5d7b37ef449c0f042f4fa252941b76c",
+      "bytes": 17601,
+      "qualified_c179_match": false
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullExtended80Reduction.cs",
+      "sha256": "12ed677aa68458490d46e950ab40c63a4ff73bf62aaaf97367689fc94f636459",
+      "bytes": 1306,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullExtended80ReductionEmitter.cs",
+      "sha256": "9ba2bed2006a579647b7cbd1ddf2fb03d1d21f731c905ea97ac5c871b5111c2a",
+      "bytes": 23756,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullExtended80Transcendental.cs",
+      "sha256": "21cfd8ee078833ebaa8311413b249352dc2671a95c6cdbfdac3d7ef6c6fa9558",
+      "bytes": 1829,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullExtended80TranscendentalEmitter.IntegerNative.cs",
+      "sha256": "b6e3f8ddaa16aab3adfa6f890c093cd5a265abe0390cd6e80c0d4779c981ee99",
+      "bytes": 6377,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullExtended80TranscendentalEmitter.cs",
+      "sha256": "9d46e1717e25bd2cc45eddd05dc44d28f6f7d342cebcccf82b704e4e90738a7a",
+      "bytes": 19378,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullExtended80TranscendentalSoftwareEmitter.Arithmetic.cs",
+      "sha256": "b72bf22d3ada2d1c0ee05800d02c0c7c84c84621fc318ee78b73cac36ec84e0e",
+      "bytes": 9797,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullExtended80TranscendentalSoftwareEmitter.Constants.cs",
+      "sha256": "c2f228b1cd3a6e61b015ef3c328352333482d9b90cb3608538d45681a368b001",
+      "bytes": 1111,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullExtended80TranscendentalSoftwareEmitter.Family.cs",
+      "sha256": "527182d34fc82bcf1f981a9d9ddaf3767c5428c7fa282b72d8a677053e095b10",
+      "bytes": 13681,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullExtended80TranscendentalSoftwareEmitter.Kernels.cs",
+      "sha256": "a7de9900d12b05bb04268fe20bd851ae9da223199e5e72dab27b3f71c457d1de",
+      "bytes": 7992,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullExtended80TranscendentalSoftwareEmitter.Pack.cs",
+      "sha256": "7d172fd60a718e370162ce78a7a0c5fcb46615c703928f933303927e809603b2",
+      "bytes": 4978,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullExtended80TranscendentalSoftwareEmitter.cs",
+      "sha256": "773b003510710d17afa23c82f3d3b2d107d88d037f39be451acf7f514fbb54f4",
+      "bytes": 5895,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullExtended80TranscendentalSoftwareProfile.cs",
+      "sha256": "08b1f4d202fb7a3a07666008b22f2721379ce414d5cea3b870517ac2803fd3bc",
+      "bytes": 2173,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullExtended80Transform.cs",
+      "sha256": "a9bebb9ac9e1bddac3bd802424759a0e74e3d426fb0f7d738b60be57db55c3f4",
+      "bytes": 959,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullExtended80TransformEmitter.cs",
+      "sha256": "a1cc0472bd10080bab82ba4b2fd2e58ce85e3a2aead6d8060db3af46066742b7",
+      "bytes": 16680,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullExtended80WorkFrame.cs",
+      "sha256": "cd4ec9003b7d0bcbf4cf8f4f2bbde221e6f173d72df5e8c31669f7fb54ef8d57",
+      "bytes": 2889,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullFlagStackLowering.cs",
+      "sha256": "f8ef6778a43d2e86cf387a7be6e5ee2b946b2782cd887617e5b41607365fc8c9",
+      "bytes": 1374,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullFloatExtendedLowering.cs",
+      "sha256": "6667c1d507a10f6122c669c1986ee0129e7f99b9bb1659847895429911e4baca",
+      "bytes": 2414,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullFloatLowering.cs",
+      "sha256": "ae2376b8b6c8d30cd3dc53ab0b726b22d919ea78357dbf2856cf949ea7ba92a0",
+      "bytes": 6502,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullFloatMmxLowering.cs",
+      "sha256": "ba6bc34770809c30eae290c3529abee331206bf99779fc4417763ead147ce9b5",
+      "bytes": 2169,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullHintLowering.cs",
+      "sha256": "192843d11658ea7823e9cdd1ee7fcbb5ff9a0d49478c40d80f4e93cca7ef5837",
+      "bytes": 5988,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullIntegerLowering.cs",
+      "sha256": "4d8f459c9babb60aefd7437beadff011d8ff1371be41a2071b7da43849e1a0d3",
+      "bytes": 12589,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullMaskedStoreLowering.cs",
+      "sha256": "cc70de9d94560b6104ea03780be83c4cedb82993a609ac1c2a24fe4ef903bc77",
+      "bytes": 2250,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullMemoryIntegerLowering.cs",
+      "sha256": "196ef8ea6f9007b15f4829748b2eaf032f1785ed76f2ef7e96420ccd9c07cda3",
+      "bytes": 5032,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullMemoryLifetime.cs",
+      "sha256": "f8c3a9f5be07742342eadf714afc2bd8a5ddd9f7428f42aa5b63e2f7852c1625",
+      "bytes": 4101,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullMemoryLowering.cs",
+      "sha256": "bcd8da694c896f3972a232307a60c1fe976a043745a2057cfab53ae198009e3b",
+      "bytes": 13252,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullMemoryMissDiagnostics.cs",
+      "sha256": "c3dd1e9c3c9bbf12ac034382706a78d63280e9ae380aea4152ae1db306dc87af",
+      "bytes": 8592,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullMmxLowering.cs",
+      "sha256": "9423b0ad462aa568739ff9f0a79f7a328f5f8bafb9b96b0d2a7221a031d2b86a",
+      "bytes": 10094,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullNativeDispatcher.cs",
+      "sha256": "d87fd06a472ebbcc3b783409274560edfbd980e7d2b9b688c54eb3d8191e56ff",
+      "bytes": 6709,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullNativeMemory.Atomic.cs",
+      "sha256": "e41dde61d5d40e4836dfc5455ffd35d997cd6caa3dffaa614a7b3277c8438931",
+      "bytes": 12930,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullNativeMemory.CanonicalX87Probe.cs",
+      "sha256": "69572336065173c9828e2eb5731f24e100a93d5127e17376fb153be4f4f3f48a",
+      "bytes": 6375,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullNativeMemory.Masked.cs",
+      "sha256": "43a6e5cc156d60b15325937b0c369cafb4394619adfb436c44f9fe2f4eb437c8",
+      "bytes": 8672,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullNativeMemory.NearControl.cs",
+      "sha256": "6125b74db3fa153491845907a30077cabafe18b6b39e16f7f6de86495d24bd5e",
+      "bytes": 5091,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullNativeMemory.Stack.cs",
+      "sha256": "20216024d09a412a6156692ea4e5927dd9ae13f80f3c006f64db4879178e48ef",
+      "bytes": 11127,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullNativeMemory.Strings.cs",
+      "sha256": "22d2f4e88ef05ff26aca4b6b58b23b0ae3b574d5790dd4aa7b67947394052962",
+      "bytes": 5795,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullNativeMemory.cs",
+      "sha256": "80b61213248f743faca6ae9e42506cdfc5684cdfeedea4ca956a264222deb920",
+      "bytes": 14628,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullNearControlLowering.cs",
+      "sha256": "bce4dac5d13490e02476455b6e6795303a13c9a5cab0e3c934769ebda22d6d88",
+      "bytes": 6457,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullProcessorEnvironmentLease.cs",
+      "sha256": "2eb7d00989d1ec2c0ae7826a359ffe1f261ebc7c68641780f473729bee501261",
+      "bytes": 4368,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullProcessorEnvironmentLowering.cs",
+      "sha256": "e9c55842b122a83f1a0a087517199076c69a769f4d9b43ce5b00c56c88140c28",
+      "bytes": 2587,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullProcessorEnvironmentProtocol.cs",
+      "sha256": "071edca28c5834f82d77f624dd56447456994eff92490d79f9e3da3585579af6",
+      "bytes": 9093,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullProcessorQueryAdmission.cs",
+      "sha256": "76cf448e781f541e13ba7563a3c57eec56bff136069c774bd95ea8d1c76fc2ab",
+      "bytes": 2228,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullProcessorQueryLowering.cs",
+      "sha256": "c10e3596a3ac382bec993026c72173f0d59bfe9945ef6cecb788c6eee56cbfb9",
+      "bytes": 3295,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullRepContracts.cs",
+      "sha256": "e6f6bbf730b81b00f3af0cf3f28d04db742c3335e6fd1a56fd26a39771a8edf2",
+      "bytes": 3125,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullRepKernelStore.cs",
+      "sha256": "825e3a1f6e2544ff495b860d9c755655ebf4e5d990b3528764af778780372d48",
+      "bytes": 8230,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullRepLowering.cs",
+      "sha256": "e52aed2eb482a537cb74e400bb45239824415fac5ead5bb90648e3fdba3c8db0",
+      "bytes": 5501,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullResidualScalarLowering.cs",
+      "sha256": "69553eee03b4cd5728e73fa7396c4b70f5a390ff671ffe788cbba4b4b164764d",
+      "bytes": 7116,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullScalarMiscLowering.cs",
+      "sha256": "7fbbd564a1d272374cbf71bcc66781e0306f0bae353e48999d042b9ab4bc7e18",
+      "bytes": 3667,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullSemanticJit.cs",
+      "sha256": "6175f0382a2967018255cd3d6a490dbed4ca22b1cf94fb4f39d32ac766072f0e",
+      "bytes": 24504,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullStackMemoryLowering.cs",
+      "sha256": "4811a39e6791c18bab6a8164a844bb65eb272a0e0fbfdd95b31ea8c28af443b5",
+      "bytes": 2194,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullStringLowering.cs",
+      "sha256": "7751dbe255ef904569553f20a8d59a29fbdd7f4aa44dfc07475f1b70d0ca75cb",
+      "bytes": 4087,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullSystemStateLowering.cs",
+      "sha256": "c7f12966bf4d9c68459d0f93f278dd051a733d8add6dec6e7647b44b43458cb0",
+      "bytes": 2827,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullTranslationJit.BoundedCopies.cs",
+      "sha256": "55901d92292372fc4fbed96fcf5f21fdb87644f8dce721dc798b9f490a47ac1f",
+      "bytes": 1835,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullTranslationJit.CanonicalEncoding.cs",
+      "sha256": "b8c60822435fceb8bac20ff2101227f5c03c4407978879873facf6938d392fcc",
+      "bytes": 1367,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullTranslationJit.CanonicalX87Family.cs",
+      "sha256": "22b146859e3be8bb817a7a686efc83e675176c0b647485f1d669e2ecc3d4e738",
+      "bytes": 3860,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullTranslationJit.LastExitLinks.cs",
+      "sha256": "99bc82c8649821d3c281f40418751d43fcac43764d5e5c1faf649b9c2cf5154a",
+      "bytes": 6333,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullTranslationJit.MappingRevocation.cs",
+      "sha256": "a7cbe4b2b81ffe930d6b5eed5a602f313a2defd5caed0fcd70a8af367a829dc4",
+      "bytes": 2811,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullTranslationJit.RepStatistics.cs",
+      "sha256": "d4ce903025001736e86c4631bd6202faf806bafcb7034074e203b491936d5543",
+      "bytes": 1252,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullTranslationJit.RetainedAdmission.cs",
+      "sha256": "833ce0e76d41375ae741bd8ac919ab9ed8204aee3085c8cb56991d8d5a764ce7",
+      "bytes": 6048,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullTranslationJit.RetainedCost.cs",
+      "sha256": "e8b048c70cab87f06867e72a3589d7f816bc743304657ff6995a84cfe37a3013",
+      "bytes": 1530,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullTranslationJit.RetainedNativeEntry.cs",
+      "sha256": "7d14dfb197bdc2c21eaf9966584173eb00c3a1649eba3ed5f2213f3b388e0f10",
+      "bytes": 2315,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullTranslationJit.SharedReads.cs",
+      "sha256": "3aea8d1d3d01490209989b50704491f8c2b5d17c0cd7b97f7fd150618471f50a",
+      "bytes": 407,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullTranslationJit.StaticExits.cs",
+      "sha256": "5986732c058501df5ab277a99d3025ee402a1a4e5fb45c6d38e1d3360b8cbed9",
+      "bytes": 3503,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullTranslationJit.X87Kernels.cs",
+      "sha256": "4824276aa68e2e247619ef55d06fa0f81a1731bdeacbeccfd2fcda1251c73a65",
+      "bytes": 4645,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullTranslationJit.cs",
+      "sha256": "b5da4174d1a2240d6b7a6d2b157b9528249714735bda460c31c358b3986fc3e6",
+      "bytes": 63996,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullVectorExtendedLowering.cs",
+      "sha256": "8a2b17edff909abd4483065af922332929581b22a447910e0fe95e0c91f046b6",
+      "bytes": 5246,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullVectorLowering.cs",
+      "sha256": "95aa98ac4e010e689d6277985d9e16eaa4f75c5db8b46c4fa7c534feb735600b",
+      "bytes": 9079,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullVectorMoveLowering.cs",
+      "sha256": "f2a8f834f0851bfc74a2fb483191007c9795f8364aba3c4c418aad7813d8d170",
+      "bytes": 8036,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullWorkerNativeState.MappingCache.cs",
+      "sha256": "c2d1ad8c9f5e650c67cc799c0003e279818f5b4a907c8d4536b499cb1caf3db1",
+      "bytes": 7857,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullWorkerNativeState.RetainedNativeEntry.cs",
+      "sha256": "3143d68592ac738f188726cde95427f6c9aaf9a7026fbe147c63e164a460bf84",
+      "bytes": 1045,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullWorkerNativeState.cs",
+      "sha256": "6b3a0aa3ee89bec9055d1ea43e0b4c1c4b28c209bb4c1d7c5f5f11c42d8a6add",
+      "bytes": 1980,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullX87KernelCall.cs",
+      "sha256": "24e59f57f4b46c7b07db998b6d9df9ac3a3cc601908ecb499886526490462ed3",
+      "bytes": 553,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullX87KernelCatalog.cs",
+      "sha256": "56d582ed1161b688167b3e3f9a6b853dcbecf16f9a8c9a6d7db9298b190f513f",
+      "bytes": 24478,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullX87Lowering.cs",
+      "sha256": "a0625c28dd4daf943d31d8f639168f36443e09453835c1231d4396d6c5b2f032",
+      "bytes": 9821,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullX87NativeStorage.cs",
+      "sha256": "4bb45e3456bca71d9669014d67d8849841f1cbd6a41f0008c4b2e679b78aa152",
+      "bytes": 776,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullX87RegisterFile.cs",
+      "sha256": "cc45719dcf6e253f2bd71afe2862da09a3121a1cb96002875a18ad479a2e4cc2",
+      "bytes": 7846,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullX87StateBridge.cs",
+      "sha256": "f325c9f11acac43f11ff3873d841411a197f06c4cf865cf53299fec4c2eb0293",
+      "bytes": 13163,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullX87WorkerBinding.cs",
+      "sha256": "5f82ee70b587a0cf8e382fa7fc66e247554212eccaa274815e7feaf9cb2ad232",
+      "bytes": 3513,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/GuestBlockJit.cs",
+      "sha256": "a7297fdf755688661d417b78b06512c36fd5f6fe9abe5d36f5cb98fb10e7feb3",
+      "bytes": 52748,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/JitContracts.cs",
+      "sha256": "98e6cc727784649dbe75494a0e48afe6697405adb564b9e08698f217155d20bd",
+      "bytes": 16584,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/JitPageIdentity.cs",
+      "sha256": "0eb92b11f53c74ad2fe097dd7b7f97bcfe90095427b34de32ec4da574d23e146",
+      "bytes": 1190,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/NativeCodeCache.cs",
+      "sha256": "502aadf4311976b10f7fb3245b9603716c2668487627a2464f329cdcc28a2767",
+      "bytes": 8027,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/RetainedTranslationStore.CodeSnapshotPublication.cs",
+      "sha256": "512995a7d154a303674c8474dd8da381cd27fe3ff5feeef20ba8fb449ae6743b",
+      "bytes": 849,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/RetainedTranslationStore.EntryView.cs",
+      "sha256": "8778dcdea2b1c2466392ea687d76195eb70e65497bfb58c49c603074f9a28e15",
+      "bytes": 3126,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/RetainedTranslationStore.cs",
+      "sha256": "436f455cdc79fcd008d7484457c4037248e28e6f8d69046e7413e19c55116184",
+      "bytes": 55256,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/ThreadedGuestExecution.Atomic.cs",
+      "sha256": "8da2bdd6f0e372522673295afc0fde516b8cd480a4e4e7a6d7ff940856f2bfc7",
+      "bytes": 5174,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/ThreadedGuestExecution.CanonicalX87FxMemory.cs",
+      "sha256": "1b33d96c5a270fb80229e22455c541db5ae99487ad9e116d316e92261df8f356",
+      "bytes": 6605,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/ThreadedGuestExecution.FullJit.cs",
+      "sha256": "536e37e77bdb942d06fffad003b6d6f8c37d12dd318f46cb66de10cd5508d112",
+      "bytes": 52424,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/ThreadedGuestExecution.Jit.cs",
+      "sha256": "ce16e42b0f3b6061d8b54446b10718391bd9697ee2fc4b760bc36cf667fc3717",
+      "bytes": 13615,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/ThreadedGuestExecution.LastExitLinks.cs",
+      "sha256": "974f79fb725639f7f743df45d8852cc7e562467ae08647869b630ce6a8786310",
+      "bytes": 217,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/ThreadedGuestExecution.MappingCache.cs",
+      "sha256": "c64b082dd25849504f2908c9538f6ff9624968670d8d804b882b89abd87743df",
+      "bytes": 1152,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/ThreadedGuestExecution.NativeMemory.cs",
+      "sha256": "dbb4285212538bdbf85fb7fad408d2ea40c2dce24ae99feedd02d78c8e47286e",
+      "bytes": 18602,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/ThreadedGuestExecution.ProcessorEnvironment.cs",
+      "sha256": "beb73e8bdb12892a6ef9629950e908bd910b383a015bc22cfe3f2cd12e44180a",
+      "bytes": 28810,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/ThreadedGuestExecution.Rep.cs",
+      "sha256": "6fd8c75fd555d25e7c891275386767089a413ee1f0b4f1e7ac7688b43ca16a0c",
+      "bytes": 35361,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/ThreadedGuestExecution.RepHooks.cs",
+      "sha256": "7498fd4f2d926d1137e4b7ce7a00379cc731e44e6a60392f2d979f40dd429a27",
+      "bytes": 499,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/ThreadedGuestExecution.RetainedNativeEntry.cs",
+      "sha256": "bb16a28761b971c24024f17e57fbe73dd1cc5d772a8f67b2fa8247fbb778a0b6",
+      "bytes": 4863,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/ThreadedGuestExecution.SemanticMemory.cs",
+      "sha256": "e83f85ede59f9f92726c00173952e6f7d0d90c141448937675c29bec950c44a3",
+      "bytes": 4503,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/ThreadedGuestExecution.X87KernelReturn.cs",
+      "sha256": "ceeb3407d5567ffb53a555f642a910be0daf313612691dfe824e8e9bea4dab42",
+      "bytes": 2113,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/ThreadedGuestExecution.X87Ownership.cs",
+      "sha256": "bfd028e3ac027f6be8af8db16ffed89cc6d10396ddbc2be70e8e9a701d702490",
+      "bytes": 8707,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/ThreadedGuestExecution.X87State.cs",
+      "sha256": "95017c2ac59e23054e5da05755ec292bd4ed4a48fbe3590fbdb2454f2e9f71f6",
+      "bytes": 2192,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/TranslationCodeRegions.cs",
+      "sha256": "67599ad8e01535076109ccceec0fc99df8681dffe101d25478828c0bfc03a699",
+      "bytes": 14203,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/TranslationStoreContracts.cs",
+      "sha256": "717dc03beee6f03f9f33d9a88c3cc48b8de2dab650c9f3536aee3d9336cc9a88",
+      "bytes": 8499,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Jit/X64BlockEmitter.cs",
+      "sha256": "02b009fd930b9712328b763656fc56f4b1d36dc808fe13b742a81ee7c2be97c6",
+      "bytes": 37183,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Managed.Emulation.ThreadedExecution.csproj",
+      "sha256": "a03bdcdc8e658829718129498c42bc86342518876494b736fdb9c2a500127349",
+      "bytes": 442,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/Managed.Emulation.ThreadedExecution.props",
+      "sha256": "523bacc1dbcd7868e810dc94916385232f2c3e5ad35233146b6312617e590222",
+      "bytes": 851,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/README.md",
+      "sha256": "ff353164e23a794fa2f07deb4924510046ad1078001e5f94ff03dee67bc69d3c",
+      "bytes": 10087,
+      "qualified_c179_match": false
+    },
+    {
+      "path": "blink/src/Managed.Emulation.ThreadedExecution/ThreadedGuestExecution.cs",
+      "sha256": "0b4b380e350d7b723cef840a333a0ddb9f55e511260515153dd8191e36b58e59",
+      "bytes": 47977,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation/MACHINE-API.md",
+      "sha256": "6a5748cd173c9afa18e07a9301611ded9347c84c46aaa292d34fdcb1129eca61",
+      "bytes": 17222,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/src/Managed.Emulation/MachineOptions.cs",
+      "sha256": "9e69c16ac535de5a8662ea30eb899f08cee6e0e65250d8170f1185feaeeea375",
+      "bytes": 11200,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/FullJit/FullJit.csproj",
+      "sha256": "52405316bc4bd8c328ca1df28569b700ffba6de8cdaeb8d9bc9b99db3c256467",
+      "bytes": 510,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/FullJit/Program.cs",
+      "sha256": "c0bba467b6c44bf74293a27c15b7f4c1556a9d69e53a97a46723f22b127b04da",
+      "bytes": 17522,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/FullJit/README.md",
+      "sha256": "93a9820134a4dfbc519fce69eb9e0bf50a31c6ec524e6ca2275d0b74fac41aa1",
+      "bytes": 4183,
+      "qualified_c179_match": false
+    },
+    {
+      "path": "blink/tests/FullJit/atomic-family-r156.c",
+      "sha256": "f809e81d96fd0ff4a8ad41a792fe7e65d1c284cd24efe7ba23c1323e52ba9444",
+      "bytes": 2756,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/FullJit/bounded-static-workers.py",
+      "sha256": "e9cc92d60d344605f75c9ea89c601f2394b700cd280dcc7b8e2a1317a72edc4e",
+      "bytes": 2120,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/FullJit/check-copy-boundaries.py",
+      "sha256": "739883670a0f2d716e89802394e9ddd550b1380af677b05b8f042ba3e6d025ec",
+      "bytes": 8286,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/FullJit/cpu-fixtures.py",
+      "sha256": "7e6aa56f8e48fe9b99f152f69d76f3d7ea68ea3d78d44ce9a5ab9ea3bb0462bd",
+      "bytes": 3370,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/FullJit/futex-copy-progress.c",
+      "sha256": "59c2925182860c78173605ca5007f593a10a16cf05d04eda2430c6825d6a4635",
+      "bytes": 2639,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/FullJit/host-read-pin.c",
+      "sha256": "5533f330a3597a7a424f11030d424ac14dd85bf0a9de8e87a0be20e2bc0199ce",
+      "bytes": 1555,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/FullJit/mapping-signal.S",
+      "sha256": "74c68c70b0117e8d8d38e8aa4f564abee633c9f5849d3f875131d9a250795d66",
+      "bytes": 1213,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/FullJit/mapping-signal.c",
+      "sha256": "91a65d2746270db757ba662ee0a06135f5b638e172dd5cbf031ec58944932ddb",
+      "bytes": 8248,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/FullJit/memory-recovery.S",
+      "sha256": "34775d956f92ac77576b0b09141d256d4c4f89d32017f7c893c517ed608a5171",
+      "bytes": 404,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/FullJit/memory-recovery.c",
+      "sha256": "e343fd29f94d8f469182696ffbbcace47ba2bebf425bb3f59b1e21e1c911e3dd",
+      "bytes": 3554,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/FullJit/native-chain.S",
+      "sha256": "8541884064f7bc952ec6c54709be465a2f28f2aba3b6d30b26fdeeddff9862c9",
+      "bytes": 551,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/FullJit/prepare.py",
+      "sha256": "23a2c2c1576f2249f03c5731541ab1069a5d12c0bdb4bd583ef390718f1bf5c6",
+      "bytes": 2646,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/FullJit/qualify-windows.ps1",
+      "sha256": "a266b7a0808ba1921aec3787377863f0733ceac594e69ecfb57e77e2a6e16b19",
+      "bytes": 34992,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/FullJitSignals/FullJitSignals.csproj",
+      "sha256": "eef44018175d1b409e88a8a2c47a7b0c29324a07db15772e13bbe53455cbd713",
+      "bytes": 467,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/FullJitSignals/Program.cs",
+      "sha256": "94466c70c14e1567aa6c779c7e9b4298957a6a975575a7df98a942b1fba8c0a0",
+      "bytes": 8537,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/FullJitSignals/README.md",
+      "sha256": "c734b1a06fb0c7abb6705fddf82c5c40b5457a74aa19bbf715af12d19aa8184a",
+      "bytes": 4440,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/FullJitSignals/adapter-tests.py",
+      "sha256": "65b9b073fe964dbd01a3d57c99de2cba64a651fb16a99de669ee6e361b6a2d12",
+      "bytes": 5151,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/FullJitSignals/context.S",
+      "sha256": "71673035a4723ed63cef49cacaa04a540f5cf549d47e21892f9439bafb8305ce",
+      "bytes": 1926,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/FullJitSignals/context.c",
+      "sha256": "567ba135eddd508a157d16a2969c6cbdbd687f951b18663868f3462f60349189",
+      "bytes": 6441,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/FullJitSignals/cpu-policy.S",
+      "sha256": "9f34e8034e56b8015ca2abdbd8cc59e820e15c77ce1d122e0956008d676aab6d",
+      "bytes": 831,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/FullJitSignals/host-capabilities.c",
+      "sha256": "a651be85f70596cff59a0ebe0d61285da10861f95df93c64fd58f02130a0f5d5",
+      "bytes": 774,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/FullJitSignals/rep-context.S",
+      "sha256": "8aa79cd9000786c22bd672c4a1f48fd21c14e80f458bca0d4b431e384d81b863",
+      "bytes": 828,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/FullJitSignals/rep-context.c",
+      "sha256": "eec8ec921e5ebd77abfda958c8177b92a4138e9f0705170072380edc6323c52b",
+      "bytes": 3700,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/FullJitSignals/run.py",
+      "sha256": "1c4648cc99f72823d3942849e1c8f7affed0a43680b25a5e104d80eebb30d4fd",
+      "bytes": 8644,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/FullJitSignals/uncaught.S",
+      "sha256": "20fa3f3d15eda74ae5424bd33df31a370009f72b744dfdfc35eba49946353657",
+      "bytes": 418,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/ContractTests.csproj",
+      "sha256": "7af9b9fb31fc2c372f716f40638950482768241b02b10ea68bb7df3dc34beba7",
+      "bytes": 958,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullAddressExtensionR192Tests.cs",
+      "sha256": "01a06ce82427caa1d19575753636c392e9f6fc619a8c91381698e7ce1ea826f5",
+      "bytes": 27759,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullAtomicAlignmentR156R1Tests.cs",
+      "sha256": "c42bae404346c1533e9db0fcf68e9cd2429dce993839ef6c2ad6cbd72b64c4a4",
+      "bytes": 12514,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullAtomicFamilyR156Hooks.cs",
+      "sha256": "fe87044d0b47120084190d7fea0df4d57e15a7621672191fed194178b4ce1efc",
+      "bytes": 6185,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullAtomicFamilyR156Tests.cs",
+      "sha256": "cab9a03360d030c4c2f0e8c3bc6a06e76a01c4c7c9cf4f401981ac4a536782d7",
+      "bytes": 46899,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullAtomicInspectionRetryTests.cs",
+      "sha256": "2bac1b476aaa52a88edc5f8753cbc4b93b94431358bcb9ee8a6a224f517520f9",
+      "bytes": 3482,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullBlockEmitterTests.cs",
+      "sha256": "6f6979661c0d2aacb8becb36f5e75a9b48f4aea4cc0210e45a28d532a0057031",
+      "bytes": 76162,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullBoundedCopyR190Tests.cs",
+      "sha256": "b6e668492b5f5645910e4673ec88138d46e85d23e84d97c8cf633e548acdc31c",
+      "bytes": 5600,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullCanonicalEncodingR159Hooks.cs",
+      "sha256": "c47b1403dbf936d7eab28cac44138f583b97c8d89d878a0e7ef808ee235365fa",
+      "bytes": 681,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullCanonicalEncodingR159Tests.cs",
+      "sha256": "e59eef7d164a0bd12b4ed003f32e3534a30895f38d3d5e04e1e93fc5342e46fb",
+      "bytes": 29112,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullCanonicalMmxTests.cs",
+      "sha256": "7cd445ec49a86b4352ece6d2b229adc0fc5a0268382448c7de902e40ce304abb",
+      "bytes": 35090,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullCanonicalX87ActivationR179Tests.cs",
+      "sha256": "59c5187096a0ef274a840a76f60038cefcf5f0b8f92ae19f287aa6d6f056d6ed",
+      "bytes": 15668,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullCanonicalX87ArithmeticTests.cs",
+      "sha256": "72d4657a6bfddd624d394fb836483b14b30f50d17b50a454368e832cffd59938",
+      "bytes": 42882,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullCanonicalX87ControlStateTests.cs",
+      "sha256": "7423040c7f786ac1004e4cbf0ecb4976f550891b98e9c2ed845c2234f8d94508",
+      "bytes": 81810,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullCanonicalX87ControlTests.cs",
+      "sha256": "9961f32bb6c3a30689f1f57be60257545396a34c9f15ef5468c49a59ef8f8d5f",
+      "bytes": 52081,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullCanonicalX87FamilyTests.cs",
+      "sha256": "99306d4bad69e23c9af57a68905bf8cee01101b05a17c95662fd6335b44aadc1",
+      "bytes": 16537,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullCanonicalX87MemoryArithmeticTests.cs",
+      "sha256": "2f032087d69da8928456235e97ab71e587cfa324c8bf3fd329d65b083f276a39",
+      "bytes": 57757,
+      "qualified_c179_match": false
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullCanonicalX87MemoryTests.cs",
+      "sha256": "e299d6488d56868cabe8c05a05e9bb8d0c9b23c305b8081a78eb14e0dbc0cf29",
+      "bytes": 56869,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullCanonicalX87PrefixTests.cs",
+      "sha256": "3ed06935db29cf1346016270124618db00c530d06548a3374962f111e0c771ec",
+      "bytes": 7427,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullCanonicalX87ProbeMaterializationTests.cs",
+      "sha256": "b1c98c1916bdd13fa1fa23e9fd79d2a815d4941bf9046329653e75767233ffbc",
+      "bytes": 4837,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullCanonicalX87ProfileR179R1Tests.cs",
+      "sha256": "7a9b3543ae5fdcc5c3673dd27761d5fdf2abf9bf8875b7e50af42d115afb7bb1",
+      "bytes": 15971,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullCanonicalX87StackControlR174Tests.cs",
+      "sha256": "f9ffcc4cf9536a62d2369f6079f52313f8e4300f9c7fa4c62c7f0b7500348bcd",
+      "bytes": 16421,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullCanonicalX87StackTests.cs",
+      "sha256": "6b0e661fda3562ac3c507bc645e71709f1bd38bec1f01adb8f6bc623b87fe454",
+      "bytes": 32344,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullCanonicalX87TranscendentalTests.cs",
+      "sha256": "bf9d9f00f88b3b2bc4929901292a8610b766a2a602eb9a8865a9ff8718d74ba9",
+      "bytes": 16873,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullCodeEpochTests.cs",
+      "sha256": "6217dd0079c79f46657a051292df3f93ee99c71497833b1ac10c859b3c5b5014",
+      "bytes": 20303,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullCodeRoleMappingsR204Hooks.cs",
+      "sha256": "83eb8f879b995ef2088b5cde39e84ac332a858472a0e1babf35ed8c2b8b5b976",
+      "bytes": 435,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullCodeRoleMappingsR204Tests.cs",
+      "sha256": "3023c6b84ce715bb82b1f16b56be6d97912b02a8066c0e780d81d95b1b89bfae",
+      "bytes": 26586,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullCodeSnapshotR201Hooks.cs",
+      "sha256": "eb21dd31e456aea60786ee00c44fbeeee377c1701bf76778dd0611563ebc149e",
+      "bytes": 726,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullCodeSnapshotR201Tests.cs",
+      "sha256": "413636fba1d07c059eb797573030d7babe9117e898f821a4fd2b128ebee9bb3c",
+      "bytes": 21967,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullControllerTests.cs",
+      "sha256": "b26bad7dce8faf65a9230be771d931afd181958f9a6061c14d56aa6677f30037",
+      "bytes": 59264,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullEnterDemandMaterializationTests.cs",
+      "sha256": "758371e374ee2ac9505df402ff38e0ef56b2b99f9b68a2d7c5d740825a354d32",
+      "bytes": 6120,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullExtended80BcdTests.cs",
+      "sha256": "aca02af8ca0482e8e9aae5e9631fdfdc2a7e5bcf896e840c8a36b69f1f7814fd",
+      "bytes": 27439,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullExtended80ControlTests.cs",
+      "sha256": "70fb0735991f93ffc5a29a4f8969e05c3b5b9f055f9f835bc4dea8778eed1efd",
+      "bytes": 29767,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullExtended80ConversionTests.cs",
+      "sha256": "742a1388bf702170f85a273306534e3d06af3812ef15f08d5e9633de0cfafcd6",
+      "bytes": 29676,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullExtended80NativeTests.cs",
+      "sha256": "36df43f9a5cc9c6aae110b313c4af566a8866b24e83cfcb0080930c194c67495",
+      "bytes": 35275,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullExtended80TranscendentalTests.cs",
+      "sha256": "bd18967d552e4a5c006a062ad631fe098c8554e581f6fd6dbb85d56357acc757",
+      "bytes": 40132,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullExtended80TransformTests.cs",
+      "sha256": "a18088a3f3b99dea4f723d1220c408ba4ec01080c557ad355e8217ae06d90075",
+      "bytes": 27089,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullImmutableGuardR202Tests.cs",
+      "sha256": "704fe1a25ad952d19bd84195096bcf40328e7c05f72ad88437b95461f5a2332d",
+      "bytes": 22252,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullJumpCacheIndexTests.Dynamic.cs",
+      "sha256": "2405280c16e41524a92801d05d4b7a473f91459cdbd59d23eb87676813389f71",
+      "bytes": 31289,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullJumpCacheIndexTests.cs",
+      "sha256": "f11299a59da7e583a5a08ec50fd9ddde8cb29d5ae6c6c0f73d71a13d374b621a",
+      "bytes": 25872,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullLastExitLinkTestHooks.cs",
+      "sha256": "023181237918aace7e456bf648ffbb8463a1dd61510fb4c2063c9a7f8253e5b7",
+      "bytes": 425,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullLastExitLinkTests.cs",
+      "sha256": "69ffd1d27033bdbf790b3225e32a4f4a89504f091cf0a7936eb52ec6e75096cd",
+      "bytes": 28458,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullMappingCacheEpochR193Tests.cs",
+      "sha256": "56eb6ecc20b296ab0c60a91822528438814624a783e0f0c036969fce05deb0a1",
+      "bytes": 26132,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullMappingCacheLifetimeR200Hooks.cs",
+      "sha256": "69489fde70eb56d4825deebe7978fe7f9803d16f9c32467749b28497515793b4",
+      "bytes": 777,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullMappingCacheLifetimeR200Tests.cs",
+      "sha256": "f4fc28aeffe1ec7d422ad70ccb1d20f4c891467fb1d1e891bacd08806bffc676",
+      "bytes": 27046,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullMappingCacheR193Hooks.cs",
+      "sha256": "3a701743a1734cba25a872b91b670272c97392a48c6e76ec43c774b9e5fffb81",
+      "bytes": 1270,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullMaskedStoreBoundaryTests.cs",
+      "sha256": "095c56399eb60ae8ad284355771bc74625922897eb14422bcb420d9ee59a187c",
+      "bytes": 6347,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullMaskedStoreUnionTests.cs",
+      "sha256": "339cac8894fcfcf1dbe5009290b970c7252a1390c8a02b966ccfc9b5ea83d3c1",
+      "bytes": 3453,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullMemoryMissDiagnosticsTests.cs",
+      "sha256": "aee0c154b48fa40a0d704cf8c5ae8aae571af6c6c369e88f3693ccd69462c66a",
+      "bytes": 22664,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeAtomicTests.cs",
+      "sha256": "9322f51c30eb73e690caf0bb89cac03a3f589a6f7a581a1e831d1220e3028389",
+      "bytes": 33484,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeBitCountTests.cs",
+      "sha256": "28a05e9cd2ea6952d1fbed7aa21cdff9a9f65cbfc35742bbe4c7c8ceb3943842",
+      "bytes": 8888,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeChecksumTests.cs",
+      "sha256": "4440aa6a08e80407c5514f576b263f29f7834fb58742520140125a19855bc183",
+      "bytes": 9985,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeCompletionR189Tests.cs",
+      "sha256": "f03597dc214a335fb71e18b2d52660c87a7cda935ec959b69d60b00330da5a84",
+      "bytes": 29215,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeControlFlagTests.cs",
+      "sha256": "bd334a734b09e64e045a2419ee0c5dea49e2bcbb4fc237794113e56c358a2b85",
+      "bytes": 41451,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeControllerTests.cs",
+      "sha256": "7195d3c9c55f238b98b03316d82aca1104f3b72fc4430dc338e548b9c2cc3bfd",
+      "bytes": 12242,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeDenseMemoryTests.cs",
+      "sha256": "9020cc44aa4ba629444d800048f0894ad1c791144cb38c28acc261c5350a362d",
+      "bytes": 2839,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeDispatcherTests.cs",
+      "sha256": "b80c8ca7bf628bb9e52c61d29d69c69320eb2ea1c57bfe492c1671428fce3e87",
+      "bytes": 5280,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeEnterTests.cs",
+      "sha256": "258ab1508a90ee633b6a66eddf759dd173cb93e3a00f8cdea1cf83db184b686b",
+      "bytes": 33277,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeFlagStackTests.cs",
+      "sha256": "1aaf4b86213fda6aba7ddb68b4902a59c84fd11d162898112657e8f95fe20759",
+      "bytes": 14898,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeFloatExtendedTests.cs",
+      "sha256": "e851941b50b8f8ed222cd8968ff3c35189dbc7e85d37e3f0227a55b60d6d11bc",
+      "bytes": 9400,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeFloatMmxTests.cs",
+      "sha256": "fb410ac3abd94cdbd15617b7279c42c1646fe444dc004dd0757e28e758b64e0c",
+      "bytes": 7211,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeFloatTests.cs",
+      "sha256": "d4be219f3b5d63c67126f7d660962fa20aefd40e41b1f1dcc788014645aae69e",
+      "bytes": 39868,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeHintTests.cs",
+      "sha256": "80f05e571234e6cc30e3ae7711b3d85df887a1c5485cbccf42983baf981312f8",
+      "bytes": 27684,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeIntegerTests.cs",
+      "sha256": "71b441c735c06e8d171aa107e6b3ab11b04a29ce9cce5374cbbdc8e3bb09bd17",
+      "bytes": 21568,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeMaskedStoreTests.cs",
+      "sha256": "9c8dc6bfcd0fd8e1da2518f78b41b182241dbf5a4f42fa70db8630c736a5a865",
+      "bytes": 41412,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeMemoryCacheR181Tests.cs",
+      "sha256": "e3f1b3daf54a7b134302c31e2b143d40e459e94912d731c327aac07e8d308d09",
+      "bytes": 28385,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeMemoryIntegerTests.cs",
+      "sha256": "558d266405ee83564f132f29fff2b0992c59a8ce94eef7a703a8ed49e0414616",
+      "bytes": 40890,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeMemoryTests.cs",
+      "sha256": "b4074e0c08b7d5a1c082464737e6400fcf8899c20b0dc42c5ed8d48c59e0e5a1",
+      "bytes": 31087,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeMmxTests.cs",
+      "sha256": "3b5540fa43d6924f8ea6fb6ebebd8c792abf20c5d661cc3da2dd4001d91a463f",
+      "bytes": 56319,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeNearControlTests.cs",
+      "sha256": "fa1a9a7caddc804b4dc563e7b0781f8ae22a0267b4e5ba753a64518db4c2828e",
+      "bytes": 38593,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeProcessorEnvironmentAttentionR177Tests.cs",
+      "sha256": "35e0e28f533a70a4f6c5c03693c45d347389002c3beeb2f1cea5bd9355a016fc",
+      "bytes": 19721,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeProcessorEnvironmentTests.cs",
+      "sha256": "7f662acef2cbc2aee8e55efcef02db12e4a150bdb155d83488fc92293fde5a44",
+      "bytes": 44605,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeProcessorQueryTests.cs",
+      "sha256": "029dea3ebeb777d58c9554e083f971d9dcc1509c947f73baa2ca5f92a9ab1358",
+      "bytes": 44632,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeQualificationCounts.cs",
+      "sha256": "b4439af489576b0e57b368b8cd17c040679a9212440311640ddcf9a847151135",
+      "bytes": 2303,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeR118Tests.cs",
+      "sha256": "831152d8e415b067b8b40c3a986e5291ab0ead4218e90f8fb9fa74b7cc5c268d",
+      "bytes": 5093,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeResidualScalarTests.cs",
+      "sha256": "0725134dc74bda042c752c87354d42f831f5ba57ed52258bc82278bbd1a2a575",
+      "bytes": 24490,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeScalarMiscTests.cs",
+      "sha256": "6afa9d38518dd4bf592cba773f1549263be58366d0f1d4fe14b322c34330ba4b",
+      "bytes": 16539,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeSegmentFaultTests.cs",
+      "sha256": "8fa638cc44d73b96f53a16f49cde5871c3b1ef3d6547a4403c3ce75aa7240bd2",
+      "bytes": 3739,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeStackMemoryTests.cs",
+      "sha256": "254c9c1c35a317f44a5bd7ad467bd006c98aa9c1efdd9a455519f2827966efd6",
+      "bytes": 43491,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeStringTests.cs",
+      "sha256": "794f9759debd627520feea98c82795a1adb2f67b5851175250a44ce3c1b16bbd",
+      "bytes": 47834,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeSystemStateTests.cs",
+      "sha256": "324e44dbf56a95b35c0c0b25318206bc4cf7894071be77751dcf3fba6a63b1a4",
+      "bytes": 8174,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeUnlockedBitTests.cs",
+      "sha256": "db6996a9d6f83442e2a1fcefcb74f040078b362b5d0914a64ccac7f5d23851ea",
+      "bytes": 5773,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeVectorExtendedTests.cs",
+      "sha256": "673ec18a5df21686904f3fbdb4849aaafd0751a6f0485e19a8460582cb911897",
+      "bytes": 33192,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeVectorMoveTests.cs",
+      "sha256": "be58274247e646ec838fdd410a0676cffdcd26b27eee94e133aef1f8e4c9977f",
+      "bytes": 32337,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeVectorTests.cs",
+      "sha256": "504481a62d144b73aa3dce638a273fb77504d44e697788895a79e570d6e1b683",
+      "bytes": 33387,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullNativeX87Tests.cs",
+      "sha256": "e50aaf70c11221f646bbba840efa316adca11cf758bf2344cec1ab64a061d3c8",
+      "bytes": 28521,
+      "qualified_c179_match": null
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullOwnedSharedReadR207Tests.cs",
+      "sha256": "9746f5a4eb00698f05bea87e50e8bfd3664f2e1870429f770c7695952098e065",
+      "bytes": 35978,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullPreciseMappingR203Hooks.cs",
+      "sha256": "8e77fd125f26c7032840e42e0dbc8eb30026588a76821bb1e9f78d8b291e8e9b",
+      "bytes": 673,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullPreciseMappingR203Tests.cs",
+      "sha256": "139d54cb82470d4602228033fed2f82018d3879c7496b056a802ae5dc940b6a1",
+      "bytes": 23535,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullPublicationCleanupFastPathTests.cs",
+      "sha256": "d00dffa8e220b4bcc1de8494189f0e8dc97b2de5b25c76b7ec252a5d5398545b",
+      "bytes": 1773,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullRepControllerR104Tests.cs",
+      "sha256": "023ca5ddc98b0edfe5cffd1db069a9702f2c9104bb6fd93639e6756e93310bec",
+      "bytes": 9408,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullRepControllerTests.cs",
+      "sha256": "66e51f2707edfd79d0be789b1dcc84fc68493c671b9d8d8b1b7a8d7fe08b4fa2",
+      "bytes": 22986,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullRepFailurePathTests.cs",
+      "sha256": "bec145b2eae7232441ebdcfd2e24a383304d7cf2dcdd60f62ca540322bada6ab",
+      "bytes": 10087,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullRepKernelStoreTests.cs",
+      "sha256": "fae0c1b8998ac5396411189f45bea311bcf1b6e8dc401fabb189794212a688e7",
+      "bytes": 6408,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullRepKernelTests.cs",
+      "sha256": "9cc234b6b2ad0988484b248036c30a0ce26e0a8a6510ebb2a708fb55bb1265b0",
+      "bytes": 22222,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullRepLoweringTests.cs",
+      "sha256": "5d7d89fdec8a10e858ea51c7cf65f67560410f1e6f400d650315f039c710e47b",
+      "bytes": 5576,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullRepOrdinaryStateTests.cs",
+      "sha256": "0339e0a2a2a8c170bbef5ffb2ea465df9ea6877cd2f841d2958ca53d17d010d6",
+      "bytes": 2549,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullRepPauseTests.cs",
+      "sha256": "3fa103a962159170d964c58933c741169cbe77eff6093e04dbdea3aecf1b6eca",
+      "bytes": 5092,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullRepSelectedOracleTests.cs",
+      "sha256": "b7b97ec0c0a91175089311b6797a199ed1f0c96e80fd9f51ea048da5c9a75633",
+      "bytes": 4070,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullRepTests.cs",
+      "sha256": "b427438281b6918b6c8886a293e9b234beadf47170f210918840f2aabbe8c094",
+      "bytes": 661,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullRetainedAdmissionR185TestHooks.cs",
+      "sha256": "20b66d9f3756612b91eab5c01218df15b122a26b2e450180f8fe5cca12e16dac",
+      "bytes": 2189,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullRetainedAdmissionR185Tests.cs",
+      "sha256": "47f59bc5645664b32b26dbdcf3e78abe2fc062a0ff3e27cf785c1eeb52521f04",
+      "bytes": 25018,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullRetainedAuthorityTestHooks.cs",
+      "sha256": "0a3e4126597d71c05900eb4185e060e00e58c94e1fc1e6263836ae4c1c8c64a6",
+      "bytes": 3121,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullRetainedAuthorityTests.cs",
+      "sha256": "e781fa0032aca7989bb34b8127db17d5eca3bc02362806f27ae7883616baee4c",
+      "bytes": 27888,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullRetainedCostR205Hooks.cs",
+      "sha256": "b16e3d88ff70fe45f59f8fc73163e00990e560a82df29645730e2a9fe07b38af",
+      "bytes": 636,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullRetainedCostR205Tests.cs",
+      "sha256": "61861002b06de36985927c08148340481341c15002a6e5b592e8f9d5d2a089d6",
+      "bytes": 20709,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullRetainedNativeEntryR195Hooks.cs",
+      "sha256": "687d18c884eedb2f90d546af09bf880e9aecc53b89bbfe769bc9c570354e5bcd",
+      "bytes": 4493,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullRetainedNativeEntryR195Tests.cs",
+      "sha256": "8c64ee6dc0c1278eb0766d636dfb30f350aa616fd8c9b93f168d335b4d96cee8",
+      "bytes": 14686,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullScalarAtomicOverlapR186Tests.cs",
+      "sha256": "cc2888a7ad483220eb4e390590529c3c4568df8f1558167cd84d10f919bbb142",
+      "bytes": 2933,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullScalarAtomicR183Tests.cs",
+      "sha256": "7ee42866e3edf487d2e10079a008bca049c7d7a10326a2911965e18d7cbec27e",
+      "bytes": 28308,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullSemanticAuthorityTestHooks.cs",
+      "sha256": "04a5a181bd3616c18143d3e8cb14dce863a886d9ecf57fb8800cf256c67eb65c",
+      "bytes": 1139,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullSemanticAuthorityTests.cs",
+      "sha256": "35b5249ac604b9dfb74651adfc061332a15ba1e669dabce6d781d85ff15e5b7b",
+      "bytes": 22666,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullSemanticLifetimeTests.cs",
+      "sha256": "956511d221e3b4bd413af933fdc8c189652d825097f37f1c6fa96e8171dbb16d",
+      "bytes": 9100,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullSharedMemoryGuardsR188Tests.cs",
+      "sha256": "578b06dedf2e8a17766a4c75fb94276467b4f59095cda0289a609a9747152dca",
+      "bytes": 23140,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullStackMemoryAdmissionTests.cs",
+      "sha256": "4d4e0bb728e91fe8f96b4cf472487bcefb751d65affdfe3c4ca3973ed6348100",
+      "bytes": 3803,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullStaticExitMetadataTests.cs",
+      "sha256": "a84e086818c06fefff5f5532cee279a3714d068a38b85350df2eba73ea73c545",
+      "bytes": 6001,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullStringFormsR162Hooks.cs",
+      "sha256": "2b0445ef924571ee4e2e657c38919012da509318cff8f90fd1c0f3fa895163a6",
+      "bytes": 516,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullStringFormsR162Tests.cs",
+      "sha256": "39472b0d027218124a9c6a9b1b10aa18a7d8ce685dccb1e8c770272ff182d3f0",
+      "bytes": 38615,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullTranscendentalHostStateBoundaryTests.cs",
+      "sha256": "5f99ba22af53373452db78a977b4f1b6a2f9684e1c006e9a8d3a3e558a1c9bac",
+      "bytes": 15441,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullTranscendentalIntegerNativeTests.cs",
+      "sha256": "577b7dfb9d6276cf33d2e79c74fa7415bc3061256ddcc1a1ff4ddb94484b929e",
+      "bytes": 14159,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullTranscendentalNumericalR182Tests.cs",
+      "sha256": "9226fa81deae26e5600dafc60528c6ded31e30fe1e8e97246ed83ae508096124",
+      "bytes": 9057,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullTranscendentalNumericalR182Vectors.cs",
+      "sha256": "b83cd2993e2ef470d91794820805c7c5632332f36dc4bab0ec1a6a2d878fad23",
+      "bytes": 27533,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullTranscendentalPortableAcceptanceTests.cs",
+      "sha256": "8f84148b1d64f59041ea4bb327076652bc8763774526a772dd89a84c59a8c8c3",
+      "bytes": 18267,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullTranscendentalPortableBoundaryVectors.cs",
+      "sha256": "4751f464370398a13f26b1872740b90f29b9eb113b3a1b926fd9138c492b3c68",
+      "bytes": 5083,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullTranscendentalPortableLiteralTests.cs",
+      "sha256": "3f8cdb4071e39e56e370df9aa683a22e09917c84a6d42440f4900542f4109e6a",
+      "bytes": 7100,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullTranscendentalPortablePoisonTests.cs",
+      "sha256": "45afdaf9fc90b666d2c6eecb3a4248b3e733ee3916558e85857dffdd33522eda",
+      "bytes": 7289,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullTranscendentalSoftwareTests.cs",
+      "sha256": "fcf48189e26161e4dd0b1c699a89665dfe74dae1b406733f28f2b60281ccb19e",
+      "bytes": 19479,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullTranscendentalSoftwareVectors.cs",
+      "sha256": "fc1182106b8823fb586e963d3b4e538a8578f6a69dc82bbece8c51bae7948204",
+      "bytes": 20695,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullX87FrameTests.cs",
+      "sha256": "9c7acbb13ac1b6278f8bd602fc53858cbecba5115ca135883f38b02359c0cfd5",
+      "bytes": 3355,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullX87KernelCatalogTests.cs",
+      "sha256": "e45e2005a9f37ef40208cf2ee815d6444822dd3100016f3664e77190a05eef73",
+      "bytes": 20502,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullX87KernelOwnerTests.cs",
+      "sha256": "ed6fae5f221e6e84bd721d7665b2c31c6274da52b902fbca335fc372054918f3",
+      "bytes": 2416,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullX87OwnedFrameTests.cs",
+      "sha256": "f7b9e6faea04cee7ce962a9f6749ad2f41e3ff381e4f7e1bfc95279f80c82451",
+      "bytes": 3056,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullX87OwnershipTests.cs",
+      "sha256": "ad3748251b98c7b99a4c5006de0154206afa9bf14be26899b258d849fd65d86d",
+      "bytes": 14596,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullX87SignalTransportTests.cs",
+      "sha256": "73b1de74fe7bb3760d39bf6c08810ec426ab9ee6baee7ff1873d54357b5570d1",
+      "bytes": 8369,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullX87StateTests.cs",
+      "sha256": "4fb624de473e623cb283cb46a0163dfb029bd2e144b92e42075cef4373b625f2",
+      "bytes": 24007,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/FullX87WorkStorageTests.cs",
+      "sha256": "ace33bd4f4dcae83970c1a2635d8287f88c0044279b83cedfe2684f78e792c57",
+      "bytes": 3714,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/HostMemoryFileMutationTests.cs",
+      "sha256": "ce4316db1ab011ced93f88bc8edbbb6706061d5d038fbf9b2dfb0355952f85cd",
+      "bytes": 16966,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/HostMemoryFileReadTests.cs",
+      "sha256": "6392d70423195e693c0dd4d35b5abcd429ef3a12d2e8e91206405ce2fd3aa361",
+      "bytes": 4012,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/NativeLoweringInventory.cs",
+      "sha256": "5c80884b0243d3e3c84e10c18fd2136577c66d3d696c2eeaf0814bb8be458791",
+      "bytes": 8648,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/Program.cs",
+      "sha256": "fd342aa2d833c8764dca16468d4448e1315d5fb1701d5caeda6aaae34427181a",
+      "bytes": 74642,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/QemuAuthorityTests.cs",
+      "sha256": "211a3a76031eb7997cd7e57d1dc790f881be7258e56959242befbb074f3c39e9",
+      "bytes": 11894,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/QemuBlockPolicyTests.cs",
+      "sha256": "8d98a8b4dcd6096a665231c05a00de709f412d69816bb9ae325501222016934c",
+      "bytes": 11443,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/QemuLinkPreparationTests.cs",
+      "sha256": "748570c105b9b1437aa159baa2020f9e43f44ace9b3cc76860bf8b5c9b6ae29a",
+      "bytes": 9181,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/QemuOwnerScaffoldTests.cs",
+      "sha256": "09517e9d9b95ec17befbe16b221cd2f2b25d0f03f0c049d896fdfef7212c7179",
+      "bytes": 2740,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/QemuProvenanceTests.cs",
+      "sha256": "190ea53ea87bc47df65a0ec75edfd7904b730a5e72c216d8bc3f5152bcb39774",
+      "bytes": 22700,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/QemuPublicationTests.cs",
+      "sha256": "f814b0c1bd7b7ec65d3631e25f403750d48935281eb49e313c61e6ee2129ed24",
+      "bytes": 8075,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/RetainedTranslationStoreTests.cs",
+      "sha256": "facc9040ae280d1ec712489586857dff93f03f3d8dda8a8c02928e4122a15ba9",
+      "bytes": 33569,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/ContractTests/ThreadedControllerTestHooks.cs",
+      "sha256": "146ad39a9180fd41838de90e8e557e6d529b3cbf37c4c4fe1526644ad0b8e3dc",
+      "bytes": 19824,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/GuestJit/EmitterAllocationTests/EmitterAllocationTests.csproj",
+      "sha256": "eeda3f7a50583590cf14370803c8d93038e7bd903be4739bfbfe755403299583",
+      "bytes": 1051,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/Performance/Program.cs",
+      "sha256": "34f646fc1afcd44a67ef7c92b4c46e45113ab413a5c8d9fd5b0371a25d31fcb1",
+      "bytes": 13665,
+      "qualified_c179_match": true
+    },
+    {
+      "path": "blink/tests/PerformanceService/Program.cs",
+      "sha256": "daffd82dd428718fcb0564c2ab12abe5e5e88c1ab4f0d4ab3df2580ec26d9214",
+      "bytes": 15954,
+      "qualified_c179_match": true
+    }
+  ],
+  "self_reference": "This manifest and checkpoint-cleanup.json are staged explicitly in addition to the listed files; self hash is not recursive.",
+  "qualified_source_deltas": [
+    "blink/src/Managed.Emulation.FullCore/QualifiedProducer.targets",
+    "blink/src/Managed.Emulation.FullCore/README.md",
+    "blink/src/Managed.Emulation.ThreadedExecution/Jit/FullExtended80MemoryCompareEmitter.cs",
+    "blink/src/Managed.Emulation.ThreadedExecution/README.md",
+    "blink/tests/FullJit/README.md",
+    "blink/tests/GuestJit/ContractTests/FullCanonicalX87MemoryArithmeticTests.cs"
+  ],
+  "delta_reason": "Docs, producer target comment, test input-location portability and two proven line-end-whitespace-only cleanups; no runtime semantic change. Current atomic C source matches c179."
+}

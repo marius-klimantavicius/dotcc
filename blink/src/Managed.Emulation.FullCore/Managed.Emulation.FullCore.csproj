@@ -1,0 +1,61 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>14</LangVersion>
+    <OutputType>Library</OutputType>
+    <AssemblyName>TranslatedBlink</AssemblyName>
+    <RootNamespace>Managed.Emulation</RootNamespace>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <WarningsAsErrors>$(WarningsAsErrors);CS8500</WarningsAsErrors>
+    <DefineConstants>$(DefineConstants);BLINK_FULL_CORE;DOTCC_INSTANCE_FOR_HOST;BLINK_GUEST_THREAD_COPIES</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../Host/HostIoBridge.cs" Link="Bindings/HostIoBridge.cs" />
+    <Compile Include="../Host/HostGuestCopyBridge.cs" Link="Bindings/HostGuestCopyBridge.cs" />
+    <Compile Include="../Host/HostGuestX87StateBridge.cs" Link="Bindings/HostGuestX87StateBridge.cs" />
+    <Compile Include="../Host/HostGuestSnapshotBridge.cs" Link="Bindings/HostGuestSnapshotBridge.cs" />
+    <Compile Include="../Host/HostFileMappingBridge.cs" Link="Bindings/HostFileMappingBridge.cs" />
+    <Compile Include="../Host/HostNetworkBridge.cs" Link="Bindings/HostNetworkBridge.cs" />
+    <Compile Include="../Host/HostReadinessBridge.cs" Link="Bindings/HostReadinessBridge.cs" />
+    <Compile Include="../Host/HostFileMetadataBridge.cs" Link="Bindings/HostFileMetadataBridge.cs" />
+    <Compile Include="../Host/HostEnvironmentBridge.cs" Link="Bindings/HostEnvironmentBridge.cs" />
+    <Compile Include="../Host/HostIdentityBridge.cs" Link="Bindings/HostIdentityBridge.cs" />
+    <Compile Include="../Host/HostTerminationBridge.cs" Link="Bindings/HostTerminationBridge.cs" />
+    <Compile Include="../Host/HostClockBridge.cs" Link="Bindings/HostClockBridge.cs" />
+    <Compile Include="../Host/HostTerminalBridge.cs" Link="Bindings/HostTerminalBridge.cs" />
+    <Compile Include="../Host/HostPathsBridge.cs" Link="Bindings/HostPathsBridge.cs" />
+    <Compile Include="../Host/HostVariablesBridge.cs" Link="Bindings/HostVariablesBridge.cs" />
+    <Compile Include="../Host/HostCalendarBridge.cs" Link="Bindings/HostCalendarBridge.cs" />
+    <Compile Include="../Host/HostIdentityDetailsBridge.cs" Link="Bindings/HostIdentityDetailsBridge.cs" />
+    <Compile Include="../Host/HostAccessBridge.cs" Link="Bindings/HostAccessBridge.cs" />
+    <Compile Include="../Host/HostProcessPolicyBridge.cs" Link="Bindings/HostProcessPolicyBridge.cs" />
+    <Compile Include="../Host/HostSleepBridge.cs" Link="Bindings/HostSleepBridge.cs" />
+    <Compile Include="../Host/HostFileUpdatesBridge.cs" Link="Bindings/HostFileUpdatesBridge.cs" />
+    <Compile Include="../Host/HostDescriptorsBridge.cs" Link="Bindings/HostDescriptorsBridge.cs" />
+    <Compile Include="../Host/HostCapacityBridge.cs" Link="Bindings/HostCapacityBridge.cs" />
+    <Compile Include="../Host/HostSocketQueriesBridge.cs" Link="Bindings/HostSocketQueriesBridge.cs" />
+    <Compile Include="../Host/HostYieldBridge.cs" Link="Bindings/HostYieldBridge.cs" />
+    <Compile Include="../Host/HostDirectoriesBridge.cs" Link="Bindings/HostDirectoriesBridge.cs" />
+    <Compile Include="../Host/HostMessagesBridge.cs" Link="Bindings/HostMessagesBridge.cs" />
+    <Compile Include="../Host/HostFileTimesBridge.cs" Link="Bindings/HostFileTimesBridge.cs" />
+    <Compile Include="../Host/HostResourcesBridge.cs" Link="Bindings/HostResourcesBridge.cs" />
+    <Compile Include="../Host/HostSignalPolicyBridge.cs" Link="Bindings/HostSignalPolicyBridge.cs" />
+    <Compile Include="../Host/HostNamespaceBridge.cs" Link="Bindings/HostNamespaceBridge.cs" />
+    <Compile Include="../Host/HostPermissionsBridge.cs" Link="Bindings/HostPermissionsBridge.cs" />
+    <Compile Include="../Host/HostLocksBridge.cs" Link="Bindings/HostLocksBridge.cs" />
+    <Compile Include="../GuestResources/GuestResourcesBridge.cs" Link="Bindings/GuestResourcesBridge.cs" />
+    <Compile Include="../Host/HostNamespacePolicyBridge.cs" Link="Bindings/HostNamespacePolicyBridge.cs" />
+    <Compile Include="../Host/HostPipesBridge.cs" Link="Bindings/HostPipesBridge.cs" />
+    <Compile Include="../Host/HostExecutionStopBridge.cs" Link="Bindings/HostExecutionStopBridge.cs" />
+    <Compile Include="../Host/HostGuestSignalsBridge.cs" Link="Bindings/HostGuestSignalsBridge.cs" />
+    <Compile Include="../Host/HostMembarrierBridge.cs" Link="Bindings/HostMembarrierBridge.cs" />
+    <Compile Include="../Host/HostPageTableBridge.cs" Link="Bindings/HostPageTableBridge.cs" />
+    <Compile Include="../Host/HostGuestThreadsBridge.cs" Link="Bindings/HostGuestThreadsBridge.cs" />
+    <Compile Include="../Host/HostEpollBridge.cs" Link="Bindings/HostEpollBridge.cs" />
+    <ProjectReference Include="../Managed.Emulation.Host/Managed.Emulation.Host.csproj" />
+  </ItemGroup>
+  <Import Project="QualifiedProducer.targets" />
+</Project>

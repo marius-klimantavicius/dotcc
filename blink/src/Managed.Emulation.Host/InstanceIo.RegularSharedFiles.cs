@@ -16,6 +16,7 @@ public sealed partial class InstanceIo
         // Also validate read access before reusing another description's cache.
         var length = files.ReadAtLength(description.Handle);
         if (!length.Succeeded) return Fail<MemoryFilePage>(length.Error);
+        if (length.Value < 0) return Fail<MemoryFilePage>(GuestError.Io);
         bool created = false;
         if (!regularSharedFiles.TryGetValue(stat.Value.Inode, out var file))
         {
@@ -35,6 +36,11 @@ public sealed partial class InstanceIo
             }
             catch (OutOfMemoryException) { return Fail<MemoryFilePage>(GuestError.NoMemory); }
         }
+        else
+        {
+            if (file.BackingUnavailable) return Fail<MemoryFilePage>(GuestError.Io);
+            if (file.Length != length.Value) TruncateMemoryFile(file, length.Value);
+        }
         var result = AcquireMemoryFilePage(file, offset);
         if (!result.Succeeded && created) ReclaimMemoryFile(file);
         return result;
@@ -42,6 +48,9 @@ public sealed partial class InstanceIo
 
     private unsafe HostResult<int> LoadRegularSharedPage(MemoryFile file, Description reader, long offset, MemoryPage page)
     {
+        // The current caller only loads freshly allocated, unpublished pages.
+        // Keep reloads of an exposed address covered if a caller is added later.
+        using var mutation = page.Published ? BeginMemoryFileMutation(page.Address, 4096, logical: false) : default;
         int count = offset < file.Length ? (int)Math.Min(4096, file.Length - offset) : 0;
         var destination = new Span<byte>((void*)page.Address, count);
         for (int copied = 0; copied < count;)
@@ -52,6 +61,29 @@ public sealed partial class InstanceIo
             copied += read.Value;
         }
         return HostResult<int>.Success(0);
+    }
+
+    // Caller holds sync. External filesystem writers are not enrolled in this
+    // barrier; refreshing EOF is a guarded local cache update, not a coherence
+    // promise with those writers. An open reader must retain its inode identity.
+    private bool RefreshRegularSharedFile(MemoryFile file)
+    {
+        if (file.BackingUnavailable) return false;
+        if (!file.Regular || file.Reader is not { } reader) return true;
+        var stat = files.FStat(reader.Handle);
+        if (!stat.Succeeded) return false;
+        if (stat.Value.Inode != file.Inode || stat.Value.Immutable || (stat.Value.Mode & 0xf000) != 0x8000)
+        {
+            using var mutation = file.Published ? BeginMemoryFileMutation(0, 0, logical: true) : default;
+            // Never silently repoint existing leases to a replacement backing.
+            // A backend that changes an open handle's identity fails closed.
+            file.BackingUnavailable = true;
+            return false;
+        }
+        var length = files.ReadAtLength(reader.Handle);
+        if (!length.Succeeded || length.Value < 0) return false;
+        if (file.Length != length.Value) TruncateMemoryFile(file, length.Value);
+        return true;
     }
 
     // Caller holds sync throughout backend mutation and cache publication.
@@ -67,6 +99,7 @@ public sealed partial class InstanceIo
             if (!stat.Succeeded) return Fail<int>(stat.Error);
             if (regularSharedFiles.TryGetValue(stat.Value.Inode, out file))
             {
+                if (file.BackingUnavailable) file = null;
                 if ((description.StatusFlags & 1024) != 0) position = stat.Value.Length;
                 else if (offset is long at) position = at;
                 else
@@ -77,6 +110,10 @@ public sealed partial class InstanceIo
                 }
             }
         }
+        // Successful writes can extend EOF as well as change several resident
+        // pages. One conservative logical scope covers backend commit, every
+        // cache copy and length publication, including short writes or failures.
+        using var mutation = file is { Published: true } ? BeginMemoryFileMutation(0, 0, logical: true) : default;
         var result = offset is long target ? files.WriteAt(description.Handle, source, target)
             : files.Write(description.Handle, source);
         if (result.Succeeded && result.Value > 0 && file != null)
@@ -102,6 +139,7 @@ public sealed partial class InstanceIo
         foreach (var file in regularSharedFiles.Values)
             if (file.Reader is { } reader)
             {
+                using var mutation = file.Published ? BeginMemoryFileMutation(0, 0, logical: true) : default;
                 file.Reader = null;
                 ReleaseDescription(reader);
             }

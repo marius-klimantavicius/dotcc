@@ -70,12 +70,7 @@ public static partial class Blink
             if ((flags & ~supported) != 0) return IoError(95);
             if ((flags & 3) == 3) return IoError(22);
             if ((flags & (64 | 65536)) == (64 | 65536)) return IoError(22);
-            int length = 0;
-            while (length < PathLimit && path[length] != 0) ++length;
-            if (length == PathLimit) return IoError(36);
-            string name;
-            try { name = PathEncoding.GetString(new ReadOnlySpan<byte>(path, length)); }
-            catch (DecoderFallbackException) { return IoError(22); }
+            if (!ReadGuestPath(path, out string name)) return -1;
             if (name == "/proc/self/maps" && processMaps != null)
             {
                 if ((flags & 3) != 0 || (flags & (64 | 128 | 512)) != 0) return IoError(13);
@@ -135,10 +130,11 @@ public static partial class Blink
         {
             if (io == null) return IoError(19);
             if (destination == null && length != 0) return IoError(14);
-            byte[] buffer = new byte[(int)global::System.Math.Min(length, (ulong)IoChunk)];
+            using var staging = new GuestIoBuffer((int)global::System.Math.Min(length, (ulong)IoChunk));
+            byte[] buffer = staging.Bytes;
             using var wake = BeginIoOperation();
             var result = io.ReadAsync(fd, buffer, wake?.Token ?? ioCancellation).GetAwaiter().GetResult();
-            if (result.Succeeded) buffer.AsSpan(0, result.Value).CopyTo(new Span<byte>(destination, buffer.Length));
+            if (result.Succeeded) StoreGuestBytes(destination, buffer.AsSpan(0, result.Value));
             return IoResult(result, wake);
         }
         catch (Exception error) { return IoException(error); }
@@ -150,7 +146,11 @@ public static partial class Blink
             if (io == null) return IoError(19);
             if (destination == null && length != 0) return IoError(14);
             int count = (int)global::System.Math.Min(length, (ulong)IoChunk);
-            return IoResult(io.ReadAt(fd, new Span<byte>(destination, count), offset));
+            using var staging = new GuestIoBuffer(count);
+            byte[] buffer = staging.Bytes;
+            var result = io.ReadAt(fd, buffer, offset);
+            if (result.Succeeded) StoreGuestBytes(destination, buffer.AsSpan(0, result.Value));
+            return IoResult(result);
         }
         catch (Exception error) { return IoException(error); }
     }
@@ -162,7 +162,8 @@ public static partial class Blink
             if (length == null) return IoError(14);
             var result = io.ReadAtLength(fd);
             if (!result.Succeeded) return IoError((int)result.Error);
-            *length = result.Value;
+            long value = result.Value;
+            StoreGuestBytes(length, new ReadOnlySpan<byte>(&value, sizeof(long)));
             return 0;
         }
         catch (Exception error) { return IoException(error); }
@@ -174,7 +175,9 @@ public static partial class Blink
             if (io == null) return IoError(19);
             if (source == null && length != 0) return IoError(14);
             int count = (int)global::System.Math.Min(length, (ulong)IoChunk);
-            byte[] buffer = new ReadOnlySpan<byte>(source, count).ToArray();
+            using var staging = new GuestIoBuffer(count);
+            byte[] buffer = staging.Bytes;
+            SnapshotGuestBytes(source, buffer);
             using var wake = BeginIoOperation();
             return IoResult(io.WriteAsync(fd, buffer, wake?.Token ?? ioCancellation).GetAwaiter().GetResult(), wake);
         }
@@ -196,7 +199,8 @@ public static partial class Blink
                 if (vectors[i].iov_len > (ulong)long.MaxValue - total) return IoError(22);
                 total += vectors[i].iov_len;
             }
-            byte[] buffer = new byte[(int)global::System.Math.Min(total, (ulong)IoChunk)];
+            using var staging = new GuestIoBuffer((int)global::System.Math.Min(total, (ulong)IoChunk));
+            byte[] buffer = staging.Bytes;
             if (writing) CopyVectors(vectors, count, buffer, true);
             using var wake = BeginIoOperation();
             var token = wake?.Token ?? ioCancellation;
@@ -212,9 +216,8 @@ public static partial class Blink
         for (int i = 0; i < count && offset < bytes.Length; ++i)
         {
             int length = (int)global::System.Math.Min(vectors[i].iov_len, (ulong)(bytes.Length - offset));
-            var memory = new Span<byte>(vectors[i].iov_base, length);
-            if (writing) memory.CopyTo(bytes.Slice(offset, length));
-            else bytes.Slice(offset, length).CopyTo(memory);
+            if (writing) SnapshotGuestBytes(vectors[i].iov_base, bytes.Slice(offset, length));
+            else StoreGuestBytes(vectors[i].iov_base, bytes.Slice(offset, length));
             offset += length;
         }
     }

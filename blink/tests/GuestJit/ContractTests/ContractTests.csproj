@@ -3,14 +3,14 @@
     <TargetFramework>net10.0</TargetFramework><OutputType>Exe</OutputType>
     <ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks><IsAotCompatible>true</IsAotCompatible>
-    <BlinkProject Condition="'$(BlinkProject)' == ''">../../../generated/TranslatedBlink/TranslatedBlink.csproj</BlinkProject>
   </PropertyGroup>
+  <Import Project="../../../src/Managed.Emulation.ThreadedExecution/Managed.Emulation.ThreadedExecution.props" />
   <ItemGroup>
     <ProjectReference Include="$(BlinkProject)" />
-    <Compile Include="../../../src/Managed.Emulation.ThreadedExecution/Jit/JitContracts.cs" Link="JitContracts.cs" />
-    <Compile Include="../../../src/Managed.Emulation.ThreadedExecution/Jit/JitAddressPlan.cs" Link="JitAddressPlan.cs" />
-    <Compile Include="../../../src/Managed.Emulation.ThreadedExecution/Jit/JitValueEffects.cs" Link="JitValueEffects.cs" />
-    <Compile Include="../../../src/Managed.Emulation.ThreadedExecution/Jit/X64BlockEmitter.cs" Link="X64BlockEmitter.cs" />
-    <Compile Include="../../../src/Managed.Emulation.ThreadedExecution/Jit/NativeCodeCache.cs" Link="NativeCodeCache.cs" />
+    <!-- Compile the exact authored controller into this assembly so test-only
+         partial fixtures can inspect its precision/lifetime boundaries. -->
+    <Compile Include="../../../src/Managed.Emulation.ThreadedExecution/**/*.cs"
+             Exclude="../../../src/Managed.Emulation.ThreadedExecution/**/obj/**;../../../src/Managed.Emulation.ThreadedExecution/**/bin/**"
+             Link="Execution/%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
 </Project>
