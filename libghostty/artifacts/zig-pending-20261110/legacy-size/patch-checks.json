@@ -1,0 +1,38 @@
+[
+  {
+    "stage": "apply",
+    "command": [
+      "python3",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/legacy-size/application-tool/apply.py",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/legacy-size/application"
+    ],
+    "exit": 0,
+    "stdout": "patching file src/terminal/size_report.zig\n",
+    "stderr": "",
+    "source_sha256": "cc226ee8c4c6d62b2a46f9361030b69ec35dbd8cafb5348ff2e40eb51ff9f1d5"
+  },
+  {
+    "stage": "idempotent",
+    "command": [
+      "python3",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/legacy-size/application-tool/apply.py",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/legacy-size/application"
+    ],
+    "exit": 0,
+    "stdout": "already applied: 0016-concrete-size-report.patch\n",
+    "stderr": "",
+    "source_sha256": "cc226ee8c4c6d62b2a46f9361030b69ec35dbd8cafb5348ff2e40eb51ff9f1d5"
+  },
+  {
+    "stage": "unknown-preserved",
+    "command": [
+      "python3",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/legacy-size/application-tool/apply.py",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/legacy-size/application"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "Source differs from this patch baseline; preserving it: /mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/legacy-size/application/src/terminal/size_report.zig\n",
+    "source_sha256": "e79494c30c666a3f74072bb04df91aaac65a68b8fd286b6842efdecdb056d760"
+  }
+]

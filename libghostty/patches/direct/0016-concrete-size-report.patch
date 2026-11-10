@@ -1,0 +1,39 @@
+--- a/src/terminal/size_report.zig
++++ b/src/terminal/size_report.zig
+@@ -1,5 +1,6 @@
+ const std = @import("std");
+ const lib = @import("lib.zig");
++const terminal_options = @import("terminal_options");
+ const CellCountInt = @import("size.zig").CellCountInt;
+ 
+ /// Output formats for terminal size reports written to the PTY.
+@@ -17,7 +18,7 @@
+ });
+ 
+ /// Runtime size values used to encode terminal size reports.
+-pub const Size = lib.Struct(lib.target, struct {
++pub const Size = if (terminal_options.c_abi) extern struct {
+     /// Terminal row count in cells.
+     rows: CellCountInt,
+ 
+@@ -29,7 +30,19 @@
+ 
+     /// Height of a single terminal cell in pixels.
+     cell_height: u32,
+-});
++} else struct {
++    /// Terminal row count in cells.
++    rows: CellCountInt,
++
++    /// Terminal column count in cells.
++    columns: CellCountInt,
++
++    /// Width of a single terminal cell in pixels.
++    cell_width: u32,
++
++    /// Height of a single terminal cell in pixels.
++    cell_height: u32,
++};
+ 
+ fn widthPixels(s: Size) u64 {
+     return @as(u64, s.columns) * @as(u64, s.cell_width);
