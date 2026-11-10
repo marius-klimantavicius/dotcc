@@ -1,0 +1,9 @@
+{
+  "product": "TranslatedCuiGallery",
+  "class": "Gallery",
+  "namespace": "Managed.Cui.Gallery",
+  "sources": ["examples/gallery_ui.c", "examples/gallery_more.c"],
+  "headers": ["examples/gallery_ui.h", "examples/gallery_more.h"],
+  "pages": 27,
+  "scope": "Original upstream gallery workload; separate companion referencing canonical core types/functions/runtime"
+}

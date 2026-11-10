@@ -10,7 +10,7 @@ from campaigns.recipes import flags, helper, json_file, lines, link_flags
 
 def run_suite(ctx, suite):
     runners = helper(ctx.root / "scripts/suites.py")
-    return (runners.consumer if suite.name == "consumer" else runners.abi if suite.name == "abi" else runners.audit if suite.name == "audit"
+    return (runners.consumer if suite.name == "consumer" else runners.abi if suite.name == "abi" else runners.gallery if suite.name == "gallery" else runners.audit if suite.name == "audit"
             else runners.qualification)(ctx, suite)
 
 
@@ -43,8 +43,9 @@ def prepare(ctx):
     return Translation(units,
                        ["-std=c99", "-U_WIN32", "-U__APPLE__", "-DGLFW_INCLUDE_NONE",
                         *flags(json_file(ctx.root / "config/profile.json")["defines"], [ctx.root / "config/include", source / "include"])],
-                       [*link_flags("Cui", "Managed.Cui"), "--export-enum", "CUI_*"],
-                       objects=True, configure=configure, finish=finish)
+                       [*link_flags("Cui", "Managed.Cui"), "--export-enum", "CUI_*", "--export-managed-symbols"],
+                       objects=True, configure=configure, finish=finish,
+                       companions=helper(ctx.root / "scripts/gallery.py").companions)
 
 
 def configure(ctx, project, form):
@@ -108,13 +109,14 @@ recipe = Recipe(
     sources, prepare,
     consumer=Consumer(property="CuiProject", arguments=("--smoke", "--capture", "{work}/{label}.rgba"), build_arguments=("-m:1",)),
     suites=(Suite("consumer", ("consumer",), run=run_suite, matrix=True, scope="translated OpenGL widgets, readback and desktop lifecycle; native pixel comparison when selected"),
+            Suite("gallery", (), run=run_suite, matrix=True, scope="all 27 original upstream gallery pages and desktop interactions", timeout=14400),
             Suite("native", (), run=run_suite, scope="matching native GLFW selected deterministic upstream suites", timeout=3600),
             Suite("abi", (), run=run_suite, matrix=True, scope="GLFW callbacks, GL execution, platform ABI and guarded adaptations", timeout=3600),
             Suite("upstream", (), run=run_suite, matrix=True, scope="original upstream C suites, bidi and trusted Arabic shaping oracle", timeout=7200),
             Suite("render", (), run=run_suite, matrix=True, scope="five image formats and exact native/software pixels", timeout=7200),
             Suite("lifecycle", (), run=run_suite, matrix=True, scope="offscreen allocation failures and cleanup cycles", timeout=7200),
             Suite("audit", (), run=run_suite, matrix=True, scope="canonical source/reference and native dependency closure")),
-    default_suites=("consumer",), verify_suites=("native", "consumer", "abi", "upstream", "render", "lifecycle", "audit"),
+    default_suites=("consumer",), verify_suites=("native", "consumer", "gallery", "abi", "upstream", "render", "lifecycle", "audit"),
     validate_options=validate_options,
     work_root=Path(os.environ["CUI_WORK_ROOT"]) if "CUI_WORK_ROOT" in os.environ else None,
 )

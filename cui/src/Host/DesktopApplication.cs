@@ -14,22 +14,26 @@ public sealed unsafe class DesktopApplication : IDisposable
     private readonly int owner = Environment.CurrentManagedThreadId;
 
     public DesktopApplication(string title = "CUI", int width = 800, int height = 600,
-        bool hidden = false, bool continuous = false)
+        bool hidden = false, bool continuous = false, int minWidth = 0, int minHeight = 0,
+        cui_theme_mode theme = cui_theme_mode.CUI_THEME_DARK,
+        cui_accent accent = cui_accent.CUI_ACCENT_BLUE)
     {
         ArgumentNullException.ThrowIfNull(title);
         if (title.Contains('\0')) throw new ArgumentException("A window title cannot contain NUL.", nameof(title));
         if (width <= 0) throw new ArgumentOutOfRangeException(nameof(width));
         if (height <= 0) throw new ArgumentOutOfRangeException(nameof(height));
+        if (minWidth < 0) throw new ArgumentOutOfRangeException(nameof(minWidth));
+        if (minHeight < 0) throw new ArgumentOutOfRangeException(nameof(minHeight));
         byte[] utf8 = Encoding.UTF8.GetBytes(title + '\0');
         fixed (byte* text = utf8)
         {
             var description = new cui_app_desc
             {
                 title = text, width = width, height = height,
+                min_width = minWidth, min_height = minHeight,
                 hidden = hidden, continuous = continuous,
                 renderer = cui_renderer_kind.CUI_RENDERER_OPENGL,
-                theme = cui_theme_mode.CUI_THEME_DARK,
-                accent = cui_accent.CUI_ACCENT_BLUE
+                theme = theme, accent = accent
             };
             app = cui_app_create(&description);
         }
@@ -48,11 +52,14 @@ public sealed unsafe class DesktopApplication : IDisposable
     public bool NextFrame() { Check(); return cui_app_frame(app) != 0; }
     public void Quit() { Check(); cui_app_quit(app); }
 
+    /// <summary>Finishes layout and presents the current frame on the owner thread.</summary>
+    public void Render() { Check(); cui__app_render(app); }
+
     /// <summary>Finishes the current frame and reads actual OpenGL RGBA pixels.</summary>
     public byte[] CapturePixels(out int width, out int height)
     {
         Check();
-        cui__app_render(app);
+        Render();
         var draw = cui_get_draw_data(cui_app_ui(app));
         width = draw->width_px;
         height = draw->height_px;

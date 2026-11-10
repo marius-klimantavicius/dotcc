@@ -1,0 +1,494 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-10",
+  "scope": "Upstream gallery follow-up; historical core VALIDATION.json is not rewritten or requalified under these new output hashes",
+  "acceptance": "Linux gallery follow-up passed; required actual Windows x64 execution remains unrun",
+  "source_revision": "629b6fcb991d71527f2d67b25c51429c3dcdb498",
+  "gallery_sources_sha256": {
+    "examples/gallery_ui.c": "012dabfff1234ac8cb497901779f4d329589d9bda4e09e729db35697c382b250",
+    "examples/gallery_more.c": "1c083dbdef6fa97cde088c29ee0547bee2de32cb1f0697f35f2cee0259a63f02",
+    "examples/gallery_ui.h": "82b030ab36290bad74e68e5d9e34147298a580de2911cf691554c1be1d309bf7",
+    "examples/gallery_more.h": "04225c16a2712518b6bf517a0880b0caffc337b7b16f23b8a647c9c32792de0c"
+  },
+  "core_units": 58,
+  "gallery_units": 2,
+  "gallery_source_adaptations": [],
+  "registered_pages": [
+    {
+      "index": 0,
+      "name": "Overview"
+    },
+    {
+      "index": 1,
+      "name": "Buttons"
+    },
+    {
+      "index": 2,
+      "name": "Inputs"
+    },
+    {
+      "index": 3,
+      "name": "Selection"
+    },
+    {
+      "index": 4,
+      "name": "Navigation"
+    },
+    {
+      "index": 5,
+      "name": "Overlays"
+    },
+    {
+      "index": 6,
+      "name": "Feedback"
+    },
+    {
+      "index": 7,
+      "name": "Data display"
+    },
+    {
+      "index": 8,
+      "name": "Charts"
+    },
+    {
+      "index": 9,
+      "name": "Actions"
+    },
+    {
+      "index": 10,
+      "name": "Smart inputs"
+    },
+    {
+      "index": 11,
+      "name": "Pickers"
+    },
+    {
+      "index": 12,
+      "name": "Capture"
+    },
+    {
+      "index": 13,
+      "name": "Disclosure"
+    },
+    {
+      "index": 14,
+      "name": "Reader"
+    },
+    {
+      "index": 15,
+      "name": "Data grid"
+    },
+    {
+      "index": 16,
+      "name": "Code"
+    },
+    {
+      "index": 17,
+      "name": "Social and media"
+    },
+    {
+      "index": 18,
+      "name": "Planning"
+    },
+    {
+      "index": 19,
+      "name": "More charts"
+    },
+    {
+      "index": 20,
+      "name": "Motion"
+    },
+    {
+      "index": 21,
+      "name": "AI"
+    },
+    {
+      "index": 22,
+      "name": "Audio"
+    },
+    {
+      "index": 23,
+      "name": "Files"
+    },
+    {
+      "index": 24,
+      "name": "Developer tools"
+    },
+    {
+      "index": 25,
+      "name": "More developer tools"
+    },
+    {
+      "index": 26,
+      "name": "Instruments"
+    }
+  ],
+  "architecture": "Separate core-referencing managed gallery companion; no duplicated CUI engine/runtime or native CUI/GLFW product dependency",
+  "translation": {
+    "run_id": "20261110-185905-1c3aa0d5",
+    "receipt": "artifacts/campaign/20261110-185905-1c3aa0d5/receipt.json",
+    "status": "passed",
+    "tool_hashes": {
+      "DotCC": {
+        "DotCC.Lib.dll": "0c2064eb0a14ef8009a2caf1a4c01c74f6d8f74607548985925e148ddea9d193",
+        "DotCC.Lib.pdb": "bf934477105dfcb8b078a858b33e10b7b7256d82ae3125473a4cd473d30bc2f5",
+        "LALR.CC.dll": "417a28fda54e2b794267075f7766c6f649cf174ceedb916c6ebd485fe4d09b6c",
+        "System.CommandLine.dll": "0b7790b44a438c6c2f4714ec9d408e02c5ed98145d7c89ecd9a9d11acf0932cb",
+        "cs/System.CommandLine.resources.dll": "15981e39eb96e3f1ccea6745b53ce358c85b6b30659af54cdfdfa2adf0536c20",
+        "de/System.CommandLine.resources.dll": "5cdcd1ce61a638cebe1fbd2ef4c3fc83d046670a4f6b43aeadd82d032b1af03a",
+        "dotcc": "aa88891b040209eac118029bb96c73a46a431eee12886cbdb4615cda1dc2c867",
+        "dotcc.deps.json": "78871af73af0452474943d5f9a9ca6acac30d1920a5c680457a9dec73ff5834c",
+        "dotcc.dll": "28187e85203ad84c09efe48cb001d1fdd43fc4ad3e3dfff377227702a71e6322",
+        "dotcc.pdb": "23a911eab61af51bf1f45b7a39318263c3c58983e052a59bb8d9df21de1e9b7a",
+        "dotcc.runtimeconfig.json": "5acdb16a460772054343c970894d62b803d3afa33dc719a66317f94d58119b1b",
+        "es/System.CommandLine.resources.dll": "1931512c78045dc88f68bc71f9fe7dcf1e3a679ace15b42ddbfc6235978ebc72",
+        "fr/System.CommandLine.resources.dll": "d161253276bd0079e6edd24c689b7e8c36c115c787af0bd528cd86422f94b32d",
+        "it/System.CommandLine.resources.dll": "a9a0ab1041642a0c1a3b7bef39151e2ef393a79a3e5cccd538bd7639bb11f2f9",
+        "ja/System.CommandLine.resources.dll": "ea81cd7153ca5e2ebb6419a76510c241a9d87c8ddba7b850d56bed4d7240e668",
+        "ko/System.CommandLine.resources.dll": "cea119f65a5114c40c32ed06f77f3454d7971ae14397b5e0500005ec136375ad",
+        "pl/System.CommandLine.resources.dll": "d1b332ac112bd517fcd4ac8f97353fb075b1fd40dacf516101c505a303988f6c",
+        "pt-BR/System.CommandLine.resources.dll": "15dfe1a5101b90c0cc3c8d8ed9a483786788a2dbeb0e0df75c70d9df938e5f8e",
+        "ru/System.CommandLine.resources.dll": "3a7bf2fb8c47b2ee365981260324715fc5abb810f92dde4e2e7be094f5734340",
+        "tr/System.CommandLine.resources.dll": "8ad9d45e731598c6fc67ec85a33e90920595b7ab25a88170a7a3a74a7cd9e9a6",
+        "zh-Hans/System.CommandLine.resources.dll": "70ccd79ef38beb16dfd5736a68e60d5812dcc5ab531f63e6c5e33e8a88cae253",
+        "zh-Hant/System.CommandLine.resources.dll": "5141ce74409ee7fb9aa343813f24ebfb7a20871b03df81891447d929d70ac008"
+      },
+      "DotCC.PostProcess": {
+        "Microsoft.CodeAnalysis.CSharp.dll": "c2012a0674c8306930ba21476d16c51a795cbf4970d7e34cf56f0f84f63f2a94",
+        "Microsoft.CodeAnalysis.dll": "575dd14082d5e92138b6e51b8c1642919ba634dc8011d883ee971382d55162f7",
+        "cs/Microsoft.CodeAnalysis.CSharp.resources.dll": "9413cafc573f2c3c70ed2656ccb4c11a7b72556655a2aa0a137b068efe1f5f50",
+        "cs/Microsoft.CodeAnalysis.resources.dll": "e47097c575a60c720a38a611327f341bf8f427787157103134654ff9d917b93e",
+        "de/Microsoft.CodeAnalysis.CSharp.resources.dll": "b39bbb8fd6a50d85a7fac75feb48595e13eca8fb38d3bdb5d3a64c3b410f52a1",
+        "de/Microsoft.CodeAnalysis.resources.dll": "4b7a72d69794b1714081628058de0b9138aec514c647f63f6c5706acc925e1ca",
+        "dotcc-postprocess": "b3333715f9ae224322386613094d0f917d0c19e888cf383e6060916e34e5521c",
+        "dotcc-postprocess.deps.json": "7b72b07bf5b04bdbb2a7c45d168e385df7d7ccd924b839ce53777d4b59ee8bcd",
+        "dotcc-postprocess.dll": "c83049e9111ba1d32a4d124d362df1b904a860d5b237a0ef1eb341f1f28295b4",
+        "dotcc-postprocess.pdb": "9c82f6f6ad2df3d26b74e8fdd6751b595c70d3923061280b94a7be5dfda040af",
+        "dotcc-postprocess.runtimeconfig.json": "9950d4583cfc9a106857c0d5b8a75b53e8774852b57b80bc3823a74d44a4d87f",
+        "es/Microsoft.CodeAnalysis.CSharp.resources.dll": "30a93c7e49b6a77fb1fff2a021d22a117e9b0987b855d9a4929da2857be878f8",
+        "es/Microsoft.CodeAnalysis.resources.dll": "73bab8b8eb76600a29d50c10abc3dc173919b6968e2c454c68ea971d1603873f",
+        "fr/Microsoft.CodeAnalysis.CSharp.resources.dll": "a6c2d2aabb6de3676ce2b31d47362adbc919c42900ffdc82ca20ac0cdd5373d5",
+        "fr/Microsoft.CodeAnalysis.resources.dll": "6c2fc7f42de1a86cbb4b4e4acb21460f26f47545611769233eaa7aae2e7addb7",
+        "it/Microsoft.CodeAnalysis.CSharp.resources.dll": "9f4c8e00101154d99f1eae589e626016da367e7f3421f0c1fe5342f68bc83481",
+        "it/Microsoft.CodeAnalysis.resources.dll": "b7ec4de669c873506c8ef8709131efdf44562426d7abf6a5414918da6feb1949",
+        "ja/Microsoft.CodeAnalysis.CSharp.resources.dll": "243fd72ed6a3b7dccaff885e95c512e4ee1f70403ea8961a51fd77444b532ddb",
+        "ja/Microsoft.CodeAnalysis.resources.dll": "0a02b8f9ad53901f2ef3b1f5764802ae822db1cd5b49ad669a2b8dd8a655a6d5",
+        "ko/Microsoft.CodeAnalysis.CSharp.resources.dll": "61be04a3cb54977754c78b22ebede7e945325301a56d1a10b23a1d04146fb846",
+        "ko/Microsoft.CodeAnalysis.resources.dll": "c767ecdc184a461a99038a6b090db0a68bb0f9972112234bf52d3d97a3542091",
+        "pl/Microsoft.CodeAnalysis.CSharp.resources.dll": "76a88d7893570a5f9446dac6a7a6ee33d6a7666ccb47f27d363bbe13d24881ce",
+        "pl/Microsoft.CodeAnalysis.resources.dll": "8d9301ac2878fa8fbf9265b320f6c46cbec503aa9e3c7ad9c9ffa0b7410ba067",
+        "pt-BR/Microsoft.CodeAnalysis.CSharp.resources.dll": "34c09aeb034678f6c65b7a985fc6949267e8abde180082455dd7a8d20587f77f",
+        "pt-BR/Microsoft.CodeAnalysis.resources.dll": "7e5d9dba2b2931c39c4a59dce422e2c9bae2be1dddc5adea659abe98598e6b05",
+        "ru/Microsoft.CodeAnalysis.CSharp.resources.dll": "81fb2131b25ed77575263b335b0cd123dc34444f6f56e5343eb341b0bfcb99f8",
+        "ru/Microsoft.CodeAnalysis.resources.dll": "6924f2ae0ec897bb7310ff01173d3610978de7654a9cc3e564a9b60fef87b5f2",
+        "tr/Microsoft.CodeAnalysis.CSharp.resources.dll": "0a5e480f7c4d8d325ae0626759c40c90303828cef5c4901ddcad3cf1798f09cc",
+        "tr/Microsoft.CodeAnalysis.resources.dll": "694a81904d53318e4ee57a8a103fe0a3d0ecf4f1f33ce7c64fb74bdf35e6a050",
+        "zh-Hans/Microsoft.CodeAnalysis.CSharp.resources.dll": "97fc6af291189b657049a358683e726496d8263f4043ff0dd61769aea14ef1bd",
+        "zh-Hans/Microsoft.CodeAnalysis.resources.dll": "9624311ea3587b371dcad16fb2c20b0f2d682f26cebeab43cec2f9f7efc19245",
+        "zh-Hant/Microsoft.CodeAnalysis.CSharp.resources.dll": "553cddfd1172c2438422202a936bc14293fd0abc3cbf6b1c433f5cbe7ddad73d",
+        "zh-Hant/Microsoft.CodeAnalysis.resources.dll": "6b9ce2c3d1e6bedb97f78fc9fffc4acddbdd5c6cb23a6befd156cc43906ecc31"
+      }
+    },
+    "all_four_final_project_builds": "passed",
+    "managed_node_budget": 1,
+    "emission_jobs": 2
+  },
+  "solution_build": "passed with external artifacts and -m:1",
+  "sample": {
+    "variants": [
+      {
+        "form": "raw",
+        "mode": "jit",
+        "listed_pages": 27,
+        "rendered_pages": 27,
+        "gallery_frames": 108,
+        "gallery_bytes": 4067200,
+        "legacy_bytes": 1228800,
+        "legacy_maximum_channel_error": 0,
+        "legacy_sha256": "7507d356db22f0bc33490ca36224dde236d63a92131205801dfb7b807f796879"
+      },
+      {
+        "form": "raw",
+        "mode": "aot",
+        "listed_pages": 27,
+        "rendered_pages": 27,
+        "gallery_frames": 108,
+        "gallery_bytes": 4067200,
+        "legacy_bytes": 1228800,
+        "legacy_maximum_channel_error": 0,
+        "legacy_sha256": "7507d356db22f0bc33490ca36224dde236d63a92131205801dfb7b807f796879"
+      },
+      {
+        "form": "processed",
+        "mode": "jit",
+        "listed_pages": 27,
+        "rendered_pages": 27,
+        "gallery_frames": 108,
+        "gallery_bytes": 4067200,
+        "legacy_bytes": 1228800,
+        "legacy_maximum_channel_error": 0,
+        "legacy_sha256": "7507d356db22f0bc33490ca36224dde236d63a92131205801dfb7b807f796879"
+      },
+      {
+        "form": "processed",
+        "mode": "aot",
+        "listed_pages": 27,
+        "rendered_pages": 27,
+        "gallery_frames": 108,
+        "gallery_bytes": 4067200,
+        "legacy_bytes": 1228800,
+        "legacy_maximum_channel_error": 0,
+        "legacy_sha256": "7507d356db22f0bc33490ca36224dde236d63a92131205801dfb7b807f796879"
+      }
+    ],
+    "windows": "unrun",
+    "consumer_audit_run": "20261110-190331-744d3c13",
+    "display": {
+      "kind": "owned Xvfb",
+      "cleanup": "terminated and reaped",
+      "pid": 681814,
+      "display": ":1",
+      "exitCode": 0
+    },
+    "status": "passed"
+  },
+  "gallery_matrix": [
+    {
+      "form": "raw",
+      "mode": "jit",
+      "pages": 27,
+      "os_sidebar_selections": 27,
+      "recorded_actions": 53,
+      "assertions": 1069,
+      "maximum_main_rgba_channel_error": 0,
+      "channels_above_tolerance": 0,
+      "cleanup": "UI allocation freed once per lifecycle, GLFW context/display released, reinitialized"
+    },
+    {
+      "form": "raw",
+      "mode": "aot",
+      "pages": 27,
+      "os_sidebar_selections": 27,
+      "recorded_actions": 53,
+      "assertions": 1071,
+      "maximum_main_rgba_channel_error": 0,
+      "channels_above_tolerance": 0,
+      "cleanup": "UI allocation freed once per lifecycle, GLFW context/display released, reinitialized"
+    },
+    {
+      "form": "processed",
+      "mode": "jit",
+      "pages": 27,
+      "os_sidebar_selections": 27,
+      "recorded_actions": 53,
+      "assertions": 1071,
+      "maximum_main_rgba_channel_error": 0,
+      "channels_above_tolerance": 0,
+      "cleanup": "UI allocation freed once per lifecycle, GLFW context/display released, reinitialized"
+    },
+    {
+      "form": "processed",
+      "mode": "aot",
+      "pages": 27,
+      "os_sidebar_selections": 27,
+      "recorded_actions": 53,
+      "assertions": 1070,
+      "maximum_main_rgba_channel_error": 0,
+      "channels_above_tolerance": 0,
+      "cleanup": "UI allocation freed once per lifecycle, GLFW context/display released, reinitialized"
+    }
+  ],
+  "gallery_comparison": {
+    "main_content_x_start": 260,
+    "channels_per_page": 3214400,
+    "tolerance": 1,
+    "dynamic_content_regions_excluded": false,
+    "clock": "Only deterministic capture fixes time=10 and dt=1/60; OS workflows use normal clock",
+    "sidebar": "All27 selections/scroll exercised through OS input; moving selection spring outside raster comparison"
+  },
+  "native_gallery": {
+    "pages": 27,
+    "input_status": "passed",
+    "display_cleanup": "terminated and reaped",
+    "input_assertions": 1192
+  },
+  "dependency_audit": "Evaluated core/gallery/sample references stay campaign-local, gallery references matching core form, no native CUI/GLFW imports; copied GLFW closure present",
+  "regressions": {
+    "managed_symbol_unit_tests": 4,
+    "affected_compiler_execution_tests": 20,
+    "additional_import_split_namespace_tests": 8,
+    "printf_unit_tests": 94,
+    "printf_functional_native_tests": 16,
+    "shared_framework_targeted_tests": 24
+  },
+  "reproduction": {
+    "source_base_commit": "f1563617cfcc96e999e9e2144d37ef1cdb6c0aa9",
+    "snapshot": "git archive of committed compiler/runtime/framework plus explicitly hashed authored CUI overlay; unrelated dirty changes excluded",
+    "translation_run": "20261110-185952-414f4daa",
+    "fresh_tool_builds": true,
+    "all58_plus2_regenerated": true,
+    "all_four_sample_variants": [
+      {
+        "form": "raw",
+        "mode": "jit",
+        "pages": 27,
+        "frames": 108,
+        "status": "passed"
+      },
+      {
+        "form": "raw",
+        "mode": "aot",
+        "pages": 27,
+        "frames": 108,
+        "status": "passed"
+      },
+      {
+        "form": "processed",
+        "mode": "jit",
+        "pages": 27,
+        "frames": 108,
+        "status": "passed"
+      },
+      {
+        "form": "processed",
+        "mode": "aot",
+        "pages": 27,
+        "frames": 108,
+        "status": "passed"
+      }
+    ],
+    "consumer_audit_run": "20261110-190421-01e13d71",
+    "display_cleanup": "terminated and reaped",
+    "relocated_generated_source_byte_identity_claimed": false,
+    "authored_build_input_sample_test_sources_match_delivery": true,
+    "authored_build_sources_manifest_sha256": "d499f558c2a6a52048f82cb3d91e387340773f924a98ea941c74cc3cb6af3d08"
+  },
+  "observed_repairs": [
+    {
+      "id": "GALLERY-01",
+      "problem": "Gallery requires canonical core aggregate/callback/runtime identities across separate assemblies",
+      "repair": "Reviewed managed symbol import/export capability with incompatible layout/runtime rejection and separate-assembly execution regression"
+    },
+    {
+      "id": "GALLERY-02",
+      "problem": "Virtual-list for initializer comma expression captured addressed locals in IIFE, CS1686",
+      "repair": "One-time initializer statement storage, direct/object order/scope/continue/post execution regressions"
+    },
+    {
+      "id": "GALLERY-03",
+      "problem": "Feedback meter %g used BCL roundtrip precision, native18.4 vs managed18.399999618530273",
+      "repair": "C default6 significant digits and zero precision1; reduced native differential and fresh full regeneration"
+    }
+  ],
+  "harness_findings": "Retained native-proven pointer/scroll/modal timing failures and initial dark-to-light harness transition in external history; final assertions/tolerance unchanged",
+  "windows": "Actual Windows runtime execution unrun; no cross-build or Wine pass claimed",
+  "deferred": "Native Wayland and direct CUI Win32/X11 backends remain outside scope",
+  "products": {
+    "TranslatedCui": {
+      "owned_files": 29,
+      "sha256_of_sorted_path_hash_json": "1001553c18c1eb6b9b3158579287a75e18ba4746dcedffac2a287514d462e4ee",
+      "source_sha256": {
+        "Cui.00000.cs": "0178f46ee8e8583ac024e666011fb7b173313c19258ea1c1c6e7257fd2d3f9a3",
+        "Cui.00001.cs": "a126d888bf08aaa9e5c90829e4e815a79fbd8693a1d2f40582e79b6960080988",
+        "Cui.00002.cs": "2c9fce89e0844cb67c94ba91d094a4a10a55a5398a7e73b74dfcd9d808deccfc",
+        "Cui.00003.cs": "961e2b6cdc1d64aed9de5f5b9af156ff70f2a76a8847574f8e4deba6a59eec4d",
+        "Cui.00004.cs": "268f2ff2fe8d7ad0d80a4752f71080f77527cf605cbe503a0b9839b923090fcd",
+        "Cui.00005.cs": "2c3716d32ea47bcce24082b1601564d896ec6c59c8a0befee84cf4f7b3438a29",
+        "Cui.00006.cs": "e4ebc5174f68aa675a83c1bf593668c659334c338dba42c447246e624cfa8035",
+        "Cui.00007.cs": "848df4fa120054fdc553cbe8efd9622de039cbc7e6bd6b49dcbbe0ba05bfac8b",
+        "Cui.00008.cs": "aaf325afbb366c9da6e63f4111e633e8ce2d47b5025c6391a3549c77d3aaa9da",
+        "Cui.00009.cs": "1516d2cad4a4fc8cd106b56cbafd7434d354c618c6f5399854cddeffce7f23b4",
+        "Cui.00010.cs": "c07349d0433bbad0fdda8b0b8ff3d296db5cca60c6eb2d19c39941ac5e249403",
+        "Cui.00011.cs": "66f65dc409203511312b69262625e6028dc50e072ba5df05dbff8bf0b685e0d4",
+        "Cui.00012.cs": "809abddb065f28aa1d078f2eb0c775f20f485f1caabee9ea4045966cd5f2cbf6",
+        "Cui.00013.cs": "f8e4b2c6d10d58c181f312b34b7ac3aa45f80ae33deae93838ee1ce77ef74ba8",
+        "Cui.00014.cs": "d17da2566e6ebb5508d26edaf6ab787cd62e486701c34904d68bfa962f3abb0b",
+        "Cui.00015.cs": "f7891fb503620a7064b430b77d8f65916618c206498621546ae4deaad21e6fba",
+        "Cui.00016.cs": "310c1ab2c12cb4613d9b33c95489690594bc8dc46aefeed3b236d419e7526482",
+        "Cui.00017.cs": "801ecac4f7e4a2f76d044d03a4e9d23f359e2e58fa21f6e17df8a295428f40b3",
+        "Cui.00018.cs": "c5e1497c4c323e854b2363147473b280ae49ca257b68f7ad0852efaa44108bba",
+        "Cui.cs": "14aef1947a15286af1f69245f21d54608c1d45ac5a4301ece8dd143a71086047",
+        "Dotcc.ManagedSymbols.cs": "bf92c31e16e35734c76777eb833347204fe6411a184d910291fee9454de8ad57",
+        "TranslatedCui.csproj": "e34bcdbaa83375a31ca4088b524ca88fe939a812e715673691da6de9d063c6c9"
+      }
+    },
+    "TranslatedCui.Raw": {
+      "owned_files": 29,
+      "sha256_of_sorted_path_hash_json": "328c1ac1827ad64dded26d2d400fe74583c83cdd7b2c0233a1d91069c4589d5b",
+      "source_sha256": {
+        "Cui.00000.cs": "9271b0fb70e575d460cb3768590c939c712eb4c8d04dba11ed0f7becc7dfc1d4",
+        "Cui.00001.cs": "393438d54ce8b1a75ed11f703cd520845fc5043851eee1550812b08555aac349",
+        "Cui.00002.cs": "7884550e1b24a39f9ea792781ca620fb1821e97b9e443f21984a2ff71beafbb2",
+        "Cui.00003.cs": "97757536e0c17f5478779357912c0489995414efea459a52fce0565299cb480a",
+        "Cui.00004.cs": "f86d27caaf43edb940ad410266a9f815790dcd2306ead20efdd04a21ee1de350",
+        "Cui.00005.cs": "2ac550c0dc19d69368233cf548505e511c0bbf4d1c4240c2197ab8cecaaf2b87",
+        "Cui.00006.cs": "4d29cbc120b6fafe9be2e817354c63acbaa4596a238dce2e6715def40dfb4595",
+        "Cui.00007.cs": "76b9546b2c222b322279c2b4bf856a33fbdbceb223a30090c16d4b355db012f9",
+        "Cui.00008.cs": "de00d7f0bed1aeb4edac5a47e9d249ffddb803c94c505f97298219687b238fb5",
+        "Cui.00009.cs": "e759e0156695588cb7921b603171ee8ee0f2f5cc352b301fcf91a1af55f7f864",
+        "Cui.00010.cs": "da460e9775a62718fa392762001ac48a22b587af521fcd132afec5084995249e",
+        "Cui.00011.cs": "12510c9f4de90f6726ed2004fd45ed1033c7f8c0b418e8d3fe29caf529b5f324",
+        "Cui.00012.cs": "8135fc6a431264b3ff0f5690f9b038e3d1c38fbfea4a750535eab4ad7e8135da",
+        "Cui.00013.cs": "b197e33956512dd350bb225fd816b3801326992a83d1c7df04d61cfa618257b2",
+        "Cui.00014.cs": "4344e97e09715c0b781838685177a740e1a6f0170e64407804c9b59b1cdc0b07",
+        "Cui.00015.cs": "4163f6bf8291b7de982b238d99b4f08e3ce5e8da6ae077cbb2b50274d5a848ec",
+        "Cui.00016.cs": "74d45c9221405319d1172924390a740cb2983d60e392633cb9c10e6e877b76ec",
+        "Cui.00017.cs": "8c393a59a14bb3e40c4875faec26a796a5c3d32561b5e58fe424f92b301dd41a",
+        "Cui.00018.cs": "26c3c181aa40f1d595e16e378dd1820fa5a825922d74f6ef4d005b9d56aaa173",
+        "Cui.cs": "14aef1947a15286af1f69245f21d54608c1d45ac5a4301ece8dd143a71086047",
+        "Dotcc.ManagedSymbols.cs": "bf92c31e16e35734c76777eb833347204fe6411a184d910291fee9454de8ad57",
+        "TranslatedCui.csproj": "deee9bc0887a8134c75edee4f2c1684e8f9228eef960c06c43983fd681fad873"
+      }
+    },
+    "TranslatedCuiGallery": {
+      "owned_files": 12,
+      "sha256_of_sorted_path_hash_json": "78c4a7f85f476c1f08e837b7de4cda178c5c8686df326303604d2d57b745a3cb",
+      "source_sha256": {
+        "Gallery.00000.cs": "9a64c56a74b8f632a3cf07e82e68fe6bb7bb99de3fd9bedfd61c7dfc0f47c3b3",
+        "Gallery.00001.cs": "2b32e1a578e6ad3bd6d2ce01bf4371b834b03bedbc01b306f3338e8d24da9664",
+        "Gallery.cs": "a7528542fb71e1bc2beb5e32e0d909ceee8be1997c679b24e06b46d0e1908d96",
+        "TranslatedCuiGallery.csproj": "8aee789e873b77c8a26b343055b6f22c0ce2a0a22a57ecd897a4aefb09409f12"
+      }
+    },
+    "TranslatedCuiGallery.Raw": {
+      "owned_files": 12,
+      "sha256_of_sorted_path_hash_json": "4f0c7d3a5d7a521a0883f6a2e137d41e0ed698024ee0c76baf874e122276fe21",
+      "source_sha256": {
+        "Gallery.00000.cs": "80fe4a7a0f0cf5c62d7d60dbf62a6234f7bb9a7ab6f06ab3d0450c6942f47b5a",
+        "Gallery.00001.cs": "2dd1411524c84a38bf31666f7fdf0050a683afecfb9286cb09fb2a409ac22678",
+        "Gallery.cs": "a7528542fb71e1bc2beb5e32e0d909ceee8be1997c679b24e06b46d0e1908d96",
+        "TranslatedCuiGallery.csproj": "8aee789e873b77c8a26b343055b6f22c0ce2a0a22a57ecd897a4aefb09409f12"
+      }
+    }
+  },
+  "default_interactive_launch": {
+    "status": "passed",
+    "arguments": [],
+    "title": "CUI Gallery",
+    "width": 1240,
+    "height": 820,
+    "os_close_exit": 0,
+    "display": {
+      "kind": "owned Xvfb",
+      "cleanup": "terminated and reaped",
+      "pid": 686804,
+      "display": ":4",
+      "exitCode": 0
+    }
+  },
+  "recipe_gallery_suite": {
+    "run_id": "20261110-190519-86f3222f",
+    "receipt": "artifacts/campaign/20261110-190519-86f3222f/receipt.json",
+    "status": "passed",
+    "form": "processed",
+    "mode": "jit",
+    "native_pages": 27,
+    "managed_pages": 27,
+    "maximum_main_rgba_channel_error": 0,
+    "owned_display_cleanup": "terminated and reaped"
+  },
+  "formatting": {
+    "authored_diff_check": "passed",
+    "generated_constant_tables": "Existing emitter trailing spaces retained; emitted C# is unmodified by hand"
+  }
+}

@@ -1,0 +1,14 @@
+[
+  "Dotcc.SourceFiles.txt",
+  "Gallery.00000.cs",
+  "Gallery.00001.cs",
+  "Gallery.cs",
+  "TranslatedCuiGallery.csproj",
+  "notices/LICENSE",
+  "notices/THIRD_PARTY.md",
+  "upstream/gallery_more.c",
+  "upstream/gallery_more.h",
+  "upstream/gallery_ui.c",
+  "upstream/gallery_ui.h",
+  "upstream/provenance.json"
+]

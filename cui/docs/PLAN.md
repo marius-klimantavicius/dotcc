@@ -143,3 +143,27 @@ Final receipts, source/tool/product hashes and exact scope are summarized in
 `docs/VALIDATION.json`, with specialist evidence under `tests/`.
 The initial probes and native controls are feasibility evidence. P0 is complete;
 later phases retain their required runtime/platform gates.
+
+## Upstream gallery follow-up
+
+The default ManagedConsumer now runs the pinned upstream gallery, reusing
+`examples/gallery_ui.c` and `gallery_more.c` with their headers: nine primary
+pages and 18 extended pages, original controls/state, navigation, themes and
+accent swatches. The initial window is 1240×820, minimum 720×480. The original
+four-widget `--smoke` contract remains separate and unchanged. `--list-pages`,
+`--page INDEX|NAME` and `--gallery-smoke` support bounded verification.
+
+The gallery is delivered as the separate `TranslatedCuiGallery` companion in
+raw/processed canonical directories. It imports the core's generated symbol
+manifest and uses the matching core project's types, functions and C runtime.
+No gallery workload is added to the 58-unit core. The shared compiler's managed
+reference capability supports one nested static C-runtime library at object
+link time; it validates canonical aggregate signatures and runtime identity.
+An observed virtual-list macro initializer defect is repaired in the compiler,
+with direct/object execution regressions. Generated C# is never patched.
+
+The `gallery` suite adds native and managed all-page readback/content comparison,
+real OS navigation and representative input/scroll/theme/overlay actions, plus
+cleanup. Linux qualification covers raw/processed JIT/NativeAOT; actual Windows
+execution remains open. Follow-up evidence and current product hashes belong to
+`docs/GALLERY-VALIDATION.json`, independently of the earlier core qualification.

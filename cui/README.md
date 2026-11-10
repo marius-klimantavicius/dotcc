@@ -35,9 +35,10 @@ bash cui/scripts/translate.sh --jobs 4
 bash cui/scripts/test.sh --suite consumer --form all --mode all
 ```
 
-The first command builds current tools, emits all 58 units, links, builds raw,
-semantically processes a private copy, builds processed and publishes both
-forms transactionally. `build.sh` builds existing products; `probe.sh` emits
+The first command builds current tools, emits all 58 core units and the two
+upstream gallery units, links the separate core and gallery libraries, builds
+raw, semantically processes private copies, builds processed and publishes both
+forms and their companion projects transactionally. `build.sh` builds existing products; `probe.sh` emits
 diagnostic objects. `--tools reuse`, `--fetch never`, and `--hashes off` have the
 shared framework meanings. `DOTCC_COMPILER` and `DOTCC_POSTPROCESSOR` can select
 explicit prebuilt tools. Generated C# must be regenerated, never patched.
@@ -66,7 +67,7 @@ LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a -s '-screen 0 1280x800x24 +extension GLX' \
   bash cui/scripts/verify.sh --jobs 4 --form all --mode all
 ```
 
-Verification declares `native`, `consumer`, `abi`, `upstream`, `render`,
+Verification declares `native`, `consumer`, `gallery`, `abi`, `upstream`, `render`,
 `lifecycle` and `audit`. It executes original upstream tests and compares native
 results, exact shaping records and software pixels. Its ABI suite also runs
 real desktop input, GL readback, dialog/URL tools and cleanup tests. The native
@@ -75,7 +76,7 @@ together. The eight existing fuzz
 programs and one soak are excluded by plan D9. Specialist prerequisites,
 counts and comparison rules are documented in [qualification](tests/qualification/README.md),
 [host tests](tests/host-glfw/README.md), [platform tests](tests/platform/README.md)
-and [desktop input](tests/desktop/README.md),
+and [desktop input](tests/desktop/README.md), [gallery qualification](tests/gallery/README.md),
 [real desktop services](tests/desktop-services/README.md), and
 [native desktop control](tests/native-desktop/README.md).
 
@@ -109,8 +110,11 @@ sample supplies it. COM apartment initialization failure reports dialog failure.
 Raw GLFW handles are adapter-owned opaque tokens. Pass them only to this
 translation's GLFW API; they are not native GLFW pointers or OS window handles.
 
-`ManagedConsumer.slnx` builds the separate sample. Use `-p:CuiProject=...` to
-select the alternate library. Build outputs should stay on external storage:
+`ManagedConsumer.slnx` builds the separate sample and its translated upstream
+gallery companion. The core library remains separate from this example workload.
+Use `-p:CuiProject=...` to select the raw core; the sample selects the matching
+raw gallery automatically. `-p:CuiGalleryProject=...` overrides the companion.
+Build outputs should stay on external storage:
 
 ```bash
 dotnet build cui/ManagedConsumer.slnx -c Release \
@@ -118,11 +122,37 @@ dotnet build cui/ManagedConsumer.slnx -c Release \
 dotnet "$CUI_WORK_ROOT/consumer/bin/ManagedConsumer/release/ManagedConsumer.dll"
 ```
 
-Add `--smoke` for bounded GL/readback and lifetime checks, or `--capture PATH`
-with `--smoke` to save the readback as raw RGBA bytes. The interactive sample
-provides a button, checkbox, slider and text field. NativeAOT publication is
+The default application is the pinned upstream component gallery: all 27 pages
+(nine primary and 18 extended), with its original navigation, responsive drawer,
+themes, accent swatches, state and interactive controls. It opens at 1240×820,
+with a 720×480 minimum size. The gallery C sources are translated into the
+separate `generated/TranslatedCuiGallery` and `TranslatedCuiGallery.Raw` projects,
+which reference the corresponding core rather than duplicating it.
+
+Pass `--list-pages` to print the registered indices/names without opening a
+window, or `--page Selection` / `--page 3` to choose the initial page. Quote page
+names containing spaces. `--gallery-smoke` visits every page for four frames,
+checks actual GL readback and draw commands, then checks disposal and
+reinitialization. `--smoke` preserves the original 640×480 four-widget,
+four-frame pixel/lifetime regression used by the native consumer oracle.
+Add `--capture PATH` to either bounded mode to save its final framebuffer as
+raw RGBA bytes; interactive capture saves frame four and leaves the window open.
+
+```bash
+dotnet "$CUI_WORK_ROOT/consumer/bin/ManagedConsumer/release/ManagedConsumer.dll" --list-pages
+dotnet "$CUI_WORK_ROOT/consumer/bin/ManagedConsumer/release/ManagedConsumer.dll" --page "Data display"
+dotnet "$CUI_WORK_ROOT/consumer/bin/ManagedConsumer/release/ManagedConsumer.dll" --gallery-smoke
+```
+
+NativeAOT publication is
 target-specific; use `dotnet publish` with `-r linux-x64` or `-r win-x64`,
 `-p:PublishAot=true`, `--artifacts-path` and `-m:1`.
+
+Run `bash cui/scripts/test.sh --suite gallery --form all --mode all` for the
+Linux native/translated gallery differential and real desktop-input workflows.
+That suite owns its Xvfb display. Gallery follow-up evidence is recorded
+separately in [GALLERY-VALIDATION.json](docs/GALLERY-VALIDATION.json); the earlier
+core qualification in `VALIDATION.json` retains its original product hashes.
 
 Linux file dialogs use installed `zenity` or `kdialog`; missing tools,
 cancellation and failed launchers report failure. URL opening waits for the

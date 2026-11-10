@@ -152,3 +152,64 @@ existing metadata-policy test rejected a literal hash in
 campaign's starting commit and the file has not been changed here. The affected
 C/C# compiler/runtime regressions above run separately and pass. Do not describe
 the optional full framework control as all passing.
+
+## Upstream gallery follow-up
+
+ManagedConsumer now defaults to the original 27-page component gallery from the
+pinned upstream `gallery_ui.c` and `gallery_more.c`, with unmodified C/header
+copies, license and provenance in the generated companion. The 58-unit core
+stays separate. `TranslatedCuiGallery[.Raw]` imports canonical core aggregate,
+function and runtime identities and references the matching ordinary core
+project. The sample preserves its STA entry point and owning desktop lifetime.
+It opens at upstream's 1240×820 with a 720×480 minimum. Its original four-widget
+`--smoke` implementation is preserved except for moving its class/entry method;
+`--gallery-smoke`, `--list-pages` and numeric/named `--page` select the new work.
+
+Three concrete integration needs were addressed without editing emitted C#:
+
+| ID | Finding | Repair and focused evidence |
+| --- | --- | --- |
+| GALLERY-01 | A separate gallery assembly needs the core's actual struct/enum/callback types and shared C runtime | Managed-symbol export/import for nested static C managed object links; canonical aggregate signatures and runtime fingerprints checked. Four unit gates, separate-assembly callback execution, namespace/split/nesting checks and the 20-case affected execution selection pass. One imported runtime owner is supported; import/re-export chains and instance/state-context modes are rejected. |
+| GALLERY-02 | Upstream virtual-list macro's comma initializer captured addressed locals in an IIFE, producing CS1686 | Reuse one-time enclosing statement storage for comma initializers; direct/object regressions assert declaration scope, ordering, continue and post behavior. Fresh complete core/gallery regeneration builds. |
+| GALLERY-03 | Feedback's `%g` meter label printed `18.399999618530273` instead of native `18.4` | Shared printf uses C's default six significant digits and treats precision zero as one. Thirteen new cases fail before repair; 94 focused unit and 16 functional/native-oracle tests pass after repair. Fresh runtime-embedding tools and all 58+2 units are regenerated. |
+
+The sample's four Linux raw/processed JIT/NativeAOT runs each render all 27
+pages in 108 frames with nonblank main content and actual GL draw/readback,
+then dispose and reinitialize. The retained smoke captures remain exactly equal
+to the fresh native 640×480 control in all four variants, maximum channel error
+zero. A no-argument launch opens the real visible gallery and exits successfully
+on an OS close event. Evaluated core/gallery/sample project references remain
+campaign-local; no native CUI/GLFW import or scratch/sibling reference is added.
+
+Clean reproduction rebuilds tools from the committed compiler/runtime/framework
+archive plus an explicitly hashed authored CUI overlay, excluding unrelated
+working-tree changes. All 58 core and two gallery units regenerate; all four
+final projects, the solution, four-way consumer/audit and four-way bounded
+gallery sample pass with external artifacts and one MSBuild node. The overlay
+matches the delivered authored build, input, sample and test sources. Relocated generated identities differ;
+byte-identical generated source across different source roots is not claimed.
+
+The new strict gallery runner compares every main-panel RGBA channel and exact
+node/text records for all 27 pages against the original native gallery. All four
+Linux variants pass: 108 main-panel buffers are byte-identical, with maximum
+channel error zero. Each variant passes all 27 OS sidebar selections and 53
+recorded actions. The original native OS control passes 1,192 assertions;
+managed counts are 1,069, 1,071, 1,071 and 1,070, including timing-dependent
+polling checks. The documented recipe's processed JIT gallery route also passes.
+The runner also
+uses real OS input for all sidebar choices and representative stateful controls,
+scrolling, themes/accents, overlays, persistence, OS close and cleanup. Only its
+deterministic capture phase pins the clock; ordinary input uses the app clock.
+Native-proven harness issues in pointer synchronization, partially clipped
+sidebar navigation, animated scroll and modal scrim timing were corrected while
+retaining required actions. Its initial managed capture also started a theme
+transition unlike native; matching initial light/neutral descriptions removes
+that harness mismatch. Original failures and the `%g` defect captures/transcripts
+remain in external history. No raster tolerance or required page was removed.
+
+Final matrix rows, current source/tool/product hashes and exact scoped evidence
+are in [GALLERY-VALIDATION.json](GALLERY-VALIDATION.json). The earlier
+`VALIDATION.json` remains historical core qualification under its original
+hashes; its full 48-program matrix is not claimed rerun for this follow-up.
+Actual Windows execution remains unrun, and the direct CUI backends remain
+deferred by the user's scope.

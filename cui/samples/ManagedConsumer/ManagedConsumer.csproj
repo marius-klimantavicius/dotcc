@@ -4,8 +4,12 @@
     <TargetFramework>net10.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <CuiProject Condition="'$(CuiProject)' == ''">../../generated/TranslatedCui/TranslatedCui.csproj</CuiProject>
+    <_CuiLibraryDirectory>$([System.IO.Path]::GetFileName($([System.IO.Path]::GetDirectoryName('$(CuiProject)'))))</_CuiLibraryDirectory>
+    <CuiGalleryProject Condition="'$(CuiGalleryProject)' == '' and '$(_CuiLibraryDirectory)' == 'TranslatedCui.Raw'">../../generated/TranslatedCuiGallery.Raw/TranslatedCuiGallery.csproj</CuiGalleryProject>
+    <CuiGalleryProject Condition="'$(CuiGalleryProject)' == ''">../../generated/TranslatedCuiGallery/TranslatedCuiGallery.csproj</CuiGalleryProject>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="$(CuiProject)" />
+    <ProjectReference Include="$(CuiGalleryProject)" />
   </ItemGroup>
 </Project>

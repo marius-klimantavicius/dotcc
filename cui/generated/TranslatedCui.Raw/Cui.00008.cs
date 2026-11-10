@@ -29,7 +29,7 @@ using __DotCcEnum_6375695F6D6F64 = global::Managed.Cui.Cui.cui_mod;
 using __DotCcEnum_6375695F7468656D655F6D6F6465 = global::Managed.Cui.Cui.cui_theme_mode;
 using __DotCcEnum_6375695F746F6E65 = global::Managed.Cui.Cui.cui_tone;
 using __DotCcEnum_6375695F656C65766174696F6E = global::Managed.Cui.Cui.cui_elevation;
-using __DotCcEnum_5F5F446F744363547970656465665F33453944424537323436443535393146373143463031314336324431334341373444333235394146433030333041364643334338353045414337443336343143 = global::Managed.Cui.Cui.cui__text_anchor;
+using __DotCcEnum_5F5F446F744363547970656465665F30453045363138353046303939323138444342313336464135443434453336353142413335323030433944453438343444393532313136323837423043463944 = global::Managed.Cui.Cui.cui__text_anchor;
 using __DotCcEnum_6375695F746578747572655F666F726D6174 = global::Managed.Cui.Cui.cui_texture_format;
 using __DotCcEnum_6375695F646972656374696F6E = global::Managed.Cui.Cui.cui_direction;
 using __DotCcEnum_6375695F6A757374696679 = global::Managed.Cui.Cui.cui_justify;
@@ -39,7 +39,7 @@ using __DotCcEnum_6375695F746578745F616C69676E = global::Managed.Cui.Cui.cui_tex
 using __DotCcEnum_6375695F627574746F6E5F76617269616E74 = global::Managed.Cui.Cui.cui_button_variant;
 using __DotCcEnum_6375695F636F6E74726F6C5F73697A65 = global::Managed.Cui.Cui.cui_control_size;
 using __DotCcEnum_6375695F746162735F76617269616E74 = global::Managed.Cui.Cui.cui_tabs_variant;
-using __DotCcEnum_5F5F446F744363547970656465665F32413230444446313846393636303539303542313137383041413535464530324641454332384237444537353145433236313546443136383430383044304638 = global::Managed.Cui.Cui.cui__field_style;
+using __DotCcEnum_5F5F446F744363547970656465665F37383132333838343837304536434536353233453436434444443433383833373744363646433646314241334230424639434637324136333833454138353043 = global::Managed.Cui.Cui.cui__field_style;
 using __DotCcEnum_6375695F73696465 = global::Managed.Cui.Cui.cui_side;
 using __DotCcEnum_6375695F737461747573 = global::Managed.Cui.Cui.cui_status;
 using __DotCcEnum_6375695F646966665F726F775F6B696E64 = global::Managed.Cui.Cui.cui_diff_row_kind;
@@ -62,64 +62,7 @@ using DotCcPointers = global::Managed.Cui.Cui.CuiFunctionPointers;
 
 public static unsafe partial class Cui
 {
-    public static unsafe void cui__paint_week_grid__unit_AAB5A88457C64B983A8EFE2FA54C5115E7579CDC90C22FD86E0279C2CFCD07B4(cui_ctx* ui, cui_node* n, void* data)
-    {
-        cui__week_paint* p = (cui__week_paint*)(data);
-        cui_rect r = n->rect;
-        float fs = cui__fs(ui, ui->theme.text_xs);
-        for (int h = (int)p->h0; Cond.B(((CBool)(h <= (int)p->h1))); h++)
-        {
-            float y = r.y + (h - p->h0) * p->hh;
-            if (Cond.B(((CBool)(h < (int)p->h1))))
-                cui_draw_rect(ui, new cui_rect { x = r.x + p->gutter, y = y, w = r.w - p->gutter, h = 1 }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, p->line);
-            if (Cond.B(((CBool)(h < (int)p->h1))))
-                cui_draw_rect(ui, new cui_rect { x = r.x + p->gutter, y = y + p->hh * 0.5f, w = r.w - p->gutter, h = 1 }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, p->faint);
-            if (Cond.B(((CBool)(Cond.B(((CBool)(h > (int)p->h0))) && Cond.B(((CBool)(h < (int)p->h1)))))))
-            {
-                byte* s = cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1302 /*"%02d:00"*/), h);
-                float w = cui__text_width(ui, 0, fs, s, -1, 1);
-                cui__draw_text_line(ui, 0, fs, r.x + p->gutter - 10 - w, y - cui__font_line_height(ui, 0, fs) * 0.5f, p->label, s, -1, 1);
-            }
-        }
-        for (int d = 0; Cond.B(((CBool)(d < 7))); d++)
-            cui_draw_rect(ui, new cui_rect { x = r.x + p->gutter + d * p->dw, y = r.y, w = 1, h = r.h }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, p->line);
-        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(p->today >= 0))) && Cond.B(((CBool)(p->now >= p->h0)))))) && Cond.B(((CBool)(p->now <= p->h1)))))))
-        {
-            float y__1 = r.y + (p->now - p->h0) * p->hh;
-            float x = r.x + p->gutter + p->today * p->dw;
-            cui_draw_rect(ui, new cui_rect { x = x, y = y__1 - 1, w = p->dw, h = 2 }, new cui_corners { tl = 1, tr = 1, br = 1, bl = 1 }, p->now_c);
-            cui_draw_circle(ui, new cui_vec2 { x = x, y = y__1 }, 4.5f, p->now_c);
-        }
-    }
-
-
-
-    public static unsafe void cui__paint_event_bar__unit_AAB5A88457C64B983A8EFE2FA54C5115E7579CDC90C22FD86E0279C2CFCD07B4(cui_ctx* ui, cui_node* n, void* data)
-    {
-        cui__evbar_paint* p = (cui__evbar_paint*)(data);
-        cui_rect r = n->rect;
-        cui_draw_rect(ui, new cui_rect { x = r.x + 3, y = r.y + 4, w = 3, h = r.h - 8 }, new cui_corners { tl = 1.5f, tr = 1.5f, br = 1.5f, bl = 1.5f }, p->bar);
-    }
-
-
-
-    public static unsafe int cui_week_calendar_ex(cui_ctx* ui, byte* id_str, cui_date week_start, cui_cal_event* ev, int count, cui_week_opts* o)
-    {
-        int first = ui->node_count;
-        int r = cui__week_calendar_ex_body__unit_AAB5A88457C64B983A8EFE2FA54C5115E7579CDC90C22FD86E0279C2CFCD07B4(ui, id_str, week_start, ev, count, o);
-        do
-        {
-            int f_ = first;
-            if (Cond.B(((CBool)(Cond.B(((CBool)(f_ < ui->node_count))) && Cond.B((Cond.B(ui->nodes[f_].direction) ? 0 : 1))))))
-                ui->nodes[f_].direction = (byte)(__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_LTR);
-        }
-        while (false);
-        return r;
-    }
-
-
-
-    public static unsafe int cui__week_calendar_ex_body__unit_AAB5A88457C64B983A8EFE2FA54C5115E7579CDC90C22FD86E0279C2CFCD07B4(cui_ctx* ui, byte* id_str, cui_date week_start, cui_cal_event* ev, int count, cui_week_opts* o)
+    public static unsafe int cui__week_calendar_ex_body__unit_A8176D22FEBAA8D93B974B3F1E67BF13C4B3F620410306BB8DECC7C4A3A25475(cui_ctx* ui, byte* id_str, cui_date week_start, cui_cal_event* ev, int count, cui_week_opts* o)
     {
         cui_week_opts d = default;
         memset(&d, 0, ((ulong)(sizeof(cui_week_opts))));
@@ -259,7 +202,7 @@ public static unsafe partial class Cui
         wp->faint = cui_alpha(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER_SUBTLE], 0.5f);
         wp->label = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED];
         wp->now_c = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_DANGER];
-        gn->paint = DotCcPointers.cui__paint_week_grid__unit_AAB5A88457C64B983A8EFE2FA54C5115E7579CDC90C22FD86E0279C2CFCD07B4;
+        gn->paint = DotCcPointers.cui__paint_week_grid__unit_A8176D22FEBAA8D93B974B3F1E67BF13C4B3F620410306BB8DECC7C4A3A25475;
         gn->paint_data = wp;
         cui__open(ui, grid);
         if (Cond.B(((CBool)(tday >= 0))))
@@ -388,7 +331,7 @@ public static unsafe partial class Cui
             }
             cui__evbar_paint* bp = (cui__evbar_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__evbar_paint)))));
             bp->bar = tone;
-            nd->paint = DotCcPointers.cui__paint_event_bar__unit_AAB5A88457C64B983A8EFE2FA54C5115E7579CDC90C22FD86E0279C2CFCD07B4;
+            nd->paint = DotCcPointers.cui__paint_event_bar__unit_A8176D22FEBAA8D93B974B3F1E67BF13C4B3F620410306BB8DECC7C4A3A25475;
             nd->paint_data = bp;
             cui__mark_interactive(ui, en, 2 | 1);
             if (Cond.B(((CBool)(Cond.B(r.hovered) && Cond.B(((CBool)(st->drag == 0)))))))
@@ -439,7 +382,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__paint_gantt_body__unit_AAB5A88457C64B983A8EFE2FA54C5115E7579CDC90C22FD86E0279C2CFCD07B4(cui_ctx* ui, cui_node* n, void* data)
+    public static unsafe void cui__paint_gantt_body__unit_A8176D22FEBAA8D93B974B3F1E67BF13C4B3F620410306BB8DECC7C4A3A25475(cui_ctx* ui, cui_node* n, void* data)
     {
     byte* __dotcc_array_storage0 = null;
         cui__gantt_paint* p = (cui__gantt_paint*)(data);
@@ -499,7 +442,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__paint_gantt_bar__unit_AAB5A88457C64B983A8EFE2FA54C5115E7579CDC90C22FD86E0279C2CFCD07B4(cui_ctx* ui, cui_node* n, void* data)
+    public static unsafe void cui__paint_gantt_bar__unit_A8176D22FEBAA8D93B974B3F1E67BF13C4B3F620410306BB8DECC7C4A3A25475(cui_ctx* ui, cui_node* n, void* data)
     {
         cui__gbar_paint* p = (cui__gbar_paint*)(data);
         cui_rect r = n->rect;
@@ -525,7 +468,7 @@ public static unsafe partial class Cui
     public static unsafe int cui_gantt_ex(cui_ctx* ui, byte* id_str, cui_gantt_task* tasks, int count, cui_date origin, int days, cui_gantt_opts* o)
     {
         int first = ui->node_count;
-        int r = cui__gantt_ex_body__unit_AAB5A88457C64B983A8EFE2FA54C5115E7579CDC90C22FD86E0279C2CFCD07B4(ui, id_str, tasks, count, origin, days, o);
+        int r = cui__gantt_ex_body__unit_A8176D22FEBAA8D93B974B3F1E67BF13C4B3F620410306BB8DECC7C4A3A25475(ui, id_str, tasks, count, origin, days, o);
         do
         {
             int f_ = first;
@@ -538,7 +481,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe int cui__gantt_ex_body__unit_AAB5A88457C64B983A8EFE2FA54C5115E7579CDC90C22FD86E0279C2CFCD07B4(cui_ctx* ui, byte* id_str, cui_gantt_task* tasks, int count, cui_date origin, int days, cui_gantt_opts* o)
+    public static unsafe int cui__gantt_ex_body__unit_A8176D22FEBAA8D93B974B3F1E67BF13C4B3F620410306BB8DECC7C4A3A25475(cui_ctx* ui, byte* id_str, cui_gantt_task* tasks, int count, cui_date origin, int days, cui_gantt_opts* o)
     {
         cui_gantt_opts d = default;
         memset(&d, 0, ((ulong)(sizeof(cui_gantt_opts))));
@@ -734,7 +677,7 @@ public static unsafe partial class Cui
         gp->line = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER_SUBTLE];
         gp->today_c = cui_alpha(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_DANGER], 0.8f);
         gp->dep = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED];
-        bn->paint = DotCcPointers.cui__paint_gantt_body__unit_AAB5A88457C64B983A8EFE2FA54C5115E7579CDC90C22FD86E0279C2CFCD07B4;
+        bn->paint = DotCcPointers.cui__paint_gantt_body__unit_A8176D22FEBAA8D93B974B3F1E67BF13C4B3F620410306BB8DECC7C4A3A25475;
         bn->paint_data = gp;
         cui__open(ui, body);
         for (int k__1 = 0; Cond.B(((CBool)(k__1 < count))); k__1++)
@@ -801,7 +744,7 @@ public static unsafe partial class Cui
             bp->fill = cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE], tone__1, ((float)(Cond.B(((CBool)((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK))) ? ((float)(Cond.B(r.hovered) ? 0.36f : 0.28f)) : ((float)(Cond.B(r.hovered) ? 0.3f : 0.22f)))));
             bp->prog = (Cond.B(((CBool)((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK))) ? cui_mix(tone__1, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE], 0.5f) : tone__1);
             bp->milestone = t__2->milestone;
-            nd->paint = DotCcPointers.cui__paint_gantt_bar__unit_AAB5A88457C64B983A8EFE2FA54C5115E7579CDC90C22FD86E0279C2CFCD07B4;
+            nd->paint = DotCcPointers.cui__paint_gantt_bar__unit_A8176D22FEBAA8D93B974B3F1E67BF13C4B3F620410306BB8DECC7C4A3A25475;
             nd->paint_data = bp;
             cui__mark_interactive(ui, bnode, 2 | 1);
             if (Cond.B(((CBool)(Cond.B(r.hovered) && Cond.B(((CBool)(st->drag == 0)))))))
@@ -827,14 +770,14 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe cui__chrome_slots* cui__slots__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(cui_ctx* ui)
+    public static unsafe cui__chrome_slots* cui__slots__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(cui_ctx* ui)
     {
         return (cui__chrome_slots*)(cui_state(ui, 0xC4203E5u, ((ulong)(sizeof(cui__chrome_slots)))));
     }
 
 
 
-    public static unsafe void cui__paint_edge__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(cui_ctx* ui, cui_node* n, void* data)
+    public static unsafe void cui__paint_edge__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(cui_ctx* ui, cui_node* n, void* data)
     {
         cui__bar_edge_paint* p = (cui__bar_edge_paint*)(data);
         cui_rect r = n->rect;
@@ -843,18 +786,18 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__bar_edge__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(cui_ctx* ui, int node, CBool top)
+    public static unsafe void cui__bar_edge__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(cui_ctx* ui, int node, CBool top)
     {
         cui__bar_edge_paint* p = (cui__bar_edge_paint*)cui__frame_alloc(ui, ((ulong)(sizeof(cui__bar_edge_paint))));
         p->c = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER];
         p->top = top;
-        ui->nodes[node].paint = DotCcPointers.cui__paint_edge__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0;
+        ui->nodes[node].paint = DotCcPointers.cui__paint_edge__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED;
         ui->nodes[node].paint_data = p;
     }
 
 
 
-    public static unsafe int cui__bar_row__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(cui_ctx* ui, uint id, float pad_y, float pad_x, CBool edge, CBool top)
+    public static unsafe int cui__bar_row__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(cui_ctx* ui, uint id, float pad_y, float pad_x, CBool edge, CBool top)
     {
         int row = cui__node_new(ui, id);
         cui_node* n = &ui->nodes[row];
@@ -867,13 +810,13 @@ public static unsafe partial class Cui
         n->self_align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_STRETCH);
         n->flags |= (uint)(16);
         if (Cond.B(edge))
-            cui__bar_edge__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, row, top);
+            cui__bar_edge__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, row, top);
         return row;
     }
 
 
 
-    public static unsafe CBool cui__keys_covered__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(cui_ctx* ui)
+    public static unsafe CBool cui__keys_covered__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(cui_ctx* ui)
     {
         int my_z = 0;
         for (int i = 0; Cond.B(((CBool)(i < ui->popup_count))); i++)
@@ -887,7 +830,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe int cui__key_for_char__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(byte c)
+    public static unsafe int cui__key_for_char__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(byte c)
     {
         if (Cond.B(((CBool)(Cond.B(((CBool)(c >= 97))) && Cond.B(((CBool)(c <= 122)))))))
             return (int)__DotCcEnum_6375695F6B6579.CUI_KEY_A + (c - 97);
@@ -900,7 +843,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__paint_mnemonic__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(cui_ctx* ui, cui_node* n, void* data)
+    public static unsafe void cui__paint_mnemonic__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(cui_ctx* ui, cui_node* n, void* data)
     {
         cui__mnemonic_paint* p = (cui__mnemonic_paint*)(data);
         float x0 = n->rect.x + cui__text_width(ui, n->font, n->font_size, n->text, p->at, 0);
@@ -912,7 +855,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe int cui__bar_step__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(cui__menubar_state* st, int from, int dir)
+    public static unsafe int cui__bar_step__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(cui__menubar_state* st, int from, int dir)
     {
         int n = ((int)(Cond.B(((CBool)(st->count < 16))) ? st->count : 16));
         if (Cond.B(((CBool)(n <= 0))))
@@ -929,7 +872,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__bar_take_keys__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(cui_ctx* ui, cui__menubar_state* st)
+    public static unsafe void cui__bar_take_keys__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(cui_ctx* ui, cui__menubar_state* st)
     {
         if (Cond.B(st->kbd))
             return;
@@ -940,7 +883,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__bar_release_keys__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(cui_ctx* ui, cui__menubar_state* st)
+    public static unsafe void cui__bar_release_keys__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(cui_ctx* ui, cui__menubar_state* st)
     {
         if (Cond.B((Cond.B(st->kbd) ? 0 : 1)))
             return;
@@ -952,7 +895,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__bar_open__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(cui_ctx* ui, cui__menubar_state* st, int k, CBool keys)
+    public static unsafe void cui__bar_open__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(cui_ctx* ui, cui__menubar_state* st, int k, CBool keys)
     {
         if (Cond.B(((CBool)(Cond.B(((CBool)(st->open >= 0))) && Cond.B(((CBool)(st->open != k)))))))
             cui__popup_set(ui, st->pid[st->open], 0);
@@ -974,18 +917,18 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__bar_menu_closed__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(cui_ctx* ui, cui__menubar_state* st, int k)
+    public static unsafe void cui__bar_menu_closed__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(cui_ctx* ui, cui__menubar_state* st, int k)
     {
         if (Cond.B(((CBool)(st->open != k))))
             return;
         st->open = -1;
         if (Cond.B(st->esc))
         {
-            cui__bar_take_keys__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, st);
+            cui__bar_take_keys__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, st);
             st->hl = k;
         }
         else
-            cui__bar_release_keys__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, st);
+            cui__bar_release_keys__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, st);
     }
 
 
@@ -1020,7 +963,7 @@ public static unsafe partial class Cui
             if (Cond.B(((CBool)(Cond.B((Cond.B(p) ? 0 : 1)) || Cond.B((Cond.B(p->open) ? 0 : 1))))))
             {
                 st->open = -1;
-                cui__bar_release_keys__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, st);
+                cui__bar_release_keys__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, st);
             }
         }
         CBool covered_by_other = 0;
@@ -1036,7 +979,7 @@ public static unsafe partial class Cui
         }
         else
         {
-            covered_by_other = cui__keys_covered__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui);
+            covered_by_other = cui__keys_covered__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui);
         }
         int mods = ui->mods;
         CBool alt = ((CBool)((mods & (int)__DotCcEnum_6375695F6D6F64.CUI_MOD_ALT) != 0));
@@ -1060,13 +1003,13 @@ public static unsafe partial class Cui
             ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_F10] = 0;
             if (Cond.B(((CBool)(Cond.B(((CBool)(st->open >= 0))) || Cond.B(st->kbd)))))
             {
-                cui__bar_open__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, st, -1, 0);
-                cui__bar_release_keys__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, st);
+                cui__bar_open__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, st, -1, 0);
+                cui__bar_release_keys__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, st);
             }
             else
             {
-                cui__bar_take_keys__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, st);
-                st->hl = ((int)(Cond.B(((CBool*)&st->dis)[0]) ? cui__bar_step__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(st, 0, 1) : 0));
+                cui__bar_take_keys__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, st);
+                st->hl = ((int)(Cond.B(((CBool*)&st->dis)[0]) ? cui__bar_step__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(st, 0, 1) : 0));
             }
         }
         if (Cond.B(((CBool)(Cond.B(((CBool)(n > 0))) && Cond.B((Cond.B(covered_by_other) ? 0 : 1))))))
@@ -1077,13 +1020,13 @@ public static unsafe partial class Cui
             {
                 for (int k__1 = 0; Cond.B(((CBool)(k__1 < n))); k__1++)
                 {
-                    int key = cui__key_for_char__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(st->mn[k__1]);
+                    int key = cui__key_for_char__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(st->mn[k__1]);
                     if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool*)&st->dis)[k__1]) || Cond.B((Cond.B(key) ? 0 : 1))))) || Cond.B((Cond.B(cui_key_pressed(ui, (cui_key)key)) ? 0 : 1))))))
                         continue;
                     ui->kpressed[key] = 0;
                     st->alt_armed = 0;
-                    cui__bar_take_keys__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, st);
-                    cui__bar_open__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, st, k__1, 1);
+                    cui__bar_take_keys__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, st);
+                    cui__bar_open__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, st, k__1, 1);
                     break;
                 }
             }
@@ -1092,37 +1035,37 @@ public static unsafe partial class Cui
         {
             if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_LEFT)))
             {
-                st->hl = cui__bar_step__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(st, st->hl, -1);
+                st->hl = cui__bar_step__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(st, st->hl, -1);
                 ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_LEFT] = 0;
             }
             if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_RIGHT)))
             {
-                st->hl = cui__bar_step__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(st, st->hl, 1);
+                st->hl = cui__bar_step__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(st, st->hl, 1);
                 ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_RIGHT] = 0;
             }
             if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_HOME)))
             {
-                st->hl = cui__bar_step__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(st, n - 1, 1);
+                st->hl = cui__bar_step__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(st, n - 1, 1);
                 ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_HOME] = 0;
             }
             if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_END)))
             {
-                st->hl = cui__bar_step__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(st, 0, -1);
+                st->hl = cui__bar_step__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(st, 0, -1);
                 ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_END] = 0;
             }
             if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_ENTER)) || Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_SPACE))))) || Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_DOWN))))) || Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_UP))))))
             {
                 ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_ENTER] = ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_SPACE] = ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_DOWN] = ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_UP] = 0;
                 if (Cond.B(((CBool)(Cond.B(((CBool)(st->hl >= 0))) && Cond.B((Cond.B(((CBool*)&st->dis)[st->hl]) ? 0 : 1))))))
-                    cui__bar_open__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, st, st->hl, 1);
+                    cui__bar_open__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, st, st->hl, 1);
             }
             if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_ESCAPE)))
             {
                 ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_ESCAPE] = 0;
-                cui__bar_release_keys__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, st);
+                cui__bar_release_keys__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, st);
             }
             if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_TAB)))
-                cui__bar_release_keys__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, st);
+                cui__bar_release_keys__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, st);
         }
         if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(st->open >= 0))) && Cond.B(((CBool)(n > 1)))))) && Cond.B((Cond.B(covered_by_other) ? 0 : 1))))))
         {
@@ -1130,7 +1073,7 @@ public static unsafe partial class Cui
             if (Cond.B(dir))
             {
                 ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_LEFT] = ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_RIGHT] = 0;
-                cui__bar_open__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, st, cui__bar_step__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(st, st->open, dir), 1);
+                cui__bar_open__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, st, cui__bar_step__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(st, st->open, dir), 1);
             }
         }
         int hov = -1;
@@ -1142,32 +1085,32 @@ public static unsafe partial class Cui
             if (Cond.B(((CBool)(Cond.B(((CBool)(hov >= 0))) && Cond.B((Cond.B(((CBool*)&st->dis)[hov]) ? 0 : 1))))))
             {
                 CBool close = ((CBool)(st->open == hov));
-                cui__bar_release_keys__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, st);
-                cui__bar_open__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, st, ((int)(Cond.B(close) ? -1 : hov)), 0);
+                cui__bar_release_keys__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, st);
+                cui__bar_open__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, st, ((int)(Cond.B(close) ? -1 : hov)), 0);
             }
             else
                 if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(hov < 0))) && Cond.B(st->kbd)))) && Cond.B(((CBool)(st->open < 0)))))))
                 {
-                    cui__bar_release_keys__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, st);
+                    cui__bar_release_keys__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, st);
                 }
         }
         else
             if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(st->open >= 0))) && Cond.B(((CBool)(hov >= 0)))))) && Cond.B(((CBool)(hov != st->open)))))) && Cond.B((Cond.B(((CBool*)&st->dis)[hov]) ? 0 : 1))))) && Cond.B(((CBool)(Cond.B(((CBool)(ui->mx != ui->pmx))) || Cond.B(((CBool)(ui->my != ui->pmy))))))))))
             {
-                cui__bar_open__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, st, hov, 0);
+                cui__bar_open__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, st, hov, 0);
             }
-        int row = cui__bar_row__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, id, 3, 6, (Cond.B(o->no_border) ? 0 : 1), 0);
+        int row = cui__bar_row__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, id, 3, 6, (Cond.B(o->no_border) ? 0 : 1), 0);
         cui__open(ui, row);
         cui_push_id(ui, id_str);
         st->build = 0;
-        cui__slots__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui)->bar = st;
+        cui__slots__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui)->bar = st;
     }
 
 
 
     public static unsafe void cui_menu_bar_end(cui_ctx* ui)
     {
-        cui__chrome_slots* s = cui__slots__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui);
+        cui__chrome_slots* s = cui__slots__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui);
         cui__menubar_state* st = s->bar;
         if (Cond.B((Cond.B(st) ? 0 : 1)))
             return;
@@ -1187,7 +1130,7 @@ public static unsafe partial class Cui
         memset(&d, 0, ((ulong)(sizeof(cui_menu_bar_menu_opts))));
         if (Cond.B((Cond.B(o) ? 0 : 1)))
             o = &d;
-        cui__menubar_state* st = cui__slots__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui)->bar;
+        cui__menubar_state* st = cui__slots__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui)->bar;
         if (Cond.B(((CBool)(Cond.B((Cond.B(st) ? 0 : 1)) || Cond.B((Cond.B(label) ? 0 : 1))))))
             return 0;
         int k = st->build++;
@@ -1200,7 +1143,7 @@ public static unsafe partial class Cui
         byte mn = o->mnemonic;
         if (Cond.B((Cond.B(mn) ? 0 : 1)))
             for (int i = 0; Cond.B(((CBool)(Cond.B(((CBool)(i < len))) && Cond.B((Cond.B(mn) ? 0 : 1))))); i++)
-                if (Cond.B(cui__key_for_char__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(label[i])))
+                if (Cond.B(cui__key_for_char__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(label[i])))
                     mn = label[i];
         st->trig[k] = tid;
         st->pid[k] = pid;
@@ -1243,7 +1186,7 @@ public static unsafe partial class Cui
                 mp->at = at;
                 mp->len = 1;
                 mp->c = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND];
-                ui->nodes[t].paint = DotCcPointers.cui__paint_mnemonic__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0;
+                ui->nodes[t].paint = DotCcPointers.cui__paint_mnemonic__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED;
                 ui->nodes[t].paint_data = mp;
                 ui->nodes[t].flags |= (uint)(4096);
             }
@@ -1258,7 +1201,7 @@ public static unsafe partial class Cui
         CBool was_open = ((CBool)(Cond.B(p) && Cond.B(p->open)));
         CBool shown = cui__popup_begin(ui, pid, tid, (int)(__DotCcEnum_6375695F706C6163656D656E74.CUI_PLACE_BOTTOM_START), o->width, 6, 0, 1);
         if (Cond.B(((CBool)(Cond.B(was_open) && Cond.B((Cond.B(p->open) ? 0 : 1))))))
-            cui__bar_menu_closed__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, st, k);
+            cui__bar_menu_closed__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, st, k);
         st->cur = k;
         st->cur_was_open = ((CBool)(Cond.B(p) && Cond.B(p->open)));
         ui->last_id = tid;
@@ -1270,17 +1213,17 @@ public static unsafe partial class Cui
     public static unsafe void cui_menu_bar_menu_end(cui_ctx* ui)
     {
         cui__popup_end(ui);
-        cui__menubar_state* st = cui__slots__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui)->bar;
+        cui__menubar_state* st = cui__slots__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui)->bar;
         if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(st) ? 0 : 1)) || Cond.B((Cond.B(st->cur_was_open) ? 0 : 1))))) || Cond.B(((CBool)(st->cur < 0)))))) || Cond.B(((CBool)(st->cur >= 16)))))))
             return;
         cui_popup* p = cui__popup_get(ui, st->pid[st->cur], 0);
         if (Cond.B(((CBool)(Cond.B((Cond.B(p) ? 0 : 1)) || Cond.B((Cond.B(p->open) ? 0 : 1))))))
-            cui__bar_menu_closed__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, st, st->cur);
+            cui__bar_menu_closed__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, st, st->cur);
     }
 
 
 
-    public static unsafe CBool cui__tool_place__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(cui__toolbar_build* b, float w)
+    public static unsafe CBool cui__tool_place__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(cui__toolbar_build* b, float w)
     {
         b->x += ((float)(Cond.B(b->any) ? 2.0f : (float)(0))) + w;
         b->any = 1;
@@ -1310,15 +1253,15 @@ public static unsafe partial class Cui
             if (Cond.B(((CBool)(b->st->total > avail + 0.5f))))
                 b->budget = avail - (b->h + 2.0f);
         }
-        int row = cui__bar_row__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, b->id, 3, pad_x, (Cond.B(o->no_border) ? 0 : 1), 0);
+        int row = cui__bar_row__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, b->id, 3, pad_x, (Cond.B(o->no_border) ? 0 : 1), 0);
         cui__open(ui, row);
         cui_push_id(ui, id_str);
-        cui__slots__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui)->tb = b;
+        cui__slots__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui)->tb = b;
     }
 
 
 
-    public static unsafe void cui__tool_overflow__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(cui_ctx* ui, cui__toolbar_build* b, byte* label, byte* icon, CBool disabled, CBool @checked, CBool sep, int index)
+    public static unsafe void cui__tool_overflow__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(cui_ctx* ui, cui__toolbar_build* b, byte* label, byte* icon, CBool disabled, CBool @checked, CBool sep, int index)
     {
         if (Cond.B(((CBool)(b->over_count >= 64))))
             return;
@@ -1339,7 +1282,7 @@ public static unsafe partial class Cui
         memset(&d, 0, ((ulong)(sizeof(cui_tool_opts))));
         if (Cond.B((Cond.B(o) ? 0 : 1)))
             o = &d;
-        cui__toolbar_build* b = cui__slots__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui)->tb;
+        cui__toolbar_build* b = cui__slots__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui)->tb;
         int index = ((int)(Cond.B(b) ? b->index++ : 0));
         CBool fired = ((CBool)(Cond.B(b) && Cond.B(((CBool)(b->st->fire == index + 1)))));
         if (Cond.B(fired))
@@ -1356,7 +1299,7 @@ public static unsafe partial class Cui
         CBool on = ((CBool)(Cond.B(o->toggle) && Cond.B(*o->toggle)));
         CBool disabled = ((CBool)(Cond.B(o->disabled) || Cond.B(cui_is_disabled(ui))));
         CBool clicked = 0;
-        if (Cond.B(((CBool)(Cond.B((Cond.B(b) ? 0 : 1)) || Cond.B(cui__tool_place__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(b, w))))))
+        if (Cond.B(((CBool)(Cond.B((Cond.B(b) ? 0 : 1)) || Cond.B(cui__tool_place__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(b, w))))))
         {
             cui_button_opts bo = default;
             memset(&bo, 0, ((ulong)(sizeof(cui_button_opts))));
@@ -1381,7 +1324,7 @@ public static unsafe partial class Cui
         else
         {
             byte* name = ((byte*)(Cond.B(has_label) ? o->label : ((byte*)(Cond.B(o->tooltip) ? o->tooltip : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/)))));
-            cui__tool_overflow__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, b, name, icon, disabled, on, 0, index);
+            cui__tool_overflow__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, b, name, icon, disabled, on, 0, index);
         }
         if (Cond.B(((CBool)(Cond.B(fired) && Cond.B((Cond.B(disabled) ? 0 : 1))))))
             clicked = 1;
@@ -1394,11 +1337,11 @@ public static unsafe partial class Cui
 
     public static unsafe void cui_toolbar_separator(cui_ctx* ui)
     {
-        cui__toolbar_build* b = cui__slots__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui)->tb;
+        cui__toolbar_build* b = cui__slots__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui)->tb;
         float h = ui->theme.control_sm;
-        if (Cond.B(((CBool)(Cond.B(b) && Cond.B((Cond.B(cui__tool_place__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(b, 1 + 2 * 5)) ? 0 : 1))))))
+        if (Cond.B(((CBool)(Cond.B(b) && Cond.B((Cond.B(cui__tool_place__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(b, 1 + 2 * 5)) ? 0 : 1))))))
         {
-            cui__tool_overflow__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, b, null, null, 0, 0, 1, -1);
+            cui__tool_overflow__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, b, null, null, 0, 0, 1, -1);
             return;
         }
         int box = cui__node_new(ui, 0);
@@ -1414,7 +1357,7 @@ public static unsafe partial class Cui
 
     public static unsafe void cui_toolbar_spacer(cui_ctx* ui)
     {
-        cui__toolbar_build* b = cui__slots__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui)->tb;
+        cui__toolbar_build* b = cui__slots__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui)->tb;
         if (Cond.B(((CBool)(Cond.B(b) && Cond.B(b->hiding)))))
             return;
         cui_spacer(ui);
@@ -1424,7 +1367,7 @@ public static unsafe partial class Cui
 
     public static unsafe void cui_toolbar_end(cui_ctx* ui)
     {
-        cui__chrome_slots* s = cui__slots__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui);
+        cui__chrome_slots* s = cui__slots__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui);
         cui__toolbar_build* b = s->tb;
         if (Cond.B((Cond.B(b) ? 0 : 1)))
             return;
@@ -1500,7 +1443,7 @@ public static unsafe partial class Cui
         b->compact = ((CBool)(b->avail + 0.5f < b->st->need));
         b->prev = (cui_status_build*)ui->building.status_bar;
         ui->building.status_bar = b;
-        int row = cui__bar_row__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, id, 3, 6, (Cond.B(o->no_border) ? 0 : 1), 1);
+        int row = cui__bar_row__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, id, 3, 6, (Cond.B(o->no_border) ? 0 : 1), 1);
         ui->nodes[row].gap = 4;
         cui__open(ui, row);
         cui_push_id(ui, id_str);
@@ -1522,7 +1465,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe CBool cui__status_fits__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(cui_ctx* ui, float label_w, CBool has_icon, float extra, CBool* icon_only)
+    public static unsafe CBool cui__status_fits__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(cui_ctx* ui, float label_w, CBool has_icon, float extra, CBool* icon_only)
     {
         cui_status_build* b = (cui_status_build*)ui->building.status_bar;
         *icon_only = 0;
@@ -1551,7 +1494,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe int cui__status_row__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(cui_ctx* ui, uint id)
+    public static unsafe int cui__status_row__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(cui_ctx* ui, uint id)
     {
         int i = cui__node_new(ui, id);
         cui_node* n = &ui->nodes[i];
@@ -1567,7 +1510,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__status_label__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(cui_ctx* ui, byte* text, int len, cui_color c)
+    public static unsafe void cui__status_label__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(cui_ctx* ui, byte* text, int len, cui_color c)
     {
         int t = cui__text_node(ui, text, len, 0, cui__fs(ui, ui->theme.text_sm), c, 0);
         ui->nodes[t].line_height = 1.3f;
@@ -1584,14 +1527,14 @@ public static unsafe partial class Cui
             o = &d;
         CBool icon_only = default;
         float tw = ((float)(Cond.B(text) ? cui__text_width(ui, 0, cui__fs(ui, ui->theme.text_sm), text, cui__display_len(text), 1) : (float)(0)));
-        if (Cond.B((Cond.B(cui__status_fits__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, tw, ((CBool)(o->icon != (void*)0)), 0, &icon_only)) ? 0 : 1)))
+        if (Cond.B((Cond.B(cui__status_fits__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, tw, ((CBool)(o->icon != (void*)0)), 0, &icon_only)) ? 0 : 1)))
             return;
-        int i = cui__status_row__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, 0);
+        int i = cui__status_row__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, 0);
         cui__open(ui, i);
         if (Cond.B(o->icon))
             cui__icon_node(ui, o->icon, 12, (Cond.B((int)o->tone) ? cui__tone_color(ui, o->tone) : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY]));
         if (Cond.B(((CBool)(Cond.B(text) && Cond.B((Cond.B(icon_only) ? 0 : 1))))))
-            cui__status_label__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, text, cui__display_len(text), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY]);
+            cui__status_label__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, text, cui__display_len(text), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY]);
         cui__close(ui);
     }
 
@@ -1607,7 +1550,7 @@ public static unsafe partial class Cui
             label = (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/);
         CBool icon_only = default;
         float lw = ((float)(Cond.B(label[0]) ? cui__text_width(ui, 0, cui__fs(ui, ui->theme.text_sm), label, cui__display_len(label), 1) : (float)(0)));
-        if (Cond.B((Cond.B(cui__status_fits__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, lw, ((CBool)(o->icon != (void*)0)), 0, &icon_only)) ? 0 : 1)))
+        if (Cond.B((Cond.B(cui__status_fits__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, lw, ((CBool)(o->icon != (void*)0)), 0, &icon_only)) ? 0 : 1)))
             return 0;
         uint id = cui_make_id(ui, ((byte*)(Cond.B(label[0]) ? label : ((byte*)(Cond.B(o->tooltip) ? o->tooltip : (DotCcLiterals.Pointer + DotCcLiterals.S1047 /*"#status-item"*/))))));
         CBool disabled = ((CBool)(Cond.B(o->disabled) || Cond.B(cui_is_disabled(ui))));
@@ -1617,7 +1560,7 @@ public static unsafe partial class Cui
         cui__status_item_state* st = (cui__status_item_state*)(cui_state(ui, id, ((ulong)(sizeof(cui__status_item_state)))));
         cui__tween(ui, &st->hover, ((float)(Cond.B(r.hovered) ? 1.0f : 0.0f)), 0.14f);
         cui__tween(ui, &st->focus, ((float)(Cond.B(r.focus_visible) ? 1.0f : 0.0f)), 0.14f);
-        int i = cui__status_row__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, id);
+        int i = cui__status_row__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, id);
         cui_node* n = &ui->nodes[i];
         n->bg = (Cond.B(r.pressed) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_ACTIVE] : cui_alpha(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_HOVER], st->hover));
         n->opacity = ((float)(Cond.B(disabled) ? 0.45f : 1.0f));
@@ -1629,7 +1572,7 @@ public static unsafe partial class Cui
         if (Cond.B(o->icon))
             cui__icon_node(ui, o->icon, 12, (Cond.B((int)o->tone) ? cui__tone_color(ui, o->tone) : fg));
         if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(label[0]) && Cond.B(((CBool)(cui__display_len(label) > 0)))))) && Cond.B((Cond.B(icon_only) ? 0 : 1))))))
-            cui__status_label__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, label, cui__display_len(label), fg);
+            cui__status_label__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, label, cui__display_len(label), fg);
         cui__close(ui);
         cui__focus_ring(ui, i, st->focus);
         ui->last_id = id;
@@ -1644,7 +1587,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__paint_status_progress__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(cui_ctx* ui, cui_node* n, void* data)
+    public static unsafe void cui__paint_status_progress__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(cui_ctx* ui, cui_node* n, void* data)
     {
         cui__status_progress_paint* p = (cui__status_progress_paint*)(data);
         cui_rect r = n->rect;
@@ -1681,13 +1624,13 @@ public static unsafe partial class Cui
             o = &d;
         CBool icon_only = default;
         float lw = ((float)(Cond.B(o->label) ? cui__text_width(ui, 0, cui__fs(ui, ui->theme.text_sm), o->label, cui__display_len(o->label), 1) + 8 : (float)(0)));
-        if (Cond.B((Cond.B(cui__status_fits__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, lw, 0, ((float)(Cond.B(((CBool)(o->width > 0))) ? o->width : (float)(64))), &icon_only)) ? 0 : 1)))
+        if (Cond.B((Cond.B(cui__status_fits__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, lw, 0, ((float)(Cond.B(((CBool)(o->width > 0))) ? o->width : (float)(64))), &icon_only)) ? 0 : 1)))
             return;
-        int i = cui__status_row__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, 0);
+        int i = cui__status_row__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, 0);
         ui->nodes[i].gap = 8;
         cui__open(ui, i);
         if (Cond.B(o->label))
-            cui__status_label__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, o->label, cui__display_len(o->label), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY]);
+            cui__status_label__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, o->label, cui__display_len(o->label), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY]);
         int bar = cui__leaf(ui, 0, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)((float)(Cond.B(((CBool)(o->width > 0))) ? o->width : (float)(64))) }, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)4 });
         ui->nodes[bar].self_align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
         uint aid = cui__position_id(ui, 0x57A7u);
@@ -1698,14 +1641,14 @@ public static unsafe partial class Cui
         p->motion = ui->theme.motion;
         p->track = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_CONTROL_TRACK];
         p->fill = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_CONTROL_ON];
-        ui->nodes[bar].paint = DotCcPointers.cui__paint_status_progress__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0;
+        ui->nodes[bar].paint = DotCcPointers.cui__paint_status_progress__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED;
         ui->nodes[bar].paint_data = p;
         cui__close(ui);
     }
 
 
 
-    public static unsafe void cui__paint_folder__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(cui_ctx* ui, cui_node* n, void* data)
+    public static unsafe void cui__paint_folder__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(cui_ctx* ui, cui_node* n, void* data)
     {
         cui__folder_paint* p = (cui__folder_paint*)(data);
         cui_rect r = n->rect;
@@ -1722,7 +1665,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__paint_dirty_dot__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(cui_ctx* ui, cui_node* n, void* data)
+    public static unsafe void cui__paint_dirty_dot__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(cui_ctx* ui, cui_node* n, void* data)
     {
         cui__dirty_dot_paint* p = (cui__dirty_dot_paint*)(data);
         if (Cond.B(((CBool)(p->alpha <= 0.01f))))
@@ -1733,7 +1676,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__dtf_geometry__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(cui__dtf* f)
+    public static unsafe void cui__dtf_geometry__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(cui__dtf* f)
     {
         cui_ctx* ui = f->ui;
         int count = f->count;
@@ -1760,7 +1703,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__dtf_shortcuts__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(cui__dtf* f)
+    public static unsafe void cui__dtf_shortcuts__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(cui__dtf* f)
     {
         cui_ctx* ui = f->ui;
         int count = f->count, cur = *f->selected;
@@ -1786,7 +1729,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__dtf_glide_moved__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(cui__dtf* f, int from, int to, float from_x)
+    public static unsafe void cui__dtf_glide_moved__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(cui__dtf* f, int from, int to, float from_x)
     {
         float new_x = ((float)(Cond.B(((CBool)(to > from))) ? f->left[to] + f->wid[to] - f->wid[from] : f->left[to]));
         f->st->dropped = f->tid[from];
@@ -1797,7 +1740,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__dtf_keys__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(cui__dtf* f)
+    public static unsafe void cui__dtf_keys__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(cui__dtf* f)
     {
         cui_ctx* ui = f->ui;
         int sel = f->sel, count = f->count;
@@ -1825,7 +1768,7 @@ public static unsafe partial class Cui
                 f->res->move_from = sel;
                 f->res->move_to = to;
                 if (Cond.B(f->have))
-                    cui__dtf_glide_moved__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(f, sel, to, f->left[sel]);
+                    cui__dtf_glide_moved__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(f, sel, to, f->left[sel]);
             }
             else
                 if (Cond.B((Cond.B(move) ? 0 : 1)))
@@ -1845,7 +1788,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__dtf_drag__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(cui__dtf* f)
+    public static unsafe void cui__dtf_drag__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(cui__dtf* f)
     {
         cui_ctx* ui = f->ui;
         cui__dtabs_state* st = f->st;
@@ -1898,7 +1841,7 @@ public static unsafe partial class Cui
                 {
                     f->res->move_from = from;
                     f->res->move_to = to;
-                    cui__dtf_glide_moved__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(f, from, to, x0);
+                    cui__dtf_glide_moved__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(f, from, to, x0);
                 }
                 else
                 {
@@ -1917,7 +1860,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__dtf_scroll_strip__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(cui__dtf* f, cui_scroll_state* ss)
+    public static unsafe void cui__dtf_scroll_strip__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(cui__dtf* f, cui_scroll_state* ss)
     {
         cui_ctx* ui = f->ui;
         cui__dtabs_state* st = f->st;
@@ -1951,7 +1894,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__dtf_tab_motion__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(cui__dtf* f, cui__dtab_state* ts, int k)
+    public static unsafe void cui__dtf_tab_motion__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(cui__dtf* f, cui__dtab_state* ts, int k)
     {
         cui_ctx* ui = f->ui;
         cui__dtabs_state* st = f->st;
@@ -1982,7 +1925,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__dtf_build_close__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(cui_ctx* ui, cui_doc_tab* tb, cui__dtab_state* ts, uint cid, cui_interact sr)
+    public static unsafe void cui__dtf_build_close__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(cui_ctx* ui, cui_doc_tab* tb, cui__dtab_state* ts, uint cid, cui_interact sr)
     {
         int slot = cui__node_new(ui, cid);
         cui_node* s = &ui->nodes[slot];
@@ -2004,14 +1947,14 @@ public static unsafe partial class Cui
         cui__dirty_dot_paint* dp = (cui__dirty_dot_paint*)cui__frame_alloc(ui, ((ulong)(sizeof(cui__dirty_dot_paint))));
         dp->c = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY];
         dp->alpha = ((float)(Cond.B(tb->dirty) ? 1.0f - ts->xshow : 0.0f));
-        ui->nodes[dot].paint = DotCcPointers.cui__paint_dirty_dot__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0;
+        ui->nodes[dot].paint = DotCcPointers.cui__paint_dirty_dot__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED;
         ui->nodes[dot].paint_data = dp;
         cui__close(ui);
     }
 
 
 
-    public static unsafe void cui__dtf_build_tab__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(cui__dtf* f, int k, int vis_sel, float rad, float fs)
+    public static unsafe void cui__dtf_build_tab__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(cui__dtf* f, int k, int vis_sel, float rad, float fs)
     {
         cui_ctx* ui = f->ui;
         cui_doc_tabs_opts* o = f->o;
@@ -2045,7 +1988,7 @@ public static unsafe partial class Cui
         if (Cond.B(sr.clicked))
             f->res->close = k;
         cui__dtab_state* ts = (cui__dtab_state*)(cui_state(ui, tid ^ 0x1u, ((ulong)(sizeof(cui__dtab_state)))));
-        cui__dtf_tab_motion__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(f, ts, k);
+        cui__dtf_tab_motion__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(f, ts, k);
         CBool dragged = ((CBool)(f->pose_from == k));
         CBool hov = ((CBool)(Cond.B(((CBool)(Cond.B(tr.hovered) || Cond.B(sr.hovered)))) && Cond.B(((CBool)(f->pose_from < 0)))));
         CBool want_x = ((CBool)(Cond.B((Cond.B(o->no_close) ? 0 : 1)) && Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(hov) || Cond.B(tr.focus_visible)))) || Cond.B(((CBool)(Cond.B(active) && Cond.B((Cond.B(tb->dirty) ? 0 : 1))))))))));
@@ -2071,7 +2014,7 @@ public static unsafe partial class Cui
             fp->border = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER];
             fp->r = rad;
             fp->full = dragged;
-            n->paint = DotCcPointers.cui__paint_folder__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0;
+            n->paint = DotCcPointers.cui__paint_folder__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED;
             n->paint_data = fp;
         }
         else
@@ -2097,7 +2040,7 @@ public static unsafe partial class Cui
         ui->nodes[t].line_height = 1.3f;
         ui->nodes[t].max_w = 200;
         if (Cond.B((Cond.B(o->no_close) ? 0 : 1)))
-            cui__dtf_build_close__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, tb, ts, cid, sr);
+            cui__dtf_build_close__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, tb, ts, cid, sr);
         cui__close(ui);
         cui__focus_ring(ui, i, ts->focus);
         if (Cond.B((Cond.B(o->no_close) ? 0 : 1)))
@@ -2153,20 +2096,20 @@ public static unsafe partial class Cui
         if (Cond.B(((CBool)(st->press_pos >= count))))
             st->pending = 0;
         cui_push_id(ui, id_str);
-        cui__dtf_geometry__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(&f);
+        cui__dtf_geometry__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(&f);
         f.sel = *selected;
         if (Cond.B(((CBool)(Cond.B(o->shortcuts) && Cond.B(((CBool)(count > 0)))))))
-            cui__dtf_shortcuts__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(&f);
+            cui__dtf_shortcuts__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(&f);
         CBool valid = ((CBool)(Cond.B(((CBool)(*selected >= 0))) && Cond.B(((CBool)(*selected < count)))));
-        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(valid) && Cond.B(((CBool)(f.sel == *selected)))))) && Cond.B(((CBool)(ui->focus == f.tid[f.sel])))))) && Cond.B((Cond.B(cui__keys_covered__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui)) ? 0 : 1))))))
-            cui__dtf_keys__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(&f);
+        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(valid) && Cond.B(((CBool)(f.sel == *selected)))))) && Cond.B(((CBool)(ui->focus == f.tid[f.sel])))))) && Cond.B((Cond.B(cui__keys_covered__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui)) ? 0 : 1))))))
+            cui__dtf_keys__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(&f);
         f.pose_from = f.pose_to = -1;
         if (Cond.B((Cond.B(o->no_reorder) ? 0 : 1)))
-            cui__dtf_drag__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(&f);
+            cui__dtf_drag__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(&f);
         cui__spring(ui, &st->lift, ((float)(Cond.B(((CBool)(st->from >= 0))) ? 1.0f : 0.0f)), 0.26f, 0.12f);
         int vis_sel = *selected;
         cui_scroll_state* ss = (cui_scroll_state*)(cui_state(ui, f.sid, ((ulong)(sizeof(cui_scroll_state)))));
-        cui__dtf_scroll_strip__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(&f, ss);
+        cui__dtf_scroll_strip__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(&f, ss);
         cui_box sb = default;
         memset(&sb, 0, ((ulong)(sizeof(cui_box))));
         sb.width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
@@ -2174,7 +2117,7 @@ public static unsafe partial class Cui
         cui_node* cn = &ui->nodes[col];
         cn->flags &= ~(uint)8;
         cn->self_align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_STRETCH);
-        cui__bar_edge__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(ui, col, 0);
+        cui__bar_edge__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(ui, col, 0);
         ss->fade = cui__backdrop(ui);
         int row = cui__node_new(ui, f.id ^ 0x5707u);
         cui_node* rn = &ui->nodes[row];
@@ -2187,7 +2130,7 @@ public static unsafe partial class Cui
         float rad = ((float)(Cond.B(((CBool)(6.0f > ui->theme.radius_panel - 6.0f))) ? 6.0f : ui->theme.radius_panel - 6.0f));
         float fs = cui__fs(ui, ui->theme.text_body);
         for (int k = 0; Cond.B(((CBool)(k < count))); k++)
-            cui__dtf_build_tab__unit_1E26CE91844475FABCBD00F85A66DBBE017CE89C223B4AF8E1B5CAFF6F9683F0(&f, k, vis_sel, rad, fs);
+            cui__dtf_build_tab__unit_F3BE631C9EAD7AFFE426981AB500330BDAF836DAF9989E46CE5A416C21F2FCED(&f, k, vis_sel, rad, fs);
         cui__close(ui);
         cui__scroll_end_ex(ui);
         cui_pop_id(ui);
@@ -2215,16 +2158,16 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe cui__dk_reg* cui__dk_registry__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui_ctx* ui)
+    public static unsafe cui__dk_reg* cui__dk_registry__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui_ctx* ui)
     {
         return (cui__dk_reg*)(cui_state(ui, cui__hash_str((DotCcLiterals.Pointer + DotCcLiterals.S194 /*"cui.dockspace"*/), 0xD0C4u), ((ulong)(sizeof(cui__dk_reg)))));
     }
 
 
 
-    public static unsafe cui__dk_build* cui__dk_cur__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui_ctx* ui)
+    public static unsafe cui__dk_build* cui__dk_cur__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui_ctx* ui)
     {
-        cui__dk_reg* reg = cui__dk_registry__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(ui);
+        cui__dk_reg* reg = cui__dk_registry__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(ui);
         if (Cond.B(((CBool)(Cond.B(reg->cur) && Cond.B(((CBool)(reg->cur->frame != ui->frame)))))))
             reg->cur = null;
         return reg->cur;
@@ -2232,7 +2175,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__dk_init__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_state* st)
+    public static unsafe void cui__dk_init__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_state* st)
     {
         memset(st, 0, ((ulong)(sizeof(cui__dk_state))));
         st->init = 1;
@@ -2250,14 +2193,14 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe cui__dk_state* cui__dk_state_of__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui_ctx* ui, byte* id)
+    public static unsafe cui__dk_state* cui__dk_state_of__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui_ctx* ui, byte* id)
     {
         return (cui__dk_state*)(cui_state(ui, cui__hash_str(((byte*)(Cond.B(id) ? id : (DotCcLiterals.Pointer + DotCcLiterals.S768 /*"dock"*/))), 0xD0C5A11u), ((ulong)(sizeof(cui__dk_state)))));
     }
 
 
 
-    public static unsafe int cui__dk_alloc__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_state* st, int kind)
+    public static unsafe int cui__dk_alloc__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_state* st, int kind)
     {
         for (int i = 0; Cond.B(((CBool)(i < 96))); i++)
             if (Cond.B(((CBool)(((cui__dk_node*)&st->nodes)[i].kind == 0))))
@@ -2275,7 +2218,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe int cui__dk_free_nodes__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_state* st)
+    public static unsafe int cui__dk_free_nodes__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_state* st)
     {
         int n = 0;
         for (int i = 0; Cond.B(((CBool)(i < 96))); i++)
@@ -2285,7 +2228,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__dk_replace__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_state* st, int parent, int old, int nw)
+    public static unsafe void cui__dk_replace__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_state* st, int parent, int old, int nw)
     {
         if (Cond.B(((CBool)(parent < 0))))
             st->root = nw;
@@ -2300,7 +2243,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe int cui__dk_count__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_state* st, int leaf)
+    public static unsafe int cui__dk_count__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_state* st, int leaf)
     {
         int n = 0;
         for (int i = 0; Cond.B(((CBool)(i < 48))); i++)
@@ -2310,7 +2253,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe int cui__dk_tabs__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_state* st, int leaf, int* @out, int exclude)
+    public static unsafe int cui__dk_tabs__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_state* st, int leaf, int* @out, int exclude)
     {
         int n = 0;
         for (int i = 0; Cond.B(((CBool)(i < 48))); i++)
@@ -2329,7 +2272,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__dk_renumber__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_state* st, int* list, int n)
+    public static unsafe void cui__dk_renumber__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_state* st, int* list, int n)
     {
         for (int k = 0; Cond.B(((CBool)(k < n))); k++)
             ((cui__dk_panel*)&st->panels)[list[k]].order = k;
@@ -2337,7 +2280,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__dk_remove_leaf__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_state* st, int leaf)
+    public static unsafe void cui__dk_remove_leaf__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_state* st, int leaf)
     {
         int par = ((cui__dk_node*)&st->nodes)[leaf].parent;
         ((cui__dk_node*)&st->nodes)[leaf].kind = 0;
@@ -2349,13 +2292,13 @@ public static unsafe partial class Cui
             return;
         }
         int sib = ((int)(Cond.B(((CBool)(((cui__dk_node*)&st->nodes)[par].a == leaf))) ? ((cui__dk_node*)&st->nodes)[par].b : ((cui__dk_node*)&st->nodes)[par].a));
-        cui__dk_replace__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, ((cui__dk_node*)&st->nodes)[par].parent, par, sib);
+        cui__dk_replace__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, ((cui__dk_node*)&st->nodes)[par].parent, par, sib);
         ((cui__dk_node*)&st->nodes)[par].kind = 0;
     }
 
 
 
-    public static unsafe void cui__dk_detach__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_state* st, int p)
+    public static unsafe void cui__dk_detach__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_state* st, int p)
     {
         int leaf = ((cui__dk_panel*)&st->panels)[p].leaf;
         ((cui__dk_panel*)&st->panels)[p].leaf = -1;
@@ -2363,16 +2306,16 @@ public static unsafe partial class Cui
             return;
         if (Cond.B(((CBool)(((cui__dk_node*)&st->nodes)[leaf].sel == p))))
             ((cui__dk_node*)&st->nodes)[leaf].sel = -1;
-        if (Cond.B(((CBool)(cui__dk_count__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, leaf) == 0))))
-            cui__dk_remove_leaf__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, leaf);
+        if (Cond.B(((CBool)(cui__dk_count__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, leaf) == 0))))
+            cui__dk_remove_leaf__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, leaf);
     }
 
 
 
-    public static unsafe void cui__dk_insert__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_state* st, int p, int leaf, int before)
+    public static unsafe void cui__dk_insert__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_state* st, int p, int leaf, int before)
     {
         int* list = stackalloc int[49];
-        int n = cui__dk_tabs__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, leaf, list, p), at = n;
+        int n = cui__dk_tabs__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, leaf, list, p), at = n;
         for (int k = 0; Cond.B(((CBool)(k < n))); k++)
             if (Cond.B(((CBool)(list[k] == before))))
             {
@@ -2382,12 +2325,12 @@ public static unsafe partial class Cui
         memmove(list + at + 1, list + at, 4UL * (ulong)(n - at));
         list[at] = p;
         ((cui__dk_panel*)&st->panels)[p].leaf = leaf;
-        cui__dk_renumber__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, list, n + 1);
+        cui__dk_renumber__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, list, n + 1);
     }
 
 
 
-    public static unsafe int cui__dk_first_leaf__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_state* st, int i)
+    public static unsafe int cui__dk_first_leaf__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_state* st, int i)
     {
         while (Cond.B(((CBool)(Cond.B(((CBool)(i >= 0))) && Cond.B(((CBool)(((cui__dk_node*)&st->nodes)[i].kind == 2)))))))
             i = ((cui__dk_node*)&st->nodes)[i].a;
@@ -2396,19 +2339,19 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe int cui__dk_split__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_state* st, int target, int zone, float share)
+    public static unsafe int cui__dk_split__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_state* st, int target, int zone, float share)
     {
-        int x = cui__dk_alloc__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, 2);
+        int x = cui__dk_alloc__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, 2);
         if (Cond.B(((CBool)(x < 0))))
             return -1;
-        int n = cui__dk_alloc__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, 1);
+        int n = cui__dk_alloc__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, 1);
         if (Cond.B(((CBool)(n < 0))))
         {
             ((cui__dk_node*)&st->nodes)[x].kind = 0;
             return -1;
         }
         CBool first = ((CBool)(Cond.B(((CBool)(zone == 2))) || Cond.B(((CBool)(zone == 4)))));
-        cui__dk_replace__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, ((cui__dk_node*)&st->nodes)[target].parent, target, x);
+        cui__dk_replace__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, ((cui__dk_node*)&st->nodes)[target].parent, target, x);
         cui__dk_node* s = &((cui__dk_node*)&st->nodes)[x];
         s->vertical = ((CBool)(Cond.B(((CBool)(zone == 4))) || Cond.B(((CBool)(zone == 5)))));
         s->ratio = ((float)(Cond.B(first) ? share : 1.0f - share));
@@ -2421,7 +2364,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__dk_name_of__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(byte* label, byte* @out)
+    public static unsafe void cui__dk_name_of__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(byte* label, byte* @out)
     {
         byte* k = strstr(label, (DotCcLiterals.Pointer + DotCcLiterals.S1065 /*"###"*/));
         byte* s = ((byte*)(Cond.B(k) ? k + 3 : label));
@@ -2438,7 +2381,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe int cui__dk_find__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_state* st, byte* name)
+    public static unsafe int cui__dk_find__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_state* st, byte* name)
     {
         for (int i = 0; Cond.B(((CBool)(i < 48))); i++)
             if (Cond.B(((CBool)(Cond.B(((cui__dk_panel*)&st->panels)[i].used) && Cond.B(((CBool)(strcmp(((cui__dk_panel*)&st->panels)[i].name, name) == 0)))))))
@@ -2448,7 +2391,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe int cui__dk_new_panel__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_state* st, byte* name)
+    public static unsafe int cui__dk_new_panel__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_state* st, byte* name)
     {
         for (int i = 0; Cond.B(((CBool)(i < 48))); i++)
             if (Cond.B((Cond.B(((cui__dk_panel*)&st->panels)[i].used) ? 0 : 1)))
@@ -2467,7 +2410,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__dk_put__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_out* o, byte* s, ulong n)
+    public static unsafe void cui__dk_put__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_out* o, byte* s, ulong n)
     {
         for (ulong k = 0; Cond.B(((CBool)(k < n))); k++)
         {
@@ -2479,18 +2422,18 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__dk_put_ratio__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_out* o, float r)
+    public static unsafe void cui__dk_put_ratio__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_out* o, float r)
     {
         int q = (int)(cui__clampf(r, 0, 1) * 10000.0f + 0.5f);
         byte* t = stackalloc byte[8];
         if (Cond.B(((CBool)(q >= 10000))))
         {
-            cui__dk_put__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(o, (DotCcLiterals.Pointer + DotCcLiterals.S1325 /*"1"*/), 1);
+            cui__dk_put__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(o, (DotCcLiterals.Pointer + DotCcLiterals.S1325 /*"1"*/), 1);
             return;
         }
         if (Cond.B(((CBool)(q <= 0))))
         {
-            cui__dk_put__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(o, (DotCcLiterals.Pointer + DotCcLiterals.S1307 /*"0"*/), 1);
+            cui__dk_put__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(o, (DotCcLiterals.Pointer + DotCcLiterals.S1307 /*"0"*/), 1);
             return;
         }
         t[0] = 48;
@@ -2501,58 +2444,58 @@ public static unsafe partial class Cui
             t[n++] = (byte)(48 + q / d);
             q %= d;
         }
-        cui__dk_put__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(o, t, (ulong)n);
+        cui__dk_put__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(o, t, (ulong)n);
     }
 
 
 
-    public static unsafe CBool cui__dk_special__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(byte c)
+    public static unsafe CBool cui__dk_special__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(byte c)
     {
         return ((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(c == 44))) || Cond.B(((CBool)(c == 91)))))) || Cond.B(((CBool)(c == 93)))))) || Cond.B(((CBool)(c == 40)))))) || Cond.B(((CBool)(c == 41)))))) || Cond.B(((CBool)(c == 92)))));
     }
 
 
 
-    public static unsafe void cui__dk_write__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_state* st, int i, cui__dk_out* o)
+    public static unsafe void cui__dk_write__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_state* st, int i, cui__dk_out* o)
     {
         cui__dk_node* n = &((cui__dk_node*)&st->nodes)[i];
         if (Cond.B(((CBool)(n->kind == 2))))
         {
-            cui__dk_put__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(o, ((byte*)(Cond.B(n->vertical) ? (DotCcLiterals.Pointer + DotCcLiterals.S843 /*"v"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S868 /*"h"*/))), 1);
-            cui__dk_put_ratio__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(o, n->ratio);
-            cui__dk_put__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(o, (DotCcLiterals.Pointer + DotCcLiterals.S1305 /*"("*/), 1);
-            cui__dk_write__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, n->a, o);
-            cui__dk_put__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(o, (DotCcLiterals.Pointer + DotCcLiterals.S1212 /*","*/), 1);
-            cui__dk_write__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, n->b, o);
-            cui__dk_put__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(o, (DotCcLiterals.Pointer + DotCcLiterals.S700 /*")"*/), 1);
+            cui__dk_put__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(o, ((byte*)(Cond.B(n->vertical) ? (DotCcLiterals.Pointer + DotCcLiterals.S843 /*"v"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S868 /*"h"*/))), 1);
+            cui__dk_put_ratio__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(o, n->ratio);
+            cui__dk_put__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(o, (DotCcLiterals.Pointer + DotCcLiterals.S1305 /*"("*/), 1);
+            cui__dk_write__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, n->a, o);
+            cui__dk_put__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(o, (DotCcLiterals.Pointer + DotCcLiterals.S1212 /*","*/), 1);
+            cui__dk_write__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, n->b, o);
+            cui__dk_put__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(o, (DotCcLiterals.Pointer + DotCcLiterals.S700 /*")"*/), 1);
             return;
         }
         int* list = stackalloc int[48];
-        int c = cui__dk_tabs__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, i, list, -1);
-        cui__dk_put__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(o, (DotCcLiterals.Pointer + DotCcLiterals.S1210 /*"["*/), 1);
+        int c = cui__dk_tabs__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, i, list, -1);
+        cui__dk_put__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(o, (DotCcLiterals.Pointer + DotCcLiterals.S1210 /*"["*/), 1);
         for (int k = 0; Cond.B(((CBool)(k < c))); k++)
         {
             cui__dk_panel* p = &((cui__dk_panel*)&st->panels)[list[k]];
             if (Cond.B(k))
-                cui__dk_put__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(o, (DotCcLiterals.Pointer + DotCcLiterals.S1212 /*","*/), 1);
+                cui__dk_put__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(o, (DotCcLiterals.Pointer + DotCcLiterals.S1212 /*","*/), 1);
             if (Cond.B(((CBool)(n->sel == list[k]))))
-                cui__dk_put__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(o, (DotCcLiterals.Pointer + DotCcLiterals.S132 /*"*"*/), 1);
+                cui__dk_put__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(o, (DotCcLiterals.Pointer + DotCcLiterals.S132 /*"*"*/), 1);
             if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(p->known) && Cond.B((Cond.B(p->open) ? 0 : 1))))) || Cond.B(((CBool)(Cond.B((Cond.B(p->known) ? 0 : 1)) && Cond.B(((CBool)(p->pending == 0))))))))))
-                cui__dk_put__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(o, (DotCcLiterals.Pointer + DotCcLiterals.S201 /*"-"*/), 1);
+                cui__dk_put__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(o, (DotCcLiterals.Pointer + DotCcLiterals.S201 /*"-"*/), 1);
             for (byte* s = p->name; Cond.B(*s); s++)
             {
                 CBool lead = ((CBool)(Cond.B(((CBool)(s == p->name))) && Cond.B(((CBool)(Cond.B(((CBool)(*s == 42))) || Cond.B(((CBool)(*s == 45))))))));
-                if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(cui__dk_special__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(*s)) || Cond.B(((CBool)((byte)(*s) < 0x20)))))) || Cond.B(lead)))))
-                    cui__dk_put__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(o, (DotCcLiterals.Pointer + DotCcLiterals.S111 /*"\\"*/), 1);
-                cui__dk_put__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(o, s, 1);
+                if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(cui__dk_special__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(*s)) || Cond.B(((CBool)((byte)(*s) < 0x20)))))) || Cond.B(lead)))))
+                    cui__dk_put__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(o, (DotCcLiterals.Pointer + DotCcLiterals.S111 /*"\\"*/), 1);
+                cui__dk_put__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(o, s, 1);
             }
         }
-        cui__dk_put__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(o, (DotCcLiterals.Pointer + DotCcLiterals.S1038 /*"]"*/), 1);
+        cui__dk_put__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(o, (DotCcLiterals.Pointer + DotCcLiterals.S1038 /*"]"*/), 1);
     }
 
 
 
-    public static unsafe CBool cui__dk_parse_ratio__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_parser* P, float* @out)
+    public static unsafe CBool cui__dk_parse_ratio__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_parser* P, float* @out)
     {
         if (Cond.B(((CBool)(P->pos >= P->len))))
             return 0;
@@ -2591,7 +2534,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe int cui__dk_parse_node__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_parser* P, int parent, int depth)
+    public static unsafe int cui__dk_parse_node__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_parser* P, int parent, int depth)
     {
         if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(depth > 40))) || Cond.B(((CBool)(P->pos >= P->len)))))) || Cond.B(((CBool)(P->nn >= 96)))))))
             return -1;
@@ -2606,16 +2549,16 @@ public static unsafe partial class Cui
             n->kind = 2;
             n->vertical = ((CBool)(c == 118));
             P->pos++;
-            if (Cond.B((Cond.B(cui__dk_parse_ratio__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(P, &n->ratio)) ? 0 : 1)))
+            if (Cond.B((Cond.B(cui__dk_parse_ratio__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(P, &n->ratio)) ? 0 : 1)))
                 return -1;
             if (Cond.B(((CBool)(Cond.B(((CBool)(P->pos >= P->len))) || Cond.B(((CBool)(P->s[P->pos] != 40)))))))
                 return -1;
             P->pos++;
-            int a = cui__dk_parse_node__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(P, me, depth + 1);
+            int a = cui__dk_parse_node__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(P, me, depth + 1);
             if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(a < 0))) || Cond.B(((CBool)(P->pos >= P->len)))))) || Cond.B(((CBool)(P->s[P->pos] != 44)))))))
                 return -1;
             P->pos++;
-            int b = cui__dk_parse_node__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(P, me, depth + 1);
+            int b = cui__dk_parse_node__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(P, me, depth + 1);
             if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(b < 0))) || Cond.B(((CBool)(P->pos >= P->len)))))) || Cond.B(((CBool)(P->s[P->pos] != 41)))))))
                 return -1;
             P->pos++;
@@ -2697,7 +2640,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe CBool cui__dk_load__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui_ctx* ui, cui__dk_state* st, byte* text)
+    public static unsafe CBool cui__dk_load__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui_ctx* ui, cui__dk_state* st, byte* text)
     {
         if (Cond.B((Cond.B(text) ? 0 : 1)))
             return 0;
@@ -2713,7 +2656,7 @@ public static unsafe partial class Cui
             P->pos = 5;
             while (Cond.B(((CBool)(Cond.B(((CBool)(P->pos < P->len))) && Cond.B(((CBool)(P->s[P->pos] == 32)))))))
                 P->pos++;
-            ok = ((CBool)(cui__dk_parse_node__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(P, -1, 0) == 0));
+            ok = ((CBool)(cui__dk_parse_node__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(P, -1, 0) == 0));
             while (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(ok) && Cond.B(((CBool)(P->pos < P->len)))))) && Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(P->s[P->pos] == 32))) || Cond.B(((CBool)(P->s[P->pos] == 10)))))) || Cond.B(((CBool)(P->s[P->pos] == 13)))))) || Cond.B(((CBool)(P->s[P->pos] == 9))))))))))
                 P->pos++;
             ok = ((CBool)(Cond.B(ok) && Cond.B(((CBool)(P->pos == P->len)))));
@@ -2725,7 +2668,7 @@ public static unsafe partial class Cui
         }
         int keep_needed = 0;
         for (int k = 0; Cond.B(((CBool)(k < P->nt))); k++)
-            if (Cond.B(((CBool)(cui__dk_find__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, ((cui__dk_ptab*)&P->tabs)[k].name) < 0))))
+            if (Cond.B(((CBool)(cui__dk_find__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, ((cui__dk_ptab*)&P->tabs)[k].name) < 0))))
                 keep_needed++;
         int free_slots = 0;
         for (int i = 0; Cond.B(((CBool)(i < 48))); i++)
@@ -2774,9 +2717,9 @@ public static unsafe partial class Cui
         for (int k__3 = 0; Cond.B(((CBool)(k__3 < P->nt))); k__3++)
         {
             cui__dk_ptab* t = &((cui__dk_ptab*)&P->tabs)[k__3];
-            int p__2 = cui__dk_find__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, t->name);
+            int p__2 = cui__dk_find__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, t->name);
             if (Cond.B(((CBool)(p__2 < 0))))
-                p__2 = cui__dk_new_panel__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, t->name);
+                p__2 = cui__dk_new_panel__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, t->name);
             if (Cond.B(((CBool)(p__2 < 0))))
                 continue;
             ((cui__dk_panel*)&st->panels)[p__2].leaf = t->leaf;
@@ -2802,12 +2745,12 @@ public static unsafe partial class Cui
     {
         if (Cond.B(((CBool)(Cond.B(buf) && Cond.B(cap)))))
             buf[0] = 0;
-        cui__dk_state* st = cui__dk_state_of__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(ui, id);
+        cui__dk_state* st = cui__dk_state_of__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(ui, id);
         if (Cond.B(((CBool)(Cond.B((Cond.B(st->init) ? 0 : 1)) || Cond.B(((CBool)(st->root < 0)))))))
             return 0;
         cui__dk_out o = new cui__dk_out { buf = buf, cap = cap, len = 0 };
-        cui__dk_put__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(&o, (DotCcLiterals.Pointer + DotCcLiterals.S612 /*"dock1 "*/), 6);
-        cui__dk_write__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, st->root, &o);
+        cui__dk_put__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(&o, (DotCcLiterals.Pointer + DotCcLiterals.S612 /*"dock1 "*/), 6);
+        cui__dk_write__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, st->root, &o);
         if (Cond.B(((CBool)(Cond.B(buf) && Cond.B(cap)))))
             buf[((ulong)(Cond.B(((CBool)(o.len < cap))) ? o.len : cap - (ulong)(1)))] = 0;
         return o.len;
@@ -2817,22 +2760,22 @@ public static unsafe partial class Cui
 
     public static unsafe CBool cui_dock_load(cui_ctx* ui, byte* id, byte* text)
     {
-        cui__dk_state* st = cui__dk_state_of__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(ui, id);
+        cui__dk_state* st = cui__dk_state_of__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(ui, id);
         if (Cond.B((Cond.B(st->init) ? 0 : 1)))
-            cui__dk_init__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st);
-        return cui__dk_load__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(ui, st, text);
+            cui__dk_init__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st);
+        return cui__dk_load__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(ui, st, text);
     }
 
 
 
-    public static unsafe CBool cui__dk_present__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_state* st, cui__dk_panel* p)
+    public static unsafe CBool cui__dk_present__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_state* st, cui__dk_panel* p)
     {
         return ((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(p->used) && Cond.B(p->known)))) && Cond.B(p->open)))) && Cond.B(((CBool)(p->leaf >= 0)))))) && Cond.B(((CBool)(p->seen == st->built)))))) && Cond.B(((CBool)(st->built > (ulong)(0))))));
     }
 
 
 
-    public static unsafe CBool cui__dk_vis__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_build* b, int i)
+    public static unsafe CBool cui__dk_vis__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_build* b, int i)
     {
         cui__dk_state* st = b->st;
         if (Cond.B(((CBool)(i < 0))))
@@ -2841,14 +2784,14 @@ public static unsafe partial class Cui
         CBool v = 0;
         if (Cond.B(((CBool)(n->kind == 2))))
         {
-            CBool va = cui__dk_vis__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(b, n->a), vb = cui__dk_vis__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(b, n->b);
+            CBool va = cui__dk_vis__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(b, n->a), vb = cui__dk_vis__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(b, n->b);
             v = ((CBool)(Cond.B(va) || Cond.B(vb)));
         }
         else
             if (Cond.B(((CBool)(n->kind == 1))))
             {
                 for (int k = 0; Cond.B(((CBool)(Cond.B(((CBool)(k < 48))) && Cond.B((Cond.B(v) ? 0 : 1))))); k++)
-                    v = ((CBool)(Cond.B(((CBool)(((cui__dk_panel*)&st->panels)[k].leaf == i))) && Cond.B(cui__dk_present__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, &((cui__dk_panel*)&st->panels)[k]))));
+                    v = ((CBool)(Cond.B(((CBool)(((cui__dk_panel*)&st->panels)[k].leaf == i))) && Cond.B(cui__dk_present__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, &((cui__dk_panel*)&st->panels)[k]))));
             }
         ((CBool*)&b->vis)[i] = v;
         return v;
@@ -2856,15 +2799,15 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__dk_compute_vis__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_build* b)
+    public static unsafe void cui__dk_compute_vis__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_build* b)
     {
         memset((CBool*)&b->vis, 0, ((ulong)((96 * sizeof(CBool)))));
-        _ = cui__dk_vis__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(b, b->st->root);
+        _ = cui__dk_vis__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(b, b->st->root);
     }
 
 
 
-    public static unsafe int cui__dk_shown__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_build* b, int i)
+    public static unsafe int cui__dk_shown__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_build* b, int i)
     {
         cui__dk_state* st = b->st;
         while (Cond.B(((CBool)(Cond.B(((CBool)(i >= 0))) && Cond.B(((CBool)(((cui__dk_node*)&st->nodes)[i].kind == 2)))))))
@@ -2879,26 +2822,26 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe int cui__dk_visible_tabs__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_state* st, int leaf, int* @out, int exclude)
+    public static unsafe int cui__dk_visible_tabs__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_state* st, int leaf, int* @out, int exclude)
     {
         int* all = stackalloc int[48];
-        int n = cui__dk_tabs__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, leaf, all, exclude), c = 0;
+        int n = cui__dk_tabs__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, leaf, all, exclude), c = 0;
         for (int k = 0; Cond.B(((CBool)(k < n))); k++)
-            if (Cond.B(cui__dk_present__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, &((cui__dk_panel*)&st->panels)[all[k]])))
+            if (Cond.B(cui__dk_present__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, &((cui__dk_panel*)&st->panels)[all[k]])))
                 @out[c++] = all[k];
         return c;
     }
 
 
 
-    public static unsafe uint cui__dk_leaf_id__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_build* b, uint uid)
+    public static unsafe uint cui__dk_leaf_id__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_build* b, uint uid)
     {
         return cui__hash(&uid, ((ulong)(sizeof(uint))), b->seed ^ 0x1EAFu);
     }
 
 
 
-    public static unsafe uint cui__dk_tab_id__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui_ctx* ui, uint uid, byte* label)
+    public static unsafe uint cui__dk_tab_id__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui_ctx* ui, uint uid, byte* label)
     {
         cui_push_id(ui, cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S309 /*"t%u"*/), (uint)uid));
         uint id = cui_make_id(ui, label);
@@ -2908,19 +2851,19 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe float cui__dk_min__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_build* b, int i, CBool vertical)
+    public static unsafe float cui__dk_min__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_build* b, int i, CBool vertical)
     {
-        i = cui__dk_shown__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(b, i);
+        i = cui__dk_shown__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(b, i);
         cui__dk_node* n = &((cui__dk_node*)&b->st->nodes)[i];
         if (Cond.B(((CBool)(n->kind != 2))))
             return ((float)(Cond.B(vertical) ? b->min_h : b->min_w));
-        float ma = cui__dk_min__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(b, n->a, vertical), mb = cui__dk_min__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(b, n->b, vertical);
+        float ma = cui__dk_min__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(b, n->a, vertical), mb = cui__dk_min__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(b, n->b, vertical);
         return ((float)(Cond.B(((CBool)((int)((int)(n->vertical)) == (int)((int)(vertical))))) ? ma + mb + 1 : ((float)(Cond.B(((CBool)(ma > mb))) ? ma : mb))));
     }
 
 
 
-    public static unsafe void cui__dk_reorder__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_state* st, int leaf, int* vis, int vn, int from, int to)
+    public static unsafe void cui__dk_reorder__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_state* st, int leaf, int* vis, int vn, int from, int to)
     {
         if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(from < 0))) || Cond.B(((CBool)(to < 0)))))) || Cond.B(((CBool)(from >= vn)))))) || Cond.B(((CBool)(to >= vn)))))) || Cond.B(((CBool)(from == to)))))))
             return;
@@ -2933,7 +2876,7 @@ public static unsafe partial class Cui
             else
             {
                 int* all = stackalloc int[48];
-                int n = cui__dk_tabs__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, leaf, all, p);
+                int n = cui__dk_tabs__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, leaf, all, p);
                 for (int k = 0; Cond.B(((CBool)(k < n))); k++)
                     if (Cond.B(((CBool)(all[k] == vis[to]))))
                     {
@@ -2941,24 +2884,24 @@ public static unsafe partial class Cui
                         break;
                     }
             }
-        cui__dk_insert__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, p, leaf, before);
+        cui__dk_insert__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, p, leaf, before);
     }
 
 
 
-    public static unsafe void cui__dk_build_leaf__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui_ctx* ui, cui__dk_build* b, int i)
+    public static unsafe void cui__dk_build_leaf__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui_ctx* ui, cui__dk_build* b, int i)
     {
         cui__dk_state* st = b->st;
         cui__dk_node* n = &((cui__dk_node*)&st->nodes)[i];
         int* vis = stackalloc int[48];
-        int vn = cui__dk_visible_tabs__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, i, vis, -1);
+        int vn = cui__dk_visible_tabs__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, i, vis, -1);
         int sel = 0;
         for (int k = 0; Cond.B(((CBool)(k < vn))); k++)
             if (Cond.B(((CBool)(vis[k] == n->sel))))
                 sel = k;
         if (Cond.B(((CBool)(vn > 0))))
             n->sel = vis[sel];
-        uint lid = cui__dk_leaf_id__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(b, n->uid);
+        uint lid = cui__dk_leaf_id__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(b, n->uid);
         int ln = cui__node_new(ui, lid);
         cui_node* L = &ui->nodes[ln];
         L->dir = (byte)(__DotCcEnum_6375695F646972.CUI_COLUMN);
@@ -2984,7 +2927,7 @@ public static unsafe partial class Cui
             tabs[k__1].dirty = p->dirty;
             closable = ((CBool)(Cond.B(closable) || Cond.B(p->closable)));
             ((CBool*)&b->tab_vis)[vis[k__1]] = 1;
-            b->tab_id[vis[k__1]] = cui__dk_tab_id__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(ui, n->uid, p->label);
+            b->tab_id[vis[k__1]] = cui__dk_tab_id__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(ui, n->uid, p->label);
             if (Cond.B(((CBool)(st->refocus == vis[k__1]))))
             {
                 ui->focus = b->tab_id[vis[k__1]];
@@ -3012,8 +2955,8 @@ public static unsafe partial class Cui
             }
             if (Cond.B(((CBool)(Cond.B(((CBool)(r.move_from >= 0))) && Cond.B(((CBool)(r.move_to >= 0)))))))
             {
-                cui__dk_reorder__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, i, vis, vn, r.move_from, r.move_to);
-                vn = cui__dk_visible_tabs__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, i, vis, -1);
+                cui__dk_reorder__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, i, vis, vn, r.move_from, r.move_to);
+                vn = cui__dk_visible_tabs__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, i, vis, -1);
             }
             if (Cond.B(((CBool)(Cond.B(((CBool)(sel >= 0))) && Cond.B(((CBool)(sel < vn)))))))
                 n->sel = vis[sel];
@@ -3032,22 +2975,22 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__dk_build_node__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui_ctx* ui, cui__dk_build* b, int i)
+    public static unsafe void cui__dk_build_node__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui_ctx* ui, cui__dk_build* b, int i)
     {
         cui__dk_state* st = b->st;
-        i = cui__dk_shown__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(b, i);
+        i = cui__dk_shown__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(b, i);
         if (Cond.B(((CBool)(i < 0))))
             return;
         if (Cond.B(((CBool)(((cui__dk_node*)&st->nodes)[i].kind == 1))))
         {
-            cui__dk_build_leaf__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(ui, b, i);
+            cui__dk_build_leaf__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(ui, b, i);
             return;
         }
         cui__dk_node* n = &((cui__dk_node*)&st->nodes)[i];
         byte* sid = cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1036 /*"s%u"*/), (uint)n->uid);
         cui_rect pr = cui__prev_rect(ui, cui_make_id(ui, sid));
         float total = ((float)(Cond.B(n->vertical) ? pr.h : pr.w));
-        float ma = cui__dk_min__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(b, n->a, n->vertical), mb = cui__dk_min__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(b, n->b, n->vertical);
+        float ma = cui__dk_min__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(b, n->a, n->vertical), mb = cui__dk_min__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(b, n->b, n->vertical);
         float lo = 0.02f, hi = 0.98f;
         if (Cond.B(((CBool)(total > 2))))
         {
@@ -3075,16 +3018,16 @@ public static unsafe partial class Cui
         if (Cond.B(((CBool)(*r != shown))))
             n->ratio = cui__clampf(*r, ((float)(Cond.B(((CBool)(lo > 0.01f))) ? lo : 0.01f)), ((float)(Cond.B(((CBool)(hi < 0.99f))) ? hi : 0.99f)));
         ui->nodes[cui__current(ui)].min_w = ui->nodes[cui__current(ui)].min_h = 0;
-        cui__dk_build_node__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(ui, b, n->a);
+        cui__dk_build_node__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(ui, b, n->a);
         cui_split_next(ui);
         ui->nodes[cui__current(ui)].min_w = ui->nodes[cui__current(ui)].min_h = 0;
-        cui__dk_build_node__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(ui, b, n->b);
+        cui__dk_build_node__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(ui, b, n->b);
         cui_split_end(ui);
     }
 
 
 
-    public static unsafe void cui__dk_tiles_for_leaf__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui_rect C, cui_rect* t, int* nt)
+    public static unsafe void cui__dk_tiles_for_leaf__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui_rect C, cui_rect* t, int* nt)
     {
         float s = ((float)(Cond.B(((CBool)(32.0f < (((float)(Cond.B(((CBool)(C.w < C.h))) ? C.w : C.h)) - 24) / 3.4f))) ? 32.0f : (((float)(Cond.B(((CBool)(C.w < C.h))) ? C.w : C.h)) - 24) / 3.4f));
         *nt = 0;
@@ -3100,7 +3043,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe int cui__dk_outer_tiles__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui_rect R, cui_rect* t)
+    public static unsafe int cui__dk_outer_tiles__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui_rect R, cui_rect* t)
     {
         float s = 28;
         if (Cond.B(((CBool)(Cond.B(((CBool)(R.w < 4 * s))) || Cond.B(((CBool)(R.h < 4 * s)))))))
@@ -3115,7 +3058,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe float cui__dk_outer_share__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_build* b, cui_rect R, int zone)
+    public static unsafe float cui__dk_outer_share__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_build* b, cui_rect R, int zone)
     {
         CBool v = ((CBool)(Cond.B(((CBool)(zone == 4))) || Cond.B(((CBool)(zone == 5)))));
         float total = ((float)(Cond.B(v) ? R.h : R.w)), mn = ((float)(Cond.B(v) ? b->min_h : b->min_w));
@@ -3124,7 +3067,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe cui_rect cui__dk_part__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui_rect r, int zone, float share)
+    public static unsafe cui_rect cui__dk_part__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui_rect r, int zone, float share)
     {
         switch (zone)
         {
@@ -3150,7 +3093,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__dk_target__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui_ctx* ui, cui__dk_build* b, cui_rect R, cui__dk_paint* pt, cui_rect* pv)
+    public static unsafe void cui__dk_target__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui_ctx* ui, cui__dk_build* b, cui_rect R, cui__dk_paint* pt, cui_rect* pv)
     {
         cui__dk_state* st = b->st;
         float mx = ui->mx, my = ui->my;
@@ -3163,14 +3106,14 @@ public static unsafe partial class Cui
         pt->marker = 0;
         int src = st->drag_leaf, P = st->drag_panel;
         int* tmp = stackalloc int[48];
-        CBool lone = ((CBool)(cui__dk_visible_tabs__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, src, tmp, -1) <= 1));
-        CBool outer_ok = (Cond.B(((CBool)(Cond.B(lone) && Cond.B(((CBool)(cui__dk_shown__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(b, st->root) == src)))))) ? 0 : 1);
+        CBool lone = ((CBool)(cui__dk_visible_tabs__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, src, tmp, -1) <= 1));
+        CBool outer_ok = (Cond.B(((CBool)(Cond.B(lone) && Cond.B(((CBool)(cui__dk_shown__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(b, st->root) == src)))))) ? 0 : 1);
         cui_rect* ot = stackalloc cui_rect[4];
-        int no = ((int)(Cond.B(outer_ok) ? cui__dk_outer_tiles__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(R, ot) : 0));
+        int no = ((int)(Cond.B(outer_ok) ? cui__dk_outer_tiles__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(R, ot) : 0));
         for (int k = 0; Cond.B(((CBool)(k < no))); k++)
         {
             ((cui_rect*)&pt->tiles)[pt->ntiles] = ot[k];
-            pt->zone[pt->ntiles] = global::Managed.Cui.Cui.Globals.oz__s0__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154[k];
+            pt->zone[pt->ntiles] = global::Managed.Cui.Cui.Globals.oz__s0__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58[k];
             ((CBool*)&pt->outer)[pt->ntiles] = 1;
             pt->ntiles++;
         }
@@ -3180,9 +3123,9 @@ public static unsafe partial class Cui
             if (Cond.B(cui__rect_contains(cui__rect_inset(ot[k__1], -4), mx, my)))
             {
                 st->t_kind = 2;
-                st->t_zone = global::Managed.Cui.Cui.Globals.oz__s0__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154[k__1];
+                st->t_zone = global::Managed.Cui.Cui.Globals.oz__s0__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58[k__1];
                 pt->hot = k__1;
-                *pv = cui__dk_part__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(R, global::Managed.Cui.Cui.Globals.oz__s0__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154[k__1], cui__dk_outer_share__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(b, R, global::Managed.Cui.Cui.Globals.oz__s0__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154[k__1]));
+                *pv = cui__dk_part__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(R, global::Managed.Cui.Cui.Globals.oz__s0__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58[k__1], cui__dk_outer_share__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(b, R, global::Managed.Cui.Cui.Globals.oz__s0__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58[k__1]));
                 return;
             }
         int leaf = -1;
@@ -3200,14 +3143,14 @@ public static unsafe partial class Cui
         cui_rect C = new cui_rect { x = Lr.x, y = S.y + S.h, w = Lr.w, h = ((float)(Cond.B(((CBool)(0 > Lr.y + Lr.h - (S.y + S.h)))) ? (float)(0) : Lr.y + Lr.h - (S.y + S.h))) };
         cui_rect* lt = stackalloc cui_rect[5];
         int nl = default;
-        cui__dk_tiles_for_leaf__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(C, lt, &nl);
+        cui__dk_tiles_for_leaf__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(C, lt, &nl);
         int @base = pt->ntiles;
         for (int k__2 = 0; Cond.B(((CBool)(k__2 < nl))); k__2++)
         {
             if (Cond.B(((CBool)(Cond.B(((CBool)(k__2 == 0))) && Cond.B(((CBool)(leaf == src)))))))
                 continue;
             ((cui_rect*)&pt->tiles)[pt->ntiles] = lt[k__2];
-            pt->zone[pt->ntiles] = global::Managed.Cui.Cui.Globals.lz__s1__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154[k__2];
+            pt->zone[pt->ntiles] = global::Managed.Cui.Cui.Globals.lz__s1__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58[k__2];
             ((CBool*)&pt->outer)[pt->ntiles] = 0;
             pt->ntiles++;
         }
@@ -3216,7 +3159,7 @@ public static unsafe partial class Cui
         if (Cond.B(cui__rect_contains(S, mx, my)))
         {
             int* vis = stackalloc int[48];
-            int vn = cui__dk_visible_tabs__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, leaf, vis, P), at = vn;
+            int vn = cui__dk_visible_tabs__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, leaf, vis, P), at = vn;
             float edge = S.x + 6;
             for (int k__3 = 0; Cond.B(((CBool)(k__3 < vn))); k__3++)
             {
@@ -3241,7 +3184,7 @@ public static unsafe partial class Cui
         int zone = 0;
         for (int k__4 = 0; Cond.B(((CBool)(k__4 < nl))); k__4++)
             if (Cond.B(cui__rect_contains(cui__rect_inset(lt[k__4], -3), mx, my)))
-                zone = global::Managed.Cui.Cui.Globals.lz__s1__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154[k__4];
+                zone = global::Managed.Cui.Cui.Globals.lz__s1__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58[k__4];
         if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(zone == 0))) && Cond.B(((CBool)(C.w > 0)))))) && Cond.B(((CBool)(C.h > 0)))))))
         {
             float u = (mx - C.x) / C.w, v = (my - C.y) / C.h;
@@ -3250,7 +3193,7 @@ public static unsafe partial class Cui
             for (int k__5 = 1; Cond.B(((CBool)(k__5 < 4))); k__5++)
                 if (Cond.B(((CBool)(d[k__5] < d[best]))))
                     best = k__5;
-            zone = ((int)(Cond.B(((CBool)(d[best] >= 0.28f))) ? 1 : (int)global::Managed.Cui.Cui.Globals.oz__s0__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154[best]));
+            zone = ((int)(Cond.B(((CBool)(d[best] >= 0.28f))) ? 1 : (int)global::Managed.Cui.Cui.Globals.oz__s0__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58[best]));
         }
         for (int k__6 = @base; Cond.B(((CBool)(k__6 < pt->ntiles))); k__6++)
             if (Cond.B(((CBool)(pt->zone[k__6] == zone))))
@@ -3263,12 +3206,12 @@ public static unsafe partial class Cui
             return;
         }
         st->t_zone = zone;
-        *pv = (Cond.B(((CBool)(zone == 1))) ? Lr : cui__dk_part__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(Lr, zone, 0.5f));
+        *pv = (Cond.B(((CBool)(zone == 1))) ? Lr : cui__dk_part__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(Lr, zone, 0.5f));
     }
 
 
 
-    public static unsafe void cui__dk_drop__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui_ctx* ui, cui__dk_build* b, cui_rect R)
+    public static unsafe void cui__dk_drop__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui_ctx* ui, cui__dk_build* b, cui_rect R)
     {
         cui__dk_state* st = b->st;
         int P = st->drag_panel;
@@ -3280,62 +3223,62 @@ public static unsafe partial class Cui
         {
             int leaf = st->t_leaf;
             if (Cond.B(((CBool)(leaf != ((cui__dk_panel*)&st->panels)[P].leaf))))
-                cui__dk_detach__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, P);
+                cui__dk_detach__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, P);
             if (Cond.B(((CBool)(((cui__dk_node*)&st->nodes)[leaf].kind != 1))))
                 return;
-            cui__dk_insert__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, P, leaf, st->t_index);
+            cui__dk_insert__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, P, leaf, st->t_index);
             ((cui__dk_node*)&st->nodes)[leaf].sel = P;
             st->cur_leaf = leaf;
             return;
         }
-        if (Cond.B(((CBool)(cui__dk_free_nodes__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st) < 2))))
+        if (Cond.B(((CBool)(cui__dk_free_nodes__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st) < 2))))
             return;
         int target = ((int)(Cond.B(((CBool)(st->t_kind == 1))) ? st->t_leaf : -1));
-        float share = ((float)(Cond.B(((CBool)(st->t_kind == 2))) ? cui__dk_outer_share__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(b, R, st->t_zone) : 0.5f));
-        cui__dk_detach__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, P);
+        float share = ((float)(Cond.B(((CBool)(st->t_kind == 2))) ? cui__dk_outer_share__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(b, R, st->t_zone) : 0.5f));
+        cui__dk_detach__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, P);
         if (Cond.B(((CBool)(st->t_kind == 2))))
             target = st->root;
         int nl = default;
         if (Cond.B(((CBool)(target < 0))))
         {
-            nl = cui__dk_alloc__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, 1);
+            nl = cui__dk_alloc__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, 1);
             st->root = nl;
         }
         else
         {
-            nl = cui__dk_split__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, target, st->t_zone, share);
+            nl = cui__dk_split__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, target, st->t_zone, share);
         }
         if (Cond.B(((CBool)(nl < 0))))
             return;
-        cui__dk_insert__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, P, nl, -1);
+        cui__dk_insert__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, P, nl, -1);
         ((cui__dk_node*)&st->nodes)[nl].sel = P;
         st->cur_leaf = nl;
     }
 
 
 
-    public static unsafe void cui__dk_collect__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_build* b, int i, int* @out, int* n)
+    public static unsafe void cui__dk_collect__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_build* b, int i, int* @out, int* n)
     {
         cui__dk_state* st = b->st;
         if (Cond.B(((CBool)(Cond.B(((CBool)(i < 0))) || Cond.B((Cond.B(((CBool*)&b->vis)[i]) ? 0 : 1))))))
             return;
         if (Cond.B(((CBool)(((cui__dk_node*)&st->nodes)[i].kind == 2))))
         {
-            cui__dk_collect__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(b, ((cui__dk_node*)&st->nodes)[i].a, @out, n);
-            cui__dk_collect__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(b, ((cui__dk_node*)&st->nodes)[i].b, @out, n);
+            cui__dk_collect__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(b, ((cui__dk_node*)&st->nodes)[i].a, @out, n);
+            cui__dk_collect__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(b, ((cui__dk_node*)&st->nodes)[i].b, @out, n);
             return;
         }
-        *n += cui__dk_visible_tabs__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, i, @out + *n, -1);
+        *n += cui__dk_visible_tabs__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, i, @out + *n, -1);
     }
 
 
 
-    public static unsafe void cui__dk_build_compact__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui_ctx* ui, cui__dk_build* b)
+    public static unsafe void cui__dk_build_compact__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui_ctx* ui, cui__dk_build* b)
     {
         cui__dk_state* st = b->st;
         int* list = stackalloc int[48];
         int vn = 0;
-        cui__dk_collect__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(b, st->root, list, &vn);
+        cui__dk_collect__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(b, st->root, list, &vn);
         int sel = -1;
         for (int k = 0; Cond.B(((CBool)(k < vn))); k++)
             if (Cond.B(((CBool)(list[k] == st->compact_sel))))
@@ -3367,7 +3310,7 @@ public static unsafe partial class Cui
             tabs[k__2].dirty = p->dirty;
             closable = ((CBool)(Cond.B(closable) || Cond.B(p->closable)));
             ((CBool*)&b->tab_vis)[list[k__2]] = 1;
-            b->tab_id[list[k__2]] = cui__dk_tab_id__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(ui, 0xC0A7u, p->label);
+            b->tab_id[list[k__2]] = cui__dk_tab_id__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(ui, 0xC0A7u, p->label);
         }
         cui_doc_tabs_opts o = default;
         memset(&o, 0, ((ulong)(sizeof(cui_doc_tabs_opts))));
@@ -3411,15 +3354,15 @@ public static unsafe partial class Cui
             o = &d;
         if (Cond.B((Cond.B(id_str) ? 0 : 1)))
             id_str = (DotCcLiterals.Pointer + DotCcLiterals.S768 /*"dock"*/);
-        cui__dk_reg* reg = cui__dk_registry__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(ui);
+        cui__dk_reg* reg = cui__dk_registry__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(ui);
         cui__dk_build* b = (cui__dk_build*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__dk_build)))));
         memset(b, 0, ((ulong)(sizeof(cui__dk_build))));
-        cui__dk_state* st = cui__dk_state_of__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(ui, id_str);
+        cui__dk_state* st = cui__dk_state_of__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(ui, id_str);
         if (Cond.B((Cond.B(st->init) ? 0 : 1)))
         {
-            cui__dk_init__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st);
+            cui__dk_init__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st);
             if (Cond.B(o->layout))
-                _ = cui__dk_load__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(ui, st, o->layout);
+                _ = cui__dk_load__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(ui, st, o->layout);
         }
         b->st = st;
         b->frame = ui->frame;
@@ -3429,7 +3372,7 @@ public static unsafe partial class Cui
         b->min_h = ((float)(Cond.B(((CBool)(o->min_panel_height > 0))) ? o->min_panel_height : (float)(96)));
         b->shortcuts = o->shortcuts;
         b->takeover = -1;
-        b->prev = cui__dk_cur__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(ui);
+        b->prev = cui__dk_cur__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(ui);
         for (int i = 0; Cond.B(((CBool)(i < 96))); i++)
         {
             b->body[i] = -1;
@@ -3441,14 +3384,14 @@ public static unsafe partial class Cui
         b->compact = ((CBool)(Cond.B(((CBool)(R.w > 0))) && Cond.B(((CBool)(R.w < 2 * b->min_w + 180)))));
         if (Cond.B(((CBool)(Cond.B(b->compact) && Cond.B(((CBool)(st->drag != 0)))))))
             st->drag = 0;
-        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(st->drag_panel >= 0))) && Cond.B(((CBool)(st->drag_panel < 48)))))) && Cond.B(((CBool)(st->drag != 0)))))) && Cond.B((Cond.B(cui__dk_present__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, &((cui__dk_panel*)&st->panels)[st->drag_panel])) ? 0 : 1))))))
+        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(st->drag_panel >= 0))) && Cond.B(((CBool)(st->drag_panel < 48)))))) && Cond.B(((CBool)(st->drag != 0)))))) && Cond.B((Cond.B(cui__dk_present__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, &((cui__dk_panel*)&st->panels)[st->drag_panel])) ? 0 : 1))))))
             st->drag = 0;
-        cui__dk_compute_vis__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(b);
+        cui__dk_compute_vis__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(b);
         for (int i__1 = 0; Cond.B(((CBool)(i__1 < 96))); i__1++)
         {
             if (Cond.B(((CBool)(Cond.B(((CBool)(((cui__dk_node*)&st->nodes)[i__1].kind != 1))) || Cond.B((Cond.B(((CBool*)&b->vis)[i__1]) ? 0 : 1))))))
                 continue;
-            uint lid = cui__dk_leaf_id__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(b, ((cui__dk_node*)&st->nodes)[i__1].uid);
+            uint lid = cui__dk_leaf_id__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(b, ((cui__dk_node*)&st->nodes)[i__1].uid);
             ((cui_rect*)&b->leaf_rect)[i__1] = cui__prev_rect(ui, lid);
             ((cui_rect*)&b->strip_rect)[i__1] = cui__prev_rect(ui, lid ^ 0x5717u);
             if (Cond.B(((CBool)(((cui_rect*)&b->strip_rect)[i__1].h <= 0))))
@@ -3471,11 +3414,11 @@ public static unsafe partial class Cui
             }
             int* vis = (int*)__dotcc_array_storage0;
             new global::System.Span<byte>((void*)vis, checked(sizeof(int) * 48)).Clear();
-            int vn = cui__dk_visible_tabs__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, i__2, vis, -1);
+            int vn = cui__dk_visible_tabs__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, i__2, vis, -1);
             for (int k = 0; Cond.B(((CBool)(k < vn))); k++)
             {
                 cui__dk_panel* p = &((cui__dk_panel*)&st->panels)[vis[k]];
-                uint tid = cui__dk_tab_id__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(ui, ((cui__dk_node*)&st->nodes)[i__2].uid, p->label);
+                uint tid = cui__dk_tab_id__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(ui, ((cui__dk_node*)&st->nodes)[i__2].uid, p->label);
                 b->tab_id[vis[k]] = tid;
                 if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool*)&ui->mpressed)[0]) && Cond.B(((CBool)(st->drag == 0)))))) && Cond.B(((CBool)(ui->hot == tid)))))) && Cond.B((Cond.B(b->compact) ? 0 : 1))))))
                 {
@@ -3520,10 +3463,10 @@ public static unsafe partial class Cui
         if (Cond.B(((CBool)(st->drag == 2))))
         {
             cui_rect pv = new cui_rect { x = 0, y = 0, w = 0, h = 0 };
-            cui__dk_target__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(ui, b, R, pt, &pv);
+            cui__dk_target__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(ui, b, R, pt, &pv);
             if (Cond.B((Cond.B(((CBool*)&ui->mdown)[0]) ? 0 : 1)))
             {
-                cui__dk_drop__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(ui, b, R);
+                cui__dk_drop__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(ui, b, R);
                 st->drag = 0;
                 dropped = 1;
             }
@@ -3555,7 +3498,7 @@ public static unsafe partial class Cui
         cui__spring(ui, &st->lift, ((float)(Cond.B(((CBool)(st->drag == 2))) ? 1.0f : 0.0f)), 0.26f, 0.12f);
         if (Cond.B(dropped))
         {
-            cui__dk_compute_vis__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(b);
+            cui__dk_compute_vis__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(b);
             ui->animating = 1;
         }
         int c = cui__node_new(ui, b->id);
@@ -3570,9 +3513,9 @@ public static unsafe partial class Cui
         if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(room) && Cond.B(((CBool)(st->root >= 0)))))) && Cond.B(((CBool*)&b->vis)[st->root])))))
         {
             if (Cond.B(b->compact))
-                cui__dk_build_compact__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(ui, b);
+                cui__dk_build_compact__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(ui, b);
             else
-                cui__dk_build_node__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(ui, b, st->root);
+                cui__dk_build_node__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(ui, b, st->root);
         }
         st->built = ui->frame;
         reg->cur = b;
@@ -3580,7 +3523,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__dk_place__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui__dk_build* b, int p)
+    public static unsafe void cui__dk_place__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui__dk_build* b, int p)
     {
         cui__dk_state* st = b->st;
         int best = -1;
@@ -3597,15 +3540,15 @@ public static unsafe partial class Cui
             }
         }
         if (Cond.B(((CBool)(best < 0))))
-            best = cui__dk_first_leaf__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, st->root);
+            best = cui__dk_first_leaf__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, st->root);
         if (Cond.B(((CBool)(best < 0))))
         {
-            best = cui__dk_alloc__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, 1);
+            best = cui__dk_alloc__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, 1);
             if (Cond.B(((CBool)(best < 0))))
                 return;
             st->root = best;
         }
-        cui__dk_insert__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, p, best, -1);
+        cui__dk_insert__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, p, best, -1);
     }
 
 
@@ -3616,18 +3559,18 @@ public static unsafe partial class Cui
         memset(&d, 0, ((ulong)(sizeof(cui_dock_panel_opts))));
         if (Cond.B((Cond.B(o) ? 0 : 1)))
             o = &d;
-        cui__dk_build* b = cui__dk_cur__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(ui);
+        cui__dk_build* b = cui__dk_cur__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(ui);
         if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(b) ? 0 : 1)) || Cond.B((Cond.B(title) ? 0 : 1))))) || Cond.B(b->in_panel)))))
             return 0;
         ui->last_id = 0;
         cui__dk_state* st = b->st;
         byte* name = stackalloc byte[64];
-        cui__dk_name_of__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(title, name);
+        cui__dk_name_of__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(title, name);
         if (Cond.B((Cond.B(name[0]) ? 0 : 1)))
             return 0;
-        int pi = cui__dk_find__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, name);
+        int pi = cui__dk_find__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, name);
         if (Cond.B(((CBool)(pi < 0))))
-            pi = cui__dk_new_panel__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, name);
+            pi = cui__dk_new_panel__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, name);
         if (Cond.B(((CBool)(pi < 0))))
             return 0;
         cui__dk_panel* p = &((cui__dk_panel*)&st->panels)[pi];
@@ -3658,9 +3601,9 @@ public static unsafe partial class Cui
             CBool any = 0;
             for (int i = 0; Cond.B(((CBool)(Cond.B(((CBool)(i < 96))) && Cond.B((Cond.B(any) ? 0 : 1))))); i++)
                 any = ((CBool*)&b->vis)[i];
-            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(any) || Cond.B(p->deferred)))) || Cond.B(((CBool)(cui__dk_first_leaf__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(st, st->root) < 0)))))))
+            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(any) || Cond.B(p->deferred)))) || Cond.B(((CBool)(cui__dk_first_leaf__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(st, st->root) < 0)))))))
             {
-                cui__dk_place__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(b, pi);
+                cui__dk_place__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(b, pi);
                 if (Cond.B(((CBool)(Cond.B(((CBool)(p->leaf >= 0))) && Cond.B(((CBool)(Cond.B(reopened) || Cond.B(((CBool)(((cui__dk_node*)&st->nodes)[p->leaf].sel < 0))))))))))
                     ((cui__dk_node*)&st->nodes)[p->leaf].sel = pi;
             }
@@ -3699,7 +3642,7 @@ public static unsafe partial class Cui
 
     public static unsafe void cui_dock_panel_end(cui_ctx* ui)
     {
-        cui__dk_build* b = cui__dk_cur__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(ui);
+        cui__dk_build* b = cui__dk_cur__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(ui);
         if (Cond.B(((CBool)(Cond.B((Cond.B(b) ? 0 : 1)) || Cond.B((Cond.B(b->in_panel) ? 0 : 1))))))
             return;
         cui_pop_id(ui);
@@ -3710,7 +3653,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__dk_glyph__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui_ctx* ui, cui_rect t, int zone, CBool outer, CBool hot, float a)
+    public static unsafe void cui__dk_glyph__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui_ctx* ui, cui_rect t, int zone, CBool outer, CBool hot, float a)
     {
         cui_rect g = new cui_rect { x = roundf(t.x + t.w * 0.5f - 8), y = roundf(t.y + t.h * 0.5f - 7), w = 16, h = 14 };
         cui_color edge = cui_alpha(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], a);
@@ -3718,13 +3661,13 @@ public static unsafe partial class Cui
         cui_draw_rect_border(ui, g, new cui_corners { tl = 3, tr = 3, br = 3, bl = 3 }, cui__rgba(0, 0, 0, 0), edge, 1);
         cui_rect @in = cui__rect_inset(g, 2.5f);
         if (Cond.B(((CBool)(zone != 1))))
-            @in = cui__dk_part__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(@in, zone, ((float)(Cond.B(outer) ? 0.34f : 0.5f)));
+            @in = cui__dk_part__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(@in, zone, ((float)(Cond.B(outer) ? 0.34f : 0.5f)));
         cui_draw_rect(ui, @in, new cui_corners { tl = 1.5f, tr = 1.5f, br = 1.5f, bl = 1.5f }, fill);
     }
 
 
 
-    public static unsafe void cui__dk_paint_overlay__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(cui_ctx* ui, cui_node* n, void* data)
+    public static unsafe void cui__dk_paint_overlay__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(cui_ctx* ui, cui_node* n, void* data)
     {
         ;
         cui__dk_paint* p = (cui__dk_paint*)(data);
@@ -3744,7 +3687,7 @@ public static unsafe partial class Cui
             cui_corners c = new cui_corners { tl = 8, tr = 8, br = 8, bl = 8 };
             cui__draw_elevation(ui, t, c, __DotCcEnum_6375695F656C65766174696F6E.CUI_ELEVATION_FLOATING, p->alpha * 0.6f);
             cui_draw_rect_border(ui, t, c, cui_alpha(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE_RAISED], p->alpha), cui_alpha((Cond.B(hot) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_ACCENT] : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER]), p->alpha), 1);
-            cui__dk_glyph__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(ui, t, p->zone[k], ((CBool*)&p->outer)[k], hot, p->alpha);
+            cui__dk_glyph__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(ui, t, p->zone[k], ((CBool*)&p->outer)[k], hot, p->alpha);
         }
     }
 
@@ -3752,14 +3695,14 @@ public static unsafe partial class Cui
 
     public static unsafe void cui_dockspace_end(cui_ctx* ui)
     {
-        cui__dk_build* b = cui__dk_cur__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(ui);
+        cui__dk_build* b = cui__dk_cur__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(ui);
         if (Cond.B((Cond.B(b) ? 0 : 1)))
             return;
         if (Cond.B(b->in_panel))
             cui_dock_panel_end(ui);
         cui__dk_state* st = b->st;
         cui_node* cn = &ui->nodes[b->container];
-        cn->paint = DotCcPointers.cui__dk_paint_overlay__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154;
+        cn->paint = DotCcPointers.cui__dk_paint_overlay__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58;
         cn->paint_data = b->paint;
         cn->flags |= (uint)(4096);
         if (Cond.B(((CBool)(Cond.B(((CBool)(st->drag == 2))) && Cond.B(((CBool)(st->drag_panel >= 0)))))))
@@ -3791,14 +3734,14 @@ public static unsafe partial class Cui
         }
         cui_pop_id(ui);
         cui__close(ui);
-        cui__dk_registry__unit_7EE0DE414E61195C84DB790BBF3491AC01E857D4CC39C8828FBA5A41075FA154(ui)->cur = b->prev;
+        cui__dk_registry__unit_2C8162FC4C734A2BDB154BA0AA0E6ADD692C95D30046EF5A0946A493C4E0CB58(ui)->cur = b->prev;
         ui->last_id = b->id;
         ui->last_node = b->container;
     }
 
 
 
-    public static unsafe cui_color cui__viz_color__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(cui_ctx* ui, cui_color c, int k)
+    public static unsafe cui_color cui__viz_color__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(cui_ctx* ui, cui_color c, int k)
     {
         if (Cond.B(cui__color_set(c)))
             return cui_color_of(ui, c);
@@ -3807,7 +3750,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe cui_color cui__viz_base__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(cui_ctx* ui, cui_color c)
+    public static unsafe cui_color cui__viz_base__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(cui_ctx* ui, cui_color c)
     {
         if (Cond.B(cui__color_set(c)))
             return cui_color_of(ui, c);
@@ -3816,18 +3759,18 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe cui_color cui__viz_empty__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(cui_ctx* ui)
+    public static unsafe cui_color cui__viz_empty__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(cui_ctx* ui)
     {
         return (Cond.B(((CBool)((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK))) ? cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE], ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0.07f) : cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE], ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0.055f));
     }
 
 
 
-    public static unsafe cui_color cui__viz_seq__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(cui_ctx* ui, cui_color @base, float t)
+    public static unsafe cui_color cui__viz_seq__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(cui_ctx* ui, cui_color @base, float t)
     {
         t = cui__clampf(t, 0, 1);
         CBool dark = ((CBool)((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK));
-        cui_color e = cui__viz_empty__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(ui);
+        cui_color e = cui__viz_empty__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(ui);
         cui_color lo = cui_mix(e, @base, ((float)(Cond.B(dark) ? 0.28f : 0.2f)));
         cui_color hi = (Cond.B(dark) ? cui_mix(@base, cui__rgba(255, 255, 255, 255), 0.12f) : cui_mix(@base, cui__rgba(0, 0, 0, 255), 0.22f));
         cui_color mid = @base;
@@ -3836,7 +3779,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe CBool cui__viz_light_text__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(cui_color c)
+    public static unsafe CBool cui__viz_light_text__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(cui_color c)
     {
         float l = (0.2126f * c.r + 0.7152f * c.g + 0.0722f * c.b) / 255.0f;
         return ((CBool)(l < 0.52f));
@@ -3844,7 +3787,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__tip_draw__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(cui_ctx* ui, cui__tip* t)
+    public static unsafe void cui__tip_draw__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(cui_ctx* ui, cui__tip* t)
     {
         if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(t) ? 0 : 1)) || Cond.B(((CBool)(t->alpha <= 0.01f)))))) || Cond.B((Cond.B(t->title) ? 0 : 1))))))
             return;
@@ -3892,7 +3835,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__tip_row__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(cui__tip* t, byte* label, byte* value, cui_color sw)
+    public static unsafe void cui__tip_row__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(cui__tip* t, byte* label, byte* value, cui_color sw)
     {
         if (Cond.B(((CBool)(t->n >= 8))))
             return;
@@ -3904,7 +3847,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe cui__viz_state* cui__viz_state_get__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(cui_ctx* ui, uint id)
+    public static unsafe cui__viz_state* cui__viz_state_get__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(cui_ctx* ui, uint id)
     {
         cui__viz_state* st = (cui__viz_state*)(cui_state(ui, id, ((ulong)(sizeof(cui__viz_state)))));
         cui__spring(ui, &st->intro, 1.0f, 0.7f, 0.0f);
@@ -3913,7 +3856,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__viz_hover__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(cui_ctx* ui, cui__viz_state* st, int hover)
+    public static unsafe void cui__viz_hover__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(cui_ctx* ui, cui__viz_state* st, int hover)
     {
         st->hover = hover;
         if (Cond.B(((CBool)(hover >= 0))))
@@ -3923,7 +3866,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe int cui__viz_node__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(cui_ctx* ui, uint id, cui_size w, cui_size h, delegate*<cui_ctx*, cui_node*, void*, void> paint, void* data, CBool hovered)
+    public static unsafe int cui__viz_node__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(cui_ctx* ui, uint id, cui_size w, cui_size h, delegate*<cui_ctx*, cui_node*, void*, void> paint, void* data, CBool hovered)
     {
         int n = cui__node_new(ui, id);
         cui_node* nd = &ui->nodes[n];
@@ -3941,7 +3884,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe float cui__viz_legend__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(cui_ctx* ui, float x, float y, float w, byte** names, cui_color* colors, int n, int hl, CBool draw)
+    public static unsafe float cui__viz_legend__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(cui_ctx* ui, float x, float y, float w, byte** names, cui_color* colors, int n, int hl, CBool draw)
     {
         float fs = cui__fs(ui, ui->theme.text_xs), lh = 18, cx = x, cy = y;
         float fh = cui__font_line_height(ui, 0, fs);
@@ -3967,7 +3910,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe float* cui__copy_floats__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(cui_ctx* ui, float* v, int n)
+    public static unsafe float* cui__copy_floats__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(cui_ctx* ui, float* v, int n)
     {
         float* o = (float*)(cui__frame_alloc(ui, 4UL * (ulong)((int)(Cond.B(((CBool)(1 > n))) ? 1 : n))));
         if (Cond.B(((CBool)(Cond.B(v) && Cond.B(((CBool)(n > 0)))))))
@@ -3980,7 +3923,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe cui_viz_item* cui__copy_items__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(cui_ctx* ui, cui_viz_item* v, int n)
+    public static unsafe cui_viz_item* cui__copy_items__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(cui_ctx* ui, cui_viz_item* v, int n)
     {
         cui_viz_item* o = (cui_viz_item*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui_viz_item))) * (ulong)((int)(Cond.B(((CBool)(1 > n))) ? 1 : n))));
         if (Cond.B(((CBool)(Cond.B(v) && Cond.B(((CBool)(n > 0)))))))
@@ -3993,7 +3936,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe byte* cui__pct__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(cui_ctx* ui, float part, float total)
+    public static unsafe byte* cui__pct__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(cui_ctx* ui, float part, float total)
     {
         if (Cond.B(((CBool)(total <= 0))))
             return (DotCcLiterals.Pointer + DotCcLiterals.S92 /*"0%"*/);
@@ -4003,7 +3946,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe cui__hm_geo cui__hm_layout__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(cui_ctx* ui, cui_rect r, int rows, int cols, cui_heatmap_opts* o)
+    public static unsafe cui__hm_geo cui__hm_layout__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(cui_ctx* ui, cui_rect r, int rows, int cols, cui_heatmap_opts* o)
     {
         cui__hm_geo g = default;
         float fs = cui__fs(ui, ui->theme.text_xs);
@@ -4027,10 +3970,10 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__paint_heatmap__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(cui_ctx* ui, cui_node* n, void* data)
+    public static unsafe void cui__paint_heatmap__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(cui_ctx* ui, cui_node* n, void* data)
     {
         cui__hm_paint* p = (cui__hm_paint*)(data);
-        cui__hm_geo g = cui__hm_layout__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(ui, n->rect, p->rows, p->cols, &p->o);
+        cui__hm_geo g = cui__hm_layout__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(ui, n->rect, p->rows, p->cols, &p->o);
         float fs = cui__fs(ui, ui->theme.text_xs);
         float rad = ((float)(Cond.B(((CBool)(g.cell >= 18))) ? (float)(4) : 2.5f));
         int every = (int)ceilf(cui__font_line_height(ui, 0, fs) / (g.cell + g.gap));
@@ -4039,13 +3982,13 @@ public static unsafe partial class Cui
         for (int i = 0; Cond.B(((CBool)(i < p->rows))); i++)
         {
             if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(p->o.row_labels) && Cond.B(p->o.row_labels[i])))) && Cond.B(((CBool)(i % every == 0)))))))
-                cui__draw_text_at(ui, 0, fs, g.gx - 10, g.gy + i * (g.cell + g.gap) + g.cell * 0.5f, __DotCcEnum_5F5F446F744363547970656465665F33453944424537323436443535393146373143463031314336324431334341373444333235394146433030333041364643334338353045414337443336343143.CUI__AT_RIGHT, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY], p->o.row_labels[i], 0);
+                cui__draw_text_at(ui, 0, fs, g.gx - 10, g.gy + i * (g.cell + g.gap) + g.cell * 0.5f, __DotCcEnum_5F5F446F744363547970656465665F30453045363138353046303939323138444342313336464135443434453336353142413335323030433944453438343444393532313136323837423043463944.CUI__AT_RIGHT, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY], p->o.row_labels[i], 0);
             for (int j = 0; Cond.B(((CBool)(j < p->cols))); j++)
             {
                 float t = (p->v[i * p->cols + j] - p->lo) / (p->hi - p->lo);
                 float a = cui__clampf(p->intro * 1.8f - (float)j / (float)p->cols * 0.8f, 0, 1);
                 cui_rect c = new cui_rect { x = g.gx + j * (g.cell + g.gap), y = g.gy + i * (g.cell + g.gap), w = g.cell, h = g.cell };
-                cui_draw_rect(ui, c, new cui_corners { tl = rad, tr = rad, br = rad, bl = rad }, cui_mix(cui__viz_empty__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(ui), cui__viz_seq__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(ui, p->@base, t), a));
+                cui_draw_rect(ui, c, new cui_corners { tl = rad, tr = rad, br = rad, bl = rad }, cui_mix(cui__viz_empty__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(ui), cui__viz_seq__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(ui, p->@base, t), a));
             }
         }
         if (Cond.B(((CBool)(Cond.B(((CBool)(p->hover >= 0))) && Cond.B(((CBool)(p->tip.alpha > 0.01f)))))))
@@ -4066,7 +4009,7 @@ public static unsafe partial class Cui
                 float cx = g.gx + j__2 * (g.cell + g.gap) + g.cell * 0.5f, w = cui__text_width(ui, 0, fs, s, -1, 0);
                 if (Cond.B(((CBool)(cx - w * 0.5f < last + 6))))
                     continue;
-                cui__draw_text_at(ui, 0, fs, cx, by + 13, __DotCcEnum_5F5F446F744363547970656465665F33453944424537323436443535393146373143463031314336324431334341373444333235394146433030333041364643334338353045414337443336343143.CUI__AT_CENTER, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], s, 0);
+                cui__draw_text_at(ui, 0, fs, cx, by + 13, __DotCcEnum_5F5F446F744363547970656465665F30453045363138353046303939323138444342313336464135443434453336353142413335323030433944453438343444393532313136323837423043463944.CUI__AT_CENTER, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], s, 0);
                 last = cx + w * 0.5f;
             }
             by += 22;
@@ -4082,11 +4025,11 @@ public static unsafe partial class Cui
                 cr = new cui_corners { tl = 4, tr = 0, br = 0, bl = 4 };
             if (Cond.B(((CBool)(k == 23))))
                 cr = new cui_corners { tl = 0, tr = 4, br = 4, bl = 0 };
-            cui_draw_rect(ui, c__2, cr, cui__viz_seq__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(ui, p->@base, (k + 0.5f) / 24.0f));
+            cui_draw_rect(ui, c__2, cr, cui__viz_seq__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(ui, p->@base, (k + 0.5f) / 24.0f));
         }
-        cui__draw_text_at(ui, 0, fs, sx - 8, sy + 4, __DotCcEnum_5F5F446F744363547970656465665F33453944424537323436443535393146373143463031314336324431334341373444333235394146433030333041364643334338353045414337443336343143.CUI__AT_RIGHT, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], lo, 1);
-        cui__draw_text_at(ui, 0, fs, sx + sw + 8, sy + 4, __DotCcEnum_5F5F446F744363547970656465665F33453944424537323436443535393146373143463031314336324431334341373444333235394146433030333041364643334338353045414337443336343143.CUI__AT_LEFT, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], hi, 1);
-        cui__tip_draw__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(ui, &p->tip);
+        cui__draw_text_at(ui, 0, fs, sx - 8, sy + 4, __DotCcEnum_5F5F446F744363547970656465665F30453045363138353046303939323138444342313336464135443434453336353142413335323030433944453438343444393532313136323837423043463944.CUI__AT_RIGHT, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], lo, 1);
+        cui__draw_text_at(ui, 0, fs, sx + sw + 8, sy + 4, __DotCcEnum_5F5F446F744363547970656465665F30453045363138353046303939323138444342313336464135443434453336353142413335323030433944453438343444393532313136323837423043463944.CUI__AT_LEFT, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], hi, 1);
+        cui__tip_draw__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(ui, &p->tip);
     }
 
 
@@ -4100,10 +4043,10 @@ public static unsafe partial class Cui
         rows = ((int)(Cond.B(((CBool)(0 > rows))) ? 0 : rows));
         cols = ((int)(Cond.B(((CBool)(0 > cols))) ? 0 : cols));
         uint id = cui_make_id(ui, id_str);
-        cui__viz_state* st = cui__viz_state_get__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(ui, id);
+        cui__viz_state* st = cui__viz_state_get__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(ui, id);
         cui_interact r = cui__interact(ui, id, 0);
         cui_rect pr = cui__prev_rect(ui, id);
-        cui__hm_geo g = cui__hm_layout__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(ui, pr, rows, cols, o);
+        cui__hm_geo g = cui__hm_layout__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(ui, pr, rows, cols, o);
         float lo = o->min, hi = o->max;
         if (Cond.B((Cond.B(((CBool)(o->max > o->min))) ? 0 : 1)))
         {
@@ -4129,16 +4072,16 @@ public static unsafe partial class Cui
             if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(i >= 0))) && Cond.B(((CBool)(i < rows)))))) && Cond.B(((CBool)(j >= 0)))))) && Cond.B(((CBool)(j < cols)))))))
                 hover = i * cols + j;
         }
-        cui__viz_hover__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(ui, st, hover);
+        cui__viz_hover__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(ui, st, hover);
         cui__hm_paint* p = (cui__hm_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__hm_paint)))));
         memset(p, 0, ((ulong)(sizeof(cui__hm_paint))));
-        p->v = cui__copy_floats__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(ui, values, rows * cols);
+        p->v = cui__copy_floats__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(ui, values, rows * cols);
         p->rows = rows;
         p->cols = cols;
         p->lo = lo;
         p->hi = hi;
         p->o = *o;
-        p->@base = cui__viz_base__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(ui, o->color);
+        p->@base = cui__viz_base__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(ui, o->color);
         p->intro = st->intro.x;
         p->hover = ((int)(Cond.B(((CBool)(st->hover_t > 0.01f))) ? st->shown : -1));
         if (Cond.B(((CBool)(p->hover >= rows * cols))))
@@ -4153,11 +4096,11 @@ public static unsafe partial class Cui
             byte* rl = ((byte*)(Cond.B(((CBool)(Cond.B(o->row_labels) && Cond.B(o->row_labels[i__1])))) ? o->row_labels[i__1] : cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S757 /*"Row %d"*/), i__1 + 1)));
             byte* cl = ((byte*)(Cond.B(((CBool)(Cond.B(o->col_labels) && Cond.B(o->col_labels[j__1])))) ? o->col_labels[j__1] : cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S66 /*"%d"*/), j__1 + 1)));
             p->tip.title = cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S746 /*"%s · %s"*/), rl, cl);
-            cui__tip_row__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(&p->tip, (DotCcLiterals.Pointer + DotCcLiterals.S1120 /*"Value"*/), cui__fmt_value(ui, o->format, values[p->hover]), cui__viz_seq__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(ui, p->@base, (values[p->hover] - lo) / (hi - lo)));
+            cui__tip_row__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(&p->tip, (DotCcLiterals.Pointer + DotCcLiterals.S1120 /*"Value"*/), cui__fmt_value(ui, o->format, values[p->hover]), cui__viz_seq__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(ui, p->@base, (values[p->hover] - lo) / (hi - lo)));
         }
         float h = g.grid_h + ((int)(Cond.B(o->col_labels) ? 22 : 0)) + 30;
         cui_size w = (Cond.B((int)o->width.kind) ? o->width : (Cond.B(((CBool)(o->cell > 0))) ? new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)(g.lw + cols * (g.cell + g.gap) - g.gap) } : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }));
-        cui__viz_node__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(ui, id, w, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)h }, DotCcPointers.cui__paint_heatmap__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9, p, ((CBool)(hover >= 0)));
+        cui__viz_node__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(ui, id, w, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)h }, DotCcPointers.cui__paint_heatmap__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B, p, ((CBool)(hover >= 0)));
         if (Cond.B(((CBool)(hover >= 0))))
             cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_HAND);
         return ((int)(Cond.B(r.clicked) ? hover : -1));
@@ -4165,7 +4108,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe int cui__cal_level__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(float v, float maxv)
+    public static unsafe int cui__cal_level__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(float v, float maxv)
     {
         if (Cond.B(((CBool)(Cond.B(((CBool)(v <= 0))) || Cond.B(((CBool)(maxv <= 0)))))))
             return 0;
@@ -4175,16 +4118,16 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe cui_color cui__cal_color__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(cui_ctx* ui, cui_color @base, int level)
+    public static unsafe cui_color cui__cal_color__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(cui_ctx* ui, cui_color @base, int level)
     {
         if (Cond.B(((CBool)(level == 0))))
-            return cui__viz_empty__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(ui);
-        return cui__viz_seq__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(ui, @base, global::Managed.Cui.Cui.Globals.t__s0__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9[level]);
+            return cui__viz_empty__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(ui);
+        return cui__viz_seq__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(ui, @base, global::Managed.Cui.Cui.Globals.t__s0__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B[level]);
     }
 
 
 
-    public static unsafe void cui__paint_calendar__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(cui_ctx* ui, cui_node* n, void* data)
+    public static unsafe void cui__paint_calendar__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(cui_ctx* ui, cui_node* n, void* data)
     {
         cui__cal_paint* p = (cui__cal_paint*)(data);
         cui_rect r = n->rect;
@@ -4192,7 +4135,7 @@ public static unsafe partial class Cui
         float gx = r.x + 32.0f, gy = r.y + 20.0f;
         float rad = ((int)(Cond.B(((CBool)(p->cell >= 12))) ? 3 : 2));
         for (int k = 0; Cond.B(((CBool)(k < 5))); k += 2)
-            cui__draw_text_at(ui, 0, fs, r.x, gy + k * step + p->cell * 0.5f, __DotCcEnum_5F5F446F744363547970656465665F33453944424537323436443535393146373143463031314336324431334341373444333235394146433030333041364643334338353045414337443336343143.CUI__AT_LEFT, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], cui__weekday_short(ui, k), 0);
+            cui__draw_text_at(ui, 0, fs, r.x, gy + k * step + p->cell * 0.5f, __DotCcEnum_5F5F446F744363547970656465665F30453045363138353046303939323138444342313336464135443434453336353142413335323030433944453438343444393532313136323837423043463944.CUI__AT_LEFT, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], cui__weekday_short(ui, k), 0);
         float last_end = -1e9f;
         for (int w = 0; Cond.B(((CBool)(w < p->weeks))); w++)
         {
@@ -4202,7 +4145,7 @@ public static unsafe partial class Cui
             float x = gx + w * step;
             if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(starts) && Cond.B(((CBool)(x > last_end + 4)))))) && Cond.B(((CBool)(w < p->weeks - 1)))))))
             {
-                cui__draw_text_at(ui, 0, fs, x, r.y + 8, __DotCcEnum_5F5F446F744363547970656465665F33453944424537323436443535393146373143463031314336324431334341373444333235394146433030333041364643334338353045414337443336343143.CUI__AT_LEFT, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], cui__month_short(ui, dd.month - 1), 0);
+                cui__draw_text_at(ui, 0, fs, x, r.y + 8, __DotCcEnum_5F5F446F744363547970656465665F30453045363138353046303939323138444342313336464135443434453336353142413335323030433944453438343444393532313136323837423043463944.CUI__AT_LEFT, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], cui__month_short(ui, dd.month - 1), 0);
                 last_end = x + cui__text_width(ui, 0, fs, cui__month_short(ui, dd.month - 1), -1, 0);
             }
             for (int k__1 = 0; Cond.B(((CBool)(k__1 < 7))); k__1++)
@@ -4210,10 +4153,10 @@ public static unsafe partial class Cui
                 int di = first + k__1;
                 if (Cond.B(((CBool)(Cond.B(((CBool)(di < 0))) || Cond.B(((CBool)(di >= p->days)))))))
                     continue;
-                int lv = cui__cal_level__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(p->v[di], p->maxv);
+                int lv = cui__cal_level__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(p->v[di], p->maxv);
                 float a = cui__clampf(p->intro * 1.8f - (float)w / (float)p->weeks * 0.8f, 0, 1);
                 cui_rect c = new cui_rect { x = x, y = gy + k__1 * step, w = p->cell, h = p->cell };
-                cui_draw_rect(ui, c, new cui_corners { tl = rad, tr = rad, br = rad, bl = rad }, cui_mix(cui__viz_empty__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(ui), cui__cal_color__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(ui, p->@base, lv), a));
+                cui_draw_rect(ui, c, new cui_corners { tl = rad, tr = rad, br = rad, bl = rad }, cui_mix(cui__viz_empty__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(ui), cui__cal_color__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(ui, p->@base, lv), a));
                 if (Cond.B(((CBool)(Cond.B(((CBool)(di == p->hover))) && Cond.B(((CBool)(p->tip.alpha > 0.01f)))))))
                     cui_draw_rect_border(ui, new cui_rect { x = c.x - 1.5f, y = c.y - 1.5f, w = c.w + 3, h = c.h + 3 }, new cui_corners { tl = rad + 1.5f, tr = rad + 1.5f, br = rad + 1.5f, bl = rad + 1.5f }, cui__rgba(0, 0, 0, 0), cui_alpha(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], p->tip.alpha), 1.5f);
             }
@@ -4229,20 +4172,101 @@ public static unsafe partial class Cui
         if (Cond.B(words))
         {
             x__1 -= more_w;
-            cui__draw_text_at(ui, 0, fs, x__1, ly + sz * 0.5f, __DotCcEnum_5F5F446F744363547970656465665F33453944424537323436443535393146373143463031314336324431334341373444333235394146433030333041364643334338353045414337443336343143.CUI__AT_LEFT, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], (DotCcLiterals.Pointer + DotCcLiterals.S959 /*"More"*/), 0);
+            cui__draw_text_at(ui, 0, fs, x__1, ly + sz * 0.5f, __DotCcEnum_5F5F446F744363547970656465665F30453045363138353046303939323138444342313336464135443434453336353142413335323030433944453438343444393532313136323837423043463944.CUI__AT_LEFT, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], (DotCcLiterals.Pointer + DotCcLiterals.S959 /*"More"*/), 0);
             x__1 -= 6;
         }
         for (int lv__1 = 4; Cond.B(((CBool)(lv__1 >= 0))); lv__1--)
         {
             x__1 -= sz;
-            cui_draw_rect(ui, new cui_rect { x = x__1, y = ly, w = sz, h = sz }, new cui_corners { tl = rad, tr = rad, br = rad, bl = rad }, cui__cal_color__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(ui, p->@base, lv__1));
+            cui_draw_rect(ui, new cui_rect { x = x__1, y = ly, w = sz, h = sz }, new cui_corners { tl = rad, tr = rad, br = rad, bl = rad }, cui__cal_color__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(ui, p->@base, lv__1));
             x__1 -= 3;
         }
         if (Cond.B(words))
-            cui__draw_text_at(ui, 0, fs, x__1 - 3, ly + sz * 0.5f, __DotCcEnum_5F5F446F744363547970656465665F33453944424537323436443535393146373143463031314336324431334341373444333235394146433030333041364643334338353045414337443336343143.CUI__AT_RIGHT, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], (DotCcLiterals.Pointer + DotCcLiterals.S595 /*"Less"*/), 0);
+            cui__draw_text_at(ui, 0, fs, x__1 - 3, ly + sz * 0.5f, __DotCcEnum_5F5F446F744363547970656465665F30453045363138353046303939323138444342313336464135443434453336353142413335323030433944453438343444393532313136323837423043463944.CUI__AT_RIGHT, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], (DotCcLiterals.Pointer + DotCcLiterals.S595 /*"Less"*/), 0);
         if (Cond.B(((CBool)(Cond.B(tot) && Cond.B(((CBool)(gx + tot_w + 9 <= x__1)))))))
-            cui__draw_text_at(ui, 0, fs, gx, ly + sz * 0.5f, __DotCcEnum_5F5F446F744363547970656465665F33453944424537323436443535393146373143463031314336324431334341373444333235394146433030333041364643334338353045414337443336343143.CUI__AT_LEFT, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY], tot, 1);
-        cui__tip_draw__unit_C4CED410FAA767E3B9B6D003991A044C2BDEF883CBBE102BEB4B95C7919AD8B9(ui, &p->tip);
+            cui__draw_text_at(ui, 0, fs, gx, ly + sz * 0.5f, __DotCcEnum_5F5F446F744363547970656465665F30453045363138353046303939323138444342313336464135443434453336353142413335323030433944453438343444393532313136323837423043463944.CUI__AT_LEFT, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY], tot, 1);
+        cui__tip_draw__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(ui, &p->tip);
+    }
+
+
+
+    public static unsafe int cui_calendar_heatmap_ex(cui_ctx* ui, byte* id_str, cui_date start, float* values, int days, cui_calendar_heatmap_opts* o)
+    {
+        cui_calendar_heatmap_opts d = default;
+        memset(&d, 0, ((ulong)(sizeof(cui_calendar_heatmap_opts))));
+        if (Cond.B((Cond.B(o) ? 0 : 1)))
+            o = &d;
+        days = ((int)(Cond.B(((CBool)(0 > days))) ? 0 : days));
+        uint id = cui_make_id(ui, id_str);
+        cui__viz_state* st = cui__viz_state_get__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(ui, id);
+        cui_interact r = cui__interact(ui, id, 0);
+        cui_rect pr = cui__prev_rect(ui, id);
+        int @base = cui_date_to_days(start);
+        int wd0 = ((@base + 3) % 7 + 7) % 7;
+        int weeks = (wd0 + days + 6) / 7;
+        float cell = ((float)(Cond.B(((CBool)(o->cell > 0))) ? o->cell : (float)(11))), gap = ((int)(Cond.B(((CBool)(cell >= 10))) ? 3 : 2)), step = cell + gap;
+        float full_w = 32.0f + weeks * step - gap;
+        if (Cond.B(((CBool)(Cond.B(((CBool)(pr.w > 0))) && Cond.B(((CBool)(pr.w + 0.5f < full_w)))))))
+        {
+            int fit = ((int)(Cond.B(((CBool)(1 > (int)floorf((pr.w - 32.0f + gap) / step)))) ? 1 : (int)floorf((pr.w - 32.0f + gap) / step)));
+            if (Cond.B(((CBool)(fit < weeks))))
+            {
+                int skip = (weeks - fit) * 7 - wd0;
+                values += skip;
+                days -= skip;
+                @base += skip;
+                wd0 = 0;
+                weeks = fit;
+            }
+        }
+        float maxv = 0, total = 0;
+        for (int k = 0; Cond.B(((CBool)(k < days))); k++)
+        {
+            maxv = ((float)(Cond.B(((CBool)(maxv > values[k]))) ? maxv : values[k]));
+            total += ((float)(Cond.B(((CBool)(values[k] > 0))) ? values[k] : (float)(0)));
+        }
+        int hover = -1;
+        if (Cond.B(r.hovered))
+        {
+            int w = (int)floorf((ui->mx - pr.x - 32.0f) / step), k__1 = (int)floorf((ui->my - pr.y - 20.0f) / step);
+            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(w >= 0))) && Cond.B(((CBool)(w < weeks)))))) && Cond.B(((CBool)(k__1 >= 0)))))) && Cond.B(((CBool)(k__1 < 7)))))))
+            {
+                int di = w * 7 - wd0 + k__1;
+                if (Cond.B(((CBool)(Cond.B(((CBool)(di >= 0))) && Cond.B(((CBool)(di < days)))))))
+                    hover = di;
+            }
+        }
+        cui__viz_hover__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(ui, st, hover);
+        cui__cal_paint* p = (cui__cal_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__cal_paint)))));
+        memset(p, 0, ((ulong)(sizeof(cui__cal_paint))));
+        p->v = cui__copy_floats__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(ui, values, days);
+        p->days = days;
+        p->wd0 = wd0;
+        p->weeks = weeks;
+        p->base_day = @base;
+        p->maxv = maxv;
+        p->total = total;
+        p->cell = cell;
+        p->gap = gap;
+        p->@base = cui__viz_base__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(ui, o->color);
+        p->o = *o;
+        p->intro = st->intro.x;
+        p->hover = ((int)(Cond.B(((CBool)(Cond.B(((CBool)(st->hover_t > 0.01f))) && Cond.B(((CBool)(st->shown < days)))))) ? st->shown : -1));
+        if (Cond.B(((CBool)(p->hover >= 0))))
+        {
+            cui_date dd = cui_date_from_days(@base + p->hover);
+            int wd = ((@base + p->hover + 3) % 7 + 7) % 7;
+            p->tip.alpha = st->hover_t;
+            p->tip.x = ui->mx;
+            p->tip.y = ui->my;
+            p->tip.bounds = pr;
+            p->tip.title = cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S791 /*"%s, %s %d, %d"*/), cui__weekday_short(ui, wd), cui__month_short(ui, dd.month - 1), dd.day, dd.year);
+            cui__tip_row__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(&p->tip, ((byte*)(Cond.B(o->unit) ? o->unit : (DotCcLiterals.Pointer + DotCcLiterals.S1120 /*"Value"*/))), cui__fmt_value(ui, o->format, values[p->hover]), cui__cal_color__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(ui, p->@base, cui__cal_level__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(values[p->hover], maxv)));
+        }
+        float h = 20.0f + 7 * step - gap + 12 + ((float)(Cond.B(((CBool)(cell < 12))) ? cell : (float)(12))) + 2;
+        int node = cui__viz_node__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B(ui, id, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIT, value = 0 }, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)h }, DotCcPointers.cui__paint_calendar__unit_2CA41DDCF769A6054B18FA45CEAE2BE300A50F94F9044385C60EFF916F445F5B, p, ((CBool)(hover >= 0)));
+        cui__soft_width(&ui->nodes[node], new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIT, value = 0 }, full_w);
+        return ((int)(Cond.B(r.clicked) ? hover : -1));
     }
 
 

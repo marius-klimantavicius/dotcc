@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>Managed.Cui.Gallery</RootNamespace>
+    <AssemblyName>TranslatedCuiGallery</AssemblyName>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+  <PropertyGroup>
+    <CuiCoreProject Condition="'$(CuiCoreProject)' == ''">../TranslatedCui/TranslatedCui.csproj</CuiCoreProject>
+    <CuiCoreProject Condition="$([System.String]::Copy('$(MSBuildProjectDirectory)').EndsWith('.Raw'))">../TranslatedCui.Raw/TranslatedCui.csproj</CuiCoreProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(CuiCoreProject)" />
+  </ItemGroup>
+</Project>

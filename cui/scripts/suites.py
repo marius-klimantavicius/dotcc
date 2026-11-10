@@ -82,6 +82,19 @@ def consumer(ctx, suite):
     ctx.save()
 
 
+def gallery(ctx, suite):
+    for form in forms(ctx):
+        check_product(ctx, form)
+    arguments = [sys.executable, ctx.root / "tests/gallery/run.py", "--work-root", ctx.work / "gallery",
+                 "--source", source(ctx), "--form", ctx.options.form, "--mode", ctx.options.mode]
+    if sys.platform == "linux":
+        arguments.append("--xvfb")
+    ctx.run(arguments, "gallery", timeout=suite.timeout)
+    import json
+    ctx.receipt["gallery_qualification"] = json.loads((ctx.work / "gallery/report.json").read_text())
+    ctx.save()
+
+
 def abi(ctx, suite):
     tools(ctx)
     ctx.run([sys.executable, "-B", "-m", "unittest", "discover", "-s", ctx.root / "tests/recipe", "-v"], "recipe-contracts")
@@ -124,20 +137,44 @@ def audit(ctx, suite):
     findings = []
     for form in forms(ctx):
         product = check_product(ctx, form)
-        for node in ET.parse(product).iter():
-            if node.tag not in ("Compile", "ProjectReference", "Import"):
-                continue
-            value = node.get("Include") or node.get("Project") or ""
-            if not value or "$" in value or "*" in value:
-                continue
-            path = (product.parent / value).resolve()
-            if not path.is_relative_to(ctx.root.resolve()) or not path.is_file():
-                raise RuntimeError(f"Product reference leaves campaign or is missing: {value}")
-        for path in product.parent.glob("*.cs"):
-            text = path.read_text(encoding="utf-8")
-            if re.search(r'(?:DllImport|LibraryImport)\s*\(\s*"[^"\n]*(?:libcui|cui\.dll|glfw)', text, re.I):
-                raise RuntimeError(f"Unexpected native CUI/GLFW dependency in {path.name}")
-        findings.append({"form": form, "references": "campaign-local", "native_cui_glfw": False})
+        suffix = ".Raw" if form == "raw" else ""
+        companion = ctx.root / f"generated/TranslatedCuiGallery{suffix}/TranslatedCuiGallery.csproj"
+        sample = ctx.root / "samples/ManagedConsumer/ManagedConsumer.csproj"
+        evaluated = {}
+        for name, project in (("core", product), ("gallery", companion), ("sample", sample)):
+            if not project.is_file():
+                raise RuntimeError(f"Missing {name} project: {project}")
+            for node in ET.parse(project).iter():
+                if node.tag not in ("Compile", "ProjectReference", "Import"):
+                    continue
+                value = node.get("Include") or node.get("Project") or ""
+                if not value or "$" in value or "*" in value:
+                    continue
+                path = (project.parent / value).resolve()
+                if not path.is_relative_to(ctx.root.resolve()) or not path.is_file():
+                    raise RuntimeError(f"Product reference leaves campaign or is missing: {value}")
+            label = f"audit-{form}-{name}-references"
+            arguments = ["dotnet", "msbuild", project, "-getItem:ProjectReference", "--nologo"]
+            if name == "sample":
+                arguments.append("-p:CuiProject=" + str(product))
+            ctx.run(arguments, label)
+            data = json.loads((ctx.artifacts / (label + ".log")).read_text())
+            references = [Path(row["FullPath"]).resolve() for row in data["Items"]["ProjectReference"]]
+            for path in references:
+                if not path.is_relative_to(ctx.root.resolve()) or not path.is_file():
+                    raise RuntimeError(f"Evaluated {name} project reference leaves campaign or is missing: {path}")
+            evaluated[name] = references
+            if name in ("core", "gallery"):
+                for path in project.parent.glob("*.cs"):
+                    text = path.read_text(encoding="utf-8")
+                    if re.search(r'(?:DllImport|LibraryImport)\s*\(\s*"[^"\n]*(?:libcui|cui\.dll|glfw)', text, re.I):
+                        raise RuntimeError(f"Unexpected native CUI/GLFW dependency in {path.name}")
+        if evaluated["gallery"] != [product.resolve()]:
+            raise RuntimeError(f"Gallery does not reference the matching {form} core")
+        if set(evaluated["sample"]) != {product.resolve(), companion.resolve()}:
+            raise RuntimeError(f"Sample does not reference the matching {form} core and gallery")
+        findings.append({"form": form, "references": "campaign-local and evaluated", "native_cui_glfw": False,
+                         "gallery_core": "matching form", "sample": "ordinary core/gallery project references"})
     pin = json.loads((ctx.root / "config/glfw-source.json").read_text())
     missing = [name for name in pin["snapshot_sha256"] if not (ctx.root / "src/Glfw" / name).is_file()]
     if missing:

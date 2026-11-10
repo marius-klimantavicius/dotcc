@@ -18,3 +18,4 @@ Cui.00016.cs
 Cui.00017.cs
 Cui.00018.cs
 Cui.cs
+Dotcc.ManagedSymbols.cs
