@@ -10,7 +10,7 @@ from campaigns.recipes import flags, helper, json_file, lines, link_flags
 
 def run_suite(ctx, suite):
     runners = helper(ctx.root / "scripts/suites.py")
-    return (runners.abi if suite.name == "abi" else runners.audit if suite.name == "audit"
+    return (runners.consumer if suite.name == "consumer" else runners.abi if suite.name == "abi" else runners.audit if suite.name == "audit"
             else runners.qualification)(ctx, suite)
 
 
@@ -106,8 +106,8 @@ recipe = Recipe(
     "cui", "TranslatedCui", ("desktop",),
     ("src/Glfw/Glfw.csproj", "samples/ManagedConsumer/ManagedConsumer.csproj"),
     sources, prepare,
-    consumer=Consumer(property="CuiProject", arguments=("--smoke",), build_arguments=("-m:1",)),
-    suites=(Suite("consumer", ("consumer",), matrix=True, scope="translated OpenGL widgets, readback and desktop lifecycle"),
+    consumer=Consumer(property="CuiProject", arguments=("--smoke", "--capture", "{work}/{label}.rgba"), build_arguments=("-m:1",)),
+    suites=(Suite("consumer", ("consumer",), run=run_suite, matrix=True, scope="translated OpenGL widgets, readback and desktop lifecycle; native pixel comparison when selected"),
             Suite("native", (), run=run_suite, scope="matching native GLFW selected deterministic upstream suites", timeout=3600),
             Suite("abi", (), run=run_suite, matrix=True, scope="GLFW callbacks, GL execution, platform ABI and guarded adaptations", timeout=3600),
             Suite("upstream", (), run=run_suite, matrix=True, scope="original upstream C suites, bidi and trusted Arabic shaping oracle", timeout=7200),

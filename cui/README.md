@@ -19,7 +19,7 @@ an ABI shim, cross-build or Wine run does not close it.
 
 ## Regenerate and verify
 
-Use .NET 10 and Python 3. Choose a disposable directory on external storage and
+Use .NET 10 and Python 3.11 or newer. Choose a disposable directory on external storage and
 set `CUI_WORK_ROOT` to its absolute path. Campaign commands require it; acquired
 inputs, tool snapshots, emissions and managed intermediates use that directory.
 Final generated projects and durable campaign receipts live under `cui/`.
@@ -43,8 +43,11 @@ shared framework meanings. `DOTCC_COMPILER` and `DOTCC_POSTPROCESSOR` can select
 explicit prebuilt tools. Generated C# must be regenerated, never patched.
 
 Full Linux qualification needs CMake, a C/C++ compiler, GLFW development files
-for the native oracle, X11/GLX and OpenGL 3.3, `xdotool`, and the Python test
-dependencies. Install them into a private Python environment on external storage:
+for the native oracle, X11/GLX and OpenGL 3.3, `xdotool`, `xclip`, `zenity`,
+`kdialog`, `xdg-utils`, `gio`, `desktop-file-utils`, Xvfb and xauth. The real
+desktop-service runner requires a disposable work path without whitespace for
+the installed generic launcher. Install the Python test dependencies into a
+private environment on external storage:
 
 ```bash
 python3 -m venv "$CUI_WORK_ROOT/python"
@@ -66,11 +69,15 @@ LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a -s '-screen 0 1280x800x24 +extension GLX' \
 Verification declares `native`, `consumer`, `abi`, `upstream`, `render`,
 `lifecycle` and `audit`. It executes original upstream tests and compares native
 results, exact shaping records and software pixels. Its ABI suite also runs
-real desktop input, GL readback and cleanup tests. The eight existing fuzz
+real desktop input, GL readback, dialog/URL tools and cleanup tests. The native
+and consumer suites compare the same full-window GL workload when selected
+together. The eight existing fuzz
 programs and one soak are excluded by plan D9. Specialist prerequisites,
 counts and comparison rules are documented in [qualification](tests/qualification/README.md),
 [host tests](tests/host-glfw/README.md), [platform tests](tests/platform/README.md)
-and [desktop input](tests/desktop/README.md).
+and [desktop input](tests/desktop/README.md),
+[real desktop services](tests/desktop-services/README.md), and
+[native desktop control](tests/native-desktop/README.md).
 
 For a targeted qualification retry, `CUI_QUALIFICATION_OBJECTS` and
 `CUI_QUALIFICATION_STAGED_SOURCE` can select a matching retained object/source
@@ -99,6 +106,8 @@ finishes the current frame and returns actual GL RGBA readback. Call `Dispose`
 even after a managed callback throws.
 On Windows, use an `[STAThread]` entry point when using folder dialogs; the
 sample supplies it. COM apartment initialization failure reports dialog failure.
+Raw GLFW handles are adapter-owned opaque tokens. Pass them only to this
+translation's GLFW API; they are not native GLFW pointers or OS window handles.
 
 `ManagedConsumer.slnx` builds the separate sample. Use `-p:CuiProject=...` to
 select the alternate library. Build outputs should stay on external storage:

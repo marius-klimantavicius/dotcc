@@ -1,0 +1,301 @@
+{
+  "date": "2026-11-10",
+  "status": "Linux real desktop-services qualification passed; Windows remains unrun",
+  "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.39",
+  "dotnet": "10.0.114",
+  "versions": {
+    "zenity": "4.0.1",
+    "xdg-open": "xdg-open 1.1.3",
+    "gio": "2.80.0",
+    "kdialog": "kdialog 23.08.5"
+  },
+  "assertions_total": 448,
+  "actual_dialog_invocations": 40,
+  "actual_xdg_open_invocations": 40,
+  "matrix": [
+    {
+      "form": "raw",
+      "runtime": "JIT",
+      "status": "passed",
+      "transcript_directory": "raw-jit-final",
+      "xvfb_terminated": true,
+      "dialog_tools": {
+        "zenity": {
+          "assertions": 56,
+          "dialog_statuses": [
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          "launcher_statuses": [
+            0,
+            4,
+            3,
+            0,
+            0
+          ],
+          "handler_exit_codes": {
+            "leading-dash": 0,
+            "generic-success": 0,
+            "generic-handler-fails": 23,
+            "gio-handler-fails": 23
+          }
+        },
+        "kdialog": {
+          "assertions": 56,
+          "dialog_statuses": [
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          "launcher_statuses": [
+            0,
+            4,
+            3,
+            0,
+            0
+          ],
+          "handler_exit_codes": {
+            "leading-dash": 0,
+            "generic-success": 0,
+            "generic-handler-fails": 23,
+            "gio-handler-fails": 23
+          }
+        }
+      }
+    },
+    {
+      "form": "processed",
+      "runtime": "JIT",
+      "status": "passed",
+      "transcript_directory": "processed-jit",
+      "xvfb_terminated": true,
+      "dialog_tools": {
+        "zenity": {
+          "assertions": 56,
+          "dialog_statuses": [
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          "launcher_statuses": [
+            0,
+            4,
+            3,
+            0,
+            0
+          ],
+          "handler_exit_codes": {
+            "leading-dash": 0,
+            "generic-success": 0,
+            "generic-handler-fails": 23,
+            "gio-handler-fails": 23
+          }
+        },
+        "kdialog": {
+          "assertions": 56,
+          "dialog_statuses": [
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          "launcher_statuses": [
+            0,
+            4,
+            3,
+            0,
+            0
+          ],
+          "handler_exit_codes": {
+            "leading-dash": 0,
+            "generic-success": 0,
+            "generic-handler-fails": 23,
+            "gio-handler-fails": 23
+          }
+        }
+      }
+    },
+    {
+      "form": "raw",
+      "runtime": "NativeAOT",
+      "status": "passed",
+      "transcript_directory": "raw-aot",
+      "xvfb_terminated": true,
+      "dialog_tools": {
+        "zenity": {
+          "assertions": 56,
+          "dialog_statuses": [
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          "launcher_statuses": [
+            0,
+            4,
+            3,
+            0,
+            0
+          ],
+          "handler_exit_codes": {
+            "leading-dash": 0,
+            "generic-success": 0,
+            "generic-handler-fails": 23,
+            "gio-handler-fails": 23
+          }
+        },
+        "kdialog": {
+          "assertions": 56,
+          "dialog_statuses": [
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          "launcher_statuses": [
+            0,
+            4,
+            3,
+            0,
+            0
+          ],
+          "handler_exit_codes": {
+            "leading-dash": 0,
+            "generic-success": 0,
+            "generic-handler-fails": 23,
+            "gio-handler-fails": 23
+          }
+        }
+      }
+    },
+    {
+      "form": "processed",
+      "runtime": "NativeAOT",
+      "status": "passed",
+      "transcript_directory": "processed-aot",
+      "xvfb_terminated": true,
+      "dialog_tools": {
+        "zenity": {
+          "assertions": 56,
+          "dialog_statuses": [
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          "launcher_statuses": [
+            0,
+            4,
+            3,
+            0,
+            0
+          ],
+          "handler_exit_codes": {
+            "leading-dash": 0,
+            "generic-success": 0,
+            "generic-handler-fails": 23,
+            "gio-handler-fails": 23
+          }
+        },
+        "kdialog": {
+          "assertions": 56,
+          "dialog_statuses": [
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          "launcher_statuses": [
+            0,
+            4,
+            3,
+            0,
+            0
+          ],
+          "handler_exit_codes": {
+            "leading-dash": 0,
+            "generic-success": 0,
+            "generic-handler-fails": 23,
+            "gio-handler-fails": 23
+          }
+        }
+      }
+    }
+  ],
+  "entrypoints": [
+    "Original translated cui_app_file_dialog(null, opts, output, capacity), with live DesktopApplication/current-app resolution",
+    "Original translated cui_app_open_url(utf8), with live DesktopApplication"
+  ],
+  "dialog_case_order": [
+    "open-confirm",
+    "open-cancel",
+    "save-confirm",
+    "folder-confirm",
+    "small-capacity"
+  ],
+  "launcher_case_order": [
+    "generic-success",
+    "generic-handler-fails",
+    "no-handler",
+    "leading-dash",
+    "gio-handler-fails"
+  ],
+  "additional_checks": [
+    "Exact Unicode UTF-8 path and NUL; capacity guards and failure output clearing",
+    "Translated focus/mouse cleanup and continued app frames",
+    "App/window release and second owning app initialization/disposal",
+    "Both dialog tools missing; launcher missing; null/empty URL",
+    "kdialog fallback with zenity absent from private PATH",
+    "Literal shell metacharacters/spaces/quotes in one argv element",
+    "Leading-dash Unicode local filename converted to absolute path",
+    "Private handler actual child exit recorded/reaped",
+    "Actual dialog/launcher processes completed and reaped; owned Xvfb terminated"
+  ],
+  "limits": [
+    "Actual Windows dialogs/URLs unrun; external interactive Windows gate required",
+    "No native Wayland or other desktop environments qualified",
+    "Public URL result follows launcher status, not general desktop handler completion/success",
+    "GNOME/gio launcher reports success 0 despite private handler actual child exit23",
+    "Installed xdg-open1.1.3 misclassified initial valid digit-containing scheme as filename: status2/CUI false; successful fixture schemes alphabetic",
+    "GTK4 zenity new save Name can be blank despite filename argument; driver enters basename, no visual default seeding claim",
+    "No overwrite-confirmation or general application handler outcomes claimed",
+    "Transparent recording trampolines forward actual installed binary output/status; they may wait for inherited output pipes to close; no launch-timing claim"
+  ],
+  "products": {
+    "raw": {
+      "project": "cui/generated/TranslatedCui.Raw/TranslatedCui.csproj",
+      "file_count": 21,
+      "manifest_sha256": "4dd1dbfcfd58e9081172b099786cf59a33c632fe39af6a193cb04e3017bcb1f5",
+      "manifest_format": "sorted filename + SPACE + SHA256 + LF for root *.cs and TranslatedCui.csproj"
+    },
+    "processed": {
+      "project": "cui/generated/TranslatedCui/TranslatedCui.csproj",
+      "file_count": 21,
+      "manifest_sha256": "098c903fc776ebd6df2ff5f71e98945aa1e085e5c1afadf888b4297a8a0f6f61",
+      "manifest_format": "sorted filename + SPACE + SHA256 + LF for root *.cs and TranslatedCui.csproj"
+    }
+  },
+  "source_sha256": {
+    "cui/tests/desktop-services/Program.cs": "8d55e7df3a0abed44e8bac77b55552d5188d77d9e4f5d87ca3ad344e7646d53d",
+    "cui/tests/desktop-services/run.py": "db6830c008c8daf730bcfb2a2835305ee96d3d4558a320b3afc06df5f7ae54d1",
+    "cui/tests/desktop-services/DesktopServices.Tests.csproj": "1f04b9aaa494a5c68618b6f4f0cbc480a8100fed4e9e4b443fa20e33a879da50",
+    "cui/src/Host/DesktopApplication.cs": "a2cb21aae12e387e200b0bb8cee3e3bf79f64b54ac4bf7a20012a2addc5086a2",
+    "cui/src/Host/GlfwHost.Callbacks.cs": "bda4fad8fd3628b76b4dc14cdc821efadd58de92d0c6422de38c085f2867b6d3",
+    "cui/src/Host/GlfwHost.cs": "342543eedb33c0b17391e10c65d3115ae81ad0a407c3950f6cc4400d2f04b0e2",
+    "cui/src/Host/OpenGlHost.cs": "a5f51bf774620c31e21684a9fa3aabc38c05ad4252035e7046283f719a9aa356",
+    "cui/src/Host/PlatformHost.cs": "ecd311afe68f68a268bbaced186c41665bf88b6e708d2efbdd8a131219fb8726"
+  },
+  "transcripts": "Per invocation work root: evidence.json, build.log, coordinator.log, xvfb.log; per-tool run.log, automation.log, tool-status/*.done.json and stdout/stderr logs, *.argv and *.handler.json"
+}

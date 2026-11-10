@@ -53,6 +53,33 @@ def qualification(ctx, suite):
         arguments += ["--objects-dir", os.environ["CUI_QUALIFICATION_OBJECTS"],
                       "--staged-source", os.environ["CUI_QUALIFICATION_STAGED_SOURCE"]]
     ctx.run(arguments, suite.name, timeout=suite.timeout)
+    if suite.name == "native":
+        binary = ctx.work / "native-desktop"
+        ctx.run(["cc", "-std=c99", "-O3", "-I", upstream / "include", ctx.root / "tests/native-desktop/workflow.c",
+                 native / "libcui.a", "-lm", "-lglfw", "-o", binary], "native-desktop-build")
+        ctx.run([binary, ctx.work / "native-desktop.rgba"], "native-desktop-run", timeout=120, separate=True)
+
+
+def consumer(ctx, suite):
+    from campaigns.testing import consumer as run_consumer
+    run_consumer(ctx, suite)
+    native = ctx.work / "native-desktop.rgba"
+    if not native.is_file():
+        return
+    expected = native.read_bytes()
+    comparisons = []
+    for form in forms(ctx):
+        for mode in modes(ctx):
+            actual = (ctx.work / f"consumer-{form}-{mode}.rgba").read_bytes()
+            if len(expected) != len(actual):
+                raise RuntimeError("Native/translated GL framebuffer sizes differ")
+            maximum = max(abs(a-b) for a,b in zip(expected, actual))
+            # GL conversion can round a normalized channel one byte differently.
+            if maximum > 1:
+                raise RuntimeError(f"Native/translated GL readback differs by {maximum}, tolerance 1")
+            comparisons.append(dict(form=form, mode=mode, bytes=len(actual), maximum_channel_error=maximum, tolerance=1))
+    ctx.receipt["native_gl_readback_comparisons"] = comparisons
+    ctx.save()
 
 
 def abi(ctx, suite):
@@ -82,6 +109,12 @@ def abi(ctx, suite):
             if mode == "aot":
                 desktop.append("--aot")
             ctx.run(desktop, "desktop-" + form + "-" + mode, timeout=suite.timeout, separate=True)
+            if sys.platform == "linux":
+                services = [sys.executable, ctx.root / "tests/desktop-services/run.py", "--work-root",
+                            ctx.work / ("desktop-services-" + form + "-" + mode), "--cui-project", product]
+                if mode == "aot":
+                    services.append("--aot")
+                ctx.run(services, "desktop-services-" + form + "-" + mode, timeout=suite.timeout, separate=True)
 
 
 def audit(ctx, suite):
