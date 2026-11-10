@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="generated/TranslatedCui/TranslatedCui.csproj" />
+  <Project Path="src/Glfw/Glfw.csproj" />
+  <Project Path="samples/ManagedConsumer/ManagedConsumer.csproj" />
+</Solution>

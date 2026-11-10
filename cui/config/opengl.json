@@ -1,0 +1,394 @@
+[
+  {
+    "name": "glEnable",
+    "return": "void",
+    "parameters": [
+      "GLenum_"
+    ]
+  },
+  {
+    "name": "glDisable",
+    "return": "void",
+    "parameters": [
+      "GLenum_"
+    ]
+  },
+  {
+    "name": "glBlendFunc",
+    "return": "void",
+    "parameters": [
+      "GLenum_",
+      "GLenum_"
+    ]
+  },
+  {
+    "name": "glBlendEquation",
+    "return": "void",
+    "parameters": [
+      "GLenum_"
+    ]
+  },
+  {
+    "name": "glViewport",
+    "return": "void",
+    "parameters": [
+      "GLint_",
+      "GLint_",
+      "GLsizei_",
+      "GLsizei_"
+    ]
+  },
+  {
+    "name": "glScissor",
+    "return": "void",
+    "parameters": [
+      "GLint_",
+      "GLint_",
+      "GLsizei_",
+      "GLsizei_"
+    ]
+  },
+  {
+    "name": "glClearColor",
+    "return": "void",
+    "parameters": [
+      "GLfloat_",
+      "GLfloat_",
+      "GLfloat_",
+      "GLfloat_"
+    ]
+  },
+  {
+    "name": "glClear",
+    "return": "void",
+    "parameters": [
+      "GLbitfield_"
+    ]
+  },
+  {
+    "name": "glGenTextures",
+    "return": "void",
+    "parameters": [
+      "GLsizei_",
+      "GLuint_ *"
+    ]
+  },
+  {
+    "name": "glDeleteTextures",
+    "return": "void",
+    "parameters": [
+      "GLsizei_",
+      "const GLuint_ *"
+    ]
+  },
+  {
+    "name": "glBindTexture",
+    "return": "void",
+    "parameters": [
+      "GLenum_",
+      "GLuint_"
+    ]
+  },
+  {
+    "name": "glTexParameteri",
+    "return": "void",
+    "parameters": [
+      "GLenum_",
+      "GLenum_",
+      "GLint_"
+    ]
+  },
+  {
+    "name": "glTexImage2D",
+    "return": "void",
+    "parameters": [
+      "GLenum_",
+      "GLint_",
+      "GLint_",
+      "GLsizei_",
+      "GLsizei_",
+      "GLint_",
+      "GLenum_",
+      "GLenum_",
+      "const void *"
+    ]
+  },
+  {
+    "name": "glTexSubImage2D",
+    "return": "void",
+    "parameters": [
+      "GLenum_",
+      "GLint_",
+      "GLint_",
+      "GLint_",
+      "GLsizei_",
+      "GLsizei_",
+      "GLenum_",
+      "GLenum_",
+      "const void *"
+    ]
+  },
+  {
+    "name": "glPixelStorei",
+    "return": "void",
+    "parameters": [
+      "GLenum_",
+      "GLint_"
+    ]
+  },
+  {
+    "name": "glActiveTexture",
+    "return": "void",
+    "parameters": [
+      "GLenum_"
+    ]
+  },
+  {
+    "name": "glDrawElements",
+    "return": "void",
+    "parameters": [
+      "GLenum_",
+      "GLsizei_",
+      "GLenum_",
+      "const void *"
+    ]
+  },
+  {
+    "name": "glGetString",
+    "return": "const unsigned char *",
+    "parameters": [
+      "GLenum_"
+    ]
+  },
+  {
+    "name": "glGenBuffers",
+    "return": "void",
+    "parameters": [
+      "GLsizei_",
+      "GLuint_ *"
+    ]
+  },
+  {
+    "name": "glDeleteBuffers",
+    "return": "void",
+    "parameters": [
+      "GLsizei_",
+      "const GLuint_ *"
+    ]
+  },
+  {
+    "name": "glBindBuffer",
+    "return": "void",
+    "parameters": [
+      "GLenum_",
+      "GLuint_"
+    ]
+  },
+  {
+    "name": "glBufferData",
+    "return": "void",
+    "parameters": [
+      "GLenum_",
+      "GLsizeiptr_",
+      "const void *",
+      "GLenum_"
+    ]
+  },
+  {
+    "name": "glGenVertexArrays",
+    "return": "void",
+    "parameters": [
+      "GLsizei_",
+      "GLuint_ *"
+    ]
+  },
+  {
+    "name": "glDeleteVertexArrays",
+    "return": "void",
+    "parameters": [
+      "GLsizei_",
+      "const GLuint_ *"
+    ]
+  },
+  {
+    "name": "glBindVertexArray",
+    "return": "void",
+    "parameters": [
+      "GLuint_"
+    ]
+  },
+  {
+    "name": "glEnableVertexAttribArray",
+    "return": "void",
+    "parameters": [
+      "GLuint_"
+    ]
+  },
+  {
+    "name": "glVertexAttribPointer",
+    "return": "void",
+    "parameters": [
+      "GLuint_",
+      "GLint_",
+      "GLenum_",
+      "GLboolean_",
+      "GLsizei_",
+      "const void *"
+    ]
+  },
+  {
+    "name": "glCreateShader",
+    "return": "GLuint_",
+    "parameters": [
+      "GLenum_"
+    ]
+  },
+  {
+    "name": "glShaderSource",
+    "return": "void",
+    "parameters": [
+      "GLuint_",
+      "GLsizei_",
+      "const GLchar_ *const *",
+      "const GLint_ *"
+    ]
+  },
+  {
+    "name": "glCompileShader",
+    "return": "void",
+    "parameters": [
+      "GLuint_"
+    ]
+  },
+  {
+    "name": "glGetShaderiv",
+    "return": "void",
+    "parameters": [
+      "GLuint_",
+      "GLenum_",
+      "GLint_ *"
+    ]
+  },
+  {
+    "name": "glGetShaderInfoLog",
+    "return": "void",
+    "parameters": [
+      "GLuint_",
+      "GLsizei_",
+      "GLsizei_ *",
+      "GLchar_ *"
+    ]
+  },
+  {
+    "name": "glDeleteShader",
+    "return": "void",
+    "parameters": [
+      "GLuint_"
+    ]
+  },
+  {
+    "name": "glCreateProgram",
+    "return": "GLuint_",
+    "parameters": []
+  },
+  {
+    "name": "glAttachShader",
+    "return": "void",
+    "parameters": [
+      "GLuint_",
+      "GLuint_"
+    ]
+  },
+  {
+    "name": "glLinkProgram",
+    "return": "void",
+    "parameters": [
+      "GLuint_"
+    ]
+  },
+  {
+    "name": "glGetProgramiv",
+    "return": "void",
+    "parameters": [
+      "GLuint_",
+      "GLenum_",
+      "GLint_ *"
+    ]
+  },
+  {
+    "name": "glGetProgramInfoLog",
+    "return": "void",
+    "parameters": [
+      "GLuint_",
+      "GLsizei_",
+      "GLsizei_ *",
+      "GLchar_ *"
+    ]
+  },
+  {
+    "name": "glDeleteProgram",
+    "return": "void",
+    "parameters": [
+      "GLuint_"
+    ]
+  },
+  {
+    "name": "glUseProgram",
+    "return": "void",
+    "parameters": [
+      "GLuint_"
+    ]
+  },
+  {
+    "name": "glGetUniformLocation",
+    "return": "GLint_",
+    "parameters": [
+      "GLuint_",
+      "const GLchar_ *"
+    ]
+  },
+  {
+    "name": "glUniform1i",
+    "return": "void",
+    "parameters": [
+      "GLint_",
+      "GLint_"
+    ]
+  },
+  {
+    "name": "glUniform2f",
+    "return": "void",
+    "parameters": [
+      "GLint_",
+      "GLfloat_",
+      "GLfloat_"
+    ]
+  },
+  {
+    "name": "glBindAttribLocation",
+    "return": "void",
+    "parameters": [
+      "GLuint_",
+      "GLuint_",
+      "const GLchar_ *"
+    ]
+  },
+  {
+    "name": "glReadPixels",
+    "return": "void",
+    "parameters": [
+      "GLint_",
+      "GLint_",
+      "GLsizei_",
+      "GLsizei_",
+      "GLenum_",
+      "GLenum_",
+      "void *"
+    ]
+  },
+  {
+    "name": "glFinish",
+    "return": "void",
+    "parameters": []
+  }
+]

@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <CuiProject Condition="'$(CuiProject)' == ''">../../generated/TranslatedCui/TranslatedCui.csproj</CuiProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(CuiProject)" />
+  </ItemGroup>
+</Project>

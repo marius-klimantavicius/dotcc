@@ -1,0 +1,584 @@
+{
+  "version": 1,
+  "functionOverrides": [
+    {
+      "name": "glfwCreateStandardCursor",
+      "signature": {
+        "returnType": "GLFWcursor*",
+        "parameterTypes": [
+          "int"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwCreateStandardCursor"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwCreateWindow",
+      "signature": {
+        "returnType": "GLFWwindow*",
+        "parameterTypes": [
+          "int",
+          "int",
+          "const char*",
+          "GLFWmonitor*",
+          "GLFWwindow*"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwCreateWindow"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwDestroyCursor",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "GLFWcursor*"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwDestroyCursor"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwDestroyWindow",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "GLFWwindow*"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwDestroyWindow"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwGetClipboardString",
+      "signature": {
+        "returnType": "const char*",
+        "parameterTypes": [
+          "GLFWwindow*"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwGetClipboardString"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwGetCursorPos",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "GLFWwindow*",
+          "double*",
+          "double*"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwGetCursorPos"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwGetFramebufferSize",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "GLFWwindow*",
+          "int*",
+          "int*"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwGetFramebufferSize"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwGetPrimaryMonitor",
+      "signature": {
+        "returnType": "GLFWmonitor*",
+        "parameterTypes": []
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwGetPrimaryMonitor"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwGetProcAddress",
+      "signature": {
+        "returnType": "GLFWglproc",
+        "parameterTypes": [
+          "const char*"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwGetProcAddress"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwGetTime",
+      "signature": {
+        "returnType": "double",
+        "parameterTypes": []
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwGetTime"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwGetVideoMode",
+      "signature": {
+        "returnType": "const GLFWvidmode*",
+        "parameterTypes": [
+          "GLFWmonitor*"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwGetVideoMode"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwGetWindowContentScale",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "GLFWwindow*",
+          "float*",
+          "float*"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwGetWindowContentScale"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwGetWindowMonitor",
+      "signature": {
+        "returnType": "GLFWmonitor*",
+        "parameterTypes": [
+          "GLFWwindow*"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwGetWindowMonitor"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwGetWindowUserPointer",
+      "signature": {
+        "returnType": "void*",
+        "parameterTypes": [
+          "GLFWwindow*"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwGetWindowUserPointer"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwInit",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": []
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwInit"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwMakeContextCurrent",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "GLFWwindow*"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwMakeContextCurrent"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwPollEvents",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": []
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwPollEvents"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwSetCharCallback",
+      "signature": {
+        "returnType": "GLFWcharfun",
+        "parameterTypes": [
+          "GLFWwindow*",
+          "GLFWcharfun"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwSetCharCallback"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwSetClipboardString",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "GLFWwindow*",
+          "const char*"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwSetClipboardString"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwSetCursor",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "GLFWwindow*",
+          "GLFWcursor*"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwSetCursor"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwSetCursorEnterCallback",
+      "signature": {
+        "returnType": "GLFWcursorenterfun",
+        "parameterTypes": [
+          "GLFWwindow*",
+          "GLFWcursorenterfun"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwSetCursorEnterCallback"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwSetCursorPosCallback",
+      "signature": {
+        "returnType": "GLFWcursorposfun",
+        "parameterTypes": [
+          "GLFWwindow*",
+          "GLFWcursorposfun"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwSetCursorPosCallback"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwSetDropCallback",
+      "signature": {
+        "returnType": "GLFWdropfun",
+        "parameterTypes": [
+          "GLFWwindow*",
+          "GLFWdropfun"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwSetDropCallback"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwSetKeyCallback",
+      "signature": {
+        "returnType": "GLFWkeyfun",
+        "parameterTypes": [
+          "GLFWwindow*",
+          "GLFWkeyfun"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwSetKeyCallback"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwSetMouseButtonCallback",
+      "signature": {
+        "returnType": "GLFWmousebuttonfun",
+        "parameterTypes": [
+          "GLFWwindow*",
+          "GLFWmousebuttonfun"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwSetMouseButtonCallback"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwSetScrollCallback",
+      "signature": {
+        "returnType": "GLFWscrollfun",
+        "parameterTypes": [
+          "GLFWwindow*",
+          "GLFWscrollfun"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwSetScrollCallback"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwSetWindowCloseCallback",
+      "signature": {
+        "returnType": "GLFWwindowclosefun",
+        "parameterTypes": [
+          "GLFWwindow*",
+          "GLFWwindowclosefun"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwSetWindowCloseCallback"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwSetWindowFocusCallback",
+      "signature": {
+        "returnType": "GLFWwindowfocusfun",
+        "parameterTypes": [
+          "GLFWwindow*",
+          "GLFWwindowfocusfun"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwSetWindowFocusCallback"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwSetWindowRefreshCallback",
+      "signature": {
+        "returnType": "GLFWwindowrefreshfun",
+        "parameterTypes": [
+          "GLFWwindow*",
+          "GLFWwindowrefreshfun"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwSetWindowRefreshCallback"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwSetWindowSize",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "GLFWwindow*",
+          "int",
+          "int"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwSetWindowSize"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwSetWindowSizeLimits",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "GLFWwindow*",
+          "int",
+          "int",
+          "int",
+          "int"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwSetWindowSizeLimits"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwSetWindowTitle",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "GLFWwindow*",
+          "const char*"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwSetWindowTitle"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwSetWindowUserPointer",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "GLFWwindow*",
+          "void*"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwSetWindowUserPointer"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwShowWindow",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "GLFWwindow*"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwShowWindow"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwSwapBuffers",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "GLFWwindow*"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwSwapBuffers"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwSwapInterval",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "int"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwSwapInterval"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwTerminate",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": []
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwTerminate"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwWaitEvents",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": []
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwWaitEvents"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwWaitEventsTimeout",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "double"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwWaitEventsTimeout"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "glfwWindowHint",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "int",
+          "int"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.GlfwHost.glfwWindowHint"
+      },
+      "requireMatch": true
+    }
+  ]
+}

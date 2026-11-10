@@ -57,11 +57,11 @@ is needed. Existing unrelated working-tree edits are not campaign work.
 | --- | --- | --- |
 | D1 | Inputs | CUI revision in `config/source.json`; vendored GLFW snapshot in `config/glfw-source.json`; preserve CUI and dependency notices. Decided. |
 | D2 | Features | `config/profile.json`: app, default fonts, image decoder/all formats and shaping enabled. Native packaging/LTO/unwind options do not control managed functionality. Decided. |
-| D3 | ABI | One DotCC source ABI, 64-bit pointers, UTF-8 CUI strings and DotCC UTF-16 wide strings. Do not pass generated libc structures directly to OS APIs. Validate actual emitted layouts, callbacks and GL calls. P1 open. |
-| D4 | Boundary | Typed function overrides for managed GLFW calls and targeted OS services. Copy GLFW source, retain translated CUI algorithms. GL proc pointers need explicit managed-to-unmanaged adapters. P1 open. |
-| D5 | Lifetime | One active desktop app per process, owner-thread creation/events/render/destruction; upstream GLFW adapter terminates GLFW on app destruction. Offscreen contexts retain upstream semantics. Root retained callbacks and opaque-handle objects until release. P1/P3 open. |
+| D3 | ABI | One DotCC source ABI, 64-bit pointers, UTF-8 CUI strings and DotCC UTF-16 wide strings. Emitted layouts, callbacks and native GL calls pass Linux JIT/AOT probes; Windows structures pass a shim, with real Windows execution open. |
+| D4 | Boundary | Typed managed GLFW/OS overrides and exact managed-to-native GL thunks are implemented and executed on Linux. Copied GLFW and translated CUI algorithms remain the product boundary. |
+| D5 | Lifetime | One active desktop app, owner-thread calls, rooted retained callbacks and stable opaque handles. Raw and owning destruction preserve deferred-error visibility while releasing C allocations. Linux JIT/AOT lifecycle probes and full desktop workflows pass; Windows execution open. |
 | D6 | Delivery | Object emission, class `Cui`, namespace `Managed.Cui`; shared 256 KB `link_flags`, literal pooling and inline deduplication. Canonical raw/processed products. Decided. |
-| D7 | Oracles | Same feature selection with native GLFW; native X11 preliminary control is diagnostic only. Native and translated upstream suites plus useful window execution. P0/P4 open. |
+| D7 | Oracles | Matching native GLFW 9/9 and independent Noto/HarfBuzz 661-case oracle pass. Native X11 preliminary control is diagnostic only. Full translated differential qualification is in progress. |
 | D8 | Matrix | Linux x64 raw/processed × JIT/AOT; Windows x64 same runtime dispatch and consumer, requiring actual execution. No Windows completion inferred from cross-compilation or Wine. P4/P6 open. |
 | D9 | Tests | Upstream deterministic unit suites, software rendering, bidi/shaping, ordinary failures/lifecycle, GLFW app workflow. Existing fuzz/soak programs inventoried separately; no new fuzz/stress campaign or performance threshold selected. P4 open. |
 
@@ -111,12 +111,12 @@ Scripts must also work on Windows with ordinary copies and no elevation.
 | Phase | Exit gate | Status |
 | --- | --- | --- |
 | P0 | Frozen profile, recipe/layout, native GLFW workload, real translation attempt | Complete: 58-unit source selection emitted and linked; native GLFW 9/9 and trusted shaping baseline pass; copied GLFW builds |
-| P1 | Executed GL/callback/handle/ABI probes and runtime-selection decisions | Planned |
+| P1 | Executed GL/callback/handle/ABI probes and runtime-selection decisions | Linux executed probes pass; Windows ABI shim passes, real Windows axis open |
 | P2 | Full source closure, raw/processed builds, import audit, canonical publication | Raw/processed products published; final-tool regeneration and dependency audit pending |
-| P3 | Actual translated window workflow and correct input/render/shutdown | Planned |
-| P4 | Required upstream behavior, software pixels, failures and lifetimes | Planned |
-| P5 | Owning API, separate consumer, solution builds and JIT/AOT workflow | Planned |
-| P6 | Final-tool regeneration, reproduction, dependency audit, required target matrix | Planned |
+| P3 | Actual translated window workflow and correct input/render/shutdown | Linux raw/processed JIT/AOT OS-input and GL-readback workflows pass; Windows open |
+| P4 | Required upstream behavior, software pixels, failures and lifetimes | Four-way shaping passes; complete upstream/render/lifecycle verification in progress |
+| P5 | Owning API, separate consumer, solution builds and JIT/AOT workflow | Owning API/sample delivered, solution builds, Linux four-way consumer passes; final rerun ongoing and Windows open |
+| P6 | Final-tool regeneration, reproduction, dependency audit, required target matrix | Final-tool full verification in progress; actual Windows target unavailable |
 
 Commit significant milestones only after their gates pass. Leave unrelated
 existing compiler and libghostty edits untouched. Track observed failures,

@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "functionOverrides": [
+    {
+      "name": "cui_host_is_windows",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": []
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.PlatformHost.IsWindows"
+      }
+    },
+    {
+      "name": "cui_fs_list",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "void *",
+          "const char *",
+          "cui_file_entry *",
+          "int",
+          "char *",
+          "size_t",
+          "_Bool"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.PlatformHost.ListDirectory"
+      }
+    },
+    {
+      "name": "cui__plat_file_dialog",
+      "signature": {
+        "returnType": "_Bool",
+        "parameterTypes": [
+          "cui_app *",
+          "const cui_file_dialog_opts *",
+          "char *",
+          "size_t"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.PlatformHost.FileDialog"
+      }
+    },
+    {
+      "name": "cui__plat_open_url",
+      "signature": {
+        "returnType": "_Bool",
+        "parameterTypes": [
+          "const char *"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Cui.PlatformHost.OpenUrl"
+      }
+    }
+  ]
+}
