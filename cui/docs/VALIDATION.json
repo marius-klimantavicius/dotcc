@@ -1,0 +1,552 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-10",
+  "acceptance": "Incomplete: Linux x64 qualified; required actual Windows x64 execution unavailable",
+  "source_revision": "629b6fcb991d71527f2d67b25c51429c3dcdb498",
+  "profile": "desktop: translated shared core/app loop plus upstream GLFW adapter and copied managed GLFW; native Wayland and direct CUI backends excluded",
+  "translation_units": [
+    "src/cui_core.c",
+    "src/cui_theme.c",
+    "src/cui_draw.c",
+    "src/cui_text.c",
+    "src/cui_layout.c",
+    "src/cui_widgets.c",
+    "src/cui_controls.c",
+    "src/cui_textedit.c",
+    "src/cui_overlay.c",
+    "src/cui_data.c",
+    "src/cui_charts.c",
+    "src/cui_extras.c",
+    "src/cui_actions.c",
+    "src/cui_pickers.c",
+    "src/cui_disclosure.c",
+    "src/cui_grid.c",
+    "src/cui_treetable.c",
+    "src/cui_code.c",
+    "src/cui_markdown.c",
+    "src/cui_editor.c",
+    "src/cui_diff.c",
+    "src/cui_tools.c",
+    "src/cui_hex.c",
+    "src/cui_social.c",
+    "src/cui_media.c",
+    "src/cui_planning.c",
+    "src/cui_chrome.c",
+    "src/cui_dock.c",
+    "src/cui_viz.c",
+    "src/cui_motion.c",
+    "src/cui_ai.c",
+    "src/cui_image.c",
+    "src/cui_nodes.c",
+    "src/cui_flame.c",
+    "src/cui_curves.c",
+    "src/cui_timeline.c",
+    "src/cui_dials.c",
+    "src/cui_month.c",
+    "src/cui_strings.c",
+    "src/cui_devtools.c",
+    "src/cui_graph.c",
+    "src/cui_devpanels.c",
+    "src/cui_regex.c",
+    "src/cui_devviews.c",
+    "src/cui_instrument.c",
+    "src/cui_tour.c",
+    "src/cui_photo.c",
+    "src/cui_files.c",
+    "src/cui_terminal.c",
+    "src/cui_emoji.c",
+    "src/render/cui_render_sw.c",
+    "src/render/cui_render_gl.c",
+    "src/cui_font_data.c",
+    "src/cui_inflate.c",
+    "src/cui_bidi.c",
+    "src/cui_shape.c",
+    "src/platform/cui_app.c",
+    "src/platform/cui_app_glfw.c"
+  ],
+  "linux_matrix": {
+    "forms": [
+      "raw",
+      "processed"
+    ],
+    "execution": [
+      "jit",
+      "aot"
+    ],
+    "rid": "linux-x64",
+    "declared_suites": {
+      "native": "passed",
+      "consumer": "passed",
+      "abi": "passed",
+      "upstream": "passed",
+      "render": "passed",
+      "lifecycle": "passed",
+      "audit": "passed"
+    }
+  },
+  "framework_runs": {
+    "final_regeneration_and_initial_suites": {
+      "run_id": "20261110-173031-f70c7809",
+      "action": "verify",
+      "status": "cancelled",
+      "tasks": [
+        {
+          "name": "inputs",
+          "status": "passed"
+        },
+        {
+          "name": "tools",
+          "status": "passed"
+        },
+        {
+          "name": "translation",
+          "status": "passed"
+        },
+        {
+          "name": "test:native",
+          "status": "passed"
+        },
+        {
+          "name": "test:consumer",
+          "status": "passed"
+        },
+        {
+          "name": "test:abi",
+          "status": "passed"
+        },
+        {
+          "name": "test:upstream",
+          "status": "cancelled"
+        },
+        {
+          "name": "test:render",
+          "status": "blocked"
+        },
+        {
+          "name": "test:lifecycle",
+          "status": "blocked"
+        },
+        {
+          "name": "test:audit",
+          "status": "blocked"
+        }
+      ]
+    },
+    "upstream_render_lifecycle_audit": {
+      "run_id": "20261110-174337-c400107a",
+      "action": "test",
+      "status": "passed",
+      "tasks": [
+        {
+          "name": "test:upstream",
+          "status": "passed"
+        },
+        {
+          "name": "test:render",
+          "status": "passed"
+        },
+        {
+          "name": "test:lifecycle",
+          "status": "passed"
+        },
+        {
+          "name": "test:audit",
+          "status": "passed"
+        }
+      ]
+    },
+    "native_window_and_consumer": {
+      "run_id": "20261110-180310-55d74591",
+      "action": "test",
+      "status": "passed",
+      "tasks": [
+        {
+          "name": "test:native",
+          "status": "passed"
+        },
+        {
+          "name": "test:consumer",
+          "status": "passed"
+        },
+        {
+          "name": "test:audit",
+          "status": "passed"
+        }
+      ]
+    },
+    "abi_input_and_real_services": {
+      "run_id": "20261110-180512-d9419597",
+      "action": "test",
+      "status": "passed",
+      "tasks": [
+        {
+          "name": "test:abi",
+          "status": "passed"
+        }
+      ]
+    },
+    "clean_committed_source_reproduction": {
+      "run_id": "20261110-173901-2b06efec",
+      "action": "verify",
+      "status": "passed",
+      "tasks": [
+        {
+          "name": "inputs",
+          "status": "passed"
+        },
+        {
+          "name": "tools",
+          "status": "passed"
+        },
+        {
+          "name": "translation",
+          "status": "passed"
+        },
+        {
+          "name": "test:consumer",
+          "status": "passed"
+        },
+        {
+          "name": "test:abi",
+          "status": "passed"
+        },
+        {
+          "name": "test:audit",
+          "status": "passed"
+        }
+      ]
+    }
+  },
+  "regeneration_note": "The first run was deliberately cancelled after an obsolete unaligned test harness failed its strict count comparison; translation, native, consumer and ABI tasks had passed. Latest harness qualification and final ABI/services are separate passing receipts.",
+  "native_gl_readback": [
+    {
+      "bytes": 1228800,
+      "form": "raw",
+      "maximum_channel_error": 0,
+      "mode": "jit",
+      "tolerance": 1
+    },
+    {
+      "bytes": 1228800,
+      "form": "raw",
+      "maximum_channel_error": 0,
+      "mode": "aot",
+      "tolerance": 1
+    },
+    {
+      "bytes": 1228800,
+      "form": "processed",
+      "maximum_channel_error": 0,
+      "mode": "jit",
+      "tolerance": 1
+    },
+    {
+      "bytes": 1228800,
+      "form": "processed",
+      "maximum_channel_error": 0,
+      "mode": "aot",
+      "tolerance": 1
+    }
+  ],
+  "upstream_evidence": {
+    "path": "tests/qualification/evidence.json",
+    "sha256": "d665409ae79f4ee43e53c5eb4a3c0619a0dcde27f3ccf6a6fad15e85a9285cad",
+    "programs": 12,
+    "execution_rows": 48,
+    "native_ctest": {
+      "registered": 18,
+      "selected_passed": 9,
+      "excluded_fuzz": 8,
+      "excluded_soak": 1
+    },
+    "native_original_core_assertions": 6147,
+    "input_aligned_core_assertions": 6160,
+    "exact_groups": 69,
+    "random_records": 168572,
+    "exact_shaping_cases_per_variant": 661
+  },
+  "desktop_services_evidence": {
+    "path": "tests/desktop-services/evidence.json",
+    "sha256": "a558e8bee6d38b648a7e0067d4e218eb76e69987739bdffdeb2157eb121a76c6",
+    "assertions": 448,
+    "actual_dialogs": 40,
+    "actual_xdg_open_invocations": 40
+  },
+  "shared_regressions": {
+    "stdio_functional_source_object": {
+      "passed": 2,
+      "failed": 0
+    },
+    "stdio_file_wide_unit": {
+      "passed": 40,
+      "failed": 0
+    },
+    "numeric_math_unit": {
+      "passed": 19,
+      "failed": 0
+    },
+    "compound_and_loop_functional": {
+      "passed": 13,
+      "failed": 0
+    },
+    "enabled_c_zig_boundary_contracts": {
+      "passed": 32,
+      "failed": 0
+    },
+    "recipe_source_isolation_and_publication": {
+      "passed": 1,
+      "failed": 0
+    },
+    "optional_framework_controls": {
+      "passed": 93,
+      "failed": 1,
+      "preexisting_failure": "DiscoveryTests.test_campaign_helpers_keep_hash_literals_in_metadata rejects a hash already present in blink/scripts/full_jit_copy_bindings.py at starting commit 66f13bc9a; file unchanged"
+    }
+  },
+  "clean_reproduction": {
+    "source_commit": "39cf7adbf",
+    "source": "git archive of committed compiler/runtime/postprocessor/framework/CUI plus root build metadata, excluding unrelated uncommitted Zig/libghostty work",
+    "tools": "rebuilt from archived sources with external artifacts",
+    "translation": "all 58 units; raw/processed libraries built and published",
+    "verification": "consumer, ABI/OS input and audit in raw/processed JIT/AOT passed",
+    "byte_identical_generated_source_claim": false,
+    "note": "Relocated sources receive different translation-unit/anonymous-type identities; execution and dependency gates passed. Later changes add qualification orchestration, fixtures/docs and a Windows-only STA entry attribute."
+  },
+  "windows_required_gate": {
+    "status": "unrun",
+    "required_forms": [
+      "raw",
+      "processed"
+    ],
+    "required_execution": [
+      "jit",
+      "aot"
+    ],
+    "discovery": "Linked-machine tool unavailable; local session is Linux x64; Wine and cross-publication are not accepted as Windows execution",
+    "minimum_external_prerequisite": "Interactive Windows x64 target with .NET 10 SDK, NativeAOT native build tools, OpenGL 3.3 and matching native-control prerequisites",
+    "open_work": "Execute window/input/GL/lifetime/OS-service and upstream differential matrix; current specialist native fixture compiler commands and desktop-service tool driver are Linux-specific and need target-specific qualification"
+  },
+  "limits": [
+    "GLFW software windows are explicitly rejected; software rendering remains offscreen",
+    "Native C++ header and full-gallery screenshot controls are native-only; translated C, software/GL pixels and five RTL captures execute separately",
+    "xdg-open status establishes launcher status; GNOME/gio may return success after detached handler failure",
+    "Installed xdg-open 1.1.3 misclassified a valid digit-containing fixture scheme; successful recorded fixtures use alphabetic schemes",
+    "Generated build retains five CS1718 warnings from intentional upstream self-comparisons used for NaN handling"
+  ],
+  "final_boundary_rows": [
+    {
+      "form": "raw",
+      "execution": "jit",
+      "host_gl_assertions": 120,
+      "desktop_input_assertions": 442,
+      "desktop_input_lifecycles": 3,
+      "real_service_assertions": {
+        "zenity": 56,
+        "kdialog": 56
+      },
+      "owned_service_xvfb_terminated": true
+    },
+    {
+      "form": "raw",
+      "execution": "aot",
+      "host_gl_assertions": 120,
+      "desktop_input_assertions": 430,
+      "desktop_input_lifecycles": 3,
+      "real_service_assertions": {
+        "zenity": 56,
+        "kdialog": 56
+      },
+      "owned_service_xvfb_terminated": true
+    },
+    {
+      "form": "processed",
+      "execution": "jit",
+      "host_gl_assertions": 120,
+      "desktop_input_assertions": 443,
+      "desktop_input_lifecycles": 3,
+      "real_service_assertions": {
+        "zenity": 56,
+        "kdialog": 56
+      },
+      "owned_service_xvfb_terminated": true
+    },
+    {
+      "form": "processed",
+      "execution": "aot",
+      "host_gl_assertions": 120,
+      "desktop_input_assertions": 430,
+      "desktop_input_lifecycles": 3,
+      "real_service_assertions": {
+        "zenity": 56,
+        "kdialog": 56
+      },
+      "owned_service_xvfb_terminated": true
+    }
+  ],
+  "desktop_count_note": "Polling assertions vary with event timing; required completed input/state/lifecycle workloads are fixed.",
+  "tool_hashes": {
+    "final_regeneration_and_initial_suites": {
+      "DotCC": {
+        "DotCC.Lib.dll": "c8d358fb53603c1de433efb5a0fdd1d404593d8446dfd5bb4ccc92bf934ef241",
+        "dotcc.dll": "369d0af8faba866226a79453c36b072b6804846f72bb245328b65a20cfbe93b0"
+      },
+      "DotCC.PostProcess": {
+        "dotcc-postprocess.dll": "a7e1a846f86ad2ee43e61dfdd80dd6e51e5daf7da187b1c4729907ffc2c13bed"
+      }
+    },
+    "upstream_render_lifecycle_audit": {
+      "DotCC": {
+        "DotCC.Lib.dll": "c8d358fb53603c1de433efb5a0fdd1d404593d8446dfd5bb4ccc92bf934ef241",
+        "dotcc.dll": "369d0af8faba866226a79453c36b072b6804846f72bb245328b65a20cfbe93b0"
+      },
+      "DotCC.PostProcess": {
+        "dotcc-postprocess.dll": "a7e1a846f86ad2ee43e61dfdd80dd6e51e5daf7da187b1c4729907ffc2c13bed"
+      }
+    },
+    "native_window_and_consumer": {
+      "DotCC": {
+        "DotCC.Lib.dll": "c8d358fb53603c1de433efb5a0fdd1d404593d8446dfd5bb4ccc92bf934ef241",
+        "dotcc.dll": "369d0af8faba866226a79453c36b072b6804846f72bb245328b65a20cfbe93b0"
+      },
+      "DotCC.PostProcess": {
+        "dotcc-postprocess.dll": "a7e1a846f86ad2ee43e61dfdd80dd6e51e5daf7da187b1c4729907ffc2c13bed"
+      }
+    },
+    "abi_input_and_real_services": {
+      "DotCC": {
+        "DotCC.Lib.dll": "c8d358fb53603c1de433efb5a0fdd1d404593d8446dfd5bb4ccc92bf934ef241",
+        "dotcc.dll": "369d0af8faba866226a79453c36b072b6804846f72bb245328b65a20cfbe93b0"
+      },
+      "DotCC.PostProcess": {
+        "dotcc-postprocess.dll": "a7e1a846f86ad2ee43e61dfdd80dd6e51e5daf7da187b1c4729907ffc2c13bed"
+      }
+    },
+    "clean_committed_source_reproduction": {
+      "DotCC": {
+        "DotCC.Lib.dll": "616802bb92707356bc672a3f5f851bfd5988eba3d2ea2d885f4112ebd11456fe",
+        "dotcc.dll": "00cbd2c64865136fe070683fc2b28a605e56ce5d551fbda319307690bfeee8a5"
+      },
+      "DotCC.PostProcess": {
+        "dotcc-postprocess.dll": "8330f75aaab0fe8a54d11b5d84f064047e4c17eeea31ffb8d6e3c5f1c536d425"
+      }
+    }
+  },
+  "product_sha256": {
+    "generated/TranslatedCui/.campaign-files.json": "321cc916e3d5c5dc4e5e5b618442fea66680e817956d5e64ad413fc24e6cf32b",
+    "generated/TranslatedCui/Cui.00000.cs": "abaa61dd947e4d41dccacfc0d31c1de641ea90e15cc2493c87d3aac5592e86eb",
+    "generated/TranslatedCui/Cui.00001.cs": "e33e04452bb0c6be6dab7aa93c58eedbb3df582f8492d3b7416819400775c9d8",
+    "generated/TranslatedCui/Cui.00002.cs": "4190f76caa96ad81e54f6777b826d59f26cbf0c49a9beb4d35711c640247ccf8",
+    "generated/TranslatedCui/Cui.00003.cs": "10da88d2e0571da609dece20a09c23728d1cd6a5af59586420edc76004772173",
+    "generated/TranslatedCui/Cui.00004.cs": "5f57c86f0102cfa5923fea8f6a692318cafd73bb75e8cad1ee5d1b1e8ebc23e2",
+    "generated/TranslatedCui/Cui.00005.cs": "3f51b7a7d66d649f81361a84e573406e221a1268c1537f26d80d7502e1746411",
+    "generated/TranslatedCui/Cui.00006.cs": "29d408c9bf16f455aecd1eabe50237d0ff2850bdf35e0dbeaeb4e085fa04d6fe",
+    "generated/TranslatedCui/Cui.00007.cs": "99f42ba4f7fc1e9c4b3a76e42499ba93c10855b7e971ecfaf3eb9b6977626ab4",
+    "generated/TranslatedCui/Cui.00008.cs": "8f6410cda0e40695298a4f76647f5ca43ae6efd07c3d0075ff213b3ca30f762c",
+    "generated/TranslatedCui/Cui.00009.cs": "db6503fddb2625b67b56ef938ab1d0b98cd88ff378c0bf3c21c8c85b38db8839",
+    "generated/TranslatedCui/Cui.00010.cs": "01c4a889e72d431942c730c0ba3b2d61a208679e8f5efbce3596b50ec117d249",
+    "generated/TranslatedCui/Cui.00011.cs": "b5c912c8973cf440d58929df816a2791b55f42794ff19323fd452bece455c994",
+    "generated/TranslatedCui/Cui.00012.cs": "2bbad8dad852830d677f24fafc7faea6f1cf2178a2ab905a0f44fd0d2880e646",
+    "generated/TranslatedCui/Cui.00013.cs": "116005faf5baf1eb35366e09e3f9300220fa84c385d4f9017cc5aca5d275d21c",
+    "generated/TranslatedCui/Cui.00014.cs": "f3274d4928008fb4a6134867362a442c803904410ba1b7942aedbc3fdbf86108",
+    "generated/TranslatedCui/Cui.00015.cs": "881ba0c786d64ac20e1f2400fdf078e3e59bf73f4f19a1938ddd915e159995a9",
+    "generated/TranslatedCui/Cui.00016.cs": "abfb1450a6a349e852e0d4599c33acb1f960972dc9ac699eed753d108660ae2c",
+    "generated/TranslatedCui/Cui.00017.cs": "493c9959138fdc71425255fcf7494269cc1cbc66e3c616bd8ab7e6541c487955",
+    "generated/TranslatedCui/Cui.00018.cs": "f93f556df64631af0d1e6e3081397d71b67587fca852fc7a20fedbe9e7384acb",
+    "generated/TranslatedCui/Cui.cs": "40576c021223aa63c0e0565466fab918912c87391980c958561315e3f61d58ac",
+    "generated/TranslatedCui/Dotcc.SourceFiles.txt": "00fff84462f4b314e77b068c6c5ba0dc695a6a45283919dc16b7918d199f4e08",
+    "generated/TranslatedCui/TranslatedCui.csproj": "e34bcdbaa83375a31ca4088b524ca88fe939a812e715673691da6de9d063c6c9",
+    "generated/TranslatedCui/bin/Debug/net10.0/Glfw.dll": "3f326d9b5d637ed0ee00bb8b48dd4c400ddb3d6e3f2a59dd58a057b3166f87b2",
+    "generated/TranslatedCui/bin/Debug/net10.0/Glfw.pdb": "56322b080951fe1e710ca096b18a41baab88dec558b8c9c507020d5aa3c1524a",
+    "generated/TranslatedCui/bin/Debug/net10.0/TranslatedCui.deps.json": "975847fe06ef8a9aba0b528d9e5abbc96b5d5857e388040d42c1f12918b5e188",
+    "generated/TranslatedCui/bin/Debug/net10.0/TranslatedCui.dll": "0b690ddf64f6cf4a66c52fa13f11d945d2b38831f58a5baa174fd592b0f4c854",
+    "generated/TranslatedCui/bin/Debug/net10.0/TranslatedCui.pdb": "28af93a63df5ec0a05d2e484b06f53ac2b66400ca39976a88a0f05798764b867",
+    "generated/TranslatedCui/notices/GLFW-LICENSE.md": "149704059b5d0bf551637e50042dd4de9c2cae921021f6636298911e3a5f9462",
+    "generated/TranslatedCui/notices/LICENSE": "993ce06560d0aa89d7825c205b676caf14ebf7483989cd5edd597a5a285a5633",
+    "generated/TranslatedCui/notices/LICENSE-Geist.txt": "934b987e215a2bc463d7b1a99456c1d83e9505f5ef6d8b0dd439181fb2414b1b",
+    "generated/TranslatedCui/notices/LICENSE-Inter.txt": "cc36dd53b88f8c7f138b9708e0c4b598816e4e52c7e252859e67e1e7edbcf117",
+    "generated/TranslatedCui/notices/LICENSE-Lucide.txt": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57",
+    "generated/TranslatedCui/notices/THIRD_PARTY.md": "49a8cabf46f03cec8bfbffdfa3b60a684dd699967098f187768ec84181d23e35",
+    "generated/TranslatedCui/obj/Debug/net10.0/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs": "f79c1ad9a9fc76110b3655f5bfb5ff4e3168e9addceff05b937c0796f0ec34eb",
+    "generated/TranslatedCui/obj/Debug/net10.0/Translat.67D610C9.Up2Date": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "generated/TranslatedCui/obj/Debug/net10.0/TranslatedCui.AssemblyInfo.cs": "2794681abafc6aad0090c8ecb4ef74e8b73de0a045bfb419c333678a490bd2cb",
+    "generated/TranslatedCui/obj/Debug/net10.0/TranslatedCui.AssemblyInfoInputs.cache": "c971bc8bce38519c84301e69993637f942de462f7c09072571d0cf1aa1f7979c",
+    "generated/TranslatedCui/obj/Debug/net10.0/TranslatedCui.GeneratedMSBuildEditorConfig.editorconfig": "131482c16e41fb0cf1a0d47c7978b0f17ca91350ec66bbe9afbb2c8373130951",
+    "generated/TranslatedCui/obj/Debug/net10.0/TranslatedCui.GlobalUsings.g.cs": "8f86a2cbf00ff3eee0bda2bc0eb5e1fc19c8544d5dc650c53d0132325956b592",
+    "generated/TranslatedCui/obj/Debug/net10.0/TranslatedCui.assets.cache": "5637ff095e2ee4dd0227506b5f7b534125fd2e131fd9e5bdc5ab54d61b8e67eb",
+    "generated/TranslatedCui/obj/Debug/net10.0/TranslatedCui.csproj.AssemblyReference.cache": "e2984742fd97e33388674ecdbaa03723c04ed64a187b10fc4b2eacdcaafd601f",
+    "generated/TranslatedCui/obj/Debug/net10.0/TranslatedCui.csproj.CoreCompileInputs.cache": "7ce9dd99198a7c121d35f2a58c28256fedd7edacae5021b46f04cf0a5c94e5fe",
+    "generated/TranslatedCui/obj/Debug/net10.0/TranslatedCui.csproj.FileListAbsolute.txt": "e00000a1276b5d276a9184d65ccd6c176460f09bc45a0c53e069ebcb92fc3a9b",
+    "generated/TranslatedCui/obj/Debug/net10.0/TranslatedCui.dll": "0b690ddf64f6cf4a66c52fa13f11d945d2b38831f58a5baa174fd592b0f4c854",
+    "generated/TranslatedCui/obj/Debug/net10.0/TranslatedCui.pdb": "28af93a63df5ec0a05d2e484b06f53ac2b66400ca39976a88a0f05798764b867",
+    "generated/TranslatedCui/obj/Debug/net10.0/TranslatedCui.sourcelink.json": "ca016db4e2fb37a5e73ecc9ff4b3f49f4657264d391c5b9417967272e5cbb2a4",
+    "generated/TranslatedCui/obj/Debug/net10.0/ref/TranslatedCui.dll": "58689c37bb0e7ef20da65617ecbdf4e8cfbd6f492ee4c9cd7157ea546ded2dc3",
+    "generated/TranslatedCui/obj/Debug/net10.0/refint/TranslatedCui.dll": "58689c37bb0e7ef20da65617ecbdf4e8cfbd6f492ee4c9cd7157ea546ded2dc3",
+    "generated/TranslatedCui/obj/TranslatedCui.csproj.nuget.dgspec.json": "c413ad0240130729a67ccac3f39eebce7487e162b712ec7e82d136a07f2f9de9",
+    "generated/TranslatedCui/obj/TranslatedCui.csproj.nuget.g.props": "c62be193ccb7151b62924ed25db6b78984f9d0da68d4ae00da44f0a6a1957ee6",
+    "generated/TranslatedCui/obj/TranslatedCui.csproj.nuget.g.targets": "b14461e0cb1be3f77fcf9fe2fdd62889325ca92523d0f606980ed59eb5c4aa1c",
+    "generated/TranslatedCui/obj/project.assets.json": "d632fd043fa87c380f6b9551dafda92e2126aef6bea59b4aee5cefa973f12b89",
+    "generated/TranslatedCui/obj/project.nuget.cache": "e9483ccdb4536b4967d694c7552a73964d24c3635c6b9f6f45ebcf984233b168",
+    "generated/TranslatedCui/obj/project.packagespec.json": "72056a710ae4f05e83817049f90b8b65e6c8b0a0f17ee9281ddd02e8ca958ace",
+    "generated/TranslatedCui/obj/rider.project.restore.info": "a597533359bb0d0e039fb1fbb0ad5866bbd766c2f1a3bc05c1e0404c8140450b",
+    "generated/TranslatedCui.Raw/.campaign-files.json": "321cc916e3d5c5dc4e5e5b618442fea66680e817956d5e64ad413fc24e6cf32b",
+    "generated/TranslatedCui.Raw/Cui.00000.cs": "fc99dfe0f511ffa7ad70b4e6d1a4b59dce7ae99a322f8225ea90c7c6d036739e",
+    "generated/TranslatedCui.Raw/Cui.00001.cs": "0918bad014c6bc7ebd905f6197fe67144cd424445410a814890161bbe0201cb1",
+    "generated/TranslatedCui.Raw/Cui.00002.cs": "d9367afbe573d201d418a520f41cc2792121ebf630654023abc9d22ba241f571",
+    "generated/TranslatedCui.Raw/Cui.00003.cs": "4452778b586b5ba3e224bc4f69ec2b09bdee7db54a5241f241b011ec41486154",
+    "generated/TranslatedCui.Raw/Cui.00004.cs": "2296250a19bfa07a348595b7cf809dc483190e355d5fe1112a97adb9376daea8",
+    "generated/TranslatedCui.Raw/Cui.00005.cs": "1069e199762c0e003c3da22ba54cb09c8a3fcc11181d570f2aa7599b90f9d17c",
+    "generated/TranslatedCui.Raw/Cui.00006.cs": "152001c5c518d0606c7dc510f79576653e96fa8f9855d5e473b97aec66166618",
+    "generated/TranslatedCui.Raw/Cui.00007.cs": "cd1e8761e2172cb94aabfad86f87208da88cb1c4c79a489ef61bfc1b9695932e",
+    "generated/TranslatedCui.Raw/Cui.00008.cs": "c43ee317c4268582fce45754b9bb713655a4577142dda04d2d84af417b6f12fc",
+    "generated/TranslatedCui.Raw/Cui.00009.cs": "0535ec0e902ee8a026e83baf750434dc54cd08e640a70155595e94612c261896",
+    "generated/TranslatedCui.Raw/Cui.00010.cs": "8f0b1bd12088b7b9f69528fcbe34fa2f4d4e65461ad479474968ae6f58097db6",
+    "generated/TranslatedCui.Raw/Cui.00011.cs": "aba25568db160f65c858bf61b9370b32987b744f898c557ee36af1fc2084ee35",
+    "generated/TranslatedCui.Raw/Cui.00012.cs": "0d9f2057f3753d67843add85b36c3a5ff11de5a12ce5a5d63f746607675a2f40",
+    "generated/TranslatedCui.Raw/Cui.00013.cs": "301bb98219f1cff18c42e5f0f383b306069cde20bf4180afd4a18c9de094465a",
+    "generated/TranslatedCui.Raw/Cui.00014.cs": "51fceba5c23c82c0285a09ffe989e4d19becfd2e48445e6df5d745ef1bee57b4",
+    "generated/TranslatedCui.Raw/Cui.00015.cs": "9517e86d3e8ba0a84f588bd7071226a8337e722e29663d6ce6597a507d3eebca",
+    "generated/TranslatedCui.Raw/Cui.00016.cs": "99bf9deb9fe0c426763b3dba725da82c9560d7a310f8e39fa877b53122ea08e0",
+    "generated/TranslatedCui.Raw/Cui.00017.cs": "9b8273ede2aae8f219f804d8d566873d6aed831e4a2c6a89a816e5612da931a9",
+    "generated/TranslatedCui.Raw/Cui.00018.cs": "5426ab11f00c5e01c63a8eb4d378285af8c9b2d75f6d92b780aa5ef551971b42",
+    "generated/TranslatedCui.Raw/Cui.cs": "40576c021223aa63c0e0565466fab918912c87391980c958561315e3f61d58ac",
+    "generated/TranslatedCui.Raw/Dotcc.SourceFiles.txt": "00fff84462f4b314e77b068c6c5ba0dc695a6a45283919dc16b7918d199f4e08",
+    "generated/TranslatedCui.Raw/TranslatedCui.csproj": "deee9bc0887a8134c75edee4f2c1684e8f9228eef960c06c43983fd681fad873",
+    "generated/TranslatedCui.Raw/notices/GLFW-LICENSE.md": "149704059b5d0bf551637e50042dd4de9c2cae921021f6636298911e3a5f9462",
+    "generated/TranslatedCui.Raw/notices/LICENSE": "993ce06560d0aa89d7825c205b676caf14ebf7483989cd5edd597a5a285a5633",
+    "generated/TranslatedCui.Raw/notices/LICENSE-Geist.txt": "934b987e215a2bc463d7b1a99456c1d83e9505f5ef6d8b0dd439181fb2414b1b",
+    "generated/TranslatedCui.Raw/notices/LICENSE-Inter.txt": "cc36dd53b88f8c7f138b9708e0c4b598816e4e52c7e252859e67e1e7edbcf117",
+    "generated/TranslatedCui.Raw/notices/LICENSE-Lucide.txt": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57",
+    "generated/TranslatedCui.Raw/notices/THIRD_PARTY.md": "49a8cabf46f03cec8bfbffdfa3b60a684dd699967098f187768ec84181d23e35"
+  },
+  "authored_host_sha256": {
+    "src/Host/DesktopApplication.cs": "a2cb21aae12e387e200b0bb8cee3e3bf79f64b54ac4bf7a20012a2addc5086a2",
+    "src/Host/GlfwHost.Callbacks.cs": "bda4fad8fd3628b76b4dc14cdc821efadd58de92d0c6422de38c085f2867b6d3",
+    "src/Host/GlfwHost.cs": "342543eedb33c0b17391e10c65d3115ae81ad0a407c3950f6cc4400d2f04b0e2",
+    "src/Host/OpenGlHost.cs": "a5f51bf774620c31e21684a9fa3aabc38c05ad4252035e7046283f719a9aa356",
+    "src/Host/PlatformHost.cs": "ecd311afe68f68a268bbaced186c41665bf88b6e708d2efbdd8a131219fb8726"
+  },
+  "configuration_sha256": {
+    "config/core-sources.txt": "bfafd3ee6b35ef0aa321daddf0a6859c9d29c078dc850be714a76db7f598fa27",
+    "config/glfw-overrides.json": "10fac508e3241a3c1c49e7d8052e829969f40c4ac76d7be27523fb777b242cf0",
+    "config/glfw-source.json": "a9052f60d5a8cbd06721cd9f44c699418122e6e122067c6b79fe5eeaedfcc302",
+    "config/host-overrides.json": "3502f2b0849542853c673d76f222c7e9a91af6538c13a46db5e1f3122cdb4c1c",
+    "config/include/GLFW/glfw3.h": "55f03c6f3297905a3378e94b31c241e63be633050419af775f5a56d2f5e54a99",
+    "config/opengl.json": "b323db9f56b9a6a0f6e64b4155868f06226eb671cea0ac0dddf499cdaacf4e53",
+    "config/profile.json": "f28a73360ff10f5113059686041eb7633dda1eb4ae5a032439f5a6338bda7bea",
+    "config/source.json": "8fb36a80d5b301f619d6b8bf48a5c1c79c0843ed33cdd59bc295b9bf10a3b3d7"
+  },
+  "qualification_harness_sha256": "99d85923349c90549b856a746d5c99f85797ff7724854862b596d25efae8d10a",
+  "native_gl_rgba_sha256": "7507d356db22f0bc33490ca36224dde236d63a92131205801dfb7b807f796879",
+  "recipe_contracts": {
+    "passed": true,
+    "simulated_cross_drive_private_links": true,
+    "authored_source_unchanged": true,
+    "canonical_links_relative_and_campaign_local": true
+  },
+  "orchestration": {
+    "implementation_model": "gpt-6.1-sol",
+    "implementation_reasoning_effort": "xhigh",
+    "settings_explicit_and_available": true,
+    "new_top_level_threads": false
+  }
+}

@@ -1,6 +1,7 @@
 # Translate CUI with DotCC
 
-Status: implementation in progress; no completed campaign claimed.
+Status: Linux implementation and qualification passed; overall acceptance remains
+open for required actual Windows x64 execution.
 Campaign: `cui/`. Updated: 2026-11-10.
 
 This plan adopts [translation baseline v4](../../docs/plans/translation-baseline.md)
@@ -61,9 +62,9 @@ is needed. Existing unrelated working-tree edits are not campaign work.
 | D4 | Boundary | Typed managed GLFW/OS overrides and exact managed-to-native GL thunks are implemented and executed on Linux. Copied GLFW and translated CUI algorithms remain the product boundary. |
 | D5 | Lifetime | One active desktop app, owner-thread calls, rooted retained callbacks and stable opaque handles. Raw and owning destruction preserve deferred-error visibility while releasing C allocations. Linux JIT/AOT lifecycle probes and full desktop workflows pass; Windows execution open. |
 | D6 | Delivery | Object emission, class `Cui`, namespace `Managed.Cui`; shared 256 KB `link_flags`, literal pooling and inline deduplication. Canonical raw/processed products. Decided. |
-| D7 | Oracles | Matching native GLFW 9/9 and independent Noto/HarfBuzz 661-case oracle pass. Native X11 preliminary control is diagnostic only. Full translated differential qualification is in progress. |
+| D7 | Oracles | Matching native GLFW 9/9 and native window workload pass. All four managed window buffers match native exactly. Upstream 12-program Linux matrix and Noto/HarfBuzz 661-case oracle pass. Native X11 preliminary control is diagnostic only. |
 | D8 | Matrix | Linux x64 raw/processed × JIT/AOT; Windows x64 same runtime dispatch and consumer, requiring actual execution. No Windows completion inferred from cross-compilation or Wine. P4/P6 open. |
-| D9 | Tests | Upstream deterministic unit suites, software rendering, bidi/shaping, ordinary failures/lifecycle, GLFW app workflow. Existing fuzz/soak programs inventoried separately; no new fuzz/stress campaign or performance threshold selected. P4 open. |
+| D9 | Tests | Linux 12-program × four-variant matrix, software/images/RTL pixels, shaping, ordinary failures/lifetimes, native/managed GLFW windows, actual OS input and real desktop services pass. Existing eight fuzz and one soak programs remain excluded. Windows axis open. |
 
 Provenance hashes default to `warn`, with `off` supported. Guard every staged
 source adaptation using unique local anchors. Never repair generated C#.
@@ -112,11 +113,11 @@ Scripts must also work on Windows with ordinary copies and no elevation.
 | --- | --- | --- |
 | P0 | Frozen profile, recipe/layout, native GLFW workload, real translation attempt | Complete: 58-unit source selection emitted and linked; native GLFW 9/9 and trusted shaping baseline pass; copied GLFW builds |
 | P1 | Executed GL/callback/handle/ABI probes and runtime-selection decisions | Linux executed probes pass; Windows ABI shim passes, real Windows axis open |
-| P2 | Full source closure, raw/processed builds, import audit, canonical publication | Raw/processed products published; final-tool regeneration and dependency audit pending |
+| P2 | Full source closure, raw/processed builds, import audit, canonical publication | Complete: all 58 units, final-tool raw/processed publication and dependency audit pass |
 | P3 | Actual translated window workflow and correct input/render/shutdown | Linux raw/processed JIT/AOT OS-input and GL-readback workflows pass; Windows open |
-| P4 | Required upstream behavior, software pixels, failures and lifetimes | Four-way shaping passes; complete upstream/render/lifecycle verification in progress |
-| P5 | Owning API, separate consumer, solution builds and JIT/AOT workflow | Owning API/sample delivered, solution builds, Linux four-way consumer passes; final rerun ongoing and Windows open |
-| P6 | Final-tool regeneration, reproduction, dependency audit, required target matrix | Final-tool full verification in progress; actual Windows target unavailable |
+| P4 | Required upstream behavior, software pixels, failures and lifetimes | Linux complete: 48 program rows, shaping/pixels/lifetimes, input-aligned docking, real dialogs/URLs; Windows open |
+| P5 | Owning API, separate consumer, solution builds and JIT/AOT workflow | Owning API/sample delivered, solution builds, final Linux four-way consumer/native GL comparisons pass; Windows execution open |
+| P6 | Final-tool regeneration, reproduction, dependency audit, required target matrix | Linux final-tool regeneration, clean committed-source reproduction, all seven suites and affected shared regressions pass; required actual Windows axis unavailable/unrun |
 
 Commit significant milestones only after their gates pass. Leave unrelated
 existing compiler and libghostty edits untouched. Track observed failures,
@@ -137,6 +138,8 @@ Arabic-script font fixture; font availability is a prerequisite, not an excuse
 to disable the feature. Headless offscreen/null checks do not establish desktop
 window behavior. Real X11 controls can use Xvfb with Mesa GL.
 
-Record actual reproduction commands and final receipts once the recipe exists.
+Reproduction commands are in `README.md` and the specialist test READMEs.
+Final receipts, source/tool/product hashes and exact scope are summarized in
+`docs/VALIDATION.json`, with specialist evidence under `tests/`.
 The initial probes and native controls are feasibility evidence. P0 is complete;
 later phases retain their required runtime/platform gates.

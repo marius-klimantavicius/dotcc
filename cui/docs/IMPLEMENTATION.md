@@ -1,6 +1,8 @@
 # Implementation ledger
 
-Updated 2026-11-10. Full product/platform acceptance remains open.
+Updated 2026-11-10. Linux qualification passes. Overall acceptance remains open
+for actual Windows x64 execution. Final hashes/receipts are summarized in
+[VALIDATION.json](VALIDATION.json).
 
 ## Executed integration findings
 
@@ -19,11 +21,12 @@ programs also pass. These results do not establish the full library matrix.
 | ID | Classification and reproducer | Repair and regression | Full-source retry |
 | --- | --- | --- | --- |
 | CUI-01 | Override signature parser rejects C preprocessor spelling `bool` in `cui_fs_list`; independently supplied signature text is not preprocessed | Use `_Bool` in typed override metadata; affected files/app/GLFW objects emit | All 58 selected objects emitted and linked on retry |
-| CUI-02 | Missing shared libc `lround`, `lroundf`, `llround`, `llroundf`, `copysignf`; raw full-library build reports unresolved method names | Add header declarations and shared numeric implementations preserving ties-away rounding, domain handling and float sign bits; 19 numeric unit cases pass | Fresh tool built; all 58 objects regenerated; combined link/build pending |
-| CUI-03 | Addressed compound literal in a `for` declaration's comma expression emits invalid C# `&new` | Give once-evaluated initializer storage the loop's enclosing scope; direct/object retained-pointer and continue/post regression plus related loop/conditional cases: 11 pass | Fresh-tool full-source regeneration in progress |
+| CUI-02 | Missing shared libc `lround`, `lroundf`, `llround`, `llroundf`, `copysignf`; raw full-library build reports unresolved method names | Add header declarations and shared numeric implementations preserving ties-away rounding, domain handling and float sign bits; 19 numeric unit cases pass | Fresh tools regenerate all 58 units; raw/processed builds and complete Linux behavior matrix pass |
+| CUI-03 | Addressed compound literal in a `for` declaration's comma expression emits invalid C# `&new` | Give once-evaluated initializer storage the loop's enclosing scope; direct/object retained-pointer and continue/post regressions pass | Fresh-tool raw/processed generation and full upstream tests pass; final related compound/loop set has 13 passing cases |
 | CUI-04 | Original Arabic shaping input is truncated by decoded `Console.In` character-to-byte casts; old-tool pipe regression exits 1 vs native 0 | Shared stdio reads raw standard-input bytes with common lookahead/pushback; source/object raw OS-pipe cases 2/2 and affected stdio/file/wide unit cases 40/40 pass | Fresh translated upstream shaping matches native/HarfBuzz 661/661 |
 | CUI-05 | Fresh full object link exceeds 600 seconds; diagnostic stack locates repeated whole-fragment splits in managed-boundary target selection | Read source-language metadata once per object; all 32 enabled C/Zig boundary contract cases pass | Full 58-object link passes in 62 seconds; no source/algorithm workaround |
-| CUI-06 | Original upstream test ternary initializers take compound-record addresses in lazy arms and emit invalid C# `&new` | Recognize addressed record temporaries as branch storage; 13 focused compound/loop cases pass; reduced native and translated programs both exit 0 | Complete upstream test bundle builds and publishes raw/processed JIT/AOT; behavior qualification ongoing |
+| CUI-06 | Original upstream test ternary initializers take compound-record addresses in lazy arms and emit invalid C# `&new` | Recognize addressed record temporaries as branch storage; 13 focused compound/loop cases pass; reduced native and translated programs both exit 0 | Complete upstream test bundle builds/publishes and passes raw/processed JIT/AOT |
+| CUI-07 | Strict core assertion count differs: native 6,147 vs managed 6,160 with zero failed; difference isolated to randomized docking | Shared C `rand` is BCL-backed and C also permits different operand evaluation orders. Record actual seed/line/call-site/value inputs; native replays every value at the same call site. Assertions and mutation/drag algorithms stay intact | Original native 6,147 baseline still mandatory. Aligned native/managed 6,160, all 69 cumulative group counts exact; all four trace hashes equal and all 168,572 records consumed |
 
 Focused GLFW/GL boundary qualification passes 120 assertions each in JIT and
 NativeAOT on Linux/X11 with Xvfb/Mesa. It executes the translated upstream GL
@@ -80,27 +83,68 @@ and therefore vary; completed workload/state assertions are fixed.
 
 The four-way original upstream Noto shaping matrix is exact for all 661 cases
 against native/HarfBuzz. Five original RTL paragraph PNG captures also match
-native after decoding to RGBA. Complete upstream/render/lifecycle and final
-framework verification remain in progress. The first complete-core test run
-finds a strict assertion inventory difference (native 6,147 vs translated 6,160)
-with zero failed assertions; this is an open gate under investigation.
+native after decoding to RGBA. All 12 selected programs pass all four Linux
+variants: 48 passing rows. Image checks cover all five formats, ownership and
+errors; software comparison checks two 256,000-byte theme buffers exactly and
+128,000 RGBA/BGRA channel invariants per variant; offscreen lifetime tests check
+33 assertions with allocation refusal and eight balanced cleanup cycles.
+The randomized-core discrepancy is resolved by CUI-07's input-aligned control.
+Original failures and original native counts remain in the evidence.
+
+The matching native GLFW/OpenGL window runs the separate consumer's exact
+four-frame widget workload. All four managed RGBA captures are byte-identical
+to native: 1,228,800 bytes at 640×480 and 33,023 nonuniform pixels. The declared
+GL tolerance is one channel value; observed maximum error is zero.
+
+Real installed zenity/kdialog and xdg-open/gio pass 448 assertions across the
+four configurations: 40 actual dialogs and 40 actual launcher invocations.
+Unicode paths, cancellation/capacity, literal argv, failures, cleanup and owned
+Xvfb termination are checked. A launcher success can outlive a failing detached
+handler; installed xdg-open's digit-scheme limitation is recorded explicitly.
+See `tests/desktop-services/` for exact versions, statuses and limitations.
 
 The initial full-framework verification attempt used the system Python without
 the private HarfBuzz package. Its nine native suites passed, then shaping setup
 failed. The documented invocation now selects the private environment through
 PATH, as required by the shared wrapper's Python selection, and verification
 was restarted. This is a harness prerequisite failure, not a native pass claim
-for that failed attempt.
+for that failed attempt. The following run was deliberately cancelled after its
+older loaded harness encountered the known unaligned count difference; its
+translation/native/consumer/ABI gates had passed. The updated-harness upstream,
+render, lifecycle and audit retry passed, as did the final combined ABI/input/
+real-services suite and the native-window/consumer/audit invocation. These
+receipts collectively execute all seven declared Linux suites on final products.
+
+Clean reproduction used a `git archive` of committed source at `39cf7adbf`,
+including compiler/runtime/postprocessor/framework/CUI and root build metadata,
+without the unrelated uncommitted Zig/libghostty work. Tools were rebuilt on
+external storage, all 58 units regenerated, and raw/processed publication,
+four-way consumer, host/OS-input and dependency audit passed from an unrelated
+working directory. Relocated translation-unit and anonymous-type identities
+differ, so byte-identical generated source is not claimed. Subsequent changes
+add qualification fixtures/orchestration, project-path contract checks/docs and
+the Windows-only STA entry attribute. The final root solution/sample also builds
+and runs. Published project references stay campaign-local; no sibling nhor or
+scratch dependency exists. A contract test verifies private host processing and
+portable final links, including simulated different-drive private Windows paths.
+Five generated CS1718 warnings retain intentional upstream NaN self-comparisons.
 
 ## Risks requiring executable checks
 
-Linux GL ABI, callbacks, handles, lifecycle and explicit software-window rejection
-have executed successfully. Platform tests cover filesystem metadata and sorting,
-runtime defaults, dialogs/URL status contracts and guarded failure cleanup.
-Real desktop-tool interaction and actual Windows runtime execution remain open.
+Linux GL ABI, callbacks, handles, lifecycle, explicit software-window rejection,
+filesystem behavior and real desktop-tool interaction have executed successfully.
+Actual Windows runtime execution remains open.
 The linked-machine discovery tool was unavailable in this environment; no remote
 Windows execution target has been established. Native Wayland and CUI direct
 backends remain excluded by the user's scope.
+
+To close the remaining required platform gates, provide an interactive Windows
+x64 target with .NET 10 SDK, NativeAOT native tools, OpenGL 3.3 and native-oracle
+prerequisites. Execute raw/processed JIT/AOT window/input/GL/lifetime and OS-service
+checks plus upstream differentials. The existing specialist native compilation
+commands and real Linux dialog/launcher driver are Linux-specific; their Windows
+counterparts need target-specific qualification. Cross-publication or Wine does
+not close these gates. No Windows pass or complete P6 acceptance is claimed.
 
 An additional shared framework control ran 94 tests: 93 passed, and the
 existing metadata-policy test rejected a literal hash in
