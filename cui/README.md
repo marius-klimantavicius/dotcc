@@ -91,6 +91,8 @@ by disposing the app. Offscreen contexts have upstream ownership rules. Call
 `NextFrame`, build widgets, then repeat; `Quit` ends the loop. `CapturePixels`
 finishes the current frame and returns actual GL RGBA readback. Call `Dispose`
 even after a managed callback throws.
+On Windows, use an `[STAThread]` entry point when using folder dialogs; the
+sample supplies it. COM apartment initialization failure reports dialog failure.
 
 `ManagedConsumer.slnx` builds the separate sample. Use `-p:CuiProject=...` to
 select the alternate library. Build outputs should stay on external storage:

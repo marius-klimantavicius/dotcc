@@ -48,7 +48,7 @@ public sealed class StdinByteExecutionTests
             var stdout = process.StandardOutput.ReadToEndAsync();
             var stderr = process.StandardError.ReadToEndAsync();
             // Raw OS pipe: Arabic, supplementary Unicode, NUL and invalid UTF-8.
-            byte[] payload = [.. Encoding.UTF8.GetBytes("ءب😀\n"), 0, 0xff, 0xc0, 0x80];
+            byte[] payload = [.. Encoding.UTF8.GetBytes("ءب😀\n"), 0, 0xff, 0xc0, 0x80, .. Encoding.ASCII.GetBytes(" 42Q")];
             process.StandardInput.BaseStream.Write(payload);
             process.StandardInput.BaseStream.Flush();
             process.StandardInput.Close();
@@ -73,6 +73,9 @@ public sealed class StdinByteExecutionTests
             unsigned char tail[4];
             if (fread(tail, 1, 4, stdin) != 4) return 6;
             for (int i=0;i<4;i++) if (tail[i] != want[i+9]) return 7;
+            int number = 0;
+            if (fscanf(stdin, "%d", &number) != 1 || number != 42) return 12;
+            if (fgetc(stdin) != 'Q') return 13; /* formatted lookahead shares bytes */
             if (fgetc(stdin) != EOF || !feof(stdin) || ferror(stdin)) return 8;
             if (ungetc('X', stdin) != 'X' || feof(stdin)) return 9;
             if (fgetc(stdin) != 'X' || fgetc(stdin) != EOF || !feof(stdin)) return 10;

@@ -1,0 +1,1782 @@
+{
+  "date": "2026-11-10",
+  "source_revision": "629b6fcb991d71527f2d67b25c51429c3dcdb498",
+  "qualification_status": "Selected Linux x64 native and translated qualification passed; overall campaign acceptance remains open for other required platforms/integration gates",
+  "native": {
+    "control": "matching GLFW Release, shaping and all image formats enabled",
+    "registered": 18,
+    "selected": 9,
+    "excluded": 9,
+    "exclusions": {
+      "cui_fuzz": "Existing fuzz campaign not selected by PLAN D9",
+      "cui_fuzz_tracker": "Existing fuzz campaign not selected by PLAN D9",
+      "cui_fuzz_music": "Existing fuzz campaign not selected by PLAN D9",
+      "cui_fuzz_finance": "Existing fuzz campaign not selected by PLAN D9",
+      "cui_fuzz_dashboard": "Existing fuzz campaign not selected by PLAN D9",
+      "cui_fuzz_assistant": "Existing fuzz campaign not selected by PLAN D9",
+      "cui_fuzz_todo": "Existing fuzz campaign not selected by PLAN D9",
+      "cui_fuzz_caffeine": "Existing fuzz campaign not selected by PLAN D9",
+      "cui_soak_notes": "Timed memory/performance soak not selected by PLAN D9"
+    },
+    "tests": [
+      {
+        "name": "cui_tests",
+        "exit_code": 0,
+        "checks": [
+          {
+            "checks": 6147,
+            "failed": 0
+          }
+        ]
+      },
+      {
+        "name": "cui_test_devtools",
+        "exit_code": 0,
+        "checks": [
+          {
+            "checks": 378,
+            "failed": 0
+          }
+        ]
+      },
+      {
+        "name": "cui_test_instrument",
+        "exit_code": 0,
+        "checks": [
+          {
+            "checks": 146,
+            "failed": 0
+          }
+        ]
+      },
+      {
+        "name": "cui_screenshots",
+        "exit_code": 0,
+        "checks": []
+      },
+      {
+        "name": "cui_cpp_compat",
+        "exit_code": 0,
+        "checks": []
+      },
+      {
+        "name": "cui_test_inflate",
+        "exit_code": 0,
+        "checks": []
+      },
+      {
+        "name": "cui_test_todo",
+        "exit_code": 0,
+        "checks": [
+          {
+            "checks": 10,
+            "failed": 0
+          }
+        ]
+      },
+      {
+        "name": "cui_test_bidi",
+        "exit_code": 0,
+        "checks": []
+      },
+      {
+        "name": "cui_rtl_layout",
+        "exit_code": 0,
+        "checks": []
+      }
+    ],
+    "receipt_sha256": "95ad5c1e7d2b24aaa35a4f0c6078fb43d8dc366f700d6641e9a0d7132bf5ff31",
+    "screenshot_files": 61
+  },
+  "shaping": {
+    "font": {
+      "file": "NotoSansArabic-Regular.ttf",
+      "sha256": "504d7407d86875acf7d04dfaa0fd7524d0b8797723bc4aa18022f29db25b0b6e",
+      "bytes": 244072
+    },
+    "harfbuzz": "15.0.0",
+    "cases": 661,
+    "native_translated_exact": true,
+    "status": "passed"
+  },
+  "shaping_variants": {
+    "native": {
+      "exit_code": 0,
+      "cases": 661,
+      "exact_cases": 661
+    },
+    "raw-jit": {
+      "exit_code": 0,
+      "cases": 661,
+      "exact_cases": 661
+    },
+    "raw-aot": {
+      "exit_code": 0,
+      "cases": 661,
+      "exact_cases": 661
+    },
+    "processed-jit": {
+      "exit_code": 0,
+      "cases": 661,
+      "exact_cases": 661
+    },
+    "processed-aot": {
+      "exit_code": 0,
+      "cases": 661,
+      "exact_cases": 661
+    }
+  },
+  "shaping_receipt_sha256": "d6e060f3d632992bc74917bc652c762c13454336590bbd883bb4f7464d91a1bf",
+  "native_specialist_probes": {
+    "qualification_images": {
+      "exit_code": 0,
+      "output": "284 checks, 0 failed\n",
+      "status": "passed"
+    },
+    "qualification_lifecycle": {
+      "exit_code": 0,
+      "output": "33 checks, 0 failed\n",
+      "status": "passed"
+    },
+    "qualification_pixels": {
+      "exit_code": 0,
+      "output": "theme=0 vertices=184 indices=276 commands=10 bytes=256000\ntheme=1 vertices=184 indices=276 commands=10 bytes=256000\n128000 checks, 0 failed\n",
+      "status": "passed"
+    }
+  },
+  "runtime_regression": {
+    "old_tool_pipe_exit": 1,
+    "native_pipe_exit": 0,
+    "source_and_object_pipe_regressions": {
+      "passed": 2,
+      "failed": 0
+    },
+    "affected_stdio_file_wide_unit_tests": {
+      "passed": 40,
+      "failed": 0
+    },
+    "contract": "stdin reads raw bytes; managed Console.SetIn character injection replaced with C descriptor input in five unit tests; binary and invalid UTF-8 preserved, ungetc/feof/clearerr correct, fscanf lookahead shares its byte reader with fgetc",
+    "final_functional_log_sha256": "87ccaa39614ad90240b4194afa737b1f8b214e14e15fcb59bde570654e0b2854"
+  },
+  "limitations": [
+    "Actual Windows execution remains required.",
+    "Full upstream C++ header smoke and gallery screenshot generator are native-only in this runner.",
+    "Desktop GLFW/GL callbacks and app lifecycle are separate consumer/host suite responsibilities.",
+    "Full Unicode external bidi-conformance dataset not executed.",
+    "No fuzz, soak or benchmark campaign selected."
+  ],
+  "upstream_case_inventory": [
+    {
+      "source": "tests/test_main.c",
+      "counted_native_checks": 6147,
+      "named_groups_called_by_main": 69,
+      "check_count_note": "Native executed count"
+    },
+    {
+      "source": "tests/test_devtools.c",
+      "counted_native_checks": 378,
+      "named_groups_called_by_main": 25,
+      "check_count_note": "Native executed count"
+    },
+    {
+      "source": "tests/test_instrument.c",
+      "counted_native_checks": 146,
+      "named_groups_called_by_main": 9,
+      "check_count_note": "Native executed count"
+    },
+    {
+      "source": "tests/test_todo.c",
+      "counted_native_checks": 10,
+      "named_groups_called_by_main": 0,
+      "check_count_note": "Native executed count"
+    },
+    {
+      "source": "tests/test_bidi.c",
+      "counted_native_checks": null,
+      "named_groups_called_by_main": 0,
+      "check_count_note": "No upstream runtime check counter; native and translated status/output contracts"
+    },
+    {
+      "source": "tests/rtl_layout.c",
+      "counted_native_checks": null,
+      "named_groups_called_by_main": 0,
+      "check_count_note": "No upstream runtime check counter; native and translated status/output contracts"
+    },
+    {
+      "source": "tests/test_inflate.c",
+      "counted_native_checks": null,
+      "named_groups_called_by_main": 0,
+      "check_count_note": "No upstream runtime check counter; native and translated status/output contracts"
+    }
+  ],
+  "translated_raw_jit_independent": {
+    "qualification_images": {
+      "raw-jit": {
+        "exit_code": 0,
+        "checks": [
+          [
+            284,
+            0
+          ]
+        ],
+        "stdout_sha256": "b43b4faed6ca13ece946d157a78bc95c9c4f7474e38dede5aa65a41b676ebc30"
+      },
+      "exact_bytes": [
+        {
+          "variant": "raw-jit",
+          "file": "decoded-bmp.rgba",
+          "bytes": 16,
+          "native_sha256": "c21b35e3f28e676cedf24c13575a7346682e101a2d26aad9598d0cdbcee9ee3b",
+          "equal": true
+        },
+        {
+          "variant": "raw-jit",
+          "file": "decoded-gif.rgba",
+          "bytes": 16,
+          "native_sha256": "c21b35e3f28e676cedf24c13575a7346682e101a2d26aad9598d0cdbcee9ee3b",
+          "equal": true
+        },
+        {
+          "variant": "raw-jit",
+          "file": "decoded-jpg.rgba",
+          "bytes": 256,
+          "native_sha256": "6e6386ed7d44b54cc8ccb9082d27cf3f2abc97c5867e1fe4613222b065506d75",
+          "equal": true
+        },
+        {
+          "variant": "raw-jit",
+          "file": "decoded-png.rgba",
+          "bytes": 16,
+          "native_sha256": "c21b35e3f28e676cedf24c13575a7346682e101a2d26aad9598d0cdbcee9ee3b",
+          "equal": true
+        },
+        {
+          "variant": "raw-jit",
+          "file": "decoded-tga.rgba",
+          "bytes": 16,
+          "native_sha256": "c21b35e3f28e676cedf24c13575a7346682e101a2d26aad9598d0cdbcee9ee3b",
+          "equal": true
+        }
+      ],
+      "status": "passed"
+    },
+    "qualification_lifecycle": {
+      "raw-jit": {
+        "exit_code": 0,
+        "checks": [
+          [
+            33,
+            0
+          ]
+        ],
+        "stdout_sha256": "4c40edd353820f06a39011ffb5efe94894646750362720263f84149e7b2c5e16"
+      },
+      "exact_bytes": [],
+      "status": "passed"
+    },
+    "qualification_pixels": {
+      "raw-jit": {
+        "exit_code": 0,
+        "checks": [
+          [
+            128000,
+            0
+          ]
+        ],
+        "stdout_sha256": "4725e9d9cefbdfb84162570dad9a28d735cbe3e740bb4b89b0e1f2f2d030be3c"
+      },
+      "exact_bytes": [
+        {
+          "variant": "raw-jit",
+          "file": "pixels-0.rgba",
+          "bytes": 256000,
+          "native_sha256": "9b2ff23ce30d2c2bb5fceca0fe1545e1a45fb8f9c3194cb8eea96c117778dcd9",
+          "equal": true
+        },
+        {
+          "variant": "raw-jit",
+          "file": "pixels-1.rgba",
+          "bytes": 256000,
+          "native_sha256": "bcbdaefb2f9bb8d21084eac76fa91482edbb5ba5c4310c878c2e037bda2861b1",
+          "equal": true
+        }
+      ],
+      "status": "passed"
+    },
+    "cui_test_instrument": {
+      "raw-jit": {
+        "exit_code": 0,
+        "checks": [
+          [
+            146,
+            0
+          ]
+        ],
+        "stdout_sha256": "461813819666acf58a47f33a9bf50a4f5482c145d1468290c3b15053d5d0b6c1"
+      },
+      "status": "passed"
+    },
+    "cui_test_todo": {
+      "raw-jit": {
+        "exit_code": 0,
+        "checks": [
+          [
+            10,
+            0
+          ]
+        ],
+        "stdout_sha256": "425dc1caf66f0aa62fe2f8163928cae056bb60d8b39ecd8eab9258f851bd40d1"
+      },
+      "status": "passed"
+    },
+    "cui_rtl_layout": {
+      "raw-jit": {
+        "exit_code": 0,
+        "checks": [],
+        "stdout_sha256": "51d82d659223336157415453367a6aee5e92716805e377d3cfc9ae85310ad4e8"
+      },
+      "status": "passed"
+    },
+    "cui_rtl_paragraph": {
+      "raw-jit": {
+        "exit_code": 0,
+        "checks": [],
+        "stdout_sha256": "f5519fa0acebdcd3326b2c1f1a6f8d19a16abf4c9bbea6572cbbbc308af329fb"
+      },
+      "status": "passed"
+    }
+  },
+  "translated_raw_jit_receipt_sha256": "51b947d6163137b2ed23281e0f1adb7b2696ddc658166377a37593d048606f60",
+  "observed_failures": [
+    {
+      "classification": "runtime stdin byte contract",
+      "native_expected": "UTF-8 bytes preserved",
+      "old_observed": "Arabic U+0621 truncated to 0x21; shaping0/661",
+      "repair": "FileLib raw standard input; source/object pipe tests and all661 shape records now pass in four managed variants"
+    },
+    {
+      "classification": "harness prerequisite",
+      "observed": "Fresh empty CWD fails upstream fs_list assertion; native baseline8/9",
+      "repair": "Explicit nonempty directory fixture; matching native baseline9/9 passes"
+    },
+    {
+      "classification": "stale postprocessor binary",
+      "observed": "External artifacts SDK editorconfig rejected",
+      "repair": "Rebuild current postprocessor and specify artifacts metadata; shape four-way passes"
+    },
+    {
+      "classification": "shared linker efficiency",
+      "observed": "Fresh58-object links spent >8min repeatedly splitting closure",
+      "repair_owner": "coordinator",
+      "repair": "Cache IsZig metadata per fragment; retried full bundle link55s"
+    },
+    {
+      "classification": "conditional compound literal storage lowering",
+      "observed": "Three CS0211 addressed rvalue errors in original test_main and devtools",
+      "reproducer": "repro-conditional-compound.c",
+      "repair_owner": "coordinator",
+      "status": "Fixed by coordinator; reduced0/0 and all four managed full core/devtools executions pass"
+    },
+    {
+      "classification": "harness input alignment",
+      "observed": "Original libc rand input native6147 checks vs BCL provider6160, zero assertion failures; exact count gate failed",
+      "diagnosis": "All69group counts equal except randomized docking; C rand sequence and operand evaluation orders produce different test inputs",
+      "repair": "Record actual emitted provider values by seed/line/callsite, replay native queues with exact consumption; strict69groups6160counts and four vector hashes match. Original6147 baseline retained."
+    }
+  ],
+  "translated_rtl_paragraph_pixel_comparisons": [
+    {
+      "variant": "raw-jit",
+      "file": "paragraph-lines-auto.png",
+      "bytes": 46258,
+      "native_sha256": "37dc4a1494326cc2750e262ba25280c3c3f0656586085ea9583e33e82e304aac",
+      "equal": true
+    },
+    {
+      "variant": "raw-jit",
+      "file": "paragraph-lines-rtl.png",
+      "bytes": 46285,
+      "native_sha256": "031206f4954b563e8312f716d31c6af4bd7b49719579729c63f0c59a2c4bd4f7",
+      "equal": true
+    },
+    {
+      "variant": "raw-jit",
+      "file": "paragraph-wrap-240.png",
+      "bytes": 82440,
+      "native_sha256": "0dffa62b559118169eb9cc855a8de623b00436a38a71858a60120968ad50b6e9",
+      "equal": true
+    },
+    {
+      "variant": "raw-jit",
+      "file": "paragraph-wrap-360.png",
+      "bytes": 85130,
+      "native_sha256": "6908fb8347759cfacdc1fa3e166cd7cedf3ccb8138a411ba2a3473e5d0a91edc",
+      "equal": true
+    },
+    {
+      "variant": "raw-jit",
+      "file": "paragraph-wrap-600.png",
+      "bytes": 91631,
+      "native_sha256": "67e343de9fab4c52607cb6f93bc3615e110998e837f9c2499848a641ff4e8df2",
+      "equal": true
+    }
+  ],
+  "matrix": {
+    "platform": "linux-x64",
+    "forms": [
+      "raw",
+      "processed"
+    ],
+    "runtimes": [
+      "jit",
+      "aot"
+    ],
+    "programs": {
+      "cui_tests": {
+        "status": "passed",
+        "native-baseline": {
+          "exit_code": 0,
+          "checks": [
+            [
+              6147,
+              0
+            ]
+          ]
+        },
+        "native": {
+          "exit_code": 0,
+          "checks": [
+            [
+              6160,
+              0
+            ]
+          ]
+        },
+        "raw-jit": {
+          "exit_code": 0,
+          "checks": [
+            [
+              6160,
+              0
+            ]
+          ],
+          "random_input_sha256": "4093d80cec9961141ce555e9dcd23f1f16f627b67ab9b333a350ba45a0d6f107",
+          "random_input_records": 168572
+        },
+        "raw-aot": {
+          "exit_code": 0,
+          "checks": [
+            [
+              6160,
+              0
+            ]
+          ],
+          "random_input_sha256": "4093d80cec9961141ce555e9dcd23f1f16f627b67ab9b333a350ba45a0d6f107",
+          "random_input_records": 168572
+        },
+        "processed-jit": {
+          "exit_code": 0,
+          "checks": [
+            [
+              6160,
+              0
+            ]
+          ],
+          "random_input_sha256": "4093d80cec9961141ce555e9dcd23f1f16f627b67ab9b333a350ba45a0d6f107",
+          "random_input_records": 168572
+        },
+        "processed-aot": {
+          "exit_code": 0,
+          "checks": [
+            [
+              6160,
+              0
+            ]
+          ],
+          "random_input_sha256": "4093d80cec9961141ce555e9dcd23f1f16f627b67ab9b333a350ba45a0d6f107",
+          "random_input_records": 168572
+        },
+        "input_alignment": {
+          "seeds": [
+            1234,
+            99
+          ],
+          "groups": 69,
+          "all_groups_exact": true,
+          "provider": "Actual emitted Cui.Libc.srand/rand; recorded seed,line,call-site,value vectors replayed by native C",
+          "replay_source_sha256": "98e953b36f5796bb2d38e31b7a2ee2b57d06ba07fcda462a9dbd913197c65a69",
+          "harness_source_sha256": "ea13ed9b8937dc5b29f0608b9b95fac1897ca503f69d27484429ba54a90dd059",
+          "native_all_records_consumed": true
+        }
+      },
+      "cui_test_devtools": {
+        "status": "passed",
+        "native": {
+          "exit_code": 0,
+          "checks": [
+            [
+              378,
+              0
+            ]
+          ],
+          "stdout_sha256": "ca2fa5209e56240f49096a015d9c58b35e238f1e51aaf3cd44afe12f0b9ab1d0"
+        },
+        "raw-jit": {
+          "exit_code": 0,
+          "checks": [
+            [
+              378,
+              0
+            ]
+          ],
+          "stdout_sha256": "ca32922bd01a62641d8132ec3dff73eeea43ab10036bc6e10a809fce23af21a6"
+        },
+        "raw-aot": {
+          "exit_code": 0,
+          "checks": [
+            [
+              378,
+              0
+            ]
+          ],
+          "stdout_sha256": "58e2e8f38ad46be2d9a0a1a82852dfa34ddbadbb1ad1ba853879ecb3c6d90cf5"
+        },
+        "processed-jit": {
+          "exit_code": 0,
+          "checks": [
+            [
+              378,
+              0
+            ]
+          ],
+          "stdout_sha256": "392f4141598a974d8784ae63d1811dd0e8a4fcce32cc6c89a73f6af1ca7778c9"
+        },
+        "processed-aot": {
+          "exit_code": 0,
+          "checks": [
+            [
+              378,
+              0
+            ]
+          ],
+          "stdout_sha256": "ed8e5dd02c3a4f8cc530272e389e543774d8aaf3acc07e9ae6cb571d10bf53f7"
+        }
+      },
+      "cui_test_instrument": {
+        "status": "passed",
+        "native": {
+          "exit_code": 0,
+          "checks": [
+            [
+              146,
+              0
+            ]
+          ],
+          "stdout_sha256": "461813819666acf58a47f33a9bf50a4f5482c145d1468290c3b15053d5d0b6c1"
+        },
+        "raw-jit": {
+          "exit_code": 0,
+          "checks": [
+            [
+              146,
+              0
+            ]
+          ],
+          "stdout_sha256": "461813819666acf58a47f33a9bf50a4f5482c145d1468290c3b15053d5d0b6c1"
+        },
+        "raw-aot": {
+          "exit_code": 0,
+          "checks": [
+            [
+              146,
+              0
+            ]
+          ],
+          "stdout_sha256": "461813819666acf58a47f33a9bf50a4f5482c145d1468290c3b15053d5d0b6c1"
+        },
+        "processed-jit": {
+          "exit_code": 0,
+          "checks": [
+            [
+              146,
+              0
+            ]
+          ],
+          "stdout_sha256": "461813819666acf58a47f33a9bf50a4f5482c145d1468290c3b15053d5d0b6c1"
+        },
+        "processed-aot": {
+          "exit_code": 0,
+          "checks": [
+            [
+              146,
+              0
+            ]
+          ],
+          "stdout_sha256": "461813819666acf58a47f33a9bf50a4f5482c145d1468290c3b15053d5d0b6c1"
+        }
+      },
+      "cui_test_inflate": {
+        "status": "passed",
+        "native": {
+          "exit_code": 0,
+          "checks": [],
+          "stdout_sha256": "af61a3c60401ed1071cb9a712f900ff89c347ddf7551319ea444652559f1aae8"
+        },
+        "raw-jit": {
+          "exit_code": 0,
+          "checks": [],
+          "stdout_sha256": "af61a3c60401ed1071cb9a712f900ff89c347ddf7551319ea444652559f1aae8"
+        },
+        "raw-aot": {
+          "exit_code": 0,
+          "checks": [],
+          "stdout_sha256": "af61a3c60401ed1071cb9a712f900ff89c347ddf7551319ea444652559f1aae8"
+        },
+        "processed-jit": {
+          "exit_code": 0,
+          "checks": [],
+          "stdout_sha256": "af61a3c60401ed1071cb9a712f900ff89c347ddf7551319ea444652559f1aae8"
+        },
+        "processed-aot": {
+          "exit_code": 0,
+          "checks": [],
+          "stdout_sha256": "af61a3c60401ed1071cb9a712f900ff89c347ddf7551319ea444652559f1aae8"
+        }
+      },
+      "cui_test_todo": {
+        "status": "passed",
+        "native": {
+          "exit_code": 0,
+          "checks": [
+            [
+              10,
+              0
+            ]
+          ],
+          "stdout_sha256": "425dc1caf66f0aa62fe2f8163928cae056bb60d8b39ecd8eab9258f851bd40d1"
+        },
+        "raw-jit": {
+          "exit_code": 0,
+          "checks": [
+            [
+              10,
+              0
+            ]
+          ],
+          "stdout_sha256": "425dc1caf66f0aa62fe2f8163928cae056bb60d8b39ecd8eab9258f851bd40d1"
+        },
+        "raw-aot": {
+          "exit_code": 0,
+          "checks": [
+            [
+              10,
+              0
+            ]
+          ],
+          "stdout_sha256": "425dc1caf66f0aa62fe2f8163928cae056bb60d8b39ecd8eab9258f851bd40d1"
+        },
+        "processed-jit": {
+          "exit_code": 0,
+          "checks": [
+            [
+              10,
+              0
+            ]
+          ],
+          "stdout_sha256": "425dc1caf66f0aa62fe2f8163928cae056bb60d8b39ecd8eab9258f851bd40d1"
+        },
+        "processed-aot": {
+          "exit_code": 0,
+          "checks": [
+            [
+              10,
+              0
+            ]
+          ],
+          "stdout_sha256": "425dc1caf66f0aa62fe2f8163928cae056bb60d8b39ecd8eab9258f851bd40d1"
+        }
+      },
+      "cui_test_bidi": {
+        "status": "passed",
+        "native": {
+          "exit_code": 0,
+          "checks": [],
+          "stdout_sha256": "897de8c52dfa5f5859944ed7b9f09bd52391ac34e2d181aa61e1629b6a135b6a"
+        },
+        "raw-jit": {
+          "exit_code": 0,
+          "checks": [],
+          "stdout_sha256": "897de8c52dfa5f5859944ed7b9f09bd52391ac34e2d181aa61e1629b6a135b6a"
+        },
+        "raw-aot": {
+          "exit_code": 0,
+          "checks": [],
+          "stdout_sha256": "897de8c52dfa5f5859944ed7b9f09bd52391ac34e2d181aa61e1629b6a135b6a"
+        },
+        "processed-jit": {
+          "exit_code": 0,
+          "checks": [],
+          "stdout_sha256": "897de8c52dfa5f5859944ed7b9f09bd52391ac34e2d181aa61e1629b6a135b6a"
+        },
+        "processed-aot": {
+          "exit_code": 0,
+          "checks": [],
+          "stdout_sha256": "897de8c52dfa5f5859944ed7b9f09bd52391ac34e2d181aa61e1629b6a135b6a"
+        }
+      },
+      "cui_rtl_layout": {
+        "status": "passed",
+        "native": {
+          "exit_code": 0,
+          "checks": [],
+          "stdout_sha256": "51d82d659223336157415453367a6aee5e92716805e377d3cfc9ae85310ad4e8"
+        },
+        "raw-jit": {
+          "exit_code": 0,
+          "checks": [],
+          "stdout_sha256": "51d82d659223336157415453367a6aee5e92716805e377d3cfc9ae85310ad4e8"
+        },
+        "raw-aot": {
+          "exit_code": 0,
+          "checks": [],
+          "stdout_sha256": "51d82d659223336157415453367a6aee5e92716805e377d3cfc9ae85310ad4e8"
+        },
+        "processed-jit": {
+          "exit_code": 0,
+          "checks": [],
+          "stdout_sha256": "51d82d659223336157415453367a6aee5e92716805e377d3cfc9ae85310ad4e8"
+        },
+        "processed-aot": {
+          "exit_code": 0,
+          "checks": [],
+          "stdout_sha256": "51d82d659223336157415453367a6aee5e92716805e377d3cfc9ae85310ad4e8"
+        }
+      },
+      "cui_rtl_paragraph": {
+        "status": "passed",
+        "native": {
+          "exit_code": 0,
+          "checks": [],
+          "stdout_sha256": "f5519fa0acebdcd3326b2c1f1a6f8d19a16abf4c9bbea6572cbbbc308af329fb"
+        },
+        "raw-jit": {
+          "exit_code": 0,
+          "checks": [],
+          "stdout_sha256": "f5519fa0acebdcd3326b2c1f1a6f8d19a16abf4c9bbea6572cbbbc308af329fb"
+        },
+        "raw-aot": {
+          "exit_code": 0,
+          "checks": [],
+          "stdout_sha256": "f5519fa0acebdcd3326b2c1f1a6f8d19a16abf4c9bbea6572cbbbc308af329fb"
+        },
+        "processed-jit": {
+          "exit_code": 0,
+          "checks": [],
+          "stdout_sha256": "f5519fa0acebdcd3326b2c1f1a6f8d19a16abf4c9bbea6572cbbbc308af329fb"
+        },
+        "processed-aot": {
+          "exit_code": 0,
+          "checks": [],
+          "stdout_sha256": "f5519fa0acebdcd3326b2c1f1a6f8d19a16abf4c9bbea6572cbbbc308af329fb"
+        },
+        "exact_bytes": [
+          {
+            "variant": "raw-jit",
+            "file": "paragraph-lines-auto.png",
+            "bytes": 46258,
+            "native_sha256": "37dc4a1494326cc2750e262ba25280c3c3f0656586085ea9583e33e82e304aac",
+            "equal": true
+          },
+          {
+            "variant": "raw-jit",
+            "file": "paragraph-lines-rtl.png",
+            "bytes": 46285,
+            "native_sha256": "031206f4954b563e8312f716d31c6af4bd7b49719579729c63f0c59a2c4bd4f7",
+            "equal": true
+          },
+          {
+            "variant": "raw-jit",
+            "file": "paragraph-wrap-240.png",
+            "bytes": 82440,
+            "native_sha256": "0dffa62b559118169eb9cc855a8de623b00436a38a71858a60120968ad50b6e9",
+            "equal": true
+          },
+          {
+            "variant": "raw-jit",
+            "file": "paragraph-wrap-360.png",
+            "bytes": 85130,
+            "native_sha256": "6908fb8347759cfacdc1fa3e166cd7cedf3ccb8138a411ba2a3473e5d0a91edc",
+            "equal": true
+          },
+          {
+            "variant": "raw-jit",
+            "file": "paragraph-wrap-600.png",
+            "bytes": 91631,
+            "native_sha256": "67e343de9fab4c52607cb6f93bc3615e110998e837f9c2499848a641ff4e8df2",
+            "equal": true
+          },
+          {
+            "variant": "raw-aot",
+            "file": "paragraph-lines-auto.png",
+            "bytes": 46258,
+            "native_sha256": "37dc4a1494326cc2750e262ba25280c3c3f0656586085ea9583e33e82e304aac",
+            "equal": true
+          },
+          {
+            "variant": "raw-aot",
+            "file": "paragraph-lines-rtl.png",
+            "bytes": 46285,
+            "native_sha256": "031206f4954b563e8312f716d31c6af4bd7b49719579729c63f0c59a2c4bd4f7",
+            "equal": true
+          },
+          {
+            "variant": "raw-aot",
+            "file": "paragraph-wrap-240.png",
+            "bytes": 82440,
+            "native_sha256": "0dffa62b559118169eb9cc855a8de623b00436a38a71858a60120968ad50b6e9",
+            "equal": true
+          },
+          {
+            "variant": "raw-aot",
+            "file": "paragraph-wrap-360.png",
+            "bytes": 85130,
+            "native_sha256": "6908fb8347759cfacdc1fa3e166cd7cedf3ccb8138a411ba2a3473e5d0a91edc",
+            "equal": true
+          },
+          {
+            "variant": "raw-aot",
+            "file": "paragraph-wrap-600.png",
+            "bytes": 91631,
+            "native_sha256": "67e343de9fab4c52607cb6f93bc3615e110998e837f9c2499848a641ff4e8df2",
+            "equal": true
+          },
+          {
+            "variant": "processed-jit",
+            "file": "paragraph-lines-auto.png",
+            "bytes": 46258,
+            "native_sha256": "37dc4a1494326cc2750e262ba25280c3c3f0656586085ea9583e33e82e304aac",
+            "equal": true
+          },
+          {
+            "variant": "processed-jit",
+            "file": "paragraph-lines-rtl.png",
+            "bytes": 46285,
+            "native_sha256": "031206f4954b563e8312f716d31c6af4bd7b49719579729c63f0c59a2c4bd4f7",
+            "equal": true
+          },
+          {
+            "variant": "processed-jit",
+            "file": "paragraph-wrap-240.png",
+            "bytes": 82440,
+            "native_sha256": "0dffa62b559118169eb9cc855a8de623b00436a38a71858a60120968ad50b6e9",
+            "equal": true
+          },
+          {
+            "variant": "processed-jit",
+            "file": "paragraph-wrap-360.png",
+            "bytes": 85130,
+            "native_sha256": "6908fb8347759cfacdc1fa3e166cd7cedf3ccb8138a411ba2a3473e5d0a91edc",
+            "equal": true
+          },
+          {
+            "variant": "processed-jit",
+            "file": "paragraph-wrap-600.png",
+            "bytes": 91631,
+            "native_sha256": "67e343de9fab4c52607cb6f93bc3615e110998e837f9c2499848a641ff4e8df2",
+            "equal": true
+          },
+          {
+            "variant": "processed-aot",
+            "file": "paragraph-lines-auto.png",
+            "bytes": 46258,
+            "native_sha256": "37dc4a1494326cc2750e262ba25280c3c3f0656586085ea9583e33e82e304aac",
+            "equal": true
+          },
+          {
+            "variant": "processed-aot",
+            "file": "paragraph-lines-rtl.png",
+            "bytes": 46285,
+            "native_sha256": "031206f4954b563e8312f716d31c6af4bd7b49719579729c63f0c59a2c4bd4f7",
+            "equal": true
+          },
+          {
+            "variant": "processed-aot",
+            "file": "paragraph-wrap-240.png",
+            "bytes": 82440,
+            "native_sha256": "0dffa62b559118169eb9cc855a8de623b00436a38a71858a60120968ad50b6e9",
+            "equal": true
+          },
+          {
+            "variant": "processed-aot",
+            "file": "paragraph-wrap-360.png",
+            "bytes": 85130,
+            "native_sha256": "6908fb8347759cfacdc1fa3e166cd7cedf3ccb8138a411ba2a3473e5d0a91edc",
+            "equal": true
+          },
+          {
+            "variant": "processed-aot",
+            "file": "paragraph-wrap-600.png",
+            "bytes": 91631,
+            "native_sha256": "67e343de9fab4c52607cb6f93bc3615e110998e837f9c2499848a641ff4e8df2",
+            "equal": true
+          }
+        ]
+      },
+      "cui_shape_dump": {
+        "status": "passed",
+        "native": {
+          "exit_code": 0,
+          "cases": 661,
+          "exact_cases": 661
+        },
+        "raw-jit": {
+          "exit_code": 0,
+          "cases": 661,
+          "exact_cases": 661
+        },
+        "raw-aot": {
+          "exit_code": 0,
+          "cases": 661,
+          "exact_cases": 661
+        },
+        "processed-jit": {
+          "exit_code": 0,
+          "cases": 661,
+          "exact_cases": 661
+        },
+        "processed-aot": {
+          "exit_code": 0,
+          "cases": 661,
+          "exact_cases": 661
+        },
+        "font": {
+          "file": "NotoSansArabic-Regular.ttf",
+          "sha256": "504d7407d86875acf7d04dfaa0fd7524d0b8797723bc4aa18022f29db25b0b6e",
+          "bytes": 244072
+        }
+      },
+      "qualification_pixels": {
+        "status": "passed",
+        "native": {
+          "exit_code": 0,
+          "checks": [
+            [
+              128000,
+              0
+            ]
+          ],
+          "stdout_sha256": "4725e9d9cefbdfb84162570dad9a28d735cbe3e740bb4b89b0e1f2f2d030be3c"
+        },
+        "raw-jit": {
+          "exit_code": 0,
+          "checks": [
+            [
+              128000,
+              0
+            ]
+          ],
+          "stdout_sha256": "4725e9d9cefbdfb84162570dad9a28d735cbe3e740bb4b89b0e1f2f2d030be3c"
+        },
+        "raw-aot": {
+          "exit_code": 0,
+          "checks": [
+            [
+              128000,
+              0
+            ]
+          ],
+          "stdout_sha256": "4725e9d9cefbdfb84162570dad9a28d735cbe3e740bb4b89b0e1f2f2d030be3c"
+        },
+        "processed-jit": {
+          "exit_code": 0,
+          "checks": [
+            [
+              128000,
+              0
+            ]
+          ],
+          "stdout_sha256": "4725e9d9cefbdfb84162570dad9a28d735cbe3e740bb4b89b0e1f2f2d030be3c"
+        },
+        "processed-aot": {
+          "exit_code": 0,
+          "checks": [
+            [
+              128000,
+              0
+            ]
+          ],
+          "stdout_sha256": "4725e9d9cefbdfb84162570dad9a28d735cbe3e740bb4b89b0e1f2f2d030be3c"
+        },
+        "exact_bytes": [
+          {
+            "variant": "raw-jit",
+            "file": "pixels-0.rgba",
+            "bytes": 256000,
+            "native_sha256": "9b2ff23ce30d2c2bb5fceca0fe1545e1a45fb8f9c3194cb8eea96c117778dcd9",
+            "equal": true
+          },
+          {
+            "variant": "raw-jit",
+            "file": "pixels-1.rgba",
+            "bytes": 256000,
+            "native_sha256": "bcbdaefb2f9bb8d21084eac76fa91482edbb5ba5c4310c878c2e037bda2861b1",
+            "equal": true
+          },
+          {
+            "variant": "raw-aot",
+            "file": "pixels-0.rgba",
+            "bytes": 256000,
+            "native_sha256": "9b2ff23ce30d2c2bb5fceca0fe1545e1a45fb8f9c3194cb8eea96c117778dcd9",
+            "equal": true
+          },
+          {
+            "variant": "raw-aot",
+            "file": "pixels-1.rgba",
+            "bytes": 256000,
+            "native_sha256": "bcbdaefb2f9bb8d21084eac76fa91482edbb5ba5c4310c878c2e037bda2861b1",
+            "equal": true
+          },
+          {
+            "variant": "processed-jit",
+            "file": "pixels-0.rgba",
+            "bytes": 256000,
+            "native_sha256": "9b2ff23ce30d2c2bb5fceca0fe1545e1a45fb8f9c3194cb8eea96c117778dcd9",
+            "equal": true
+          },
+          {
+            "variant": "processed-jit",
+            "file": "pixels-1.rgba",
+            "bytes": 256000,
+            "native_sha256": "bcbdaefb2f9bb8d21084eac76fa91482edbb5ba5c4310c878c2e037bda2861b1",
+            "equal": true
+          },
+          {
+            "variant": "processed-aot",
+            "file": "pixels-0.rgba",
+            "bytes": 256000,
+            "native_sha256": "9b2ff23ce30d2c2bb5fceca0fe1545e1a45fb8f9c3194cb8eea96c117778dcd9",
+            "equal": true
+          },
+          {
+            "variant": "processed-aot",
+            "file": "pixels-1.rgba",
+            "bytes": 256000,
+            "native_sha256": "bcbdaefb2f9bb8d21084eac76fa91482edbb5ba5c4310c878c2e037bda2861b1",
+            "equal": true
+          }
+        ]
+      },
+      "qualification_images": {
+        "status": "passed",
+        "native": {
+          "exit_code": 0,
+          "checks": [
+            [
+              284,
+              0
+            ]
+          ],
+          "stdout_sha256": "b43b4faed6ca13ece946d157a78bc95c9c4f7474e38dede5aa65a41b676ebc30"
+        },
+        "raw-jit": {
+          "exit_code": 0,
+          "checks": [
+            [
+              284,
+              0
+            ]
+          ],
+          "stdout_sha256": "b43b4faed6ca13ece946d157a78bc95c9c4f7474e38dede5aa65a41b676ebc30"
+        },
+        "raw-aot": {
+          "exit_code": 0,
+          "checks": [
+            [
+              284,
+              0
+            ]
+          ],
+          "stdout_sha256": "b43b4faed6ca13ece946d157a78bc95c9c4f7474e38dede5aa65a41b676ebc30"
+        },
+        "processed-jit": {
+          "exit_code": 0,
+          "checks": [
+            [
+              284,
+              0
+            ]
+          ],
+          "stdout_sha256": "b43b4faed6ca13ece946d157a78bc95c9c4f7474e38dede5aa65a41b676ebc30"
+        },
+        "processed-aot": {
+          "exit_code": 0,
+          "checks": [
+            [
+              284,
+              0
+            ]
+          ],
+          "stdout_sha256": "b43b4faed6ca13ece946d157a78bc95c9c4f7474e38dede5aa65a41b676ebc30"
+        },
+        "exact_bytes": [
+          {
+            "variant": "raw-jit",
+            "file": "decoded-bmp.rgba",
+            "bytes": 16,
+            "native_sha256": "c21b35e3f28e676cedf24c13575a7346682e101a2d26aad9598d0cdbcee9ee3b",
+            "equal": true
+          },
+          {
+            "variant": "raw-jit",
+            "file": "decoded-gif.rgba",
+            "bytes": 16,
+            "native_sha256": "c21b35e3f28e676cedf24c13575a7346682e101a2d26aad9598d0cdbcee9ee3b",
+            "equal": true
+          },
+          {
+            "variant": "raw-jit",
+            "file": "decoded-jpg.rgba",
+            "bytes": 256,
+            "native_sha256": "6e6386ed7d44b54cc8ccb9082d27cf3f2abc97c5867e1fe4613222b065506d75",
+            "equal": true
+          },
+          {
+            "variant": "raw-jit",
+            "file": "decoded-png.rgba",
+            "bytes": 16,
+            "native_sha256": "c21b35e3f28e676cedf24c13575a7346682e101a2d26aad9598d0cdbcee9ee3b",
+            "equal": true
+          },
+          {
+            "variant": "raw-jit",
+            "file": "decoded-tga.rgba",
+            "bytes": 16,
+            "native_sha256": "c21b35e3f28e676cedf24c13575a7346682e101a2d26aad9598d0cdbcee9ee3b",
+            "equal": true
+          },
+          {
+            "variant": "raw-aot",
+            "file": "decoded-bmp.rgba",
+            "bytes": 16,
+            "native_sha256": "c21b35e3f28e676cedf24c13575a7346682e101a2d26aad9598d0cdbcee9ee3b",
+            "equal": true
+          },
+          {
+            "variant": "raw-aot",
+            "file": "decoded-gif.rgba",
+            "bytes": 16,
+            "native_sha256": "c21b35e3f28e676cedf24c13575a7346682e101a2d26aad9598d0cdbcee9ee3b",
+            "equal": true
+          },
+          {
+            "variant": "raw-aot",
+            "file": "decoded-jpg.rgba",
+            "bytes": 256,
+            "native_sha256": "6e6386ed7d44b54cc8ccb9082d27cf3f2abc97c5867e1fe4613222b065506d75",
+            "equal": true
+          },
+          {
+            "variant": "raw-aot",
+            "file": "decoded-png.rgba",
+            "bytes": 16,
+            "native_sha256": "c21b35e3f28e676cedf24c13575a7346682e101a2d26aad9598d0cdbcee9ee3b",
+            "equal": true
+          },
+          {
+            "variant": "raw-aot",
+            "file": "decoded-tga.rgba",
+            "bytes": 16,
+            "native_sha256": "c21b35e3f28e676cedf24c13575a7346682e101a2d26aad9598d0cdbcee9ee3b",
+            "equal": true
+          },
+          {
+            "variant": "processed-jit",
+            "file": "decoded-bmp.rgba",
+            "bytes": 16,
+            "native_sha256": "c21b35e3f28e676cedf24c13575a7346682e101a2d26aad9598d0cdbcee9ee3b",
+            "equal": true
+          },
+          {
+            "variant": "processed-jit",
+            "file": "decoded-gif.rgba",
+            "bytes": 16,
+            "native_sha256": "c21b35e3f28e676cedf24c13575a7346682e101a2d26aad9598d0cdbcee9ee3b",
+            "equal": true
+          },
+          {
+            "variant": "processed-jit",
+            "file": "decoded-jpg.rgba",
+            "bytes": 256,
+            "native_sha256": "6e6386ed7d44b54cc8ccb9082d27cf3f2abc97c5867e1fe4613222b065506d75",
+            "equal": true
+          },
+          {
+            "variant": "processed-jit",
+            "file": "decoded-png.rgba",
+            "bytes": 16,
+            "native_sha256": "c21b35e3f28e676cedf24c13575a7346682e101a2d26aad9598d0cdbcee9ee3b",
+            "equal": true
+          },
+          {
+            "variant": "processed-jit",
+            "file": "decoded-tga.rgba",
+            "bytes": 16,
+            "native_sha256": "c21b35e3f28e676cedf24c13575a7346682e101a2d26aad9598d0cdbcee9ee3b",
+            "equal": true
+          },
+          {
+            "variant": "processed-aot",
+            "file": "decoded-bmp.rgba",
+            "bytes": 16,
+            "native_sha256": "c21b35e3f28e676cedf24c13575a7346682e101a2d26aad9598d0cdbcee9ee3b",
+            "equal": true
+          },
+          {
+            "variant": "processed-aot",
+            "file": "decoded-gif.rgba",
+            "bytes": 16,
+            "native_sha256": "c21b35e3f28e676cedf24c13575a7346682e101a2d26aad9598d0cdbcee9ee3b",
+            "equal": true
+          },
+          {
+            "variant": "processed-aot",
+            "file": "decoded-jpg.rgba",
+            "bytes": 256,
+            "native_sha256": "6e6386ed7d44b54cc8ccb9082d27cf3f2abc97c5867e1fe4613222b065506d75",
+            "equal": true
+          },
+          {
+            "variant": "processed-aot",
+            "file": "decoded-png.rgba",
+            "bytes": 16,
+            "native_sha256": "c21b35e3f28e676cedf24c13575a7346682e101a2d26aad9598d0cdbcee9ee3b",
+            "equal": true
+          },
+          {
+            "variant": "processed-aot",
+            "file": "decoded-tga.rgba",
+            "bytes": 16,
+            "native_sha256": "c21b35e3f28e676cedf24c13575a7346682e101a2d26aad9598d0cdbcee9ee3b",
+            "equal": true
+          }
+        ]
+      },
+      "qualification_lifecycle": {
+        "status": "passed",
+        "native": {
+          "exit_code": 0,
+          "checks": [
+            [
+              33,
+              0
+            ]
+          ],
+          "stdout_sha256": "4c40edd353820f06a39011ffb5efe94894646750362720263f84149e7b2c5e16"
+        },
+        "raw-jit": {
+          "exit_code": 0,
+          "checks": [
+            [
+              33,
+              0
+            ]
+          ],
+          "stdout_sha256": "4c40edd353820f06a39011ffb5efe94894646750362720263f84149e7b2c5e16"
+        },
+        "raw-aot": {
+          "exit_code": 0,
+          "checks": [
+            [
+              33,
+              0
+            ]
+          ],
+          "stdout_sha256": "4c40edd353820f06a39011ffb5efe94894646750362720263f84149e7b2c5e16"
+        },
+        "processed-jit": {
+          "exit_code": 0,
+          "checks": [
+            [
+              33,
+              0
+            ]
+          ],
+          "stdout_sha256": "4c40edd353820f06a39011ffb5efe94894646750362720263f84149e7b2c5e16"
+        },
+        "processed-aot": {
+          "exit_code": 0,
+          "checks": [
+            [
+              33,
+              0
+            ]
+          ],
+          "stdout_sha256": "4c40edd353820f06a39011ffb5efe94894646750362720263f84149e7b2c5e16"
+        },
+        "exact_bytes": []
+      }
+    },
+    "passed_program_variant_rows": 48,
+    "receipt_sha256": {
+      "complete-matrix": "e519e58542df65f39e3da06f8b932e458e829f93f1639a49083a3f227982cbb5",
+      "core-input-aligned": "530ad459211f9481e721d910aa04a41215995e41b5d81621c4875b959e87cae0"
+    },
+    "historical_complete_matrix_note": "The initial complete-matrix receipt retains original strict count mismatch. Current cui_tests result comes from the input-aligned rerun; other eleven programs passed all four variants in the initial receipt."
+  },
+  "aligned_random_inputs": {
+    "sha256": "4093d80cec9961141ce555e9dcd23f1f16f627b67ab9b333a350ba45a0d6f107",
+    "records": 168572,
+    "bytes": 2697152,
+    "records_by_seed": {
+      "1234": 167701,
+      "99": 871
+    },
+    "callsite_queues": [
+      {
+        "seed": 99,
+        "line": 2443,
+        "site": 0,
+        "records": 300
+      },
+      {
+        "seed": 99,
+        "line": 2444,
+        "site": 0,
+        "records": 37
+      },
+      {
+        "seed": 99,
+        "line": 2446,
+        "site": 0,
+        "records": 62
+      },
+      {
+        "seed": 99,
+        "line": 2448,
+        "site": 0,
+        "records": 156
+      },
+      {
+        "seed": 99,
+        "line": 2450,
+        "site": 0,
+        "records": 79
+      },
+      {
+        "seed": 99,
+        "line": 2450,
+        "site": 1,
+        "records": 79
+      },
+      {
+        "seed": 99,
+        "line": 2451,
+        "site": 0,
+        "records": 79
+      },
+      {
+        "seed": 99,
+        "line": 2452,
+        "site": 0,
+        "records": 79
+      },
+      {
+        "seed": 1234,
+        "line": 2342,
+        "site": 0,
+        "records": 4000
+      },
+      {
+        "seed": 1234,
+        "line": 2345,
+        "site": 0,
+        "records": 150349
+      },
+      {
+        "seed": 1234,
+        "line": 2353,
+        "site": 0,
+        "records": 5784
+      },
+      {
+        "seed": 1234,
+        "line": 2353,
+        "site": 1,
+        "records": 3784
+      },
+      {
+        "seed": 1234,
+        "line": 2353,
+        "site": 2,
+        "records": 3784
+      }
+    ],
+    "all_69_groups": [
+      {
+        "group": "test_color",
+        "checks": 5,
+        "cumulative": 5
+      },
+      {
+        "group": "test_layout_row",
+        "checks": 7,
+        "cumulative": 12
+      },
+      {
+        "group": "test_layout_wrap",
+        "checks": 3,
+        "cumulative": 15
+      },
+      {
+        "group": "test_layout_center",
+        "checks": 2,
+        "cumulative": 17
+      },
+      {
+        "group": "test_layout_grid",
+        "checks": 4,
+        "cumulative": 21
+      },
+      {
+        "group": "test_layout_flow",
+        "checks": 12,
+        "cumulative": 33
+      },
+      {
+        "group": "test_layout_autogrid",
+        "checks": 8,
+        "cumulative": 41
+      },
+      {
+        "group": "test_layout_narrow_table",
+        "checks": 2,
+        "cumulative": 43
+      },
+      {
+        "group": "test_button_click",
+        "checks": 5,
+        "cumulative": 48
+      },
+      {
+        "group": "test_click_then_keys",
+        "checks": 3,
+        "cumulative": 51
+      },
+      {
+        "group": "test_keyboard_nav",
+        "checks": 3,
+        "cumulative": 54
+      },
+      {
+        "group": "test_toggles_and_slider",
+        "checks": 6,
+        "cumulative": 60
+      },
+      {
+        "group": "test_text_input",
+        "checks": 15,
+        "cumulative": 75
+      },
+      {
+        "group": "test_textarea_and_clear",
+        "checks": 7,
+        "cumulative": 82
+      },
+      {
+        "group": "test_more_actions",
+        "checks": 13,
+        "cumulative": 95
+      },
+      {
+        "group": "test_more_inputs",
+        "checks": 11,
+        "cumulative": 106
+      },
+      {
+        "group": "test_swipe",
+        "checks": 4,
+        "cumulative": 110
+      },
+      {
+        "group": "test_date_math",
+        "checks": 4,
+        "cumulative": 114
+      },
+      {
+        "group": "test_strings",
+        "checks": 5,
+        "cumulative": 119
+      },
+      {
+        "group": "test_pickers",
+        "checks": 16,
+        "cumulative": 135
+      },
+      {
+        "group": "test_disclosure",
+        "checks": 11,
+        "cumulative": 146
+      },
+      {
+        "group": "test_checklist",
+        "checks": 1,
+        "cumulative": 147
+      },
+      {
+        "group": "test_data_grid",
+        "checks": 15,
+        "cumulative": 162
+      },
+      {
+        "group": "test_tree_table",
+        "checks": 66,
+        "cumulative": 228
+      },
+      {
+        "group": "test_tools",
+        "checks": 37,
+        "cumulative": 265
+      },
+      {
+        "group": "test_hex_view",
+        "checks": 65,
+        "cumulative": 330
+      },
+      {
+        "group": "test_markdown",
+        "checks": 53,
+        "cumulative": 383
+      },
+      {
+        "group": "test_code_editor",
+        "checks": 78,
+        "cumulative": 461
+      },
+      {
+        "group": "test_diff",
+        "checks": 70,
+        "cumulative": 531
+      },
+      {
+        "group": "test_dials",
+        "checks": 19,
+        "cumulative": 550
+      },
+      {
+        "group": "test_candles",
+        "checks": 10,
+        "cumulative": 560
+      },
+      {
+        "group": "test_month",
+        "checks": 14,
+        "cumulative": 574
+      },
+      {
+        "group": "test_tour",
+        "checks": 11,
+        "cumulative": 585
+      },
+      {
+        "group": "test_photo",
+        "checks": 19,
+        "cumulative": 604
+      },
+      {
+        "group": "test_files",
+        "checks": 18,
+        "cumulative": 622
+      },
+      {
+        "group": "test_terminal",
+        "checks": 25,
+        "cumulative": 647
+      },
+      {
+        "group": "test_emoji",
+        "checks": 22,
+        "cumulative": 669
+      },
+      {
+        "group": "test_atlas_shrink",
+        "checks": 4,
+        "cumulative": 673
+      },
+      {
+        "group": "test_sw_incremental",
+        "checks": 3,
+        "cumulative": 676
+      },
+      {
+        "group": "test_emoji_release",
+        "checks": 4,
+        "cumulative": 680
+      },
+      {
+        "group": "test_planning",
+        "checks": 28,
+        "cumulative": 708
+      },
+      {
+        "group": "test_node_editor",
+        "checks": 18,
+        "cumulative": 726
+      },
+      {
+        "group": "test_flame",
+        "checks": 63,
+        "cumulative": 789
+      },
+      {
+        "group": "test_curve_eval",
+        "checks": 18,
+        "cumulative": 807
+      },
+      {
+        "group": "test_curve_editor",
+        "checks": 37,
+        "cumulative": 844
+      },
+      {
+        "group": "test_gradient",
+        "checks": 26,
+        "cumulative": 870
+      },
+      {
+        "group": "test_timeline",
+        "checks": 94,
+        "cumulative": 964
+      },
+      {
+        "group": "test_media",
+        "checks": 11,
+        "cumulative": 975
+      },
+      {
+        "group": "test_viz",
+        "checks": 16,
+        "cumulative": 991
+      },
+      {
+        "group": "test_motion",
+        "checks": 17,
+        "cumulative": 1008
+      },
+      {
+        "group": "test_ai",
+        "checks": 16,
+        "cumulative": 1024
+      },
+      {
+        "group": "test_text_capacity",
+        "checks": 1,
+        "cumulative": 1025
+      },
+      {
+        "group": "test_dialog",
+        "checks": 5,
+        "cumulative": 1030
+      },
+      {
+        "group": "test_menu",
+        "checks": 4,
+        "cumulative": 1034
+      },
+      {
+        "group": "test_focus_trap",
+        "checks": 3,
+        "cumulative": 1037
+      },
+      {
+        "group": "test_extras",
+        "checks": 9,
+        "cumulative": 1046
+      },
+      {
+        "group": "test_reorder",
+        "checks": 5,
+        "cumulative": 1051
+      },
+      {
+        "group": "test_chrome",
+        "checks": 38,
+        "cumulative": 1089
+      },
+      {
+        "group": "test_dock",
+        "checks": 5030,
+        "cumulative": 6119
+      },
+      {
+        "group": "test_virtual_list",
+        "checks": 4,
+        "cumulative": 6123
+      },
+      {
+        "group": "test_theme",
+        "checks": 7,
+        "cumulative": 6130
+      },
+      {
+        "group": "test_renderer",
+        "checks": 7,
+        "cumulative": 6137
+      },
+      {
+        "group": "test_scroll_fade",
+        "checks": 2,
+        "cumulative": 6139
+      },
+      {
+        "group": "test_pretty_wrap",
+        "checks": 5,
+        "cumulative": 6144
+      },
+      {
+        "group": "test_truncated_tooltip",
+        "checks": 3,
+        "cumulative": 6147
+      },
+      {
+        "group": "test_truncated_tooltip_covered",
+        "checks": 4,
+        "cumulative": 6151
+      },
+      {
+        "group": "test_number_roll",
+        "checks": 6,
+        "cumulative": 6157
+      },
+      {
+        "group": "test_stress",
+        "checks": 2,
+        "cumulative": 6159
+      },
+      {
+        "group": "test_atlas_pressure",
+        "checks": 1,
+        "cumulative": 6160
+      }
+    ],
+    "test_dock_native_aligned_checks": 5030,
+    "native_original_test_dock_checks": 5017,
+    "native_original_total_checks": 6147,
+    "aligned_total_checks": 6160,
+    "strict_all_four_variants_and_native_groups_equal": true
+  },
+  "bundled_input_hook_validation": {
+    "status": "passed",
+    "programs": {
+      "cui_tests": "passed",
+      "qualification_lifecycle": "passed"
+    },
+    "receipt_sha256": "aa7181fb8b0babb151ee290e1e9674d6708a31fabd900e6ccafb3673d90e50fb"
+  },
+  "private_test_input_relocation_validation": {
+    "status": "passed",
+    "scope": "Private test input relocation and actual DotCC object emission only; no link/execution claim",
+    "emitted_objects": 9,
+    "receipt_sha256": "b7b79c1baa5107f1d89518ec5825dd6eb5709e5f5e29b552bb74af1d0f2bf65c"
+  },
+  "final_harness_sha256": "99d85923349c90549b856a746d5c99f85797ff7724854862b596d25efae8d10a"
+}

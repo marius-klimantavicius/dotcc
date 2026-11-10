@@ -1,0 +1,16 @@
+{
+  "role": "Trusted test-only Arabic font; never a product dependency",
+  "family": "Noto Sans Arabic",
+  "file": "NotoSansArabic-Regular.ttf",
+  "sha256": "504d7407d86875acf7d04dfaa0fd7524d0b8797723bc4aa18022f29db25b0b6e",
+  "bytes": 244072,
+  "origin": "Debian/Ubuntu fonts-noto-core 20201225-2, installed trusted package",
+  "example_path": "/usr/share/fonts/truetype/noto/NotoSansArabic-Regular.ttf",
+  "license": "SIL Open Font License 1.1; see installed fonts-noto-core copyright or Noto distribution",
+  "license_metadata_sha256": "075f91382875da1c4b491f1facf2586f55448705133264d98ce15cab6211b125",
+  "upstream": "https://github.com/notofonts/arabic",
+  "oracle": "Unchanged CUI tools/compare_shape.py corpus plus all U+064B..U+065F ordered mark pairs; uharfbuzz 0.57.0 / HarfBuzz 15.0.0",
+  "comparison": "All glyph IDs, font-unit advances and x/y offsets exact; no tolerances or exclusions for this fixture",
+  "cases": 661,
+  "acquisition": "Supply --font from a trusted font package; not bundled or automatically downloaded"
+}

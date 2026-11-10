@@ -5,6 +5,7 @@ using static Managed.Cui.Cui;
 
 internal static unsafe class Program
 {
+    [STAThread]
     private static int Main(string[] arguments)
     {
         try

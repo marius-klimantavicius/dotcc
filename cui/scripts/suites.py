@@ -47,6 +47,11 @@ def qualification(ctx, suite):
         arguments += ["--font", font]
     if (ctx.work / "objects").is_dir() and (ctx.work / "source").is_dir():
         arguments += ["--objects-dir", ctx.work / "objects", "--staged-source", ctx.work / "source"]
+    elif os.environ.get("CUI_QUALIFICATION_OBJECTS") or os.environ.get("CUI_QUALIFICATION_STAGED_SOURCE"):
+        if not (os.environ.get("CUI_QUALIFICATION_OBJECTS") and os.environ.get("CUI_QUALIFICATION_STAGED_SOURCE")):
+            raise RuntimeError("Supply both CUI_QUALIFICATION_OBJECTS and CUI_QUALIFICATION_STAGED_SOURCE from the same final translation")
+        arguments += ["--objects-dir", os.environ["CUI_QUALIFICATION_OBJECTS"],
+                      "--staged-source", os.environ["CUI_QUALIFICATION_STAGED_SOURCE"]]
     ctx.run(arguments, suite.name, timeout=suite.timeout)
 
 
