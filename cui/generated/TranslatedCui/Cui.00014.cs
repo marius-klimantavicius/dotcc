@@ -29,7 +29,7 @@ using __DotCcEnum_6375695F6D6F64 = global::Managed.Cui.Cui.cui_mod;
 using __DotCcEnum_6375695F7468656D655F6D6F6465 = global::Managed.Cui.Cui.cui_theme_mode;
 using __DotCcEnum_6375695F746F6E65 = global::Managed.Cui.Cui.cui_tone;
 using __DotCcEnum_6375695F656C65766174696F6E = global::Managed.Cui.Cui.cui_elevation;
-using __DotCcEnum_5F5F446F744363547970656465665F46324333433032343146314545314442363236314639313537453932413541454342383644323831453331333643423331464642363530454344414539343230 = global::Managed.Cui.Cui.cui__text_anchor;
+using __DotCcEnum_5F5F446F744363547970656465665F35433139373738383936433338353538423536464637393636313641303646314635434642443343333533373045314333413434453641334536354638393637 = global::Managed.Cui.Cui.cui__text_anchor;
 using __DotCcEnum_6375695F746578747572655F666F726D6174 = global::Managed.Cui.Cui.cui_texture_format;
 using __DotCcEnum_6375695F646972656374696F6E = global::Managed.Cui.Cui.cui_direction;
 using __DotCcEnum_6375695F6A757374696679 = global::Managed.Cui.Cui.cui_justify;
@@ -39,7 +39,7 @@ using __DotCcEnum_6375695F746578745F616C69676E = global::Managed.Cui.Cui.cui_tex
 using __DotCcEnum_6375695F627574746F6E5F76617269616E74 = global::Managed.Cui.Cui.cui_button_variant;
 using __DotCcEnum_6375695F636F6E74726F6C5F73697A65 = global::Managed.Cui.Cui.cui_control_size;
 using __DotCcEnum_6375695F746162735F76617269616E74 = global::Managed.Cui.Cui.cui_tabs_variant;
-using __DotCcEnum_5F5F446F744363547970656465665F39334642464235333439314530394434303042314546323342303239344631454137424444414637453242413538423838433630464237313543313339303446 = global::Managed.Cui.Cui.cui__field_style;
+using __DotCcEnum_5F5F446F744363547970656465665F45303336324332393344374432443334303043373445453936414142393132363345303446314443434239304638413335384235453033433735303241453241 = global::Managed.Cui.Cui.cui__field_style;
 using __DotCcEnum_6375695F73696465 = global::Managed.Cui.Cui.cui_side;
 using __DotCcEnum_6375695F737461747573 = global::Managed.Cui.Cui.cui_status;
 using __DotCcEnum_6375695F646966665F726F775F6B696E64 = global::Managed.Cui.Cui.cui_diff_row_kind;
@@ -496,7 +496,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__paint_uptime__unit_C77B25EB39D86A4142BE41DEC1165BC0BDDD7E360A93C1B394ADE7A917909310(cui_ctx* ui, cui_node* nd, void* data)
+    public static unsafe void cui__paint_uptime__unit_BB994494F0E7B42398C74845C42E6687F46347C7AA574AF20F1F702D74A661EF(cui_ctx* ui, cui_node* nd, void* data)
     {
         cui__up_paint* p = (cui__up_paint*)(data);
         cui_rect r = nd->rect;
@@ -608,7 +608,7 @@ public static unsafe partial class Cui
             bn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
             bn->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)30.0f };
             bn->direction = (byte)(__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_LTR);
-            bn->paint = DotCcPointers.cui__paint_uptime__unit_C77B25EB39D86A4142BE41DEC1165BC0BDDD7E360A93C1B394ADE7A917909310;
+            bn->paint = DotCcPointers.cui__paint_uptime__unit_BB994494F0E7B42398C74845C42E6687F46347C7AA574AF20F1F702D74A661EF;
             bn->paint_data = p;
             cui__mark_interactive(ui, bars, 0);
             if (((p->hover >= 0)))
@@ -669,7 +669,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__paint_thist__unit_C77B25EB39D86A4142BE41DEC1165BC0BDDD7E360A93C1B394ADE7A917909310(cui_ctx* ui, cui_node* nd, void* data)
+    public static unsafe void cui__paint_thist__unit_BB994494F0E7B42398C74845C42E6687F46347C7AA574AF20F1F702D74A661EF(cui_ctx* ui, cui_node* nd, void* data)
     {
         cui__th_paint* p = (cui__th_paint*)(data);
         cui_rect r = nd->rect;
@@ -831,11 +831,11 @@ public static unsafe partial class Cui
         p->offset = ((int)(((unchecked((int)(o->utc))) != 0) ? 0 : cui__utc_offset((long)start)));
         double span = t1 - t0;
         float pw = ((float)(((unchecked((int)(known))) != 0) ? plot.w : (float)(500)));
-        p->tstep = global::Managed.Cui.Cui.Globals.cui__th_steps__unit_C77B25EB39D86A4142BE41DEC1165BC0BDDD7E360A93C1B394ADE7A917909310[unchecked(((ulong)((16 * sizeof(double)))) / ((ulong)(sizeof(double))) - (ulong)(1))];
+        p->tstep = global::Managed.Cui.Cui.Globals.cui__th_steps__unit_BB994494F0E7B42398C74845C42E6687F46347C7AA574AF20F1F702D74A661EF[unchecked(((ulong)((16 * sizeof(double)))) / ((ulong)(sizeof(double))) - (ulong)(1))];
         for (ulong k = 0; ((k < ((ulong)((16 * sizeof(double)))) / ((ulong)(sizeof(double))))); k++)
-            if (((((span > 0)) && ((global::Managed.Cui.Cui.Globals.cui__th_steps__unit_C77B25EB39D86A4142BE41DEC1165BC0BDDD7E360A93C1B394ADE7A917909310[k] / span * pw >= 78)))))
+            if (((((span > 0)) && ((global::Managed.Cui.Cui.Globals.cui__th_steps__unit_BB994494F0E7B42398C74845C42E6687F46347C7AA574AF20F1F702D74A661EF[k] / span * pw >= 78)))))
             {
-                p->tstep = global::Managed.Cui.Cui.Globals.cui__th_steps__unit_C77B25EB39D86A4142BE41DEC1165BC0BDDD7E360A93C1B394ADE7A917909310[k];
+                p->tstep = global::Managed.Cui.Cui.Globals.cui__th_steps__unit_BB994494F0E7B42398C74845C42E6687F46347C7AA574AF20F1F702D74A661EF[k];
                 break;
             }
         p->label_dates = ((CBool)(((p->tstep >= 86400)) || ((span > 86400))));
@@ -856,7 +856,7 @@ public static unsafe partial class Cui
         n->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
         n->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)((float)(((o->height > 0)) ? o->height : (float)(140))) };
         n->direction = (byte)(__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_LTR);
-        n->paint = DotCcPointers.cui__paint_thist__unit_C77B25EB39D86A4142BE41DEC1165BC0BDDD7E360A93C1B394ADE7A917909310;
+        n->paint = DotCcPointers.cui__paint_thist__unit_BB994494F0E7B42398C74845C42E6687F46347C7AA574AF20F1F702D74A661EF;
         n->paint_data = p;
         cui__mark_interactive(ui, nd, 2);
         if (((((p->hover >= 0)) && ((ui->active == (uint)(0))))))
@@ -913,7 +913,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__cov_dtor__unit_C77B25EB39D86A4142BE41DEC1165BC0BDDD7E360A93C1B394ADE7A917909310(cui_ctx* ui, void* data)
+    public static unsafe void cui__cov_dtor__unit_BB994494F0E7B42398C74845C42E6687F46347C7AA574AF20F1F702D74A661EF(cui_ctx* ui, void* data)
     {
         cui__cov_state* s = (cui__cov_state*)(data);
         cui__free(ui, s->nodes);
@@ -1116,7 +1116,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__paint_cv_bar__unit_C77B25EB39D86A4142BE41DEC1165BC0BDDD7E360A93C1B394ADE7A917909310(cui_ctx* ui, cui_node* n, void* data)
+    public static unsafe void cui__paint_cv_bar__unit_BB994494F0E7B42398C74845C42E6687F46347C7AA574AF20F1F702D74A661EF(cui_ctx* ui, cui_node* n, void* data)
     {
         ;
         cui__cov_bar* b = (cui__cov_bar*)(data);
@@ -1159,7 +1159,7 @@ public static unsafe partial class Cui
         float lo = ((float)(((o->low > 0)) ? o->low : (float)(50))), hi = ((float)(((o->high > 0)) ? o->high : (float)(80)));
         uint id = cui_make_id(ui, id_str);
         cui__cov_state* s = (cui__cov_state*)(cui_state(ui, id ^ 0xC0E1u, ((ulong)(sizeof(cui__cov_state)))));
-        cui__state_set_dtor(ui, id ^ 0xC0E1u, DotCcPointers.cui__cov_dtor__unit_C77B25EB39D86A4142BE41DEC1165BC0BDDD7E360A93C1B394ADE7A917909310);
+        cui__state_set_dtor(ui, id ^ 0xC0E1u, DotCcPointers.cui__cov_dtor__unit_BB994494F0E7B42398C74845C42E6687F46347C7AA574AF20F1F702D74A661EF);
         if ((!(((unchecked((int)(s->init))) != 0) )     ))
         {
             s->sel = -1;
@@ -1203,7 +1203,7 @@ public static unsafe partial class Cui
         int cols = ((int)(((unchecked((int)(narrow))) != 0) ? 2 : 4));
         for (int c = 0; ((c < cols)); c++)
         {
-            uint cid = cui_make_id(ui, global::Managed.Cui.Cui.Globals.titles__s0__unit_C77B25EB39D86A4142BE41DEC1165BC0BDDD7E360A93C1B394ADE7A917909310[c]);
+            uint cid = cui_make_id(ui, global::Managed.Cui.Cui.Globals.titles__s0__unit_BB994494F0E7B42398C74845C42E6687F46347C7AA574AF20F1F702D74A661EF[c]);
             cui_interact ci = cui__interact(ui, cid, 0);
             if (((unchecked((int)(ci.clicked))) != 0))
             {
@@ -1226,7 +1226,7 @@ public static unsafe partial class Cui
             if (((unchecked((int)(ci.hovered))) != 0))
                 cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_HAND);
             cui__open(ui, cell);
-            cui__text_node(ui, global::Managed.Cui.Cui.Globals.titles__s0__unit_C77B25EB39D86A4142BE41DEC1165BC0BDDD7E360A93C1B394ADE7A917909310[c], -1, 1, fx, (((s->sort == c)) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND] : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED]), 0);
+            cui__text_node(ui, global::Managed.Cui.Cui.Globals.titles__s0__unit_BB994494F0E7B42398C74845C42E6687F46347C7AA574AF20F1F702D74A661EF[c], -1, 1, fx, (((s->sort == c)) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND] : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED]), 0);
             if (((s->sort == c)))
                 cui__icon_node(ui, ((byte*)(((unchecked((int)(s->desc))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S1383 /*""*/) : (DotCcLiterals.Pointer + DotCcLiterals.S61 /*""*/))), 12, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY]);
             cui__close(ui);
@@ -1330,7 +1330,7 @@ public static unsafe partial class Cui
             int bar = cui__node_new(ui, 0);
             ui->nodes[bar].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)bar_w };
             ui->nodes[bar].h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)12 };
-            ui->nodes[bar].paint = DotCcPointers.cui__paint_cv_bar__unit_C77B25EB39D86A4142BE41DEC1165BC0BDDD7E360A93C1B394ADE7A917909310;
+            ui->nodes[bar].paint = DotCcPointers.cui__paint_cv_bar__unit_BB994494F0E7B42398C74845C42E6687F46347C7AA574AF20F1F702D74A661EF;
             ui->nodes[bar].paint_data = bp;
             cui__cov_pct_cell(ui, lp, 54, lo, hi);
             if ((!(((unchecked((int)(narrow))) != 0) )     ))
@@ -1352,7 +1352,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__blm_dtor__unit_C77B25EB39D86A4142BE41DEC1165BC0BDDD7E360A93C1B394ADE7A917909310(cui_ctx* ui, void* data)
+    public static unsafe void cui__blm_dtor__unit_BB994494F0E7B42398C74845C42E6687F46347C7AA574AF20F1F702D74A661EF(cui_ctx* ui, void* data)
     {
         cui__blm_state* s = (cui__blm_state*)(data);
         cui__free(ui, s->in_block);
@@ -1362,7 +1362,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__paint_blm_row__unit_C77B25EB39D86A4142BE41DEC1165BC0BDDD7E360A93C1B394ADE7A917909310(cui_ctx* ui, cui_node* nd, void* data)
+    public static unsafe void cui__paint_blm_row__unit_BB994494F0E7B42398C74845C42E6687F46347C7AA574AF20F1F702D74A661EF(cui_ctx* ui, cui_node* nd, void* data)
     {
         cui__blm_paint* p = (cui__blm_paint*)(data);
         cui_rect r = nd->rect;
@@ -1419,7 +1419,7 @@ public static unsafe partial class Cui
             commit_count = 0;
         uint id = cui_make_id(ui, id_str);
         cui__blm_state* s = (cui__blm_state*)(cui_state(ui, id ^ 0xB1A3u, ((ulong)(sizeof(cui__blm_state)))));
-        cui__state_set_dtor(ui, id ^ 0xB1A3u, DotCcPointers.cui__blm_dtor__unit_C77B25EB39D86A4142BE41DEC1165BC0BDDD7E360A93C1B394ADE7A917909310);
+        cui__state_set_dtor(ui, id ^ 0xB1A3u, DotCcPointers.cui__blm_dtor__unit_BB994494F0E7B42398C74845C42E6687F46347C7AA574AF20F1F702D74A661EF);
         if ((!(((unchecked((int)(s->init))) != 0) )     ))
         {
             s->init = 1;
@@ -1551,7 +1551,7 @@ public static unsafe partial class Cui
             cui_node* rn = &ui->nodes[row];
             rn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
             rn->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)20.0f };
-            rn->paint = DotCcPointers.cui__paint_blm_row__unit_C77B25EB39D86A4142BE41DEC1165BC0BDDD7E360A93C1B394ADE7A917909310;
+            rn->paint = DotCcPointers.cui__paint_blm_row__unit_BB994494F0E7B42398C74845C42E6687F46347C7AA574AF20F1F702D74A661EF;
             rn->paint_data = p;
             cui__open(ui, row);
             int g = cui__node_new(ui, gid);
@@ -1596,15 +1596,15 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe double cui__ins_step__unit_4B2C9A10C23965FEECCE640079E917AE77F58CA07B2CC1830058A12A4EE9AA75(cui_axis_units units, double span, float width, float min_px)
+    public static unsafe double cui__ins_step__unit_9CD6034423FBDB87D7F65BC9948F92523FF001929645592A1AE33426DC5E15BC(cui_axis_units units, double span, float width, float min_px)
     {
         if ((((!(((span > 0)) )     ) || ((width <= 0)))))
             return 0;
         if ((((int)units == (int)__DotCcEnum_6375695F617869735F756E697473.CUI_AXIS_HOURS)))
         {
             for (int k = 0; ((k < unchecked((int)(((ulong)((10 * sizeof(double)))) / ((ulong)(sizeof(double))))))); k++)
-                if (((global::Managed.Cui.Cui.Globals.hours__s0__unit_4B2C9A10C23965FEECCE640079E917AE77F58CA07B2CC1830058A12A4EE9AA75[k] / span * width >= min_px)))
-                    return global::Managed.Cui.Cui.Globals.hours__s0__unit_4B2C9A10C23965FEECCE640079E917AE77F58CA07B2CC1830058A12A4EE9AA75[k];
+                if (((global::Managed.Cui.Cui.Globals.hours__s0__unit_9CD6034423FBDB87D7F65BC9948F92523FF001929645592A1AE33426DC5E15BC[k] / span * width >= min_px)))
+                    return global::Managed.Cui.Cui.Globals.hours__s0__unit_9CD6034423FBDB87D7F65BC9948F92523FF001929645592A1AE33426DC5E15BC[k];
             return 168;
         }
         double raw = span * min_px / width;
@@ -1618,7 +1618,7 @@ public static unsafe partial class Cui
     {
         if ((!(((a->x1 > a->x0)) )     ))
             return;
-        double step = ((double)(((a->step > 0)) ? a->step : cui__ins_step__unit_4B2C9A10C23965FEECCE640079E917AE77F58CA07B2CC1830058A12A4EE9AA75(a->units, a->x1 - a->x0, pw, ((int)((((int)a->units == (int)__DotCcEnum_6375695F617869735F756E697473.CUI_AXIS_HOURS)) ? 34 : 56)))));
+        double step = ((double)(((a->step > 0)) ? a->step : cui__ins_step__unit_9CD6034423FBDB87D7F65BC9948F92523FF001929645592A1AE33426DC5E15BC(a->units, a->x1 - a->x0, pw, ((int)((((int)a->units == (int)__DotCcEnum_6375695F617869735F756E697473.CUI_AXIS_HOURS)) ? 34 : 56)))));
         if ((!(((step > 0)) )     ))
             return;
         float fs = cui__fs(ui, ui->theme.text_xs);
@@ -1826,7 +1826,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__paint_dot_chart__unit_4B2C9A10C23965FEECCE640079E917AE77F58CA07B2CC1830058A12A4EE9AA75(cui_ctx* ui, cui_node* nd, void* data)
+    public static unsafe void cui__paint_dot_chart__unit_9CD6034423FBDB87D7F65BC9948F92523FF001929645592A1AE33426DC5E15BC(cui_ctx* ui, cui_node* nd, void* data)
     {
         cui__dm_paint* p = (cui__dm_paint*)(data);
         cui_rect r = nd->rect;
@@ -2064,7 +2064,7 @@ public static unsafe partial class Cui
         n->w = ((((int)o->width.kind) != 0) ? o->width : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 });
         n->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)((float)(((o->height > 0)) ? o->height : (float)(200))) };
         n->direction = (byte)(__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_LTR);
-        n->paint = DotCcPointers.cui__paint_dot_chart__unit_4B2C9A10C23965FEECCE640079E917AE77F58CA07B2CC1830058A12A4EE9AA75;
+        n->paint = DotCcPointers.cui__paint_dot_chart__unit_9CD6034423FBDB87D7F65BC9948F92523FF001929645592A1AE33426DC5E15BC;
         n->paint_data = p;
         cui__mark_interactive(ui, nd, 1);
         ui->last_id = id;
@@ -2126,7 +2126,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__paint_event_track__unit_4B2C9A10C23965FEECCE640079E917AE77F58CA07B2CC1830058A12A4EE9AA75(cui_ctx* ui, cui_node* nd, void* data)
+    public static unsafe void cui__paint_event_track__unit_9CD6034423FBDB87D7F65BC9948F92523FF001929645592A1AE33426DC5E15BC(cui_ctx* ui, cui_node* nd, void* data)
     {
         cui__ev_paint* p = (cui__ev_paint*)(data);
         cui_rect r = nd->rect;
@@ -2367,7 +2367,7 @@ public static unsafe partial class Cui
         n->w = ((((int)o->width.kind) != 0) ? o->width : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 });
         n->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)((int)(((unchecked((int)(o->no_axis))) != 0) ? 36 : 54)) };
         n->direction = (byte)(__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_LTR);
-        n->paint = DotCcPointers.cui__paint_event_track__unit_4B2C9A10C23965FEECCE640079E917AE77F58CA07B2CC1830058A12A4EE9AA75;
+        n->paint = DotCcPointers.cui__paint_event_track__unit_9CD6034423FBDB87D7F65BC9948F92523FF001929645592A1AE33426DC5E15BC;
         n->paint_data = p;
         cui__mark_interactive(ui, nd, 1 | 2);
         ui->last_id = id;
@@ -2444,7 +2444,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__paint_dot_display__unit_4B2C9A10C23965FEECCE640079E917AE77F58CA07B2CC1830058A12A4EE9AA75(cui_ctx* ui, cui_node* nd, void* data)
+    public static unsafe void cui__paint_dot_display__unit_9CD6034423FBDB87D7F65BC9948F92523FF001929645592A1AE33426DC5E15BC(cui_ctx* ui, cui_node* nd, void* data)
     {
         cui__dmf_paint* p = (cui__dmf_paint*)(data);
         cui_rect r = nd->rect;
@@ -2478,7 +2478,7 @@ public static unsafe partial class Cui
             float bx = x0 + off + copy * period;
             for (int g = 0; ((g < p->n)); g++)
             {
-                byte* rows = global::Managed.Cui.Cui.Globals.cui__dmf_glyphs__unit_4B2C9A10C23965FEECCE640079E917AE77F58CA07B2CC1830058A12A4EE9AA75 + p->glyph[g] * 7;
+                byte* rows = global::Managed.Cui.Cui.Globals.cui__dmf_glyphs__unit_9CD6034423FBDB87D7F65BC9948F92523FF001929645592A1AE33426DC5E15BC + p->glyph[g] * 7;
                 for (int row = 0; ((row < 7)); row++)
                     for (int c = 0; ((c < 5)); c++)
                     {
@@ -2540,13 +2540,13 @@ public static unsafe partial class Cui
             if (((((unchecked((int)(cui__has_prev_rect(ui, id)))) != 0) && ((cui__prev_rect(ui, id).w + 0.5f < cols * pitch)))))
                 cui_request_wakeup(ui, 1.0f / 30.0f);
         }
-        n->paint = DotCcPointers.cui__paint_dot_display__unit_4B2C9A10C23965FEECCE640079E917AE77F58CA07B2CC1830058A12A4EE9AA75;
+        n->paint = DotCcPointers.cui__paint_dot_display__unit_9CD6034423FBDB87D7F65BC9948F92523FF001929645592A1AE33426DC5E15BC;
         n->paint_data = p;
     }
 
 
 
-    public static unsafe void cui__paint_tour__unit_B8C95D2E1D889980458EECF62B3F4425720945D26371FF567F7DADC86F3D8ECE(cui_ctx* ui, cui_node* n, void* data)
+    public static unsafe void cui__paint_tour__unit_6DD226B925DDE5003C00C95D07DFF1BBC453B620B940907AC59FA20508907C90(cui_ctx* ui, cui_node* n, void* data)
     {
         cui__tour_paint* p = (cui__tour_paint*)(data);
         cui_rect r = n->rect;
@@ -2666,7 +2666,7 @@ public static unsafe partial class Cui
         p->alpha = alpha;
         p->scrim = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SCRIM];
         p->ring = ((((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK)) ? cui__rgba(255, 255, 255, 200) : cui__rgba(255, 255, 255, 235));
-        rn->paint = DotCcPointers.cui__paint_tour__unit_B8C95D2E1D889980458EECF62B3F4425720945D26371FF567F7DADC86F3D8ECE;
+        rn->paint = DotCcPointers.cui__paint_tour__unit_6DD226B925DDE5003C00C95D07DFF1BBC453B620B940907AC59FA20508907C90;
         rn->paint_data = p;
         {
             cui_rect h = p->hole;
@@ -2839,7 +2839,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__paint_viewer__unit_06C3271187539F37824983B48C2A956C3D3056DC60272BA0FCA80D631F5D880B(cui_ctx* ui, cui_node* n, void* data)
+    public static unsafe void cui__paint_viewer__unit_31C7CF82831BCF7CCCBC0794FE317FC2571D9D6508182816903572357ADDC204(cui_ctx* ui, cui_node* n, void* data)
     {
         cui__iv_paint* p = (cui__iv_paint*)(data);
         cui_rect r = n->rect;
@@ -3040,7 +3040,7 @@ public static unsafe partial class Cui
         p->cy = st->y.x;
         p->wheel = wid;
         p->checker = o->checkerboard;
-        nd->paint = DotCcPointers.cui__paint_viewer__unit_06C3271187539F37824983B48C2A956C3D3056DC60272BA0FCA80D631F5D880B;
+        nd->paint = DotCcPointers.cui__paint_viewer__unit_31C7CF82831BCF7CCCBC0794FE317FC2571D9D6508182816903572357ADDC204;
         nd->paint_data = p;
         if ((!(((unchecked((int)(o->no_toolbar))) != 0) )     ))
         {
@@ -3169,7 +3169,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__paint_cropper__unit_06C3271187539F37824983B48C2A956C3D3056DC60272BA0FCA80D631F5D880B(cui_ctx* ui, cui_node* n, void* data)
+    public static unsafe void cui__paint_cropper__unit_31C7CF82831BCF7CCCBC0794FE317FC2571D9D6508182816903572357ADDC204(cui_ctx* ui, cui_node* n, void* data)
     {
         cui__cr_paint* p = (cui__cr_paint*)(data);
         cui_rect r = n->rect;
@@ -3441,7 +3441,7 @@ public static unsafe partial class Cui
         p->round = o->round;
         p->active = st->active_t;
         p->hover = hover;
-        nd->paint = DotCcPointers.cui__paint_cropper__unit_06C3271187539F37824983B48C2A956C3D3056DC60272BA0FCA80D631F5D880B;
+        nd->paint = DotCcPointers.cui__paint_cropper__unit_31C7CF82831BCF7CCCBC0794FE317FC2571D9D6508182816903572357ADDC204;
         nd->paint_data = p;
         ui->last_id = id;
         return ((CBool)(memcmp(&before, crop, ((ulong)(sizeof(cui_rect)))) != 0));
@@ -3549,23 +3549,23 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe byte* cui__file_icon__unit_485A012A9471E7A8EACA204CA9AD1F57B765A1DE67692E17F01C2BE35375C2A9(cui_file_entry* e)
+    public static unsafe byte* cui__file_icon__unit_A0CD1D9738F5EDDD910CA9065AF047A4AC1E6D97BAA0D9C652CF84B2153A6A63(cui_file_entry* e)
     {
         if (((unchecked((int)(e->dir))) != 0))
             return (DotCcLiterals.Pointer + DotCcLiterals.S287 /*""*/);
         byte* dot = strrchr(e->name, 46);
         if ((!((((void*)(dot)) != null) )     ))
             return (DotCcLiterals.Pointer + DotCcLiterals.S195 /*""*/);
-        for (ulong k = 0; ((k < ((ulong)((30 * sizeof(__Anon42E75D5A5F700924EB0AC5F7A630AD2FFFC8A0DA486F5CBB612FD20F078C4AEB)))) / ((ulong)(sizeof(__Anon42E75D5A5F700924EB0AC5F7A630AD2FFFC8A0DA486F5CBB612FD20F078C4AEB))))); k++)
+        for (ulong k = 0; ((k < ((ulong)((30 * sizeof(__Anon4CD1835A74AB18E0B7DCCE6EF6BB46ADF7E145B9A335B2A57B9A226B854B285C)))) / ((ulong)(sizeof(__Anon4CD1835A74AB18E0B7DCCE6EF6BB46ADF7E145B9A335B2A57B9A226B854B285C))))); k++)
         {
-            byte* a = dot + 1, b = global::Managed.Cui.Cui.Globals.map__s0__unit_485A012A9471E7A8EACA204CA9AD1F57B765A1DE67692E17F01C2BE35375C2A9[k].ext;
+            byte* a = dot + 1, b = global::Managed.Cui.Cui.Globals.map__s0__unit_A0CD1D9738F5EDDD910CA9065AF047A4AC1E6D97BAA0D9C652CF84B2153A6A63[k].ext;
             while (((((((*a) != 0) && ((*b) != 0))) && (((*a | 32) == *b)))))
             {
                 a++;
                 b++;
             }
             if ((((!(((*a) != 0) )     ) && (!(((*b) != 0) )     ))))
-                return global::Managed.Cui.Cui.Globals.map__s0__unit_485A012A9471E7A8EACA204CA9AD1F57B765A1DE67692E17F01C2BE35375C2A9[k].icon;
+                return global::Managed.Cui.Cui.Globals.map__s0__unit_A0CD1D9738F5EDDD910CA9065AF047A4AC1E6D97BAA0D9C652CF84B2153A6A63[k].icon;
         }
         return (DotCcLiterals.Pointer + DotCcLiterals.S195 /*""*/);
     }
@@ -3596,7 +3596,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__fb_dtor__unit_485A012A9471E7A8EACA204CA9AD1F57B765A1DE67692E17F01C2BE35375C2A9(cui_ctx* ui, void* data)
+    public static unsafe void cui__fb_dtor__unit_A0CD1D9738F5EDDD910CA9065AF047A4AC1E6D97BAA0D9C652CF84B2153A6A63(cui_ctx* ui, void* data)
     {
         cui__fb_state* s = (cui__fb_state*)(data);
         cui__free(ui, s->ent);
@@ -3636,9 +3636,9 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe int cui__fb_cmp__unit_485A012A9471E7A8EACA204CA9AD1F57B765A1DE67692E17F01C2BE35375C2A9(void* pa, void* pb)
+    public static unsafe int cui__fb_cmp__unit_A0CD1D9738F5EDDD910CA9065AF047A4AC1E6D97BAA0D9C652CF84B2153A6A63(void* pa, void* pb)
     {
-        cui__fb_state* s = (cui__fb_state*)global::Managed.Cui.Cui.Globals.cui__fb_sorting__unit_485A012A9471E7A8EACA204CA9AD1F57B765A1DE67692E17F01C2BE35375C2A9;
+        cui__fb_state* s = (cui__fb_state*)global::Managed.Cui.Cui.Globals.cui__fb_sorting__unit_A0CD1D9738F5EDDD910CA9065AF047A4AC1E6D97BAA0D9C652CF84B2153A6A63;
         cui_file_entry* a = &s->ent[*(int*)pa], b = &s->ent[*(int*)pb];
         if ((((int)((int)(a->dir)) != (int)((int)(b->dir)))))
             return ((int)(((unchecked((int)(a->dir))) != 0) ? -1 : 1));
@@ -3690,7 +3690,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__fb_order__unit_485A012A9471E7A8EACA204CA9AD1F57B765A1DE67692E17F01C2BE35375C2A9(cui_ctx* ui, cui__fb_state* s, cui_file_browser_opts* o)
+    public static unsafe void cui__fb_order__unit_A0CD1D9738F5EDDD910CA9065AF047A4AC1E6D97BAA0D9C652CF84B2153A6A63(cui_ctx* ui, cui__fb_state* s, cui_file_browser_opts* o)
     {
         uint key = (uint)s->n * 2654435761u ^ (uint)s->sort * 97u ^ ((uint)(((unchecked((int)(s->desc))) != 0) ? 0x51u : (uint)(0))) ^ ((uint)(((unchecked((int)(o->folders_only))) != 0) ? 0x1000u : (uint)(0)));
         key ^= cui__hash_str(s->query, 0x0F11u) ^ cui__hash_str(((byte*)((((void*)(o->filter)) != null) ? o->filter : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), 0x0F12u);
@@ -3712,9 +3712,9 @@ public static unsafe partial class Cui
                 continue;
             s->order[s->norder++] = i;
         }
-        global::Managed.Cui.Cui.Globals.cui__fb_sorting__unit_485A012A9471E7A8EACA204CA9AD1F57B765A1DE67692E17F01C2BE35375C2A9 = (nint)(s);
-        qsort(s->order, (int)((ulong)s->norder), (int)(4UL), DotCcPointers.cui__fb_cmp__unit_485A012A9471E7A8EACA204CA9AD1F57B765A1DE67692E17F01C2BE35375C2A9);
-        global::Managed.Cui.Cui.Globals.cui__fb_sorting__unit_485A012A9471E7A8EACA204CA9AD1F57B765A1DE67692E17F01C2BE35375C2A9 = (nint)(null);
+        global::Managed.Cui.Cui.Globals.cui__fb_sorting__unit_A0CD1D9738F5EDDD910CA9065AF047A4AC1E6D97BAA0D9C652CF84B2153A6A63 = (nint)(s);
+        qsort(s->order, (int)((ulong)s->norder), (int)(4UL), DotCcPointers.cui__fb_cmp__unit_A0CD1D9738F5EDDD910CA9065AF047A4AC1E6D97BAA0D9C652CF84B2153A6A63);
+        global::Managed.Cui.Cui.Globals.cui__fb_sorting__unit_A0CD1D9738F5EDDD910CA9065AF047A4AC1E6D97BAA0D9C652CF84B2153A6A63 = (nint)(null);
         s->order_key = key;
     }
 
@@ -3747,7 +3747,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__fb_default_places__unit_485A012A9471E7A8EACA204CA9AD1F57B765A1DE67692E17F01C2BE35375C2A9(byte* @out, byte** labels, int* n)
+    public static unsafe void cui__fb_default_places__unit_A0CD1D9738F5EDDD910CA9065AF047A4AC1E6D97BAA0D9C652CF84B2153A6A63(byte* @out, byte** labels, int* n)
     {
         byte* home = getenv((DotCcLiterals.Pointer + DotCcLiterals.S515 /*"HOME"*/));
         if (((((cui_host_is_windows()) != 0) && (((!((((void*)(home)) != null) )     ) || (!(((*home) != 0) )     ))))))
@@ -3757,11 +3757,11 @@ public static unsafe partial class Cui
         {
             for (int k = 0; ((k < 4)); k++)
             {
-                if ((((void*)(global::Managed.Cui.Cui.Globals.sub__s1__unit_485A012A9471E7A8EACA204CA9AD1F57B765A1DE67692E17F01C2BE35375C2A9[k])) != null))
-                    cui__path_join(@out + *n * 1024, 1024, home, global::Managed.Cui.Cui.Globals.sub__s1__unit_485A012A9471E7A8EACA204CA9AD1F57B765A1DE67692E17F01C2BE35375C2A9[k]);
+                if ((((void*)(global::Managed.Cui.Cui.Globals.sub__s1__unit_A0CD1D9738F5EDDD910CA9065AF047A4AC1E6D97BAA0D9C652CF84B2153A6A63[k])) != null))
+                    cui__path_join(@out + *n * 1024, 1024, home, global::Managed.Cui.Cui.Globals.sub__s1__unit_A0CD1D9738F5EDDD910CA9065AF047A4AC1E6D97BAA0D9C652CF84B2153A6A63[k]);
                 else
                     snprintf(@out + *n * 1024, 1024, (DotCcLiterals.Pointer + DotCcLiterals.S260 /*"%s"*/)).Arg(home).Done();
-                labels[*n] = global::Managed.Cui.Cui.Globals.lab__s2__unit_485A012A9471E7A8EACA204CA9AD1F57B765A1DE67692E17F01C2BE35375C2A9[k];
+                labels[*n] = global::Managed.Cui.Cui.Globals.lab__s2__unit_A0CD1D9738F5EDDD910CA9065AF047A4AC1E6D97BAA0D9C652CF84B2153A6A63[k];
                 (*n)++;
             }
         }
@@ -3877,7 +3877,7 @@ public static unsafe partial class Cui
         byte** places = o->places;
         if ((!((((void*)(places)) != null) )     ))
         {
-            cui__fb_default_places__unit_485A012A9471E7A8EACA204CA9AD1F57B765A1DE67692E17F01C2BE35375C2A9(dplaces, dlabels, &np);
+            cui__fb_default_places__unit_A0CD1D9738F5EDDD910CA9065AF047A4AC1E6D97BAA0D9C652CF84B2153A6A63(dplaces, dlabels, &np);
         }
         else
             np = ((int)(((o->place_count < 6)) ? o->place_count : 6));
@@ -3929,7 +3929,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__fb_build_header__unit_485A012A9471E7A8EACA204CA9AD1F57B765A1DE67692E17F01C2BE35375C2A9(cui__fb_frame* f)
+    public static unsafe void cui__fb_build_header__unit_A0CD1D9738F5EDDD910CA9065AF047A4AC1E6D97BAA0D9C652CF84B2153A6A63(cui__fb_frame* f)
     {
         cui_ctx* ui = f->ui;
         cui__fb_state* s = f->s;
@@ -3971,7 +3971,7 @@ public static unsafe partial class Cui
             if (((unchecked((int)(hr.hovered))) != 0))
                 cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_HAND);
             cui__open(ui, c);
-            int t = cui__text_node(ui, global::Managed.Cui.Cui.Globals.titles__s3__unit_485A012A9471E7A8EACA204CA9AD1F57B765A1DE67692E17F01C2BE35375C2A9[k], -1, 1, f->fx, (((((s->sort == k)) || ((unchecked((int)(hr.hovered))) != 0))) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND] : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY]), 0);
+            int t = cui__text_node(ui, global::Managed.Cui.Cui.Globals.titles__s3__unit_A0CD1D9738F5EDDD910CA9065AF047A4AC1E6D97BAA0D9C652CF84B2153A6A63[k], -1, 1, f->fx, (((((s->sort == k)) || ((unchecked((int)(hr.hovered))) != 0))) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND] : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY]), 0);
             ui->nodes[t].line_height = 1.3f;
             if (((s->sort == k)))
                 cui__icon_node(ui, ((byte*)(((unchecked((int)(s->desc))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S1383 /*""*/) : (DotCcLiterals.Pointer + DotCcLiterals.S61 /*""*/))), 12, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND]);
@@ -4127,7 +4127,7 @@ public static unsafe partial class Cui
             ui->nodes[nm].align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
             ui->nodes[nm].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
             cui__open(ui, nm);
-            cui__icon_node(ui, cui__file_icon__unit_485A012A9471E7A8EACA204CA9AD1F57B765A1DE67692E17F01C2BE35375C2A9(e__1), 15, (((unchecked((int)(e__1->dir))) != 0) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND] : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY]));
+            cui__icon_node(ui, cui__file_icon__unit_A0CD1D9738F5EDDD910CA9065AF047A4AC1E6D97BAA0D9C652CF84B2153A6A63(e__1), 15, (((unchecked((int)(e__1->dir))) != 0) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND] : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY]));
             int t = cui__text_node(ui, e__1->name, -1, 0, f->fs, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0);
             ui->nodes[t].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
             ui->nodes[t].line_height = 1.3f;
@@ -4217,7 +4217,7 @@ public static unsafe partial class Cui
         f.picked = -1;
         f.id = cui_make_id(ui, ((byte*)((((void*)(id_str)) != null) ? id_str : (DotCcLiterals.Pointer + DotCcLiterals.S937 /*"files"*/))));
         cui__fb_state* s = f.s = (cui__fb_state*)(cui_state(ui, f.id, ((ulong)(sizeof(cui__fb_state)))));
-        cui__state_set_dtor(ui, f.id, DotCcPointers.cui__fb_dtor__unit_485A012A9471E7A8EACA204CA9AD1F57B765A1DE67692E17F01C2BE35375C2A9);
+        cui__state_set_dtor(ui, f.id, DotCcPointers.cui__fb_dtor__unit_A0CD1D9738F5EDDD910CA9065AF047A4AC1E6D97BAA0D9C652CF84B2153A6A63);
         if ((!(((*path) != 0) )     ))
             snprintf(path, (int)(path_cap), (DotCcLiterals.Pointer + DotCcLiterals.S42 /*"."*/)).Done();
         if ((!(((unchecked((int)(s->init))) != 0) )     ))
@@ -4232,7 +4232,7 @@ public static unsafe partial class Cui
             cui__fb_load(ui, s, path, o);
             s->reload = 0;
         }
-        cui__fb_order__unit_485A012A9471E7A8EACA204CA9AD1F57B765A1DE67692E17F01C2BE35375C2A9(ui, s, o);
+        cui__fb_order__unit_A0CD1D9738F5EDDD910CA9065AF047A4AC1E6D97BAA0D9C652CF84B2153A6A63(ui, s, o);
         cui_push_id(ui, ((byte*)((((void*)(id_str)) != null) ? id_str : (DotCcLiterals.Pointer + DotCcLiterals.S937 /*"files"*/))));
         f.pr = cui__prev_rect(ui, f.id);
         f.narrow = ((CBool)(((f.pr.w > 0)) && ((f.pr.w < 560))));
@@ -4271,7 +4271,7 @@ public static unsafe partial class Cui
         cui__open(ui, list);
         f.fs = cui__fs(ui, ui->theme.text_sm);
         f.fx = cui__fs(ui, ui->theme.text_xs);
-        cui__fb_build_header__unit_485A012A9471E7A8EACA204CA9AD1F57B765A1DE67692E17F01C2BE35375C2A9(&f);
+        cui__fb_build_header__unit_A0CD1D9738F5EDDD910CA9065AF047A4AC1E6D97BAA0D9C652CF84B2153A6A63(&f);
         cui__fb_keys(&f);
         cui__fb_build_rows(&f);
         cui__close(ui);

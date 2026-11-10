@@ -33,6 +33,68 @@ def adapt_widgets(destination):
     return changes
 
 
+def adapt_text_renderer(destination):
+    """Connect editable text's missing glyphs to CUI's existing color emoji engine.
+
+    Font fallbacks feed stb's monochrome outline atlas, not the separate color
+    emoji atlas. Editing deliberately bypasses shaping; use its shared iterator
+    so measurement, hit testing, selection and painting agree on emoji advances.
+    Keep upstream's code-point editing and original UTF-8 buffer untouched.
+    """
+    changes = []
+    replace = _replacer(destination, changes)
+    replace("src/cui_text.c", '#include "cui_internal.h"\n',
+            '#include "cui_internal.h"\n'
+            'void cui__draw_inline_emoji(cui_ctx *ui, const char *text, int len, cui_rect r, float alpha);\n',
+            "Declare the existing emoji renderer bridge for editable text, including text opacity")
+    replace("src/cui_text.c",
+            '    float adv;       /* advance (points) */\n',
+            '    float adv;       /* advance (points) */\n'
+            '    bool emoji;      /* missing outline drawn by the color emoji engine */\n',
+            "Track color emoji in the shared text measurement/hit/paint iterator")
+    replace("src/cui_text.c",
+            '    float adv = cui__advance_em(fd, gi, cp) * gs;\n',
+            '    it->emoji = ui->text_unshaped && !gi && cp >= 128 &&\n'
+            '        cui_emoji_supported(ui, it->s + it->start, n);\n'
+            '    float adv = it->emoji ? gs : cui__advance_em(fd, gi, cp) * gs;\n',
+            "Use one em for supported missing emoji in editable text; retain ordinary glyph advances")
+    replace("src/cui_text.c",
+            '    if (!fd->is_icon) { adv += it->track; it->center_off += it->track * 0.5f; }\n',
+            '    if (!fd->is_icon && !it->emoji) { adv += it->track; it->center_off += it->track * 0.5f; }\n',
+            "Keep emoji cells square without changing ordinary optical text tracking")
+    replace("src/cui_text.c",
+            "        if (it.cp == ' ' || it.cp == '\\n' || it.cp == '\\t' || !it.gi) continue;\n",
+            "        if (it.cp == ' ' || it.cp == '\\n' || it.cp == '\\t' || (!it.gi && !it.emoji)) continue;\n",
+            "Paint supported color emoji even though the text outline font has no glyph")
+    replace("src/cui_text.c",
+            '        cui_glyph *g = cui__glyph_get(ui, it.gfont, it.gi, gs_px, subpx);\n',
+            '        if (it.emoji) {\n'
+            '            /* Center the color cell on the text cap height, on the same baseline.\n'
+            '             * The ordinary edit clip/transform and text effects still apply. */\n'
+            '            cui_rect r = { fl / s, gy / s - base->cap_height * size * 0.5f - it.gsize * 0.5f, it.gsize, it.gsize };\n'
+            '            cui__draw_inline_emoji(ui, text + it.start, it.end - it.start, r, gc.a / 255.0f);\n'
+            '            continue;\n'
+            '        }\n'
+            '        cui_glyph *g = cui__glyph_get(ui, it.gfont, it.gi, gs_px, subpx);\n',
+            "Render emoji inside the original edit paint using CUI's existing color atlas, clipping and effects")
+    replace("src/cui_emoji.c",
+            '    enum { TAPS = 8 };\n'
+            '    if ((sw + dw - 1) / dw + 1 > TAPS || (sh + dh - 1) / dh + 1 > TAPS) return;   /* more than 7 to 1: not worth a path */\n',
+            '    /* Text-sized emoji can shrink a bitmap strike by more than 7:1.\n'
+            '     * Retain the area filter, sizing its allocated weights for that ratio. */\n'
+            '    const int TAPS = CUI_MAX(8, CUI_MAX((sw + dw - 1) / dw + 1, (sh + dh - 1) / dh + 1));\n',
+            "Render small inline bitmap emoji instead of silently returning a transparent successful raster")
+    replace("src/cui_emoji.c",
+            'bool cui_emoji_supported(cui_ctx *ui, const char *utf8, int len) {\n',
+            '/* Internal text bridge: preserve foreground opacity without tinting color emoji. */\n'
+            'void cui__draw_inline_emoji(cui_ctx *ui, const char *text, int len, cui_rect r, float alpha) {\n'
+            '    cui__em_draw(ui, text, len, r, alpha, NULL);\n'
+            '}\n\n'
+            'bool cui_emoji_supported(cui_ctx *ui, const char *utf8, int len) {\n',
+            "Reuse upstream emoji font discovery, color formats, cache and renderer; preserve text opacity")
+    return changes
+
+
 def stage(source, destination):
     shutil.copytree(source, destination, ignore=shutil.ignore_patterns(".git", "build", "__pycache__"))
     changes = []
@@ -85,4 +147,5 @@ def stage(source, destination):
             '    if (n < 0 || (size_t)n >= sizeof p) return false;',
             "Reject a truncated Windows emoji font path instead of opening a different file")
     changes.extend(adapt_widgets(destination))
+    changes.extend(adapt_text_renderer(destination))
     return changes

@@ -29,7 +29,7 @@ using __DotCcEnum_6375695F6D6F64 = global::Managed.Cui.Cui.cui_mod;
 using __DotCcEnum_6375695F7468656D655F6D6F6465 = global::Managed.Cui.Cui.cui_theme_mode;
 using __DotCcEnum_6375695F746F6E65 = global::Managed.Cui.Cui.cui_tone;
 using __DotCcEnum_6375695F656C65766174696F6E = global::Managed.Cui.Cui.cui_elevation;
-using __DotCcEnum_5F5F446F744363547970656465665F46324333433032343146314545314442363236314639313537453932413541454342383644323831453331333643423331464642363530454344414539343230 = global::Managed.Cui.Cui.cui__text_anchor;
+using __DotCcEnum_5F5F446F744363547970656465665F35433139373738383936433338353538423536464637393636313641303646314635434642443343333533373045314333413434453641334536354638393637 = global::Managed.Cui.Cui.cui__text_anchor;
 using __DotCcEnum_6375695F746578747572655F666F726D6174 = global::Managed.Cui.Cui.cui_texture_format;
 using __DotCcEnum_6375695F646972656374696F6E = global::Managed.Cui.Cui.cui_direction;
 using __DotCcEnum_6375695F6A757374696679 = global::Managed.Cui.Cui.cui_justify;
@@ -39,7 +39,7 @@ using __DotCcEnum_6375695F746578745F616C69676E = global::Managed.Cui.Cui.cui_tex
 using __DotCcEnum_6375695F627574746F6E5F76617269616E74 = global::Managed.Cui.Cui.cui_button_variant;
 using __DotCcEnum_6375695F636F6E74726F6C5F73697A65 = global::Managed.Cui.Cui.cui_control_size;
 using __DotCcEnum_6375695F746162735F76617269616E74 = global::Managed.Cui.Cui.cui_tabs_variant;
-using __DotCcEnum_5F5F446F744363547970656465665F39334642464235333439314530394434303042314546323342303239344631454137424444414637453242413538423838433630464237313543313339303446 = global::Managed.Cui.Cui.cui__field_style;
+using __DotCcEnum_5F5F446F744363547970656465665F45303336324332393344374432443334303043373445453936414142393132363345303446314443434239304638413335384235453033433735303241453241 = global::Managed.Cui.Cui.cui__field_style;
 using __DotCcEnum_6375695F73696465 = global::Managed.Cui.Cui.cui_side;
 using __DotCcEnum_6375695F737461747573 = global::Managed.Cui.Cui.cui_status;
 using __DotCcEnum_6375695F646966665F726F775F6B696E64 = global::Managed.Cui.Cui.cui_diff_row_kind;
@@ -62,7 +62,7 @@ using DotCcPointers = global::Managed.Cui.Cui.CuiFunctionPointers;
 
 public static unsafe partial class Cui
 {
-    public static unsafe void* cui__default_alloc__unit_C6A76E3C8130F56127D6E46BD7702F9E404B8A3E099633297377D93E2567750F(ulong size, void* user)
+    public static unsafe void* cui__default_alloc__unit_0CED80CC3C9D68FA6F11B1CA394039449592AE86373F1BD026161FCC7A41DA7A(ulong size, void* user)
     {
         ;
         return malloc(size);
@@ -70,7 +70,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void* cui__default_realloc__unit_C6A76E3C8130F56127D6E46BD7702F9E404B8A3E099633297377D93E2567750F(void* p, ulong size, void* user)
+    public static unsafe void* cui__default_realloc__unit_0CED80CC3C9D68FA6F11B1CA394039449592AE86373F1BD026161FCC7A41DA7A(void* p, ulong size, void* user)
     {
         ;
         return realloc(p, size);
@@ -78,7 +78,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__default_free__unit_C6A76E3C8130F56127D6E46BD7702F9E404B8A3E099633297377D93E2567750F(void* p, void* user)
+    public static unsafe void cui__default_free__unit_0CED80CC3C9D68FA6F11B1CA394039449592AE86373F1BD026161FCC7A41DA7A(void* p, void* user)
     {
         ;
         free(p);
@@ -401,9 +401,9 @@ public static unsafe partial class Cui
         cui_allocator a = d.allocator;
         if ((!((((void*)(a.alloc)) != null) )     ))
         {
-            a.alloc = DotCcPointers.cui__default_alloc__unit_C6A76E3C8130F56127D6E46BD7702F9E404B8A3E099633297377D93E2567750F;
-            a.realloc = DotCcPointers.cui__default_realloc__unit_C6A76E3C8130F56127D6E46BD7702F9E404B8A3E099633297377D93E2567750F;
-            a.free = DotCcPointers.cui__default_free__unit_C6A76E3C8130F56127D6E46BD7702F9E404B8A3E099633297377D93E2567750F;
+            a.alloc = DotCcPointers.cui__default_alloc__unit_0CED80CC3C9D68FA6F11B1CA394039449592AE86373F1BD026161FCC7A41DA7A;
+            a.realloc = DotCcPointers.cui__default_realloc__unit_0CED80CC3C9D68FA6F11B1CA394039449592AE86373F1BD026161FCC7A41DA7A;
+            a.free = DotCcPointers.cui__default_free__unit_0CED80CC3C9D68FA6F11B1CA394039449592AE86373F1BD026161FCC7A41DA7A;
             a.user = null;
         }
         cui_ctx* ui = (cui_ctx*)(a.alloc(((ulong)(sizeof(cui_ctx))), a.user));
@@ -1694,7 +1694,7 @@ public static unsafe partial class Cui
 
     public static unsafe byte* cui_accent_name(cui_accent a)
     {
-        return ((byte*)((((((int)a >= 0)) && (((int)a < (int)__DotCcEnum_6375695F616363656E74.CUI_ACCENT_COUNT)))) ? global::Managed.Cui.Cui.Globals.cui__accents__unit_05A307375503ABA6CE3254189CF0BBBF861E6EB3445979D2A18E308191E44DDE[(int)a].name : (DotCcLiterals.Pointer + DotCcLiterals.S522 /*"neutral"*/)));
+        return ((byte*)((((((int)a >= 0)) && (((int)a < (int)__DotCcEnum_6375695F616363656E74.CUI_ACCENT_COUNT)))) ? global::Managed.Cui.Cui.Globals.cui__accents__unit_D85656ED839DD40B2C63B8C8D1C200DC825774CB2DAF24495EE69AB0613D52DC[(int)a].name : (DotCcLiterals.Pointer + DotCcLiterals.S522 /*"neutral"*/)));
     }
 
 
@@ -1766,7 +1766,7 @@ public static unsafe partial class Cui
         c[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_INFO] = t->tone_sky;
         c[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_HOVER] = cui_alpha(c[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0.05f);
         c[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_ACTIVE] = cui_alpha(c[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0.075f);
-        cui__accent_def* a = &global::Managed.Cui.Cui.Globals.cui__accents__unit_05A307375503ABA6CE3254189CF0BBBF861E6EB3445979D2A18E308191E44DDE[(int)accent];
+        cui__accent_def* a = &global::Managed.Cui.Cui.Globals.cui__accents__unit_D85656ED839DD40B2C63B8C8D1C200DC825774CB2DAF24495EE69AB0613D52DC[(int)accent];
         float series_l = ((float)(((unchecked((int)(dark))) != 0) ? 0.73f : 0.58f));
         float series_h = 250;
         if ((((int)accent == (int)__DotCcEnum_6375695F616363656E74.CUI_ACCENT_NEUTRAL)))
@@ -1797,7 +1797,7 @@ public static unsafe partial class Cui
             float best = 1e9f;
             for (int i = 0; ((i < 6)); i++)
             {
-                float d = fabsf(fmodf(global::Managed.Cui.Cui.Globals.sh__s1__unit_05A307375503ABA6CE3254189CF0BBBF861E6EB3445979D2A18E308191E44DDE[i] - series_h + 540.0f, 360.0f) - 180.0f);
+                float d = fabsf(fmodf(global::Managed.Cui.Cui.Globals.sh__s1__unit_D85656ED839DD40B2C63B8C8D1C200DC825774CB2DAF24495EE69AB0613D52DC[i] - series_h + 540.0f, 360.0f) - 180.0f);
                 if (((d < best)))
                 {
                     best = d;
@@ -1807,7 +1807,7 @@ public static unsafe partial class Cui
         }
         for (int i__1 = 0; ((i__1 < 6)); i__1++)
         {
-            uint v = (global::Managed.Cui.Cui.Globals.sp__s0__unit_05A307375503ABA6CE3254189CF0BBBF861E6EB3445979D2A18E308191E44DDE + dark * 6)[(first + i__1) % 6];
+            uint v = (global::Managed.Cui.Cui.Globals.sp__s0__unit_D85656ED839DD40B2C63B8C8D1C200DC825774CB2DAF24495EE69AB0613D52DC + dark * 6)[(first + i__1) % 6];
             c[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SERIES_1 + i__1] = cui__rgba((byte)(v >> 16), (byte)(v >> 8), (byte)v, 255);
         }
         t->radius_control = 10;
@@ -2800,7 +2800,7 @@ public static unsafe partial class Cui
     {
         float w = cui__text_width(ui, font, size, s, -1, tab);
         float fh = cui__font_line_height(ui, font, size);
-        float tx = ((float)((((int)anchor == (int)__DotCcEnum_5F5F446F744363547970656465665F46324333433032343146314545314442363236314639313537453932413541454342383644323831453331333643423331464642363530454344414539343230.CUI__AT_CENTER)) ? x - w * 0.5f : ((float)((((int)anchor == (int)__DotCcEnum_5F5F446F744363547970656465665F46324333433032343146314545314442363236314639313537453932413541454342383644323831453331333643423331464642363530454344414539343230.CUI__AT_RIGHT)) ? x - w : x))));
+        float tx = ((float)((((int)anchor == (int)__DotCcEnum_5F5F446F744363547970656465665F35433139373738383936433338353538423536464637393636313641303646314635434642443343333533373045314333413434453641334536354638393637.CUI__AT_CENTER)) ? x - w * 0.5f : ((float)((((int)anchor == (int)__DotCcEnum_5F5F446F744363547970656465665F35433139373738383936433338353538423536464637393636313641303646314635434642443343333533373045314333413434453641334536354638393637.CUI__AT_RIGHT)) ? x - w : x))));
         cui__draw_text_line(ui, font, size, tx, y - fh * 0.5f, color, s, -1, tab);
     }
 

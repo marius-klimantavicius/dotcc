@@ -165,10 +165,16 @@ one guarded upstream gallery repair: close the emoji popup after leaving its
 ID scope. The original acquired source remains unchanged; the native control
 uses the identical repair. Earlier gallery, deduplication and core reports
 retain their historical product hashes and qualification scope.
-The picker draws color emoji, but the native gallery's ordinary text input
-uses the bundled text fonts and does not display these emoji glyphs. Exact
-UTF-8 append, editing storage and recent history are checked independently
-of that native rendering limitation.
+Preparation also connects missing emoji in the original editable text renderer
+to CUI's existing color emoji engine. The shared text iterator supplies matching
+paint, caret and hit-test advances; the original UTF-8 buffer and editor remain
+upstream CUI. A targeted area-filter repair permits bitmap emoji at small input
+font sizes. Native qualification applies the same adaptations. Color glyphs use
+the existing system emoji font discovery (Noto Color Emoji on Linux, Segoe UI
+Emoji on Windows); no additional native library is required. The gallery suite
+requires actual colored glyph pixels inside the original input and OS-driven
+UTF-8 navigation, insertion, deletion and selection replacement. Actual Windows
+font rendering remains unrun.
 
 Linux file dialogs use installed `zenity` or `kdialog`; missing tools,
 cancellation and failed launchers report failure. URL opening waits for the

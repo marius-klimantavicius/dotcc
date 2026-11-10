@@ -1,0 +1,3472 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-10",
+  "scope": "Focused Smart inputs emoji selection fix; native plus Linux x64 raw/processed JIT/NativeAOT",
+  "status": "passed",
+  "overall_acceptance": "Actual Windows x64 execution remains required and unrun",
+  "source_revision": "629b6fcb991d71527f2d67b25c51429c3dcdb498",
+  "baseline_commit": "a5af79f97b796b2fec098ad6fc7c45a51f44e8db",
+  "classification": "Upstream gallery popup close is resolved inside the wrong pushed ID scope; no compiler/runtime defect reproduced",
+  "before_observation": "Original native and retained raw/processed managed JIT append exact UTF-8 Release notes are up 😀, but visible popup remains open and a second closed popup is created. Missing append did not reproduce.",
+  "fix": "Guarded source preparation keeps selected pointer across popover_end and appends/closes in original caller ID scope; same widget-only adaptation in native control; original source untouched",
+  "before_controls": {
+    "checks": [
+      {
+        "control": "native-original",
+        "expectedExit": 11,
+        "actualExit": 11,
+        "log": "$INVESTIGATION/native-original-run.log",
+        "logSha256": "49498744e5021eb2f2af08ab53d9262c704d705cdaa08f59b618514f16a4dea3"
+      },
+      {
+        "control": "native-adapted",
+        "expectedExit": 0,
+        "actualExit": 0,
+        "log": "$INVESTIGATION/native-adapted-run.log",
+        "logSha256": "e19ef30c51460410e3119338e43f9a2388be3fd0f530897eaa774321aafc4cd1"
+      },
+      {
+        "control": "managed-before",
+        "expectedExit": 1,
+        "actualExit": 1,
+        "log": "$INVESTIGATION/managed-before-run.log",
+        "logSha256": "bd514da6586898d1025e3c1ad4ecd468bbb013a52ba145d7e9daa1fe0c3819d2"
+      },
+      {
+        "control": "managed-before-processed",
+        "expectedExit": 1,
+        "actualExit": 1,
+        "log": "$INVESTIGATION/managed-before-processed-run.log",
+        "logSha256": "bd514da6586898d1025e3c1ad4ecd468bbb013a52ba145d7e9daa1fe0c3819d2"
+      }
+    ],
+    "guardChecks": "26/26",
+    "stageComparison": "only examples/gallery_more.c differs from retained fully adapted pin",
+    "windows": "unrun"
+  },
+  "full_harness_before_controls": {
+    "original_native_report": "$REGRESSION/native-original/report.json",
+    "original_native_report_sha256": "d8efc288dd3efd591b724fe5f42720298be9d06a66659e74ce70fc390bb56907",
+    "managed_before_log": "$REGRESSION/managed-before-run.log",
+    "managed_before_log_sha256": "86864ba718fbee38ac960495c78957ebffd624482c9427293c5c51099f2e6c54"
+  },
+  "before_environment_and_inputs": {
+    "repositoryBase": "b9a224a38707681f5358996a2e2a26c71552e560",
+    "upstreamRevision": "629b6fcb991d71527f2d67b25c51429c3dcdb498",
+    "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.39",
+    "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "dotnet": "10.0.114",
+    "sourceFiles": {
+      "gallery_more.c": "1c083dbdef6fa97cde088c29ee0547bee2de32cb1f0697f35f2cee0259a63f02",
+      "raw-gallery.cs": "88cf98d4b519275c7060bc89d5818d5dad8b71073bd95307780523e6c183bed1",
+      "raw-core-emoji.cs": "867854a84dff7a6c9d17dc63a643e42df6f3d52eeb0b3490afe4419ae10a3569",
+      "cui_emoji.c": "609087490e2f1404b806eff51afc882750f2e6231b1508fe5a79c8d8e59ad39e",
+      "cui_overlay.c": "c06922899a57a881acf24102e8762d9a275356b659c13a42696b965fb3e375ef"
+    },
+    "managedBefore": {
+      "raw": {
+        "Glfw.dll": "3e740669b92780cb35f61a64ff190c890b250f7e416d7d05026f58fad0e09407",
+        "TranslatedCuiGallery.dll": "109e014e77bee6cba35d0d46f69843f4854d4fd771853d6de480ee60facbe317",
+        "TranslatedCui.dll": "dfe555f9d9be35ebf7bf2ee084189e4b754dad3b4b2e02edcdd9e8fe6cebb6ff",
+        "Emoji.Before.dll": "03c8464483a80b74143bc684d99104e841e895a976d42e017e6205c691eacd65"
+      },
+      "processed": {
+        "Glfw.dll": "c088f65e999b355ada4a9d559c284355346e0745c2392b1131243650c166719c",
+        "TranslatedCuiGallery.dll": "1555221786900f6c002703073285bd5855295a850f58fd2a598fb64b86020004",
+        "TranslatedCui.dll": "d7f4889ef396ce668a57bba33ebb576fed513e28516cc0bb0015055a26fba988",
+        "Emoji.Before.dll": "ecc7b60f20bc8a6ff9a49e0776f11b3137f450552b1b2597ca2c1592faf8fe06"
+      }
+    },
+    "reproInputs": {
+      "native-repro.c": "055528cee3a6d29623899143550ca9b9b39004f934789e7137698c5a1d85430d",
+      "CMakeLists.txt": "32c4498a06bf332b7a0e60d1c3849ff34684f000eaaa8063923ce570a165d226",
+      "native-original-command.sh": "c4f951bfaf33a0a59633f33c55ebdfd8d0b3d14858d07400f05863d23600e986",
+      "native-adapted-command.sh": "a4127c7539ce15de5fdb2fc00e0d3d882f2facc7e80fc6d753f14b10b2a833ae",
+      "managed-before-command.sh": "53e28599f0176145e86f5f96eb4a9738bf42f80f199833ad9aeeca3af2963ac4",
+      "managed-before/Program.cs": "60a29f5e5b77aaedb661ed9a96f74e8b52bcc315c2deb3d4986aa938cea3b81d",
+      "managed-before/Emoji.Before.csproj": "781425286fec2c4a0e3609997b6775398450e6f9b6a906bae16854bcd890f3ec"
+    }
+  },
+  "adapted_native_provenance": {
+    "original": "$UPSTREAM",
+    "nativeAdapted": "$INVESTIGATION/source-native-adapted",
+    "adaptations": [
+      {
+        "file": "examples/gallery_more.c",
+        "reason": "Upstream gallery: close the emoji popover in its caller ID scope after selection"
+      }
+    ],
+    "files": {
+      "src/cui_emoji.c": {
+        "original": "609087490e2f1404b806eff51afc882750f2e6231b1508fe5a79c8d8e59ad39e",
+        "adapted": "609087490e2f1404b806eff51afc882750f2e6231b1508fe5a79c8d8e59ad39e"
+      },
+      "src/cui_core.c": {
+        "original": "8e2524d4832e49148862943e1354e4e2c7a7774c998f5c4bc723ccaa50bf564f",
+        "adapted": "8e2524d4832e49148862943e1354e4e2c7a7774c998f5c4bc723ccaa50bf564f"
+      },
+      "src/cui_overlay.c": {
+        "original": "c06922899a57a881acf24102e8762d9a275356b659c13a42696b965fb3e375ef",
+        "adapted": "c06922899a57a881acf24102e8762d9a275356b659c13a42696b965fb3e375ef"
+      },
+      "examples/gallery_more.c": {
+        "original": "1c083dbdef6fa97cde088c29ee0547bee2de32cb1f0697f35f2cee0259a63f02",
+        "adapted": "631c8b51ad1030c1b1935cb4fd020c679fb4dbae30690e287675cb1ec9542b64"
+      },
+      "examples/gallery_ui.c": {
+        "original": "012dabfff1234ac8cb497901779f4d329589d9bda4e09e729db35697c382b250",
+        "adapted": "012dabfff1234ac8cb497901779f4d329589d9bda4e09e729db35697c382b250"
+      }
+    }
+  },
+  "reproduction": {
+    "path_convention": "WORK, INVESTIGATION, REGRESSION and UPSTREAM are caller-selected external directories; REPOSITORY is checkout root",
+    "translation": "CUI_WORK_ROOT=\"$WORK\" CUI_SOURCE_ROOT=\"$UPSTREAM\" TMPDIR=\"$WORK/tmp\" PYTHONDONTWRITEBYTECODE=1 bash cui/scripts/translate.sh --fetch never --tools reuse --jobs 4",
+    "tool_preparation": "dotnet build DotCC/DotCC.csproj and DotCC.PostProcess/DotCC.PostProcess.csproj -c Release --artifacts-path \"$WORK/tool-build\" -p:UseLocalLalrCc=false -m:1",
+    "gallery": "CUI_WORK_ROOT=\"$WORK\" CUI_SOURCE_ROOT=\"$UPSTREAM\" TMPDIR=\"$WORK/tmp\" PYTHONDONTWRITEBYTECODE=1 bash cui/scripts/test.sh --suite gallery --form all --mode all --fetch never --tools reuse",
+    "sample": "validate-sample.py under WORK runs solution build, consumer+audit all four variants, 27-page sample smoke and fresh native four-widget framebuffer comparison",
+    "before": "Retained original/native and raw/processed managed before repro commands, inputs and checks.json live under INVESTIGATION; see fix.md"
+  },
+  "effective_flags": [
+    "--deduplicate-inline",
+    "--deduplicate-static"
+  ],
+  "translation": {
+    "receipt": "artifacts/campaign/20261110-194734-d54e0a5d/receipt.json",
+    "run_id": "20261110-194734-d54e0a5d",
+    "status": "passed",
+    "core_units": 58,
+    "gallery_units": 2,
+    "links": {
+      "link": {
+        "command": [
+          "dotnet",
+          "$WORK/20261110-194734-d54e0a5d/tools/DotCC/dotcc.dll",
+          "$WORK/20261110-194734-d54e0a5d/objects/000-cui_core.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/001-cui_theme.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/002-cui_draw.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/003-cui_text.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/004-cui_layout.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/005-cui_widgets.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/006-cui_controls.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/007-cui_textedit.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/008-cui_overlay.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/009-cui_data.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/010-cui_charts.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/011-cui_extras.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/012-cui_actions.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/013-cui_pickers.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/014-cui_disclosure.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/015-cui_grid.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/016-cui_treetable.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/017-cui_code.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/018-cui_markdown.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/019-cui_editor.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/020-cui_diff.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/021-cui_tools.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/022-cui_hex.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/023-cui_social.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/024-cui_media.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/025-cui_planning.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/026-cui_chrome.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/027-cui_dock.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/028-cui_viz.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/029-cui_motion.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/030-cui_ai.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/031-cui_image.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/032-cui_nodes.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/033-cui_flame.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/034-cui_curves.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/035-cui_timeline.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/036-cui_dials.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/037-cui_month.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/038-cui_strings.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/039-cui_devtools.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/040-cui_graph.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/041-cui_devpanels.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/042-cui_regex.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/043-cui_devviews.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/044-cui_instrument.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/045-cui_tour.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/046-cui_photo.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/047-cui_files.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/048-cui_terminal.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/049-cui_emoji.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/050-cui_render_sw.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/051-cui_render_gl.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/052-cui_font_data.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/053-cui_inflate.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/054-cui_bidi.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/055-cui_shape.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/056-cui_app.cs",
+          "$WORK/20261110-194734-d54e0a5d/objects/057-cui_app_glfw.cs",
+          "--emit=managedlib",
+          "--nest-types",
+          "--runtime=c",
+          "--class-name",
+          "Cui",
+          "--namespace",
+          "Managed.Cui",
+          "--split=size",
+          "--split-size=262144",
+          "--literal-pool",
+          "--deduplicate-inline",
+          "--deduplicate-static",
+          "--export-enum",
+          "CUI_*",
+          "--export-managed-symbols",
+          "-o",
+          "$WORK/20261110-194734-d54e0a5d/raw/TranslatedCui"
+        ],
+        "deduplication_flags": [
+          "--deduplicate-inline",
+          "--deduplicate-static"
+        ],
+        "status": "passed"
+      },
+      "gallery-link": {
+        "command": [
+          "dotnet",
+          "$WORK/20261110-194734-d54e0a5d/tools/DotCC/dotcc.dll",
+          "$WORK/20261110-194734-d54e0a5d/gallery-objects/000-gallery_ui.cs",
+          "$WORK/20261110-194734-d54e0a5d/gallery-objects/001-gallery_more.cs",
+          "--emit=managedlib",
+          "--nest-types",
+          "--runtime=c",
+          "--class-name",
+          "Gallery",
+          "--namespace",
+          "Managed.Cui.Gallery",
+          "--split=size",
+          "--split-size=262144",
+          "--literal-pool",
+          "--deduplicate-inline",
+          "--deduplicate-static",
+          "--managed-reference",
+          "$WORK/20261110-194734-d54e0a5d/raw/TranslatedCui/Dotcc.ManagedSymbols.cs",
+          "-o",
+          "$WORK/20261110-194734-d54e0a5d/raw/TranslatedCuiGallery"
+        ],
+        "deduplication_flags": [
+          "--deduplicate-inline",
+          "--deduplicate-static"
+        ],
+        "status": "passed"
+      }
+    },
+    "tools": {
+      "DotCC": {
+        "DotCC.Lib.dll": "44ab50143dbc0920c381a6ddcb07fc80817351073fdafb6ccb4ec8d8c3476254",
+        "DotCC.Lib.pdb": "734efcb9b7cb48f84b71e0b9755017825b4c7073a9bf6d1e417cd7bf8645630c",
+        "LALR.CC.dll": "417a28fda54e2b794267075f7766c6f649cf174ceedb916c6ebd485fe4d09b6c",
+        "System.CommandLine.dll": "0b7790b44a438c6c2f4714ec9d408e02c5ed98145d7c89ecd9a9d11acf0932cb",
+        "cs/System.CommandLine.resources.dll": "15981e39eb96e3f1ccea6745b53ce358c85b6b30659af54cdfdfa2adf0536c20",
+        "de/System.CommandLine.resources.dll": "5cdcd1ce61a638cebe1fbd2ef4c3fc83d046670a4f6b43aeadd82d032b1af03a",
+        "dotcc": "aa88891b040209eac118029bb96c73a46a431eee12886cbdb4615cda1dc2c867",
+        "dotcc.deps.json": "78871af73af0452474943d5f9a9ca6acac30d1920a5c680457a9dec73ff5834c",
+        "dotcc.dll": "c74e822064e25da38ef5bb89dc6d928c955db7c5ef5f96122038457f53e4db21",
+        "dotcc.pdb": "f37e835eaec7278d543c186092993c5d90acb043d11cb62c0f57c75131c35aca",
+        "dotcc.runtimeconfig.json": "5acdb16a460772054343c970894d62b803d3afa33dc719a66317f94d58119b1b",
+        "es/System.CommandLine.resources.dll": "1931512c78045dc88f68bc71f9fe7dcf1e3a679ace15b42ddbfc6235978ebc72",
+        "fr/System.CommandLine.resources.dll": "d161253276bd0079e6edd24c689b7e8c36c115c787af0bd528cd86422f94b32d",
+        "it/System.CommandLine.resources.dll": "a9a0ab1041642a0c1a3b7bef39151e2ef393a79a3e5cccd538bd7639bb11f2f9",
+        "ja/System.CommandLine.resources.dll": "ea81cd7153ca5e2ebb6419a76510c241a9d87c8ddba7b850d56bed4d7240e668",
+        "ko/System.CommandLine.resources.dll": "cea119f65a5114c40c32ed06f77f3454d7971ae14397b5e0500005ec136375ad",
+        "pl/System.CommandLine.resources.dll": "d1b332ac112bd517fcd4ac8f97353fb075b1fd40dacf516101c505a303988f6c",
+        "pt-BR/System.CommandLine.resources.dll": "15dfe1a5101b90c0cc3c8d8ed9a483786788a2dbeb0e0df75c70d9df938e5f8e",
+        "ru/System.CommandLine.resources.dll": "3a7bf2fb8c47b2ee365981260324715fc5abb810f92dde4e2e7be094f5734340",
+        "tr/System.CommandLine.resources.dll": "8ad9d45e731598c6fc67ec85a33e90920595b7ab25a88170a7a3a74a7cd9e9a6",
+        "zh-Hans/System.CommandLine.resources.dll": "70ccd79ef38beb16dfd5736a68e60d5812dcc5ab531f63e6c5e33e8a88cae253",
+        "zh-Hant/System.CommandLine.resources.dll": "5141ce74409ee7fb9aa343813f24ebfb7a20871b03df81891447d929d70ac008"
+      },
+      "DotCC.PostProcess": {
+        "Microsoft.CodeAnalysis.CSharp.dll": "c2012a0674c8306930ba21476d16c51a795cbf4970d7e34cf56f0f84f63f2a94",
+        "Microsoft.CodeAnalysis.dll": "575dd14082d5e92138b6e51b8c1642919ba634dc8011d883ee971382d55162f7",
+        "cs/Microsoft.CodeAnalysis.CSharp.resources.dll": "9413cafc573f2c3c70ed2656ccb4c11a7b72556655a2aa0a137b068efe1f5f50",
+        "cs/Microsoft.CodeAnalysis.resources.dll": "e47097c575a60c720a38a611327f341bf8f427787157103134654ff9d917b93e",
+        "de/Microsoft.CodeAnalysis.CSharp.resources.dll": "b39bbb8fd6a50d85a7fac75feb48595e13eca8fb38d3bdb5d3a64c3b410f52a1",
+        "de/Microsoft.CodeAnalysis.resources.dll": "4b7a72d69794b1714081628058de0b9138aec514c647f63f6c5706acc925e1ca",
+        "dotcc-postprocess": "b3333715f9ae224322386613094d0f917d0c19e888cf383e6060916e34e5521c",
+        "dotcc-postprocess.deps.json": "7b72b07bf5b04bdbb2a7c45d168e385df7d7ccd924b839ce53777d4b59ee8bcd",
+        "dotcc-postprocess.dll": "5c38098f9f5846a78678dbf906d531f040471fb8867f775332517bc4d8ea6395",
+        "dotcc-postprocess.pdb": "debdf6fbac5ef844661fe90a5f03e89f8720b14a61fae2d31af5ddccf23cb93c",
+        "dotcc-postprocess.runtimeconfig.json": "9950d4583cfc9a106857c0d5b8a75b53e8774852b57b80bc3823a74d44a4d87f",
+        "es/Microsoft.CodeAnalysis.CSharp.resources.dll": "30a93c7e49b6a77fb1fff2a021d22a117e9b0987b855d9a4929da2857be878f8",
+        "es/Microsoft.CodeAnalysis.resources.dll": "73bab8b8eb76600a29d50c10abc3dc173919b6968e2c454c68ea971d1603873f",
+        "fr/Microsoft.CodeAnalysis.CSharp.resources.dll": "a6c2d2aabb6de3676ce2b31d47362adbc919c42900ffdc82ca20ac0cdd5373d5",
+        "fr/Microsoft.CodeAnalysis.resources.dll": "6c2fc7f42de1a86cbb4b4e4acb21460f26f47545611769233eaa7aae2e7addb7",
+        "it/Microsoft.CodeAnalysis.CSharp.resources.dll": "9f4c8e00101154d99f1eae589e626016da367e7f3421f0c1fe5342f68bc83481",
+        "it/Microsoft.CodeAnalysis.resources.dll": "b7ec4de669c873506c8ef8709131efdf44562426d7abf6a5414918da6feb1949",
+        "ja/Microsoft.CodeAnalysis.CSharp.resources.dll": "243fd72ed6a3b7dccaff885e95c512e4ee1f70403ea8961a51fd77444b532ddb",
+        "ja/Microsoft.CodeAnalysis.resources.dll": "0a02b8f9ad53901f2ef3b1f5764802ae822db1cd5b49ad669a2b8dd8a655a6d5",
+        "ko/Microsoft.CodeAnalysis.CSharp.resources.dll": "61be04a3cb54977754c78b22ebede7e945325301a56d1a10b23a1d04146fb846",
+        "ko/Microsoft.CodeAnalysis.resources.dll": "c767ecdc184a461a99038a6b090db0a68bb0f9972112234bf52d3d97a3542091",
+        "pl/Microsoft.CodeAnalysis.CSharp.resources.dll": "76a88d7893570a5f9446dac6a7a6ee33d6a7666ccb47f27d363bbe13d24881ce",
+        "pl/Microsoft.CodeAnalysis.resources.dll": "8d9301ac2878fa8fbf9265b320f6c46cbec503aa9e3c7ad9c9ffa0b7410ba067",
+        "pt-BR/Microsoft.CodeAnalysis.CSharp.resources.dll": "34c09aeb034678f6c65b7a985fc6949267e8abde180082455dd7a8d20587f77f",
+        "pt-BR/Microsoft.CodeAnalysis.resources.dll": "7e5d9dba2b2931c39c4a59dce422e2c9bae2be1dddc5adea659abe98598e6b05",
+        "ru/Microsoft.CodeAnalysis.CSharp.resources.dll": "81fb2131b25ed77575263b335b0cd123dc34444f6f56e5343eb341b0bfcb99f8",
+        "ru/Microsoft.CodeAnalysis.resources.dll": "6924f2ae0ec897bb7310ff01173d3610978de7654a9cc3e564a9b60fef87b5f2",
+        "tr/Microsoft.CodeAnalysis.CSharp.resources.dll": "0a5e480f7c4d8d325ae0626759c40c90303828cef5c4901ddcad3cf1798f09cc",
+        "tr/Microsoft.CodeAnalysis.resources.dll": "694a81904d53318e4ee57a8a103fe0a3d0ecf4f1f33ce7c64fb74bdf35e6a050",
+        "zh-Hans/Microsoft.CodeAnalysis.CSharp.resources.dll": "97fc6af291189b657049a358683e726496d8263f4043ff0dd61769aea14ef1bd",
+        "zh-Hans/Microsoft.CodeAnalysis.resources.dll": "9624311ea3587b371dcad16fb2c20b0f2d682f26cebeab43cec2f9f7efc19245",
+        "zh-Hant/Microsoft.CodeAnalysis.CSharp.resources.dll": "553cddfd1172c2438422202a936bc14293fd0abc3cbf6b1c433f5cbe7ddad73d",
+        "zh-Hant/Microsoft.CodeAnalysis.resources.dll": "6b9ce2c3d1e6bedb97f78fc9fffc4acddbdd5c6cb23a6befd156cc43906ecc31"
+      }
+    },
+    "dotnet_sdk": "10.0.114",
+    "final_project_builds": "all four passed",
+    "gallery_provenance": {
+      "adaptations": [
+        {
+          "file": "examples/gallery_more.c",
+          "reason": "Upstream gallery: close the emoji popover in its caller ID scope after selection"
+        }
+      ],
+      "gallery": {
+        "class": "Gallery",
+        "headers": [
+          "examples/gallery_ui.h",
+          "examples/gallery_more.h"
+        ],
+        "namespace": "Managed.Cui.Gallery",
+        "pages": 27,
+        "product": "TranslatedCuiGallery",
+        "scope": "Original upstream gallery workload; separate companion referencing canonical core types/functions/runtime",
+        "sources": [
+          "examples/gallery_ui.c",
+          "examples/gallery_more.c"
+        ]
+      },
+      "sha256": {
+        "examples/gallery_more.c": "1c083dbdef6fa97cde088c29ee0547bee2de32cb1f0697f35f2cee0259a63f02",
+        "examples/gallery_more.h": "04225c16a2712518b6bf517a0880b0caffc337b7b16f23b8a647c9c32792de0c",
+        "examples/gallery_ui.c": "012dabfff1234ac8cb497901779f4d329589d9bda4e09e729db35697c382b250",
+        "examples/gallery_ui.h": "82b030ab36290bad74e68e5d9e34147298a580de2911cf691554c1be1d309bf7"
+      },
+      "source": {
+        "archive": "cui-source.tar.gz",
+        "directory": "CUI-629b6fcb991d71527f2d67b25c51429c3dcdb498",
+        "required": [
+          "CMakeLists.txt",
+          "include/cui/cui.h",
+          "src/cui_core.c",
+          "src/platform/cui_platform.h",
+          "examples/gallery_ui.c",
+          "examples/gallery_ui.h",
+          "examples/gallery_more.c",
+          "examples/gallery_more.h",
+          "LICENSE",
+          "THIRD_PARTY.md"
+        ],
+        "revision": "629b6fcb991d71527f2d67b25c51429c3dcdb498",
+        "upstream": "https://github.com/yappologistic/CUI",
+        "url": "https://github.com/yappologistic/CUI/archive/629b6fcb991d71527f2d67b25c51429c3dcdb498.tar.gz",
+        "version": "1.3.1-development"
+      },
+      "translation_sha256": {
+        "examples/gallery_more.c": "631c8b51ad1030c1b1935cb4fd020c679fb4dbae30690e287675cb1ec9542b64",
+        "examples/gallery_ui.c": "012dabfff1234ac8cb497901779f4d329589d9bda4e09e729db35697c382b250"
+      }
+    }
+  },
+  "staged_source_comparison": {
+    "baseline": "retained fully adapted dedup staging",
+    "current": "final recipe staging",
+    "different_files": [
+      "examples/gallery_more.c"
+    ],
+    "expected": [
+      "examples/gallery_more.c"
+    ],
+    "status": "passed"
+  },
+  "core_targeted": {
+    "status": "passed",
+    "program_variant_rows": 12,
+    "report": "core-targeted/result.json",
+    "report_sha256": "49d837189cc9c5d8ea1138fa476be3da63b2a073c6aa27e91c0e414db4a6a1e7",
+    "programs": {
+      "cui_tests": {
+        "native-baseline": {
+          "exit_code": 0,
+          "log": "$WORK/core-targeted/logs/cui_tests/native-baseline.log",
+          "checks": [
+            [
+              6147,
+              0
+            ]
+          ]
+        },
+        "raw-jit": {
+          "exit_code": 0,
+          "log": "$WORK/core-targeted/logs/cui_tests/raw-jit.log",
+          "checks": [
+            [
+              6160,
+              0
+            ]
+          ],
+          "random_input_sha256": "4093d80cec9961141ce555e9dcd23f1f16f627b67ab9b333a350ba45a0d6f107",
+          "random_input_records": 168572
+        },
+        "raw-aot": {
+          "exit_code": 0,
+          "log": "$WORK/core-targeted/logs/cui_tests/raw-aot.log",
+          "checks": [
+            [
+              6160,
+              0
+            ]
+          ],
+          "random_input_sha256": "4093d80cec9961141ce555e9dcd23f1f16f627b67ab9b333a350ba45a0d6f107",
+          "random_input_records": 168572
+        },
+        "processed-jit": {
+          "exit_code": 0,
+          "log": "$WORK/core-targeted/logs/cui_tests/processed-jit.log",
+          "checks": [
+            [
+              6160,
+              0
+            ]
+          ],
+          "random_input_sha256": "4093d80cec9961141ce555e9dcd23f1f16f627b67ab9b333a350ba45a0d6f107",
+          "random_input_records": 168572
+        },
+        "processed-aot": {
+          "exit_code": 0,
+          "log": "$WORK/core-targeted/logs/cui_tests/processed-aot.log",
+          "checks": [
+            [
+              6160,
+              0
+            ]
+          ],
+          "random_input_sha256": "4093d80cec9961141ce555e9dcd23f1f16f627b67ab9b333a350ba45a0d6f107",
+          "random_input_records": 168572
+        },
+        "native": {
+          "exit_code": 0,
+          "log": "$WORK/core-targeted/logs/cui_tests/native.log",
+          "checks": [
+            [
+              6160,
+              0
+            ]
+          ]
+        },
+        "input_alignment": {
+          "seeds": [
+            1234,
+            99
+          ],
+          "groups": 69,
+          "all_groups_exact": true,
+          "provider": "Actual emitted Cui.Libc.srand/rand; recorded seed,line,call-site,value vectors replayed by native C",
+          "replay_source_sha256": "98e953b36f5796bb2d38e31b7a2ee2b57d06ba07fcda462a9dbd913197c65a69",
+          "harness_source_sha256": "ea13ed9b8937dc5b29f0608b9b95fac1897ca503f69d27484429ba54a90dd059",
+          "native_all_records_consumed": true
+        },
+        "status": "passed"
+      },
+      "qualification_pixels": {
+        "native": {
+          "exit_code": 0,
+          "log": "$WORK/core-targeted/logs/qualification_pixels/native.log",
+          "checks": [
+            [
+              128000,
+              0
+            ]
+          ],
+          "stdout_sha256": "4725e9d9cefbdfb84162570dad9a28d735cbe3e740bb4b89b0e1f2f2d030be3c"
+        },
+        "raw-jit": {
+          "exit_code": 0,
+          "log": "$WORK/core-targeted/logs/qualification_pixels/raw-jit.log",
+          "checks": [
+            [
+              128000,
+              0
+            ]
+          ],
+          "stdout_sha256": "4725e9d9cefbdfb84162570dad9a28d735cbe3e740bb4b89b0e1f2f2d030be3c"
+        },
+        "raw-aot": {
+          "exit_code": 0,
+          "log": "$WORK/core-targeted/logs/qualification_pixels/raw-aot.log",
+          "checks": [
+            [
+              128000,
+              0
+            ]
+          ],
+          "stdout_sha256": "4725e9d9cefbdfb84162570dad9a28d735cbe3e740bb4b89b0e1f2f2d030be3c"
+        },
+        "processed-jit": {
+          "exit_code": 0,
+          "log": "$WORK/core-targeted/logs/qualification_pixels/processed-jit.log",
+          "checks": [
+            [
+              128000,
+              0
+            ]
+          ],
+          "stdout_sha256": "4725e9d9cefbdfb84162570dad9a28d735cbe3e740bb4b89b0e1f2f2d030be3c"
+        },
+        "processed-aot": {
+          "exit_code": 0,
+          "log": "$WORK/core-targeted/logs/qualification_pixels/processed-aot.log",
+          "checks": [
+            [
+              128000,
+              0
+            ]
+          ],
+          "stdout_sha256": "4725e9d9cefbdfb84162570dad9a28d735cbe3e740bb4b89b0e1f2f2d030be3c"
+        },
+        "exact_bytes": [
+          {
+            "variant": "raw-jit",
+            "file": "pixels-0.rgba",
+            "bytes": 256000,
+            "native_sha256": "9b2ff23ce30d2c2bb5fceca0fe1545e1a45fb8f9c3194cb8eea96c117778dcd9",
+            "managed_sha256": "9b2ff23ce30d2c2bb5fceca0fe1545e1a45fb8f9c3194cb8eea96c117778dcd9",
+            "comparison": "exact-file-bytes",
+            "equal": true
+          },
+          {
+            "variant": "raw-jit",
+            "file": "pixels-1.rgba",
+            "bytes": 256000,
+            "native_sha256": "bcbdaefb2f9bb8d21084eac76fa91482edbb5ba5c4310c878c2e037bda2861b1",
+            "managed_sha256": "bcbdaefb2f9bb8d21084eac76fa91482edbb5ba5c4310c878c2e037bda2861b1",
+            "comparison": "exact-file-bytes",
+            "equal": true
+          },
+          {
+            "variant": "raw-aot",
+            "file": "pixels-0.rgba",
+            "bytes": 256000,
+            "native_sha256": "9b2ff23ce30d2c2bb5fceca0fe1545e1a45fb8f9c3194cb8eea96c117778dcd9",
+            "managed_sha256": "9b2ff23ce30d2c2bb5fceca0fe1545e1a45fb8f9c3194cb8eea96c117778dcd9",
+            "comparison": "exact-file-bytes",
+            "equal": true
+          },
+          {
+            "variant": "raw-aot",
+            "file": "pixels-1.rgba",
+            "bytes": 256000,
+            "native_sha256": "bcbdaefb2f9bb8d21084eac76fa91482edbb5ba5c4310c878c2e037bda2861b1",
+            "managed_sha256": "bcbdaefb2f9bb8d21084eac76fa91482edbb5ba5c4310c878c2e037bda2861b1",
+            "comparison": "exact-file-bytes",
+            "equal": true
+          },
+          {
+            "variant": "processed-jit",
+            "file": "pixels-0.rgba",
+            "bytes": 256000,
+            "native_sha256": "9b2ff23ce30d2c2bb5fceca0fe1545e1a45fb8f9c3194cb8eea96c117778dcd9",
+            "managed_sha256": "9b2ff23ce30d2c2bb5fceca0fe1545e1a45fb8f9c3194cb8eea96c117778dcd9",
+            "comparison": "exact-file-bytes",
+            "equal": true
+          },
+          {
+            "variant": "processed-jit",
+            "file": "pixels-1.rgba",
+            "bytes": 256000,
+            "native_sha256": "bcbdaefb2f9bb8d21084eac76fa91482edbb5ba5c4310c878c2e037bda2861b1",
+            "managed_sha256": "bcbdaefb2f9bb8d21084eac76fa91482edbb5ba5c4310c878c2e037bda2861b1",
+            "comparison": "exact-file-bytes",
+            "equal": true
+          },
+          {
+            "variant": "processed-aot",
+            "file": "pixels-0.rgba",
+            "bytes": 256000,
+            "native_sha256": "9b2ff23ce30d2c2bb5fceca0fe1545e1a45fb8f9c3194cb8eea96c117778dcd9",
+            "managed_sha256": "9b2ff23ce30d2c2bb5fceca0fe1545e1a45fb8f9c3194cb8eea96c117778dcd9",
+            "comparison": "exact-file-bytes",
+            "equal": true
+          },
+          {
+            "variant": "processed-aot",
+            "file": "pixels-1.rgba",
+            "bytes": 256000,
+            "native_sha256": "bcbdaefb2f9bb8d21084eac76fa91482edbb5ba5c4310c878c2e037bda2861b1",
+            "managed_sha256": "bcbdaefb2f9bb8d21084eac76fa91482edbb5ba5c4310c878c2e037bda2861b1",
+            "comparison": "exact-file-bytes",
+            "equal": true
+          }
+        ],
+        "status": "passed"
+      },
+      "qualification_lifecycle": {
+        "native": {
+          "exit_code": 0,
+          "log": "$WORK/core-targeted/logs/qualification_lifecycle/native.log",
+          "checks": [
+            [
+              33,
+              0
+            ]
+          ],
+          "stdout_sha256": "4c40edd353820f06a39011ffb5efe94894646750362720263f84149e7b2c5e16"
+        },
+        "raw-jit": {
+          "exit_code": 0,
+          "log": "$WORK/core-targeted/logs/qualification_lifecycle/raw-jit.log",
+          "checks": [
+            [
+              33,
+              0
+            ]
+          ],
+          "stdout_sha256": "4c40edd353820f06a39011ffb5efe94894646750362720263f84149e7b2c5e16"
+        },
+        "raw-aot": {
+          "exit_code": 0,
+          "log": "$WORK/core-targeted/logs/qualification_lifecycle/raw-aot.log",
+          "checks": [
+            [
+              33,
+              0
+            ]
+          ],
+          "stdout_sha256": "4c40edd353820f06a39011ffb5efe94894646750362720263f84149e7b2c5e16"
+        },
+        "processed-jit": {
+          "exit_code": 0,
+          "log": "$WORK/core-targeted/logs/qualification_lifecycle/processed-jit.log",
+          "checks": [
+            [
+              33,
+              0
+            ]
+          ],
+          "stdout_sha256": "4c40edd353820f06a39011ffb5efe94894646750362720263f84149e7b2c5e16"
+        },
+        "processed-aot": {
+          "exit_code": 0,
+          "log": "$WORK/core-targeted/logs/qualification_lifecycle/processed-aot.log",
+          "checks": [
+            [
+              33,
+              0
+            ]
+          ],
+          "stdout_sha256": "4c40edd353820f06a39011ffb5efe94894646750362720263f84149e7b2c5e16"
+        },
+        "exact_bytes": [],
+        "status": "passed"
+      }
+    },
+    "library_objects": {
+      "$WORK/20261110-194734-d54e0a5d/objects/000-cui_core.cs": "084958289a915de06921cb8dd767abfc42b8e5fdce32188d68e16e81244afb58",
+      "$WORK/20261110-194734-d54e0a5d/objects/001-cui_theme.cs": "46917253b012c2ea3540c36b1368d2ec91adc588d14dcfcaa30496d6f2c2174a",
+      "$WORK/20261110-194734-d54e0a5d/objects/002-cui_draw.cs": "d9816becedb5d35b861d68bb90076f54af6d1e42195c76c71d57cbce6973d484",
+      "$WORK/20261110-194734-d54e0a5d/objects/003-cui_text.cs": "217a764d6988cd881c0b39ba98077c01f6ef7709cd796da483282e736449e30f",
+      "$WORK/20261110-194734-d54e0a5d/objects/004-cui_layout.cs": "bb79e59b6f01f8b97315a48fab53eb71c2a5321438496310cfd9c86fdf6ee9df",
+      "$WORK/20261110-194734-d54e0a5d/objects/005-cui_widgets.cs": "9f540740fe5de1850e3a4ae36f498e48b658069360026375b7a7f94b5bb1690d",
+      "$WORK/20261110-194734-d54e0a5d/objects/006-cui_controls.cs": "8a45f4db554a4b092d7b87ee7775dd2658980507890233d656d34ffc0f306218",
+      "$WORK/20261110-194734-d54e0a5d/objects/007-cui_textedit.cs": "55f0989cfd4c03527c1cdf4ad434e2959fd15dc5d4493bac504855a6fba0de04",
+      "$WORK/20261110-194734-d54e0a5d/objects/008-cui_overlay.cs": "ab8fbb3a4a1de885ce9c523d597872544e126d354854f13a1fe55a742bf4483c",
+      "$WORK/20261110-194734-d54e0a5d/objects/009-cui_data.cs": "c27f0a91145b3be638722d517331ce61190d2e7b3ecde66140be1af3d7717e60",
+      "$WORK/20261110-194734-d54e0a5d/objects/010-cui_charts.cs": "4539e2278c5c6808efa6d22b7b4f1887b80093f73cdb9915d2067076eb34418f",
+      "$WORK/20261110-194734-d54e0a5d/objects/011-cui_extras.cs": "db2a805e9a8106b173170927d00fc36cb71f16bf340767e94224fe0a2b017219",
+      "$WORK/20261110-194734-d54e0a5d/objects/012-cui_actions.cs": "1db9d9c2987ea3bfbeb1bab85cb17641771afab295daa877019cf20195e5f2ff",
+      "$WORK/20261110-194734-d54e0a5d/objects/013-cui_pickers.cs": "61ea67357cd6163d3f1f9788a3765a5eb1ca2c2696793d4fc68e0042c46b5bdc",
+      "$WORK/20261110-194734-d54e0a5d/objects/014-cui_disclosure.cs": "58a167e2042106e06cb771239d986e04aa89c8efa2c40417bbda7681c7dd48e3",
+      "$WORK/20261110-194734-d54e0a5d/objects/015-cui_grid.cs": "a7de6a8c313eb8c62915b60fdc7dd3f02ac41aa829d131db629e77958991820f",
+      "$WORK/20261110-194734-d54e0a5d/objects/016-cui_treetable.cs": "b4fee3905b8804ed60f2c128c022e7180b4c7932a4708ff723840e0c8bd904df",
+      "$WORK/20261110-194734-d54e0a5d/objects/017-cui_code.cs": "7ff4d86e2173cbb11962ddbbabf9902ddcb2fca34eb70b8c0059681d03d4374f",
+      "$WORK/20261110-194734-d54e0a5d/objects/018-cui_markdown.cs": "a647ae11db67d92dda6d67c9ce3a9e32b56a0f908352af277999da42d6ca210c",
+      "$WORK/20261110-194734-d54e0a5d/objects/019-cui_editor.cs": "10ed3623dfdc2126be9ff80536b55b0f285933f6b1798d1c4aee4caab537d86b",
+      "$WORK/20261110-194734-d54e0a5d/objects/020-cui_diff.cs": "6de982c60e41414db469c63a23bd867d085af32da641e7f070506be2474474d4",
+      "$WORK/20261110-194734-d54e0a5d/objects/021-cui_tools.cs": "a5138dcbd709ab943f573fcbd81046d5fbfde1f57797d07972776155393db410",
+      "$WORK/20261110-194734-d54e0a5d/objects/022-cui_hex.cs": "dc5c632fe453ec0bfd15f1916a41aa37ef2517c4172a0b0c86a39d9a9bb93330",
+      "$WORK/20261110-194734-d54e0a5d/objects/023-cui_social.cs": "f905078d88e4f316dcb87753e6b2a83f6a4b041fd4eb7f5704f2848159b615a5",
+      "$WORK/20261110-194734-d54e0a5d/objects/024-cui_media.cs": "81f09014659252c1a467351ab0a6f529177a0141f7c9a8ab5a137a8c942c0ed9",
+      "$WORK/20261110-194734-d54e0a5d/objects/025-cui_planning.cs": "14126c5b95b9ca236650c49c98920aa5fa6fa2cff2bceb7eae4db7117ec70341",
+      "$WORK/20261110-194734-d54e0a5d/objects/026-cui_chrome.cs": "4b7fc7c065be9528f60ce54c738aa3809492a5c6f0dca516d9090fe52d612b46",
+      "$WORK/20261110-194734-d54e0a5d/objects/027-cui_dock.cs": "87c8da5149cb6b49c1090ee403448f941fbdf871ddef72e3f5d3bcd310dbc6ff",
+      "$WORK/20261110-194734-d54e0a5d/objects/028-cui_viz.cs": "82cf8107860cac165b4c0a74536cbe1a029faa0e8f692b15fd4a518ede5b42e0",
+      "$WORK/20261110-194734-d54e0a5d/objects/029-cui_motion.cs": "6ddc20c708416970a7956e2639d15a0e095db8ad9757395495d2de1ac86e6ed4",
+      "$WORK/20261110-194734-d54e0a5d/objects/030-cui_ai.cs": "a6192649a4a8eb6aca202f3a13d6c6b86d02b80a58586bab22ecb8cf91fec4f7",
+      "$WORK/20261110-194734-d54e0a5d/objects/031-cui_image.cs": "f94dea32c067b681696ac1f719ddae007b4e39950de577f767f2b7afeeb54656",
+      "$WORK/20261110-194734-d54e0a5d/objects/032-cui_nodes.cs": "3b59e2fffdaddbcf41b4eff99108aa2aa1613cbded57a536b41e92784e3c4639",
+      "$WORK/20261110-194734-d54e0a5d/objects/033-cui_flame.cs": "a6e508fd5afdd76884f7704717cb49b4ad8de1b52a01636d3d02635332ce9719",
+      "$WORK/20261110-194734-d54e0a5d/objects/034-cui_curves.cs": "dab39a03fd1e8e1b2e91b0bb37dc703de2904d8815d42bd9f4292316e68051e2",
+      "$WORK/20261110-194734-d54e0a5d/objects/035-cui_timeline.cs": "482b0d30d57e04758aaa07163d9e6ad95aa1e7ed4f9aba3397bd0412d8acfd43",
+      "$WORK/20261110-194734-d54e0a5d/objects/036-cui_dials.cs": "a06a58509ee2126bb7fcd38f82a014d3d4d96f053e47b8a74f9108fdc40a1c8f",
+      "$WORK/20261110-194734-d54e0a5d/objects/037-cui_month.cs": "c4401b443f9da294610a01b538920607b2f08d28e0a8f38f2f7091c00abd18b5",
+      "$WORK/20261110-194734-d54e0a5d/objects/038-cui_strings.cs": "d57cb9fc3682a7938e1417fbfb2f39a2b8c567c9b5512ec24b3079627c892263",
+      "$WORK/20261110-194734-d54e0a5d/objects/039-cui_devtools.cs": "3b8080868b0bc179a3430b378e7aafac17bff0ba278316352bd7230a7b165936",
+      "$WORK/20261110-194734-d54e0a5d/objects/040-cui_graph.cs": "3210123ef7be3213269a2498b087c2bd2c07b31c5fb8d9f07a2799705f06c1d8",
+      "$WORK/20261110-194734-d54e0a5d/objects/041-cui_devpanels.cs": "907921aa5f3699296b0f9308bb0270abc68f9f17b90dfa2fe86a8f7f219a27d5",
+      "$WORK/20261110-194734-d54e0a5d/objects/042-cui_regex.cs": "2f7f51cf8812b44fb41f9396b3de749ac84ead227660d5d7eecab2a401748a55",
+      "$WORK/20261110-194734-d54e0a5d/objects/043-cui_devviews.cs": "affbeec729c6921ed3f2eaae6bea19534ad6ca853ee18e5e728598fe2fb0e603",
+      "$WORK/20261110-194734-d54e0a5d/objects/044-cui_instrument.cs": "7e2f4bf73aafd55699cac72db72c506b16da2a1583a1f14a58656bf04a283c2a",
+      "$WORK/20261110-194734-d54e0a5d/objects/045-cui_tour.cs": "3fed87e8a2ae40b99b0a96d369e0b5cc09102ad052c682a9349228f5a014f332",
+      "$WORK/20261110-194734-d54e0a5d/objects/046-cui_photo.cs": "d1cab1eae19c67aa5e8167145ddf72f0b3dca77eae8265e92452fd1d96fda79c",
+      "$WORK/20261110-194734-d54e0a5d/objects/047-cui_files.cs": "ef65ea419ce6f1d2fde6279ea7870f422f93ad35182d35e851d7d02816b50a78",
+      "$WORK/20261110-194734-d54e0a5d/objects/048-cui_terminal.cs": "7ad4b8776a69bd9254f1ddd3b16cfcc76f1d7f1cfca76e7bb03e7bcacff40a3a",
+      "$WORK/20261110-194734-d54e0a5d/objects/049-cui_emoji.cs": "dfd86838a77c9540ad2456531d9eb04cbd09faf354f3ef00ca558f053214de00",
+      "$WORK/20261110-194734-d54e0a5d/objects/050-cui_render_sw.cs": "b7b9bc88f0439489e6afccfa0c25f90d98547111a29a13ab7341228441f45710",
+      "$WORK/20261110-194734-d54e0a5d/objects/051-cui_render_gl.cs": "c91eefe3af11081f73d5944122ca405e0889f8fde08372e6233731d94c9f9e6c",
+      "$WORK/20261110-194734-d54e0a5d/objects/052-cui_font_data.cs": "731849cbfdb69d98e461fba62fd8035bc18f43ca2821908eb8ffccd2c587add5",
+      "$WORK/20261110-194734-d54e0a5d/objects/053-cui_inflate.cs": "896df80564daa7a4547296edc0144a610d2892ef67c58d134036e69f83ca43ec",
+      "$WORK/20261110-194734-d54e0a5d/objects/054-cui_bidi.cs": "751cf38295874af4c994a513b9df05c06e599ce22f828ca7671cbf7bdfbf4276",
+      "$WORK/20261110-194734-d54e0a5d/objects/055-cui_shape.cs": "4181025b815199dc0fa1233f1cf08d21f87556a07f7de7beb114bf3c7e31a508",
+      "$WORK/20261110-194734-d54e0a5d/objects/056-cui_app.cs": "3650d54466a7ed7b6bc76acad2d43a447eac8b05c664152f1f6878e0ea7843a9",
+      "$WORK/20261110-194734-d54e0a5d/objects/057-cui_app_glfw.cs": "1e64543e8460af0e60ffaf8c320df0d92bd8640324dd5a41affaacd154ffe057"
+    },
+    "scope": "Original cui_tests plus software pixels and allocation/lifecycle checks in all four Linux forms/modes using exact final 58 objects; retained matching native core control"
+  },
+  "native_render_limitation": {
+    "observation": "Bundled ordinary text fonts omit selected emoji glyphs: native message crop unchanged after exact UTF8 append; picker cells render color emoji. No inline color-emoji text-rendering feature added.",
+    "retained_failed_assertion": "$REGRESSION/native-adapted/native/input.log",
+    "log_sha256": "23731f756a187ae67966630afbe1889ea936cf622b6b60a262ba168cf91fef2a"
+  },
+  "platform": {
+    "status": "passed",
+    "managed_assertions": 130,
+    "adaptations": 13,
+    "missing_duplicate_anchor_rejections": 26,
+    "log": "platform.log",
+    "log_sha256": "bda04ade0fec7e8f569440a7a36028d71773afe3c3df0bff832e35f194afc4bf",
+    "scope": "Targeted platform/ABI fixture including Windows test double, not actual Windows execution"
+  },
+  "recipe_contracts": {
+    "status": "passed",
+    "tests": 2,
+    "log": "recipe-final.log",
+    "log_sha256": "8109dca9e6e7dcde241ffb06be5ccedbb2b65a462b0395eb07315d3e6dda0ddc"
+  },
+  "gallery": {
+    "receipt": "artifacts/campaign/20261110-195930-2d932258/receipt.json",
+    "report": "20261110-195930-2d932258/gallery/report.json",
+    "report_sha256": "3a7d629543bad4fe8fe540fc026f05f22d3a3f9c38916b6a61351199ba0245be",
+    "native": {
+      "status": "passed",
+      "windows": "unrun",
+      "source": "$UPSTREAM",
+      "sourceHashes": {
+        "gallery_ui.c": "012dabfff1234ac8cb497901779f4d329589d9bda4e09e729db35697c382b250",
+        "gallery_ui.h": "82b030ab36290bad74e68e5d9e34147298a580de2911cf691554c1be1d309bf7",
+        "gallery_more.c": "1c083dbdef6fa97cde088c29ee0547bee2de32cb1f0697f35f2cee0259a63f02",
+        "gallery_more.h": "04225c16a2712518b6bf517a0880b0caffc337b7b16f23b8a647c9c32792de0c"
+      },
+      "comparison": "Main-content nodes/text exact; all RGBA channels within 1; no dynamic-content exclusion",
+      "nativeOracle": {
+        "kind": "adapted",
+        "source": "$WORK/20261110-195930-2d932258/gallery/native/source",
+        "adaptations": [
+          {
+            "file": "examples/gallery_more.c",
+            "reason": "Upstream gallery: close the emoji popover in its caller ID scope after selection"
+          }
+        ],
+        "sourceHashes": {
+          "gallery_ui.c": "012dabfff1234ac8cb497901779f4d329589d9bda4e09e729db35697c382b250",
+          "gallery_ui.h": "82b030ab36290bad74e68e5d9e34147298a580de2911cf691554c1be1d309bf7",
+          "gallery_more.c": "631c8b51ad1030c1b1935cb4fd020c679fb4dbae30690e287675cb1ec9542b64",
+          "gallery_more.h": "04225c16a2712518b6bf517a0880b0caffc337b7b16f23b8a647c9c32792de0c"
+        }
+      },
+      "nativeBinarySha256": "022c5b4a0037d5e58eeaaabb73d5bf59f4f66a06ea468f5141d347962b893837",
+      "display": {
+        "kind": "owned Xvfb",
+        "cleanup": "terminated and reaped",
+        "pid": 807935,
+        "display": ":1",
+        "exitCode": 0
+      },
+      "nativePages": [
+        {
+          "page": 0,
+          "name": "Overview",
+          "nodes": 217,
+          "mainText": 44,
+          "textHash": 4038726249,
+          "different": 70795
+        },
+        {
+          "page": 1,
+          "name": "Buttons",
+          "nodes": 238,
+          "mainText": 59,
+          "textHash": 1320524017,
+          "different": 70180
+        },
+        {
+          "page": 2,
+          "name": "Inputs",
+          "nodes": 235,
+          "mainText": 43,
+          "textHash": 1915324641,
+          "different": 41764
+        },
+        {
+          "page": 3,
+          "name": "Selection",
+          "nodes": 252,
+          "mainText": 48,
+          "textHash": 435846595,
+          "different": 57783
+        },
+        {
+          "page": 4,
+          "name": "Navigation",
+          "nodes": 208,
+          "mainText": 42,
+          "textHash": 1261913610,
+          "different": 36812
+        },
+        {
+          "page": 5,
+          "name": "Overlays",
+          "nodes": 179,
+          "mainText": 29,
+          "textHash": 3444690065,
+          "different": 169947
+        },
+        {
+          "page": 6,
+          "name": "Feedback",
+          "nodes": 279,
+          "mainText": 57,
+          "textHash": 3795479188,
+          "different": 299882
+        },
+        {
+          "page": 7,
+          "name": "Data display",
+          "nodes": 388,
+          "mainText": 131,
+          "textHash": 2787385060,
+          "different": 144443
+        },
+        {
+          "page": 8,
+          "name": "Charts",
+          "nodes": 195,
+          "mainText": 21,
+          "textHash": 4092782315,
+          "different": 45856
+        },
+        {
+          "page": 9,
+          "name": "Actions",
+          "nodes": 280,
+          "mainText": 81,
+          "textHash": 3936841462,
+          "different": 39536
+        },
+        {
+          "page": 10,
+          "name": "Smart inputs",
+          "nodes": 206,
+          "mainText": 42,
+          "textHash": 4257854292,
+          "different": 28034
+        },
+        {
+          "page": 11,
+          "name": "Pickers",
+          "nodes": 370,
+          "mainText": 119,
+          "textHash": 1395811256,
+          "different": 40344
+        },
+        {
+          "page": 12,
+          "name": "Capture",
+          "nodes": 165,
+          "mainText": 20,
+          "textHash": 2278660598,
+          "different": 32583
+        },
+        {
+          "page": 13,
+          "name": "Disclosure",
+          "nodes": 262,
+          "mainText": 63,
+          "textHash": 1826530766,
+          "different": 74249
+        },
+        {
+          "page": 14,
+          "name": "Reader",
+          "nodes": 186,
+          "mainText": 42,
+          "textHash": 198630120,
+          "different": 46993
+        },
+        {
+          "page": 15,
+          "name": "Data grid",
+          "nodes": 506,
+          "mainText": 142,
+          "textHash": 710137252,
+          "different": 130580
+        },
+        {
+          "page": 16,
+          "name": "Code",
+          "nodes": 277,
+          "mainText": 71,
+          "textHash": 3453549479,
+          "different": 353846
+        },
+        {
+          "page": 17,
+          "name": "Social and media",
+          "nodes": 438,
+          "mainText": 151,
+          "textHash": 3136226653,
+          "different": 82891
+        },
+        {
+          "page": 18,
+          "name": "Planning",
+          "nodes": 498,
+          "mainText": 182,
+          "textHash": 1179639738,
+          "different": 116128
+        },
+        {
+          "page": 19,
+          "name": "More charts",
+          "nodes": 192,
+          "mainText": 26,
+          "textHash": 3185055877,
+          "different": 219787
+        },
+        {
+          "page": 20,
+          "name": "Motion",
+          "nodes": 265,
+          "mainText": 63,
+          "textHash": 3067974028,
+          "different": 31020
+        },
+        {
+          "page": 21,
+          "name": "AI",
+          "nodes": 314,
+          "mainText": 81,
+          "textHash": 1087603717,
+          "different": 142498
+        },
+        {
+          "page": 22,
+          "name": "Audio",
+          "nodes": 173,
+          "mainText": 24,
+          "textHash": 1161999309,
+          "different": 38879
+        },
+        {
+          "page": 23,
+          "name": "Files",
+          "nodes": 206,
+          "mainText": 42,
+          "textHash": 3595311223,
+          "different": 48973
+        },
+        {
+          "page": 24,
+          "name": "Developer tools",
+          "nodes": 712,
+          "mainText": 306,
+          "textHash": 4198489850,
+          "different": 225522
+        },
+        {
+          "page": 25,
+          "name": "More developer tools",
+          "nodes": 766,
+          "mainText": 280,
+          "textHash": 377826077,
+          "different": 83293
+        },
+        {
+          "page": 26,
+          "name": "Instruments",
+          "nodes": 153,
+          "mainText": 18,
+          "textHash": 573193795,
+          "different": 46290
+        }
+      ],
+      "nativeInput": "$WORK/20261110-195930-2d932258/gallery/native/input.log",
+      "nativeInputStatus": "passed",
+      "nativeEmoji": {
+        "status": "passed",
+        "selections": 3,
+        "messages": [
+          {
+            "length": 21,
+            "hex": "52656C65617365206E6F7465732061726520757020",
+            "text": "Release notes are up "
+          },
+          {
+            "length": 25,
+            "hex": "52656C65617365206E6F7465732061726520757020F09F9880",
+            "text": "Release notes are up 😀"
+          },
+          {
+            "length": 25,
+            "hex": "52656C65617365206E6F7465732061726520757020F09F9880",
+            "text": "Release notes are up 😀"
+          },
+          {
+            "length": 29,
+            "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883",
+            "text": "Release notes are up 😀😃"
+          },
+          {
+            "length": 29,
+            "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883",
+            "text": "Release notes are up 😀😃"
+          },
+          {
+            "length": 29,
+            "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883",
+            "text": "Release notes are up 😀😃"
+          },
+          {
+            "length": 33,
+            "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883F09F9880",
+            "text": "Release notes are up 😀😃😀"
+          },
+          {
+            "length": 33,
+            "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883F09F9880",
+            "text": "Release notes are up 😀😃😀"
+          },
+          {
+            "length": 33,
+            "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883F09F9880",
+            "text": "Release notes are up 😀😃😀"
+          }
+        ],
+        "recent": [
+          "",
+          "😀",
+          "😃 😀",
+          "😀 😃"
+        ],
+        "pixels": [
+          {
+            "name": "emoji-0-message",
+            "width": 435,
+            "height": 35,
+            "colored": 0
+          },
+          {
+            "name": "emoji-1-cell",
+            "width": 37,
+            "height": 37,
+            "colored": 388
+          },
+          {
+            "name": "emoji-1-message",
+            "width": 435,
+            "height": 35,
+            "colored": 0
+          },
+          {
+            "name": "emoji-1-rendered-message",
+            "width": 435,
+            "height": 35,
+            "colored": 0
+          },
+          {
+            "name": "emoji-2-cell",
+            "width": 37,
+            "height": 37,
+            "colored": 387
+          },
+          {
+            "name": "emoji-2-message",
+            "width": 435,
+            "height": 35,
+            "colored": 0
+          },
+          {
+            "name": "emoji-3-cell",
+            "width": 37,
+            "height": 37,
+            "colored": 388
+          },
+          {
+            "name": "emoji-3-message",
+            "width": 435,
+            "height": 35,
+            "colored": 0
+          }
+        ],
+        "messagePixelsChanged": false,
+        "rendering": "Colored picker cells and nonblank message GL readback; native text fonts omit these emoji glyphs"
+      }
+    },
+    "variants": [
+      {
+        "form": "raw",
+        "mode": "jit",
+        "pages": 27,
+        "os_sidebar_selections": 27,
+        "recorded_actions": 68,
+        "assertions": 2952,
+        "maximum_main_rgba_channel_error": 0,
+        "channels_above_tolerance": 0,
+        "cleanup": "UI allocation freed once per lifecycle, GLFW context/display released, reinitialized",
+        "binary_sha256": "4df5b9d88794b5d4d3d5b8b504ad7343b53723c58ea532110742cbbbd5b4c42e",
+        "assemblies_sha256": {
+          "Glfw.dll": "25b3847602ea479b57018732381ad1fb00ebef9e622f7e3e5a9c552a2221fb3a",
+          "TranslatedCuiGallery.dll": "e91f4068d11d332a58374233a0dee6dec9d397614cacb1b0ff9dcae939b96f18",
+          "TranslatedCui.dll": "72f8d2513b92bac210967c0fc55341a3c6e63ad6602f11d658b6cc093d3acf08",
+          "Gallery.Tests.dll": "4df5b9d88794b5d4d3d5b8b504ad7343b53723c58ea532110742cbbbd5b4c42e"
+        },
+        "behavior_report": {
+          "status": "passed",
+          "assertions": 2952,
+          "pages": [
+            {
+              "page": 0,
+              "name": "Overview",
+              "nodes": 217,
+              "mainText": 44,
+              "textHash": 4038726249,
+              "different": 70795
+            },
+            {
+              "page": 1,
+              "name": "Buttons",
+              "nodes": 238,
+              "mainText": 59,
+              "textHash": 1320524017,
+              "different": 70180
+            },
+            {
+              "page": 2,
+              "name": "Inputs",
+              "nodes": 235,
+              "mainText": 43,
+              "textHash": 1915324641,
+              "different": 41764
+            },
+            {
+              "page": 3,
+              "name": "Selection",
+              "nodes": 252,
+              "mainText": 48,
+              "textHash": 435846595,
+              "different": 57783
+            },
+            {
+              "page": 4,
+              "name": "Navigation",
+              "nodes": 208,
+              "mainText": 42,
+              "textHash": 1261913610,
+              "different": 36812
+            },
+            {
+              "page": 5,
+              "name": "Overlays",
+              "nodes": 179,
+              "mainText": 29,
+              "textHash": 3444690065,
+              "different": 169947
+            },
+            {
+              "page": 6,
+              "name": "Feedback",
+              "nodes": 279,
+              "mainText": 57,
+              "textHash": 3795479188,
+              "different": 299882
+            },
+            {
+              "page": 7,
+              "name": "Data display",
+              "nodes": 388,
+              "mainText": 131,
+              "textHash": 2787385060,
+              "different": 144443
+            },
+            {
+              "page": 8,
+              "name": "Charts",
+              "nodes": 195,
+              "mainText": 21,
+              "textHash": 4092782315,
+              "different": 45856
+            },
+            {
+              "page": 9,
+              "name": "Actions",
+              "nodes": 280,
+              "mainText": 81,
+              "textHash": 3936841462,
+              "different": 39536
+            },
+            {
+              "page": 10,
+              "name": "Smart inputs",
+              "nodes": 206,
+              "mainText": 42,
+              "textHash": 4257854292,
+              "different": 28034
+            },
+            {
+              "page": 11,
+              "name": "Pickers",
+              "nodes": 370,
+              "mainText": 119,
+              "textHash": 1395811256,
+              "different": 40344
+            },
+            {
+              "page": 12,
+              "name": "Capture",
+              "nodes": 165,
+              "mainText": 20,
+              "textHash": 2278660598,
+              "different": 32583
+            },
+            {
+              "page": 13,
+              "name": "Disclosure",
+              "nodes": 262,
+              "mainText": 63,
+              "textHash": 1826530766,
+              "different": 74249
+            },
+            {
+              "page": 14,
+              "name": "Reader",
+              "nodes": 186,
+              "mainText": 42,
+              "textHash": 198630120,
+              "different": 46993
+            },
+            {
+              "page": 15,
+              "name": "Data grid",
+              "nodes": 506,
+              "mainText": 142,
+              "textHash": 710137252,
+              "different": 130580
+            },
+            {
+              "page": 16,
+              "name": "Code",
+              "nodes": 277,
+              "mainText": 71,
+              "textHash": 3453549479,
+              "different": 353846
+            },
+            {
+              "page": 17,
+              "name": "Social and media",
+              "nodes": 438,
+              "mainText": 151,
+              "textHash": 3136226653,
+              "different": 82891
+            },
+            {
+              "page": 18,
+              "name": "Planning",
+              "nodes": 498,
+              "mainText": 182,
+              "textHash": 1179639738,
+              "different": 116128
+            },
+            {
+              "page": 19,
+              "name": "More charts",
+              "nodes": 192,
+              "mainText": 26,
+              "textHash": 3185055877,
+              "different": 219787
+            },
+            {
+              "page": 20,
+              "name": "Motion",
+              "nodes": 265,
+              "mainText": 63,
+              "textHash": 3067974028,
+              "different": 31020
+            },
+            {
+              "page": 21,
+              "name": "AI",
+              "nodes": 314,
+              "mainText": 81,
+              "textHash": 1087603717,
+              "different": 142498
+            },
+            {
+              "page": 22,
+              "name": "Audio",
+              "nodes": 173,
+              "mainText": 24,
+              "textHash": 1161999309,
+              "different": 38879
+            },
+            {
+              "page": 23,
+              "name": "Files",
+              "nodes": 206,
+              "mainText": 42,
+              "textHash": 3595311223,
+              "different": 48973
+            },
+            {
+              "page": 24,
+              "name": "Developer tools",
+              "nodes": 712,
+              "mainText": 306,
+              "textHash": 4198489850,
+              "different": 225522
+            },
+            {
+              "page": 25,
+              "name": "More developer tools",
+              "nodes": 766,
+              "mainText": 280,
+              "textHash": 377826077,
+              "different": 83293
+            },
+            {
+              "page": 26,
+              "name": "Instruments",
+              "nodes": 153,
+              "mainText": 18,
+              "textHash": 573193795,
+              "different": 46290
+            }
+          ],
+          "actions": [
+            "OS sidebar selects page 1: Buttons and scrolls to top",
+            "OS sidebar selects page 0: Overview and scrolls to top",
+            "OS sidebar selects page 1: Buttons and scrolls to top",
+            "OS sidebar selects page 2: Inputs and scrolls to top",
+            "OS sidebar selects page 3: Selection and scrolls to top",
+            "OS sidebar selects page 4: Navigation and scrolls to top",
+            "OS sidebar selects page 5: Overlays and scrolls to top",
+            "OS sidebar selects page 6: Feedback and scrolls to top",
+            "OS sidebar selects page 7: Data display and scrolls to top",
+            "OS sidebar selects page 8: Charts and scrolls to top",
+            "OS sidebar selects page 9: Actions and scrolls to top",
+            "OS sidebar selects page 10: Smart inputs and scrolls to top",
+            "OS sidebar selects page 11: Pickers and scrolls to top",
+            "OS sidebar selects page 12: Capture and scrolls to top",
+            "OS sidebar selects page 13: Disclosure and scrolls to top",
+            "OS sidebar selects page 14: Reader and scrolls to top",
+            "OS sidebar selects page 15: Data grid and scrolls to top",
+            "OS sidebar selects page 16: Code and scrolls to top",
+            "OS sidebar selects page 17: Social and media and scrolls to top",
+            "OS sidebar selects page 18: Planning and scrolls to top",
+            "OS sidebar selects page 19: More charts and scrolls to top",
+            "OS sidebar selects page 20: Motion and scrolls to top",
+            "OS sidebar selects page 21: AI and scrolls to top",
+            "OS sidebar selects page 22: Audio and scrolls to top",
+            "OS sidebar selects page 23: Files and scrolls to top",
+            "OS sidebar selects page 24: Developer tools and scrolls to top",
+            "OS sidebar selects page 25: More developer tools and scrolls to top",
+            "OS sidebar selects page 26: Instruments and scrolls to top",
+            "OS sidebar selects page 3: Selection and scrolls to top",
+            "Checkbox changes upstream newsletter state",
+            "Switch changes upstream Bluetooth state",
+            "Radio changes upstream plan value",
+            "Slider pointer updates upstream volume",
+            "OS sidebar selects page 2: Inputs and scrolls to top",
+            "Text input replaces upstream name buffer",
+            "OS sidebar selects page 1: Buttons and scrolls to top",
+            "Button sets upstream loading state",
+            "Reset button clears upstream loading state",
+            "OS sidebar selects page 4: Navigation and scrolls to top",
+            "Tabs change upstream selected tab",
+            "Stepper Next changes upstream step",
+            "Stepper Back restores upstream step",
+            "OS sidebar selects page 5: Overlays and scrolls to top",
+            "Dialog button opens upstream modal",
+            "Escape closes upstream modal and releases input layer",
+            "OS sidebar selects page 10: Smart inputs and scrolls to top",
+            "OS smile icon opens original emoji popup",
+            "Original emoji recent order: ",
+            "OS emoji selection 1 appends exact UTF-8 and closes original popup: Release notes are up 😀",
+            "OS smile icon opens original emoji popup",
+            "Original emoji recent order: 😀",
+            "OS emoji selection 2 appends exact UTF-8 and closes original popup: Release notes are up 😀😃",
+            "OS sidebar selects page 1: Buttons and scrolls to top",
+            "OS sidebar selects page 10: Smart inputs and scrolls to top",
+            "OS smile icon opens original emoji popup",
+            "Original emoji recent order: 😃 😀",
+            "OS emoji selection 3 appends exact UTF-8 and closes original popup: Release notes are up 😀😃😀",
+            "OS smile icon opens original emoji popup",
+            "Original emoji recent order: 😀 😃",
+            "Emoji message and recent history persist across popup reopen and page navigation",
+            "OS sidebar selects page 9: Actions and scrolls to top",
+            "Extended Actions split button renders saved result",
+            "OS sidebar selects page 1: Buttons and scrolls to top",
+            "Sidebar theme control updates gallery and core theme",
+            "Accent swatch updates gallery and core accent",
+            "Ctrl+J shortcut changes upstream theme",
+            "OS sidebar selects page 3: Selection and scrolls to top",
+            "OS close ends upstream gallery loop"
+          ],
+          "platform": "Zorin OS 18.1",
+          "architecture": "X64",
+          "windows": "unrun",
+          "cleanup": "UI allocation freed once per lifecycle, GLFW context/display released, reinitialized"
+        },
+        "emoji": {
+          "status": "passed",
+          "selections": 3,
+          "messages": [
+            {
+              "length": 21,
+              "hex": "52656C65617365206E6F7465732061726520757020",
+              "text": "Release notes are up "
+            },
+            {
+              "length": 25,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880",
+              "text": "Release notes are up 😀"
+            },
+            {
+              "length": 25,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880",
+              "text": "Release notes are up 😀"
+            },
+            {
+              "length": 29,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883",
+              "text": "Release notes are up 😀😃"
+            },
+            {
+              "length": 29,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883",
+              "text": "Release notes are up 😀😃"
+            },
+            {
+              "length": 29,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883",
+              "text": "Release notes are up 😀😃"
+            },
+            {
+              "length": 33,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883F09F9880",
+              "text": "Release notes are up 😀😃😀"
+            },
+            {
+              "length": 33,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883F09F9880",
+              "text": "Release notes are up 😀😃😀"
+            },
+            {
+              "length": 33,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883F09F9880",
+              "text": "Release notes are up 😀😃😀"
+            }
+          ],
+          "recent": [
+            "",
+            "😀",
+            "😃 😀",
+            "😀 😃"
+          ],
+          "pixels": [
+            {
+              "name": "emoji-0-message",
+              "width": 435,
+              "height": 35,
+              "colored": 0
+            },
+            {
+              "name": "emoji-1-cell",
+              "width": 37,
+              "height": 37,
+              "colored": 388
+            },
+            {
+              "name": "emoji-1-message",
+              "width": 435,
+              "height": 35,
+              "colored": 0
+            },
+            {
+              "name": "emoji-1-rendered-message",
+              "width": 435,
+              "height": 35,
+              "colored": 0
+            },
+            {
+              "name": "emoji-2-cell",
+              "width": 37,
+              "height": 37,
+              "colored": 387
+            },
+            {
+              "name": "emoji-2-message",
+              "width": 435,
+              "height": 35,
+              "colored": 0
+            },
+            {
+              "name": "emoji-3-cell",
+              "width": 37,
+              "height": 37,
+              "colored": 388
+            },
+            {
+              "name": "emoji-3-message",
+              "width": 435,
+              "height": 35,
+              "colored": 0
+            }
+          ],
+          "messagePixelsChanged": false,
+          "rendering": "Colored picker cells and nonblank message GL readback; native text fonts omit these emoji glyphs",
+          "comparisons": [
+            {
+              "name": "emoji-1-cell",
+              "bytes": 5476,
+              "maximumError": 0,
+              "nativeSha256": "2c3b68f6f7c152ac463b656f5b4521603682531dafcd3f644d3b6f5ddfd7ba20",
+              "managedSha256": "2c3b68f6f7c152ac463b656f5b4521603682531dafcd3f644d3b6f5ddfd7ba20"
+            },
+            {
+              "name": "emoji-2-cell",
+              "bytes": 5476,
+              "maximumError": 0,
+              "nativeSha256": "1fb9433a06a2890b85434173d9bbea1cfe97a1d9bb652fc7302c480e1f5fbc84",
+              "managedSha256": "1fb9433a06a2890b85434173d9bbea1cfe97a1d9bb652fc7302c480e1f5fbc84"
+            },
+            {
+              "name": "emoji-3-cell",
+              "bytes": 5476,
+              "maximumError": 0,
+              "nativeSha256": "2c3b68f6f7c152ac463b656f5b4521603682531dafcd3f644d3b6f5ddfd7ba20",
+              "managedSha256": "2c3b68f6f7c152ac463b656f5b4521603682531dafcd3f644d3b6f5ddfd7ba20"
+            }
+          ]
+        }
+      },
+      {
+        "form": "raw",
+        "mode": "aot",
+        "pages": 27,
+        "os_sidebar_selections": 27,
+        "recorded_actions": 68,
+        "assertions": 2955,
+        "maximum_main_rgba_channel_error": 0,
+        "channels_above_tolerance": 0,
+        "cleanup": "UI allocation freed once per lifecycle, GLFW context/display released, reinitialized",
+        "binary_sha256": "18703f04e9febd6810eaa2a7af573612aa32fd08c376133f33ad2bbdb377d563",
+        "assemblies_sha256": {
+          "System.Net.Primitives.dll": "f2e86accafe9de5af0f16f18c974ec669231c973d43792be72ca6e51a3aff7d9",
+          "Glfw.dll": "ee8e2eb34124422e952bc80bf20d1772fcdd58e803dfe29503bfec5703973ece",
+          "System.Web.dll": "d230cda9f6cff88ad0b1fd1185102406a776b743115b07d61e4e58aea650bb88",
+          "System.Core.dll": "b219d47e28c7d0d7fbf9373d5acac3c5c114e40e992ef3686077f8de36326ba4",
+          "System.Xml.ReaderWriter.dll": "65b5f58d6cdd5f2f61ab70ae81e2fc3857a65192e75a319468cd403e73f5331a",
+          "System.Net.Http.Json.dll": "8aa33e8e5c7dc6b73865e3cd8e3d3586fdd3c1f8dd56413db1d51bfbc44786bc",
+          "System.Net.ServerSentEvents.dll": "f4471860c812cc1ebd423e7a18d8fc403986b444d09fb85eb4cff0b48d14b4d9",
+          "System.Diagnostics.Tools.dll": "73c3a14d4ab85e05042316f21c1a33edb25ff6047b977baf3b7cbea819c0678d",
+          "System.ComponentModel.DataAnnotations.dll": "af7820376609b16bbc5c5ba6527d3693cfce3ef21912709fc6ccaa20fcd027f1",
+          "System.Reflection.Emit.ILGeneration.dll": "521f634cd65832fb3ce9426c374e6be3132e9caa07429ecd7f7478af9ea7ca6e",
+          "System.Net.Http.dll": "d5e6a71649c671b1c5ef3cc0e4a459ba5bd6498725bca9a437e9d7c985f32b1a",
+          "System.Threading.Channels.dll": "0c1f2cd447d31f005287ea17078c91917d641f813aae7b31a19b2d882f5453a2",
+          "System.Text.Encoding.Extensions.dll": "d35c939c5092e06c2becb94bb8fa2edaefc6c03996524951cc53ac61e3c3fef7",
+          "System.Runtime.Loader.dll": "85d7467d043ad6f5b16bd18ede2008b7c2435a651898f73ee7d42500f2cfd09d",
+          "System.Runtime.Serialization.Xml.dll": "68c9c3cc342102629092769910e698f7ce6e3032e5ce3ffeb147908f798fcd77",
+          "System.Net.WebHeaderCollection.dll": "7f63fdd0de62ae14f6559c282cf2ff7d89589a2332b7b38f277ff50c7191977f",
+          "System.Runtime.dll": "839cdd56c557d7845ca950ebdca65d1f159643c400e6a0af9a6d25dd64565602",
+          "TranslatedCuiGallery.dll": "16f07615feb7850d95a8065429f76a409641812b275ffcb92fcce7e30830d6e5",
+          "System.Drawing.Primitives.dll": "8239277ad8f8feb8e0d7ebb0acdb5922881a6f918d31b48d61b9e6dbfeb6b99a",
+          "System.Memory.dll": "749db3af71950e1549660bfa81c1e1a8f2858b81b6aedae7789a01b2bc740899",
+          "System.Runtime.Extensions.dll": "cdb29bb53d4720f1a06b44b62b8eb94b090a8d89bc78d64722e77f025b1ed2eb",
+          "System.Resources.Reader.dll": "0a22b766a1d3517416c4c8b1fb1b6e9fd0a2391383a5515e8f88c44452173ed9",
+          "System.Data.dll": "43d3b246c56beb65800deff3448ba76d0bed2bc90c083d1598a77536dfac517a",
+          "System.Net.Requests.dll": "ec8218672d49a01319847b32c933ee966ff9e417e06dd324fdc05b9509bb5fb6",
+          "System.Web.HttpUtility.dll": "8f7ff90c00b5c13ba8adf48830570b82e1161a2a58011eab371ed2734cd44c70",
+          "System.Net.Quic.dll": "8b8a4ef87e1b403541db1caed92dee7d8380f7e5c7d5e7a9c63a43178e869233",
+          "System.Net.WebSockets.dll": "6f955fc822262a2b4d79d04d099040601127d60db905b85fe7774cc19bc2ce86",
+          "System.IO.Compression.dll": "01429c550746ab2625c1a24bf295e5107ce9b3d96dc2c4e7c0fc2fb13fb4681e",
+          "System.Threading.dll": "827ba6462048a629673f889efe2a0ef59982a20a176c3b353bc667f66a871e0f",
+          "netstandard.dll": "ecc773f1ee8f112d802d6aca2c3767d39f7052536bd01302694a9e279ddd6134",
+          "System.Net.Security.dll": "df23123fd6e49878087e87287f1bf1bf22260aaf01a3683a2c62e333b35c2049",
+          "System.ComponentModel.dll": "5f3001f276c9c8f9e8a7f0fc85fac66ffddfe16e1ae1f496bb4e2083527f928a",
+          "System.Net.Ping.dll": "ba0bbc7f33c7101d37be9ebf5ffdc3cca873220e1a856b2849deb2b801ce799d",
+          "System.Security.Cryptography.X509Certificates.dll": "836ae89c94d996082923f3fd115b51bfb66e3f704f62757a6c93bd0a105fcaa9",
+          "System.Security.Cryptography.Encoding.dll": "a89382ae6578da1d96ac5e12c7d2b703972b1bd5322b4f26d3a23c9ed3bea87f",
+          "System.Transactions.Local.dll": "b8fefe57c2da72ff7c5553c62546ce698c9a6ac55d9b38054a101fe599031e4f",
+          "System.Linq.Expressions.dll": "1c528f1ee2125a539375a598bddf72078bb850749aff4bbc3cdc4e13a4ff4c3a",
+          "System.Runtime.Serialization.dll": "83f14b7606582ec8a3cacd165749440210edec4a90a4330d0aaf060549fd2a4e",
+          "System.Security.Cryptography.Primitives.dll": "50d6d55891dce87687d201e44a47b6d3bdd0bb358e47cf9710b1d53beca11f69",
+          "System.Security.Cryptography.Cng.dll": "0bb0840f8ed31567f135c88199f70d3faabe274af49c24ac3695d195117b3979",
+          "System.Xml.dll": "78f020d60276967e6a7923c8a670991ee777f9128da9311ada8068a2ef3429af",
+          "System.Security.dll": "2fafe6217c25ac921012eaac6d725c6ae39a9c0b805f8b26656bc98971dc1862",
+          "System.IO.UnmanagedMemoryStream.dll": "cfa8ab48d53fb12947c5b92aa7be696e8d9e3fee339cebadcc54328d1b1bb660",
+          "System.Xml.XDocument.dll": "7af9c0dfae3d7c73b0d2fd724d0c84187a2c21242879c2382f64b337aebb8be0",
+          "System.Runtime.CompilerServices.VisualC.dll": "2ede146bfc2892c071a2feb7d3b3e47c5464a5c83779d0c26486c2b2621a0918",
+          "System.Numerics.Vectors.dll": "a576a927d7023594a7bd2f354a5da397717e5a308c33d2a1f955674b3d4be8f9",
+          "System.Threading.Overlapped.dll": "4d077b08ebe49812609b17f17e0498c1c5151cf4ff7e0d0268def2bfe9d6f573",
+          "System.Dynamic.Runtime.dll": "5a0676e056c334d67584eac443738eac5870225abab3f6f249736281862a0cfb",
+          "Microsoft.VisualBasic.dll": "1ca493add6cb738d0a555a775c0eba1619beef5bb7a1b90648944d5c4ce6db1b",
+          "System.Net.WebClient.dll": "34405a1d6a0073c1d817f94c246b57b0dec4d0feb3592196d7f8df9706c53ae7",
+          "System.ObjectModel.dll": "0b5d4f6de23044d01bfc5e54c1ab330cd379da2a8aa5465cc308a9b795262eb9",
+          "System.Security.SecureString.dll": "4f69151b35126e4a973a56ad38f1c84cbe1a27bcc2542233a12551ea1884824f",
+          "System.Reflection.TypeExtensions.dll": "22afcd1d5d75749ca54deac34d68a50dae24c6ebe8a9d03272139f93b7b34d21",
+          "System.Runtime.InteropServices.dll": "7498430a42ee968f55e01139c7551a6729df6e462bef6f1dc64b4a8930d66890",
+          "System.Security.Cryptography.dll": "db81d873a163907c95fc75d77f7209fa48dbe9effa30f9b7662f5f495b511ef8",
+          "System.Diagnostics.Contracts.dll": "fa0189487506a93b492884162584885eaa5a5e8b33a3f86a08a49bb3b681c6c1",
+          "System.Reflection.Metadata.dll": "fae943c73b59e382d5495d2c57a31891da73103486d5bead7cbd8bce68ad9611",
+          "System.Net.NetworkInformation.dll": "7a3a4a8f2cf424a1acc71665bf4a51a2cb644b66eef004dd4346548128d6cbfa",
+          "System.Net.Sockets.dll": "5fe8da6f65d3000b328b13ccbd7ccaa4483354a5b0342f2325bf51a2d4ebc572",
+          "System.Drawing.dll": "34fce7436c4297202134736df7be5475ab2c540b9ddf9d8378667ac2b044d988",
+          "System.Text.Json.dll": "407fed3d662b4a6dbdc27e722ba61014f4be350059115fe9213af8570c884973",
+          "System.Collections.Immutable.dll": "94bc31471f4e342353dae017445d640e4087fe81060b01cfc03b9a5a25ed3f90",
+          "System.IO.Pipes.dll": "d42fae607824b355e2f7d78760427c76903679866ec4438be12aaa342db3eb2b",
+          "Microsoft.VisualBasic.Core.dll": "5b6552eff6e4c15facbe474a2f61489557c519ab36b4d2f6976755c43c79fba6",
+          "System.Diagnostics.Debug.dll": "997b78ca6418ea9877cc846b0bd2eccbed9b9850ced29515d60a6797ab2d6271",
+          "System.IO.Compression.FileSystem.dll": "8e08abd20fdb827b65755a9383362c1e2b1bd1b10ea79272cb3129fb2334f94d",
+          "System.Resources.ResourceManager.dll": "989720575485ea6cc917a00b676fb8f90e0bbf1e9cf7dbb47ee35f6c9608508f",
+          "System.Runtime.Numerics.dll": "036ff16ac5b1b8c811f957d8e831aa95cd680944dad479f2dc42f344835d5a5e",
+          "System.Globalization.Extensions.dll": "4b55b90db602d61a0f4bd540632fa8e2fd57d4358dae6ffdd77be615279720cf",
+          "System.IO.FileSystem.AccessControl.dll": "31a36da4312bc3d40950a4cbd88833b1836447fea8ebfcf1f9287044cea1bfd1",
+          "System.Linq.dll": "4879905671860d2038ac2b52f2e81eabd917719a186cc00f7abaca6b1dd8bd0b",
+          "System.Xml.Serialization.dll": "b152e26520029e3adbbd757b574a3182826b683bd8cf7d10d64281fa718cf409",
+          "System.Threading.Thread.dll": "dcf489e1a1a0816de5e5c78dad86a1ff47e8c31ceca95707fc0cb108cbc76236",
+          "Microsoft.Win32.Registry.dll": "c9e8a73eb04f6836e21d4a0d94cabf19faba5f6420255ad5f20abf28c6858775",
+          "System.Data.Common.dll": "ee642be411a99c51382966d250627b811911d2f14b9d82706bbf429fad1110b4",
+          "System.ServiceModel.Web.dll": "60525d2fa5ce88fc4af0fa0c8734d52ca9c67131104ed02452c0ed1c4a150dbe",
+          "System.Private.DataContractSerialization.dll": "d541de44181e6859be5e4013af0fa52d61d88667c31dcd178c353c2eb1b2a74e",
+          "System.Resources.Writer.dll": "9747fbd2332aac568fdfebac5a3815ece41ced5eeb20cb007e92b4a1c8f02b0a",
+          "System.IO.dll": "55ab109ef79b3d012e85dadd738b83ede5e54a4d6a5d63abc5442e288fc863c1",
+          "TranslatedCui.dll": "893a9400a65f64e954dd7b76be1d6a1e72ae30edbe56aca52515e50642299a76",
+          "System.Data.DataSetExtensions.dll": "61762456c6808398dba43907bd53ac12aee922d19fa7e994337e8a8bd79e298c",
+          "System.Threading.Tasks.dll": "c7735e1be17f09fb8d9c9b9cceacd516040c8e861359e800b778c3b1fcaf0bb3",
+          "System.Security.AccessControl.dll": "4a18f7b71960e0750f288437d10075b9c038033eee768e3ae4f7aae4be1eab6d",
+          "System.IO.FileSystem.dll": "fb9de61d860122854669cd962ef1212cd491142983011840894311f4eda2f531",
+          "System.Collections.NonGeneric.dll": "36780e3e28a7f6deee88c550d57c752b514f40239cfd08c396aaf3180b14b7cc",
+          "System.Private.CoreLib.dll": "dbe82a7a9a38f468d8dafb7890a3301f904c420718a8a985a302aa182c1268bc",
+          "System.Threading.AccessControl.dll": "3f8bc70f42ca5f70714a9c96d59a7493ad19159ca51238e8e8d9a69eab111897",
+          "System.Diagnostics.TextWriterTraceListener.dll": "946bcb73f6a138413198d79e44ffde330af274739fcf11f3c6c78f7c4bcd7bc7",
+          "System.Runtime.CompilerServices.Unsafe.dll": "dda0197aa024f24bd6478acb7d087c0f676733efdc29840e3276ef1d7031a013",
+          "System.Security.Cryptography.Csp.dll": "0be83cdc7c500aec30f0e36257bbe7f4e6ed195677b3c8fe710f742bd364301a",
+          "System.ComponentModel.Primitives.dll": "6e18f61344cc864286a7e7f96270a19560ffe9af71d5b4e69011c67f0cc29446",
+          "System.dll": "754a23a4ed82763ddef01bffbc1d5cc7f0eff4cce9f848189ef39a0edeb7e8cd",
+          "System.Collections.dll": "db3059eca80ea3e42a09d7a9ac5ab9769b1897ee671b954aca403e06f6ea1c11",
+          "System.Diagnostics.Process.dll": "da867d57969858e40239e6324ed8f5654aef6d7664df4b753ee1d7443ffb7f4a",
+          "System.Net.NameResolution.dll": "171069eba752613ee109bc8c47ca57b3d79a5427abf544a718bc723fddb8071b",
+          "System.Threading.Timer.dll": "3c08a4f21c0824ee9cd6f943df030e44b0d251e873f2d692f46e2803e8ce810f",
+          "System.Text.Encoding.dll": "366f702dc6ecd58c8337ba1064e29c8588245533c1469fb270b80f092486f103",
+          "System.Collections.Concurrent.dll": "bf447847582ef31de3a8f4acfbe451720e6e2082f09a3819e60f1a65cfba237b",
+          "System.Buffers.dll": "633335be887788fa67a2c9cb5407b7c14e4f4c38d19b2208d178d13e32349a11",
+          "Gallery.Tests.dll": "0d58eb0cd430aa18728e454aecdadbac95d06d5c43c13e8da351cd21a490c9f3",
+          "System.Net.WebSockets.Client.dll": "c63914100bc3a6d89f861b69955462bd43af367f6455919a9b3de4e8b653c22b",
+          "System.Security.Principal.Windows.dll": "bc2a4fdef15f112c0d53b7baeb736ba151f26a37633dbbd0efd3e4ff4a0ebbe0",
+          "System.Threading.Tasks.Dataflow.dll": "b80979b313399b03b0d6393a613f9a2d6d5ff9ec383a7f58209316ced65219cb",
+          "System.Xml.Linq.dll": "6827af05c735ca2685300e1085a3da54089bb54174a815d06bdc9d311f2975f9",
+          "System.Formats.Tar.dll": "18b082ef2f24a65fc907b7975236ea0bf294bfbb534756a16bc6301bbdea4986",
+          "System.Globalization.Calendars.dll": "4279749a72a53fbe1780b71d530db8f5e4cb7664c2d63de6132dc3661b9fe56a",
+          "System.ComponentModel.Annotations.dll": "0b4d81f288a151edae1f4a324d57def3bc5c71bad394869ed104daaf4fc7c025",
+          "System.Linq.AsyncEnumerable.dll": "89791d570ea786fb201cc262d5be12412bd50e7c8bd5e9b6c962bf28abfeb019",
+          "System.Reflection.Emit.Lightweight.dll": "d2d1801fefa184fbfef208c1d54f3f30b2b5784d124a4297cb1fe40c7f8f5ef8",
+          "System.Runtime.InteropServices.JavaScript.dll": "80696d0b42805da967bf38f7762814eb81ef0de8f47af67a22b2230f5904c74d",
+          "System.Configuration.dll": "b036e9c647bd12d380bb55be3394338f6af84651fdd11c13c76ff7a82d834d41",
+          "System.Xml.XPath.dll": "e81f1e29016269a29bab81afc6c7193640164337fcbec8e4979833215acbebe4",
+          "Microsoft.Win32.Primitives.dll": "4094c154d472d493fc9314ca88817eaa8cc4433affedc6c4183943486942f1b6",
+          "System.Security.Cryptography.OpenSsl.dll": "cc0f4bb2e592bb4ee7edc77f97fc3830c08f8040f89bf4e308510c2ef2fe77fd",
+          "System.Net.HttpListener.dll": "e1aba0b20484784f59a341bd381494a97c41b9cd7f8324e2589d0c1707ddc032",
+          "System.Net.Mail.dll": "9c74f0fe97aa31d73614e2e001727a3f6a65ee055c6e06e35c4ef06f239762de",
+          "System.Globalization.dll": "62bb714d514049ddc5864487bc3bdbe32a2514a4eae63abf3dcef22e9ebca242",
+          "System.Private.Uri.dll": "937386450b618daab122570e306e457e52a87616bc7ba4a840fdb5e851e24a10",
+          "System.Reflection.dll": "7c2e252bea814c79908d690c457752e685128846dae0f8b9395604c3fd798c00",
+          "System.Formats.Asn1.dll": "2c932f755e240ec337aee1f41fe5287334544914d4b17126b98e6284032c147f",
+          "mscorlib.dll": "b356f26321e76d23790d7fc58a92e29b324a11cefd2ffe79c3449ccf75df0dac",
+          "System.IO.FileSystem.Watcher.dll": "fd1dc6cb6f00c280ab53e6e91cc25e69cc1c9eed84360937d139c2d2293c3bde",
+          "System.Xml.XPath.XDocument.dll": "bdfe9eed32b8ff9360209e30ae7b5acc4d9eee1f6fa7ea6e1397530588a2da72",
+          "System.Threading.Tasks.Parallel.dll": "35fe7ef5b033436a61c5262f2ebc79fffee5a164e1e48e844fc73b584f02179d",
+          "System.Net.dll": "77165cbfd5ef1b29d2de78b8d26debeff28e499adcb50b2e27f4df336335c249",
+          "System.Reflection.DispatchProxy.dll": "b85caa6b1488e24a6aef68e6b9e57ac24dbaad72734ee070a45fac0ac61d5f02",
+          "System.Text.Encoding.CodePages.dll": "2fdc71a4b5f7f4618a0a2a543fb1bc8d115a434b0b627c1553cfffc5af2a5bc3",
+          "System.Text.Encodings.Web.dll": "12237c5ab0c988482e343944c88c88062f03c6a8a52604fc9571d213231eb6d8",
+          "System.Threading.ThreadPool.dll": "be68d332857e77b50b56ba2411fc4c8b9020ac7254834267b15164936741ea45",
+          "System.Runtime.Serialization.Primitives.dll": "b238c221d4548acbfd2e6bcf7d332c1c41190f3ad82ccdafe76a37c1dca77f4f",
+          "System.Runtime.Handles.dll": "37fa23382b9fe1efa900ed745e33c2eec0f9d892dd1e51b93b490809c976a7e4",
+          "System.Numerics.dll": "3c08786a94a9261f45c7feb84852ab81480dc2f7c4a3bc55aed0919a7f3d1fa5",
+          "System.IO.Compression.ZipFile.dll": "7e56cc7b9a30f08354dc7baed161bc9987433c2a3ca85297cedace146a9c362f",
+          "System.Reflection.Emit.dll": "02bc0410706627fd7eae582f380aefb200d8d90ac95a2c91df14f0305699e08e",
+          "System.Threading.Tasks.Extensions.dll": "382356d9b241bf1b231441c8f2c3940d955bf5b9e8ff616c6bd5ade8eb0d6085",
+          "System.Runtime.Serialization.Json.dll": "03e1510d9b10f2d24724cb8c5078e07f215c72f71f6961e315f930bdbe57daa9",
+          "System.IO.FileSystem.Primitives.dll": "9589ec09c7b04f4fd5c3b2e7e97c1cc8b84ec4d5d74bef509f6196b1a5e405c3",
+          "System.IO.IsolatedStorage.dll": "96206bfd5e67fbf3e65238d67c809c867b4e8fb6dbe0a72df39e58b95af0f4c2",
+          "System.Security.Claims.dll": "17007563d30265048dcc0743004f6d6402d0dc1aca6afd399a38979014cf2e86",
+          "System.Reflection.Primitives.dll": "3043d26dacf632e5703b9f8f896eab3b56582be85b28811175638b3b3cf9cd18",
+          "System.Reflection.Extensions.dll": "b78188567c3328ecff0ad8f0dde2125d48d5e15462a4dd25d24285763a70ac15",
+          "System.Text.RegularExpressions.dll": "2cb4845d0bbfd593524d45ab254768a25d5fee68652729a3ef13586a6663de5e",
+          "System.ValueTuple.dll": "ed6a7b611f824ab5b0b6abfa9f549d16cb4754cf5c6fd6e7ff038a7f76afbd6d",
+          "System.IO.FileSystem.DriveInfo.dll": "f8808192db957cfe95b693dee095a28ef1ba9897cbcf374e4dec06269db9f7e6",
+          "System.Runtime.Serialization.Formatters.dll": "83130977df76fd65e8d859c27b6247a2a5b804b3d1a47a0322012c836963d24c",
+          "System.Windows.dll": "78e5cce0acb5b73fa416562b0bb91c52e77721bd96f328c7e98bb072e3ce8c93",
+          "Microsoft.CSharp.dll": "df1d833c857008228e070e690ed13e3eb39548d79619fc305e5034edd32001c0",
+          "System.Diagnostics.DiagnosticSource.dll": "8ed6e3480e56950bbd3e2d38f87e2e080d5640b8501c5ca5cc5967979baaad8e",
+          "System.Runtime.Intrinsics.dll": "527ba6339b3755295a8ba2a2e370d608e3c14a10ab3e2ca217fe64f33ec99141",
+          "System.Collections.Specialized.dll": "d7e9bf3963dc30f7e3f62b7c9250cfe42c24643002d8f0b6048e28e8f7d797f4",
+          "System.Console.dll": "d571f6095154bdb07f851642b59dae2c94b42bd3e6fc6d00074faf92c71a8cfa",
+          "System.Diagnostics.StackTrace.dll": "b973bc54ccfd472c5963a226e379d1dd3634ad7bbf427564d716ea7c506ce50c",
+          "System.Diagnostics.FileVersionInfo.dll": "5805c93b65c4eb2586f4043da1768289fec09d087ecea9c6405178dd8b941777",
+          "System.Private.Xml.Linq.dll": "a307edc44e2d0ccf731ee033b789c12e31637adb24f8eb9a459dd7d3c661c0bb",
+          "System.IO.Compression.Brotli.dll": "64a596fbbf02dd51504051d8005e724e9695a44844f43e46c229f32ffd28e2ca",
+          "System.ComponentModel.TypeConverter.dll": "dd65cca51ead8cb9280f3af48f4d473b7504aeeb3eb796b9d0e232f3674711d7",
+          "System.AppContext.dll": "5a73c677388598c111f945fb222d3a8371a5417f7af624505bfdd8cf391ad430",
+          "System.Transactions.dll": "0743a76bf91ebdc1a3e21e9f000c3905b4345ee4c3f9539d880df5752dfee4bf",
+          "WindowsBase.dll": "57f08fdec670ab275e21a14e3fe09573bdc30621c7d5dfa6c230984e48b94abd",
+          "System.Net.WebProxy.dll": "25b4b45fad0d5905f973143a71325bc026bb0bb3da6b2849ff447ce9e3fed643",
+          "System.Linq.Queryable.dll": "3dcae2252fbed398604da5100c650bde32d65a5cb93308ff0cf6a0667bc2cd9b",
+          "System.ServiceProcess.dll": "587b6e755a29fef4632cd53db12ea3b9c21e620538e8b1be2b3388e3036efaaa",
+          "System.Linq.Parallel.dll": "477b394b39f0d7665eb42ce9a369d32d927a7bb6c6c5ad496d7a240bbef5428b",
+          "System.Private.Xml.dll": "f9974a1d5a72542f35be15f18ae55df71572b685580434af35a10f67fae60cee",
+          "System.IO.Pipelines.dll": "e32a01a18c0226e35d842b00c35542b3d44ae505913127fefd91ce8e2af19de9",
+          "System.Xml.XmlSerializer.dll": "255aac837d6a2f575be63b898bebb648f62c653d8577be4c48b1e65a5e19556a",
+          "System.ComponentModel.EventBasedAsync.dll": "455bf136fa4e1818cafd37dd3d14fa7d6f664e7cf612569752593d7bb115d650",
+          "System.Security.Principal.dll": "45f9ea4d762ebed18a554c69eac0e254993d05f5e465b3f9b219e2bd533479e6",
+          "System.IO.Pipes.AccessControl.dll": "110ef9c38ed835c3b343b035c74d5ff8a8bf3cdcafd013513924ecbdb894d668",
+          "System.IO.MemoryMappedFiles.dll": "a38f7a3fcd5b094b08e80e94189c07905242fa77350f054460a435cda6bc1274",
+          "System.Net.ServicePoint.dll": "e7fafb223d77b2dd54cfbd925fda813f0bba621e10eecc65fe5f89f1d3ef91a2",
+          "System.Security.Cryptography.Algorithms.dll": "6f20e429b9931539e78201283a960b3f63aab46a5d86e801c31477a8bdfbf95e",
+          "System.Diagnostics.Tracing.dll": "eca9cc25477cc2f9dd697dedd32caf03c0c2779c307f4a6311f3e5d0ec993969",
+          "System.Diagnostics.TraceSource.dll": "56cb4670dfc4772de78f4ba3f886fa91434185d07a75bdcc285d6326b76f0abf",
+          "System.Runtime.InteropServices.RuntimeInformation.dll": "8f891c8ea3a965a3fc8f16f217dd92d0623da3194af0dcaadcf67f4f16f9f76f",
+          "System.Xml.XmlDocument.dll": "134611455cb54e663e4865e937270b4a251113c7b5b641b7075b17b2e549e2ee"
+        },
+        "behavior_report": {
+          "status": "passed",
+          "assertions": 2955,
+          "pages": [
+            {
+              "page": 0,
+              "name": "Overview",
+              "nodes": 217,
+              "mainText": 44,
+              "textHash": 4038726249,
+              "different": 70795
+            },
+            {
+              "page": 1,
+              "name": "Buttons",
+              "nodes": 238,
+              "mainText": 59,
+              "textHash": 1320524017,
+              "different": 70180
+            },
+            {
+              "page": 2,
+              "name": "Inputs",
+              "nodes": 235,
+              "mainText": 43,
+              "textHash": 1915324641,
+              "different": 41764
+            },
+            {
+              "page": 3,
+              "name": "Selection",
+              "nodes": 252,
+              "mainText": 48,
+              "textHash": 435846595,
+              "different": 57783
+            },
+            {
+              "page": 4,
+              "name": "Navigation",
+              "nodes": 208,
+              "mainText": 42,
+              "textHash": 1261913610,
+              "different": 36812
+            },
+            {
+              "page": 5,
+              "name": "Overlays",
+              "nodes": 179,
+              "mainText": 29,
+              "textHash": 3444690065,
+              "different": 169947
+            },
+            {
+              "page": 6,
+              "name": "Feedback",
+              "nodes": 279,
+              "mainText": 57,
+              "textHash": 3795479188,
+              "different": 299882
+            },
+            {
+              "page": 7,
+              "name": "Data display",
+              "nodes": 388,
+              "mainText": 131,
+              "textHash": 2787385060,
+              "different": 144443
+            },
+            {
+              "page": 8,
+              "name": "Charts",
+              "nodes": 195,
+              "mainText": 21,
+              "textHash": 4092782315,
+              "different": 45856
+            },
+            {
+              "page": 9,
+              "name": "Actions",
+              "nodes": 280,
+              "mainText": 81,
+              "textHash": 3936841462,
+              "different": 39536
+            },
+            {
+              "page": 10,
+              "name": "Smart inputs",
+              "nodes": 206,
+              "mainText": 42,
+              "textHash": 4257854292,
+              "different": 28034
+            },
+            {
+              "page": 11,
+              "name": "Pickers",
+              "nodes": 370,
+              "mainText": 119,
+              "textHash": 1395811256,
+              "different": 40344
+            },
+            {
+              "page": 12,
+              "name": "Capture",
+              "nodes": 165,
+              "mainText": 20,
+              "textHash": 2278660598,
+              "different": 32583
+            },
+            {
+              "page": 13,
+              "name": "Disclosure",
+              "nodes": 262,
+              "mainText": 63,
+              "textHash": 1826530766,
+              "different": 74249
+            },
+            {
+              "page": 14,
+              "name": "Reader",
+              "nodes": 186,
+              "mainText": 42,
+              "textHash": 198630120,
+              "different": 46993
+            },
+            {
+              "page": 15,
+              "name": "Data grid",
+              "nodes": 506,
+              "mainText": 142,
+              "textHash": 710137252,
+              "different": 130580
+            },
+            {
+              "page": 16,
+              "name": "Code",
+              "nodes": 277,
+              "mainText": 71,
+              "textHash": 3453549479,
+              "different": 353846
+            },
+            {
+              "page": 17,
+              "name": "Social and media",
+              "nodes": 438,
+              "mainText": 151,
+              "textHash": 3136226653,
+              "different": 82891
+            },
+            {
+              "page": 18,
+              "name": "Planning",
+              "nodes": 498,
+              "mainText": 182,
+              "textHash": 1179639738,
+              "different": 116128
+            },
+            {
+              "page": 19,
+              "name": "More charts",
+              "nodes": 192,
+              "mainText": 26,
+              "textHash": 3185055877,
+              "different": 219787
+            },
+            {
+              "page": 20,
+              "name": "Motion",
+              "nodes": 265,
+              "mainText": 63,
+              "textHash": 3067974028,
+              "different": 31020
+            },
+            {
+              "page": 21,
+              "name": "AI",
+              "nodes": 314,
+              "mainText": 81,
+              "textHash": 1087603717,
+              "different": 142498
+            },
+            {
+              "page": 22,
+              "name": "Audio",
+              "nodes": 173,
+              "mainText": 24,
+              "textHash": 1161999309,
+              "different": 38879
+            },
+            {
+              "page": 23,
+              "name": "Files",
+              "nodes": 206,
+              "mainText": 42,
+              "textHash": 3595311223,
+              "different": 48973
+            },
+            {
+              "page": 24,
+              "name": "Developer tools",
+              "nodes": 712,
+              "mainText": 306,
+              "textHash": 4198489850,
+              "different": 225522
+            },
+            {
+              "page": 25,
+              "name": "More developer tools",
+              "nodes": 766,
+              "mainText": 280,
+              "textHash": 377826077,
+              "different": 83293
+            },
+            {
+              "page": 26,
+              "name": "Instruments",
+              "nodes": 153,
+              "mainText": 18,
+              "textHash": 573193795,
+              "different": 46290
+            }
+          ],
+          "actions": [
+            "OS sidebar selects page 1: Buttons and scrolls to top",
+            "OS sidebar selects page 0: Overview and scrolls to top",
+            "OS sidebar selects page 1: Buttons and scrolls to top",
+            "OS sidebar selects page 2: Inputs and scrolls to top",
+            "OS sidebar selects page 3: Selection and scrolls to top",
+            "OS sidebar selects page 4: Navigation and scrolls to top",
+            "OS sidebar selects page 5: Overlays and scrolls to top",
+            "OS sidebar selects page 6: Feedback and scrolls to top",
+            "OS sidebar selects page 7: Data display and scrolls to top",
+            "OS sidebar selects page 8: Charts and scrolls to top",
+            "OS sidebar selects page 9: Actions and scrolls to top",
+            "OS sidebar selects page 10: Smart inputs and scrolls to top",
+            "OS sidebar selects page 11: Pickers and scrolls to top",
+            "OS sidebar selects page 12: Capture and scrolls to top",
+            "OS sidebar selects page 13: Disclosure and scrolls to top",
+            "OS sidebar selects page 14: Reader and scrolls to top",
+            "OS sidebar selects page 15: Data grid and scrolls to top",
+            "OS sidebar selects page 16: Code and scrolls to top",
+            "OS sidebar selects page 17: Social and media and scrolls to top",
+            "OS sidebar selects page 18: Planning and scrolls to top",
+            "OS sidebar selects page 19: More charts and scrolls to top",
+            "OS sidebar selects page 20: Motion and scrolls to top",
+            "OS sidebar selects page 21: AI and scrolls to top",
+            "OS sidebar selects page 22: Audio and scrolls to top",
+            "OS sidebar selects page 23: Files and scrolls to top",
+            "OS sidebar selects page 24: Developer tools and scrolls to top",
+            "OS sidebar selects page 25: More developer tools and scrolls to top",
+            "OS sidebar selects page 26: Instruments and scrolls to top",
+            "OS sidebar selects page 3: Selection and scrolls to top",
+            "Checkbox changes upstream newsletter state",
+            "Switch changes upstream Bluetooth state",
+            "Radio changes upstream plan value",
+            "Slider pointer updates upstream volume",
+            "OS sidebar selects page 2: Inputs and scrolls to top",
+            "Text input replaces upstream name buffer",
+            "OS sidebar selects page 1: Buttons and scrolls to top",
+            "Button sets upstream loading state",
+            "Reset button clears upstream loading state",
+            "OS sidebar selects page 4: Navigation and scrolls to top",
+            "Tabs change upstream selected tab",
+            "Stepper Next changes upstream step",
+            "Stepper Back restores upstream step",
+            "OS sidebar selects page 5: Overlays and scrolls to top",
+            "Dialog button opens upstream modal",
+            "Escape closes upstream modal and releases input layer",
+            "OS sidebar selects page 10: Smart inputs and scrolls to top",
+            "OS smile icon opens original emoji popup",
+            "Original emoji recent order: ",
+            "OS emoji selection 1 appends exact UTF-8 and closes original popup: Release notes are up 😀",
+            "OS smile icon opens original emoji popup",
+            "Original emoji recent order: 😀",
+            "OS emoji selection 2 appends exact UTF-8 and closes original popup: Release notes are up 😀😃",
+            "OS sidebar selects page 1: Buttons and scrolls to top",
+            "OS sidebar selects page 10: Smart inputs and scrolls to top",
+            "OS smile icon opens original emoji popup",
+            "Original emoji recent order: 😃 😀",
+            "OS emoji selection 3 appends exact UTF-8 and closes original popup: Release notes are up 😀😃😀",
+            "OS smile icon opens original emoji popup",
+            "Original emoji recent order: 😀 😃",
+            "Emoji message and recent history persist across popup reopen and page navigation",
+            "OS sidebar selects page 9: Actions and scrolls to top",
+            "Extended Actions split button renders saved result",
+            "OS sidebar selects page 1: Buttons and scrolls to top",
+            "Sidebar theme control updates gallery and core theme",
+            "Accent swatch updates gallery and core accent",
+            "Ctrl+J shortcut changes upstream theme",
+            "OS sidebar selects page 3: Selection and scrolls to top",
+            "OS close ends upstream gallery loop"
+          ],
+          "platform": "Zorin OS 18.1",
+          "architecture": "X64",
+          "windows": "unrun",
+          "cleanup": "UI allocation freed once per lifecycle, GLFW context/display released, reinitialized"
+        },
+        "emoji": {
+          "status": "passed",
+          "selections": 3,
+          "messages": [
+            {
+              "length": 21,
+              "hex": "52656C65617365206E6F7465732061726520757020",
+              "text": "Release notes are up "
+            },
+            {
+              "length": 25,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880",
+              "text": "Release notes are up 😀"
+            },
+            {
+              "length": 25,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880",
+              "text": "Release notes are up 😀"
+            },
+            {
+              "length": 29,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883",
+              "text": "Release notes are up 😀😃"
+            },
+            {
+              "length": 29,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883",
+              "text": "Release notes are up 😀😃"
+            },
+            {
+              "length": 29,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883",
+              "text": "Release notes are up 😀😃"
+            },
+            {
+              "length": 33,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883F09F9880",
+              "text": "Release notes are up 😀😃😀"
+            },
+            {
+              "length": 33,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883F09F9880",
+              "text": "Release notes are up 😀😃😀"
+            },
+            {
+              "length": 33,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883F09F9880",
+              "text": "Release notes are up 😀😃😀"
+            }
+          ],
+          "recent": [
+            "",
+            "😀",
+            "😃 😀",
+            "😀 😃"
+          ],
+          "pixels": [
+            {
+              "name": "emoji-0-message",
+              "width": 435,
+              "height": 35,
+              "colored": 0
+            },
+            {
+              "name": "emoji-1-cell",
+              "width": 37,
+              "height": 37,
+              "colored": 388
+            },
+            {
+              "name": "emoji-1-message",
+              "width": 435,
+              "height": 35,
+              "colored": 0
+            },
+            {
+              "name": "emoji-1-rendered-message",
+              "width": 435,
+              "height": 35,
+              "colored": 0
+            },
+            {
+              "name": "emoji-2-cell",
+              "width": 37,
+              "height": 37,
+              "colored": 387
+            },
+            {
+              "name": "emoji-2-message",
+              "width": 435,
+              "height": 35,
+              "colored": 0
+            },
+            {
+              "name": "emoji-3-cell",
+              "width": 37,
+              "height": 37,
+              "colored": 388
+            },
+            {
+              "name": "emoji-3-message",
+              "width": 435,
+              "height": 35,
+              "colored": 0
+            }
+          ],
+          "messagePixelsChanged": false,
+          "rendering": "Colored picker cells and nonblank message GL readback; native text fonts omit these emoji glyphs",
+          "comparisons": [
+            {
+              "name": "emoji-1-cell",
+              "bytes": 5476,
+              "maximumError": 0,
+              "nativeSha256": "2c3b68f6f7c152ac463b656f5b4521603682531dafcd3f644d3b6f5ddfd7ba20",
+              "managedSha256": "2c3b68f6f7c152ac463b656f5b4521603682531dafcd3f644d3b6f5ddfd7ba20"
+            },
+            {
+              "name": "emoji-2-cell",
+              "bytes": 5476,
+              "maximumError": 0,
+              "nativeSha256": "1fb9433a06a2890b85434173d9bbea1cfe97a1d9bb652fc7302c480e1f5fbc84",
+              "managedSha256": "1fb9433a06a2890b85434173d9bbea1cfe97a1d9bb652fc7302c480e1f5fbc84"
+            },
+            {
+              "name": "emoji-3-cell",
+              "bytes": 5476,
+              "maximumError": 0,
+              "nativeSha256": "2c3b68f6f7c152ac463b656f5b4521603682531dafcd3f644d3b6f5ddfd7ba20",
+              "managedSha256": "2c3b68f6f7c152ac463b656f5b4521603682531dafcd3f644d3b6f5ddfd7ba20"
+            }
+          ]
+        }
+      },
+      {
+        "form": "processed",
+        "mode": "jit",
+        "pages": 27,
+        "os_sidebar_selections": 27,
+        "recorded_actions": 68,
+        "assertions": 2955,
+        "maximum_main_rgba_channel_error": 0,
+        "channels_above_tolerance": 0,
+        "cleanup": "UI allocation freed once per lifecycle, GLFW context/display released, reinitialized",
+        "binary_sha256": "932fd249600f00551939d7b73f948e4a87b2b45c227a2bcb4cbf592dbe96c402",
+        "assemblies_sha256": {
+          "Glfw.dll": "9dc7031ecdd935c9a7c37959039e87cc7e795cb41835eae9a3072283775431c9",
+          "TranslatedCuiGallery.dll": "18b0bcbcec6fdf97fe69bb6240dc6576b02ec5a9b7302cbbd9d0e6a4f062e672",
+          "TranslatedCui.dll": "7549190b8849bb945f5c92591ab8d7e1a4157809ba650a6d65282068522a3c09",
+          "Gallery.Tests.dll": "932fd249600f00551939d7b73f948e4a87b2b45c227a2bcb4cbf592dbe96c402"
+        },
+        "behavior_report": {
+          "status": "passed",
+          "assertions": 2955,
+          "pages": [
+            {
+              "page": 0,
+              "name": "Overview",
+              "nodes": 217,
+              "mainText": 44,
+              "textHash": 4038726249,
+              "different": 70795
+            },
+            {
+              "page": 1,
+              "name": "Buttons",
+              "nodes": 238,
+              "mainText": 59,
+              "textHash": 1320524017,
+              "different": 70180
+            },
+            {
+              "page": 2,
+              "name": "Inputs",
+              "nodes": 235,
+              "mainText": 43,
+              "textHash": 1915324641,
+              "different": 41764
+            },
+            {
+              "page": 3,
+              "name": "Selection",
+              "nodes": 252,
+              "mainText": 48,
+              "textHash": 435846595,
+              "different": 57783
+            },
+            {
+              "page": 4,
+              "name": "Navigation",
+              "nodes": 208,
+              "mainText": 42,
+              "textHash": 1261913610,
+              "different": 36812
+            },
+            {
+              "page": 5,
+              "name": "Overlays",
+              "nodes": 179,
+              "mainText": 29,
+              "textHash": 3444690065,
+              "different": 169947
+            },
+            {
+              "page": 6,
+              "name": "Feedback",
+              "nodes": 279,
+              "mainText": 57,
+              "textHash": 3795479188,
+              "different": 299882
+            },
+            {
+              "page": 7,
+              "name": "Data display",
+              "nodes": 388,
+              "mainText": 131,
+              "textHash": 2787385060,
+              "different": 144443
+            },
+            {
+              "page": 8,
+              "name": "Charts",
+              "nodes": 195,
+              "mainText": 21,
+              "textHash": 4092782315,
+              "different": 45856
+            },
+            {
+              "page": 9,
+              "name": "Actions",
+              "nodes": 280,
+              "mainText": 81,
+              "textHash": 3936841462,
+              "different": 39536
+            },
+            {
+              "page": 10,
+              "name": "Smart inputs",
+              "nodes": 206,
+              "mainText": 42,
+              "textHash": 4257854292,
+              "different": 28034
+            },
+            {
+              "page": 11,
+              "name": "Pickers",
+              "nodes": 370,
+              "mainText": 119,
+              "textHash": 1395811256,
+              "different": 40344
+            },
+            {
+              "page": 12,
+              "name": "Capture",
+              "nodes": 165,
+              "mainText": 20,
+              "textHash": 2278660598,
+              "different": 32583
+            },
+            {
+              "page": 13,
+              "name": "Disclosure",
+              "nodes": 262,
+              "mainText": 63,
+              "textHash": 1826530766,
+              "different": 74249
+            },
+            {
+              "page": 14,
+              "name": "Reader",
+              "nodes": 186,
+              "mainText": 42,
+              "textHash": 198630120,
+              "different": 46993
+            },
+            {
+              "page": 15,
+              "name": "Data grid",
+              "nodes": 506,
+              "mainText": 142,
+              "textHash": 710137252,
+              "different": 130580
+            },
+            {
+              "page": 16,
+              "name": "Code",
+              "nodes": 277,
+              "mainText": 71,
+              "textHash": 3453549479,
+              "different": 353846
+            },
+            {
+              "page": 17,
+              "name": "Social and media",
+              "nodes": 438,
+              "mainText": 151,
+              "textHash": 3136226653,
+              "different": 82891
+            },
+            {
+              "page": 18,
+              "name": "Planning",
+              "nodes": 498,
+              "mainText": 182,
+              "textHash": 1179639738,
+              "different": 116128
+            },
+            {
+              "page": 19,
+              "name": "More charts",
+              "nodes": 192,
+              "mainText": 26,
+              "textHash": 3185055877,
+              "different": 219787
+            },
+            {
+              "page": 20,
+              "name": "Motion",
+              "nodes": 265,
+              "mainText": 63,
+              "textHash": 3067974028,
+              "different": 31020
+            },
+            {
+              "page": 21,
+              "name": "AI",
+              "nodes": 314,
+              "mainText": 81,
+              "textHash": 1087603717,
+              "different": 142498
+            },
+            {
+              "page": 22,
+              "name": "Audio",
+              "nodes": 173,
+              "mainText": 24,
+              "textHash": 1161999309,
+              "different": 38879
+            },
+            {
+              "page": 23,
+              "name": "Files",
+              "nodes": 206,
+              "mainText": 42,
+              "textHash": 3595311223,
+              "different": 48973
+            },
+            {
+              "page": 24,
+              "name": "Developer tools",
+              "nodes": 712,
+              "mainText": 306,
+              "textHash": 4198489850,
+              "different": 225522
+            },
+            {
+              "page": 25,
+              "name": "More developer tools",
+              "nodes": 766,
+              "mainText": 280,
+              "textHash": 377826077,
+              "different": 83293
+            },
+            {
+              "page": 26,
+              "name": "Instruments",
+              "nodes": 153,
+              "mainText": 18,
+              "textHash": 573193795,
+              "different": 46290
+            }
+          ],
+          "actions": [
+            "OS sidebar selects page 1: Buttons and scrolls to top",
+            "OS sidebar selects page 0: Overview and scrolls to top",
+            "OS sidebar selects page 1: Buttons and scrolls to top",
+            "OS sidebar selects page 2: Inputs and scrolls to top",
+            "OS sidebar selects page 3: Selection and scrolls to top",
+            "OS sidebar selects page 4: Navigation and scrolls to top",
+            "OS sidebar selects page 5: Overlays and scrolls to top",
+            "OS sidebar selects page 6: Feedback and scrolls to top",
+            "OS sidebar selects page 7: Data display and scrolls to top",
+            "OS sidebar selects page 8: Charts and scrolls to top",
+            "OS sidebar selects page 9: Actions and scrolls to top",
+            "OS sidebar selects page 10: Smart inputs and scrolls to top",
+            "OS sidebar selects page 11: Pickers and scrolls to top",
+            "OS sidebar selects page 12: Capture and scrolls to top",
+            "OS sidebar selects page 13: Disclosure and scrolls to top",
+            "OS sidebar selects page 14: Reader and scrolls to top",
+            "OS sidebar selects page 15: Data grid and scrolls to top",
+            "OS sidebar selects page 16: Code and scrolls to top",
+            "OS sidebar selects page 17: Social and media and scrolls to top",
+            "OS sidebar selects page 18: Planning and scrolls to top",
+            "OS sidebar selects page 19: More charts and scrolls to top",
+            "OS sidebar selects page 20: Motion and scrolls to top",
+            "OS sidebar selects page 21: AI and scrolls to top",
+            "OS sidebar selects page 22: Audio and scrolls to top",
+            "OS sidebar selects page 23: Files and scrolls to top",
+            "OS sidebar selects page 24: Developer tools and scrolls to top",
+            "OS sidebar selects page 25: More developer tools and scrolls to top",
+            "OS sidebar selects page 26: Instruments and scrolls to top",
+            "OS sidebar selects page 3: Selection and scrolls to top",
+            "Checkbox changes upstream newsletter state",
+            "Switch changes upstream Bluetooth state",
+            "Radio changes upstream plan value",
+            "Slider pointer updates upstream volume",
+            "OS sidebar selects page 2: Inputs and scrolls to top",
+            "Text input replaces upstream name buffer",
+            "OS sidebar selects page 1: Buttons and scrolls to top",
+            "Button sets upstream loading state",
+            "Reset button clears upstream loading state",
+            "OS sidebar selects page 4: Navigation and scrolls to top",
+            "Tabs change upstream selected tab",
+            "Stepper Next changes upstream step",
+            "Stepper Back restores upstream step",
+            "OS sidebar selects page 5: Overlays and scrolls to top",
+            "Dialog button opens upstream modal",
+            "Escape closes upstream modal and releases input layer",
+            "OS sidebar selects page 10: Smart inputs and scrolls to top",
+            "OS smile icon opens original emoji popup",
+            "Original emoji recent order: ",
+            "OS emoji selection 1 appends exact UTF-8 and closes original popup: Release notes are up 😀",
+            "OS smile icon opens original emoji popup",
+            "Original emoji recent order: 😀",
+            "OS emoji selection 2 appends exact UTF-8 and closes original popup: Release notes are up 😀😃",
+            "OS sidebar selects page 1: Buttons and scrolls to top",
+            "OS sidebar selects page 10: Smart inputs and scrolls to top",
+            "OS smile icon opens original emoji popup",
+            "Original emoji recent order: 😃 😀",
+            "OS emoji selection 3 appends exact UTF-8 and closes original popup: Release notes are up 😀😃😀",
+            "OS smile icon opens original emoji popup",
+            "Original emoji recent order: 😀 😃",
+            "Emoji message and recent history persist across popup reopen and page navigation",
+            "OS sidebar selects page 9: Actions and scrolls to top",
+            "Extended Actions split button renders saved result",
+            "OS sidebar selects page 1: Buttons and scrolls to top",
+            "Sidebar theme control updates gallery and core theme",
+            "Accent swatch updates gallery and core accent",
+            "Ctrl+J shortcut changes upstream theme",
+            "OS sidebar selects page 3: Selection and scrolls to top",
+            "OS close ends upstream gallery loop"
+          ],
+          "platform": "Zorin OS 18.1",
+          "architecture": "X64",
+          "windows": "unrun",
+          "cleanup": "UI allocation freed once per lifecycle, GLFW context/display released, reinitialized"
+        },
+        "emoji": {
+          "status": "passed",
+          "selections": 3,
+          "messages": [
+            {
+              "length": 21,
+              "hex": "52656C65617365206E6F7465732061726520757020",
+              "text": "Release notes are up "
+            },
+            {
+              "length": 25,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880",
+              "text": "Release notes are up 😀"
+            },
+            {
+              "length": 25,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880",
+              "text": "Release notes are up 😀"
+            },
+            {
+              "length": 29,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883",
+              "text": "Release notes are up 😀😃"
+            },
+            {
+              "length": 29,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883",
+              "text": "Release notes are up 😀😃"
+            },
+            {
+              "length": 29,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883",
+              "text": "Release notes are up 😀😃"
+            },
+            {
+              "length": 33,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883F09F9880",
+              "text": "Release notes are up 😀😃😀"
+            },
+            {
+              "length": 33,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883F09F9880",
+              "text": "Release notes are up 😀😃😀"
+            },
+            {
+              "length": 33,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883F09F9880",
+              "text": "Release notes are up 😀😃😀"
+            }
+          ],
+          "recent": [
+            "",
+            "😀",
+            "😃 😀",
+            "😀 😃"
+          ],
+          "pixels": [
+            {
+              "name": "emoji-0-message",
+              "width": 435,
+              "height": 35,
+              "colored": 0
+            },
+            {
+              "name": "emoji-1-cell",
+              "width": 37,
+              "height": 37,
+              "colored": 388
+            },
+            {
+              "name": "emoji-1-message",
+              "width": 435,
+              "height": 35,
+              "colored": 0
+            },
+            {
+              "name": "emoji-1-rendered-message",
+              "width": 435,
+              "height": 35,
+              "colored": 0
+            },
+            {
+              "name": "emoji-2-cell",
+              "width": 37,
+              "height": 37,
+              "colored": 387
+            },
+            {
+              "name": "emoji-2-message",
+              "width": 435,
+              "height": 35,
+              "colored": 0
+            },
+            {
+              "name": "emoji-3-cell",
+              "width": 37,
+              "height": 37,
+              "colored": 388
+            },
+            {
+              "name": "emoji-3-message",
+              "width": 435,
+              "height": 35,
+              "colored": 0
+            }
+          ],
+          "messagePixelsChanged": false,
+          "rendering": "Colored picker cells and nonblank message GL readback; native text fonts omit these emoji glyphs",
+          "comparisons": [
+            {
+              "name": "emoji-1-cell",
+              "bytes": 5476,
+              "maximumError": 0,
+              "nativeSha256": "2c3b68f6f7c152ac463b656f5b4521603682531dafcd3f644d3b6f5ddfd7ba20",
+              "managedSha256": "2c3b68f6f7c152ac463b656f5b4521603682531dafcd3f644d3b6f5ddfd7ba20"
+            },
+            {
+              "name": "emoji-2-cell",
+              "bytes": 5476,
+              "maximumError": 0,
+              "nativeSha256": "1fb9433a06a2890b85434173d9bbea1cfe97a1d9bb652fc7302c480e1f5fbc84",
+              "managedSha256": "1fb9433a06a2890b85434173d9bbea1cfe97a1d9bb652fc7302c480e1f5fbc84"
+            },
+            {
+              "name": "emoji-3-cell",
+              "bytes": 5476,
+              "maximumError": 0,
+              "nativeSha256": "2c3b68f6f7c152ac463b656f5b4521603682531dafcd3f644d3b6f5ddfd7ba20",
+              "managedSha256": "2c3b68f6f7c152ac463b656f5b4521603682531dafcd3f644d3b6f5ddfd7ba20"
+            }
+          ]
+        }
+      },
+      {
+        "form": "processed",
+        "mode": "aot",
+        "pages": 27,
+        "os_sidebar_selections": 27,
+        "recorded_actions": 68,
+        "assertions": 2955,
+        "maximum_main_rgba_channel_error": 0,
+        "channels_above_tolerance": 0,
+        "cleanup": "UI allocation freed once per lifecycle, GLFW context/display released, reinitialized",
+        "binary_sha256": "16d3f6730eb346994c54bceeb678a3c702fdd4a8d34da2c8864a6018f09a5e2b",
+        "assemblies_sha256": {
+          "System.Net.Primitives.dll": "f2e86accafe9de5af0f16f18c974ec669231c973d43792be72ca6e51a3aff7d9",
+          "Glfw.dll": "5ebb840517587d3293f66d2b06e1d58750eb8fb939eefb229807d44eba75948a",
+          "System.Web.dll": "d230cda9f6cff88ad0b1fd1185102406a776b743115b07d61e4e58aea650bb88",
+          "System.Core.dll": "b219d47e28c7d0d7fbf9373d5acac3c5c114e40e992ef3686077f8de36326ba4",
+          "System.Xml.ReaderWriter.dll": "65b5f58d6cdd5f2f61ab70ae81e2fc3857a65192e75a319468cd403e73f5331a",
+          "System.Net.Http.Json.dll": "8aa33e8e5c7dc6b73865e3cd8e3d3586fdd3c1f8dd56413db1d51bfbc44786bc",
+          "System.Net.ServerSentEvents.dll": "f4471860c812cc1ebd423e7a18d8fc403986b444d09fb85eb4cff0b48d14b4d9",
+          "System.Diagnostics.Tools.dll": "73c3a14d4ab85e05042316f21c1a33edb25ff6047b977baf3b7cbea819c0678d",
+          "System.ComponentModel.DataAnnotations.dll": "af7820376609b16bbc5c5ba6527d3693cfce3ef21912709fc6ccaa20fcd027f1",
+          "System.Reflection.Emit.ILGeneration.dll": "521f634cd65832fb3ce9426c374e6be3132e9caa07429ecd7f7478af9ea7ca6e",
+          "System.Net.Http.dll": "d5e6a71649c671b1c5ef3cc0e4a459ba5bd6498725bca9a437e9d7c985f32b1a",
+          "System.Threading.Channels.dll": "0c1f2cd447d31f005287ea17078c91917d641f813aae7b31a19b2d882f5453a2",
+          "System.Text.Encoding.Extensions.dll": "d35c939c5092e06c2becb94bb8fa2edaefc6c03996524951cc53ac61e3c3fef7",
+          "System.Runtime.Loader.dll": "85d7467d043ad6f5b16bd18ede2008b7c2435a651898f73ee7d42500f2cfd09d",
+          "System.Runtime.Serialization.Xml.dll": "68c9c3cc342102629092769910e698f7ce6e3032e5ce3ffeb147908f798fcd77",
+          "System.Net.WebHeaderCollection.dll": "7f63fdd0de62ae14f6559c282cf2ff7d89589a2332b7b38f277ff50c7191977f",
+          "System.Runtime.dll": "839cdd56c557d7845ca950ebdca65d1f159643c400e6a0af9a6d25dd64565602",
+          "TranslatedCuiGallery.dll": "d889d97279287e57ef825e5b7ccb514b60ec1e4ea7c6b5d4fc5911da2ace3601",
+          "System.Drawing.Primitives.dll": "8239277ad8f8feb8e0d7ebb0acdb5922881a6f918d31b48d61b9e6dbfeb6b99a",
+          "System.Memory.dll": "749db3af71950e1549660bfa81c1e1a8f2858b81b6aedae7789a01b2bc740899",
+          "System.Runtime.Extensions.dll": "cdb29bb53d4720f1a06b44b62b8eb94b090a8d89bc78d64722e77f025b1ed2eb",
+          "System.Resources.Reader.dll": "0a22b766a1d3517416c4c8b1fb1b6e9fd0a2391383a5515e8f88c44452173ed9",
+          "System.Data.dll": "43d3b246c56beb65800deff3448ba76d0bed2bc90c083d1598a77536dfac517a",
+          "System.Net.Requests.dll": "ec8218672d49a01319847b32c933ee966ff9e417e06dd324fdc05b9509bb5fb6",
+          "System.Web.HttpUtility.dll": "8f7ff90c00b5c13ba8adf48830570b82e1161a2a58011eab371ed2734cd44c70",
+          "System.Net.Quic.dll": "8b8a4ef87e1b403541db1caed92dee7d8380f7e5c7d5e7a9c63a43178e869233",
+          "System.Net.WebSockets.dll": "6f955fc822262a2b4d79d04d099040601127d60db905b85fe7774cc19bc2ce86",
+          "System.IO.Compression.dll": "01429c550746ab2625c1a24bf295e5107ce9b3d96dc2c4e7c0fc2fb13fb4681e",
+          "System.Threading.dll": "827ba6462048a629673f889efe2a0ef59982a20a176c3b353bc667f66a871e0f",
+          "netstandard.dll": "ecc773f1ee8f112d802d6aca2c3767d39f7052536bd01302694a9e279ddd6134",
+          "System.Net.Security.dll": "df23123fd6e49878087e87287f1bf1bf22260aaf01a3683a2c62e333b35c2049",
+          "System.ComponentModel.dll": "5f3001f276c9c8f9e8a7f0fc85fac66ffddfe16e1ae1f496bb4e2083527f928a",
+          "System.Net.Ping.dll": "ba0bbc7f33c7101d37be9ebf5ffdc3cca873220e1a856b2849deb2b801ce799d",
+          "System.Security.Cryptography.X509Certificates.dll": "836ae89c94d996082923f3fd115b51bfb66e3f704f62757a6c93bd0a105fcaa9",
+          "System.Security.Cryptography.Encoding.dll": "a89382ae6578da1d96ac5e12c7d2b703972b1bd5322b4f26d3a23c9ed3bea87f",
+          "System.Transactions.Local.dll": "b8fefe57c2da72ff7c5553c62546ce698c9a6ac55d9b38054a101fe599031e4f",
+          "System.Linq.Expressions.dll": "1c528f1ee2125a539375a598bddf72078bb850749aff4bbc3cdc4e13a4ff4c3a",
+          "System.Runtime.Serialization.dll": "83f14b7606582ec8a3cacd165749440210edec4a90a4330d0aaf060549fd2a4e",
+          "System.Security.Cryptography.Primitives.dll": "50d6d55891dce87687d201e44a47b6d3bdd0bb358e47cf9710b1d53beca11f69",
+          "System.Security.Cryptography.Cng.dll": "0bb0840f8ed31567f135c88199f70d3faabe274af49c24ac3695d195117b3979",
+          "System.Xml.dll": "78f020d60276967e6a7923c8a670991ee777f9128da9311ada8068a2ef3429af",
+          "System.Security.dll": "2fafe6217c25ac921012eaac6d725c6ae39a9c0b805f8b26656bc98971dc1862",
+          "System.IO.UnmanagedMemoryStream.dll": "cfa8ab48d53fb12947c5b92aa7be696e8d9e3fee339cebadcc54328d1b1bb660",
+          "System.Xml.XDocument.dll": "7af9c0dfae3d7c73b0d2fd724d0c84187a2c21242879c2382f64b337aebb8be0",
+          "System.Runtime.CompilerServices.VisualC.dll": "2ede146bfc2892c071a2feb7d3b3e47c5464a5c83779d0c26486c2b2621a0918",
+          "System.Numerics.Vectors.dll": "a576a927d7023594a7bd2f354a5da397717e5a308c33d2a1f955674b3d4be8f9",
+          "System.Threading.Overlapped.dll": "4d077b08ebe49812609b17f17e0498c1c5151cf4ff7e0d0268def2bfe9d6f573",
+          "System.Dynamic.Runtime.dll": "5a0676e056c334d67584eac443738eac5870225abab3f6f249736281862a0cfb",
+          "Microsoft.VisualBasic.dll": "1ca493add6cb738d0a555a775c0eba1619beef5bb7a1b90648944d5c4ce6db1b",
+          "System.Net.WebClient.dll": "34405a1d6a0073c1d817f94c246b57b0dec4d0feb3592196d7f8df9706c53ae7",
+          "System.ObjectModel.dll": "0b5d4f6de23044d01bfc5e54c1ab330cd379da2a8aa5465cc308a9b795262eb9",
+          "System.Security.SecureString.dll": "4f69151b35126e4a973a56ad38f1c84cbe1a27bcc2542233a12551ea1884824f",
+          "System.Reflection.TypeExtensions.dll": "22afcd1d5d75749ca54deac34d68a50dae24c6ebe8a9d03272139f93b7b34d21",
+          "System.Runtime.InteropServices.dll": "7498430a42ee968f55e01139c7551a6729df6e462bef6f1dc64b4a8930d66890",
+          "System.Security.Cryptography.dll": "db81d873a163907c95fc75d77f7209fa48dbe9effa30f9b7662f5f495b511ef8",
+          "System.Diagnostics.Contracts.dll": "fa0189487506a93b492884162584885eaa5a5e8b33a3f86a08a49bb3b681c6c1",
+          "System.Reflection.Metadata.dll": "fae943c73b59e382d5495d2c57a31891da73103486d5bead7cbd8bce68ad9611",
+          "System.Net.NetworkInformation.dll": "7a3a4a8f2cf424a1acc71665bf4a51a2cb644b66eef004dd4346548128d6cbfa",
+          "System.Net.Sockets.dll": "5fe8da6f65d3000b328b13ccbd7ccaa4483354a5b0342f2325bf51a2d4ebc572",
+          "System.Drawing.dll": "34fce7436c4297202134736df7be5475ab2c540b9ddf9d8378667ac2b044d988",
+          "System.Text.Json.dll": "407fed3d662b4a6dbdc27e722ba61014f4be350059115fe9213af8570c884973",
+          "System.Collections.Immutable.dll": "94bc31471f4e342353dae017445d640e4087fe81060b01cfc03b9a5a25ed3f90",
+          "System.IO.Pipes.dll": "d42fae607824b355e2f7d78760427c76903679866ec4438be12aaa342db3eb2b",
+          "Microsoft.VisualBasic.Core.dll": "5b6552eff6e4c15facbe474a2f61489557c519ab36b4d2f6976755c43c79fba6",
+          "System.Diagnostics.Debug.dll": "997b78ca6418ea9877cc846b0bd2eccbed9b9850ced29515d60a6797ab2d6271",
+          "System.IO.Compression.FileSystem.dll": "8e08abd20fdb827b65755a9383362c1e2b1bd1b10ea79272cb3129fb2334f94d",
+          "System.Resources.ResourceManager.dll": "989720575485ea6cc917a00b676fb8f90e0bbf1e9cf7dbb47ee35f6c9608508f",
+          "System.Runtime.Numerics.dll": "036ff16ac5b1b8c811f957d8e831aa95cd680944dad479f2dc42f344835d5a5e",
+          "System.Globalization.Extensions.dll": "4b55b90db602d61a0f4bd540632fa8e2fd57d4358dae6ffdd77be615279720cf",
+          "System.IO.FileSystem.AccessControl.dll": "31a36da4312bc3d40950a4cbd88833b1836447fea8ebfcf1f9287044cea1bfd1",
+          "System.Linq.dll": "4879905671860d2038ac2b52f2e81eabd917719a186cc00f7abaca6b1dd8bd0b",
+          "System.Xml.Serialization.dll": "b152e26520029e3adbbd757b574a3182826b683bd8cf7d10d64281fa718cf409",
+          "System.Threading.Thread.dll": "dcf489e1a1a0816de5e5c78dad86a1ff47e8c31ceca95707fc0cb108cbc76236",
+          "Microsoft.Win32.Registry.dll": "c9e8a73eb04f6836e21d4a0d94cabf19faba5f6420255ad5f20abf28c6858775",
+          "System.Data.Common.dll": "ee642be411a99c51382966d250627b811911d2f14b9d82706bbf429fad1110b4",
+          "System.ServiceModel.Web.dll": "60525d2fa5ce88fc4af0fa0c8734d52ca9c67131104ed02452c0ed1c4a150dbe",
+          "System.Private.DataContractSerialization.dll": "d541de44181e6859be5e4013af0fa52d61d88667c31dcd178c353c2eb1b2a74e",
+          "System.Resources.Writer.dll": "9747fbd2332aac568fdfebac5a3815ece41ced5eeb20cb007e92b4a1c8f02b0a",
+          "System.IO.dll": "55ab109ef79b3d012e85dadd738b83ede5e54a4d6a5d63abc5442e288fc863c1",
+          "TranslatedCui.dll": "a12f089494e216b171c20dd5a496156d5138e9cc3d9073a220753a9a9a3010ab",
+          "System.Data.DataSetExtensions.dll": "61762456c6808398dba43907bd53ac12aee922d19fa7e994337e8a8bd79e298c",
+          "System.Threading.Tasks.dll": "c7735e1be17f09fb8d9c9b9cceacd516040c8e861359e800b778c3b1fcaf0bb3",
+          "System.Security.AccessControl.dll": "4a18f7b71960e0750f288437d10075b9c038033eee768e3ae4f7aae4be1eab6d",
+          "System.IO.FileSystem.dll": "fb9de61d860122854669cd962ef1212cd491142983011840894311f4eda2f531",
+          "System.Collections.NonGeneric.dll": "36780e3e28a7f6deee88c550d57c752b514f40239cfd08c396aaf3180b14b7cc",
+          "System.Private.CoreLib.dll": "dbe82a7a9a38f468d8dafb7890a3301f904c420718a8a985a302aa182c1268bc",
+          "System.Threading.AccessControl.dll": "3f8bc70f42ca5f70714a9c96d59a7493ad19159ca51238e8e8d9a69eab111897",
+          "System.Diagnostics.TextWriterTraceListener.dll": "946bcb73f6a138413198d79e44ffde330af274739fcf11f3c6c78f7c4bcd7bc7",
+          "System.Runtime.CompilerServices.Unsafe.dll": "dda0197aa024f24bd6478acb7d087c0f676733efdc29840e3276ef1d7031a013",
+          "System.Security.Cryptography.Csp.dll": "0be83cdc7c500aec30f0e36257bbe7f4e6ed195677b3c8fe710f742bd364301a",
+          "System.ComponentModel.Primitives.dll": "6e18f61344cc864286a7e7f96270a19560ffe9af71d5b4e69011c67f0cc29446",
+          "System.dll": "754a23a4ed82763ddef01bffbc1d5cc7f0eff4cce9f848189ef39a0edeb7e8cd",
+          "System.Collections.dll": "db3059eca80ea3e42a09d7a9ac5ab9769b1897ee671b954aca403e06f6ea1c11",
+          "System.Diagnostics.Process.dll": "da867d57969858e40239e6324ed8f5654aef6d7664df4b753ee1d7443ffb7f4a",
+          "System.Net.NameResolution.dll": "171069eba752613ee109bc8c47ca57b3d79a5427abf544a718bc723fddb8071b",
+          "System.Threading.Timer.dll": "3c08a4f21c0824ee9cd6f943df030e44b0d251e873f2d692f46e2803e8ce810f",
+          "System.Text.Encoding.dll": "366f702dc6ecd58c8337ba1064e29c8588245533c1469fb270b80f092486f103",
+          "System.Collections.Concurrent.dll": "bf447847582ef31de3a8f4acfbe451720e6e2082f09a3819e60f1a65cfba237b",
+          "System.Buffers.dll": "633335be887788fa67a2c9cb5407b7c14e4f4c38d19b2208d178d13e32349a11",
+          "Gallery.Tests.dll": "4196300dde3cedff3b98063e205d428cec810cd35c155b0b9e8b7b450684a043",
+          "System.Net.WebSockets.Client.dll": "c63914100bc3a6d89f861b69955462bd43af367f6455919a9b3de4e8b653c22b",
+          "System.Security.Principal.Windows.dll": "bc2a4fdef15f112c0d53b7baeb736ba151f26a37633dbbd0efd3e4ff4a0ebbe0",
+          "System.Threading.Tasks.Dataflow.dll": "b80979b313399b03b0d6393a613f9a2d6d5ff9ec383a7f58209316ced65219cb",
+          "System.Xml.Linq.dll": "6827af05c735ca2685300e1085a3da54089bb54174a815d06bdc9d311f2975f9",
+          "System.Formats.Tar.dll": "18b082ef2f24a65fc907b7975236ea0bf294bfbb534756a16bc6301bbdea4986",
+          "System.Globalization.Calendars.dll": "4279749a72a53fbe1780b71d530db8f5e4cb7664c2d63de6132dc3661b9fe56a",
+          "System.ComponentModel.Annotations.dll": "0b4d81f288a151edae1f4a324d57def3bc5c71bad394869ed104daaf4fc7c025",
+          "System.Linq.AsyncEnumerable.dll": "89791d570ea786fb201cc262d5be12412bd50e7c8bd5e9b6c962bf28abfeb019",
+          "System.Reflection.Emit.Lightweight.dll": "d2d1801fefa184fbfef208c1d54f3f30b2b5784d124a4297cb1fe40c7f8f5ef8",
+          "System.Runtime.InteropServices.JavaScript.dll": "80696d0b42805da967bf38f7762814eb81ef0de8f47af67a22b2230f5904c74d",
+          "System.Configuration.dll": "b036e9c647bd12d380bb55be3394338f6af84651fdd11c13c76ff7a82d834d41",
+          "System.Xml.XPath.dll": "e81f1e29016269a29bab81afc6c7193640164337fcbec8e4979833215acbebe4",
+          "Microsoft.Win32.Primitives.dll": "4094c154d472d493fc9314ca88817eaa8cc4433affedc6c4183943486942f1b6",
+          "System.Security.Cryptography.OpenSsl.dll": "cc0f4bb2e592bb4ee7edc77f97fc3830c08f8040f89bf4e308510c2ef2fe77fd",
+          "System.Net.HttpListener.dll": "e1aba0b20484784f59a341bd381494a97c41b9cd7f8324e2589d0c1707ddc032",
+          "System.Net.Mail.dll": "9c74f0fe97aa31d73614e2e001727a3f6a65ee055c6e06e35c4ef06f239762de",
+          "System.Globalization.dll": "62bb714d514049ddc5864487bc3bdbe32a2514a4eae63abf3dcef22e9ebca242",
+          "System.Private.Uri.dll": "937386450b618daab122570e306e457e52a87616bc7ba4a840fdb5e851e24a10",
+          "System.Reflection.dll": "7c2e252bea814c79908d690c457752e685128846dae0f8b9395604c3fd798c00",
+          "System.Formats.Asn1.dll": "2c932f755e240ec337aee1f41fe5287334544914d4b17126b98e6284032c147f",
+          "mscorlib.dll": "b356f26321e76d23790d7fc58a92e29b324a11cefd2ffe79c3449ccf75df0dac",
+          "System.IO.FileSystem.Watcher.dll": "fd1dc6cb6f00c280ab53e6e91cc25e69cc1c9eed84360937d139c2d2293c3bde",
+          "System.Xml.XPath.XDocument.dll": "bdfe9eed32b8ff9360209e30ae7b5acc4d9eee1f6fa7ea6e1397530588a2da72",
+          "System.Threading.Tasks.Parallel.dll": "35fe7ef5b033436a61c5262f2ebc79fffee5a164e1e48e844fc73b584f02179d",
+          "System.Net.dll": "77165cbfd5ef1b29d2de78b8d26debeff28e499adcb50b2e27f4df336335c249",
+          "System.Reflection.DispatchProxy.dll": "b85caa6b1488e24a6aef68e6b9e57ac24dbaad72734ee070a45fac0ac61d5f02",
+          "System.Text.Encoding.CodePages.dll": "2fdc71a4b5f7f4618a0a2a543fb1bc8d115a434b0b627c1553cfffc5af2a5bc3",
+          "System.Text.Encodings.Web.dll": "12237c5ab0c988482e343944c88c88062f03c6a8a52604fc9571d213231eb6d8",
+          "System.Threading.ThreadPool.dll": "be68d332857e77b50b56ba2411fc4c8b9020ac7254834267b15164936741ea45",
+          "System.Runtime.Serialization.Primitives.dll": "b238c221d4548acbfd2e6bcf7d332c1c41190f3ad82ccdafe76a37c1dca77f4f",
+          "System.Runtime.Handles.dll": "37fa23382b9fe1efa900ed745e33c2eec0f9d892dd1e51b93b490809c976a7e4",
+          "System.Numerics.dll": "3c08786a94a9261f45c7feb84852ab81480dc2f7c4a3bc55aed0919a7f3d1fa5",
+          "System.IO.Compression.ZipFile.dll": "7e56cc7b9a30f08354dc7baed161bc9987433c2a3ca85297cedace146a9c362f",
+          "System.Reflection.Emit.dll": "02bc0410706627fd7eae582f380aefb200d8d90ac95a2c91df14f0305699e08e",
+          "System.Threading.Tasks.Extensions.dll": "382356d9b241bf1b231441c8f2c3940d955bf5b9e8ff616c6bd5ade8eb0d6085",
+          "System.Runtime.Serialization.Json.dll": "03e1510d9b10f2d24724cb8c5078e07f215c72f71f6961e315f930bdbe57daa9",
+          "System.IO.FileSystem.Primitives.dll": "9589ec09c7b04f4fd5c3b2e7e97c1cc8b84ec4d5d74bef509f6196b1a5e405c3",
+          "System.IO.IsolatedStorage.dll": "96206bfd5e67fbf3e65238d67c809c867b4e8fb6dbe0a72df39e58b95af0f4c2",
+          "System.Security.Claims.dll": "17007563d30265048dcc0743004f6d6402d0dc1aca6afd399a38979014cf2e86",
+          "System.Reflection.Primitives.dll": "3043d26dacf632e5703b9f8f896eab3b56582be85b28811175638b3b3cf9cd18",
+          "System.Reflection.Extensions.dll": "b78188567c3328ecff0ad8f0dde2125d48d5e15462a4dd25d24285763a70ac15",
+          "System.Text.RegularExpressions.dll": "2cb4845d0bbfd593524d45ab254768a25d5fee68652729a3ef13586a6663de5e",
+          "System.ValueTuple.dll": "ed6a7b611f824ab5b0b6abfa9f549d16cb4754cf5c6fd6e7ff038a7f76afbd6d",
+          "System.IO.FileSystem.DriveInfo.dll": "f8808192db957cfe95b693dee095a28ef1ba9897cbcf374e4dec06269db9f7e6",
+          "System.Runtime.Serialization.Formatters.dll": "83130977df76fd65e8d859c27b6247a2a5b804b3d1a47a0322012c836963d24c",
+          "System.Windows.dll": "78e5cce0acb5b73fa416562b0bb91c52e77721bd96f328c7e98bb072e3ce8c93",
+          "Microsoft.CSharp.dll": "df1d833c857008228e070e690ed13e3eb39548d79619fc305e5034edd32001c0",
+          "System.Diagnostics.DiagnosticSource.dll": "8ed6e3480e56950bbd3e2d38f87e2e080d5640b8501c5ca5cc5967979baaad8e",
+          "System.Runtime.Intrinsics.dll": "527ba6339b3755295a8ba2a2e370d608e3c14a10ab3e2ca217fe64f33ec99141",
+          "System.Collections.Specialized.dll": "d7e9bf3963dc30f7e3f62b7c9250cfe42c24643002d8f0b6048e28e8f7d797f4",
+          "System.Console.dll": "d571f6095154bdb07f851642b59dae2c94b42bd3e6fc6d00074faf92c71a8cfa",
+          "System.Diagnostics.StackTrace.dll": "b973bc54ccfd472c5963a226e379d1dd3634ad7bbf427564d716ea7c506ce50c",
+          "System.Diagnostics.FileVersionInfo.dll": "5805c93b65c4eb2586f4043da1768289fec09d087ecea9c6405178dd8b941777",
+          "System.Private.Xml.Linq.dll": "a307edc44e2d0ccf731ee033b789c12e31637adb24f8eb9a459dd7d3c661c0bb",
+          "System.IO.Compression.Brotli.dll": "64a596fbbf02dd51504051d8005e724e9695a44844f43e46c229f32ffd28e2ca",
+          "System.ComponentModel.TypeConverter.dll": "dd65cca51ead8cb9280f3af48f4d473b7504aeeb3eb796b9d0e232f3674711d7",
+          "System.AppContext.dll": "5a73c677388598c111f945fb222d3a8371a5417f7af624505bfdd8cf391ad430",
+          "System.Transactions.dll": "0743a76bf91ebdc1a3e21e9f000c3905b4345ee4c3f9539d880df5752dfee4bf",
+          "WindowsBase.dll": "57f08fdec670ab275e21a14e3fe09573bdc30621c7d5dfa6c230984e48b94abd",
+          "System.Net.WebProxy.dll": "25b4b45fad0d5905f973143a71325bc026bb0bb3da6b2849ff447ce9e3fed643",
+          "System.Linq.Queryable.dll": "3dcae2252fbed398604da5100c650bde32d65a5cb93308ff0cf6a0667bc2cd9b",
+          "System.ServiceProcess.dll": "587b6e755a29fef4632cd53db12ea3b9c21e620538e8b1be2b3388e3036efaaa",
+          "System.Linq.Parallel.dll": "477b394b39f0d7665eb42ce9a369d32d927a7bb6c6c5ad496d7a240bbef5428b",
+          "System.Private.Xml.dll": "f9974a1d5a72542f35be15f18ae55df71572b685580434af35a10f67fae60cee",
+          "System.IO.Pipelines.dll": "e32a01a18c0226e35d842b00c35542b3d44ae505913127fefd91ce8e2af19de9",
+          "System.Xml.XmlSerializer.dll": "255aac837d6a2f575be63b898bebb648f62c653d8577be4c48b1e65a5e19556a",
+          "System.ComponentModel.EventBasedAsync.dll": "455bf136fa4e1818cafd37dd3d14fa7d6f664e7cf612569752593d7bb115d650",
+          "System.Security.Principal.dll": "45f9ea4d762ebed18a554c69eac0e254993d05f5e465b3f9b219e2bd533479e6",
+          "System.IO.Pipes.AccessControl.dll": "110ef9c38ed835c3b343b035c74d5ff8a8bf3cdcafd013513924ecbdb894d668",
+          "System.IO.MemoryMappedFiles.dll": "a38f7a3fcd5b094b08e80e94189c07905242fa77350f054460a435cda6bc1274",
+          "System.Net.ServicePoint.dll": "e7fafb223d77b2dd54cfbd925fda813f0bba621e10eecc65fe5f89f1d3ef91a2",
+          "System.Security.Cryptography.Algorithms.dll": "6f20e429b9931539e78201283a960b3f63aab46a5d86e801c31477a8bdfbf95e",
+          "System.Diagnostics.Tracing.dll": "eca9cc25477cc2f9dd697dedd32caf03c0c2779c307f4a6311f3e5d0ec993969",
+          "System.Diagnostics.TraceSource.dll": "56cb4670dfc4772de78f4ba3f886fa91434185d07a75bdcc285d6326b76f0abf",
+          "System.Runtime.InteropServices.RuntimeInformation.dll": "8f891c8ea3a965a3fc8f16f217dd92d0623da3194af0dcaadcf67f4f16f9f76f",
+          "System.Xml.XmlDocument.dll": "134611455cb54e663e4865e937270b4a251113c7b5b641b7075b17b2e549e2ee"
+        },
+        "behavior_report": {
+          "status": "passed",
+          "assertions": 2955,
+          "pages": [
+            {
+              "page": 0,
+              "name": "Overview",
+              "nodes": 217,
+              "mainText": 44,
+              "textHash": 4038726249,
+              "different": 70795
+            },
+            {
+              "page": 1,
+              "name": "Buttons",
+              "nodes": 238,
+              "mainText": 59,
+              "textHash": 1320524017,
+              "different": 70180
+            },
+            {
+              "page": 2,
+              "name": "Inputs",
+              "nodes": 235,
+              "mainText": 43,
+              "textHash": 1915324641,
+              "different": 41764
+            },
+            {
+              "page": 3,
+              "name": "Selection",
+              "nodes": 252,
+              "mainText": 48,
+              "textHash": 435846595,
+              "different": 57783
+            },
+            {
+              "page": 4,
+              "name": "Navigation",
+              "nodes": 208,
+              "mainText": 42,
+              "textHash": 1261913610,
+              "different": 36812
+            },
+            {
+              "page": 5,
+              "name": "Overlays",
+              "nodes": 179,
+              "mainText": 29,
+              "textHash": 3444690065,
+              "different": 169947
+            },
+            {
+              "page": 6,
+              "name": "Feedback",
+              "nodes": 279,
+              "mainText": 57,
+              "textHash": 3795479188,
+              "different": 299882
+            },
+            {
+              "page": 7,
+              "name": "Data display",
+              "nodes": 388,
+              "mainText": 131,
+              "textHash": 2787385060,
+              "different": 144443
+            },
+            {
+              "page": 8,
+              "name": "Charts",
+              "nodes": 195,
+              "mainText": 21,
+              "textHash": 4092782315,
+              "different": 45856
+            },
+            {
+              "page": 9,
+              "name": "Actions",
+              "nodes": 280,
+              "mainText": 81,
+              "textHash": 3936841462,
+              "different": 39536
+            },
+            {
+              "page": 10,
+              "name": "Smart inputs",
+              "nodes": 206,
+              "mainText": 42,
+              "textHash": 4257854292,
+              "different": 28034
+            },
+            {
+              "page": 11,
+              "name": "Pickers",
+              "nodes": 370,
+              "mainText": 119,
+              "textHash": 1395811256,
+              "different": 40344
+            },
+            {
+              "page": 12,
+              "name": "Capture",
+              "nodes": 165,
+              "mainText": 20,
+              "textHash": 2278660598,
+              "different": 32583
+            },
+            {
+              "page": 13,
+              "name": "Disclosure",
+              "nodes": 262,
+              "mainText": 63,
+              "textHash": 1826530766,
+              "different": 74249
+            },
+            {
+              "page": 14,
+              "name": "Reader",
+              "nodes": 186,
+              "mainText": 42,
+              "textHash": 198630120,
+              "different": 46993
+            },
+            {
+              "page": 15,
+              "name": "Data grid",
+              "nodes": 506,
+              "mainText": 142,
+              "textHash": 710137252,
+              "different": 130580
+            },
+            {
+              "page": 16,
+              "name": "Code",
+              "nodes": 277,
+              "mainText": 71,
+              "textHash": 3453549479,
+              "different": 353846
+            },
+            {
+              "page": 17,
+              "name": "Social and media",
+              "nodes": 438,
+              "mainText": 151,
+              "textHash": 3136226653,
+              "different": 82891
+            },
+            {
+              "page": 18,
+              "name": "Planning",
+              "nodes": 498,
+              "mainText": 182,
+              "textHash": 1179639738,
+              "different": 116128
+            },
+            {
+              "page": 19,
+              "name": "More charts",
+              "nodes": 192,
+              "mainText": 26,
+              "textHash": 3185055877,
+              "different": 219787
+            },
+            {
+              "page": 20,
+              "name": "Motion",
+              "nodes": 265,
+              "mainText": 63,
+              "textHash": 3067974028,
+              "different": 31020
+            },
+            {
+              "page": 21,
+              "name": "AI",
+              "nodes": 314,
+              "mainText": 81,
+              "textHash": 1087603717,
+              "different": 142498
+            },
+            {
+              "page": 22,
+              "name": "Audio",
+              "nodes": 173,
+              "mainText": 24,
+              "textHash": 1161999309,
+              "different": 38879
+            },
+            {
+              "page": 23,
+              "name": "Files",
+              "nodes": 206,
+              "mainText": 42,
+              "textHash": 3595311223,
+              "different": 48973
+            },
+            {
+              "page": 24,
+              "name": "Developer tools",
+              "nodes": 712,
+              "mainText": 306,
+              "textHash": 4198489850,
+              "different": 225522
+            },
+            {
+              "page": 25,
+              "name": "More developer tools",
+              "nodes": 766,
+              "mainText": 280,
+              "textHash": 377826077,
+              "different": 83293
+            },
+            {
+              "page": 26,
+              "name": "Instruments",
+              "nodes": 153,
+              "mainText": 18,
+              "textHash": 573193795,
+              "different": 46290
+            }
+          ],
+          "actions": [
+            "OS sidebar selects page 1: Buttons and scrolls to top",
+            "OS sidebar selects page 0: Overview and scrolls to top",
+            "OS sidebar selects page 1: Buttons and scrolls to top",
+            "OS sidebar selects page 2: Inputs and scrolls to top",
+            "OS sidebar selects page 3: Selection and scrolls to top",
+            "OS sidebar selects page 4: Navigation and scrolls to top",
+            "OS sidebar selects page 5: Overlays and scrolls to top",
+            "OS sidebar selects page 6: Feedback and scrolls to top",
+            "OS sidebar selects page 7: Data display and scrolls to top",
+            "OS sidebar selects page 8: Charts and scrolls to top",
+            "OS sidebar selects page 9: Actions and scrolls to top",
+            "OS sidebar selects page 10: Smart inputs and scrolls to top",
+            "OS sidebar selects page 11: Pickers and scrolls to top",
+            "OS sidebar selects page 12: Capture and scrolls to top",
+            "OS sidebar selects page 13: Disclosure and scrolls to top",
+            "OS sidebar selects page 14: Reader and scrolls to top",
+            "OS sidebar selects page 15: Data grid and scrolls to top",
+            "OS sidebar selects page 16: Code and scrolls to top",
+            "OS sidebar selects page 17: Social and media and scrolls to top",
+            "OS sidebar selects page 18: Planning and scrolls to top",
+            "OS sidebar selects page 19: More charts and scrolls to top",
+            "OS sidebar selects page 20: Motion and scrolls to top",
+            "OS sidebar selects page 21: AI and scrolls to top",
+            "OS sidebar selects page 22: Audio and scrolls to top",
+            "OS sidebar selects page 23: Files and scrolls to top",
+            "OS sidebar selects page 24: Developer tools and scrolls to top",
+            "OS sidebar selects page 25: More developer tools and scrolls to top",
+            "OS sidebar selects page 26: Instruments and scrolls to top",
+            "OS sidebar selects page 3: Selection and scrolls to top",
+            "Checkbox changes upstream newsletter state",
+            "Switch changes upstream Bluetooth state",
+            "Radio changes upstream plan value",
+            "Slider pointer updates upstream volume",
+            "OS sidebar selects page 2: Inputs and scrolls to top",
+            "Text input replaces upstream name buffer",
+            "OS sidebar selects page 1: Buttons and scrolls to top",
+            "Button sets upstream loading state",
+            "Reset button clears upstream loading state",
+            "OS sidebar selects page 4: Navigation and scrolls to top",
+            "Tabs change upstream selected tab",
+            "Stepper Next changes upstream step",
+            "Stepper Back restores upstream step",
+            "OS sidebar selects page 5: Overlays and scrolls to top",
+            "Dialog button opens upstream modal",
+            "Escape closes upstream modal and releases input layer",
+            "OS sidebar selects page 10: Smart inputs and scrolls to top",
+            "OS smile icon opens original emoji popup",
+            "Original emoji recent order: ",
+            "OS emoji selection 1 appends exact UTF-8 and closes original popup: Release notes are up 😀",
+            "OS smile icon opens original emoji popup",
+            "Original emoji recent order: 😀",
+            "OS emoji selection 2 appends exact UTF-8 and closes original popup: Release notes are up 😀😃",
+            "OS sidebar selects page 1: Buttons and scrolls to top",
+            "OS sidebar selects page 10: Smart inputs and scrolls to top",
+            "OS smile icon opens original emoji popup",
+            "Original emoji recent order: 😃 😀",
+            "OS emoji selection 3 appends exact UTF-8 and closes original popup: Release notes are up 😀😃😀",
+            "OS smile icon opens original emoji popup",
+            "Original emoji recent order: 😀 😃",
+            "Emoji message and recent history persist across popup reopen and page navigation",
+            "OS sidebar selects page 9: Actions and scrolls to top",
+            "Extended Actions split button renders saved result",
+            "OS sidebar selects page 1: Buttons and scrolls to top",
+            "Sidebar theme control updates gallery and core theme",
+            "Accent swatch updates gallery and core accent",
+            "Ctrl+J shortcut changes upstream theme",
+            "OS sidebar selects page 3: Selection and scrolls to top",
+            "OS close ends upstream gallery loop"
+          ],
+          "platform": "Zorin OS 18.1",
+          "architecture": "X64",
+          "windows": "unrun",
+          "cleanup": "UI allocation freed once per lifecycle, GLFW context/display released, reinitialized"
+        },
+        "emoji": {
+          "status": "passed",
+          "selections": 3,
+          "messages": [
+            {
+              "length": 21,
+              "hex": "52656C65617365206E6F7465732061726520757020",
+              "text": "Release notes are up "
+            },
+            {
+              "length": 25,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880",
+              "text": "Release notes are up 😀"
+            },
+            {
+              "length": 25,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880",
+              "text": "Release notes are up 😀"
+            },
+            {
+              "length": 29,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883",
+              "text": "Release notes are up 😀😃"
+            },
+            {
+              "length": 29,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883",
+              "text": "Release notes are up 😀😃"
+            },
+            {
+              "length": 29,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883",
+              "text": "Release notes are up 😀😃"
+            },
+            {
+              "length": 33,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883F09F9880",
+              "text": "Release notes are up 😀😃😀"
+            },
+            {
+              "length": 33,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883F09F9880",
+              "text": "Release notes are up 😀😃😀"
+            },
+            {
+              "length": 33,
+              "hex": "52656C65617365206E6F7465732061726520757020F09F9880F09F9883F09F9880",
+              "text": "Release notes are up 😀😃😀"
+            }
+          ],
+          "recent": [
+            "",
+            "😀",
+            "😃 😀",
+            "😀 😃"
+          ],
+          "pixels": [
+            {
+              "name": "emoji-0-message",
+              "width": 435,
+              "height": 35,
+              "colored": 0
+            },
+            {
+              "name": "emoji-1-cell",
+              "width": 37,
+              "height": 37,
+              "colored": 388
+            },
+            {
+              "name": "emoji-1-message",
+              "width": 435,
+              "height": 35,
+              "colored": 0
+            },
+            {
+              "name": "emoji-1-rendered-message",
+              "width": 435,
+              "height": 35,
+              "colored": 0
+            },
+            {
+              "name": "emoji-2-cell",
+              "width": 37,
+              "height": 37,
+              "colored": 387
+            },
+            {
+              "name": "emoji-2-message",
+              "width": 435,
+              "height": 35,
+              "colored": 0
+            },
+            {
+              "name": "emoji-3-cell",
+              "width": 37,
+              "height": 37,
+              "colored": 388
+            },
+            {
+              "name": "emoji-3-message",
+              "width": 435,
+              "height": 35,
+              "colored": 0
+            }
+          ],
+          "messagePixelsChanged": false,
+          "rendering": "Colored picker cells and nonblank message GL readback; native text fonts omit these emoji glyphs",
+          "comparisons": [
+            {
+              "name": "emoji-1-cell",
+              "bytes": 5476,
+              "maximumError": 0,
+              "nativeSha256": "2c3b68f6f7c152ac463b656f5b4521603682531dafcd3f644d3b6f5ddfd7ba20",
+              "managedSha256": "2c3b68f6f7c152ac463b656f5b4521603682531dafcd3f644d3b6f5ddfd7ba20"
+            },
+            {
+              "name": "emoji-2-cell",
+              "bytes": 5476,
+              "maximumError": 0,
+              "nativeSha256": "1fb9433a06a2890b85434173d9bbea1cfe97a1d9bb652fc7302c480e1f5fbc84",
+              "managedSha256": "1fb9433a06a2890b85434173d9bbea1cfe97a1d9bb652fc7302c480e1f5fbc84"
+            },
+            {
+              "name": "emoji-3-cell",
+              "bytes": 5476,
+              "maximumError": 0,
+              "nativeSha256": "2c3b68f6f7c152ac463b656f5b4521603682531dafcd3f644d3b6f5ddfd7ba20",
+              "managedSha256": "2c3b68f6f7c152ac463b656f5b4521603682531dafcd3f644d3b6f5ddfd7ba20"
+            }
+          ]
+        }
+      }
+    ],
+    "rgba_tolerance": 1,
+    "excluded_pages": [],
+    "excluded_main_content_regions": []
+  },
+  "sample": {
+    "variants": [
+      {
+        "form": "raw",
+        "mode": "jit",
+        "listed_pages": 27,
+        "rendered_pages": 27,
+        "gallery_frames": 108,
+        "gallery_bytes": 4067200,
+        "legacy_bytes": 1228800,
+        "legacy_maximum_channel_error": 0,
+        "legacy_sha256": "7507d356db22f0bc33490ca36224dde236d63a92131205801dfb7b807f796879"
+      },
+      {
+        "form": "raw",
+        "mode": "aot",
+        "listed_pages": 27,
+        "rendered_pages": 27,
+        "gallery_frames": 108,
+        "gallery_bytes": 4067200,
+        "legacy_bytes": 1228800,
+        "legacy_maximum_channel_error": 0,
+        "legacy_sha256": "7507d356db22f0bc33490ca36224dde236d63a92131205801dfb7b807f796879"
+      },
+      {
+        "form": "processed",
+        "mode": "jit",
+        "listed_pages": 27,
+        "rendered_pages": 27,
+        "gallery_frames": 108,
+        "gallery_bytes": 4067200,
+        "legacy_bytes": 1228800,
+        "legacy_maximum_channel_error": 0,
+        "legacy_sha256": "7507d356db22f0bc33490ca36224dde236d63a92131205801dfb7b807f796879"
+      },
+      {
+        "form": "processed",
+        "mode": "aot",
+        "listed_pages": 27,
+        "rendered_pages": 27,
+        "gallery_frames": 108,
+        "gallery_bytes": 4067200,
+        "legacy_bytes": 1228800,
+        "legacy_maximum_channel_error": 0,
+        "legacy_sha256": "7507d356db22f0bc33490ca36224dde236d63a92131205801dfb7b807f796879"
+      }
+    ],
+    "windows": "unrun",
+    "consumer_audit_run": "20261110-195120-d5f3422c",
+    "display": {
+      "kind": "owned Xvfb",
+      "cleanup": "terminated and reaped",
+      "pid": 780542,
+      "display": ":1",
+      "exitCode": 0
+    },
+    "status": "passed",
+    "native_sha256": "7507d356db22f0bc33490ca36224dde236d63a92131205801dfb7b807f796879"
+  },
+  "dependency_audit": [
+    {
+      "form": "raw",
+      "gallery_core": "matching form",
+      "native_cui_glfw": false,
+      "references": "campaign-local and evaluated",
+      "sample": "ordinary core/gallery project references"
+    },
+    {
+      "form": "processed",
+      "gallery_core": "matching form",
+      "native_cui_glfw": false,
+      "references": "campaign-local and evaluated",
+      "sample": "ordinary core/gallery project references"
+    }
+  ],
+  "consumer_receipt": "artifacts/campaign/20261110-195120-d5f3422c/receipt.json",
+  "products": {
+    "TranslatedCui": {
+      "owned_files": 27,
+      "sha256_of_sorted_path_hash_json": "063f0e1236c05d9f42ccb37868e784d1b46e2527b8c60cbf102ff8ff2fb0b7e0",
+      "sha256": {
+        "Cui.00000.cs": "463eeee95ff1d0019ca5d7716efb03871e91a929ceaccb48fe2df31b876b5c3c",
+        "Cui.00001.cs": "aebd71855dbef6351687e5fdf558b336472dbbfedb3635d78b56e84e31a38645",
+        "Cui.00002.cs": "c334fae9a67acb2bac148b76d0f3a27ac5014a22dad8292098085e416606b4a9",
+        "Cui.00003.cs": "000d02de938542649d371d68a9d572c0542462dbb8b098445c32d21306a82d2a",
+        "Cui.00004.cs": "5f5c2b3021c86aca2e26740a61bab102173273224a2de0d0998227d9a3abe1f2",
+        "Cui.00005.cs": "fe694bbb4e1b6fa96dfbade746fed77b42994c300d7f25974230fb85b714035a",
+        "Cui.00006.cs": "dc4412326dce57b0114829288b317e94626b7d63e2c7c1721253157ac04a6ac1",
+        "Cui.00007.cs": "0e4139d0f65141fa08d5face5dd0c1caa9358a868852a377727e10033646c545",
+        "Cui.00008.cs": "c952c18d520821361fdafb1f8bd762e34d20a3d60337d21d15d42ee913c0dff2",
+        "Cui.00009.cs": "95c5a37a428820c7d4820c31fbbd49771d2a350ef24a72d7612654e81e7b0e7a",
+        "Cui.00010.cs": "678a3ab88bb6c88ee0827b28dab3bb1fa954ad68f283db93eda6a6b8e9afa9cc",
+        "Cui.00011.cs": "50daf28f49a1ce22efea084557f5b425df488180535015d2e315648faa69b328",
+        "Cui.00012.cs": "8cf0fc6441805b3ffb8515e16d4fa977c2c01446faf55d79ca84e816f0644c2a",
+        "Cui.00013.cs": "f04f826c8513b1674a588817c3884eb8b27a858e66f62730f6799e1a081ccb40",
+        "Cui.00014.cs": "350c8893226065ba3d74aac1c7a9ae7f2e279353e5ef2a6f14ca68000dce1844",
+        "Cui.00015.cs": "8ccf3efc9aef25395d42f56b1901dfa05a9f021650578ce2bfeb57051be86fd5",
+        "Cui.00016.cs": "4481641e94cbac3a57be9f905b0bd280fe5b5d4cd3ea435cdba4c33738902870",
+        "Cui.cs": "2ac3f4a4e89dc0e917906adf8acd756eb30fc658c39e59637fbc46620a15d1cb",
+        "Dotcc.ManagedSymbols.cs": "cb080f135c48cfb13c0fd6599b08fdd0c87fee1555dceab8e7a7f9b111d9949b",
+        "Dotcc.SourceFiles.txt": "4b6a29116b5682c750988278bda8596a39eb854048965b2bbab65be61bd93317",
+        "TranslatedCui.csproj": "e34bcdbaa83375a31ca4088b524ca88fe939a812e715673691da6de9d063c6c9",
+        "notices/GLFW-LICENSE.md": "149704059b5d0bf551637e50042dd4de9c2cae921021f6636298911e3a5f9462",
+        "notices/LICENSE": "993ce06560d0aa89d7825c205b676caf14ebf7483989cd5edd597a5a285a5633",
+        "notices/LICENSE-Geist.txt": "934b987e215a2bc463d7b1a99456c1d83e9505f5ef6d8b0dd439181fb2414b1b",
+        "notices/LICENSE-Inter.txt": "cc36dd53b88f8c7f138b9708e0c4b598816e4e52c7e252859e67e1e7edbcf117",
+        "notices/LICENSE-Lucide.txt": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57",
+        "notices/THIRD_PARTY.md": "49a8cabf46f03cec8bfbffdfa3b60a684dd699967098f187768ec84181d23e35"
+      },
+      "manifest_sha256": "67efd6f49104b8e67aae1279a38d8f9931130ab303dbf254e68aff29a8f57549"
+    },
+    "TranslatedCui.Raw": {
+      "owned_files": 27,
+      "sha256_of_sorted_path_hash_json": "91e133b9c36f3745eaed8049322ecc19fe404210cf19359acb3e590470dd9ae8",
+      "sha256": {
+        "Cui.00000.cs": "7201c05bfe49f6886873a3a497f3b3feb1809cff5c70c8ea51211df224cb8490",
+        "Cui.00001.cs": "be33659da8bd259bbb24975afed232bd7574326ab21136bcfa462546b7f8554a",
+        "Cui.00002.cs": "819ca0306c0bfe4accf038bcc92e480de8db752f7aee4bd4e99997813fab3373",
+        "Cui.00003.cs": "23d845613603ef706c42bca34dc8b028838e688962a8e0e950a6cb8213241aa0",
+        "Cui.00004.cs": "9bb22608b9dc92ad3bd4a5af3feb55baea2694eb22190addb6cfcd147c22b83c",
+        "Cui.00005.cs": "e46a7061901bde2063574419fa9ec73dde665d205de775aaf86a2dbf3371dc38",
+        "Cui.00006.cs": "9bdc642b7848553a891db3592aedb3bb8ead3faed7b85716902f36c9e37feed9",
+        "Cui.00007.cs": "879275c488f383f7c83aefba3df1858d53f99146004057f02888de95956b317b",
+        "Cui.00008.cs": "be4344f908f4e7677339ea900167b9161cead967c22ad72755ad72454bb85547",
+        "Cui.00009.cs": "03950ba3b24a9f30a3cd365e3b1c33e949207d93809a09fe037acc0857fb6c5c",
+        "Cui.00010.cs": "9349b44ab1a8969a51223bfca620f62a1d2e0872ab60d3078436c08239beb2b7",
+        "Cui.00011.cs": "43f501bb355433ba894d1dbd024521d21e9e1ef10ee67a16bce2efc7777b806b",
+        "Cui.00012.cs": "c7be45e555e4efd6947064add6427b9ee431d0c39be6e231d3254c92b60d2a3e",
+        "Cui.00013.cs": "04e2599959e3c3b779a236633917a16d6ce035944d0a5aca4f372239382dd97d",
+        "Cui.00014.cs": "547f1b28f5f217eb420e282a84b30ba552c8284d8df86fc8a108ffb40583b74c",
+        "Cui.00015.cs": "acefac8dc3bcf8ba1a33c011a3d3d11b7ed3262cba270fc9e5f807c1de6b2e27",
+        "Cui.00016.cs": "3183ccae7b25d1d1e24e7925433df5a9bac9e121c64228f33e82325da99cac44",
+        "Cui.cs": "2ac3f4a4e89dc0e917906adf8acd756eb30fc658c39e59637fbc46620a15d1cb",
+        "Dotcc.ManagedSymbols.cs": "cb080f135c48cfb13c0fd6599b08fdd0c87fee1555dceab8e7a7f9b111d9949b",
+        "Dotcc.SourceFiles.txt": "4b6a29116b5682c750988278bda8596a39eb854048965b2bbab65be61bd93317",
+        "TranslatedCui.csproj": "deee9bc0887a8134c75edee4f2c1684e8f9228eef960c06c43983fd681fad873",
+        "notices/GLFW-LICENSE.md": "149704059b5d0bf551637e50042dd4de9c2cae921021f6636298911e3a5f9462",
+        "notices/LICENSE": "993ce06560d0aa89d7825c205b676caf14ebf7483989cd5edd597a5a285a5633",
+        "notices/LICENSE-Geist.txt": "934b987e215a2bc463d7b1a99456c1d83e9505f5ef6d8b0dd439181fb2414b1b",
+        "notices/LICENSE-Inter.txt": "cc36dd53b88f8c7f138b9708e0c4b598816e4e52c7e252859e67e1e7edbcf117",
+        "notices/LICENSE-Lucide.txt": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57",
+        "notices/THIRD_PARTY.md": "49a8cabf46f03cec8bfbffdfa3b60a684dd699967098f187768ec84181d23e35"
+      },
+      "manifest_sha256": "67efd6f49104b8e67aae1279a38d8f9931130ab303dbf254e68aff29a8f57549"
+    },
+    "TranslatedCuiGallery": {
+      "owned_files": 12,
+      "sha256_of_sorted_path_hash_json": "4e5e384c49241fe2c1b9e8b69a7545fc2f1656954974ead53925e2d1eaec3ada",
+      "sha256": {
+        "Dotcc.SourceFiles.txt": "efe527a441ddc9ea704f9d6b26ccbe609028d2932a9b62cc961959e5e59b92ec",
+        "Gallery.00000.cs": "a9f2e0d0ca41173e70b618a6386d90db4e2a21f165285df40338680bbe70e03e",
+        "Gallery.00001.cs": "ef3b061ab41eb843aab52de7df84a0732febb96f36dd43e902062a8e084a9994",
+        "Gallery.cs": "cf282e9a83afaa5eb4d3381dc8b3fd7894c32d7fa7a3be719a27faa3f489117e",
+        "TranslatedCuiGallery.csproj": "8aee789e873b77c8a26b343055b6f22c0ce2a0a22a57ecd897a4aefb09409f12",
+        "notices/LICENSE": "993ce06560d0aa89d7825c205b676caf14ebf7483989cd5edd597a5a285a5633",
+        "notices/THIRD_PARTY.md": "49a8cabf46f03cec8bfbffdfa3b60a684dd699967098f187768ec84181d23e35",
+        "upstream/gallery_more.c": "1c083dbdef6fa97cde088c29ee0547bee2de32cb1f0697f35f2cee0259a63f02",
+        "upstream/gallery_more.h": "04225c16a2712518b6bf517a0880b0caffc337b7b16f23b8a647c9c32792de0c",
+        "upstream/gallery_ui.c": "012dabfff1234ac8cb497901779f4d329589d9bda4e09e729db35697c382b250",
+        "upstream/gallery_ui.h": "82b030ab36290bad74e68e5d9e34147298a580de2911cf691554c1be1d309bf7",
+        "upstream/provenance.json": "f1fe747aeb86d9123862fc919ef9de9861ee6cc7171b2e27e72eb7d7df93950b"
+      },
+      "manifest_sha256": "9860c9eff544a6c21d89e7a7006e688b635e3f26cc40997fdb20b51b1a350fb3"
+    },
+    "TranslatedCuiGallery.Raw": {
+      "owned_files": 12,
+      "sha256_of_sorted_path_hash_json": "10dd671f199b60790072652049316065add3245cfb89d62a92f7dd4e04c4b6ee",
+      "sha256": {
+        "Dotcc.SourceFiles.txt": "efe527a441ddc9ea704f9d6b26ccbe609028d2932a9b62cc961959e5e59b92ec",
+        "Gallery.00000.cs": "f1c73203d6a5ab196b099f74ebe0f670c3ba53415291ae9170f86a7266360963",
+        "Gallery.00001.cs": "ba31e8277cb1731f04ebe2a4e70a7cdafd89228d71b32d68c269bcd2563aac48",
+        "Gallery.cs": "cf282e9a83afaa5eb4d3381dc8b3fd7894c32d7fa7a3be719a27faa3f489117e",
+        "TranslatedCuiGallery.csproj": "8aee789e873b77c8a26b343055b6f22c0ce2a0a22a57ecd897a4aefb09409f12",
+        "notices/LICENSE": "993ce06560d0aa89d7825c205b676caf14ebf7483989cd5edd597a5a285a5633",
+        "notices/THIRD_PARTY.md": "49a8cabf46f03cec8bfbffdfa3b60a684dd699967098f187768ec84181d23e35",
+        "upstream/gallery_more.c": "1c083dbdef6fa97cde088c29ee0547bee2de32cb1f0697f35f2cee0259a63f02",
+        "upstream/gallery_more.h": "04225c16a2712518b6bf517a0880b0caffc337b7b16f23b8a647c9c32792de0c",
+        "upstream/gallery_ui.c": "012dabfff1234ac8cb497901779f4d329589d9bda4e09e729db35697c382b250",
+        "upstream/gallery_ui.h": "82b030ab36290bad74e68e5d9e34147298a580de2911cf691554c1be1d309bf7",
+        "upstream/provenance.json": "f1fe747aeb86d9123862fc919ef9de9861ee6cc7171b2e27e72eb7d7df93950b"
+      },
+      "manifest_sha256": "9860c9eff544a6c21d89e7a7006e688b635e3f26cc40997fdb20b51b1a350fb3"
+    }
+  },
+  "configuration_and_scripts_sha256": {
+    "config/core-sources.txt": "bfafd3ee6b35ef0aa321daddf0a6859c9d29c078dc850be714a76db7f598fa27",
+    "config/gallery.json": "b73167fed9a979276c2c27db0df6827906ed5314f9c3412877f24e260f13b491",
+    "config/glfw-overrides.json": "10fac508e3241a3c1c49e7d8052e829969f40c4ac76d7be27523fb777b242cf0",
+    "config/glfw-source.json": "a9052f60d5a8cbd06721cd9f44c699418122e6e122067c6b79fe5eeaedfcc302",
+    "config/host-overrides.json": "3502f2b0849542853c673d76f222c7e9a91af6538c13a46db5e1f3122cdb4c1c",
+    "config/include/GLFW/glfw3.h": "55f03c6f3297905a3378e94b31c241e63be633050419af775f5a56d2f5e54a99",
+    "config/opengl.json": "b323db9f56b9a6a0f6e64b4155868f06226eb671cea0ac0dddf499cdaacf4e53",
+    "config/profile.json": "289fd3bf5732735390c68ec2b4c969b56b1020533f4fb94db09fbaa4b654943e",
+    "config/source.json": "6dd322895c812dcfb654f29c5d5fb04dcc3f84a578392441c48d3c7e93c08392",
+    "scripts/campaign.py": "467e6cd30507859cc7d08f3e6f89cb86230789e5c8d0e9a96e9b2e4258ed8c0e",
+    "scripts/codegen.py": "acdd5cc801af07f8e415fcbdb4e9b1e6e32725041153bee31bff7234d6076aa2",
+    "scripts/gallery.py": "ebffdadd5723f6c863c621f280ff86999528a73bff96796f8e1b2ef3bcc84fb3",
+    "scripts/generate-gl.py": "7624b988ca18cfa8e81166a63fbf7edf8b834bb695f60175e970a3331e4b717e",
+    "scripts/qualify.py": "e12be7989029520004e1c447d4eb57f9ea129f262ef8f94400fe6848cadfdde5",
+    "scripts/stage.py": "78c89fb10b90852cb35d8dd77b51f34c91c53dec0bcd0ec9a849bd126a50566a",
+    "scripts/suites.py": "49bdabd97ba4bcbed5752d296d95ce844f83ce16d18a24d88396a55722008e86"
+  },
+  "authored_validation_sha256": {
+    "tests/gallery/CMakeLists.txt": "2c9ccc1a249b51a24beca204ab444373f1eb821d83f9cbed322a22f89c4049f4",
+    "tests/gallery/Program.cs": "7f3735c0ffa4d393dc65b0a6f72553787b1ce41c1b39ed2ee85db2456fd2b148",
+    "tests/gallery/README.md": "e03866607f9d625612bc2883da9940d526a00340b6301d01e63b984875f3d1bc",
+    "tests/gallery/run.py": "bea869fa0ac6e9b1c534795ff933387df9a2f66ffb3783ea88b985f607db9684",
+    "tests/recipe/test_recipe.py": "65eb951263837f0461b9f24acfc8fa05bfe9b0d6b52aea2c34c417cce5f15dc9"
+  },
+  "limits": [
+    "Actual Windows runtime execution unrun; no Windows pass inferred from test double",
+    "Full broad upstream/host-service suites were not rerun: selected source change is gallery-only; focused core/pixels/lifecycle all4 passed; earlier broader evidence remains historical",
+    "Bundled text fonts do not visibly draw selected emoji in the message input; native color picker pixels and exact UTF8 payload are verified separately",
+    "No missing-append compiler/runtime bug reproduced; native and managed before-controls already held exact emoji bytes",
+    "Generated translation-unit identities vary with staging path; no cross-directory byte identity claim"
+  ],
+  "formatting": {
+    "authored_diff_check": "passed",
+    "generated_diff_check": "passed; emitted source preserved without manual edits"
+  },
+  "scratch_policy": "All new temporary inputs/builds/logs/artifacts external; only canonical generated products and durable summaries delivered"
+}

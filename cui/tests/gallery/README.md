@@ -4,9 +4,11 @@ This harness references `TranslatedCuiGallery` and its matching canonical core.
 It executes the translated `gallery_ui.c` and `gallery_more.c`, rather than a
 managed reconstruction of their controls. The native control compiles the same
 staged gallery sources against native CUI's GLFW backend with shaping and all
-image formats enabled. Its private copy receives the same guarded widget-only repair
-as the managed gallery: close the emoji popover after returning to the caller
-ID scope. Original acquired sources remain unchanged. The native executable
+image formats enabled. Its private copy receives the same guarded adaptations
+from `stage.adapt_widgets` and `stage.adapt_text_renderer` as the managed product:
+close the emoji popover in its caller ID scope, bridge missing editable glyphs
+to the existing color engine, and permit small bitmap downsampling.
+Original acquired sources remain unchanged. The native executable
 uses the core's private shaping/image feature defines when reading `cui_ctx`.
 It also runs an independent native OS-input control for all 27 sidebar choices
 and the same representative stateful controls before building managed variants.
@@ -24,13 +26,23 @@ python3 -B cui/tests/gallery/run.py \
 
 `--form raw|processed|all` and `--mode jit|aot|all` select the Linux matrix.
 `--native-only` runs the native capture and OS-input controls without managed builds.
-The default `--native-oracle adapted` applies `stage.adapt_widgets` to a private
+The default `--native-oracle adapted` applies `stage.adapt_widgets` and
+`stage.adapt_text_renderer` to a private
 native source copy. `--source` must identify original acquired upstream, before
 staging. To preserve the original native failure separately, use another work
 root and `--native-only --native-oracle original`; that diagnostic is expected
 to fail because picking appends UTF-8 but leaves the original popup open. It is
 not an accepted oracle result. `report.json` records original and effective
 source hashes plus the native adaptation list.
+
+For before-fix evidence only, add `--diagnostic-allow-invisible-emoji` in a
+separate work root. This records failed visibility assertions and continues
+through all selections, edits and comparisons. Every other assertion stays
+enabled. The runner marks the report `diagnostic`, exits nonzero, and never
+counts that run as qualification. Normal invocation clears the diagnostic
+environment variable before launching either executable. Direct executable
+diagnostics use `CUI_GALLERY_DIAGNOSTIC_INVISIBLE=1`; their transcripts and
+managed reports are likewise explicitly diagnostic.
 
 Omit `--xvfb` to use an existing X11 display. Prerequisites are .NET 10 with
 NativeAOT tools, CMake, a C compiler, GLFW development files, X11/GLX, Mesa,
@@ -67,12 +79,33 @@ The fixed workload is:
   managed uses actual emitted payload types. Neither changes gallery storage.
   Cell targets come from the original grid's rendered geometry. Each selected
   cell must contain at least 50 colored GL pixels (channel spread >32), and the
-  message framebuffer crop must contain rendered text. The runner records whether
-  that crop changes after append; the pinned native input omits these emoji
-  glyphs because its text fonts are separate from the color-emoji renderer.
-  Retain cell/message `.rgba` crops and dimensions in `EMOJI_PIXELS` log records. The runner compares native/managed
-  message bytes and recent-order transcripts exactly in all four variants, plus
-  all three selected-cell GL crops with channel tolerance 1.
+  message framebuffer crop must contain rendered text and change after append.
+  Independently crop the actual `message ^ 0xED17` edit-paint leaf inside the
+  original editable input, excluding the smile button, field border and picker.
+  Each picked message must contain at least 30 colored pixels per emoji, a
+  colored shape at least 6 pixels high and 6 pixels wide per emoji, and at least
+  three distinct 4-bit RGB shades. The original neutral plain-text crop must
+  contain zero colored pixels. Capture with the original input unfocused and
+  popup exit animation finished so caret, selection and popup cannot satisfy
+  the color check. Retain cell/message/inline `.rgba` crops and dimensions in
+  `EMOJI_PIXELS` and shape metrics in `EMOJI_INLINE`. Python independently
+  recomputes every inline metric from the saved RGBA. Compare native/managed
+  message bytes and recent-order transcripts exactly in all four variants, all
+  three selected-cell crops with channel tolerance 1, and all six inline crops
+  **byte-for-byte**.
+- Edit that same original input through the OS after all three picks. Assert
+  exact UTF-8 bytes and byte cursor/anchor positions at 17 checkpoints:
+  End, Left/Right across a four-byte emoji, insert `X` between emoji, Home,
+  Right over plain text, End, Backspace over a whole emoji, Left over `X` and
+  the previous emoji, Delete over a whole emoji, Right, Backspace over `X`,
+  Shift+Left selecting exactly one emoji, replace it with `Z`, and Backspace
+  restoring the original plain-text prefix. Check focus belongs to the original
+  input and all cursor/selection endpoints are UTF-8 boundaries. Require color
+  shape in the mixed `😀😃X😀` input, then zero colored pixels after removing
+  every emoji. Navigate away/back and reopen Recent to verify the edited message
+  persists and typing/deletion leaves recent order/deduplication unchanged.
+  `EMOJI_EDIT` records must match independently specified expected transcripts
+  and the native transcript exactly.
 - Scroll main content with the OS wheel, assert changed scroll offset and
   navigation's reset to the top. Change theme and accent through sidebar
   controls, assert both gallery and core state plus changed GL pixels, and
@@ -124,13 +157,16 @@ Smileys cells must be the pinned 😀 and 😃 entries; the test checks the byte
 actually appended rather than accepting any glyph. The original native and
 retained managed failure are classified as an upstream popup-ID scope defect;
 correct emoji bytes already append before the repair. The prior 53-action,
-108-capture deduplication evidence above predates this added workflow. Current
-emoji matrix evidence is in [EMOJI-VALIDATION.json](../../docs/EMOJI-VALIDATION.json).
+108-capture deduplication evidence above predates this added workflow. The
+historical popup-only emoji matrix evidence is in
+[EMOJI-POPUP-VALIDATION.json](../../docs/EMOJI-POPUP-VALIDATION.json).
+Current visibility/editing qualification is in
+[EMOJI-VALIDATION.json](../../docs/EMOJI-VALIDATION.json).
 Actual Windows execution remains unrun.
 
-The bundled text fonts do **not** display these picked emoji inside the plain
-message input. Native before/after message crops are identical even though the
-actual input paint payload contains the appended UTF-8. `messagePixelsChanged`
-records this observation; colored emoji rendering is asserted in the picker
-cells, and input readback must still contain rendered message text. This suite
-does not claim visible emoji glyph rendering inside the plain text field.
+The historical popup-only product leaves picked emoji invisible inside the
+plain message input. The stronger inline-visibility gate intentionally rejects
+that product, even when exact bytes, picker pixels and popup behavior pass.
+Historical evidence remains unchanged; it does not establish passage of the
+new visibility/editing gate. Save new reports and before-fix diagnostics under
+new work roots, preserving their source/binary hashes and original transcripts.

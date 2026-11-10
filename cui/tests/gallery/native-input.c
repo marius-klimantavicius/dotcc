@@ -18,6 +18,7 @@ static cui_ctx *ui;
 static gallery g;
 static char window_id[32];
 static int assertions;
+static int diagnostic_invisible, visibility_failures;
 
 static void require(int condition, const char *message) {
     assertions++;
@@ -26,6 +27,12 @@ static void require(int condition, const char *message) {
         if (app) cui_app_destroy(app);
         exit(11);
     }
+}
+
+static void visible_require(int condition, const char *name) {
+    printf("EMOJI_VISIBILITY_ASSERT\t%s\t%d\n", name, !!condition);
+    if (!condition) visibility_failures++;
+    if (!diagnostic_invisible) require(condition, "picked emoji must be visible inside the original editable input");
 }
 
 static void frames(int count) {
@@ -145,6 +152,11 @@ typedef struct {
     bool focus, soft;
     float top;
 } observed_grid;
+typedef struct {
+    const char *buf;
+    int len, cursor, anchor;
+    bool focused, password, multiline;
+} observed_edit;
 
 static cui_id smart_id(const char *name) {
     cui_push_id(ui, "Smart inputs");
@@ -159,18 +171,38 @@ static cui_node *node(cui_id id) {
     return NULL;
 }
 
-static void emoji_message(const char *expected) {
+static observed_edit emoji_edit(void) {
     cui_node *n = node(smart_id("message") ^ 0xED17u);
-    const char *buf = NULL;
-    int len = 0;
+    observed_edit p;
     require(n->paint && n->paint_data, "message edit renderer exists");
-    memcpy(&buf, n->paint_data, sizeof buf);
-    memcpy(&len, (char *)n->paint_data + sizeof buf, sizeof len);
+    memcpy(&p, n->paint_data, sizeof p);
+    require(p.buf && p.len >= 0 && p.len < 160, "message edit payload is valid");
+    return p;
+}
+
+static void emoji_message(const char *expected) {
+    observed_edit p = emoji_edit();
+    const char *buf = p.buf;
+    int len = p.len;
     require(buf && len >= 0 && len < 160, "message edit payload is valid");
     printf("EMOJI_MESSAGE\t%d\t", len);
     for (int i = 0; i < len; i++) printf("%02X", (unsigned char)buf[i]);
     printf("\t%.*s\n", len, buf);
     require(len == (int)strlen(expected) && !memcmp(buf, expected, len), "emoji message contains exact UTF-8 bytes");
+}
+
+static void emoji_edit_state(const char *step, const char *expected, int cursor, int anchor) {
+    emoji_message(expected);
+    observed_edit p = emoji_edit();
+    if (anchor < 0) anchor = cursor;
+    require(p.focused && ui->focus == smart_id("message"), "OS editing focuses original message input");
+    printf("EMOJI_EDIT\t%s\t%d\t%d\t%d\t", step, p.len, p.cursor, p.anchor);
+    for (int i = 0; i < p.len; i++) printf("%02X", (unsigned char)p.buf[i]);
+    puts("");
+    require(p.cursor == cursor && p.anchor == anchor, "exact UTF-8 byte cursor/anchor after OS edit");
+    require(cursor >= 0 && cursor <= p.len && (cursor == p.len || ((unsigned char)p.buf[cursor] & 0xc0) != 0x80) &&
+        anchor >= 0 && anchor <= p.len && (anchor == p.len || ((unsigned char)p.buf[anchor] & 0xc0) != 0x80),
+        "caret and selection stay on UTF-8 boundaries");
 }
 
 static cui_node *emoji_grid(void) {
@@ -235,7 +267,7 @@ static void emoji_recent(int count, const char *first, const char *second) {
     printf("EMOJI_RECENT\t%s%s%s\n", first ? first : "", second ? " " : "", second ? second : "");
 }
 
-static unsigned char *emoji_pixels(const char *name, cui_rect r, int color, size_t *length) {
+static unsigned char *emoji_pixels(const char *name, cui_rect r, int color, int inline_count, size_t *length) {
     int width = 1240, height = 820;
     unsigned char *frame = malloc((size_t)width * height * 4);
     require(frame && cui_app_screenshot(app, frame, width, height), "emoji GL readback");
@@ -244,7 +276,8 @@ static unsigned char *emoji_pixels(const char *name, cui_rect r, int color, size
     *length = (size_t)w * h * 4;
     unsigned char *pixels = malloc(*length);
     require(pixels != NULL, "emoji GL crop allocation");
-    int colored = 0, ink = 0;
+    int colored = 0, ink = 0, min_x = w, min_y = h, max_x = -1, max_y = -1, nshades = 0;
+    unsigned char shades[4096] = {0};
     for (int row = 0; row < h; row++) {
         memcpy(pixels + (size_t)row * w * 4, frame + ((size_t)(y + row) * width + x) * 4, (size_t)w * 4);
         for (int col = 0; col < w; col++) {
@@ -252,7 +285,15 @@ static unsigned char *emoji_pixels(const char *name, cui_rect r, int color, size
             int high = v[0] > v[1] ? v[0] : v[1], low = v[0] < v[1] ? v[0] : v[1];
             if (v[2] > high) high = v[2];
             if (v[2] < low) low = v[2];
-            if (high - low > 32) colored++;
+            if (high - low > 32) {
+                colored++;
+                if (col < min_x) min_x = col;
+                if (col > max_x) max_x = col;
+                if (row < min_y) min_y = row;
+                if (row > max_y) max_y = row;
+                int shade = ((v[0] >> 4) << 8) | ((v[1] >> 4) << 4) | (v[2] >> 4);
+                if (!shades[shade]) { shades[shade] = 1; nshades++; }
+            }
             if (row > 3 && row < h - 3 && col > 8 && col < w - 8 && high < 128) ink++;
         }
     }
@@ -269,7 +310,22 @@ static unsigned char *emoji_pixels(const char *name, cui_rect r, int color, size
     printf("EMOJI_PIXELS\t%s\t%d\t%d\t%d\n", name, w, h, colored);
     if (color) require(colored >= 50, "picked emoji renders real colored GL pixels");
     else require(ink >= 50, "original message GL crop contains rendered text");
+    if (inline_count >= 0) {
+        printf("EMOJI_INLINE\t%s\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n", name, inline_count, colored, min_x, min_y, max_x, max_y, nshades);
+        visible_require(inline_count == 0 ? colored == 0 : colored >= 30 * inline_count &&
+            max_x - min_x + 1 >= 6 * inline_count && max_y - min_y + 1 >= 6 && nshades >= 3, name);
+    }
     return pixels;
+}
+
+static void emoji_inline(const char *name, int count) {
+    observed_edit p = emoji_edit();
+    cui_rect r = node(smart_id("message") ^ 0xED17u)->rect, field = node(smart_id("message"))->rect;
+    require(!p.focused && !p.password && !p.multiline, "stable inline capture uses original unfocused editable input");
+    require(r.x >= field.x && r.y >= field.y && r.x + r.w <= field.x + field.w && r.y + r.h <= field.y + field.h,
+        "inline pixels are inside actual original input");
+    size_t length;
+    free(emoji_pixels(name, r, 0, count, &length));
 }
 
 static void pick_emoji(int selection, int section, int column, const char *expected) {
@@ -283,7 +339,7 @@ static void pick_emoji(int selection, int section, int column, const char *expec
     cui_rect cell = { grid.x + p.g.pad + column * p.g.cell, grid.y + top + p.g.header - p.top, p.g.cell, p.g.cell };
     char name[80]; size_t length;
     snprintf(name, sizeof name, "emoji-%d-cell", selection);
-    free(emoji_pixels(name, cell, 1, &length));
+    free(emoji_pixels(name, cell, 1, -1, &length));
     int popup_count = ui->popup_count;
     cui_id grid_id = emoji_grid()->id;
     click(cell, .5f, .5f);
@@ -298,8 +354,52 @@ static void pick_emoji(int selection, int section, int column, const char *expec
     for (int i = 0; i < ui->node_count; i++) require(ui->nodes[i].id != grid_id, "closed original emoji grid disappears from rendered nodes");
     emoji_message(expected);
     snprintf(name, sizeof name, "emoji-%d-message", selection);
-    free(emoji_pixels(name, node(smart_id("message"))->rect, 0, &length));
+    free(emoji_pixels(name, node(smart_id("message"))->rect, 0, -1, &length));
+    snprintf(name, sizeof name, "emoji-%d-inline", selection);
+    emoji_inline(name, selection);
     printf("PASS native OS emoji selection %d appends exact UTF-8 and closes original popup\n", selection);
+}
+
+#define MESSAGE_PREFIX "Release notes are up "
+#define GRIN "\xf0\x9f\x98\x80"
+#define SMILE "\xf0\x9f\x98\x83"
+
+static void emoji_editing(void) {
+    int start = (int)strlen(MESSAGE_PREFIX);
+    click(node(smart_id("message"))->rect, .5f, .5f);
+    key("End"); emoji_edit_state("end", MESSAGE_PREFIX GRIN SMILE GRIN, start + 12, -1);
+    key("Left"); emoji_edit_state("left-over-emoji", MESSAGE_PREFIX GRIN SMILE GRIN, start + 8, -1);
+    key("Right"); emoji_edit_state("right-over-emoji", MESSAGE_PREFIX GRIN SMILE GRIN, start + 12, -1);
+    key("Left"); emoji_edit_state("insert-position", MESSAGE_PREFIX GRIN SMILE GRIN, start + 8, -1);
+    command((const char *const[]){"xdotool", "type", "--clearmodifiers", "--", "X", NULL}); frames(4);
+    emoji_edit_state("insert-between", MESSAGE_PREFIX GRIN SMILE "X" GRIN, start + 9, -1);
+    key("Home"); emoji_edit_state("home", MESSAGE_PREFIX GRIN SMILE "X" GRIN, 0, -1);
+    key("Right"); emoji_edit_state("right-over-ascii", MESSAGE_PREFIX GRIN SMILE "X" GRIN, 1, -1);
+    key("End"); emoji_edit_state("end-mixed", MESSAGE_PREFIX GRIN SMILE "X" GRIN, start + 13, -1);
+    click(text("Emoji picker", 0), .5f, .5f); frames(100);
+    emoji_inline("emoji-edit-mixed-inline", 3);
+    click(node(smart_id("message"))->rect, .5f, .5f);
+    key("End");
+    key("BackSpace"); emoji_edit_state("backspace-emoji", MESSAGE_PREFIX GRIN SMILE "X", start + 9, -1);
+    key("Left"); emoji_edit_state("left-over-ascii", MESSAGE_PREFIX GRIN SMILE "X", start + 8, -1);
+    key("Left"); emoji_edit_state("left-over-second", MESSAGE_PREFIX GRIN SMILE "X", start + 4, -1);
+    key("Delete"); emoji_edit_state("delete-emoji", MESSAGE_PREFIX GRIN "X", start + 4, -1);
+    key("Right"); emoji_edit_state("right-after-delete", MESSAGE_PREFIX GRIN "X", start + 5, -1);
+    key("BackSpace"); emoji_edit_state("backspace-ascii", MESSAGE_PREFIX GRIN, start + 4, -1);
+    command((const char *const[]){"xdotool", "keydown", "Shift_L", NULL}); frames(2);
+    key("Left");
+    command((const char *const[]){"xdotool", "keyup", "Shift_L", NULL}); frames(2);
+    emoji_edit_state("select-whole-emoji", MESSAGE_PREFIX GRIN, start, start + 4);
+    command((const char *const[]){"xdotool", "type", "--clearmodifiers", "--", "Z", NULL}); frames(4);
+    emoji_edit_state("replace-selected-emoji", MESSAGE_PREFIX "Z", start + 1, -1);
+    key("BackSpace"); emoji_edit_state("restore-plain-prefix", MESSAGE_PREFIX, start, -1);
+    click(text("Emoji picker", 0), .5f, .5f); frames(100);
+    emoji_inline("emoji-edit-plain-inline", 0);
+    select_page(1); select_page(10); reveal("Emoji picker"); wheel(0, 1, 3);
+    emoji_message(MESSAGE_PREFIX);
+    open_emoji(); emoji_recent(2, GRIN, SMILE);
+    key("Escape"); frames(100); emoji_popup(0); emoji_message(MESSAGE_PREFIX);
+    puts("PASS native OS UTF-8 navigation, insertion, selection, Backspace/Delete and edited persistence");
 }
 
 static void emoji_workflow(void) {
@@ -307,12 +407,14 @@ static void emoji_workflow(void) {
     select_page(10); reveal("Emoji picker"); wheel(0, 1, 3);
     emoji_message("Release notes are up ");
     size_t before_len, after_len;
-    unsigned char *before = emoji_pixels("emoji-0-message", node(smart_id("message"))->rect, 0, &before_len);
+    unsigned char *before = emoji_pixels("emoji-0-message", node(smart_id("message"))->rect, 0, -1, &before_len);
+    emoji_inline("emoji-0-inline", 0);
     open_emoji(); emoji_recent(0, NULL, NULL);
     pick_emoji(1, 0, 0, "Release notes are up \xf0\x9f\x98\x80");
-    unsigned char *after = emoji_pixels("emoji-1-rendered-message", node(smart_id("message"))->rect, 0, &after_len);
-    /* Native ordinary text fonts do not use the separate color emoji renderer. */
-    printf("EMOJI_RENDER_CHANGE\t%d\n", before_len != after_len || memcmp(before, after, before_len) != 0);
+    unsigned char *after = emoji_pixels("emoji-1-rendered-message", node(smart_id("message"))->rect, 0, -1, &after_len);
+    int changed = before_len != after_len || memcmp(before, after, before_len) != 0;
+    printf("EMOJI_RENDER_CHANGE\t%d\n", changed);
+    visible_require(changed, "picked-message-changes");
     free(before); free(after);
     open_emoji(); emoji_recent(1, first, NULL);
     pick_emoji(2, 1, 1, "Release notes are up \xf0\x9f\x98\x80\xf0\x9f\x98\x83");
@@ -324,9 +426,12 @@ static void emoji_workflow(void) {
     key("Escape"); frames(100); emoji_popup(0);
     emoji_message("Release notes are up \xf0\x9f\x98\x80\xf0\x9f\x98\x83\xf0\x9f\x98\x80");
     puts("PASS native emoji message and recent history persist across popup reopen and page navigation");
+    emoji_editing();
 }
 
 int native_input(void) {
+    const char *diagnostic = getenv("CUI_GALLERY_DIAGNOSTIC_INVISIBLE");
+    diagnostic_invisible = diagnostic && !strcmp(diagnostic, "1");
     app = cui_app_create(&(cui_app_desc){.title="Native CUI gallery input", .width=1240,
         .height=820, .continuous=true, .renderer=CUI_RENDERER_OPENGL,
         .theme=CUI_THEME_LIGHT, .accent=CUI_ACCENT_NEUTRAL});
@@ -380,6 +485,8 @@ int native_input(void) {
     require(!cui_app_frame(app), "quit ends loop");
     cui_app_destroy(app);
     app = NULL;
-    printf("PASS native gallery OS input: all27 sidebar selections, checkbox/switch/disabled/radio/slider/input/buttons/tabs/stepper/modal/emoji/extended/theme/accent; %d assertions\n", assertions);
+    printf("EMOJI_VISIBILITY_SUMMARY\t%d\t%s\n", visibility_failures, diagnostic_invisible ? "diagnostic" : "strict");
+    printf("%s native gallery OS input: all27 sidebar selections, checkbox/switch/disabled/radio/slider/input/buttons/tabs/stepper/modal/emoji/extended/theme/accent; %d assertions\n",
+        diagnostic_invisible ? "DIAGNOSTIC" : "PASS", assertions);
     return 0;
 }

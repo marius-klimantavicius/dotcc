@@ -228,7 +228,7 @@ The guarded `adapt_widgets` preparation step retains the selected pointer until
 the popover body ends, then appends and closes in the same caller scope as the
 toggle. This is a targeted upstream gallery repair, with no replacement picker
 algorithm or compiler/runtime change. The acquired upstream remains untouched.
-Native qualification applies the identical widget-only adaptation to its own
+Native qualification applies the identical widget adaptation to its own
 private source copy. Companion provenance retains original source hashes and
 records both the adaptation and the staged translation hashes.
 
@@ -237,14 +237,61 @@ The native harness also requires `CUI_TEXT_SHAPING` and
 privately on its library, so omitting them from the executable changes internal
 field offsets. The gallery control now uses the matching definitions.
 
-An additional native render probe confirms that the bundled plain-text fonts
+The original native render probe confirms that the bundled plain-text fonts
 do not display the selected emoji in the message input: its GL crop is
 unchanged although its actual edit-paint payload contains the exact appended
 UTF-8 bytes. The picker cells themselves contain color emoji pixels. This
-follow-up preserves that native text-rendering limitation; it does not add
-an inline color-emoji shaping/rendering feature. The failed message-pixel
-change assertion and crops are retained separately from passing selection
-and popup-disappearance checks.
+popup-only follow-up left that visibility failure unresolved. Its failed
+message-pixel assertion and crops remain historical evidence in
+[EMOJI-POPUP-VALIDATION.json](EMOJI-POPUP-VALIDATION.json).
+
+The visibility repair first investigated `cui_font_load_file/memory`,
+`cui_font_add_fallback`, glyph lookup and the existing color outline helpers.
+Text fallbacks feed the monochrome stb outline atlas; they do not integrate the
+picker's CBDT/sbix/COLR color atlas. `cui_emoji_supported` and the existing
+`cui__em_draw` path already provide font discovery, caching, color rasterization,
+image rendering and clipping. Reuse those algorithms through a small internal
+opacity-preserving bridge. `adapt_text_renderer` guards each source anchor and
+runs for both translated preparation and the native comparison.
+
+The original editor sets `text_unshaped` and shares its scalar glyph iterator
+between measurement, hit testing, selection and paint. That iterator now assigns
+one em to supported missing emoji and paints the color image on the text baseline
+inside the original input clip. Ordinary glyph lookup/advances remain unchanged;
+the original buffer, UTF-8 edit operations, widget and paint callback remain in
+CUI. Static shaped labels and grapheme-cluster editing are not added by this
+repair. An installed supported emoji font remains necessary. Linux uses the
+existing Noto search; Windows uses the existing Segoe UI Emoji discovery and
+COLR path, with actual Windows execution still unrun.
+
+The first native attempt reached the emoji draw successfully but still produced
+transparent 13px cells. Upstream's area downsampler silently returned when the
+bitmap strike exceeded seven source pixels per output pixel. Replace its fixed
+eight-tap capacity with the capacity needed for the existing area filter. This
+retains the filter and picker pixels, while allowing input-sized glyphs. The
+native/translated reduced probe covers 13px, 8px and 1px output, transparent
+alpha and unchanged picker-size output. No native dependency or broad renderer
+rewrite is introduced. All acquired original files remain untouched.
+
+The stricter gallery regression rejects the retained popup-only native and
+managed controls. It independently recomputes colored shape metrics from saved
+RGBA inside the original edit-paint leaf, compares six inline crops exactly to
+adapted native, and checks 17 OS-driven UTF-8 cursor/edit states. It retains all
+popup, recent-history, persistence, navigation and all-page comparisons. A
+diagnostic invocation always reports diagnostic status and exits nonzero.
+
+Fresh-tool regeneration emits all 58 core and two gallery units with both
+deduplication flags and matching managed-reference metadata. All four Linux
+gallery variants pass: 108 page buffers, 24 inline-input crops and 12 picker
+cells are byte-identical to adapted native. Each completes 75 state-checked
+actions and all 17 UTF-8 editing checkpoints. The 12 core programs pass all
+48 variant rows, including 661 exact shaping cases per variant, software pixels,
+images and lifecycle checks. Four-way consumer/sample execution and dependency
+audit pass; the sample's original four-widget buffer matches fresh native
+exactly. Platform checks pass 130 assertions and all 42 anchor rejections.
+An earlier attempt passed the four consumer rows before stopping on a missing
+Pillow prerequisite; the retained retry uses the pinned qualified Python
+environment and passes the remaining suites. Original failures remain preserved.
 
 Current results, commands, original failing transcripts, source/tool/product
 hashes and verification limits are recorded in

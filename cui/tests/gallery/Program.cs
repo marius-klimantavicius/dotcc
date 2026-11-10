@@ -29,6 +29,17 @@ internal static unsafe class Program
     private static delegate*<void*, void*, void> originalFree;
     private static nint watchedUi;
     private static int frees;
+    private static readonly bool diagnosticInvisible = Environment.GetEnvironmentVariable("CUI_GALLERY_DIAGNOSTIC_INVISIBLE") == "1";
+    private static int visibilityFailures;
+
+    private static void VisibleCheck(bool condition, string name)
+    {
+        Console.WriteLine($"EMOJI_VISIBILITY_ASSERT\t{name}\t{(condition ? 1 : 0)}");
+        if (!condition) visibilityFailures++;
+        // Explicit before-fix evidence mode only. The runner never accepts a
+        // diagnostic run as qualification, even if every observation succeeds.
+        if (!diagnosticInvisible) Check(condition, "Inline emoji visibility: " + name);
+    }
 
     private static void Check(bool condition, string message)
     {
@@ -281,6 +292,18 @@ internal static unsafe class Program
         Console.WriteLine($"EMOJI_MESSAGE\t{paint->len}\t{Convert.ToHexString(bytes)}\t{expected}");
     }
 
+    private static void EmojiEditState(Session s, string step, string expected, int cursor, int anchor = -1)
+    {
+        EmojiMessage(s, expected);
+        var p = (cui__edit_paint*)s.Node(SmartId(s, "message") ^ 0xED17u)->paint_data;
+        if (anchor < 0) anchor = cursor;
+        Check(p->focused != 0 && s.App.Ui->focus == SmartId(s, "message"), "OS editing focuses the original message input");
+        Check(p->cursor == cursor && p->anchor == anchor, $"{step}: exact UTF-8 byte cursor/anchor {cursor}/{anchor}, got {p->cursor}/{p->anchor}");
+        Check(cursor >= 0 && cursor <= p->len && (cursor == p->len || (p->buf[cursor] & 0xc0) != 0x80) &&
+            anchor >= 0 && anchor <= p->len && (anchor == p->len || (p->buf[anchor] & 0xc0) != 0x80), "Caret and selection stay on UTF-8 boundaries");
+        Console.WriteLine($"EMOJI_EDIT\t{step}\t{p->len}\t{p->cursor}\t{p->anchor}\t{Convert.ToHexString(new ReadOnlySpan<byte>(p->buf, p->len))}");
+    }
+
     private static cui_node* EmojiGrid(Session s)
     {
         cui_node* found = null;
@@ -350,14 +373,15 @@ internal static unsafe class Program
         actions.Add("Original emoji recent order: " + string.Join(" ", expected));
     }
 
-    private static byte[] EmojiPixels(Session s, string directory, string name, cui_rect r, bool color = false)
+    private static byte[] EmojiPixels(Session s, string directory, string name, cui_rect r, bool color = false, int inlineCount = -1)
     {
         byte[] frame = s.App.CapturePixels(out int width, out int height);
         int x = (int)MathF.Ceiling(r.x), y = (int)MathF.Ceiling(r.y);
         int w = (int)MathF.Floor(r.w) - 1, h = (int)MathF.Floor(r.h) - 1;
         Check(x >= 0 && y >= 0 && w > 0 && h > 0 && x + w <= width && y + h <= height, "Emoji GL crop is visible");
         byte[] pixels = new byte[w * h * 4];
-        int colored = 0, ink = 0;
+        int colored = 0, ink = 0, minX = w, minY = h, maxX = -1, maxY = -1;
+        var shades = new HashSet<int>();
         for (int row = 0; row < h; row++)
         {
             frame.AsSpan(((y + row) * width + x) * 4, w * 4).CopyTo(pixels.AsSpan(row * w * 4));
@@ -366,7 +390,13 @@ internal static unsafe class Program
                 int at = (row * w + col) * 4;
                 int high = Math.Max(pixels[at], Math.Max(pixels[at + 1], pixels[at + 2]));
                 int low = Math.Min(pixels[at], Math.Min(pixels[at + 1], pixels[at + 2]));
-                if (high - low > 32) colored++;
+                if (high - low > 32)
+                {
+                    colored++;
+                    minX = Math.Min(minX, col); maxX = Math.Max(maxX, col);
+                    minY = Math.Min(minY, row); maxY = Math.Max(maxY, row);
+                    shades.Add((pixels[at] >> 4) << 8 | (pixels[at + 1] >> 4) << 4 | (pixels[at + 2] >> 4));
+                }
                 if (row > 3 && row < h - 3 && col > 8 && col < w - 8 && high < 128) ink++;
             }
         }
@@ -374,7 +404,27 @@ internal static unsafe class Program
         Console.WriteLine($"EMOJI_PIXELS\t{name}\t{w}\t{h}\t{colored}");
         if (color) Check(colored >= 50, "Picked emoji renders real colored GL pixels");
         else Check(ink >= 50, "Original message GL crop contains rendered text");
+        if (inlineCount >= 0)
+        {
+            Console.WriteLine($"EMOJI_INLINE\t{name}\t{inlineCount}\t{colored}\t{minX}\t{minY}\t{maxX}\t{maxY}\t{shades.Count}");
+            // Crop is the original edit-paint leaf, excluding the smile button,
+            // borders, picker and all other controls. Neutral unfocused plain
+            // text supplies an independent zero-color negative control.
+            VisibleCheck(inlineCount == 0 ? colored == 0 :
+                colored >= 30 * inlineCount && maxX - minX + 1 >= 6 * inlineCount && maxY - minY + 1 >= 6 && shades.Count >= 3, name);
+        }
         return pixels;
+    }
+
+    private static byte[] EmojiInline(Session s, string directory, string name, int count)
+    {
+        var edit = s.Node(SmartId(s, "message") ^ 0xED17u);
+        var p = (cui__edit_paint*)edit->paint_data;
+        var field = s.Node(SmartId(s, "message"))->rect;
+        Check(p->focused == 0 && p->password == 0 && p->multiline == 0, "Stable inline capture uses the original unfocused editable input");
+        Check(edit->rect.x >= field.x && edit->rect.y >= field.y && edit->rect.x + edit->rect.w <= field.x + field.w &&
+            edit->rect.y + edit->rect.h <= field.y + field.h, "Inline pixels are inside the actual original input");
+        return EmojiPixels(s, directory, name, edit->rect, inlineCount: count);
     }
 
     private static void PickEmoji(Session s, OsInput input, string directory, int selection, int section, int column, string expected)
@@ -406,6 +456,7 @@ internal static unsafe class Program
             Check(s.App.Ui->nodes[i].id != gridId, "Closed original emoji grid disappears from rendered nodes");
         EmojiMessage(s, expected);
         EmojiPixels(s, directory, $"emoji-{selection}-message", s.Node(SmartId(s, "message"))->rect);
+        EmojiInline(s, directory, $"emoji-{selection}-inline", selection);
         actions.Add($"OS emoji selection {selection} appends exact UTF-8 and closes original popup: {expected}");
     }
 
@@ -416,13 +467,14 @@ internal static unsafe class Program
         Wheel(s, input, false, true, 3);
         EmojiMessage(s, "Release notes are up ");
         var before = EmojiPixels(s, directory, "emoji-0-message", s.Node(SmartId(s, "message"))->rect);
+        EmojiInline(s, directory, "emoji-0-inline", 0);
         OpenEmoji(s, input);
         EmojiRecent(s);
         PickEmoji(s, input, directory, 1, 0, 0, "Release notes are up 😀");
         var after = EmojiPixels(s, directory, "emoji-1-rendered-message", s.Node(SmartId(s, "message"))->rect);
-        // Native text inputs use ordinary text fonts, separate from the color
-        // emoji renderer. Record this limitation without claiming glyph display.
-        Console.WriteLine("EMOJI_RENDER_CHANGE\t" + (before.AsSpan().SequenceEqual(after) ? 0 : 1));
+        bool changed = !before.AsSpan().SequenceEqual(after);
+        Console.WriteLine("EMOJI_RENDER_CHANGE\t" + (changed ? 1 : 0));
+        VisibleCheck(changed, "picked-message-changes");
         OpenEmoji(s, input);
         EmojiRecent(s, "😀");
         PickEmoji(s, input, directory, 2, 1, 1, "Release notes are up 😀😃");
@@ -441,6 +493,48 @@ internal static unsafe class Program
         EmojiPopup(s, false);
         EmojiMessage(s, "Release notes are up 😀😃😀");
         actions.Add("Emoji message and recent history persist across popup reopen and page navigation");
+        EmojiEditing(s, input, directory);
+    }
+
+    private static void EmojiEditing(Session s, OsInput input, string directory)
+    {
+        const string prefix = "Release notes are up ", original = prefix + "😀😃😀";
+        int start = Encoding.UTF8.GetByteCount(prefix);
+        Click(s, input, s.Node(SmartId(s, "message"))->rect);
+        Key(s, "End"); EmojiEditState(s, "end", original, start + 12);
+        Key(s, "Left"); EmojiEditState(s, "left-over-emoji", original, start + 8);
+        Key(s, "Right"); EmojiEditState(s, "right-over-emoji", original, start + 12);
+        Key(s, "Left"); EmojiEditState(s, "insert-position", original, start + 8);
+        input.Text("X"); s.Until(() => input.Idle, "OS inserts plain text between picked emoji");
+        EmojiEditState(s, "insert-between", prefix + "😀😃X😀", start + 9);
+        Key(s, "Home"); EmojiEditState(s, "home", prefix + "😀😃X😀", 0);
+        Key(s, "Right"); EmojiEditState(s, "right-over-ascii", prefix + "😀😃X😀", 1);
+        Key(s, "End"); EmojiEditState(s, "end-mixed", prefix + "😀😃X😀", start + 13);
+        Click(s, input, s.Text("Emoji picker")); s.Settle(100);
+        EmojiInline(s, directory, "emoji-edit-mixed-inline", 3);
+        Click(s, input, s.Node(SmartId(s, "message"))->rect);
+        Key(s, "End");
+        Key(s, "BackSpace"); EmojiEditState(s, "backspace-emoji", prefix + "😀😃X", start + 9);
+        Key(s, "Left"); EmojiEditState(s, "left-over-ascii", prefix + "😀😃X", start + 8);
+        Key(s, "Left"); EmojiEditState(s, "left-over-second", prefix + "😀😃X", start + 4);
+        Key(s, "Delete"); EmojiEditState(s, "delete-emoji", prefix + "😀X", start + 4);
+        Key(s, "Right"); EmojiEditState(s, "right-after-delete", prefix + "😀X", start + 5);
+        Key(s, "BackSpace"); EmojiEditState(s, "backspace-ascii", prefix + "😀", start + 4);
+        Xdotool("keydown", "Shift_L"); s.Settle(2);
+        Key(s, "Left");
+        Xdotool("keyup", "Shift_L"); s.Settle(2);
+        EmojiEditState(s, "select-whole-emoji", prefix + "😀", start, start + 4);
+        input.Text("Z"); s.Until(() => input.Idle, "OS replaces selected four-byte emoji with plain text");
+        EmojiEditState(s, "replace-selected-emoji", prefix + "Z", start + 1);
+        Key(s, "BackSpace"); EmojiEditState(s, "restore-plain-prefix", prefix, start);
+        Click(s, input, s.Text("Emoji picker")); s.Settle(100);
+        EmojiInline(s, directory, "emoji-edit-plain-inline", 0);
+        Select(s, input, 1); Select(s, input, 10);
+        Reveal(s, input, "Emoji picker"); Wheel(s, input, false, true, 3);
+        EmojiMessage(s, prefix);
+        OpenEmoji(s, input); EmojiRecent(s, "😀", "😃");
+        Key(s, "Escape"); s.Settle(100); EmojiPopup(s, false); EmojiMessage(s, prefix);
+        actions.Add("Original emoji input supports OS byte-boundary navigation, insertion, selection, Backspace/Delete and edited persistence");
     }
 
     private static void Interact(string directory)
@@ -548,6 +642,7 @@ internal static unsafe class Program
             Directory.CreateDirectory(args[0]);
             CapturePages(args[0]);
             Interact(args[0]);
+            Console.WriteLine($"EMOJI_VISIBILITY_SUMMARY\t{visibilityFailures}\t{(diagnosticInvisible ? "diagnostic" : "strict")}");
             // A fresh process-local lifecycle after every upstream page has run.
             using (var retry = new Session())
             {
@@ -557,10 +652,10 @@ internal static unsafe class Program
                 Check(StateName(retry) == "Maya Okafor", "Reinitialized text has original upstream default");
             }
             File.WriteAllText(Path.Combine(args[0], "report.json"), JsonSerializer.Serialize(
-                new GalleryReport("passed", assertions, pages, actions, RuntimeInformation.OSDescription, RuntimeInformation.ProcessArchitecture.ToString(),
+                new GalleryReport(diagnosticInvisible ? "diagnostic" : "passed", assertions, pages, actions, RuntimeInformation.OSDescription, RuntimeInformation.ProcessArchitecture.ToString(),
                     "unrun", "UI allocation freed once per lifecycle, GLFW context/display released, reinitialized"),
                 GalleryJsonContext.Default.GalleryReport));
-            Console.WriteLine($"PASS translated upstream gallery: 27 captures, 27 OS selections, {actions.Count} state-asserted actions, cleanup; {assertions} assertions");
+            Console.WriteLine($"{(diagnosticInvisible ? "DIAGNOSTIC" : "PASS")} translated upstream gallery: 27 captures, 27 OS selections, {actions.Count} state-asserted actions, cleanup; {assertions} assertions");
             return 0;
         }
         catch (Exception e) { Console.Error.WriteLine(e); return 1; }

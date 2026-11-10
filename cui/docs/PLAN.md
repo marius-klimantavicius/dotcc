@@ -171,3 +171,10 @@ deduplication and core reports retain their historical qualification scope.
 The emoji follow-up applies a guarded upstream gallery repair that closes the
 popover from its caller ID scope; native and managed qualification use the
 same adapted gallery source while preserving the original native failure.
+The visibility follow-up adds a narrowly scoped bridge from missing editable
+text glyphs to the existing CUI color emoji engine and repairs its small-bitmap
+downsampling limit. It preserves the original input, UTF-8 editor and scalar
+cursor behavior. Native and managed use the same renderer adaptations. The
+gallery gate requires colored glyphs inside the edit-paint leaf, exact native
+inline pixels and 17 OS editing checkpoints; ordinary page pixels, core text,
+software rendering, lifecycle and the ordinary consumer remain required checks.
