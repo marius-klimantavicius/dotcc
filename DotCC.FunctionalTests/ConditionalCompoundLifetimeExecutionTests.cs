@@ -10,6 +10,50 @@ public sealed class ConditionalCompoundLifetimeExecutionTests
     [Theory]
     [InlineData(false)]
     [InlineData(true)]
+    public void Conditional_addressed_records_keep_lazy_initialization_and_pointer_storage(bool objects)
+    {
+        const string source = """
+            #include <stdio.h>
+            struct Box { int value; };
+            static int effects;
+            static int mark(int value) { effects++; return value; }
+            static int read(struct Box *value) { return value->value; }
+            int main(void) {
+                int yes = 1;
+                int no = 0;
+                int value = yes ? read(&(struct Box){mark(40)}) : read(&(struct Box){mark(-1)});
+                struct Box *retained = no ? &(struct Box){mark(-2)} : &(struct Box){mark(2)};
+                int other = no ? read(&(struct Box){mark(-3)}) : read(&(struct Box){mark(7)});
+                int skipped = no && read(&(struct Box){mark(-4)});
+                retained->value += value;
+                printf("%d %d %d %d %d\n", value, retained->value, other, effects, skipped);
+                return value != 40 || retained->value != 42 || other != 7 || effects != 3 || skipped;
+            }
+            """;
+        string directory = Path.Combine(Path.GetTempPath(), "dotcc-conditional-record-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(directory);
+        try
+        {
+            string path = Path.Combine(directory, "main.c");
+            File.WriteAllText(path, source);
+            string emitted;
+            if (objects)
+            {
+                string fragment = Path.Combine(directory, "main.cs");
+                File.WriteAllText(fragment, Compiler.EmitObject(path));
+                emitted = Compiler.LinkObjects(new[] { fragment });
+            }
+            else emitted = Compiler.EmitCSharp(new[] { path });
+            var result = FixtureRunner.CompileAndRunCapturingExit(emitted, Array.Empty<string>());
+            result.exit.ShouldBe(0);
+            result.stdout.Trim().ShouldBe("40 42 7 3 0");
+        }
+        finally { Directory.Delete(directory, recursive: true); }
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
     public void Conditional_compound_arrays_keep_effects_and_enclosing_block_storage(bool objects)
     {
         const string source = """

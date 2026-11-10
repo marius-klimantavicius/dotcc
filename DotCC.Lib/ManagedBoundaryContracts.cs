@@ -97,7 +97,11 @@ internal static class ManagedBoundaryContracts
     {
         var renames = texts.Select(_ => new Dictionary<string, string>(StringComparer.Ordinal)).ToArray();
         var bridges = new List<Bridge>();
-        bool IsZig(int unit) => texts[unit].Split('\n').Contains("//!!dotcc-obj source-language:zig", StringComparer.Ordinal);
+        // Source language is object metadata. Read it once per fragment rather
+        // than splitting potentially large embedded-data objects again for every
+        // candidate function contract and target unit.
+        var zigUnits = texts.Select(text => text.Split('\n').Contains("//!!dotcc-obj source-language:zig", StringComparer.Ordinal)).ToArray();
+        bool IsZig(int unit) => zigUnits[unit];
         var definitions = texts.Select(text => text.Split('\n').Where(l => l.StartsWith("//!!dotcc-obj def:", StringComparison.Ordinal))
             .Select(l => l["//!!dotcc-obj def:".Length..]).ToHashSet(StringComparer.Ordinal)).ToArray();
         // One caller-side handle cannot mean two different Zig objects, even

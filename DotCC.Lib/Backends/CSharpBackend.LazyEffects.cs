@@ -13,7 +13,8 @@ internal sealed partial class CSharpBackend
         VaListLifetimeValidator.Walk(expression, node =>
         {
             if (node is CommaOp) comma = true;
-            if (node is StackArray or Member { Arrow: false, Type.Unqualified: CType.Array, Base.IsLValue: false })
+            if (node is StackArray or Member { Arrow: false, Type.Unqualified: CType.Array, Base.IsLValue: false }
+                or Unary { Op: UnOp.AddrOf, Operand.IsLValue: false })
                 branchStorage = true;
             if (node is NullCoalesce coalesce && (IsAlignedOptional(coalesce.Left.Type)
                 || coalesce.Left.Type.Unqualified is CType.Optional { Inner.Unqualified: CType.ErrorSetType }))
