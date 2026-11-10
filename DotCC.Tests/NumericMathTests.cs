@@ -20,6 +20,10 @@ public sealed unsafe class NumericMathTests
     {
         RuntimeLibc.llrint(value).ShouldBe(even);
         RuntimeLibc.llroundl(value).ShouldBe(away);
+        RuntimeLibc.lround(value).ShouldBe(away);
+        RuntimeLibc.lroundf((float)value).ShouldBe(away);
+        RuntimeLibc.llround(value).ShouldBe(away);
+        RuntimeLibc.llroundf((float)value).ShouldBe(away);
     }
 
     [Fact]
@@ -35,6 +39,16 @@ public sealed unsafe class NumericMathTests
             RuntimeLibc.llrint(bad).ShouldBe(long.MinValue);
             RuntimeLibc.errno.ShouldBe(RuntimeLibc.EDOM);
         }
+    }
+
+    [Fact]
+    public void Copysignf_preserves_magnitude_bits_and_signed_zero()
+    {
+        BitConverter.SingleToInt32Bits(RuntimeLibc.copysignf(0f, -1f)).ShouldBe(int.MinValue);
+        RuntimeLibc.copysignf(-3.5f, 0f).ShouldBe(3.5f);
+        int payload = unchecked((int)0x7fc00123);
+        BitConverter.SingleToInt32Bits(RuntimeLibc.copysignf(BitConverter.Int32BitsToSingle(payload), -0f))
+            .ShouldBe(payload | int.MinValue);
     }
 
     [Theory]

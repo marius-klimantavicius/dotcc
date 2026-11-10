@@ -84,6 +84,8 @@ double rint(double x); float rintf(float x);
 long long llrint(double x);
 long lrint(double x); long lrintf(float x);
 long long llroundl(long double x);
+long lround(double x); long lroundf(float x);
+long long llround(double x); long long llroundf(float x);
 double trunc(double x); float truncf(float x);
 
 /* Absolute value, remainder, min/max (C99 for fmin/fmax). The `l` variant is
@@ -95,6 +97,7 @@ double remainder(double x, double y);
 double fmin(double x, double y); float fminf(float x, float y);
 double fmax(double x, double y); float fmaxf(float x, float y);
 double copysign(double x, double y);
+float copysignf(float x, float y);
 double nextafter(double x, double y);
 double fma(double x, double y, double z);
 

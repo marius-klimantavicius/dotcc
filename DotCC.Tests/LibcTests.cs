@@ -428,9 +428,7 @@ public sealed unsafe class LibcTests
     [Fact]
     public void fscanf_reads_from_stdin()
     {
-        var prev = Console.In;
-        Console.SetIn(new StringReader("100 2.71"));
-        try
+        using (new StdinBytes("100 2.71"))
         {
             int n = 0;
             double f = 0;
@@ -439,7 +437,6 @@ public sealed unsafe class LibcTests
             n.ShouldBe(100);
             f.ShouldBe(2.71);
         }
-        finally { Console.SetIn(prev); }
     }
 
     // -----------------------------------------------------------------

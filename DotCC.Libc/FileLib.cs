@@ -28,10 +28,11 @@ namespace DotCC.Libc;
 /// </para>
 /// <para>
 /// <b>Two backings.</b> Slots 0/1/2 are <c>stdin</c>/<c>stdout</c>/<c>stderr</c>
-/// and route text through <see cref="Console.In"/> / <see cref="Console.Out"/> /
-/// <see cref="Console.Error"/>, <i>resolved per call</i> so <c>Console.SetIn</c> /
-/// <c>SetOut</c> redirection (and the functional harness's stdout capture) is
-/// honored — never the raw OS handle. <c>fopen</c>'d slots wrap a
+/// and read stdin bytes from <see cref="Console.OpenStandardInput()"/>. Output
+/// uses <see cref="Console.Out"/> / <see cref="Console.Error"/>, resolved per
+/// call so managed output capture is honored. Redirect input through C file
+/// descriptors (<c>freopen</c>/<c>dup2</c>) or the process's standard input;
+/// <c>Console.SetIn</c> supplies decoded characters, not C bytes. <c>fopen</c>'d slots wrap a
 /// <see cref="FileStream"/> (binary, seekable). <c>freopen</c> swaps a slot's
 /// backing while keeping the same <c>FILE*</c> identity — the standard way to
 /// point <c>stdin</c>/<c>stdout</c> at a file (C99 7.19.5.4).
@@ -111,7 +112,7 @@ public static unsafe partial class Libc
         }
     }
 
-    /// <summary>Standard input stream (<c>FILE*</c>). Routes through <see cref="Console.In"/>.</summary>
+    /// <summary>Standard input stream (<c>FILE*</c>). Reads raw process input bytes.</summary>
     public static FILE* stdin => StdStream(ref _stdinP, 0);
 
     /// <summary>Standard output stream (<c>FILE*</c>). Routes through <see cref="Console.Out"/>.</summary>
@@ -150,7 +151,7 @@ public static unsafe partial class Libc
 
     internal static TextReader ReaderFor(FILE* f) => Slot(f) switch
     {
-        { Kind: FileSlot.K.In } => Console.In,
+        { Kind: FileSlot.K.In } s => s.Reader ??= new StreamFileReader(Console.OpenStandardInput()),
         { Kind: FileSlot.K.File, Stream: { } st } s => s.Reader ??= new StreamFileReader(st),
         _ => TextReader.Null,
     };
@@ -158,8 +159,8 @@ public static unsafe partial class Libc
     // ---- byte helpers used by fputc/fputs/fgetc/fgets ----
     //
     // For files these hit the FileStream byte-exact (fputc/fgetc are
-    // byte-oriented in C); for the console they go through Console.* as chars,
-    // which is exactly correct for ASCII (matches dotcc's UTF-8-in-char* model).
+    // byte-oriented in C). Stdin shares a raw byte reader with fscanf so neither
+    // Unicode decoding nor formatted-reader lookahead loses bytes.
 
     internal static bool WriteByteTo(FILE* f, byte b)
     {
@@ -254,7 +255,7 @@ public static unsafe partial class Libc
         }
         else
         {
-            r = Console.In.Read();
+            r = (s.Reader ??= new StreamFileReader(Console.OpenStandardInput())).Read();
         }
         if (r < 0) { s.Eof = true; return -1; }
         return r & 0xFF;
@@ -464,7 +465,7 @@ public static unsafe partial class Libc
     }
 
     /// <summary>POSIX <c>read(fd, buf, count)</c> — byte-level fd read over the
-    /// slot's backing (file stream, or Console.In for fd 0).</summary>
+    /// slot's backing (file stream, or raw standard input for fd 0).</summary>
     public static long read(int fd, void* buf, ulong count)
     {
         var s = SlotByFd(fd);

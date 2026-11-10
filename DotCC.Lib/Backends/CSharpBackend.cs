@@ -1198,10 +1198,11 @@ internal sealed partial class CSharpBackend
                 sb.Append(pad).Append($"throw new ZigErrorReturn((ushort){Expr(zt.Code)});\n");
                 break;
             case For fr:
-                if (fr.Init is DeclStmt alignedInit && alignedInit.Decls.Any(declaration => RequiresAlignedObject(declaration.Sym)))
+                if (fr.Init is { } storedInit && (ForInitializerNeedsStorage(storedInit)
+                    || storedInit is DeclStmt alignedInit && alignedInit.Decls.Any(declaration => RequiresAlignedObject(declaration.Sym))))
                 {
                     sb.Append(pad).Append("{\n");
-                    Stmt(sb, alignedInit, ind + 1);
+                    Stmt(sb, storedInit, ind + 1);
                     Stmt(sb, fr with { Init = null }, ind + 1);
                     sb.Append(pad).Append("}\n");
                     break;

@@ -7,6 +7,7 @@ namespace DotCC.Libc;
 public static unsafe partial class Libc
 {
     public static double copysign(double value, double sign) => Math.CopySign(value, sign);
+    public static float copysignf(float value, float sign) => MathF.CopySign(value, sign);
 
     /// <summary>Adjacent binary64 value toward target, including target's zero
     /// sign. Range errors follow the C errno contract; FP flags/fenv are not modeled.</summary>

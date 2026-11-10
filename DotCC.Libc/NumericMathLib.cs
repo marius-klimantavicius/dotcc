@@ -18,6 +18,11 @@ public static unsafe partial class Libc
     public static long llroundl(double value)
         => RoundedLong(global::System.Math.Round(value, global::System.MidpointRounding.AwayFromZero));
 
+    public static long lround(double value) => llroundl(value);
+    public static long lroundf(float value) => llroundl(value);
+    public static long llround(double value) => llroundl(value);
+    public static long llroundf(float value) => llroundl(value);
+
     private static long RoundedLong(double value)
     {
         if (double.IsNaN(value) || value < -9223372036854775808.0 || value >= 9223372036854775808.0)

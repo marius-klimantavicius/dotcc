@@ -12,8 +12,7 @@ namespace DotCC.Tests;
 /// Unit tests for the <c>&lt;stdio.h&gt;</c> character I/O surface
 /// (StdioLib.cs) plus <c>&lt;errno.h&gt;</c> / <c>strerror</c> / <c>perror</c>
 /// (ErrnoLib.cs). The stream-reading entries are driven with a
-/// <see cref="StringReader"/>; the stdin/stdout-bound ones redirect
-/// <see cref="Console"/>.
+/// C file redirected to descriptor zero; stdout-bound ones redirect Console.
 /// </summary>
 [Collection("Console")]
 public sealed unsafe class LibcStdioCharTests
@@ -41,57 +40,45 @@ public sealed unsafe class LibcStdioCharTests
     [Fact]
     public void getchar_reads_stdin_then_eof()
     {
-        var prev = Console.In;
-        Console.SetIn(new StringReader("Hi"));
-        try
+        using (new StdinBytes("Hi"))
         {
             getchar().ShouldBe((int)'H');
             getchar().ShouldBe((int)'i');
             getchar().ShouldBe(-1);
         }
-        finally { Console.SetIn(prev); }
     }
 
     [Fact]
     public void fgetc_and_getc_read_stdin()
     {
-        var prev = Console.In;
-        Console.SetIn(new StringReader("xy"));
-        try
+        using (new StdinBytes("xy"))
         {
             fgetc(stdin).ShouldBe((int)'x');
             getc(stdin).ShouldBe((int)'y');
             fgetc(stdin).ShouldBe(-1);
         }
-        finally { Console.SetIn(prev); }
     }
 
     [Fact]
     public void fgets_keeps_newline_and_stops()
     {
-        var prev = Console.In;
-        Console.SetIn(new StringReader("hello\nworld"));
-        try
+        using (new StdinBytes("hello\nworld"))
         {
             byte* buf = stackalloc byte[32];
             Cstr(fgets(buf, 32, stdin)).ShouldBe("hello\n");
             Cstr(fgets(buf, 32, stdin)).ShouldBe("world");
             ((nint)fgets(buf, 32, stdin)).ShouldBe((nint)0);   // EOF, nothing read
         }
-        finally { Console.SetIn(prev); }
     }
 
     [Fact]
     public void fgets_respects_size_limit()
     {
-        var prev = Console.In;
-        Console.SetIn(new StringReader("abcdef"));
-        try
+        using (new StdinBytes("abcdef"))
         {
             byte* buf = stackalloc byte[4];
             Cstr(fgets(buf, 4, stdin)).ShouldBe("abc");          // at most n-1 = 3 bytes
         }
-        finally { Console.SetIn(prev); }
     }
 
     // ---- errno / strerror / perror ----
