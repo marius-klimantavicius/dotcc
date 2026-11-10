@@ -57,6 +57,7 @@ def qualification(ctx, suite):
 
 def abi(ctx, suite):
     tools(ctx)
+    ctx.run([sys.executable, "-B", "-m", "unittest", "discover", "-s", ctx.root / "tests/recipe", "-v"], "recipe-contracts")
     ctx.run([sys.executable, ctx.root / "tests/host-glfw/verify-abi.py", "--source-root", source(ctx)], "gl-abi")
     ctx.run([sys.executable, ctx.root / "scripts/generate-gl.py", "--check"], "gl-generated-check")
     ctx.run([sys.executable, ctx.root / "tests/platform/run.py", "--source", source(ctx),

@@ -72,6 +72,12 @@ counts and comparison rules are documented in [qualification](tests/qualificatio
 [host tests](tests/host-glfw/README.md), [platform tests](tests/platform/README.md)
 and [desktop input](tests/desktop/README.md).
 
+For a targeted qualification retry, `CUI_QUALIFICATION_OBJECTS` and
+`CUI_QUALIFICATION_STAGED_SOURCE` can select a matching retained object/source
+pair from an already validated final translation. Supply both and preserve its
+profile/tool provenance. The specialist runner records all reused object hashes.
+Ordinary `verify.sh` emits a fresh complete source closure.
+
 For Windows use Python to invoke the shared CLI (`python Scripts/campaign.py`)
 or Git Bash wrappers, an ordinary interactive desktop, and `--rid win-x64`.
 The current native differential runner requires the documented Linux toolchain;

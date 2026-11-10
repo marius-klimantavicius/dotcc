@@ -14,6 +14,15 @@ def run_suite(ctx, suite):
             else runners.qualification)(ctx, suite)
 
 
+def project_path(target, project):
+    try:
+        return os.path.relpath(target, project.parent)
+    except ValueError:
+        # Private Windows builds may use a different drive from the sources.
+        # finish() restores portable links at the canonical delivery location.
+        return str(target.resolve())
+
+
 def sources(root):
     pin = json_file(root / "config/source.json")
     inputs = Path(os.environ["CUI_WORK_ROOT"]) / "inputs" if "CUI_WORK_ROOT" in os.environ else root / "ref"
@@ -51,10 +60,10 @@ def configure(ctx, project, form):
         existing = next((node for node in root.iter("Compile") if node.get("Link") == "Host/" + path.name), None)
         if existing is None:
             existing = ET.SubElement(group, "Compile", Link="Host/" + path.name)
-        existing.set("Include", os.path.relpath(selected, project.parent))
+        existing.set("Include", project_path(selected, project))
     reference = ctx.root / "src/Glfw/Glfw.csproj"
     if not any(Path(node.get("Include", "")).name == "Glfw.csproj" for node in root.iter("ProjectReference")):
-        ET.SubElement(group, "ProjectReference", Include=os.path.relpath(reference, project.parent))
+        ET.SubElement(group, "ProjectReference", Include=project_path(reference, project))
     ET.indent(tree, space="  ")
     tree.write(project, encoding="unicode")
     notices = project.parent / "notices"
@@ -74,7 +83,10 @@ def finish(ctx, project, form):
     for node in tree.getroot().iter("Compile"):
         link = node.get("Link", "")
         if link.startswith("Host/"):
-            node.set("Include", os.path.relpath(ctx.root / "src/Host" / Path(link).name, project.parent))
+            node.set("Include", project_path(ctx.root / "src/Host" / Path(link).name, project))
+    for node in tree.getroot().iter("ProjectReference"):
+        if Path(node.get("Include", "")).name == "Glfw.csproj":
+            node.set("Include", project_path(ctx.root / "src/Glfw/Glfw.csproj", project))
     ET.indent(tree, space="  ")
     tree.write(project, encoding="unicode")
 
