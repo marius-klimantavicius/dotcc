@@ -34,11 +34,20 @@
     "pages": 27,
     "scope": "Original upstream gallery workload; separate companion referencing canonical core types/functions/runtime"
   },
-  "adaptations": [],
+  "adaptations": [
+    {
+      "file": "examples/gallery_more.c",
+      "reason": "Upstream gallery: close the emoji popover in its caller ID scope after selection"
+    }
+  ],
   "sha256": {
     "examples/gallery_ui.c": "012dabfff1234ac8cb497901779f4d329589d9bda4e09e729db35697c382b250",
     "examples/gallery_more.c": "1c083dbdef6fa97cde088c29ee0547bee2de32cb1f0697f35f2cee0259a63f02",
     "examples/gallery_ui.h": "82b030ab36290bad74e68e5d9e34147298a580de2911cf691554c1be1d309bf7",
     "examples/gallery_more.h": "04225c16a2712518b6bf517a0880b0caffc337b7b16f23b8a647c9c32792de0c"
+  },
+  "translation_sha256": {
+    "examples/gallery_ui.c": "012dabfff1234ac8cb497901779f4d329589d9bda4e09e729db35697c382b250",
+    "examples/gallery_more.c": "631c8b51ad1030c1b1935cb4fd020c679fb4dbae30690e287675cb1ec9542b64"
   }
 }

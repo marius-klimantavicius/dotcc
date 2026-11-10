@@ -2,10 +2,7 @@
 import shutil
 
 
-def stage(source, destination):
-    shutil.copytree(source, destination, ignore=shutil.ignore_patterns(".git", "build", "__pycache__"))
-    changes = []
-
+def _replacer(destination, changes):
     def replace(file, old, new, reason):
         path = destination / file
         text = path.read_text(encoding="utf-8")
@@ -13,6 +10,33 @@ def stage(source, destination):
             raise RuntimeError(f"Expected one adaptation anchor in {file}: {reason}")
         path.write_text(text.replace(old, new), encoding="utf-8")
         changes.append({"file": file, "reason": reason})
+    return replace
+
+
+def adapt_widgets(destination):
+    """Apply upstream widget repairs to a private managed or native source copy."""
+    changes = []
+    replace = _replacer(destination, changes)
+    # Popover contents have an additional ID scope. Close from the same scope
+    # as toggle(), otherwise close() creates a different, already-closed popup.
+    replace("examples/gallery_more.c",
+            '        cui_popover(ui, "emoji-pop", .placement = CUI_PLACE_BOTTOM_END, .width = 340, .pad = 0) {\n'
+            '            const char *e = cui_emoji_picker(ui, "emoji", .recent = recent, .recent_cap = sizeof recent, .tone = &tone, .height = 260);\n'
+            '            if (e && strlen(message) + strlen(e) < sizeof message) { strcat(message, e); cui_popover_close(ui, "emoji-pop"); }\n'
+            '        }',
+            '        const char *e = NULL;\n'
+            '        cui_popover(ui, "emoji-pop", .placement = CUI_PLACE_BOTTOM_END, .width = 340, .pad = 0) {\n'
+            '            e = cui_emoji_picker(ui, "emoji", .recent = recent, .recent_cap = sizeof recent, .tone = &tone, .height = 260);\n'
+            '        }\n'
+            '        if (e && strlen(message) + strlen(e) < sizeof message) { strcat(message, e); cui_popover_close(ui, "emoji-pop"); }',
+            "Upstream gallery: close the emoji popover in its caller ID scope after selection")
+    return changes
+
+
+def stage(source, destination):
+    shutil.copytree(source, destination, ignore=shutil.ignore_patterns(".git", "build", "__pycache__"))
+    changes = []
+    replace = _replacer(destination, changes)
 
     replace("src/platform/cui_app.c",
             "cui_app *cui_app_create(const cui_app_desc *desc) {\n",
@@ -60,4 +84,5 @@ def stage(source, destination):
             '    int n = snprintf(p, sizeof p, "%s\\\\Fonts\\\\seguiemj.ttf", win && *win ? win : "C:\\\\Windows");\n'
             '    if (n < 0 || (size_t)n >= sizeof p) return false;',
             "Reject a truncated Windows emoji font path instead of opening a different file")
+    changes.extend(adapt_widgets(destination))
     return changes

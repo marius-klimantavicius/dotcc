@@ -260,7 +260,190 @@ internal static unsafe class Program
         throw new TimeoutException("Cannot reveal " + label);
     }
 
-    private static void Interact()
+    private static uint SmartId(Session s, string value)
+    {
+        fixed (byte* scope = "Smart inputs"u8) cui_push_id(s.App.Ui, scope);
+        uint id = s.Id(value);
+        cui_pop_id(s.App.Ui);
+        return id;
+    }
+
+    private static void EmojiMessage(Session s, string expected)
+    {
+        // The original page keeps message[] static. Observe the actual edit
+        // renderer's payload, using its emitted type; never write that storage.
+        var node = s.Node(SmartId(s, "message") ^ 0xED17u);
+        Check(node->paint != null && node->paint_data != null, "Message has an edit renderer");
+        var paint = (cui__edit_paint*)node->paint_data;
+        byte[] bytes = Encoding.UTF8.GetBytes(expected);
+        Check(paint->len == bytes.Length && new ReadOnlySpan<byte>(paint->buf, paint->len).SequenceEqual(bytes),
+            $"Emoji message contains exact UTF-8 bytes: {expected}");
+        Console.WriteLine($"EMOJI_MESSAGE\t{paint->len}\t{Convert.ToHexString(bytes)}\t{expected}");
+    }
+
+    private static cui_node* EmojiGrid(Session s)
+    {
+        cui_node* found = null;
+        for (int i = 0; i < s.App.Ui->node_count; i++)
+        {
+            var n = &s.App.Ui->nodes[i];
+            if (n->paint == null || n->paint_data == null || n->id == 0 ||
+                (n->flags & CUI_NF_FOCUSABLE) == 0 || n->rect.h != 260) continue;
+            Check(found == null, "Exactly one original emoji grid");
+            found = n;
+        }
+        Check(found != null, "Original 260px emoji grid is rendered");
+        return found;
+    }
+
+    private static void EmojiPopup(Session s, bool open)
+    {
+        uint id = SmartId(s, "emoji-pop");
+        bool found = false;
+        for (int i = 0; i < s.App.Ui->popup_count; i++)
+        {
+            var p = &s.App.Ui->popups[i];
+            if (p->id == id)
+            {
+                found = true;
+                Console.WriteLine($"EMOJI_POPUP\t{id}\t{p->open}\t{p->s.x}");
+                Check((p->open != 0) == open, $"Original emoji popup {id} open={p->open}, expected={open}");
+            }
+            else Check(p->open == 0, "No other popup is open");
+        }
+        Check(found, "Original scoped emoji popup exists");
+    }
+
+    private static void OpenEmoji(Session s, OsInput input)
+    {
+        var message = s.Node(SmartId(s, "message"))->rect;
+        cui_rect trigger = default;
+        int count = 0;
+        for (int i = 0; i < s.App.Ui->node_count; i++)
+        {
+            var n = &s.App.Ui->nodes[i];
+            if (n->rect.x > message.x + message.w && MathF.Abs(n->rect.y - message.y) < 10 &&
+                (n->flags & CUI_NF_INTERACTIVE) != 0) { trigger = n->rect; count++; }
+        }
+        Check(count == 1, "Original smile icon trigger is beside the message");
+        Click(s, input, trigger);
+        s.Settle(100); // settle popup placement and budgeted color-emoji atlas uploads
+        EmojiPopup(s, true);
+        EmojiGrid(s);
+        actions.Add("OS smile icon opens original emoji popup");
+    }
+
+    private static void EmojiRecent(Session s, params string[] expected)
+    {
+        var p = (cui__em_paint*)EmojiGrid(s)->paint_data;
+        Check(p->none == 0 && p->g.nsec > 0 && p->g.nsec <= 11 && p->items != null && p->recent != null,
+            "Emoji font and original picker paint data are available");
+        Check(p->g.sec[0].kind == (expected.Length == 0 ? 1 : 0), "Recent section precedes smileys when populated");
+        if (expected.Length > 0)
+        {
+            Check(p->g.sec[0].count == expected.Length, "Recent list deduplicates selected emoji");
+            for (int i = 0; i < expected.Length; i++)
+                Check(p->items[i] == -(i + 1) && Utf8(p->recent + i * 32) == expected[i],
+                    $"Recent item {i} preserves actual emoji {expected[i]}");
+        }
+        Console.WriteLine("EMOJI_RECENT\t" + string.Join(" ", expected));
+        actions.Add("Original emoji recent order: " + string.Join(" ", expected));
+    }
+
+    private static byte[] EmojiPixels(Session s, string directory, string name, cui_rect r, bool color = false)
+    {
+        byte[] frame = s.App.CapturePixels(out int width, out int height);
+        int x = (int)MathF.Ceiling(r.x), y = (int)MathF.Ceiling(r.y);
+        int w = (int)MathF.Floor(r.w) - 1, h = (int)MathF.Floor(r.h) - 1;
+        Check(x >= 0 && y >= 0 && w > 0 && h > 0 && x + w <= width && y + h <= height, "Emoji GL crop is visible");
+        byte[] pixels = new byte[w * h * 4];
+        int colored = 0, ink = 0;
+        for (int row = 0; row < h; row++)
+        {
+            frame.AsSpan(((y + row) * width + x) * 4, w * 4).CopyTo(pixels.AsSpan(row * w * 4));
+            for (int col = 0; col < w; col++)
+            {
+                int at = (row * w + col) * 4;
+                int high = Math.Max(pixels[at], Math.Max(pixels[at + 1], pixels[at + 2]));
+                int low = Math.Min(pixels[at], Math.Min(pixels[at + 1], pixels[at + 2]));
+                if (high - low > 32) colored++;
+                if (row > 3 && row < h - 3 && col > 8 && col < w - 8 && high < 128) ink++;
+            }
+        }
+        File.WriteAllBytes(Path.Combine(directory, name + ".rgba"), pixels);
+        Console.WriteLine($"EMOJI_PIXELS\t{name}\t{w}\t{h}\t{colored}");
+        if (color) Check(colored >= 50, "Picked emoji renders real colored GL pixels");
+        else Check(ink >= 50, "Original message GL crop contains rendered text");
+        return pixels;
+    }
+
+    private static void PickEmoji(Session s, OsInput input, string directory, int selection, int section, int column, string expected)
+    {
+        var grid = EmojiGrid(s);
+        var p = (cui__em_paint*)grid->paint_data;
+        Check(p->g.cell > 0 && p->g.cols > column && section < p->g.nsec && p->g.sec[section].count > column,
+            "Selected original emoji cell exists");
+        float top = 0;
+        for (int i = 0; i < section; i++)
+            top += (p->g.sec[i].kind == 10 ? 0 : p->g.header) +
+                ((p->g.sec[i].count + p->g.cols - 1) / p->g.cols) * p->g.cell;
+        var cell = new cui_rect { x = grid->rect.x + p->g.pad + column * p->g.cell,
+            y = grid->rect.y + top + p->g.header - p->top, w = p->g.cell, h = p->g.cell };
+        EmojiPixels(s, directory, $"emoji-{selection}-cell", cell, color: true);
+        int popupCount = s.App.Ui->popup_count;
+        uint gridId = grid->id;
+        Click(s, input, cell);
+        s.Settle(10);
+        EmojiMessage(s, expected); // check append independently before checking close
+        EmojiPopup(s, false);
+        Check(s.App.Ui->popup_count == popupCount, "Picking creates no phantom popup in a nested ID scope");
+        s.Settle(100);
+        EmojiPopup(s, false);
+        for (int i = 0; i < s.App.Ui->popup_count; i++)
+            if (s.App.Ui->popups[i].id == SmartId(s, "emoji-pop"))
+                Check(s.App.Ui->popups[i].s.x == 0, "Original emoji popup exit spring finishes");
+        for (int i = 0; i < s.App.Ui->node_count; i++)
+            Check(s.App.Ui->nodes[i].id != gridId, "Closed original emoji grid disappears from rendered nodes");
+        EmojiMessage(s, expected);
+        EmojiPixels(s, directory, $"emoji-{selection}-message", s.Node(SmartId(s, "message"))->rect);
+        actions.Add($"OS emoji selection {selection} appends exact UTF-8 and closes original popup: {expected}");
+    }
+
+    private static void EmojiWorkflow(Session s, OsInput input, string directory)
+    {
+        Select(s, input, 10);
+        Reveal(s, input, "Emoji picker");
+        Wheel(s, input, false, true, 3);
+        EmojiMessage(s, "Release notes are up ");
+        var before = EmojiPixels(s, directory, "emoji-0-message", s.Node(SmartId(s, "message"))->rect);
+        OpenEmoji(s, input);
+        EmojiRecent(s);
+        PickEmoji(s, input, directory, 1, 0, 0, "Release notes are up 😀");
+        var after = EmojiPixels(s, directory, "emoji-1-rendered-message", s.Node(SmartId(s, "message"))->rect);
+        // Native text inputs use ordinary text fonts, separate from the color
+        // emoji renderer. Record this limitation without claiming glyph display.
+        Console.WriteLine("EMOJI_RENDER_CHANGE\t" + (before.AsSpan().SequenceEqual(after) ? 0 : 1));
+        OpenEmoji(s, input);
+        EmojiRecent(s, "😀");
+        PickEmoji(s, input, directory, 2, 1, 1, "Release notes are up 😀😃");
+        Select(s, input, 1);
+        Select(s, input, 10);
+        Reveal(s, input, "Emoji picker");
+        Wheel(s, input, false, true, 3);
+        EmojiMessage(s, "Release notes are up 😀😃");
+        OpenEmoji(s, input);
+        EmojiRecent(s, "😃", "😀");
+        PickEmoji(s, input, directory, 3, 0, 1, "Release notes are up 😀😃😀");
+        OpenEmoji(s, input);
+        EmojiRecent(s, "😀", "😃");
+        Key(s, "Escape");
+        s.Settle(100);
+        EmojiPopup(s, false);
+        EmojiMessage(s, "Release notes are up 😀😃😀");
+        actions.Add("Emoji message and recent history persist across popup reopen and page navigation");
+    }
+
+    private static void Interact(string directory)
     {
         using var s = new Session();
         s.Settle();
@@ -321,6 +504,8 @@ internal static unsafe class Program
         s.Until(() => s.State.dialog_open == 0 && s.App.Ui->modal_layer == 0 && s.App.Ui->prev_modal_layer == 0 && !s.HasBlocker(),
             "Escape closes upstream modal and releases input layer");
 
+        EmojiWorkflow(s, input, directory);
+
         Select(s, input, 9);
         Click(s, input, s.Text("Save"));
         s.Until(() => s.Text("Saved").w > 0, "Extended Actions split button renders saved result");
@@ -362,7 +547,7 @@ internal static unsafe class Program
             if (args.Length != 1) throw new ArgumentException("Expected capture/report directory");
             Directory.CreateDirectory(args[0]);
             CapturePages(args[0]);
-            Interact();
+            Interact(args[0]);
             // A fresh process-local lifecycle after every upstream page has run.
             using (var retry = new Session())
             {

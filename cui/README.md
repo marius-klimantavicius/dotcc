@@ -159,10 +159,16 @@ target-specific; use `dotnet publish` with `-r linux-x64` or `-r win-x64`,
 Run `bash cui/scripts/test.sh --suite gallery --form all --mode all` for the
 Linux native/translated gallery differential and real desktop-input workflows.
 That suite owns its Xvfb display. Gallery follow-up evidence is recorded
-in [GALLERY-VALIDATION.json](docs/GALLERY-VALIDATION.json). Current deduplication
-flags, product hashes and targeted core qualification are recorded in
-[DEDUP-VALIDATION.json](docs/DEDUP-VALIDATION.json); the earlier core qualification
-in `VALIDATION.json` retains its historical product hashes and scope.
+in [EMOJI-VALIDATION.json](docs/EMOJI-VALIDATION.json), including current product
+hashes and the native/managed emoji-selection regression. Preparation applies
+one guarded upstream gallery repair: close the emoji popup after leaving its
+ID scope. The original acquired source remains unchanged; the native control
+uses the identical repair. Earlier gallery, deduplication and core reports
+retain their historical product hashes and qualification scope.
+The picker draws color emoji, but the native gallery's ordinary text input
+uses the bundled text fonts and does not display these emoji glyphs. Exact
+UTF-8 append, editing storage and recent history are checked independently
+of that native rendering limitation.
 
 Linux file dialogs use installed `zenity` or `kdialog`; missing tools,
 cancellation and failed launchers report failure. URL opening waits for the

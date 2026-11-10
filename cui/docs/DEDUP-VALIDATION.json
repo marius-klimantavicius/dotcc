@@ -1612,5 +1612,7 @@
     "authored_diff_check": "passed",
     "generated_diff_check": "Compiler-emitted constant-table trailing spaces retained; generated source is not hand edited",
     "warnings": 30
-  }
+  },
+  "artifact_status": "Historical qualification before emoji popup repair; hashes and successes below describe that earlier artifact set",
+  "current_product_evidence": "EMOJI-VALIDATION.json"
 }

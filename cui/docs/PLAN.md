@@ -165,5 +165,9 @@ with direct/object execution regressions. Generated C# is never patched.
 The `gallery` suite adds native and managed all-page readback/content comparison,
 real OS navigation and representative input/scroll/theme/overlay actions, plus
 cleanup. Linux qualification covers raw/processed JIT/NativeAOT; actual Windows
-execution remains open. Follow-up evidence and current product hashes belong to
-`docs/GALLERY-VALIDATION.json`, independently of the earlier core qualification.
+execution remains open. Current product hashes and the emoji-selection
+follow-up belong to `docs/EMOJI-VALIDATION.json`. The earlier gallery,
+deduplication and core reports retain their historical qualification scope.
+The emoji follow-up applies a guarded upstream gallery repair that closes the
+popover from its caller ID scope; native and managed qualification use the
+same adapted gallery source while preserving the original native failure.

@@ -1,6 +1,6 @@
 {
-  "artifact_status": "Historical pre-static-deduplication qualification; hashes and successes below describe that earlier artifact set",
-  "current_product_evidence": "DEDUP-VALIDATION.json",
+  "artifact_status": "Historical qualification before emoji popup repair; hashes and successes below describe that earlier artifact set",
+  "current_product_evidence": "EMOJI-VALIDATION.json",
   "schema_version": 1,
   "date": "2026-11-10",
   "scope": "Upstream gallery follow-up; historical core VALIDATION.json is not rewritten or requalified under these new output hashes",

@@ -3,8 +3,11 @@
 This harness references `TranslatedCuiGallery` and its matching canonical core.
 It executes the translated `gallery_ui.c` and `gallery_more.c`, rather than a
 managed reconstruction of their controls. The native control compiles the same
-original sources against native CUI's GLFW backend with shaping and all image
-formats enabled.
+staged gallery sources against native CUI's GLFW backend with shaping and all
+image formats enabled. Its private copy receives the same guarded widget-only repair
+as the managed gallery: close the emoji popover after returning to the caller
+ID scope. Original acquired sources remain unchanged. The native executable
+uses the core's private shaping/image feature defines when reading `cui_ctx`.
 It also runs an independent native OS-input control for all 27 sidebar choices
 and the same representative stateful controls before building managed variants.
 
@@ -21,6 +24,14 @@ python3 -B cui/tests/gallery/run.py \
 
 `--form raw|processed|all` and `--mode jit|aot|all` select the Linux matrix.
 `--native-only` runs the native capture and OS-input controls without managed builds.
+The default `--native-oracle adapted` applies `stage.adapt_widgets` to a private
+native source copy. `--source` must identify original acquired upstream, before
+staging. To preserve the original native failure separately, use another work
+root and `--native-only --native-oracle original`; that diagnostic is expected
+to fail because picking appends UTF-8 but leaves the original popup open. It is
+not an accepted oracle result. `report.json` records original and effective
+source hashes plus the native adaptation list.
+
 Omit `--xvfb` to use an existing X11 display. Prerequisites are .NET 10 with
 NativeAOT tools, CMake, a C compiler, GLFW development files, X11/GLX, Mesa,
 `xdotool`, and Xvfb when selected. There are no Python package dependencies.
@@ -46,6 +57,22 @@ The fixed workload is:
   input, loading/reset buttons, tabs, forward/back stepper, modal open/Escape,
   and the extended Actions split button. Check actual upstream fields or
   rendered results, including persistence after navigating away and back.
+- On Smart inputs, open the original smile icon with OS input and pick 😀,
+  reopen and pick 😃, navigate away/back, then pick 😀 from Recent. Read the
+  original input renderer's payload to assert exact UTF-8 message bytes after
+  each selection. Check the original scoped popup closes, creates no phantom
+  popup, and stays closed after its exit animation. Reopen to verify recent
+  order, deduplication and persistence, then dismiss through OS Escape. Native
+  observes read-only prefixes of pinned private paint payloads with `memcpy`;
+  managed uses actual emitted payload types. Neither changes gallery storage.
+  Cell targets come from the original grid's rendered geometry. Each selected
+  cell must contain at least 50 colored GL pixels (channel spread >32), and the
+  message framebuffer crop must contain rendered text. The runner records whether
+  that crop changes after append; the pinned native input omits these emoji
+  glyphs because its text fonts are separate from the color-emoji renderer.
+  Retain cell/message `.rgba` crops and dimensions in `EMOJI_PIXELS` log records. The runner compares native/managed
+  message bytes and recent-order transcripts exactly in all four variants, plus
+  all three selected-cell GL crops with channel tolerance 1.
 - Scroll main content with the OS wheel, assert changed scroll offset and
   navigation's reset to the top. Change theme and accent through sidebar
   controls, assert both gallery and core state plus changed GL pixels, and
@@ -67,7 +94,8 @@ static storage retains its normal process lifetime.
 The runner owns and reaps its Xvfb process even after a test failure. External
 `report.json` includes source hashes, the native page records, per-variant
 comparison records, execution state, and display cleanup. Each variant retains
-its build/run logs, all 27 `.rgba` captures, and a managed action/state report.
+its build/run logs, all 27 page `.rgba` captures, emoji GL crops, and a managed
+action/state report.
 Failed commands or missing products fail the runner and preserve the partial
 report. Windows execution remains explicitly **unrun**; this runner does not
 claim Windows runtime qualification.
@@ -85,7 +113,24 @@ workflow steps and cleanup. Counts and retained artifact paths are in
 [evidence.json](evidence.json). The first differential caught a shared `%g`
 default-precision defect; final full-source regeneration and all four gallery
 variants pass after its repair. Original failure evidence is retained.
-Current product hashes and targeted core results are in
+Historical deduplication product hashes and targeted core results are in
 [DEDUP-VALIDATION.json](../../docs/DEDUP-VALIDATION.json). Artifact paths in the
 evidence are relative to the caller-chosen `CUI_WORK_ROOT`; the canonical
 translation receipt is relative to the repository.
+
+The emoji regression requires a color emoji font supported by the pinned picker
+(e.g. Noto Color Emoji). Missing color rendering fails the test. The first two
+Smileys cells must be the pinned 😀 and 😃 entries; the test checks the bytes
+actually appended rather than accepting any glyph. The original native and
+retained managed failure are classified as an upstream popup-ID scope defect;
+correct emoji bytes already append before the repair. The prior 53-action,
+108-capture deduplication evidence above predates this added workflow. Current
+emoji matrix evidence is in [EMOJI-VALIDATION.json](../../docs/EMOJI-VALIDATION.json).
+Actual Windows execution remains unrun.
+
+The bundled text fonts do **not** display these picked emoji inside the plain
+message input. Native before/after message crops are identical even though the
+actual input paint payload contains the appended UTF-8. `messagePixelsChanged`
+records this observation; colored emoji rendering is asserted in the picker
+cells, and input readback must still contain rendered message text. This suite
+does not claim visible emoji glyph rendering inside the plain text field.

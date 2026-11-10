@@ -14,4 +14,7 @@ add_executable(gallery-control native.c native-input.c
   "${CUI_SOURCE_ROOT}/examples/gallery_more.c")
 target_include_directories(gallery-control PRIVATE
   "${CUI_SOURCE_ROOT}/examples" "${CUI_SOURCE_ROOT}/src")
+# This harness reads cui_ctx directly. Match the private feature definitions
+# used by the core library so its internal structure layout is identical.
+target_compile_definitions(gallery-control PRIVATE CUI_TEXT_SHAPING CUI_IMAGE_ALL_FORMATS)
 target_link_libraries(gallery-control PRIVATE cui::cui)

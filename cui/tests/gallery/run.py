@@ -8,12 +8,18 @@ import os
 from pathlib import Path
 import platform
 import signal
+import sys
 import shutil
 import subprocess
 import time
 
 ROOT = Path(__file__).resolve().parents[2]
 REPOSITORY = ROOT.parent
+sys.dont_write_bytecode = True
+sys.path.insert(0, str(ROOT / "scripts"))
+from stage import adapt_widgets
+
+GALLERY_FILES = ("gallery_ui.c", "gallery_ui.h", "gallery_more.c", "gallery_more.h")
 
 
 def sha256(path):
@@ -85,6 +91,51 @@ def parse_pages(log):
     return result
 
 
+def parse_emoji(log):
+    messages, recent, pixels = [], [], []
+    message_pixels_changed = None
+    for line in log.read_text(encoding='utf-8').splitlines():
+        fields = line.split('\t')
+        if fields[0] == 'EMOJI_MESSAGE':
+            messages.append(dict(length=int(fields[1]), hex=fields[2], text=fields[3]))
+        elif fields[0] == 'EMOJI_RECENT':
+            recent.append(fields[1])
+        elif fields[0] == 'EMOJI_RENDER_CHANGE':
+            message_pixels_changed = bool(int(fields[1]))
+        elif fields[0] == 'EMOJI_PIXELS':
+            pixels.append(dict(name=fields[1], width=int(fields[2]), height=int(fields[3]), colored=int(fields[4])))
+    expected_recent = ['', '😀', '😃 😀', '😀 😃']
+    if recent != expected_recent or not messages or messages[-1]['text'] != 'Release notes are up 😀😃😀':
+        raise RuntimeError(f'{log}: incomplete emoji selections/recent persistence')
+    cells = [row for row in pixels if row['name'].endswith('-cell')]
+    if len(cells) != 3 or any(row['colored'] < 50 for row in cells):
+        raise RuntimeError(f'{log}: missing colored GL readback for three actual emoji picks')
+    if message_pixels_changed is None:
+        raise RuntimeError(f'{log}: missing actual message rendering observation')
+    return dict(status='passed', selections=3, messages=messages, recent=recent, pixels=pixels,
+                messagePixelsChanged=message_pixels_changed,
+                rendering='Colored picker cells and nonblank message GL readback; native text fonts omit these emoji glyphs')
+
+
+def compare_emoji(native, managed, native_dir, managed_dir):
+    rows = []
+    for expected, actual in zip(native['pixels'], managed['pixels'], strict=True):
+        if any(expected[key] != actual[key] for key in ('name', 'width', 'height')):
+            raise RuntimeError('Native/managed emoji GL crop names or dimensions differ')
+        if not expected['name'].endswith('-cell'):
+            continue
+        filename = expected['name'] + '.rgba'
+        left, right = (native_dir / filename).read_bytes(), (managed_dir / filename).read_bytes()
+        if len(left) != expected['width'] * expected['height'] * 4 or len(right) != len(left):
+            raise RuntimeError(f'{filename}: incorrect emoji framebuffer length')
+        maximum = max(abs(a - b) for a, b in zip(left, right, strict=True))
+        if maximum > 1:
+            raise RuntimeError(f'{filename}: native/managed emoji GL pixels exceed tolerance 1, max {maximum}')
+        rows.append(dict(name=expected['name'], bytes=len(left), maximumError=maximum,
+                         nativeSha256=hashlib.sha256(left).hexdigest(), managedSha256=hashlib.sha256(right).hexdigest()))
+    return rows
+
+
 def compare(native, managed, native_dir, managed_dir):
     rows = []
     for expected, actual in zip(native, managed, strict=True):
@@ -127,6 +178,8 @@ def main():
     parser.add_argument('--mode', choices=('jit', 'aot', 'all'), default='all')
     parser.add_argument('--xvfb', action='store_true')
     parser.add_argument('--native-only', action='store_true')
+    parser.add_argument('--native-oracle', choices=('adapted', 'original'), default='adapted',
+                        help='Original is a diagnostic expected to fail the emoji popup-close regression')
     args = parser.parse_args()
     if platform.system() != 'Linux':
         parser.error('This native/OS runner requires Linux/X11. Windows gallery execution remains unrun.')
@@ -134,7 +187,7 @@ def main():
     if work.is_relative_to(REPOSITORY):
         parser.error('--work-root must be outside the repository')
     source = args.source.resolve()
-    for name in ('gallery_ui.c', 'gallery_ui.h', 'gallery_more.c', 'gallery_more.h'):
+    for name in GALLERY_FILES:
         if not (source / 'examples' / name).is_file():
             parser.error(f'Missing upstream gallery source: {name}')
     work.mkdir(parents=True, exist_ok=True)
@@ -164,15 +217,22 @@ def main():
             path.write_text(value)
     report = dict(status='running', windows='unrun', variants=[],
                   source=str(source), sourceHashes={name: hashlib.sha256((source / 'examples' / name).read_bytes()).hexdigest()
-                                                   for name in ('gallery_ui.c', 'gallery_ui.h', 'gallery_more.c', 'gallery_more.h')},
+                                                   for name in GALLERY_FILES},
                   comparison='Main-content nodes/text exact; all RGBA channels within 1; no dynamic-content exclusion')
     try:
         native = work / 'native'
         native.mkdir(exist_ok=True)
+        native_source = native / 'source'
+        if native_source.exists():
+            shutil.rmtree(native_source)
+        shutil.copytree(source, native_source, ignore=shutil.ignore_patterns('.git', 'build', '__pycache__'))
+        adaptations = adapt_widgets(native_source) if args.native_oracle == 'adapted' else []
+        report['nativeOracle'] = dict(kind=args.native_oracle, source=str(native_source), adaptations=adaptations,
+                                     sourceHashes={name: sha256(native_source / 'examples' / name) for name in GALLERY_FILES})
         native_capture = native / 'captures'
         native_capture.mkdir(exist_ok=True)
         execute(['cmake', '-S', ROOT / 'tests/gallery', '-B', native / 'build', '-DCMAKE_BUILD_TYPE=Release',
-                 '-DCUI_SOURCE_ROOT=' + str(source)], native / 'configure.log', env)
+                 '-DCUI_SOURCE_ROOT=' + str(native_source)], native / 'configure.log', env)
         execute(['cmake', '--build', native / 'build', '--target', 'gallery-control', '--parallel', '2'],
                 native / 'build.log', env)
         report['nativeBinarySha256'] = sha256(native / 'build/gallery-control')
@@ -182,8 +242,12 @@ def main():
             execute([native / 'build/gallery-control', native_capture], native / 'run.log', runtime_env, 180, fixture)
             native_pages = parse_pages(native / 'run.log')
             report['nativePages'] = native_pages
-            execute([native / 'build/gallery-control', '--input'], native / 'input.log', runtime_env, 600, fixture)
             report['nativeInput'] = str(native / 'input.log')
+            report['nativeInputStatus'] = 'running'
+            execute([native / 'build/gallery-control', '--input'], native / 'input.log',
+                    dict(runtime_env, CUI_GALLERY_INPUT_CAPTURE=str(native_capture)), 600, fixture)
+            report['nativeEmoji'] = parse_emoji(native / 'input.log')
+            report['nativeInputStatus'] = 'passed'
             if not args.native_only:
                 forms = ('raw', 'processed') if args.form == 'all' else (args.form,)
                 modes = ('jit', 'aot') if args.mode == 'all' else (args.mode,)
@@ -211,8 +275,13 @@ def main():
                         execute(['xdotool', 'mousemove', '1439', '999'], variant / 'pointer.log', runtime_env, 15)
                         execute([*command, captures], variant / 'run.log', runtime_env, 600, fixture)
                         actual = parse_pages(variant / 'run.log')
+                        emoji = parse_emoji(variant / 'run.log')
+                        for field in ('messages', 'recent'):
+                            if emoji[field] != report['nativeEmoji'][field]:
+                                raise RuntimeError(f'{form}-{mode}: emoji {field} differs from native')
+                        emoji['comparisons'] = compare_emoji(report['nativeEmoji'], emoji, native_capture, captures)
                         result = dict(form=form, mode=mode, status='running', behaviorStatus='passed',
-                                      report=str(captures / 'report.json'),
+                                      report=str(captures / 'report.json'), emoji=emoji,
                                       binarySha256=sha256(Path(command[-1])),
                                       assemblyHashes={path.name: sha256(path) for path in
                                                       (artifacts / 'bin/Gallery.Tests' / ('release_linux-x64' if mode == 'aot' else 'release')).glob('*.dll')})
@@ -228,6 +297,8 @@ def main():
     except BaseException as error:
         report['status'] = 'failed'
         report['error'] = str(error)
+        if report.get('nativeInputStatus') == 'running':
+            report['nativeInputStatus'] = 'failed'
         raise
     finally:
         (work / 'report.json').write_text(json.dumps(report, indent=2) + '\n')

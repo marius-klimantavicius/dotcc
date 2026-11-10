@@ -52,7 +52,11 @@ def companions(ctx):
         shutil.copyfile(path, originals / path.name)
         hashes[name] = hashlib.sha256(path.read_bytes()).hexdigest()
     provenance = {"source": json_file(ctx.root / "config/source.json"), "gallery": config,
-                  "adaptations": [], "sha256": hashes}
+                  "adaptations": [change for change in ctx.receipt.get("adaptations", [])
+                                  if change["file"] in config["sources"]],
+                  "sha256": hashes,
+                  "translation_sha256": {name: hashlib.sha256((source / name).read_bytes()).hexdigest()
+                                         for name in config["sources"]}}
     (output / "upstream/provenance.json").write_text(json.dumps(provenance, indent=2) + "\n")
     ctx.receipt["gallery"] = provenance
     return {config["product"]: output}

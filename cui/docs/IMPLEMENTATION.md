@@ -1,8 +1,9 @@
 # Implementation ledger
 
 Updated 2026-11-10. Linux qualification passes. Overall acceptance remains open
-for actual Windows x64 execution. Final hashes/receipts are summarized in
-[VALIDATION.json](VALIDATION.json).
+for actual Windows x64 execution. Current hashes/receipts are summarized in
+[EMOJI-VALIDATION.json](EMOJI-VALIDATION.json); earlier reports retain their
+historical product hashes and qualification scope.
 
 ## Executed integration findings
 
@@ -213,3 +214,40 @@ are in [GALLERY-VALIDATION.json](GALLERY-VALIDATION.json). The earlier
 hashes; its full 48-program matrix is not claimed rerun for this follow-up.
 Actual Windows execution remains unrun, and the direct CUI backends remain
 deferred by the user's scope.
+
+## Emoji selection follow-up
+
+The reported Smart inputs emoji-selection failure reproduces in both the
+original native gallery and the retained managed raw product: the selected
+emoji is appended as the exact UTF-8 bytes, but the visible popover remains
+open. `cui_popover` pushes an ID scope for its body. The gallery called
+`cui_popover_close("emoji-pop")` inside that scope, resolving a different ID
+and creating an already-closed popup instead of closing the visible one.
+
+The guarded `adapt_widgets` preparation step retains the selected pointer until
+the popover body ends, then appends and closes in the same caller scope as the
+toggle. This is a targeted upstream gallery repair, with no replacement picker
+algorithm or compiler/runtime change. The acquired upstream remains untouched.
+Native qualification applies the identical widget-only adaptation to its own
+private source copy. Companion provenance retains original source hashes and
+records both the adaptation and the staged translation hashes.
+
+The native harness also requires `CUI_TEXT_SHAPING` and
+`CUI_IMAGE_ALL_FORMATS` when reading `cui_ctx`: upstream sets those definitions
+privately on its library, so omitting them from the executable changes internal
+field offsets. The gallery control now uses the matching definitions.
+
+An additional native render probe confirms that the bundled plain-text fonts
+do not display the selected emoji in the message input: its GL crop is
+unchanged although its actual edit-paint payload contains the exact appended
+UTF-8 bytes. The picker cells themselves contain color emoji pixels. This
+follow-up preserves that native text-rendering limitation; it does not add
+an inline color-emoji shaping/rendering feature. The failed message-pixel
+change assertion and crops are retained separately from passing selection
+and popup-disappearance checks.
+
+Current results, commands, original failing transcripts, source/tool/product
+hashes and verification limits are recorded in
+[EMOJI-VALIDATION.json](EMOJI-VALIDATION.json). Earlier gallery and deduplication
+reports describe their historical products. Actual Windows execution remains
+unrun.

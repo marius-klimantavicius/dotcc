@@ -38,6 +38,12 @@ class RecipeContracts(unittest.TestCase):
                 path = work / name
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_text("// upstream fixture\n")
+                if name in config["sources"]:
+                    staged = work / "source" / name
+                    staged.parent.mkdir(parents=True, exist_ok=True)
+                    staged.write_text("// staged translation fixture\n")
+            adaptation = {"file": "examples/gallery_more.c", "reason": "widget fixture"}
+            ctx.receipt["adaptations"] = [adaptation, {"file": "src/cui_files.c", "reason": "core fixture"}]
             commands = []
 
             def run(command, label, **_):
@@ -49,6 +55,10 @@ class RecipeContracts(unittest.TestCase):
 
             ctx.run, ctx.compiler, ctx.options = run, work / "dotcc.dll", SimpleNamespace(timeout=300)
             core.companions(ctx)
+            provenance = json.loads((work / "raw/TranslatedCuiGallery/upstream/provenance.json").read_text())
+            self.assertEqual(provenance["adaptations"], [adaptation])
+            self.assertNotEqual(provenance["sha256"]["examples/gallery_more.c"],
+                                provenance["translation_sha256"]["examples/gallery_more.c"])
             command = next(command for label, command in commands if label == "gallery-link")
             for flag in ("--deduplicate-inline", "--deduplicate-static"):
                 self.assertEqual(command.count(flag), 1)
