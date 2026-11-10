@@ -1,5 +1,10 @@
 # Direct vt-1.0.0 upgrade milestone
 
+Follow-up, 2026-11-10: the Zig source fragments excluded from this milestone
+have since been completed and checked, including the legacy Patch16 checkpoint.
+See [the current inventory and remaining limitations](ZIG-FOLLOWUP-20261110.md).
+The isolation description below records the original milestone's scope.
+
 This milestone commits the working official libghostty-vt 1.0.0 direct Zig to
 C# default. The conventional projects remain
 `generated/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj` and

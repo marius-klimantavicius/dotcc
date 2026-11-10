@@ -1,0 +1,124 @@
+[
+  {
+    "stage": "raw-jit-build",
+    "command": [
+      "dotnet",
+      "build",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/owning/OwningConsumer.csproj",
+      "-c",
+      "Release",
+      "-p:PublishAot=false",
+      "-p:TranslatedProject=/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/final-engine/raw/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+      "-p:UseArtifactsOutput=true",
+      "-p:ArtifactsPath=/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/owning/raw-jit-build",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/owning/raw-jit",
+      "--nologo"
+    ],
+    "exit": 0,
+    "seconds": 14.823703504982404,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/owning/raw-jit-build.log"
+  },
+  {
+    "stage": "raw-jit-run",
+    "command": [
+      "dotnet",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/owning/raw-jit/GhosttyVt.DirectConsumer.dll"
+    ],
+    "exit": 0,
+    "seconds": 0.3605778400087729,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/owning/raw-jit-run.log"
+  },
+  {
+    "stage": "raw-aot-build",
+    "command": [
+      "dotnet",
+      "publish",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/owning/OwningConsumer.csproj",
+      "-c",
+      "Release",
+      "-p:PublishAot=true",
+      "-p:TranslatedProject=/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/final-engine/raw/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+      "-p:UseArtifactsOutput=true",
+      "-p:ArtifactsPath=/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/owning/raw-aot-build",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/owning/raw-aot",
+      "--nologo",
+      "-r",
+      "linux-x64"
+    ],
+    "exit": 0,
+    "seconds": 29.61324770806823,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/owning/raw-aot-build.log"
+  },
+  {
+    "stage": "raw-aot-run",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/owning/raw-aot/GhosttyVt.DirectConsumer"
+    ],
+    "exit": 0,
+    "seconds": 0.021489999955520034,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/owning/raw-aot-run.log"
+  },
+  {
+    "stage": "processed-jit-build",
+    "command": [
+      "dotnet",
+      "build",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/owning/OwningConsumer.csproj",
+      "-c",
+      "Release",
+      "-p:PublishAot=false",
+      "-p:TranslatedProject=/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/final-engine/processed/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+      "-p:UseArtifactsOutput=true",
+      "-p:ArtifactsPath=/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/owning/processed-jit-build",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/owning/processed-jit",
+      "--nologo"
+    ],
+    "exit": 0,
+    "seconds": 13.994617740041576,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/owning/processed-jit-build.log"
+  },
+  {
+    "stage": "processed-jit-run",
+    "command": [
+      "dotnet",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/owning/processed-jit/GhosttyVt.DirectConsumer.dll"
+    ],
+    "exit": 0,
+    "seconds": 0.34110730001702905,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/owning/processed-jit-run.log"
+  },
+  {
+    "stage": "processed-aot-build",
+    "command": [
+      "dotnet",
+      "publish",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/owning/OwningConsumer.csproj",
+      "-c",
+      "Release",
+      "-p:PublishAot=true",
+      "-p:TranslatedProject=/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/final-engine/processed/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+      "-p:UseArtifactsOutput=true",
+      "-p:ArtifactsPath=/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/owning/processed-aot-build",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/owning/processed-aot",
+      "--nologo",
+      "-r",
+      "linux-x64"
+    ],
+    "exit": 0,
+    "seconds": 22.54647019703407,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/owning/processed-aot-build.log"
+  },
+  {
+    "stage": "processed-aot-run",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/owning/processed-aot/GhosttyVt.DirectConsumer"
+    ],
+    "exit": 0,
+    "seconds": 0.01899491110816598,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/owning/processed-aot-run.log"
+  }
+]

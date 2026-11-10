@@ -87,6 +87,10 @@ public sealed class ZigStaticPointerExecutionTests
     [InlineData(true, "local-self-node.zig")]
     [InlineData(false, "local-enum-union-methods.zig")]
     [InlineData(true, "local-enum-union-methods.zig")]
+    [InlineData(false, "for-else-return.zig")]
+    [InlineData(true, "for-else-return.zig")]
+    [InlineData(false, "comptime-slice-arguments.zig")]
+    [InlineData(true, "comptime-slice-arguments.zig")]
     public void Static_addresses_keep_identity_without_reading_runtime_storage(bool objects, string fixture)
     {
         var library = Environment.GetEnvironmentVariable("DOTCC_TARGET_ZIG_LIB");
@@ -127,7 +131,8 @@ public sealed class ZigStaticPointerExecutionTests
             if (objects) Compiler.EmitObject(source, zigOptions: Options(source, library));
             else Compiler.EmitCSharp([source], emit: EmitMode.ManagedLib, zigOptions: Options(source, library));
         });
-        exception.Message.ShouldContain("did not evaluate at compile time");
+        exception.Message.ShouldContain("comptime");
+        exception.Message.ShouldContain("did not evaluate");
     }
 
     [Theory]
@@ -176,6 +181,28 @@ public sealed class ZigStaticPointerExecutionTests
             else Compiler.EmitCSharp([source], emit: EmitMode.ManagedLib, zigOptions: Options(source, library));
         });
         exception.Message.ShouldContain("requires a fixed-size array");
+    }
+
+    [Theory]
+    [InlineData(false, "runtime-comptime-slice.zig", 8)]
+    [InlineData(true, "runtime-comptime-slice.zig", 8)]
+    [InlineData(false, "runtime-call-comptime-slice.zig", 9)]
+    [InlineData(true, "runtime-call-comptime-slice.zig", 9)]
+    public void Runtime_type_returning_slice_argument_reports_its_source_and_caller(bool objects, string fixture, int line)
+    {
+        var library = Environment.GetEnvironmentVariable("DOTCC_TARGET_ZIG_LIB");
+        if (string.IsNullOrEmpty(library)) Assert.Skip("Set DOTCC_TARGET_ZIG_LIB to the pinned source standard library.");
+        var source = Fixture(fixture);
+        var exception = Should.Throw<IrUnsupportedException>(() =>
+        {
+            if (objects) Compiler.EmitObject(source, zigOptions: Options(source, library));
+            else Compiler.EmitCSharp([source], emit: EmitMode.ManagedLib, zigOptions: Options(source, library));
+        });
+        exception.Message.ShouldContain("type-returning generic 'Table'");
+        exception.Message.ShouldContain("argument 'keys' must be a compile-time-known slice");
+        exception.Message.ShouldContain(Path.GetFileNameWithoutExtension(source) + ":" + line);
+        exception.Message.ShouldContain("function 'demand'");
+        exception.Message.ShouldContain("callers: answer");
     }
 
     [Theory]

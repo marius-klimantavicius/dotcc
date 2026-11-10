@@ -15,11 +15,11 @@ internal sealed partial class IrBuilder
         CType.Prim primitive => $"p:{primitive.Bytes}:{(type.AlignmentOverride != 0 ? type.AlignmentOverride : primitive.Bytes)}",
         CType.LongDoubleStorage16 => $"p:16:{(type.AlignmentOverride != 0 ? type.AlignmentOverride : 16)}",
         CType.Slice => "p:16:8",
-        // Pinned Linux x86_64 Zig storage: numeric 128-byte vectors and
-        // their non-niche optionals have 128-byte alignment. The bounded
+        // Numeric 128-byte Zig vectors use the existing native CPU feature
+        // policy for their ABI alignment (16/32/64 on x86_64). The bounded
         // value carrier keeps all bytes; aligned locals/arrays supply the address.
         CType.Vector { IsMask: false, UsesStorage: true, SizeOf: 128 } =>
-            $"p:128:{(type.AlignmentOverride != 0 ? type.AlignmentOverride : 128)}",
+            $"p:128:{(type.AlignmentOverride != 0 ? type.AlignmentOverride : Frontends.ZigSyntheticModules.HostStorageVectorAlignment)}",
         CType.Tuple tuple when tuple.Elements.Any(element => element.Unqualified is CType.Array)
             => "unsupported:pointer-backed-tuple-array",
         CType.Tuple { Elements.Count: 2 } tuple => "t:" + string.Join(",", tuple.Elements.Select(element =>

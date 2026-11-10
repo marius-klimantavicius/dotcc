@@ -128,10 +128,16 @@ internal sealed partial class ZigLowering
     /// capture is by value: zig has no <c>else |*e|</c>.</summary>
     private static (Item? Body, string? ErrName) ElseStmtParts(Item? elseClause)
     {
-        if (elseClause?.Content is not Zig.ElseStmt e) { return (null, null); }
-        var (errName, errByRef, _) = PayloadParts(e.Arg1);
+        var (payload, body) = elseClause?.Content switch
+        {
+            Zig.ElseStmt statement => (statement.Arg1, statement.Arg2),
+            Zig.LoopElse loop => (loop.Arg1, loop.Arg2),
+            _ => ((Item?)null, (Item?)null),
+        };
+        if (body is null) return (null, null);
+        var (errName, errByRef, _) = PayloadParts(payload);
         if (errByRef) { throw new IrUnsupportedException("zig `else |*e|`: an error capture cannot be by reference"); }
-        return (e.Arg2, errName);
+        return (body, errName);
     }
     private CStmt LowerStmt(Item stmt)
     {
@@ -226,7 +232,7 @@ internal sealed partial class ZigLowering
             // (`if (optionalType) |T| {...} else switch (layout) {...}`).
             case Zig.SwitchExpr statementSwitch:
                 return LowerSwitchStmt(statementSwitch.Arg2, statementSwitch.Arg5);
-            case Zig.EmptyStmt:         return new Seq(new List<CStmt>());   // the `;` after a block-armed `if` expression statement
+            case Zig.EmptyStmt or Zig.VoidValue: return new Seq(new List<CStmt>());   // `;` after a block-armed `if`, or an empty `{}` arm
             case Zig.StmtExpr e:        return Hoisted(() => new ExprStmt(LowerExpr(e.Arg0)));
 
             // `x = value;`  → an assignment used as a statement. `_ = value;` is Zig's
@@ -251,8 +257,7 @@ internal sealed partial class ZigLowering
             // An expression then-arm of a statement `if` (`if (c) f() else …`, `if (x) |s| s.close(io) else |_| {}`).
             case Zig.ThenExpr t:        return LowerArmStmt(t.Arg0);
             // The jump body of a statement `if` / prong (`if (c) return v else …`, `=> if (x) |v| break`), zig-grammar-peg P1b.
-            case Zig.ReturnExpr or Zig.FbBreak or Zig.FbBreakLabel or Zig.FbBreakLabelValue or Zig.FbBreakValue
-              or Zig.FbContinue or Zig.FbContinueLabel or Zig.FbContinueLabelValue:
+            case var _ when IsNoreturnArm(stmt):
                 return LowerExitArm(stmt);
             case Zig.AssignArm a:                  return LowerAssignOpStmt(a.Arg0, a.Arg1, a.Arg2);
             // `while (c) [|x|] [: (cont)] body [else [|e|] body]` (zig's WhileStatement) and `for (objs) |caps| body [else body]`:
@@ -262,11 +267,11 @@ internal sealed partial class ZigLowering
             // The no-`;` body twins (`for (…) |*n| n.* = f() orelse continue else …;`, zig's `AssignExpr else Statement`).
             case Zig.WhileStmtThen w:   return LowerWhileLoop(w.Arg2, w.Arg4, w.Arg5, w.Arg6, w.Arg7);
             case Zig.ForStmtThen f:     return LowerForLoop(f.Arg2, f.Arg6, f.Arg9, f.Arg10);
-            // An else-less value loop where a statement stands (a prong body `=> for (xs) |x| f(x),`, std's Build.zig): its
-            // value is void, so it is the statement loop.
-            case Zig.WhileValue { Arg7: null } w: return LowerWhileLoop(w.Arg2, w.Arg4, w.Arg5, w.Arg6, null);
-            case Zig.ForValue { Arg10: null } f:  return LowerForLoop(f.Arg2, f.Arg6, f.Arg9, null);
-            case Zig.InlineForValue { Arg11: null } f: return LowerInlineForLoop(f.Arg3, f.Arg7, f.Arg10, null, stmt);
+            // A value-loop spelling in statement position, with no value-producing else arm (including `else return`),
+            // follows ordinary loop break/else lowering.
+            case Zig.WhileValue w when IsVoidLoop(stmt): return LowerWhileLoop(w.Arg2, w.Arg4, w.Arg5, w.Arg6, w.Arg7);
+            case Zig.ForValue f when IsVoidLoop(stmt):  return LowerForLoop(f.Arg2, f.Arg6, f.Arg9, f.Arg10);
+            case Zig.InlineForValue f when IsVoidLoop(stmt): return LowerInlineForLoop(f.Arg3, f.Arg7, f.Arg10, f.Arg11, stmt);
             case Zig.LabeledLoopExpr l when IsVoidLoop(l.Arg2): return LowerLabeledLoop(Tok(l.Arg0), l.Arg2);
 
             // `break;` / `continue;` — reuse the C IR loop-control nodes (the C# backend

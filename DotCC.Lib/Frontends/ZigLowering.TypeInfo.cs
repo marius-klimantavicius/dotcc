@@ -149,6 +149,10 @@ internal sealed partial class ZigLowering
         {
             return childInfo.DeclaredBits;
         }
+        if (cur.Content is Zig.Field { Arg2: var arrayChildTok } arrayChild && Tok(arrayChildTok) == "child"
+            && TryEvalTypeInfo(arrayChild.Arg0, out var arrayInfo) && arrayInfo.Tag == "array"
+            && _shared.BitcastWidths.TypeOperands.TryGetValue(arrayInfo.Type, out var arrayLocation))
+            return arrayLocation.Element?.IntegerBits;
         if (cur.Content is Zig.Field { Arg2: var pointeeTok } pointeeField && Tok(pointeeTok) == "child"
             && TryEvalTypeInfo(pointeeField.Arg0, out var pointerInfo) && pointerInfo.Tag == "pointer"
             && pointerInfo.Type.Unqualified is CType.Pointer { ZigSourcePointeeBits: { } pointeeBits })

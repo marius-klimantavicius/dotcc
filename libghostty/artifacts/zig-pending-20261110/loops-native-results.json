@@ -1,0 +1,33 @@
+[
+  {
+    "fixture": "for-else-return.zig",
+    "compile_exit": 0,
+    "link_exit": 0,
+    "run_exit": 42,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "fixture": "comptime-slice-arguments.zig",
+    "compile_exit": 0,
+    "link_exit": 0,
+    "run_exit": 42,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "fixture": "runtime-comptime-slice.zig",
+    "compile_exit": 1,
+    "diagnostic": "DotCC.FunctionalTests/Fixtures/ZigStaticPointers/runtime-comptime-slice.zig:8:27: error: unable to resolve comptime value\n    const Runtime = Table(copied);\n                          ^~~~~~\nDotCC.FunctionalTests/Fixtures/ZigStaticPointers/runtime-comptime-slice.zig:8:27: note: argument to comptime parameter must be comptime-known\nDotCC.FunctionalTests/Fixtures/ZigStaticPointers/runtime-comptime-slice.zig:1:10: note: parameter declared comptime here\nfn Table(comptime keys: []const u16) type {\n         ^~~~~~~~\nreferenced by:\n    answer: DotCC.FunctionalTests/Fixtures/ZigStaticPointers/runtime-comptime-slice.zig:14:18\n    comptime: DotCC.FunctionalTests/Fixtures/ZigStaticPointers/runtime-comptime-slice.zig:12:21\n    4 reference(s) hidden; use '-freference-trace=6' to see all references\n"
+  },
+  {
+    "fixture": "runtime-call-comptime-slice.zig",
+    "compile_exit": 1,
+    "diagnostic": "DotCC.FunctionalTests/Fixtures/ZigStaticPointers/runtime-call-comptime-slice.zig:9:27: error: unable to resolve comptime value\n    const Runtime = Table(keys);\n                          ^~~~\nDotCC.FunctionalTests/Fixtures/ZigStaticPointers/runtime-call-comptime-slice.zig:9:27: note: argument to comptime parameter must be comptime-known\nDotCC.FunctionalTests/Fixtures/ZigStaticPointers/runtime-call-comptime-slice.zig:1:10: note: parameter declared comptime here\nfn Table(comptime keys: []const u16) type {\n         ^~~~~~~~\nreferenced by:\n    answer: DotCC.FunctionalTests/Fixtures/ZigStaticPointers/runtime-call-comptime-slice.zig:14:18\n    comptime: DotCC.FunctionalTests/Fixtures/ZigStaticPointers/runtime-call-comptime-slice.zig:12:21\n    4 reference(s) hidden; use '-freference-trace=6' to see all references\n"
+  },
+  {
+    "fixture": "mutable-read.zig",
+    "compile_exit": 1,
+    "diagnostic": "DotCC.FunctionalTests/Fixtures/ZigStaticPointers/mutable-read.zig:2:26: error: unable to resolve comptime value\nconst result: u32 = blk: {\n                    ~~~~~^\nDotCC.FunctionalTests/Fixtures/ZigStaticPointers/mutable-read.zig:2:26: note: initializer of container-level variable must be comptime-known\nreferenced by:\n    answer: DotCC.FunctionalTests/Fixtures/ZigStaticPointers/mutable-read.zig:7:51\n    comptime: DotCC.FunctionalTests/Fixtures/ZigStaticPointers/mutable-read.zig:6:21\n    4 reference(s) hidden; use '-freference-trace=6' to see all references\n"
+  }
+]

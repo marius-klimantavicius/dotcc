@@ -19,6 +19,7 @@ internal sealed partial class ZigLowering
         public Dictionary<Symbol, ZigResultLocation> Returns { get; } = new();
         public Dictionary<CExpr, ZigResultLocation> Expressions { get; } = new(ReferenceEqualityComparer.Instance);
         public Dictionary<CExpr, ZigResultLocation> CallResults { get; } = new(ReferenceEqualityComparer.Instance);
+        public Dictionary<CType, ZigResultLocation> TypeOperands { get; } = new(ReferenceEqualityComparer.Instance);
         public Dictionary<Symbol, ZigResultLocation> Values { get; } = new();
         public Dictionary<(string Owner, string Field), ZigResultLocation> Fields { get; } = new();
         public Dictionary<string, int> PackedBits { get; } = new(StringComparer.Ordinal);
@@ -29,6 +30,8 @@ internal sealed partial class ZigLowering
         if (depth > 32) return ZigResultLocation.Unknown(physical);
         while (ast.Content is Zig.Grouped g) ast = g.Arg1;
         ast = StripVolatile(ast);
+        if (UsesSourceStdlib && _shared.BitcastWidths.TypeOperands.TryGetValue(physical, out var operandLocation))
+            return operandLocation;
         if (ast.Content is Zig.BuiltinCall { Arg2: not null } fieldType && Tok(fieldType.Arg0) == "@FieldType"
             && _reifiedTypeLocations.TryGetValue(fieldType.Arg2, out var fieldLocation))
             return fieldLocation with { Physical = physical };
@@ -52,6 +55,7 @@ internal sealed partial class ZigLowering
         {
             Zig.TyArray a => a.Arg3, Zig.TySentArray a => a.Arg5,
             Zig.TySlice a => a.Arg2, Zig.TySliceConst a => a.Arg3,
+            Zig.TySliceAlign a => a.Arg3, Zig.TySliceConstAlign a => a.Arg4,
             Zig.TyManyPtr a => a.Arg1, Zig.TyManyPtrConst a => a.Arg2,
             Zig.TyPointer a => a.Arg1, Zig.TyPtrConst a => a.Arg2,
             Zig.TyPointerAlign a => a.Arg2, Zig.TyPtrConstAlign a => a.Arg3,

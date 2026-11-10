@@ -498,7 +498,10 @@ internal sealed partial class ZigLowering
                     // The declared width rides the seed: `f(u21)` and `f(u32)` resolve to the SAME
                     // CType, so without it they would key one instance and share one `bits` answer.
                     // So does a pointer's spelled size class (task #150): `*T` and `[*]T` lower to one CType.
-                    var fnSeedType = argScope.LowerType(argItems[i]).Unqualified;
+                    var sourceSeedType = argScope.LowerType(argItems[i]);
+                    var fnSeedType = sourceSeedType.Unqualified;
+                    if (argScope._shared.BitcastWidths.TypeOperands.TryGetValue(sourceSeedType, out var sourceSeedLocation))
+                        argScope.RememberTypeOperandLocation(fnSeedType, sourceSeedLocation);
                     typeSeeds.Add(new TypeSeed(g.Params[i].Name, fnSeedType, argScope.DeclaredBitsOfTypeArg(argItems[i]),
                                                fnSeedType is CType.Pointer ? argScope.PointerSizeOfTypeArg(argItems[i]) : null,
                                                fnSeedType is CType.Pointer or CType.Slice or CType.Array ? argScope.SentinelOfTypeArg(argItems[i]) : null));
@@ -1445,16 +1448,18 @@ internal sealed partial class ZigLowering
 
     private string MangleTypeSeed(TypeSeed seed)
     {
+        var elementProof = _shared.BitcastWidths.TypeOperands.TryGetValue(seed.Type, out var sourceLocation)
+            ? GenericElementLocationMangle(sourceLocation.Element) : "";
         // A many-item or C pointer is a different type from the single-item pointer it lowers alike to (task #150); a
         // single-item or unspelled one keeps the plain name, so no existing instance name changes.
         if (seed.Type.Unqualified is CType.Pointer && seed.PointerSize is "many" or "c")
         {
-            return MangleType(seed.Type) + "_" + seed.PointerSize + SentinelMangle(seed.Sentinel);
+            return MangleType(seed.Type) + "_" + seed.PointerSize + SentinelMangle(seed.Sentinel) + elementProof;
         }
         // `[:0]u8` is not `[]u8` (task #213): a spelled sentinel keys its own instance; none keeps the plain name.
         if (seed.Sentinel is { HasSentinel: true })
         {
-            return MangleType(seed.Type) + SentinelMangle(seed.Sentinel);
+            return MangleType(seed.Type) + SentinelMangle(seed.Sentinel) + elementProof;
         }
         if (seed.DeclaredBits is { } bits
             && seed.Type.Unqualified is CType.Prim { Integer: true, Name: not "_Bool" } p
@@ -1462,7 +1467,7 @@ internal sealed partial class ZigLowering
         {
             return (p.Signed ? "i" : "u") + bits.ToString(CultureInfo.InvariantCulture);
         }
-        return MangleType(seed.Type);
+        return MangleType(seed.Type) + elementProof;
     }
 
     /// <summary>Replace every non-alphanumeric character with <c>_</c>, so an arbitrary type spelling
@@ -1892,7 +1897,9 @@ internal sealed partial class ZigLowering
                 else if (parameter.Type.Unqualified is CType.Slice sliceParameter)
                 {
                     var value = argScope.ComptimeSliceArg(argItems[i], sliceParameter)
-                        ?? throw new IrUnsupportedException($"call to type-returning generic '{templateSym.Name}': argument '{p.Name}' must be a compile-time-known slice");
+                        ?? throw new IrUnsupportedException($"call to type-returning generic '{templateSym.Name}': argument '{p.Name}' must be a compile-time-known slice"
+                            + $" ({argScope._module?.Path ?? argScope._fileStem}:{argItems[i].Position.Line}, function '{argScope._currentFnName}', {argItems[i].Content?.GetType().Name})"
+                            + (argScope._currentFnSym is { } caller ? "; callers: " + argScope.DescribeRuntimeDemand(caller) : ""));
                     mangleTokens.Add("c" + IrBuilder.ComptimeDigest(value));
                     aggregateSeeds.Add((p.Name, value, sliceParameter));
                 }

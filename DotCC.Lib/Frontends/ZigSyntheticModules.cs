@@ -211,6 +211,20 @@ internal static class ZigSyntheticModules
         return sb.ToString();
     }
 
+    // Match the native CPU feature policy used by builtin.cpu. Zig's x86
+    // vector ABI caps alignment at the widest enabled register, including
+    // storage vectors wider than that register. This bounded storage path
+    // currently models x86_64 and aarch64 hosts.
+    internal static int HostStorageVectorAlignment
+    {
+        get
+        {
+            if (RuntimeInformation.ProcessArchitecture != Architecture.X64) return 16;
+            var features = HostX86Features();
+            return features.Contains("avx512f") ? 64 : features.Contains("avx") ? 32 : 16;
+        }
+    }
+
     /// <summary>The x86 features the host supports, as <c>std.Target.x86.Feature</c> names: the x86-64 baseline,
     /// then each ISA extension <c>System.Runtime.Intrinsics.X86</c> reports supported.</summary>
     private static List<string> HostX86Features()

@@ -651,6 +651,8 @@ internal sealed partial class ZigLowering
         // not yet an in-scope symbol, so the LowerExpr path below would fail to resolve it.
         if (arg.Content is Zig.Ident aid && _anytypeSeeds.TryGetValue(Tok(aid.Arg0), out var seeded))
         {
+            if (_symbols.Resolve(Tok(aid.Arg0)) is { } parameter && ReferenceEquals(parameter.Type, seeded))
+                RememberTypeOperandLocation(seeded, BitcastSymbolLocation(parameter));
             return (seeded, seeded.Unqualified is CType.Prim { IsComptimeInt: true });
         }
         using var typeHoist = EnterThrowawayHoist();   // @TypeOf's operand is unevaluated
@@ -662,6 +664,7 @@ internal sealed partial class ZigLowering
         var type = lowered.Type
             ?? throw new IrUnsupportedException("zig `@TypeOf`: the operand has no statically known type");
         type = SourceSentinelArrayValueType(type);
+        RememberTypeOperandLocation(type, BitcastSourceLocation(arg, lowered));
         return (type, arg.Content is Zig.IntLit || type.Unqualified is CType.Prim { IsComptimeInt: true });
     }
 
@@ -1221,6 +1224,7 @@ internal sealed partial class ZigLowering
         Call call => call with { Args = call.Args.Select(InlineUnfoldedConsts).ToList() },
         IndirectCall call => call with { Callee = InlineUnfoldedConsts(call.Callee), Args = call.Args.Select(InlineUnfoldedConsts).ToList() },
         Member member => member with { Base = InlineUnfoldedConsts(member.Base) },
+        SliceNew slice => slice with { Ptr = InlineUnfoldedConsts(slice.Ptr), Len = InlineUnfoldedConsts(slice.Len) },
         _ => e,
     };
 

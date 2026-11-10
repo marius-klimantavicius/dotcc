@@ -201,7 +201,7 @@ internal sealed partial class ZigLowering
             return new IrBuilder.CtSlice(backing, 0, elems.Length, sliceType);
         }
         using var hoist = EnterFreshHoist();
-        var lowered = LowerExprSink(arg, sliceType);
+        var lowered = InlineUnfoldedConsts(LowerExprSink(arg, sliceType));
         IrBuilder.ComptimeValue? value;
         if (_hoist is { Count: > 0 } statements)
         {

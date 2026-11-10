@@ -737,12 +737,28 @@ internal sealed partial class ZigLowering
     private int _inlineUnrollDepth;
     /// <summary>True for a runtime loop statement (every <c>LoopStmt</c> form), which gets an unlabeled
     /// break target (<see cref="LowerLoopWithBreakTarget"/>).</summary>
-    private static bool IsRuntimeLoopStmt(object? content) => content is Zig.WhileStmt or Zig.ForStmt
-        or Zig.WhileStmtThen or Zig.ForStmtThen or Zig.WhileValue { Arg7: null } or Zig.ForValue { Arg10: null };
-    /// <summary>True for a value loop with no <c>else</c> (zig's else is optional), labeled or not: its value is void, so where
-    /// a statement stands it is the statement loop.</summary>
-    private static bool IsVoidLoop(Item e) => e.Content is Zig.WhileValue { Arg7: null } or Zig.ForValue { Arg10: null }
-        or Zig.InlineForValue { Arg11: null } || e.Content is Zig.LabeledLoopExpr l && IsVoidLoop(l.Arg2);
+    private static bool IsRuntimeLoopStmt(object? content) => content switch
+    {
+        Zig.WhileStmt or Zig.ForStmt or Zig.WhileStmtThen or Zig.ForStmtThen => true,
+        Zig.WhileValue loop => IsStatementLoopElse(loop.Arg7),
+        Zig.ForValue loop => IsStatementLoopElse(loop.Arg10, forLoop: true),
+        _ => false,
+    };
+    /// <summary>A loop with no value-producing else arm is valid in statement position. A return/jump else still
+    /// belongs to ordinary loop lowering, including its break flag and lazy normal-completion arm.</summary>
+    private static bool IsVoidLoop(Item e) => e.Content switch
+    {
+        Zig.WhileValue loop => IsStatementLoopElse(loop.Arg7),
+        Zig.ForValue loop => IsStatementLoopElse(loop.Arg10, forLoop: true),
+        Zig.InlineForValue loop => IsStatementLoopElse(loop.Arg11, forLoop: true),
+        Zig.LabeledLoopExpr loop => IsVoidLoop(loop.Arg2),
+        _ => false,
+    };
+    private static bool IsStatementLoopElse(Item? otherwise, bool forLoop = false)
+    {
+        var arm = LoopElseArm(otherwise, forLoop);
+        return arm is null || arm.Content is Zig.Block or Zig.VoidValue || IsNoreturnArm(arm);
+    }
     /// <summary>Lower a runtime loop with an unlabeled break target (<see cref="LoopBreakTarget"/>), so a
     /// <c>break</c> inside a <c>switch</c> in its body exits the loop, as in zig. The label is emitted
     /// after the loop only when such a break used it; otherwise the loop lowers exactly as before.</summary>

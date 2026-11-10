@@ -14,6 +14,8 @@ public sealed class ZigRenderOptionalExecutionTests
     [InlineData("array-payload.zig", true)]
     [InlineData("equality.zig", false)]
     [InlineData("equality.zig", true)]
+    [InlineData("forward-null.zig", false)]
+    [InlineData("forward-null.zig", true)]
     public void Render_optional_values_keep_source_storage_equality_and_null_sinks(string fixture, bool objects)
     {
         var library = Environment.GetEnvironmentVariable("DOTCC_TARGET_ZIG_LIB");

@@ -1,0 +1,104 @@
+[
+  {
+    "fixture": "forward-u8.zig",
+    "mode": "Debug",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/metadata-native/forward-u8.zig",
+      "-ODebug",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/metadata-native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/metadata-native/global",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/metadata-native/control"
+    ],
+    "compile": 0,
+    "run": 42
+  },
+  {
+    "fixture": "forward-u8.zig",
+    "mode": "ReleaseFast",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/metadata-native/forward-u8.zig",
+      "-OReleaseFast",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/metadata-native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/metadata-native/global",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/metadata-native/control"
+    ],
+    "compile": 0,
+    "run": 42
+  },
+  {
+    "fixture": "hash-bytes.zig",
+    "mode": "Debug",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/metadata-native/hash-bytes.zig",
+      "-ODebug",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/metadata-native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/metadata-native/global",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/metadata-native/control"
+    ],
+    "compile": 0,
+    "run": 42
+  },
+  {
+    "fixture": "hash-bytes.zig",
+    "mode": "ReleaseFast",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/metadata-native/hash-bytes.zig",
+      "-OReleaseFast",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/metadata-native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/metadata-native/global",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/metadata-native/control"
+    ],
+    "compile": 0,
+    "run": 42
+  },
+  {
+    "fixture": "cache.zig",
+    "mode": "Debug",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/metadata-native/cache.zig",
+      "-ODebug",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/metadata-native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/metadata-native/global",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/metadata-native/control"
+    ],
+    "compile": 0,
+    "run": 42
+  },
+  {
+    "fixture": "cache.zig",
+    "mode": "ReleaseFast",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/metadata-native/cache.zig",
+      "-OReleaseFast",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/metadata-native/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/metadata-native/global",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/metadata-native/control"
+    ],
+    "compile": 0,
+    "run": 42
+  }
+]

@@ -1,0 +1,371 @@
+[
+  {
+    "label": "forward-u8.zig-Debug",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/forward-u8.zig",
+      "-ODebug",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/global",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/control"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "label": "forward-u8.zig-Debug-execute",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/control"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "label": "forward-u8.zig-ReleaseFast",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/forward-u8.zig",
+      "-OReleaseFast",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/global",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/control"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "label": "forward-u8.zig-ReleaseFast-execute",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/control"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "label": "hash-bytes.zig-Debug",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/hash-bytes.zig",
+      "-ODebug",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/global",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/control"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "label": "hash-bytes.zig-Debug-execute",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/control"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "label": "hash-bytes.zig-ReleaseFast",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/hash-bytes.zig",
+      "-OReleaseFast",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/global",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/control"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "label": "hash-bytes.zig-ReleaseFast-execute",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/control"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "label": "cache.zig-Debug",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/cache.zig",
+      "-ODebug",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/global",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/control"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "label": "cache.zig-Debug-execute",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/control"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "label": "cache.zig-ReleaseFast",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-exe",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/cache.zig",
+      "-OReleaseFast",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/global",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/control"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "label": "cache.zig-ReleaseFast-execute",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/control"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "label": "vector-baseline",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "test",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/optional-vector.zig",
+      "-target",
+      "x86_64-linux-gnu",
+      "-mcpu=baseline",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/global"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "1/1 optional-vector.test.answer...OK\nAll 1 tests passed.\n"
+  },
+  {
+    "label": "vector-x86_64_v3",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "test",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/optional-vector.zig",
+      "-target",
+      "x86_64-linux-gnu",
+      "-mcpu=x86_64_v3",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/global"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "1/1 optional-vector.test.answer...OK\nAll 1 tests passed.\n"
+  },
+  {
+    "label": "vector-native",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "test",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/optional-vector.zig",
+      "-target",
+      "x86_64-linux-gnu",
+      "-mcpu=native",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/global"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "1/1 optional-vector.test.answer...OK\nAll 1 tests passed.\n"
+  },
+  {
+    "label": "forward-null",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "test",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/forward-null.zig",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/global"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "1/1 forward-null.test.answer...OK\nAll 1 tests passed.\n"
+  },
+  {
+    "label": "zero-optionals",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "test",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/zero-optionals.zig",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/global"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "1/1 zero-optionals.test.layout...OK\nAll 1 tests passed.\n"
+  },
+  {
+    "label": "for-else-return.zig",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-obj",
+      "/home/marius/p/dotcc/DotCC.FunctionalTests/Fixtures/ZigStaticPointers/for-else-return.zig",
+      "-OReleaseFast",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/global",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/control.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "label": "for-else-return.zig-link",
+    "command": [
+      "cc",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/host.c",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/control.o",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/control"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "label": "for-else-return.zig-execute",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/control"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "label": "comptime-slice-arguments.zig",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-obj",
+      "/home/marius/p/dotcc/DotCC.FunctionalTests/Fixtures/ZigStaticPointers/comptime-slice-arguments.zig",
+      "-OReleaseFast",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/global",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/control.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "label": "comptime-slice-arguments.zig-link",
+    "command": [
+      "cc",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/host.c",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/control.o",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/control"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "label": "comptime-slice-arguments.zig-execute",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/control"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "label": "runtime-comptime-slice.zig",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-obj",
+      "/home/marius/p/dotcc/DotCC.FunctionalTests/Fixtures/ZigStaticPointers/runtime-comptime-slice.zig",
+      "-OReleaseFast",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/global",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/control.o"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "DotCC.FunctionalTests/Fixtures/ZigStaticPointers/runtime-comptime-slice.zig:8:27: error: unable to resolve comptime value\n    const Runtime = Table(copied);\n                          ^~~~~~\nDotCC.FunctionalTests/Fixtures/ZigStaticPointers/runtime-comptime-slice.zig:8:27: note: argument to comptime parameter must be comptime-known\nDotCC.FunctionalTests/Fixtures/ZigStaticPointers/runtime-comptime-slice.zig:1:10: note: parameter declared comptime here\nfn Table(comptime keys: []const u16) type {\n         ^~~~~~~~\nreferenced by:\n    answer: DotCC.FunctionalTests/Fixtures/ZigStaticPointers/runtime-comptime-slice.zig:14:18\n    comptime: DotCC.FunctionalTests/Fixtures/ZigStaticPointers/runtime-comptime-slice.zig:12:21\n    4 reference(s) hidden; use '-freference-trace=6' to see all references\n"
+  },
+  {
+    "label": "runtime-call-comptime-slice.zig",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-obj",
+      "/home/marius/p/dotcc/DotCC.FunctionalTests/Fixtures/ZigStaticPointers/runtime-call-comptime-slice.zig",
+      "-OReleaseFast",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/global",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/control.o"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "DotCC.FunctionalTests/Fixtures/ZigStaticPointers/runtime-call-comptime-slice.zig:9:27: error: unable to resolve comptime value\n    const Runtime = Table(keys);\n                          ^~~~\nDotCC.FunctionalTests/Fixtures/ZigStaticPointers/runtime-call-comptime-slice.zig:9:27: note: argument to comptime parameter must be comptime-known\nDotCC.FunctionalTests/Fixtures/ZigStaticPointers/runtime-call-comptime-slice.zig:1:10: note: parameter declared comptime here\nfn Table(comptime keys: []const u16) type {\n         ^~~~~~~~\nreferenced by:\n    answer: DotCC.FunctionalTests/Fixtures/ZigStaticPointers/runtime-call-comptime-slice.zig:14:18\n    comptime: DotCC.FunctionalTests/Fixtures/ZigStaticPointers/runtime-call-comptime-slice.zig:12:21\n    4 reference(s) hidden; use '-freference-trace=6' to see all references\n"
+  },
+  {
+    "label": "mutable-read.zig",
+    "command": [
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/tools/zig-x86_64-linux-0.17.0/zig",
+      "build-obj",
+      "/home/marius/p/dotcc/DotCC.FunctionalTests/Fixtures/ZigStaticPointers/mutable-read.zig",
+      "-OReleaseFast",
+      "--cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/cache",
+      "--global-cache-dir",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/global",
+      "-femit-bin=/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/native-final/control.o"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "DotCC.FunctionalTests/Fixtures/ZigStaticPointers/mutable-read.zig:2:26: error: unable to resolve comptime value\nconst result: u32 = blk: {\n                    ~~~~~^\nDotCC.FunctionalTests/Fixtures/ZigStaticPointers/mutable-read.zig:2:26: note: initializer of container-level variable must be comptime-known\nreferenced by:\n    answer: DotCC.FunctionalTests/Fixtures/ZigStaticPointers/mutable-read.zig:7:51\n    comptime: DotCC.FunctionalTests/Fixtures/ZigStaticPointers/mutable-read.zig:6:21\n    4 reference(s) hidden; use '-freference-trace=6' to see all references\n"
+  }
+]

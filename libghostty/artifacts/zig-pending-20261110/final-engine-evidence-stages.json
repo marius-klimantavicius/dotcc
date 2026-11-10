@@ -1,0 +1,134 @@
+[
+  {
+    "stage": "engine",
+    "command": [
+      "python3",
+      "/home/marius/p/dotcc/libghostty/scripts/retry_direct.py",
+      "--compiler",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/build/bin/DotCC/release/dotcc.dll",
+      "--graph",
+      "/mnt/storage/dotcc-libghostty-disposable/vt-1.0.0/native/module-graph-managed.json",
+      "--work",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/final-engine/engine",
+      "--evidence",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/final-engine-evidence/engine"
+    ],
+    "exit": 0,
+    "seconds": 16.835489414050244,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/final-engine/engine.log"
+  },
+  {
+    "stage": "boundary",
+    "command": [
+      "dotnet",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/build/bin/DotCC/release/dotcc.dll",
+      "/home/marius/p/dotcc/libghostty/src/Boundary/ghostty_boundary.c",
+      "--emit=obj",
+      "--aggregate-data",
+      "-std=c11",
+      "-I/home/marius/p/dotcc/libghostty/ref/libghostty-vt-1.0.0/include",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/final-engine/boundary.csobj"
+    ],
+    "exit": 0,
+    "seconds": 0.6832400499843061,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/final-engine/boundary.log"
+  },
+  {
+    "stage": "link",
+    "command": [
+      "dotnet",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/build/bin/DotCC/release/dotcc.dll",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/final-engine/engine/engine.csobj",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/final-engine/boundary.csobj",
+      "--emit=managedlib",
+      "--nest-types",
+      "--runtime=auto",
+      "--class-name",
+      "GhosttyVt",
+      "--namespace",
+      "Managed",
+      "--split=size",
+      "--split-size=262144",
+      "--literal-pool",
+      "--deduplicate-inline",
+      "--prune-unused-inline",
+      "--export-enum",
+      "DOTCC_STYLE_*",
+      "-o",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/final-engine/raw/TranslatedGhosttyVt"
+    ],
+    "exit": 0,
+    "seconds": 14.41880897898227,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/final-engine/link.log"
+  },
+  {
+    "stage": "raw-build",
+    "command": [
+      "dotnet",
+      "build",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/final-engine/raw/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+      "-c",
+      "Release",
+      "--nologo"
+    ],
+    "exit": 0,
+    "seconds": 16.738036423921585,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/final-engine/raw-build.log"
+  },
+  {
+    "stage": "postprocessor-build",
+    "command": [
+      "dotnet",
+      "build",
+      "/home/marius/p/dotcc/DotCC.PostProcess/DotCC.PostProcess.csproj",
+      "-c",
+      "Release",
+      "-p:PublishAot=false",
+      "-p:UseArtifactsOutput=true",
+      "-p:ArtifactsPath=/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/final-engine/postprocessor",
+      "--nologo"
+    ],
+    "exit": 0,
+    "seconds": 1.5754007790237665,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/final-engine/postprocessor-build.log"
+  },
+  {
+    "stage": "processed-restore",
+    "command": [
+      "dotnet",
+      "restore",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/final-engine/processed/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+      "--nologo"
+    ],
+    "exit": 0,
+    "seconds": 0.6444262720178813,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/final-engine/processed-restore.log"
+  },
+  {
+    "stage": "postprocess",
+    "command": [
+      "dotnet",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/final-engine/postprocessor/bin/DotCC.PostProcess/release/dotcc-postprocess.dll",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/final-engine/processed/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+      "--in-place"
+    ],
+    "exit": 0,
+    "seconds": 34.01781756198034,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/final-engine/postprocess.log"
+  },
+  {
+    "stage": "processed-build",
+    "command": [
+      "dotnet",
+      "build",
+      "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/final-engine/processed/TranslatedGhosttyVt/TranslatedGhosttyVt.csproj",
+      "-c",
+      "Release",
+      "--nologo"
+    ],
+    "exit": 0,
+    "seconds": 12.760115690995008,
+    "log": "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/final-engine/processed-build.log"
+  }
+]

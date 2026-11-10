@@ -1,5 +1,9 @@
 # libghostty-vt 1.0.0 direct upgrade
 
+Follow-up, 2026-11-10: the previously excluded Zig changes are now completed
+and validated. See [the source/test inventory and remaining limitations](ZIG-FOLLOWUP-20261110.md).
+The original upgrade receipts and canonical products described below are unchanged.
+
 Published as the canonical direct default on 2026-11-07. The actual selected
 engine emits, links, builds and runs in raw/processed JIT and whole-library-rooted
 NativeAOT. All 45 native differential/version/API cases pass in every row;

@@ -33,6 +33,15 @@ internal sealed partial class ZigLowering
         _ir.ComptimeGlobals[sym] = value;
         return true;
     }
+    /// <summary>Retain a pure const array/slice initializer for later comptime arguments without
+    /// substituting its runtime local, which must keep its own storage and address.</summary>
+    private void RememberImmutableAggregateInitializer(Symbol symbol, bool isConst, CExpr initializer)
+    {
+        if (!UsesSourceStdlib || !isConst) return;
+        var known = InlineUnfoldedConsts(initializer);
+        if (IsComptimeNameRead(known) && _ir.EvalComptimeValue(known) is IrBuilder.CtArray or IrBuilder.CtSlice)
+            _unfoldedConstInits[symbol] = known;
+    }
     /// <summary>Bind <c>const x = f(T, U)</c>, a call whose every argument is a type and whose result struct is
     /// comptime-only (a <c>comptime_int</c> field), as a comptime aggregate (see <see cref="DeclOrComptime"/>). False, with nothing bound, for any
     /// other initializer, or when the call does not evaluate at compile time (then it is an ordinary runtime call).</summary>
@@ -584,6 +593,7 @@ internal sealed partial class ZigLowering
             {
                 var csym = _symbols.Declare(new Symbol { Name = Tok(nameTok), Kind = SymKind.Var, Type = arr });
                 RememberBitcastValue(csym, bitcastLocation);
+                RememberImmutableAggregateInitializer(csym, isConst, arrInit);
                 return ArrayValueCopyDecl(csym, arr, copyCount, arrInit);
             }
             if ((arrInit is ComptimeFold || arrInit is Call { Type: CType.Array }) && !sentinel)
@@ -665,6 +675,7 @@ internal sealed partial class ZigLowering
         {
             var usym = _symbols.Declare(new Symbol { Name = Tok(nameTok), Kind = SymKind.Var, Type = untypedArr });
             RememberBitcastValue(usym, BitcastSourceLocation(initExpr, init));
+            RememberImmutableAggregateInitializer(usym, isConst, init);
             return ArrayValueCopyDecl(usym, untypedArr, untypedCount, init);
         }
         // A local `const` whose integer initializer folds IS that value in every comptime question, as a
@@ -696,6 +707,8 @@ internal sealed partial class ZigLowering
             _comptimeStringVars[sym2] = slicedString;
         NoteComptimeFloatConst(sym2, isConst, declared, init);
         RememberImmutableLiteralMemberName(sym2, isConst, declared is null, init);
+        if (type.Unqualified is CType.Slice)
+            RememberImmutableAggregateInitializer(sym2, isConst, init);
         // A const optional slice over comptime storage remains a known optional when passed
         // to another generic. Only pure constant reads qualify; runtime calls keep their storage.
         if (UsesSourceStdlib && isConst && type.Unqualified is CType.Optional { Inner.Unqualified: CType.Slice }

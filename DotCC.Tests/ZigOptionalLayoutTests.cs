@@ -16,6 +16,10 @@ public sealed class ZigOptionalLayoutTests
     [InlineData("o:p:16:8", 24, 8)]
     [InlineData("o:a:3:p:4:4", 16, 4)]
     [InlineData("o:p:16:16", 32, 16)]
+    [InlineData("o:p:128:16", 144, 16)]
+    [InlineData("o:p:128:32", 160, 32)]
+    [InlineData("o:p:128:64", 192, 64)]
+    [InlineData("o:a:0:p:1:1", 1, 1)]
     public void Managed_optional_extent_includes_flag_alignment_and_tail_padding(string descriptor, int size, int alignment)
     {
         var model = new OffsetLayoutModel(_ => throw new System.Exception("unexpected aggregate"));
@@ -25,7 +29,6 @@ public sealed class ZigOptionalLayoutTests
     }
 
     [Theory]
-    [InlineData("o:a:0:p:1:1")]
     [InlineData("o:p:16:256")]
     [InlineData("o:unsupported:nested-managed-optional")]
     public void Unproven_optional_payload_storage_is_rejected(string descriptor)
@@ -37,7 +40,6 @@ public sealed class ZigOptionalLayoutTests
 
     [Theory]
     [InlineData("??u32")]
-    [InlineData("?struct {}")]
     public void Runtime_size_queries_reject_unsupported_payloads_before_CSharp_compilation(string type)
     {
         var directory = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "dotcc-optional-cut-" + System.Guid.NewGuid().ToString("N"));
@@ -48,6 +50,25 @@ public sealed class ZigOptionalLayoutTests
             System.IO.File.WriteAllText(path, "pub fn main() u8 { return @intCast(@sizeOf(" + type + ")); }");
             Should.Throw<CompileException>(() => Compiler.EmitCSharp([path])).Message.ShouldContain("optional");
             Should.Throw<CompileException>(() => Compiler.EmitObject(path)).Message.ShouldContain("optional");
+        }
+        finally { System.IO.Directory.Delete(directory, true); }
+    }
+
+    [Theory]
+    [InlineData("?struct {}")]
+    [InlineData("?[0]u8")]
+    public void Zero_size_payload_optional_layout_queries_emit_through_source_and_object_paths(string type)
+    {
+        var directory = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "dotcc-optional-zero-" + System.Guid.NewGuid().ToString("N"));
+        System.IO.Directory.CreateDirectory(directory);
+        try
+        {
+            var path = System.IO.Path.Combine(directory, "main.zig");
+            System.IO.File.WriteAllText(path, "const T = " + type + ";\n"
+                + "comptime { if (@sizeOf(T) != 1 or @alignOf(T) != 1) @compileError(\"unexpected zero-payload optional layout\"); }\n"
+                + "pub fn main() u8 { return @intCast(@sizeOf(T) + @alignOf(T)); }");
+            Compiler.EmitCSharp([path]).ShouldNotBeNullOrEmpty();
+            Compiler.EmitObject(path).ShouldNotBeNullOrEmpty();
         }
         finally { System.IO.Directory.Delete(directory, true); }
     }
@@ -74,8 +95,10 @@ public sealed class ZigOptionalLayoutTests
         var vector = new CType.Vector(CType.UInt, 32);
         var layout = new OffsetLayoutModel(_ => throw new System.Exception("unexpected aggregate"))
             .Type(IrBuilder.LayoutType(new CType.Optional(vector)));
-        layout.Size.ShouldBe(256);
-        layout.Alignment.ShouldBe(128);
+        var alignment = System.Runtime.Intrinsics.X86.Avx512F.IsSupported ? 64
+            : System.Runtime.Intrinsics.X86.Avx.IsSupported ? 32 : 16;
+        layout.Size.ShouldBe(128 + alignment);
+        layout.Alignment.ShouldBe(alignment);
     }
 
     [Theory]
