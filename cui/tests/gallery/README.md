@@ -76,12 +76,16 @@ Repeated runs preserve previous logs and the report under `history/`. UTF-8
 main-content transcripts beside each `.rgba` capture identify string differences
 without normalizing their values.
 
-The 2026-11-10 Linux run passes native and raw/processed JIT/NativeAOT. All 108
+The 2026-11-10 deduplication follow-up passes native and raw/processed
+JIT/NativeAOT with both `--deduplicate-inline` and `--deduplicate-static` on the
+core and gallery links. All 108
 managed main-content buffers match native byte-for-byte, with maximum channel
 error zero. Every managed variant completes 27 OS page selections, 53 recorded
 workflow steps and cleanup. Counts and retained artifact paths are in
 [evidence.json](evidence.json). The first differential caught a shared `%g`
 default-precision defect; final full-source regeneration and all four gallery
 variants pass after its repair. Original failure evidence is retained.
-Artifact paths in the evidence are relative to the caller-chosen external gallery
-test work root; the canonical translation receipt is relative to the repository.
+Current product hashes and targeted core results are in
+[DEDUP-VALIDATION.json](../../docs/DEDUP-VALIDATION.json). Artifact paths in the
+evidence are relative to the caller-chosen `CUI_WORK_ROOT`; the canonical
+translation receipt is relative to the repository.

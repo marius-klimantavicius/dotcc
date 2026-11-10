@@ -22,7 +22,7 @@ REPO = ROOT.parent
 FIXTURES = ROOT / "tests/qualification"
 sys.dont_write_bytecode = True
 sys.path.insert(0, str(REPO / "Scripts"))
-from campaigns.recipes import helper, link_flags
+from campaigns.recipes import helper
 RANDOM_INPUTS = helper(FIXTURES / "random_inputs.py")
 
 # Native-only C++ header/ABI smoke is explicitly inventoried separately.
@@ -280,7 +280,8 @@ class Run:
         for i, unit in enumerate(extra):
             objects = [*objects, self.emit(unit, program / f"extra-{i}.cs", flags, name + f"/extra-{i}")]
         raw = program / "raw"
-        self.run(["dotnet", self.args.compiler, *objects, main, "--emit=managedlib", *link_flags("Cui", "Managed.Cui"),
+        self.run(["dotnet", self.args.compiler, *objects, main, "--emit=managedlib",
+                  *helper(ROOT / "scripts/codegen.py").link_flags(ROOT, "Cui", "Managed.Cui"),
                   "-o", raw], name + "/link")
         project = next(raw.glob("*.csproj"))
         if kind == "core":

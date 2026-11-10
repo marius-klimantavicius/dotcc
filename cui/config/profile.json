@@ -5,6 +5,7 @@
   "window_backends": ["glfw"],
   "backend_status": "GLFW first; CUI direct Win32/X11 backends deferred by user",
   "defines": ["CUI_TEXT_SHAPING", "CUI_IMAGE_ALL_FORMATS"],
+  "deduplication": {"inline": true, "static": true},
   "features": {
     "CUI_WITH_APP": true,
     "CUI_DEFAULT_FONTS": true,

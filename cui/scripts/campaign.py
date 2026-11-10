@@ -5,7 +5,7 @@ from pathlib import Path
 import shutil
 import xml.etree.ElementTree as ET
 from campaigns.model import Consumer, Recipe, Source, Suite, Translation, Unit
-from campaigns.recipes import flags, helper, json_file, lines, link_flags
+from campaigns.recipes import flags, helper, json_file, lines
 
 
 def run_suite(ctx, suite):
@@ -43,7 +43,8 @@ def prepare(ctx):
     return Translation(units,
                        ["-std=c99", "-U_WIN32", "-U__APPLE__", "-DGLFW_INCLUDE_NONE",
                         *flags(json_file(ctx.root / "config/profile.json")["defines"], [ctx.root / "config/include", source / "include"])],
-                       [*link_flags("Cui", "Managed.Cui"), "--export-enum", "CUI_*", "--export-managed-symbols"],
+                       [*helper(ctx.root / "scripts/codegen.py").link_flags(ctx.root, "Cui", "Managed.Cui"),
+                        "--export-enum", "CUI_*", "--export-managed-symbols"],
                        objects=True, configure=configure, finish=finish,
                        companions=helper(ctx.root / "scripts/gallery.py").companions)
 

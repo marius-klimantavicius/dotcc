@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 import shutil
 import xml.etree.ElementTree as ET
-from campaigns.recipes import flags, json_file, link_flags
+from campaigns.recipes import flags, helper, json_file
 
 
 def companions(ctx):
@@ -25,7 +25,7 @@ def companions(ctx):
     output = ctx.work / "raw" / config["product"]
     core = ctx.work / "raw" / ctx.recipe.product
     ctx.run(["dotnet", ctx.compiler, *inputs, "--emit=managedlib",
-             *link_flags(config["class"], config["namespace"]),
+             *helper(ctx.root / "scripts/codegen.py").link_flags(ctx.root, config["class"], config["namespace"]),
              "--managed-reference", core / "Dotcc.ManagedSymbols.cs", "-o", output],
             "gallery-link", timeout=max(600, ctx.options.timeout))
     project = output / (config["product"] + ".csproj")

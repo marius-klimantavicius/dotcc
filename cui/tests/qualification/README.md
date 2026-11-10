@@ -51,7 +51,9 @@ The runner checks object fragment headers and records object hashes. The
 coordinator must supply corresponding source, profile and compiler provenance;
 the runner does not infer that arbitrary objects belong to the pinned source.
 Minimal bidi/inflate/shaping programs independently emit their unchanged source
-closure. No generated C# is patched. An authored managed entry point calls the
+closure. Every qualification link uses the same CUI profile's inline and static
+deduplication flags as the delivered libraries, including these minimal closures.
+No generated C# is patched. An authored managed entry point calls the
 emitted typed `Cui.main` API with stable UTF-8 arguments. Only project scaffolding
 is adjusted; processed host inputs are private copies so postprocessing cannot
 rewrite authored campaign sources.

@@ -387,93 +387,7 @@ using DotCcPointers = global::Managed.Cui.Gallery.Gallery.GalleryFunctionPointer
 
 public static unsafe partial class Gallery
 {
-    public static unsafe void page_code__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
-    {
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S738 /*"Code block"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1416 /*"Highlighting for C, C++, JavaScript, TypeScript, Python, Rust, Go, JSON and shell."*/));
-        cui_code_opts __cl159 = new cui_code_opts { _ = 0, lang = (DotCcLiterals.Pointer + DotCcLiterals.S1525 /*"c"*/), title = (DotCcLiterals.Pointer + DotCcLiterals.S1498 /*"counter.c"*/), line_numbers = 1, highlight_from = 7 };
-        cui_code_block_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S73 /*"c-sample"*/), (DotCcLiterals.Pointer + DotCcLiterals.S855 /*"#include <cui/cui.h>\n\n\u002F* A counter with a button *\u002F\nstatic int clicks = 0;\n\nvoid frame(cui_ctx *ui) {\n    if (cui_button(ui, \"Click me\", .vari"…*/), &__cl159);
-        {
-            cui_box __cl160 = new cui_box { _ = 0, gap = 16, align = __DotCcEnum_6375695F616C69676E.CUI_ALIGN_START, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 } };
-            cui_row_begin(ui, &__cl160);
-            int cui__scope_510 = 0;
-            for (; (!(((cui__scope_510) != 0) )     ); cui__scope_510 = 1, cui_box_end(ui))
-            {
-                {
-                    cui_box __cl161 = new cui_box { _ = 0, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = (float)1 } };
-                    cui_box_begin(ui, &__cl161);
-                    int cui__scope_511 = 0;
-                    for (; (!(((cui__scope_511) != 0) )     ); cui__scope_511 = 1, cui_box_end(ui))
-                    {
-                        cui_code_opts __cl162 = new cui_code_opts { _ = 0, lang = (DotCcLiterals.Pointer + DotCcLiterals.S1130 /*"python"*/), title = (DotCcLiterals.Pointer + DotCcLiterals.S424 /*"fib.py"*/) };
-                        cui_code_block_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S312 /*"py"*/), (DotCcLiterals.Pointer + DotCcLiterals.S448 /*"def fib(n: int) -> int:\n    # the slow way, on purpose\n    if n < 2:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nprint([fib(k) for k in range(10)"…*/), &__cl162);
-                    }
-                }
-                {
-                    cui_box __cl163 = new cui_box { _ = 0, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = (float)1 } };
-                    cui_box_begin(ui, &__cl163);
-                    int cui__scope_515 = 0;
-                    for (; (!(((cui__scope_515) != 0) )     ); cui__scope_515 = 1, cui_box_end(ui))
-                    {
-                        cui_code_opts __cl164 = new cui_code_opts { _ = 0, lang = (DotCcLiterals.Pointer + DotCcLiterals.S1336 /*"shell"*/) };
-                        cui_code_block_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1539 /*"sh"*/), (DotCcLiterals.Pointer + DotCcLiterals.S434 /*"git clone https://github.com/yappologistic/CUI.git\ncmake -S CUI -B build\ncmake --build build\n./build/examples/gallery  # run it\n"*/), &__cl164);
-                    }
-                }
-            }
-        }
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S300 /*"JSON viewer"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1274 /*"Collapsible, with counts. Click a brace to fold it."*/));
-        cui_json_opts __cl165 = new cui_json_opts { _ = 0, expand_depth = 2 };
-        _ = cui_json_view_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1512 /*"json"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1605 /*"{\"name\": \"cui\", \"version\": \"1.1.0\", \"private\": false, \"downloads\": 128400,\n \"platforms\": [\"windows\", \"macos\", \"linux\"],\n \"renderer\": {\""…*/), &__cl165);
-        cui_json_opts __cl166 = new cui_json_opts { _ = 0 };
-        _ = cui_json_view_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S226 /*"broken"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1179 /*"{\"ok\": true, \"oops\": [1, 2,}"*/), &__cl166);
-    }
-
-
-
-    public static unsafe void make_scene__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(byte* px, int w, int h, CBool color)
-    {
-        for (int y = 0; ((unchecked((int)(((CBool)(y < h))))) != 0); y++)
-            for (int x = 0; ((unchecked((int)(((CBool)(x < w))))) != 0); x++)
-            {
-                float fx = (float)x / w, fy = (float)y / h;
-                float r = 0.56f + fy * 0.34f, g = 0.72f + fy * 0.2f, b = 0.88f + fy * 0.06f;
-                float sun = (fx - 0.72f) * (fx - 0.72f) * 15.4f + (fy - 0.24f) * (fy - 0.24f) * 6.0f;
-                if (((unchecked((int)(((CBool)(sun < 0.024f))))) != 0))
-                {
-                    r = 1.0f;
-                    g = 0.97f;
-                    b = 0.86f;
-                }
-                float m1 = 0.5f + 0.1f * sinf(fx * 6.0f + 0.6f) + 0.03f * sinf(fx * 23.0f);
-                float m2 = 0.68f + 0.06f * sinf(fx * 4.0f + 2.1f) + 0.02f * sinf(fx * 31.0f);
-                if (((unchecked((int)(((CBool)(fy > m1))))) != 0))
-                {
-                    r = 0.5f;
-                    g = 0.6f;
-                    b = 0.62f - fy * 0.08f;
-                }
-                if (((unchecked((int)(((CBool)(fy > m2))))) != 0))
-                {
-                    r = 0.3f - (fy - m2) * 0.2f;
-                    g = 0.45f - (fy - m2) * 0.25f;
-                    b = 0.3f;
-                }
-                if ((!(((unchecked((int)(color))) != 0) )     ))
-                {
-                    float l = r * 0.3f + g * 0.59f + b * 0.11f;
-                    l = l * 0.85f + 0.05f;
-                    r = g = b = l;
-                }
-                byte* p = px + (y * w + x) * 4;
-                p[0] = (byte)(fminf((float)(1), fmaxf((float)(0), r)) * 255);
-                p[1] = (byte)(fminf((float)(1), fmaxf((float)(0), g)) * 255);
-                p[2] = (byte)(fminf((float)(1), fmaxf((float)(0), b)) * 255);
-                p[3] = 255;
-            }
-    }
-
-
-
-    public static unsafe void cmp_textures_free__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui, void* data)
+    public static unsafe void cmp_textures_free__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui, void* data)
     {
         cmp_textures* tx = (cmp_textures*)(data);
         cui_image_destroy(ui, tx->before);
@@ -482,20 +396,20 @@ public static unsafe partial class Gallery
 
 
 
-    public static unsafe void page_social__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void page_social__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
         uint tid = cui_make_id(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1441 /*"cmp-textures"*/));
         cmp_textures* tx = (cmp_textures*)(cui_state(ui, tid, ((ulong)(sizeof(cmp_textures)))));
         if ((!(((tx->before) != 0) )     ))
         {
-            make_scene__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(global::Managed.Cui.Gallery.Gallery.Globals.a__s90__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 640, 400, 0);
-            make_scene__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(global::Managed.Cui.Gallery.Gallery.Globals.b__s91__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 640, 400, 1);
-            tx->before = cui_image_create(ui, 640, 400, global::Managed.Cui.Gallery.Gallery.Globals.a__s90__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9);
-            tx->after = cui_image_create(ui, 640, 400, global::Managed.Cui.Gallery.Gallery.Globals.b__s91__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9);
-            cui_state_on_free(ui, tid, DotCcPointers.cmp_textures_free__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9);
+            make_scene(global::Managed.Cui.Gallery.Gallery.Globals.a__s90__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 640, 400, 0);
+            make_scene(global::Managed.Cui.Gallery.Gallery.Globals.b__s91__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 640, 400, 1);
+            tx->before = cui_image_create(ui, 640, 400, global::Managed.Cui.Gallery.Gallery.Globals.a__s90__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199);
+            tx->after = cui_image_create(ui, 640, 400, global::Managed.Cui.Gallery.Gallery.Globals.b__s91__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199);
+            cui_state_on_free(ui, tid, DotCcPointers.cmp_textures_free__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199);
         }
-        global::Managed.Cui.Gallery.Gallery.Globals.before__s84__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 = tx->before;
-        global::Managed.Cui.Gallery.Gallery.Globals.after__s85__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 = tx->after;
+        global::Managed.Cui.Gallery.Gallery.Globals.before__s84__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 = tx->before;
+        global::Managed.Cui.Gallery.Gallery.Globals.after__s85__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 = tx->after;
         {
             cui_box __cl170 = new cui_box { _ = 0, gap = 24, align = __DotCcEnum_6375695F616C69676E.CUI_ALIGN_START, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 } };
             cui_row_begin(ui, &__cl170);
@@ -508,7 +422,7 @@ public static unsafe partial class Gallery
                     int cui__scope_586 = 0;
                     for (; (!(((cui__scope_586) != 0) )     ); cui__scope_586 = 1, cui_box_end(ui))
                     {
-                        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1128 /*"Chat"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1541 /*"Grouped bubbles, read receipts and a typing indicator."*/));
+                        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1128 /*"Chat"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1541 /*"Grouped bubbles, read receipts and a typing indicator."*/));
                         {
                             cui_card_opts __cl172 = new cui_card_opts { _ = 0, gap = 0, pad = 16 };
                             _ = cui_card_begin(ui, &__cl172);
@@ -535,18 +449,18 @@ public static unsafe partial class Gallery
                     int cui__scope_597 = 0;
                     for (; (!(((cui__scope_597) != 0) )     ); cui__scope_597 = 1, cui_box_end(ui))
                     {
-                        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1241 /*"Comments"*/), (DotCcLiterals.Pointer + DotCcLiterals.S250 /*"Threads with replies, likes and badges."*/));
+                        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1241 /*"Comments"*/), (DotCcLiterals.Pointer + DotCcLiterals.S250 /*"Threads with replies, likes and badges."*/));
                         {
                             cui_card_opts __cl178 = new cui_card_opts { _ = 0, gap = 4, pad = 14 };
                             _ = cui_card_begin(ui, &__cl178);
                             int cui__scope_599 = 0;
                             for (; (!(((cui__scope_599) != 0) )     ); cui__scope_599 = 1, cui_card_end(ui))
                             {
-                                cui_comment_opts __cl179 = new cui_comment_opts { _ = 0, time = (DotCcLiterals.Pointer + DotCcLiterals.S494 /*"2h"*/), likes = &global::Managed.Cui.Gallery.Gallery.Globals.likes__s81__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[0], liked = &global::Managed.Cui.Gallery.Gallery.Globals.liked__s82__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[0], badge = (DotCcLiterals.Pointer + DotCcLiterals.S327 /*"Author"*/) };
+                                cui_comment_opts __cl179 = new cui_comment_opts { _ = 0, time = (DotCcLiterals.Pointer + DotCcLiterals.S494 /*"2h"*/), likes = &global::Managed.Cui.Gallery.Gallery.Globals.likes__s81__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[0], liked = &global::Managed.Cui.Gallery.Gallery.Globals.liked__s82__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[0], badge = (DotCcLiterals.Pointer + DotCcLiterals.S327 /*"Author"*/) };
                                 cui_comment_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1081 /*"c1"*/), (DotCcLiterals.Pointer + DotCcLiterals.S871 /*"Tomas Rivera"*/), (DotCcLiterals.Pointer + DotCcLiterals.S112 /*"The new numbers match the staging run. I would still test the import on a large file before Friday."*/), &__cl179);
-                                cui_comment_opts __cl180 = new cui_comment_opts { _ = 0, time = (DotCcLiterals.Pointer + DotCcLiterals.S1513 /*"1h"*/), depth = 1, likes = &global::Managed.Cui.Gallery.Gallery.Globals.likes__s81__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[1], liked = &global::Managed.Cui.Gallery.Gallery.Globals.liked__s82__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[1] };
+                                cui_comment_opts __cl180 = new cui_comment_opts { _ = 0, time = (DotCcLiterals.Pointer + DotCcLiterals.S1513 /*"1h"*/), depth = 1, likes = &global::Managed.Cui.Gallery.Gallery.Globals.likes__s81__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[1], liked = &global::Managed.Cui.Gallery.Gallery.Globals.liked__s82__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[1] };
                                 cui_comment_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S625 /*"c2"*/), (DotCcLiterals.Pointer + DotCcLiterals.S437 /*"Priya Nair"*/), (DotCcLiterals.Pointer + DotCcLiterals.S526 /*"Agreed. I have a 2 GB export we can use."*/), &__cl180);
-                                cui_comment_opts __cl181 = new cui_comment_opts { _ = 0, time = (DotCcLiterals.Pointer + DotCcLiterals.S1502 /*"40m"*/), depth = 1, likes = &global::Managed.Cui.Gallery.Gallery.Globals.likes__s81__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[2], liked = &global::Managed.Cui.Gallery.Gallery.Globals.liked__s82__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[2], edited = 1 };
+                                cui_comment_opts __cl181 = new cui_comment_opts { _ = 0, time = (DotCcLiterals.Pointer + DotCcLiterals.S1502 /*"40m"*/), depth = 1, likes = &global::Managed.Cui.Gallery.Gallery.Globals.likes__s81__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[2], liked = &global::Managed.Cui.Gallery.Gallery.Globals.liked__s82__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[2], edited = 1 };
                                 cui_comment_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S619 /*"c3"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1189 /*"Maya Okafor"*/), (DotCcLiterals.Pointer + DotCcLiterals.S362 /*"Scheduled it for 3 pm."*/), &__cl181);
                             }
                         }
@@ -554,28 +468,28 @@ public static unsafe partial class Gallery
                 }
             }
         }
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1606 /*"Presence"*/), (DotCcLiterals.Pointer + DotCcLiterals.S960 /*"Who is here now. Hover to spread them out."*/));
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1606 /*"Presence"*/), (DotCcLiterals.Pointer + DotCcLiterals.S960 /*"Who is here now. Hover to spread them out."*/));
         {
             cui_box __cl182 = new cui_box { _ = 0, gap = 24, align = __DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER };
             cui_row_begin(ui, &__cl182);
             int cui__scope_607 = 0;
             for (; (!(((cui__scope_607) != 0) )     ); cui__scope_607 = 1, cui_box_end(ui))
             {
-                cui_presence(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1588 /*"here"*/), global::Managed.Cui.Gallery.Gallery.Globals.who__s89__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 7, 5, 30);
+                cui_presence(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1588 /*"here"*/), global::Managed.Cui.Gallery.Gallery.Globals.who__s89__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 7, 5, 30);
                 cui_counter_opts __cl183 = new cui_counter_opts { _ = 0, format = (DotCcLiterals.Pointer + DotCcLiterals.S1239 /*"$%.0f"*/), size = 34, group_thousands = 1 };
-                cui_counter_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S382 /*"rev"*/), global::Managed.Cui.Gallery.Gallery.Globals.revenue__s88__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, &__cl183);
+                cui_counter_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S382 /*"rev"*/), global::Managed.Cui.Gallery.Gallery.Globals.revenue__s88__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, &__cl183);
                 cui_button_opts __cl184 = new cui_button_opts { _ = 0, size = __DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM, icon = (DotCcLiterals.Pointer + DotCcLiterals.S490 /*""*/) };
                 if (((unchecked((int)(cui_button_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S694 /*"Add a sale"*/), &__cl184)))) != 0))
-                    global::Managed.Cui.Gallery.Gallery.Globals.revenue__s88__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 += 1287;
+                    global::Managed.Cui.Gallery.Gallery.Globals.revenue__s88__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 += 1287;
             }
         }
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1351 /*"Ticker"*/), (DotCcLiterals.Pointer + DotCcLiterals.S110 /*"A continuous strip of figures. It pauses under the pointer."*/));
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1351 /*"Ticker"*/), (DotCcLiterals.Pointer + DotCcLiterals.S110 /*"A continuous strip of figures. It pauses under the pointer."*/));
         cui_ticker_opts __cl185 = new cui_ticker_opts { _ = 0 };
-        cui_ticker_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S417 /*"tick"*/), global::Managed.Cui.Gallery.Gallery.Globals.tick__s92__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 6, &__cl185);
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1147 /*"Carousel"*/), (DotCcLiterals.Pointer + DotCcLiterals.S737 /*"Drag, flick, scroll sideways or use the arrows and dots."*/));
+        cui_ticker_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S417 /*"tick"*/), global::Managed.Cui.Gallery.Gallery.Globals.tick__s92__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 6, &__cl185);
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1147 /*"Carousel"*/), (DotCcLiterals.Pointer + DotCcLiterals.S737 /*"Drag, flick, scroll sideways or use the arrows and dots."*/));
         {
             cui_carousel_opts __cl186 = new cui_carousel_opts { _ = 0, height = 200, auto_advance = 6 };
-            _ = cui_carousel_begin(ui, (DotCcLiterals.Pointer + DotCcLiterals.S567 /*"tour"*/), 4, ((int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.slide__s83__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9)), &__cl186);
+            _ = cui_carousel_begin(ui, (DotCcLiterals.Pointer + DotCcLiterals.S567 /*"tour"*/), 4, ((int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.slide__s83__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199)), &__cl186);
             int cui__scope_621 = 0;
             for (; (!(((cui__scope_621) != 0) )     ); cui__scope_621 = 1, cui_carousel_end(ui))
             {
@@ -587,15 +501,15 @@ public static unsafe partial class Gallery
                         for (; (!(((cui__scope_628) != 0) )     ); cui__scope_628 = 1, cui_carousel_slide_end(ui))
                         {
                             {
-                                cui_box __cl187 = new cui_box { _ = 0, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, height = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, bg = new cui_color { r = (byte)(global::Managed.Cui.Gallery.Gallery.Globals.tops__s95__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[k] >> 16 & (uint)(0xff)), g = (byte)(global::Managed.Cui.Gallery.Gallery.Globals.tops__s95__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[k] >> 8 & (uint)(0xff)), b = (byte)(global::Managed.Cui.Gallery.Gallery.Globals.tops__s95__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[k] & (uint)(0xff)), a = 255 }, radius = 16, pad = 28, gap = 8, justify = __DotCcEnum_6375695F6A757374696679.CUI_JUSTIFY_END };
+                                cui_box __cl187 = new cui_box { _ = 0, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, height = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, bg = new cui_color { r = (byte)(global::Managed.Cui.Gallery.Gallery.Globals.tops__s95__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[k] >> 16 & (uint)(0xff)), g = (byte)(global::Managed.Cui.Gallery.Gallery.Globals.tops__s95__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[k] >> 8 & (uint)(0xff)), b = (byte)(global::Managed.Cui.Gallery.Gallery.Globals.tops__s95__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[k] & (uint)(0xff)), a = 255 }, radius = 16, pad = 28, gap = 8, justify = __DotCcEnum_6375695F6A757374696679.CUI_JUSTIFY_END };
                                 cui_box_begin(ui, &__cl187);
                                 int cui__scope_629 = 0;
                                 for (; (!(((cui__scope_629) != 0) )     ); cui__scope_629 = 1, cui_box_end(ui))
                                 {
                                     cui_text_opts __cl188 = new cui_text_opts { _ = 0, font = 2, size = 24, color = new cui_color { r = unchecked((byte)(0xffffff >> 16 & 0xff)), g = unchecked((byte)(0xffffff >> 8 & 0xff)), b = unchecked((byte)(0xffffff & 0xff)), a = 255 } };
-                                    cui_text_ex(ui, global::Managed.Cui.Gallery.Gallery.Globals.titles__s93__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[k], &__cl188);
+                                    cui_text_ex(ui, global::Managed.Cui.Gallery.Gallery.Globals.titles__s93__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[k], &__cl188);
                                     cui_text_opts __cl189 = new cui_text_opts { _ = 0, color = new cui_color { r = unchecked((byte)(0xffffffc0u >> 24 & (uint)(0xff))), g = unchecked((byte)(0xffffffc0u >> 16 & (uint)(0xff))), b = unchecked((byte)(0xffffffc0u >> 8 & (uint)(0xff))), a = unchecked((byte)(0xffffffc0u & (uint)(0xff))) } };
-                                    cui_text_ex(ui, global::Managed.Cui.Gallery.Gallery.Globals.descs__s94__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[k], &__cl189);
+                                    cui_text_ex(ui, global::Managed.Cui.Gallery.Gallery.Globals.descs__s94__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[k], &__cl189);
                                 }
                             }
                         }
@@ -615,9 +529,9 @@ public static unsafe partial class Gallery
                     int cui__scope_639 = 0;
                     for (; (!(((cui__scope_639) != 0) )     ); cui__scope_639 = 1, cui_box_end(ui))
                     {
-                        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S902 /*"Image viewer"*/), (DotCcLiterals.Pointer + DotCcLiterals.S404 /*"Wheel to zoom around the pointer, drag to pan, double-click for 100%."*/));
+                        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S902 /*"Image viewer"*/), (DotCcLiterals.Pointer + DotCcLiterals.S404 /*"Wheel to zoom around the pointer, drag to pan, double-click for 100%."*/));
                         cui_image_viewer_opts __cl192 = new cui_image_viewer_opts { _ = 0, height = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)260 } };
-                        _ = cui_image_viewer_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S535 /*"viewer"*/), global::Managed.Cui.Gallery.Gallery.Globals.after__s85__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 640, 400, global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_view__s96__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, &__cl192);
+                        _ = cui_image_viewer_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S535 /*"viewer"*/), global::Managed.Cui.Gallery.Gallery.Globals.after__s85__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 640, 400, global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_view__s96__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, &__cl192);
                     }
                 }
                 {
@@ -626,9 +540,9 @@ public static unsafe partial class Gallery
                     int cui__scope_643 = 0;
                     for (; (!(((cui__scope_643) != 0) )     ); cui__scope_643 = 1, cui_box_end(ui))
                     {
-                        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S650 /*"Cropper"*/), (DotCcLiterals.Pointer + DotCcLiterals.S187 /*"Drag the corners; the square keeps its shape."*/));
+                        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S650 /*"Cropper"*/), (DotCcLiterals.Pointer + DotCcLiterals.S187 /*"Drag the corners; the square keeps its shape."*/));
                         cui_cropper_opts __cl194 = new cui_cropper_opts { _ = 0, aspect = 1, height = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)260 } };
-                        _ = cui_cropper_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1109 /*"cropper"*/), global::Managed.Cui.Gallery.Gallery.Globals.after__s85__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 640, 400, global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_crop__s97__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, &__cl194);
+                        _ = cui_cropper_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1109 /*"cropper"*/), global::Managed.Cui.Gallery.Gallery.Globals.after__s85__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 640, 400, global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_crop__s97__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, &__cl194);
                     }
                 }
             }
@@ -645,9 +559,9 @@ public static unsafe partial class Gallery
                     int cui__scope_649 = 0;
                     for (; (!(((cui__scope_649) != 0) )     ); cui__scope_649 = 1, cui_box_end(ui))
                     {
-                        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S235 /*"Before and after"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1127 /*"Drag the divider."*/));
+                        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S235 /*"Before and after"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1127 /*"Drag the divider."*/));
                         cui_compare_opts __cl197 = new cui_compare_opts { _ = 0, height = 230, aspect = 640.0f / 400.0f };
-                        _ = cui_image_compare_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1648 /*"cmp"*/), global::Managed.Cui.Gallery.Gallery.Globals.before__s84__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, global::Managed.Cui.Gallery.Gallery.Globals.after__s85__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_split__s86__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, &__cl197);
+                        _ = cui_image_compare_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1648 /*"cmp"*/), global::Managed.Cui.Gallery.Gallery.Globals.before__s84__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, global::Managed.Cui.Gallery.Gallery.Globals.after__s85__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_split__s86__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, &__cl197);
                     }
                 }
                 {
@@ -656,25 +570,25 @@ public static unsafe partial class Gallery
                     int cui__scope_653 = 0;
                     for (; (!(((cui__scope_653) != 0) )     ); cui__scope_653 = 1, cui_box_end(ui))
                     {
-                        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S953 /*"Card stack"*/), (DotCcLiterals.Pointer + DotCcLiterals.S643 /*"Flick the top card away, left or right."*/));
+                        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S953 /*"Card stack"*/), (DotCcLiterals.Pointer + DotCcLiterals.S643 /*"Flick the top card away, left or right."*/));
                         cui_card_stack_opts __cl199 = new cui_card_stack_opts { width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)260 }, height = 200 };
                         cui_card_stack_begin(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1356 /*"deck"*/), 3, &__cl199);
                         for (int k__1 = 0; ((unchecked((int)(((CBool)(k__1 < 3))))) != 0); k__1++)
                         {
-                            int idx = (global::Managed.Cui.Gallery.Gallery.Globals.deck__s87__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 + k__1) % 5;
+                            int idx = (global::Managed.Cui.Gallery.Gallery.Globals.deck__s87__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 + k__1) % 5;
                             {
                                 cui_card_stack_item_begin(ui, k__1);
                                 int cui__scope_660 = 0;
                                 for (; (!(((cui__scope_660) != 0) )     ); cui__scope_660 = 1, cui_card_stack_item_end(ui))
                                 {
                                     {
-                                        cui_box __cl200 = new cui_box { _ = 0, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, height = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, bg = new cui_color { r = (byte)(global::Managed.Cui.Gallery.Gallery.Globals.cols__s99__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[idx] >> 16 & (uint)(0xff)), g = (byte)(global::Managed.Cui.Gallery.Gallery.Globals.cols__s99__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[idx] >> 8 & (uint)(0xff)), b = (byte)(global::Managed.Cui.Gallery.Gallery.Globals.cols__s99__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[idx] & (uint)(0xff)), a = 255 }, radius = 25, pad = 20, justify = __DotCcEnum_6375695F6A757374696679.CUI_JUSTIFY_END, gap = 4 };
+                                        cui_box __cl200 = new cui_box { _ = 0, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, height = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, bg = new cui_color { r = (byte)(global::Managed.Cui.Gallery.Gallery.Globals.cols__s99__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[idx] >> 16 & (uint)(0xff)), g = (byte)(global::Managed.Cui.Gallery.Gallery.Globals.cols__s99__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[idx] >> 8 & (uint)(0xff)), b = (byte)(global::Managed.Cui.Gallery.Gallery.Globals.cols__s99__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[idx] & (uint)(0xff)), a = 255 }, radius = 25, pad = 20, justify = __DotCcEnum_6375695F6A757374696679.CUI_JUSTIFY_END, gap = 4 };
                                         cui_box_begin(ui, &__cl200);
                                         int cui__scope_661 = 0;
                                         for (; (!(((cui__scope_661) != 0) )     ); cui__scope_661 = 1, cui_box_end(ui))
                                         {
                                             cui_text_opts __cl201 = new cui_text_opts { _ = 0, font = 2, size = 22, color = new cui_color { r = unchecked((byte)(0xffffff >> 16 & 0xff)), g = unchecked((byte)(0xffffff >> 8 & 0xff)), b = unchecked((byte)(0xffffff & 0xff)), a = 255 } };
-                                            cui_text_ex(ui, global::Managed.Cui.Gallery.Gallery.Globals.names__s98__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[idx], &__cl201);
+                                            cui_text_ex(ui, global::Managed.Cui.Gallery.Gallery.Globals.names__s98__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[idx], &__cl201);
                                             cui_text_opts __cl202 = new cui_text_opts { _ = 0, size = 13, font = 1, color = new cui_color { r = unchecked((byte)(0xfffffff0u >> 24 & (uint)(0xff))), g = unchecked((byte)(0xfffffff0u >> 16 & (uint)(0xff))), b = unchecked((byte)(0xfffffff0u >> 8 & (uint)(0xff))), a = unchecked((byte)(0xfffffff0u & (uint)(0xff))) } };
                                             cui_text_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1072 /*"Swipe right to save"*/), &__cl202);
                                         }
@@ -685,7 +599,7 @@ public static unsafe partial class Gallery
                         int dir = cui_card_stack_end(ui);
                         if (((dir) != 0))
                         {
-                            global::Managed.Cui.Gallery.Gallery.Globals.deck__s87__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 = (global::Managed.Cui.Gallery.Gallery.Globals.deck__s87__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 + 1) % 5;
+                            global::Managed.Cui.Gallery.Gallery.Globals.deck__s87__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 = (global::Managed.Cui.Gallery.Gallery.Globals.deck__s87__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 + 1) % 5;
                             cui_toast_opts __cl203 = new cui_toast_opts { _ = 0 };
                             cui_toast_ex(ui, ((byte*)(((unchecked((int)(((CBool)(dir > 0))))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S12 /*"Saved"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S1421 /*"Skipped"*/))), &__cl203);
                         }
@@ -697,52 +611,52 @@ public static unsafe partial class Gallery
 
 
 
-    public static unsafe kb_card* kb_find__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(int id)
+    public static unsafe kb_card* kb_find__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(int id)
     {
         for (ulong k = 0; ((unchecked((int)(((CBool)(k < ((ulong)((8 * sizeof(kb_card)))) / ((ulong)(sizeof(kb_card)))))))) != 0); k++)
-            if (((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.kb_cards__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[k].id == id))))) != 0))
-                return &global::Managed.Cui.Gallery.Gallery.Globals.kb_cards__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[k];
+            if (((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.kb_cards__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[k].id == id))))) != 0))
+                return &global::Managed.Cui.Gallery.Gallery.Globals.kb_cards__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[k];
         return null;
     }
 
 
 
-    public static unsafe void kb_apply__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_kanban_move* m)
+    public static unsafe void kb_apply__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_kanban_move* m)
     {
-        int* from = global::Managed.Cui.Gallery.Gallery.Globals.kb_cols__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 + m->from_column * 8, to = global::Managed.Cui.Gallery.Gallery.Globals.kb_cols__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 + m->to_column * 8;
+        int* from = global::Managed.Cui.Gallery.Gallery.Globals.kb_cols__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 + m->from_column * 8, to = global::Managed.Cui.Gallery.Gallery.Globals.kb_cols__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 + m->to_column * 8;
         int at = -1;
-        for (int k = 0; ((unchecked((int)(((CBool)(k < global::Managed.Cui.Gallery.Gallery.Globals.kb_len__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[m->from_column]))))) != 0); k++)
+        for (int k = 0; ((unchecked((int)(((CBool)(k < global::Managed.Cui.Gallery.Gallery.Globals.kb_len__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[m->from_column]))))) != 0); k++)
             if (((unchecked((int)(((CBool)(from[k] == m->card))))) != 0))
                 at = k;
-        if (((unchecked((int)(((CBool)(((unchecked((int)(((CBool)(at < 0))))) != 0) || ((unchecked((int)(((CBool)(((unchecked((int)(((CBool)(m->to_column != m->from_column))))) != 0) && ((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.kb_len__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[m->to_column] >= 8))))) != 0)))))) != 0)))))) != 0))
+        if (((unchecked((int)(((CBool)(((unchecked((int)(((CBool)(at < 0))))) != 0) || ((unchecked((int)(((CBool)(((unchecked((int)(((CBool)(m->to_column != m->from_column))))) != 0) && ((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.kb_len__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[m->to_column] >= 8))))) != 0)))))) != 0)))))) != 0))
             return;
-        for (int k__1 = at; ((unchecked((int)(((CBool)(k__1 < global::Managed.Cui.Gallery.Gallery.Globals.kb_len__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[m->from_column] - 1))))) != 0); k__1++)
+        for (int k__1 = at; ((unchecked((int)(((CBool)(k__1 < global::Managed.Cui.Gallery.Gallery.Globals.kb_len__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[m->from_column] - 1))))) != 0); k__1++)
             from[k__1] = from[k__1 + 1];
-        global::Managed.Cui.Gallery.Gallery.Globals.kb_len__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[m->from_column]--;
-        int idx = ((int)(((unchecked((int)(((CBool)(m->to_index < 0))))) != 0) ? 0 : ((int)(((unchecked((int)(((CBool)(m->to_index > global::Managed.Cui.Gallery.Gallery.Globals.kb_len__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[m->to_column]))))) != 0) ? global::Managed.Cui.Gallery.Gallery.Globals.kb_len__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[m->to_column] : m->to_index))));
-        for (int k__2 = global::Managed.Cui.Gallery.Gallery.Globals.kb_len__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[m->to_column]; ((unchecked((int)(((CBool)(k__2 > idx))))) != 0); k__2--)
+        global::Managed.Cui.Gallery.Gallery.Globals.kb_len__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[m->from_column]--;
+        int idx = ((int)(((unchecked((int)(((CBool)(m->to_index < 0))))) != 0) ? 0 : ((int)(((unchecked((int)(((CBool)(m->to_index > global::Managed.Cui.Gallery.Gallery.Globals.kb_len__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[m->to_column]))))) != 0) ? global::Managed.Cui.Gallery.Gallery.Globals.kb_len__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[m->to_column] : m->to_index))));
+        for (int k__2 = global::Managed.Cui.Gallery.Gallery.Globals.kb_len__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[m->to_column]; ((unchecked((int)(((CBool)(k__2 > idx))))) != 0); k__2--)
             to[k__2] = to[k__2 - 1];
         to[idx] = m->card;
-        global::Managed.Cui.Gallery.Gallery.Globals.kb_len__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[m->to_column]++;
+        global::Managed.Cui.Gallery.Gallery.Globals.kb_len__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[m->to_column]++;
     }
 
 
 
-    public static unsafe void page_planning__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void page_planning__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S125 /*"Kanban"*/), (DotCcLiterals.Pointer + DotCcLiterals.S91 /*"Drag cards within and between columns. Columns can carry a work-in-progress limit."*/));
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S125 /*"Kanban"*/), (DotCcLiterals.Pointer + DotCcLiterals.S91 /*"Drag cards within and between columns. Columns can carry a work-in-progress limit."*/));
         cui_kanban_begin(ui, (DotCcLiterals.Pointer + DotCcLiterals.S136 /*"board"*/));
         for (int c = 0; ((unchecked((int)(((CBool)(c < 4))))) != 0); c++)
         {
-            cui_kanban_column_opts __cl204 = new cui_kanban_column_opts { _ = 0, dot = new cui_color { r = (byte)(global::Managed.Cui.Gallery.Gallery.Globals.col_dots__s101__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[c] >> 16 & (uint)(0xff)), g = (byte)(global::Managed.Cui.Gallery.Gallery.Globals.col_dots__s101__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[c] >> 8 & (uint)(0xff)), b = (byte)(global::Managed.Cui.Gallery.Gallery.Globals.col_dots__s101__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[c] & (uint)(0xff)), a = 255 }, limit = ((int)(((unchecked((int)(((CBool)(c == 1))))) != 0) ? 3 : 0)), width = 264 };
-            if (((unchecked((int)(cui_kanban_column_begin_ex(ui, global::Managed.Cui.Gallery.Gallery.Globals.col_names__s100__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[c], global::Managed.Cui.Gallery.Gallery.Globals.kb_len__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[c], &__cl204)))) != 0))
+            cui_kanban_column_opts __cl204 = new cui_kanban_column_opts { _ = 0, dot = new cui_color { r = (byte)(global::Managed.Cui.Gallery.Gallery.Globals.col_dots__s101__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[c] >> 16 & (uint)(0xff)), g = (byte)(global::Managed.Cui.Gallery.Gallery.Globals.col_dots__s101__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[c] >> 8 & (uint)(0xff)), b = (byte)(global::Managed.Cui.Gallery.Gallery.Globals.col_dots__s101__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[c] & (uint)(0xff)), a = 255 }, limit = ((int)(((unchecked((int)(((CBool)(c == 1))))) != 0) ? 3 : 0)), width = 264 };
+            if (((unchecked((int)(cui_kanban_column_begin_ex(ui, global::Managed.Cui.Gallery.Gallery.Globals.col_names__s100__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[c], global::Managed.Cui.Gallery.Gallery.Globals.kb_len__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[c], &__cl204)))) != 0))
             {
-                cui_toast_opts __cl205 = new cui_toast_opts { _ = 0, description = global::Managed.Cui.Gallery.Gallery.Globals.col_names__s100__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[c] };
+                cui_toast_opts __cl205 = new cui_toast_opts { _ = 0, description = global::Managed.Cui.Gallery.Gallery.Globals.col_names__s100__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[c] };
                 cui_toast_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S199 /*"New card"*/), &__cl205);
             }
-            for (int k = 0; ((unchecked((int)(((CBool)(k < global::Managed.Cui.Gallery.Gallery.Globals.kb_len__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[c]))))) != 0); k++)
+            for (int k = 0; ((unchecked((int)(((CBool)(k < global::Managed.Cui.Gallery.Gallery.Globals.kb_len__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[c]))))) != 0); k++)
             {
-                kb_card* cd = kb_find__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9((global::Managed.Cui.Gallery.Gallery.Globals.kb_cols__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 + c * 8)[k]);
+                kb_card* cd = kb_find__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199((global::Managed.Cui.Gallery.Gallery.Globals.kb_cols__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 + c * 8)[k]);
                 if ((!((((void*)(cd)) != null) )     ))
                     continue;
                 if (((unchecked((int)(cui_kanban_card_begin(ui, cd->id)))) != 0))
@@ -772,13 +686,13 @@ public static unsafe partial class Gallery
                         {
                             cui_icon(ui, (DotCcLiterals.Pointer + DotCcLiterals.S895 /*""*/), 12, new cui_color { r = (byte)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED, g = 0xC5, b = 0x1D, a = 0 });
                             cui_text_opts __cl212 = new cui_text_opts { _ = 0, size = 12, color = new cui_color { r = (byte)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED, g = 0xC5, b = 0x1D, a = 0 } };
-                            cui_text_ex(ui, global::Managed.Cui.Gallery.Gallery.Globals.nums__s102__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[cd->files % 10], &__cl212);
+                            cui_text_ex(ui, global::Managed.Cui.Gallery.Gallery.Globals.nums__s102__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[cd->files % 10], &__cl212);
                         }
                         if (((cd->comments) != 0))
                         {
                             cui_icon(ui, (DotCcLiterals.Pointer + DotCcLiterals.S646 /*""*/), 12, new cui_color { r = (byte)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED, g = 0xC5, b = 0x1D, a = 0 });
                             cui_text_opts __cl213 = new cui_text_opts { _ = 0, size = 12, color = new cui_color { r = (byte)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED, g = 0xC5, b = 0x1D, a = 0 } };
-                            cui_text_ex(ui, global::Managed.Cui.Gallery.Gallery.Globals.nums__s102__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[cd->comments % 10], &__cl213);
+                            cui_text_ex(ui, global::Managed.Cui.Gallery.Gallery.Globals.nums__s102__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[cd->comments % 10], &__cl213);
                         }
                         if (((unchecked((int)(((CBool)(cd->progress >= 1))))) != 0))
                             cui_icon(ui, (DotCcLiterals.Pointer + DotCcLiterals.S846 /*""*/), 14, new cui_color { r = (byte)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SUCCESS, g = 0xC5, b = 0x1D, a = 0 });
@@ -790,58 +704,58 @@ public static unsafe partial class Gallery
         }
         cui_kanban_move mv = default;
         if (((unchecked((int)(cui_kanban_end(ui, &mv)))) != 0))
-            kb_apply__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(&mv);
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1391 /*"Week calendar"*/), (DotCcLiterals.Pointer + DotCcLiterals.S621 /*"Drag events to move them in 15 minute steps, or pull the bottom edge to resize."*/));
+            kb_apply__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(&mv);
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1391 /*"Week calendar"*/), (DotCcLiterals.Pointer + DotCcLiterals.S621 /*"Drag events to move them in 15 minute steps, or pull the bottom edge to resize."*/));
         cui_date today = cui_date_today();
         int td = cui_date_to_days(today);
         int monday = td - ((td + 3) % 7 + 7) % 7;
         cui_week_opts __cl214 = new cui_week_opts { _ = 0, start_hour = 8, end_hour = 19, height = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)420 } };
-        int ev = cui_week_calendar_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S801 /*"week"*/), cui_date_from_days(monday), global::Managed.Cui.Gallery.Gallery.Globals.events__s103__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, unchecked((int)(((ulong)((11 * sizeof(cui_cal_event)))) / ((ulong)(sizeof(cui_cal_event))))), &__cl214);
+        int ev = cui_week_calendar_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S801 /*"week"*/), cui_date_from_days(monday), global::Managed.Cui.Gallery.Gallery.Globals.events__s103__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, unchecked((int)(((ulong)((11 * sizeof(cui_cal_event)))) / ((ulong)(sizeof(cui_cal_event))))), &__cl214);
         if (((unchecked((int)(((CBool)(ev >= 0))))) != 0))
         {
-            cui_toast_opts __cl215 = new cui_toast_opts { _ = 0, description = global::Managed.Cui.Gallery.Gallery.Globals.events__s103__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[ev].detail };
-            cui_toast_ex(ui, global::Managed.Cui.Gallery.Gallery.Globals.events__s103__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[ev].title, &__cl215);
+            cui_toast_opts __cl215 = new cui_toast_opts { _ = 0, description = global::Managed.Cui.Gallery.Gallery.Globals.events__s103__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[ev].detail };
+            cui_toast_ex(ui, global::Managed.Cui.Gallery.Gallery.Globals.events__s103__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[ev].title, &__cl215);
         }
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S68 /*"Gantt"*/), (DotCcLiterals.Pointer + DotCcLiterals.S614 /*"Drag bars to reschedule, pull either end to change the length. Arrows follow dependencies."*/));
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S68 /*"Gantt"*/), (DotCcLiterals.Pointer + DotCcLiterals.S614 /*"Drag bars to reschedule, pull either end to change the length. Arrows follow dependencies."*/));
         cui_date origin = cui_date_from_days(monday - 7);
         cui_gantt_opts __cl216 = new cui_gantt_opts { _ = 0, today = 7 + (td - monday) };
-        int tk = cui_gantt_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1417 /*"plan"*/), global::Managed.Cui.Gallery.Gallery.Globals.tasks__s104__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, unchecked((int)(((ulong)((7 * sizeof(cui_gantt_task)))) / ((ulong)(sizeof(cui_gantt_task))))), origin, 42, &__cl216);
+        int tk = cui_gantt_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1417 /*"plan"*/), global::Managed.Cui.Gallery.Gallery.Globals.tasks__s104__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, unchecked((int)(((ulong)((7 * sizeof(cui_gantt_task)))) / ((ulong)(sizeof(cui_gantt_task))))), origin, 42, &__cl216);
         if (((unchecked((int)(((CBool)(tk >= 0))))) != 0))
         {
-            snprintf(global::Managed.Cui.Gallery.Gallery.Globals.dur__s105__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, unchecked((int)(((ulong)((32 * sizeof(byte)))))), (DotCcLiterals.Pointer + DotCcLiterals.S850 /*"%d days"*/)).Arg(global::Managed.Cui.Gallery.Gallery.Globals.tasks__s104__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[tk].end - global::Managed.Cui.Gallery.Gallery.Globals.tasks__s104__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[tk].start).Done();
-            cui_toast_opts __cl217 = new cui_toast_opts { _ = 0, description = ((byte*)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.tasks__s104__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[tk].milestone))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S60 /*"Milestone"*/) : global::Managed.Cui.Gallery.Gallery.Globals.dur__s105__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9)) };
-            cui_toast_ex(ui, global::Managed.Cui.Gallery.Gallery.Globals.tasks__s104__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[tk].name, &__cl217);
+            snprintf(global::Managed.Cui.Gallery.Gallery.Globals.dur__s105__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, unchecked((int)(((ulong)((32 * sizeof(byte)))))), (DotCcLiterals.Pointer + DotCcLiterals.S850 /*"%d days"*/)).Arg(global::Managed.Cui.Gallery.Gallery.Globals.tasks__s104__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[tk].end - global::Managed.Cui.Gallery.Gallery.Globals.tasks__s104__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[tk].start).Done();
+            cui_toast_opts __cl217 = new cui_toast_opts { _ = 0, description = ((byte*)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.tasks__s104__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[tk].milestone))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S60 /*"Milestone"*/) : global::Managed.Cui.Gallery.Gallery.Globals.dur__s105__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199)) };
+            cui_toast_ex(ui, global::Managed.Cui.Gallery.Gallery.Globals.tasks__s104__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[tk].name, &__cl217);
         }
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1148 /*"Month calendar"*/), (DotCcLiterals.Pointer + DotCcLiterals.S37 /*"Bars for days off and trips, timed events in time order, +N more when a day is full."*/));
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1148 /*"Month calendar"*/), (DotCcLiterals.Pointer + DotCcLiterals.S37 /*"Bars for days off and trips, timed events in time order, +N more when a day is full."*/));
         cui_date now = cui_date_today();
         int @base = cui_date_to_days(new cui_date { year = now.year, month = now.month, day = 1 });
         for (int k__1 = 0; ((unchecked((int)(((CBool)(k__1 < 12))))) != 0); k__1++)
         {
             CBool span = ((CBool)(((unchecked((int)(((CBool)(k__1 == 2))))) != 0) || ((unchecked((int)(((CBool)(k__1 == 9))))) != 0)));
-            global::Managed.Cui.Gallery.Gallery.Globals.mev__s108__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[k__1] = new cui_month_event { title = global::Managed.Cui.Gallery.Gallery.Globals.titles__s109__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[k__1], start = cui_date_from_days(@base + k__1 * 5 % 27), end = (((unchecked((int)(span))) != 0) ? cui_date_from_days(@base + k__1 * 5 % 27 + 2) : new cui_date {  }), time = 9.0f + (float)(k__1 % 8), all_day = ((CBool)(((unchecked((int)(span))) != 0) || ((unchecked((int)(((CBool)(k__1 == 4))))) != 0))), tone = (cui_tone)(1 + k__1 % 8) };
+            global::Managed.Cui.Gallery.Gallery.Globals.mev__s108__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[k__1] = new cui_month_event { title = global::Managed.Cui.Gallery.Gallery.Globals.titles__s109__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[k__1], start = cui_date_from_days(@base + k__1 * 5 % 27), end = (((unchecked((int)(span))) != 0) ? cui_date_from_days(@base + k__1 * 5 % 27 + 2) : new cui_date {  }), time = 9.0f + (float)(k__1 % 8), all_day = ((CBool)(((unchecked((int)(span))) != 0) || ((unchecked((int)(((CBool)(k__1 == 4))))) != 0))), tone = (cui_tone)(1 + k__1 % 8) };
         }
-        cui_month_opts __cl218 = new cui_month_opts { _ = 0, selected = ((cui_date*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.picked__s107__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9)) };
-        cui_month_result mr = cui_month_calendar_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1479 /*"month"*/), ((cui_date*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.month__s106__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9)), global::Managed.Cui.Gallery.Gallery.Globals.mev__s108__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 12, &__cl218);
+        cui_month_opts __cl218 = new cui_month_opts { _ = 0, selected = ((cui_date*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.picked__s107__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199)) };
+        cui_month_result mr = cui_month_calendar_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1479 /*"month"*/), ((cui_date*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.month__s106__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199)), global::Managed.Cui.Gallery.Gallery.Globals.mev__s108__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 12, &__cl218);
         if (((unchecked((int)(((CBool)(mr.@event >= 0))))) != 0))
         {
             cui_toast_opts __cl219 = new cui_toast_opts { _ = 0, description = (DotCcLiterals.Pointer + DotCcLiterals.S1260 /*"Opened from the month calendar"*/) };
-            cui_toast_ex(ui, global::Managed.Cui.Gallery.Gallery.Globals.mev__s108__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[mr.@event].title, &__cl219);
+            cui_toast_ex(ui, global::Managed.Cui.Gallery.Gallery.Globals.mev__s108__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[mr.@event].title, &__cl219);
         }
     }
 
 
 
-    public static unsafe void page_viz__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void page_viz__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
     byte* __dotcc_array_storage220 = null;
-        if ((!(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.init__s112__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9))) != 0) )     ))
+        if ((!(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.init__s112__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199))) != 0) )     ))
         {
             for (int d = 0; ((unchecked((int)(((CBool)(d < 7))))) != 0); d++)
                 for (int h = 0; ((unchecked((int)(((CBool)(h < 24))))) != 0); h++)
                 {
                     float work = ((float)(((unchecked((int)(((CBool)(d < 5))))) != 0) ? 1.0f : 0.45f));
                     float day = expf(-powf((h - 13.5f) / 4.2f, (float)(2))) * 90 * work + expf(-powf((h - 20.5f) / 2.0f, (float)(2))) * 35;
-                    global::Managed.Cui.Gallery.Gallery.Globals.traffic__s110__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[d * 24 + h] = day + (float)((d * 31 + h * 17) % 11);
+                    global::Managed.Cui.Gallery.Gallery.Globals.traffic__s110__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[d * 24 + h] = day + (float)((d * 31 + h * 17) % 11);
                 }
             uint s = 7;
             for (int k = 0; ((unchecked((int)(((CBool)(k < 364))))) != 0); k++)
@@ -850,9 +764,9 @@ public static unsafe partial class Gallery
                 int wd = (k + ((cui_date_to_days(cui_date_today()) - 363) % 7 + 10) % 7) % 7;
                 float @base = ((float)(((unchecked((int)(((CBool)(wd >= 5))))) != 0) ? 0.6f : 3.2f)) * (0.6f + 0.4f * sinf(k / 40.0f) * sinf(k / 40.0f));
                 float r = (float)((s >> 16) % (uint)(1000)) / 1000.0f;
-                global::Managed.Cui.Gallery.Gallery.Globals.days__s111__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[k] = ((float)(((unchecked((int)(((CBool)(r < 0.18f))))) != 0) ? (float)(0) : floorf(@base * r * 4)));
+                global::Managed.Cui.Gallery.Gallery.Globals.days__s111__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[k] = ((float)(((unchecked((int)(((CBool)(r < 0.18f))))) != 0) ? (float)(0) : floorf(@base * r * 4)));
             }
-            global::Managed.Cui.Gallery.Gallery.Globals.init__s112__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 = 1;
+            global::Managed.Cui.Gallery.Gallery.Globals.init__s112__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 = 1;
         }
         {
             cui_box __cl221 = new cui_box { _ = 0, gap = 24, align = __DotCcEnum_6375695F616C69676E.CUI_ALIGN_START, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 } };
@@ -866,22 +780,22 @@ public static unsafe partial class Gallery
                     int cui__scope_812 = 0;
                     for (; (!(((cui__scope_812) != 0) )     ); cui__scope_812 = 1, cui_box_end(ui))
                     {
-                        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1020 /*"Heatmap"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1439 /*"Requests by weekday and hour."*/));
+                        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1020 /*"Heatmap"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1439 /*"Requests by weekday and hour."*/));
                         {
                             cui_card_opts __cl223 = new cui_card_opts { _ = 0, pad = 18, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 } };
                             _ = cui_card_begin(ui, &__cl223);
                             int cui__scope_814 = 0;
                             for (; (!(((cui__scope_814) != 0) )     ); cui__scope_814 = 1, cui_card_end(ui))
                             {
-                                cui_heatmap_opts __cl224 = new cui_heatmap_opts { _ = 0, row_labels = global::Managed.Cui.Gallery.Gallery.Globals.wd__s113__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, col_labels = global::Managed.Cui.Gallery.Gallery.Globals.hours__s114__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, format = (DotCcLiterals.Pointer + DotCcLiterals.S59 /*"%.0f req"*/) };
-                                cui_heatmap_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S332 /*"traffic"*/), global::Managed.Cui.Gallery.Gallery.Globals.traffic__s110__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 7, 24, &__cl224);
+                                cui_heatmap_opts __cl224 = new cui_heatmap_opts { _ = 0, row_labels = global::Managed.Cui.Gallery.Gallery.Globals.wd__s113__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, col_labels = global::Managed.Cui.Gallery.Gallery.Globals.hours__s114__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, format = (DotCcLiterals.Pointer + DotCcLiterals.S59 /*"%.0f req"*/) };
+                                cui_heatmap_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S332 /*"traffic"*/), global::Managed.Cui.Gallery.Gallery.Globals.traffic__s110__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 7, 24, &__cl224);
                             }
                         }
                     }
                 }
             }
         }
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S791 /*"Calendar heatmap"*/), (DotCcLiterals.Pointer + DotCcLiterals.S421 /*"A year of activity, one square a day."*/));
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S791 /*"Calendar heatmap"*/), (DotCcLiterals.Pointer + DotCcLiterals.S421 /*"A year of activity, one square a day."*/));
         {
             cui_card_opts __cl225 = new cui_card_opts { _ = 0, pad = 18 };
             _ = cui_card_begin(ui, &__cl225);
@@ -890,7 +804,7 @@ public static unsafe partial class Gallery
             {
                 cui_date start = cui_date_from_days(cui_date_to_days(cui_date_today()) - 363);
                 cui_calendar_heatmap_opts __cl226 = new cui_calendar_heatmap_opts { _ = 0, unit = (DotCcLiterals.Pointer + DotCcLiterals.S819 /*"contributions"*/) };
-                cui_calendar_heatmap_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S292 /*"activity"*/), start, global::Managed.Cui.Gallery.Gallery.Globals.days__s111__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 364, &__cl226);
+                cui_calendar_heatmap_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S292 /*"activity"*/), start, global::Managed.Cui.Gallery.Gallery.Globals.days__s111__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 364, &__cl226);
             }
         }
         {
@@ -905,9 +819,9 @@ public static unsafe partial class Gallery
                     int cui__scope_823 = 0;
                     for (; (!(((cui__scope_823) != 0) )     ); cui__scope_823 = 1, cui_box_end(ui))
                     {
-                        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1181 /*"Treemap"*/), (DotCcLiterals.Pointer + DotCcLiterals.S841 /*"Bundle size by module."*/));
+                        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1181 /*"Treemap"*/), (DotCcLiterals.Pointer + DotCcLiterals.S841 /*"Bundle size by module."*/));
                         cui_treemap_opts __cl229 = new cui_treemap_opts { _ = 0, height = 280, format = (DotCcLiterals.Pointer + DotCcLiterals.S322 /*"%.0f KB"*/) };
-                        cui_treemap_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1059 /*"bundle"*/), global::Managed.Cui.Gallery.Gallery.Globals.mods__s115__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 10, &__cl229);
+                        cui_treemap_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1059 /*"bundle"*/), global::Managed.Cui.Gallery.Gallery.Globals.mods__s115__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 10, &__cl229);
                     }
                 }
                 {
@@ -916,7 +830,7 @@ public static unsafe partial class Gallery
                     int cui__scope_831 = 0;
                     for (; (!(((cui__scope_831) != 0) )     ); cui__scope_831 = 1, cui_box_end(ui))
                     {
-                        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1022 /*"Radar"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1379 /*"Two releases across six qualities."*/));
+                        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1022 /*"Radar"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1379 /*"Two releases across six qualities."*/));
                         if (__dotcc_array_storage220 == null)
                         {
                             byte* __dotcc_array_storage220_new = stackalloc byte[checked(sizeof(cui_series) * 2)];
@@ -924,10 +838,10 @@ public static unsafe partial class Gallery
                         }
                         cui_series* rs = (cui_series*)__dotcc_array_storage220;
                         new global::System.Span<byte>((void*)rs, checked(sizeof(cui_series) * 2)).Clear();
-                        rs[0] = new cui_series { name = (DotCcLiterals.Pointer + DotCcLiterals.S1636 /*"1.0"*/), values = global::Managed.Cui.Gallery.Gallery.Globals.a__s116__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, count = 6, color = new cui_color {  } };
-                        rs[1] = new cui_series { name = (DotCcLiterals.Pointer + DotCcLiterals.S1572 /*"1.1"*/), values = global::Managed.Cui.Gallery.Gallery.Globals.b__s117__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, count = 6, color = new cui_color {  } };
+                        rs[0] = new cui_series { name = (DotCcLiterals.Pointer + DotCcLiterals.S1636 /*"1.0"*/), values = global::Managed.Cui.Gallery.Gallery.Globals.a__s116__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, count = 6, color = new cui_color {  } };
+                        rs[1] = new cui_series { name = (DotCcLiterals.Pointer + DotCcLiterals.S1572 /*"1.1"*/), values = global::Managed.Cui.Gallery.Gallery.Globals.b__s117__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, count = 6, color = new cui_color {  } };
                         cui_radar_opts __cl231 = new cui_radar_opts { _ = 0, size = 220, max = 100 };
-                        cui_radar_chart_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S446 /*"radar"*/), rs, 2, global::Managed.Cui.Gallery.Gallery.Globals.axes__s118__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 6, &__cl231);
+                        cui_radar_chart_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S446 /*"radar"*/), rs, 2, global::Managed.Cui.Gallery.Gallery.Globals.axes__s118__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 6, &__cl231);
                     }
                 }
             }
@@ -944,9 +858,9 @@ public static unsafe partial class Gallery
                     int cui__scope_840 = 0;
                     for (; (!(((cui__scope_840) != 0) )     ); cui__scope_840 = 1, cui_box_end(ui))
                     {
-                        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S325 /*"Funnel"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1556 /*"Sign up conversion."*/));
+                        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S325 /*"Funnel"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1556 /*"Sign up conversion."*/));
                         cui_funnel_opts __cl234 = new cui_funnel_opts { _ = 0 };
-                        cui_funnel_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1542 /*"funnel"*/), global::Managed.Cui.Gallery.Gallery.Globals.stages__s119__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 4, &__cl234);
+                        cui_funnel_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1542 /*"funnel"*/), global::Managed.Cui.Gallery.Gallery.Globals.stages__s119__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 4, &__cl234);
                     }
                 }
                 {
@@ -955,18 +869,18 @@ public static unsafe partial class Gallery
                     int cui__scope_845 = 0;
                     for (; (!(((cui__scope_845) != 0) )     ); cui__scope_845 = 1, cui_box_end(ui))
                     {
-                        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1305 /*"Split bar"*/), (DotCcLiterals.Pointer + DotCcLiterals.S991 /*"Where the time goes."*/));
+                        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1305 /*"Split bar"*/), (DotCcLiterals.Pointer + DotCcLiterals.S991 /*"Where the time goes."*/));
                         cui_split_bar_opts __cl236 = new cui_split_bar_opts { _ = 0, format = (DotCcLiterals.Pointer + DotCcLiterals.S1576 /*"%.0f ms"*/) };
-                        cui_split_bar_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S626 /*"split"*/), global::Managed.Cui.Gallery.Gallery.Globals.parts__s120__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 5, &__cl236);
+                        cui_split_bar_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S626 /*"split"*/), global::Managed.Cui.Gallery.Gallery.Globals.parts__s120__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 5, &__cl236);
                         cui_gap(ui, 18);
-                        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1355 /*"Waffle"*/), (DotCcLiterals.Pointer + DotCcLiterals.S931 /*"Platforms of the last 100 installs."*/));
+                        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1355 /*"Waffle"*/), (DotCcLiterals.Pointer + DotCcLiterals.S931 /*"Platforms of the last 100 installs."*/));
                         cui_waffle_opts __cl237 = new cui_waffle_opts { _ = 0, cell = 14 };
-                        cui_waffle_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1163 /*"waffle"*/), global::Managed.Cui.Gallery.Gallery.Globals.plats__s121__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 3, &__cl237);
+                        cui_waffle_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1163 /*"waffle"*/), global::Managed.Cui.Gallery.Gallery.Globals.plats__s121__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 3, &__cl237);
                     }
                 }
             }
         }
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1612 /*"Sankey"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1543 /*"Where sign ups come from and where they end up."*/));
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1612 /*"Sankey"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1543 /*"Where sign ups come from and where they end up."*/));
         {
             cui_card_opts __cl238 = new cui_card_opts { _ = 0, pad = 18, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 } };
             _ = cui_card_begin(ui, &__cl238);
@@ -974,7 +888,7 @@ public static unsafe partial class Gallery
             for (; (!(((cui__scope_861) != 0) )     ); cui__scope_861 = 1, cui_card_end(ui))
             {
                 cui_sankey_opts __cl239 = new cui_sankey_opts { _ = 0, height = 280 };
-                cui_sankey_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S364 /*"flow"*/), global::Managed.Cui.Gallery.Gallery.Globals.nodes__s122__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 8, global::Managed.Cui.Gallery.Gallery.Globals.links__s123__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 8, &__cl239);
+                cui_sankey_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S364 /*"flow"*/), global::Managed.Cui.Gallery.Gallery.Globals.nodes__s122__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 8, global::Managed.Cui.Gallery.Gallery.Globals.links__s123__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 8, &__cl239);
             }
         }
         {
@@ -989,13 +903,13 @@ public static unsafe partial class Gallery
                     int cui__scope_863 = 0;
                     for (; (!(((cui__scope_863) != 0) )     ); cui__scope_863 = 1, cui_box_end(ui))
                     {
-                        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1150 /*"Bar list"*/), (DotCcLiterals.Pointer + DotCcLiterals.S968 /*"Ranked, keyed by label: press Shuffle and the rows slide to their new rank."*/));
+                        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1150 /*"Bar list"*/), (DotCcLiterals.Pointer + DotCcLiterals.S968 /*"Ranked, keyed by label: press Shuffle and the rows slide to their new rank."*/));
                         cui_bar_list_opts __cl242 = new cui_bar_list_opts { _ = 0 };
-                        cui_bar_list_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1470 /*"pages"*/), global::Managed.Cui.Gallery.Gallery.Globals.pages__s124__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 6, &__cl242);
+                        cui_bar_list_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1470 /*"pages"*/), global::Managed.Cui.Gallery.Gallery.Globals.pages__s124__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 6, &__cl242);
                         cui_button_opts __cl243 = new cui_button_opts { _ = 0, size = __DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM, icon = (DotCcLiterals.Pointer + DotCcLiterals.S1108 /*""*/), variant = __DotCcEnum_6375695F627574746F6E5F76617269616E74.CUI_BUTTON_OUTLINE };
                         if (((unchecked((int)(cui_button_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S978 /*"Shuffle"*/), &__cl243)))) != 0))
                             for (int k__1 = 0; ((unchecked((int)(((CBool)(k__1 < 6))))) != 0); k__1++)
-                                global::Managed.Cui.Gallery.Gallery.Globals.pages__s124__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[k__1].value = (float)(500 + rand() % 5000);
+                                global::Managed.Cui.Gallery.Gallery.Globals.pages__s124__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[k__1].value = (float)(500 + rand() % 5000);
                     }
                 }
                 {
@@ -1004,28 +918,28 @@ public static unsafe partial class Gallery
                     int cui__scope_870 = 0;
                     for (; (!(((cui__scope_870) != 0) )     ); cui__scope_870 = 1, cui_box_end(ui))
                     {
-                        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1293 /*"Activity rings"*/), (DotCcLiterals.Pointer + DotCcLiterals.S734 /*"Past one, a ring keeps winding."*/));
+                        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1293 /*"Activity rings"*/), (DotCcLiterals.Pointer + DotCcLiterals.S734 /*"Past one, a ring keeps winding."*/));
                         cui_rings_opts __cl245 = new cui_rings_opts { _ = 0, size = 170, center = (DotCcLiterals.Pointer + DotCcLiterals.S461 /*"82%"*/), caption = (DotCcLiterals.Pointer + DotCcLiterals.S780 /*"of goal"*/) };
-                        cui_activity_rings_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1367 /*"rings"*/), global::Managed.Cui.Gallery.Gallery.Globals.rings__s125__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 3, &__cl245);
+                        cui_activity_rings_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1367 /*"rings"*/), global::Managed.Cui.Gallery.Gallery.Globals.rings__s125__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 3, &__cl245);
                     }
                 }
             }
         }
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S230 /*"Scatter"*/), (DotCcLiterals.Pointer + DotCcLiterals.S540 /*"Frame time against node count, sized by draw calls."*/));
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S230 /*"Scatter"*/), (DotCcLiterals.Pointer + DotCcLiterals.S540 /*"Frame time against node count, sized by draw calls."*/));
         {
-            if ((!(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.pinit__s130__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9))) != 0) )     ))
+            if ((!(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.pinit__s130__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199))) != 0) )     ))
             {
                 for (int k__2 = 0; ((unchecked((int)(((CBool)(k__2 < 40))))) != 0); k__2++)
                 {
                     float n = 200 + k__2 * 95.0f;
-                    global::Managed.Cui.Gallery.Gallery.Globals.a__s126__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[k__2] = new cui_vec2 { x = n, y = 0.08f + n * 0.00006f + (float)(k__2 * 37 % 13) * 0.004f };
-                    global::Managed.Cui.Gallery.Gallery.Globals.b__s127__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[k__2] = new cui_vec2 { x = n * 0.9f + 150, y = 0.15f + n * 0.00011f + (float)(k__2 * 53 % 17) * 0.006f };
-                    global::Managed.Cui.Gallery.Gallery.Globals.sa__s128__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[k__2] = (float)(10 + k__2 * 7 % 40);
-                    global::Managed.Cui.Gallery.Gallery.Globals.sb__s129__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[k__2] = (float)(20 + k__2 * 11 % 50);
+                    global::Managed.Cui.Gallery.Gallery.Globals.a__s126__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[k__2] = new cui_vec2 { x = n, y = 0.08f + n * 0.00006f + (float)(k__2 * 37 % 13) * 0.004f };
+                    global::Managed.Cui.Gallery.Gallery.Globals.b__s127__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[k__2] = new cui_vec2 { x = n * 0.9f + 150, y = 0.15f + n * 0.00011f + (float)(k__2 * 53 % 17) * 0.006f };
+                    global::Managed.Cui.Gallery.Gallery.Globals.sa__s128__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[k__2] = (float)(10 + k__2 * 7 % 40);
+                    global::Managed.Cui.Gallery.Gallery.Globals.sb__s129__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[k__2] = (float)(20 + k__2 * 11 % 50);
                 }
-                global::Managed.Cui.Gallery.Gallery.Globals.pinit__s130__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 = 1;
+                global::Managed.Cui.Gallery.Gallery.Globals.pinit__s130__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 = 1;
             }
-            cui_scatter_series* ss = stackalloc cui_scatter_series[]{ new cui_scatter_series { name = (DotCcLiterals.Pointer + DotCcLiterals.S1092 /*"Software"*/), points = global::Managed.Cui.Gallery.Gallery.Globals.a__s126__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, sizes = global::Managed.Cui.Gallery.Gallery.Globals.sa__s128__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, count = 40, color = new cui_color {  } }, new cui_scatter_series { name = (DotCcLiterals.Pointer + DotCcLiterals.S673 /*"OpenGL"*/), points = global::Managed.Cui.Gallery.Gallery.Globals.b__s127__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, sizes = global::Managed.Cui.Gallery.Gallery.Globals.sb__s129__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, count = 40, color = new cui_color {  } } };
+            cui_scatter_series* ss = stackalloc cui_scatter_series[]{ new cui_scatter_series { name = (DotCcLiterals.Pointer + DotCcLiterals.S1092 /*"Software"*/), points = global::Managed.Cui.Gallery.Gallery.Globals.a__s126__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, sizes = global::Managed.Cui.Gallery.Gallery.Globals.sa__s128__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, count = 40, color = new cui_color {  } }, new cui_scatter_series { name = (DotCcLiterals.Pointer + DotCcLiterals.S673 /*"OpenGL"*/), points = global::Managed.Cui.Gallery.Gallery.Globals.b__s127__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, sizes = global::Managed.Cui.Gallery.Gallery.Globals.sb__s129__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, count = 40, color = new cui_color {  } } };
             {
                 cui_card_opts __cl246 = new cui_card_opts { _ = 0, pad = 18, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 } };
                 _ = cui_card_begin(ui, &__cl246);
@@ -1042,7 +956,7 @@ public static unsafe partial class Gallery
                 int cui__scope_895 = 0;
                 for (; (!(((cui__scope_895) != 0) )     ); cui__scope_895 = 1, cui_card_end(ui))
                 {
-                    cui_radial_gauge_opts __cl249 = new cui_radial_gauge_opts { _ = 0, unit = (DotCcLiterals.Pointer + DotCcLiterals.S1225 /*"%"*/), label = (DotCcLiterals.Pointer + DotCcLiterals.S90 /*"CPU"*/), bands = global::Managed.Cui.Gallery.Gallery.Globals.bands__s131__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, band_count = 3, size = 180 };
+                    cui_radial_gauge_opts __cl249 = new cui_radial_gauge_opts { _ = 0, unit = (DotCcLiterals.Pointer + DotCcLiterals.S1225 /*"%"*/), label = (DotCcLiterals.Pointer + DotCcLiterals.S90 /*"CPU"*/), bands = global::Managed.Cui.Gallery.Gallery.Globals.bands__s131__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, band_count = 3, size = 180 };
                     cui_radial_gauge_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S677 /*"cpu"*/), 64, 0, 100, &__cl249);
                     cui_radial_gauge_opts __cl250 = new cui_radial_gauge_opts { _ = 0, unit = (DotCcLiterals.Pointer + DotCcLiterals.S800 /*"C"*/), label = (DotCcLiterals.Pointer + DotCcLiterals.S355 /*"GPU temperature"*/), show_target = 1, target = 85, size = 180 };
                     cui_radial_gauge_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1343 /*"temp"*/), 71, 20, 100, &__cl250);
@@ -1052,16 +966,16 @@ public static unsafe partial class Gallery
             }
             
             
-            if ((!(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.cinit__s133__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9))) != 0) )     ))
+            if ((!(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.cinit__s133__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199))) != 0) )     ))
             {
                 float price = 64;
                 for (int k__3 = 0; ((unchecked((int)(((CBool)(k__3 < 2000))))) != 0); k__3++)
                 {
                     float o = price, c = o * (1 + sinf(k__3 * 0.37f) * 0.012f + cosf(k__3 * 0.043f) * 0.008f);
-                    global::Managed.Cui.Gallery.Gallery.Globals.candles__s132__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[k__3] = new cui_candle { open = o, high = fmaxf(o, c) * 1.006f, low = fminf(o, c) * 0.994f, close = c, volume = 2000 + (float)(k__3 * 7919 % 900) * 10 };
+                    global::Managed.Cui.Gallery.Gallery.Globals.candles__s132__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[k__3] = new cui_candle { open = o, high = fmaxf(o, c) * 1.006f, low = fminf(o, c) * 0.994f, close = c, volume = 2000 + (float)(k__3 * 7919 % 900) * 10 };
                     price = c;
                 }
-                global::Managed.Cui.Gallery.Gallery.Globals.cinit__s133__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 = 1;
+                global::Managed.Cui.Gallery.Gallery.Globals.cinit__s133__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 = 1;
             }
             {
                 cui_card_opts __cl252 = new cui_card_opts { _ = 0, pad = 18, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, gap = 10 };
@@ -1071,7 +985,7 @@ public static unsafe partial class Gallery
                 {
                     cui_label(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1328 /*"Price, 2,000 periods"*/));
                     cui_candlestick_opts __cl253 = new cui_candlestick_opts { _ = 0, height = 280 };
-                    cui_candlestick_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S799 /*"price"*/), global::Managed.Cui.Gallery.Gallery.Globals.candles__s132__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 2000, &__cl253);
+                    cui_candlestick_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S799 /*"price"*/), global::Managed.Cui.Gallery.Gallery.Globals.candles__s132__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 2000, &__cl253);
                 }
             }
         }
@@ -1079,12 +993,12 @@ public static unsafe partial class Gallery
 
 
 
-    public static unsafe void page_motion__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void page_motion__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
-        if ((!(((global::Managed.Cui.Gallery.Gallery.Globals.peaks__s135__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[0]) != 0) )     ))
+        if ((!(((global::Managed.Cui.Gallery.Gallery.Globals.peaks__s135__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[0]) != 0) )     ))
             for (int k = 0; ((unchecked((int)(((CBool)(k < 96))))) != 0); k++)
-                global::Managed.Cui.Gallery.Gallery.Globals.peaks__s135__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[k] = 0.18f + 0.8f * fabsf(sinf(k * 0.37f) * sinf(k * 0.11f + 1.3f));
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S715 /*"Text effects"*/), (DotCcLiterals.Pointer + DotCcLiterals.S247 /*"A shimmer for pending work, a typewriter for streamed text, words that settle into place."*/));
+                global::Managed.Cui.Gallery.Gallery.Globals.peaks__s135__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[k] = 0.18f + 0.8f * fabsf(sinf(k * 0.37f) * sinf(k * 0.11f + 1.3f));
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S715 /*"Text effects"*/), (DotCcLiterals.Pointer + DotCcLiterals.S247 /*"A shimmer for pending work, a typewriter for streamed text, words that settle into place."*/));
         {
             cui_card_opts __cl262 = new cui_card_opts { _ = 0, gap = 18, pad = 20, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 } };
             _ = cui_card_begin(ui, &__cl262);
@@ -1103,7 +1017,7 @@ public static unsafe partial class Gallery
                         cui_shimmer_text_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S295 /*"Thinking about your question…"*/), &__cl265);
                     }
                 }
-                cui_push_id_int(ui, global::Managed.Cui.Gallery.Gallery.Globals.replay__s134__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9);
+                cui_push_id_int(ui, global::Managed.Cui.Gallery.Gallery.Globals.replay__s134__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199);
                 cui_text_fx_opts __cl266 = new cui_text_fx_opts { _ = 0, caret = 1, size = 15 };
                 _ = cui_typewriter_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1407 /*"tw"*/), (DotCcLiterals.Pointer + DotCcLiterals.S315 /*"CUI draws a full frame in a fraction of a millisecond, so text can stream in as fast as it arrives."*/), &__cl266);
                 cui_text_fx_opts __cl267 = new cui_text_fx_opts { _ = 0, size = 20, font = 2 };
@@ -1118,15 +1032,15 @@ public static unsafe partial class Gallery
                         cui_text_opts __cl269 = new cui_text_opts { _ = 0, font = 2, size = 26 };
                         cui_text_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S891 /*"Deploying to"*/), &__cl269);
                         cui_text_fx_opts __cl270 = new cui_text_fx_opts { _ = 0, font = 2, size = 26 };
-                        cui_word_rotate_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1547 /*"rot"*/), global::Managed.Cui.Gallery.Gallery.Globals.words__s144__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 4, 2.2f, &__cl270);
+                        cui_word_rotate_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1547 /*"rot"*/), global::Managed.Cui.Gallery.Gallery.Globals.words__s144__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 4, 2.2f, &__cl270);
                     }
                 }
                 cui_button_opts __cl271 = new cui_button_opts { _ = 0, size = __DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM, icon = (DotCcLiterals.Pointer + DotCcLiterals.S726 /*""*/), variant = __DotCcEnum_6375695F627574746F6E5F76617269616E74.CUI_BUTTON_OUTLINE };
                 if (((unchecked((int)(cui_button_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1196 /*"Replay"*/), &__cl271)))) != 0))
-                    global::Managed.Cui.Gallery.Gallery.Globals.replay__s134__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9++;
+                    global::Managed.Cui.Gallery.Gallery.Globals.replay__s134__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199++;
             }
         }
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S183 /*"Gradient text and spotlight cards"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1156 /*"A light follows the pointer across a card and along its edge. A beam marks the one card that is live."*/));
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S183 /*"Gradient text and spotlight cards"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1156 /*"A light follows the pointer across a card and along its edge. A beam marks the one card that is live."*/));
         cui_gradient_text_opts __cl272 = new cui_gradient_text_opts { _ = 0, font = 2, size = 34, animate = 1 };
         cui_gradient_text_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1041 /*"Kiln 2.4"*/), &__cl272);
         {
@@ -1145,16 +1059,16 @@ public static unsafe partial class Gallery
                         for (; (!(((cui__scope_953) != 0) )     ); cui__scope_953 = 1, cui_spotlight_end(ui))
                         {
                             cui_text_opts __cl275 = new cui_text_opts { _ = 0, font = 1, size = 15 };
-                            cui_text_ex(ui, global::Managed.Cui.Gallery.Gallery.Globals.titles__s145__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[k__1], &__cl275);
+                            cui_text_ex(ui, global::Managed.Cui.Gallery.Gallery.Globals.titles__s145__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[k__1], &__cl275);
                             cui_text_opts __cl276 = new cui_text_opts { _ = 0, size = 13, color = new cui_color { r = (byte)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY, g = 0xC5, b = 0x1D, a = 0 } };
-                            cui_text_ex(ui, global::Managed.Cui.Gallery.Gallery.Globals.blurbs__s146__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[k__1], &__cl276);
+                            cui_text_ex(ui, global::Managed.Cui.Gallery.Gallery.Globals.blurbs__s146__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[k__1], &__cl276);
                         }
                     }
                     cui_pop_id(ui);
                 }
             }
         }
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S35 /*"Loaders"*/), (DotCcLiterals.Pointer + DotCcLiterals.S28 /*"Dots, bars, pulse, orbit and grid."*/));
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S35 /*"Loaders"*/), (DotCcLiterals.Pointer + DotCcLiterals.S28 /*"Dots, bars, pulse, orbit and grid."*/));
         {
             cui_box __cl277 = new cui_box { _ = 0, gap = 36, align = __DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER };
             cui_row_begin(ui, &__cl277);
@@ -1168,7 +1082,7 @@ public static unsafe partial class Gallery
                 }
             }
         }
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1263 /*"Dock"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1345 /*"Icons grow as the pointer passes."*/));
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1263 /*"Dock"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1345 /*"Icons grow as the pointer passes."*/));
         {
             cui_box __cl279 = new cui_box { _ = 0, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, justify = __DotCcEnum_6375695F6A757374696679.CUI_JUSTIFY_CENTER, height = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)110 }, align = __DotCcEnum_6375695F616C69676E.CUI_ALIGN_END };
             cui_row_begin(ui, &__cl279);
@@ -1218,25 +1132,25 @@ public static unsafe partial class Gallery
                     int cui__scope_979 = 0;
                     for (; (!(((cui__scope_979) != 0) )     ); cui__scope_979 = 1, cui_box_end(ui))
                     {
-                        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1100 /*"Control tiles"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1453 /*"Big toggles for quick settings."*/));
+                        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1100 /*"Control tiles"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1453 /*"Big toggles for quick settings."*/));
                         {
                             cui_box __cl292 = new cui_box { _ = 0, dir = __DotCcEnum_6375695F646972.CUI_GRID, columns = 2, gap = 10, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)300 } };
                             cui_box_begin(ui, &__cl292);
                             int cui__scope_981 = 0;
                             for (; (!(((cui__scope_981) != 0) )     ); cui__scope_981 = 1, cui_box_end(ui))
                             {
-                                cui_tile_opts __cl293 = new cui_tile_opts { _ = 0, icon = (DotCcLiterals.Pointer + DotCcLiterals.S1001 /*""*/), detail = ((byte*)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.wifi__s137__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S1003 /*"Home"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S509 /*"Off"*/))) };
-                                _ = cui_control_tile_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S531 /*"Wi-Fi"*/), global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_wifi__s137__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, &__cl293);
+                                cui_tile_opts __cl293 = new cui_tile_opts { _ = 0, icon = (DotCcLiterals.Pointer + DotCcLiterals.S1001 /*""*/), detail = ((byte*)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.wifi__s137__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S1003 /*"Home"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S509 /*"Off"*/))) };
+                                _ = cui_control_tile_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S531 /*"Wi-Fi"*/), global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_wifi__s137__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, &__cl293);
                                 cui_tile_opts __cl294 = new cui_tile_opts { _ = 0, icon = (DotCcLiterals.Pointer + DotCcLiterals.S872 /*""*/) };
-                                _ = cui_control_tile_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S455 /*"Hotspot"*/), global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_bt__s138__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, &__cl294);
-                                cui_tile_opts __cl295 = new cui_tile_opts { _ = 0, icon = (DotCcLiterals.Pointer + DotCcLiterals.S143 /*""*/), detail = ((byte*)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.focus__s139__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S1214 /*"Until 6 pm"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S509 /*"Off"*/))) };
-                                _ = cui_control_tile_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1002 /*"Focus"*/), global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_focus__s139__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, &__cl295);
-                                cui_tile_opts __cl296 = new cui_tile_opts { _ = 0, icon = (DotCcLiterals.Pointer + DotCcLiterals.S912 /*""*/), detail = ((byte*)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.airdrop__s140__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S365 /*"Everyone"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S935 /*"Contacts only"*/))) };
-                                _ = cui_control_tile_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S498 /*"AirShare"*/), global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_airdrop__s140__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, &__cl296);
+                                _ = cui_control_tile_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S455 /*"Hotspot"*/), global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_bt__s138__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, &__cl294);
+                                cui_tile_opts __cl295 = new cui_tile_opts { _ = 0, icon = (DotCcLiterals.Pointer + DotCcLiterals.S143 /*""*/), detail = ((byte*)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.focus__s139__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S1214 /*"Until 6 pm"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S509 /*"Off"*/))) };
+                                _ = cui_control_tile_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1002 /*"Focus"*/), global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_focus__s139__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, &__cl295);
+                                cui_tile_opts __cl296 = new cui_tile_opts { _ = 0, icon = (DotCcLiterals.Pointer + DotCcLiterals.S912 /*""*/), detail = ((byte*)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.airdrop__s140__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S365 /*"Everyone"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S935 /*"Contacts only"*/))) };
+                                _ = cui_control_tile_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S498 /*"AirShare"*/), global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_airdrop__s140__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, &__cl296);
                             }
                         }
                         cui_tile_opts __cl297 = new cui_tile_opts { _ = 0, icon = (DotCcLiterals.Pointer + DotCcLiterals.S1638 /*""*/), wide = 1, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)300 } };
-                        _ = cui_control_tile_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1246 /*"Dark appearance"*/), global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_dark_tile__s141__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, &__cl297);
+                        _ = cui_control_tile_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1246 /*"Dark appearance"*/), global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_dark_tile__s141__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, &__cl297);
                     }
                 }
                 {
@@ -1245,21 +1159,21 @@ public static unsafe partial class Gallery
                     int cui__scope_989 = 0;
                     for (; (!(((cui__scope_989) != 0) )     ); cui__scope_989 = 1, cui_box_end(ui))
                     {
-                        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S451 /*"Now playing"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1360 /*"Artwork, a scrubber and transport."*/));
+                        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S451 /*"Now playing"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1360 /*"Artwork, a scrubber and transport."*/));
                         cui_now_playing_opts __cl299 = new cui_now_playing_opts { _ = 0 };
-                        int ev = cui_now_playing_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1152 /*"np"*/), global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_np__s143__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, &__cl299);
+                        int ev = cui_now_playing_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1152 /*"np"*/), global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_np__s143__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, &__cl299);
                         if (((ev & 4) != 0))
                         {
                             cui_toast_opts __cl300 = new cui_toast_opts { _ = 0 };
                             cui_toast_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S632 /*"Next track"*/), &__cl300);
                         }
-                        if (((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.np__s143__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9.playing))) != 0))
+                        if (((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.np__s143__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199.playing))) != 0))
                         {
-                            global::Managed.Cui.Gallery.Gallery.Globals.np__s143__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9.position += cui_delta_time(ui);
-                            if (((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.np__s143__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9.position > global::Managed.Cui.Gallery.Gallery.Globals.np__s143__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9.duration))))) != 0))
-                                global::Managed.Cui.Gallery.Gallery.Globals.np__s143__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9.position = 0;
+                            global::Managed.Cui.Gallery.Gallery.Globals.np__s143__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199.position += cui_delta_time(ui);
+                            if (((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.np__s143__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199.position > global::Managed.Cui.Gallery.Gallery.Globals.np__s143__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199.duration))))) != 0))
+                                global::Managed.Cui.Gallery.Gallery.Globals.np__s143__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199.position = 0;
                         }
-                        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S536 /*"Waveform"*/), (DotCcLiterals.Pointer + DotCcLiterals.S63 /*"Click or drag to seek."*/));
+                        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S536 /*"Waveform"*/), (DotCcLiterals.Pointer + DotCcLiterals.S63 /*"Click or drag to seek."*/));
                         {
                             cui_card_opts __cl301 = new cui_card_opts { _ = 0, pad = 14, gap = 8, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)360 } };
                             _ = cui_card_begin(ui, &__cl301);
@@ -1281,7 +1195,7 @@ public static unsafe partial class Gallery
                                             for (; (!(((cui__scope_998) != 0) )     ); cui__scope_998 = 1, cui_box_end(ui))
                                             {
                                                 cui_waveform_opts __cl305 = new cui_waveform_opts { _ = 0, height = 34 };
-                                                _ = cui_waveform_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S345 /*"wave"*/), global::Managed.Cui.Gallery.Gallery.Globals.peaks__s135__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 96, global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_progress__s136__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, &__cl305);
+                                                _ = cui_waveform_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S345 /*"wave"*/), global::Managed.Cui.Gallery.Gallery.Globals.peaks__s135__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 96, global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_progress__s136__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, &__cl305);
                                             }
                                         }
                                         cui_text_opts __cl306 = new cui_text_opts { _ = 0, size = 12, tabular = 1, color = new cui_color { r = (byte)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED, g = 0xC5, b = 0x1D, a = 0 } };
@@ -1290,9 +1204,9 @@ public static unsafe partial class Gallery
                                 }
                             }
                         }
-                        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S202 /*"Tab bar"*/), (DotCcLiterals.Pointer + DotCcLiterals.S372 /*"For compact layouts."*/));
+                        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S202 /*"Tab bar"*/), (DotCcLiterals.Pointer + DotCcLiterals.S372 /*"For compact layouts."*/));
                         cui_tab_bar_opts __cl307 = new cui_tab_bar_opts { _ = 0, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)360 } };
-                        _ = cui_tab_bar_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S802 /*"tabs"*/), global::Managed.Cui.Gallery.Gallery.Globals.tabs__s147__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 4, global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_tab__s142__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, &__cl307);
+                        _ = cui_tab_bar_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S802 /*"tabs"*/), global::Managed.Cui.Gallery.Gallery.Globals.tabs__s147__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 4, global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_tab__s142__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, &__cl307);
                     }
                 }
             }
@@ -1301,17 +1215,17 @@ public static unsafe partial class Gallery
 
 
 
-    public static unsafe void page_ai__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void page_ai__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
     byte* __dotcc_array_storage308 = null;
         double now = cui_time(ui);
-        if (((unchecked((int)(((CBool)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9))) != 0) && ((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.started__s154__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 < 0))))) != 0)))))) != 0))
-            global::Managed.Cui.Gallery.Gallery.Globals.started__s154__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 = now;
-        if ((!(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9))) != 0) )     ))
-            global::Managed.Cui.Gallery.Gallery.Globals.started__s154__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 = -1;
-        float elapsed = ((float)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9))) != 0) ? (float)(now - global::Managed.Cui.Gallery.Gallery.Globals.started__s154__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9) : (float)(0)));
-        if (((unchecked((int)(((CBool)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9))) != 0) && ((unchecked((int)(((CBool)(elapsed > 9))))) != 0)))))) != 0))
-            global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 = 0;
+        if (((unchecked((int)(((CBool)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199))) != 0) && ((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.started__s154__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 < 0))))) != 0)))))) != 0))
+            global::Managed.Cui.Gallery.Gallery.Globals.started__s154__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 = now;
+        if ((!(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199))) != 0) )     ))
+            global::Managed.Cui.Gallery.Gallery.Globals.started__s154__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 = -1;
+        float elapsed = ((float)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199))) != 0) ? (float)(now - global::Managed.Cui.Gallery.Gallery.Globals.started__s154__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199) : (float)(0)));
+        if (((unchecked((int)(((CBool)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199))) != 0) && ((unchecked((int)(((CBool)(elapsed > 9))))) != 0)))))) != 0))
+            global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 = 0;
         {
             cui_box __cl313 = new cui_box { _ = 0, gap = 28, align = __DotCcEnum_6375695F616C69676E.CUI_ALIGN_START, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 } };
             cui_row_begin(ui, &__cl313);
@@ -1324,11 +1238,11 @@ public static unsafe partial class Gallery
                     int cui__scope_1034 = 0;
                     for (; (!(((cui__scope_1034) != 0) )     ); cui__scope_1034 = 1, cui_box_end(ui))
                     {
-                        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1249 /*"Conversation"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1382 /*"Reasoning, tool calls, an answer with sources, and the composer."*/));
+                        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1249 /*"Conversation"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1382 /*"Reasoning, tool calls, an answer with sources, and the composer."*/));
                         cui_chat_opts __cl315 = new cui_chat_opts { _ = 0, mine = 1 };
                         cui_chat_message_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1518 /*"Why do immediate mode toolkits feel so fast? Cite a few sources."*/), &__cl315);
                         {
-                            cui_reasoning_opts __cl316 = new cui_reasoning_opts { _ = 0, thinking = global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, seconds = ((float)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9))) != 0) ? elapsed : (float)(8))) };
+                            cui_reasoning_opts __cl316 = new cui_reasoning_opts { _ = 0, thinking = global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, seconds = ((float)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199))) != 0) ? elapsed : (float)(8))) };
                             int cui__scope_1037 = (((unchecked((int)(cui_reasoning_begin(ui, (DotCcLiterals.Pointer + DotCcLiterals.S17 /*"think"*/), &__cl316)))) != 0) ? 0 : 1);
                             for (; (!(((cui__scope_1037) != 0) )     ); cui__scope_1037 = 1, cui_reasoning_end(ui))
                             {
@@ -1340,9 +1254,9 @@ public static unsafe partial class Gallery
                         }
                         cui_tool_call_opts __cl319 = new cui_tool_call_opts { _ = 0, icon = (DotCcLiterals.Pointer + DotCcLiterals.S328 /*""*/), detail = (DotCcLiterals.Pointer + DotCcLiterals.S1370 /*"immediate mode gui performance"*/), status = __DotCcEnum_6375695F7461736B5F737461747573.CUI_TASK_DONE, seconds = 1.4f, input = (DotCcLiterals.Pointer + DotCcLiterals.S47 /*"{\"query\": \"immediate mode gui performance\", \"limit\": 5}"*/), output = (DotCcLiterals.Pointer + DotCcLiterals.S5 /*"{\"results\": [{\"title\": \"Immediate mode GUIs\", \"url\": \"https://fieldnotes.dev/immediate-mode\"}], \"took_ms\": 1380}"*/) };
                         cui_tool_call_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S155 /*"search"*/), (DotCcLiterals.Pointer + DotCcLiterals.S344 /*"web_search"*/), &__cl319);
-                        cui_tool_call_opts __cl320 = new cui_tool_call_opts { _ = 0, icon = (DotCcLiterals.Pointer + DotCcLiterals.S615 /*""*/), detail = (DotCcLiterals.Pointer + DotCcLiterals.S373 /*"quarterly-report.pdf"*/), status = (cui_task_status)(((int)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9))) != 0) ? (int)(__DotCcEnum_6375695F7461736B5F737461747573.CUI_TASK_RUNNING) : (int)(__DotCcEnum_6375695F7461736B5F737461747573.CUI_TASK_DONE)))), seconds = ((float)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9))) != 0) ? elapsed : 2.1f)) };
+                        cui_tool_call_opts __cl320 = new cui_tool_call_opts { _ = 0, icon = (DotCcLiterals.Pointer + DotCcLiterals.S615 /*""*/), detail = (DotCcLiterals.Pointer + DotCcLiterals.S373 /*"quarterly-report.pdf"*/), status = (cui_task_status)(((int)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199))) != 0) ? (int)(__DotCcEnum_6375695F7461736B5F737461747573.CUI_TASK_RUNNING) : (int)(__DotCcEnum_6375695F7461736B5F737461747573.CUI_TASK_DONE)))), seconds = ((float)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199))) != 0) ? elapsed : 2.1f)) };
                         cui_tool_call_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S928 /*"read"*/), (DotCcLiterals.Pointer + DotCcLiterals.S990 /*"read_file"*/), &__cl320);
-                        if (((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9))) != 0))
+                        if (((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199))) != 0))
                         {
                             cui_agent_status_opts __cl321 = new cui_agent_status_opts { _ = 0, status = __DotCcEnum_6375695F7461736B5F737461747573.CUI_TASK_RUNNING, seconds = elapsed };
                             cui_agent_status_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S549 /*"Reading quarterly-report.pdf"*/), &__cl321);
@@ -1358,39 +1272,39 @@ public static unsafe partial class Gallery
                                 cui_text_opts __cl324 = new cui_text_opts { _ = 0, size = 12, color = new cui_color { r = (byte)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED, g = 0xC5, b = 0x1D, a = 0 } };
                                 cui_text_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S971 /*"Sources"*/), &__cl324);
                                 for (int k = 0; ((unchecked((int)(((CBool)(k < 3))))) != 0); k++)
-                                    _ = cui_citation(ui, k + 1, &global::Managed.Cui.Gallery.Gallery.Globals.sources__s158__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[k]);
+                                    _ = cui_citation(ui, k + 1, &global::Managed.Cui.Gallery.Gallery.Globals.sources__s158__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[k]);
                             }
                         }
-                        cui_source_list(ui, (DotCcLiterals.Pointer + DotCcLiterals.S427 /*"sources"*/), global::Managed.Cui.Gallery.Gallery.Globals.sources__s158__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 3);
+                        cui_source_list(ui, (DotCcLiterals.Pointer + DotCcLiterals.S427 /*"sources"*/), global::Managed.Cui.Gallery.Gallery.Globals.sources__s158__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 3);
                         {
                             cui_box __cl325 = new cui_box { _ = 0, gap = 8, align = __DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 } };
                             cui_row_begin(ui, &__cl325);
                             int cui__scope_1052 = 0;
                             for (; (!(((cui__scope_1052) != 0) )     ); cui__scope_1052 = 1, cui_box_end(ui))
                             {
-                                cui_response_actions_opts __cl326 = new cui_response_actions_opts { _ = 0, copy_text = (DotCcLiterals.Pointer + DotCcLiterals.S1017 /*"They do very little work per frame."*/), vote = global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_vote__s150__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 };
+                                cui_response_actions_opts __cl326 = new cui_response_actions_opts { _ = 0, copy_text = (DotCcLiterals.Pointer + DotCcLiterals.S1017 /*"They do very little work per frame."*/), vote = global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_vote__s150__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 };
                                 int ra = cui_response_actions_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S829 /*"actions"*/), &__cl326);
                                 if (((ra & 2) != 0))
-                                    global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 = 1;
+                                    global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 = 1;
                                 cui_spacer(ui);
-                                cui_context_opts __cl327 = new cui_context_opts { _ = 0, parts = global::Managed.Cui.Gallery.Gallery.Globals.parts__s159__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, part_count = 3 };
+                                cui_context_opts __cl327 = new cui_context_opts { _ = 0, parts = global::Managed.Cui.Gallery.Gallery.Globals.parts__s159__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, part_count = 3 };
                                 cui_context_meter_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S804 /*"ctx"*/), 113400, 200000, &__cl327);
                             }
                         }
-                        cui_composer_opts __cl328 = new cui_composer_opts { _ = 0, placeholder = (DotCcLiterals.Pointer + DotCcLiterals.S25 /*"Ask a follow up"*/), busy = global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, attachments = global::Managed.Cui.Gallery.Gallery.Globals.files__s155__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, attachment_count = global::Managed.Cui.Gallery.Gallery.Globals.file_count__s156__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, removed = global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_removed__s152__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, models = global::Managed.Cui.Gallery.Gallery.Globals.models__s157__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, model_count = 3, model = global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_model__s149__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 };
-                        int ev = cui_chat_composer_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1145 /*"composer"*/), global::Managed.Cui.Gallery.Gallery.Globals.draft__s148__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, ((ulong)((512 * sizeof(byte)))), &__cl328);
+                        cui_composer_opts __cl328 = new cui_composer_opts { _ = 0, placeholder = (DotCcLiterals.Pointer + DotCcLiterals.S25 /*"Ask a follow up"*/), busy = global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, attachments = global::Managed.Cui.Gallery.Gallery.Globals.files__s155__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, attachment_count = global::Managed.Cui.Gallery.Gallery.Globals.file_count__s156__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, removed = global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_removed__s152__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, models = global::Managed.Cui.Gallery.Gallery.Globals.models__s157__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, model_count = 3, model = global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_model__s149__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 };
+                        int ev = cui_chat_composer_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1145 /*"composer"*/), global::Managed.Cui.Gallery.Gallery.Globals.draft__s148__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, ((ulong)((512 * sizeof(byte)))), &__cl328);
                         if (((ev & 1) != 0))
                         {
-                            global::Managed.Cui.Gallery.Gallery.Globals.draft__s148__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[0] = 0;
-                            global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 = 1;
+                            global::Managed.Cui.Gallery.Gallery.Globals.draft__s148__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[0] = 0;
+                            global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 = 1;
                         }
                         if (((ev & 2) != 0))
-                            global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 = 0;
-                        if (((unchecked((int)(((CBool)(((unchecked((int)(((CBool)(((ev & 8) != 0) && ((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.removed__s152__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 >= 0))))) != 0)))))) != 0) && ((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.removed__s152__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 < global::Managed.Cui.Gallery.Gallery.Globals.file_count__s156__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9))))) != 0)))))) != 0))
+                            global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 = 0;
+                        if (((unchecked((int)(((CBool)(((unchecked((int)(((CBool)(((ev & 8) != 0) && ((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.removed__s152__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 >= 0))))) != 0)))))) != 0) && ((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.removed__s152__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 < global::Managed.Cui.Gallery.Gallery.Globals.file_count__s156__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199))))) != 0)))))) != 0))
                         {
-                            for (int k__1 = global::Managed.Cui.Gallery.Gallery.Globals.removed__s152__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9; ((unchecked((int)(((CBool)(k__1 < global::Managed.Cui.Gallery.Gallery.Globals.file_count__s156__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 - 1))))) != 0); k__1++)
-                                global::Managed.Cui.Gallery.Gallery.Globals.files__s155__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[k__1] = global::Managed.Cui.Gallery.Gallery.Globals.files__s155__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[k__1 + 1];
-                            global::Managed.Cui.Gallery.Gallery.Globals.file_count__s156__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9--;
+                            for (int k__1 = global::Managed.Cui.Gallery.Gallery.Globals.removed__s152__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199; ((unchecked((int)(((CBool)(k__1 < global::Managed.Cui.Gallery.Gallery.Globals.file_count__s156__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 - 1))))) != 0); k__1++)
+                                global::Managed.Cui.Gallery.Gallery.Globals.files__s155__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[k__1] = global::Managed.Cui.Gallery.Gallery.Globals.files__s155__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[k__1 + 1];
+                            global::Managed.Cui.Gallery.Gallery.Globals.file_count__s156__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199--;
                         }
                         if (((ev & 4) != 0))
                         {
@@ -1405,7 +1319,7 @@ public static unsafe partial class Gallery
                     int cui__scope_1070 = 0;
                     for (; (!(((cui__scope_1070) != 0) )     ); cui__scope_1070 = 1, cui_box_end(ui))
                     {
-                        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1016 /*"Agent plan"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1584 /*"Steps and their status."*/));
+                        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1016 /*"Agent plan"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1584 /*"Steps and their status."*/));
                         if (__dotcc_array_storage308 == null)
                         {
                             byte* __dotcc_array_storage308_new = stackalloc byte[checked(sizeof(cui_plan_step) * 5)];
@@ -1414,13 +1328,13 @@ public static unsafe partial class Gallery
                         cui_plan_step* steps = (cui_plan_step*)__dotcc_array_storage308;
                         new global::System.Span<byte>((void*)steps, checked(sizeof(cui_plan_step) * 5)).Clear();
                         steps[0] = new cui_plan_step { title = (DotCcLiterals.Pointer + DotCcLiterals.S213 /*"Search for sources"*/), detail = (DotCcLiterals.Pointer + DotCcLiterals.S788 /*"3 results"*/), status = __DotCcEnum_6375695F7461736B5F737461747573.CUI_TASK_DONE };
-                        steps[1] = new cui_plan_step { title = (DotCcLiterals.Pointer + DotCcLiterals.S826 /*"Read the attached report"*/), detail = ((byte*)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S1097 /*"Page 12 of 40"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S1107 /*"40 pages"*/))), status = (cui_task_status)(((int)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9))) != 0) ? (int)(__DotCcEnum_6375695F7461736B5F737461747573.CUI_TASK_RUNNING) : (int)(__DotCcEnum_6375695F7461736B5F737461747573.CUI_TASK_DONE)))) };
-                        steps[2] = new cui_plan_step { title = (DotCcLiterals.Pointer + DotCcLiterals.S1029 /*"Compare the numbers with last quarter"*/), detail = null, status = (cui_task_status)(((int)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9))) != 0) ? (int)(__DotCcEnum_6375695F7461736B5F737461747573.CUI_TASK_PENDING) : (int)(__DotCcEnum_6375695F7461736B5F737461747573.CUI_TASK_DONE)))) };
-                        steps[3] = new cui_plan_step { title = (DotCcLiterals.Pointer + DotCcLiterals.S1608 /*"Draft the summary"*/), detail = null, status = (cui_task_status)(((int)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9))) != 0) ? (int)(__DotCcEnum_6375695F7461736B5F737461747573.CUI_TASK_PENDING) : (int)(__DotCcEnum_6375695F7461736B5F737461747573.CUI_TASK_RUNNING)))) };
+                        steps[1] = new cui_plan_step { title = (DotCcLiterals.Pointer + DotCcLiterals.S826 /*"Read the attached report"*/), detail = ((byte*)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S1097 /*"Page 12 of 40"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S1107 /*"40 pages"*/))), status = (cui_task_status)(((int)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199))) != 0) ? (int)(__DotCcEnum_6375695F7461736B5F737461747573.CUI_TASK_RUNNING) : (int)(__DotCcEnum_6375695F7461736B5F737461747573.CUI_TASK_DONE)))) };
+                        steps[2] = new cui_plan_step { title = (DotCcLiterals.Pointer + DotCcLiterals.S1029 /*"Compare the numbers with last quarter"*/), detail = null, status = (cui_task_status)(((int)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199))) != 0) ? (int)(__DotCcEnum_6375695F7461736B5F737461747573.CUI_TASK_PENDING) : (int)(__DotCcEnum_6375695F7461736B5F737461747573.CUI_TASK_DONE)))) };
+                        steps[3] = new cui_plan_step { title = (DotCcLiterals.Pointer + DotCcLiterals.S1608 /*"Draft the summary"*/), detail = null, status = (cui_task_status)(((int)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199))) != 0) ? (int)(__DotCcEnum_6375695F7461736B5F737461747573.CUI_TASK_PENDING) : (int)(__DotCcEnum_6375695F7461736B5F737461747573.CUI_TASK_RUNNING)))) };
                         steps[4] = new cui_plan_step { title = (DotCcLiterals.Pointer + DotCcLiterals.S589 /*"Check the citations"*/), detail = null, status = __DotCcEnum_6375695F7461736B5F737461747573.CUI_TASK_PENDING };
                         cui_agent_plan_opts __cl331 = new cui_agent_plan_opts { _ = 0, title = (DotCcLiterals.Pointer + DotCcLiterals.S1368 /*"Research plan"*/) };
                         cui_agent_plan_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1417 /*"plan"*/), steps, 5, &__cl331);
-                        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1083 /*"Voice"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1522 /*"Idle, listening, thinking and speaking."*/));
+                        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1083 /*"Voice"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1522 /*"Idle, listening, thinking and speaking."*/));
                         {
                             cui_box __cl332 = new cui_box { _ = 0, align = __DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER, gap = 12, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 } };
                             cui_column_begin(ui, &__cl332);
@@ -1429,17 +1343,17 @@ public static unsafe partial class Gallery
                             {
                                 float lvl = 0.35f + 0.35f * sinf((float)now * 5.1f) * sinf((float)now * 1.7f);
                                 cui_voice_orb_opts __cl333 = new cui_voice_orb_opts { _ = 0, size = 170 };
-                                if (((unchecked((int)(cui_voice_orb_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1212 /*"orb"*/), (cui_voice_state)global::Managed.Cui.Gallery.Gallery.Globals.orb_state__s151__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, lvl, &__cl333)))) != 0))
-                                    global::Managed.Cui.Gallery.Gallery.Globals.orb_state__s151__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 = ((int)(((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.orb_state__s151__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 == 1))))) != 0) ? 0 : 1));
+                                if (((unchecked((int)(cui_voice_orb_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1212 /*"orb"*/), (cui_voice_state)global::Managed.Cui.Gallery.Gallery.Globals.orb_state__s151__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, lvl, &__cl333)))) != 0))
+                                    global::Managed.Cui.Gallery.Gallery.Globals.orb_state__s151__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 = ((int)(((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.orb_state__s151__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 == 1))))) != 0) ? 0 : 1));
                                 cui_segmented_opts __cl334 = new cui_segmented_opts { _ = 0, size = __DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM };
-                                _ = cui_segmented_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1301 /*"orb-state"*/), global::Managed.Cui.Gallery.Gallery.Globals.states__s160__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 4, global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_orb_state__s151__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, &__cl334);
+                                _ = cui_segmented_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1301 /*"orb-state"*/), global::Managed.Cui.Gallery.Gallery.Globals.states__s160__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 4, global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_orb_state__s151__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, &__cl334);
                             }
                         }
-                        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S695 /*"Suggestions"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1616 /*"Ways to start."*/));
+                        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S695 /*"Suggestions"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1616 /*"Ways to start."*/));
                         cui_prompt_suggestions_opts __cl335 = new cui_prompt_suggestions_opts { _ = 0, columns = 1 };
-                        int sg = cui_prompt_suggestions_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S920 /*"sugg"*/), global::Managed.Cui.Gallery.Gallery.Globals.sugg__s161__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 4, &__cl335);
+                        int sg = cui_prompt_suggestions_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S920 /*"sugg"*/), global::Managed.Cui.Gallery.Gallery.Globals.sugg__s161__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 4, &__cl335);
                         if (((unchecked((int)(((CBool)(sg >= 0))))) != 0))
-                            snprintf(global::Managed.Cui.Gallery.Gallery.Globals.draft__s148__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, unchecked((int)(((ulong)((512 * sizeof(byte)))))), (DotCcLiterals.Pointer + DotCcLiterals.S651 /*"%s: "*/)).Arg(global::Managed.Cui.Gallery.Gallery.Globals.sugg__s161__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[sg].title).Done();
+                            snprintf(global::Managed.Cui.Gallery.Gallery.Globals.draft__s148__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, unchecked((int)(((ulong)((512 * sizeof(byte)))))), (DotCcLiterals.Pointer + DotCcLiterals.S651 /*"%s: "*/)).Arg(global::Managed.Cui.Gallery.Gallery.Globals.sugg__s161__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[sg].title).Done();
                     }
                 }
             }
@@ -1448,20 +1362,20 @@ public static unsafe partial class Gallery
 
 
 
-    public static unsafe void page_audio__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void page_audio__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
     byte* __dotcc_array_storage336 = null;
-        global::Managed.Cui.Gallery.Gallery.Globals.tick__s167__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9++;
+        global::Managed.Cui.Gallery.Gallery.Globals.tick__s167__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199++;
         float* lv = stackalloc float[12];
         for (int k = 0; ((unchecked((int)(((CBool)(k < 6))))) != 0); k++)
             for (int c = 0; ((unchecked((int)(((CBool)(c < 2))))) != 0); c++)
             {
-                float t = (global::Managed.Cui.Gallery.Gallery.Globals.tick__s167__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 + c * 5) / 60.0f, beat = fmodf(t * (1.8f + 0.2f * k) + k * 0.31f, 1.0f);
+                float t = (global::Managed.Cui.Gallery.Gallery.Globals.tick__s167__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 + c * 5) / 60.0f, beat = fmodf(t * (1.8f + 0.2f * k) + k * 0.31f, 1.0f);
                 (lv + k * 2)[c] = (0.3f + 0.1f * k) * (0.2f + 0.8f * expf(-beat * (2.5f + k)));
             }
         cui_button_opts __cl341 = new cui_button_opts { _ = 0, icon = (DotCcLiterals.Pointer + DotCcLiterals.S298 /*""*/), variant = __DotCcEnum_6375695F627574746F6E5F76617269616E74.CUI_BUTTON_OUTLINE };
         if (((unchecked((int)(cui_button_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S367 /*"Take the tour"*/), &__cl341)))) != 0))
-            global::Managed.Cui.Gallery.Gallery.Globals.tour__s170__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 = 0;
+            global::Managed.Cui.Gallery.Gallery.Globals.tour__s170__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 = 0;
         {
             cui_box __cl342 = new cui_box { _ = 0, gap = 16, wrap = 1, align = __DotCcEnum_6375695F616C69676E.CUI_ALIGN_START };
             cui_row_begin(ui, &__cl342);
@@ -1482,14 +1396,14 @@ public static unsafe partial class Gallery
                             for (; (!(((cui__scope_1124) != 0) )     ); cui__scope_1124 = 1, cui_box_end(ui))
                             {
                                 cui_knob_opts __cl345 = new cui_knob_opts { _ = 0, unit = (DotCcLiterals.Pointer + DotCcLiterals.S1044 /*"Hz"*/), log_scale = 1, reset = 1000 };
-                                _ = cui_knob_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S350 /*"Cutoff"*/), global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_cutoff__s162__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 20, 20000, &__cl345);
-                                global::Managed.Cui.Gallery.Gallery.Globals.steps__s171__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[0].target = cui_last_id(ui);
+                                _ = cui_knob_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S350 /*"Cutoff"*/), global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_cutoff__s162__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 20, 20000, &__cl345);
+                                global::Managed.Cui.Gallery.Gallery.Globals.steps__s171__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[0].target = cui_last_id(ui);
                                 cui_knob_opts __cl346 = new cui_knob_opts { _ = 0, format = (DotCcLiterals.Pointer + DotCcLiterals.S1223 /*"%.2f"*/) };
-                                _ = cui_knob_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1136 /*"Resonance"*/), global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_res__s163__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 0, 1, &__cl346);
+                                _ = cui_knob_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1136 /*"Resonance"*/), global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_res__s163__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 0, 1, &__cl346);
                                 cui_knob_opts __cl347 = new cui_knob_opts { _ = 0, unit = (DotCcLiterals.Pointer + DotCcLiterals.S1019 /*"ms"*/), log_scale = 1, reset = 10 };
-                                _ = cui_knob_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1591 /*"Attack"*/), global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_attack__s164__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 1, 2000, &__cl347);
+                                _ = cui_knob_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1591 /*"Attack"*/), global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_attack__s164__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 1, 2000, &__cl347);
                                 cui_knob_opts __cl348 = new cui_knob_opts { _ = 0, bipolar = 1, format = (DotCcLiterals.Pointer + DotCcLiterals.S828 /*"%+.2f"*/) };
-                                _ = cui_knob_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1008 /*"Pan"*/), global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_pan__s165__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, -1, 1, &__cl348);
+                                _ = cui_knob_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1008 /*"Pan"*/), global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_pan__s165__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, -1, 1, &__cl348);
                             }
                         }
                         if (__dotcc_array_storage336 == null)
@@ -1503,7 +1417,7 @@ public static unsafe partial class Gallery
                         master[1] = (lv + 4 * 2)[1] * 1.3f;
                         cui_level_meter_opts __cl349 = new cui_level_meter_opts { _ = 0, horizontal = 1, length = 240, scale = 1, segmented = 1 };
                         _ = cui_level_meter_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1030 /*"master"*/), master, 2, &__cl349);
-                        global::Managed.Cui.Gallery.Gallery.Globals.steps__s171__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[1].target = cui_last_id(ui);
+                        global::Managed.Cui.Gallery.Gallery.Globals.steps__s171__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[1].target = cui_last_id(ui);
                     }
                 }
                 {
@@ -1515,45 +1429,45 @@ public static unsafe partial class Gallery
                         for (int k__1 = 0; ((unchecked((int)(((CBool)(k__1 < 6))))) != 0); k__1++)
                         {
                             cui_push_id_int(ui, k__1);
-                            cui_fader_opts __cl351 = new cui_fader_opts { _ = 0, unit = (DotCcLiterals.Pointer + DotCcLiterals.S343 /*"dB"*/), length = 180, ticks = ((float*)(((unchecked((int)(((CBool)(k__1 == 0))))) != 0) ? global::Managed.Cui.Gallery.Gallery.Globals.marks__s169__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 : null)), tick_count = ((int)(((unchecked((int)(((CBool)(k__1 == 0))))) != 0) ? 6 : 0)), meter = lv + k__1 * 2, meter_channels = 2 };
-                            _ = cui_fader_ex(ui, global::Managed.Cui.Gallery.Gallery.Globals.names__s168__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[k__1], &global::Managed.Cui.Gallery.Gallery.Globals.faders__s166__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[k__1], -48, 6, &__cl351);
+                            cui_fader_opts __cl351 = new cui_fader_opts { _ = 0, unit = (DotCcLiterals.Pointer + DotCcLiterals.S343 /*"dB"*/), length = 180, ticks = ((float*)(((unchecked((int)(((CBool)(k__1 == 0))))) != 0) ? global::Managed.Cui.Gallery.Gallery.Globals.marks__s169__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 : null)), tick_count = ((int)(((unchecked((int)(((CBool)(k__1 == 0))))) != 0) ? 6 : 0)), meter = lv + k__1 * 2, meter_channels = 2 };
+                            _ = cui_fader_ex(ui, global::Managed.Cui.Gallery.Gallery.Globals.names__s168__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[k__1], &global::Managed.Cui.Gallery.Gallery.Globals.faders__s166__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[k__1], -48, 6, &__cl351);
                             if (((unchecked((int)(((CBool)(k__1 == 2))))) != 0))
-                                global::Managed.Cui.Gallery.Gallery.Globals.steps__s171__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[2].target = cui_last_id(ui);
+                                global::Managed.Cui.Gallery.Gallery.Globals.steps__s171__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[2].target = cui_last_id(ui);
                             cui_pop_id(ui);
                         }
                     }
                 }
             }
         }
-        if (((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.tour__s170__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 >= 0))))) != 0))
+        if (((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.tour__s170__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 >= 0))))) != 0))
         {
             cui_tour_opts __cl352 = new cui_tour_opts { _ = 0 };
-            cui_tour_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S847 /*"audio-tour"*/), global::Managed.Cui.Gallery.Gallery.Globals.steps__s171__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 3, ((int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.tour__s170__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9)), &__cl352);
+            cui_tour_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S847 /*"audio-tour"*/), global::Managed.Cui.Gallery.Gallery.Globals.steps__s171__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 3, ((int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.tour__s170__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199)), &__cl352);
         }
     }
 
 
 
-    public static unsafe int files_list__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(void* user, byte* path, cui_file_entry* @out, int cap, byte* names, ulong names_cap, CBool hidden)
+    public static unsafe int files_list__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(void* user, byte* path, cui_file_entry* @out, int cap, byte* names, ulong names_cap, CBool hidden)
     {
         int n = cui_fs_list(user, path, @out, cap, names, names_cap, hidden);
         if (((unchecked((int)(((CBool)(((unchecked((int)(((CBool)(n >= 0))))) != 0) || ((strcmp(path, (DotCcLiterals.Pointer + DotCcLiterals.S44 /*"."*/))) != 0)))))) != 0))
             return n;
         for (int k = 0; ((unchecked((int)(((CBool)(((unchecked((int)(((CBool)(k < 6))))) != 0) && ((unchecked((int)(((CBool)(k < cap))))) != 0)))))) != 0); k++)
-            @out[k] = new cui_file_entry { name = global::Managed.Cui.Gallery.Gallery.Globals.demo__s172__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[k], dir = ((CBool)(k < 2)), size = (ulong)(k * 13100), modified = 1730000000 + k * 86400 };
+            @out[k] = new cui_file_entry { name = global::Managed.Cui.Gallery.Gallery.Globals.demo__s172__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[k], dir = ((CBool)(k < 2)), size = (ulong)(k * 13100), modified = 1730000000 + k * 86400 };
         return 6;
     }
 
 
 
-    public static unsafe void page_files__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void page_files__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
     byte* __dotcc_array_storage353 = null;
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1193 /*"File browser"*/), (DotCcLiterals.Pointer + DotCcLiterals.S46 /*"Double-click to open; type to jump; Backspace goes up."*/));
-        cui_file_browser_opts __cl355 = new cui_file_browser_opts { _ = 0, list = DotCcPointers.files_list__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, height = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)380 } };
-        cui_file_browser_result r = cui_file_browser_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1040 /*"files"*/), global::Managed.Cui.Gallery.Gallery.Globals.folder__s173__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, ((ulong)((1024 * sizeof(byte)))), &__cl355);
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1193 /*"File browser"*/), (DotCcLiterals.Pointer + DotCcLiterals.S46 /*"Double-click to open; type to jump; Backspace goes up."*/));
+        cui_file_browser_opts __cl355 = new cui_file_browser_opts { _ = 0, list = DotCcPointers.files_list__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, height = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)380 } };
+        cui_file_browser_result r = cui_file_browser_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1040 /*"files"*/), global::Managed.Cui.Gallery.Gallery.Globals.folder__s173__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, ((ulong)((1024 * sizeof(byte)))), &__cl355);
         if ((((void*)(r.picked)) != null))
-            snprintf(global::Managed.Cui.Gallery.Gallery.Globals.chosen__s176__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, unchecked((int)(((ulong)((1024 * sizeof(byte)))))), (DotCcLiterals.Pointer + DotCcLiterals.S288 /*"%s"*/)).Arg(r.picked).Done();
+            snprintf(global::Managed.Cui.Gallery.Gallery.Globals.chosen__s176__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, unchecked((int)(((ulong)((1024 * sizeof(byte)))))), (DotCcLiterals.Pointer + DotCcLiterals.S288 /*"%s"*/)).Arg(r.picked).Done();
         {
             cui_box __cl356 = new cui_box { _ = 0, gap = 8, align = __DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER, wrap = 1 };
             cui_row_begin(ui, &__cl356);
@@ -1562,45 +1476,45 @@ public static unsafe partial class Gallery
             {
                 cui_button_opts __cl357 = new cui_button_opts { _ = 0, icon = (DotCcLiterals.Pointer + DotCcLiterals.S1114 /*""*/) };
                 if (((unchecked((int)(cui_button_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1617 /*"Open…"*/), &__cl357)))) != 0))
-                    global::Managed.Cui.Gallery.Gallery.Globals.open_dlg__s174__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 = 1;
+                    global::Managed.Cui.Gallery.Gallery.Globals.open_dlg__s174__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 = 1;
                 cui_button_opts __cl358 = new cui_button_opts { _ = 0, icon = (DotCcLiterals.Pointer + DotCcLiterals.S714 /*""*/) };
                 if (((unchecked((int)(cui_button_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1437 /*"Save as…"*/), &__cl358)))) != 0))
-                    global::Managed.Cui.Gallery.Gallery.Globals.save_dlg__s175__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 = 1;
-                if (((global::Managed.Cui.Gallery.Gallery.Globals.chosen__s176__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[0]) != 0))
-                    cui_muted(ui, global::Managed.Cui.Gallery.Gallery.Globals.chosen__s176__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9);
+                    global::Managed.Cui.Gallery.Gallery.Globals.save_dlg__s175__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 = 1;
+                if (((global::Managed.Cui.Gallery.Gallery.Globals.chosen__s176__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[0]) != 0))
+                    cui_muted(ui, global::Managed.Cui.Gallery.Gallery.Globals.chosen__s176__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199);
             }
         }
-        cui_file_picker_opts __cl359 = new cui_file_picker_opts { _ = 0, list = DotCcPointers.files_list__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 };
-        _ = cui_file_picker_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S380 /*"open"*/), ((CBool*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.open_dlg__s174__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9)), global::Managed.Cui.Gallery.Gallery.Globals.chosen__s176__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, ((ulong)((1024 * sizeof(byte)))), &__cl359);
-        cui_file_picker_opts __cl360 = new cui_file_picker_opts { _ = 0, list = DotCcPointers.files_list__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, save = 1, name = (DotCcLiterals.Pointer + DotCcLiterals.S832 /*"untitled.txt"*/) };
-        _ = cui_file_picker_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1116 /*"save"*/), ((CBool*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.save_dlg__s175__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9)), global::Managed.Cui.Gallery.Gallery.Globals.chosen__s176__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, ((ulong)((1024 * sizeof(byte)))), &__cl360);
-        if ((!(((global::Managed.Cui.Gallery.Gallery.Globals.term__s177__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9.line_cap) != 0) )     ))
+        cui_file_picker_opts __cl359 = new cui_file_picker_opts { _ = 0, list = DotCcPointers.files_list__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 };
+        _ = cui_file_picker_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S380 /*"open"*/), ((CBool*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.open_dlg__s174__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199)), global::Managed.Cui.Gallery.Gallery.Globals.chosen__s176__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, ((ulong)((1024 * sizeof(byte)))), &__cl359);
+        cui_file_picker_opts __cl360 = new cui_file_picker_opts { _ = 0, list = DotCcPointers.files_list__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, save = 1, name = (DotCcLiterals.Pointer + DotCcLiterals.S832 /*"untitled.txt"*/) };
+        _ = cui_file_picker_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1116 /*"save"*/), ((CBool*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.save_dlg__s175__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199)), global::Managed.Cui.Gallery.Gallery.Globals.chosen__s176__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, ((ulong)((1024 * sizeof(byte)))), &__cl360);
+        if ((!(((global::Managed.Cui.Gallery.Gallery.Globals.term__s177__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199.line_cap) != 0) )     ))
         {
-            cui_terminal_init(global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_term__s177__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, global::Managed.Cui.Gallery.Gallery.Globals.term_text__s178__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, ((ulong)((65536 * sizeof(byte)))), global::Managed.Cui.Gallery.Gallery.Globals.term_lines__s179__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 1024);
-            cui_terminal_write(global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_term__s177__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, (DotCcLiterals.Pointer + DotCcLiterals.S644 /*"Type \u001B[1mhelp\u001B[0m for the commands.\n"*/), -1);
+            cui_terminal_init(global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_term__s177__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, global::Managed.Cui.Gallery.Gallery.Globals.term_text__s178__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, ((ulong)((65536 * sizeof(byte)))), global::Managed.Cui.Gallery.Gallery.Globals.term_lines__s179__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 1024);
+            cui_terminal_write(global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_term__s177__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, (DotCcLiterals.Pointer + DotCcLiterals.S644 /*"Type \u001B[1mhelp\u001B[0m for the commands.\n"*/), -1);
         }
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S923 /*"Terminal"*/), (DotCcLiterals.Pointer + DotCcLiterals.S331 /*"Colors, \\r progress, history on Up and Down, Ctrl+C, Ctrl+L, drag to select."*/));
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S923 /*"Terminal"*/), (DotCcLiterals.Pointer + DotCcLiterals.S331 /*"Colors, \\r progress, history on Up and Down, Ctrl+C, Ctrl+L, drag to select."*/));
         cui_terminal_opts __cl361 = new cui_terminal_opts { _ = 0, height = 300, prompt = (DotCcLiterals.Pointer + DotCcLiterals.S393 /*"> "*/) };
-        cui_terminal_result tr = cui_terminal_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1336 /*"shell"*/), global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_term__s177__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, &__cl361);
+        cui_terminal_result tr = cui_terminal_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1336 /*"shell"*/), global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_term__s177__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, &__cl361);
         if ((((void*)(tr.command)) != null))
         {
             byte* c = tr.command;
             if ((!(((strcmp(c, (DotCcLiterals.Pointer + DotCcLiterals.S291 /*"help"*/))) != 0) )     ))
-                cui_terminal_write(global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_term__s177__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, (DotCcLiterals.Pointer + DotCcLiterals.S1068 /*"  \u001B[36mls\u001B[0m      the folder above\n  \u001B[36mcolors\u001B[0m  the 16 colors\n  \u001B[36mbuild\u001B[0m   a progress bar\n  \u001B[36mecho\u001B[0"…*/), -1);
+                cui_terminal_write(global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_term__s177__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, (DotCcLiterals.Pointer + DotCcLiterals.S1068 /*"  \u001B[36mls\u001B[0m      the folder above\n  \u001B[36mcolors\u001B[0m  the 16 colors\n  \u001B[36mbuild\u001B[0m   a progress bar\n  \u001B[36mecho\u001B[0"…*/), -1);
             else
                 if ((!(((strcmp(c, (DotCcLiterals.Pointer + DotCcLiterals.S9 /*"ls"*/))) != 0) )     ))
                 {
-                    int n = files_list__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(null, global::Managed.Cui.Gallery.Gallery.Globals.folder__s173__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, global::Managed.Cui.Gallery.Gallery.Globals.ents__s180__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 256, global::Managed.Cui.Gallery.Gallery.Globals.names__s181__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, ((ulong)((16384 * sizeof(byte)))), 0);
+                    int n = files_list__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(null, global::Managed.Cui.Gallery.Gallery.Globals.folder__s173__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, global::Managed.Cui.Gallery.Gallery.Globals.ents__s180__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 256, global::Managed.Cui.Gallery.Gallery.Globals.names__s181__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, ((ulong)((16384 * sizeof(byte)))), 0);
                     for (int k = 0; ((unchecked((int)(((CBool)(k < n))))) != 0); k++)
-                        cui_terminal_printf(global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_term__s177__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, ((byte*)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.ents__s180__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[k].dir))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S256 /*"\u001B[1;34m%s/\u001B[0m\n"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S1594 /*"%s\n"*/))), global::Managed.Cui.Gallery.Gallery.Globals.ents__s180__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[k].name);
+                        cui_terminal_printf(global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_term__s177__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, ((byte*)(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.ents__s180__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[k].dir))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S256 /*"\u001B[1;34m%s/\u001B[0m\n"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S1594 /*"%s\n"*/))), global::Managed.Cui.Gallery.Gallery.Globals.ents__s180__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[k].name);
                     if (((unchecked((int)(((CBool)(n < 0))))) != 0))
-                        cui_terminal_write(global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_term__s177__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, (DotCcLiterals.Pointer + DotCcLiterals.S303 /*"\u001B[31mls: cannot read this folder\u001B[0m\n"*/), -1);
+                        cui_terminal_write(global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_term__s177__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, (DotCcLiterals.Pointer + DotCcLiterals.S303 /*"\u001B[31mls: cannot read this folder\u001B[0m\n"*/), -1);
                 }
                 else
                     if ((!(((strcmp(c, (DotCcLiterals.Pointer + DotCcLiterals.S1047 /*"colors"*/))) != 0) )     ))
                     {
                         for (int k__1 = 0; ((unchecked((int)(((CBool)(k__1 < 16))))) != 0); k__1++)
-                            cui_terminal_printf(global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_term__s177__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, (DotCcLiterals.Pointer + DotCcLiterals.S1206 /*"\u001B[%dm██\u001B[0m%s"*/), ((int)(((unchecked((int)(((CBool)(k__1 < 8))))) != 0) ? 30 + k__1 : 82 + k__1)), ((byte*)(((unchecked((int)(((CBool)(((unchecked((int)(((CBool)(k__1 == 7))))) != 0) || ((unchecked((int)(((CBool)(k__1 == 15))))) != 0)))))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S103 /*"\n"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S852 /*" "*/))));
+                            cui_terminal_printf(global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_term__s177__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, (DotCcLiterals.Pointer + DotCcLiterals.S1206 /*"\u001B[%dm██\u001B[0m%s"*/), ((int)(((unchecked((int)(((CBool)(k__1 < 8))))) != 0) ? 30 + k__1 : 82 + k__1)), ((byte*)(((unchecked((int)(((CBool)(((unchecked((int)(((CBool)(k__1 == 7))))) != 0) || ((unchecked((int)(((CBool)(k__1 == 15))))) != 0)))))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S103 /*"\n"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S852 /*" "*/))));
                     }
                     else
                         if ((!(((strcmp(c, (DotCcLiterals.Pointer + DotCcLiterals.S1551 /*"build"*/))) != 0) )     ))
@@ -1617,19 +1531,19 @@ public static unsafe partial class Gallery
                                 int m = 0;
                                 for (int j = 0; ((unchecked((int)(((CBool)(j < 20))))) != 0); j++)
                                     m += snprintf(bar + m, (int)(((ulong)((96 * sizeof(byte)))) - (ulong)(m)), (DotCcLiterals.Pointer + DotCcLiterals.S288 /*"%s"*/)).Arg(((byte*)(((unchecked((int)(((CBool)(j < k__2))))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S770 /*"█"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S499 /*"░"*/)))).Done();
-                                cui_terminal_printf(global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_term__s177__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, (DotCcLiterals.Pointer + DotCcLiterals.S99 /*"\r\u001B[32m%s\u001B[0m %3d%%"*/), bar, k__2 * 5);
+                                cui_terminal_printf(global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_term__s177__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, (DotCcLiterals.Pointer + DotCcLiterals.S99 /*"\r\u001B[32m%s\u001B[0m %3d%%"*/), bar, k__2 * 5);
                             }
-                            cui_terminal_write(global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_term__s177__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, (DotCcLiterals.Pointer + DotCcLiterals.S1633 /*"\n\u001B[32mdone\u001B[0m\n"*/), -1);
+                            cui_terminal_write(global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_term__s177__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, (DotCcLiterals.Pointer + DotCcLiterals.S1633 /*"\n\u001B[32mdone\u001B[0m\n"*/), -1);
                         }
                         else
                             if (((unchecked((int)(((CBool)((!(((strncmp(c, (DotCcLiterals.Pointer + DotCcLiterals.S55 /*"echo"*/), (ulong)(4))) != 0) )     ) && ((unchecked((int)(((CBool)(((unchecked((int)(((CBool)(c[4] == 32))))) != 0) || (!(((c[4]) != 0) )     )))))) != 0)))))) != 0))
-                                cui_terminal_printf(global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_term__s177__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, (DotCcLiterals.Pointer + DotCcLiterals.S1594 /*"%s\n"*/), ((byte*)(((c[4]) != 0) ? c + 5 : (DotCcLiterals.Pointer + DotCcLiterals.S704 /*""*/))));
+                                cui_terminal_printf(global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_term__s177__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, (DotCcLiterals.Pointer + DotCcLiterals.S1594 /*"%s\n"*/), ((byte*)(((c[4]) != 0) ? c + 5 : (DotCcLiterals.Pointer + DotCcLiterals.S704 /*""*/))));
                             else
                                 if ((!(((strcmp(c, (DotCcLiterals.Pointer + DotCcLiterals.S1185 /*"clear"*/))) != 0) )     ))
-                                    cui_terminal_clear(global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_term__s177__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9);
+                                    cui_terminal_clear(global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_term__s177__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199);
                                 else
                                     if (((c[0]) != 0))
-                                        cui_terminal_printf(global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_term__s177__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, (DotCcLiterals.Pointer + DotCcLiterals.S821 /*"\u001B[31m%s: command not found\u001B[0m\n"*/), c);
+                                        cui_terminal_printf(global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_term__s177__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, (DotCcLiterals.Pointer + DotCcLiterals.S821 /*"\u001B[31m%s: command not found\u001B[0m\n"*/), c);
         }
         if (((unchecked((int)(tr.interrupt))) != 0))
         {
@@ -1640,24 +1554,24 @@ public static unsafe partial class Gallery
 
 
 
-    public static unsafe void devtools_kv__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void devtools_kv__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
-        if (((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.kv_n__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 < 0))))) != 0))
+        if (((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.kv_n__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 < 0))))) != 0))
         {
-            global::Managed.Cui.Gallery.Gallery.Globals.kv_n__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 = 4;
-            snprintf(global::Managed.Cui.Gallery.Gallery.Globals.kv_pairs__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[0].key, 64, (DotCcLiterals.Pointer + DotCcLiterals.S356 /*"Authorization"*/)).Done();
-            snprintf(global::Managed.Cui.Gallery.Gallery.Globals.kv_pairs__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[0].value, 256, (DotCcLiterals.Pointer + DotCcLiterals.S1155 /*"Bearer 4f9c2e81d0b7a6"*/)).Done();
-            global::Managed.Cui.Gallery.Gallery.Globals.kv_pairs__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[0].enabled = 1;
-            global::Managed.Cui.Gallery.Gallery.Globals.kv_pairs__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[0].secret = 1;
-            snprintf(global::Managed.Cui.Gallery.Gallery.Globals.kv_pairs__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[1].key, 64, (DotCcLiterals.Pointer + DotCcLiterals.S533 /*"Accept"*/)).Done();
-            snprintf(global::Managed.Cui.Gallery.Gallery.Globals.kv_pairs__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[1].value, 256, (DotCcLiterals.Pointer + DotCcLiterals.S456 /*"application/json"*/)).Done();
-            global::Managed.Cui.Gallery.Gallery.Globals.kv_pairs__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[1].enabled = 1;
-            snprintf(global::Managed.Cui.Gallery.Gallery.Globals.kv_pairs__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[2].key, 64, (DotCcLiterals.Pointer + DotCcLiterals.S308 /*"X-Request-Id"*/)).Done();
-            snprintf(global::Managed.Cui.Gallery.Gallery.Globals.kv_pairs__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[2].value, 256, (DotCcLiterals.Pointer + DotCcLiterals.S618 /*"7d1c0a"*/)).Done();
-            global::Managed.Cui.Gallery.Gallery.Globals.kv_pairs__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[2].enabled = 0;
-            snprintf(global::Managed.Cui.Gallery.Gallery.Globals.kv_pairs__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[3].key, 64, (DotCcLiterals.Pointer + DotCcLiterals.S533 /*"Accept"*/)).Done();
-            snprintf(global::Managed.Cui.Gallery.Gallery.Globals.kv_pairs__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[3].value, 256, (DotCcLiterals.Pointer + DotCcLiterals.S1256 /*"text/html"*/)).Done();
-            global::Managed.Cui.Gallery.Gallery.Globals.kv_pairs__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[3].enabled = 1;
+            global::Managed.Cui.Gallery.Gallery.Globals.kv_n__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 = 4;
+            snprintf(global::Managed.Cui.Gallery.Gallery.Globals.kv_pairs__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[0].key, 64, (DotCcLiterals.Pointer + DotCcLiterals.S356 /*"Authorization"*/)).Done();
+            snprintf(global::Managed.Cui.Gallery.Gallery.Globals.kv_pairs__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[0].value, 256, (DotCcLiterals.Pointer + DotCcLiterals.S1155 /*"Bearer 4f9c2e81d0b7a6"*/)).Done();
+            global::Managed.Cui.Gallery.Gallery.Globals.kv_pairs__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[0].enabled = 1;
+            global::Managed.Cui.Gallery.Gallery.Globals.kv_pairs__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[0].secret = 1;
+            snprintf(global::Managed.Cui.Gallery.Gallery.Globals.kv_pairs__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[1].key, 64, (DotCcLiterals.Pointer + DotCcLiterals.S533 /*"Accept"*/)).Done();
+            snprintf(global::Managed.Cui.Gallery.Gallery.Globals.kv_pairs__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[1].value, 256, (DotCcLiterals.Pointer + DotCcLiterals.S456 /*"application/json"*/)).Done();
+            global::Managed.Cui.Gallery.Gallery.Globals.kv_pairs__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[1].enabled = 1;
+            snprintf(global::Managed.Cui.Gallery.Gallery.Globals.kv_pairs__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[2].key, 64, (DotCcLiterals.Pointer + DotCcLiterals.S308 /*"X-Request-Id"*/)).Done();
+            snprintf(global::Managed.Cui.Gallery.Gallery.Globals.kv_pairs__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[2].value, 256, (DotCcLiterals.Pointer + DotCcLiterals.S618 /*"7d1c0a"*/)).Done();
+            global::Managed.Cui.Gallery.Gallery.Globals.kv_pairs__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[2].enabled = 0;
+            snprintf(global::Managed.Cui.Gallery.Gallery.Globals.kv_pairs__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[3].key, 64, (DotCcLiterals.Pointer + DotCcLiterals.S533 /*"Accept"*/)).Done();
+            snprintf(global::Managed.Cui.Gallery.Gallery.Globals.kv_pairs__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[3].value, 256, (DotCcLiterals.Pointer + DotCcLiterals.S1256 /*"text/html"*/)).Done();
+            global::Managed.Cui.Gallery.Gallery.Globals.kv_pairs__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[3].enabled = 1;
         }
         {
             cui_box __cl364 = new cui_box { _ = 0, gap = 10, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, max_width = 680 };
@@ -1668,14 +1582,14 @@ public static unsafe partial class Gallery
                 cui_text_opts __cl365 = new cui_text_opts { _ = 0, font = 1 };
                 cui_text_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S551 /*"Headers"*/), &__cl365);
                 cui_kv_editor_opts __cl366 = new cui_kv_editor_opts { _ = 0 };
-                _ = cui_kv_editor_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S481 /*"headers"*/), global::Managed.Cui.Gallery.Gallery.Globals.kv_pairs__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_kv_n__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 12, &__cl366);
+                _ = cui_kv_editor_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S481 /*"headers"*/), global::Managed.Cui.Gallery.Gallery.Globals.kv_pairs__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_kv_n__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 12, &__cl366);
             }
         }
     }
 
 
 
-    public static unsafe void devtools_problems__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void devtools_problems__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
         {
             cui_box __cl367 = new cui_box { _ = 0, gap = 10, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, max_width = 760 };
@@ -1684,14 +1598,14 @@ public static unsafe partial class Gallery
             for (; (!(((cui__scope_1238) != 0) )     ); cui__scope_1238 = 1, cui_box_end(ui))
             {
                 cui_problems_opts __cl368 = new cui_problems_opts { _ = 0, height = 300 };
-                cui_problems_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S787 /*"problems"*/), global::Managed.Cui.Gallery.Gallery.Globals.pbm_diags__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, unchecked((int)(((ulong)((7 * sizeof(cui_diagnostic)))) / ((ulong)(sizeof(cui_diagnostic))))), &__cl368);
+                cui_problems_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S787 /*"problems"*/), global::Managed.Cui.Gallery.Gallery.Globals.pbm_diags__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, unchecked((int)(((ulong)((7 * sizeof(cui_diagnostic)))) / ((ulong)(sizeof(cui_diagnostic))))), &__cl368);
             }
         }
     }
 
 
 
-    public static unsafe void devtools_pipeline__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void devtools_pipeline__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
         {
             cui_box __cl370 = new cui_box { _ = 0, gap = 10, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, max_width = 920 };
@@ -1699,15 +1613,15 @@ public static unsafe partial class Gallery
             int cui__scope_1252 = 0;
             for (; (!(((cui__scope_1252) != 0) )     ); cui__scope_1252 = 1, cui_box_end(ui))
             {
-                cui_pipeline_opts __cl371 = new cui_pipeline_opts { _ = 0, selected = global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_pl_sel__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 };
-                cui_pipeline_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S433 /*"run"*/), global::Managed.Cui.Gallery.Gallery.Globals.stages_en__s182__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 4, global::Managed.Cui.Gallery.Gallery.Globals.jobs__s183__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, unchecked((int)(((ulong)((10 * sizeof(cui_pipeline_job)))) / ((ulong)(sizeof(cui_pipeline_job))))), &__cl371);
+                cui_pipeline_opts __cl371 = new cui_pipeline_opts { _ = 0, selected = global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_pl_sel__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 };
+                cui_pipeline_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S433 /*"run"*/), global::Managed.Cui.Gallery.Gallery.Globals.stages_en__s182__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 4, global::Managed.Cui.Gallery.Gallery.Globals.jobs__s183__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, unchecked((int)(((ulong)((10 * sizeof(cui_pipeline_job)))) / ((ulong)(sizeof(cui_pipeline_job))))), &__cl371);
             }
         }
     }
 
 
 
-    public static unsafe void devtools_query__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void devtools_query__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
     byte* __dotcc_array_storage372 = null;
         {
@@ -1717,7 +1631,7 @@ public static unsafe partial class Gallery
             for (; (!(((cui__scope_1266) != 0) )     ); cui__scope_1266 = 1, cui_box_end(ui))
             {
                 cui_query_opts __cl375 = new cui_query_opts { _ = 0 };
-                _ = cui_query_builder_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S655 /*"filter"*/), global::Managed.Cui.Gallery.Gallery.Globals.qb_fields__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 4, global::Managed.Cui.Gallery.Gallery.Globals.qb_nodes__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_qb_n__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 16, &__cl375);
+                _ = cui_query_builder_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S655 /*"filter"*/), global::Managed.Cui.Gallery.Gallery.Globals.qb_fields__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 4, global::Managed.Cui.Gallery.Gallery.Globals.qb_nodes__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_qb_n__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 16, &__cl375);
                 if (__dotcc_array_storage372 == null)
                 {
                     byte* __dotcc_array_storage372_new = stackalloc byte[checked(sizeof(byte) * 256)];
@@ -1725,7 +1639,7 @@ public static unsafe partial class Gallery
                 }
                 byte* text = (byte*)__dotcc_array_storage372;
                 new global::System.Span<byte>((void*)text, checked(sizeof(byte) * 256)).Clear();
-                cui_query_text(global::Managed.Cui.Gallery.Gallery.Globals.qb_fields__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 4, global::Managed.Cui.Gallery.Gallery.Globals.qb_nodes__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, global::Managed.Cui.Gallery.Gallery.Globals.qb_n__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, text, ((ulong)((256 * sizeof(byte)))));
+                cui_query_text(global::Managed.Cui.Gallery.Gallery.Globals.qb_fields__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 4, global::Managed.Cui.Gallery.Gallery.Globals.qb_nodes__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, global::Managed.Cui.Gallery.Gallery.Globals.qb_n__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, text, ((ulong)((256 * sizeof(byte)))));
                 cui_text_opts __cl376 = new cui_text_opts { _ = 0, size = 12, color = new cui_color { r = (byte)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED, g = 0xC5, b = 0x1D, a = 0 } };
                 cui_text_ex(ui, text, &__cl376);
             }
@@ -1734,7 +1648,7 @@ public static unsafe partial class Gallery
 
 
 
-    public static unsafe void devtools_schedule__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void devtools_schedule__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
         {
             cui_box __cl377 = new cui_box { _ = 0, gap = 10, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, max_width = 560 };
@@ -1743,14 +1657,14 @@ public static unsafe partial class Gallery
             for (; (!(((cui__scope_1276) != 0) )     ); cui__scope_1276 = 1, cui_box_end(ui))
             {
                 cui_schedule_opts __cl378 = new cui_schedule_opts { _ = 0, now = 1794211200, utc = 1, next_count = 3 };
-                cui_schedule_picker_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S543 /*"backup"*/), global::Managed.Cui.Gallery.Gallery.Globals.sc_cron__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, ((ulong)((64 * sizeof(byte)))), &__cl378);
+                cui_schedule_picker_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S543 /*"backup"*/), global::Managed.Cui.Gallery.Gallery.Globals.sc_cron__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, ((ulong)((64 * sizeof(byte)))), &__cl378);
             }
         }
     }
 
 
 
-    public static unsafe void devtools_keymap__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void devtools_keymap__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
         {
             cui_box __cl380 = new cui_box { _ = 0, gap = 10, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, max_width = 900 };
@@ -1758,15 +1672,15 @@ public static unsafe partial class Gallery
             int cui__scope_1295 = 0;
             for (; (!(((cui__scope_1295) != 0) )     ); cui__scope_1295 = 1, cui_box_end(ui))
             {
-                cui_keymap_opts __cl381 = new cui_keymap_opts { _ = 0, categories = global::Managed.Cui.Gallery.Gallery.Globals.cats_en__s185__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, category_count = 4, mods = global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_km_mods__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 };
-                cui_keymap_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1010 /*"keys"*/), global::Managed.Cui.Gallery.Gallery.Globals.binds__s184__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, unchecked((int)(((ulong)((24 * sizeof(cui_keymap_binding)))) / ((ulong)(sizeof(cui_keymap_binding))))), &__cl381);
+                cui_keymap_opts __cl381 = new cui_keymap_opts { _ = 0, categories = global::Managed.Cui.Gallery.Gallery.Globals.cats_en__s185__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, category_count = 4, mods = global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_km_mods__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 };
+                cui_keymap_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1010 /*"keys"*/), global::Managed.Cui.Gallery.Gallery.Globals.binds__s184__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, unchecked((int)(((ulong)((24 * sizeof(cui_keymap_binding)))) / ((ulong)(sizeof(cui_keymap_binding))))), &__cl381);
             }
         }
     }
 
 
 
-    public static unsafe void devtools_commits__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void devtools_commits__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
         {
             cui_box __cl383 = new cui_box { _ = 0, gap = 10, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, max_width = 920 };
@@ -1774,15 +1688,15 @@ public static unsafe partial class Gallery
             int cui__scope_1314 = 0;
             for (; (!(((cui__scope_1314) != 0) )     ); cui__scope_1314 = 1, cui_box_end(ui))
             {
-                cui_commit_graph_opts __cl384 = new cui_commit_graph_opts { _ = 0, selected = global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_cg_sel__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, height = 320 };
-                cui_commit_graph_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S983 /*"history"*/), global::Managed.Cui.Gallery.Gallery.Globals.cg_commits__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, unchecked((int)(((ulong)((10 * sizeof(cui_commit)))) / ((ulong)(sizeof(cui_commit))))), &__cl384);
+                cui_commit_graph_opts __cl384 = new cui_commit_graph_opts { _ = 0, selected = global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_cg_sel__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, height = 320 };
+                cui_commit_graph_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S983 /*"history"*/), global::Managed.Cui.Gallery.Gallery.Globals.cg_commits__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, unchecked((int)(((ulong)((10 * sizeof(cui_commit)))) / ((ulong)(sizeof(cui_commit))))), &__cl384);
             }
         }
     }
 
 
 
-    public static unsafe void devtools_graph__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void devtools_graph__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
         {
             cui_box __cl386 = new cui_box { _ = 0, gap = 10, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, max_width = 1000 };
@@ -1790,15 +1704,15 @@ public static unsafe partial class Gallery
             int cui__scope_1327 = 0;
             for (; (!(((cui__scope_1327) != 0) )     ); cui__scope_1327 = 1, cui_box_end(ui))
             {
-                cui_graph_opts __cl387 = new cui_graph_opts { _ = 0, selected = global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_gv_sel__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, height = 340 };
-                cui_graph_view_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S492 /*"deps"*/), global::Managed.Cui.Gallery.Gallery.Globals.gv_nodes__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 9, global::Managed.Cui.Gallery.Gallery.Globals.gv_edges__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 11, &__cl387);
+                cui_graph_opts __cl387 = new cui_graph_opts { _ = 0, selected = global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_gv_sel__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, height = 340 };
+                cui_graph_view_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S492 /*"deps"*/), global::Managed.Cui.Gallery.Gallery.Globals.gv_nodes__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 9, global::Managed.Cui.Gallery.Gallery.Globals.gv_edges__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 11, &__cl387);
             }
         }
     }
 
 
 
-    public static unsafe void devtools_waterfall__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void devtools_waterfall__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
         {
             cui_box __cl389 = new cui_box { _ = 0, gap = 10, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, max_width = 1000 };
@@ -1806,99 +1720,99 @@ public static unsafe partial class Gallery
             int cui__scope_1346 = 0;
             for (; (!(((cui__scope_1346) != 0) )     ); cui__scope_1346 = 1, cui_box_end(ui))
             {
-                cui_waterfall_opts __cl390 = new cui_waterfall_opts { _ = 0, selected = global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_wf_sel__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, height = 340, dom_loaded = 0.395, loaded = 0.68 };
-                cui_waterfall_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S514 /*"net"*/), global::Managed.Cui.Gallery.Gallery.Globals.wf_reqs__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, unchecked((int)(((ulong)((10 * sizeof(cui_net_request)))) / ((ulong)(sizeof(cui_net_request))))), &__cl390);
+                cui_waterfall_opts __cl390 = new cui_waterfall_opts { _ = 0, selected = global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_wf_sel__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, height = 340, dom_loaded = 0.395, loaded = 0.68 };
+                cui_waterfall_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S514 /*"net"*/), global::Managed.Cui.Gallery.Gallery.Globals.wf_reqs__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, unchecked((int)(((ulong)((10 * sizeof(cui_net_request)))) / ((ulong)(sizeof(cui_net_request))))), &__cl390);
             }
         }
     }
 
 
 
-    public static unsafe void tr_add__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(byte* name, double s, double e, int track, int depth)
+    public static unsafe void tr_add__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(byte* name, double s, double e, int track, int depth)
     {
-        if (((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.tr_n__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 < 400))))) != 0))
-            global::Managed.Cui.Gallery.Gallery.Globals.tr_spans__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[global::Managed.Cui.Gallery.Gallery.Globals.tr_n__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9++] = new cui_trace_span { name = name, start = s, end = e, track = track, depth = depth, color_key = 0 };
+        if (((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.tr_n__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 < 400))))) != 0))
+            global::Managed.Cui.Gallery.Gallery.Globals.tr_spans__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[global::Managed.Cui.Gallery.Gallery.Globals.tr_n__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199++] = new cui_trace_span { name = name, start = s, end = e, track = track, depth = depth, color_key = 0 };
     }
 
 
 
-    public static unsafe void tr_build__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9()
+    public static unsafe void tr_build__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199()
     {
         for (int f = 0; ((unchecked((int)(((CBool)(f < 3))))) != 0); f++)
         {
             double t = f * 0.0166;
-            tr_add__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9((DotCcLiterals.Pointer + DotCcLiterals.S921 /*"Frame"*/), t + 0.0004, t + 0.0151, 0, 0);
-            tr_add__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9((DotCcLiterals.Pointer + DotCcLiterals.S948 /*"Input"*/), t + 0.0006, t + 0.0019, 0, 1);
-            tr_add__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9((DotCcLiterals.Pointer + DotCcLiterals.S629 /*"Update"*/), t + 0.0021, t + 0.0092, 0, 1);
-            tr_add__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9((DotCcLiterals.Pointer + DotCcLiterals.S699 /*"Physics"*/), t + 0.0023, t + 0.0051, 0, 2);
-            tr_add__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9((DotCcLiterals.Pointer + DotCcLiterals.S1282 /*"Animation"*/), t + 0.0053, t + 0.0068, 0, 2);
-            tr_add__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9((DotCcLiterals.Pointer + DotCcLiterals.S965 /*"Scripts"*/), t + 0.0070, t + 0.0090, 0, 2);
-            tr_add__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9((DotCcLiterals.Pointer + DotCcLiterals.S859 /*"Layout"*/), t + 0.0094, t + 0.0121, 0, 1);
-            tr_add__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9((DotCcLiterals.Pointer + DotCcLiterals.S591 /*"Measure"*/), t + 0.0095, t + 0.0108, 0, 2);
-            tr_add__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9((DotCcLiterals.Pointer + DotCcLiterals.S329 /*"Paint"*/), t + 0.0123, t + 0.0149, 0, 1);
-            tr_add__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9((DotCcLiterals.Pointer + DotCcLiterals.S26 /*"Record"*/), t + 0.0124, t + 0.0139, 0, 2);
-            tr_add__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9((DotCcLiterals.Pointer + DotCcLiterals.S792 /*"Submit"*/), t + 0.0152, t + 0.0163, 1, 0);
-            tr_add__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9((DotCcLiterals.Pointer + DotCcLiterals.S605 /*"Upload"*/), t + 0.0153, t + 0.0157, 1, 1);
-            tr_add__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9((DotCcLiterals.Pointer + DotCcLiterals.S1149 /*"Encode"*/), t + 0.0157, t + 0.0162, 1, 1);
-            tr_add__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9((DotCcLiterals.Pointer + DotCcLiterals.S493 /*"Decode image"*/), t + 0.0012, t + 0.0074, 2, 0);
-            tr_add__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9((DotCcLiterals.Pointer + DotCcLiterals.S879 /*"Inflate"*/), t + 0.0013, t + 0.0049, 2, 1);
-            tr_add__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9((DotCcLiterals.Pointer + DotCcLiterals.S209 /*"Parse JSON"*/), t + 0.0081, t + 0.0118, 3, 0);
-            tr_add__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9((DotCcLiterals.Pointer + DotCcLiterals.S1603 /*"Draw"*/), t + 0.0164, t + 0.0166 + 0.0105, 4, 0);
+            tr_add__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199((DotCcLiterals.Pointer + DotCcLiterals.S921 /*"Frame"*/), t + 0.0004, t + 0.0151, 0, 0);
+            tr_add__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199((DotCcLiterals.Pointer + DotCcLiterals.S948 /*"Input"*/), t + 0.0006, t + 0.0019, 0, 1);
+            tr_add__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199((DotCcLiterals.Pointer + DotCcLiterals.S629 /*"Update"*/), t + 0.0021, t + 0.0092, 0, 1);
+            tr_add__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199((DotCcLiterals.Pointer + DotCcLiterals.S699 /*"Physics"*/), t + 0.0023, t + 0.0051, 0, 2);
+            tr_add__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199((DotCcLiterals.Pointer + DotCcLiterals.S1282 /*"Animation"*/), t + 0.0053, t + 0.0068, 0, 2);
+            tr_add__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199((DotCcLiterals.Pointer + DotCcLiterals.S965 /*"Scripts"*/), t + 0.0070, t + 0.0090, 0, 2);
+            tr_add__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199((DotCcLiterals.Pointer + DotCcLiterals.S859 /*"Layout"*/), t + 0.0094, t + 0.0121, 0, 1);
+            tr_add__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199((DotCcLiterals.Pointer + DotCcLiterals.S591 /*"Measure"*/), t + 0.0095, t + 0.0108, 0, 2);
+            tr_add__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199((DotCcLiterals.Pointer + DotCcLiterals.S329 /*"Paint"*/), t + 0.0123, t + 0.0149, 0, 1);
+            tr_add__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199((DotCcLiterals.Pointer + DotCcLiterals.S26 /*"Record"*/), t + 0.0124, t + 0.0139, 0, 2);
+            tr_add__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199((DotCcLiterals.Pointer + DotCcLiterals.S792 /*"Submit"*/), t + 0.0152, t + 0.0163, 1, 0);
+            tr_add__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199((DotCcLiterals.Pointer + DotCcLiterals.S605 /*"Upload"*/), t + 0.0153, t + 0.0157, 1, 1);
+            tr_add__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199((DotCcLiterals.Pointer + DotCcLiterals.S1149 /*"Encode"*/), t + 0.0157, t + 0.0162, 1, 1);
+            tr_add__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199((DotCcLiterals.Pointer + DotCcLiterals.S493 /*"Decode image"*/), t + 0.0012, t + 0.0074, 2, 0);
+            tr_add__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199((DotCcLiterals.Pointer + DotCcLiterals.S879 /*"Inflate"*/), t + 0.0013, t + 0.0049, 2, 1);
+            tr_add__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199((DotCcLiterals.Pointer + DotCcLiterals.S209 /*"Parse JSON"*/), t + 0.0081, t + 0.0118, 3, 0);
+            tr_add__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199((DotCcLiterals.Pointer + DotCcLiterals.S1603 /*"Draw"*/), t + 0.0164, t + 0.0166 + 0.0105, 4, 0);
         }
-        cui_trace_sort(global::Managed.Cui.Gallery.Gallery.Globals.tr_spans__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, global::Managed.Cui.Gallery.Gallery.Globals.tr_n__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9);
+        cui_trace_sort(global::Managed.Cui.Gallery.Gallery.Globals.tr_spans__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, global::Managed.Cui.Gallery.Gallery.Globals.tr_n__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199);
     }
 
 
 
-    public static unsafe void devtools_trace__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void devtools_trace__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
-        if ((!(((global::Managed.Cui.Gallery.Gallery.Globals.tr_n__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9) != 0) )     ))
-            tr_build__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9();
-        if (((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.tr_sel__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 < 0))))) != 0))
-            for (int i = 0; ((unchecked((int)(((CBool)(i < global::Managed.Cui.Gallery.Gallery.Globals.tr_n__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9))))) != 0); i++)
-                if (((unchecked((int)(((CBool)(((unchecked((int)(((CBool)((!(((strcmp(global::Managed.Cui.Gallery.Gallery.Globals.tr_spans__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[i].name, (DotCcLiterals.Pointer + DotCcLiterals.S629 /*"Update"*/))) != 0) )     ) && ((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.tr_spans__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[i].start > 0.016))))) != 0)))))) != 0) && ((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.tr_spans__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[i].start < 0.03))))) != 0)))))) != 0))
-                    global::Managed.Cui.Gallery.Gallery.Globals.tr_sel__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 = i;
+        if ((!(((global::Managed.Cui.Gallery.Gallery.Globals.tr_n__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199) != 0) )     ))
+            tr_build__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199();
+        if (((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.tr_sel__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 < 0))))) != 0))
+            for (int i = 0; ((unchecked((int)(((CBool)(i < global::Managed.Cui.Gallery.Gallery.Globals.tr_n__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199))))) != 0); i++)
+                if (((unchecked((int)(((CBool)(((unchecked((int)(((CBool)((!(((strcmp(global::Managed.Cui.Gallery.Gallery.Globals.tr_spans__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[i].name, (DotCcLiterals.Pointer + DotCcLiterals.S629 /*"Update"*/))) != 0) )     ) && ((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.tr_spans__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[i].start > 0.016))))) != 0)))))) != 0) && ((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.tr_spans__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[i].start < 0.03))))) != 0)))))) != 0))
+                    global::Managed.Cui.Gallery.Gallery.Globals.tr_sel__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 = i;
         {
             cui_box __cl393 = new cui_box { _ = 0, gap = 10, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, max_width = 1000 };
             cui_column_begin(ui, &__cl393);
             int cui__scope_1384 = 0;
             for (; (!(((cui__scope_1384) != 0) )     ); cui__scope_1384 = 1, cui_box_end(ui))
             {
-                cui_trace_opts __cl394 = new cui_trace_opts { _ = 0, markers = global::Managed.Cui.Gallery.Gallery.Globals.tr_marks__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, marker_count = 4, height = 320 };
-                cui_trace_view_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1067 /*"trace"*/), global::Managed.Cui.Gallery.Gallery.Globals.tr_tracks__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 5, global::Managed.Cui.Gallery.Gallery.Globals.tr_spans__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, global::Managed.Cui.Gallery.Gallery.Globals.tr_n__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_tr_view__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_tr_sel__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, &__cl394);
+                cui_trace_opts __cl394 = new cui_trace_opts { _ = 0, markers = global::Managed.Cui.Gallery.Gallery.Globals.tr_marks__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, marker_count = 4, height = 320 };
+                cui_trace_view_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1067 /*"trace"*/), global::Managed.Cui.Gallery.Gallery.Globals.tr_tracks__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 5, global::Managed.Cui.Gallery.Gallery.Globals.tr_spans__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, global::Managed.Cui.Gallery.Gallery.Globals.tr_n__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_tr_view__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_tr_sel__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, &__cl394);
             }
         }
     }
 
 
 
-    public static unsafe void page_devtools__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void page_devtools__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S414 /*"Trace viewer"*/), (DotCcLiterals.Pointer + DotCcLiterals.S571 /*"Wheel zooms, drag pans, Shift+drag measures, a lane's name folds it."*/));
-        devtools_trace__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui);
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S452 /*"Network waterfall"*/), (DotCcLiterals.Pointer + DotCcLiterals.S208 /*"Hover a bar for its timing; Up and Down move the selection."*/));
-        devtools_waterfall__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui);
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1517 /*"Dependency graph"*/), (DotCcLiterals.Pointer + DotCcLiterals.S537 /*"Hover a node to light up its neighbours; wheel zooms, F fits."*/));
-        devtools_graph__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui);
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1510 /*"Commit graph"*/), (DotCcLiterals.Pointer + DotCcLiterals.S716 /*"Branch lanes, merges and refs; only the rows in view are built."*/));
-        devtools_commits__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui);
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S132 /*"Pipeline"*/), (DotCcLiterals.Pointer + DotCcLiterals.S568 /*"Stages of jobs; a stage sums up its jobs."*/));
-        devtools_pipeline__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui);
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1180 /*"Problems"*/), (DotCcLiterals.Pointer + DotCcLiterals.S947 /*"Grouped by file; filter by severity or text, Enter opens."*/));
-        devtools_problems__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui);
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S123 /*"Key-value editor"*/), (DotCcLiterals.Pointer + DotCcLiterals.S469 /*"Type in the empty row to add a pair; the lock hides a value."*/));
-        devtools_kv__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui);
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1467 /*"Query builder"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1596 /*"Nested all and any groups."*/));
-        devtools_query__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui);
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1495 /*"Schedule picker"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1438 /*"Writes a cron expression and shows the next runs."*/));
-        devtools_schedule__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui);
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1218 /*"Keymap"*/), (DotCcLiterals.Pointer + DotCcLiterals.S129 /*"Shortcuts on a keyboard; keys bound twice are marked."*/));
-        devtools_keymap__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui);
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S414 /*"Trace viewer"*/), (DotCcLiterals.Pointer + DotCcLiterals.S571 /*"Wheel zooms, drag pans, Shift+drag measures, a lane's name folds it."*/));
+        devtools_trace__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(ui);
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S452 /*"Network waterfall"*/), (DotCcLiterals.Pointer + DotCcLiterals.S208 /*"Hover a bar for its timing; Up and Down move the selection."*/));
+        devtools_waterfall__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(ui);
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1517 /*"Dependency graph"*/), (DotCcLiterals.Pointer + DotCcLiterals.S537 /*"Hover a node to light up its neighbours; wheel zooms, F fits."*/));
+        devtools_graph__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(ui);
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1510 /*"Commit graph"*/), (DotCcLiterals.Pointer + DotCcLiterals.S716 /*"Branch lanes, merges and refs; only the rows in view are built."*/));
+        devtools_commits__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(ui);
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S132 /*"Pipeline"*/), (DotCcLiterals.Pointer + DotCcLiterals.S568 /*"Stages of jobs; a stage sums up its jobs."*/));
+        devtools_pipeline__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(ui);
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1180 /*"Problems"*/), (DotCcLiterals.Pointer + DotCcLiterals.S947 /*"Grouped by file; filter by severity or text, Enter opens."*/));
+        devtools_problems__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(ui);
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S123 /*"Key-value editor"*/), (DotCcLiterals.Pointer + DotCcLiterals.S469 /*"Type in the empty row to add a pair; the lock hides a value."*/));
+        devtools_kv__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(ui);
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1467 /*"Query builder"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1596 /*"Nested all and any groups."*/));
+        devtools_query__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(ui);
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1495 /*"Schedule picker"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1438 /*"Writes a cron expression and shows the next runs."*/));
+        devtools_schedule__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(ui);
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1218 /*"Keymap"*/), (DotCcLiterals.Pointer + DotCcLiterals.S129 /*"Shortcuts on a keyboard; keys bound twice are marked."*/));
+        devtools_keymap__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(ui);
     }
 
 
 
-    public static unsafe void devtools2_regex__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void devtools2_regex__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
         {
             cui_box __cl395 = new cui_box { _ = 0, gap = 10, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, max_width = 760 };
@@ -1907,14 +1821,14 @@ public static unsafe partial class Gallery
             for (; (!(((cui__scope_1417) != 0) )     ); cui__scope_1417 = 1, cui_box_end(ui))
             {
                 cui_regex_tester_opts __cl396 = new cui_regex_tester_opts { _ = 0, height = 110 };
-                cui_regex_tester_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1286 /*"rx"*/), global::Managed.Cui.Gallery.Gallery.Globals.rx_pat__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, ((ulong)((128 * sizeof(byte)))), global::Managed.Cui.Gallery.Gallery.Globals.rx_text__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, ((ulong)((1024 * sizeof(byte)))), &__cl396);
+                cui_regex_tester_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1286 /*"rx"*/), global::Managed.Cui.Gallery.Gallery.Globals.rx_pat__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, ((ulong)((128 * sizeof(byte)))), global::Managed.Cui.Gallery.Gallery.Globals.rx_text__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, ((ulong)((1024 * sizeof(byte)))), &__cl396);
             }
         }
     }
 
 
 
-    public static unsafe void devtools2_tests__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void devtools2_tests__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
         {
             cui_box __cl397 = new cui_box { _ = 0, gap = 10, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, max_width = 760 };
@@ -1923,14 +1837,14 @@ public static unsafe partial class Gallery
             for (; (!(((cui__scope_1431) != 0) )     ); cui__scope_1431 = 1, cui_box_end(ui))
             {
                 cui_test_explorer_opts __cl398 = new cui_test_explorer_opts { _ = 0, height = 500 };
-                cui_test_explorer_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1266 /*"tests"*/), global::Managed.Cui.Gallery.Gallery.Globals.tx_items__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, unchecked((int)(((ulong)((15 * sizeof(cui_test_item)))) / ((ulong)(sizeof(cui_test_item))))), &__cl398);
+                cui_test_explorer_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1266 /*"tests"*/), global::Managed.Cui.Gallery.Gallery.Globals.tx_items__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, unchecked((int)(((ulong)((15 * sizeof(cui_test_item)))) / ((ulong)(sizeof(cui_test_item))))), &__cl398);
             }
         }
     }
 
 
 
-    public static unsafe void devtools2_stack__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void devtools2_stack__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
         {
             cui_box __cl399 = new cui_box { _ = 0, gap = 10, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, max_width = 760 };
@@ -1939,17 +1853,17 @@ public static unsafe partial class Gallery
             for (; (!(((cui__scope_1447) != 0) )     ); cui__scope_1447 = 1, cui_box_end(ui))
             {
                 cui_stack_trace_opts __cl400 = new cui_stack_trace_opts { _ = 0, title = (DotCcLiterals.Pointer + DotCcLiterals.S8 /*"TypeError"*/), message = (DotCcLiterals.Pointer + DotCcLiterals.S505 /*"Cannot read properties of undefined (reading 'items')"*/), lang = (DotCcLiterals.Pointer + DotCcLiterals.S33 /*"js"*/) };
-                cui_stack_trace_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1067 /*"trace"*/), global::Managed.Cui.Gallery.Gallery.Globals.st_frames__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 6, &__cl400);
+                cui_stack_trace_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1067 /*"trace"*/), global::Managed.Cui.Gallery.Gallery.Globals.st_frames__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 6, &__cl400);
             }
         }
     }
 
 
 
-    public static unsafe void devtools2_request__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void devtools2_request__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
-        if (((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.rq_n__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 < 0))))) != 0))
-            global::Managed.Cui.Gallery.Gallery.Globals.rq_n__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 = cui_url_params(global::Managed.Cui.Gallery.Gallery.Globals.rq_url__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, global::Managed.Cui.Gallery.Gallery.Globals.rq_params__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 8);
+        if (((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.rq_n__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 < 0))))) != 0))
+            global::Managed.Cui.Gallery.Gallery.Globals.rq_n__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 = cui_url_params(global::Managed.Cui.Gallery.Gallery.Globals.rq_url__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, global::Managed.Cui.Gallery.Gallery.Globals.rq_params__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 8);
         {
             cui_box __cl403 = new cui_box { _ = 0, gap = 12, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, max_width = 760 };
             cui_column_begin(ui, &__cl403);
@@ -1957,12 +1871,12 @@ public static unsafe partial class Gallery
             for (; (!(((cui__scope_1458) != 0) )     ); cui__scope_1458 = 1, cui_box_end(ui))
             {
                 cui_request_bar_opts __cl404 = new cui_request_bar_opts { _ = 0 };
-                cui_request_bar_result r = cui_request_bar_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S161 /*"req"*/), global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_rq_method__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, global::Managed.Cui.Gallery.Gallery.Globals.rq_url__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, ((ulong)((256 * sizeof(byte)))), &__cl404);
+                cui_request_bar_result r = cui_request_bar_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S161 /*"req"*/), global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_rq_method__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, global::Managed.Cui.Gallery.Gallery.Globals.rq_url__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, ((ulong)((256 * sizeof(byte)))), &__cl404);
                 if (((unchecked((int)(r.changed))) != 0))
-                    global::Managed.Cui.Gallery.Gallery.Globals.rq_n__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 = cui_url_params(global::Managed.Cui.Gallery.Gallery.Globals.rq_url__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, global::Managed.Cui.Gallery.Gallery.Globals.rq_params__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 8);
+                    global::Managed.Cui.Gallery.Gallery.Globals.rq_n__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 = cui_url_params(global::Managed.Cui.Gallery.Gallery.Globals.rq_url__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, global::Managed.Cui.Gallery.Gallery.Globals.rq_params__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 8);
                 cui_kv_editor_opts __cl405 = new cui_kv_editor_opts { _ = 0 };
-                if (((unchecked((int)(cui_kv_editor_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S736 /*"params"*/), global::Managed.Cui.Gallery.Gallery.Globals.rq_params__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_rq_n__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 8, &__cl405)))) != 0))
-                    _ = cui_url_set_params(global::Managed.Cui.Gallery.Gallery.Globals.rq_url__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, ((ulong)((256 * sizeof(byte)))), global::Managed.Cui.Gallery.Gallery.Globals.rq_params__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, global::Managed.Cui.Gallery.Gallery.Globals.rq_n__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9);
+                if (((unchecked((int)(cui_kv_editor_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S736 /*"params"*/), global::Managed.Cui.Gallery.Gallery.Globals.rq_params__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_rq_n__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 8, &__cl405)))) != 0))
+                    _ = cui_url_set_params(global::Managed.Cui.Gallery.Gallery.Globals.rq_url__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, ((ulong)((256 * sizeof(byte)))), global::Managed.Cui.Gallery.Gallery.Globals.rq_params__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, global::Managed.Cui.Gallery.Gallery.Globals.rq_n__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199);
                 cui_response_status(ui, 201, 0.142, 18400);
             }
         }
@@ -1970,30 +1884,30 @@ public static unsafe partial class Gallery
 
 
 
-    public static unsafe void devtools2_uptime__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void devtools2_uptime__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
-        if ((!(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.init__s186__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9))) != 0) )     ))
+        if ((!(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.init__s186__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199))) != 0) )     ))
         {
-            global::Managed.Cui.Gallery.Gallery.Globals.init__s186__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 = 1;
+            global::Managed.Cui.Gallery.Gallery.Globals.init__s186__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 = 1;
             for (int i = 0; ((unchecked((int)(((CBool)(i < 90))))) != 0); i++)
             {
-                global::Managed.Cui.Gallery.Gallery.Globals.up_api__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[i] = 1;
-                global::Managed.Cui.Gallery.Gallery.Globals.up_web__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[i] = 1;
-                global::Managed.Cui.Gallery.Gallery.Globals.up_db__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[i] = 1;
-                global::Managed.Cui.Gallery.Gallery.Globals.up_cdn__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[i] = ((int)(((unchecked((int)(((CBool)(i < 20))))) != 0) ? -1 : 1));
+                global::Managed.Cui.Gallery.Gallery.Globals.up_api__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[i] = 1;
+                global::Managed.Cui.Gallery.Gallery.Globals.up_web__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[i] = 1;
+                global::Managed.Cui.Gallery.Gallery.Globals.up_db__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[i] = 1;
+                global::Managed.Cui.Gallery.Gallery.Globals.up_cdn__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[i] = ((int)(((unchecked((int)(((CBool)(i < 20))))) != 0) ? -1 : 1));
                 if (((unchecked((int)(((CBool)(i % 17 == 5))))) != 0))
-                    global::Managed.Cui.Gallery.Gallery.Globals.up_api__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[i] = 0.9985f;
+                    global::Managed.Cui.Gallery.Gallery.Globals.up_api__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[i] = 0.9985f;
                 if (((unchecked((int)(((CBool)(i == 61))))) != 0))
-                    global::Managed.Cui.Gallery.Gallery.Globals.up_api__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[i] = 0.962f;
+                    global::Managed.Cui.Gallery.Gallery.Globals.up_api__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[i] = 0.962f;
                 if (((unchecked((int)(((CBool)(i == 44))))) != 0))
-                    global::Managed.Cui.Gallery.Gallery.Globals.up_web__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[i] = 0.93f;
+                    global::Managed.Cui.Gallery.Gallery.Globals.up_web__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[i] = 0.93f;
                 if (((unchecked((int)(((CBool)(i % 23 == 9))))) != 0))
-                    global::Managed.Cui.Gallery.Gallery.Globals.up_db__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[i] = 0.995f;
+                    global::Managed.Cui.Gallery.Gallery.Globals.up_db__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[i] = 0.995f;
                 if (((unchecked((int)(((CBool)(i == 88))))) != 0))
-                    global::Managed.Cui.Gallery.Gallery.Globals.up_db__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[i] = 0.97f;
+                    global::Managed.Cui.Gallery.Gallery.Globals.up_db__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[i] = 0.97f;
             }
         }
-        cui_uptime_service* sv = stackalloc cui_uptime_service[]{ new cui_uptime_service { name = global::Managed.Cui.Gallery.Gallery.Globals.names_en__s187__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[0], days = global::Managed.Cui.Gallery.Gallery.Globals.up_api__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, day_count = 90 }, new cui_uptime_service { name = global::Managed.Cui.Gallery.Gallery.Globals.names_en__s187__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[1], days = global::Managed.Cui.Gallery.Gallery.Globals.up_web__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, day_count = 90 }, new cui_uptime_service { name = global::Managed.Cui.Gallery.Gallery.Globals.names_en__s187__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[2], days = global::Managed.Cui.Gallery.Gallery.Globals.up_db__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, day_count = 90 }, new cui_uptime_service { name = global::Managed.Cui.Gallery.Gallery.Globals.names_en__s187__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[3], days = global::Managed.Cui.Gallery.Gallery.Globals.up_cdn__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, day_count = 90 } };
+        cui_uptime_service* sv = stackalloc cui_uptime_service[]{ new cui_uptime_service { name = global::Managed.Cui.Gallery.Gallery.Globals.names_en__s187__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[0], days = global::Managed.Cui.Gallery.Gallery.Globals.up_api__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, day_count = 90 }, new cui_uptime_service { name = global::Managed.Cui.Gallery.Gallery.Globals.names_en__s187__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[1], days = global::Managed.Cui.Gallery.Gallery.Globals.up_web__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, day_count = 90 }, new cui_uptime_service { name = global::Managed.Cui.Gallery.Gallery.Globals.names_en__s187__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[2], days = global::Managed.Cui.Gallery.Gallery.Globals.up_db__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, day_count = 90 }, new cui_uptime_service { name = global::Managed.Cui.Gallery.Gallery.Globals.names_en__s187__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[3], days = global::Managed.Cui.Gallery.Gallery.Globals.up_cdn__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, day_count = 90 } };
         {
             cui_box __cl406 = new cui_box { _ = 0, gap = 10, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, max_width = 860 };
             cui_column_begin(ui, &__cl406);
@@ -2008,20 +1922,20 @@ public static unsafe partial class Gallery
 
 
 
-    public static unsafe void devtools2_histogram__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void devtools2_histogram__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
-        if ((!(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.init__s188__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9))) != 0) )     ))
+        if ((!(((unchecked((int)(global::Managed.Cui.Gallery.Gallery.Globals.init__s188__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199))) != 0) )     ))
         {
-            global::Managed.Cui.Gallery.Gallery.Globals.init__s188__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 = 1;
+            global::Managed.Cui.Gallery.Gallery.Globals.init__s188__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 = 1;
             for (int i = 0; ((unchecked((int)(((CBool)(i < 96))))) != 0); i++)
             {
                 double x = i / 96.0;
-                global::Managed.Cui.Gallery.Gallery.Globals.th_info__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[i] = (float)(120 + 80 * sin(x * 6.28 * 2) + i * 37 % 23);
-                global::Managed.Cui.Gallery.Gallery.Globals.th_warn__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[i] = (float)(12 + i * 13 % 9 + ((int)(((unchecked((int)(((CBool)(((unchecked((int)(((CBool)(i > 60))))) != 0) && ((unchecked((int)(((CBool)(i < 70))))) != 0)))))) != 0) ? 40 : 0)));
-                global::Managed.Cui.Gallery.Gallery.Globals.th_err__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[i] = (float)(i * 7 % 5 + ((int)(((unchecked((int)(((CBool)(((unchecked((int)(((CBool)(i > 62))))) != 0) && ((unchecked((int)(((CBool)(i < 67))))) != 0)))))) != 0) ? 30 : 0)));
+                global::Managed.Cui.Gallery.Gallery.Globals.th_info__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[i] = (float)(120 + 80 * sin(x * 6.28 * 2) + i * 37 % 23);
+                global::Managed.Cui.Gallery.Gallery.Globals.th_warn__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[i] = (float)(12 + i * 13 % 9 + ((int)(((unchecked((int)(((CBool)(((unchecked((int)(((CBool)(i > 60))))) != 0) && ((unchecked((int)(((CBool)(i < 70))))) != 0)))))) != 0) ? 40 : 0)));
+                global::Managed.Cui.Gallery.Gallery.Globals.th_err__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[i] = (float)(i * 7 % 5 + ((int)(((unchecked((int)(((CBool)(((unchecked((int)(((CBool)(i > 62))))) != 0) && ((unchecked((int)(((CBool)(i < 67))))) != 0)))))) != 0) ? 30 : 0)));
             }
         }
-        cui_histogram_series* se = stackalloc cui_histogram_series[]{ new cui_histogram_series { name = (DotCcLiterals.Pointer + DotCcLiterals.S556 /*"Info"*/), counts = global::Managed.Cui.Gallery.Gallery.Globals.th_info__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, tone = __DotCcEnum_6375695F746F6E65.CUI_TONE_INFO }, new cui_histogram_series { name = (DotCcLiterals.Pointer + DotCcLiterals.S652 /*"Warning"*/), counts = global::Managed.Cui.Gallery.Gallery.Globals.th_warn__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, tone = __DotCcEnum_6375695F746F6E65.CUI_TONE_WARNING }, new cui_histogram_series { name = (DotCcLiterals.Pointer + DotCcLiterals.S1488 /*"Error"*/), counts = global::Managed.Cui.Gallery.Gallery.Globals.th_err__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, tone = __DotCcEnum_6375695F746F6E65.CUI_TONE_DANGER } };
+        cui_histogram_series* se = stackalloc cui_histogram_series[]{ new cui_histogram_series { name = (DotCcLiterals.Pointer + DotCcLiterals.S556 /*"Info"*/), counts = global::Managed.Cui.Gallery.Gallery.Globals.th_info__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, tone = __DotCcEnum_6375695F746F6E65.CUI_TONE_INFO }, new cui_histogram_series { name = (DotCcLiterals.Pointer + DotCcLiterals.S652 /*"Warning"*/), counts = global::Managed.Cui.Gallery.Gallery.Globals.th_warn__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, tone = __DotCcEnum_6375695F746F6E65.CUI_TONE_WARNING }, new cui_histogram_series { name = (DotCcLiterals.Pointer + DotCcLiterals.S1488 /*"Error"*/), counts = global::Managed.Cui.Gallery.Gallery.Globals.th_err__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, tone = __DotCcEnum_6375695F746F6E65.CUI_TONE_DANGER } };
         {
             cui_box __cl410 = new cui_box { _ = 0, gap = 10, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, max_width = 900 };
             cui_column_begin(ui, &__cl410);
@@ -2029,14 +1943,14 @@ public static unsafe partial class Gallery
             for (; (!(((cui__scope_1501) != 0) )     ); cui__scope_1501 = 1, cui_box_end(ui))
             {
                 cui_time_histogram_opts __cl411 = new cui_time_histogram_opts { _ = 0, utc = 1, height = 150 };
-                cui_time_histogram_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S772 /*"logs"*/), 1794240000, 900, 96, se, 3, global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_th_s0__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_th_s1__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, &__cl411);
+                cui_time_histogram_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S772 /*"logs"*/), 1794240000, 900, 96, se, 3, global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_th_s0__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_th_s1__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, &__cl411);
             }
         }
     }
 
 
 
-    public static unsafe void devtools2_coverage__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void devtools2_coverage__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
         {
             cui_box __cl412 = new cui_box { _ = 0, gap = 10, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, max_width = 820 };
@@ -2045,14 +1959,14 @@ public static unsafe partial class Gallery
             for (; (!(((cui__scope_1513) != 0) )     ); cui__scope_1513 = 1, cui_box_end(ui))
             {
                 cui_coverage_opts __cl413 = new cui_coverage_opts { _ = 0, height = 372 };
-                cui_coverage_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S940 /*"cov"*/), global::Managed.Cui.Gallery.Gallery.Globals.cv_files__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 8, &__cl413);
+                cui_coverage_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S940 /*"cov"*/), global::Managed.Cui.Gallery.Gallery.Globals.cv_files__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 8, &__cl413);
             }
         }
     }
 
 
 
-    public static unsafe void devtools2_blame__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void devtools2_blame__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
         {
             cui_box __cl414 = new cui_box { _ = 0, gap = 10, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, max_width = 900 };
@@ -2061,14 +1975,14 @@ public static unsafe partial class Gallery
             for (; (!(((cui__scope_1530) != 0) )     ); cui__scope_1530 = 1, cui_box_end(ui))
             {
                 cui_blame_opts __cl415 = new cui_blame_opts { _ = 0, lang = (DotCcLiterals.Pointer + DotCcLiterals.S1525 /*"c"*/), now = 1794211200, height = 320, first_line = 120 };
-                cui_blame_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S64 /*"blame"*/), global::Managed.Cui.Gallery.Gallery.Globals.bl_lines__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, global::Managed.Cui.Gallery.Gallery.Globals.bl_commit__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 15, global::Managed.Cui.Gallery.Gallery.Globals.bl_commits__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 5, &__cl415);
+                cui_blame_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S64 /*"blame"*/), global::Managed.Cui.Gallery.Gallery.Globals.bl_lines__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, global::Managed.Cui.Gallery.Gallery.Globals.bl_commit__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 15, global::Managed.Cui.Gallery.Gallery.Globals.bl_commits__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 5, &__cl415);
             }
         }
     }
 
 
 
-    public static unsafe void devtools2_flags__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void devtools2_flags__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
         {
             cui_box __cl416 = new cui_box { _ = 0, gap = 10, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, max_width = 860 };
@@ -2077,14 +1991,14 @@ public static unsafe partial class Gallery
             for (; (!(((cui__scope_1543) != 0) )     ); cui__scope_1543 = 1, cui_box_end(ui))
             {
                 cui_feature_flags_opts __cl417 = new cui_feature_flags_opts { _ = 0 };
-                cui_feature_flags_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1459 /*"flags"*/), global::Managed.Cui.Gallery.Gallery.Globals.ff_flags__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 4, global::Managed.Cui.Gallery.Gallery.Globals.envs__s189__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 3, &__cl417);
+                cui_feature_flags_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1459 /*"flags"*/), global::Managed.Cui.Gallery.Gallery.Globals.ff_flags__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 4, global::Managed.Cui.Gallery.Gallery.Globals.envs__s189__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 3, &__cl417);
             }
         }
     }
 
 
 
-    public static unsafe void devtools2_api__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void devtools2_api__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
         {
             cui_box __cl419 = new cui_box { _ = 0, gap = 10, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, max_width = 820 };
@@ -2092,41 +2006,41 @@ public static unsafe partial class Gallery
             int cui__scope_1558 = 0;
             for (; (!(((cui__scope_1558) != 0) )     ); cui__scope_1558 = 1, cui_box_end(ui))
             {
-                cui_api_explorer_opts __cl420 = new cui_api_explorer_opts { _ = 0, selected = global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_ax_sel__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 };
-                cui_api_explorer_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S784 /*"api"*/), global::Managed.Cui.Gallery.Gallery.Globals.ax_eps__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 8, &__cl420);
+                cui_api_explorer_opts __cl420 = new cui_api_explorer_opts { _ = 0, selected = global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_ax_sel__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 };
+                cui_api_explorer_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S784 /*"api"*/), global::Managed.Cui.Gallery.Gallery.Globals.ax_eps__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 8, &__cl420);
             }
         }
     }
 
 
 
-    public static unsafe void page_devtools2__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void page_devtools2__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1589 /*"Test explorer"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1373 /*"Suites fold; hover a row to run it; filter by status or name."*/));
-        devtools2_tests__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui);
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S842 /*"Stack trace"*/), (DotCcLiterals.Pointer + DotCcLiterals.S949 /*"Library frames fold; a frame with source opens; copy the trace."*/));
-        devtools2_stack__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui);
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1381 /*"Blame"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1028 /*"Hover the gutter to mark a commit's lines; click it to open the commit."*/));
-        devtools2_blame__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui);
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S283 /*"Coverage"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1055 /*"Folders sum up their files; click a column to sort."*/));
-        devtools2_coverage__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui);
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S299 /*"Regex tester"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1545 /*"Matches and groups are marked as you type."*/));
-        devtools2_regex__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui);
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1298 /*"HTTP request bar"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1573 /*"The parameters table and the URL stay in step."*/));
-        devtools2_request__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui);
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S916 /*"API explorer"*/), (DotCcLiterals.Pointer + DotCcLiterals.S85 /*"Click an endpoint for its parameters."*/));
-        devtools2_api__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui);
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S188 /*"Feature flags"*/), (DotCcLiterals.Pointer + DotCcLiterals.S460 /*"A switch per environment; click a share to change it."*/));
-        devtools2_flags__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui);
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1204 /*"Uptime"*/), (DotCcLiterals.Pointer + DotCcLiterals.S399 /*"One bar per day; hover for the day."*/));
-        devtools2_uptime__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui);
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S597 /*"Time histogram"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1269 /*"Drag to select a range; click to clear it."*/));
-        devtools2_histogram__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui);
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1589 /*"Test explorer"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1373 /*"Suites fold; hover a row to run it; filter by status or name."*/));
+        devtools2_tests__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(ui);
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S842 /*"Stack trace"*/), (DotCcLiterals.Pointer + DotCcLiterals.S949 /*"Library frames fold; a frame with source opens; copy the trace."*/));
+        devtools2_stack__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(ui);
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1381 /*"Blame"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1028 /*"Hover the gutter to mark a commit's lines; click it to open the commit."*/));
+        devtools2_blame__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(ui);
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S283 /*"Coverage"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1055 /*"Folders sum up their files; click a column to sort."*/));
+        devtools2_coverage__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(ui);
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S299 /*"Regex tester"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1545 /*"Matches and groups are marked as you type."*/));
+        devtools2_regex__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(ui);
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1298 /*"HTTP request bar"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1573 /*"The parameters table and the URL stay in step."*/));
+        devtools2_request__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(ui);
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S916 /*"API explorer"*/), (DotCcLiterals.Pointer + DotCcLiterals.S85 /*"Click an endpoint for its parameters."*/));
+        devtools2_api__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(ui);
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S188 /*"Feature flags"*/), (DotCcLiterals.Pointer + DotCcLiterals.S460 /*"A switch per environment; click a share to change it."*/));
+        devtools2_flags__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(ui);
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1204 /*"Uptime"*/), (DotCcLiterals.Pointer + DotCcLiterals.S399 /*"One bar per day; hover for the day."*/));
+        devtools2_uptime__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(ui);
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S597 /*"Time histogram"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1269 /*"Drag to select a range; click to clear it."*/));
+        devtools2_histogram__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(ui);
     }
 
 
 
-    public static unsafe float instrument_dose__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(double t)
+    public static unsafe float instrument_dose(double t)
     {
         if (((unchecked((int)(((CBool)(t <= 0))))) != 0))
             return 0;
@@ -2136,16 +2050,16 @@ public static unsafe partial class Gallery
 
 
 
-    public static unsafe void page_instruments__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(cui_ctx* ui)
+    public static unsafe void page_instruments__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199(cui_ctx* ui)
     {
         double peak = 0, peak_at = 6, bed = 0;
         for (int k = 0; ((unchecked((int)(((CBool)(k < 97))))) != 0); k++)
         {
             double at = 6 + 24.0 * k / 96, total = 0;
-            for (int c = 0; ((unchecked((int)(((CBool)(c < global::Managed.Cui.Gallery.Gallery.Globals.count__s191__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9))))) != 0); c++)
+            for (int c = 0; ((unchecked((int)(((CBool)(c < global::Managed.Cui.Gallery.Gallery.Globals.count__s191__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199))))) != 0); c++)
             {
-                (global::Managed.Cui.Gallery.Gallery.Globals.curve__s193__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 + c * 97)[k] = instrument_dose__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(at - global::Managed.Cui.Gallery.Gallery.Globals.cups__s190__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[c]);
-                total += (global::Managed.Cui.Gallery.Gallery.Globals.curve__s193__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 + c * 97)[k];
+                (global::Managed.Cui.Gallery.Gallery.Globals.curve__s193__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 + c * 97)[k] = instrument_dose(at - global::Managed.Cui.Gallery.Gallery.Globals.cups__s190__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[c]);
+                total += (global::Managed.Cui.Gallery.Gallery.Globals.curve__s193__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 + c * 97)[k];
             }
             if (((unchecked((int)(((CBool)(total > peak))))) != 0))
             {
@@ -2153,8 +2067,8 @@ public static unsafe partial class Gallery
                 peak_at = at;
             }
         }
-        for (int c__1 = 0; ((unchecked((int)(((CBool)(c__1 < global::Managed.Cui.Gallery.Gallery.Globals.count__s191__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9))))) != 0); c__1++)
-            bed += instrument_dose__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(23 - global::Managed.Cui.Gallery.Gallery.Globals.cups__s190__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[c__1]);
+        for (int c__1 = 0; ((unchecked((int)(((CBool)(c__1 < global::Managed.Cui.Gallery.Gallery.Globals.count__s191__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199))))) != 0); c__1++)
+            bed += instrument_dose(23 - global::Managed.Cui.Gallery.Gallery.Globals.cups__s190__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[c__1]);
         byte* peak_text = stackalloc byte[32];
         byte* peak_mg = stackalloc byte[16];
         byte* peak_time = stackalloc byte[16];
@@ -2165,7 +2079,7 @@ public static unsafe partial class Gallery
         snprintf(peak_time, unchecked((int)(((ulong)((16 * sizeof(byte)))))), (DotCcLiterals.Pointer + DotCcLiterals.S1458 /*"%02d:%02d"*/)).Arg((int)peak_at).Arg((int)lround((peak_at - (int)peak_at) * 60) % 60).Done();
         snprintf(bed_text, unchecked((int)(((ulong)((32 * sizeof(byte)))))), (DotCcLiterals.Pointer + DotCcLiterals.S1253 /*"%.0f MG STILL IN YOU"*/)).Arg(bed).Done();
         snprintf(big, unchecked((int)(((ulong)((16 * sizeof(byte)))))), (DotCcLiterals.Pointer + DotCcLiterals.S1257 /*"%.0f"*/)).Arg(bed).Done();
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S815 /*"Readouts"*/), (DotCcLiterals.Pointer + DotCcLiterals.S22 /*"A label, a value with its unit, and a line of context, in the monospaced font."*/));
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S815 /*"Readouts"*/), (DotCcLiterals.Pointer + DotCcLiterals.S22 /*"A label, a value with its unit, and a line of context, in the monospaced font."*/));
         {
             cui_box __cl423 = new cui_box { _ = 0, gap = 40, wrap = 1, align = __DotCcEnum_6375695F616C69676E.CUI_ALIGN_END };
             cui_row_begin(ui, &__cl423);
@@ -2177,13 +2091,13 @@ public static unsafe partial class Gallery
                 cui_readout_opts __cl425 = new cui_readout_opts { _ = 0, unit = (DotCcLiterals.Pointer + DotCcLiterals.S1299 /*"MG"*/), detail = peak_time };
                 cui_readout_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1587 /*"PEAK"*/), peak_mg, &__cl425);
                 cui_readout_opts __cl426 = new cui_readout_opts { _ = 0, size = __DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM, detail = (DotCcLiterals.Pointer + DotCcLiterals.S1035 /*"95 MG EACH"*/) };
-                cui_readout_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1354 /*"CUPS"*/), ((byte*)(((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.count__s191__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 == 1))))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S1500 /*"1"*/) : ((byte*)(((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.count__s191__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 == 2))))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S929 /*"2"*/) : ((byte*)(((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.count__s191__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 == 3))))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S1096 /*"3"*/) : ((byte*)(((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.count__s191__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 == 4))))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S296 /*"4"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S1623 /*"5+"*/))))))))), &__cl426);
+                cui_readout_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1354 /*"CUPS"*/), ((byte*)(((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.count__s191__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 == 1))))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S1500 /*"1"*/) : ((byte*)(((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.count__s191__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 == 2))))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S929 /*"2"*/) : ((byte*)(((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.count__s191__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 == 3))))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S1096 /*"3"*/) : ((byte*)(((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.count__s191__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 == 4))))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S296 /*"4"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S1623 /*"5+"*/))))))))), &__cl426);
             }
         }
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S640 /*"Dot-matrix chart and event track"*/), (DotCcLiterals.Pointer + DotCcLiterals.S612 /*"Drag a cup along the axis, click the chart to add one, double-click a cup to remove it."*/));
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S640 /*"Dot-matrix chart and event track"*/), (DotCcLiterals.Pointer + DotCcLiterals.S612 /*"Drag a cup along the axis, click the chart to add one, double-click a cup to remove it."*/));
         cui_dot_series* series = stackalloc cui_dot_series[8];
-        for (int c__2 = 0; ((unchecked((int)(((CBool)(c__2 < global::Managed.Cui.Gallery.Gallery.Globals.count__s191__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9))))) != 0); c__2++)
-            series[c__2] = new cui_dot_series { values = global::Managed.Cui.Gallery.Gallery.Globals.curve__s193__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 + c__2 * 97, name = null, accent = ((CBool)(c__2 == global::Managed.Cui.Gallery.Gallery.Globals.selected__s192__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9)) };
+        for (int c__2 = 0; ((unchecked((int)(((CBool)(c__2 < global::Managed.Cui.Gallery.Gallery.Globals.count__s191__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199))))) != 0); c__2++)
+            series[c__2] = new cui_dot_series { values = global::Managed.Cui.Gallery.Gallery.Globals.curve__s193__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 + c__2 * 97, name = null, accent = ((CBool)(c__2 == global::Managed.Cui.Gallery.Gallery.Globals.selected__s192__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199)) };
         cui_chart_annotation* notes = stackalloc cui_chart_annotation[]{ new cui_chart_annotation { kind = __DotCcEnum_6375695F616E6E6F746174696F6E5F6B696E64.CUI_ANNOTATION_Y, x = 0, y = 50, label = (DotCcLiterals.Pointer + DotCcLiterals.S1392 /*"50"*/), detail = null, accent = 0 }, new cui_chart_annotation { kind = __DotCcEnum_6375695F616E6E6F746174696F6E5F6B696E64.CUI_ANNOTATION_X, x = 23, y = 0, label = (DotCcLiterals.Pointer + DotCcLiterals.S998 /*"BED 23:00"*/), detail = bed_text, accent = 0 }, new cui_chart_annotation { kind = __DotCcEnum_6375695F616E6E6F746174696F6E5F6B696E64.CUI_ANNOTATION_X, x = peak_at, y = 0, label = peak_text, detail = peak_time, accent = 0 } };
         {
             cui_box __cl427 = new cui_box { _ = 0, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, gap = 0 };
@@ -2191,25 +2105,25 @@ public static unsafe partial class Gallery
             int cui__scope_1625 = 0;
             for (; (!(((cui__scope_1625) != 0) )     ); cui__scope_1625 = 1, cui_box_end(ui))
             {
-                cui_dot_chart_opts __cl428 = new cui_dot_chart_opts { _ = 0, height = 240, x_min = 6, x_max = 30, x_units = __DotCcEnum_6375695F617869735F756E697473.CUI_AXIS_HOURS, min = 0, max = 260, unit = (DotCcLiterals.Pointer + DotCcLiterals.S1299 /*"MG"*/), no_axis = 1, annotations = notes, annotation_count = ((int)(((global::Managed.Cui.Gallery.Gallery.Globals.count__s191__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9) != 0) ? 3 : 1)) };
-                cui_dot_chart_result r = cui_dot_chart_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1237 /*"caffeine"*/), series, global::Managed.Cui.Gallery.Gallery.Globals.count__s191__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 97, &__cl428);
-                if (((unchecked((int)(((CBool)(((unchecked((int)(r.clicked))) != 0) && ((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.count__s191__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 < 8))))) != 0)))))) != 0))
+                cui_dot_chart_opts __cl428 = new cui_dot_chart_opts { _ = 0, height = 240, x_min = 6, x_max = 30, x_units = __DotCcEnum_6375695F617869735F756E697473.CUI_AXIS_HOURS, min = 0, max = 260, unit = (DotCcLiterals.Pointer + DotCcLiterals.S1299 /*"MG"*/), no_axis = 1, annotations = notes, annotation_count = ((int)(((global::Managed.Cui.Gallery.Gallery.Globals.count__s191__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199) != 0) ? 3 : 1)) };
+                cui_dot_chart_result r = cui_dot_chart_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1237 /*"caffeine"*/), series, global::Managed.Cui.Gallery.Gallery.Globals.count__s191__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 97, &__cl428);
+                if (((unchecked((int)(((CBool)(((unchecked((int)(r.clicked))) != 0) && ((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.count__s191__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 < 8))))) != 0)))))) != 0))
                 {
                     double t = floor(r.x * 4 + 0.5) / 4;
-                    int at__1 = global::Managed.Cui.Gallery.Gallery.Globals.count__s191__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9++;
-                    while (((unchecked((int)(((CBool)(((unchecked((int)(((CBool)(at__1 > 0))))) != 0) && ((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.cups__s190__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[at__1 - 1] > t))))) != 0)))))) != 0))
+                    int at__1 = global::Managed.Cui.Gallery.Gallery.Globals.count__s191__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199++;
+                    while (((unchecked((int)(((CBool)(((unchecked((int)(((CBool)(at__1 > 0))))) != 0) && ((unchecked((int)(((CBool)(global::Managed.Cui.Gallery.Gallery.Globals.cups__s190__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[at__1 - 1] > t))))) != 0)))))) != 0))
                     {
-                        global::Managed.Cui.Gallery.Gallery.Globals.cups__s190__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[at__1] = global::Managed.Cui.Gallery.Gallery.Globals.cups__s190__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[at__1 - 1];
+                        global::Managed.Cui.Gallery.Gallery.Globals.cups__s190__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[at__1] = global::Managed.Cui.Gallery.Gallery.Globals.cups__s190__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[at__1 - 1];
                         at__1--;
                     }
-                    global::Managed.Cui.Gallery.Gallery.Globals.cups__s190__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[at__1] = t;
-                    global::Managed.Cui.Gallery.Gallery.Globals.selected__s192__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 = at__1;
+                    global::Managed.Cui.Gallery.Gallery.Globals.cups__s190__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[at__1] = t;
+                    global::Managed.Cui.Gallery.Gallery.Globals.selected__s192__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 = at__1;
                 }
-                cui_event_track_opts __cl429 = new cui_event_track_opts { _ = 0, step = 0.25, units = __DotCcEnum_6375695F617869735F756E697473.CUI_AXIS_HOURS, label_step = 6, selected = global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_selected__s192__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9 };
-                cui_event_track_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S955 /*"cups"*/), global::Managed.Cui.Gallery.Gallery.Globals.cups__s190__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_count__s191__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9, 8, 6, 30, &__cl429);
+                cui_event_track_opts __cl429 = new cui_event_track_opts { _ = 0, step = 0.25, units = __DotCcEnum_6375695F617869735F756E697473.CUI_AXIS_HOURS, label_step = 6, selected = global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_selected__s192__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199 };
+                cui_event_track_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S955 /*"cups"*/), global::Managed.Cui.Gallery.Gallery.Globals.cups__s190__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, global::Managed.Cui.Gallery.Gallery.__dotcc_globalAddress_count__s191__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199, 8, 6, 30, &__cl429);
             }
         }
-        section__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1634 /*"Dot-matrix display"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1316 /*"Text in a 5 by 7 dot font; a long line can scroll."*/));
+        section(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1634 /*"Dot-matrix display"*/), (DotCcLiterals.Pointer + DotCcLiterals.S1316 /*"Text in a 5 by 7 dot font; a long line can scroll."*/));
         cui_dot_display_opts __cl430 = new cui_dot_display_opts { _ = 0, pitch = 3, accent = ((CBool)(bed > 50)) };
         cui_dot_display_ex(ui, ((byte*)(((unchecked((int)(((CBool)(bed > 50))))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S1419 /*"OVER THE LINE AT BEDTIME"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S234 /*"UNDER THE LINE AT BEDTIME"*/))), &__cl430);
     }
@@ -2225,14 +2139,14 @@ public static unsafe partial class Gallery
 
     public static unsafe byte* gallery_more_name(int page)
     {
-        return ((byte*)(((unchecked((int)(((CBool)(((unchecked((int)(((CBool)(page >= 0))))) != 0) && ((unchecked((int)(((CBool)(page < gallery_more_count()))))) != 0)))))) != 0) ? global::Managed.Cui.Gallery.Gallery.Globals.pages__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[page].name : (DotCcLiterals.Pointer + DotCcLiterals.S704 /*""*/)));
+        return ((byte*)(((unchecked((int)(((CBool)(((unchecked((int)(((CBool)(page >= 0))))) != 0) && ((unchecked((int)(((CBool)(page < gallery_more_count()))))) != 0)))))) != 0) ? global::Managed.Cui.Gallery.Gallery.Globals.pages__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[page].name : (DotCcLiterals.Pointer + DotCcLiterals.S704 /*""*/)));
     }
 
 
 
     public static unsafe byte* gallery_more_icon(int page)
     {
-        return ((byte*)(((unchecked((int)(((CBool)(((unchecked((int)(((CBool)(page >= 0))))) != 0) && ((unchecked((int)(((CBool)(page < gallery_more_count()))))) != 0)))))) != 0) ? global::Managed.Cui.Gallery.Gallery.Globals.pages__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[page].icon : null));
+        return ((byte*)(((unchecked((int)(((CBool)(((unchecked((int)(((CBool)(page >= 0))))) != 0) && ((unchecked((int)(((CBool)(page < gallery_more_count()))))) != 0)))))) != 0) ? global::Managed.Cui.Gallery.Gallery.Globals.pages__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[page].icon : null));
     }
 
 
@@ -2241,8 +2155,8 @@ public static unsafe partial class Gallery
     {
         if (((unchecked((int)(((CBool)(((unchecked((int)(((CBool)(page < 0))))) != 0) || ((unchecked((int)(((CBool)(page >= gallery_more_count()))))) != 0)))))) != 0))
             return;
-        cui_push_id(ui, global::Managed.Cui.Gallery.Gallery.Globals.pages__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[page].name);
-        global::Managed.Cui.Gallery.Gallery.Globals.pages__unit_AA99C05C9B88379C3E487D8C3CA778C56CA11833A3BF3913E9E756D45ACE71C9[page].fn(ui);
+        cui_push_id(ui, global::Managed.Cui.Gallery.Gallery.Globals.pages__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[page].name);
+        global::Managed.Cui.Gallery.Gallery.Globals.pages__unit_FA4C3EF01494C6D96CD56C84BA65C646C6902B38AE09C3FD9F6627AF268ED199[page].fn(ui);
         cui_pop_id(ui);
     }
 

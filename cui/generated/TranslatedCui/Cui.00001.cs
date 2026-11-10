@@ -29,7 +29,7 @@ using __DotCcEnum_6375695F6D6F64 = global::Managed.Cui.Cui.cui_mod;
 using __DotCcEnum_6375695F7468656D655F6D6F6465 = global::Managed.Cui.Cui.cui_theme_mode;
 using __DotCcEnum_6375695F746F6E65 = global::Managed.Cui.Cui.cui_tone;
 using __DotCcEnum_6375695F656C65766174696F6E = global::Managed.Cui.Cui.cui_elevation;
-using __DotCcEnum_5F5F446F744363547970656465665F30453045363138353046303939323138444342313336464135443434453336353142413335323030433944453438343444393532313136323837423043463944 = global::Managed.Cui.Cui.cui__text_anchor;
+using __DotCcEnum_5F5F446F744363547970656465665F31383733324539413631304534373639334344373536304538413931383146443146454137313736373931463742444543353734433534454635444546413538 = global::Managed.Cui.Cui.cui__text_anchor;
 using __DotCcEnum_6375695F746578747572655F666F726D6174 = global::Managed.Cui.Cui.cui_texture_format;
 using __DotCcEnum_6375695F646972656374696F6E = global::Managed.Cui.Cui.cui_direction;
 using __DotCcEnum_6375695F6A757374696679 = global::Managed.Cui.Cui.cui_justify;
@@ -39,7 +39,7 @@ using __DotCcEnum_6375695F746578745F616C69676E = global::Managed.Cui.Cui.cui_tex
 using __DotCcEnum_6375695F627574746F6E5F76617269616E74 = global::Managed.Cui.Cui.cui_button_variant;
 using __DotCcEnum_6375695F636F6E74726F6C5F73697A65 = global::Managed.Cui.Cui.cui_control_size;
 using __DotCcEnum_6375695F746162735F76617269616E74 = global::Managed.Cui.Cui.cui_tabs_variant;
-using __DotCcEnum_5F5F446F744363547970656465665F37383132333838343837304536434536353233453436434444443433383833373744363646433646314241334230424639434637324136333833454138353043 = global::Managed.Cui.Cui.cui__field_style;
+using __DotCcEnum_5F5F446F744363547970656465665F34304230353439433246314135414433383143374232414442363442463143414143393430304331413830453744383444394644423346304430413946433346 = global::Managed.Cui.Cui.cui__field_style;
 using __DotCcEnum_6375695F73696465 = global::Managed.Cui.Cui.cui_side;
 using __DotCcEnum_6375695F737461747573 = global::Managed.Cui.Cui.cui_status;
 using __DotCcEnum_6375695F646966665F726F775F6B696E64 = global::Managed.Cui.Cui.cui_diff_row_kind;
@@ -62,950 +62,7 @@ using DotCcPointers = global::Managed.Cui.Cui.CuiFunctionPointers;
 
 public static unsafe partial class Cui
 {
-    public static unsafe stbtt__point* stbtt_FlattenCurves__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(stbtt_vertex* vertices, int num_verts, float objspace_flatness, int** contour_lengths, int* num_contours, void* userdata)
-    {
-        stbtt__point* points = null;
-        int num_points = 0;
-        float objspace_flatness_squared = objspace_flatness * objspace_flatness;
-        int i = default, n = 0, start = 0, pass = default;
-        for (i = 0; ((i < num_verts)); ++i)
-            if (((vertices[i].type == 1)))
-                ++n;
-        *num_contours = n;
-        if (((n == 0)))
-            return null;
-        _ = userdata;
-        *contour_lengths = (int*)malloc(((ulong)(sizeof(int))) * (ulong)(n));
-        if (((*contour_lengths == null)))
-        {
-            *num_contours = 0;
-            return null;
-        }
-        for (pass = 0; ((pass < 2)); ++pass)
-        {
-            float x = 0, y = 0;
-            if (((pass == 1)))
-            {
-                _ = userdata;
-                points = (stbtt__point*)malloc((ulong)(num_points) * ((ulong)(sizeof(stbtt__point))));
-                if (((points == (void*)0)))
-                    goto error;
-            }
-            num_points = 0;
-            n = -1;
-            for (i = 0; ((i < num_verts)); ++i)
-            {
-                switch ((int)vertices[i].type)
-                {
-                    case 1:
-                        if (((n >= 0)))
-                            (*contour_lengths)[n] = num_points - start;
-                        ++n;
-                        start = num_points;
-                        {
-                            x = vertices[i].x;
-                            y = vertices[i].y;
-                        }
-                        stbtt__add_point__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(points, num_points++, x, y);
-                        break;
-                    case 2:
-                        {
-                            x = vertices[i].x;
-                            y = vertices[i].y;
-                        }
-                        stbtt__add_point__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(points, num_points++, x, y);
-                        break;
-                    case 3:
-                        stbtt__tesselate_curve__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(points, &num_points, x, y, vertices[i].cx, vertices[i].cy, vertices[i].x, vertices[i].y, objspace_flatness_squared, 0);
-                        {
-                            x = vertices[i].x;
-                            y = vertices[i].y;
-                        }
-                        break;
-                    case 4:
-                        stbtt__tesselate_cubic__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(points, &num_points, x, y, vertices[i].cx, vertices[i].cy, vertices[i].cx1, vertices[i].cy1, vertices[i].x, vertices[i].y, objspace_flatness_squared, 0);
-                        {
-                            x = vertices[i].x;
-                            y = vertices[i].y;
-                        }
-                        break;
-                }
-            }
-            (*contour_lengths)[n] = num_points - start;
-        }
-        return points;
-        error:
-        {
-            free(points);
-        }
-        {
-            free(*contour_lengths);
-        }
-        *contour_lengths = null;
-        *num_contours = 0;
-        return null;
-    }
-
-
-
-    public static unsafe void stbtt_Rasterize__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(stbtt__bitmap* result, float flatness_in_pixels, stbtt_vertex* vertices, int num_verts, float scale_x, float scale_y, float shift_x, float shift_y, int x_off, int y_off, int invert, void* userdata)
-    {
-        float scale = ((float)(((scale_x > scale_y)) ? scale_y : scale_x));
-        int winding_count = 0;
-        int* winding_lengths = null;
-        stbtt__point* windings = stbtt_FlattenCurves__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(vertices, num_verts, flatness_in_pixels / scale, &winding_lengths, &winding_count, userdata);
-        if ((((void*)(windings)) != null))
-        {
-            stbtt__rasterize__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(result, windings, winding_lengths, winding_count, scale_x, scale_y, shift_x, shift_y, x_off, y_off, invert, userdata);
-            {
-                free(winding_lengths);
-            }
-            {
-                free(windings);
-            }
-        }
-    }
-
-
-
-    public static unsafe void stbtt_FreeBitmap__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(byte* bitmap, void* userdata)
-    {
-        {
-            free(bitmap);
-        }
-    }
-
-
-
-    public static unsafe byte* stbtt_GetGlyphBitmapSubpixel__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(stbtt_fontinfo* info, float scale_x, float scale_y, float shift_x, float shift_y, int glyph, int* width, int* height, int* xoff, int* yoff)
-    {
-        int ix0 = default, iy0 = default, ix1 = default, iy1 = default;
-        stbtt__bitmap gbm = default;
-        stbtt_vertex* vertices = default;
-        int num_verts = stbtt_GetGlyphShape__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, glyph, &vertices);
-        if (((scale_x == 0)))
-            scale_x = scale_y;
-        if (((scale_y == 0)))
-        {
-            if (((scale_x == 0)))
-            {
-                {
-                    free(vertices);
-                }
-                return null;
-            }
-            scale_y = scale_x;
-        }
-        stbtt_GetGlyphBitmapBoxSubpixel__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, glyph, scale_x, scale_y, shift_x, shift_y, &ix0, &iy0, &ix1, &iy1);
-        gbm.w = ix1 - ix0;
-        gbm.h = iy1 - iy0;
-        gbm.pixels = null;
-        if ((((void*)(width)) != null))
-            *width = gbm.w;
-        if ((((void*)(height)) != null))
-            *height = gbm.h;
-        if ((((void*)(xoff)) != null))
-            *xoff = ix0;
-        if ((((void*)(yoff)) != null))
-            *yoff = iy0;
-        if (((((gbm.w) != 0) && ((gbm.h) != 0))))
-        {
-            _ = info->userdata;
-            gbm.pixels = (byte*)malloc((ulong)(gbm.w * gbm.h));
-            if ((((void*)(gbm.pixels)) != null))
-            {
-                gbm.stride = gbm.w;
-                stbtt_Rasterize__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&gbm, 0.35f, vertices, num_verts, scale_x, scale_y, shift_x, shift_y, ix0, iy0, 1, info->userdata);
-            }
-        }
-        {
-            free(vertices);
-        }
-        return gbm.pixels;
-    }
-
-
-
-    public static unsafe byte* stbtt_GetGlyphBitmap__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(stbtt_fontinfo* info, float scale_x, float scale_y, int glyph, int* width, int* height, int* xoff, int* yoff)
-    {
-        return stbtt_GetGlyphBitmapSubpixel__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, scale_x, scale_y, 0.0f, 0.0f, glyph, width, height, xoff, yoff);
-    }
-
-
-
-    public static unsafe void stbtt_MakeGlyphBitmapSubpixel__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(stbtt_fontinfo* info, byte* output, int out_w, int out_h, int out_stride, float scale_x, float scale_y, float shift_x, float shift_y, int glyph)
-    {
-        int ix0 = default, iy0 = default;
-        stbtt_vertex* vertices = default;
-        int num_verts = stbtt_GetGlyphShape__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, glyph, &vertices);
-        stbtt__bitmap gbm = default;
-        stbtt_GetGlyphBitmapBoxSubpixel__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, glyph, scale_x, scale_y, shift_x, shift_y, &ix0, &iy0, null, null);
-        gbm.pixels = output;
-        gbm.w = out_w;
-        gbm.h = out_h;
-        gbm.stride = out_stride;
-        if (((((gbm.w) != 0) && ((gbm.h) != 0))))
-            stbtt_Rasterize__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&gbm, 0.35f, vertices, num_verts, scale_x, scale_y, shift_x, shift_y, ix0, iy0, 1, info->userdata);
-        {
-            free(vertices);
-        }
-    }
-
-
-
-    public static unsafe void stbtt_MakeGlyphBitmap__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(stbtt_fontinfo* info, byte* output, int out_w, int out_h, int out_stride, float scale_x, float scale_y, int glyph)
-    {
-        stbtt_MakeGlyphBitmapSubpixel__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, output, out_w, out_h, out_stride, scale_x, scale_y, 0.0f, 0.0f, glyph);
-    }
-
-
-
-    public static unsafe byte* stbtt_GetCodepointBitmapSubpixel__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(stbtt_fontinfo* info, float scale_x, float scale_y, float shift_x, float shift_y, int codepoint, int* width, int* height, int* xoff, int* yoff)
-    {
-        return stbtt_GetGlyphBitmapSubpixel__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, scale_x, scale_y, shift_x, shift_y, stbtt_FindGlyphIndex__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, codepoint), width, height, xoff, yoff);
-    }
-
-
-
-    public static unsafe void stbtt_MakeCodepointBitmapSubpixelPrefilter__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(stbtt_fontinfo* info, byte* output, int out_w, int out_h, int out_stride, float scale_x, float scale_y, float shift_x, float shift_y, int oversample_x, int oversample_y, float* sub_x, float* sub_y, int codepoint)
-    {
-        stbtt_MakeGlyphBitmapSubpixelPrefilter__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, output, out_w, out_h, out_stride, scale_x, scale_y, shift_x, shift_y, oversample_x, oversample_y, sub_x, sub_y, stbtt_FindGlyphIndex__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, codepoint));
-    }
-
-
-
-    public static unsafe void stbtt_MakeCodepointBitmapSubpixel__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(stbtt_fontinfo* info, byte* output, int out_w, int out_h, int out_stride, float scale_x, float scale_y, float shift_x, float shift_y, int codepoint)
-    {
-        stbtt_MakeGlyphBitmapSubpixel__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, output, out_w, out_h, out_stride, scale_x, scale_y, shift_x, shift_y, stbtt_FindGlyphIndex__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, codepoint));
-    }
-
-
-
-    public static unsafe byte* stbtt_GetCodepointBitmap__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(stbtt_fontinfo* info, float scale_x, float scale_y, int codepoint, int* width, int* height, int* xoff, int* yoff)
-    {
-        return stbtt_GetCodepointBitmapSubpixel__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, scale_x, scale_y, 0.0f, 0.0f, codepoint, width, height, xoff, yoff);
-    }
-
-
-
-    public static unsafe void stbtt_MakeCodepointBitmap__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(stbtt_fontinfo* info, byte* output, int out_w, int out_h, int out_stride, float scale_x, float scale_y, int codepoint)
-    {
-        stbtt_MakeCodepointBitmapSubpixel__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, output, out_w, out_h, out_stride, scale_x, scale_y, 0.0f, 0.0f, codepoint);
-    }
-
-
-
-    public static unsafe int stbtt_BakeFontBitmap_internal__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(byte* data, int offset, float pixel_height, byte* pixels, int pw, int ph, int first_char, int num_chars, stbtt_bakedchar* chardata)
-    {
-        float scale = default;
-        int x = default, y = default, bottom_y = default, i = default;
-        stbtt_fontinfo f = default;
-        f.userdata = null;
-        if ((!(((stbtt_InitFont__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&f, data, offset)) != 0) )     ))
-            return -1;
-        memset(pixels, 0, (ulong)(pw * ph));
-        x = y = 1;
-        bottom_y = 1;
-        scale = stbtt_ScaleForPixelHeight__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&f, pixel_height);
-        for (i = 0; ((i < num_chars)); ++i)
-        {
-            int advance = default, lsb = default, x0 = default, y0 = default, x1 = default, y1 = default, gw = default, gh = default;
-            int g = stbtt_FindGlyphIndex__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&f, first_char + i);
-            stbtt_GetGlyphHMetrics__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&f, g, &advance, &lsb);
-            stbtt_GetGlyphBitmapBox__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&f, g, scale, scale, &x0, &y0, &x1, &y1);
-            gw = x1 - x0;
-            gh = y1 - y0;
-            if (((x + gw + 1 >= pw)))
-                {
-                    y = bottom_y;
-                    x = 1;
-                }
-            if (((y + gh + 1 >= ph)))
-                return -i;
-            __dotcc_assert(((CBool)(x + gw < pw)));
-            __dotcc_assert(((CBool)(y + gh < ph)));
-            stbtt_MakeGlyphBitmap__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&f, pixels + x + y * pw, gw, gh, pw, scale, scale, g);
-            chardata[i].x0 = (ushort)((short)x);
-            chardata[i].y0 = (ushort)((short)y);
-            chardata[i].x1 = (ushort)((short)(x + gw));
-            chardata[i].y1 = (ushort)((short)(y + gh));
-            chardata[i].xadvance = scale * advance;
-            chardata[i].xoff = (float)x0;
-            chardata[i].yoff = (float)y0;
-            x = x + gw + 1;
-            if (((y + gh + 1 > bottom_y)))
-                bottom_y = y + gh + 1;
-        }
-        return bottom_y;
-    }
-
-
-
-    public static unsafe void stbtt_GetBakedQuad__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(stbtt_bakedchar* chardata, int pw, int ph, int char_index, float* xpos, float* ypos, stbtt_aligned_quad* q, int opengl_fillrule)
-    {
-        float d3d_bias = ((float)(((opengl_fillrule) != 0) ? (float)(0) : -0.5f));
-        float ipw = 1.0f / pw, iph = 1.0f / ph;
-        stbtt_bakedchar* b = chardata + char_index;
-        int round_x = (int)floor((double)((*xpos + b->xoff + 0.5f)));
-        int round_y = (int)floor((double)((*ypos + b->yoff + 0.5f)));
-        q->x0 = round_x + d3d_bias;
-        q->y0 = round_y + d3d_bias;
-        q->x1 = round_x + b->x1 - b->x0 + d3d_bias;
-        q->y1 = round_y + b->y1 - b->y0 + d3d_bias;
-        q->s0 = b->x0 * ipw;
-        q->t0 = b->y0 * iph;
-        q->s1 = b->x1 * ipw;
-        q->t1 = b->y1 * iph;
-        *xpos += b->xadvance;
-    }
-
-
-
-    public static unsafe void stbrp_init_target__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(stbrp_context* con, int pw, int ph, stbrp_node* nodes, int num_nodes)
-    {
-        con->width = pw;
-        con->height = ph;
-        con->x = 0;
-        con->y = 0;
-        con->bottom_y = 0;
-        ;
-        ;
-    }
-
-
-
-    public static unsafe void stbrp_pack_rects__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(stbrp_context* con, stbrp_rect* rects, int num_rects)
-    {
-        int i = default;
-        for (i = 0; ((i < num_rects)); ++i)
-        {
-            if (((con->x + rects[i].w > con->width)))
-            {
-                con->x = 0;
-                con->y = con->bottom_y;
-            }
-            if (((con->y + rects[i].h > con->height)))
-                break;
-            rects[i].x = con->x;
-            rects[i].y = con->y;
-            rects[i].was_packed = 1;
-            con->x += rects[i].w;
-            if (((con->y + rects[i].h > con->bottom_y)))
-                con->bottom_y = con->y + rects[i].h;
-        }
-        for (; ((i < num_rects)); ++i)
-            rects[i].was_packed = 0;
-    }
-
-
-
-    public static unsafe int stbtt_PackBegin__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(stbtt_pack_context* spc, byte* pixels, int pw, int ph, int stride_in_bytes, int padding, void* alloc_context)
-    {
-        _ = alloc_context;
-        stbrp_context* context = (stbrp_context*)malloc(((ulong)(sizeof(stbrp_context))));
-        int num_nodes = pw - padding;
-        _ = alloc_context;
-        stbrp_node* nodes = (stbrp_node*)malloc(((ulong)(sizeof(stbrp_node))) * (ulong)(num_nodes));
-        if (((((context == (void*)0)) || ((nodes == (void*)0)))))
-        {
-            if (((context != (void*)0)))
-                {
-                    free(context);
-                }
-            if (((nodes != (void*)0)))
-                {
-                    free(nodes);
-                }
-            return 0;
-        }
-        spc->user_allocator_context = alloc_context;
-        spc->width = pw;
-        spc->height = ph;
-        spc->pixels = pixels;
-        spc->pack_info = context;
-        spc->nodes = nodes;
-        spc->padding = padding;
-        spc->stride_in_bytes = ((int)(((stride_in_bytes != 0)) ? stride_in_bytes : pw));
-        spc->h_oversample = 1;
-        spc->v_oversample = 1;
-        spc->skip_missing = 0;
-        stbrp_init_target__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(context, pw - padding, ph - padding, nodes, num_nodes);
-        if ((((void*)(pixels)) != null))
-            memset(pixels, 0, (ulong)(pw * ph));
-        return 1;
-    }
-
-
-
-    public static unsafe void stbtt_PackEnd__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(stbtt_pack_context* spc)
-    {
-        {
-            free(spc->nodes);
-        }
-        {
-            free(spc->pack_info);
-        }
-    }
-
-
-
-    public static unsafe void stbtt_PackSetOversampling__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(stbtt_pack_context* spc, uint h_oversample, uint v_oversample)
-    {
-        __dotcc_assert(((CBool)(h_oversample <= (uint)(8))));
-        __dotcc_assert(((CBool)(v_oversample <= (uint)(8))));
-        if (((h_oversample <= (uint)(8))))
-            spc->h_oversample = h_oversample;
-        if (((v_oversample <= (uint)(8))))
-            spc->v_oversample = v_oversample;
-    }
-
-
-
-    public static unsafe void stbtt_PackSetSkipMissingCodepoints__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(stbtt_pack_context* spc, int skip)
-    {
-        spc->skip_missing = skip;
-    }
-
-
-
-    public static unsafe void stbtt__h_prefilter__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(byte* pixels, int w, int h, int stride_in_bytes, uint kernel_width)
-    {
-        byte* buffer = stackalloc byte[8];
-        int safe_w = (int)((uint)(w) - kernel_width);
-        int j = default;
-        memset(buffer, 0, (ulong)(8));
-        for (j = 0; ((j < h)); ++j)
-        {
-            int i = default;
-            uint total = default;
-            memset(buffer, 0, (ulong)(kernel_width));
-            total = 0;
-            switch (kernel_width)
-            {
-                case 2:
-                    for (i = 0; ((i <= safe_w)); ++i)
-                    {
-                        total += (uint)((pixels[i] - buffer[i & 8 - 1]));
-                        buffer[(uint)(i) + kernel_width & unchecked((uint)((8 - 1)))] = pixels[i];
-                        pixels[i] = (byte)(total / (uint)(2));
-                    }
-                    break;
-                case 3:
-                    for (i = 0; ((i <= safe_w)); ++i)
-                    {
-                        total += (uint)((pixels[i] - buffer[i & 8 - 1]));
-                        buffer[(uint)(i) + kernel_width & unchecked((uint)((8 - 1)))] = pixels[i];
-                        pixels[i] = (byte)(total / (uint)(3));
-                    }
-                    break;
-                case 4:
-                    for (i = 0; ((i <= safe_w)); ++i)
-                    {
-                        total += (uint)((pixels[i] - buffer[i & 8 - 1]));
-                        buffer[(uint)(i) + kernel_width & unchecked((uint)((8 - 1)))] = pixels[i];
-                        pixels[i] = (byte)(total / (uint)(4));
-                    }
-                    break;
-                case 5:
-                    for (i = 0; ((i <= safe_w)); ++i)
-                    {
-                        total += (uint)((pixels[i] - buffer[i & 8 - 1]));
-                        buffer[(uint)(i) + kernel_width & unchecked((uint)((8 - 1)))] = pixels[i];
-                        pixels[i] = (byte)(total / (uint)(5));
-                    }
-                    break;
-                default:
-                    for (i = 0; ((i <= safe_w)); ++i)
-                    {
-                        total += (uint)((pixels[i] - buffer[i & 8 - 1]));
-                        buffer[(uint)(i) + kernel_width & unchecked((uint)((8 - 1)))] = pixels[i];
-                        pixels[i] = (byte)(total / kernel_width);
-                    }
-                    break;
-            }
-            for (; ((i < w)); ++i)
-            {
-                __dotcc_assert(((CBool)(pixels[i] == 0)));
-                total -= buffer[i & 8 - 1];
-                pixels[i] = (byte)(total / kernel_width);
-            }
-            pixels += stride_in_bytes;
-        }
-    }
-
-
-
-    public static unsafe void stbtt__v_prefilter__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(byte* pixels, int w, int h, int stride_in_bytes, uint kernel_width)
-    {
-        byte* buffer = stackalloc byte[8];
-        int safe_h = (int)((uint)(h) - kernel_width);
-        int j = default;
-        memset(buffer, 0, (ulong)(8));
-        for (j = 0; ((j < w)); ++j)
-        {
-            int i = default;
-            uint total = default;
-            memset(buffer, 0, (ulong)(kernel_width));
-            total = 0;
-            switch (kernel_width)
-            {
-                case 2:
-                    for (i = 0; ((i <= safe_h)); ++i)
-                    {
-                        total += (uint)((pixels[i * stride_in_bytes] - buffer[i & 8 - 1]));
-                        buffer[(uint)(i) + kernel_width & unchecked((uint)((8 - 1)))] = pixels[i * stride_in_bytes];
-                        pixels[i * stride_in_bytes] = (byte)(total / (uint)(2));
-                    }
-                    break;
-                case 3:
-                    for (i = 0; ((i <= safe_h)); ++i)
-                    {
-                        total += (uint)((pixels[i * stride_in_bytes] - buffer[i & 8 - 1]));
-                        buffer[(uint)(i) + kernel_width & unchecked((uint)((8 - 1)))] = pixels[i * stride_in_bytes];
-                        pixels[i * stride_in_bytes] = (byte)(total / (uint)(3));
-                    }
-                    break;
-                case 4:
-                    for (i = 0; ((i <= safe_h)); ++i)
-                    {
-                        total += (uint)((pixels[i * stride_in_bytes] - buffer[i & 8 - 1]));
-                        buffer[(uint)(i) + kernel_width & unchecked((uint)((8 - 1)))] = pixels[i * stride_in_bytes];
-                        pixels[i * stride_in_bytes] = (byte)(total / (uint)(4));
-                    }
-                    break;
-                case 5:
-                    for (i = 0; ((i <= safe_h)); ++i)
-                    {
-                        total += (uint)((pixels[i * stride_in_bytes] - buffer[i & 8 - 1]));
-                        buffer[(uint)(i) + kernel_width & unchecked((uint)((8 - 1)))] = pixels[i * stride_in_bytes];
-                        pixels[i * stride_in_bytes] = (byte)(total / (uint)(5));
-                    }
-                    break;
-                default:
-                    for (i = 0; ((i <= safe_h)); ++i)
-                    {
-                        total += (uint)((pixels[i * stride_in_bytes] - buffer[i & 8 - 1]));
-                        buffer[(uint)(i) + kernel_width & unchecked((uint)((8 - 1)))] = pixels[i * stride_in_bytes];
-                        pixels[i * stride_in_bytes] = (byte)(total / kernel_width);
-                    }
-                    break;
-            }
-            for (; ((i < h)); ++i)
-            {
-                __dotcc_assert(((CBool)(pixels[i * stride_in_bytes] == 0)));
-                total -= buffer[i & 8 - 1];
-                pixels[i * stride_in_bytes] = (byte)(total / kernel_width);
-            }
-            pixels += 1;
-        }
-    }
-
-
-
-    public static unsafe float stbtt__oversample_shift__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(int oversample)
-    {
-        if ((!(((oversample) != 0) )     ))
-            return 0.0f;
-        return (float)(-(oversample - 1)) / (2.0f * (float)oversample);
-    }
-
-
-
-    public static unsafe int stbtt_PackFontRangesGatherRects__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(stbtt_pack_context* spc, stbtt_fontinfo* info, stbtt_pack_range* ranges, int num_ranges, stbrp_rect* rects)
-    {
-        int i = default, j = default, k = default;
-        int missing_glyph_added = 0;
-        k = 0;
-        for (i = 0; ((i < num_ranges)); ++i)
-        {
-            float fh = ranges[i].font_size;
-            float scale = ((float)(((fh > 0)) ? stbtt_ScaleForPixelHeight__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, fh) : stbtt_ScaleForMappingEmToPixels__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, -fh)));
-            ranges[i].h_oversample = (byte)spc->h_oversample;
-            ranges[i].v_oversample = (byte)spc->v_oversample;
-            for (j = 0; ((j < ranges[i].num_chars)); ++j)
-            {
-                int x0 = default, y0 = default, x1 = default, y1 = default;
-                int codepoint = ((int)(((ranges[i].array_of_unicode_codepoints == (void*)0)) ? ranges[i].first_unicode_codepoint_in_range + j : ranges[i].array_of_unicode_codepoints[j]));
-                int glyph = stbtt_FindGlyphIndex__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, codepoint);
-                if (((((glyph == 0)) && ((((spc->skip_missing) != 0) || ((missing_glyph_added) != 0))))))
-                {
-                    rects[k].w = rects[k].h = 0;
-                }
-                else
-                {
-                    stbtt_GetGlyphBitmapBoxSubpixel__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, glyph, scale * spc->h_oversample, scale * spc->v_oversample, 0, 0, &x0, &y0, &x1, &y1);
-                    rects[k].w = (int)((uint)((x1 - x0 + spc->padding)) + spc->h_oversample - (uint)(1));
-                    rects[k].h = (int)((uint)((y1 - y0 + spc->padding)) + spc->v_oversample - (uint)(1));
-                    if (((glyph == 0)))
-                        missing_glyph_added = 1;
-                }
-                ++k;
-            }
-        }
-        return k;
-    }
-
-
-
-    public static unsafe void stbtt_MakeGlyphBitmapSubpixelPrefilter__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(stbtt_fontinfo* info, byte* output, int out_w, int out_h, int out_stride, float scale_x, float scale_y, float shift_x, float shift_y, int prefilter_x, int prefilter_y, float* sub_x, float* sub_y, int glyph)
-    {
-        stbtt_MakeGlyphBitmapSubpixel__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, output, out_w - (prefilter_x - 1), out_h - (prefilter_y - 1), out_stride, scale_x, scale_y, shift_x, shift_y, glyph);
-        if (((prefilter_x > 1)))
-            stbtt__h_prefilter__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(output, out_w, out_h, out_stride, (uint)(prefilter_x));
-        if (((prefilter_y > 1)))
-            stbtt__v_prefilter__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(output, out_w, out_h, out_stride, (uint)(prefilter_y));
-        *sub_x = stbtt__oversample_shift__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(prefilter_x);
-        *sub_y = stbtt__oversample_shift__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(prefilter_y);
-    }
-
-
-
-    public static unsafe int stbtt_PackFontRangesRenderIntoRects__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(stbtt_pack_context* spc, stbtt_fontinfo* info, stbtt_pack_range* ranges, int num_ranges, stbrp_rect* rects)
-    {
-        int i = default, j = default, k = default, missing_glyph = -1, return_value = 1;
-        int old_h_over = (int)(spc->h_oversample);
-        int old_v_over = (int)(spc->v_oversample);
-        k = 0;
-        for (i = 0; ((i < num_ranges)); ++i)
-        {
-            float fh = ranges[i].font_size;
-            float scale = ((float)(((fh > 0)) ? stbtt_ScaleForPixelHeight__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, fh) : stbtt_ScaleForMappingEmToPixels__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, -fh)));
-            float recip_h = default, recip_v = default, sub_x = default, sub_y = default;
-            spc->h_oversample = ranges[i].h_oversample;
-            spc->v_oversample = ranges[i].v_oversample;
-            recip_h = 1.0f / spc->h_oversample;
-            recip_v = 1.0f / spc->v_oversample;
-            sub_x = stbtt__oversample_shift__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A((int)(spc->h_oversample));
-            sub_y = stbtt__oversample_shift__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A((int)(spc->v_oversample));
-            for (j = 0; ((j < ranges[i].num_chars)); ++j)
-            {
-                stbrp_rect* r = &rects[k];
-                if (((((((r->was_packed) != 0) && ((r->w != 0)))) && ((r->h != 0)))))
-                {
-                    stbtt_packedchar* bc = &ranges[i].chardata_for_range[j];
-                    int advance = default, lsb = default, x0 = default, y0 = default, x1 = default, y1 = default;
-                    int codepoint = ((int)(((ranges[i].array_of_unicode_codepoints == (void*)0)) ? ranges[i].first_unicode_codepoint_in_range + j : ranges[i].array_of_unicode_codepoints[j]));
-                    int glyph = stbtt_FindGlyphIndex__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, codepoint);
-                    int pad = (int)spc->padding;
-                    r->x += pad;
-                    r->y += pad;
-                    r->w -= pad;
-                    r->h -= pad;
-                    stbtt_GetGlyphHMetrics__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, glyph, &advance, &lsb);
-                    stbtt_GetGlyphBitmapBox__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, glyph, scale * spc->h_oversample, scale * spc->v_oversample, &x0, &y0, &x1, &y1);
-                    stbtt_MakeGlyphBitmapSubpixel__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, spc->pixels + r->x + r->y * spc->stride_in_bytes, (int)((uint)(r->w) - spc->h_oversample + (uint)(1)), (int)((uint)(r->h) - spc->v_oversample + (uint)(1)), spc->stride_in_bytes, scale * spc->h_oversample, scale * spc->v_oversample, 0, 0, glyph);
-                    if (((spc->h_oversample > (uint)(1))))
-                        stbtt__h_prefilter__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(spc->pixels + r->x + r->y * spc->stride_in_bytes, r->w, r->h, spc->stride_in_bytes, spc->h_oversample);
-                    if (((spc->v_oversample > (uint)(1))))
-                        stbtt__v_prefilter__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(spc->pixels + r->x + r->y * spc->stride_in_bytes, r->w, r->h, spc->stride_in_bytes, spc->v_oversample);
-                    bc->x0 = (ushort)((short)r->x);
-                    bc->y0 = (ushort)((short)r->y);
-                    bc->x1 = (ushort)((short)(r->x + r->w));
-                    bc->y1 = (ushort)((short)(r->y + r->h));
-                    bc->xadvance = scale * advance;
-                    bc->xoff = (float)x0 * recip_h + sub_x;
-                    bc->yoff = (float)y0 * recip_v + sub_y;
-                    bc->xoff2 = (x0 + r->w) * recip_h + sub_x;
-                    bc->yoff2 = (y0 + r->h) * recip_v + sub_y;
-                    if (((glyph == 0)))
-                        missing_glyph = j;
-                }
-                else
-                    if (((spc->skip_missing) != 0))
-                    {
-                        return_value = 0;
-                    }
-                    else
-                        if (((((((((r->was_packed) != 0) && ((r->w == 0)))) && ((r->h == 0)))) && ((missing_glyph >= 0)))))
-                        {
-                            ranges[i].chardata_for_range[j] = ranges[i].chardata_for_range[missing_glyph];
-                        }
-                        else
-                        {
-                            return_value = 0;
-                        }
-                ++k;
-            }
-        }
-        spc->h_oversample = (uint)(old_h_over);
-        spc->v_oversample = (uint)(old_v_over);
-        return return_value;
-    }
-
-
-
-    public static unsafe void stbtt_PackFontRangesPackRects__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(stbtt_pack_context* spc, stbrp_rect* rects, int num_rects)
-    {
-        stbrp_pack_rects__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A((stbrp_context*)spc->pack_info, rects, num_rects);
-    }
-
-
-
-    public static unsafe int stbtt_PackFontRanges__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(stbtt_pack_context* spc, byte* fontdata, int font_index, stbtt_pack_range* ranges, int num_ranges)
-    {
-        stbtt_fontinfo info = default;
-        int i = default, j = default, n = default, return_value = 1;
-        stbrp_rect* rects = default;
-        for (i = 0; ((i < num_ranges)); ++i)
-            for (j = 0; ((j < ranges[i].num_chars)); ++j)
-                ranges[i].chardata_for_range[j].x0 = ranges[i].chardata_for_range[j].y0 = ranges[i].chardata_for_range[j].x1 = ranges[i].chardata_for_range[j].y1 = 0;
-        n = 0;
-        for (i = 0; ((i < num_ranges)); ++i)
-            n += ranges[i].num_chars;
-        _ = spc->user_allocator_context;
-        rects = (stbrp_rect*)malloc(((ulong)(sizeof(stbrp_rect))) * (ulong)(n));
-        if (((rects == (void*)0)))
-            return 0;
-        info.userdata = spc->user_allocator_context;
-        stbtt_InitFont__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&info, fontdata, stbtt_GetFontOffsetForIndex__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fontdata, font_index));
-        n = stbtt_PackFontRangesGatherRects__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(spc, &info, ranges, num_ranges, rects);
-        stbtt_PackFontRangesPackRects__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(spc, rects, n);
-        return_value = stbtt_PackFontRangesRenderIntoRects__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(spc, &info, ranges, num_ranges, rects);
-        {
-            free(rects);
-        }
-        return return_value;
-    }
-
-
-
-    public static unsafe int stbtt_PackFontRange__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(stbtt_pack_context* spc, byte* fontdata, int font_index, float font_size, int first_unicode_codepoint_in_range, int num_chars_in_range, stbtt_packedchar* chardata_for_range)
-    {
-        stbtt_pack_range range = default;
-        range.first_unicode_codepoint_in_range = first_unicode_codepoint_in_range;
-        range.array_of_unicode_codepoints = null;
-        range.num_chars = num_chars_in_range;
-        range.chardata_for_range = chardata_for_range;
-        range.font_size = font_size;
-        return stbtt_PackFontRanges__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(spc, fontdata, font_index, &range, 1);
-    }
-
-
-
-    public static unsafe void stbtt_GetScaledFontVMetrics__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(byte* fontdata, int index, float size, float* ascent, float* descent, float* lineGap)
-    {
-        int i_ascent = default, i_descent = default, i_lineGap = default;
-        float scale = default;
-        stbtt_fontinfo info = default;
-        stbtt_InitFont__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&info, fontdata, stbtt_GetFontOffsetForIndex__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fontdata, index));
-        scale = ((float)(((size > 0)) ? stbtt_ScaleForPixelHeight__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&info, size) : stbtt_ScaleForMappingEmToPixels__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&info, -size)));
-        stbtt_GetFontVMetrics__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&info, &i_ascent, &i_descent, &i_lineGap);
-        *ascent = (float)i_ascent * scale;
-        *descent = (float)i_descent * scale;
-        *lineGap = (float)i_lineGap * scale;
-    }
-
-
-
-    public static unsafe void stbtt_GetPackedQuad__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(stbtt_packedchar* chardata, int pw, int ph, int char_index, float* xpos, float* ypos, stbtt_aligned_quad* q, int align_to_integer)
-    {
-        float ipw = 1.0f / pw, iph = 1.0f / ph;
-        stbtt_packedchar* b = chardata + char_index;
-        if (((align_to_integer) != 0))
-        {
-            float x = (float)(int)floor((double)((*xpos + b->xoff + 0.5f)));
-            float y = (float)(int)floor((double)((*ypos + b->yoff + 0.5f)));
-            q->x0 = x;
-            q->y0 = y;
-            q->x1 = x + b->xoff2 - b->xoff;
-            q->y1 = y + b->yoff2 - b->yoff;
-        }
-        else
-        {
-            q->x0 = *xpos + b->xoff;
-            q->y0 = *ypos + b->yoff;
-            q->x1 = *xpos + b->xoff2;
-            q->y1 = *ypos + b->yoff2;
-        }
-        q->s0 = b->x0 * ipw;
-        q->t0 = b->y0 * iph;
-        q->s1 = b->x1 * ipw;
-        q->t1 = b->y1 * iph;
-        *xpos += b->xadvance;
-    }
-
-
-
-    public static unsafe int stbtt__ray_intersect_bezier__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(float* orig, float* ray, float* q0, float* q1, float* q2, float* hits)
-    {
-        float q0perp = q0[1] * ray[0] - q0[0] * ray[1];
-        float q1perp = q1[1] * ray[0] - q1[0] * ray[1];
-        float q2perp = q2[1] * ray[0] - q2[0] * ray[1];
-        float roperp = orig[1] * ray[0] - orig[0] * ray[1];
-        float a = q0perp - 2 * q1perp + q2perp;
-        float b = q1perp - q0perp;
-        float c = q0perp - roperp;
-        float s0 = (float)(0.0), s1 = (float)(0.0);
-        int num_s = 0;
-        if (((a != 0.0)))
-        {
-            float discr = b * b - a * c;
-            if (((discr > 0.0)))
-            {
-                float rcpna = -1 / a;
-                float d = (float)sqrt((double)(discr));
-                s0 = (b + d) * rcpna;
-                s1 = (b - d) * rcpna;
-                if (((((s0 >= 0.0)) && ((s0 <= 1.0)))))
-                    num_s = 1;
-                if (((((((d > 0.0)) && ((s1 >= 0.0)))) && ((s1 <= 1.0)))))
-                {
-                    if (((num_s == 0)))
-                        s0 = s1;
-                    ++num_s;
-                }
-            }
-        }
-        else
-        {
-            s0 = c / (-2 * b);
-            if (((((s0 >= 0.0)) && ((s0 <= 1.0)))))
-                num_s = 1;
-        }
-        if (((num_s == 0)))
-            return 0;
-        else
-        {
-            float rcp_len2 = 1 / (ray[0] * ray[0] + ray[1] * ray[1]);
-            float rayn_x = ray[0] * rcp_len2, rayn_y = ray[1] * rcp_len2;
-            float q0d = q0[0] * rayn_x + q0[1] * rayn_y;
-            float q1d = q1[0] * rayn_x + q1[1] * rayn_y;
-            float q2d = q2[0] * rayn_x + q2[1] * rayn_y;
-            float rod = orig[0] * rayn_x + orig[1] * rayn_y;
-            float q10d = q1d - q0d;
-            float q20d = q2d - q0d;
-            float q0rd = q0d - rod;
-            (hits + 0 * 2)[0] = q0rd + s0 * (2.0f - 2.0f * s0) * q10d + s0 * s0 * q20d;
-            (hits + 0 * 2)[1] = a * s0 + b;
-            if (((num_s > 1)))
-            {
-                (hits + 1 * 2)[0] = q0rd + s1 * (2.0f - 2.0f * s1) * q10d + s1 * s1 * q20d;
-                (hits + 1 * 2)[1] = a * s1 + b;
-                return 2;
-            }
-            else
-            {
-                return 1;
-            }
-        }
-    }
-
-
-
-    public static unsafe int equal__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(float* a, float* b)
-    {
-        return ((CBool)(((a[0] == b[0])) && ((a[1] == b[1]))));
-    }
-
-
-
-    public static unsafe int stbtt__compute_crossings_x__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(float x, float y, int nverts, stbtt_vertex* verts)
-    {
-    byte* __dotcc_array_storage3 = null;
-    byte* __dotcc_array_storage4 = null;
-    byte* __dotcc_array_storage5 = null;
-    byte* __dotcc_array_storage6 = null;
-        int i = default;
-        float* orig = stackalloc float[2];
-        float* ray = stackalloc float[]{ 1, 0 };
-        float y_frac = default;
-        int winding = 0;
-        y_frac = (float)fmod((double)(y), (double)(1.0f));
-        if (((y_frac < 0.01f)))
-            y += 0.01f;
-        else
-            if (((y_frac > 0.99f)))
-                y -= 0.01f;
-        orig[0] = x;
-        orig[1] = y;
-        for (i = 0; ((i < nverts)); ++i)
-        {
-            if (((verts[i].type == 2)))
-            {
-                int x0 = (int)verts[i - 1].x, y0 = (int)verts[i - 1].y;
-                int x1 = (int)verts[i].x, y1 = (int)verts[i].y;
-                if (((((((y > ((int)(((y0 < y1)) ? y0 : y1)))) && ((y < ((int)(((y0 < y1)) ? y1 : y0)))))) && ((x > ((int)(((x0 < x1)) ? x0 : x1)))))))
-                {
-                    float x_inter = (y - y0) / (y1 - y0) * (x1 - x0) + x0;
-                    if (((x_inter < x)))
-                        winding += ((int)(((y0 < y1)) ? 1 : -1));
-                }
-            }
-            if (((verts[i].type == 3)))
-            {
-                int x0__1 = (int)verts[i - 1].x, y0__1 = (int)verts[i - 1].y;
-                int x1__1 = (int)verts[i].cx, y1__1 = (int)verts[i].cy;
-                int x2 = (int)verts[i].x, y2 = (int)verts[i].y;
-                int ax = ((int)(((x0__1 < ((int)(((x1__1 < x2)) ? x1__1 : x2)))) ? x0__1 : ((int)(((x1__1 < x2)) ? x1__1 : x2)))), ay = ((int)(((y0__1 < ((int)(((y1__1 < y2)) ? y1__1 : y2)))) ? y0__1 : ((int)(((y1__1 < y2)) ? y1__1 : y2))));
-                int by = ((int)(((y0__1 < ((int)(((y1__1 < y2)) ? y2 : y1__1)))) ? ((int)(((y1__1 < y2)) ? y2 : y1__1)) : y0__1));
-                if (((((((y > ay)) && ((y < by)))) && ((x > ax)))))
-                {
-                    if (__dotcc_array_storage3 == null)
-                    {
-                        byte* __dotcc_array_storage3_new = stackalloc byte[checked(sizeof(float) * 2)];
-                        __dotcc_array_storage3 = __dotcc_array_storage3_new;
-                    }
-                    float* q0 = (float*)__dotcc_array_storage3;
-                    new global::System.Span<byte>((void*)q0, checked(sizeof(float) * 2)).Clear();
-                    if (__dotcc_array_storage4 == null)
-                    {
-                        byte* __dotcc_array_storage4_new = stackalloc byte[checked(sizeof(float) * 2)];
-                        __dotcc_array_storage4 = __dotcc_array_storage4_new;
-                    }
-                    float* q1 = (float*)__dotcc_array_storage4;
-                    new global::System.Span<byte>((void*)q1, checked(sizeof(float) * 2)).Clear();
-                    if (__dotcc_array_storage5 == null)
-                    {
-                        byte* __dotcc_array_storage5_new = stackalloc byte[checked(sizeof(float) * 2)];
-                        __dotcc_array_storage5 = __dotcc_array_storage5_new;
-                    }
-                    float* q2 = (float*)__dotcc_array_storage5;
-                    new global::System.Span<byte>((void*)q2, checked(sizeof(float) * 2)).Clear();
-                    if (__dotcc_array_storage6 == null)
-                    {
-                        byte* __dotcc_array_storage6_new = stackalloc byte[checked(sizeof(float) * 4)];
-                        __dotcc_array_storage6 = __dotcc_array_storage6_new;
-                    }
-                    float* hits = (float*)__dotcc_array_storage6;
-                    new global::System.Span<byte>((void*)hits, checked(sizeof(float) * 4)).Clear();
-                    q0[0] = (float)x0__1;
-                    q0[1] = (float)y0__1;
-                    q1[0] = (float)x1__1;
-                    q1[1] = (float)y1__1;
-                    q2[0] = (float)x2;
-                    q2[1] = (float)y2;
-                    if (((((equal__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(q0, q1)) != 0) || ((equal__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(q1, q2)) != 0))))
-                    {
-                        x0__1 = (int)verts[i - 1].x;
-                        y0__1 = (int)verts[i - 1].y;
-                        x1__1 = (int)verts[i].x;
-                        y1__1 = (int)verts[i].y;
-                        if (((((((y > ((int)(((y0__1 < y1__1)) ? y0__1 : y1__1)))) && ((y < ((int)(((y0__1 < y1__1)) ? y1__1 : y0__1)))))) && ((x > ((int)(((x0__1 < x1__1)) ? x0__1 : x1__1)))))))
-                        {
-                            float x_inter__1 = (y - y0__1) / (y1__1 - y0__1) * (x1__1 - x0__1) + x0__1;
-                            if (((x_inter__1 < x)))
-                                winding += ((int)(((y0__1 < y1__1)) ? 1 : -1));
-                        }
-                    }
-                    else
-                    {
-                        int num_hits = stbtt__ray_intersect_bezier__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(orig, ray, q0, q1, q2, hits);
-                        if (((num_hits >= 1)))
-                            if ((((hits + 0 * 2)[0] < 0)))
-                                winding += ((int)((((hits + 0 * 2)[1] < 0)) ? -1 : 1));
-                        if (((num_hits >= 2)))
-                            if ((((hits + 1 * 2)[0] < 0)))
-                                winding += ((int)((((hits + 1 * 2)[1] < 0)) ? -1 : 1));
-                    }
-                }
-            }
-        }
-        return winding;
-    }
-
-
-
-    public static unsafe float stbtt__cuberoot__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(float x)
+    public static unsafe float stbtt__cuberoot(float x)
     {
         if (((x < 0)))
             return -(float)pow((double)(-x), (double)((1.0f / 3.0f)));
@@ -1015,7 +72,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe int stbtt__solve_cubic__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(float a, float b, float c, float* r)
+    public static unsafe int stbtt__solve_cubic(float a, float b, float c, float* r)
     {
         float s = -a / 3;
         float p = b - a * a / 3;
@@ -1027,8 +84,8 @@ public static unsafe partial class Cui
             float z = (float)sqrt((double)(d));
             float u = (-q + z) / 2;
             float v = (-q - z) / 2;
-            u = stbtt__cuberoot__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(u);
-            v = stbtt__cuberoot__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(v);
+            u = stbtt__cuberoot(u);
+            v = stbtt__cuberoot(v);
             r[0] = s + u + v;
             return 1;
         }
@@ -1047,7 +104,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe byte* stbtt_GetGlyphSDF__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(stbtt_fontinfo* info, float scale, int glyph, int padding, byte onedge_value, float pixel_dist_scale, int* width, int* height, int* xoff, int* yoff)
+    public static unsafe byte* stbtt_GetGlyphSDF(stbtt_fontinfo* info, float scale, int glyph, int padding, byte onedge_value, float pixel_dist_scale, int* width, int* height, int* xoff, int* yoff)
     {
     byte* __dotcc_array_storage7 = null;
         float scale_x = scale, scale_y = scale;
@@ -1056,7 +113,7 @@ public static unsafe partial class Cui
         byte* data = default;
         if (((scale == 0)))
             return null;
-        stbtt_GetGlyphBitmapBoxSubpixel__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, glyph, scale, scale, 0.0f, 0.0f, &ix0, &iy0, &ix1, &iy1);
+        stbtt_GetGlyphBitmapBoxSubpixel(info, glyph, scale, scale, 0.0f, 0.0f, &ix0, &iy0, &ix1, &iy1);
         if (((((ix0 == ix1)) || ((iy0 == iy1)))))
             return null;
         ix0 -= padding;
@@ -1079,7 +136,7 @@ public static unsafe partial class Cui
             int x = default, y = default, i = default, j = default;
             float* precompute = default;
             stbtt_vertex* verts = default;
-            int num_verts = stbtt_GetGlyphShape__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, glyph, &verts);
+            int num_verts = stbtt_GetGlyphShape(info, glyph, &verts);
             _ = info->userdata;
             data = (byte*)malloc((ulong)(w * h));
             _ = info->userdata;
@@ -1119,7 +176,7 @@ public static unsafe partial class Cui
                     float sy = (float)y + 0.5f;
                     float x_gspace = sx / scale_x;
                     float y_gspace = sy / scale_y;
-                    int winding = stbtt__compute_crossings_x__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(x_gspace, y_gspace, num_verts, verts);
+                    int winding = stbtt__compute_crossings_x(x_gspace, y_gspace, num_verts, verts);
                     for (i = 0; ((i < num_verts)); ++i)
                     {
                         float x0__2 = verts[i].x * scale_x, y0__2 = verts[i].y * scale_y;
@@ -1198,7 +255,7 @@ public static unsafe partial class Cui
                                         float b__1 = 3 * (ax * bx__1 + ay * by__1) * a_inv;
                                         float c__1 = (2 * (ax * ax + ay * ay) + (mx * bx__1 + my * by__1)) * a_inv;
                                         float d = (mx * ax + my * ay) * a_inv;
-                                        num = stbtt__solve_cubic__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(b__1, c__1, d, res);
+                                        num = stbtt__solve_cubic(b__1, c__1, d, res);
                                     }
                                     dist2__1 = (x0__2 - sx) * (x0__2 - sx) + (y0__2 - sy) * (y0__2 - sy);
                                     if (((dist2__1 < min_dist * min_dist)))
@@ -1265,14 +322,14 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe byte* stbtt_GetCodepointSDF__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(stbtt_fontinfo* info, float scale, int codepoint, int padding, byte onedge_value, float pixel_dist_scale, int* width, int* height, int* xoff, int* yoff)
+    public static unsafe byte* stbtt_GetCodepointSDF(stbtt_fontinfo* info, float scale, int codepoint, int padding, byte onedge_value, float pixel_dist_scale, int* width, int* height, int* xoff, int* yoff)
     {
-        return stbtt_GetGlyphSDF__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, scale, stbtt_FindGlyphIndex__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, codepoint), padding, onedge_value, pixel_dist_scale, width, height, xoff, yoff);
+        return stbtt_GetGlyphSDF(info, scale, stbtt_FindGlyphIndex(info, codepoint), padding, onedge_value, pixel_dist_scale, width, height, xoff, yoff);
     }
 
 
 
-    public static unsafe void stbtt_FreeSDF__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(byte* bitmap, void* userdata)
+    public static unsafe void stbtt_FreeSDF(byte* bitmap, void* userdata)
     {
         {
             free(bitmap);
@@ -1281,7 +338,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe int stbtt__CompareUTF8toUTF16_bigendian_prefix__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(byte* s1, int len1, byte* s2, int len2)
+    public static unsafe int stbtt__CompareUTF8toUTF16_bigendian_prefix(byte* s1, int len1, byte* s2, int len2)
     {
         int i = 0;
         while (((len2) != 0))
@@ -1347,30 +404,30 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe int stbtt_CompareUTF8toUTF16_bigendian_internal__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(byte* s1, int len1, byte* s2, int len2)
+    public static unsafe int stbtt_CompareUTF8toUTF16_bigendian_internal(byte* s1, int len1, byte* s2, int len2)
     {
-        return ((CBool)(len1 == stbtt__CompareUTF8toUTF16_bigendian_prefix__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A((byte*)s1, len1, (byte*)s2, len2)));
+        return ((CBool)(len1 == stbtt__CompareUTF8toUTF16_bigendian_prefix((byte*)s1, len1, (byte*)s2, len2)));
     }
 
 
 
-    public static unsafe byte* stbtt_GetFontNameString__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(stbtt_fontinfo* font, int* length, int platformID, int encodingID, int languageID, int nameID)
+    public static unsafe byte* stbtt_GetFontNameString(stbtt_fontinfo* font, int* length, int platformID, int encodingID, int languageID, int nameID)
     {
         int i = default, count = default, stringOffset = default;
         byte* fc = font->data;
         uint offset = (uint)(font->fontstart);
-        uint nm = stbtt__find_table__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc, offset, (DotCcLiterals.Pointer + DotCcLiterals.S133 /*"name"*/));
+        uint nm = stbtt__find_table(fc, offset, (DotCcLiterals.Pointer + DotCcLiterals.S133 /*"name"*/));
         if ((!(((nm) != 0) )     ))
             return null;
-        count = ttUSHORT__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc + nm + 2);
-        stringOffset = (int)(nm + ttUSHORT__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc + nm + 4));
+        count = ttUSHORT(fc + nm + 2);
+        stringOffset = (int)(nm + ttUSHORT(fc + nm + 4));
         for (i = 0; ((i < count)); ++i)
         {
             uint loc = nm + (uint)(6) + (uint)((12 * i));
-            if (((((((((platformID == ttUSHORT__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc + loc + 0))) && ((encodingID == ttUSHORT__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc + loc + 2))))) && ((languageID == ttUSHORT__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc + loc + 4))))) && ((nameID == ttUSHORT__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc + loc + 6))))))
+            if (((((((((platformID == ttUSHORT(fc + loc + 0))) && ((encodingID == ttUSHORT(fc + loc + 2))))) && ((languageID == ttUSHORT(fc + loc + 4))))) && ((nameID == ttUSHORT(fc + loc + 6))))))
             {
-                *length = ttUSHORT__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc + loc + 8);
-                return (byte*)(fc + stringOffset + ttUSHORT__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc + loc + 10));
+                *length = ttUSHORT(fc + loc + 8);
+                return (byte*)(fc + stringOffset + ttUSHORT(fc + loc + 10));
             }
         }
         return null;
@@ -1378,29 +435,29 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe int stbtt__matchpair__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(byte* fc, uint nm, byte* name, int nlen, int target_id, int next_id)
+    public static unsafe int stbtt__matchpair(byte* fc, uint nm, byte* name, int nlen, int target_id, int next_id)
     {
         int i = default;
-        int count = ttUSHORT__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc + nm + 2);
-        int stringOffset = (int)(nm + ttUSHORT__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc + nm + 4));
+        int count = ttUSHORT(fc + nm + 2);
+        int stringOffset = (int)(nm + ttUSHORT(fc + nm + 4));
         for (i = 0; ((i < count)); ++i)
         {
             uint loc = nm + (uint)(6) + (uint)((12 * i));
-            int id = ttUSHORT__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc + loc + 6);
+            int id = ttUSHORT(fc + loc + 6);
             if (((id == target_id)))
             {
-                int platform = ttUSHORT__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc + loc + 0), encoding = ttUSHORT__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc + loc + 2), language = ttUSHORT__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc + loc + 4);
+                int platform = ttUSHORT(fc + loc + 0), encoding = ttUSHORT(fc + loc + 2), language = ttUSHORT(fc + loc + 4);
                 if (((((((platform == 0)) || ((((platform == 3)) && ((encoding == 1)))))) || ((((platform == 3)) && ((encoding == 10)))))))
                 {
-                    int slen = ttUSHORT__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc + loc + 8);
-                    int off = ttUSHORT__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc + loc + 10);
-                    int matchlen = stbtt__CompareUTF8toUTF16_bigendian_prefix__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(name, nlen, fc + stringOffset + off, slen);
+                    int slen = ttUSHORT(fc + loc + 8);
+                    int off = ttUSHORT(fc + loc + 10);
+                    int matchlen = stbtt__CompareUTF8toUTF16_bigendian_prefix(name, nlen, fc + stringOffset + off, slen);
                     if (((matchlen >= 0)))
                     {
-                        if (((((((((((i + 1 < count)) && ((ttUSHORT__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc + loc + 12 + 6) == next_id)))) && ((ttUSHORT__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc + loc + 12) == platform)))) && ((ttUSHORT__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc + loc + 12 + 2) == encoding)))) && ((ttUSHORT__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc + loc + 12 + 4) == language)))))
+                        if (((((((((((i + 1 < count)) && ((ttUSHORT(fc + loc + 12 + 6) == next_id)))) && ((ttUSHORT(fc + loc + 12) == platform)))) && ((ttUSHORT(fc + loc + 12 + 2) == encoding)))) && ((ttUSHORT(fc + loc + 12 + 4) == language)))))
                         {
-                            slen = ttUSHORT__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc + loc + 12 + 8);
-                            off = ttUSHORT__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc + loc + 12 + 10);
+                            slen = ttUSHORT(fc + loc + 12 + 8);
+                            off = ttUSHORT(fc + loc + 12 + 10);
                             if (((slen == 0)))
                             {
                                 if (((matchlen == nlen)))
@@ -1410,7 +467,7 @@ public static unsafe partial class Cui
                                 if (((((matchlen < nlen)) && ((name[matchlen] == 32)))))
                                 {
                                     ++matchlen;
-                                    if (((stbtt_CompareUTF8toUTF16_bigendian_internal__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A((byte*)(name + matchlen), nlen - matchlen, (byte*)(fc + stringOffset + off), slen)) != 0))
+                                    if (((stbtt_CompareUTF8toUTF16_bigendian_internal((byte*)(name + matchlen), nlen - matchlen, (byte*)(fc + stringOffset + off), slen)) != 0))
                                         return 1;
                                 }
                         }
@@ -1428,37 +485,37 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe int stbtt__matches__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(byte* fc, uint offset, byte* name, int flags)
+    public static unsafe int stbtt__matches(byte* fc, uint offset, byte* name, int flags)
     {
         int nlen = (int)strlen((byte*)name);
         uint nm = default, hd = default;
-        if ((!(((stbtt__isfont__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc + offset)) != 0) )     ))
+        if ((!(((stbtt__isfont(fc + offset)) != 0) )     ))
             return 0;
         if (((flags) != 0))
         {
-            hd = stbtt__find_table__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc, offset, (DotCcLiterals.Pointer + DotCcLiterals.S1066 /*"head"*/));
-            if ((((ttUSHORT__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc + hd + 44) & 7) != (flags & 7))))
+            hd = stbtt__find_table(fc, offset, (DotCcLiterals.Pointer + DotCcLiterals.S1066 /*"head"*/));
+            if ((((ttUSHORT(fc + hd + 44) & 7) != (flags & 7))))
                 return 0;
         }
-        nm = stbtt__find_table__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc, offset, (DotCcLiterals.Pointer + DotCcLiterals.S133 /*"name"*/));
+        nm = stbtt__find_table(fc, offset, (DotCcLiterals.Pointer + DotCcLiterals.S133 /*"name"*/));
         if ((!(((nm) != 0) )     ))
             return 0;
         if (((flags) != 0))
         {
-            if (((stbtt__matchpair__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc, nm, name, nlen, 16, -1)) != 0))
+            if (((stbtt__matchpair(fc, nm, name, nlen, 16, -1)) != 0))
                 return 1;
-            if (((stbtt__matchpair__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc, nm, name, nlen, 1, -1)) != 0))
+            if (((stbtt__matchpair(fc, nm, name, nlen, 1, -1)) != 0))
                 return 1;
-            if (((stbtt__matchpair__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc, nm, name, nlen, 3, -1)) != 0))
+            if (((stbtt__matchpair(fc, nm, name, nlen, 3, -1)) != 0))
                 return 1;
         }
         else
         {
-            if (((stbtt__matchpair__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc, nm, name, nlen, 16, 17)) != 0))
+            if (((stbtt__matchpair(fc, nm, name, nlen, 16, 17)) != 0))
                 return 1;
-            if (((stbtt__matchpair__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc, nm, name, nlen, 1, 2)) != 0))
+            if (((stbtt__matchpair(fc, nm, name, nlen, 1, 2)) != 0))
                 return 1;
-            if (((stbtt__matchpair__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fc, nm, name, nlen, 3, -1)) != 0))
+            if (((stbtt__matchpair(fc, nm, name, nlen, 3, -1)) != 0))
                 return 1;
         }
         return 0;
@@ -1466,64 +523,64 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe int stbtt_FindMatchingFont_internal__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(byte* font_collection, byte* name_utf8, int flags)
+    public static unsafe int stbtt_FindMatchingFont_internal(byte* font_collection, byte* name_utf8, int flags)
     {
         int i = default;
         for (i = 0; ; ++i)
         {
-            int off = stbtt_GetFontOffsetForIndex__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(font_collection, i);
+            int off = stbtt_GetFontOffsetForIndex(font_collection, i);
             if (((off < 0)))
                 return off;
-            if (((stbtt__matches__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A((byte*)font_collection, (uint)(off), (byte*)name_utf8, flags)) != 0))
+            if (((stbtt__matches((byte*)font_collection, (uint)(off), (byte*)name_utf8, flags)) != 0))
                 return off;
         }
     }
 
 
 
-    public static unsafe int stbtt_BakeFontBitmap__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(byte* data, int offset, float pixel_height, byte* pixels, int pw, int ph, int first_char, int num_chars, stbtt_bakedchar* chardata)
+    public static unsafe int stbtt_BakeFontBitmap(byte* data, int offset, float pixel_height, byte* pixels, int pw, int ph, int first_char, int num_chars, stbtt_bakedchar* chardata)
     {
-        return stbtt_BakeFontBitmap_internal__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A((byte*)data, offset, pixel_height, pixels, pw, ph, first_char, num_chars, chardata);
+        return stbtt_BakeFontBitmap_internal((byte*)data, offset, pixel_height, pixels, pw, ph, first_char, num_chars, chardata);
     }
 
 
 
-    public static unsafe int stbtt_GetFontOffsetForIndex__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(byte* data, int index)
+    public static unsafe int stbtt_GetFontOffsetForIndex(byte* data, int index)
     {
-        return stbtt_GetFontOffsetForIndex_internal__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A((byte*)data, index);
+        return stbtt_GetFontOffsetForIndex_internal((byte*)data, index);
     }
 
 
 
-    public static unsafe int stbtt_GetNumberOfFonts__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(byte* data)
+    public static unsafe int stbtt_GetNumberOfFonts(byte* data)
     {
-        return stbtt_GetNumberOfFonts_internal__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A((byte*)data);
+        return stbtt_GetNumberOfFonts_internal((byte*)data);
     }
 
 
 
-    public static unsafe int stbtt_InitFont__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(stbtt_fontinfo* info, byte* data, int offset)
+    public static unsafe int stbtt_InitFont(stbtt_fontinfo* info, byte* data, int offset)
     {
-        return stbtt_InitFont_internal__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(info, (byte*)data, offset);
+        return stbtt_InitFont_internal(info, (byte*)data, offset);
     }
 
 
 
-    public static unsafe int stbtt_FindMatchingFont__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(byte* fontdata, byte* name, int flags)
+    public static unsafe int stbtt_FindMatchingFont(byte* fontdata, byte* name, int flags)
     {
-        return stbtt_FindMatchingFont_internal__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A((byte*)fontdata, (byte*)name, flags);
+        return stbtt_FindMatchingFont_internal((byte*)fontdata, (byte*)name, flags);
     }
 
 
 
-    public static unsafe int stbtt_CompareUTF8toUTF16_bigendian__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(byte* s1, int len1, byte* s2, int len2)
+    public static unsafe int stbtt_CompareUTF8toUTF16_bigendian(byte* s1, int len1, byte* s2, int len2)
     {
-        return stbtt_CompareUTF8toUTF16_bigendian_internal__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A((byte*)s1, len1, (byte*)s2, len2);
+        return stbtt_CompareUTF8toUTF16_bigendian_internal((byte*)s1, len1, (byte*)s2, len2);
     }
 
 
 
-    public static unsafe void cui__shape_lines_free__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(cui_ctx* ui, cui_shaped_paragraph* p)
+    public static unsafe void cui__shape_lines_free(cui_ctx* ui, cui_shaped_paragraph* p)
     {
         while ((((void*)(p->lines)) != null))
         {
@@ -1537,13 +594,13 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__shape_cache_clear__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(cui_ctx* ui)
+    public static unsafe void cui__shape_cache_clear(cui_ctx* ui)
     {
         while ((((void*)(ui->shape_cache)) != null))
         {
             cui_shaped_paragraph* p = ui->shape_cache;
             ui->shape_cache = p->next;
-            cui__shape_lines_free__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, p);
+            cui__shape_lines_free(ui, p);
             cui__free(ui, p->wrap_lines);
             cui__free(ui, p->text);
             cui__free(ui, p->offsets);
@@ -1555,7 +612,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe cui_shaped_paragraph* cui__paragraph__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(cui_ctx* ui, byte* text, int len, int @base)
+    public static unsafe cui_shaped_paragraph* cui__paragraph(cui_ctx* ui, byte* text, int len, int @base)
     {
         cui_shaped_paragraph** link = &ui->shape_cache;
         while ((((void*)(*link)) != null))
@@ -1578,7 +635,7 @@ public static unsafe partial class Cui
             cui_shaped_paragraph* p__1 = *link;
             *link = null;
             cui__free(ui, p__1->wrap_lines);
-            cui__shape_lines_free__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, p__1);
+            cui__shape_lines_free(ui, p__1);
             cui__free(ui, p__1->text);
             cui__free(ui, p__1->offsets);
             cui__free(ui, p__1->chars);
@@ -1619,7 +676,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe cui_font_data* cui__fd__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(cui_ctx* ui, int f)
+    public static unsafe cui_font_data* cui__fd(cui_ctx* ui, int f)
     {
         if (((((f < 0)) || ((f >= ui->font_count)))))
             return null;
@@ -1644,35 +701,35 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__font_prepare__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(cui_font_data* fd)
+    public static unsafe void cui__font_prepare(cui_font_data* fd)
     {
         int asc = default, desc = default, gap = default;
-        stbtt_GetFontVMetrics__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&fd->info, &asc, &desc, &gap);
+        stbtt_GetFontVMetrics(&fd->info, &asc, &desc, &gap);
         int ta = default, td = default, tg = default;
-        if (((stbtt_GetFontVMetricsOS2__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&fd->info, &ta, &td, &tg)) != 0))
+        if (((stbtt_GetFontVMetricsOS2(&fd->info, &ta, &td, &tg)) != 0))
         {
             asc = ta;
             desc = td;
             gap = tg;
         }
-        float em = 1.0f / stbtt_ScaleForMappingEmToPixels__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&fd->info, 1.0f);
+        float em = 1.0f / stbtt_ScaleForMappingEmToPixels(&fd->info, 1.0f);
         fd->upem = em;
         fd->ascent = asc / em;
         fd->descent = desc / em;
         fd->line_gap = gap / em;
         int x0 = default, y0 = default, x1 = default, y1 = default;
-        int gH = stbtt_FindGlyphIndex__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&fd->info, 72);
-        if (((((gH) != 0) && ((stbtt_GetGlyphBox__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&fd->info, gH, &x0, &y0, &x1, &y1)) != 0))))
+        int gH = stbtt_FindGlyphIndex(&fd->info, 72);
+        if (((((gH) != 0) && ((stbtt_GetGlyphBox(&fd->info, gH, &x0, &y0, &x1, &y1)) != 0))))
             fd->cap_height = y1 / em;
         else
             fd->cap_height = fd->ascent * 0.72f;
         fd->tab_adv = 0;
         for (int c = 0; ((c < 128)); c++)
         {
-            int gi = stbtt_FindGlyphIndex__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&fd->info, c);
+            int gi = stbtt_FindGlyphIndex(&fd->info, c);
             fd->gi_ascii[c] = gi;
             int adv = default, lsb = default;
-            stbtt_GetGlyphHMetrics__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&fd->info, gi, &adv, &lsb);
+            stbtt_GetGlyphHMetrics(&fd->info, gi, &adv, &lsb);
             fd->adv_ascii[c] = ((float)(((gi) != 0) ? adv / em : (float)(0)));
             if (((((((c >= 48)) && ((c <= 57)))) && ((fd->adv_ascii[c] > fd->tab_adv)))))
                 fd->tab_adv = fd->adv_ascii[c];
@@ -1692,14 +749,14 @@ public static unsafe partial class Cui
             memcpy(bytes, data, size);
         }
         stbtt_fontinfo info = default;
-        int off = stbtt_GetFontOffsetForIndex__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(bytes, 0);
-        if (((((off < 0)) || (!(((stbtt_InitFont__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&info, bytes, off)) != 0) )     ))))
+        int off = stbtt_GetFontOffsetForIndex(bytes, 0);
+        if (((((off < 0)) || (!(((stbtt_InitFont(&info, bytes, off)) != 0) )     ))))
         {
             if (((unchecked((int)(copy))) != 0))
                 cui__free(ui, bytes);
             return -1;
         }
-        cui__shape_cache_clear__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui);
+        cui__shape_cache_clear(ui);
         do
         {
             if (((ui->font_count + 1 > ui->font_cap)))
@@ -1719,7 +776,7 @@ public static unsafe partial class Cui
         fd->data_size = size;
         cui__shape_font_init(&fd->shaped, bytes, size, off);
         fd->owned = copy;
-        cui__font_prepare__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fd);
+        cui__font_prepare(fd);
         return 16 + ui->font_count++;
     }
 
@@ -1766,7 +823,7 @@ public static unsafe partial class Cui
         if (((real < 0)))
             return;
         if (((ui->roles[role] != real)))
-            cui__shape_cache_clear__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui);
+            cui__shape_cache_clear(ui);
         ui->roles[role] = real;
         ui->fonts[real].is_icon = ((CBool)(role == 4));
     }
@@ -1775,11 +832,11 @@ public static unsafe partial class Cui
 
     public static unsafe void cui_font_add_fallback(cui_ctx* ui, int font, int fallback)
     {
-        cui_font_data* fd = cui__fd__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, cui__resolve_font(ui, font));
+        cui_font_data* fd = cui__fd(ui, cui__resolve_font(ui, font));
         int fb = cui__resolve_font(ui, fallback);
         if ((((((!((((void*)(fd)) != null) )     ) || ((fd->fallback_count >= 4)))) || ((fb < 0)))))
             return;
-        cui__shape_cache_clear__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui);
+        cui__shape_cache_clear(ui);
         fd->fallbacks[fd->fallback_count++] = fb;
     }
 
@@ -1825,7 +882,7 @@ public static unsafe partial class Cui
 
     public static unsafe void cui__fonts_shutdown(cui_ctx* ui)
     {
-        cui__shape_cache_clear__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui);
+        cui__shape_cache_clear(ui);
         for (int i = 0; ((i < ui->font_count)); i++)
         {
             if (((unchecked((int)(ui->fonts[i].owned))) != 0))
@@ -1847,7 +904,7 @@ public static unsafe partial class Cui
         cui__tt* t = (cui__tt*)(cui__alloc(ui, ((ulong)(sizeof(cui__tt)))));
         if ((!((((void*)(t)) != null) )     ))
             return null;
-        if ((!(((stbtt_InitFont__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&t->info, data, offset)) != 0) )     ))
+        if ((!(((stbtt_InitFont(&t->info, data, offset)) != 0) )     ))
         {
             cui__free(ui, t);
             return null;
@@ -1860,14 +917,14 @@ public static unsafe partial class Cui
     public static unsafe void cui__tt_vmetrics(cui__tt* t, int* ascent, int* descent)
     {
         int gap = default;
-        stbtt_GetFontVMetrics__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&t->info, ascent, descent, &gap);
+        stbtt_GetFontVMetrics(&t->info, ascent, descent, &gap);
     }
 
 
 
     public static unsafe CBool cui__tt_box(cui__tt* t, int gid, float scale, int* x0, int* y0, int* x1, int* y1)
     {
-        stbtt_GetGlyphBitmapBox__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&t->info, gid, scale, scale, x0, y0, x1, y1);
+        stbtt_GetGlyphBitmapBox(&t->info, gid, scale, scale, x0, y0, x1, y1);
         return ((CBool)(((*x1 > *x0)) && ((*y1 > *y0))));
     }
 
@@ -1875,30 +932,30 @@ public static unsafe partial class Cui
 
     public static unsafe void cui__tt_render(cui__tt* t, int gid, float scale, byte* @out, int w, int h, int stride)
     {
-        stbtt_MakeGlyphBitmap__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&t->info, @out, w, h, stride, scale, scale, gid);
+        stbtt_MakeGlyphBitmap(&t->info, @out, w, h, stride, scale, scale, gid);
     }
 
 
 
-    public static unsafe int cui__glyph_index__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(cui_font_data* fd, uint cp)
+    public static unsafe int cui__glyph_index(cui_font_data* fd, uint cp)
     {
         if (((cp < (uint)(128))))
             return fd->gi_ascii[cp];
-        return stbtt_FindGlyphIndex__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&fd->info, (int)cp);
+        return stbtt_FindGlyphIndex(&fd->info, (int)cp);
     }
 
 
 
-    public static unsafe void cui__find_glyph__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(cui_ctx* ui, int font, uint cp, int* out_font, int* out_gi)
+    public static unsafe void cui__find_glyph(cui_ctx* ui, int font, uint cp, int* out_font, int* out_gi)
     {
-        cui_font_data* fd = cui__fd__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, font);
+        cui_font_data* fd = cui__fd(ui, font);
         if ((!((((void*)(fd)) != null) )     ))
         {
             *out_font = -1;
             *out_gi = 0;
             return;
         }
-        int gi = cui__glyph_index__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fd, cp);
+        int gi = cui__glyph_index(fd, cp);
         if (((((gi) != 0) || ((cp == (uint)(32))))))
         {
             *out_font = font;
@@ -1907,8 +964,8 @@ public static unsafe partial class Cui
         }
         for (int i = 0; ((i < fd->fallback_count)); i++)
         {
-            cui_font_data* f2 = cui__fd__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, fd->fallbacks[i]);
-            int g2 = ((int)((((void*)(f2)) != null) ? cui__glyph_index__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(f2, cp) : 0));
+            cui_font_data* f2 = cui__fd(ui, fd->fallbacks[i]);
+            int g2 = ((int)((((void*)(f2)) != null) ? cui__glyph_index(f2, cp) : 0));
             if (((g2) != 0))
             {
                 *out_font = fd->fallbacks[i];
@@ -1919,7 +976,7 @@ public static unsafe partial class Cui
         int icons = ui->roles[4];
         if (((((((((icons >= 0)) && ((icons != font)))) && ((cp >= (uint)(0xE000))))) && ((cp <= (uint)(0xF8FF))))))
         {
-            int g2__1 = cui__glyph_index__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&ui->fonts[icons], cp);
+            int g2__1 = cui__glyph_index(&ui->fonts[icons], cp);
             if (((g2__1) != 0))
             {
                 *out_font = icons;
@@ -1931,7 +988,7 @@ public static unsafe partial class Cui
         {
             if (((((i__1 == font)) || ((unchecked((int)(ui->fonts[i__1].is_icon))) != 0))))
                 continue;
-            int g2__2 = cui__glyph_index__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&ui->fonts[i__1], cp);
+            int g2__2 = cui__glyph_index(&ui->fonts[i__1], cp);
             if (((g2__2) != 0))
             {
                 *out_font = i__1;
@@ -1945,7 +1002,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe float cui__glyph_size__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(cui_ctx* ui, int f, int gf, float size)
+    public static unsafe float cui__glyph_size(cui_ctx* ui, int f, int gf, float size)
     {
         if (((((gf != f)) && ((unchecked((int)(ui->fonts[gf].is_icon))) != 0))))
             return size * 1.15f;
@@ -1954,18 +1011,18 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe float cui__advance_em__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(cui_font_data* fd, int gi, uint cp)
+    public static unsafe float cui__advance_em(cui_font_data* fd, int gi, uint cp)
     {
         if (((((cp < (uint)(128))) && ((fd->gi_ascii[cp] == gi)))))
             return fd->adv_ascii[cp];
         int adv = default, lsb = default;
-        stbtt_GetGlyphHMetrics__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&fd->info, gi, &adv, &lsb);
+        stbtt_GetGlyphHMetrics(&fd->info, gi, &adv, &lsb);
         return adv / fd->upem;
     }
 
 
 
-    public static unsafe float cui__kern_em__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(cui_ctx* ui, cui_font_data* fd, uint a, uint b, int ga, int gb)
+    public static unsafe float cui__kern_em(cui_ctx* ui, cui_font_data* fd, uint a, uint b, int ga, int gb)
     {
         if (((unchecked((int)(fd->is_icon))) != 0))
             return 0;
@@ -1978,17 +1035,17 @@ public static unsafe partial class Cui
                     for (int j = 0; ((j < 95)); j++)
                     {
                         int g1 = fd->gi_ascii[i + 32], g2 = fd->gi_ascii[j + 32];
-                        fd->kern_ascii[i * 95 + j] = ((float)(((((g1) != 0) && ((g2) != 0))) ? stbtt_GetGlyphKernAdvance__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&fd->info, g1, g2) / fd->upem : (float)(0)));
+                        fd->kern_ascii[i * 95 + j] = ((float)(((((g1) != 0) && ((g2) != 0))) ? stbtt_GetGlyphKernAdvance(&fd->info, g1, g2) / fd->upem : (float)(0)));
                     }
             }
             return fd->kern_ascii[(a - (uint)(32)) * (uint)(95) + (b - (uint)(32))];
         }
-        return stbtt_GetGlyphKernAdvance__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&fd->info, ga, gb) / fd->upem;
+        return stbtt_GetGlyphKernAdvance(&fd->info, ga, gb) / fd->upem;
     }
 
 
 
-    public static unsafe void cui__iter_init__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(cui__glyph_iter* it, cui_ctx* ui, int font, float size, byte* s, int len, CBool tab)
+    public static unsafe void cui__iter_init(cui__glyph_iter* it, cui_ctx* ui, int font, float size, byte* s, int len, CBool tab)
     {
         memset(it, 0, ((ulong)(sizeof(cui__glyph_iter))));
         it->ui = ui;
@@ -2003,7 +1060,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe CBool cui__iter_next__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(cui__glyph_iter* it)
+    public static unsafe CBool cui__iter_next(cui__glyph_iter* it)
     {
         if (((it->pos >= it->len)))
             return 0;
@@ -2015,15 +1072,15 @@ public static unsafe partial class Cui
         it->pos += n;
         int gf = default;
         int gi = default;
-        cui__find_glyph__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, it->font, cp, &gf, &gi);
+        cui__find_glyph(ui, it->font, cp, &gf, &gi);
         if (((gf < 0)))
             return 0;
         cui_font_data* fd = &ui->fonts[gf];
-        float gs = cui__glyph_size__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, it->font, gf, it->size);
+        float gs = cui__glyph_size(ui, it->font, gf, it->size);
         CBool tab_pair = ((CBool)(((unchecked((int)(it->tabular))) != 0) && ((((((cp >= (uint)(48))) && ((cp <= (uint)(57))))) || ((((it->prev_cp >= (uint)(48))) && ((it->prev_cp <= (uint)(57)))))))));
         if (((((((((it->prev_font == gf)) && ((it->prev_gi) != 0))) && ((gi) != 0))) && (!(((unchecked((int)(tab_pair))) != 0) )     ))))
-            it->x += cui__kern_em__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, fd, it->prev_cp, cp, it->prev_gi, gi) * gs;
-        float adv = cui__advance_em__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(fd, gi, cp) * gs;
+            it->x += cui__kern_em(ui, fd, it->prev_cp, cp, it->prev_gi, gi) * gs;
+        float adv = cui__advance_em(fd, gi, cp) * gs;
         it->center_off = 0;
         if (((((((((unchecked((int)(it->tabular))) != 0) && ((cp >= (uint)(48))))) && ((cp <= (uint)(57))))) && ((fd->tab_adv > 0)))))
         {
@@ -2069,7 +1126,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe float cui__text_width_raw__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(cui_ctx* ui, int font, float size, byte* text, int len, CBool tabular)
+    public static unsafe float cui__text_width_raw(cui_ctx* ui, int font, float size, byte* text, int len, CBool tabular)
     {
         if (((((font < 0)) || (!((((void*)(text)) != null) )     ))))
             return 0;
@@ -2083,16 +1140,16 @@ public static unsafe partial class Cui
                 int end = start;
                 while (((((end < len)) && ((text[end] != 10)))))
                     end++;
-                float w = cui__shape_run__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, font, size, text + start, end - start, tabular, 0, 0, 0, new cui_color {  }, 1e30f);
+                float w = cui__shape_run(ui, font, size, text + start, end - start, tabular, 0, 0, 0, new cui_color {  }, 1e30f);
                 maxw = ((float)(((maxw > w)) ? maxw : w));
                 start = end + 1;
             }
             return maxw;
         }
         cui__glyph_iter it = default;
-        cui__iter_init__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&it, ui, font, size, text, len, tabular);
+        cui__iter_init(&it, ui, font, size, text, len, tabular);
         float maxw__1 = 0;
-        while (((unchecked((int)(cui__iter_next__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&it)))) != 0))
+        while (((unchecked((int)(cui__iter_next(&it)))) != 0))
         {
             if (((it.cp == (uint)(10))))
             {
@@ -2108,7 +1165,7 @@ public static unsafe partial class Cui
 
     public static unsafe float cui__text_width(cui_ctx* ui, int font, float size, byte* text, int len, CBool tabular)
     {
-        return cui__text_width_raw__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, cui__resolve_font(ui, font), size, text, len, tabular);
+        return cui__text_width_raw(ui, cui__resolve_font(ui, font), size, text, len, tabular);
     }
 
 
@@ -2116,7 +1173,7 @@ public static unsafe partial class Cui
     public static unsafe float cui__font_line_height(cui_ctx* ui, int font, float size)
     {
         font = cui__resolve_font(ui, font);
-        cui_font_data* fd = cui__fd__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, font);
+        cui_font_data* fd = cui__fd(ui, font);
         if ((!((((void*)(fd)) != null) )     ))
             return size;
         if (((unchecked((int)(fd->is_icon))) != 0))
@@ -2129,7 +1186,7 @@ public static unsafe partial class Cui
     public static unsafe float cui__font_ascent(cui_ctx* ui, int font, float size)
     {
         font = cui__resolve_font(ui, font);
-        cui_font_data* fd = cui__fd__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, font);
+        cui_font_data* fd = cui__fd(ui, font);
         return ((float)((((void*)(fd)) != null) ? fd->ascent * size : size));
     }
 
@@ -2139,10 +1196,10 @@ public static unsafe partial class Cui
     {
         cui_text_metrics m = default;
         font = cui__resolve_font(ui, font);
-        cui_font_data* fd = cui__fd__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, font);
+        cui_font_data* fd = cui__fd(ui, font);
         if (((((len < 0)) && (((void*)(text)) != null))))
             len = (int)strlen(text);
-        m.width = cui__text_width_raw__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, font, size, text, len, 0);
+        m.width = cui__text_width_raw(ui, font, size, text, len, 0);
         m.ascent = ((float)((((void*)(fd)) != null) ? fd->ascent * size : size));
         m.descent = ((float)((((void*)(fd)) != null) ? fd->descent * size : (float)(0)));
         m.line_height = size * 1.45f;
@@ -2162,8 +1219,8 @@ public static unsafe partial class Cui
         if (((((font < 0)) || ((x <= 0)))))
             return 0;
         cui__glyph_iter it = default;
-        cui__iter_init__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&it, ui, font, size, text, len, 0);
-        while (((unchecked((int)(cui__iter_next__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&it)))) != 0))
+        cui__iter_init(&it, ui, font, size, text, len, 0);
+        while (((unchecked((int)(cui__iter_next(&it)))) != 0))
         {
             if (((x < it.gx + it.adv * 0.5f)))
                 return it.start;
@@ -2173,14 +1230,14 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe CBool cui__is_space__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(uint c)
+    public static unsafe CBool cui__is_space(uint c)
     {
         return ((CBool)(((c == (uint)(32))) || ((c == (uint)(9)))));
     }
 
 
 
-    public static unsafe int cui__text_wrap_greedy__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(cui_ctx* ui, int font, float size, byte* text, int len, float width, cui_text_layout_line* lines, int max_lines)
+    public static unsafe int cui__text_wrap_greedy(cui_ctx* ui, int font, float size, byte* text, int len, float width, cui_text_layout_line* lines, int max_lines)
     {
         font = cui__resolve_font(ui, font);
         if (((font < 0)))
@@ -2191,9 +1248,9 @@ public static unsafe partial class Cui
         int last_break = -1;
         float width_at_break = 0;
         cui__glyph_iter it = default;
-        cui__iter_init__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&it, ui, font, size, text, len, 0);
+        cui__iter_init(&it, ui, font, size, text, len, 0);
         float base_x = 0;
-        while (((unchecked((int)(cui__iter_next__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&it)))) != 0))
+        while (((unchecked((int)(cui__iter_next(&it)))) != 0))
         {
             if (((it.cp == (uint)(10))))
             {
@@ -2215,7 +1272,7 @@ public static unsafe partial class Cui
                 continue;
             }
             float right = it.gx + it.adv - base_x;
-            if (((unchecked((int)(cui__is_space__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(it.cp)))) != 0))
+            if (((unchecked((int)(cui__is_space(it.cp)))) != 0))
             {
                 last_break = it.start;
                 width_at_break = it.gx - base_x;
@@ -2240,7 +1297,7 @@ public static unsafe partial class Cui
                     while (((((p < len)) && ((((text[p] == 32)) || ((text[p] == 9)))))))
                         p++;
                     line_start = p;
-                    base_x = it.gx - cui__text_width_raw__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, font, size, text + line_start, it.start - line_start, 0);
+                    base_x = it.gx - cui__text_width_raw(ui, font, size, text + line_start, it.start - line_start, 0);
                 }
                 else
                 {
@@ -2272,7 +1329,7 @@ public static unsafe partial class Cui
             {
                 lines[count].start = line_start;
                 lines[count].end = e;
-                lines[count].width = cui__text_width_raw__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, font, size, text + line_start, e - line_start, 0);
+                lines[count].width = cui__text_width_raw(ui, font, size, text + line_start, e - line_start, 0);
             }
             count++;
         }
@@ -2282,7 +1339,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe CBool cui__span_has_space__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(byte* text, int s, int e)
+    public static unsafe CBool cui__span_has_space(byte* text, int s, int e)
     {
         for (int i = s; ((i < e)); i++)
             if (((((text[i] == 32)) || ((text[i] == 9)))))
@@ -2292,7 +1349,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe int cui__span_spaces__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(byte* text, int s, int e)
+    public static unsafe int cui__span_spaces(byte* text, int s, int e)
     {
         int n = 0;
         for (int i = s; ((i < e)); i++)
@@ -2311,7 +1368,7 @@ public static unsafe partial class Cui
                 return 0;
             cui_direction direction = (cui_direction)(((int)((((int)ui->text_direction) != 0) ? (int)(ui->text_direction) : (int)(ui->direction))));
             int requested = ((int)((((int)direction == (int)__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_RTL)) ? 1 : ((int)((((int)direction == (int)__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_LTR)) ? 0 : -1))));
-            cui_shaped_paragraph* p = cui__paragraph__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, text, len, requested);
+            cui_shaped_paragraph* p = cui__paragraph(ui, text, len, requested);
             if ((((((((((((void*)(p)) != null) && (((void*)(p->wrap_lines)) != null))) && ((p->wrap_font == font)))) && ((p->wrap_size == size)))) && ((p->wrap_width == width)))))
             {
                 if ((((((void*)(lines)) != null) && ((max_lines > 0)))))
@@ -2331,7 +1388,7 @@ public static unsafe partial class Cui
                 {
                     while (((((((((end < len)) && ((text[end] != 32)))) && ((text[end] != 9)))) && ((text[end] != 10)))))
                         end++;
-                    float w = cui__shape_run__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, font, size, text + start, end - start, 0, 0, 0, 0, new cui_color {  }, 1e30f);
+                    float w = cui__shape_run(ui, font, size, text + start, end - start, 0, 0, 0, 0, new cui_color {  }, 1e30f);
                     if (((((w > width + 0.01f)) && ((best > start)))))
                         break;
                     best = end;
@@ -2356,7 +1413,7 @@ public static unsafe partial class Cui
             ui->text_paragraph_len = saved_len;
             if ((((((void*)(lines)) != null) && ((n <= max_lines)))))
             {
-                p = cui__paragraph__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, text, len, requested);
+                p = cui__paragraph(ui, text, len, requested);
                 cui_text_layout_line* copy = (cui_text_layout_line*)(((void*)((((void*)(p)) != null) ? cui__alloc(ui, (ulong)n * ((ulong)(sizeof(cui_text_layout_line)))) : null)));
                 if ((((void*)(copy)) != null))
                 {
@@ -2374,7 +1431,7 @@ public static unsafe partial class Cui
         
         
         cui_text_layout_line* tmp = stackalloc cui_text_layout_line[96];
-        int n__1 = cui__text_wrap_greedy__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, font, size, text, len, width, tmp, 96);
+        int n__1 = cui__text_wrap_greedy(ui, font, size, text, len, width, tmp, 96);
         CBool orphan = 0;
         if (((((n__1 >= 2)) && ((n__1 <= 96)))))
         {
@@ -2386,7 +1443,7 @@ public static unsafe partial class Cui
                     same_paragraph = 0;
                     break;
                 }
-            orphan = ((CBool)(((((((unchecked((int)(same_paragraph))) != 0) && ((b->end > b->start)))) && (!(((unchecked((int)(cui__span_has_space__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(text, b->start, b->end)))) != 0) )     ))) && ((cui__span_spaces__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(text, a->start, a->end) >= 2))));
+            orphan = ((CBool)(((((((unchecked((int)(same_paragraph))) != 0) && ((b->end > b->start)))) && (!(((unchecked((int)(cui__span_has_space(text, b->start, b->end)))) != 0) )     ))) && ((cui__span_spaces(text, a->start, a->end) >= 2))));
         }
         if (((((((size >= 20)) && ((n__1 >= 2)))) && ((n__1 <= 4)))))
         {
@@ -2404,7 +1461,7 @@ public static unsafe partial class Cui
                 for (int k = 0; ((k < 9)); k++)
                 {
                     float mid = (lo + hi) * 0.5f;
-                    if (((cui__text_wrap_greedy__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, font, size, text, len, mid, alt, 96) == n__1)))
+                    if (((cui__text_wrap_greedy(ui, font, size, text, len, mid, alt, 96) == n__1)))
                     {
                         best__1 = mid;
                         hi = mid;
@@ -2414,7 +1471,7 @@ public static unsafe partial class Cui
                 }
                 if (((best__1 < width)))
                 {
-                    int m = cui__text_wrap_greedy__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, font, size, text, len, best__1 + 0.5f, alt, 96);
+                    int m = cui__text_wrap_greedy(ui, font, size, text, len, best__1 + 0.5f, alt, 96);
                     if (((m == n__1)))
                     {
                         if ((((void*)(lines)) != null))
@@ -2431,10 +1488,10 @@ public static unsafe partial class Cui
             for (int k__1 = 1; ((k__1 <= 10)); k__1++)
             {
                 float w__1 = width * (1.0f - 0.03f * (float)k__1);
-                int m__1 = cui__text_wrap_greedy__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, font, size, text, len, w__1, alt__1, 96);
+                int m__1 = cui__text_wrap_greedy(ui, font, size, text, len, w__1, alt__1, 96);
                 if (((m__1 != n__1)))
                     break;
-                if (((unchecked((int)(cui__span_has_space__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(text, alt__1[m__1 - 1].start, alt__1[m__1 - 1].end)))) != 0))
+                if (((unchecked((int)(cui__span_has_space(text, alt__1[m__1 - 1].start, alt__1[m__1 - 1].end)))) != 0))
                 {
                     if ((((void*)(lines)) != null))
                         for (int i__3 = 0; ((((i__3 < m__1)) && ((i__3 < max_lines)))); i__3++)
@@ -2447,7 +1504,7 @@ public static unsafe partial class Cui
             for (int i__4 = 0; ((((((i__4 < n__1)) && ((i__4 < max_lines)))) && ((i__4 < 96)))); i__4++)
                 lines[i__4] = tmp[i__4];
         if (((((n__1 > 96)) && (((void*)(lines)) != null))))
-            return cui__text_wrap_greedy__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, font, size, text, len, width, lines, max_lines);
+            return cui__text_wrap_greedy(ui, font, size, text, len, width, lines, max_lines);
         return n__1;
     }
 
@@ -2464,7 +1521,7 @@ public static unsafe partial class Cui
             {
                 if (((i > ws)))
                 {
-                    float w = cui__text_width_raw__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, font, size, text + ws, i - ws, 0);
+                    float w = cui__text_width_raw(ui, font, size, text + ws, i - ws, 0);
                     if (((w > best)))
                         best = w;
                 }
@@ -2476,7 +1533,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__atlas_grow__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(cui_ctx* ui)
+    public static unsafe void cui__atlas_grow(cui_ctx* ui)
     {
         int nw = ui->atlas_w * 2, nh = ui->atlas_h * 2;
         byte* na = (byte*)(cui__alloc(ui, (ulong)nw * (ulong)nh));
@@ -2496,7 +1553,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe CBool cui__atlas_pack__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(cui_ctx* ui, int w, int h, int* ox, int* oy)
+    public static unsafe CBool cui__atlas_pack(cui_ctx* ui, int w, int h, int* ox, int* oy)
     {
         for (; ; )
         {
@@ -2510,7 +1567,7 @@ public static unsafe partial class Cui
                 break;
             if (((ui->atlas_w >= 4096)))
                 return 0;
-            cui__atlas_grow__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui);
+            cui__atlas_grow(ui);
         }
         *ox = ui->pack_x;
         *oy = ui->pack_y;
@@ -2522,7 +1579,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe cui_glyph* cui__glyph_get__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(cui_ctx* ui, int font, int gi, float px_size, int subpx)
+    public static unsafe cui_glyph* cui__glyph_get__unit_50F9E03AABBBB9C468D5DF18C6C10EFB091E7A031DDFF251576C90D76AA9CE13(cui_ctx* ui, int font, int gi, float px_size, int subpx)
     {
         ushort sq = (ushort)((float)(((65535.0f < px_size * 4.0f + 0.5f)) ? 65535.0f : px_size * 4.0f + 0.5f));
         uint* key = stackalloc uint[]{ (uint)gi, (uint)font | (uint)sq << 16, (uint)subpx };
@@ -2536,35 +1593,35 @@ public static unsafe partial class Cui
                 return g;
             }
         }
-        if ((!(((unchecked((int)(global::Managed.Cui.Cui.Globals.cui__gamma_ready__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A))) != 0) )     ))
+        if ((!(((unchecked((int)(global::Managed.Cui.Cui.Globals.cui__gamma_ready__unit_50F9E03AABBBB9C468D5DF18C6C10EFB091E7A031DDFF251576C90D76AA9CE13))) != 0) )     ))
         {
             for (int i__1 = 0; ((i__1 < 256)); i__1++)
-                global::Managed.Cui.Cui.Globals.cui__gamma_lut__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A[i__1] = (byte)(powf(i__1 / 255.0f, 0.82f) * 255.0f + 0.5f);
-            global::Managed.Cui.Cui.Globals.cui__gamma_ready__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A = 1;
+                global::Managed.Cui.Cui.Globals.cui__gamma_lut__unit_50F9E03AABBBB9C468D5DF18C6C10EFB091E7A031DDFF251576C90D76AA9CE13[i__1] = (byte)(powf(i__1 / 255.0f, 0.82f) * 255.0f + 0.5f);
+            global::Managed.Cui.Cui.Globals.cui__gamma_ready__unit_50F9E03AABBBB9C468D5DF18C6C10EFB091E7A031DDFF251576C90D76AA9CE13 = 1;
         }
         cui_font_data* fd = &ui->fonts[font];
-        float scale = stbtt_ScaleForMappingEmToPixels__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&fd->info, sq / 4.0f);
+        float scale = stbtt_ScaleForMappingEmToPixels(&fd->info, sq / 4.0f);
         float shift = subpx / 3.0f;
         int x0 = default, y0 = default, x1 = default, y1 = default;
-        stbtt_GetGlyphBitmapBoxSubpixel__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&fd->info, gi, scale, scale, shift, 0, &x0, &y0, &x1, &y1);
+        stbtt_GetGlyphBitmapBoxSubpixel(&fd->info, gi, scale, scale, shift, 0, &x0, &y0, &x1, &y1);
         int w = x1 - x0, hgt = y1 - y0;
         int ax = 0, ay = 0;
         if (((((w > 0)) && ((hgt > 0)))))
         {
-            if ((!(((unchecked((int)(cui__atlas_pack__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, w, hgt, &ax, &ay)))) != 0) )     ))
+            if ((!(((unchecked((int)(cui__atlas_pack(ui, w, hgt, &ax, &ay)))) != 0) )     ))
             {
                 ui->atlas_reset_pending = 1;
                 return null;
             }
             byte* dst = ui->atlas + (ulong)ay * (ulong)ui->atlas_w + (ulong)ax;
-            stbtt_MakeGlyphBitmapSubpixel__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&fd->info, dst, w, hgt, ui->atlas_w, scale, scale, shift, 0, gi);
+            stbtt_MakeGlyphBitmapSubpixel(&fd->info, dst, w, hgt, ui->atlas_w, scale, scale, shift, 0, gi);
             if ((!(((unchecked((int)(fd->is_icon))) != 0) )     ))
             {
                 for (int y = 0; ((y < hgt)); y++)
                 {
                     byte* row = dst + (ulong)y * (ulong)ui->atlas_w;
                     for (int x = 0; ((x < w)); x++)
-                        row[x] = global::Managed.Cui.Cui.Globals.cui__gamma_lut__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A[row[x]];
+                        row[x] = global::Managed.Cui.Cui.Globals.cui__gamma_lut__unit_50F9E03AABBBB9C468D5DF18C6C10EFB091E7A031DDFF251576C90D76AA9CE13[row[x]];
                 }
             }
             if ((!(((unchecked((int)(ui->atlas_dirty))) != 0) )     ))
@@ -2614,7 +1671,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe int cui__glyph_ord_cmp__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(void* a, void* b)
+    public static unsafe int cui__glyph_ord_cmp__unit_50F9E03AABBBB9C468D5DF18C6C10EFB091E7A031DDFF251576C90D76AA9CE13(void* a, void* b)
     {
         cui__glyph_ord* x = (cui__glyph_ord*)(a), y = (cui__glyph_ord*)(b);
         return ((int)(((x->h != y->h)) ? (int)y->h - (int)x->h : x->i - y->i));
@@ -2622,7 +1679,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__atlas_compact__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(cui_ctx* ui)
+    public static unsafe void cui__atlas_compact(cui_ctx* ui)
     {
     byte* __dotcc_array_storage8 = null;
         uint now = (uint)ui->frame;
@@ -2655,7 +1712,7 @@ public static unsafe partial class Cui
         for (int i__1 = 0; ((i__1 < ui->glyph_count)); i__1++)
             if (((now - ui->glyphs[i__1].stamp <= (uint)(300))))
                 ord[n++] = new cui__glyph_ord { h = ui->glyphs[i__1].h, i = i__1 };
-        qsort(ord, (int)((ulong)n), unchecked((int)(((ulong)(sizeof(cui__glyph_ord))))), DotCcPointers.cui__glyph_ord_cmp__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A);
+        qsort(ord, (int)((ulong)n), unchecked((int)(((ulong)(sizeof(cui__glyph_ord))))), DotCcPointers.cui__glyph_ord_cmp__unit_50F9E03AABBBB9C468D5DF18C6C10EFB091E7A031DDFF251576C90D76AA9CE13);
         memset(na, 0, (ulong)nw * (ulong)nw);
         int px = 1, py = 1, row = 0;
         for (int k = 0; ((k < n)); k++)
@@ -2730,7 +1787,7 @@ public static unsafe partial class Cui
         if ((((((!(((unchecked((int)(ui->atlas_reset_pending))) != 0) )     ) && ((ui->atlas_w > 1024)))) && ((ui->frame - ui->atlas_check_frame >= (ulong)(300))))))
         {
             ui->atlas_check_frame = ui->frame;
-            cui__atlas_compact__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui);
+            cui__atlas_compact(ui);
         }
         if ((!(((unchecked((int)(ui->atlas_reset_pending))) != 0) )     ))
             return;
@@ -2783,7 +1840,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe uint cui__shape_script__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(uint cp)
+    public static unsafe uint cui__shape_script(uint cp)
     {
         if (((((((((cp >= (uint)(0x600))) && ((cp <= (uint)(0x8ff))))) || ((((cp >= (uint)(0xfb50))) && ((cp <= (uint)(0xfdff))))))) || ((((cp >= (uint)(0xfe70))) && ((cp <= (uint)(0xfeff))))))))
             return 0x61726162;
@@ -2796,7 +1853,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe float cui__shape_run__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(cui_ctx* ui, int font, float size, byte* text, int len, CBool tabular, CBool draw, float x, float y, cui_color color, float max_x)
+    public static unsafe float cui__shape_run(cui_ctx* ui, int font, float size, byte* text, int len, CBool tabular, CBool draw, float x, float y, cui_color color, float max_x)
     {
         cui_bidi_char* chars = default;
         int* offsets = default;
@@ -2805,7 +1862,7 @@ public static unsafe partial class Cui
         int* order = default;
         byte* levels = default;
         cui_shaped_glyph* glyphs = default;
-        __AnonF048DF0F3F800429BEB60DC0CEA86713614C2210C70FAC8F803FFC8B63B03E50* spans = default;
+        __Anon5C951E699879062C57C21670F7490A63FE1A5661876A03DCABC1DCB8E6E71FCA* spans = default;
         int glyph_count = default;
         int glyph_cap = default;
         int span_count = default;
@@ -2831,7 +1888,7 @@ public static unsafe partial class Cui
         }
         cui_direction direction = (cui_direction)(((int)((((int)ui->text_direction) != 0) ? (int)(ui->text_direction) : (int)(ui->direction))));
         int requested = ((int)((((int)direction == (int)__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_RTL)) ? 1 : ((int)((((int)direction == (int)__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_LTR)) ? 0 : -1))));
-        cui_shaped_paragraph* p = cui__paragraph__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, paragraph, plen, requested);
+        cui_shaped_paragraph* p = cui__paragraph(ui, paragraph, plen, requested);
         if ((!((((void*)(p)) != null) )     ))
             return 0;
         cui_shaped_line* cached = p->lines;
@@ -2840,7 +1897,7 @@ public static unsafe partial class Cui
         if ((((void*)(cached)) != null))
             goto paint;
         if (((p->line_count == 128)))
-            cui__shape_lines_free__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, p);
+            cui__shape_lines_free(ui, p);
         cached = (cui_shaped_line*)(cui__alloc(ui, ((ulong)(sizeof(cui_shaped_line)))));
         if ((!((((void*)(cached)) != null) )     ))
             return 0;
@@ -2893,7 +1950,7 @@ public static unsafe partial class Cui
                 int se = si;
                 for (; ((se < run_last)); se++)
                 {
-                    uint next = cui__shape_script__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(chars[se].cp);
+                    uint next = cui__shape_script(chars[se].cp);
                     if (((((((tag) != 0) && ((next) != 0))) && ((tag != next)))))
                         break;
                     if (((next) != 0))
@@ -2909,7 +1966,7 @@ public static unsafe partial class Cui
                     int gf = default;
                     int gi = default;
                     cui__utf8_decode(text + start, end - start, &cp);
-                    cui__find_glyph__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, font, cp, &gf, &gi);
+                    cui__find_glyph(ui, font, cp, &gf, &gi);
                     int cap = (end - start) * 4 + 16, input_count = 0, at = start;
                     cui_shape_glyph* input = (cui_shape_glyph*)(cui__alloc(ui, (ulong)cap * ((ulong)(sizeof(cui_shape_glyph)))));
                     if ((!((((void*)(input)) != null) )     ))
@@ -2919,7 +1976,7 @@ public static unsafe partial class Cui
                         int bytes = cui__utf8_decode(text + at, end - at, &cp);
                         int cf = default;
                         int cg = default;
-                        cui__find_glyph__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, font, cp, &cf, &cg);
+                        cui__find_glyph(ui, font, cp, &cf, &cg);
                         CBool control = ((CBool)(((cp >= (uint)(0x200b))) && ((cp <= (uint)(0x200f)))));
                         if (((((((input_count) != 0) && (!(((unchecked((int)(control))) != 0) )     ))) && ((cf != gf)))))
                             break;
@@ -2935,13 +1992,13 @@ public static unsafe partial class Cui
                             int ncap__ = ((int)(((span_cap) != 0) ? span_cap * 2 : 64));
                             while (((ncap__ < span_count + 1)))
                                 ncap__ *= 2;
-                            spans = (__AnonF048DF0F3F800429BEB60DC0CEA86713614C2210C70FAC8F803FFC8B63B03E50*)(cui__realloc(ui, spans, ((ulong)(sizeof(__AnonF048DF0F3F800429BEB60DC0CEA86713614C2210C70FAC8F803FFC8B63B03E50))) * (ulong)ncap__));
+                            spans = (__Anon5C951E699879062C57C21670F7490A63FE1A5661876A03DCABC1DCB8E6E71FCA*)(cui__realloc(ui, spans, ((ulong)(sizeof(__Anon5C951E699879062C57C21670F7490A63FE1A5661876A03DCABC1DCB8E6E71FCA))) * (ulong)ncap__));
                             span_cap = ncap__;
                         }
                     }
                     while (false);
-                    __AnonF048DF0F3F800429BEB60DC0CEA86713614C2210C70FAC8F803FFC8B63B03E50* span = &spans[span_count++];
-                    *span = new __AnonF048DF0F3F800429BEB60DC0CEA86713614C2210C70FAC8F803FFC8B63B03E50 { first = glyph_count, count = 0, width = 0 };
+                    __Anon5C951E699879062C57C21670F7490A63FE1A5661876A03DCABC1DCB8E6E71FCA* span = &spans[span_count++];
+                    *span = new __Anon5C951E699879062C57C21670F7490A63FE1A5661876A03DCABC1DCB8E6E71FCA { first = glyph_count, count = 0, width = 0 };
                     float em = size / ui->fonts[gf].upem;
                     for (int k = 0; ((k < input_count)); k++)
                     {
@@ -2968,7 +2025,7 @@ public static unsafe partial class Cui
             }
             for (int i = 0; ((i < span_count)); i++)
             {
-                __AnonF048DF0F3F800429BEB60DC0CEA86713614C2210C70FAC8F803FFC8B63B03E50* span__1 = &spans[((int)(((unchecked((int)(rtl))) != 0) ? span_count - 1 - i : i))];
+                __Anon5C951E699879062C57C21670F7490A63FE1A5661876A03DCABC1DCB8E6E71FCA* span__1 = &spans[((int)(((unchecked((int)(rtl))) != 0) ? span_count - 1 - i : i))];
                 for (int j = 0; ((j < span__1->count)); j++)
                 {
                     do
@@ -3020,7 +2077,7 @@ public static unsafe partial class Cui
                     gc = ui->text_fx(ui, ui->text_fx_data, ui->text_fx_base + sg->start, x + gx, ui->text_fx_line_y, &dy, color);
                     gy += roundf(dy * scale);
                 }
-                cui_glyph* g__2 = cui__glyph_get__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, sg->font, sg->id, size * scale, subpx);
+                cui_glyph* g__2 = cui__glyph_get__unit_50F9E03AABBBB9C468D5DF18C6C10EFB091E7A031DDFF251576C90D76AA9CE13(ui, sg->font, sg->id, size * scale, subpx);
                 if ((((((((void*)(g__2)) != null) && ((g__2->w) != 0))) && ((gc.a) != 0))))
                 {
                     float iw = 1.0f / ui->atlas_w, ih = 1.0f / ui->atlas_h;
@@ -3034,7 +2091,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__draw_run__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(cui_ctx* ui, int font, float size, float x, float y, cui_color color, byte* text, int len, CBool tabular, float max_x)
+    public static unsafe void cui__draw_run(cui_ctx* ui, int font, float size, float x, float y, cui_color color, byte* text, int len, CBool tabular, float max_x)
     {
         font = cui__resolve_font(ui, font);
         if (((((((font < 0)) || (!((((void*)(text)) != null) )     ))) || ((len <= 0)))))
@@ -3044,7 +2101,7 @@ public static unsafe partial class Cui
             return;
         if (((unchecked((int)(cui__text_needs_shaping(ui, text, len)))) != 0))
         {
-            cui__shape_run__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, font, size, text, len, tabular, 1, x, y, color, max_x);
+            cui__shape_run(ui, font, size, text, len, tabular, 1, x, y, color, max_x);
             return;
         }
         float s = ui->scale;
@@ -3055,8 +2112,8 @@ public static unsafe partial class Cui
         float by_px = roundf(baseline * s);
         float inv_w = 1.0f / (float)ui->atlas_w, inv_h = 1.0f / (float)ui->atlas_h;
         cui__glyph_iter it = default;
-        cui__iter_init__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&it, ui, font, size, text, len, tabular);
-        while (((unchecked((int)(cui__iter_next__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&it)))) != 0))
+        cui__iter_init(&it, ui, font, size, text, len, tabular);
+        while (((unchecked((int)(cui__iter_next(&it)))) != 0))
         {
             if (((it.gx + x > max_x)))
                 break;
@@ -3091,7 +2148,7 @@ public static unsafe partial class Cui
                     continue;
                 gy += roundf(dy * s);
             }
-            cui_glyph* g = cui__glyph_get__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, it.gfont, it.gi, gs_px, subpx);
+            cui_glyph* g = cui__glyph_get__unit_50F9E03AABBBB9C468D5DF18C6C10EFB091E7A031DDFF251576C90D76AA9CE13(ui, it.gfont, it.gi, gs_px, subpx);
             if ((((!((((void*)(g)) != null) )     ) || (!(((g->w) != 0) )     ))))
                 continue;
             float qx0 = fl + g->x0, qy0 = gy + g->y0;
@@ -3105,7 +2162,7 @@ public static unsafe partial class Cui
     {
         if (((((len < 0)) && (((void*)(text)) != null))))
             len = (int)strlen(text);
-        cui__draw_run__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, font, size, x, y, color, text, len, tabular, 1e30f);
+        cui__draw_run(ui, font, size, x, y, color, text, len, tabular, 1e30f);
     }
 
 
@@ -3117,7 +2174,7 @@ public static unsafe partial class Cui
         float w = cui__text_width(ui, font, size, text, len, tabular);
         if (((w <= max_w + 0.5f)))
         {
-            cui__draw_run__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, font, size, x, y, color, text, len, tabular, 1e30f);
+            cui__draw_run(ui, font, size, x, y, color, text, len, tabular, 1e30f);
             return;
         }
         byte* ell = (DotCcLiterals.Pointer + DotCcLiterals.S1144 /*"…"*/);
@@ -3127,10 +2184,10 @@ public static unsafe partial class Cui
             return;
         int rf = cui__resolve_font(ui, font);
         cui__glyph_iter it = default;
-        cui__iter_init__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&it, ui, rf, size, text, len, tabular);
+        cui__iter_init(&it, ui, rf, size, text, len, tabular);
         int cut = 0;
         float cut_w = 0;
-        while (((unchecked((int)(cui__iter_next__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(&it)))) != 0))
+        while (((unchecked((int)(cui__iter_next(&it)))) != 0))
         {
             if (((it.x > avail)))
                 break;
@@ -3154,10 +2211,10 @@ public static unsafe partial class Cui
                 break;
             }
         }
-        cui__draw_run__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, font, size, ((float)(((unchecked((int)(rtl))) != 0) ? x + ew : x)), y, color, text, cut, tabular, 1e30f);
+        cui__draw_run(ui, font, size, ((float)(((unchecked((int)(rtl))) != 0) ? x + ew : x)), y, color, text, cut, tabular, 1e30f);
         delegate*<cui_ctx*, void*, int, float, float, float*, cui_color, cui_color> fx = ui->text_fx;
         ui->text_fx = null;
-        cui__draw_run__unit_05184C46EDFD26351841B68F269593A6762051D724450E1BE4D89C3CE84D117A(ui, font, size, ((float)(((unchecked((int)(rtl))) != 0) ? x : x + cut_w)), y, color, ell, 3, 0, 1e30f);
+        cui__draw_run(ui, font, size, ((float)(((unchecked((int)(rtl))) != 0) ? x : x + cut_w)), y, color, ell, 3, 0, 1e30f);
         ui->text_fx = fx;
     }
 
@@ -3253,7 +2310,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe uint cui__auto_id__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(cui_ctx* ui)
+    public static unsafe uint cui__auto_id(cui_ctx* ui)
     {
         int d = ui->id_depth;
         int c = ui->auto_counter[((int)(((d < 64)) ? d : 64 - 1))]++;
@@ -3435,7 +2492,7 @@ public static unsafe partial class Cui
         if (((unchecked((int)(scroll))) != 0))
         {
             if ((!(((id) != 0) )     ))
-                id = cui__auto_id__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui);
+                id = cui__auto_id(ui);
             cui__scroll_begin_ex(ui, id, b, b->scroll_x);
             return id;
         }
@@ -3517,7 +2574,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe float cui__clamp_size__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(float v, float lo, float hi)
+    public static unsafe float cui__clamp_size(float v, float lo, float hi)
     {
         if (((v > hi)))
             v = hi;
@@ -3528,7 +2585,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe int cui__eff_align__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(cui_node* parent, cui_node* child)
+    public static unsafe int cui__eff_align(cui_node* parent, cui_node* child)
     {
         int pa = ((int)(((parent->align) != 0) ? (int)(parent->align) : ((int)(((parent->dir == (int)__DotCcEnum_6375695F646972.CUI_ROW)) ? (int)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER) : ((int)(((parent->dir == (int)__DotCcEnum_6375695F646972.CUI_STACK)) ? (int)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_START) : (int)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_STRETCH)))))));
         if (((child->self_align == 7)))
@@ -3540,21 +2597,21 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe float cui__text_line_px__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(cui_node* n)
+    public static unsafe float cui__text_line_px(cui_node* n)
     {
         return n->font_size * n->line_height;
     }
 
 
 
-    public static unsafe int cui__grid_cols__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(cui_node* n)
+    public static unsafe int cui__grid_cols(cui_node* n)
     {
         return ((int)(((n->grid_cols > 0)) ? n->grid_cols : ((int)(((n->columns > 0)) ? n->columns : 1))));
     }
 
 
 
-    public static unsafe CBool cui__multiline__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(cui_ctx* ui, cui_node* n)
+    public static unsafe CBool cui__multiline(cui_ctx* ui, cui_node* n)
     {
         if ((((!(((n->flags & (uint)(32768)) != 0) )     ) || ((n->first < 0)))))
             return 0;
@@ -3566,7 +2623,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe int cui__line_count__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(cui_ctx* ui, int c)
+    public static unsafe int cui__line_count(cui_ctx* ui, int c)
     {
         int k = 0;
         for (int i = c; ((((i >= 0)) && ((((i == c)) || (!(((ui->nodes[i].flags & (uint)(65536)) != 0) )     ))))); i = ui->nodes[i].next)
@@ -3576,13 +2633,13 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__measure_w__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(cui_ctx* ui, int i)
+    public static unsafe void cui__measure_w(cui_ctx* ui, int i)
     {
         cui_node* n = &ui->nodes[i];
         for (int c = n->first; ((c >= 0)); c = ui->nodes[c].next)
-            cui__measure_w__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, c);
+            cui__measure_w(ui, c);
         for (int c__1 = n->abs_first; ((c__1 >= 0)); c__1 = ui->nodes[c__1].next)
-            cui__measure_w__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, c__1);
+            cui__measure_w(ui, c__1);
         n = &ui->nodes[i];
         float pref = 0, minc = 0;
         if (((n->flags & (uint)(1)) != 0))
@@ -3629,8 +2686,8 @@ public static unsafe partial class Cui
                             cm = ch->minc_w;
                         }
                 float cc = ((float)((((int)ch->w.kind == (int)__DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED)) ? cm : ((float)(((ch->cmin_w < ch->max_w)) ? ch->cmin_w : ch->max_w))));
-                cp = cui__clamp_size__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(cp, ch->min_w, ch->max_w);
-                cm = cui__clamp_size__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(cm, ch->min_w, ch->max_w);
+                cp = cui__clamp_size(cp, ch->min_w, ch->max_w);
+                cm = cui__clamp_size(cm, ch->min_w, ch->max_w);
                 sum += cp;
                 sum_min += cm;
                 if (((cp > mx)))
@@ -3692,13 +2749,13 @@ public static unsafe partial class Cui
         n->cmin_w = ((float)(((minc < ((float)(((pref < n->max_w)) ? pref : n->max_w)))) ? minc : ((float)(((pref < n->max_w)) ? pref : n->max_w))));
         if (((n->flags & (uint)(262144)) != 0))
             n->cmin_w = ((float)(((n->cmin_w > ((float)(((n->min_w < n->max_w)) ? n->min_w : n->max_w)))) ? n->cmin_w : ((float)(((n->min_w < n->max_w)) ? n->min_w : n->max_w))));
-        n->pref_w = cui__clamp_size__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(pref, n->min_w, n->max_w);
-        n->minc_w = cui__clamp_size__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(((float)(((minc < n->pref_w)) ? minc : n->pref_w)), n->min_w, n->max_w);
+        n->pref_w = cui__clamp_size(pref, n->min_w, n->max_w);
+        n->minc_w = cui__clamp_size(((float)(((minc < n->pref_w)) ? minc : n->pref_w)), n->min_w, n->max_w);
     }
 
 
 
-    public static unsafe void cui__distribute__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(cui_ctx* ui, cui_node* n, int first, int count, float inner, CBool horizontal, CBool can_shrink)
+    public static unsafe void cui__distribute(cui_ctx* ui, cui_node* n, int first, int count, float inner, CBool horizontal, CBool can_shrink)
     {
         if (((count <= 0)))
             return;
@@ -3727,7 +2784,7 @@ public static unsafe partial class Cui
                     break;
             }
             if ((((int)sz.kind != (int)__DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW)))
-                v = cui__clamp_size__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(v, ((float)(((unchecked((int)(horizontal))) != 0) ? ch->min_w : ch->min_h)), ((float)(((unchecked((int)(horizontal))) != 0) ? ch->max_w : ch->max_h)));
+                v = cui__clamp_size(v, ((float)(((unchecked((int)(horizontal))) != 0) ? ch->min_w : ch->min_h)), ((float)(((unchecked((int)(horizontal))) != 0) ? ch->max_w : ch->max_h)));
             *((float*)(((unchecked((int)(horizontal))) != 0) ? &ch->rect.w : &ch->rect.h)) = v;
             used += v;
         }
@@ -3808,7 +2865,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__resolve_w__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(cui_ctx* ui, int i)
+    public static unsafe void cui__resolve_w(cui_ctx* ui, int i)
     {
         cui_node* n = &ui->nodes[i];
         float inner = n->rect.w - n->pad[1] - n->pad[3];
@@ -3841,7 +2898,7 @@ public static unsafe partial class Cui
                             b = ch->pref_w;
                             break;
                     }
-                    b = cui__clamp_size__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(b, ch->min_w, ch->max_w);
+                    b = cui__clamp_size(b, ch->min_w, ch->max_w);
                     float need = ((float)(((count) != 0) ? used + n->gap + b : b));
                     if (((((count) != 0) && ((need > inner + 0.01f)))))
                         break;
@@ -3849,7 +2906,7 @@ public static unsafe partial class Cui
                     count++;
                 }
                 ui->nodes[start].flags |= (uint)(65536);
-                cui__distribute__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, n, start, count, inner, 1, 1);
+                cui__distribute(ui, n, start, count, inner, 1, 1);
                 if (((count == 1)))
                 {
                     cui_node* ch__1 = &ui->nodes[start];
@@ -3861,7 +2918,7 @@ public static unsafe partial class Cui
         else
             if (((n->dir == (int)__DotCcEnum_6375695F646972.CUI_ROW)))
             {
-                cui__distribute__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, n, n->first, n->child_count, inner, 1, (((n->flags & (uint)(4)) != 0) ? 0 : 1));
+                cui__distribute(ui, n, n->first, n->child_count, inner, 1, (((n->flags & (uint)(4)) != 0) ? 0 : 1));
             }
             else
                 if (((n->dir == (int)__DotCcEnum_6375695F646972.CUI_GRID)))
@@ -3898,7 +2955,7 @@ public static unsafe partial class Cui
                     for (int c__2 = n->first; ((c__2 >= 0)); c__2 = ui->nodes[c__2].next)
                     {
                         cui_node* ch__3 = &ui->nodes[c__2];
-                        int al = cui__eff_align__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(n, ch__3);
+                        int al = cui__eff_align(n, ch__3);
                         float v = default;
                         switch ((int)ch__3->w.kind)
                         {
@@ -3918,27 +2975,27 @@ public static unsafe partial class Cui
                                     v = ((float)(((unchecked((int)(sx))) != 0) ? ch__3->pref_w : ((float)(((ch__3->minc_w > ((float)(((ch__3->pref_w < inner)) ? ch__3->pref_w : inner)))) ? ch__3->minc_w : ((float)(((ch__3->pref_w < inner)) ? ch__3->pref_w : inner))))));
                                 break;
                         }
-                        ch__3->rect.w = cui__clamp_size__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(v, ch__3->min_w, ch__3->max_w);
+                        ch__3->rect.w = cui__clamp_size(v, ch__3->min_w, ch__3->max_w);
                     }
                 }
         for (int c__3 = n->first; ((c__3 >= 0)); c__3 = ui->nodes[c__3].next)
-            cui__resolve_w__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, c__3);
+            cui__resolve_w(ui, c__3);
         for (int c__4 = n->abs_first; ((c__4 >= 0)); c__4 = ui->nodes[c__4].next)
         {
             ui->nodes[c__4].rect.w = ((float)((((int)ui->nodes[c__4].w.kind == (int)__DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED)) ? ui->nodes[c__4].w.value : ui->nodes[c__4].pref_w));
-            cui__resolve_w__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, c__4);
+            cui__resolve_w(ui, c__4);
         }
     }
 
 
 
-    public static unsafe void cui__measure_h__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(cui_ctx* ui, int i)
+    public static unsafe void cui__measure_h(cui_ctx* ui, int i)
     {
         cui_node* n = &ui->nodes[i];
         for (int c = n->first; ((c >= 0)); c = ui->nodes[c].next)
-            cui__measure_h__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, c);
+            cui__measure_h(ui, c);
         for (int c__1 = n->abs_first; ((c__1 >= 0)); c__1 = ui->nodes[c__1].next)
-            cui__measure_h__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, c__1);
+            cui__measure_h(ui, c__1);
         n = &ui->nodes[i];
         float pref = 0, minc = 0;
         if (((n->flags & (uint)(1)) != 0))
@@ -3962,16 +3019,16 @@ public static unsafe partial class Cui
             }
             ui->text_direction = (cui_direction)(0);
             n->text_lines = lines;
-            pref = minc = cui__text_line_px__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(n) * (float)lines;
+            pref = minc = cui__text_line_px(n) * (float)lines;
         }
         else
         {
             int count = 0;
             float sum = 0, sum_min = 0, mx = 0, mx_min = 0;
-            if (((((n->dir == (int)__DotCcEnum_6375695F646972.CUI_GRID)) || ((unchecked((int)(cui__multiline__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, n)))) != 0))))
+            if (((((n->dir == (int)__DotCcEnum_6375695F646972.CUI_GRID)) || ((unchecked((int)(cui__multiline(ui, n)))) != 0))))
             {
                 CBool grid = ((CBool)(n->dir == (int)__DotCcEnum_6375695F646972.CUI_GRID));
-                int cols = cui__grid_cols__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(n);
+                int cols = cui__grid_cols(n);
                 int k__1 = 0;
                 float row_max = 0;
                 int rows = 0;
@@ -4015,8 +3072,8 @@ public static unsafe partial class Cui
                             cp = ch__1->pref_h;
                             cm = ch__1->minc_h;
                         }
-                    cp = cui__clamp_size__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(cp, ch__1->min_h, ch__1->max_h);
-                    cm = cui__clamp_size__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(cm, ch__1->min_h, ch__1->max_h);
+                    cp = cui__clamp_size(cp, ch__1->min_h, ch__1->max_h);
+                    cm = cui__clamp_size(cm, ch__1->min_h, ch__1->max_h);
                     sum += cp;
                     sum_min += cm;
                     if (((cp > mx)))
@@ -4045,13 +3102,13 @@ public static unsafe partial class Cui
         }
         if ((((int)n->h.kind == (int)__DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED)))
             pref = minc = n->h.value;
-        n->pref_h = cui__clamp_size__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(pref, n->min_h, n->max_h);
-        n->minc_h = cui__clamp_size__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(((float)(((minc < n->pref_h)) ? minc : n->pref_h)), n->min_h, n->max_h);
+        n->pref_h = cui__clamp_size(pref, n->min_h, n->max_h);
+        n->minc_h = cui__clamp_size(((float)(((minc < n->pref_h)) ? minc : n->pref_h)), n->min_h, n->max_h);
     }
 
 
 
-    public static unsafe void cui__resolve_h__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(cui_ctx* ui, int i)
+    public static unsafe void cui__resolve_h(cui_ctx* ui, int i)
     {
         cui_node* n = &ui->nodes[i];
         float inner = n->rect.h - n->pad[0] - n->pad[2];
@@ -4068,18 +3125,18 @@ public static unsafe partial class Cui
                     float v = ((float)((((int)ch->h.kind == (int)__DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED)) ? ch->h.value : ch->pref_h));
                     if ((((((int)ch->h.kind == (int)__DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW)) && ((n->child_count == 1)))))
                         v = ((float)(((v > inner)) ? v : inner));
-                    ch->rect.h = cui__clamp_size__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(v, ch->min_h, ch->max_h);
+                    ch->rect.h = cui__clamp_size(v, ch->min_h, ch->max_h);
                 }
             }
             else
             {
-                cui__distribute__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, n, n->first, n->child_count, inner, 0, 1);
+                cui__distribute(ui, n, n->first, n->child_count, inner, 0, 1);
             }
         }
         else
             if (((n->dir == (int)__DotCcEnum_6375695F646972.CUI_GRID)))
             {
-                int cols = cui__grid_cols__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(n);
+                int cols = cui__grid_cols(n);
                 int first_in_row = n->first;
                 int k = 0;
                 float row_max = 0;
@@ -4104,11 +3161,11 @@ public static unsafe partial class Cui
                 }
             }
             else
-                if (((unchecked((int)(cui__multiline__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, n)))) != 0))
+                if (((unchecked((int)(cui__multiline(ui, n)))) != 0))
                 {
                     for (int c__2 = n->first; ((c__2 >= 0)); )
                     {
-                        int count = cui__line_count__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, c__2);
+                        int count = cui__line_count(ui, c__2);
                         float line_h = 0;
                         int k__1 = 0;
                         for (int child = c__2; ((k__1 < count)); child = ui->nodes[child].next, k__1++)
@@ -4132,10 +3189,10 @@ public static unsafe partial class Cui
                                     v__1 = line_h;
                                     break;
                                 default:
-                                    v__1 = ((float)(((cui__eff_align__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(n, ch__3) == (int)__DotCcEnum_6375695F616C69676E.CUI_ALIGN_STRETCH)) ? line_h : ch__3->pref_h));
+                                    v__1 = ((float)(((cui__eff_align(n, ch__3) == (int)__DotCcEnum_6375695F616C69676E.CUI_ALIGN_STRETCH)) ? line_h : ch__3->pref_h));
                                     break;
                             }
-                            ch__3->rect.h = cui__clamp_size__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(v__1, ch__3->min_h, ch__3->max_h);
+                            ch__3->rect.h = cui__clamp_size(v__1, ch__3->min_h, ch__3->max_h);
                         }
                     }
                 }
@@ -4144,7 +3201,7 @@ public static unsafe partial class Cui
                     for (int c__3 = n->first; ((c__3 >= 0)); c__3 = ui->nodes[c__3].next)
                     {
                         cui_node* ch__4 = &ui->nodes[c__3];
-                        int al = ((int)(((n->dir == (int)__DotCcEnum_6375695F646972.CUI_STACK)) ? ((int)(((ch__4->self_align == (int)__DotCcEnum_6375695F616C69676E.CUI_ALIGN_STRETCH)) ? (int)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_STRETCH) : (int)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_START))) : cui__eff_align__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(n, ch__4)));
+                        int al = ((int)(((n->dir == (int)__DotCcEnum_6375695F646972.CUI_STACK)) ? ((int)(((ch__4->self_align == (int)__DotCcEnum_6375695F616C69676E.CUI_ALIGN_STRETCH)) ? (int)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_STRETCH) : (int)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_START))) : cui__eff_align(n, ch__4)));
                         float v__2 = default;
                         switch ((int)ch__4->h.kind)
                         {
@@ -4161,21 +3218,21 @@ public static unsafe partial class Cui
                                 v__2 = ((float)(((((al == (int)__DotCcEnum_6375695F616C69676E.CUI_ALIGN_STRETCH)) && (!(((unchecked((int)(sy))) != 0) )     ))) ? inner : ch__4->pref_h));
                                 break;
                         }
-                        ch__4->rect.h = cui__clamp_size__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(v__2, ch__4->min_h, ch__4->max_h);
+                        ch__4->rect.h = cui__clamp_size(v__2, ch__4->min_h, ch__4->max_h);
                     }
                 }
         for (int c__4 = n->first; ((c__4 >= 0)); c__4 = ui->nodes[c__4].next)
-            cui__resolve_h__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, c__4);
+            cui__resolve_h(ui, c__4);
         for (int c__5 = n->abs_first; ((c__5 >= 0)); c__5 = ui->nodes[c__5].next)
         {
             ui->nodes[c__5].rect.h = ((float)((((int)ui->nodes[c__5].h.kind == (int)__DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED)) ? ui->nodes[c__5].h.value : ui->nodes[c__5].pref_h));
-            cui__resolve_h__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, c__5);
+            cui__resolve_h(ui, c__5);
         }
     }
 
 
 
-    public static unsafe void cui__record_rect__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(cui_ctx* ui, cui_node* n)
+    public static unsafe void cui__record_rect(cui_ctx* ui, cui_node* n)
     {
         if ((!(((n->id) != 0) )     ))
             return;
@@ -4186,7 +3243,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe int cui__strong_class__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(uint cp)
+    public static unsafe int cui__strong_class(uint cp)
     {
         int t = cui__bidi_strong_direction(cp);
         return ((int)(((t < 0)) ? 0 : ((int)(((t) != 0) ? (int)(__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_RTL) : (int)(__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_LTR)))));
@@ -4194,7 +3251,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe int cui__first_strong__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(cui_ctx* ui, int i)
+    public static unsafe int cui__first_strong(cui_ctx* ui, int i)
     {
         cui_node* n = &ui->nodes[i];
         if (((((n->flags & (uint)(1)) != 0) && ((n->font != 4)))))
@@ -4203,7 +3260,7 @@ public static unsafe partial class Cui
             {
                 uint cp = default;
                 p += cui__utf8_decode(n->text + p, n->text_len - p, &cp);
-                int d = cui__strong_class__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(cp);
+                int d = cui__strong_class(cp);
                 if (((d) != 0))
                     return d;
             }
@@ -4212,7 +3269,7 @@ public static unsafe partial class Cui
         {
             if (((ui->nodes[c].direction) != 0))
                 continue;
-            int d__1 = cui__first_strong__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, c);
+            int d__1 = cui__first_strong(ui, c);
             if (((d__1) != 0))
                 return d__1;
         }
@@ -4221,12 +3278,12 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__resolve_direction__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(cui_ctx* ui, int i, CBool inherited)
+    public static unsafe void cui__resolve_direction(cui_ctx* ui, int i, CBool inherited)
     {
         cui_node* n = &ui->nodes[i];
         int d = n->direction;
         if (((d == (int)__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_AUTO)))
-            d = cui__first_strong__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, i);
+            d = cui__first_strong(ui, i);
         n->rtl = ((CBool)(((d == (int)__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_RTL)) || (((!(((d) != 0) )     ) && ((unchecked((int)(inherited))) != 0)))));
         if ((((!(((n->flags & (uint)(1)) != 0) )     ) && ((n->text_align != (int)__DotCcEnum_6375695F746578745F616C69676E.CUI_TEXT_START)))))
         {
@@ -4239,17 +3296,17 @@ public static unsafe partial class Cui
                     n->justify = (byte)(((int)(((((CBool)(n->text_align == (int)__DotCcEnum_6375695F746578745F616C69676E.CUI_TEXT_RIGHT)) != (int)((int)(n->rtl)))) ? (int)(__DotCcEnum_6375695F6A757374696679.CUI_JUSTIFY_END) : (int)(__DotCcEnum_6375695F6A757374696679.CUI_JUSTIFY_START))));
         }
         for (int c = n->first; ((c >= 0)); c = ui->nodes[c].next)
-            cui__resolve_direction__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, c, n->rtl);
+            cui__resolve_direction(ui, c, n->rtl);
         for (int c__1 = n->abs_first; ((c__1 >= 0)); c__1 = ui->nodes[c__1].next)
-            cui__resolve_direction__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, c__1, n->rtl);
+            cui__resolve_direction(ui, c__1, n->rtl);
     }
 
 
 
-    public static unsafe void cui__place__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(cui_ctx* ui, int i)
+    public static unsafe void cui__place(cui_ctx* ui, int i)
     {
         cui_node* n = &ui->nodes[i];
-        cui__record_rect__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, n);
+        cui__record_rect(ui, n);
         float ox = n->rect.x + n->pad[3] - n->scroll_x;
         float oy = n->rect.y + n->pad[0] - n->scroll_y;
         float iw = n->rect.w - n->pad[1] - n->pad[3];
@@ -4258,12 +3315,12 @@ public static unsafe partial class Cui
         float max_r = 0, max_b = 0;
         if (((count > 0)))
         {
-            if (((unchecked((int)(cui__multiline__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, n)))) != 0))
+            if (((unchecked((int)(cui__multiline(ui, n)))) != 0))
             {
                 float y = 0;
                 for (int c = n->first; ((c >= 0)); )
                 {
-                    int lc = cui__line_count__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, c);
+                    int lc = cui__line_count(ui, c);
                     float total = 0, line_h = 0;
                     int k = 0;
                     for (int child = c; ((k < lc)); child = ui->nodes[child].next, k++)
@@ -4299,7 +3356,7 @@ public static unsafe partial class Cui
                     for (k = 0; ((k < lc)); c = ui->nodes[c].next, k++)
                     {
                         cui_node* ch = &ui->nodes[c];
-                        int al = cui__eff_align__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(n, ch);
+                        int al = cui__eff_align(n, ch);
                         float cpos = 0;
                         if (((al == (int)__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER)))
                             cpos = (line_h - ch->rect.h) * 0.5f;
@@ -4349,7 +3406,7 @@ public static unsafe partial class Cui
                     for (int c__2 = n->first; ((c__2 >= 0)); c__2 = ui->nodes[c__2].next)
                     {
                         cui_node* ch__1 = &ui->nodes[c__2];
-                        int al__1 = cui__eff_align__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(n, ch__1);
+                        int al__1 = cui__eff_align(n, ch__1);
                         float cross_avail = ((float)(((unchecked((int)(row))) != 0) ? ih : iw));
                         float csize = ((float)(((unchecked((int)(row))) != 0) ? ch__1->rect.h : ch__1->rect.w));
                         float cpos__1 = 0;
@@ -4397,7 +3454,7 @@ public static unsafe partial class Cui
                     else
                         if (((n->dir == (int)__DotCcEnum_6375695F646972.CUI_GRID)))
                         {
-                            int cols = cui__grid_cols__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(n);
+                            int cols = cui__grid_cols(n);
                             float cell = (iw - n->gap * (float)(cols - 1)) / (float)cols;
                             int k__1 = 0;
                             float y__2 = oy, row_h = 0;
@@ -4439,7 +3496,7 @@ public static unsafe partial class Cui
             ss->view_h = n->rect.h;
         }
         for (int c__6 = n->first; ((c__6 >= 0)); c__6 = ui->nodes[c__6].next)
-            cui__place__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, c__6);
+            cui__place(ui, c__6);
         for (int c__7 = n->abs_first; ((c__7 >= 0)); c__7 = ui->nodes[c__7].next)
         {
             cui_node* ab = &ui->nodes[c__7];
@@ -4453,13 +3510,13 @@ public static unsafe partial class Cui
                 ab->rect.x = n->rect.x + ab->fx - n->scroll_x;
                 ab->rect.y = n->rect.y + ab->fy - n->scroll_y;
             }
-            cui__place__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, c__7);
+            cui__place(ui, c__7);
         }
     }
 
 
 
-    public static unsafe cui_rect cui__anchor_rect__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(cui_ctx* ui, uint anchor)
+    public static unsafe cui_rect cui__anchor_rect(cui_ctx* ui, uint anchor)
     {
         cui_state_entry* e = cui__state_entry(ui, anchor);
         return e->rect;
@@ -4467,11 +3524,11 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__layout_float__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(cui_ctx* ui, int i)
+    public static unsafe void cui__layout_float(cui_ctx* ui, int i)
     {
         cui_node* n = &ui->nodes[i];
         float vw = ui->vw, vh = ui->vh, margin = 8;
-        cui__measure_w__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, i);
+        cui__measure_w(ui, i);
         n = &ui->nodes[i];
         if (((n->placement == 100)))
             n->rect.w = vw;
@@ -4486,9 +3543,9 @@ public static unsafe partial class Cui
                         n->rect.w = vw;
                     else
                         n->rect.w = ((float)(((n->pref_w < vw - 2 * margin)) ? n->pref_w : vw - 2 * margin));
-        n->rect.w = cui__clamp_size__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(n->rect.w, n->min_w, ((float)(((n->max_w < ((float)(((n->placement == 100)) ? vw : vw - 2 * margin)))) ? n->max_w : ((float)(((n->placement == 100)) ? vw : vw - 2 * margin)))));
-        cui__resolve_w__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, i);
-        cui__measure_h__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, i);
+        n->rect.w = cui__clamp_size(n->rect.w, n->min_w, ((float)(((n->max_w < ((float)(((n->placement == 100)) ? vw : vw - 2 * margin)))) ? n->max_w : ((float)(((n->placement == 100)) ? vw : vw - 2 * margin)))));
+        cui__resolve_w(ui, i);
+        cui__measure_h(ui, i);
         n = &ui->nodes[i];
         if (((n->placement == 100)))
             n->rect.h = vh;
@@ -4526,7 +3583,7 @@ public static unsafe partial class Cui
                 }
                 else
                 {
-                    cui_rect A = cui__anchor_rect__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, n->anchor);
+                    cui_rect A = cui__anchor_rect(ui, n->anchor);
                     switch ((int)n->placement)
                     {
                         case (int)__DotCcEnum_6375695F706C6163656D656E74.CUI_PLACE_BOTTOM_START:
@@ -4587,8 +3644,8 @@ public static unsafe partial class Cui
         }
         n->rect.x = roundf(x);
         n->rect.y = roundf(y);
-        cui__resolve_h__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, i);
-        cui__place__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, i);
+        cui__resolve_h(ui, i);
+        cui__place(ui, i);
     }
 
 
@@ -4598,30 +3655,30 @@ public static unsafe partial class Cui
         if (((ui->node_count == 0)))
             return;
         cui_node* root = &ui->nodes[0];
-        cui__resolve_direction__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, 0, 0);
+        cui__resolve_direction(ui, 0, 0);
         for (int k = 0; ((k < ui->float_count)); k++)
         {
             int i = ui->float_roots[k], parent = ui->nodes[i].parent;
-            cui__resolve_direction__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, i, ((int)(((parent >= 0)) ? (int)((int)(ui->nodes[parent].rtl)) : (int)((int)(root->rtl)))));
+            cui__resolve_direction(ui, i, ((int)(((parent >= 0)) ? (int)((int)(ui->nodes[parent].rtl)) : (int)((int)(root->rtl)))));
         }
-        cui__measure_w__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, 0);
+        cui__measure_w(ui, 0);
         root = &ui->nodes[0];
         root->rect.x = 0;
         root->rect.y = 0;
         root->rect.w = ui->vw;
-        cui__resolve_w__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, 0);
-        cui__measure_h__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, 0);
+        cui__resolve_w(ui, 0);
+        cui__measure_h(ui, 0);
         root = &ui->nodes[0];
         root->rect.h = ui->vh;
-        cui__resolve_h__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, 0);
-        cui__place__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, 0);
+        cui__resolve_h(ui, 0);
+        cui__place(ui, 0);
         for (int k__1 = 0; ((k__1 < ui->float_count)); k__1++)
-            cui__layout_float__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, ui->float_roots[k__1]);
+            cui__layout_float(ui, ui->float_roots[k__1]);
     }
 
 
 
-    public static unsafe void cui__add_hit__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(cui_ctx* ui, uint id, cui_rect r, uint flags)
+    public static unsafe void cui__add_hit(cui_ctx* ui, uint id, cui_rect r, uint flags)
     {
         if (((((r.w <= 0)) || ((r.h <= 0)))))
             return;
@@ -4647,7 +3704,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe cui_rect cui__xform_rect__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(cui_ctx* ui, cui_rect r)
+    public static unsafe cui_rect cui__xform_rect(cui_ctx* ui, cui_rect r)
     {
         cui_xform x = ((cui_xform*)&ui->dl.xform_stack)[ui->dl.xform_depth - 1];
         if (((((((x.scale == 1)) && ((x.ox == 0)))) && ((x.oy == 0)))))
@@ -4659,14 +3716,14 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__paint_text__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(cui_ctx* ui, cui_node* n)
+    public static unsafe void cui__paint_text(cui_ctx* ui, cui_node* n)
     {
         ui->text_fx = n->text_fx;
         ui->text_fx_data = n->text_fx_data;
         ui->text_direction = (cui_direction)(((int)(((unchecked((int)(n->rtl))) != 0) ? (int)(__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_RTL) : (int)(__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_LTR))));
         ui->text_paragraph_len = n->text_len;
         ui->text_paragraph = ((byte*)(((unchecked((int)(cui__text_needs_shaping(ui, n->text, n->text_len)))) != 0) ? n->text : null));
-        cui__paint_text_lines__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, n);
+        cui__paint_text_lines(ui, n);
         ui->text_direction = (cui_direction)(0);
         ui->text_paragraph = null;
         ui->text_fx = null;
@@ -4675,9 +3732,9 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__paint_text_lines__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(cui_ctx* ui, cui_node* n)
+    public static unsafe void cui__paint_text_lines(cui_ctx* ui, cui_node* n)
     {
-        float lh = cui__text_line_px__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(n);
+        float lh = cui__text_line_px(n);
         float fh = cui__font_line_height(ui, n->font, n->font_size);
         float top_pad = (lh - fh) * 0.5f;
         CBool tab = ((CBool)((n->flags & (uint)(256)) != (uint)(0)));
@@ -4732,13 +3789,13 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__paint_node__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(cui_ctx* ui, int i, cui_rect clip)
+    public static unsafe void cui__paint_node__unit_41976E9219D19E4B8ABFAA306256FFA3CED3E03FE750372317FCD8B4131238D4(cui_ctx* ui, int i, cui_rect clip)
     {
         cui_node* n = &ui->nodes[i];
         cui_rect r = n->rect;
         if ((!(((n->flags & (uint)(32)) != 0) )     ))
         {
-            cui_rect vis = cui__rect_intersect(cui__xform_rect__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, r), clip);
+            cui_rect vis = cui__rect_intersect(cui__xform_rect(ui, r), clip);
             if (((((((vis.w <= 0)) || ((vis.h <= 0)))) && (!(((((r.w == 0)) || ((r.h == 0)))) )     ))))
                 return;
         }
@@ -4747,8 +3804,8 @@ public static unsafe partial class Cui
             cui__push_xform(ui, n->scale, r.x + r.w * 0.5f, r.y + r.h * 0.5f, n->opacity, n->tx, n->ty);
         if (((n->flags & unchecked((uint)((2 | 64 | 2048 | 4 | 8)))) != 0))
         {
-            cui_rect hr = (((n->flags & (uint)(64)) != 0) ? r : cui__rect_intersect(cui__xform_rect__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, r), clip));
-            cui__add_hit__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, n->id, hr, n->flags);
+            cui_rect hr = (((n->flags & (uint)(64)) != 0) ? r : cui__rect_intersect(cui__xform_rect(ui, r), clip));
+            cui__add_hit(ui, n->id, hr, n->flags);
         }
         if ((((int)n->elevation) != 0))
             cui__draw_elevation(ui, r, n->radius, n->elevation, n->elevation_alpha);
@@ -4772,14 +3829,14 @@ public static unsafe partial class Cui
             {
                 for (int k = 0; ((k < unchecked((int)(((ulong)((3 * (2 * sizeof(byte*))))) / ((ulong)((2 * sizeof(byte*)))))))); k++)
                 {
-                    if ((!(((strcmp(text, (global::Managed.Cui.Cui.Globals.pairs__s0__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4 + k * 2)[0])) != 0) )     ))
-                        n->text = (global::Managed.Cui.Cui.Globals.pairs__s0__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4 + k * 2)[1];
+                    if ((!(((strcmp(text, (global::Managed.Cui.Cui.Globals.pairs__s0__unit_41976E9219D19E4B8ABFAA306256FFA3CED3E03FE750372317FCD8B4131238D4 + k * 2)[0])) != 0) )     ))
+                        n->text = (global::Managed.Cui.Cui.Globals.pairs__s0__unit_41976E9219D19E4B8ABFAA306256FFA3CED3E03FE750372317FCD8B4131238D4 + k * 2)[1];
                     else
-                        if ((!(((strcmp(text, (global::Managed.Cui.Cui.Globals.pairs__s0__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4 + k * 2)[1])) != 0) )     ))
-                            n->text = (global::Managed.Cui.Cui.Globals.pairs__s0__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4 + k * 2)[0];
+                        if ((!(((strcmp(text, (global::Managed.Cui.Cui.Globals.pairs__s0__unit_41976E9219D19E4B8ABFAA306256FFA3CED3E03FE750372317FCD8B4131238D4 + k * 2)[1])) != 0) )     ))
+                            n->text = (global::Managed.Cui.Cui.Globals.pairs__s0__unit_41976E9219D19E4B8ABFAA306256FFA3CED3E03FE750372317FCD8B4131238D4 + k * 2)[0];
                 }
             }
-            cui__paint_text__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, n);
+            cui__paint_text(ui, n);
             n->text = text;
         }
         CBool clips = ((CBool)((n->flags & unchecked((uint)((16 | 4 | 8)))) != (uint)(0)));
@@ -4787,10 +3844,10 @@ public static unsafe partial class Cui
         if (((unchecked((int)(clips))) != 0))
         {
             cui_push_clip(ui, r);
-            child_clip = cui__rect_intersect(clip, cui__xform_rect__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, r));
+            child_clip = cui__rect_intersect(clip, cui__xform_rect(ui, r));
         }
         for (int c = n->abs_first; ((c >= 0)); c = ui->nodes[c].next)
-            cui__paint_node__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, c, child_clip);
+            cui__paint_node__unit_41976E9219D19E4B8ABFAA306256FFA3CED3E03FE750372317FCD8B4131238D4(ui, c, child_clip);
         CBool any_top = 0;
         for (int c__1 = n->first; ((c__1 >= 0)); c__1 = ui->nodes[c__1].next)
         {
@@ -4799,12 +3856,12 @@ public static unsafe partial class Cui
                 any_top = 1;
                 continue;
             }
-            cui__paint_node__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, c__1, child_clip);
+            cui__paint_node__unit_41976E9219D19E4B8ABFAA306256FFA3CED3E03FE750372317FCD8B4131238D4(ui, c__1, child_clip);
         }
         if (((unchecked((int)(any_top))) != 0))
             for (int c__2 = n->first; ((c__2 >= 0)); c__2 = ui->nodes[c__2].next)
                 if (((ui->nodes[c__2].flags & (uint)(16384)) != 0))
-                    cui__paint_node__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, c__2, child_clip);
+                    cui__paint_node__unit_41976E9219D19E4B8ABFAA306256FFA3CED3E03FE750372317FCD8B4131238D4(ui, c__2, child_clip);
         if (((unchecked((int)(clips))) != 0))
             cui_pop_clip(ui);
         n = &ui->nodes[i];
@@ -4822,7 +3879,7 @@ public static unsafe partial class Cui
 
     public static unsafe void cui__paint_add_hit(cui_ctx* ui, uint id, cui_rect r, uint flags)
     {
-        cui__add_hit__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, id, r, flags);
+        cui__add_hit(ui, id, r, flags);
     }
 
 
@@ -4837,7 +3894,7 @@ public static unsafe partial class Cui
         ss->view_h = r.h;
         ss->content_w = r.w + 1e6f;
         ss->content_h = r.h + 1e6f;
-        cui__add_hit__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, id, cui__rect_intersect(r, cp), unchecked((uint)(4 | 8)));
+        cui__add_hit(ui, id, cui__rect_intersect(r, cp), unchecked((uint)(4 | 8)));
     }
 
 
@@ -4848,7 +3905,7 @@ public static unsafe partial class Cui
             return;
         cui_rect full = new cui_rect { x = 0, y = 0, w = ui->vw, h = ui->vh };
         ui->current_layer = 0;
-        cui__paint_node__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, 0, full);
+        cui__paint_node__unit_41976E9219D19E4B8ABFAA306256FFA3CED3E03FE750372317FCD8B4131238D4(ui, 0, full);
         int n = ui->float_count;
         int* order = (int*)(cui__frame_alloc(ui, 4UL * (ulong)((int)(((n > 0)) ? n : 1))));
         for (int k = 0; ((k < n)); k++)
@@ -4866,7 +3923,7 @@ public static unsafe partial class Cui
         for (int k__1 = 0; ((k__1 < n)); k__1++)
         {
             ui->current_layer = ui->nodes[order[k__1]].id;
-            cui__paint_node__unit_A24829F17CB5888E49EDE85843618D4F5216093B662A073DFE86B2593D1F52D4(ui, order[k__1], full);
+            cui__paint_node__unit_41976E9219D19E4B8ABFAA306256FFA3CED3E03FE750372317FCD8B4131238D4(ui, order[k__1], full);
         }
         ui->current_layer = 0;
     }
@@ -4924,7 +3981,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__paint_focus_after__unit_FCC3A14B6500BF596BCE25FB3D8713FB096946360F83EFA49A1313B5C82303B3(cui_ctx* ui, cui_node* n, void* data)
+    public static unsafe void cui__paint_focus_after__unit_081023C035BB6B4529A6C0B92CE48DE5D852A146F28C5978D9E37B331C577D60(cui_ctx* ui, cui_node* n, void* data)
     {
         float a = *(float*)data;
         cui__draw_focus_ring(ui, n->rect, n->radius, a);
@@ -4939,7 +3996,7 @@ public static unsafe partial class Cui
         cui_node* n = &ui->nodes[i];
         float* d = (float*)(cui__frame_alloc(ui, 4UL));
         *d = alpha;
-        n->paint = DotCcPointers.cui__paint_focus_after__unit_FCC3A14B6500BF596BCE25FB3D8713FB096946360F83EFA49A1313B5C82303B3;
+        n->paint = DotCcPointers.cui__paint_focus_after__unit_081023C035BB6B4529A6C0B92CE48DE5D852A146F28C5978D9E37B331C577D60;
         n->paint_data = d;
         n->flags |= (uint)(4096);
     }
@@ -4978,6 +4035,1182 @@ public static unsafe partial class Cui
                     cui__tooltip_passive(ui, tid, text);
             }
         }
+    }
+
+
+
+    public static unsafe void cui_textf(cui_ctx* ui, byte* fmt, params ReadOnlySpan<VaArg> _va)
+    {
+        scoped VaList ap = default;
+        ap = new VaList(_va);
+        byte* s = cui__frame_vprintf(ui, fmt, ap);
+        ap.End();
+        cui_text_ex(ui, s, null);
+    }
+
+
+
+    public static unsafe void cui_heading(cui_ctx* ui, byte* text, int level)
+    {
+        if (((level < 1)))
+            level = 1;
+        if (((level > 4)))
+            level = 4;
+        float size = ui->theme.heading[level - 1];
+        int f = ((int)(((size >= 26)) ? 2 : 1));
+        int i = cui__text_node(ui, text, -1, f, cui__fs(ui, size), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 1);
+        ui->nodes[i].line_height = ((float)(((size >= 26)) ? 1.15f : 1.3f));
+    }
+
+
+
+    public static unsafe void cui_label(cui_ctx* ui, byte* text)
+    {
+        int i = cui__text_node(ui, text, cui__display_len(text), 1, cui__fs(ui, ui->theme.text_body), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 1);
+        ui->nodes[i].line_height = 1.35f;
+    }
+
+
+
+    public static unsafe void cui_secondary(cui_ctx* ui, byte* text)
+    {
+        cui__text_node(ui, text, -1, 0, cui__fs(ui, ui->theme.text_body), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY], 1);
+    }
+
+
+
+    public static unsafe void cui_muted(cui_ctx* ui, byte* text)
+    {
+        cui__text_node(ui, text, -1, 0, cui__fs(ui, ui->theme.text_sm), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 1);
+    }
+
+
+
+    public static unsafe void cui_code(cui_ctx* ui, byte* text)
+    {
+        cui_box b = default;
+        memset(&b, 0, ((ulong)(sizeof(cui_box))));
+        b.pad_x = 6;
+        b.pad_y = 2;
+        b.radius = 6;
+        b.bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_ACTIVE];
+        int i = cui__node_new(ui, 0);
+        cui__apply_box(ui, &ui->nodes[i], &b);
+        ui->nodes[i].self_align = 7;
+        cui__open(ui, i);
+        int t = cui__text_node(ui, text, -1, 3, cui__fs(ui, ui->theme.text_sm), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0);
+        ui->nodes[t].line_height = 1.4f;
+        cui__close(ui);
+    }
+
+
+
+    public static unsafe void cui_kbd(cui_ctx* ui, byte* keys)
+    {
+        int first = ui->node_count;
+        cui__kbd_body(ui, keys);
+        do
+        {
+            int f_ = first;
+            if (((((f_ < ui->node_count)) && (!(((ui->nodes[f_].direction) != 0) )     ))))
+                ui->nodes[f_].direction = (byte)(__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_LTR);
+        }
+        while (false);
+    }
+
+
+
+    public static unsafe void cui__kbd_body(cui_ctx* ui, byte* keys)
+    {
+        int row = cui__node_new(ui, 0);
+        cui_node* r = &ui->nodes[row];
+        r->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
+        r->gap = 3;
+        r->self_align = 7;
+        cui__open(ui, row);
+        byte* p = keys;
+        while ((((((void*)(p)) != null) && ((*p) != 0))))
+        {
+            while (((*p == 32)))
+                p++;
+            byte* e = p;
+            while (((((*e) != 0) && ((*e != 32)))))
+                e++;
+            if (((e > p)))
+            {
+                int cap = cui__node_new(ui, 0);
+                cui_node* c = &ui->nodes[cap];
+                c->min_w = 20;
+                c->pad[1] = c->pad[3] = 5;
+                c->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)20 };
+                c->radius = new cui_corners { tl = 5, tr = 5, br = 5, bl = 5 };
+                c->bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE];
+                c->border = 1;
+                c->border_color = cui__quiet_edge(ui, 0.35f);
+                c->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+                c->justify = (byte)(__DotCcEnum_6375695F6A757374696679.CUI_JUSTIFY_CENTER);
+                c->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
+                cui__open(ui, cap);
+                int t = cui__text_node(ui, p, (int)(e - p), 1, cui__fs(ui, ui->theme.text_xs), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY], 0);
+                ui->nodes[t].line_height = 1.2f;
+                cui__close(ui);
+            }
+            p = e;
+        }
+        cui__close(ui);
+    }
+
+
+
+    public static unsafe void cui__paint_underline__unit_081023C035BB6B4529A6C0B92CE48DE5D852A146F28C5978D9E37B331C577D60(cui_ctx* ui, cui_node* n, void* data)
+    {
+        cui__underline_data* u = (cui__underline_data*)(data);
+        if (((u->hover <= 0.01f)))
+            return;
+        cui_rect r = new cui_rect { x = n->rect.x + n->pad[3], y = n->rect.y + n->rect.h * 0.5f + n->rect.h * 0.32f, w = (n->rect.w - n->pad[1] - n->pad[3]) * u->hover, h = 1 };
+        cui_draw_rect(ui, r, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, u->color);
+    }
+
+
+
+    public static unsafe CBool cui_link(cui_ctx* ui, byte* text)
+    {
+        uint id = cui_make_id(ui, text) ^ 0x11AC0009u;
+        cui_interact r = cui__interact(ui, id, 1);
+        cui__btn_state rest = default;
+        memset(&rest, 0, ((ulong)(sizeof(cui__btn_state))));
+        cui__btn_state* st = (cui__btn_state*)(cui__state_lazy(ui, id, ((ulong)(sizeof(cui__btn_state))), ((CBool)(((unchecked((int)(r.hovered))) != 0) || ((unchecked((int)(r.focus_visible))) != 0)))));
+        if ((!((((void*)(st)) != null) )     ))
+            st = &rest;
+        cui__tween(ui, &st->hover, ((float)(((unchecked((int)(r.hovered))) != 0) ? 1.0f : 0.0f)), 0.14f);
+        cui__tween(ui, &st->focus, ((float)(((unchecked((int)(r.focus_visible))) != 0) ? 1.0f : 0.0f)), 0.14f);
+        int i = cui__text_node(ui, text, cui__display_len(text), 1, cui__fs(ui, ui->theme.text_body), cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_ACCENT_STRONG], ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], ((float)((((int)ui->accent == (int)__DotCcEnum_6375695F616363656E74.CUI_ACCENT_NEUTRAL)) ? 1.0f : 0.0f))), 0);
+        cui_node* n = &ui->nodes[i];
+        n->id = id;
+        n->self_align = 7;
+        n->radius = new cui_corners { tl = 4, tr = 4, br = 4, bl = 4 };
+        cui__mark_interactive(ui, i, 1);
+        {
+            cui__underline_data* u = (cui__underline_data*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__underline_data)))));
+            u->hover = st->hover;
+            u->color = n->text_color;
+            n->paint = DotCcPointers.cui__paint_underline__unit_081023C035BB6B4529A6C0B92CE48DE5D852A146F28C5978D9E37B331C577D60;
+            n->paint_data = u;
+            n->flags |= (uint)(4096);
+        }
+        if (((unchecked((int)(r.hovered))) != 0))
+            cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_HAND);
+        ui->last_id = id;
+        ;
+        return r.clicked;
+    }
+
+
+
+    public static unsafe void cui_icon(cui_ctx* ui, byte* icon, float size, cui_color color)
+    {
+        cui__icon_node(ui, icon, ((float)(((size > 0)) ? size : (float)(16))), (((unchecked((int)(cui__color_set(color)))) != 0) ? cui_color_of(ui, color) : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND]));
+    }
+
+
+
+    public static unsafe void cui__paint_sheen(cui_ctx* ui, cui_node* n, void* data)
+    {
+        cui__draw_sheen(ui, n->rect, n->radius, ((float)(((data) != null) ? *(float*)data : 1.0f)));
+    }
+
+
+
+    public static unsafe cui_color cui__quiet_edge(cui_ctx* ui, float hover)
+    {
+        return cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER], ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER_STRONG], 0.35f + 0.65f * cui__clampf(hover, 0, 1));
+    }
+
+
+
+    public static unsafe cui_color cui__control_edge(cui_ctx* ui, float hover)
+    {
+        return cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER_STRONG], ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0.5f * cui__clampf(hover, 0, 1));
+    }
+
+
+
+    public static unsafe cui_color cui__edge_on(cui_ctx* ui)
+    {
+        return ((((int)ui->accent == (int)__DotCcEnum_6375695F616363656E74.CUI_ACCENT_NEUTRAL)) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY] : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_ACCENT]);
+    }
+
+
+
+    public static unsafe cui__btn_colors cui__button_colors(cui_ctx* ui, cui_button_variant v, CBool selected)
+    {
+        cui__btn_colors c = default;
+        cui_color clear = cui__rgba(0, 0, 0, 0);
+        cui_color fg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND];
+        c.border = c.border_hover = clear;
+        switch ((int)v)
+        {
+            case (int)__DotCcEnum_6375695F627574746F6E5F76617269616E74.CUI_BUTTON_PRIMARY:
+                {
+                    cui_color a = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_ACCENT];
+                    if ((((int)ui->accent == (int)__DotCcEnum_6375695F616363656E74.CUI_ACCENT_NEUTRAL)))
+                        a = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_CONTROL_ON];
+                    c.bg = a;
+                    c.bg_hover = cui_mix(a, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BACKGROUND], 0.14f);
+                    c.bg_press = cui_mix(a, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BACKGROUND], 0.06f);
+                    c.fg = ((((int)ui->accent == (int)__DotCcEnum_6375695F616363656E74.CUI_ACCENT_NEUTRAL)) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_CONTROL_GLYPH] : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_ACCENT_FOREGROUND]);
+                    break;
+                }
+            case (int)__DotCcEnum_6375695F627574746F6E5F76617269616E74.CUI_BUTTON_DANGER:
+                {
+                    cui_color d = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_DANGER];
+                    c.bg = d;
+                    c.bg_hover = cui_mix(d, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BACKGROUND], 0.12f);
+                    c.bg_press = cui_mix(d, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BACKGROUND], 0.05f);
+                    c.fg = ((((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK)) ? cui__rgba(26, 10, 12, 255) : cui__rgba(255, 255, 255, 255));
+                    break;
+                }
+            case (int)__DotCcEnum_6375695F627574746F6E5F76617269616E74.CUI_BUTTON_OUTLINE:
+                c.bg = clear;
+                c.bg_hover = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_HOVER];
+                c.bg_press = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_ACTIVE];
+                c.fg = fg;
+                c.border = cui__quiet_edge(ui, 0);
+                c.border_hover = cui__quiet_edge(ui, 1);
+                break;
+            case (int)__DotCcEnum_6375695F627574746F6E5F76617269616E74.CUI_BUTTON_GHOST:
+                c.bg = (((unchecked((int)(selected))) != 0) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_ACTIVE] : clear);
+                c.bg_hover = (((unchecked((int)(selected))) != 0) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_ACTIVE] : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_HOVER]);
+                c.bg_press = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_ACTIVE];
+                c.fg = fg;
+                break;
+            case (int)__DotCcEnum_6375695F627574746F6E5F76617269616E74.CUI_BUTTON_LINK:
+                c.bg = c.bg_hover = c.bg_press = clear;
+                c.fg = ((((int)ui->accent == (int)__DotCcEnum_6375695F616363656E74.CUI_ACCENT_NEUTRAL)) ? fg : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_ACCENT_STRONG]);
+                break;
+            default:
+                {
+                    cui_color @base = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_ACTIVE];
+                    c.bg = (((unchecked((int)(selected))) != 0) ? cui_mix(@base, fg, 0.10f) : cui_alpha(fg, 0.065f));
+                    c.bg_hover = cui_alpha(fg, 0.10f);
+                    c.bg_press = cui_alpha(fg, 0.13f);
+                    c.fg = fg;
+                    break;
+                }
+        }
+        return c;
+    }
+
+
+
+    public static unsafe void cui__paint_spinner__unit_081023C035BB6B4529A6C0B92CE48DE5D852A146F28C5978D9E37B331C577D60(cui_ctx* ui, cui_node* n, void* data)
+    {
+        cui_color c = *(cui_color*)data;
+        float r = ((float)(((n->rect.w < n->rect.h)) ? n->rect.w : n->rect.h)) * 0.5f;
+        cui_vec2 ctr = new cui_vec2 { x = n->rect.x + n->rect.w * 0.5f, y = n->rect.y + n->rect.h * 0.5f };
+        cui__draw_spinner(ui, ctr, r - 1.0f, ((float)(((1.5f > r * 0.22f)) ? 1.5f : r * 0.22f)), c);
+    }
+
+
+
+    public static unsafe void cui__spinner_node(cui_ctx* ui, float size, cui_color c)
+    {
+        int i = cui__leaf(ui, 0, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)size }, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)size });
+        cui_color* d = (cui_color*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui_color)))));
+        *d = c;
+        ui->nodes[i].paint = DotCcPointers.cui__paint_spinner__unit_081023C035BB6B4529A6C0B92CE48DE5D852A146F28C5978D9E37B331C577D60;
+        ui->nodes[i].paint_data = d;
+        ui->nodes[i].self_align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+    }
+
+
+
+    public static unsafe void cui__icon_swap(cui_ctx* ui, uint sid, byte* icon, float size, cui_color c)
+    {
+        cui__swap_state* st = (cui__swap_state*)(cui_state(ui, sid, ((ulong)(sizeof(cui__swap_state)))));
+        if (((strncmp(st->cur, icon, unchecked(((ulong)((8 * sizeof(byte)))) - (ulong)(1))) != 0)))
+        {
+            if (((st->cur[0]) != 0))
+            {
+                memcpy(st->prev, st->cur, ((ulong)((8 * sizeof(byte)))));
+                st->t = 0;
+            }
+            else
+                st->t = 1;
+            snprintf(st->cur, unchecked((int)(((ulong)((8 * sizeof(byte)))))), (DotCcLiterals.Pointer + DotCcLiterals.S260 /*"%s"*/)).Arg(icon).Done();
+        }
+        cui__tween(ui, &st->t, 1.0f, 0.2f);
+        if (((((st->t >= 1.0f)) || (!(((st->prev[0]) != 0) )     ))))
+        {
+            cui__icon_node(ui, icon, size, c);
+            return;
+        }
+        int box = cui__leaf(ui, 0, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)size }, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)size });
+        cui_node* b = &ui->nodes[box];
+        b->dir = (byte)(__DotCcEnum_6375695F646972.CUI_STACK);
+        b->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+        b->justify = (byte)(__DotCcEnum_6375695F6A757374696679.CUI_JUSTIFY_CENTER);
+        b->self_align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+        float t = st->t;
+        cui__open(ui, box);
+        cui__icon_node(ui, cui__frame_strdup(ui, st->prev, -1), size, c);
+        ui->nodes[ui->node_count - 1].opacity = ((float)(((0.001f > 1.0f - t * 1.6f)) ? 0.001f : 1.0f - t * 1.6f));
+        ui->nodes[ui->node_count - 1].scale = 1.0f - 0.45f * t;
+        cui__icon_node(ui, icon, size, c);
+        ui->nodes[ui->node_count - 1].opacity = ((float)(((0.001f > t)) ? 0.001f : t));
+        ui->nodes[ui->node_count - 1].scale = 0.55f + 0.45f * t;
+        cui__close(ui);
+    }
+
+
+
+    public static unsafe uint cui__position_id(cui_ctx* ui, uint salt)
+    {
+        int par = cui__current(ui);
+        uint* key = stackalloc uint[]{ ((uint)(((par >= 0)) ? ui->nodes[par].id : (uint)(0))), ((uint)(((par >= 0)) ? (uint)ui->nodes[par].child_count : (uint)(0))) };
+        return cui__hash(key, ((ulong)((2 * sizeof(uint)))), salt);
+    }
+
+
+
+    public static unsafe CBool cui__button_impl(cui_ctx* ui, byte* label, byte* icon_only, cui_button_opts* o)
+    {
+        cui_button_opts d = default;
+        memset(&d, 0, ((ulong)(sizeof(cui_button_opts))));
+        if ((!((((void*)(o)) != null) )     ))
+            o = &d;
+        uint id = cui_make_id(ui, ((byte*)((((void*)(icon_only)) != null) ? ((byte*)((((void*)(o->tooltip)) != null) ? o->tooltip : icon_only)) : label)));
+        if ((((((void*)(icon_only)) != null) && (((void*)(o->tooltip)) != null))))
+            id = cui__hash_str(icon_only, id);
+        CBool disabled = ((CBool)(((unchecked((int)(o->disabled))) != 0) || ((unchecked((int)(cui_is_disabled(ui)))) != 0)));
+        cui_push_disabled(ui, disabled);
+        cui_interact r = cui__interact(ui, id, 1);
+        cui_pop_disabled(ui);
+        cui__btn_state rest = default;
+        memset(&rest, 0, ((ulong)(sizeof(cui__btn_state))));
+        cui__btn_state* st = (cui__btn_state*)(cui__state_lazy(ui, id, ((ulong)(sizeof(cui__btn_state))), ((CBool)(((((((unchecked((int)(r.hovered))) != 0) || ((unchecked((int)(r.pressed))) != 0))) || ((unchecked((int)(r.focused))) != 0))) || ((unchecked((int)(r.focus_visible))) != 0)))));
+        if ((!((((void*)(st)) != null) )     ))
+            st = &rest;
+        if (((st->press.x == 0)))
+            st->press.x = 1;
+        cui_button_variant v = o->variant;
+        if ((((int)v == (int)__DotCcEnum_6375695F627574746F6E5F76617269616E74.CUI_BUTTON_DEFAULT)))
+            v = (cui_button_variant)(((int)((((((void*)(icon_only)) != null) || ((ui->button_group_depth > 0)))) ? (int)(__DotCcEnum_6375695F627574746F6E5F76617269616E74.CUI_BUTTON_GHOST) : (int)(__DotCcEnum_6375695F627574746F6E5F76617269616E74.CUI_BUTTON_SECONDARY))));
+        cui__btn_colors col = cui__button_colors(ui, v, o->selected);
+        if (((o->color.r | o->color.g | o->color.b | o->color.a) != 0))
+            col.fg = cui_color_of(ui, o->color);
+        cui__tween(ui, &st->hover, ((float)(((unchecked((int)(r.hovered))) != 0) ? 1.0f : 0.0f)), 0.14f);
+        cui__tween(ui, &st->focus, ((float)(((unchecked((int)(r.focus_visible))) != 0) ? 1.0f : 0.0f)), 0.14f);
+        cui__spring(ui, &st->press, ((float)(((unchecked((int)(r.pressed))) != 0) ? 0.97f : 1.0f)), 0.26f, 0.12f);
+        float h = cui__control_height(ui, o->size);
+        float fs = ((float)((((int)o->size == (int)__DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM)) ? ui->theme.text_sm : ((float)((((int)o->size == (int)__DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_LG)) ? ui->theme.text_lg - 1 : ui->theme.text_body))));
+        float icon_size = ((int)((((int)o->size == (int)__DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM)) ? 14 : ((int)((((int)o->size == (int)__DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_LG)) ? 18 : 16))));
+        float pad = ((int)((((int)o->size == (int)__DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM)) ? 11 : ((int)((((int)o->size == (int)__DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_LG)) ? 18 : 14))));
+        if ((((int)v == (int)__DotCcEnum_6375695F627574746F6E5F76617269616E74.CUI_BUTTON_LINK)))
+            pad = 2;
+        uint swap_id = id ^ 0x1C05A9u;
+        int i = cui__node_new(ui, id);
+        cui_node* n = &ui->nodes[i];
+        n->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
+        n->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+        n->justify = (byte)(__DotCcEnum_6375695F6A757374696679.CUI_JUSTIFY_CENTER);
+        n->gap = 6;
+        n->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)h };
+        if ((((void*)(icon_only)) != null))
+            n->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)h };
+        else
+        {
+            n->pad[1] = n->pad[3] = pad;
+        }
+        if (((unchecked((int)(o->full_width))) != 0))
+        {
+            n->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+            n->self_align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_STRETCH);
+        }
+        else
+            if ((((int)o->width.kind != (int)__DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIT)))
+                n->w = o->width;
+            else
+                n->self_align = 7;
+        float rad = ((float)(((ui->theme.radius_control < h * 0.5f)) ? ui->theme.radius_control : h * 0.5f));
+        n->radius = new cui_corners { tl = rad, tr = rad, br = rad, bl = rad };
+        cui_color bg = cui_mix(col.bg, col.bg_hover, st->hover);
+        if (((unchecked((int)(r.pressed))) != 0))
+            bg = col.bg_press;
+        n->bg = bg;
+        if (((col.border.a) != 0))
+        {
+            n->border = 1;
+            n->border_color = cui_mix(col.border, col.border_hover, st->hover);
+        }
+        n->scale = st->press.x;
+        n->opacity = ((float)(((unchecked((int)(disabled))) != 0) ? 0.45f : 1.0f));
+        if (((unchecked((int)(disabled))) != 0))
+        {
+        }
+        else
+            if ((((((int)v == (int)__DotCcEnum_6375695F627574746F6E5F76617269616E74.CUI_BUTTON_PRIMARY)) || (((int)v == (int)__DotCcEnum_6375695F627574746F6E5F76617269616E74.CUI_BUTTON_DANGER)))))
+            {
+                float* k = (float*)(cui__frame_alloc(ui, ((ulong)(sizeof(float)))));
+                *k = ((float)(((unchecked((int)(r.pressed))) != 0) ? 0.2f : 0.55f));
+                n->paint = DotCcPointers.cui__paint_sheen;
+                n->paint_data = k;
+            }
+        cui__mark_interactive(ui, i, 1);
+        if (((unchecked((int)(r.hovered))) != 0))
+            cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_HAND);
+        if (((((unchecked((int)(disabled))) != 0) && ((ui->hot == id)))))
+            cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_NOT_ALLOWED);
+        cui__open(ui, i);
+        byte* icon = ((byte*)((((void*)(icon_only)) != null) ? icon_only : o->icon));
+        if (((unchecked((int)(o->loading))) != 0))
+            cui__spinner_node(ui, icon_size - 2, col.fg);
+        else
+            if ((((void*)(icon)) != null))
+                cui__icon_swap(ui, swap_id, icon, icon_size, col.fg);
+        if ((((((!((((void*)(icon_only)) != null) )     ) && (((void*)(label)) != null))) && ((cui__display_len(label) > 0)))))
+        {
+            cui__label_text(ui, label, 1, cui__fs(ui, fs), col.fg);
+        }
+        if ((((!((((void*)(icon_only)) != null) )     ) && (((void*)(o->icon_right)) != null))))
+            cui__icon_node(ui, o->icon_right, icon_size, col.fg);
+        cui__close(ui);
+        if ((((int)v == (int)__DotCcEnum_6375695F627574746F6E5F76617269616E74.CUI_BUTTON_LINK)))
+        {
+            cui__underline_data* u = (cui__underline_data*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__underline_data)))));
+            u->hover = st->hover;
+            u->color = col.fg;
+            ui->nodes[i].paint = DotCcPointers.cui__paint_underline__unit_081023C035BB6B4529A6C0B92CE48DE5D852A146F28C5978D9E37B331C577D60;
+            ui->nodes[i].paint_data = u;
+            ui->nodes[i].flags |= (uint)(4096);
+        }
+        else
+        {
+            cui__focus_ring(ui, i, st->focus);
+        }
+        ui->last_id = id;
+        ui->last_node = i;
+        if ((((void*)(o->tooltip)) != null))
+        {
+            if ((((void*)(o->shortcut)) != null))
+                cui_tooltip(ui, cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S6 /*"%s  ·  %s"*/), o->tooltip, o->shortcut));
+            else
+                cui_tooltip(ui, o->tooltip);
+        }
+        return ((CBool)(((((unchecked((int)(r.clicked))) != 0) && (!(((unchecked((int)(o->loading))) != 0) )     ))) && (!(((unchecked((int)(disabled))) != 0) )     )));
+    }
+
+
+
+    public static unsafe CBool cui_button_ex(cui_ctx* ui, byte* label, cui_button_opts* o)
+    {
+        return cui__button_impl(ui, label, null, o);
+    }
+
+
+
+    public static unsafe CBool cui_icon_button_ex(cui_ctx* ui, byte* icon, cui_button_opts* o)
+    {
+        return cui__button_impl(ui, null, icon, o);
+    }
+
+
+
+    public static unsafe void cui_badge_ex(cui_ctx* ui, byte* text, cui_badge_opts* o)
+    {
+        cui_badge_opts d = default;
+        memset(&d, 0, ((ulong)(sizeof(cui_badge_opts))));
+        if ((!((((void*)(o)) != null) )     ))
+            o = &d;
+        cui_color tone = cui__tone_color(ui, o->tone);
+        CBool neutral = ((CBool)((int)o->tone == (int)__DotCcEnum_6375695F746F6E65.CUI_TONE_NEUTRAL));
+        float h = ((int)((((int)o->size == (int)__DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM)) ? 20 : ((int)((((int)o->size == (int)__DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_LG)) ? 26 : 22))));
+        int i = cui__node_new(ui, 0);
+        cui_node* n = &ui->nodes[i];
+        n->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
+        n->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+        n->gap = 5;
+        n->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)h };
+        n->pad[1] = n->pad[3] = ((int)((((int)o->size == (int)__DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM)) ? 7 : 8));
+        n->radius = new cui_corners { tl = ((int)((((int)o->size == (int)__DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM)) ? 5 : 6)), tr = ((int)((((int)o->size == (int)__DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM)) ? 5 : 6)), br = ((int)((((int)o->size == (int)__DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM)) ? 5 : 6)), bl = ((int)((((int)o->size == (int)__DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM)) ? 5 : 6)) };
+        n->self_align = 7;
+        cui_color fg = default;
+        if (((unchecked((int)(o->solid))) != 0))
+        {
+            n->bg = (((unchecked((int)(neutral))) != 0) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND] : tone);
+            fg = (((unchecked((int)(neutral))) != 0) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BACKGROUND] : ((((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK)) ? cui__rgba(20, 20, 22, 255) : cui__rgba(255, 255, 255, 255)));
+        }
+        else
+        {
+            cui_color surf = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE];
+            n->bg = (((unchecked((int)(neutral))) != 0) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_ACTIVE] : cui_mix(surf, tone, ((float)((((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK)) ? 0.18f : 0.12f))));
+            fg = (((unchecked((int)(neutral))) != 0) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY] : cui__legible(cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], tone, ((float)((((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK)) ? 0.80f : 0.88f))), n->bg, 4.5f));
+        }
+        cui__open(ui, i);
+        if (((unchecked((int)(o->dot))) != 0))
+        {
+            int dot = cui__leaf(ui, 0, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)6 }, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)6 });
+            ui->nodes[dot].bg = (((unchecked((int)(o->solid))) != 0) ? fg : (((unchecked((int)(neutral))) != 0) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED] : tone));
+            ui->nodes[dot].radius = new cui_corners { tl = 3, tr = 3, br = 3, bl = 3 };
+        }
+        if ((((void*)(o->icon)) != null))
+            cui__icon_node(ui, o->icon, 12, fg);
+        int t = cui__text_node(ui, text, -1, 1, cui__fs(ui, ui->theme.text_sm), fg, 0);
+        ui->nodes[t].line_height = 1.2f;
+        cui__close(ui);
+    }
+
+
+
+    public static unsafe cui_color cui__name_tone(cui_ctx* ui, byte* name)
+    {
+        cui_theme* t = &ui->theme;
+        cui_color fourth = ((((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK)) ? cui_mix(t->tone_sky, t->tone_violet, 0.5f) : t->tone_amber);
+        cui_color* tones = stackalloc cui_color[]{ t->tone_sky, t->tone_violet, t->tone_teal, fourth, t->tone_rose, t->tone_green, t->tone_orchid };
+        uint h = cui__hash_str(((byte*)((((void*)(name)) != null) ? name : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), 7);
+        return tones[h % (uint)(7)];
+    }
+
+
+
+    public static unsafe int cui__initials(byte* name, byte* @out)
+    {
+        int n = 0;
+        CBool word_start = 1;
+        for (byte* p = name; (((((((void*)(p)) != null) && ((*p) != 0))) && ((n < 8)))); p++)
+        {
+            byte c = (byte)(*p);
+            if (((((((c == 32)) || ((c == 45)))) || ((c == 46)))))
+            {
+                word_start = 1;
+                continue;
+            }
+            if (((unchecked((int)(word_start))) != 0))
+            {
+                uint cp = default;
+                int k = cui__utf8_decode(p, (int)strlen(p), &cp);
+                if (((((((cp < (uint)(128))) && ((cp >= (uint)(97))))) && ((cp <= (uint)(122))))))
+                    cp -= (uint)(32);
+                n += cui__utf8_encode(cp, @out + n);
+                p += k - 1;
+                word_start = 0;
+                if (((((n >= 2)) && ((cp < (uint)(128))))))
+                    break;
+            }
+        }
+        @out[n] = 0;
+        return n;
+    }
+
+
+
+    public static unsafe void cui__paint_avatar_img__unit_081023C035BB6B4529A6C0B92CE48DE5D852A146F28C5978D9E37B331C577D60(cui_ctx* ui, cui_node* n, void* data)
+    {
+        cui__avatar_paint* p = (cui__avatar_paint*)(data);
+        cui_rect uv = new cui_rect { x = 0, y = 0, w = 1, h = 1 };
+        if (((p->tex) != 0))
+            cui_draw_image(ui, p->tex, n->rect, uv, n->radius, cui__rgba(255, 255, 255, 255));
+    }
+
+
+
+    public static unsafe void cui_avatar_ex(cui_ctx* ui, byte* name, cui_avatar_opts* o)
+    {
+        cui_avatar_opts d = default;
+        memset(&d, 0, ((ulong)(sizeof(cui_avatar_opts))));
+        if ((!((((void*)(o)) != null) )     ))
+            o = &d;
+        float size = ((float)(((o->size > 0)) ? o->size : (float)(32)));
+        cui_color tone = cui__name_tone(ui, name);
+        int i = cui__node_new(ui, 0);
+        cui_node* n = &ui->nodes[i];
+        n->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)size };
+        n->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)size };
+        n->dir = (byte)(__DotCcEnum_6375695F646972.CUI_STACK);
+        n->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+        n->justify = (byte)(__DotCcEnum_6375695F6A757374696679.CUI_JUSTIFY_CENTER);
+        n->radius = new cui_corners { tl = ((float)(((unchecked((int)(o->square))) != 0) ? size * 0.28f : size * 0.5f)), tr = ((float)(((unchecked((int)(o->square))) != 0) ? size * 0.28f : size * 0.5f)), br = ((float)(((unchecked((int)(o->square))) != 0) ? size * 0.28f : size * 0.5f)), bl = ((float)(((unchecked((int)(o->square))) != 0) ? size * 0.28f : size * 0.5f)) };
+        n->self_align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+        CBool dark = ((CBool)((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK));
+        if (((o->image) != 0))
+        {
+            cui__avatar_paint* p = (cui__avatar_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__avatar_paint)))));
+            p->tex = o->image;
+            n->paint = DotCcPointers.cui__paint_avatar_img__unit_081023C035BB6B4529A6C0B92CE48DE5D852A146F28C5978D9E37B331C577D60;
+            n->paint_data = p;
+        }
+        else
+        {
+            n->bg = (((unchecked((int)(dark))) != 0) ? cui__shade(tone, 0.35f, 0.6f) : cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE], tone, 0.16f));
+            n->border = 1;
+            n->border_color = (((unchecked((int)(dark))) != 0) ? cui__shade(tone, 0.45f, 0.6f) : cui_alpha(tone, 0.28f));
+        }
+        cui__open(ui, i);
+        if ((!(((o->image) != 0) )     ))
+        {
+            byte* ini = stackalloc byte[16];
+            cui__initials(name, ini);
+            int t = cui__text_node(ui, ini, -1, 1, size * 0.38f, (((unchecked((int)(dark))) != 0) ? cui__shade(tone, 0.88f, 0.7f) : cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], tone, 0.78f)), 0);
+            ui->nodes[t].line_height = 1.0f;
+        }
+        if ((((void*)(o->status)) != null))
+        {
+            cui_color sc = (((strcmp(o->status, (DotCcLiterals.Pointer + DotCcLiterals.S381 /*"online"*/)) == 0)) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SUCCESS] : (((strcmp(o->status, (DotCcLiterals.Pointer + DotCcLiterals.S513 /*"busy"*/)) == 0)) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_DANGER] : (((strcmp(o->status, (DotCcLiterals.Pointer + DotCcLiterals.S753 /*"away"*/)) == 0)) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_WARNING] : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED])));
+            float ds = ((float)(((8 > size * 0.28f)) ? (float)(8) : size * 0.28f));
+            int dot = cui__absolute(ui, 0, size - ds + 1, size - ds + 1, ds, ds);
+            cui_node* dn = &ui->nodes[dot];
+            dn->bg = sc;
+            dn->radius = new cui_corners { tl = ds * 0.5f, tr = ds * 0.5f, br = ds * 0.5f, bl = ds * 0.5f };
+            dn->border = 2;
+            dn->border_color = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE];
+        }
+        cui__close(ui);
+    }
+
+
+
+    public static unsafe void cui_avatar_group(cui_ctx* ui, byte** names, int count, int max_visible, float size)
+    {
+    byte* __dotcc_array_storage0 = null;
+        if (((size <= 0)))
+            size = 32;
+        if (((max_visible <= 0)))
+            max_visible = 4;
+        int shown = ((int)(((count < max_visible)) ? count : max_visible));
+        int extra = count - shown;
+        float overlap = size * 0.16f;
+        int slots = shown + ((int)(((extra > 0)) ? 1 : 0));
+        float total_w = slots * size - (slots - 1) * overlap;
+        int row = cui__node_new(ui, 0);
+        cui_node* r = &ui->nodes[row];
+        r->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)total_w };
+        r->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)size };
+        r->self_align = 7;
+        cui__open(ui, row);
+        for (int k = 0; ((k < slots)); k++)
+        {
+            float x = k * (size - overlap);
+            int ring = cui__absolute(ui, 0, x - 2, -2, size + 4, size + 4);
+            cui_node* rn = &ui->nodes[ring];
+            rn->bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE];
+            rn->radius = new cui_corners { tl = size * 0.5f + 2, tr = size * 0.5f + 2, br = size * 0.5f + 2, bl = size * 0.5f + 2 };
+            rn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_STACK);
+            rn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+            rn->justify = (byte)(__DotCcEnum_6375695F6A757374696679.CUI_JUSTIFY_CENTER);
+            cui__open(ui, ring);
+            if (((k < shown)))
+            {
+                cui_avatar_opts ao = default;
+                memset(&ao, 0, ((ulong)(sizeof(cui_avatar_opts))));
+                ao.size = size;
+                cui_avatar_ex(ui, names[k], &ao);
+            }
+            else
+            {
+                int b = cui__node_new(ui, 0);
+                cui_node* bn = &ui->nodes[b];
+                bn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)size };
+                bn->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)size };
+                bn->radius = new cui_corners { tl = size * 0.5f, tr = size * 0.5f, br = size * 0.5f, bl = size * 0.5f };
+                bn->bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE_MUTED];
+                bn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_STACK);
+                bn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+                bn->justify = (byte)(__DotCcEnum_6375695F6A757374696679.CUI_JUSTIFY_CENTER);
+                cui__open(ui, b);
+                if (__dotcc_array_storage0 == null)
+                {
+                    byte* __dotcc_array_storage0_new = stackalloc byte[checked(sizeof(byte) * 16)];
+                    __dotcc_array_storage0 = __dotcc_array_storage0_new;
+                }
+                byte* buf = (byte*)__dotcc_array_storage0;
+                new global::System.Span<byte>((void*)buf, checked(sizeof(byte) * 16)).Clear();
+                snprintf(buf, unchecked((int)(((ulong)((16 * sizeof(byte)))))), (DotCcLiterals.Pointer + DotCcLiterals.S264 /*"+%d"*/)).Arg(extra).Done();
+                int t = cui__text_node(ui, buf, -1, 1, size * 0.36f, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY], 0);
+                ui->nodes[t].line_height = 1.0f;
+                cui__close(ui);
+            }
+            cui__close(ui);
+        }
+        cui__close(ui);
+    }
+
+
+
+    public static unsafe CBool cui_card_begin(cui_ctx* ui, cui_card_opts* o)
+    {
+        cui_card_opts d = default;
+        memset(&d, 0, ((ulong)(sizeof(cui_card_opts))));
+        if ((!((((void*)(o)) != null) )     ))
+            o = &d;
+        uint id = ((uint)((((void*)(o->id)) != null) ? cui_make_id(ui, o->id) : (uint)(0)));
+        CBool clicked = 0;
+        float hover = 0;
+        cui__card_state* st = null;
+        cui_interact r = default;
+        memset(&r, 0, ((ulong)(sizeof(cui_interact))));
+        if (((unchecked((int)(o->hoverable))) != 0))
+        {
+            if ((!(((id) != 0) )     ))
+                id = cui__hash_str((DotCcLiterals.Pointer + DotCcLiterals.S844 /*"card"*/), (uint)ui->node_count * 2654435761u);
+            r = cui__interact(ui, id, 1);
+            st = (cui__card_state*)(cui_state(ui, id, ((ulong)(sizeof(cui__card_state)))));
+            cui__tween(ui, &st->hover, ((float)(((unchecked((int)(r.hovered))) != 0) ? 1.0f : 0.0f)), 0.14f);
+            cui__spring(ui, &st->lift, ((float)(((unchecked((int)(r.hovered))) != 0) ? -2.0f : 0.0f)), 0.40f, 0.0f);
+            hover = st->hover;
+            clicked = r.clicked;
+        }
+        int i = cui__node_new(ui, id);
+        cui_node* n = &ui->nodes[i];
+        float pad = ((float)(((o->pad > 0)) ? o->pad : (float)(24)));
+        float px = ((float)(((o->pad_x > 0)) ? o->pad_x : pad)), py = ((float)(((o->pad_y > 0)) ? o->pad_y : pad));
+        n->pad[0] = n->pad[2] = py;
+        n->pad[1] = n->pad[3] = px;
+        n->gap = ((float)(((o->gap > 0)) ? o->gap : (float)(12)));
+        n->dir = (byte)o->dir;
+        n->align = (byte)o->align;
+        n->w = o->width;
+        n->h = o->height;
+        if (((o->min_width > 0)))
+            n->min_w = o->min_width;
+        if (((o->max_width > 0)))
+            n->max_w = o->max_width;
+        if (((((unchecked((int)(o->wrap))) != 0) && (((int)o->dir == (int)__DotCcEnum_6375695F646972.CUI_ROW)))))
+            n->flags |= (uint)(32768);
+        n->radius = new cui_corners { tl = ui->theme.radius_surface, tr = ui->theme.radius_surface, br = ui->theme.radius_surface, bl = ui->theme.radius_surface };
+        if (((unchecked((int)(o->muted))) != 0))
+            n->bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE_MUTED];
+        else
+        {
+            n->bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE];
+            n->border = 1;
+            n->border_color = (((unchecked((int)(o->selected))) != 0) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_ACCENT] : cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER], ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER_STRONG], hover));
+        }
+        if (((unchecked((int)(o->hoverable))) != 0))
+        {
+            n->elevation = __DotCcEnum_6375695F656C65766174696F6E.CUI_ELEVATION_RAISED;
+            n->elevation_alpha = hover;
+            n->ty = st->lift.x;
+            cui__mark_interactive(ui, i, 1);
+            if (((unchecked((int)(r.hovered))) != 0))
+                cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_HAND);
+        }
+        cui__open(ui, i);
+        if (((id) != 0))
+            ui->last_id = id;
+        return clicked;
+    }
+
+
+
+    public static unsafe void cui_card_end(cui_ctx* ui)
+    {
+        cui__close(ui);
+    }
+
+
+
+    public static unsafe void cui_spinner(cui_ctx* ui, float size)
+    {
+        cui__spinner_node(ui, ((float)(((size > 0)) ? size : (float)(20))), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY]);
+    }
+
+
+
+    public static unsafe void cui__paint_progress__unit_081023C035BB6B4529A6C0B92CE48DE5D852A146F28C5978D9E37B331C577D60(cui_ctx* ui, cui_node* n, void* data)
+    {
+        cui__progress_paint* p = (cui__progress_paint*)(data);
+        cui_rect r = n->rect;
+        float rad = r.h * 0.5f;
+        cui_draw_rect(ui, r, new cui_corners { tl = rad, tr = rad, br = rad, bl = rad }, p->track);
+        if (((unchecked((int)(p->indeterminate))) != 0))
+        {
+            float t = (float)fmod(p->time * 0.75, 1.0);
+            float w = r.w * 0.35f;
+            float x = r.x - w + (r.w + w) * (t * t * (3 - 2 * t));
+            cui_push_clip(ui, r);
+            if (((unchecked((int)(n->rtl))) != 0))
+                x = r.x + r.w - (x - r.x) - w;
+            cui_rect f = new cui_rect { x = x, y = r.y, w = w, h = r.h };
+            cui_draw_rect(ui, f, new cui_corners { tl = rad, tr = rad, br = rad, bl = rad }, p->fill);
+            cui_pop_clip(ui);
+            ui->animating = 1;
+        }
+        else
+            if (((p->value > 0)))
+            {
+                cui_rect f__1 = new cui_rect { x = r.x, y = r.y, w = ((float)(((r.h > r.w * cui__clampf(p->value, 0, 1))) ? r.h : r.w * cui__clampf(p->value, 0, 1))), h = r.h };
+                if (((unchecked((int)(n->rtl))) != 0))
+                    f__1.x = r.x + r.w - f__1.w;
+                cui_draw_rect(ui, f__1, new cui_corners { tl = rad, tr = rad, br = rad, bl = rad }, p->fill);
+            }
+    }
+
+
+
+    public static unsafe void cui_progress_ex(cui_ctx* ui, float value, cui_progress_opts* o)
+    {
+        cui_progress_opts d = default;
+        memset(&d, 0, ((ulong)(sizeof(cui_progress_opts))));
+        if ((!((((void*)(o)) != null) )     ))
+            o = &d;
+        uint id = cui_make_id(ui, ((byte*)((((void*)(o->label)) != null) ? o->label : (DotCcLiterals.Pointer + DotCcLiterals.S508 /*"progress"*/))));
+        id = cui__hash(&ui->node_count, ((ulong)(sizeof(int))), id);
+        float shown = cui_animate(ui, id, cui__clampf(value, 0, 1));
+        CBool col = ((CBool)((((void*)(o->label)) != null) || ((unchecked((int)(o->show_value))) != 0)));
+        if (((unchecked((int)(col))) != 0))
+        {
+            int c = cui__node_new(ui, 0);
+            ui->nodes[c].gap = 8;
+            ui->nodes[c].w = o->width;
+            cui__open(ui, c);
+            int row = cui__node_new(ui, 0);
+            ui->nodes[row].dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
+            cui__open(ui, row);
+            if ((((void*)(o->label)) != null))
+                cui__label_text(ui, o->label, 1, cui__fs(ui, ui->theme.text_body), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND]);
+            cui_spacer(ui);
+            if (((((unchecked((int)(o->show_value))) != 0) && (!(((unchecked((int)(o->indeterminate))) != 0) )     ))))
+            {
+                int t = cui__text_node(ui, cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S503 /*"%d%%"*/), (int)(value * 100 + 0.5f)), -1, 0, cui__fs(ui, ui->theme.text_body), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY], 0);
+                ui->nodes[t].flags |= (uint)(256);
+                ui->nodes[t].line_height = 1.3f;
+            }
+            cui__close(ui);
+        }
+        float h = ((float)(((o->height > 0)) ? o->height : (float)(6)));
+        int i = cui__leaf(ui, 0, (((unchecked((int)(col))) != 0) ? new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 } : ((((int)o->width.kind) != 0) ? o->width : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 })), new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)h });
+        ui->nodes[i].self_align = (byte)(((int)((((!(((unchecked((int)(col))) != 0) )     ) && (((int)o->width.kind) != 0))) ? 7 : (int)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_STRETCH))));
+        cui__progress_paint* p = (cui__progress_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__progress_paint)))));
+        p->value = shown;
+        p->indeterminate = o->indeterminate;
+        p->time = ui->time;
+        p->track = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_CONTROL_TRACK];
+        p->fill = ((((int)o->tone) != 0) ? cui__tone_color(ui, o->tone) : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_CONTROL_ON]);
+        ui->nodes[i].paint = DotCcPointers.cui__paint_progress__unit_081023C035BB6B4529A6C0B92CE48DE5D852A146F28C5978D9E37B331C577D60;
+        ui->nodes[i].paint_data = p;
+        if (((unchecked((int)(col))) != 0))
+            cui__close(ui);
+    }
+
+
+
+    public static unsafe void cui__paint_skeleton__unit_081023C035BB6B4529A6C0B92CE48DE5D852A146F28C5978D9E37B331C577D60(cui_ctx* ui, cui_node* n, void* data)
+    {
+        cui__skel_paint* p = (cui__skel_paint*)(data);
+        cui_rect r = n->rect;
+        cui_draw_rect(ui, r, n->radius, p->@base);
+        if (((ui->theme.motion > 0)))
+        {
+            float t = (float)fmod(p->time / 1.6, 1.0);
+            float w = ((float)(((80.0f > r.w * 0.4f)) ? 80.0f : r.w * 0.4f));
+            float x = r.x - w + (r.w + 2 * w) * t;
+            cui_push_clip(ui, r);
+            cui_cvert* v = stackalloc cui_cvert[6];
+            cui_color clear = p->shine;
+            clear.a = 0;
+            float* xs = stackalloc float[]{ x, x + w * 0.5f, x + w };
+            cui_color* cs = stackalloc cui_color[]{ clear, p->shine, clear };
+            for (int k = 0; ((k < 3)); k++)
+            {
+                v[k * 2].x = xs[k];
+                v[k * 2].y = r.y;
+                v[k * 2].c = cs[k];
+                v[k * 2 + 1].x = xs[k];
+                v[k * 2 + 1].y = r.y + r.h;
+                v[k * 2 + 1].c = cs[k];
+            }
+            uint* idx = stackalloc uint[]{ 0, 2, 3, 0, 3, 1, 2, 4, 5, 2, 5, 3 };
+            cui__draw_triangles(ui, v, 6, idx, 12);
+            cui_pop_clip(ui);
+            ui->animating = 1;
+        }
+    }
+
+
+
+    public static unsafe void cui_skeleton(cui_ctx* ui, cui_size width, float height)
+    {
+        int i = cui__leaf(ui, 0, ((((int)width.kind == (int)__DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIT)) ? new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 } : width), new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)((float)(((height > 0)) ? height : (float)(14))) });
+        cui_node* n = &ui->nodes[i];
+        n->radius = new cui_corners { tl = ((float)(((8.0f < ((float)(((height > 0)) ? height : (float)(14))) * 0.5f)) ? 8.0f : ((float)(((height > 0)) ? height : (float)(14))) * 0.5f)), tr = ((float)(((8.0f < ((float)(((height > 0)) ? height : (float)(14))) * 0.5f)) ? 8.0f : ((float)(((height > 0)) ? height : (float)(14))) * 0.5f)), br = ((float)(((8.0f < ((float)(((height > 0)) ? height : (float)(14))) * 0.5f)) ? 8.0f : ((float)(((height > 0)) ? height : (float)(14))) * 0.5f)), bl = ((float)(((8.0f < ((float)(((height > 0)) ? height : (float)(14))) * 0.5f)) ? 8.0f : ((float)(((height > 0)) ? height : (float)(14))) * 0.5f)) };
+        if ((((((int)width.kind != (int)__DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIT)) && (((int)width.kind != (int)__DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW)))))
+            n->self_align = 7;
+        cui__skel_paint* p = (cui__skel_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__skel_paint)))));
+        p->time = ui->time;
+        p->@base = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_ACTIVE];
+        p->shine = cui_alpha(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], ((float)((((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK)) ? 0.06f : 0.05f)));
+        n->paint = DotCcPointers.cui__paint_skeleton__unit_081023C035BB6B4529A6C0B92CE48DE5D852A146F28C5978D9E37B331C577D60;
+        n->paint_data = p;
+    }
+
+
+
+    public static unsafe CBool cui_alert_ex(cui_ctx* ui, byte* title, cui_alert_opts* o)
+    {
+        cui_alert_opts d = default;
+        memset(&d, 0, ((ulong)(sizeof(cui_alert_opts))));
+        if ((!((((void*)(o)) != null) )     ))
+            o = &d;
+        uint id = cui_make_id(ui, title) ^ 0xA1E70010u;
+        cui__alert_state* st = (cui__alert_state*)(cui_state(ui, id, ((ulong)(sizeof(cui__alert_state)))));
+        if (((unchecked((int)(st->dismissed))) != 0))
+            return 0;
+        cui_color tone = ((((int)o->tone == (int)__DotCcEnum_6375695F746F6E65.CUI_TONE_NEUTRAL)) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY] : cui__tone_color(ui, o->tone));
+        byte* icon = o->icon;
+        if ((!((((void*)(icon)) != null) )     ))
+        {
+            switch ((int)o->tone)
+            {
+                case (int)__DotCcEnum_6375695F746F6E65.CUI_TONE_SUCCESS:
+                    icon = (DotCcLiterals.Pointer + DotCcLiterals.S754 /*""*/);
+                    break;
+                case (int)__DotCcEnum_6375695F746F6E65.CUI_TONE_WARNING:
+                    icon = (DotCcLiterals.Pointer + DotCcLiterals.S506 /*""*/);
+                    break;
+                case (int)__DotCcEnum_6375695F746F6E65.CUI_TONE_DANGER:
+                    icon = (DotCcLiterals.Pointer + DotCcLiterals.S690 /*""*/);
+                    break;
+                default:
+                    icon = (DotCcLiterals.Pointer + DotCcLiterals.S438 /*""*/);
+                    break;
+            }
+        }
+        CBool dark = ((CBool)((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK));
+        int i = cui__node_new(ui, id);
+        cui_node* n = &ui->nodes[i];
+        n->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
+        n->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_START);
+        n->gap = 12;
+        n->pad[0] = n->pad[2] = 14;
+        n->pad[1] = 14;
+        n->pad[3] = 16;
+        n->radius = new cui_corners { tl = ui->theme.radius_control, tr = ui->theme.radius_control, br = ui->theme.radius_control, bl = ui->theme.radius_control };
+        n->bg = ((((int)o->tone == (int)__DotCcEnum_6375695F746F6E65.CUI_TONE_NEUTRAL)) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE_MUTED] : cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE], tone, ((float)(((unchecked((int)(dark))) != 0) ? 0.12f : 0.07f))));
+        n->border = 1;
+        n->border_color = ((((int)o->tone == (int)__DotCcEnum_6375695F746F6E65.CUI_TONE_NEUTRAL)) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER] : cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER], tone, ((float)(((unchecked((int)(dark))) != 0) ? 0.2f : 0.12f))));
+        cui__open(ui, i);
+        int ib = cui__node_new(ui, 0);
+        ui->nodes[ib].pad[0] = 1;
+        cui__open(ui, ib);
+        cui__icon_node(ui, icon, 16, tone);
+        cui__close(ui);
+        int col = cui__node_new(ui, 0);
+        ui->nodes[col].gap = 3;
+        ui->nodes[col].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+        cui__open(ui, col);
+        int t = cui__text_node(ui, title, cui__display_len(title), 1, cui__fs(ui, ui->theme.text_body), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 1);
+        ui->nodes[t].line_height = 1.4f;
+        if ((((void*)(o->description)) != null))
+        {
+            cui_color body = ((((int)o->tone == (int)__DotCcEnum_6375695F746F6E65.CUI_TONE_NEUTRAL)) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY] : cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY], tone, ((float)(((unchecked((int)(dark))) != 0) ? 0.18f : 0.22f))));
+            cui__text_node(ui, o->description, -1, 0, cui__fs(ui, ui->theme.text_body), body, 1);
+        }
+        cui__close(ui);
+        CBool keep = 1;
+        if (((unchecked((int)(o->dismissible))) != 0))
+        {
+            cui_button_opts bo = default;
+            memset(&bo, 0, ((ulong)(sizeof(cui_button_opts))));
+            bo.size = __DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM;
+            bo.tooltip = (DotCcLiterals.Pointer + DotCcLiterals.S248 /*"Dismiss"*/);
+            cui_push_id(ui, title);
+            if (((unchecked((int)(cui_icon_button_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1040 /*""*/), &bo)))) != 0))
+            {
+                st->dismissed = 1;
+                keep = 0;
+            }
+            cui_pop_id(ui);
+            ui->nodes[ui->last_node].h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)24 };
+            ui->nodes[ui->last_node].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)24 };
+        }
+        cui__close(ui);
+        return keep;
+    }
+
+
+
+    public static unsafe CBool cui_empty_state_ex(cui_ctx* ui, byte* title, cui_empty_opts* o)
+    {
+        cui_empty_opts d = default;
+        memset(&d, 0, ((ulong)(sizeof(cui_empty_opts))));
+        if ((!((((void*)(o)) != null) )     ))
+            o = &d;
+        int i = cui__node_new(ui, 0);
+        cui_node* n = &ui->nodes[i];
+        n->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+        n->gap = 6;
+        n->pad[0] = n->pad[2] = 40;
+        n->pad[1] = n->pad[3] = 24;
+        n->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+        cui__open(ui, i);
+        if ((((void*)(o->icon)) != null))
+        {
+            int ic = cui__node_new(ui, 0);
+            cui_node* @in = &ui->nodes[ic];
+            @in->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)32 };
+            @in->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)32 };
+            @in->dir = (byte)(__DotCcEnum_6375695F646972.CUI_STACK);
+            @in->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+            @in->justify = (byte)(__DotCcEnum_6375695F6A757374696679.CUI_JUSTIFY_CENTER);
+            cui__open(ui, ic);
+            cui__icon_node(ui, o->icon, 28, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED]);
+            cui__close(ui);
+            cui_gap(ui, 8);
+        }
+        int t = cui__text_node(ui, title, -1, 1, cui__fs(ui, ui->theme.text_lg), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 1);
+        ui->nodes[t].text_align = (byte)(__DotCcEnum_6375695F746578745F616C69676E.CUI_TEXT_CENTER);
+        ui->nodes[t].self_align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+        if ((((void*)(o->description)) != null))
+        {
+            int dsc = cui__text_node(ui, o->description, -1, 0, cui__fs(ui, ui->theme.text_body), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY], 1);
+            ui->nodes[dsc].text_align = (byte)(__DotCcEnum_6375695F746578745F616C69676E.CUI_TEXT_CENTER);
+            ui->nodes[dsc].max_w = 360;
+            ui->nodes[dsc].self_align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+        }
+        CBool clicked = 0;
+        if ((((void*)(o->action)) != null))
+        {
+            cui_gap(ui, 10);
+            cui_button_opts bo = default;
+            memset(&bo, 0, ((ulong)(sizeof(cui_button_opts))));
+            bo.variant = __DotCcEnum_6375695F627574746F6E5F76617269616E74.CUI_BUTTON_PRIMARY;
+            bo.icon = (DotCcLiterals.Pointer + DotCcLiterals.S437 /*""*/);
+            clicked = cui_button_ex(ui, o->action, &bo);
+            ui->nodes[ui->last_node].self_align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+        }
+        cui__close(ui);
+        return clicked;
+    }
+
+
+
+    public static unsafe void cui_metric_ex(cui_ctx* ui, byte* label, byte* value, cui_metric_opts* o)
+    {
+        cui_metric_opts d = default;
+        memset(&d, 0, ((ulong)(sizeof(cui_metric_opts))));
+        if ((!((((void*)(o)) != null) )     ))
+            o = &d;
+        cui_card_opts co = default;
+        memset(&co, 0, ((ulong)(sizeof(cui_card_opts))));
+        co.pad = 20;
+        co.gap = 10;
+        co.width = ((((int)o->width.kind) != 0) ? o->width : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 });
+        _ = cui_card_begin(ui, &co);
+        int row = cui__node_new(ui, 0);
+        ui->nodes[row].dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
+        ui->nodes[row].gap = 8;
+        cui__open(ui, row);
+        if ((((void*)(o->icon)) != null))
+            cui__icon_node(ui, o->icon, 16, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY]);
+        int lt = cui__text_node(ui, label, -1, 0, cui__fs(ui, ui->theme.text_body), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY], 0);
+        ui->nodes[lt].line_height = 1.3f;
+        cui__close(ui);
+        int vr = cui__node_new(ui, 0);
+        ui->nodes[vr].dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
+        ui->nodes[vr].align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_END);
+        ui->nodes[vr].gap = 10;
+        ui->nodes[vr].flags |= (uint)(32768);
+        ui->nodes[vr].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+        cui__open(ui, vr);
+        int vt = cui__text_node(ui, value, -1, 2, cui__fs(ui, 28), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0);
+        ui->nodes[vt].line_height = 1.1f;
+        ui->nodes[vt].flags |= (uint)(256);
+        if (((((o->delta != 0)) || (((void*)(o->delta_label)) != null))))
+        {
+            CBool up = ((CBool)(o->delta >= 0));
+            CBool good = ((int)(((unchecked((int)(o->lower_is_better))) != 0) ? ((CBool)(o->delta <= 0)) : ((CBool)(o->delta >= 0))));
+            cui_color tc = (((unchecked((int)(good))) != 0) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SUCCESS] : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_DANGER]);
+            int dr = cui__node_new(ui, 0);
+            ui->nodes[dr].dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
+            ui->nodes[dr].gap = 3;
+            ui->nodes[dr].pad[2] = 4;
+            cui__open(ui, dr);
+            cui__icon_node(ui, ((byte*)(((unchecked((int)(up))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S261 /*""*/) : (DotCcLiterals.Pointer + DotCcLiterals.S1425 /*""*/))), 14, tc);
+            byte* txt = ((byte*)((((void*)(o->delta_label)) != null) ? o->delta_label : cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S516 /*"%+.1f%%"*/), (double)o->delta)));
+            int dt = cui__text_node(ui, txt, -1, 1, cui__fs(ui, ui->theme.text_sm), tc, 0);
+            ui->nodes[dt].line_height = 1.2f;
+            ui->nodes[dt].flags |= (uint)(256);
+            cui__close(ui);
+        }
+        cui__close(ui);
+        if ((((((void*)(o->spark)) != null) && ((o->spark_count > 1)))))
+        {
+            cui_gap(ui, 2);
+            cui_sparkline(ui, o->spark, o->spark_count, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, 36, (((((int)(((unchecked((int)(o->lower_is_better))) != 0) ? ((CBool)(o->delta > 0)) : ((CBool)(o->delta < 0))))) != 0) ? new cui_color { r = (byte)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_DANGER, g = 0xC5, b = 0x1D, a = 0 } : new cui_color { r = unchecked((byte)((int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SERIES_1 + 0 % 6)), g = 0xC5, b = 0x1D, a = 0 }));
+        }
+        cui_card_end(ui);
+    }
+
+
+
+    public static unsafe void cui_meter(cui_ctx* ui, byte* label, float used, float total, byte* unit)
+    {
+        float frac = ((float)(((total > 0)) ? used / total : (float)(0)));
+        int c = cui__node_new(ui, 0);
+        ui->nodes[c].gap = 8;
+        cui__open(ui, c);
+        int row = cui__node_new(ui, 0);
+        ui->nodes[row].dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
+        ui->nodes[row].gap = 6;
+        cui__open(ui, row);
+        cui__label_text(ui, label, 1, cui__fs(ui, ui->theme.text_body), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND]);
+        cui_spacer(ui);
+        int t = cui__text_node(ui, cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1053 /*"%g / %g %s"*/), (double)used, (double)total, ((byte*)((((void*)(unit)) != null) ? unit : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/)))), -1, 0, cui__fs(ui, ui->theme.text_body), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY], 0);
+        ui->nodes[t].flags |= (uint)(256);
+        ui->nodes[t].line_height = 1.3f;
+        cui__close(ui);
+        cui_progress_opts po = default;
+        memset(&po, 0, ((ulong)(sizeof(cui_progress_opts))));
+        po.tone = (cui_tone)(((int)(((frac > 0.9f)) ? (int)(__DotCcEnum_6375695F746F6E65.CUI_TONE_DANGER) : ((int)(((frac > 0.75f)) ? (int)(__DotCcEnum_6375695F746F6E65.CUI_TONE_WARNING) : (int)(__DotCcEnum_6375695F746F6E65.CUI_TONE_NEUTRAL))))));
+        cui_push_id(ui, label);
+        cui_progress_ex(ui, frac, &po);
+        cui_pop_id(ui);
+        cui__close(ui);
+    }
+
+
+
+    public static unsafe ulong cui_image_create(cui_ctx* ui, int w, int h, void* rgba)
+    {
+        if ((!((((void*)(ui->renderer.texture_create)) != null) )     ))
+            return 0;
+        return ui->renderer.texture_create(ui->renderer.user, w, h, __DotCcEnum_6375695F746578747572655F666F726D6174.CUI_TEXTURE_RGBA8, rgba);
+    }
+
+
+
+    public static unsafe void cui_image_destroy(cui_ctx* ui, ulong tex)
+    {
+        if (((((tex) != 0) && (((void*)(ui->renderer.texture_destroy)) != null))))
+            ui->renderer.texture_destroy(ui->renderer.user, tex);
+    }
+
+
+
+    public static unsafe void cui__paint_image__unit_081023C035BB6B4529A6C0B92CE48DE5D852A146F28C5978D9E37B331C577D60(cui_ctx* ui, cui_node* n, void* data)
+    {
+        cui__img_paint* p = (cui__img_paint*)(data);
+        cui_rect uv = new cui_rect { x = 0, y = 0, w = 1, h = 1 };
+        cui_draw_image(ui, p->tex, n->rect, uv, n->radius, p->tint);
+    }
+
+
+
+    public static unsafe void cui_image_ex(cui_ctx* ui, ulong tex, cui_image_opts* o)
+    {
+        cui_image_opts d = default;
+        memset(&d, 0, ((ulong)(sizeof(cui_image_opts))));
+        if ((!((((void*)(o)) != null) )     ))
+            o = &d;
+        int i = cui__leaf(ui, 0, ((((int)o->width.kind) != 0) ? o->width : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)64 }), ((((int)o->height.kind) != 0) ? o->height : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)64 }));
+        cui_node* n = &ui->nodes[i];
+        n->radius = new cui_corners { tl = o->radius, tr = o->radius, br = o->radius, bl = o->radius };
+        n->self_align = 7;
+        cui__img_paint* p = (cui__img_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__img_paint)))));
+        p->tex = tex;
+        p->tint = (((unchecked((int)(cui__color_set(o->tint)))) != 0) ? cui_color_of(ui, o->tint) : cui__rgba(255, 255, 255, 255));
+        n->paint = DotCcPointers.cui__paint_image__unit_081023C035BB6B4529A6C0B92CE48DE5D852A146F28C5978D9E37B331C577D60;
+        n->paint_data = p;
     }
 
 

@@ -43,6 +43,14 @@ diagnostic objects. `--tools reuse`, `--fetch never`, and `--hashes off` have th
 shared framework meanings. `DOTCC_COMPILER` and `DOTCC_POSTPROCESSOR` can select
 explicit prebuilt tools. Generated C# must be regenerated, never patched.
 
+The CUI profile explicitly enables both `--deduplicate-inline` (already supplied
+by the shared recipe default) and `--deduplicate-static` (CUI opt-in). Core,
+gallery and qualification links use `scripts/codegen.py` and the
+`deduplication` settings in `config/profile.json`; unrelated campaigns keep
+their defaults. Deduplication merges only proven equivalent implementations.
+Address-used functions and functions depending on distinct static storage retain
+their identity. Static objects are not pooled by these flags.
+
 Full Linux qualification needs CMake, a C/C++ compiler, GLFW development files
 for the native oracle, X11/GLX and OpenGL 3.3, `xdotool`, `xclip`, `zenity`,
 `kdialog`, `xdg-utils`, `gio`, `desktop-file-utils`, Xvfb and xauth. The real
@@ -151,8 +159,10 @@ target-specific; use `dotnet publish` with `-r linux-x64` or `-r win-x64`,
 Run `bash cui/scripts/test.sh --suite gallery --form all --mode all` for the
 Linux native/translated gallery differential and real desktop-input workflows.
 That suite owns its Xvfb display. Gallery follow-up evidence is recorded
-separately in [GALLERY-VALIDATION.json](docs/GALLERY-VALIDATION.json); the earlier
-core qualification in `VALIDATION.json` retains its original product hashes.
+in [GALLERY-VALIDATION.json](docs/GALLERY-VALIDATION.json). Current deduplication
+flags, product hashes and targeted core qualification are recorded in
+[DEDUP-VALIDATION.json](docs/DEDUP-VALIDATION.json); the earlier core qualification
+in `VALIDATION.json` retains its historical product hashes and scope.
 
 Linux file dialogs use installed `zenity` or `kdialog`; missing tools,
 cancellation and failed launchers report failure. URL opening waits for the

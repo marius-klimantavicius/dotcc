@@ -29,7 +29,7 @@ using __DotCcEnum_6375695F6D6F64 = global::Managed.Cui.Cui.cui_mod;
 using __DotCcEnum_6375695F7468656D655F6D6F6465 = global::Managed.Cui.Cui.cui_theme_mode;
 using __DotCcEnum_6375695F746F6E65 = global::Managed.Cui.Cui.cui_tone;
 using __DotCcEnum_6375695F656C65766174696F6E = global::Managed.Cui.Cui.cui_elevation;
-using __DotCcEnum_5F5F446F744363547970656465665F30453045363138353046303939323138444342313336464135443434453336353142413335323030433944453438343444393532313136323837423043463944 = global::Managed.Cui.Cui.cui__text_anchor;
+using __DotCcEnum_5F5F446F744363547970656465665F31383733324539413631304534373639334344373536304538413931383146443146454137313736373931463742444543353734433534454635444546413538 = global::Managed.Cui.Cui.cui__text_anchor;
 using __DotCcEnum_6375695F746578747572655F666F726D6174 = global::Managed.Cui.Cui.cui_texture_format;
 using __DotCcEnum_6375695F646972656374696F6E = global::Managed.Cui.Cui.cui_direction;
 using __DotCcEnum_6375695F6A757374696679 = global::Managed.Cui.Cui.cui_justify;
@@ -39,7 +39,7 @@ using __DotCcEnum_6375695F746578745F616C69676E = global::Managed.Cui.Cui.cui_tex
 using __DotCcEnum_6375695F627574746F6E5F76617269616E74 = global::Managed.Cui.Cui.cui_button_variant;
 using __DotCcEnum_6375695F636F6E74726F6C5F73697A65 = global::Managed.Cui.Cui.cui_control_size;
 using __DotCcEnum_6375695F746162735F76617269616E74 = global::Managed.Cui.Cui.cui_tabs_variant;
-using __DotCcEnum_5F5F446F744363547970656465665F37383132333838343837304536434536353233453436434444443433383833373744363646433646314241334230424639434637324136333833454138353043 = global::Managed.Cui.Cui.cui__field_style;
+using __DotCcEnum_5F5F446F744363547970656465665F34304230353439433246314135414433383143374232414442363442463143414143393430304331413830453744383444394644423346304430413946433346 = global::Managed.Cui.Cui.cui__field_style;
 using __DotCcEnum_6375695F73696465 = global::Managed.Cui.Cui.cui_side;
 using __DotCcEnum_6375695F737461747573 = global::Managed.Cui.Cui.cui_status;
 using __DotCcEnum_6375695F646966665F726F775F6B696E64 = global::Managed.Cui.Cui.cui_diff_row_kind;
@@ -62,475 +62,162 @@ using DotCcPointers = global::Managed.Cui.Cui.CuiFunctionPointers;
 
 public static unsafe partial class Cui
 {
-    public static unsafe CBool cui_node_link_created(cui_ctx* ui, int* from_pin, int* to_pin)
+    public static unsafe void cui__tl_delete(cui_timeline_track* t, int n, int ct, int* ck, int* keys_out, int* clips_out)
     {
-        cui__ne_state* st = cui__ne_events__unit_F3BF7CB3C178872BC7B69E25D35E600F95682F84681309BF79571C01E1122FC3(ui);
-        if ((((!((((void*)(st)) != null) )     ) || ((st->ev_new_read + 2 > st->ev_new.n)))))
-            return 0;
-        if ((((void*)(from_pin)) != null))
-            *from_pin = st->ev_new.v[st->ev_new_read];
-        if ((((void*)(to_pin)) != null))
-            *to_pin = st->ev_new.v[st->ev_new_read + 1];
-        st->ev_new_read += 2;
-        return 1;
-    }
-
-
-
-    public static unsafe CBool cui_node_link_removed(cui_ctx* ui, int* link_id)
-    {
-        cui__ne_state* st = cui__ne_events__unit_F3BF7CB3C178872BC7B69E25D35E600F95682F84681309BF79571C01E1122FC3(ui);
-        if ((((!((((void*)(st)) != null) )     ) || ((st->ev_rm_read >= st->ev_rm.n)))))
-            return 0;
-        if ((((void*)(link_id)) != null))
-            *link_id = st->ev_rm.v[st->ev_rm_read];
-        st->ev_rm_read++;
-        return 1;
-    }
-
-
-
-    public static unsafe CBool cui_node_deleted(cui_ctx* ui, int* node_id)
-    {
-        cui__ne_state* st = cui__ne_events__unit_F3BF7CB3C178872BC7B69E25D35E600F95682F84681309BF79571C01E1122FC3(ui);
-        if ((((!((((void*)(st)) != null) )     ) || ((st->ev_del_read >= st->ev_del.n)))))
-            return 0;
-        if ((((void*)(node_id)) != null))
-            *node_id = st->ev_del.v[st->ev_del_read];
-        st->ev_del_read++;
-        return 1;
-    }
-
-
-
-    public static unsafe int cui__fl_depth_lb__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_flame_span* s, int n, int d)
-    {
-        int lo = 0, hi = n;
-        while (((lo < hi)))
+        int rk = 0, rc = 0;
+        for (int i = 0; ((i < n)); i++)
         {
-            int m = lo + (hi - lo) / 2;
-            if (((s[m].depth < d)))
-                lo = m + 1;
-            else
-                hi = m;
-        }
-        return lo;
-    }
-
-
-
-    public static unsafe int cui__fl_end_gt__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_flame_span* s, int lo, int hi, double t)
-    {
-        while (((lo < hi)))
-        {
-            int m = lo + (hi - lo) / 2;
-            if (((s[m].end <= t)))
-                lo = m + 1;
-            else
-                hi = m;
-        }
-        return lo;
-    }
-
-
-
-    public static unsafe int cui__fl_start_le__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_flame_span* s, int lo, int hi, double t)
-    {
-        int a = lo, b = hi;
-        while (((a < b)))
-        {
-            int m = a + (b - a) / 2;
-            if (((s[m].start <= t)))
-                a = m + 1;
-            else
-                b = m;
-        }
-        return a - 1;
-    }
-
-
-
-    public static unsafe void cui__fl_row__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_flame_span* s, int n, int d, int* lo, int* hi)
-    {
-        *lo = cui__fl_depth_lb__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(s, n, d);
-        *hi = cui__fl_depth_lb__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(s, n, d + 1);
-    }
-
-
-
-    public static unsafe int cui__fl_parent__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_flame_span* s, int n, int i)
-    {
-        if (((((((i < 0)) || ((i >= n)))) || ((s[i].depth <= 0)))))
-            return -1;
-        int lo = default, hi = default;
-        cui__fl_row__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(s, n, s[i].depth - 1, &lo, &hi);
-        int k = cui__fl_start_le__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(s, lo, hi, s[i].start);
-        return ((int)(((((k >= lo)) && ((s[k].end >= s[i].end)))) ? k : -1));
-    }
-
-
-
-    public static unsafe int cui__fl_first_child__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_flame_span* s, int n, int i)
-    {
-        if (((((i < 0)) || ((i >= n)))))
-            return -1;
-        int lo = default, hi = default;
-        cui__fl_row__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(s, n, s[i].depth + 1, &lo, &hi);
-        int k = cui__fl_end_gt__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(s, lo, hi, s[i].start);
-        return ((int)(((((((k < hi)) && ((s[k].start >= s[i].start)))) && ((s[k].start < s[i].end)))) ? k : -1));
-    }
-
-
-
-    public static unsafe uint cui__fl_name_key__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(byte* name, uint color_key)
-    {
-        return ((uint)(((color_key) != 0) ? color_key : cui__hash_str(((byte*)((((void*)(name)) != null) ? name : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), 0xF1A3u)));
-    }
-
-
-
-    public static unsafe uint cui__fl_key__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_flame_span* sp)
-    {
-        return cui__fl_name_key__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(sp->name, sp->color_key);
-    }
-
-
-
-    public static unsafe cui_color cui__fl_fill__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_ctx* ui, uint key, CBool hover)
-    {
-        cui_color tone = ((cui_color*)&ui->theme.colors)[unchecked((uint)((int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SERIES_1)) + key % (uint)(6)];
-        float k = ((float*)((((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK)) ? global::Managed.Cui.Cui.Globals.dark__s1__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA : global::Managed.Cui.Cui.Globals.light__s0__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA))[key / (uint)(6) % (uint)(3)] + ((float)(((unchecked((int)(hover))) != 0) ? 0.12f : 0.0f));
-        return cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE], tone, k);
-    }
-
-
-
-    public static unsafe cui_color cui__fl_fg__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_ctx* ui, uint key, cui_color fill)
-    {
-        cui_color tone = ((cui_color*)&ui->theme.colors)[unchecked((uint)((int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SERIES_1)) + key % (uint)(6)];
-        return cui__legible(cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], tone, 0.3f), fill, 4.5f);
-    }
-
-
-
-    public static unsafe byte* cui__fl_dur__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_ctx* ui, double s)
-    {
-        byte* u = (DotCcLiterals.Pointer + DotCcLiterals.S218 /*"s"*/);
-        double v = s;
-        if (((s < 1e-6)))
-        {
-            v = s * 1e9;
-            u = (DotCcLiterals.Pointer + DotCcLiterals.S1397 /*"ns"*/);
-        }
-        else
-            if (((s < 1e-3)))
+            if (((unchecked((int)(t[i].locked))) != 0))
+                continue;
+            int kn = cui__tl_keys_n(&t[i]);
+            if ((((((void*)(t[i].key_selected)) != null) && ((kn > 0)))))
             {
-                v = s * 1e6;
-                u = (DotCcLiterals.Pointer + DotCcLiterals.S1168 /*"µs"*/);
+                int w = 0, nck = -1;
+                for (int j = 0; ((j < kn)); j++)
+                {
+                    if (((unchecked((int)(t[i].key_selected[j]))) != 0))
+                    {
+                        rk++;
+                        continue;
+                    }
+                    if (((((i == ct)) && ((j == *ck)))))
+                        nck = w;
+                    t[i].keys[w] = t[i].keys[j];
+                    t[i].key_selected[w] = 0;
+                    w++;
+                }
+                if (((w != kn)))
+                {
+                    for (int j__1 = w; ((j__1 < kn)); j__1++)
+                        t[i].key_selected[j__1] = 0;
+                    t[i].key_count = w;
+                    if (((i == ct)))
+                        *ck = nck;
+                }
             }
-            else
-                if (((s < 1)))
-                {
-                    v = s * 1e3;
-                    u = (DotCcLiterals.Pointer + DotCcLiterals.S922 /*"ms"*/);
-                }
-        int dec = ((int)(((v >= 100)) ? 0 : ((int)(((v >= 10)) ? 1 : 2))));
-        return cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S813 /*"%.*f %s"*/), dec, v, u);
-    }
-
-
-
-    public static unsafe double cui__fl_nice__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(double raw)
-    {
-        if ((!(((raw > 0)) )     ))
-            return 1;
-        double p = pow(10.0, floor(log10(raw)));
-        double m = raw / p;
-        return ((int)(((m <= 1)) ? 1 : ((int)(((m <= 2)) ? 2 : ((int)(((m <= 5)) ? 5 : 10)))))) * p;
-    }
-
-
-
-    public static unsafe void cui__fl_unit__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(double step, double* unit, byte** name, int* dec)
-    {
-        if (((step >= 0.1)))
-        {
-            *unit = 1;
-            *name = (DotCcLiterals.Pointer + DotCcLiterals.S218 /*"s"*/);
-        }
-        else
-            if (((step >= 1e-5)))
+            int cn = cui__tl_clips_n(&t[i]);
+            if (((cn > 0)))
             {
-                *unit = 1e-3;
-                *name = (DotCcLiterals.Pointer + DotCcLiterals.S922 /*"ms"*/);
-            }
-            else
-                if (((step >= 1e-8)))
+                int w__1 = 0;
+                for (int j__2 = 0; ((j__2 < cn)); j__2++)
                 {
-                    *unit = 1e-6;
-                    *name = (DotCcLiterals.Pointer + DotCcLiterals.S1168 /*"µs"*/);
+                    if (((unchecked((int)(t[i].clips[j__2].selected))) != 0))
+                    {
+                        rc++;
+                        continue;
+                    }
+                    t[i].clips[w__1++] = t[i].clips[j__2];
                 }
-                else
-                {
-                    *unit = 1e-9;
-                    *name = (DotCcLiterals.Pointer + DotCcLiterals.S1397 /*"ns"*/);
-                }
-        double r = step / *unit;
-        int d = (int)ceil(-log10(r) - 1e-9);
-        *dec = ((int)(((((int)(((d > 0)) ? d : 0)) < 3)) ? ((int)(((d > 0)) ? d : 0)) : 3));
-    }
-
-
-
-    public static unsafe double cui__fl_ruler__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_ctx* ui, cui_rect rr, float px0, float pw, double t0, double t1, double origin, float grid_h)
-    {
-        double range = t1 - t0;
-        float k = (float)(pw / range);
-        float fs = cui__fs(ui, ui->theme.text_xs);
-        double unit = default;
-        byte* uname = default;
-        int dec = default;
-        float min_px = 72;
-        double step = cui__fl_nice__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(range * min_px / pw);
-        cui__fl_unit__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(step, &unit, &uname, &dec);
-        for (int guard = 0; ((guard < 4)); guard++)
-        {
-            byte* wl = cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S813 /*"%.*f %s"*/), dec, (t1 - origin) / unit, uname);
-            float lw = cui__text_width(ui, 0, fs, wl, -1, 1);
-            if ((((float)(step * k) >= lw + 16)))
-                break;
-            step = cui__fl_nice__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(step * 1.01 * 2);
-            cui__fl_unit__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(step, &unit, &uname, &dec);
-        }
-        double first = ceil((t0 - origin) / step - 1e-9);
-        double last = floor((t1 - origin) / step + 1e-9);
-        float fh = cui__font_line_height(ui, 0, fs);
-        cui_color grid = cui_alpha(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER_SUBTLE], ((float)((((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK)) ? 0.8f : 1.0f)));
-        for (double q = first; ((((q <= last)) && ((q - first < 400)))); q += 1)
-        {
-            double t = origin + q * step;
-            float x = px0 + (float)((t - t0) * k);
-            x = floorf(x);
-            if (((grid_h > 0)))
-                cui_draw_rect(ui, new cui_rect { x = x, y = rr.y + rr.h + 1, w = 1, h = grid_h }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, grid);
-            cui_draw_rect(ui, new cui_rect { x = x, y = rr.y + rr.h - 5, w = 1, h = 5 }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER_STRONG]);
-            double v = q * step / unit;
-            if (((fabs(v) < 1e-9)))
-                v = 0;
-            byte* lbl = cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S813 /*"%.*f %s"*/), dec, v, uname);
-            float lw__1 = cui__text_width(ui, 0, fs, lbl, -1, 1);
-            if (((x + 4 + lw__1 <= rr.x + rr.w - 6)))
-                cui__draw_text_line(ui, 0, fs, x + 4, rr.y + (rr.h - 4 - fh) * 0.5f, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], lbl, -1, 1);
-        }
-        return step;
-    }
-
-
-
-    public static unsafe void cui__fl_push__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_ctx* ui, cui__fl_paint* p, cui__fl_item* it)
-    {
-        if (((p->n >= p->cap)))
-        {
-            int nc = ((int)(((p->cap) != 0) ? p->cap * 2 : 256));
-            cui__fl_item* nv = (cui__fl_item*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__fl_item))) * (ulong)nc));
-            if (((p->n) != 0))
-                memcpy(nv, p->items, ((ulong)(sizeof(cui__fl_item))) * (ulong)p->n);
-            p->items = nv;
-            p->cap = nc;
-        }
-        p->items[p->n++] = *it;
-    }
-
-
-
-    public static unsafe void cui__fl_bar__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_ctx* ui, cui__fl_paint* p, cui__fl_item* it, float px0, float k, float body_y, cui_rect body, CBool selected)
-    {
-        float x0 = px0 + (float)((it->s - p->t0) * k), x1 = px0 + (float)((it->e - p->t0) * k);
-        float y = body_y + it->row * p->row_h - p->scroll, h = p->row_h - 1;
-        if (((((unchecked((int)(selected))) != 0) && ((x1 - x0 < 3)))))
-        {
-            float c = (x0 + x1) * 0.5f;
-            x0 = c - 1.5f;
-            x1 = c + 1.5f;
-        }
-        float lim0 = body.x - 4, lim1 = body.x + body.w + 4;
-        if (((x0 < lim0)))
-            x0 = lim0;
-        if (((x1 > lim1)))
-            x1 = lim1;
-        float w = x1 - x0;
-        if (((w >= 2)))
-            w -= 1;
-        if (((w <= 0)))
-            return;
-        cui_rect br = new cui_rect { x = x0, y = y, w = w, h = h };
-        float rad = ((float)(((3.0f < ((float)(((w < h)) ? w : h)) * 0.5f)) ? 3.0f : ((float)(((w < h)) ? w : h)) * 0.5f));
-        if (((unchecked((int)(selected))) != 0))
-        {
-            cui_draw_rect_border(ui, br, new cui_corners { tl = rad, tr = rad, br = rad, bl = rad }, it->fill, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_ACCENT], 1.5f);
-        }
-        else
-        {
-            cui_draw_rect(ui, br, new cui_corners { tl = rad, tr = rad, br = rad, bl = rad }, it->fill);
-        }
-        if (((((it->label_len > 0)) && ((it->kind != 2)))))
-        {
-            float vx0 = ((float)(((x0 > body.x + 1)) ? x0 : body.x + 1)), vx1 = ((float)(((x0 + w < body.x + body.w - 1)) ? x0 + w : body.x + body.w - 1));
-            float avail = vx1 - vx0 - 12;
-            if (((avail >= 40.0f - 12)))
-            {
-                float fs = cui__fs(ui, ui->theme.text_xs);
-                float fh = cui__font_line_height(ui, 0, fs);
-                cui__draw_text_ellipsis(ui, 0, fs, vx0 + 6, y + (h - fh) * 0.5f, avail, it->fg, it->label, it->label_len, 0);
+                t[i].clip_count = w__1;
             }
         }
+        *keys_out = rk;
+        *clips_out = rc;
     }
 
 
 
-    public static unsafe void cui__paint_flame__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_ctx* ui, cui_node* n, void* data)
+    public static unsafe int cui__tl_add(cui_timeline_track* tr, float x, CBool* existed)
     {
-        cui__fl_paint* p = (cui__fl_paint*)(data);
-        cui__fl_state* st = p->st;
-        cui_rect r = n->rect;
+        *existed = 0;
+        if ((((((!((((void*)(tr->keys)) != null) )     ) || ((unchecked((int)(tr->locked))) != 0))) || ((tr->key_capacity <= 0)))))
+            return -1;
+        int n = ((int)(((tr->key_count > 0)) ? tr->key_count : 0));
+        int j = cui__tl_key_lb(tr->keys, n, x);
+        if (((((j < n)) && ((fabsf(tr->keys[j].x - x) < 1e-5f)))))
         {
-            cui_rect clip = ((cui_rect*)&ui->dl.clip_stack)[ui->dl.clip_depth - 1];
-            float s = ui->scale;
-            cui_rect cp = new cui_rect { x = clip.x / s, y = clip.y / s, w = clip.w / s, h = clip.h / s };
-            cui_scroll_state* ss = (cui_scroll_state*)(cui_state(ui, p->sid, ((ulong)(sizeof(cui_scroll_state)))));
-            ss->view_w = r.w;
-            ss->view_h = r.h;
-            ss->content_w = r.w + 1e6f;
-            ss->content_h = r.h + 1e6f;
-            cui__paint_add_hit(ui, p->sid, cui__rect_intersect(r, cp), unchecked((uint)(4 | 8)));
+            *existed = 1;
+            return j;
         }
-        float rad = ui->theme.radius_panel;
-        float px0 = r.x + 8.0f, pw = ((float)(((1.0f > r.w - 2 * 8.0f)) ? 1.0f : r.w - 2 * 8.0f));
-        double range = p->t1 - p->t0;
-        float k = ((float)(((range > 0)) ? (float)(pw / range) : (float)(0)));
-        float body_y = r.y + 24.0f + 1 + 4.0f;
-        cui_rect body = new cui_rect { x = r.x + 1, y = r.y + 24.0f + 1, w = ((float)(((0.0f > r.w - 2)) ? 0.0f : r.w - 2)), h = ((float)(((0.0f > r.h - 24.0f - 2)) ? 0.0f : r.h - 24.0f - 2)) };
-        float view_h = r.h - 24.0f - 1 - 2 * 4.0f;
-        st->valid = ((CBool)((!(((unchecked((int)(p->empty))) != 0) )     ) && ((k > 0))));
-        st->plot_x = px0;
-        st->plot_w = pw;
-        st->body_y = body_y;
-        st->row_h = p->row_h;
-        st->scroll = p->scroll;
-        st->body = body;
-        st->t0 = p->t0;
-        st->t1 = p->t1;
-        cui_push_clip(ui, cui__rect_inset(r, 1));
-        cui_corners rc = new cui_corners { tl = rad - 1, tr = rad - 1, br = 0, bl = 0 };
-        cui_draw_rect(ui, new cui_rect { x = r.x, y = r.y, w = r.w, h = 24.0f }, rc, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE_MUTED]);
-        cui_draw_rect(ui, new cui_rect { x = r.x, y = r.y + 24.0f, w = r.w, h = 1 }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER]);
-        if (((k > 0)))
-            cui__fl_ruler__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, new cui_rect { x = r.x, y = r.y, w = r.w, h = 24.0f }, px0, pw, p->t0, p->t1, p->origin, r.h - 24.0f - 2);
-        cui_push_clip(ui, body);
-        for (int i = 0; ((i < p->n)); i++)
-            cui__fl_bar__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, p, &p->items[i], px0, k, body_y, body, 0);
-        if (((unchecked((int)(p->has_sel))) != 0))
-            cui__fl_bar__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, p, &p->sel, px0, k, body_y, body, 1);
-        if (((unchecked((int)(p->empty))) != 0))
+        if (((((j > 0)) && ((fabsf(tr->keys[j - 1].x - x) < 1e-5f)))))
         {
-            byte* msg = (DotCcLiterals.Pointer + DotCcLiterals.S1417 /*"No spans"*/);
-            float lw = cui__text_width(ui, 0, cui__fs(ui, ui->theme.text_sm), msg, -1, 0);
-            float lh = cui__font_line_height(ui, 0, cui__fs(ui, ui->theme.text_sm));
-            cui__draw_text_line(ui, 0, cui__fs(ui, ui->theme.text_sm), body.x + (body.w - lw) * 0.5f, body.y + (body.h - lh) * 0.5f, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], msg, -1, 0);
+            *existed = 1;
+            return j - 1;
         }
-        if (((((p->content_h > view_h + 0.5f)) && ((view_h > 8)))))
-        {
-            float th = ((float)(((16.0f > view_h * view_h / p->content_h)) ? 16.0f : view_h * view_h / p->content_h));
-            float ty = body.y + 4.0f + (view_h - th) * (p->scroll / (p->content_h - view_h));
-            cui_draw_rect(ui, new cui_rect { x = body.x + body.w - 5, y = ty, w = 3, h = th }, new cui_corners { tl = 1.5f, tr = 1.5f, br = 1.5f, bl = 1.5f }, cui_alpha(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0.4f));
-        }
-        cui_pop_clip(ui);
-        if (((p->focus > 0.01f)))
-            cui_draw_rect_border(ui, cui__rect_inset(r, 1), new cui_corners { tl = rad - 1, tr = rad - 1, br = rad - 1, bl = rad - 1 }, cui__rgba(0, 0, 0, 0), cui_alpha(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOCUS_RING], p->focus), 2);
-        cui_pop_clip(ui);
+        if (((n >= tr->key_capacity)))
+            return -1;
+        float y = ((float)(((n > 0)) ? cui_curve_eval(tr->keys, n, x) : (float)(0)));
+        memmove(&tr->keys[j + 1], &tr->keys[j], ((ulong)(sizeof(cui_curve_key))) * (ulong)(n - j));
+        if ((((void*)(tr->key_selected)) != null))
+            memmove(&tr->key_selected[j + 1], &tr->key_selected[j], ((ulong)(sizeof(CBool))) * (ulong)(n - j));
+        cui_curve_key nk = default;
+        memset(&nk, 0, ((ulong)(sizeof(cui_curve_key))));
+        nk.x = x;
+        nk.y = y;
+        nk.mode = (byte)((int)(((((j > 0)) && ((((tr->keys[j - 1].mode == (int)__DotCcEnum_6375695F63757276655F6D6F6465.CUI_CURVE_LINEAR)) || ((tr->keys[j - 1].mode == (int)__DotCcEnum_6375695F63757276655F6D6F6465.CUI_CURVE_STEP)))))) ? (int)(tr->keys[j - 1].mode) : (int)(__DotCcEnum_6375695F63757276655F6D6F6465.CUI_CURVE_SMOOTH)));
+        tr->keys[j] = nk;
+        if ((((void*)(tr->key_selected)) != null))
+            tr->key_selected[j] = 0;
+        tr->key_count = n + 1;
+        return j;
     }
 
 
 
-    public static unsafe int cui__fl_hit__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__fl_ctx* c, cui_flame_view* v, float mx, float my)
+    public static unsafe int cui__tl_key_at(cui_timeline_track* tr, float t, float tol)
     {
-        if (((((c->n == 0)) || ((c->plot_w <= 0)))))
+        int n = cui__tl_keys_n(tr);
+        if ((!(((n) != 0) )     ))
             return -1;
-        float yy = my - c->body_y + v->scroll;
-        if (((((((yy < 0)) || ((mx < c->plot_x - 1)))) || ((mx > c->plot_x + c->plot_w + 1)))))
-            return -1;
-        int d = (int)floorf(yy / c->row_h);
-        if (((((d >= c->rows)) || ((yy - d * c->row_h > c->row_h - 1)))))
-            return -1;
-        int lo = default, hi = default;
-        cui__fl_row__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(c->s, c->n, d, &lo, &hi);
-        if (((lo >= hi)))
-            return -1;
-        double range = v->end - v->start;
-        double t = v->start + (double)(mx - c->plot_x) / c->plot_w * range;
-        double tol = range / c->plot_w;
-        int k = cui__fl_start_le__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(c->s, lo, hi, t);
-        if (((((k >= lo)) && ((c->s[k].end >= t)))))
-            return k;
         int best = -1;
-        double bd = tol;
-        if (((((k >= lo)) && ((t - c->s[k].end <= bd)))))
+        float bd = tol;
+        for (int i = cui__tl_key_lb(tr->keys, n, t - tol), guard = 0; ((((((i < n)) && ((tr->keys[i].x <= t + tol)))) && ((guard < 64)))); i++, guard++)
         {
-            bd = t - c->s[k].end;
-            best = k;
+            float d = fabsf(tr->keys[i].x - t);
+            CBool sel = ((CBool)((((void*)(tr->key_selected)) != null) && ((unchecked((int)(tr->key_selected[i]))) != 0)));
+            if (((((((d < bd)) || ((((d == bd)) && ((unchecked((int)(sel))) != 0))))) || ((best < 0)))))
+            {
+                bd = d;
+                best = i;
+            }
         }
-        if (((((k + 1 < hi)) && ((c->s[k + 1].start - t <= bd)))))
-            best = k + 1;
         return best;
     }
 
 
 
-    public static unsafe void cui__fl_clamp__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__fl_ctx* c, cui_flame_view* v, double min_range)
+    public static unsafe int cui__tl_clip_at(cui_timeline_track* tr, cui__tl_geo* g, double v0, double k, float mx, int* part)
     {
-        double ext = c->dmax - c->dmin;
-        double range = v->end - v->start;
-        if ((!(((range > 0)) )     ))
+        int n = cui__tl_clips_n(tr);
+        if ((((!(((n) != 0) )     ) || ((k <= 0)))))
+            return -1;
+        float t = (float)(v0 + (mx - g->plot_x) / k);
+        for (int i = ((int)(((0 > cui__tl_clip_lb(tr->clips, n, t) - 1)) ? 0 : cui__tl_clip_lb(tr->clips, n, t) - 1)), guard = 0; ((((i < n)) && ((guard < 3)))); i++, guard++)
+        {
+            cui_timeline_clip* c = &tr->clips[i];
+            float x0 = (float)(g->plot_x + (c->start - v0) * k), x1 = (float)(g->plot_x + (c->end - v0) * k);
+            if (((((mx < x0 - 1)) || ((mx > x1 + 1)))))
+                continue;
+            float edge = ((float)(((6.0f < (x1 - x0) / 3)) ? 6.0f : (x1 - x0) / 3));
+            *part = ((int)(((mx - x0 <= edge)) ? 1 : ((int)(((x1 - mx <= edge)) ? 2 : 0))));
+            return i;
+        }
+        return -1;
+    }
+
+
+
+    public static unsafe void cui__tl_clamp(cui_timeline_view* v, float s0, float s1, float min_range)
+    {
+        float ext = s1 - s0;
+        float range = v->end - v->start;
+        if ((((!(((range > 0)) )     ) || (!(((isfinite((double)(range))) != 0) )     ))))
             range = ext;
-        range = ((double)(((range > min_range)) ? range : min_range));
-        if (((range > ext)))
-            range = ext;
-        double s = v->start;
-        if (((s < c->dmin)))
-            s = c->dmin;
-        if (((s + range > c->dmax)))
-            s = c->dmax - range;
+        range = cui__clampf(range, ((float)(((min_range < ext)) ? min_range : ext)), ext);
+        float s = ((float)(((isfinite((double)(v->start))) != 0) ? v->start : s0));
+        if (((s + range > s1)))
+            s = s1 - range;
+        if (((s < s0)))
+            s = s0;
         v->start = s;
         v->end = s + range;
+        if (((range == ext)))
+            v->end = s1;
     }
 
 
 
-    public static unsafe void cui__fl_clamp_scroll__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__fl_ctx* c, cui_flame_view* v)
-    {
-        float max_s = ((float)(((0.0f > c->rows * c->row_h - c->body_h)) ? 0.0f : c->rows * c->row_h - c->body_h));
-        if ((!(((v->scroll >= 0)) )     ))
-            v->scroll = 0;
-        if (((v->scroll > max_s)))
-            v->scroll = max_s;
-    }
-
-
-
-    public static unsafe void cui__fl_animate_to__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__fl_state* st, cui_flame_view* v, double s, double e)
-    {
-        st->a0 = v->start;
-        st->a1 = v->end;
-        st->b0 = s;
-        st->b1 = e;
-        st->anim.x = 0;
-        st->anim.v = 0;
-        st->anim_on = 1;
-    }
-
-
-
-    public static unsafe void cui__fl_lerp__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__fl_state* st, double p, double* s, double* e)
+    public static unsafe void cui__tl_lerp(cui__tl_state* st, double p, double* s, double* e)
     {
         double r0 = st->a1 - st->a0, r1 = st->b1 - st->b0;
         if ((((((!(((r0 > 0)) )     ) || (!(((r1 > 0)) )     ))) || ((fabs(r1 - r0) < 1e-6 * r0)))))
@@ -541,970 +228,4206 @@ public static unsafe partial class Cui
         }
         double fx = (st->a0 * r1 - st->b0 * r0) / (r1 - r0);
         double u = (fx - st->a0) / r0;
-        double r = exp(log(r0) + (log(r1) - log(r0)) * p);
-        *s = fx - u * r;
-        *e = *s + r;
+        double rr = exp(log(r0) + (log(r1) - log(r0)) * p);
+        *s = fx - u * rr;
+        *e = *s + rr;
     }
 
 
 
-    public static unsafe void cui__fl_zoom_span__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__fl_ctx* c, cui__fl_state* st, cui_flame_view* v, int i, double min_range)
+    public static unsafe float cui__tle_t_at(cui__tle_frame* f, double x)
     {
-        cui_flame_span* sp = &c->s[i];
-        double d = ((double)(((sp->end - sp->start > min_range)) ? sp->end - sp->start : min_range));
-        cui_flame_view t = new cui_flame_view { start = sp->start - d * 0.05, end = sp->start + d * 1.05, scroll = v->scroll };
-        cui__fl_clamp__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(c, &t, min_range);
-        cui__fl_animate_to__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(st, v, t.start, t.end);
+        return (float)(f->v->start + (x - f->g.plot_x) / f->k);
     }
 
 
 
-    public static unsafe void cui__fl_reveal__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__fl_ctx* c, cui_flame_view* v, int i, double min_range)
+    public static unsafe int cui__tle_row_at(cui__tle_frame* f, float y)
     {
-        cui_flame_span* sp = &c->s[i];
-        double range = v->end - v->start;
-        if (((((sp->end < v->start)) || ((sp->start > v->end)))))
-        {
-            double mid = (sp->start + sp->end) * 0.5;
-            v->start = mid - range * 0.5;
-            v->end = mid + range * 0.5;
-            cui__fl_clamp__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(c, v, min_range);
-        }
-        float top = sp->depth * c->row_h;
-        if (((top < v->scroll)))
-            v->scroll = top;
-        if (((top + c->row_h > v->scroll + c->body_h)))
-            v->scroll = top + c->row_h - c->body_h;
-        cui__fl_clamp_scroll__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(c, v);
+        return (int)floorf((y - f->g.body_y + f->v->scroll) / f->row_h);
     }
 
 
 
-    public static unsafe void cui__flf_extent__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__flf* f)
-    {
-        cui__fl_ctx* c = &f->c;
-        cui_flame_span* spans = f->spans;
-        int count = f->count;
-        memset(c, 0, ((ulong)(sizeof(cui__fl_ctx))));
-        c->s = spans;
-        c->n = count;
-        c->row_h = ((float)(((f->o->row_height > 0)) ? f->o->row_height : 20.0f));
-        c->dmin = 0;
-        c->dmax = 0;
-        CBool any = 0;
-        for (int lo = cui__fl_depth_lb__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(spans, count, 0); ((lo < count)); )
-        {
-            int dd = spans[lo].depth;
-            int hi = cui__fl_depth_lb__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(spans, count, dd + 1);
-            if (((hi <= lo)))
-                break;
-            double a = spans[lo].start, b = spans[hi - 1].end;
-            if ((((!(((unchecked((int)(any))) != 0) )     ) || ((a < c->dmin)))))
-                c->dmin = a;
-            if ((((!(((unchecked((int)(any))) != 0) )     ) || ((b > c->dmax)))))
-                c->dmax = b;
-            any = 1;
-            c->rows = dd + 1;
-            lo = hi;
-        }
-        if (((c->rows > 100000)))
-            c->rows = 100000;
-        f->has_data = ((CBool)(((((((unchecked((int)(any))) != 0) && ((c->dmax >= c->dmin)))) && ((isfinite(c->dmin)) != 0))) && ((isfinite(c->dmax)) != 0)));
-        if (((((unchecked((int)(f->has_data))) != 0) && ((c->dmax - c->dmin < f->min_range)))))
-        {
-            double m = (c->dmin + c->dmax) * 0.5;
-            c->dmin = m - f->min_range * 0.5;
-            c->dmax = m + f->min_range * 0.5;
-        }
-        f->has_rect = cui__has_prev_rect(f->ui, f->id);
-        f->R = cui__prev_rect(f->ui, f->id);
-        cui_rect R = f->R;
-        c->plot_x = R.x + 8.0f;
-        c->plot_w = ((float)(((unchecked((int)(f->has_rect))) != 0) ? ((float)(((1.0f > R.w - 2 * 8.0f)) ? 1.0f : R.w - 2 * 8.0f)) : (float)(600)));
-        c->body_y = R.y + 24.0f + 1 + 4.0f;
-        c->body_h = ((float)(((unchecked((int)(f->has_rect))) != 0) ? ((float)(((1.0f > R.h - 24.0f - 1 - 2 * 4.0f)) ? 1.0f : R.h - 24.0f - 1 - 2 * 4.0f)) : (float)(200)));
-    }
-
-
-
-    public static unsafe void cui__flf_wheel__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__flf* f)
+    public static unsafe void cui__tle_wheel_and_pan(cui__tle_frame* f)
     {
         cui_ctx* ui = f->ui;
-        cui_flame_view* v = f->v;
-        if ((!(((((((ui->scroll_target == f->sid)) && ((ui->hot_layer == ui->current_layer)))) && ((((ui->scroll_dx != 0)) || ((ui->scroll_dy != 0)))))) )     ))
-            return;
-        double range = f->range;
-        CBool pan = ((CBool)(((ui->scroll_dx != 0)) || ((ui->mods & (int)__DotCcEnum_6375695F6D6F64.CUI_MOD_SHIFT) != 0)));
-        if (((unchecked((int)(pan))) != 0))
-        {
-            float dl = ((float)(((ui->scroll_dx != 0)) ? ui->scroll_dx : ui->scroll_dy));
-            double dt = (double)dl * 40.0 / f->c.plot_w * range;
-            v->start -= dt;
-            v->end -= dt;
-        }
-        else
-        {
-            double z = pow(1.12, (double)ui->scroll_dy);
-            double nr = ((double)(((range / z > f->min_range)) ? range / z : f->min_range));
-            nr = ((double)(((nr < f->c.dmax - f->c.dmin)) ? nr : f->c.dmax - f->c.dmin));
-            double u = (double)(f->mx - f->c.plot_x) / f->c.plot_w;
-            double tm = v->start + u * range;
-            v->start = tm - u * nr;
-            v->end = v->start + nr;
-        }
-        ui->scroll_dx = ui->scroll_dy = 0;
-        f->user_moved = 1;
-    }
-
-
-
-    public static unsafe void cui__flf_pointer__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__flf* f)
-    {
-        cui_ctx* ui = f->ui;
-        cui__fl_state* st = f->st;
-        cui_flame_view* v = f->v;
+        cui__tl_state* st = f->st;
+        cui_timeline_view* v = f->v;
         float mx = f->mx, my = f->my;
-        if (((((((unchecked((int)(f->bi.hovered))) != 0) && ((unchecked((int)(((CBool*)&ui->mpressed)[0]))) != 0))) && ((st->mode == 0)))))
+        if (((((((ui->scroll_target == f->sid)) && ((ui->hot_layer == ui->current_layer)))) && ((((ui->scroll_dx != 0)) || ((ui->scroll_dy != 0)))))))
         {
-            st->mode = 1;
-            st->press_x = st->last_x = mx;
-            st->press_y = st->last_y = my;
-            st->press_hit = cui__fl_hit__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&f->c, v, mx, my);
-            st->press_double = f->bi.double_clicked;
+            double range = v->end - v->start;
+            if (((((mx < f->g.area_x)) && ((ui->scroll_dx == 0)))))
+            {
+                v->scroll -= ui->scroll_dy * 40.0f;
+            }
+            else
+                if (((((ui->scroll_dx != 0)) || ((unchecked((int)(f->shift))) != 0))))
+                {
+                    float dl = ((float)(((ui->scroll_dx != 0)) ? ui->scroll_dx : ui->scroll_dy));
+                    double dt = (double)dl * 40.0 / f->g.plot_w * range;
+                    v->start = (float)(v->start - dt);
+                    v->end = (float)(v->end - dt);
+                }
+                else
+                {
+                    double z = pow(1.12, (double)ui->scroll_dy);
+                    double nrng = ((double)(((((double)(((range / z > (double)f->min_range)) ? range / z : (double)f->min_range)) < (double)(f->s1 - f->s0))) ? ((double)(((range / z > (double)f->min_range)) ? range / z : (double)f->min_range)) : (double)(f->s1 - f->s0)));
+                    double u = (double)(mx - f->g.plot_x) / f->g.plot_w;
+                    double tm = v->start + u * range;
+                    double ns = tm - u * nrng;
+                    v->start = (float)ns;
+                    v->end = (float)(ns + nrng);
+                }
+            ui->scroll_dx = ui->scroll_dy = 0;
+            f->user_moved = 1;
         }
-        if (((((st->mode == 1)) && ((unchecked((int)(((CBool*)&ui->mdown)[0]))) != 0))))
+        if (((((((st->mode == 0)) && ((unchecked((int)(((CBool*)&ui->mpressed)[(int)__DotCcEnum_6375695F6D6F7573655F627574746F6E.CUI_MOUSE_MIDDLE]))) != 0))) && ((ui->hot == f->id)))))
         {
-            float dx = mx - st->press_x, dy = my - st->press_y;
-            if (((dx * dx + dy * dy > 3.0f * 3.0f)))
-                st->mode = 2;
+            st->mode = 7;
+            st->last_x = mx;
+            st->last_y = my;
         }
-        if (((st->mode == 2)))
+        if (((st->mode == 7)))
         {
-            double dt = (double)(mx - st->last_x) / f->c.plot_w * (v->end - v->start);
-            v->start -= dt;
-            v->end -= dt;
+            double dt__1 = (double)(mx - st->last_x) / f->k;
+            v->start = (float)(v->start - dt__1);
+            v->end = (float)(v->end - dt__1);
             v->scroll -= my - st->last_y;
             st->last_x = mx;
             st->last_y = my;
             cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_MOVE);
             f->user_moved = 1;
-            if ((!(((unchecked((int)(((CBool*)&ui->mdown)[0]))) != 0) )     ))
+            if ((!(((unchecked((int)(((CBool*)&ui->mdown)[(int)__DotCcEnum_6375695F6D6F7573655F627574746F6E.CUI_MOUSE_MIDDLE]))) != 0) )     ))
                 st->mode = 0;
         }
-        else
-            if (((((st->mode == 1)) && (!(((unchecked((int)(((CBool*)&ui->mdown)[0]))) != 0) )     ))))
-            {
-                st->mode = 0;
-                int h = st->press_hit;
-                CBool in_rows = ((CBool)(st->press_y >= f->c.body_y - 4.0f));
-                if (((((unchecked((int)(in_rows))) != 0) && ((h != *f->sel)))))
-                    *f->sel = h;
-                if (((unchecked((int)(st->press_double))) != 0))
-                {
-                    if (((h >= 0)))
-                    {
-                        cui__fl_zoom_span__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&f->c, st, v, h, f->min_range);
-                        f->res->zoomed = h;
-                    }
-                    else
-                        cui__fl_animate_to__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(st, v, f->c.dmin, f->c.dmax);
-                }
-            }
-        if (((((st->mode != 0)) && (!(((unchecked((int)(((CBool*)&ui->mdown)[0]))) != 0) )     ))))
-            st->mode = 0;
     }
 
 
 
-    public static unsafe void cui__flf_arrows__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__flf* f)
+    public static unsafe void cui__tle_press_list(cui__tle_frame* f, int tr_i)
     {
-        cui_ctx* ui = f->ui;
-        cui_flame_span* spans = f->spans;
-        int count = f->count;
-        int s = *f->sel, ns = s;
-        if (((s < 0)))
+        cui_timeline_track* tr = &f->tracks[tr_i];
+        cui_timeline_editor_result* res = f->res;
+        cui__tl_geo* g = &f->g;
+        float mx = f->mx;
+        CBool group = ((CBool)(f->sub_end[tr_i] > tr_i + 1));
+        float cx = ((float)(((g->list_mode == 2)) ? f->R.x + 6 : f->R.x + 8 + ((int)(((((int)(((tr->depth > 0)) ? tr->depth : 0)) < 1000)) ? ((int)(((tr->depth > 0)) ? tr->depth : 0)) : 1000)) * 14.0f));
+        float lx = f->R.x + g->list_w - 4 - 22.0f, hx = lx - 22.0f;
+        if (((((unchecked((int)(group))) != 0) && ((((g->list_mode == 2)) || ((((mx >= cx - 4)) && ((mx < cx + 18.0f)))))))))
         {
-            int lo = default, hi = default;
-            cui__fl_row__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(spans, count, spans[cui__fl_depth_lb__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(spans, count, 0)].depth, &lo, &hi);
-            int k = cui__fl_end_gt__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(spans, lo, hi, f->v->start);
-            ns = ((int)(((k < hi)) ? k : ((int)(((lo < hi)) ? lo : -1))));
+            tr->collapsed = (((unchecked((int)(tr->collapsed))) != 0) ? 0 : 1);
+            res->toggled = tr_i;
+            res->changed = f->relist = 1;
         }
         else
-            if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_LEFT)))) != 0))
+            if (((((g->list_mode == 0)) && ((mx >= lx)))))
             {
-                if (((((s > 0)) && ((spans[s - 1].depth == spans[s].depth)))))
-                    ns = s - 1;
+                tr->locked = (((unchecked((int)(tr->locked))) != 0) ? 0 : 1);
+                res->toggled = tr_i;
+                res->changed = 1;
             }
             else
-                if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_RIGHT)))) != 0))
+                if (((((g->list_mode == 0)) && ((mx >= hx)))))
                 {
-                    if (((((s + 1 < count)) && ((spans[s + 1].depth == spans[s].depth)))))
-                        ns = s + 1;
+                    tr->muted = (((unchecked((int)(tr->muted))) != 0) ? 0 : 1);
+                    res->toggled = tr_i;
+                    res->changed = 1;
                 }
                 else
-                    if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_UP)))) != 0))
+                    if (((((unchecked((int)(group))) != 0) && ((unchecked((int)(f->bi.double_clicked))) != 0))))
                     {
-                        int pk = cui__fl_parent__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(spans, count, s);
-                        if (((pk >= 0)))
-                            ns = pk;
+                        tr->collapsed = (((unchecked((int)(tr->collapsed))) != 0) ? 0 : 1);
+                        res->toggled = tr_i;
+                        res->changed = f->relist = 1;
                     }
                     else
                     {
-                        int ck = cui__fl_first_child__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(spans, count, s);
-                        if (((ck >= 0)))
-                            ns = ck;
+                        if ((((((!(((unchecked((int)(f->shift))) != 0) )     ) && (!(((unchecked((int)(f->prim))) != 0) )     ))) && ((unchecked((int)(cui__tl_clear(f->tracks, f->count)))) != 0))))
+                            f->sel_any = 1;
+                        int kn = cui__tl_keys_n(tr);
+                        if ((((((void*)(tr->key_selected)) != null) && (!(((unchecked((int)(tr->locked))) != 0) )     ))))
+                            for (int j = 0; ((j < kn)); j++)
+                                if ((!(((unchecked((int)(tr->key_selected[j]))) != 0) )     ))
+                                {
+                                    tr->key_selected[j] = 1;
+                                    f->sel_any = 1;
+                                }
+                        f->ct = tr_i;
+                        f->ck = -1;
                     }
-        if (((((ns >= 0)) && ((ns != s)))))
+    }
+
+
+
+    public static unsafe void cui__tle_press_row(cui__tle_frame* f, int tr_i)
+    {
+        cui__tl_state* st = f->st;
+        cui_timeline_track* tr = &f->tracks[tr_i];
+        cui_timeline_track* tracks = f->tracks;
+        int count = f->count;
+        int kh = cui__tl_key_at(tr, cui__tle_t_at(f, f->mx), (float)(7.0f / f->k));
+        int part = 0, ch = ((int)(((kh < 0)) ? cui__tl_clip_at(tr, &f->g, f->v->start, f->k, f->mx, &part) : -1));
+        if (((kh >= 0)))
         {
-            *f->sel = ns;
-            cui__fl_reveal__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&f->c, f->v, ns, f->min_range);
-            f->user_moved = 1;
+            f->ct = tr_i;
+            f->ck = kh;
+            st->grab_track = tr_i;
+            st->grab_key = kh;
+            st->grab_t = tr->keys[kh].x;
+            CBool* sel = tr->key_selected;
+            if ((((!((((void*)(sel)) != null) )     ) || ((unchecked((int)(tr->locked))) != 0))))
+            {
+            }
+            else
+                if (((unchecked((int)(f->prim))) != 0))
+                {
+                    sel[kh] = (((unchecked((int)(sel[kh]))) != 0) ? 0 : 1);
+                    f->sel_any = 1;
+                    if (((unchecked((int)(sel[kh]))) != 0))
+                        st->mode = 2;
+                    else
+                        f->ck = -1;
+                }
+                else
+                    if (((unchecked((int)(f->shift))) != 0))
+                    {
+                        if ((!(((unchecked((int)(sel[kh]))) != 0) )     ))
+                        {
+                            sel[kh] = 1;
+                            f->sel_any = 1;
+                        }
+                        st->mode = 2;
+                    }
+                    else
+                        if ((!(((unchecked((int)(sel[kh]))) != 0) )     ))
+                        {
+                            _ = cui__tl_clear(tracks, count);
+                            sel[kh] = 1;
+                            f->sel_any = 1;
+                            st->mode = 2;
+                        }
+                        else
+                        {
+                            st->was_selected = 1;
+                            st->mode = 2;
+                        }
+        }
+        else
+            if (((((ch >= 0)) && (!(((unchecked((int)(tr->locked))) != 0) )     ))))
+            {
+                cui_timeline_clip* c = &tr->clips[ch];
+                st->grab_track = tr_i;
+                st->grab_key = ch;
+                st->grab_s = c->start;
+                st->grab_e = c->end;
+                st->grab_off = c->offset;
+                if (((unchecked((int)(f->prim))) != 0))
+                {
+                    c->selected = (((unchecked((int)(c->selected))) != 0) ? 0 : 1);
+                    f->sel_any = 1;
+                }
+                else
+                    if (((unchecked((int)(f->shift))) != 0))
+                    {
+                        if ((!(((unchecked((int)(c->selected))) != 0) )     ))
+                        {
+                            c->selected = 1;
+                            f->sel_any = 1;
+                        }
+                    }
+                    else
+                        if ((!(((unchecked((int)(c->selected))) != 0) )     ))
+                        {
+                            if (((unchecked((int)(cui__tl_clear(tracks, count)))) != 0))
+                                f->sel_any = 1;
+                            c->selected = 1;
+                            f->sel_any = 1;
+                        }
+                        else
+                            st->was_selected = 1;
+                f->ct = tr_i;
+                f->ck = -1;
+                if (((unchecked((int)(c->selected))) != 0))
+                    st->mode = ((int)(((part == 1)) ? 5 : ((int)(((part == 2)) ? 6 : 4))));
+            }
+            else
+                if (((((unchecked((int)(f->bi.double_clicked))) != 0) && (!(((unchecked((int)(tr->locked))) != 0) )     ))))
+                {
+                    float t = cui__tle_t_at(f, f->mx);
+                    if ((!(((unchecked((int)(f->o->free_drag))) != 0) )     ))
+                        t = cui__tl_snap(t, f->fps);
+                    t = cui__clampf(t, f->s0, f->s1);
+                    CBool existed = default;
+                    int j = cui__tl_add(tr, t, &existed);
+                    if (((j >= 0)))
+                    {
+                        _ = cui__tl_clear(tracks, count);
+                        if ((((void*)(tr->key_selected)) != null))
+                            tr->key_selected[j] = 1;
+                        f->sel_any = 1;
+                        f->ct = tr_i;
+                        f->ck = j;
+                        if ((!(((unchecked((int)(existed))) != 0) )     ))
+                        {
+                            f->res->added_track = tr_i;
+                            f->res->added_key = j;
+                            f->res->changed = 1;
+                        }
+                    }
+                }
+                else
+                {
+                    st->mode = 3;
+                }
+    }
+
+
+
+    public static unsafe void cui__tle_press(cui__tle_frame* f)
+    {
+        cui_ctx* ui = f->ui;
+        cui__tl_state* st = f->st;
+        cui__tl_geo* g = &f->g;
+        float mx = f->mx, my = f->my;
+        st->press_x = st->last_x = mx;
+        st->press_y = st->last_y = my;
+        st->moved = 0;
+        st->was_selected = 0;
+        st->mods = ui->mods;
+        st->mode = 10;
+        int row = cui__tle_row_at(f, my);
+        int tr_i = ((int)(((((((my >= g->body_y)) && ((row >= 0)))) && ((row < f->nr)))) ? f->rows[row] : -1));
+        st->grab_row = row;
+        if (((my < g->body_y - 1)))
+        {
+            if (((mx >= g->area_x)))
+            {
+                cui_timeline_editor_opts* o = f->o;
+                float xi = ((float)(((unchecked((int)(f->range_on))) != 0) ? (float)(g->plot_x + (*o->@in - f->v->start) * f->k) : (float)(0))), xo = ((float)(((unchecked((int)(f->range_on))) != 0) ? (float)(g->plot_x + (*o->@out - f->v->start) * f->k) : (float)(0)));
+                if (((((((unchecked((int)(f->range_on))) != 0) && ((fabsf(mx - xi) <= 5)))) && ((fabsf(mx - xi) <= fabsf(mx - xo))))))
+                    st->mode = 8;
+                else
+                    if (((((unchecked((int)(f->range_on))) != 0) && ((fabsf(mx - xo) <= 5)))))
+                        st->mode = 9;
+                    else
+                        st->mode = 1;
+            }
+        }
+        else
+            if (((mx < g->area_x)))
+            {
+                if (((tr_i >= 0)))
+                    cui__tle_press_list(f, tr_i);
+            }
+            else
+                if (((tr_i >= 0)))
+                {
+                    cui__tle_press_row(f, tr_i);
+                }
+                else
+                    if (((my >= g->body_y)))
+                    {
+                        st->mode = 3;
+                    }
+        if (((st->mode == 1)))
+            cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_RESIZE_EW);
+    }
+
+
+
+    public static unsafe void cui__tle_drag_clip(cui__tle_frame* f, float dx)
+    {
+        cui__tl_state* st = f->st;
+        cui_timeline_track* tr = ((cui_timeline_track*)(((((st->grab_track >= 0)) && ((st->grab_track < f->count)))) ? &f->tracks[st->grab_track] : null));
+        int cn = ((int)((((void*)(tr)) != null) ? cui__tl_clips_n(tr) : 0));
+        if ((((((((!((((void*)(tr)) != null) )     ) || ((st->grab_key < 0)))) || ((st->grab_key >= cn)))) || (!(((unchecked((int)(st->moved))) != 0) )     ))))
+            return;
+        float s0 = f->s0, s1 = f->s1, fps = f->fps, frame = f->frame;
+        CBool snap = f->snap;
+        cui_timeline_clip* c = &tr->clips[st->grab_key];
+        float lo = ((float)(((st->grab_key > 0)) ? ((float)(((s0 > tr->clips[st->grab_key - 1].end)) ? s0 : tr->clips[st->grab_key - 1].end)) : s0));
+        float hi = ((float)(((st->grab_key + 1 < cn)) ? ((float)(((s1 < tr->clips[st->grab_key + 1].start)) ? s1 : tr->clips[st->grab_key + 1].start)) : s1));
+        float d = (float)(dx / f->k);
+        float ps = c->start, pe = c->end, po = c->offset;
+        if (((st->mode == 4)))
+        {
+            float len = st->grab_e - st->grab_s;
+            float ns = st->grab_s + d;
+            if (((unchecked((int)(snap))) != 0))
+                ns = cui__tl_snap(ns, fps);
+            ns = cui__clampf(ns, lo, ((float)(((lo > hi - len)) ? lo : hi - len)));
+            c->start = ns;
+            c->end = ns + len;
+        }
+        else
+            if (((st->mode == 5)))
+            {
+                float ns__1 = st->grab_s + d;
+                if (((unchecked((int)(snap))) != 0))
+                    ns__1 = cui__tl_snap(ns__1, fps);
+                ns__1 = cui__clampf(ns__1, lo, ((float)(((lo > st->grab_e - frame)) ? lo : st->grab_e - frame)));
+                c->start = ns__1;
+                c->offset = st->grab_off + (ns__1 - st->grab_s);
+            }
+            else
+            {
+                float ne = st->grab_e + d;
+                if (((unchecked((int)(snap))) != 0))
+                    ne = cui__tl_snap(ne, fps);
+                c->end = cui__clampf(ne, ((float)(((hi < st->grab_s + frame)) ? hi : st->grab_s + frame)), hi);
+            }
+        if (((((((c->start != ps)) || ((c->end != pe)))) || ((c->offset != po)))))
+        {
+            f->res->clip_track = st->grab_track;
+            f->res->clip = st->grab_key;
+            f->res->changed = 1;
+        }
+        cui__set_cursor(f->ui, (cui_cursor)(((int)(((st->mode == 4)) ? (int)(__DotCcEnum_6375695F637572736F72.CUI_CURSOR_MOVE) : (int)(__DotCcEnum_6375695F637572736F72.CUI_CURSOR_RESIZE_EW)))));
+    }
+
+
+
+    public static unsafe void cui__tle_drag(cui__tle_frame* f)
+    {
+        cui_ctx* ui = f->ui;
+        cui__tl_state* st = f->st;
+        cui_timeline_editor_opts* o = f->o;
+        cui_timeline_editor_result* res = f->res;
+        float s0 = f->s0, s1 = f->s1, fps = f->fps;
+        float dx = f->mx - st->press_x, dy = f->my - st->press_y;
+        if ((((!(((unchecked((int)(st->moved))) != 0) )     ) && ((dx * dx + dy * dy > 3.0f * 3.0f)))))
+            st->moved = 1;
+        float t = cui__tle_t_at(f, f->mx);
+        switch (st->mode)
+        {
+            case 1:
+                {
+                    t = cui__clampf(t, ((float)(((s0 > f->v->start)) ? s0 : f->v->start)), ((float)(((s1 < f->v->end)) ? s1 : f->v->end)));
+                    if (((unchecked((int)(f->snap))) != 0))
+                        t = cui__clampf(cui__tl_snap(t, fps), s0, s1);
+                    *f->tp = t;
+                    res->scrubbing = 1;
+                    cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_RESIZE_EW);
+                }
+                break;
+            case 8:
+            case 9:
+                {
+                    if (((unchecked((int)(f->snap))) != 0))
+                        t = cui__tl_snap(t, fps);
+                    if (((st->mode == 8)))
+                        *o->@in = cui__clampf(t, s0, ((float)(((s0 > *o->@out - f->frame)) ? s0 : *o->@out - f->frame)));
+                    else
+                        *o->@out = cui__clampf(t, ((float)(((s1 < *o->@in + f->frame)) ? s1 : *o->@in + f->frame)), s1);
+                    res->changed = 1;
+                    cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_RESIZE_EW);
+                }
+                break;
+            case 2:
+                {
+                    if ((!(((unchecked((int)(st->moved))) != 0) )     ))
+                        break;
+                    cui_timeline_track* gtr = ((cui_timeline_track*)(((((st->grab_track >= 0)) && ((st->grab_track < f->count)))) ? &f->tracks[st->grab_track] : null));
+                    if ((((((!((((void*)(gtr)) != null) )     ) || ((st->grab_key < 0)))) || ((st->grab_key >= cui__tl_keys_n(gtr))))))
+                        break;
+                    float tg = st->grab_t + (float)(dx / f->k);
+                    if (((unchecked((int)(f->snap))) != 0))
+                        tg = cui__tl_snap(tg, fps);
+                    float cur = gtr->keys[st->grab_key].x;
+                    int fk = f->ck, gk = st->grab_key;
+                    if (((unchecked((int)(cui__tl_move(f->tracks, f->count, tg - cur, f->snap, fps, s0, s1, st->grab_track, &gk, tg, f->ct, &fk)))) != 0))
+                    {
+                        res->keys_moved = res->changed = 1;
+                    }
+                    st->grab_key = gk;
+                    f->ck = fk;
+                    cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_MOVE);
+                }
+                break;
+            case 4:
+            case 5:
+            case 6:
+                cui__tle_drag_clip(f, dx);
+                break;
+            default:
+                break;
         }
     }
 
 
 
-    public static unsafe void cui__flf_keys__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__flf* f)
+    public static unsafe void cui__tle_release(cui__tle_frame* f)
     {
-        cui_ctx* ui = f->ui;
-        cui__fl_state* st = f->st;
-        cui_flame_view* v = f->v;
-        cui__fl_ctx* c = &f->c;
-        CBool shift = ((CBool)((ui->mods & (int)__DotCcEnum_6375695F6D6F64.CUI_MOD_SHIFT) != 0));
-        if (((((unchecked((int)(shift))) != 0) && ((((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_LEFT)))) != 0) || ((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_RIGHT)))) != 0))))))
+        cui__tl_state* st = f->st;
+        cui_timeline_track* tracks = f->tracks;
+        int count = f->count;
+        CBool additive = ((CBool)((st->mods & ((int)__DotCcEnum_6375695F6D6F64.CUI_MOD_SHIFT | (int)__DotCcEnum_6375695F6D6F64.CUI_MOD_CTRL)) != 0));
+        if (((((((((st->mode == 2)) && (!(((unchecked((int)(st->moved))) != 0) )     ))) && ((unchecked((int)(st->was_selected))) != 0))) && (!(((unchecked((int)(additive))) != 0) )     ))))
         {
-            double dt = ((double)(((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_LEFT)))) != 0) ? -0.1 : 0.1)) * f->range;
-            v->start += dt;
-            v->end += dt;
-            f->user_moved = 1;
+            cui_timeline_track* tr = ((cui_timeline_track*)(((st->grab_track < count)) ? &tracks[st->grab_track] : null));
+            if ((((((((void*)(tr)) != null) && (((void*)(tr->key_selected)) != null))) && ((st->grab_key < cui__tl_keys_n(tr))))))
+            {
+                _ = cui__tl_clear(tracks, count);
+                tr->key_selected[st->grab_key] = 1;
+                f->sel_any = 1;
+            }
         }
         else
-            if (((((((((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_LEFT)))) != 0) || ((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_RIGHT)))) != 0))) || ((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_UP)))) != 0))) || ((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_DOWN)))) != 0))))
+            if (((((((((((((st->mode == 4)) || ((st->mode == 5)))) || ((st->mode == 6)))) && (!(((unchecked((int)(st->moved))) != 0) )     ))) && ((unchecked((int)(st->was_selected))) != 0))) && (!(((unchecked((int)(additive))) != 0) )     ))))
             {
-                cui__flf_arrows__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(f);
+                cui_timeline_track* tr__1 = ((cui_timeline_track*)(((st->grab_track < count)) ? &tracks[st->grab_track] : null));
+                if ((((((void*)(tr__1)) != null) && ((st->grab_key < cui__tl_clips_n(tr__1))))))
+                {
+                    _ = cui__tl_clear(tracks, count);
+                    tr__1->clips[st->grab_key].selected = 1;
+                    f->sel_any = 1;
+                }
             }
+            else
+                if (((st->mode == 3)))
+                {
+                    if ((!(((unchecked((int)(st->moved))) != 0) )     ))
+                    {
+                        if ((((!(((unchecked((int)(additive))) != 0) )     ) && ((unchecked((int)(cui__tl_clear(tracks, count)))) != 0))))
+                            f->sel_any = 1;
+                        if ((!(((unchecked((int)(additive))) != 0) )     ))
+                        {
+                            f->ck = -1;
+                            if (((((st->grab_row >= 0)) && ((st->grab_row < f->nr)))))
+                                f->ct = f->rows[st->grab_row];
+                        }
+                    }
+                    else
+                    {
+                        if ((((!(((unchecked((int)(additive))) != 0) )     ) && ((unchecked((int)(cui__tl_clear(tracks, count)))) != 0))))
+                            f->sel_any = 1;
+                        float ta = cui__tle_t_at(f, ((float)(((st->press_x < f->mx)) ? st->press_x : f->mx))), tb = cui__tle_t_at(f, ((float)(((st->press_x > f->mx)) ? st->press_x : f->mx)));
+                        int ra = cui__tle_row_at(f, ((float)(((st->press_y < f->my)) ? st->press_y : f->my))), rb = cui__tle_row_at(f, ((float)(((st->press_y > f->my)) ? st->press_y : f->my)));
+                        ra = ((int)(((ra > 0)) ? ra : 0));
+                        rb = ((int)(((rb < f->nr - 1)) ? rb : f->nr - 1));
+                        for (int ri = ra; ((ri <= rb)); ri++)
+                        {
+                            cui_timeline_track* tr__2 = &tracks[f->rows[ri]];
+                            if (((((unchecked((int)(tr__2->locked))) != 0) || (!((((void*)(tr__2->key_selected)) != null) )     ))))
+                                continue;
+                            int kn = cui__tl_keys_n(tr__2);
+                            for (int j = cui__tl_key_lb(tr__2->keys, kn, ta); ((((j < kn)) && ((tr__2->keys[j].x <= tb)))); j++)
+                                if ((!(((unchecked((int)(tr__2->key_selected[j]))) != 0) )     ))
+                                {
+                                    tr__2->key_selected[j] = 1;
+                                    f->sel_any = 1;
+                                }
+                        }
+                    }
+                }
+        st->mode = 0;
+    }
+
+
+
+    public static unsafe void cui__tle_key_jump(cui__tle_frame* f, CBool next)
+    {
+        float best = ((float)(((unchecked((int)(next))) != 0) ? 1e30f : -1e30f)), t = *f->tp, eps = f->frame * 0.01f;
+        for (int ri = 0; ((ri < f->nr)); ri++)
+        {
+            cui_timeline_track* tr = &f->tracks[f->rows[ri]];
+            int kn = cui__tl_keys_n(tr);
+            if ((!(((kn) != 0) )     ))
+                continue;
+            int j = cui__tl_key_lb(tr->keys, kn, ((float)(((unchecked((int)(next))) != 0) ? t + eps : t - eps)));
+            if (((((unchecked((int)(next))) != 0) && ((j < kn)))))
+            {
+                while (((((j < kn)) && ((tr->keys[j].x <= t + eps)))))
+                    j++;
+                if (((j < kn)))
+                    best = ((float)(((best < tr->keys[j].x)) ? best : tr->keys[j].x));
+            }
+            if ((((!(((unchecked((int)(next))) != 0) )     ) && ((j > 0)))))
+                best = ((float)(((best > tr->keys[j - 1].x)) ? best : tr->keys[j - 1].x));
+        }
+        if (((fabsf(best) < 1e29f)))
+            *f->tp = best;
+    }
+
+
+
+    public static unsafe void cui__tle_keys(cui__tle_frame* f)
+    {
+        cui_ctx* ui = f->ui;
+        cui__tl_state* st = f->st;
+        cui_timeline_view* v = f->v;
+        cui_timeline_editor_result* res = f->res;
+        float* tp = f->tp;
+        float s0 = f->s0;
+        float s1 = f->s1;
+        float fps = f->fps;
+        float frame = f->frame;
+        int steps = ((int)(((unchecked((int)(f->shift))) != 0) ? 10 : 1));
+        CBool left = ((CBool)((int)((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_LEFT))) != 0)), right = ((CBool)((int)((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_RIGHT))) != 0));
+        if (((((((unchecked((int)(left))) != 0) || ((unchecked((int)(right))) != 0))) && ((unchecked((int)(f->alt))) != 0))))
+        {
+            int fk = f->ck;
+            if (((unchecked((int)(cui__tl_move(f->tracks, f->count, ((float)(((unchecked((int)(right))) != 0) ? 1.0f : -1.0f)) * (float)steps * frame, 1, fps, s0, s1, -1, null, 0.0f / 0.0f, f->ct, &fk)))) != 0))
+                res->keys_moved = res->changed = 1;
+            f->ck = fk;
+        }
+        else
+            if (((((unchecked((int)(left))) != 0) || ((unchecked((int)(right))) != 0))))
+            {
+                float t = ((float)(((unchecked((int)(cui__tl_on_frame(*tp, fps)))) != 0) ? cui__tl_snap(*tp, fps) : ((float)(((unchecked((int)(right))) != 0) ? floorf(*tp * fps) : ceilf(*tp * fps))) / fps));
+                t = cui__tl_snap(t + ((float)(((unchecked((int)(right))) != 0) ? 1.0f : -1.0f)) * (float)steps * frame, fps);
+                *tp = cui__clampf(t, s0, s1);
+            }
+        if (((((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_UP)))) != 0) || ((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_DOWN)))) != 0))))
+            cui__tle_key_jump(f, ((CBool)((int)((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_DOWN))) != 0)));
         ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_LEFT] = ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_RIGHT] = ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_UP] = ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_DOWN] = 0;
-        double cx = (v->start + v->end) * 0.5;
-        if (((((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_EQUAL)))) != 0) || ((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_MINUS)))) != 0))))
+        if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_HOME)))) != 0))
         {
-            double z = ((double)(((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_EQUAL)))) != 0) ? 1 / 1.25 : 1.25));
-            double nr = ((double)(((((double)((((v->end - v->start) * z > f->min_range)) ? (v->end - v->start) * z : f->min_range)) < c->dmax - c->dmin)) ? ((double)((((v->end - v->start) * z > f->min_range)) ? (v->end - v->start) * z : f->min_range)) : c->dmax - c->dmin));
-            v->start = cx - nr * 0.5;
-            v->end = cx + nr * 0.5;
-            f->user_moved = 1;
-            ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_EQUAL] = ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_MINUS] = 0;
+            *tp = s0;
+            ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_HOME] = 0;
         }
-        if (((((((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_ENTER)))) != 0) || ((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_SPACE)))) != 0))) && ((*f->sel >= 0)))))
+        if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_END)))) != 0))
         {
-            cui__fl_zoom_span__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(c, st, v, *f->sel, f->min_range);
-            f->res->zoomed = *f->sel;
-            ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_ENTER] = ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_SPACE] = 0;
+            *tp = s1;
+            ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_END] = 0;
         }
-        CBool fitted = ((CBool)(((fabs(v->start - c->dmin) <= 1e-9 * (c->dmax - c->dmin) + 1e-15)) && ((fabs(v->end - c->dmax) <= 1e-9 * (c->dmax - c->dmin) + 1e-15))));
-        if (((((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_HOME)))) != 0) || ((((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_F)))) != 0) && (!(((ui->mods & (int)__DotCcEnum_6375695F6D6F64.CUI_MOD_CTRL) != 0) )     ))))))
+        if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_SPACE)))) != 0))
         {
-            cui__fl_animate_to__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(st, v, c->dmin, c->dmax);
-            ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_HOME] = ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_F] = 0;
+            res->play_toggled = 1;
+            ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_SPACE] = 0;
+        }
+        if (((((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_DELETE)))) != 0) || ((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_BACKSPACE)))) != 0))))
+        {
+            cui__tl_delete(f->tracks, f->count, f->ct, &f->ck, &res->removed_keys, &res->removed_clips);
+            if (((((res->removed_keys) != 0) || ((res->removed_clips) != 0))))
+            {
+                res->changed = 1;
+                f->sel_any = 1;
+            }
+            ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_DELETE] = ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_BACKSPACE] = 0;
         }
         if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_ESCAPE)))) != 0))
         {
-            if (((((unchecked((int)(fitted))) != 0) && (!(((unchecked((int)(st->anim_on))) != 0) )     ))))
-                *f->sel = -1;
-            else
-                cui__fl_animate_to__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(st, v, c->dmin, c->dmax);
+            if (((unchecked((int)(cui__tl_clear(f->tracks, f->count)))) != 0))
+                f->sel_any = 1;
+            f->ck = -1;
             ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_ESCAPE] = 0;
+        }
+        if (((((unchecked((int)(f->prim))) != 0) && ((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_A)))) != 0))))
+        {
+            for (int ri = 0; ((ri < f->nr)); ri++)
+            {
+                cui_timeline_track* tr = &f->tracks[f->rows[ri]];
+                if (((((unchecked((int)(tr->locked))) != 0) || (!((((void*)(tr->key_selected)) != null) )     ))))
+                    continue;
+                int kn = cui__tl_keys_n(tr);
+                for (int j = 0; ((j < kn)); j++)
+                    if ((!(((unchecked((int)(tr->key_selected[j]))) != 0) )     ))
+                    {
+                        tr->key_selected[j] = 1;
+                        f->sel_any = 1;
+                    }
+            }
+            ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_A] = 0;
+        }
+        if (((((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_EQUAL)))) != 0) || ((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_MINUS)))) != 0))))
+        {
+            double z = ((double)(((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_EQUAL)))) != 0) ? 1 / 1.25 : 1.25));
+            double range = v->end - v->start;
+            double nrng = ((double)(((((double)(((range * z > (double)f->min_range)) ? range * z : (double)f->min_range)) < (double)(s1 - s0))) ? ((double)(((range * z > (double)f->min_range)) ? range * z : (double)f->min_range)) : (double)(s1 - s0)));
+            double c = ((double)(((((double)((((double)(*tp) > (double)v->start)) ? (double)(*tp) : (double)v->start)) < (double)v->end)) ? ((double)((((double)(*tp) > (double)v->start)) ? (double)(*tp) : (double)v->start)) : (double)v->end));
+            double u = (c - v->start) / range;
+            v->start = (float)(c - u * nrng);
+            v->end = (float)(c - u * nrng + nrng);
+            f->user_moved = 1;
+            ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_EQUAL] = ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_MINUS] = 0;
+        }
+        if (((((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_F)))) != 0) && (!(((unchecked((int)(f->prim))) != 0) )     ))))
+        {
+            st->a0 = v->start;
+            st->a1 = v->end;
+            st->b0 = s0;
+            st->b1 = s1;
+            st->anim.x = 0;
+            st->anim.v = 0;
+            st->anim_on = 1;
+            ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_F] = 0;
         }
     }
 
 
 
-    public static unsafe void cui__flf_move_view__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__flf* f)
+    public static unsafe void cui__tle_move_view(cui__tle_frame* f)
     {
-        cui__fl_state* st = f->st;
-        cui_flame_view* v = f->v;
+        cui__tl_state* st = f->st;
+        cui_timeline_view* v = f->v;
+        float* tp = f->tp;
         if (((unchecked((int)(f->user_moved))) != 0))
             st->anim_on = 0;
+        if (((((((((*tp != st->last_time)) && ((st->mode != 1)))) && ((st->mode != 7)))) && (!(((unchecked((int)(st->anim_on))) != 0) )     ))))
+        {
+            float range = v->end - v->start;
+            if (((*tp > v->end)))
+            {
+                v->start = *tp - range * 0.1f;
+                v->end = v->start + range;
+            }
+            else
+                if (((*tp < v->start)))
+                {
+                    v->start = *tp - range * 0.9f;
+                    v->end = v->start + range;
+                }
+        }
         if (((unchecked((int)(st->anim_on))) != 0))
         {
             float pr = cui__spring(f->ui, &st->anim, 1.0f, 0.32f, 0.0f);
-            double s0 = default, s1 = default;
-            cui__fl_lerp__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(st, ((double)(((pr >= 1.0f)) ? 1.0 : (double)pr)), &s0, &s1);
-            v->start = s0;
-            v->end = s1;
+            double a = default, b = default;
+            cui__tl_lerp(st, ((double)(((pr >= 1.0f)) ? 1.0 : (double)pr)), &a, &b);
+            v->start = (float)a;
+            v->end = (float)b;
             if (((((pr >= 1.0f)) && ((st->anim.v == 0)))))
             {
-                v->start = st->b0;
-                v->end = st->b1;
+                v->start = (float)st->b0;
+                v->end = (float)st->b1;
                 st->anim_on = 0;
             }
         }
         else
         {
-            cui__fl_clamp__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&f->c, v, f->min_range);
+            cui__tl_clamp(v, f->s0, f->s1, f->min_range);
         }
-        cui__fl_clamp_scroll__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&f->c, v);
     }
 
 
 
-    public static unsafe cui__fl_paint* cui__flf_build_panel__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__flf* f, int* node)
+    public static unsafe void cui__tle_hover(cui__tle_frame* f)
     {
         cui_ctx* ui = f->ui;
-        cui_flame_opts* o = f->o;
+        cui__tl_geo* g = &f->g;
+        float mx = f->mx, my = f->my;
+        f->hov_track = f->hov_key = f->hov_clip = f->hov_row = -1;
+        f->hov_part = f->hov_list_part = f->hot_mark = 0;
+        CBool idle = ((CBool)(((f->st->mode == 0)) && (!(((unchecked((int)(((CBool*)&ui->mdown)[(int)__DotCcEnum_6375695F6D6F7573655F627574746F6E.CUI_MOUSE_LEFT]))) != 0) )     )));
+        if ((!(((((((((unchecked((int)(f->has_rect))) != 0) && ((unchecked((int)(f->bi.hovered))) != 0))) && ((unchecked((int)(cui__rect_contains(f->R, mx, my)))) != 0))) && ((((unchecked((int)(idle))) != 0) || ((f->st->mode == 10)))))) )     ))
+            return;
+        int row = cui__tle_row_at(f, my);
+        if (((((((my >= g->body_y)) && ((row >= 0)))) && ((row < f->nr)))))
+        {
+            f->hov_row = row;
+            int ti = f->rows[row];
+            cui_timeline_track* tr = &f->tracks[ti];
+            if (((mx >= g->area_x)))
+            {
+                int kh = cui__tl_key_at(tr, cui__tle_t_at(f, mx), (float)(7.0f / f->k));
+                if (((kh >= 0)))
+                {
+                    f->hov_track = ti;
+                    f->hov_key = kh;
+                    if ((((!(((unchecked((int)(tr->locked))) != 0) )     ) && (((void*)(tr->key_selected)) != null))))
+                        cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_HAND);
+                }
+                else
+                    if ((!(((unchecked((int)(tr->locked))) != 0) )     ))
+                    {
+                        f->hov_clip = cui__tl_clip_at(tr, g, f->v->start, f->k, mx, &f->hov_part);
+                        if (((f->hov_clip >= 0)))
+                        {
+                            f->hov_track = ti;
+                            cui__set_cursor(ui, (cui_cursor)(((int)(((f->hov_part) != 0) ? (int)(__DotCcEnum_6375695F637572736F72.CUI_CURSOR_RESIZE_EW) : (int)(__DotCcEnum_6375695F637572736F72.CUI_CURSOR_HAND)))));
+                        }
+                    }
+            }
+            else
+            {
+                CBool group = ((CBool)(f->sub_end[ti] > ti + 1));
+                float cx = f->R.x + 8 + ((int)(((((int)(((tr->depth > 0)) ? tr->depth : 0)) < 1000)) ? ((int)(((tr->depth > 0)) ? tr->depth : 0)) : 1000)) * 14.0f;
+                float lx = f->R.x + g->list_w - 4 - 22.0f, hx = lx - 22.0f;
+                if (((((unchecked((int)(group))) != 0) && ((((g->list_mode == 2)) || ((((mx >= cx - 4)) && ((mx < cx + 18.0f)))))))))
+                    f->hov_list_part = 1;
+                else
+                    if (((((g->list_mode == 0)) && ((mx >= lx)))))
+                        f->hov_list_part = 3;
+                    else
+                        if (((((g->list_mode == 0)) && ((mx >= hx)))))
+                            f->hov_list_part = 2;
+                if (((f->hov_list_part) != 0))
+                    cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_HAND);
+            }
+        }
+        else
+            if (((((((my < g->body_y - 1)) && ((mx >= g->area_x)))) && ((unchecked((int)(f->range_on))) != 0))))
+            {
+                float xi = (float)(g->plot_x + (*f->o->@in - f->v->start) * f->k), xo = (float)(g->plot_x + (*f->o->@out - f->v->start) * f->k);
+                if (((fabsf(mx - xi) <= 5)))
+                    f->hot_mark = 1;
+                else
+                    if (((fabsf(mx - xo) <= 5)))
+                        f->hot_mark = 2;
+                if (((f->hot_mark) != 0))
+                    cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_RESIZE_EW);
+            }
+    }
+
+
+
+    public static unsafe cui__tl_paint* cui__tle_build_panel(cui__tle_frame* f, int* node)
+    {
+        cui_ctx* ui = f->ui;
+        cui_timeline_editor_opts* o = f->o;
+        cui_timeline_view* v = f->v;
         int en = cui__node_new(ui, f->id);
-        cui_node* n = &ui->nodes[en];
-        n->w = ((((((int)o->width.kind == (int)__DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIT)) && ((o->width.value == 0)))) ? new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 } : o->width);
-        float def_h = 24.0f + 1 + 2 * 4.0f + ((int)(((3 > f->c.rows)) ? 3 : f->c.rows)) * f->c.row_h;
-        n->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)((float)(((o->height > 0)) ? o->height : ((float)(((360.0f < def_h)) ? 360.0f : def_h)))) };
-        n->bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE];
-        n->border = 1;
-        n->border_color = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER];
-        n->radius = new cui_corners { tl = ui->theme.radius_panel, tr = ui->theme.radius_panel, br = ui->theme.radius_panel, bl = ui->theme.radius_panel };
-        n->flags |= (uint)(16);
+        cui_node* nd = &ui->nodes[en];
+        nd->w = ((((((int)o->width.kind == (int)__DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIT)) && ((o->width.value == 0)))) ? new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 } : o->width);
+        float def_h = 28.0f + 2 + ((int)(((3 > f->count)) ? 3 : f->count)) * f->row_h;
+        nd->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)((float)(((o->height > 0)) ? o->height : ((float)(((360.0f < def_h)) ? 360.0f : def_h)))) };
+        nd->bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE];
+        nd->border = 1;
+        nd->border_color = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER];
+        nd->radius = new cui_corners { tl = ui->theme.radius_panel, tr = ui->theme.radius_panel, br = ui->theme.radius_panel, bl = ui->theme.radius_panel };
+        nd->flags |= (uint)(16);
         cui__mark_interactive(ui, en, 1);
-        cui__fl_paint* p = (cui__fl_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__fl_paint)))));
-        memset(p, 0, ((ulong)(sizeof(cui__fl_paint))));
+        cui__tl_paint* p = (cui__tl_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__tl_paint)))));
+        memset(p, 0, ((ulong)(sizeof(cui__tl_paint))));
         p->st = f->st;
         p->sid = f->sid;
-        p->t0 = f->v->start;
-        p->t1 = f->v->end;
-        p->origin = f->c.dmin;
-        p->row_h = f->c.row_h;
-        p->scroll = f->v->scroll;
-        p->content_h = f->c.rows * f->c.row_h;
-        p->empty = (((unchecked((int)(f->has_data))) != 0) ? 0 : 1);
+        p->v0 = v->start;
+        p->v1 = v->end;
+        p->scroll = v->scroll;
+        p->row_h = f->row_h;
+        p->track_w = o->track_width;
+        p->toggles = o->toggles;
+        p->seq0 = f->s0;
+        p->seq1 = f->s1;
+        p->fps = f->fps;
+        p->ruler = f->ruler;
+        p->time = cui__clampf(*f->tp, f->s0, f->s1);
+        p->range = f->range_on;
+        if (((unchecked((int)(f->range_on))) != 0))
+        {
+            p->@in = *o->@in;
+            p->@out = *o->@out;
+        }
+        p->hot_mark = f->hot_mark;
+        p->nrows = f->nr;
+        p->empty = ((CBool)(f->count == 0));
         cui__tween(ui, &f->st->focus, ((float)(((unchecked((int)(f->bi.focus_visible))) != 0) ? 1.0f : 0.0f)), 0.14f);
         p->focus = f->st->focus;
-        n->paint = DotCcPointers.cui__paint_flame__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA;
-        n->paint_data = p;
+        nd->paint = DotCcPointers.cui__paint_timeline__unit_7E88B052CD47D0302B541A29FAD158AB2642F52C08AEFA0CC42E5C72BD0504C2;
+        nd->paint_data = p;
         *node = en;
         return p;
     }
 
 
 
-    public static unsafe cui__fl_item cui__flf_span_item__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_ctx* ui, cui_flame_span* sp, int row, CBool hovered, double w)
+    public static unsafe void cui__tle_row_keys(cui__tle_frame* f, cui__tl_paint* p, cui__tle_marquee* mq, int ri, float tv0, float tv1, byte dim)
     {
-        uint key = cui__fl_key__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(sp);
-        cui__fl_item it = default;
-        memset(&it, 0, ((ulong)(sizeof(cui__fl_item))));
-        it.row = row;
-        it.s = sp->start;
-        it.e = sp->end;
-        it.kind = (byte)(((int)(((unchecked((int)(hovered))) != 0) ? 1 : 0)));
-        it.fill = cui__fl_fill__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, key, hovered);
-        if (((((((w >= 40.0f)) && (((void*)(sp->name)) != null))) && ((sp->name[0]) != 0))))
+        int ti = f->rows[ri];
+        cui_timeline_track* tr = &f->tracks[ti];
+        cui_timeline_view* v = f->v;
+        double k = f->k;
+        float plot_x = f->g.plot_x;
+        int kn = cui__tl_keys_n(tr);
+        CBool in_mq = ((CBool)(((((((((unchecked((int)(mq->on))) != 0) && ((ri >= mq->r0)))) && ((ri <= mq->r1)))) && (!(((unchecked((int)(tr->locked))) != 0) )     ))) && (((void*)(tr->key_selected)) != null)));
+        float last_x = -1e9f;
+        for (int j = cui__tl_key_lb(tr->keys, kn, tv0); ((((j < kn)) && ((tr->keys[j].x <= tv1)))); )
         {
-            it.fg = cui__fl_fg__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, key, it.fill);
-            it.label_len = (int)strlen(sp->name);
-            it.label = cui__frame_strdup(ui, sp->name, it.label_len);
-        }
-        return it;
-    }
-
-
-
-    public static unsafe void cui__flf_row_items__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__flf* f, cui__fl_paint* p, int row, double t0, double t1, double k, cui_color run_fill)
-    {
-        cui_ctx* ui = f->ui;
-        cui_flame_span* spans = f->spans;
-        int lo = default, hi = default;
-        cui__fl_row__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(spans, f->count, row, &lo, &hi);
-        int i = cui__fl_end_gt__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(spans, lo, hi, t0);
-        while (((((i < hi)) && ((spans[i].start < t1)))))
-        {
-            cui_flame_span* sp = &spans[i];
-            double xs = (sp->start - t0) * k, xe = (sp->end - t0) * k;
-            if (((xe - xs >= 1.0)))
+            float x = (float)(plot_x + (tr->keys[j].x - v->start) * k);
+            CBool sel = ((CBool)((((void*)(tr->key_selected)) != null) && ((unchecked((int)(tr->key_selected[j]))) != 0)));
+            if (((unchecked((int)(mq->on))) != 0))
             {
-                cui__fl_item it = cui__flf_span_item__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, sp, row, ((CBool)(i == f->hov)), xe - xs);
-                cui__fl_push__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, p, &it);
-                i++;
+                CBool inside = ((CBool)(((((unchecked((int)(in_mq))) != 0) && ((x >= mq->x0)))) && ((x <= mq->x1))));
+                sel = ((int)(((unchecked((int)(mq->add))) != 0) ? (int)((int)(((CBool)(((unchecked((int)(sel))) != 0) || ((unchecked((int)(inside))) != 0))))) : (int)((int)(inside))));
+            }
+            if ((((!(((unchecked((int)(sel))) != 0) )     ) && ((x - last_x < 1.0f)))))
+            {
+                int nj = cui__tl_key_lb(tr->keys, kn, (float)(v->start + (last_x + 1.0f - plot_x) / k));
+                j = ((int)(((nj > j + 1)) ? nj : j + 1));
                 continue;
             }
-            double rx0 = xs, rx1 = xe;
-            i++;
-            for (; ; )
-            {
-                int j = cui__fl_end_gt__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(spans, i, hi, t0 + (rx1 + 1.0) / k);
-                if (((j > i)))
-                {
-                    double e2 = (spans[j - 1].end - t0) * k;
-                    if (((e2 > rx1)))
-                        rx1 = e2;
-                    i = j;
-                }
-                if (((i < hi)))
-                {
-                    double ns = (spans[i].start - t0) * k, ne = (spans[i].end - t0) * k;
-                    if (((((ne - ns < 1.0)) && ((ns <= rx1 + 1.0)))))
-                    {
-                        rx1 = ne;
-                        i++;
-                        continue;
-                    }
-                }
-                break;
-            }
-            if (((rx1 - rx0 >= 1.0)))
-            {
-                cui__fl_item it__1 = default;
-                memset(&it__1, 0, ((ulong)(sizeof(cui__fl_item))));
-                it__1.row = row;
-                it__1.s = t0 + rx0 / k;
-                it__1.e = t0 + rx1 / k;
-                it__1.kind = 2;
-                it__1.fill = run_fill;
-                cui__fl_push__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, p, &it__1);
-            }
+            cui__tl_mark m = default;
+            int mode = tr->keys[j].mode;
+            m.t = tr->keys[j].x;
+            m.row = ri;
+            m.shape = (byte)((int)(((mode == (int)__DotCcEnum_6375695F63757276655F6D6F6465.CUI_CURVE_LINEAR)) ? 1 : ((int)(((mode == (int)__DotCcEnum_6375695F63757276655F6D6F6465.CUI_CURVE_STEP)) ? 2 : 0))));
+            m.flags = (byte)(dim | ((int)(((unchecked((int)(sel))) != 0) ? 1 : 0)) | ((int)(((((ti == f->hov_track)) && ((j == f->hov_key)))) ? 2 : 0)));
+            m.tone = f->tone[ti];
+            cui__tl_push_mark(f->ui, p, &m);
+            if ((!(((unchecked((int)(sel))) != 0) )     ))
+                last_x = x;
+            j++;
         }
     }
 
 
 
-    public static unsafe void cui__flf_build_spans__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__flf* f, cui__fl_paint* p)
+    public static unsafe void cui__tle_row_summary(cui__tle_frame* f, cui__tl_paint* p, int ri, float tv0, float tv1, byte* seen, int pw)
     {
-        cui_ctx* ui = f->ui;
-        cui_flame_view* v = f->v;
-        cui__fl_ctx* c = &f->c;
-        double t0 = v->start, t1 = v->end;
-        double k = c->plot_w / (t1 - t0);
-        int d0 = (int)floorf(v->scroll / c->row_h), d1 = (int)floorf((v->scroll + c->body_h) / c->row_h);
-        d0 = ((int)(((0 > d0)) ? 0 : d0));
-        d1 = ((int)(((c->rows - 1 < d1)) ? c->rows - 1 : d1));
-        cui_color run_fill = cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE], ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], ((float)((((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK)) ? 0.32f : 0.26f)));
-        for (int row = d0; ((row <= d1)); row++)
-            cui__flf_row_items__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(f, p, row, t0, t1, k, run_fill);
-        int s = *f->sel;
-        cui_flame_span* spans = f->spans;
-        if (((((((((((s >= 0)) && ((spans[s].depth >= d0)))) && ((spans[s].depth <= d1)))) && ((spans[s].end >= t0)))) && ((spans[s].start <= t1)))))
+        int ti = f->rows[ri];
+        double k = f->k;
+        float v0 = f->v->start;
+        memset(seen, 0, (ulong)pw);
+        for (int d = ti + 1; ((d < f->sub_end[ti])); d++)
         {
-            cui_flame_span* sp = &spans[s];
-            p->sel = cui__flf_span_item__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, sp, sp->depth, ((CBool)(s == f->hov)), (sp->end - sp->start) * k);
-            p->has_sel = 1;
+            cui_timeline_track* dt = &f->tracks[d];
+            int dn = cui__tl_keys_n(dt);
+            for (int j = cui__tl_key_lb(dt->keys, dn, tv0); ((((j < dn)) && ((dt->keys[j].x <= tv1)))); j++)
+            {
+                int px = (int)((dt->keys[j].x - v0) * k) + 2 * unchecked((int)10.0f);
+                if (((((px < 0)) || ((px >= pw)))))
+                    continue;
+                if (((seen[px]) != 0))
+                {
+                    int nj = cui__tl_key_lb(dt->keys, dn, (float)(v0 + (px + 1 - 2 * 10.0f) / k));
+                    j = ((int)(((nj > j + 1)) ? nj : j + 1)) - 1;
+                    continue;
+                }
+                seen[px] = 1;
+                cui__tl_mark m = default;
+                m.t = dt->keys[j].x;
+                m.row = ri;
+                m.shape = 0;
+                m.flags = 8;
+                m.tone = 0;
+                cui__tl_push_mark(f->ui, p, &m);
+            }
         }
     }
 
 
 
-    public static unsafe void cui__flf_tooltip__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__flf* f)
+    public static unsafe void cui__tle_build_rows(cui__tle_frame* f, cui__tl_paint* p)
     {
         cui_ctx* ui = f->ui;
-        int hov = f->hov;
-        if ((!(((((((hov >= 0)) && ((ui->active == (uint)(0))))) && (!(((unchecked((int)(((CBool*)&ui->mdown)[0]))) != 0) )     ))) )     ))
+        cui__tl_state* st = f->st;
+        cui_timeline_view* v = f->v;
+        cui__tl_geo* g = &f->g;
+        float row_h = f->row_h;
+        cui__tle_marquee mq = new cui__tle_marquee { on = ((CBool)(((st->mode == 3)) && ((unchecked((int)(st->moved))) != 0))), add = ((CBool)((st->mods & ((int)__DotCcEnum_6375695F6D6F64.CUI_MOD_SHIFT | (int)__DotCcEnum_6375695F6D6F64.CUI_MOD_CTRL)) != 0)), x0 = 0, x1 = 0, r0 = 0, r1 = -1 };
+        if (((unchecked((int)(mq.on))) != 0))
+        {
+            p->marquee = 1;
+            p->mq = new cui_rect { x = ((float)(((st->press_x < f->mx)) ? st->press_x : f->mx)), y = ((float)(((st->press_y < f->my)) ? st->press_y : f->my)), w = fabsf(f->mx - st->press_x), h = fabsf(f->my - st->press_y) };
+            mq.x0 = p->mq.x;
+            mq.x1 = p->mq.x + p->mq.w;
+            mq.r0 = cui__tle_row_at(f, p->mq.y);
+            mq.r1 = cui__tle_row_at(f, p->mq.y + p->mq.h);
+        }
+        if ((!(((((f->nr > 0)) && ((g->body_h > 0)))) )     ))
             return;
-        cui_flame_span* spans = f->spans;
-        cui_flame_span* sp = &spans[hov];
-        uint tid = cui__hash(&hov, ((ulong)(sizeof(int))), f->id ^ 0x7111u);
-        float ry = f->c.body_y + sp->depth * f->c.row_h - f->v->scroll;
-        cui__absolute(ui, tid, f->mx - f->R.x - 1, ry - f->R.y, 2, f->c.row_h - 1);
-        double dur = sp->end - sp->start;
-        int pk = cui__fl_parent__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(spans, f->count, hov);
-        double @base = ((double)(((pk >= 0)) ? spans[pk].end - spans[pk].start : f->v->end - f->v->start));
-        double pct = ((double)(((@base > 0)) ? dur / @base * 100.0 : (double)(0)));
-        byte* of = ((byte*)(((pk >= 0)) ? ((byte*)((((((void*)(spans[pk].name)) != null) && ((spans[pk].name[0]) != 0))) ? spans[pk].name : (DotCcLiterals.Pointer + DotCcLiterals.S859 /*"parent"*/))) : (DotCcLiterals.Pointer + DotCcLiterals.S311 /*"view"*/)));
-        byte* tip = cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S220 /*"%s\n%s · %.*f%% of %s"*/), ((byte*)((((((void*)(sp->name)) != null) && ((sp->name[0]) != 0))) ? sp->name : (DotCcLiterals.Pointer + DotCcLiterals.S343 /*"Unnamed span"*/))), cui__fl_dur__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, dur), ((int)(((pct >= 10)) ? 0 : 1)), pct, of);
-        cui__tooltip_passive(ui, tid, tip);
+        int r0 = ((int)(((0 > (int)floorf(v->scroll / row_h))) ? 0 : (int)floorf(v->scroll / row_h))), r1 = ((int)(((f->nr - 1 < (int)floorf((v->scroll + g->body_h) / row_h))) ? f->nr - 1 : (int)floorf((v->scroll + g->body_h) / row_h)));
+        p->rows = (cui__tl_row*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__tl_row))) * (ulong)((int)(((1 > r1 - r0 + 1)) ? 1 : r1 - r0 + 1))));
+        float margin = (float)((5.0f + 3) / f->k);
+        float tv0 = v->start - margin, tv1 = v->end + margin;
+        int pw = (int)g->plot_w + 4 * unchecked((int)10.0f) + 4;
+        byte* seen = null;
+        for (int ri = r0; ((ri <= r1)); ri++)
+        {
+            int ti = f->rows[ri];
+            cui_timeline_track* tr = &f->tracks[ti];
+            CBool group = ((CBool)(f->sub_end[ti] > ti + 1));
+            cui__tl_row* row = &p->rows[p->nr++];
+            memset(row, 0, ((ulong)(sizeof(cui__tl_row))));
+            row->row = ri;
+            row->name_len = ((int)((((void*)(tr->name)) != null) ? cui__display_len(tr->name) : 0));
+            row->name = ((byte*)(((row->name_len) != 0) ? cui__frame_strdup(ui, tr->name, row->name_len) : null));
+            row->icon = ((byte*)((((void*)(tr->icon)) != null) ? cui__frame_strdup(ui, tr->icon, (int)strlen(tr->icon)) : null));
+            row->depth = ((int)(((((int)(((tr->depth > 0)) ? tr->depth : 0)) < 64)) ? ((int)(((tr->depth > 0)) ? tr->depth : 0)) : 64));
+            row->tone = f->tone[ti];
+            row->flags = (ushort)(((int)(((unchecked((int)(group))) != 0) ? 1 : 0)) | ((int)(((((unchecked((int)(tr->collapsed))) != 0) && ((unchecked((int)(group))) != 0))) ? 2 : 0)) | ((int)(((unchecked((int)(tr->muted))) != 0) ? 4 : 0)) | ((int)(((unchecked((int)(tr->locked))) != 0) ? 8 : 0)) | ((int)(((ti == f->ct)) ? 16 : 0)) | ((int)(((((ri == f->hov_row)) && ((f->mx < g->area_x)))) ? 32 : 0)));
+            if (((((ri == f->hov_row)) && ((f->hov_list_part) != 0))))
+                row->flags |= (ushort)((int)(((f->hov_list_part == 1)) ? 64 : ((int)(((f->hov_list_part == 2)) ? 128 : 256))));
+            byte dim = (byte)(((int)(((unchecked((int)(tr->muted))) != 0) ? 4 : 0)));
+            int cn = cui__tl_clips_n(tr);
+            for (int j = ((int)(((0 > cui__tl_clip_lb(tr->clips, cn, tv0))) ? 0 : cui__tl_clip_lb(tr->clips, cn, tv0))); ((((j < cn)) && ((tr->clips[j].start <= tv1)))); j++)
+            {
+                cui__tl_bar b = default;
+                memset(&b, 0, ((ulong)(sizeof(cui__tl_bar))));
+                cui_timeline_clip* c = &tr->clips[j];
+                b.s = c->start;
+                b.e = c->end;
+                b.row = ri;
+                b.tone = f->tone[ti];
+                b.flags = (byte)(dim | ((int)(((unchecked((int)(c->selected))) != 0) ? 1 : 0)));
+                if (((((ti == f->hov_track)) && ((j == f->hov_clip)))))
+                    b.flags |= (byte)((int)(((f->hov_part == 1)) ? 16 : ((int)(((f->hov_part == 2)) ? 32 : 16 | 32))));
+                if ((((void*)(c->name)) != null))
+                {
+                    b.name_len = cui__display_len(c->name);
+                    b.name = cui__frame_strdup(ui, c->name, b.name_len);
+                }
+                cui__tl_push_bar(ui, p, &b);
+            }
+            cui__tle_row_keys(f, p, &mq, ri, tv0, tv1, dim);
+            if (((unchecked((int)(group))) != 0))
+            {
+                if ((!((((void*)(seen)) != null) )     ))
+                    seen = (byte*)(cui__frame_alloc(ui, (ulong)pw));
+                cui__tle_row_summary(f, p, ri, tv0, tv1, seen, pw);
+            }
+        }
     }
 
 
 
-    public static unsafe cui_flame_result cui_flame_graph_ex(cui_ctx* ui, byte* id_str, cui_flame_span* spans, int count, cui_flame_view* view, int* selected, cui_flame_opts* o)
+    public static unsafe void cui__tle_tooltip(cui__tle_frame* f)
     {
-        cui_flame_opts d = default;
-        memset(&d, 0, ((ulong)(sizeof(cui_flame_opts))));
+        cui_ctx* ui = f->ui;
+        cui__tl_geo* g = &f->g;
+        cui_timeline_view* v = f->v;
+        cui_rect R = f->R;
+        float row_h = f->row_h;
+        int hov_row = f->hov_row, hov_list_part = f->hov_list_part;
+        if ((!(((((((unchecked((int)(f->has_rect))) != 0) && ((ui->active == (uint)(0))))) && (!(((unchecked((int)(((CBool*)&ui->mdown)[(int)__DotCcEnum_6375695F6D6F7573655F627574746F6E.CUI_MOUSE_LEFT]))) != 0) )     ))) )     ))
+            return;
+        byte* tip = null;
+        cui_rect box = new cui_rect { x = 0, y = 0, w = 0, h = 0 };
+        uint* key = stackalloc uint[]{ 0, 0, 0 };
+        if (((f->hov_key >= 0)))
+        {
+            cui_timeline_track* tr = &f->tracks[f->hov_track];
+            cui_curve_key* kk = &tr->keys[f->hov_key];
+            float x = (float)(g->plot_x + (kk->x - v->start) * f->k), y = g->body_y + hov_row * row_h - v->scroll;
+            box = new cui_rect { x = x - 6, y = y + 2, w = 12, h = row_h - 4 };
+            tip = cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S278 /*"%.*s\n%s · %s"*/), ((int)((((void*)(tr->name)) != null) ? cui__display_len(tr->name) : 0)), ((byte*)((((void*)(tr->name)) != null) ? tr->name : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), cui__tl_time_text(ui, f->ruler, f->fps, f->s1, kk->x), cui__tl_value(ui, kk->y));
+            key[0] = 1;
+            key[1] = (uint)f->hov_track;
+            key[2] = (uint)f->hov_key;
+        }
+        else
+            if (((((f->hov_clip >= 0)) && ((f->hov_part == 0)))))
+            {
+                cui_timeline_clip* c = &f->tracks[f->hov_track].clips[f->hov_clip];
+                float y__1 = g->body_y + hov_row * row_h - v->scroll;
+                box = new cui_rect { x = f->mx - 1, y = y__1 + 3, w = 2, h = row_h - 7 };
+                tip = cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S145 /*"%.*s\n%s · %.2f s"*/), ((int)((((void*)(c->name)) != null) ? cui__display_len(c->name) : 0)), ((byte*)((((void*)(c->name)) != null) ? c->name : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), cui__tl_time_text(ui, f->ruler, f->fps, f->s1, c->start), (double)(c->end - c->start));
+                key[0] = 2;
+                key[1] = (uint)f->hov_track;
+                key[2] = (uint)f->hov_clip;
+            }
+            else
+                if (((((hov_row >= 0)) && ((f->mx < g->area_x)))))
+                {
+                    cui_timeline_track* tr__1 = &f->tracks[f->rows[hov_row]];
+                    float y__2 = g->body_y + hov_row * row_h - v->scroll;
+                    box = new cui_rect { x = R.x + 2, y = y__2, w = g->list_w - 4, h = row_h - 1 };
+                    if (((hov_list_part == 2)))
+                        tip = ((byte*)(((unchecked((int)(tr__1->muted))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S575 /*"Show track"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S588 /*"Hide track"*/)));
+                    else
+                        if (((hov_list_part == 3)))
+                            tip = ((byte*)(((unchecked((int)(tr__1->locked))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S422 /*"Unlock track"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S984 /*"Lock track"*/)));
+                        else
+                            if (((((g->list_mode == 2)) && (((void*)(tr__1->name)) != null))))
+                                tip = cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1110 /*"%.*s"*/), cui__display_len(tr__1->name), tr__1->name);
+                    if (((hov_list_part >= 2)))
+                        box = new cui_rect { x = ((float)(((hov_list_part == 3)) ? R.x + g->list_w - 4 - 22.0f : R.x + g->list_w - 4 - 2 * 22.0f)), y = y__2, w = 22.0f, h = row_h - 1 };
+                    key[0] = (uint)(3) + (uint)hov_list_part;
+                    key[1] = (uint)f->rows[hov_row];
+                }
+        if ((((void*)(tip)) != null))
+        {
+            uint tid = cui__hash(key, ((ulong)((3 * sizeof(uint)))), f->id ^ 0x7117u);
+            cui__absolute(ui, tid, box.x - R.x, box.y - R.y, box.w, box.h);
+            cui__tooltip_passive(ui, tid, tip);
+        }
+    }
+
+
+
+    public static unsafe cui_timeline_editor_result cui_timeline_editor_ex(cui_ctx* ui, byte* id_str, cui_timeline_track* tracks, int count, float* time, cui_timeline_editor_opts* o)
+    {
+        cui_timeline_editor_opts dflt = default;
+        memset(&dflt, 0, ((ulong)(sizeof(cui_timeline_editor_opts))));
         if ((!((((void*)(o)) != null) )     ))
-            o = &d;
-        cui_flame_result res = default;
-        res.selection_changed = res.view_changed = 0;
-        res.hovered = res.zoomed = -1;
-        cui__flf f = default;
-        memset(&f, 0, ((ulong)(sizeof(cui__flf))));
+            o = &dflt;
+        cui_timeline_editor_result res = default;
+        memset(&res, 0, ((ulong)(sizeof(cui_timeline_editor_result))));
+        res.added_track = res.added_key = res.clip_track = res.clip = res.toggled = -1;
+        res.hovered_track = res.hovered_key = -1;
+        if ((((!((((void*)(tracks)) != null) )     ) || ((count < 0)))))
+            count = 0;
+        cui__tle_frame f = default;
+        memset(&f, 0, ((ulong)(sizeof(cui__tle_frame))));
         f.ui = ui;
         f.o = o;
         f.res = &res;
-        f.id = cui_make_id(ui, ((byte*)((((void*)(id_str)) != null) ? id_str : (DotCcLiterals.Pointer + DotCcLiterals.S728 /*"flame"*/))));
-        f.sid = f.id ^ 0xF1A5C011u;
-        cui__fl_state* st = f.st = (cui__fl_state*)(cui_state(ui, f.id ^ 0xF1A3u, ((ulong)(sizeof(cui__fl_state)))));
+        f.tracks = tracks;
+        f.count = count;
+        f.id = cui_make_id(ui, ((byte*)((((void*)(id_str)) != null) ? id_str : (DotCcLiterals.Pointer + DotCcLiterals.S1118 /*"timeline"*/))));
+        f.sid = f.id ^ 0x71AE5C01u;
+        cui__tl_state* st = f.st = (cui__tl_state*)(cui_state(ui, f.id ^ 0x71AEu, ((ulong)(sizeof(cui__tl_state)))));
         if ((!(((unchecked((int)(st->init))) != 0) )     ))
         {
-            st->own_sel = -1;
+            st->own_track = st->own_key = -1;
             st->init = 1;
         }
-        cui_flame_view* v = f.v = ((cui_flame_view*)((((void*)(view)) != null) ? view : &st->own_view));
-        int* sel = f.sel = ((int*)((((void*)(selected)) != null) ? selected : &st->own_sel));
-        if ((((!((((void*)(spans)) != null) )     ) || ((count < 0)))))
-            count = 0;
-        f.spans = spans;
-        f.count = count;
-        int sel_before = *sel;
-        if (((((*sel < -1)) || ((*sel >= count)))))
-            *sel = -1;
-        f.min_range = ((double)(((o->min_range > 0)) ? o->min_range : 1e-8));
-        cui__flf_extent__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&f);
-        double b0 = v->start, b1 = v->end;
-        float bs = v->scroll;
-        if (((((unchecked((int)(f.has_data))) != 0) && (((((!(((v->end > v->start)) )     ) || (!(((isfinite(v->start)) != 0) )     ))) || (!(((isfinite(v->end)) != 0) )     ))))))
+        cui_timeline_view* v = f.v = ((cui_timeline_view*)((((void*)(o->view)) != null) ? o->view : &st->own_view));
+        float* tp = f.tp = ((float*)((((void*)(time)) != null) ? time : &st->own_time));
+        int* ctp = ((int*)((((void*)(o->current_track)) != null) ? o->current_track : &st->own_track));
+        int* ckp = ((int*)((((void*)(o->current_key)) != null) ? o->current_key : &st->own_key));
+        float s0 = o->start, s1 = o->end;
+        if ((((!(((isfinite((double)(s0))) != 0) )     ) || (!(((isfinite((double)(s1))) != 0) )     ))))
+            s0 = s1 = 0;
+        if ((!(((s1 > s0)) )     ))
+            s1 = s0 + 10;
+        f.s0 = s0;
+        f.s1 = s1;
+        f.fps = ((float)(((((o->fps > 0)) && ((isfinite((double)(o->fps))) != 0))) ? ((float)(((o->fps < 1000.0f)) ? o->fps : 1000.0f)) : (float)(30)));
+        f.frame = 1.0f / f.fps;
+        f.min_range = ((float)(((((float)(((8.0f * f.frame > 1e-3f)) ? 8.0f * f.frame : 1e-3f)) < s1 - s0)) ? ((float)(((8.0f * f.frame > 1e-3f)) ? 8.0f * f.frame : 1e-3f)) : s1 - s0));
+        f.row_h = ((float)(((o->row_height > 0)) ? ((float)(((12.0f > o->row_height)) ? 12.0f : o->row_height)) : 26.0f));
+        f.ruler = ((int)(((((o->ruler >= (int)__DotCcEnum_6375695F74696D656C696E655F72756C6572.CUI_TIMELINE_FRAMES)) && ((o->ruler <= (int)__DotCcEnum_6375695F74696D656C696E655F72756C6572.CUI_TIMELINE_TIMECODE)))) ? o->ruler : (int)(__DotCcEnum_6375695F74696D656C696E655F72756C6572.CUI_TIMELINE_FRAMES)));
+        f.range_on = ((CBool)((((void*)(o->@in)) != null) && (((void*)(o->@out)) != null)));
+        float t_before = *tp;
+        if ((!(((isfinite((double)(*tp))) != 0) )     ))
+            *tp = s0;
+        f.ct = *ctp;
+        f.ck = *ckp;
+        if (((((f.ct < -1)) || ((f.ct >= count)))))
+            f.ct = -1;
+        if (((((((f.ct < 0)) || ((f.ck < -1)))) || ((f.ck >= cui__tl_keys_n(&tracks[f.ct]))))))
+            f.ck = -1;
+        f.rows = (int*)(cui__frame_alloc(ui, 4UL * (ulong)((int)(((1 > count)) ? 1 : count))));
+        f.sub_end = (int*)(cui__frame_alloc(ui, 4UL * (ulong)((int)(((1 > count)) ? 1 : count))));
+        f.tone = (byte*)(cui__frame_alloc(ui, (ulong)((int)(((1 > count)) ? 1 : count))));
+        f.nr = cui__tl_flatten(tracks, count, f.rows, f.tone, f.sub_end);
+        f.has_rect = cui__has_prev_rect(ui, f.id);
+        f.R = cui__prev_rect(ui, f.id);
+        f.g = cui__tl_geo_of((((unchecked((int)(f.has_rect))) != 0) ? f.R : new cui_rect { x = 0, y = 0, w = 800, h = 300 }), f.row_h, o->track_width, o->toggles);
+        float b0 = v->start, b1 = v->end, bs = v->scroll;
+        if ((((((!(((v->end > v->start)) )     ) || (!(((isfinite((double)(v->start))) != 0) )     ))) || (!(((isfinite((double)(v->end))) != 0) )     ))))
         {
-            v->start = f.c.dmin;
-            v->end = f.c.dmax;
+            v->start = s0;
+            v->end = s1;
             st->anim_on = 0;
         }
         f.bi = cui__interact(ui, f.id, 1 | 2);
         f.mx = ui->mx;
         f.my = ui->my;
-        if (((((unchecked((int)(f.has_data))) != 0) && ((unchecked((int)(f.has_rect))) != 0))))
+        f.shift = ((CBool)((ui->mods & (int)__DotCcEnum_6375695F6D6F64.CUI_MOD_SHIFT) != 0));
+        f.prim = ((CBool)((ui->mods & (int)__DotCcEnum_6375695F6D6F64.CUI_MOD_CTRL) != 0));
+        f.alt = ((CBool)((ui->mods & (int)__DotCcEnum_6375695F6D6F64.CUI_MOD_ALT) != 0));
+        f.snap = ((CBool)((!(((unchecked((int)(o->free_drag))) != 0) )     ) && (!(((unchecked((int)(f.shift))) != 0) )     )));
+        f.k = (double)f.g.plot_w / (double)(v->end - v->start);
+        if (((unchecked((int)(f.has_rect))) != 0))
         {
-            f.range = v->end - v->start;
-            cui__flf_wheel__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&f);
-            cui__flf_pointer__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&f);
+            cui__tle_wheel_and_pan(&f);
+            f.k = (double)f.g.plot_w / (double)(v->end - v->start);
+            if (((((((unchecked((int)(f.bi.hovered))) != 0) && ((unchecked((int)(((CBool*)&ui->mpressed)[(int)__DotCcEnum_6375695F6D6F7573655F627574746F6E.CUI_MOUSE_LEFT]))) != 0))) && ((st->mode == 0)))))
+                cui__tle_press(&f);
+            if (((((((st->mode != 0)) && ((st->mode != 7)))) && ((unchecked((int)(((CBool*)&ui->mdown)[(int)__DotCcEnum_6375695F6D6F7573655F627574746F6E.CUI_MOUSE_LEFT]))) != 0))))
+                cui__tle_drag(&f);
+            if (((((((st->mode != 0)) && ((st->mode != 7)))) && (!(((unchecked((int)(((CBool*)&ui->mdown)[(int)__DotCcEnum_6375695F6D6F7573655F627574746F6E.CUI_MOUSE_LEFT]))) != 0) )     ))))
+                cui__tle_release(&f);
             if (((((unchecked((int)(f.bi.focused))) != 0) && (!(((unchecked((int)(ui->edit_prev))) != 0) )     ))))
-                cui__flf_keys__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&f);
-            cui__flf_move_view__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&f);
+                cui__tle_keys(&f);
+            cui__tle_move_view(&f);
         }
         else
-            if ((!(((unchecked((int)(f.has_data))) != 0) )     ))
-            {
-                st->mode = 0;
-                st->anim_on = 0;
-                if (((*sel != -1)))
-                    *sel = -1;
-            }
-        f.hov = -1;
-        if (((((((((((unchecked((int)(f.has_data))) != 0) && ((unchecked((int)(f.has_rect))) != 0))) && ((unchecked((int)(f.bi.hovered))) != 0))) && ((st->mode != 2)))) && ((unchecked((int)(cui__rect_contains(f.R, f.mx, f.my)))) != 0))))
-            f.hov = cui__fl_hit__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&f.c, v, f.mx, f.my);
-        res.hovered = f.hov;
-        res.selection_changed = ((CBool)(*sel != sel_before));
-        res.view_changed = ((CBool)(((((v->start != b0)) || ((v->end != b1)))) || ((v->scroll != bs))));
+        {
+            cui__tl_clamp(v, s0, s1, f.min_range);
+        }
+        if (((unchecked((int)(f.relist))) != 0))
+            f.nr = cui__tl_flatten(tracks, count, f.rows, f.tone, f.sub_end);
+        {
+            float max_s = ((float)(((0.0f > f.nr * f.row_h - f.g.body_h)) ? 0.0f : f.nr * f.row_h - f.g.body_h));
+            if ((!(((v->scroll >= 0)) )     ))
+                v->scroll = 0;
+            if (((v->scroll > max_s)))
+                v->scroll = max_s;
+        }
+        if (((((f.ct < 0)) || ((f.ct >= count)))))
+            f.ct = -1;
+        if (((((f.ct < 0)) || ((f.ck >= cui__tl_keys_n(&tracks[f.ct]))))))
+            f.ck = -1;
+        f.k = (double)f.g.plot_w / (double)(v->end - v->start);
+        cui__tle_hover(&f);
+        res.hovered_track = ((int)(((f.hov_key >= 0)) ? f.hov_track : -1));
+        res.hovered_key = f.hov_key;
         int en = default;
-        cui__fl_paint* p = cui__flf_build_panel__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&f, &en);
-        if (((((unchecked((int)(f.has_data))) != 0) && ((v->end > v->start)))))
-            cui__flf_build_spans__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&f, p);
+        cui__tl_paint* p = cui__tle_build_panel(&f, &en);
+        cui__tle_build_rows(&f, p);
         cui__open(ui, en);
-        cui__flf_tooltip__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&f);
+        cui__tle_tooltip(&f);
         cui__close(ui);
+        if (((*tp != t_before)))
+            res.time_changed = 1;
+        if (((f.sel_any) != 0))
+            res.selection_changed = 1;
+        res.view_changed = ((CBool)(((((v->start != b0)) || ((v->end != b1)))) || ((v->scroll != bs))));
+        st->last_time = *tp;
+        *ctp = f.ct;
+        *ckp = f.ck;
+        res.current_track = f.ct;
+        res.current_key = f.ck;
         ui->last_id = f.id;
         return res;
     }
 
 
 
-    public static unsafe int cui__fl_cmp__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(void* a, void* b)
+    public static unsafe float cui__dl_norm(float v, float lo, float hi)
     {
-        cui_flame_span* x = (cui_flame_span*)(a), y = (cui_flame_span*)(b);
-        if (((x->depth != y->depth)))
-            return ((int)(((x->depth < y->depth)) ? -1 : 1));
-        if (((x->start != y->start)))
-            return ((int)(((x->start < y->start)) ? -1 : 1));
-        if (((x->end != y->end)))
-            return ((int)(((x->end > y->end)) ? -1 : 1));
+        return ((float)(((hi > lo)) ? cui__clampf((v - lo) / (hi - lo), 0, 1) : (float)(0)));
+    }
+
+
+
+    public static unsafe float cui__dl_pos(float v, float lo, float hi, CBool lg)
+    {
+        if (((((((unchecked((int)(lg))) != 0) && ((lo > 0)))) && ((hi > lo)))))
+            return cui__clampf(logf(((float)(((v > lo)) ? v : lo)) / lo) / logf(hi / lo), 0, 1);
+        return cui__dl_norm(v, lo, hi);
+    }
+
+
+
+    public static unsafe float cui__dl_value(float t, float lo, float hi, float step, CBool lg)
+    {
+        t = cui__clampf(t, 0, 1);
+        float v = ((float)(((((((unchecked((int)(lg))) != 0) && ((lo > 0)))) && ((hi > lo)))) ? lo * powf(hi / lo, t) : lo + t * (hi - lo)));
+        if (((step > 0)))
+            v = lo + roundf((v - lo) / step) * step;
+        return cui__clampf(v, ((float)(((lo < hi)) ? lo : hi)), ((float)(((lo > hi)) ? lo : hi)));
+    }
+
+
+
+    public static unsafe float cui__dl_reset_t(float lo, float hi, float reset, CBool lg)
+    {
+        return cui__dl_pos(reset, lo, hi, lg);
+    }
+
+
+
+    public static unsafe byte* cui__dl_text(cui_ctx* ui, byte* fmt, byte* unit, float v)
+    {
+        byte* s = cui__frame_printf(ui, fmt, (double)v);
+        return ((byte*)((((((void*)(unit)) != null) && ((*unit) != 0))) ? cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S821 /*"%s %s"*/), s, unit) : s));
+    }
+
+
+
+    public static unsafe float cui__dl_input(cui_ctx* ui, cui_interact r, uint wheel_id, float t, float lo, float hi, float step, float reset_t)
+    {
+        float k = ((float)(((((step > 0)) && ((hi > lo)))) ? step / (hi - lo) : 0.01f));
+        if (((unchecked((int)(r.double_clicked))) != 0))
+            t = reset_t;
+        if (((unchecked((int)(r.focused))) != 0))
+        {
+            float big = ((float)(((ui->mods & (int)__DotCcEnum_6375695F6D6F64.CUI_MOD_SHIFT) != 0) ? 10.0f : 1.0f));
+            if (((((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_UP)))) != 0) || ((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_RIGHT)))) != 0))))
+                t += k * big;
+            if (((((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_DOWN)))) != 0) || ((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_LEFT)))) != 0))))
+                t -= k * big;
+            if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_PAGE_UP)))) != 0))
+                t += k * 10;
+            if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_PAGE_DOWN)))) != 0))
+                t -= k * 10;
+            if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_HOME)))) != 0))
+                t = 0;
+            if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_END)))) != 0))
+                t = 1;
+            if (((((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_DELETE)))) != 0) || ((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_BACKSPACE)))) != 0))))
+                t = reset_t;
+        }
+        if (((((ui->scroll_target == wheel_id)) && ((((ui->scroll_dy != 0)) || ((ui->scroll_dx != 0)))))))
+        {
+            float d = ((float)(((ui->scroll_dy != 0)) ? ui->scroll_dy : -ui->scroll_dx));
+            t += d * k * ((float)(((ui->mods & (int)__DotCcEnum_6375695F6D6F64.CUI_MOD_SHIFT) != 0) ? 0.25f : 1.0f));
+            ui->scroll_dy = ui->scroll_dx = 0;
+        }
+        return cui__clampf(t, 0, 1);
+    }
+
+
+
+    public static unsafe float cui__dl_value_w(cui_ctx* ui, float fs, byte* fmt, byte* unit, float lo, float hi)
+    {
+        float* probe = stackalloc float[]{ lo, hi, (lo + hi) * 0.5f, lo + (hi - lo) * 0.111f, -((float)(((fabsf(lo) > fabsf(hi))) ? fabsf(lo) : fabsf(hi))) * 0.999f };
+        float w = 0;
+        for (int k = 0; ((k < ((int)(((lo < 0)) ? 5 : 4)))); k++)
+            w = ((float)(((w > cui__text_width(ui, 1, fs, cui__dl_text(ui, fmt, unit, probe[k]), -1, 1))) ? w : cui__text_width(ui, 1, fs, cui__dl_text(ui, fmt, unit, probe[k]), -1, 1)));
+        return ceilf(w);
+    }
+
+
+
+    public static unsafe void cui__dl_caption(cui_ctx* ui, byte* text, float size, cui_color c, int f)
+    {
+        int t = cui__text_node(ui, text, cui__display_len(text), f, size, c, 0);
+        ui->nodes[t].text_align = (byte)(__DotCcEnum_6375695F746578745F616C69676E.CUI_TEXT_CENTER);
+        ui->nodes[t].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+        ui->nodes[t].line_height = 1.3f;
+        ui->nodes[t].flags |= (uint)(256);
+    }
+
+
+
+    public static unsafe void cui__dl_cap(cui_ctx* ui, cui_vec2 c, float rad, float a, float th, cui_color col)
+    {
+        cui_draw_circle(ui, new cui_vec2 { x = c.x + cosf(a) * rad, y = c.y + sinf(a) * rad }, th * 0.5f, col);
+    }
+
+
+
+    public static unsafe void cui__paint_knob__unit_46AE67469BEE60120D0085CFFD59612AA39915D5AA702680ED02F4C77D323987(cui_ctx* ui, cui_node* n, void* data)
+    {
+        cui__knob_paint* p = (cui__knob_paint*)(data);
+        cui_rect r = n->rect;
+        if (((unchecked((int)(p->wheel_on))) != 0))
+            cui__paint_wheel_hit(ui, p->wheel, r);
+        cui_vec2 c = new cui_vec2 { x = r.x + r.w * 0.5f, y = r.y + r.h * 0.5f };
+        float R = ((float)(((r.w < r.h)) ? r.w : r.h)) * 0.5f - 1;
+        float th = cui__clampf(R * 0.12f, 2.5f, 4.0f), ar = R - th * 0.5f;
+        float a0 = 0.75f * 3.14159265358979323846f, a1 = a0 + 1.5f * 3.14159265358979323846f;
+        cui_draw_arc(ui, c, ar, a0, a1, th, p->track);
+        cui__dl_cap(ui, c, ar, a0, th, p->track);
+        cui__dl_cap(ui, c, ar, a1, th, p->track);
+        float av = a0 + 1.5f * 3.14159265358979323846f * p->t, ab = a0 + 1.5f * 3.14159265358979323846f * p->@base;
+        if (((fabsf(av - ab) > 0.002f)))
+        {
+            cui_draw_arc(ui, c, ar, ((float)(((ab < av)) ? ab : av)), ((float)(((ab > av)) ? ab : av)), th, p->arc);
+            cui__dl_cap(ui, c, ar, ab, th, p->arc);
+            cui__dl_cap(ui, c, ar, av, th, p->arc);
+        }
+        float rb = R - th - 4;
+        if (((rb < 4)))
+            return;
+        cui_rect br = new cui_rect { x = c.x - rb, y = c.y - rb, w = rb * 2, h = rb * 2 };
+        CBool dark = ((CBool)((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK));
+        cui_draw_shadow(ui, br, new cui_corners { tl = rb, tr = rb, br = rb, bl = rb }, 2, 0, new cui_vec2 { x = 0, y = 1 }, cui__rgba(0, 0, 0, ((int)(((unchecked((int)(dark))) != 0) ? 90 : 34))));
+        cui_draw_shadow(ui, br, new cui_corners { tl = rb, tr = rb, br = rb, bl = rb }, 8, 0, new cui_vec2 { x = 0, y = 3 }, cui__rgba(0, 0, 0, ((int)(((unchecked((int)(dark))) != 0) ? 60 : 18))));
+        cui_color body = cui_mix(p->body, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0.035f * p->hover + 0.03f * p->active);
+        cui_draw_rect_border(ui, br, new cui_corners { tl = rb, tr = rb, br = rb, bl = rb }, body, p->edge, 1);
+        cui__draw_sheen(ui, br, new cui_corners { tl = rb, tr = rb, br = rb, bl = rb }, 0.8f);
+        cui_vec2 d = new cui_vec2 { x = cosf(av), y = sinf(av) };
+        cui_vec2 q0 = new cui_vec2 { x = c.x + d.x * rb * 0.3f, y = c.y + d.y * rb * 0.3f }, q1 = new cui_vec2 { x = c.x + d.x * (rb - 4), y = c.y + d.y * (rb - 4) };
+        cui_draw_line(ui, q0, q1, 2, p->pointer);
+        cui_draw_circle(ui, q1, 1, p->pointer);
+        cui_draw_circle(ui, q0, 1, p->pointer);
+        cui__draw_focus_ring(ui, br, new cui_corners { tl = rb, tr = rb, br = rb, bl = rb }, p->focus);
+    }
+
+
+
+    public static unsafe CBool cui_knob_ex(cui_ctx* ui, byte* id_str, float* value, float min, float max, cui_knob_opts* o)
+    {
+        cui_knob_opts d = default;
+        memset(&d, 0, ((ulong)(sizeof(cui_knob_opts))));
+        if ((!((((void*)(o)) != null) )     ))
+            o = &d;
+        if ((!((((void*)(value)) != null) )     ))
+            return 0;
+        if ((!(((max > min)) )     ))
+            max = min + 1;
+        uint id = cui_make_id(ui, ((byte*)((((void*)(id_str)) != null) ? id_str : (DotCcLiterals.Pointer + DotCcLiterals.S1202 /*"knob"*/))));
+        uint kid = id ^ 0x4B0Bu, wid = id ^ 0x4B0Cu;
+        CBool disabled = ((CBool)(((unchecked((int)(o->disabled))) != 0) || ((unchecked((int)(cui_is_disabled(ui)))) != 0)));
+        cui_push_disabled(ui, disabled);
+        cui_interact r = cui__interact(ui, kid, 1 | 2);
+        cui_pop_disabled(ui);
+        cui__knob_state* st = (cui__knob_state*)(cui_state(ui, id, ((ulong)(sizeof(cui__knob_state)))));
+        CBool lg = ((CBool)(((unchecked((int)(o->log_scale))) != 0) && ((min > 0))));
+        float old = *value, t = cui__dl_pos(*value, min, max, lg);
+        if ((!(((unchecked((int)(st->init))) != 0) )     ))
+        {
+            st->shown.x = t;
+            st->init = 1;
+        }
+        float reset_t = cui__dl_reset_t(min, max, o->reset, lg);
+        CBool fine = ((CBool)((ui->mods & (int)__DotCcEnum_6375695F6D6F64.CUI_MOD_SHIFT) != 0));
+        if (((((((unchecked((int)(r.active))) != 0) && ((unchecked((int)(((CBool*)&ui->mdown)[0]))) != 0))) && (!(((unchecked((int)(disabled))) != 0) )     ))))
+        {
+            if (((((unchecked((int)(((CBool*)&ui->mpressed)[0]))) != 0) || (!(((unchecked((int)(st->dragging))) != 0) )     ))))
+            {
+                st->ref_y = ui->my;
+                st->ref_t = t;
+                st->fine = fine;
+            }
+            else
+                if ((((int)((int)(fine)) != (int)((int)(st->fine)))))
+                {
+                    st->ref_y = ui->pmy;
+                    st->ref_t = t;
+                    st->fine = fine;
+                }
+            st->dragging = 1;
+            t = cui__clampf(st->ref_t + (st->ref_y - ui->my) / ((float)(((unchecked((int)(fine))) != 0) ? 2000.0f : 200.0f)), 0, 1);
+        }
+        else
+            st->dragging = 0;
+        if ((!(((unchecked((int)(disabled))) != 0) )     ))
+            t = cui__dl_input(ui, r, wid, t, min, max, ((float)(((unchecked((int)(lg))) != 0) ? (float)(0) : o->step)), reset_t);
+        float v = cui__dl_value(t, min, max, o->step, lg);
+        *value = v;
+        t = cui__dl_pos(v, min, max, lg);
+        if (((unchecked((int)(st->dragging))) != 0))
+        {
+            st->shown.x = t;
+            st->shown.v = 0;
+        }
+        else
+            cui__spring(ui, &st->shown, t, 0.26f, 0.0f);
+        cui__tween(ui, &st->hover, ((float)(((((unchecked((int)(r.hovered))) != 0) || ((unchecked((int)(r.active))) != 0))) ? 1.0f : 0.0f)), 0.14f);
+        cui__tween(ui, &st->active, ((float)(((unchecked((int)(r.active))) != 0) ? 1.0f : 0.0f)), 0.18f);
+        cui__tween(ui, &st->focus, ((float)(((unchecked((int)(r.focus_visible))) != 0) ? 1.0f : 0.0f)), 0.14f);
+        if (((((((unchecked((int)(r.hovered))) != 0) || ((unchecked((int)(r.active))) != 0))) && (!(((unchecked((int)(disabled))) != 0) )     ))))
+            cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_RESIZE_NS);
+        float size = ((float)(((o->size > 0)) ? o->size : (float)(48)));
+        byte* fmt = ((byte*)((((void*)(o->format)) != null) ? o->format : (DotCcLiterals.Pointer + DotCcLiterals.S1102 /*"%.0f"*/)));
+        byte* label = ((byte*)((((void*)(o->label)) != null) ? o->label : id_str));
+        float fv = cui__fs(ui, ui->theme.text_sm), fl = cui__fs(ui, ui->theme.text_xs);
+        float w = size;
+        if ((!(((unchecked((int)(o->hide_value))) != 0) )     ))
+            w = ((float)(((w > cui__dl_value_w(ui, fv, fmt, o->unit, min, max))) ? w : cui__dl_value_w(ui, fv, fmt, o->unit, min, max)));
+        if ((((void*)(label)) != null))
+            w = ((float)(((w > ((float)(((ceilf(cui__text_width(ui, 0, fl, label, cui__display_len(label), 0)) < size * 2)) ? ceilf(cui__text_width(ui, 0, fl, label, cui__display_len(label), 0)) : size * 2)))) ? w : ((float)(((ceilf(cui__text_width(ui, 0, fl, label, cui__display_len(label), 0)) < size * 2)) ? ceilf(cui__text_width(ui, 0, fl, label, cui__display_len(label), 0)) : size * 2))));
+        int col = cui__node_new(ui, id);
+        cui_node* cn = &ui->nodes[col];
+        cn->gap = 2;
+        cn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+        cn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)w };
+        cn->self_align = 7;
+        cn->opacity = ((float)(((unchecked((int)(disabled))) != 0) ? 0.45f : 1.0f));
+        cui__open(ui, col);
+        int k = cui__leaf(ui, kid, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)size }, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)size });
+        cui__mark_interactive(ui, k, 1);
+        cui__knob_paint* p = (cui__knob_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__knob_paint)))));
+        p->t = st->shown.x;
+        p->@base = ((float)(((unchecked((int)(o->bipolar))) != 0) ? 0.5f : (float)(0)));
+        p->hover = st->hover;
+        p->active = st->active;
+        p->focus = st->focus;
+        p->arc = (((unchecked((int)(cui__color_set(o->color)))) != 0) ? cui_color_of(ui, o->color) : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_CONTROL_ON]);
+        p->track = cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_CONTROL_TRACK], ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_CONTROL_TRACK_HOVER], st->hover);
+        p->body = ((((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK)) ? cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE_RAISED], ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0.06f) : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE_RAISED]);
+        p->edge = ((((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK)) ? cui__rgba(255, 255, 255, 20) : cui__rgba(0, 0, 0, 24));
+        p->pointer = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND];
+        p->wheel = wid;
+        p->wheel_on = ((CBool)(((unchecked((int)(r.focused))) != 0) && (!(((unchecked((int)(disabled))) != 0) )     )));
+        ui->nodes[k].paint = DotCcPointers.cui__paint_knob__unit_46AE67469BEE60120D0085CFFD59612AA39915D5AA702680ED02F4C77D323987;
+        ui->nodes[k].paint_data = p;
+        if ((!(((unchecked((int)(o->hide_value))) != 0) )     ))
+            cui__dl_caption(ui, cui__dl_text(ui, fmt, o->unit, v), fv, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 1);
+        if ((((((void*)(label)) != null) && ((cui__display_len(label)) != 0))))
+            cui__dl_caption(ui, label, fl, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY], 0);
+        cui__close(ui);
+        ui->last_id = kid;
+        return ((CBool)(*value != old));
+    }
+
+
+
+    public static unsafe int cui__meter_zone(float db)
+    {
+        return ((int)(((db >= -6)) ? 2 : ((int)(((db >= -18)) ? 1 : 0))));
+    }
+
+
+
+    public static unsafe void cui__meter_bars__unit_46AE67469BEE60120D0085CFFD59612AA39915D5AA702680ED02F4C77D323987(cui_ctx* ui, cui__meter_paint* p, cui_rect r)
+    {
+        CBool hz = p->horizontal;
+        float len = ((float)(((unchecked((int)(hz))) != 0) ? r.w : r.h)), span = p->hi - p->lo;
+        if (((((len <= 2)) || ((span <= 0)))))
+            return;
+        float fx = cui__fs(ui, ui->theme.text_xs) * 0.9f;
+        if (((unchecked((int)(p->scale))) != 0))
+        {
+            float last = -1e9f;
+            for (int k = 0; ((k < unchecked((int)(((ulong)((18 * sizeof(float)))) / ((ulong)(sizeof(float))))))); k++)
+            {
+                float db = global::Managed.Cui.Cui.Globals.marks__s0__unit_46AE67469BEE60120D0085CFFD59612AA39915D5AA702680ED02F4C77D323987[k];
+                if (((((db > p->hi + 0.01f)) || ((db < p->lo - 0.01f)))))
+                    continue;
+                float at = cui__clampf((db - p->lo) / span, 0, 1) * len;
+                if (((fabsf(at - last) < ((float)(((unchecked((int)(hz))) != 0) ? 26.0f : 13.0f)))))
+                    continue;
+                last = at;
+                byte* s = cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S953 /*"%g"*/), (double)db);
+                if (((unchecked((int)(hz))) != 0))
+                    cui__draw_text_at(ui, 0, fx, r.x + at, r.y + p->n * (p->th + 2) + 8, __DotCcEnum_5F5F446F744363547970656465665F31383733324539413631304534373639334344373536304538413931383146443146454137313736373931463742444543353734433534454635444546413538.CUI__AT_CENTER, p->muted, s, 1);
+                else
+                    cui__draw_text_at(ui, 0, fx, r.x + p->lw - 5, r.y + r.h - at, __DotCcEnum_5F5F446F744363547970656465665F31383733324539413631304534373639334344373536304538413931383146443146454137313736373931463742444543353734433534454635444546413538.CUI__AT_RIGHT, p->muted, s, 1);
+            }
+        }
+        for (int c = 0; ((c < p->n)); c++)
+        {
+            cui__meter_ch* ch = &((cui__meter_ch*)&p->ch)[c];
+            cui_rect bar = (((unchecked((int)(hz))) != 0) ? new cui_rect { x = r.x, y = r.y + c * (p->th + 2), w = r.w, h = p->th } : new cui_rect { x = r.x + p->lw + c * (p->th + 2), y = r.y, w = p->th, h = r.h });
+            float rad = ((float)(((2.0f < p->th * 0.5f)) ? 2.0f : p->th * 0.5f));
+            cui_draw_rect(ui, bar, new cui_corners { tl = rad, tr = rad, br = rad, bl = rad }, p->bg);
+            float fill = cui__clampf((ch->shown - p->lo) / span, 0, 1) * len;
+            if (((unchecked((int)(p->segmented))) != 0))
+            {
+                float seg = 4;
+                for (float s0 = 0; ((s0 + seg - 1 <= fill + 0.01f)); s0 += seg)
+                {
+                    float db__1 = p->lo + (s0 + seg * 0.5f) / len * span;
+                    cui_rect q = (((unchecked((int)(hz))) != 0) ? new cui_rect { x = bar.x + s0, y = bar.y, w = seg - 1, h = bar.h } : new cui_rect { x = bar.x, y = bar.y + bar.h - s0 - (seg - 1), w = bar.w, h = seg - 1 });
+                    cui_draw_rect(ui, q, new cui_corners { tl = 0.5f, tr = 0.5f, br = 0.5f, bl = 0.5f }, ((cui_color*)&p->zone)[cui__meter_zone(db__1)]);
+                }
+            }
+            else
+                if (((fill > 0.5f)))
+                {
+                    for (int z = 0; ((z < 3)); z++)
+                    {
+                        float z0 = cui__clampf((global::Managed.Cui.Cui.Globals.edges__s1__unit_46AE67469BEE60120D0085CFFD59612AA39915D5AA702680ED02F4C77D323987[z] - p->lo) / span, 0, 1) * len, z1 = ((float)(((cui__clampf((global::Managed.Cui.Cui.Globals.edges__s1__unit_46AE67469BEE60120D0085CFFD59612AA39915D5AA702680ED02F4C77D323987[z + 1] - p->lo) / span, 0, 1) * len < fill)) ? cui__clampf((global::Managed.Cui.Cui.Globals.edges__s1__unit_46AE67469BEE60120D0085CFFD59612AA39915D5AA702680ED02F4C77D323987[z + 1] - p->lo) / span, 0, 1) * len : fill));
+                        if (((z1 <= z0)))
+                            continue;
+                        cui_rect q__1 = (((unchecked((int)(hz))) != 0) ? new cui_rect { x = bar.x + z0, y = bar.y, w = z1 - z0, h = bar.h } : new cui_rect { x = bar.x, y = bar.y + bar.h - z1, w = bar.w, h = z1 - z0 });
+                        cui_corners cc = new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 };
+                        if (((z0 <= 0.01f)))
+                        {
+                            if (((unchecked((int)(hz))) != 0))
+                            {
+                                cc.tl = cc.bl = rad;
+                            }
+                            else
+                            {
+                                cc.bl = cc.br = rad;
+                            }
+                        }
+                        cui_draw_rect(ui, q__1, cc, ((cui_color*)&p->zone)[z]);
+                    }
+                }
+            if (((ch->peak > p->lo + 0.01f)))
+            {
+                float at__1 = cui__clampf((ch->peak - p->lo) / span, 0, 1) * len;
+                cui_rect q__2 = (((unchecked((int)(hz))) != 0) ? new cui_rect { x = bar.x + ((float)(((0.0f > at__1 - 2)) ? 0.0f : at__1 - 2)), y = bar.y, w = 2, h = bar.h } : new cui_rect { x = bar.x, y = bar.y + bar.h - ((float)(((2.0f > at__1)) ? 2.0f : at__1)), w = bar.w, h = 2 });
+                cui_draw_rect(ui, q__2, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, ((cui_color*)&p->zone)[cui__meter_zone(ch->peak)]);
+            }
+        }
+    }
+
+
+
+    public static unsafe void cui__paint_meter__unit_46AE67469BEE60120D0085CFFD59612AA39915D5AA702680ED02F4C77D323987(cui_ctx* ui, cui_node* n, void* data)
+    {
+        cui__meter_bars__unit_46AE67469BEE60120D0085CFFD59612AA39915D5AA702680ED02F4C77D323987(ui, (cui__meter_paint*)(data), n->rect);
+    }
+
+
+
+    public static unsafe CBool cui__meter_update(cui_ctx* ui, cui__meter_ch* chs, float* levels, int n, float lo, float hi, float hold, float decay)
+    {
+        CBool falling = 0;
+        float dt = ((float)(((ui->dt < 0.1f)) ? ui->dt : 0.1f));
+        for (int c = 0; ((c < n)); c++)
+        {
+            cui__meter_ch* ch = &chs[c];
+            float a = ((float)((((void*)(levels)) != null) ? levels[c] : (float)(0)));
+            float db = ((float)(((((a > 0)) && ((a == a)))) ? 20.0f * log10f(a) : lo - 1));
+            db = cui__clampf(db, lo - 1, hi);
+            if (((a >= 1.0f)))
+                ch->clip = 1;
+            ch->shown = ((float)(((db > ch->shown - decay * dt)) ? db : ch->shown - decay * dt));
+            if (((db >= ch->peak)))
+            {
+                ch->peak = db;
+                ch->age = 0;
+            }
+            else
+            {
+                ch->age += dt;
+                if (((ch->age > hold)))
+                    ch->peak = ((float)(((ch->shown > ch->peak - decay * dt)) ? ch->shown : ch->peak - decay * dt));
+            }
+            if (((((ch->shown > db + 0.01f)) || ((ch->peak > ch->shown + 0.01f)))))
+                falling = 1;
+        }
+        return falling;
+    }
+
+
+
+    public static unsafe void cui__meter_colors(cui_ctx* ui, cui__meter_paint* p)
+    {
+        p->bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE_MUTED];
+        ((cui_color*)&p->zone)[0] = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SUCCESS];
+        ((cui_color*)&p->zone)[1] = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_WARNING];
+        ((cui_color*)&p->zone)[2] = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_DANGER];
+        p->muted = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED];
+    }
+
+
+
+    public static unsafe void cui__fader_travel(cui_rect r, CBool horizontal, float lw, float* a, float* b, float* cross)
+    {
+        if (((unchecked((int)(horizontal))) != 0))
+        {
+            *a = r.x + 16.0f * 0.5f;
+            *b = r.x + r.w - 16.0f * 0.5f;
+            *cross = r.y + 30.0f * 0.5f;
+        }
+        else
+        {
+            *a = r.y + r.h - 16.0f * 0.5f;
+            *b = r.y + 16.0f * 0.5f;
+            *cross = r.x + lw + 30.0f * 0.5f;
+        }
+    }
+
+
+
+    public static unsafe void cui__paint_fader__unit_46AE67469BEE60120D0085CFFD59612AA39915D5AA702680ED02F4C77D323987(cui_ctx* ui, cui_node* n, void* data)
+    {
+        cui__fader_paint* p = (cui__fader_paint*)(data);
+        cui_rect r = n->rect;
+        if (((unchecked((int)(p->wheel_on))) != 0))
+            cui__paint_wheel_hit(ui, p->wheel, r);
+        float a = default, b = default, cr = default;
+        cui__fader_travel(r, p->horizontal, p->lw, &a, &b, &cr);
+        float pos = a + (b - a) * p->t;
+        float fx = cui__fs(ui, ui->theme.text_xs) * 0.92f;
+        for (int k = 0; ((k < p->ntick)); k++)
+        {
+            float tp = a + (b - a) * cui__dl_norm(p->ticks[k], p->lo, p->hi);
+            if (((unchecked((int)(p->horizontal))) != 0))
+            {
+                float below = cr + 30.0f * 0.5f + ((float)((((void*)(p->meter)) != null) ? p->mw + 4 : (float)(0)));
+                cui_draw_rect(ui, new cui_rect { x = tp - 0.5f, y = below - 2, w = 1, h = 4 }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, p->line);
+                cui__draw_text_at(ui, 0, fx, tp, below + 9, __DotCcEnum_5F5F446F744363547970656465665F31383733324539413631304534373639334344373536304538413931383146443146454137313736373931463742444543353734433534454635444546413538.CUI__AT_CENTER, p->muted, p->tick_text[k], 1);
+            }
+            else
+            {
+                cui_draw_rect(ui, new cui_rect { x = cr - 30.0f * 0.5f - 2, y = tp - 0.5f, w = 6, h = 1 }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, p->line);
+                cui__draw_text_at(ui, 0, fx, cr - 30.0f * 0.5f - 5, tp, __DotCcEnum_5F5F446F744363547970656465665F31383733324539413631304534373639334344373536304538413931383146443146454137313736373931463742444543353734433534454635444546413538.CUI__AT_RIGHT, p->muted, p->tick_text[k], 1);
+            }
+        }
+        if ((((void*)(p->meter)) != null))
+        {
+            cui_rect mr = (((unchecked((int)(p->horizontal))) != 0) ? new cui_rect { x = a, y = cr + 30.0f * 0.5f + 2, w = b - a, h = p->mw } : new cui_rect { x = cr + 30.0f * 0.5f + 6, y = b, w = p->mw, h = a - b });
+            cui__meter_bars__unit_46AE67469BEE60120D0085CFFD59612AA39915D5AA702680ED02F4C77D323987(ui, p->meter, mr);
+        }
+        float gw = 4;
+        cui_rect groove = (((unchecked((int)(p->horizontal))) != 0) ? new cui_rect { x = r.x + 2, y = cr - gw * 0.5f, w = r.w - 4, h = gw } : new cui_rect { x = cr - gw * 0.5f, y = r.y + 2, w = gw, h = r.h - 4 });
+        cui_draw_rect(ui, groove, new cui_corners { tl = gw * 0.5f, tr = gw * 0.5f, br = gw * 0.5f, bl = gw * 0.5f }, p->track);
+        cui_rect tr = (((unchecked((int)(p->horizontal))) != 0) ? new cui_rect { x = pos - 16.0f * 0.5f, y = cr - 30.0f * 0.5f, w = 16.0f, h = 30.0f } : new cui_rect { x = cr - 30.0f * 0.5f, y = pos - 16.0f * 0.5f, w = 30.0f, h = 16.0f });
+        CBool dark = ((CBool)((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK));
+        float sc = 1 + 0.04f * p->hover - 0.03f * p->active;
+        cui_rect ts = new cui_rect { x = tr.x + tr.w * (1 - sc) * 0.5f, y = tr.y + tr.h * (1 - sc) * 0.5f, w = tr.w * sc, h = tr.h * sc };
+        cui_draw_shadow(ui, ts, new cui_corners { tl = 4, tr = 4, br = 4, bl = 4 }, 2, 0, new cui_vec2 { x = 0, y = 1 }, cui__rgba(0, 0, 0, ((int)(((unchecked((int)(dark))) != 0) ? 90 : 38))));
+        cui_draw_shadow(ui, ts, new cui_corners { tl = 4, tr = 4, br = 4, bl = 4 }, 6, 0, new cui_vec2 { x = 0, y = 2 }, cui__rgba(0, 0, 0, ((int)(((unchecked((int)(dark))) != 0) ? 50 : 16))));
+        cui_draw_rect_border(ui, ts, new cui_corners { tl = 4, tr = 4, br = 4, bl = 4 }, p->thumb, p->edge, 1);
+        if (((unchecked((int)(p->horizontal))) != 0))
+            cui_draw_rect(ui, new cui_rect { x = pos - 0.75f, y = ts.y + 5, w = 1.5f, h = ts.h - 10 }, new cui_corners { tl = 0.75f, tr = 0.75f, br = 0.75f, bl = 0.75f }, p->grip);
+        else
+            cui_draw_rect(ui, new cui_rect { x = ts.x + 5, y = pos - 0.75f, w = ts.w - 10, h = 1.5f }, new cui_corners { tl = 0.75f, tr = 0.75f, br = 0.75f, bl = 0.75f }, p->grip);
+        cui__draw_focus_ring(ui, ts, new cui_corners { tl = 4, tr = 4, br = 4, bl = 4 }, p->focus);
+    }
+
+
+
+    public static unsafe CBool cui_fader_ex(cui_ctx* ui, byte* id_str, float* value, float min, float max, cui_fader_opts* o)
+    {
+        cui_fader_opts d = default;
+        memset(&d, 0, ((ulong)(sizeof(cui_fader_opts))));
+        if ((!((((void*)(o)) != null) )     ))
+            o = &d;
+        if ((!((((void*)(value)) != null) )     ))
+            return 0;
+        if ((!(((max > min)) )     ))
+            max = min + 1;
+        uint id = cui_make_id(ui, ((byte*)((((void*)(id_str)) != null) ? id_str : (DotCcLiterals.Pointer + DotCcLiterals.S1012 /*"fader"*/))));
+        uint fid = id ^ 0xFAD0u, wid = id ^ 0xFAD1u;
+        CBool disabled = ((CBool)(((unchecked((int)(o->disabled))) != 0) || ((unchecked((int)(cui_is_disabled(ui)))) != 0)));
+        cui_push_disabled(ui, disabled);
+        cui_interact r = cui__interact(ui, fid, 1 | 2);
+        cui_pop_disabled(ui);
+        cui__fader_state* st = (cui__fader_state*)(cui_state(ui, id, ((ulong)(sizeof(cui__fader_state)))));
+        float old = *value, t = cui__dl_norm(*value, min, max);
+        if ((!(((unchecked((int)(st->init))) != 0) )     ))
+        {
+            st->shown.x = t;
+            st->init = 1;
+        }
+        CBool hz = o->horizontal;
+        byte* fmt = ((byte*)((((void*)(o->format)) != null) ? o->format : (DotCcLiterals.Pointer + DotCcLiterals.S576 /*"%.1f"*/)));
+        float fx = cui__fs(ui, ui->theme.text_xs) * 0.92f;
+        int ntick = ((int)((((void*)(o->ticks)) != null) ? ((int)(((((int)(((o->tick_count > 0)) ? o->tick_count : 0)) < 32)) ? ((int)(((o->tick_count > 0)) ? o->tick_count : 0)) : 32)) : 0));
+        byte** tick_text = (byte**)(cui__frame_alloc(ui, ((ulong)(sizeof(byte*))) * (ulong)((int)(((ntick > 0)) ? ntick : 1))));
+        float lw = 0;
+        for (int k = 0; ((k < ntick)); k++)
+        {
+            tick_text[k] = cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S953 /*"%g"*/), (double)o->ticks[k]);
+            lw = ((float)(((lw > cui__text_width(ui, 0, fx, tick_text[k], -1, 1))) ? lw : cui__text_width(ui, 0, fx, tick_text[k], -1, 1)));
+        }
+        if (((((ntick) != 0) && (!(((unchecked((int)(hz))) != 0) )     ))))
+            lw = ceilf(lw) + 10;
+        else
+            lw = 0;
+        float len = ((float)(((o->length > 0)) ? o->length : (float)(160)));
+        cui_rect pr = cui__prev_rect(ui, fid);
+        float a = default, b = default, cr = default;
+        cui__fader_travel(pr, hz, lw, &a, &b, &cr);
+        float reset_t = cui__dl_reset_t(min, max, o->reset, 0);
+        CBool fine = ((CBool)((ui->mods & (int)__DotCcEnum_6375695F6D6F64.CUI_MOD_SHIFT) != 0));
+        if (((((((((((unchecked((int)(r.active))) != 0) && ((unchecked((int)(((CBool*)&ui->mdown)[0]))) != 0))) && (!(((unchecked((int)(disabled))) != 0) )     ))) && ((pr.w > 0)))) && ((fabsf(b - a) > 1)))))
+        {
+            float px = ((float)(((unchecked((int)(hz))) != 0) ? ui->mx : ui->my));
+            if (((unchecked((int)(((CBool*)&ui->mpressed)[0]))) != 0))
+            {
+                float pos = a + (b - a) * t;
+                if (((fabsf(px - pos) > 16.0f * 0.5f + 2)))
+                {
+                    t = cui__clampf((px - a) / (b - a), 0, 1);
+                    st->shown.v = 0;
+                }
+                st->ref_px = px;
+                st->ref_t = t;
+                st->fine = fine;
+            }
+            else
+                if ((!(((unchecked((int)(st->dragging))) != 0) )     ))
+                {
+                    st->ref_px = px;
+                    st->ref_t = t;
+                    st->fine = fine;
+                }
+                else
+                    if ((((int)((int)(fine)) != (int)((int)(st->fine)))))
+                    {
+                        st->ref_px = ((float)(((unchecked((int)(hz))) != 0) ? ui->pmx : ui->pmy));
+                        st->ref_t = t;
+                        st->fine = fine;
+                    }
+            st->dragging = 1;
+            t = cui__clampf(st->ref_t + (px - st->ref_px) / (b - a) * ((float)(((unchecked((int)(fine))) != 0) ? 0.1f : 1.0f)), 0, 1);
+        }
+        else
+            st->dragging = 0;
+        if ((!(((unchecked((int)(disabled))) != 0) )     ))
+            t = cui__dl_input(ui, r, wid, t, min, max, o->step, reset_t);
+        float v = cui__dl_value(t, min, max, o->step, 0);
+        *value = v;
+        t = cui__dl_norm(v, min, max);
+        if (((unchecked((int)(st->dragging))) != 0))
+        {
+            st->shown.x = t;
+            st->shown.v = 0;
+        }
+        else
+            cui__spring(ui, &st->shown, t, 0.26f, 0.0f);
+        cui__tween(ui, &st->hover, ((float)(((((unchecked((int)(r.hovered))) != 0) || ((unchecked((int)(r.active))) != 0))) ? 1.0f : 0.0f)), 0.14f);
+        cui__tween(ui, &st->active, ((float)(((unchecked((int)(r.active))) != 0) ? 1.0f : 0.0f)), 0.18f);
+        cui__tween(ui, &st->focus, ((float)(((unchecked((int)(r.focus_visible))) != 0) ? 1.0f : 0.0f)), 0.14f);
+        if (((((((unchecked((int)(r.hovered))) != 0) || ((unchecked((int)(r.active))) != 0))) && (!(((unchecked((int)(disabled))) != 0) )     ))))
+            cui__set_cursor(ui, (cui_cursor)(((int)(((unchecked((int)(hz))) != 0) ? (int)(__DotCcEnum_6375695F637572736F72.CUI_CURSOR_RESIZE_EW) : (int)(__DotCcEnum_6375695F637572736F72.CUI_CURSOR_RESIZE_NS)))));
+        byte* label = ((byte*)((((void*)(o->label)) != null) ? o->label : id_str));
+        float fv = cui__fs(ui, ui->theme.text_sm), fl = cui__fs(ui, ui->theme.text_xs);
+        byte* vt = ((byte*)(((unchecked((int)(o->hide_value))) != 0) ? null : cui__dl_text(ui, fmt, o->unit, v)));
+        int col = cui__node_new(ui, id);
+        cui_node* cn = &ui->nodes[col];
+        cn->opacity = ((float)(((unchecked((int)(disabled))) != 0) ? 0.45f : 1.0f));
+        cn->self_align = 7;
+        cui__meter_paint* mp = null;
+        float mw = 0;
+        if ((((((void*)(o->meter)) != null) && ((o->meter_channels > 0)))))
+        {
+            int mn = ((int)(((o->meter_channels < 8)) ? o->meter_channels : 8));
+            float mlo = ((float)(((min < 0)) ? min : (float)(-60))), mhi = ((float)(((min < 0)) ? max : (float)(6)));
+            if ((!(((unchecked((int)(st->minit))) != 0) )     ))
+            {
+                for (int c = 0; ((c < 8)); c++)
+                    ((cui__meter_ch*)&st->mch)[c].shown = ((cui__meter_ch*)&st->mch)[c].peak = mlo - 1;
+                st->minit = 1;
+            }
+            if (((unchecked((int)(cui__meter_update(ui, (cui__meter_ch*)&st->mch, o->meter, mn, mlo, mhi, 1.5f, 20)))) != 0))
+                ui->animating = 1;
+            mp = (cui__meter_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__meter_paint)))));
+            memset(mp, 0, ((ulong)(sizeof(cui__meter_paint))));
+            memcpy((cui__meter_ch*)&mp->ch, (cui__meter_ch*)&st->mch, ((ulong)((8 * sizeof(cui__meter_ch)))));
+            mp->n = mn;
+            mp->lo = mlo;
+            mp->hi = mhi;
+            mp->th = 4;
+            mp->horizontal = hz;
+            cui__meter_colors(ui, mp);
+            mw = mn * 4.0f + (mn - 1) * 2.0f;
+        }
+        float node_w = ((float)(((unchecked((int)(hz))) != 0) ? len : lw + 30.0f + ((float)(((lw > ((float)((((void*)(mp)) != null) ? mw + 6 : (float)(0))))) ? lw : ((float)((((void*)(mp)) != null) ? mw + 6 : (float)(0)))))));
+        float node_h = ((float)(((unchecked((int)(hz))) != 0) ? 30.0f + ((int)(((ntick) != 0) ? 16 : 0)) + ((float)((((void*)(mp)) != null) ? mw + 4 : (float)(0))) : len));
+        if (((unchecked((int)(hz))) != 0))
+        {
+            cn->gap = 6;
+            cn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)len };
+            cui__open(ui, col);
+            int row = cui__node_new(ui, 0);
+            ui->nodes[row].dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
+            ui->nodes[row].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+            ui->nodes[row].gap = 8;
+            cui__open(ui, row);
+            if ((((((void*)(label)) != null) && ((cui__display_len(label)) != 0))))
+            {
+                int lt = cui__text_node(ui, label, cui__display_len(label), 1, fv, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0);
+                ui->nodes[lt].line_height = 1.3f;
+                ui->nodes[lt].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+            }
+            if ((((void*)(vt)) != null))
+            {
+                int vn = cui__text_node(ui, vt, -1, 0, fv, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY], 0);
+                ui->nodes[vn].line_height = 1.3f;
+                ui->nodes[vn].flags |= (uint)(256);
+            }
+            cui__close(ui);
+        }
+        else
+        {
+            float w = node_w;
+            if ((((void*)(vt)) != null))
+                w = ((float)(((w > cui__dl_value_w(ui, fv, fmt, o->unit, min, max))) ? w : cui__dl_value_w(ui, fv, fmt, o->unit, min, max)));
+            cn->gap = 6;
+            cn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+            cn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)w };
+            cui__open(ui, col);
+            if ((((void*)(vt)) != null))
+                cui__dl_caption(ui, vt, fv, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 1);
+        }
+        int f = cui__leaf(ui, fid, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)node_w }, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)node_h });
+        cui__mark_interactive(ui, f, 1);
+        cui__fader_paint* p = (cui__fader_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__fader_paint)))));
+        memset(p, 0, ((ulong)(sizeof(cui__fader_paint))));
+        p->t = st->shown.x;
+        p->hover = st->hover;
+        p->active = st->active;
+        p->focus = st->focus;
+        p->lw = lw;
+        p->horizontal = hz;
+        p->ticks = null;
+        p->tick_text = tick_text;
+        p->ntick = ntick;
+        if (((ntick) != 0))
+        {
+            float* tk = (float*)(cui__frame_alloc(ui, 4UL * (ulong)ntick));
+            memcpy(tk, o->ticks, 4UL * (ulong)ntick);
+            p->ticks = tk;
+        }
+        p->lo = min;
+        p->hi = max;
+        p->track = cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_CONTROL_TRACK], ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_CONTROL_TRACK_HOVER], st->hover);
+        p->thumb = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_CONTROL_THUMB];
+        p->edge = ((((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK)) ? cui__rgba(255, 255, 255, 24) : cui__rgba(0, 0, 0, 30));
+        p->line = cui_alpha(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0.55f);
+        p->grip = cui__rgba(0, 0, 0, 115);
+        p->muted = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED];
+        p->wheel = wid;
+        p->wheel_on = ((CBool)(((unchecked((int)(r.focused))) != 0) && (!(((unchecked((int)(disabled))) != 0) )     )));
+        p->meter = mp;
+        p->mw = mw;
+        ui->nodes[f].paint = DotCcPointers.cui__paint_fader__unit_46AE67469BEE60120D0085CFFD59612AA39915D5AA702680ED02F4C77D323987;
+        ui->nodes[f].paint_data = p;
+        if ((((((!(((unchecked((int)(hz))) != 0) )     ) && (((void*)(label)) != null))) && ((cui__display_len(label)) != 0))))
+            cui__dl_caption(ui, label, fl, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY], 0);
+        cui__close(ui);
+        ui->last_id = fid;
+        return ((CBool)(*value != old));
+    }
+
+
+
+    public static unsafe void cui__paint_clip__unit_46AE67469BEE60120D0085CFFD59612AA39915D5AA702680ED02F4C77D323987(cui_ctx* ui, cui_node* n, void* data)
+    {
+        cui__clip_paint* p = (cui__clip_paint*)(data);
+        cui_rect r = n->rect;
+        for (int c = 0; ((c < p->n)); c++)
+        {
+            cui_rect q = (((unchecked((int)(p->horizontal))) != 0) ? new cui_rect { x = r.x, y = r.y + c * (p->th + 2), w = r.w, h = p->th } : new cui_rect { x = r.x + p->lw + c * (p->th + 2), y = r.y, w = p->th, h = r.h });
+            cui_draw_rect(ui, q, new cui_corners { tl = ((float)(((1.5f < p->th * 0.5f)) ? 1.5f : p->th * 0.5f)), tr = ((float)(((1.5f < p->th * 0.5f)) ? 1.5f : p->th * 0.5f)), br = ((float)(((1.5f < p->th * 0.5f)) ? 1.5f : p->th * 0.5f)), bl = ((float)(((1.5f < p->th * 0.5f)) ? 1.5f : p->th * 0.5f)) }, (((unchecked((int)(((CBool*)&p->clip)[c]))) != 0) ? p->on : p->off));
+        }
+    }
+
+
+
+    public static unsafe CBool cui_level_meter_ex(cui_ctx* ui, byte* id_str, float* levels, int channels, cui_level_meter_opts* o)
+    {
+        cui_level_meter_opts d = default;
+        memset(&d, 0, ((ulong)(sizeof(cui_level_meter_opts))));
+        if ((!((((void*)(o)) != null) )     ))
+            o = &d;
+        channels = ((int)(((((int)(((channels > 1)) ? channels : 1)) < 8)) ? ((int)(((channels > 1)) ? channels : 1)) : 8));
+        uint id = cui_make_id(ui, ((byte*)((((void*)(id_str)) != null) ? id_str : (DotCcLiterals.Pointer + DotCcLiterals.S498 /*"meter"*/))));
+        uint clip_id = id ^ 0xC11Bu;
+        cui__meter_state* st = (cui__meter_state*)(cui_state(ui, id, ((ulong)(sizeof(cui__meter_state)))));
+        float lo = ((float)(((o->min_db < 0)) ? o->min_db : (float)(-60))), hi = ((float)(((o->max_db != 0)) ? o->max_db : (float)(6)));
+        if (((hi <= lo)))
+            hi = lo + 1;
+        float hold = ((float)(((o->hold > 0)) ? o->hold : ((float)(((o->hold < 0)) ? (float)(0) : 1.5f))));
+        float decay = ((float)(((o->decay > 0)) ? o->decay : (float)(20)));
+        if ((!(((unchecked((int)(st->init))) != 0) )     ))
+        {
+            for (int c = 0; ((c < 8)); c++)
+                ((cui__meter_ch*)&st->ch)[c].shown = ((cui__meter_ch*)&st->ch)[c].peak = lo - 1;
+            st->init = 1;
+        }
+        cui_interact cr = cui__interact(ui, clip_id, 0);
+        CBool cleared = 0;
+        if (((unchecked((int)(cr.clicked))) != 0))
+        {
+            for (int c__1 = 0; ((c__1 < 8)); c__1++)
+                ((cui__meter_ch*)&st->ch)[c__1].clip = 0;
+            cleared = 1;
+        }
+        CBool falling = cui__meter_update(ui, (cui__meter_ch*)&st->ch, levels, channels, lo, hi, hold, decay);
+        if (((unchecked((int)(falling))) != 0))
+            ui->animating = 1;
+        CBool hz = o->horizontal;
+        float len = ((float)(((o->length > 0)) ? o->length : (float)(160)));
+        float th = ((float)(((o->thickness > 0)) ? o->thickness : (float)(6)));
+        float lw = 0, fx = cui__fs(ui, ui->theme.text_xs) * 0.9f;
+        if (((((unchecked((int)(o->scale))) != 0) && (!(((unchecked((int)(hz))) != 0) )     ))))
+            lw = ceilf(cui__text_width(ui, 0, fx, (DotCcLiterals.Pointer + DotCcLiterals.S920 /*"-60"*/), -1, 1)) + 9;
+        float bars = channels * th + (channels - 1) * 2;
+        CBool any_clip = 0;
+        for (int c__2 = 0; ((c__2 < channels)); c__2++)
+            any_clip |= ((cui__meter_ch*)&st->ch)[c__2].clip;
+        int box = cui__node_new(ui, id);
+        cui_node* bn = &ui->nodes[box];
+        bn->dir = (byte)(((int)(((unchecked((int)(hz))) != 0) ? (int)(__DotCcEnum_6375695F646972.CUI_ROW) : (int)(__DotCcEnum_6375695F646972.CUI_COLUMN))));
+        bn->gap = 3;
+        bn->self_align = 7;
+        cui__open(ui, box);
+        cui__clip_paint* cp = (cui__clip_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__clip_paint)))));
+        memset(cp, 0, ((ulong)(sizeof(cui__clip_paint))));
+        cp->n = channels;
+        cp->th = th;
+        cp->lw = lw;
+        cp->horizontal = hz;
+        for (int c__3 = 0; ((c__3 < channels)); c__3++)
+            ((CBool*)&cp->clip)[c__3] = ((cui__meter_ch*)&st->ch)[c__3].clip;
+        cp->on = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_DANGER];
+        cp->off = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE_MUTED];
+        cui__meter_paint* p = (cui__meter_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__meter_paint)))));
+        memset(p, 0, ((ulong)(sizeof(cui__meter_paint))));
+        memcpy((cui__meter_ch*)&p->ch, (cui__meter_ch*)&st->ch, ((ulong)((8 * sizeof(cui__meter_ch)))));
+        p->n = channels;
+        p->lo = lo;
+        p->hi = hi;
+        p->th = th;
+        p->lw = lw;
+        p->horizontal = hz;
+        p->scale = o->scale;
+        p->segmented = o->segmented;
+        cui__meter_colors(ui, p);
+        int clip = -1;
+        if ((!(((unchecked((int)(hz))) != 0) )     ))
+            clip = cui__leaf(ui, clip_id, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)(lw + bars) }, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)4 });
+        int m = cui__leaf(ui, 0, (((unchecked((int)(hz))) != 0) ? new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)len } : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)(lw + bars) }), (((unchecked((int)(hz))) != 0) ? new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)(bars + ((int)(((unchecked((int)(o->scale))) != 0) ? 16 : 0))) } : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)len }));
+        ui->nodes[m].paint = DotCcPointers.cui__paint_meter__unit_46AE67469BEE60120D0085CFFD59612AA39915D5AA702680ED02F4C77D323987;
+        ui->nodes[m].paint_data = p;
+        if (((unchecked((int)(hz))) != 0))
+        {
+            clip = cui__leaf(ui, clip_id, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)4 }, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)bars });
+            ui->nodes[clip].self_align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_START);
+        }
+        ui->nodes[clip].paint = DotCcPointers.cui__paint_clip__unit_46AE67469BEE60120D0085CFFD59612AA39915D5AA702680ED02F4C77D323987;
+        ui->nodes[clip].paint_data = cp;
+        if (((unchecked((int)(any_clip))) != 0))
+        {
+            cui__mark_interactive(ui, clip, 0);
+            ui->last_id = clip_id;
+            cui_tooltip(ui, (DotCcLiterals.Pointer + DotCcLiterals.S829 /*"Clipped. Click to reset"*/));
+            if (((unchecked((int)(cr.hovered))) != 0))
+                cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_HAND);
+        }
+        cui__close(ui);
+        ui->last_id = id;
+        return cleared;
+    }
+
+
+
+    public static unsafe void cui__mc_names(cui_ctx* ui, cui_month_opts* o, byte** mn, byte** dn)
+    {
+        for (int k = 0; ((k < 12)); k++)
+            mn[k] = ((byte*)((((void*)(o->month_names)) != null) ? o->month_names[k] : cui__month_name(ui, k)));
+        for (int k__1 = 0; ((k__1 < 7)); k__1++)
+            dn[k__1] = ((byte*)((((void*)(o->day_names)) != null) ? o->day_names[k__1] : cui__weekday_short(ui, k__1)));
+    }
+
+
+
+    public static unsafe int cui__mc_weekday(int days)
+    {
+        return ((days + 3) % 7 + 7) % 7;
+    }
+
+
+
+    public static unsafe int cui__mc_days_in__unit_F59AE0EAE16328049B49C5187C65187AB45397A5399750A8A9F24FF884F04A12(int y, int m)
+    {
+        if (((((m == 2)) && ((((((y % 4 == 0)) && ((y % 100 != 0)))) || ((y % 400 == 0)))))))
+            return 29;
+        return global::Managed.Cui.Cui.Globals.dm__s0__unit_F59AE0EAE16328049B49C5187C65187AB45397A5399750A8A9F24FF884F04A12[(m - 1 + 12) % 12];
+    }
+
+
+
+    public static unsafe void cui__mc_span(cui_month_event* e, int* a, int* b)
+    {
+        *a = cui_date_to_days(e->start);
+        *b = ((int)(((e->end.year) != 0) ? cui_date_to_days(e->end) : *a));
+        if (((*b < *a)))
+            *b = *a;
+    }
+
+
+
+    public static unsafe byte* cui__mc_time(cui_ctx* ui, float h, CBool h12)
+    {
+        int mins = (int)lroundf(cui__clampf(h, 0, 24) * 60), hh = mins / 60 % 24, mm = mins % 60;
+        if ((!(((unchecked((int)(h12))) != 0) )     ))
+            return cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1276 /*"%d:%02d"*/), hh, mm);
+        int h1 = ((int)(((hh % 12 == 0)) ? 12 : hh % 12));
+        return ((byte*)(((mm) != 0) ? cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S752 /*"%d:%02d%c"*/), h1, mm, ((int)(((hh < 12)) ? 97 : 112))) : cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S553 /*"%d%c"*/), h1, ((int)(((hh < 12)) ? 97 : 112)))));
+    }
+
+
+
+    public static unsafe int cui__mc_timed_cmp__unit_F59AE0EAE16328049B49C5187C65187AB45397A5399750A8A9F24FF884F04A12(void* a, void* b)
+    {
+        cui__mc_timed* x = (cui__mc_timed*)(a), y = (cui__mc_timed*)(b);
+        if (((x->day != y->day)))
+            return ((int)(((x->day < y->day)) ? -1 : 1));
+        if (((x->time != y->time)))
+            return ((int)(((x->time < y->time)) ? -1 : 1));
+        return ((int)(((x->i < y->i)) ? -1 : (int)((int)(((CBool)(x->i > y->i))))));
+    }
+
+
+
+    public static unsafe int cui__mc_layout(cui_month_event* ev, int count, int start_day, int rows, int lines, cui__mc_timed* timed, int ntimed, cui__mc_item* @out, int cap)
+    {
+    byte* __dotcc_array_storage0 = null;
+    byte* __dotcc_array_storage1 = null;
+    byte* __dotcc_array_storage2 = null;
+        int n = 0, ti = 0;
+        for (int row = 0; ((row < rows)); row++)
+        {
+            int w0 = start_day + row * 7, w1 = w0 + 6;
+            if (__dotcc_array_storage0 == null)
+            {
+                byte* __dotcc_array_storage0_new = stackalloc byte[checked(sizeof(int) * 7)];
+                __dotcc_array_storage0 = __dotcc_array_storage0_new;
+            }
+            int* used = (int*)__dotcc_array_storage0;
+            new global::System.Span<byte>((void*)used, checked(sizeof(int) * 7)).Clear();
+            if (__dotcc_array_storage1 == null)
+            {
+                byte* __dotcc_array_storage1_new = stackalloc byte[checked(sizeof(int) * 7)];
+                __dotcc_array_storage1 = __dotcc_array_storage1_new;
+            }
+            int* hidden = (int*)__dotcc_array_storage1;
+            new global::System.Span<byte>((void*)hidden, checked(sizeof(int) * 7)).Clear();
+            if (__dotcc_array_storage2 == null)
+            {
+                byte* __dotcc_array_storage2_new = stackalloc byte[checked(sizeof(byte) * 64)];
+                __dotcc_array_storage2 = __dotcc_array_storage2_new;
+            }
+            byte* lane_end = (byte*)__dotcc_array_storage2;
+            new global::System.Span<byte>((void*)lane_end, checked(sizeof(byte) * 64)).Clear();
+            memset(lane_end, 0, ((ulong)((64 * sizeof(byte)))));
+            for (int pass = 0; ((pass < 2)); pass++)
+                for (int i = 0; ((i < count)); i++)
+                {
+                    int a = default, b = default;
+                    cui__mc_span(&ev[i], &a, &b);
+                    CBool bar = ((CBool)(((unchecked((int)(ev[i].all_day))) != 0) || ((b > a))));
+                    if ((((((!(((unchecked((int)(bar))) != 0) )     ) || ((b < w0)))) || ((a > w1)))))
+                        continue;
+                    if (((((CBool)(pass == 0)) != ((CBool)(b - a >= 1)))))
+                        continue;
+                    int c0 = ((int)(((a > w0)) ? a : w0)) - w0, c1 = ((int)(((b < w1)) ? b : w1)) - w0;
+                    int lane = 0;
+                    while (((((lane < 64)) && ((lane_end[lane] > c0)))))
+                        lane++;
+                    if (((lane >= 64)))
+                        continue;
+                    lane_end[lane] = (byte)(c1 + 1);
+                    for (int c = c0; ((c <= c1)); c++)
+                        used[c] = ((int)(((used[c] > lane + 1)) ? used[c] : lane + 1));
+                    if (((((lane >= lines)) || ((n >= cap)))))
+                    {
+                        for (int c__1 = c0; ((c__1 <= c1)); c__1++)
+                            hidden[c__1]++;
+                        continue;
+                    }
+                    @out[n++] = new cui__mc_item { row = (short)row, c0 = (short)c0, c1 = (short)c1, line = (short)lane, kind = 0, cont_l = ((CBool)(a < w0)), cont_r = ((CBool)(b > w1)), ev = i, more = 0, day = w0 + c0 };
+                }
+            while (((((ti < ntimed)) && ((timed[ti].day < w0)))))
+                ti++;
+            for (; ((((ti < ntimed)) && ((timed[ti].day <= w1)))); ti++)
+            {
+                int c__2 = timed[ti].day - w0;
+                if (((((used[c__2] < lines)) && ((n < cap)))))
+                    @out[n++] = new cui__mc_item { row = (short)row, c0 = (short)c__2, c1 = (short)c__2, line = (short)used[c__2], kind = 1, cont_l = 0, cont_r = 0, ev = timed[ti].i, more = 0, day = timed[ti].day };
+                else
+                    hidden[c__2]++;
+                used[c__2]++;
+            }
+            for (int c__3 = 0; ((c__3 < 7)); c__3++)
+            {
+                if (((hidden[c__3] == 0)))
+                    continue;
+                int extra = hidden[c__3];
+                for (int k = n - 1; ((k >= 0)); k--)
+                {
+                    cui__mc_item* it = &@out[k];
+                    if (((it->row != row)))
+                        break;
+                    if (((((((((it->kind > 1)) || ((it->line != lines - 1)))) || ((c__3 < it->c0)))) || ((c__3 > it->c1)))))
+                        continue;
+                    extra++;
+                    if (((((it->kind == 1)) || ((it->c0 == it->c1)))))
+                        it->kind = 255;
+                    else
+                        if (((it->c0 == c__3)))
+                        {
+                            it->c0++;
+                            it->cont_l = 1;
+                            it->day++;
+                        }
+                        else
+                            if (((it->c1 == c__3)))
+                            {
+                                it->c1--;
+                                it->cont_r = 1;
+                            }
+                            else
+                                if (((n < cap)))
+                                {
+                                    @out[n] = *it;
+                                    @out[n].c0 = (short)(c__3 + 1);
+                                    @out[n].cont_l = 1;
+                                    @out[n].day = w0 + c__3 + 1;
+                                    it->c1 = (short)(c__3 - 1);
+                                    it->cont_r = 1;
+                                    n++;
+                                }
+                }
+                if (((n < cap)))
+                    @out[n++] = new cui__mc_item { row = (short)row, c0 = (short)c__3, c1 = (short)c__3, line = (short)(lines - 1), kind = 2, cont_l = 0, cont_r = 0, ev = -1, more = extra, day = w0 + c__3 };
+            }
+            int m = 0;
+            for (int k__1 = 0; ((k__1 < n)); k__1++)
+                if (((@out[k__1].kind != 255)))
+                    @out[m++] = @out[k__1];
+            n = m;
+        }
+        return n;
+    }
+
+
+
+    public static unsafe int cui__mc_collect(cui_ctx* ui, cui_month_event* ev, int count, int d0, int d1, cui__mc_timed** @out)
+    {
+        cui__mc_timed* t = (cui__mc_timed*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__mc_timed))) * (ulong)((int)(((1 > count)) ? 1 : count))));
+        int n = 0;
+        for (int i = 0; ((i < count)); i++)
+        {
+            int a = default, b = default;
+            cui__mc_span(&ev[i], &a, &b);
+            if (((((((((unchecked((int)(ev[i].all_day))) != 0) || ((b > a)))) || ((a < d0)))) || ((a > d1)))))
+                continue;
+            t[n++] = new cui__mc_timed { day = a, time = ev[i].time, i = i };
+        }
+        qsort(t, (int)((ulong)n), unchecked((int)(((ulong)(sizeof(cui__mc_timed))))), DotCcPointers.cui__mc_timed_cmp__unit_F59AE0EAE16328049B49C5187C65187AB45397A5399750A8A9F24FF884F04A12);
+        *@out = t;
+        return n;
+    }
+
+
+
+    public static unsafe cui__mc_geo cui__mc_geom(cui_rect r, int rows)
+    {
+        cui__mc_geo g = new cui__mc_geo { grid = r, cw = r.w / 7.0f, ch = ((float)(((rows > 0)) ? r.h / (float)rows : r.h)) };
+        return g;
+    }
+
+
+
+    public static unsafe cui_rect cui__mc_item_rect(cui__mc_geo* g, cui__mc_item* it)
+    {
+        float x = g->grid.x + it->c0 * g->cw + 3, w = (it->c1 - it->c0 + 1) * g->cw - 6;
+        float y = g->grid.y + it->row * g->ch + 26.0f + it->line * 19.0f;
+        return new cui_rect { x = x, y = y, w = w, h = 19.0f - 2 };
+    }
+
+
+
+    public static unsafe void cui__paint_month__unit_F59AE0EAE16328049B49C5187C65187AB45397A5399750A8A9F24FF884F04A12(cui_ctx* ui, cui_node* n, void* data)
+    {
+    byte* __dotcc_array_storage3 = null;
+    byte* __dotcc_array_storage4 = null;
+        cui__mc_paint* p = (cui__mc_paint*)(data);
+        cui_rect r = n->rect;
+        cui__mc_geo g = cui__mc_geom(r, p->rows);
+        float fs = cui__fs(ui, ui->theme.text_sm), fx = cui__fs(ui, ui->theme.text_xs);
+        float fh = cui__font_line_height(ui, 0, fs);
+        for (int row = 0; ((row < p->rows)); row++)
+            for (int c = 0; ((c < 7)); c++)
+            {
+                int day = p->start_day + row * 7 + c;
+                cui_rect cell = new cui_rect { x = r.x + c * g.cw, y = r.y + row * g.ch, w = g.cw, h = g.ch };
+                cui_date dt = cui_date_from_days(day);
+                CBool in_month = ((CBool)(dt.month == p->month)), sel = ((CBool)(((unchecked((int)(p->has_sel))) != 0) && ((day == p->sel))));
+                if ((((!(((unchecked((int)(p->compact))) != 0) )     ) && ((unchecked((int)(sel))) != 0))))
+                    cui_draw_rect(ui, cell, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, p->sel_bg);
+                else
+                    if ((((((!(((unchecked((int)(p->compact))) != 0) )     ) && ((day == p->hover_day)))) && ((p->hover_ev < 0)))))
+                        cui_draw_rect(ui, cell, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, p->hover_bg);
+                if (__dotcc_array_storage3 == null)
+                {
+                    byte* __dotcc_array_storage3_new = stackalloc byte[checked(sizeof(byte) * 4)];
+                    __dotcc_array_storage3 = __dotcc_array_storage3_new;
+                }
+                byte* num = (byte*)__dotcc_array_storage3;
+                new global::System.Span<byte>((void*)num, checked(sizeof(byte) * 4)).Clear();
+                snprintf(num, unchecked((int)(((ulong)((4 * sizeof(byte)))))), (DotCcLiterals.Pointer + DotCcLiterals.S66 /*"%d"*/)).Arg(dt.day).Done();
+                float nw = cui__text_width(ui, ((int)(((((day == p->today)) || ((unchecked((int)(sel))) != 0))) ? 1 : 0)), fs, num, -1, 1);
+                cui_color col = (((unchecked((int)(in_month))) != 0) ? p->fg : p->muted);
+                if (((unchecked((int)(p->compact))) != 0))
+                {
+                    cui_vec2 ctr = new cui_vec2 { x = cell.x + cell.w * 0.5f, y = cell.y + 16 };
+                    if (((unchecked((int)(sel))) != 0))
+                    {
+                        cui_draw_circle(ui, ctr, 13, p->fg);
+                        col = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BACKGROUND];
+                    }
+                    else
+                        if (((day == p->today)))
+                        {
+                            cui_draw_arc(ui, ctr, 12.5f, 0, 2 * 3.14159265358979323846f, 1.5f, p->accent);
+                            col = p->accent;
+                        }
+                    cui__draw_text_line(ui, ((int)(((((day == p->today)) || ((unchecked((int)(sel))) != 0))) ? 1 : 0)), fs, ctr.x - nw * 0.5f, ctr.y - fh * 0.5f, col, num, -1, 1);
+                    if (((((unchecked((int)(p->focused))) != 0) && ((day == p->focus_day)))))
+                        cui__draw_focus_ring(ui, new cui_rect { x = ctr.x - 15, y = ctr.y - 15, w = 30, h = 30 }, new cui_corners { tl = 15, tr = 15, br = 15, bl = 15 }, 1);
+                }
+                else
+                {
+                    float nx = cell.x + 8, ny = cell.y + 5;
+                    if (((day == p->today)))
+                    {
+                        cui_draw_rect(ui, new cui_rect { x = nx - 5, y = ny - 1, w = ((float)(((22.0f > nw + 10)) ? 22.0f : nw + 10)), h = 20 }, new cui_corners { tl = 10, tr = 10, br = 10, bl = 10 }, p->accent);
+                        col = p->accent_fg;
+                        nx += (((float)(((22.0f > nw + 10)) ? 22.0f : nw + 10)) - nw - 10) * 0.5f;
+                    }
+                    cui__draw_text_line(ui, ((int)(((((day == p->today)) || ((unchecked((int)(sel))) != 0))) ? 1 : 0)), fs, nx, ny + (18 - fh) * 0.5f, col, num, -1, 1);
+                    if (((((unchecked((int)(p->focused))) != 0) && ((day == p->focus_day)))))
+                        cui__draw_focus_ring(ui, cui__rect_inset(cell, 2), new cui_corners { tl = 4, tr = 4, br = 4, bl = 4 }, 1);
+                }
+            }
+        if ((!(((unchecked((int)(p->compact))) != 0) )     ))
+        {
+            for (int row__1 = 1; ((row__1 < p->rows)); row__1++)
+                cui_draw_rect(ui, new cui_rect { x = r.x, y = r.y + row__1 * g.ch - 0.5f, w = r.w, h = 1 }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, p->line);
+            for (int c__1 = 1; ((c__1 < 7)); c__1++)
+                cui_draw_rect(ui, new cui_rect { x = r.x + c__1 * g.cw - 0.5f, y = r.y, w = 1, h = r.h }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, p->line);
+        }
+        for (int k = 0; ((k < p->nitems)); k++)
+        {
+            cui__mc_item* it = &p->items[k];
+            if (((unchecked((int)(p->compact))) != 0))
+                continue;
+            cui_rect q = cui__mc_item_rect(&g, it);
+            if (((q.w < 4)))
+                continue;
+            CBool hov = ((CBool)(((it->ev >= 0)) && ((it->ev == p->hover_ev))));
+            if (((it->kind == 2)))
+            {
+                byte* s = cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S210 /*"+%d more"*/), it->more);
+                cui_color mc = (((((it->day == p->hover_day)) && ((p->hover_ev == -2)))) ? p->fg : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY]);
+                cui__draw_text_ellipsis(ui, 1, fx, q.x + 6, q.y + (q.h - cui__font_line_height(ui, 1, fx)) * 0.5f, q.w - 8, mc, s, (int)strlen(s), 0);
+                continue;
+            }
+            cui_month_event* e = &p->ev[it->ev];
+            cui_color tone = cui__tone_color(ui, (cui_tone)(((int)((((int)e->tone) != 0) ? (int)(e->tone) : (int)(__DotCcEnum_6375695F746F6E65.CUI_TONE_INFO)))));
+            byte* title = p->titles[it->ev];
+            if (((it->kind == 0)))
+            {
+                cui_color bg = cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE], tone, ((float)((((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK)) ? ((float)(((unchecked((int)(hov))) != 0) ? 0.34f : 0.26f)) : ((float)(((unchecked((int)(hov))) != 0) ? 0.24f : 0.16f)))));
+                cui_corners cr = new cui_corners { tl = ((int)(((unchecked((int)(it->cont_l))) != 0) ? 0 : 4)), tr = ((int)(((unchecked((int)(it->cont_r))) != 0) ? 0 : 4)), br = ((int)(((unchecked((int)(it->cont_r))) != 0) ? 0 : 4)), bl = ((int)(((unchecked((int)(it->cont_l))) != 0) ? 0 : 4)) };
+                cui_rect bq = q;
+                if (((unchecked((int)(it->cont_l))) != 0))
+                {
+                    bq.x -= 3;
+                    bq.w += 3;
+                }
+                if (((unchecked((int)(it->cont_r))) != 0))
+                    bq.w += 3;
+                cui_draw_rect(ui, bq, cr, bg);
+                if ((!(((unchecked((int)(it->cont_l))) != 0) )     ))
+                    cui_draw_rect(ui, new cui_rect { x = bq.x, y = bq.y, w = 3, h = bq.h }, new cui_corners { tl = 4, tr = 0, br = 0, bl = 4 }, tone);
+                float tx = bq.x + ((int)(((unchecked((int)(it->cont_l))) != 0) ? 6 : 8));
+                cui__draw_text_ellipsis(ui, 1, fx, tx, q.y + (q.h - cui__font_line_height(ui, 1, fx)) * 0.5f, bq.x + bq.w - tx - 4, p->fg, title, (int)strlen(title), 0);
+            }
+            else
+            {
+                if (((unchecked((int)(hov))) != 0))
+                    cui_draw_rect(ui, q, new cui_corners { tl = 4, tr = 4, br = 4, bl = 4 }, p->hover_bg);
+                cui_draw_circle(ui, new cui_vec2 { x = q.x + 7, y = q.y + q.h * 0.5f }, 3, tone);
+                byte* tm = p->times[it->ev];
+                float tw = cui__text_width(ui, 0, fx, tm, -1, 1);
+                float ty = q.y + (q.h - cui__font_line_height(ui, 0, fx)) * 0.5f;
+                CBool show_time = ((CBool)(q.w > tw + 50));
+                if (((unchecked((int)(show_time))) != 0))
+                    cui__draw_text_line(ui, 0, fx, q.x + 15, ty, p->muted, tm, -1, 1);
+                float tx__1 = q.x + 15 + ((float)(((unchecked((int)(show_time))) != 0) ? tw + 5 : (float)(0)));
+                cui__draw_text_ellipsis(ui, 1, fx, tx__1, ty, q.x + q.w - tx__1 - 2, p->fg, title, (int)strlen(title), 0);
+            }
+        }
+        if (((unchecked((int)(p->compact))) != 0))
+        {
+            for (int row__2 = 0; ((row__2 < p->rows)); row__2++)
+                for (int c__2 = 0; ((c__2 < 7)); c__2++)
+                {
+                    int day__1 = p->start_day + row__2 * 7 + c__2, nd = 0;
+                    if (__dotcc_array_storage4 == null)
+                    {
+                        byte* __dotcc_array_storage4_new = stackalloc byte[checked(sizeof(cui_color) * 3)];
+                        __dotcc_array_storage4 = __dotcc_array_storage4_new;
+                    }
+                    cui_color* dots = (cui_color*)__dotcc_array_storage4;
+                    new global::System.Span<byte>((void*)dots, checked(sizeof(cui_color) * 3)).Clear();
+                    for (int k__1 = 0; ((((k__1 < p->nitems)) && ((nd < 3)))); k__1++)
+                    {
+                        cui__mc_item* it__1 = &p->items[k__1];
+                        if (((((((((it__1->row != row__2)) || ((c__2 < it__1->c0)))) || ((c__2 > it__1->c1)))) || ((it__1->ev < 0)))))
+                            continue;
+                        dots[nd++] = cui__tone_color(ui, (cui_tone)(((int)((((int)p->ev[it__1->ev].tone) != 0) ? (int)(p->ev[it__1->ev].tone) : (int)(__DotCcEnum_6375695F746F6E65.CUI_TONE_INFO)))));
+                    }
+                    ;
+                    float cx = r.x + c__2 * g.cw + g.cw * 0.5f - (nd - 1) * 3.5f, cy = r.y + row__2 * g.ch + 35;
+                    for (int k__2 = 0; ((k__2 < nd)); k__2++)
+                        cui_draw_circle(ui, new cui_vec2 { x = cx + k__2 * 7, y = cy }, 2.2f, dots[k__2]);
+                }
+        }
+    }
+
+
+
+    public static unsafe int cui__mc_agenda(cui_ctx* ui, uint id, cui_month_event* ev, int count, int day, cui_month_opts* o)
+    {
+        int clicked = -1;
+        cui_date d = cui_date_from_days(day);
+        byte** mn = stackalloc byte*[12];
+        byte** dn = stackalloc byte*[7];
+        cui__mc_names(ui, o, mn, dn);
+        int wd = cui__mc_weekday(day);
+        byte* head = ((byte*)((((void*)(o->day_names)) != null) ? cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S688 /*"%s %d %s"*/), o->day_names[wd], d.day, mn[d.month - 1]) : cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1324 /*"%s, %d %s"*/), cui__weekday_name(ui, wd), d.day, mn[d.month - 1])));
+        int col = cui__node_new(ui, id ^ 0xA6E0u);
+        ui->nodes[col].gap = 2;
+        ui->nodes[col].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+        ui->nodes[col].pad[0] = 6;
+        cui__open(ui, col);
+        int h = cui__text_node(ui, head, -1, 1, cui__fs(ui, ui->theme.text_sm), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0);
+        ui->nodes[h].line_height = 1.6f;
+        int* list = (int*)(cui__frame_alloc(ui, 4UL * (ulong)((int)(((1 > count)) ? 1 : count))));
+        int nl = 0;
+        for (int i = 0; ((i < count)); i++)
+        {
+            int a = default, b = default;
+            cui__mc_span(&ev[i], &a, &b);
+            if (((((day < a)) || ((day > b)))))
+                continue;
+            int k = nl++;
+            CBool ib = ((CBool)(((unchecked((int)(ev[i].all_day))) != 0) || ((b > a))));
+            while (((k > 0)))
+            {
+                int j = list[k - 1], ja = default, jb = default;
+                cui__mc_span(&ev[j], &ja, &jb);
+                CBool jbar = ((CBool)(((unchecked((int)(ev[j].all_day))) != 0) || ((jb > ja))));
+                if (((((unchecked((int)(jbar))) != 0) && (!(((unchecked((int)(ib))) != 0) )     ))))
+                    break;
+                if ((((((int)((int)(jbar)) == (int)((int)(ib)))) && ((((unchecked((int)(ib))) != 0) || ((ev[j].time <= ev[i].time)))))))
+                    break;
+                list[k] = j;
+                k--;
+            }
+            list[k] = i;
+        }
+        int shown = 0;
+        for (int li = 0; ((li < nl)); li++)
+        {
+            int i__1 = list[li], a__1 = default, b__1 = default;
+            cui__mc_span(&ev[i__1], &a__1, &b__1);
+            CBool bar = ((CBool)(((unchecked((int)(ev[i__1].all_day))) != 0) || ((b__1 > a__1))));
+            uint rid = cui__hash(&i__1, ((ulong)(sizeof(int))), id ^ 0xA6E1u);
+            cui_interact r = cui__interact(ui, rid, 1);
+            if (((((unchecked((int)(r.clicked))) != 0) || ((unchecked((int)(r.keyboard_activate))) != 0))))
+                clicked = i__1;
+            int row = cui__node_new(ui, rid);
+            cui_node* rn = &ui->nodes[row];
+            rn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
+            rn->gap = 10;
+            rn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+            rn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+            rn->pad[0] = rn->pad[2] = 7;
+            rn->pad[1] = rn->pad[3] = 8;
+            rn->radius = new cui_corners { tl = ui->theme.radius_control, tr = ui->theme.radius_control, br = ui->theme.radius_control, bl = ui->theme.radius_control };
+            if (((unchecked((int)(r.hovered))) != 0))
+            {
+                rn->bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_HOVER];
+                cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_HAND);
+            }
+            cui__mark_interactive(ui, row, 1);
+            cui__focus_ring(ui, row, ((float)(((unchecked((int)(r.focus_visible))) != 0) ? 1.0f : 0.0f)));
+            cui__open(ui, row);
+            int bar_n = cui__leaf(ui, 0, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)3 }, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)28 });
+            ui->nodes[bar_n].bg = cui__tone_color(ui, (cui_tone)(((int)((((int)ev[i__1].tone) != 0) ? (int)(ev[i__1].tone) : (int)(__DotCcEnum_6375695F746F6E65.CUI_TONE_INFO)))));
+            ui->nodes[bar_n].radius = new cui_corners { tl = 1.5f, tr = 1.5f, br = 1.5f, bl = 1.5f };
+            int tcol = cui__node_new(ui, 0);
+            ui->nodes[tcol].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+            ui->nodes[tcol].gap = 0;
+            cui__open(ui, tcol);
+            int tt = cui__text_node(ui, ((byte*)((((void*)(ev[i__1].title)) != null) ? ev[i__1].title : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), -1, 1, cui__fs(ui, ui->theme.text_sm), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0);
+            ui->nodes[tt].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+            ui->nodes[tt].line_height = 1.35f;
+            byte* sub = ((byte*)(((unchecked((int)(bar))) != 0) ? ((byte*)(((b__1 > a__1)) ? cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S758 /*"%d days"*/), b__1 - a__1 + 1) : (DotCcLiterals.Pointer + DotCcLiterals.S127 /*"All day"*/))) : cui__mc_time(ui, ev[i__1].time, o->hour12)));
+            int st = cui__text_node(ui, sub, -1, 0, cui__fs(ui, ui->theme.text_xs), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY], 0);
+            ui->nodes[st].line_height = 1.3f;
+            ui->nodes[st].flags |= (uint)(256);
+            cui__close(ui);
+            cui__close(ui);
+            shown++;
+        }
+        if ((!(((shown) != 0) )     ))
+        {
+            int e = cui__text_node(ui, (DotCcLiterals.Pointer + DotCcLiterals.S909 /*"No events"*/), -1, 0, cui__fs(ui, ui->theme.text_sm), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0);
+            ui->nodes[e].line_height = 1.8f;
+        }
+        cui__close(ui);
+        return clicked;
+    }
+
+
+
+    public static unsafe cui_month_result cui_month_calendar_ex(cui_ctx* ui, byte* id_str, cui_date* month, cui_month_event* events, int count, cui_month_opts* o)
+    {
+    byte* __dotcc_array_storage5 = null;
+        cui_month_opts d = default;
+        memset(&d, 0, ((ulong)(sizeof(cui_month_opts))));
+        if ((!((((void*)(o)) != null) )     ))
+            o = &d;
+        cui_month_result res = new cui_month_result { @event = -1, day_clicked = 0, day_activated = 0, month_changed = 0 };
+        if ((!((((void*)(events)) != null) )     ))
+            count = 0;
+        count = ((int)(((0 > count)) ? 0 : count));
+        uint id = cui_make_id(ui, ((byte*)((((void*)(id_str)) != null) ? id_str : (DotCcLiterals.Pointer + DotCcLiterals.S1300 /*"month"*/))));
+        uint gid = id ^ 0x6A1Du, pid = id ^ 0x6A1Eu;
+        cui__mc_state* st = (cui__mc_state*)(cui_state(ui, id, ((ulong)(sizeof(cui__mc_state)))));
+        cui_date today = (((o->today.year) != 0) ? o->today : cui_date_today());
+        int today_n = cui_date_to_days(today);
+        cui_date* mon = ((cui_date*)((((void*)(month)) != null) ? month : ((cui_date*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Cui.Globals.own__s1__unit_F59AE0EAE16328049B49C5187C65187AB45397A5399750A8A9F24FF884F04A12))));
+        if ((!(((mon->year) != 0) )     ))
+        {
+            mon->year = today.year;
+            mon->month = today.month;
+        }
+        mon->month = ((int)(((((int)(((mon->month > 1)) ? mon->month : 1)) < 12)) ? ((int)(((mon->month > 1)) ? mon->month : 1)) : 12));
+        if ((!(((unchecked((int)(st->init))) != 0) )     ))
+        {
+            st->hover_ev = -1;
+            st->hover_day = st->more_day = -1;
+            st->focus_day = ((int)((((((void*)(o->selected)) != null) && ((o->selected->year) != 0))) ? cui_date_to_days(*o->selected) : today_n));
+            st->init = 1;
+        }
+        int sel_n = ((int)((((((void*)(o->selected)) != null) && ((o->selected->year) != 0))) ? cui_date_to_days(*o->selected) : -1));
+        cui_push_id(ui, ((byte*)((((void*)(id_str)) != null) ? id_str : (DotCcLiterals.Pointer + DotCcLiterals.S1300 /*"month"*/))));
+        cui_rect pr = cui__prev_rect(ui, id);
+        CBool compact = ((CBool)(((pr.w > 0)) && ((pr.w < 520.0f))));
+        byte** mn = stackalloc byte*[12];
+        byte** dn = stackalloc byte*[7];
+        cui__mc_names(ui, o, mn, dn);
+        int col = cui__node_new(ui, id);
+        ui->nodes[col].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+        ui->nodes[col].gap = 8;
+        ui->nodes[col].self_align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_STRETCH);
+        cui__open(ui, col);
+        int head = cui__node_new(ui, 0);
+        ui->nodes[head].dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
+        ui->nodes[head].align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+        ui->nodes[head].gap = 4;
+        ui->nodes[head].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+        cui__open(ui, head);
+        int ht = cui__text_node(ui, cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1350 /*"%s %d"*/), mn[mon->month - 1], mon->year), -1, 1, cui__fs(ui, ((float)(((unchecked((int)(compact))) != 0) ? ui->theme.text_body + 1 : ui->theme.text_body + 3))), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0);
+        ui->nodes[ht].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+        ui->nodes[ht].line_height = 1.3f;
+        cui_button_opts bo = default;
+        memset(&bo, 0, ((ulong)(sizeof(cui_button_opts))));
+        bo.size = __DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM;
+        bo.variant = __DotCcEnum_6375695F627574746F6E5F76617269616E74.CUI_BUTTON_OUTLINE;
+        if (((unchecked((int)(cui_button_ex(ui, cui__today_text(ui), &bo)))) != 0))
+        {
+            res.month_changed = ((CBool)(((mon->year != today.year)) || ((mon->month != today.month))));
+            mon->year = today.year;
+            mon->month = today.month;
+            st->focus_day = today_n;
+        }
+        memset(&bo, 0, ((ulong)(sizeof(cui_button_opts))));
+        bo.size = __DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM;
+        bo.variant = __DotCcEnum_6375695F627574746F6E5F76617269616E74.CUI_BUTTON_GHOST;
+        bo.tooltip = (DotCcLiterals.Pointer + DotCcLiterals.S872 /*"Previous month"*/);
+        if (((unchecked((int)(cui_icon_button_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S535 /*""*/), &bo)))) != 0))
+            do
+            {
+                int m_ = mon->year * 12 + (mon->month - 1) + -1;
+                mon->year = m_ / 12;
+                mon->month = m_ % 12 + 1;
+                res.month_changed = 1;
+            }
+            while (false);
+        bo.tooltip = (DotCcLiterals.Pointer + DotCcLiterals.S468 /*"Next month"*/);
+        if (((unchecked((int)(cui_icon_button_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S411 /*""*/), &bo)))) != 0))
+            do
+            {
+                int m___1 = mon->year * 12 + (mon->month - 1) + 1;
+                mon->year = m___1 / 12;
+                mon->month = m___1 % 12 + 1;
+                res.month_changed = 1;
+            }
+            while (false);
+        cui__close(ui);
+        int fwd = ((int)(((((int)(((o->first_weekday > 0)) ? o->first_weekday : 0)) < 6)) ? ((int)(((o->first_weekday > 0)) ? o->first_weekday : 0)) : 6));
+        int wh = cui__node_new(ui, 0);
+        ui->nodes[wh].dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
+        ui->nodes[wh].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+        cui__open(ui, wh);
+        for (int c = 0; ((c < 7)); c++)
+        {
+            byte* nm = dn[(fwd + c) % 7];
+            if (__dotcc_array_storage5 == null)
+            {
+                byte* __dotcc_array_storage5_new = stackalloc byte[checked(sizeof(byte) * 8)];
+                __dotcc_array_storage5 = __dotcc_array_storage5_new;
+            }
+            byte* one = (byte*)__dotcc_array_storage5;
+            new global::System.Span<byte>((void*)one, checked(sizeof(byte) * 8)).Clear();
+            if (((((unchecked((int)(compact))) != 0) && (!((((void*)(o->day_names)) != null) )     ))))
+            {
+                snprintf(one, unchecked((int)(((ulong)((8 * sizeof(byte)))))), (DotCcLiterals.Pointer + DotCcLiterals.S1110 /*"%.*s"*/)).Arg(cui__utf8_next(nm, (int)strlen(nm), 0)).Arg(nm).Done();
+                nm = cui__frame_strdup(ui, one, -1);
+            }
+            int t = cui__text_node(ui, nm, -1, 1, cui__fs(ui, ui->theme.text_xs), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0);
+            ui->nodes[t].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = (float)1 };
+            ui->nodes[t].min_w = 0;
+            ui->nodes[t].text_align = (byte)(((int)(((unchecked((int)(compact))) != 0) ? (int)(__DotCcEnum_6375695F746578745F616C69676E.CUI_TEXT_CENTER) : (int)(__DotCcEnum_6375695F746578745F616C69676E.CUI_TEXT_LEFT))));
+            ui->nodes[t].pad[3] = ((int)(((unchecked((int)(compact))) != 0) ? 0 : 8));
+            ui->nodes[t].line_height = 1.6f;
+        }
+        cui__close(ui);
+        int first = cui_date_to_days(new cui_date { year = mon->year, month = mon->month, day = 1 });
+        int lead = (cui__mc_weekday(first) - fwd + 7) % 7;
+        int start_day = first - lead;
+        int rows = (lead + cui__mc_days_in__unit_F59AE0EAE16328049B49C5187C65187AB45397A5399750A8A9F24FF884F04A12(mon->year, mon->month) + 6) / 7;
+        float cell_h = ((float)(((unchecked((int)(compact))) != 0) ? (float)(46) : ((float)(((o->cell_height > 0)) ? o->cell_height : (float)(104)))));
+        int lines = ((int)(((unchecked((int)(compact))) != 0) ? 99 : ((int)(((1 > (int)((cell_h - 26.0f - 4) / 19.0f))) ? 1 : (int)((cell_h - 26.0f - 4) / 19.0f)))));
+        cui__mc_item* items = (cui__mc_item*)(cui__frame_alloc(ui, unchecked(((ulong)(sizeof(cui__mc_item))) * (ulong)(512))));
+        cui__mc_timed* timed = default;
+        int ntimed = cui__mc_collect(ui, events, count, start_day, start_day + rows * 7 - 1, &timed);
+        int nitems = cui__mc_layout(events, count, start_day, rows, lines, timed, ntimed, items, 512);
+        cui_interact r = cui__interact(ui, gid, 1);
+        cui_rect gr = cui__prev_rect(ui, gid);
+        int hover_ev = -1, hover_day = -1;
+        CBool on_more = 0;
+        if (((((unchecked((int)(r.hovered))) != 0) && ((gr.w > 0)))))
+        {
+            cui__mc_geo g = cui__mc_geom(gr, rows);
+            int c__1 = (int)floorf((ui->mx - gr.x) / g.cw), row = (int)floorf((ui->my - gr.y) / g.ch);
+            if (((((((((c__1 >= 0)) && ((c__1 < 7)))) && ((row >= 0)))) && ((row < rows)))))
+                hover_day = start_day + row * 7 + c__1;
+            if ((!(((unchecked((int)(compact))) != 0) )     ))
+                for (int k = 0; ((k < nitems)); k++)
+                {
+                    cui_rect q = cui__mc_item_rect(&g, &items[k]);
+                    if (((unchecked((int)(cui__rect_contains(q, ui->mx, ui->my)))) != 0))
+                    {
+                        hover_ev = items[k].ev;
+                        on_more = ((CBool)(items[k].kind == 2));
+                        break;
+                    }
+                }
+            if (((((hover_ev >= 0)) || ((unchecked((int)(on_more))) != 0))))
+                cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_HAND);
+        }
+        if (((((unchecked((int)(r.clicked))) != 0) && ((hover_day >= 0)))))
+        {
+            if (((hover_ev >= 0)))
+                res.@event = hover_ev;
+            else
+                if (((unchecked((int)(on_more))) != 0))
+                {
+                    st->more_day = hover_day;
+                    cui__popup_set(ui, pid, 1);
+                }
+                else
+                {
+                    sel_n = hover_day;
+                    res.day_clicked = 1;
+                    if (((((unchecked((int)(r.double_clicked))) != 0) || ((ui->click_count >= 2)))))
+                        res.day_activated = 1;
+                }
+            st->focus_day = hover_day;
+        }
+        if (((unchecked((int)(r.focused))) != 0))
+        {
+            int fd = st->focus_day, moved = 0;
+            if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_LEFT)))) != 0))
+                moved = -1;
+            if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_RIGHT)))) != 0))
+                moved = 1;
+            if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_UP)))) != 0))
+                moved = -7;
+            if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_DOWN)))) != 0))
+                moved = 7;
+            if (((moved) != 0))
+            {
+                fd += moved;
+                sel_n = fd;
+                res.day_clicked = 1;
+            }
+            if (((((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_PAGE_UP)))) != 0) || ((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_PAGE_DOWN)))) != 0))))
+            {
+                int k__1 = ((int)(((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_PAGE_UP)))) != 0) ? -1 : 1));
+                cui_date fdd = cui_date_from_days(fd);
+                int mm = fdd.year * 12 + fdd.month - 1 + k__1;
+                int y = mm / 12, m = mm % 12 + 1;
+                fd = cui_date_to_days(new cui_date { year = y, month = m, day = ((int)(((fdd.day < cui__mc_days_in__unit_F59AE0EAE16328049B49C5187C65187AB45397A5399750A8A9F24FF884F04A12(y, m))) ? fdd.day : cui__mc_days_in__unit_F59AE0EAE16328049B49C5187C65187AB45397A5399750A8A9F24FF884F04A12(y, m))) });
+                sel_n = fd;
+                res.day_clicked = 1;
+            }
+            if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_HOME)))) != 0))
+            {
+                fd = today_n;
+                sel_n = fd;
+                res.day_clicked = 1;
+            }
+            if (((((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_ENTER)))) != 0) || ((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_SPACE)))) != 0))))
+            {
+                sel_n = fd;
+                res.day_clicked = 1;
+                res.day_activated = cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_ENTER);
+            }
+            st->focus_day = fd;
+            cui_date fdd__1 = cui_date_from_days(fd);
+            if (((((fdd__1.year != mon->year)) || ((fdd__1.month != mon->month)))))
+            {
+                mon->year = fdd__1.year;
+                mon->month = fdd__1.month;
+                res.month_changed = 1;
+            }
+        }
+        if (((((unchecked((int)(res.day_clicked))) != 0) && (((void*)(o->selected)) != null))))
+            *o->selected = cui_date_from_days(sel_n);
+        if (((unchecked((int)(res.month_changed))) != 0))
+        {
+            first = cui_date_to_days(new cui_date { year = mon->year, month = mon->month, day = 1 });
+            lead = (cui__mc_weekday(first) - fwd + 7) % 7;
+            start_day = first - lead;
+            rows = (lead + cui__mc_days_in__unit_F59AE0EAE16328049B49C5187C65187AB45397A5399750A8A9F24FF884F04A12(mon->year, mon->month) + 6) / 7;
+            ntimed = cui__mc_collect(ui, events, count, start_day, start_day + rows * 7 - 1, &timed);
+            nitems = cui__mc_layout(events, count, start_day, rows, lines, timed, ntimed, items, 512);
+            hover_ev = -1;
+            hover_day = -1;
+        }
+        int grid = cui__leaf(ui, gid, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)(rows * cell_h) });
+        ui->nodes[grid].self_align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_STRETCH);
+        if ((!(((unchecked((int)(compact))) != 0) )     ))
+        {
+            ui->nodes[grid].border = 1;
+            ui->nodes[grid].border_color = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER];
+            ui->nodes[grid].radius = new cui_corners { tl = ui->theme.radius_control, tr = ui->theme.radius_control, br = ui->theme.radius_control, bl = ui->theme.radius_control };
+            ui->nodes[grid].flags |= (uint)(16);
+        }
+        cui__mark_interactive(ui, grid, 1);
+        cui__mc_paint* p = (cui__mc_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__mc_paint)))));
+        memset(p, 0, ((ulong)(sizeof(cui__mc_paint))));
+        p->start_day = start_day;
+        p->rows = rows;
+        p->today = today_n;
+        p->sel = sel_n;
+        p->has_sel = ((CBool)(sel_n >= 0));
+        p->hover_ev = ((int)(((unchecked((int)(on_more))) != 0) ? -2 : hover_ev));
+        p->hover_day = hover_day;
+        p->month = mon->month;
+        p->compact = compact;
+        p->cell_h = cell_h;
+        p->focused = r.focus_visible;
+        p->focus_day = st->focus_day;
+        p->items = items;
+        p->nitems = nitems;
+        p->ev = (cui_month_event*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui_month_event))) * (ulong)((int)(((1 > count)) ? 1 : count))));
+        p->titles = (byte**)(cui__frame_alloc(ui, ((ulong)(sizeof(byte*))) * (ulong)((int)(((1 > count)) ? 1 : count))));
+        p->times = (byte**)(cui__frame_alloc(ui, ((ulong)(sizeof(byte*))) * (ulong)((int)(((1 > count)) ? 1 : count))));
+        for (int k__2 = 0; ((k__2 < nitems)); k__2++)
+        {
+            int e = items[k__2].ev;
+            if (((((e < 0)) || (((void*)(p->titles[e])) != null))))
+                continue;
+            ((cui_month_event*)p->ev)[e] = events[e];
+            p->titles[e] = cui__frame_strdup(ui, ((byte*)((((void*)(events[e].title)) != null) ? events[e].title : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), -1);
+            p->times[e] = cui__mc_time(ui, events[e].time, o->hour12);
+        }
+        p->line = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER_SUBTLE];
+        p->fg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND];
+        p->muted = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED];
+        p->accent = cui__emphasis(ui);
+        p->accent_fg = ((((int)ui->accent == (int)__DotCcEnum_6375695F616363656E74.CUI_ACCENT_NEUTRAL)) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BACKGROUND] : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_ACCENT_FOREGROUND]);
+        p->sel_bg = cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE], ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0.045f);
+        p->hover_bg = cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE], ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0.025f);
+        ui->nodes[grid].paint = DotCcPointers.cui__paint_month__unit_F59AE0EAE16328049B49C5187C65187AB45397A5399750A8A9F24FF884F04A12;
+        ui->nodes[grid].paint_data = p;
+        ui->nodes[grid].bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE];
+        cui_popup* pp = cui__popup_get(ui, pid, 1);
+        if ((((((((((void*)(pp)) != null) && ((unchecked((int)(pp->open))) != 0))) && ((st->more_day >= 0)))) && (!(((unchecked((int)(compact))) != 0) )     ))))
+        {
+            int mrow = (st->more_day - start_day) / 7, mc = (st->more_day - start_day) % 7;
+            if (((((st->more_day < start_day)) || ((mrow >= rows)))))
+                cui__popup_set(ui, pid, 0);
+            else
+            {
+                cui__open(ui, grid);
+                cui_rect gr2 = (((gr.w > 0)) ? gr : new cui_rect { x = 0, y = 0, w = 700, h = rows * cell_h });
+                float cw = gr2.w / 7;
+                uint aid = id ^ 0x6A1Fu;
+                cui__absolute(ui, aid, mc * cw, mrow * cell_h + 26.0f + (lines - 1) * 19.0f, cw, 19.0f);
+                cui__close(ui);
+                if (((unchecked((int)(cui__popup_begin(ui, pid, aid, (int)(__DotCcEnum_6375695F706C6163656D656E74.CUI_PLACE_BOTTOM_START), 240, 10, 4, 0)))) != 0))
+                {
+                    cui_date md = cui_date_from_days(st->more_day);
+                    int t__1 = cui__text_node(ui, cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1350 /*"%s %d"*/), mn[md.month - 1], md.day), -1, 1, cui__fs(ui, ui->theme.text_sm), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0);
+                    ui->nodes[t__1].line_height = 1.6f;
+                    for (int i = 0; ((i < count)); i++)
+                    {
+                        int a = default, b = default;
+                        cui__mc_span(&events[i], &a, &b);
+                        if (((((st->more_day < a)) || ((st->more_day > b)))))
+                            continue;
+                        uint rid = cui__hash(&i, ((ulong)(sizeof(int))), id ^ 0x6A20u);
+                        cui_interact ir = cui__interact(ui, rid, 1);
+                        if (((((unchecked((int)(ir.clicked))) != 0) || ((unchecked((int)(ir.keyboard_activate))) != 0))))
+                        {
+                            res.@event = i;
+                            cui__popup_set(ui, pid, 0);
+                        }
+                        int row__1 = cui__node_new(ui, rid);
+                        cui_node* rn = &ui->nodes[row__1];
+                        rn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
+                        rn->gap = 8;
+                        rn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+                        rn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+                        rn->pad[0] = rn->pad[2] = 5;
+                        rn->pad[1] = rn->pad[3] = 6;
+                        rn->radius = new cui_corners { tl = 6, tr = 6, br = 6, bl = 6 };
+                        if (((unchecked((int)(ir.hovered))) != 0))
+                        {
+                            rn->bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_HOVER];
+                            cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_HAND);
+                        }
+                        cui__mark_interactive(ui, row__1, 1);
+                        cui__focus_ring(ui, row__1, ((float)(((unchecked((int)(ir.focus_visible))) != 0) ? 1.0f : 0.0f)));
+                        cui__open(ui, row__1);
+                        int dot = cui__leaf(ui, 0, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)8 }, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)8 });
+                        ui->nodes[dot].radius = new cui_corners { tl = 4, tr = 4, br = 4, bl = 4 };
+                        ui->nodes[dot].bg = cui__tone_color(ui, (cui_tone)(((int)((((int)events[i].tone) != 0) ? (int)(events[i].tone) : (int)(__DotCcEnum_6375695F746F6E65.CUI_TONE_INFO)))));
+                        int tt = cui__text_node(ui, ((byte*)((((void*)(events[i].title)) != null) ? events[i].title : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), -1, 0, cui__fs(ui, ui->theme.text_sm), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0);
+                        ui->nodes[tt].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+                        ui->nodes[tt].line_height = 1.3f;
+                        CBool bar = ((CBool)(((unchecked((int)(events[i].all_day))) != 0) || ((b > a))));
+                        int tm = cui__text_node(ui, ((byte*)(((unchecked((int)(bar))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S127 /*"All day"*/) : cui__mc_time(ui, events[i].time, o->hour12))), -1, 0, cui__fs(ui, ui->theme.text_xs), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0);
+                        ui->nodes[tm].flags |= (uint)(256);
+                        cui__close(ui);
+                    }
+                    cui__popup_end(ui);
+                }
+            }
+        }
+        if (((unchecked((int)(compact))) != 0))
+        {
+            int ag = cui__mc_agenda(ui, id, events, count, ((int)(((sel_n >= 0)) ? sel_n : st->focus_day)), o);
+            if (((ag >= 0)))
+                res.@event = ag;
+        }
+        cui__close(ui);
+        cui_pop_id(ui);
+        ui->last_id = gid;
+        return res;
+    }
+
+
+
+    public static unsafe void cui_set_strings(cui_ctx* ui, cui_strings* strings)
+    {
+        ui->strings = strings;
+    }
+
+
+
+    public static unsafe cui_strings* cui_get_strings(cui_ctx* ui)
+    {
+        return ui->strings;
+    }
+
+
+
+    public static unsafe byte* cui__month_name(cui_ctx* ui, int m)
+    {
+        int k = (m % 12 + 12) % 12;
+        byte* s = ((byte*)((((void*)(ui->strings)) != null) ? ((byte**)&ui->strings->month)[k] : null));
+        return ((byte*)((((void*)(s)) != null) ? s : ((byte**)&(((cui_strings*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Cui.Globals.cui__english__unit_9A0CA1C3A4BC9D1780ACAEB1DDE218835006FE299E89C2B80DDB96D56690F8D2)))->month)[k]));
+    }
+
+
+
+    public static unsafe byte* cui__month_short(cui_ctx* ui, int m)
+    {
+        int k = (m % 12 + 12) % 12;
+        byte* s = ((byte*)((((void*)(ui->strings)) != null) ? ((byte**)&ui->strings->month_short)[k] : null));
+        return ((byte*)((((void*)(s)) != null) ? s : ((byte**)&(((cui_strings*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Cui.Globals.cui__english__unit_9A0CA1C3A4BC9D1780ACAEB1DDE218835006FE299E89C2B80DDB96D56690F8D2)))->month_short)[k]));
+    }
+
+
+
+    public static unsafe byte* cui__weekday_name(cui_ctx* ui, int d)
+    {
+        int k = (d % 7 + 7) % 7;
+        byte* s = ((byte*)((((void*)(ui->strings)) != null) ? ((byte**)&ui->strings->weekday)[k] : null));
+        return ((byte*)((((void*)(s)) != null) ? s : ((byte**)&(((cui_strings*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Cui.Globals.cui__english__unit_9A0CA1C3A4BC9D1780ACAEB1DDE218835006FE299E89C2B80DDB96D56690F8D2)))->weekday)[k]));
+    }
+
+
+
+    public static unsafe byte* cui__weekday_short(cui_ctx* ui, int d)
+    {
+        int k = (d % 7 + 7) % 7;
+        byte* s = ((byte*)((((void*)(ui->strings)) != null) ? ((byte**)&ui->strings->weekday_short)[k] : null));
+        return ((byte*)((((void*)(s)) != null) ? s : ((byte**)&(((cui_strings*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Cui.Globals.cui__english__unit_9A0CA1C3A4BC9D1780ACAEB1DDE218835006FE299E89C2B80DDB96D56690F8D2)))->weekday_short)[k]));
+    }
+
+
+
+    public static unsafe byte* cui__weekday_min(cui_ctx* ui, int d)
+    {
+        int k = (d % 7 + 7) % 7;
+        byte* s = ((byte*)((((void*)(ui->strings)) != null) ? ((byte**)&ui->strings->weekday_min)[k] : null));
+        return ((byte*)((((void*)(s)) != null) ? s : ((byte**)&(((cui_strings*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Cui.Globals.cui__english__unit_9A0CA1C3A4BC9D1780ACAEB1DDE218835006FE299E89C2B80DDB96D56690F8D2)))->weekday_min)[k]));
+    }
+
+
+
+    public static unsafe byte* cui__today_text(cui_ctx* ui)
+    {
+        return ((byte*)((((((void*)(ui->strings)) != null) && (((void*)(ui->strings->today)) != null))) ? ui->strings->today : global::Managed.Cui.Cui.Globals.cui__english__unit_9A0CA1C3A4BC9D1780ACAEB1DDE218835006FE299E89C2B80DDB96D56690F8D2.today));
+    }
+
+
+
+    public static unsafe byte* cui__size_text(cui_ctx* ui, double v)
+    {
+        if (((v < 1000)))
+            return cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S172 /*"%.0f bytes"*/), v);
+        int k = 0;
+        v /= 1000;
+        while (((((v >= 1000)) && ((k < 3)))))
+        {
+            v /= 1000;
+            k++;
+        }
+        return cui__frame_printf(ui, ((byte*)(((v < 10)) ? (DotCcLiterals.Pointer + DotCcLiterals.S179 /*"%.1f %s"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S391 /*"%.0f %s"*/))), v, global::Managed.Cui.Cui.Globals.u__s0__unit_9A0CA1C3A4BC9D1780ACAEB1DDE218835006FE299E89C2B80DDB96D56690F8D2[k]);
+    }
+
+
+
+    public static unsafe int cui__utc_offset(long t64)
+    {
+        long t = (long)t64;
+        tm lt = default, gt = default;
+        _ = ((tm*)(localtime_r(&t, &lt)));
+        _ = ((tm*)(gmtime_r(&t, &gt)));
+        int d = (lt.tm_year - gt.tm_year) * 366 + (lt.tm_yday - gt.tm_yday);
+        if (((d > 1)))
+            d = -1;
+        if (((d < -1)))
+            d = 1;
+        return d * 1440 + (lt.tm_hour - gt.tm_hour) * 60 + (lt.tm_min - gt.tm_min);
+    }
+
+
+
+    public static unsafe byte* cui__dt_duration(cui_ctx* ui, float s)
+    {
+        if ((!(((s >= 0)) )     ))
+            return (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/);
+        int t = (int)(s + 0.5f);
+        if (((t < 60)))
+            return cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1153 /*"%ds"*/), t);
+        if (((t < 3600)))
+            return cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1256 /*"%dm %02ds"*/), t / 60, t % 60);
+        return cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S178 /*"%dh %02dm"*/), t / 3600, t / 60 % 60);
+    }
+
+
+
+    public static unsafe byte* cui__kv_problem(cui_kv_pair* pairs, int n, int i)
+    {
+        cui_kv_pair* p = &pairs[i];
+        if ((!(((p->key[0]) != 0) )     ))
+            return null;
+        for (byte* c = p->key; ((*c) != 0); c++)
+            if (((((*c == 32)) || ((*c == 9)))))
+                return (DotCcLiterals.Pointer + DotCcLiterals.S404 /*"Has a space"*/);
+        if ((!(((unchecked((int)(p->enabled))) != 0) )     ))
+            return null;
+        for (int j = 0; ((((j < i)) && ((j < n)))); j++)
+            if (((((unchecked((int)(pairs[j].enabled))) != 0) && (!(((strcmp(pairs[j].key, p->key)) != 0) )     ))))
+                return (DotCcLiterals.Pointer + DotCcLiterals.S1385 /*"Used twice"*/);
+        return null;
+    }
+
+
+
+    public static unsafe CBool cui__kv_row(cui_ctx* ui, cui_kv_editor_opts* o, cui_kv_pair* pairs, int* n, int i, CBool fresh, CBool narrow, CBool* removed)
+    {
+        cui_kv_pair* p = &pairs[i];
+        CBool changed = 0;
+        cui_push_id_int(ui, i);
+        int row = cui__node_new(ui, 0);
+        cui_node* rn = &ui->nodes[row];
+        rn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
+        rn->gap = 8;
+        rn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+        rn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_START);
+        cui__open(ui, row);
+        if ((!(((unchecked((int)(o->no_toggles))) != 0) )     ))
+        {
+            cui_check_opts co = default;
+            memset(&co, 0, ((ulong)(sizeof(cui_check_opts))));
+            co.disabled = ((CBool)(((unchecked((int)(fresh))) != 0) || ((unchecked((int)(o->read_only))) != 0)));
+            CBool on = ((int)(((unchecked((int)(fresh))) != 0) ? 0 : (int)((int)(p->enabled))));
+            if (((((unchecked((int)(cui_checkbox_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1174 /*"##on"*/), &on, &co)))) != 0) && (!(((unchecked((int)(fresh))) != 0) )     ))))
+            {
+                p->enabled = on;
+                changed = 1;
+            }
+            ui->nodes[ui->last_node].pad[0] = 6;
+        }
+        int fields = row;
+        if (((unchecked((int)(narrow))) != 0))
+        {
+            fields = cui__node_new(ui, 0);
+            ui->nodes[fields].gap = 4;
+            ui->nodes[fields].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+            cui__open(ui, fields);
+        }
+        cui_input_opts io = default;
+        memset(&io, 0, ((ulong)(sizeof(cui_input_opts))));
+        io.size = __DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM;
+        io.read_only = o->read_only;
+        io.placeholder = ((byte*)((((void*)(o->key_placeholder)) != null) ? o->key_placeholder : (DotCcLiterals.Pointer + DotCcLiterals.S1112 /*"Key"*/)));
+        io.width = (((unchecked((int)(narrow))) != 0) ? new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 } : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = (float)2 });
+        io.error = ((byte*)(((unchecked((int)(fresh))) != 0) ? null : cui__kv_problem(pairs, *n, i)));
+        if (((cui_input_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1233 /*"key"*/), p->key, ((ulong)((64 * sizeof(byte)))), &io) & 1) != 0))
+            changed = 1;
+        io.placeholder = ((byte*)((((void*)(o->value_placeholder)) != null) ? o->value_placeholder : (DotCcLiterals.Pointer + DotCcLiterals.S1120 /*"Value"*/)));
+        io.width = (((unchecked((int)(narrow))) != 0) ? new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 } : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = (float)3 });
+        io.error = null;
+        io.password = p->secret;
+        if (((cui_input_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S236 /*"value"*/), p->value, ((ulong)((256 * sizeof(byte)))), &io) & 1) != 0))
+            changed = 1;
+        if (((unchecked((int)(narrow))) != 0))
+            cui__close(ui);
+        cui_button_opts bo = default;
+        memset(&bo, 0, ((ulong)(sizeof(cui_button_opts))));
+        bo.size = __DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM;
+        bo.variant = __DotCcEnum_6375695F627574746F6E5F76617269616E74.CUI_BUTTON_GHOST;
+        if ((!(((unchecked((int)(o->no_secrets))) != 0) )     ))
+        {
+            bo.tooltip = ((byte*)(((unchecked((int)(p->secret))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S1375 /*"Secret: shown as dots"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S653 /*"Mark as secret"*/)));
+            bo.disabled = ((CBool)(((unchecked((int)(o->read_only))) != 0) || ((unchecked((int)(fresh))) != 0)));
+            bo.color = (((unchecked((int)(p->secret))) != 0) ? new cui_color { r = (byte)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND, g = 0xC5, b = 0x1D, a = 0 } : new cui_color { r = (byte)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED, g = 0xC5, b = 0x1D, a = 0 });
+            if (((unchecked((int)(cui_icon_button_ex(ui, ((byte*)(((unchecked((int)(p->secret))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S761 /*""*/) : (DotCcLiterals.Pointer + DotCcLiterals.S1427 /*""*/))), &bo)))) != 0))
+            {
+                p->secret = (((unchecked((int)(p->secret))) != 0) ? 0 : 1);
+                changed = 1;
+            }
+            bo.color = new cui_color {  };
+        }
+        if ((!(((unchecked((int)(o->read_only))) != 0) )     ))
+        {
+            bo.tooltip = (DotCcLiterals.Pointer + DotCcLiterals.S1185 /*"Remove"*/);
+            bo.disabled = fresh;
+            if (((((unchecked((int)(cui_icon_button_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1040 /*""*/), &bo)))) != 0) && (!(((unchecked((int)(fresh))) != 0) )     ))))
+                *removed = 1;
+        }
+        cui__close(ui);
+        cui_pop_id(ui);
+        if (((((unchecked((int)(fresh))) != 0) && ((((p->key[0]) != 0) || ((p->value[0]) != 0))))))
+        {
+            p->enabled = 1;
+            (*n)++;
+            changed = 1;
+        }
+        return changed;
+    }
+
+
+
+    public static unsafe CBool cui_kv_editor_ex(cui_ctx* ui, byte* id_str, cui_kv_pair* pairs, int* count, int capacity, cui_kv_editor_opts* o)
+    {
+        cui_kv_editor_opts d = default;
+        memset(&d, 0, ((ulong)(sizeof(cui_kv_editor_opts))));
+        if ((!((((void*)(o)) != null) )     ))
+            o = &d;
+        if ((((((!((((void*)(pairs)) != null) )     ) || (!((((void*)(count)) != null) )     ))) || ((capacity <= 0)))))
+            return 0;
+        int n = ((int)(((((int)(((*count > 0)) ? *count : 0)) < capacity)) ? ((int)(((*count > 0)) ? *count : 0)) : capacity));
+        uint id = cui_make_id(ui, id_str);
+        cui_rect pr = cui__prev_rect(ui, id);
+        CBool narrow = ((CBool)(((pr.w > 0)) && ((pr.w < 480.0f))));
+        cui_push_id(ui, id_str);
+        CBool fresh_row = ((CBool)((!(((unchecked((int)(o->read_only))) != 0) )     ) && ((n < capacity))));
+        if (((unchecked((int)(fresh_row))) != 0))
+        {
+            cui_push_id_int(ui, n);
+            uint k = cui_make_id(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1233 /*"key"*/)), v = cui_make_id(ui, (DotCcLiterals.Pointer + DotCcLiterals.S236 /*"value"*/));
+            cui_pop_id(ui);
+            if (((((ui->focus != k)) && ((ui->focus != v)))))
+                memset(&pairs[n], 0, ((ulong)(sizeof(cui_kv_pair))));
+        }
+        int col = cui__node_new(ui, id);
+        cui_node* cn = &ui->nodes[col];
+        cn->gap = ((int)(((unchecked((int)(narrow))) != 0) ? 12 : 6));
+        cn->w = ((((int)o->width.kind) != 0) ? o->width : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 });
+        cui__open(ui, col);
+        CBool changed = 0;
+        int remove = -1;
+        int rows = n + ((int)(((unchecked((int)(fresh_row))) != 0) ? 1 : 0));
+        for (int i = 0; ((i < rows)); i++)
+        {
+            CBool removed = 0, fresh = ((CBool)(((i == n)) && ((unchecked((int)(fresh_row))) != 0)));
+            int before = n;
+            if (((unchecked((int)(cui__kv_row(ui, o, pairs, &n, i, fresh, narrow, &removed)))) != 0))
+                changed = 1;
+            if (((unchecked((int)(removed))) != 0))
+                remove = i;
+            if (((n != before)))
+                break;
+        }
+        cui__close(ui);
+        cui_pop_id(ui);
+        if (((((remove >= 0)) && ((remove < n)))))
+        {
+            memmove(&pairs[remove], &pairs[remove + 1], ((ulong)(sizeof(cui_kv_pair))) * (ulong)(n - remove - 1));
+            n--;
+            memset(&pairs[n], 0, ((ulong)(sizeof(cui_kv_pair))));
+            changed = 1;
+        }
+        *count = n;
+        ui->last_id = id;
+        return changed;
+    }
+
+
+
+    public static unsafe cui_color cui__prb_color(cui_ctx* ui, cui_severity s)
+    {
+        switch ((int)s)
+        {
+            case (int)__DotCcEnum_6375695F7365766572697479.CUI_SEVERITY_ERROR:
+                return ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_DANGER];
+            case (int)__DotCcEnum_6375695F7365766572697479.CUI_SEVERITY_WARNING:
+                return ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_WARNING];
+            case (int)__DotCcEnum_6375695F7365766572697479.CUI_SEVERITY_INFO:
+                return ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_INFO];
+            default:
+                return ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED];
+        }
+    }
+
+
+
+    public static unsafe byte* cui__prb_file(cui_diagnostic* g)
+    {
+        return ((byte*)((((((void*)(g->file)) != null) && ((g->file[0]) != 0))) ? g->file : (DotCcLiterals.Pointer + DotCcLiterals.S1190 /*"No file"*/)));
+    }
+
+
+
+    public static unsafe CBool cui__prb_folded(cui__prb_state* s, uint h)
+    {
+        for (int i = 0; ((i < s->nfolded)); i++)
+            if (((s->folded[i] == h)))
+                return 1;
         return 0;
     }
 
 
 
-    public static unsafe void cui_flame_sort(cui_flame_span* spans, int count)
+    public static unsafe void cui__prb_fold(cui__prb_state* s, uint h, CBool fold)
     {
-        if ((((((void*)(spans)) != null) && ((count > 1)))))
-            qsort(spans, (int)((ulong)count), unchecked((int)(((ulong)(sizeof(cui_flame_span))))), DotCcPointers.cui__fl_cmp__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA);
-    }
-
-
-
-    public static unsafe cui_rect cui_flame_span_rect(cui_ctx* ui, uint flame, cui_flame_span* span)
-    {
-        cui_rect none = new cui_rect { x = 0, y = 0, w = 0, h = 0 };
-        if ((((!((((void*)(span)) != null) )     ) || (!(((unchecked((int)(cui__has_prev_rect(ui, flame)))) != 0) )     ))))
-            return none;
-        cui__fl_state* st = (cui__fl_state*)(cui_state(ui, flame ^ 0xF1A3u, ((ulong)(sizeof(cui__fl_state)))));
-        if ((((!(((unchecked((int)(st->valid))) != 0) )     ) || (!(((st->t1 > st->t0)) )     ))))
-            return none;
-        double k = st->plot_w / (st->t1 - st->t0);
-        double x0 = st->plot_x + (span->start - st->t0) * k, x1 = st->plot_x + (span->end - st->t0) * k;
-        float y = st->body_y + span->depth * st->row_h - st->scroll;
-        cui_rect b = st->body;
-        if (((((((((((x1 < b.x)) || ((x0 > b.x + b.w)))) || ((y + st->row_h - 1 < b.y)))) || ((y > b.y + b.h)))) || ((span->depth < 0)))))
-            return none;
-        cui_rect r = new cui_rect { x = (float)x0, y = y, w = (float)(x1 - x0), h = st->row_h - 1 };
-        return r;
-    }
-
-
-
-    public static unsafe double cui__wf_total__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_net_request* q)
-    {
-        double t = 0;
-        for (int k = 0; ((k < 6)); k++)
-            t += ((float)(((q->timing[k] > 0)) ? q->timing[k] : (float)(0)));
-        return t;
-    }
-
-
-
-    public static unsafe cui_color cui__wf_color__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_ctx* ui, int k)
-    {
-        if (((k == 0)))
-            return ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED];
-        return cui__tone_color(ui, global::Managed.Cui.Cui.Globals.tones__s2__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA[k]);
-    }
-
-
-
-    public static unsafe void cui__wf_lines__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_ctx* ui, cui__wf_scale* b, cui_rect r, float px0, float k)
-    {
-        if (((b->dom > 0)))
-            cui_draw_rect(ui, new cui_rect { x = floorf(px0 + (float)(b->dom * k)), y = r.y, w = 1, h = r.h }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, cui_alpha(cui__tone_color(ui, __DotCcEnum_6375695F746F6E65.CUI_TONE_INFO), 0.8f));
-        if (((b->load > 0)))
-            cui_draw_rect(ui, new cui_rect { x = floorf(px0 + (float)(b->load * k)), y = r.y, w = 1, h = r.h }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, cui_alpha(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_DANGER], 0.8f));
-    }
-
-
-
-    public static unsafe void cui__paint_wf_bar__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_ctx* ui, cui_node* n, void* data)
-    {
-        cui__wf_bar* bar = (cui__wf_bar*)(data);
-        cui__wf_scale* b = bar->sc;
-        cui_rect r = n->rect;
-        float px0 = r.x + 10.0f, pw = ((float)(((1.0f > r.w - 2 * 10.0f)) ? 1.0f : r.w - 2 * 10.0f));
-        float k = (float)(pw / b->end);
-        cui_color grid = cui_alpha(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER_SUBTLE], ((float)((((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK)) ? 0.8f : 1.0f)));
-        for (int q = 1; ((((((b->step > 0)) && ((q * b->step <= b->end + 1e-9)))) && ((q < 400)))); q++)
-            cui_draw_rect(ui, new cui_rect { x = floorf(px0 + (float)(q * b->step * k)), y = r.y, w = 1, h = r.h }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, grid);
-        float x = px0 + (float)(bar->start * k), cy = r.y + r.h * 0.5f, h = 10;
-        for (int ph = 0; ((ph < 6)); ph++)
-        {
-            float w = ((float)(((bar->timing[ph] > 0)) ? (float)(bar->timing[ph] * k) : (float)(0)));
-            if (((w <= 0)))
-                continue;
-            cui_color c = cui__wf_color__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, ph);
-            if (((ph == 0)))
-                cui_draw_rect(ui, new cui_rect { x = x, y = cy - 1, w = w, h = 2 }, new cui_corners { tl = 1, tr = 1, br = 1, bl = 1 }, cui_alpha(c, 0.6f));
-            else
+        for (int i = 0; ((i < s->nfolded)); i++)
+            if (((s->folded[i] == h)))
             {
-                cui_color fill = (((ph == 4)) ? cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE], c, 0.55f) : c);
-                cui_draw_rect(ui, new cui_rect { x = x, y = cy - h * 0.5f, w = ((float)(((1.0f > w)) ? 1.0f : w)), h = h }, new cui_corners { tl = ((float)(((2.0f < w * 0.5f)) ? 2.0f : w * 0.5f)), tr = ((float)(((2.0f < w * 0.5f)) ? 2.0f : w * 0.5f)), br = ((float)(((2.0f < w * 0.5f)) ? 2.0f : w * 0.5f)), bl = ((float)(((2.0f < w * 0.5f)) ? 2.0f : w * 0.5f)) }, fill);
+                if ((!(((unchecked((int)(fold))) != 0) )     ))
+                    s->folded[i] = s->folded[--s->nfolded];
+                return;
             }
-            x += w;
-        }
-        cui__wf_lines__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, b, r, px0, k);
+        if (((((unchecked((int)(fold))) != 0) && ((s->nfolded < 64)))))
+            s->folded[s->nfolded++] = h;
     }
 
 
 
-    public static unsafe void cui__paint_wf_head__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_ctx* ui, cui_node* n, void* data)
+    public static unsafe void cui__paint_pb_dir__unit_73119C63EA392BD1C6B4BE8E517D61496FC6027289AD2ADDFA9A4E297246D37B(cui_ctx* ui, cui_node* n, void* data)
     {
-        cui__wf_scale* b = (cui__wf_scale*)(data);
-        cui_rect r = n->rect;
-        float px0 = r.x + 10.0f, pw = ((float)(((1.0f > r.w - 2 * 10.0f)) ? 1.0f : r.w - 2 * 10.0f));
-        b->step = cui__fl_ruler__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, r, px0, pw, 0, b->end, 0, 0);
-        cui__wf_lines__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, b, new cui_rect { x = r.x, y = r.y + r.h - 6, w = r.w, h = 6 }, px0, (float)(pw / b->end));
+        ;
+        *(CBool*)data = n->rtl;
     }
 
 
 
-    public static unsafe void cui__wf_cell__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_ctx* ui, byte* text, float w, int font, cui_color c, CBool end)
+    public static unsafe CBool cui__prb_passes(cui__prbf* f, cui_diagnostic* g)
     {
-        int t = cui__text_node(ui, text, -1, font, cui__fs(ui, ui->theme.text_xs), c, 0);
-        cui_node* tn = &ui->nodes[t];
-        tn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)w };
-        tn->flags |= unchecked((uint)((16 | 256)));
-        if (((unchecked((int)(end))) != 0))
-            tn->text_align = (byte)(__DotCcEnum_6375695F746578745F616C69676E.CUI_TEXT_END);
+        int sev = ((int)(((((int)((((int)g->severity > 0)) ? (int)g->severity : 0)) < 3)) ? ((int)((((int)g->severity > 0)) ? (int)g->severity : 0)) : 3));
+        if ((!(((unchecked((int)(((CBool*)&f->s->show)[sev]))) != 0) )     ))
+            return 0;
+        byte* q = f->s->query;
+        if ((!(((q[0]) != 0) )     ))
+            return 1;
+        return ((CBool)(((((((unchecked((int)(cui__contains_ci(((byte*)((((void*)(g->message)) != null) ? g->message : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), q)))) != 0) || ((unchecked((int)(cui__contains_ci(cui__prb_file(g), q)))) != 0))) || (((((void*)(g->code)) != null) && ((unchecked((int)(cui__contains_ci(g->code, q)))) != 0))))) || (((((void*)(g->source)) != null) && ((unchecked((int)(cui__contains_ci(g->source, q)))) != 0)))));
     }
 
 
 
-    public static unsafe void cui__wf_head__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__wff* f)
+    public static unsafe void cui__prb_rows(cui__prbf* f)
     {
         cui_ctx* ui = f->ui;
-        int h = cui__node_new(ui, 0);
-        cui_node* hn = &ui->nodes[h];
-        hn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
-        hn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        hn->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)28.0f };
-        hn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
-        hn->gap = 8;
-        hn->pad[3] = 10;
-        hn->bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE_MUTED];
-        hn->border_color = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER];
-        cui__open(ui, h);
-        cui_color c = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED];
-        cui__wf_cell__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, (DotCcLiterals.Pointer + DotCcLiterals.S473 /*"Name"*/), f->name_w, 1, c, 0);
-        if ((!(((unchecked((int)(f->narrow))) != 0) )     ))
-            cui__wf_cell__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, (DotCcLiterals.Pointer + DotCcLiterals.S545 /*"Method"*/), 48, 1, c, 0);
-        cui__wf_cell__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1001 /*"Status"*/), 44, 1, c, 0);
-        if ((!(((unchecked((int)(f->narrow))) != 0) )     ))
+        int n = f->n;
+        ulong nn = (ulong)((int)(((1 > n)) ? 1 : n));
+        int* gid = (int*)(cui__frame_alloc(ui, 4UL * nn));
+        f->groups = (cui__prb_group*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__prb_group))) * nn));
+        int cap = 16;
+        while (((cap < n * 2)))
+            cap *= 2;
+        int* table = (int*)(cui__frame_alloc(ui, 4UL * (ulong)cap));
+        for (int i = 0; ((i < cap)); i++)
+            table[i] = -1;
+        for (int i__1 = 0; ((i__1 < n)); i__1++)
         {
-            cui__wf_cell__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, (DotCcLiterals.Pointer + DotCcLiterals.S930 /*"Type"*/), 56, 1, c, 0);
-            cui__wf_cell__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, (DotCcLiterals.Pointer + DotCcLiterals.S109 /*"Size"*/), 60, 1, c, 1);
+            cui_diagnostic* g = &f->d[i__1];
+            f->total[((int)(((((int)((((int)g->severity > 0)) ? (int)g->severity : 0)) < 3)) ? ((int)((((int)g->severity > 0)) ? (int)g->severity : 0)) : 3))]++;
+            if ((!(((unchecked((int)(cui__prb_passes(f, g)))) != 0) )     ))
+            {
+                gid[i__1] = -1;
+                continue;
+            }
+            byte* file = cui__prb_file(g);
+            uint h = cui__hash_str(file, 0x9B0Bu);
+            int slot = (int)(h & (uint)(cap - 1));
+            while (((((table[slot] >= 0)) && ((strcmp(f->groups[table[slot]].file, file) != 0)))))
+                slot = slot + 1 & cap - 1;
+            if (((table[slot] < 0)))
+            {
+                table[slot] = f->ng;
+                f->groups[f->ng] = new cui__prb_group { file = file, hash = h, count = 0, first = 0 };
+                f->ng++;
+            }
+            gid[i__1] = table[slot];
+            f->groups[gid[i__1]].count++;
+            f->shown++;
         }
-        int w = cui__node_new(ui, 0);
-        ui->nodes[w].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        ui->nodes[w].h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        ui->nodes[w].direction = (byte)(__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_LTR);
-        ui->nodes[w].paint = DotCcPointers.cui__paint_wf_head__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA;
-        ui->nodes[w].paint_data = f->head;
-        cui__close(ui);
-        int line = cui__node_new(ui, 0);
-        ui->nodes[line].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        ui->nodes[line].h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)1 };
-        ui->nodes[line].bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER];
+        for (int g__1 = 0, at = 0; ((g__1 < f->ng)); g__1++)
+        {
+            f->groups[g__1].first = at;
+            at += f->groups[g__1].count;
+        }
+        f->order = (int*)(cui__frame_alloc(ui, 4UL * nn));
+        int* fill = (int*)(cui__frame_alloc(ui, 4UL * (ulong)((int)(((1 > f->ng)) ? 1 : f->ng))));
+        for (int g__2 = 0; ((g__2 < f->ng)); g__2++)
+            fill[g__2] = f->groups[g__2].first;
+        for (int i__2 = 0; ((i__2 < n)); i__2++)
+            if (((gid[i__2] >= 0)))
+                f->order[fill[gid[i__2]]++] = i__2;
+        f->rows = (int*)(cui__frame_alloc(ui, 4UL * (nn + (ulong)f->ng)));
+        for (int g__3 = 0; ((g__3 < f->ng)); g__3++)
+        {
+            f->rows[f->nrows++] = -(g__3 + 1);
+            if (((unchecked((int)(cui__prb_folded(f->s, f->groups[g__3].hash)))) != 0))
+                continue;
+            for (int k = 0; ((k < f->groups[g__3].count)); k++)
+                f->rows[f->nrows++] = f->order[f->groups[g__3].first + k];
+        }
     }
 
 
 
-    public static unsafe byte* cui__wf_short__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(byte* name)
+    public static unsafe int cui__prb_selected_row(cui__prbf* f)
     {
-        if ((!((((void*)(name)) != null) )     ))
-            return (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/);
-        byte* q = name, slash = null;
-        for (byte* p = name; ((((((*p) != 0) && ((*p != 63)))) && ((*p != 35)))); p++)
-            if (((((((((*p == 47)) && ((p[1]) != 0))) && ((p[1] != 63)))) && ((p[1] != 35)))))
-                slash = p;
-        if ((((void*)(slash)) != null))
-            q = slash + 1;
-        return q;
+        for (int r = 0; ((r < f->nrows)); r++)
+        {
+            int v = f->rows[r];
+            if (((((int)(((v >= 0)) ? ((CBool)(v == f->s->sel)) : ((CBool)(((f->s->sel < 0)) && ((f->groups[-v - 1].hash == f->s->sel_file))))))) != 0))
+                return r;
+        }
+        return -1;
     }
 
 
 
-    public static unsafe void cui__wf_row__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__wff* f, int i, cui_waterfall_result* res)
+    public static unsafe void cui__prb_select_row(cui__prbf* f, int r)
+    {
+        int v = f->rows[r];
+        if (((v >= 0)))
+            f->s->sel = v;
+        else
+        {
+            f->s->sel = -1;
+            f->s->sel_file = f->groups[-v - 1].hash;
+        }
+    }
+
+
+
+    public static unsafe void cui__prb_keys(cui__prbf* f, cui_problems_result* res)
     {
         cui_ctx* ui = f->ui;
-        cui_net_request* q = &f->q[i];
-        uint rid = cui__hash(&i, ((ulong)(sizeof(int))), f->id ^ 0x3EF1u);
+        cui__prb_state* s = f->s;
+        if (((f->nrows == 0)))
+            return;
+        int r = cui__prb_selected_row(f), to = r;
+        if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_DOWN)))) != 0))
+            to = ((int)(((r < 0)) ? 0 : r + 1));
+        if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_UP)))) != 0))
+            to = ((int)(((r < 0)) ? 0 : r - 1));
+        if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_HOME)))) != 0))
+            to = 0;
+        if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_END)))) != 0))
+            to = f->nrows - 1;
+        if (((to != r)))
+        {
+            cui__prb_select_row(f, ((int)(((((int)(((to > 0)) ? to : 0)) < f->nrows - 1)) ? ((int)(((to > 0)) ? to : 0)) : f->nrows - 1)));
+            s->scroll_to_sel = 1;
+        }
+        r = cui__prb_selected_row(f);
+        if (((r < 0)))
+            return;
+        int v = f->rows[r];
+        uint gh = 0;
+        if (((v < 0)))
+            gh = f->groups[-v - 1].hash;
+        else
+            for (int g = 0; ((g < f->ng)); g++)
+                if ((!(((strcmp(f->groups[g].file, cui__prb_file(&f->d[v]))) != 0) )     ))
+                {
+                    gh = f->groups[g].hash;
+                    break;
+                }
+        CBool fold_key = ((CBool)((int)((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_LEFT))) != 0)), unfold_key = ((CBool)((int)((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_RIGHT))) != 0));
+        if (((unchecked((int)(s->rtl))) != 0))
+        {
+            CBool t = fold_key;
+            fold_key = unfold_key;
+            unfold_key = t;
+        }
+        if (((unchecked((int)(fold_key))) != 0))
+        {
+            cui__prb_fold(s, gh, 1);
+            s->sel = -1;
+            s->sel_file = gh;
+        }
+        if (((unchecked((int)(unfold_key))) != 0))
+            cui__prb_fold(s, gh, 0);
+        if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_ENTER)))) != 0))
+        {
+            if (((v >= 0)))
+                res->activated = v;
+            else
+                cui__prb_fold(s, gh, (((unchecked((int)(cui__prb_folded(s, gh)))) != 0) ? 0 : 1));
+        }
+    }
+
+
+
+    public static unsafe void cui__prb_toolbar__unit_73119C63EA392BD1C6B4BE8E517D61496FC6027289AD2ADDFA9A4E297246D37B(cui__prbf* f)
+    {
+        cui_ctx* ui = f->ui;
+        cui__prb_state* s = f->s;
+        int bar = cui__node_new(ui, 0);
+        cui_node* bn = &ui->nodes[bar];
+        bn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
+        bn->gap = 8;
+        bn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+        bn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+        bn->flags |= (uint)(32768);
+        cui__open(ui, bar);
+        byte** labels = stackalloc byte*[4];
+        for (int k = 0; ((k < 4)); k++)
+            labels[k] = ((byte*)(((unchecked((int)(f->narrow))) != 0) ? cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S66 /*"%d"*/), f->total[k]) : cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1350 /*"%s %d"*/), global::Managed.Cui.Cui.Globals.names__s0__unit_73119C63EA392BD1C6B4BE8E517D61496FC6027289AD2ADDFA9A4E297246D37B[k], f->total[k])));
+        cui_toggle_group_opts go = default;
+        memset(&go, 0, ((ulong)(sizeof(cui_toggle_group_opts))));
+        go.size = __DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM;
+        go.icons = global::Managed.Cui.Cui.Globals.cui__prb_icons__unit_73119C63EA392BD1C6B4BE8E517D61496FC6027289AD2ADDFA9A4E297246D37B;
+        _ = cui_toggle_group_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S247 /*"severity"*/), labels, 4, (CBool*)&s->show, &go);
+        cui_input_opts io = default;
+        memset(&io, 0, ((ulong)(sizeof(cui_input_opts))));
+        io.size = __DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM;
+        io.width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+        io.placeholder = (DotCcLiterals.Pointer + DotCcLiterals.S159 /*"Filter problems"*/);
+        io.clearable = 1;
+        if (((s->query[0]) != 0))
+            io.suffix = cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S66 /*"%d"*/), f->shown);
+        cui_search_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S570 /*"filter"*/), s->query, ((ulong)((96 * sizeof(byte)))), &io);
+        ui->nodes[ui->last_node].min_w = 140;
+        cui__close(ui);
+    }
+
+
+
+    public static unsafe void cui__prb_header_row(cui__prbf* f, int g, int r, cui_problems_result* res)
+    {
+        cui_ctx* ui = f->ui;
+        cui__prb_state* s = f->s;
+        cui__prb_group* gr = &f->groups[g];
+        uint rid = f->id ^ gr->hash * 2654435761u ^ 0x9E01u;
+        cui_interact ri = cui__interact(ui, rid, 4);
+        CBool folded = cui__prb_folded(s, gr->hash);
+        if (((unchecked((int)(ri.clicked))) != 0))
+        {
+            cui__prb_fold(s, gr->hash, (((unchecked((int)(folded))) != 0) ? 0 : 1));
+            s->sel = -1;
+            s->sel_file = gr->hash;
+            ui->focus = f->lid;
+            folded = (((unchecked((int)(folded))) != 0) ? 0 : 1);
+        }
+        CBool sel = ((CBool)(((s->sel < 0)) && ((s->sel_file == gr->hash))));
+        int row = cui__node_new(ui, rid);
+        cui_node* rn = &ui->nodes[row];
+        rn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
+        rn->gap = 6;
+        rn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+        rn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+        rn->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)28.0f };
+        rn->pad[1] = rn->pad[3] = 8;
+        rn->bg = (((unchecked((int)(sel))) != 0) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_ACTIVE] : (((unchecked((int)(ri.hovered))) != 0) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_HOVER] : cui__rgba(0, 0, 0, 0)));
+        cui__mark_interactive(ui, row, 0);
+        if (((unchecked((int)(ri.hovered))) != 0))
+            cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_HAND);
+        cui__open(ui, row);
+        cui__icon_node(ui, ((byte*)(((unchecked((int)(folded))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S411 /*""*/) : (DotCcLiterals.Pointer + DotCcLiterals.S485 /*""*/))), 14, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED]);
+        cui__icon_node(ui, (DotCcLiterals.Pointer + DotCcLiterals.S195 /*""*/), 14, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY]);
+        byte* @base = gr->file, c = default;
+        for (c = gr->file; ((*c) != 0); c++)
+            if (((((*c == 47)) || ((*c == 92)))))
+                @base = c + 1;
+        float fs = cui__fs(ui, ui->theme.text_sm);
+        int t = cui__text_node(ui, @base, -1, 1, fs, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0);
+        ui->nodes[t].line_height = 1.3f;
+        if (((((@base > gr->file)) && (!(((unchecked((int)(f->narrow))) != 0) )     ))))
+        {
+            int dt = cui__text_node(ui, gr->file, (int)(@base - gr->file - 1), 0, cui__fs(ui, ui->theme.text_xs), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0);
+            ui->nodes[dt].line_height = 1.3f;
+            ui->nodes[dt].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+            ui->nodes[dt].flags |= (uint)(16);
+        }
+        else
+        {
+            int sp = cui__leaf(ui, 0, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)1 });
+            ;
+        }
+        cui_badge_opts bo = default;
+        memset(&bo, 0, ((ulong)(sizeof(cui_badge_opts))));
+        bo.size = __DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM;
+        cui_badge_ex(ui, cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S66 /*"%d"*/), gr->count), &bo);
+        cui__close(ui);
+        ;
+        ;
+    }
+
+
+
+    public static unsafe void cui__prb_diag_row__unit_73119C63EA392BD1C6B4BE8E517D61496FC6027289AD2ADDFA9A4E297246D37B(cui__prbf* f, int i, cui_problems_result* res)
+    {
+        cui_ctx* ui = f->ui;
+        cui__prb_state* s = f->s;
+        cui_diagnostic* g = &f->d[i];
+        uint rid = cui__hash(&i, ((ulong)(sizeof(int))), f->id ^ 0x9D1Au);
         cui_interact ri = cui__interact(ui, rid, 4);
         if (((unchecked((int)(ri.clicked))) != 0))
         {
-            *f->sel = i;
+            s->sel = i;
             ui->focus = f->lid;
-            res->clicked = i;
             if (((ui->click_count >= 2)))
                 res->activated = i;
         }
-        if (((unchecked((int)(ri.hovered))) != 0))
-            res->hovered = i;
-        CBool sel = ((CBool)(*f->sel == i)), focused = ((CBool)(ui->focus == f->lid));
+        CBool sel = ((CBool)(s->sel == i));
         int row = cui__node_new(ui, rid);
         cui_node* rn = &ui->nodes[row];
         rn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
         rn->gap = 8;
         rn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
         rn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        rn->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)26.0f };
-        rn->pad[3] = 10;
+        rn->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)28.0f };
+        rn->pad[1] = 8;
+        rn->pad[3] = 30;
+        CBool focused = ((CBool)(ui->focus == f->lid));
         rn->bg = (((unchecked((int)(sel))) != 0) ? (((unchecked((int)(focused))) != 0) ? cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE], cui__emphasis(ui), ((float)((((int)ui->accent == (int)__DotCcEnum_6375695F616363656E74.CUI_ACCENT_NEUTRAL)) ? 0.08f : 0.16f))) : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_ACTIVE]) : (((unchecked((int)(ri.hovered))) != 0) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_HOVER] : cui__rgba(0, 0, 0, 0)));
         cui__mark_interactive(ui, row, 0);
         cui__open(ui, row);
-        CBool bad = ((CBool)(q->status >= 400));
-        cui_color fg = (((unchecked((int)(bad))) != 0) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_DANGER] : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND]), mut = (((unchecked((int)(bad))) != 0) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_DANGER] : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY]);
-        int t = cui__text_node(ui, cui__wf_short__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(q->name), -1, 0, cui__fs(ui, ui->theme.text_sm), fg, 0);
-        ui->nodes[t].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)f->name_w };
+        int sev = ((int)(((((int)((((int)g->severity > 0)) ? (int)g->severity : 0)) < 3)) ? ((int)((((int)g->severity > 0)) ? (int)g->severity : 0)) : 3));
+        cui__icon_node(ui, global::Managed.Cui.Cui.Globals.cui__prb_icons__unit_73119C63EA392BD1C6B4BE8E517D61496FC6027289AD2ADDFA9A4E297246D37B[sev], 14, cui__prb_color(ui, (cui_severity)sev));
+        float fs = cui__fs(ui, ui->theme.text_sm), fx = cui__fs(ui, ui->theme.text_xs);
+        int t = cui__text_node(ui, ((byte*)((((void*)(g->message)) != null) ? g->message : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), -1, 0, fs, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0);
+        ui->nodes[t].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+        ui->nodes[t].line_height = 1.3f;
         ui->nodes[t].flags |= (uint)(16);
-        if ((!(((unchecked((int)(f->narrow))) != 0) )     ))
-            cui__wf_cell__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, ((byte*)((((void*)(q->method)) != null) ? q->method : (DotCcLiterals.Pointer + DotCcLiterals.S1378 /*"GET"*/))), 48, 3, mut, 0);
-        cui__wf_cell__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, ((byte*)(((q->status > 0)) ? cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S66 /*"%d"*/), q->status) : (DotCcLiterals.Pointer + DotCcLiterals.S1321 /*"pending"*/))), 44, ((int)(((q->status > 0)) ? 3 : 0)), (((q->status > 0)) ? (((((q->status >= 300)) && (!(((unchecked((int)(bad))) != 0) )     ))) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED] : mut) : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED]), 0);
-        if ((!(((unchecked((int)(f->narrow))) != 0) )     ))
+        if ((((!(((unchecked((int)(f->narrow))) != 0) )     ) && (((((void*)(g->code)) != null) || (((void*)(g->source)) != null))))))
         {
-            cui__wf_cell__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, ((byte*)((((void*)(q->type)) != null) ? q->type : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), 56, 0, mut, 0);
-            cui__wf_cell__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, ((byte*)(((q->size > 0)) ? cui__size_text(ui, q->size) : (DotCcLiterals.Pointer + DotCcLiterals.S417 /*"—"*/))), 60, 0, mut, 1);
+            byte* cs = ((byte*)((((((void*)(g->code)) != null) && (((void*)(g->source)) != null))) ? cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S173 /*"%s(%s)"*/), g->source, g->code) : ((byte*)((((void*)(g->code)) != null) ? g->code : g->source))));
+            int ct = cui__text_node(ui, cs, -1, 3, fx, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0);
+            ui->nodes[ct].line_height = 1.3f;
         }
-        uint bid = rid ^ 0xBA2u;
-        int b = cui__node_new(ui, bid);
-        cui_node* bn = &ui->nodes[b];
-        bn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        bn->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        bn->direction = (byte)(__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_LTR);
-        cui__wf_bar* bar = (cui__wf_bar*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__wf_bar)))));
-        bar->sc = f->head;
-        bar->start = q->start;
-        memcpy(bar->timing, q->timing, ((ulong)((6 * sizeof(float)))));
-        bn->paint = DotCcPointers.cui__paint_wf_bar__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA;
-        bn->paint_data = bar;
-        cui_interact bi = cui__interact(ui, bid, 0);
-        cui__close(ui);
-        if (((((unchecked((int)(bi.hovered))) != 0) && ((ui->active == (uint)(0))))))
+        if (((g->line > 0)))
         {
-            byte* buf = stackalloc byte[512];
-            int len = snprintf(buf, unchecked((int)(((ulong)((512 * sizeof(byte)))))), (DotCcLiterals.Pointer + DotCcLiterals.S260 /*"%s"*/)).Arg(((byte*)((((void*)(q->name)) != null) ? q->name : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/)))).Done();
-            for (int ph = 0; ((((ph < 6)) && ((len < unchecked((int)((ulong)((512 * sizeof(byte))))) - 64)))); ph++)
-                if (((q->timing[ph] > 0)))
-                    len += snprintf(buf + len, (int)(((ulong)((512 * sizeof(byte)))) - (ulong)len), (DotCcLiterals.Pointer + DotCcLiterals.S565 /*"\n%s  %s"*/)).Arg(global::Managed.Cui.Cui.Globals.cui__wf_names__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA[ph]).Arg(cui__fl_dur__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, q->timing[ph])).Done();
-            if (((len < unchecked((int)((ulong)((512 * sizeof(byte))))) - 64)))
-                snprintf(buf + len, (int)(((ulong)((512 * sizeof(byte)))) - (ulong)len), (DotCcLiterals.Pointer + DotCcLiterals.S1442 /*"\nTotal  %s, from %s"*/)).Arg(cui__fl_dur__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, cui__wf_total__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(q))).Arg(cui__fl_dur__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, q->start)).Done();
-            cui__tooltip_passive(ui, bid, cui__frame_strdup(ui, buf, -1));
-        }
-    }
-
-
-
-    public static unsafe void cui__wf_keys__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__wff* f, cui_waterfall_result* res)
-    {
-        cui_ctx* ui = f->ui;
-        int s = *f->sel, ns = s;
-        if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_DOWN)))) != 0))
-            ns = ((int)(((s < 0)) ? 0 : ((int)(((f->n - 1 < s + 1)) ? f->n - 1 : s + 1))));
-        if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_UP)))) != 0))
-            ns = ((int)(((s < 0)) ? 0 : ((int)(((0 > s - 1)) ? 0 : s - 1))));
-        if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_HOME)))) != 0))
-            ns = 0;
-        if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_END)))) != 0))
-            ns = f->n - 1;
-        if (((((ns != s)) && ((f->n > 0)))))
-        {
-            *f->sel = ns;
-            f->s->scroll_to_sel = 1;
-        }
-        if (((((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_ENTER)))) != 0) && ((*f->sel >= 0)))))
-            res->activated = *f->sel;
-        if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_ESCAPE)))) != 0))
-            *f->sel = -1;
-    }
-
-
-
-    public static unsafe void cui__wf_note__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_ctx* ui, byte* text, cui_color c, cui_color* swatch)
-    {
-        int g = cui__node_new(ui, 0);
-        cui_node* gn = &ui->nodes[g];
-        gn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
-        gn->gap = 5;
-        gn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
-        gn->pad[0] = gn->pad[2] = 2;
-        gn->pad[1] = ((int)((((void*)(swatch)) != null) ? 10 : 14));
-        cui__open(ui, g);
-        if ((((void*)(swatch)) != null))
-        {
-            int sw = cui__node_new(ui, 0);
-            ui->nodes[sw].w = ui->nodes[sw].h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)8 };
-            ui->nodes[sw].radius = new cui_corners { tl = 2, tr = 2, br = 2, bl = 2 };
-            ui->nodes[sw].bg = *swatch;
-        }
-        cui__text_node(ui, text, -1, 0, cui__fs(ui, ui->theme.text_xs), c, 0);
-        cui__close(ui);
-    }
-
-
-
-    public static unsafe void cui__wf_footer__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__wff* f)
-    {
-        cui_ctx* ui = f->ui;
-        double bytes = 0, fin = 0;
-        for (int i = 0; ((i < f->n)); i++)
-        {
-            bytes += ((double)(((f->q[i].size > 0)) ? f->q[i].size : (double)(0)));
-            fin = ((double)(((fin > f->q[i].start + cui__wf_total__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&f->q[i]))) ? fin : f->q[i].start + cui__wf_total__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&f->q[i])));
-        }
-        int line = cui__node_new(ui, 0);
-        ui->nodes[line].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        ui->nodes[line].h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)1 };
-        ui->nodes[line].bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER];
-        int r = cui__node_new(ui, 0);
-        cui_node* rn = &ui->nodes[r];
-        rn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
-        rn->flags |= (uint)(32768);
-        rn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        rn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
-        rn->pad[0] = rn->pad[2] = 5;
-        rn->pad[1] = 0;
-        rn->pad[3] = 10;
-        rn->bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE_MUTED];
-        cui__open(ui, r);
-        cui_color c = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY];
-        cui__wf_note__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, cui__frame_printf(ui, ((byte*)(((f->n == 1)) ? (DotCcLiterals.Pointer + DotCcLiterals.S360 /*"%d request"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S851 /*"%d requests"*/))), f->n), c, null);
-        cui__wf_note__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, cui__size_text(ui, bytes), c, null);
-        cui__wf_note__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1332 /*"Finished in %s"*/), cui__fl_dur__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, fin)), c, null);
-        if (((f->head->dom > 0)))
-            cui__wf_note__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S147 /*"DOMContentLoaded %s"*/), cui__fl_dur__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, f->head->dom)), cui__tone_color(ui, __DotCcEnum_6375695F746F6E65.CUI_TONE_INFO), null);
-        if (((f->head->load > 0)))
-            cui__wf_note__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S271 /*"Load %s"*/), cui__fl_dur__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, f->head->load)), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_DANGER], null);
-        for (int ph = 1; ((ph < 6)); ph++)
-        {
-            cui_color sw = (((ph == 4)) ? cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE], cui__wf_color__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, ph), 0.55f) : cui__wf_color__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, ph));
-            cui__wf_note__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, global::Managed.Cui.Cui.Globals.cui__wf_names__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA[ph], ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], &sw);
+            byte* pos = ((byte*)(((g->column > 0)) ? cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S51 /*"%d:%d"*/), g->line, g->column) : cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S66 /*"%d"*/), g->line)));
+            int pt = cui__text_node(ui, pos, -1, 3, fx, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY], 0);
+            ui->nodes[pt].line_height = 1.3f;
+            ui->nodes[pt].flags |= (uint)(256);
+            ui->nodes[pt].direction = (byte)(__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_LTR);
         }
         cui__close(ui);
+        if (((((((unchecked((int)(ri.hovered))) != 0) && (((void*)(g->message)) != null))) && ((ui->active == (uint)(0))))))
+        {
+            byte* tip = ((byte*)(((g->line > 0)) ? cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1084 /*"%s\n%s:%d:%d"*/), g->message, cui__prb_file(g), g->line, g->column) : g->message));
+            cui__tooltip_passive(ui, rid, tip);
+        }
     }
 
 
 
-    public static unsafe cui_waterfall_result cui_waterfall_ex(cui_ctx* ui, byte* id_str, cui_net_request* requests, int count, cui_waterfall_opts* o)
+    public static unsafe cui_problems_result cui_problems_ex(cui_ctx* ui, byte* id_str, cui_diagnostic* diags, int count, cui_problems_opts* o)
     {
-        cui_waterfall_opts d = default;
-        memset(&d, 0, ((ulong)(sizeof(cui_waterfall_opts))));
+        cui_problems_opts d = default;
+        memset(&d, 0, ((ulong)(sizeof(cui_problems_opts))));
         if ((!((((void*)(o)) != null) )     ))
             o = &d;
-        cui_waterfall_result res = new cui_waterfall_result { clicked = -1, activated = -1, hovered = -1 };
-        if ((((!((((void*)(requests)) != null) )     ) || ((count < 0)))))
+        cui_problems_result res = new cui_problems_result { selected = -1, activated = -1, shown = 0 };
+        if ((((!((((void*)(diags)) != null) )     ) || ((count < 0)))))
             count = 0;
-        cui__wff f = default;
-        memset(&f, 0, ((ulong)(sizeof(cui__wff))));
+        cui__prbf f = default;
+        memset(&f, 0, ((ulong)(sizeof(cui__prbf))));
         f.ui = ui;
-        f.q = requests;
+        f.d = diags;
         f.n = count;
-        f.id = cui_make_id(ui, ((byte*)((((void*)(id_str)) != null) ? id_str : (DotCcLiterals.Pointer + DotCcLiterals.S1296 /*"waterfall"*/))));
-        f.lid = f.id ^ 0x3EF0u;
-        cui__wf_state* s = f.s = (cui__wf_state*)(cui_state(ui, f.id ^ 0x3EF2u, ((ulong)(sizeof(cui__wf_state)))));
+        f.id = cui_make_id(ui, id_str);
+        f.lid = f.id ^ 0xB0B5u;
+        cui__prb_state* s = f.s = (cui__prb_state*)(cui_state(ui, f.id ^ 0x9B0Bu, ((ulong)(sizeof(cui__prb_state)))));
         if ((!(((unchecked((int)(s->init))) != 0) )     ))
         {
             s->init = 1;
+            for (int k = 0; ((k < 4)); k++)
+                ((CBool*)&s->show)[k] = 1;
             s->sel = -1;
         }
-        f.sel = ((int*)((((void*)(o->selected)) != null) ? o->selected : &s->sel));
-        if (((((*f.sel < -1)) || ((*f.sel >= count)))))
-            *f.sel = -1;
+        if (((s->sel >= count)))
+            s->sel = -1;
         cui_rect pr = cui__prev_rect(ui, f.id);
-        float W = ((float)(((pr.w > 0)) ? pr.w : (float)(800)));
-        f.narrow = ((CBool)(W < 600.0f));
-        f.name_w = ((float)(((unchecked((int)(f.narrow))) != 0) ? ((float)(((((float)(((W * 0.36f > 90.0f)) ? W * 0.36f : 90.0f)) < 170.0f)) ? ((float)(((W * 0.36f > 90.0f)) ? W * 0.36f : 90.0f)) : 170.0f)) : ((float)(((((float)(((W * 0.26f > 140.0f)) ? W * 0.26f : 140.0f)) < 300.0f)) ? ((float)(((W * 0.26f > 140.0f)) ? W * 0.26f : 140.0f)) : 300.0f))));
-        double end = 0;
-        for (int i = 0; ((i < count)); i++)
-            end = ((double)(((end > requests[i].start + cui__wf_total__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&requests[i]))) ? end : requests[i].start + cui__wf_total__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&requests[i])));
-        end = ((double)(((end > ((double)(((o->dom_loaded > o->loaded)) ? o->dom_loaded : o->loaded)))) ? end : ((double)(((o->dom_loaded > o->loaded)) ? o->dom_loaded : o->loaded))));
-        end = ((double)(((end > 0)) ? end * 1.04 : (double)(1)));
-        f.head = (cui__wf_scale*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__wf_scale)))));
-        memset(f.head, 0, ((ulong)(sizeof(cui__wf_scale))));
-        f.head->end = end;
-        f.head->dom = o->dom_loaded;
-        f.head->load = o->loaded;
+        f.narrow = ((CBool)(((pr.w > 0)) && ((pr.w < 520.0f))));
+        cui__prb_rows(&f);
         int outer = cui__node_new(ui, f.id);
         cui_node* on = &ui->nodes[outer];
+        on->gap = 8;
         on->w = ((((int)o->width.kind) != 0) ? o->width : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 });
-        on->h = (((o->height < 0)) ? new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 } : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)((float)(((o->height > 0)) ? o->height : (float)(320))) });
-        on->radius = new cui_corners { tl = ui->theme.radius_panel, tr = ui->theme.radius_panel, br = ui->theme.radius_panel, bl = ui->theme.radius_panel };
-        on->border = 1;
-        on->border_color = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER];
-        on->bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE];
-        on->flags |= (uint)(16);
+        on->h = (((o->height < 0)) ? new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 } : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)((float)(((o->height > 0)) ? o->height : (float)(300))) });
         cui__open(ui, outer);
-        cui_push_id(ui, ((byte*)((((void*)(id_str)) != null) ? id_str : (DotCcLiterals.Pointer + DotCcLiterals.S1296 /*"waterfall"*/))));
-        cui__wf_head__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&f);
+        cui_push_id(ui, id_str);
+        if ((!(((unchecked((int)(o->no_toolbar))) != 0) )     ))
+            cui__prb_toolbar__unit_73119C63EA392BD1C6B4BE8E517D61496FC6027289AD2ADDFA9A4E297246D37B(&f);
         cui_interact lr = cui__interact(ui, f.lid, 1);
-        if (((((unchecked((int)(lr.focused))) != 0) && (!(((unchecked((int)(ui->edit_prev))) != 0) )     ))))
-            cui__wf_keys__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&f, &res);
+        if (((unchecked((int)(lr.focused))) != 0))
+            cui__prb_keys(&f, &res);
         int frame = cui__node_new(ui, f.lid);
         cui_node* fn = &ui->nodes[frame];
         fn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
         fn->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        fn->min_h = 60;
+        fn->min_h = 80;
+        fn->radius = new cui_corners { tl = ui->theme.radius_control, tr = ui->theme.radius_control, br = ui->theme.radius_control, bl = ui->theme.radius_control };
+        fn->border = 1;
+        fn->border_color = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER];
+        fn->bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE];
+        fn->flags |= (uint)(16);
+        fn->paint = DotCcPointers.cui__paint_pb_dir__unit_73119C63EA392BD1C6B4BE8E517D61496FC6027289AD2ADDFA9A4E297246D37B;
+        fn->paint_data = &s->rtl;
         cui__mark_interactive(ui, frame, 1);
         cui__focus_ring(ui, frame, ((float)(((unchecked((int)(lr.focus_visible))) != 0) ? 1.0f : 0.0f)));
         cui__open(ui, frame);
         if (((unchecked((int)(s->scroll_to_sel))) != 0))
         {
+            int r = cui__prb_selected_row(&f);
             cui_scroll_state* ss = (cui_scroll_state*)(cui_state(ui, cui_make_id(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1021 /*"rows"*/)), ((ulong)(sizeof(cui_scroll_state)))));
-            float y = *f.sel * 26.0f, vh = ((float)(((ss->view_h > 0)) ? ss->view_h : (float)(240)));
-            if (((*f.sel >= 0)))
+            float y = r * 28.0f, vh = ((float)(((ss->view_h > 0)) ? ss->view_h : (float)(240)));
+            if (((r >= 0)))
             {
                 if (((y < ss->ty)))
                     ss->ty = y;
                 else
-                    if (((y + 26.0f > ss->ty + vh)))
-                        ss->ty = y + 26.0f - vh;
+                    if (((y + 28.0f > ss->ty + vh)))
+                        ss->ty = y + 28.0f - vh;
             }
             s->scroll_to_sel = 0;
         }
-        if (((count == 0)))
+        if (((f.nrows == 0)))
+        {
+            int e = cui__node_new(ui, 0);
+            ui->nodes[e].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+            ui->nodes[e].h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+            ui->nodes[e].align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+            ui->nodes[e].justify = (byte)(__DotCcEnum_6375695F6A757374696679.CUI_JUSTIFY_CENTER);
+            ui->nodes[e].gap = 6;
+            cui__open(ui, e);
+            cui__icon_node(ui, ((byte*)(((count == 0)) ? (DotCcLiterals.Pointer + DotCcLiterals.S754 /*""*/) : (DotCcLiterals.Pointer + DotCcLiterals.S1283 /*""*/))), 20, (((count == 0)) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SUCCESS] : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED]));
+            cui__text_node(ui, ((byte*)(((count == 0)) ? (DotCcLiterals.Pointer + DotCcLiterals.S112 /*"No problems"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S322 /*"No problems match the filters"*/))), -1, 0, cui__fs(ui, ui->theme.text_sm), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0);
+            cui__close(ui);
+        }
+        else
+        {
+            int first = default, last = default;
+            cui_virtual_list_begin(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1021 /*"rows"*/), f.nrows, 28.0f, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, &first, &last);
+            for (int r__1 = first; ((r__1 < last)); r__1++)
+            {
+                int v = f.rows[r__1];
+                if (((v < 0)))
+                    cui__prb_header_row(&f, -v - 1, r__1, &res);
+                else
+                    cui__prb_diag_row__unit_73119C63EA392BD1C6B4BE8E517D61496FC6027289AD2ADDFA9A4E297246D37B(&f, v, &res);
+            }
+            cui_virtual_list_end(ui);
+        }
+        cui__close(ui);
+        cui_pop_id(ui);
+        cui__close(ui);
+        res.selected = s->sel;
+        res.shown = f.shown;
+        ui->last_id = f.id;
+        return res;
+    }
+
+
+
+    public static unsafe cui_job_status cui__pl_stage_status(cui_pipeline_job* jobs, int n, int stage, CBool* soft_fail)
+    {
+        CBool any = 0, run = 0, pend = 0, fail = 0, canc = 0, allpass = 1;
+        *soft_fail = 0;
+        for (int i = 0; ((i < n)); i++)
+        {
+            if (((jobs[i].stage != stage)))
+                continue;
+            any = 1;
+            switch ((int)jobs[i].status)
+            {
+                case (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_FAILED:
+                    if (((unchecked((int)(jobs[i].allow_failure))) != 0))
+                        *soft_fail = 1;
+                    else
+                        fail = 1;
+                    break;
+                case (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_RUNNING:
+                    run = 1;
+                    allpass = 0;
+                    break;
+                case (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_PENDING:
+                    pend = 1;
+                    allpass = 0;
+                    break;
+                case (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_CANCELED:
+                    canc = 1;
+                    allpass = 0;
+                    break;
+                default:
+                    break;
+            }
+        }
+        if ((!(((unchecked((int)(any))) != 0) )     ))
+            return __DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_SKIPPED;
+        if (((unchecked((int)(fail))) != 0))
+            return __DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_FAILED;
+        if (((unchecked((int)(run))) != 0))
+            return __DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_RUNNING;
+        if (((unchecked((int)(canc))) != 0))
+            return __DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_CANCELED;
+        if (((unchecked((int)(pend))) != 0))
+            return __DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_PENDING;
+        return (cui_job_status)(((int)(((unchecked((int)(allpass))) != 0) ? (int)(__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_PASSED) : (int)(__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_PENDING))));
+    }
+
+
+
+    public static unsafe byte* cui__pl_status_name__unit_73119C63EA392BD1C6B4BE8E517D61496FC6027289AD2ADDFA9A4E297246D37B(cui_job_status st)
+    {
+        return ((byte*)((((((int)st >= 0)) && (((int)st <= (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_CANCELED)))) ? global::Managed.Cui.Cui.Globals.n__s1__unit_73119C63EA392BD1C6B4BE8E517D61496FC6027289AD2ADDFA9A4E297246D37B[(int)st] : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/)));
+    }
+
+
+
+    public static unsafe void cui__pl_status_icon(cui_ctx* ui, cui_job_status st, CBool soft, float size)
+    {
+        switch ((int)st)
+        {
+            case (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_RUNNING:
+                cui_spinner(ui, size);
+                return;
+            case (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_PASSED:
+                cui__icon_node(ui, ((byte*)(((unchecked((int)(soft))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S506 /*""*/) : (DotCcLiterals.Pointer + DotCcLiterals.S754 /*""*/))), size, (((unchecked((int)(soft))) != 0) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_WARNING] : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SUCCESS]));
+                return;
+            case (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_FAILED:
+                cui__icon_node(ui, ((byte*)(((unchecked((int)(soft))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S506 /*""*/) : (DotCcLiterals.Pointer + DotCcLiterals.S808 /*""*/))), size, (((unchecked((int)(soft))) != 0) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_WARNING] : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_DANGER]));
+                return;
+            case (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_SKIPPED:
+                cui__icon_node(ui, (DotCcLiterals.Pointer + DotCcLiterals.S39 /*""*/), size, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED]);
+                return;
+            case (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_CANCELED:
+                cui__icon_node(ui, (DotCcLiterals.Pointer + DotCcLiterals.S808 /*""*/), size, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED]);
+                return;
+            default:
+                cui__icon_node(ui, (DotCcLiterals.Pointer + DotCcLiterals.S298 /*""*/), size, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED]);
+                return;
+        }
+    }
+
+
+
+    public static unsafe void cui__paint_pl_link__unit_73119C63EA392BD1C6B4BE8E517D61496FC6027289AD2ADDFA9A4E297246D37B(cui_ctx* ui, cui_node* n, void* data)
+    {
+        cui__pl_link_paint* p = (cui__pl_link_paint*)(data);
+        cui_rect r = n->rect;
+        if (((unchecked((int)(p->vertical))) != 0))
+            cui_draw_rect(ui, new cui_rect { x = r.x + r.w * 0.5f - 0.5f, y = r.y, w = 1, h = r.h }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, p->c);
+        else
+            cui_draw_rect(ui, new cui_rect { x = r.x, y = r.y + n->pad[0] + (r.h - n->pad[0]) * 0.5f - 0.5f, w = r.w, h = 1 }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, p->c);
+    }
+
+
+
+    public static unsafe void cui__pl_link(cui_ctx* ui, CBool vertical)
+    {
+        int l = cui__node_new(ui, 0);
+        cui_node* ln = &ui->nodes[l];
+        ln->w = (((unchecked((int)(vertical))) != 0) ? new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 } : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)28 });
+        ln->h = (((unchecked((int)(vertical))) != 0) ? new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)22 } : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)(30 + 34.0f) });
+        ln->self_align = (byte)(((int)(((unchecked((int)(vertical))) != 0) ? (int)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_STRETCH) : (int)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_START))));
+        ln->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+        ln->justify = (byte)(__DotCcEnum_6375695F6A757374696679.CUI_JUSTIFY_CENTER);
+        ln->dir = (byte)(__DotCcEnum_6375695F646972.CUI_STACK);
+        if ((!(((unchecked((int)(vertical))) != 0) )     ))
+            ln->pad[0] = 30;
+        cui__pl_link_paint* p = (cui__pl_link_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__pl_link_paint)))));
+        p->c = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER_STRONG];
+        p->vertical = vertical;
+        ln->paint = DotCcPointers.cui__paint_pl_link__unit_73119C63EA392BD1C6B4BE8E517D61496FC6027289AD2ADDFA9A4E297246D37B;
+        ln->paint_data = p;
+        cui__open(ui, l);
+        int bg = cui__node_new(ui, 0);
+        ui->nodes[bg].bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BACKGROUND];
+        ui->nodes[bg].radius = new cui_corners { tl = 8, tr = 8, br = 8, bl = 8 };
+        ui->nodes[bg].pad[0] = ui->nodes[bg].pad[1] = ui->nodes[bg].pad[2] = ui->nodes[bg].pad[3] = 1;
+        cui__open(ui, bg);
+        cui__icon_node(ui, ((byte*)(((unchecked((int)(vertical))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S485 /*""*/) : (DotCcLiterals.Pointer + DotCcLiterals.S411 /*""*/))), 14, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED]);
+        cui__close(ui);
+        cui__close(ui);
+    }
+
+
+
+    public static unsafe void cui__pl_job(cui_ctx* ui, uint @base, cui_pipeline_job* j, int i, int* selected, cui_pipeline_result* res)
+    {
+        uint jid = cui__hash(&i, ((ulong)(sizeof(int))), @base ^ 0x70B5u);
+        cui_interact r = cui__interact(ui, jid, 1);
+        if (((((unchecked((int)(r.clicked))) != 0) || ((unchecked((int)(r.keyboard_activate))) != 0))))
+        {
+            res->clicked = i;
+            if ((((void*)(selected)) != null))
+                *selected = i;
+        }
+        if (((unchecked((int)(r.hovered))) != 0))
+            res->hovered = i;
+        CBool sel = ((CBool)((((void*)(selected)) != null) && ((*selected == i))));
+        int jn = cui__node_new(ui, jid);
+        cui_node* n = &ui->nodes[jn];
+        n->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
+        n->gap = 8;
+        n->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+        n->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+        n->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)34.0f };
+        n->pad[1] = n->pad[3] = 10;
+        n->radius = new cui_corners { tl = ui->theme.radius_control, tr = ui->theme.radius_control, br = ui->theme.radius_control, bl = ui->theme.radius_control };
+        n->bg = (((unchecked((int)(r.hovered))) != 0) ? cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE], ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_HOVER], 1.0f) : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE]);
+        n->border = ((float)(((unchecked((int)(sel))) != 0) ? 1.5f : (float)(1)));
+        n->border_color = (((unchecked((int)(sel))) != 0) ? cui__emphasis(ui) : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER]);
+        cui__mark_interactive(ui, jn, 1);
+        cui__focus_ring(ui, jn, ((float)(((unchecked((int)(r.focus_visible))) != 0) ? 1.0f : 0.0f)));
+        if (((unchecked((int)(r.hovered))) != 0))
+            cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_HAND);
+        cui__open(ui, jn);
+        cui__pl_status_icon(ui, j->status, ((CBool)(((unchecked((int)(j->allow_failure))) != 0) && (((int)j->status == (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_FAILED)))), 14);
+        float fs = cui__fs(ui, ui->theme.text_sm);
+        int t = cui__text_node(ui, ((byte*)((((void*)(j->name)) != null) ? j->name : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), -1, 0, fs, ((((((int)j->status == (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_SKIPPED)) || (((int)j->status == (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_CANCELED)))) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED] : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND]), 0);
+        ui->nodes[t].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+        ui->nodes[t].line_height = 1.3f;
+        ui->nodes[t].flags |= (uint)(16);
+        if (((j->duration >= 0)))
+        {
+            int dt = cui__text_node(ui, cui__dt_duration(ui, j->duration), -1, 0, cui__fs(ui, ui->theme.text_xs), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0);
+            ui->nodes[dt].flags |= (uint)(256);
+            ui->nodes[dt].line_height = 1.3f;
+        }
+        cui__close(ui);
+        if (((((unchecked((int)(r.hovered))) != 0) && ((ui->active == (uint)(0))))))
+        {
+            byte* tip = ((byte*)(((j->duration >= 0)) ? cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1421 /*"%s\n%s · %s%s"*/), ((byte*)((((void*)(j->name)) != null) ? j->name : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), cui__pl_status_name__unit_73119C63EA392BD1C6B4BE8E517D61496FC6027289AD2ADDFA9A4E297246D37B(j->status), cui__dt_duration(ui, j->duration), ((byte*)(((unchecked((int)(j->allow_failure))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S1319 /*" · allowed to fail"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/)))) : cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S856 /*"%s\n%s"*/), ((byte*)((((void*)(j->name)) != null) ? j->name : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), cui__pl_status_name__unit_73119C63EA392BD1C6B4BE8E517D61496FC6027289AD2ADDFA9A4E297246D37B(j->status))));
+            cui__tooltip_passive(ui, jid, tip);
+        }
+    }
+
+
+
+    public static unsafe cui_pipeline_result cui_pipeline_ex(cui_ctx* ui, byte* id_str, byte** stages, int stage_count, cui_pipeline_job* jobs, int job_count, cui_pipeline_opts* o)
+    {
+        cui_pipeline_opts d = default;
+        memset(&d, 0, ((ulong)(sizeof(cui_pipeline_opts))));
+        if ((!((((void*)(o)) != null) )     ))
+            o = &d;
+        cui_pipeline_result res = new cui_pipeline_result { clicked = -1, hovered = -1 };
+        if ((((!((((void*)(jobs)) != null) )     ) || ((job_count < 0)))))
+            job_count = 0;
+        if (((stage_count < 0)))
+            stage_count = 0;
+        uint id = cui_make_id(ui, id_str);
+        cui_rect pr = cui__prev_rect(ui, id);
+        CBool vertical = ((CBool)(((pr.w > 0)) && ((pr.w < 560.0f))));
+        int outer = cui__node_new(ui, id);
+        cui_node* on = &ui->nodes[outer];
+        on->dir = (byte)(((int)(((unchecked((int)(vertical))) != 0) ? (int)(__DotCcEnum_6375695F646972.CUI_COLUMN) : (int)(__DotCcEnum_6375695F646972.CUI_ROW))));
+        on->w = ((((int)o->width.kind) != 0) ? o->width : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 });
+        on->align = (byte)(((int)(((unchecked((int)(vertical))) != 0) ? (int)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_STRETCH) : (int)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_START))));
+        cui__open(ui, outer);
+        float fs = cui__fs(ui, ui->theme.text_sm), fx = cui__fs(ui, ui->theme.text_xs);
+        for (int s = 0; ((s < stage_count)); s++)
+        {
+            if (((s > 0)))
+                cui__pl_link(ui, vertical);
+            CBool soft = default;
+            cui_job_status st = cui__pl_stage_status(jobs, job_count, s, &soft);
+            float total = 0;
+            CBool timed = 0;
+            for (int i = 0; ((i < job_count)); i++)
+                if (((((jobs[i].stage == s)) && ((jobs[i].duration >= 0)))))
+                {
+                    total = ((float)(((total > jobs[i].duration)) ? total : jobs[i].duration));
+                    timed = 1;
+                }
+            int col = cui__node_new(ui, 0);
+            cui_node* cn = &ui->nodes[col];
+            cn->gap = 6;
+            cn->w = (((unchecked((int)(vertical))) != 0) ? new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 } : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = (float)1 });
+            cn->min_w = ((int)(((unchecked((int)(vertical))) != 0) ? 0 : 120));
+            cui__open(ui, col);
+            int head = cui__node_new(ui, 0);
+            cui_node* hn = &ui->nodes[head];
+            hn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
+            hn->gap = 6;
+            hn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+            hn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+            hn->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)24 };
+            cui__open(ui, head);
+            cui__pl_status_icon(ui, st, ((CBool)(((unchecked((int)(soft))) != 0) && (((int)st == (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_PASSED)))), 14);
+            int t = cui__text_node(ui, ((byte*)((((((void*)(stages)) != null) && (((void*)(stages[s])) != null))) ? stages[s] : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), -1, 1, fs, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0);
+            ui->nodes[t].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+            ui->nodes[t].line_height = 1.3f;
+            ui->nodes[t].flags |= (uint)(16);
+            if (((unchecked((int)(timed))) != 0))
+            {
+                int dt = cui__text_node(ui, cui__dt_duration(ui, total), -1, 0, fx, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0);
+                ui->nodes[dt].flags |= (uint)(256);
+                ui->nodes[dt].line_height = 1.3f;
+            }
+            cui__close(ui);
+            for (int i__1 = 0; ((i__1 < job_count)); i__1++)
+                if (((jobs[i__1].stage == s)))
+                    cui__pl_job(ui, id, &jobs[i__1], i__1, o->selected, &res);
+            cui__close(ui);
+        }
+        cui__close(ui);
+        ui->last_id = id;
+        return res;
+    }
+
+
+
+    public static unsafe uint cui__tx_key(cui_test_item* it, int i)
+    {
+        return cui__hash_str(((byte*)((((void*)(it[i].name)) != null) ? it[i].name : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), (uint)i * 2654435761u + 0x7E57u);
+    }
+
+
+
+    public static unsafe CBool cui__tx_folded(cui__tx_state* s, uint h)
+    {
+        for (int i = 0; ((i < s->nfolded)); i++)
+            if (((s->folded[i] == h)))
+                return 1;
+        return 0;
+    }
+
+
+
+    public static unsafe void cui__tx_fold(cui__tx_state* s, uint h, CBool fold)
+    {
+        for (int i = 0; ((i < s->nfolded)); i++)
+            if (((s->folded[i] == h)))
+            {
+                if ((!(((unchecked((int)(fold))) != 0) )     ))
+                    s->folded[i] = s->folded[--s->nfolded];
+                return;
+            }
+        if (((((unchecked((int)(fold))) != 0) && ((s->nfolded < 64)))))
+            s->folded[s->nfolded++] = h;
+    }
+
+
+
+    public static unsafe cui_job_status cui__tx_status(cui__txf* f, int i)
+    {
+        cui__tx_sum* m = &f->sum[i];
+        if ((!(((unchecked((int)(m->suite))) != 0) )     ))
+            return f->it[i].status;
+        if (((m->fail) != 0))
+            return __DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_FAILED;
+        if (((m->run) != 0))
+            return __DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_RUNNING;
+        if (((m->pend) != 0))
+            return __DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_PENDING;
+        if (((m->pass) != 0))
+            return __DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_PASSED;
+        return (cui_job_status)(((int)(((m->skip) != 0) ? (int)(__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_SKIPPED) : (int)(__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_PENDING))));
+    }
+
+
+
+    public static unsafe CBool cui__tx_passes(cui__txf* f, int i)
+    {
+        cui_job_status st = f->it[i].status;
+        int b = ((int)((((int)st == (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_PASSED)) ? 0 : ((int)((((int)st == (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_FAILED)) ? 1 : ((int)((((((int)st == (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_SKIPPED)) || (((int)st == (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_CANCELED)))) ? 2 : -1))))));
+        if (((((b >= 0)) && (!(((unchecked((int)(((CBool*)&f->s->show)[b]))) != 0) )     ))))
+            return 0;
+        return cui__contains_ci(((byte*)((((void*)(f->it[i].name)) != null) ? f->it[i].name : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), f->s->query);
+    }
+
+
+
+    public static unsafe void cui__tx_rows(cui__txf* f)
+    {
+        cui_ctx* ui = f->ui;
+        int n = f->n;
+        ulong nn = (ulong)((int)(((1 > n)) ? 1 : n));
+        f->res->passed = f->res->failed = f->res->skipped = f->res->total = 0;
+        f->sum = (cui__tx_sum*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__tx_sum))) * nn));
+        memset(f->sum, 0, ((ulong)(sizeof(cui__tx_sum))) * nn);
+        int* stack = stackalloc int[64];
+        int sp = 0;
+        for (int i = 0; ((i < n)); i++)
+        {
+            int d = ((int)(((((int)(((f->it[i].depth > 0)) ? f->it[i].depth : 0)) < 63)) ? ((int)(((f->it[i].depth > 0)) ? f->it[i].depth : 0)) : 63));
+            while (((((sp > 0)) && ((((int)(((((int)(((f->it[stack[sp - 1]].depth > 0)) ? f->it[stack[sp - 1]].depth : 0)) < 63)) ? ((int)(((f->it[stack[sp - 1]].depth > 0)) ? f->it[stack[sp - 1]].depth : 0)) : 63)) >= d)))))
+                sp--;
+            CBool suite = ((CBool)(((i + 1 < n)) && ((f->it[i + 1].depth > f->it[i].depth))));
+            f->sum[i].suite = suite;
+            if ((!(((unchecked((int)(suite))) != 0) )     ))
+            {
+                cui_job_status st = f->it[i].status;
+                CBool shown = cui__tx_passes(f, i);
+                float t = ((float)(((f->it[i].duration > 0)) ? f->it[i].duration : (float)(0)));
+                switch ((int)st)
+                {
+                    case (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_PASSED:
+                        f->res->passed++;
+                        break;
+                    case (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_FAILED:
+                        f->res->failed++;
+                        break;
+                    case (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_SKIPPED:
+                    case (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_CANCELED:
+                        f->res->skipped++;
+                        break;
+                    default:
+                        break;
+                }
+                f->res->total++;
+                for (int k = 0; ((k < sp)); k++)
+                {
+                    cui__tx_sum* m = &f->sum[stack[k]];
+                    switch ((int)st)
+                    {
+                        case (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_PASSED:
+                            m->pass++;
+                            break;
+                        case (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_FAILED:
+                            m->fail++;
+                            break;
+                        case (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_SKIPPED:
+                        case (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_CANCELED:
+                            m->skip++;
+                            break;
+                        case (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_RUNNING:
+                            m->run++;
+                            break;
+                        default:
+                            m->pend++;
+                            break;
+                    }
+                    m->time += t;
+                    if (((unchecked((int)(shown))) != 0))
+                        m->shown++;
+                }
+                if (((unchecked((int)(shown))) != 0))
+                    f->sum[i].shown = 1;
+            }
+            if (((((unchecked((int)(suite))) != 0) && ((sp < 64)))))
+                stack[sp++] = i;
+        }
+        f->rows = (int*)(cui__frame_alloc(ui, 4UL * nn * (ulong)(2)));
+        f->nrows = 0;
+        int hide_below = -1;
+        for (int i__1 = 0; ((i__1 < n)); i__1++)
+        {
+            int d__1 = f->it[i__1].depth;
+            if (((hide_below >= 0)))
+            {
+                if (((d__1 > hide_below)))
+                    continue;
+                hide_below = -1;
+            }
+            if ((!(((f->sum[i__1].shown) != 0) )     ))
+                continue;
+            f->rows[f->nrows++] = i__1;
+            if (((((unchecked((int)(f->sum[i__1].suite))) != 0) && ((unchecked((int)(cui__tx_folded(f->s, cui__tx_key(f->it, i__1))))) != 0))))
+                hide_below = d__1;
+            else
+                if ((((((((!(((unchecked((int)(f->sum[i__1].suite))) != 0) )     ) && (((int)f->it[i__1].status == (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_FAILED)))) && (((void*)(f->it[i__1].message)) != null))) && ((f->it[i__1].message[0]) != 0))))
+                    f->rows[f->nrows++] = -(i__1 + 1);
+        }
+    }
+
+
+
+    public static unsafe int cui__tx_row_of(cui__txf* f, int item)
+    {
+        for (int r = 0; ((r < f->nrows)); r++)
+            if (((f->rows[r] == item)))
+                return r;
+        return -1;
+    }
+
+
+
+    public static unsafe void cui__tx_keys(cui__txf* f)
+    {
+        cui_ctx* ui = f->ui;
+        cui__tx_state* s = f->s;
+        int r = cui__tx_row_of(f, s->sel), nr = r;
+        CBool left = cui_key_pressed(ui, (cui_key)(((int)(((unchecked((int)(s->rtl))) != 0) ? (int)(__DotCcEnum_6375695F6B6579.CUI_KEY_RIGHT) : (int)(__DotCcEnum_6375695F6B6579.CUI_KEY_LEFT))))), right = cui_key_pressed(ui, (cui_key)(((int)(((unchecked((int)(s->rtl))) != 0) ? (int)(__DotCcEnum_6375695F6B6579.CUI_KEY_LEFT) : (int)(__DotCcEnum_6375695F6B6579.CUI_KEY_RIGHT)))));
+        if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_DOWN)))) != 0))
+        {
+            nr = r + 1;
+            while (((((nr < f->nrows)) && ((f->rows[nr] < 0)))))
+                nr++;
+            if (((nr >= f->nrows)))
+                nr = r;
+        }
+        if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_UP)))) != 0))
+        {
+            nr = ((int)(((r < 0)) ? 0 : r - 1));
+            while (((((nr > 0)) && ((f->rows[nr] < 0)))))
+                nr--;
+            if (((nr < 0)))
+                nr = 0;
+        }
+        if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_HOME)))) != 0))
+            nr = 0;
+        if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_END)))) != 0))
+        {
+            nr = f->nrows - 1;
+            while (((((nr > 0)) && ((f->rows[nr] < 0)))))
+                nr--;
+        }
+        if (((((((((r < 0)) && ((nr < 0)))) && ((f->nrows > 0)))) && ((((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_DOWN)))) != 0) || ((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_UP)))) != 0))))))
+            nr = 0;
+        if (((((((((nr != r)) && ((nr >= 0)))) && ((nr < f->nrows)))) && ((f->rows[nr] >= 0)))))
+        {
+            s->sel = f->rows[nr];
+            s->scroll_to_sel = 1;
+        }
+        int i = s->sel;
+        if (((((i >= 0)) && ((i < f->n)))))
+        {
+            CBool suite = f->sum[i].suite;
+            uint h = cui__tx_key(f->it, i);
+            if (((unchecked((int)(left))) != 0))
+            {
+                if (((((unchecked((int)(suite))) != 0) && (!(((unchecked((int)(cui__tx_folded(s, h)))) != 0) )     ))))
+                    cui__tx_fold(s, h, 1);
+                else
+                    for (int k = i - 1; ((k >= 0)); k--)
+                        if (((f->it[k].depth < f->it[i].depth)))
+                        {
+                            s->sel = k;
+                            s->scroll_to_sel = 1;
+                            break;
+                        }
+            }
+            if (((((unchecked((int)(right))) != 0) && ((unchecked((int)(suite))) != 0))))
+                cui__tx_fold(s, h, 0);
+            if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_ENTER)))) != 0))
+                f->res->activated = i;
+        }
+    }
+
+
+
+    public static unsafe void cui__tx_toolbar__unit_73119C63EA392BD1C6B4BE8E517D61496FC6027289AD2ADDFA9A4E297246D37B(cui__txf* f)
+    {
+        cui_ctx* ui = f->ui;
+        cui__tx_state* s = f->s;
+        int bar = cui__node_new(ui, 0);
+        cui_node* bn = &ui->nodes[bar];
+        bn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
+        bn->gap = 8;
+        bn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+        bn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+        bn->flags |= (uint)(32768);
+        cui__open(ui, bar);
+        cui_button_opts bo = default;
+        memset(&bo, 0, ((ulong)(sizeof(cui_button_opts))));
+        bo.size = __DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM;
+        bo.icon = (DotCcLiterals.Pointer + DotCcLiterals.S364 /*""*/);
+        if (((unchecked((int)(cui_button_ex(ui, ((byte*)(((unchecked((int)(f->narrow))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S279 /*"Run"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S1362 /*"Run all"*/))), &bo)))) != 0))
+            f->res->run_all = 1;
+        byte** labels = stackalloc byte*[]{ cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S66 /*"%d"*/), f->res->passed), cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S66 /*"%d"*/), f->res->failed), cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S66 /*"%d"*/), f->res->skipped) };
+        cui_toggle_group_opts go = default;
+        memset(&go, 0, ((ulong)(sizeof(cui_toggle_group_opts))));
+        go.size = __DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM;
+        go.icons = global::Managed.Cui.Cui.Globals.icons__s2__unit_73119C63EA392BD1C6B4BE8E517D61496FC6027289AD2ADDFA9A4E297246D37B;
+        _ = cui_toggle_group_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1023 /*"status"*/), labels, 3, (CBool*)&s->show, &go);
+        cui_input_opts io = default;
+        memset(&io, 0, ((ulong)(sizeof(cui_input_opts))));
+        io.size = __DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM;
+        io.width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+        io.placeholder = (DotCcLiterals.Pointer + DotCcLiterals.S1232 /*"Filter tests"*/);
+        io.clearable = 1;
+        cui_search_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S570 /*"filter"*/), s->query, ((ulong)((96 * sizeof(byte)))), &io);
+        ui->nodes[ui->last_node].min_w = 120;
+        cui__close(ui);
+    }
+
+
+
+    public static unsafe void cui__tx_row(cui__txf* f, int i)
+    {
+        cui_ctx* ui = f->ui;
+        cui__tx_state* s = f->s;
+        cui_test_item* t = &f->it[i];
+        CBool suite = f->sum[i].suite;
+        uint rid = f->id ^ cui__tx_key(f->it, i) * 0x9E3779B1u;
+        cui_interact ri = cui__interact(ui, rid, 4);
+        uint h = cui__tx_key(f->it, i);
+        CBool folded = ((CBool)(((unchecked((int)(suite))) != 0) && ((unchecked((int)(cui__tx_folded(s, h)))) != 0)));
+        if (((unchecked((int)(ri.clicked))) != 0))
+        {
+            s->sel = i;
+            ui->focus = f->lid;
+            if (((ui->click_count >= 2)))
+            {
+                if (((unchecked((int)(suite))) != 0))
+                    cui__tx_fold(s, h, (((unchecked((int)(folded))) != 0) ? 0 : 1));
+                else
+                    f->res->activated = i;
+            }
+        }
+        CBool sel = ((CBool)(s->sel == i)), focused = ((CBool)(ui->focus == f->lid));
+        int row = cui__node_new(ui, rid);
+        cui_node* rn = &ui->nodes[row];
+        rn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
+        rn->gap = 6;
+        rn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+        rn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+        rn->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)28.0f };
+        rn->pad[1] = 6;
+        rn->pad[3] = 8 + (float)((int)(((((int)(((t->depth > 0)) ? t->depth : 0)) < 12)) ? ((int)(((t->depth > 0)) ? t->depth : 0)) : 12)) * ((int)(((unchecked((int)(f->narrow))) != 0) ? 12 : 16));
+        rn->bg = (((unchecked((int)(sel))) != 0) ? (((unchecked((int)(focused))) != 0) ? cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE], cui__emphasis(ui), ((float)((((int)ui->accent == (int)__DotCcEnum_6375695F616363656E74.CUI_ACCENT_NEUTRAL)) ? 0.08f : 0.16f))) : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_ACTIVE]) : (((unchecked((int)(ri.hovered))) != 0) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_HOVER] : cui__rgba(0, 0, 0, 0)));
+        cui__mark_interactive(ui, row, 0);
+        cui__open(ui, row);
+        if (((unchecked((int)(suite))) != 0))
+        {
+            uint cid = rid ^ 0xC4u;
+            cui_interact ci = cui__interact(ui, cid, 0);
+            if (((unchecked((int)(ci.clicked))) != 0))
+                cui__tx_fold(s, h, (((unchecked((int)(folded))) != 0) ? 0 : 1));
+            cui__icon_node(ui, ((byte*)(((unchecked((int)(folded))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S411 /*""*/) : (DotCcLiterals.Pointer + DotCcLiterals.S485 /*""*/))), 14, (((unchecked((int)(ci.hovered))) != 0) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND] : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED]));
+            int c = ui->last_node;
+            ui->nodes[c].id = cid;
+            cui__mark_interactive(ui, c, 0);
+        }
+        else
+        {
+            int sp = cui__node_new(ui, 0);
+            ui->nodes[sp].w = ui->nodes[sp].h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)14 };
+        }
+        cui__pl_status_icon(ui, cui__tx_status(f, i), 0, 14);
+        float fs = cui__fs(ui, ui->theme.text_sm), fx = cui__fs(ui, ui->theme.text_xs);
+        int tn = cui__text_node(ui, ((byte*)((((void*)(t->name)) != null) ? t->name : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), -1, ((int)(((unchecked((int)(suite))) != 0) ? 1 : 0)), fs, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0);
+        ui->nodes[tn].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+        ui->nodes[tn].flags |= (uint)(16);
+        ui->nodes[tn].line_height = 1.3f;
+        if (((((unchecked((int)(suite))) != 0) && (!(((unchecked((int)(f->narrow))) != 0) )     ))))
+        {
+            cui__tx_sum* m = &f->sum[i];
+            int all = m->pass + m->fail + m->skip + m->run + m->pend;
+            int ct = cui__text_node(ui, cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S885 /*"%d/%d"*/), m->pass, all), -1, 0, fx, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0);
+            ui->nodes[ct].flags |= (uint)(256);
+        }
+        float dur = ((float)(((unchecked((int)(suite))) != 0) ? f->sum[i].time : t->duration));
+        if (((((dur > 0)) || (((((((!(((unchecked((int)(suite))) != 0) )     ) && ((t->duration >= 0)))) && (((int)t->status != (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_PENDING)))) && (((int)t->status != (int)__DotCcEnum_6375695F6A6F625F737461747573.CUI_JOB_SKIPPED)))))))
+        {
+            byte* ds = ((byte*)(((dur < 1)) ? cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1404 /*"%.0f ms"*/), (double)((dur * 1000))) : cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1087 /*"%.2f s"*/), (double)(dur))));
+            int dt = cui__text_node(ui, ds, -1, 0, fx, (((dur >= 1)) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_WARNING] : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED]), 0);
+            ui->nodes[dt].flags |= (uint)(256);
+            ui->nodes[dt].direction = (byte)(__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_LTR);
+        }
+        CBool show_run = ((CBool)(((unchecked((int)(ri.hovered))) != 0) || ((unchecked((int)(sel))) != 0)));
+        if (((unchecked((int)(show_run))) != 0))
+        {
+            cui_button_opts bo = default;
+            memset(&bo, 0, ((ulong)(sizeof(cui_button_opts))));
+            bo.size = __DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM;
+            bo.variant = __DotCcEnum_6375695F627574746F6E5F76617269616E74.CUI_BUTTON_GHOST;
+            bo.tooltip = ((byte*)(((unchecked((int)(suite))) != 0) ? (DotCcLiterals.Pointer + DotCcLiterals.S793 /*"Run these tests"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S1148 /*"Run this test"*/)));
+            cui_push_id_int(ui, i);
+            if (((unchecked((int)(cui_icon_button_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S364 /*""*/), &bo)))) != 0))
+                f->res->run = i;
+            cui_pop_id(ui);
+        }
+        else
+        {
+            int sp__1 = cui__node_new(ui, 0);
+            ui->nodes[sp__1].w = ui->nodes[sp__1].h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)28 };
+        }
+        cui__close(ui);
+        if (((((((((((unchecked((int)(ri.hovered))) != 0) && ((ui->active == (uint)(0))))) && (((void*)(t->message)) != null))) && ((t->message[0]) != 0))) && (!(((unchecked((int)(suite))) != 0) )     ))))
+            cui__tooltip_passive(ui, rid, t->message);
+    }
+
+
+
+    public static unsafe void cui__tx_message_row(cui__txf* f, int i)
+    {
+        cui_ctx* ui = f->ui;
+        cui_test_item* t = &f->it[i];
+        int row = cui__node_new(ui, 0);
+        cui_node* rn = &ui->nodes[row];
+        rn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
+        rn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+        rn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+        rn->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)28.0f };
+        rn->pad[1] = 8;
+        rn->pad[3] = 8 + (float)((int)(((((int)(((t->depth > 0)) ? t->depth : 0)) < 12)) ? ((int)(((t->depth > 0)) ? t->depth : 0)) : 12)) * ((int)(((unchecked((int)(f->narrow))) != 0) ? 12 : 16)) + 40;
+        cui__open(ui, row);
+        byte* msg = t->message, nl = strchr(msg, 10);
+        int tn = cui__text_node(ui, msg, ((int)((((void*)(nl)) != null) ? (int)(nl - msg) : -1)), 3, cui__fs(ui, ui->theme.text_xs), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_DANGER], 0);
+        ui->nodes[tn].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+        ui->nodes[tn].flags |= (uint)(16);
+        cui__close(ui);
+    }
+
+
+
+    public static unsafe cui_test_explorer_result cui_test_explorer_ex(cui_ctx* ui, byte* id_str, cui_test_item* items, int count, cui_test_explorer_opts* o)
+    {
+        cui_test_explorer_opts d = default;
+        memset(&d, 0, ((ulong)(sizeof(cui_test_explorer_opts))));
+        if ((!((((void*)(o)) != null) )     ))
+            o = &d;
+        cui_test_explorer_result res = default;
+        memset(&res, 0, ((ulong)(sizeof(cui_test_explorer_result))));
+        res.selected = res.activated = res.run = -1;
+        if ((((!((((void*)(items)) != null) )     ) || ((count < 0)))))
+            count = 0;
+        cui__txf f = default;
+        memset(&f, 0, ((ulong)(sizeof(cui__txf))));
+        f.ui = ui;
+        f.it = items;
+        f.n = count;
+        f.res = &res;
+        f.id = cui_make_id(ui, id_str);
+        f.lid = f.id ^ 0x7E50u;
+        cui__tx_state* s = f.s = (cui__tx_state*)(cui_state(ui, f.id ^ 0x7E51u, ((ulong)(sizeof(cui__tx_state)))));
+        if ((!(((unchecked((int)(s->init))) != 0) )     ))
+        {
+            s->init = 1;
+            ((CBool*)&s->show)[0] = ((CBool*)&s->show)[1] = ((CBool*)&s->show)[2] = 1;
+            s->sel = -1;
+        }
+        if (((s->sel >= count)))
+            s->sel = -1;
+        cui_rect pr = cui__prev_rect(ui, f.id);
+        f.narrow = ((CBool)(((pr.w > 0)) && ((pr.w < 480.0f))));
+        cui__tx_rows(&f);
+        int outer = cui__node_new(ui, f.id);
+        cui_node* on = &ui->nodes[outer];
+        on->gap = 8;
+        on->w = ((((int)o->width.kind) != 0) ? o->width : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 });
+        on->h = (((o->height < 0)) ? new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 } : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)((float)(((o->height > 0)) ? o->height : (float)(320))) });
+        cui__open(ui, outer);
+        cui_push_id(ui, id_str);
+        cui__tx_toolbar__unit_73119C63EA392BD1C6B4BE8E517D61496FC6027289AD2ADDFA9A4E297246D37B(&f);
+        cui__tx_rows(&f);
+        cui_interact lr = cui__interact(ui, f.lid, 1);
+        if (((((unchecked((int)(lr.focused))) != 0) && (!(((unchecked((int)(ui->edit_prev))) != 0) )     ))))
+            cui__tx_keys(&f);
+        int frame = cui__node_new(ui, f.lid);
+        cui_node* fn = &ui->nodes[frame];
+        fn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+        fn->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+        fn->min_h = 80;
+        fn->radius = new cui_corners { tl = ui->theme.radius_control, tr = ui->theme.radius_control, br = ui->theme.radius_control, bl = ui->theme.radius_control };
+        fn->border = 1;
+        fn->border_color = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER];
+        fn->bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE];
+        fn->flags |= (uint)(16);
+        fn->paint = DotCcPointers.cui__paint_pb_dir__unit_73119C63EA392BD1C6B4BE8E517D61496FC6027289AD2ADDFA9A4E297246D37B;
+        fn->paint_data = &s->rtl;
+        cui__mark_interactive(ui, frame, 1);
+        cui__focus_ring(ui, frame, ((float)(((unchecked((int)(lr.focus_visible))) != 0) ? 1.0f : 0.0f)));
+        cui__open(ui, frame);
+        if (((unchecked((int)(s->scroll_to_sel))) != 0))
+        {
+            int r = cui__tx_row_of(&f, s->sel);
+            cui_scroll_state* ss = (cui_scroll_state*)(cui_state(ui, cui_make_id(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1021 /*"rows"*/)), ((ulong)(sizeof(cui_scroll_state)))));
+            float y = r * 28.0f, vh = ((float)(((ss->view_h > 0)) ? ss->view_h : (float)(240)));
+            if (((r >= 0)))
+            {
+                if (((y < ss->ty)))
+                    ss->ty = y;
+                else
+                    if (((y + 28.0f * 2 > ss->ty + vh)))
+                        ss->ty = y + 28.0f * 2 - vh;
+            }
+            s->scroll_to_sel = 0;
+        }
+        if (((f.nrows == 0)))
         {
             int e = cui__node_new(ui, 0);
             ui->nodes[e].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
@@ -1512,2842 +4435,29 @@ public static unsafe partial class Cui
             ui->nodes[e].align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
             ui->nodes[e].justify = (byte)(__DotCcEnum_6375695F6A757374696679.CUI_JUSTIFY_CENTER);
             cui__open(ui, e);
-            cui__text_node(ui, (DotCcLiterals.Pointer + DotCcLiterals.S718 /*"No requests"*/), -1, 0, cui__fs(ui, ui->theme.text_sm), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0);
+            cui__text_node(ui, ((byte*)(((count == 0)) ? (DotCcLiterals.Pointer + DotCcLiterals.S60 /*"No tests"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S142 /*"No tests match the filters"*/))), -1, 0, cui__fs(ui, ui->theme.text_sm), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0);
             cui__close(ui);
         }
         else
         {
             int first = default, last = default;
-            cui_virtual_list_begin(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1021 /*"rows"*/), count, 26.0f, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, &first, &last);
-            for (int i__1 = first; ((i__1 < last)); i__1++)
-                cui__wf_row__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&f, i__1, &res);
+            cui_virtual_list_begin(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1021 /*"rows"*/), f.nrows, 28.0f, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, &first, &last);
+            for (int r__1 = first; ((r__1 < last)); r__1++)
+            {
+                int v = f.rows[r__1];
+                if (((v >= 0)))
+                    cui__tx_row(&f, v);
+                else
+                    cui__tx_message_row(&f, -v - 1);
+            }
             cui_virtual_list_end(ui);
         }
         cui__close(ui);
-        cui__wf_footer__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&f);
         cui_pop_id(ui);
         cui__close(ui);
+        res.selected = s->sel;
         ui->last_id = f.id;
         return res;
-    }
-
-
-
-    public static unsafe int cui__tr_lb__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_trace_span* s, int lo, int hi, int track, int depth)
-    {
-        while (((lo < hi)))
-        {
-            int m = lo + (hi - lo) / 2;
-            if (((((s[m].track < track)) || ((((s[m].track == track)) && ((s[m].depth < depth)))))))
-                lo = m + 1;
-            else
-                hi = m;
-        }
-        return lo;
-    }
-
-
-
-    public static unsafe void cui__tr_row__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__tr_ctx* c, int t, int d, int* lo, int* hi)
-    {
-        *lo = cui__tr_lb__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(c->s, c->tk[t].lo, c->tk[t].hi, t, d);
-        *hi = cui__tr_lb__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(c->s, *lo, c->tk[t].hi, t, d + 1);
-    }
-
-
-
-    public static unsafe int cui__tr_end_gt__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_trace_span* s, int lo, int hi, double t)
-    {
-        while (((lo < hi)))
-        {
-            int m = lo + (hi - lo) / 2;
-            if (((s[m].end <= t)))
-                lo = m + 1;
-            else
-                hi = m;
-        }
-        return lo;
-    }
-
-
-
-    public static unsafe int cui__tr_start_le__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_trace_span* s, int lo, int hi, double t)
-    {
-        int a = lo, b = hi;
-        while (((a < b)))
-        {
-            int m = a + (b - a) / 2;
-            if (((s[m].start <= t)))
-                a = m + 1;
-            else
-                b = m;
-        }
-        return a - 1;
-    }
-
-
-
-    public static unsafe int cui__tr_parent__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__tr_ctx* c, int i)
-    {
-        cui_trace_span* sp = &c->s[i];
-        if (((sp->depth <= 0)))
-            return -1;
-        int lo = default, hi = default;
-        cui__tr_row__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(c, sp->track, sp->depth - 1, &lo, &hi);
-        int k = cui__tr_start_le__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(c->s, lo, hi, sp->start);
-        return ((int)(((((k >= lo)) && ((c->s[k].end >= sp->end)))) ? k : -1));
-    }
-
-
-
-    public static unsafe int cui__tr_child__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__tr_ctx* c, int i)
-    {
-        cui_trace_span* sp = &c->s[i];
-        if (((unchecked((int)(c->tracks[sp->track].collapsed))) != 0))
-            return -1;
-        int lo = default, hi = default;
-        cui__tr_row__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(c, sp->track, sp->depth + 1, &lo, &hi);
-        int k = cui__tr_end_gt__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(c->s, lo, hi, sp->start);
-        return ((int)(((((((k < hi)) && ((c->s[k].start >= sp->start)))) && ((c->s[k].start < sp->end)))) ? k : -1));
-    }
-
-
-
-    public static unsafe void cui__tr_layout__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_ctx* ui, cui__tr_ctx* c, cui_trace_opts* o)
-    {
-        ulong nt = (ulong)((int)(((1 > c->nt)) ? 1 : c->nt));
-        c->tk = (cui__tr_track*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__tr_track))) * nt));
-        CBool any = 0;
-        int row = 0, at = 0;
-        for (int t = 0; ((t < c->nt)); t++)
-        {
-            cui__tr_track* k = &c->tk[t];
-            k->lo = cui__tr_lb__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(c->s, at, c->n, t, 0);
-            k->hi = cui__tr_lb__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(c->s, k->lo, c->n, t + 1, 0);
-            at = k->hi;
-            k->maxd = ((int)(((k->hi > k->lo)) ? ((int)(((((int)(((c->s[k->hi - 1].depth > 0)) ? c->s[k->hi - 1].depth : 0)) < 4096)) ? ((int)(((c->s[k->hi - 1].depth > 0)) ? c->s[k->hi - 1].depth : 0)) : 4096)) : 0));
-            k->row0 = row;
-            k->rows = ((int)(((unchecked((int)(c->tracks[t].collapsed))) != 0) ? 1 : k->maxd + 1));
-            row += k->rows;
-            for (int d = 0; ((((d <= k->maxd)) && ((k->hi > k->lo)))); d++)
-            {
-                int lo = default, hi = default;
-                cui__tr_row__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(c, t, d, &lo, &hi);
-                if (((lo >= hi)))
-                    continue;
-                double a = c->s[lo].start, b = c->s[hi - 1].end;
-                if ((((!(((unchecked((int)(any))) != 0) )     ) || ((a < c->dmin)))))
-                    c->dmin = a;
-                if ((((!(((unchecked((int)(any))) != 0) )     ) || ((b > c->dmax)))))
-                    c->dmax = b;
-                any = 1;
-            }
-        }
-        for (int m = 0; ((((m < o->marker_count)) && (((void*)(o->markers)) != null))); m++)
-        {
-            double tm = o->markers[m].time;
-            if ((!(((isfinite(tm)) != 0) )     ))
-                continue;
-            if ((((!(((unchecked((int)(any))) != 0) )     ) || ((tm < c->dmin)))))
-                c->dmin = tm;
-            if ((((!(((unchecked((int)(any))) != 0) )     ) || ((tm > c->dmax)))))
-                c->dmax = tm;
-            any = 1;
-        }
-        c->rows = row;
-        if ((((((((!(((unchecked((int)(any))) != 0) )     ) || (!(((c->dmax > c->dmin)) )     ))) || (!(((isfinite(c->dmin)) != 0) )     ))) || (!(((isfinite(c->dmax)) != 0) )     ))))
-        {
-            double m__1 = ((double)(((((unchecked((int)(any))) != 0) && ((isfinite(c->dmin)) != 0))) ? c->dmin : (double)(0)));
-            c->dmin = m__1;
-            c->dmax = m__1 + 1;
-        }
-    }
-
-
-
-    public static unsafe int cui__tr_track_of__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__tr_ctx* c, int row, int* depth)
-    {
-        for (int t = 0; ((t < c->nt)); t++)
-            if (((((row >= c->tk[t].row0)) && ((row < c->tk[t].row0 + c->tk[t].rows)))))
-            {
-                *depth = row - c->tk[t].row0;
-                return t;
-            }
-        return -1;
-    }
-
-
-
-    public static unsafe int cui__tr_hit__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__tr_ctx* c, cui_trace_view* v, float mx, float my, int* track)
-    {
-        *track = -1;
-        float yy = my - c->body_y + v->scroll;
-        if (((yy < 0)))
-            return -1;
-        int row = (int)floorf(yy / c->row_h), d = default;
-        int t = cui__tr_track_of__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(c, row, &d);
-        *track = t;
-        if (((((((((t < 0)) || ((mx < c->plot_x - 1)))) || ((mx > c->plot_x + c->plot_w + 1)))) || ((yy - row * c->row_h > c->row_h - 1)))))
-            return -1;
-        int lo = default, hi = default;
-        cui__tr_row__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(c, t, d, &lo, &hi);
-        if (((lo >= hi)))
-            return -1;
-        double range = v->end - v->start;
-        double tm = v->start + (double)(mx - c->plot_x) / c->plot_w * range, tol = range / c->plot_w;
-        int k = cui__tr_start_le__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(c->s, lo, hi, tm);
-        if (((((k >= lo)) && ((c->s[k].end >= tm)))))
-            return k;
-        int best = -1;
-        double bd = tol;
-        if (((((k >= lo)) && ((tm - c->s[k].end <= bd)))))
-        {
-            bd = tm - c->s[k].end;
-            best = k;
-        }
-        if (((((k + 1 < hi)) && ((c->s[k + 1].start - tm <= bd)))))
-            best = k + 1;
-        return best;
-    }
-
-
-
-    public static unsafe void cui__tr_clamp__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__tr_ctx* c, cui_trace_view* v)
-    {
-        double ext = c->dmax - c->dmin, range = v->end - v->start;
-        if ((((!(((range > 0)) )     ) || ((range > ext)))))
-            range = ext;
-        range = ((double)(((range > ext * 1e-9)) ? range : ext * 1e-9));
-        double st = v->start;
-        if ((!(((st >= c->dmin)) )     ))
-            st = c->dmin;
-        if (((st + range > c->dmax)))
-            st = c->dmax - range;
-        v->start = st;
-        v->end = st + range;
-        float max_s = ((float)(((0.0f > c->rows * c->row_h - c->body_h)) ? 0.0f : c->rows * c->row_h - c->body_h));
-        if ((!(((v->scroll >= 0)) )     ))
-            v->scroll = 0;
-        if (((v->scroll > max_s)))
-            v->scroll = max_s;
-    }
-
-
-
-    public static unsafe void cui__tr_animate__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__tr_state* st, cui_trace_view* v, double a, double b)
-    {
-        cui_flame_view fv = new cui_flame_view { start = v->start, end = v->end, scroll = v->scroll };
-        cui__fl_animate_to__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&st->fl, &fv, a, b);
-    }
-
-
-
-    public static unsafe void cui__tr_reveal__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__tr_ctx* c, cui_trace_view* v, int i)
-    {
-        cui_trace_span* sp = &c->s[i];
-        double range = v->end - v->start;
-        if (((((sp->end < v->start)) || ((sp->start > v->end)))))
-        {
-            double mid = (sp->start + sp->end) * 0.5;
-            v->start = mid - range * 0.5;
-            v->end = mid + range * 0.5;
-        }
-        float top = (c->tk[sp->track].row0 + sp->depth) * c->row_h;
-        if (((top < v->scroll)))
-            v->scroll = top;
-        if (((top + c->row_h > v->scroll + c->body_h)))
-            v->scroll = top + c->row_h - c->body_h;
-        cui__tr_clamp__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(c, v);
-    }
-
-
-
-    public static unsafe void cui__tr_paint_marks__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_ctx* ui, cui__tr_paint* p, cui_rect plot, float px0, float k, float strip_y, float bottom)
-    {
-    byte* __dotcc_array_storage0 = null;
-        float fs = cui__fs(ui, ui->theme.text_xs), fh = cui__font_line_height(ui, 0, fs);
-        for (int m = 0; ((m < p->nm)); m++)
-        {
-            float x = floorf(px0 + (float)((p->marks[m].time - p->fp.t0) * k));
-            if (((((x < plot.x - 40)) || ((x > plot.x + plot.w)))))
-                continue;
-            cui_color c = ((((int)p->marks[m].tone) != 0) ? cui__tone_color(ui, p->marks[m].tone) : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED]);
-            cui_draw_rect(ui, new cui_rect { x = x, y = strip_y, w = 1, h = bottom - strip_y }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, cui_alpha(c, 0.55f));
-            if (__dotcc_array_storage0 == null)
-            {
-                byte* __dotcc_array_storage0_new = stackalloc byte[checked(sizeof(cui_vec2) * 3)];
-                __dotcc_array_storage0 = __dotcc_array_storage0_new;
-            }
-            cui_vec2* tri = (cui_vec2*)__dotcc_array_storage0;
-            new global::System.Span<byte>((void*)tri, checked(sizeof(cui_vec2) * 3)).Clear();
-            tri[0] = new cui_vec2 { x = x - 4, y = strip_y + 3 };
-            tri[1] = new cui_vec2 { x = x + 5, y = strip_y + 3 };
-            tri[2] = new cui_vec2 { x = x + 0.5f, y = strip_y + 9 };
-            cui_draw_polygon(ui, tri, 3, c);
-            if ((((((void*)(p->marks[m].name)) != null) && ((x >= plot.x)))))
-            {
-                float next = plot.x + plot.w;
-                for (int j = 0; ((j < p->nm)); j++)
-                {
-                    float xj = px0 + (float)((p->marks[j].time - p->fp.t0) * k);
-                    if (((((xj > x + 1)) && ((xj < next)))))
-                        next = xj;
-                }
-                float avail = next - (x + 8) - 6;
-                if (((avail >= 24)))
-                    cui__draw_text_ellipsis(ui, 0, fs, x + 8, strip_y + (18.0f - fh) * 0.5f, avail, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY], p->marks[m].name, -1, 0);
-            }
-        }
-    }
-
-
-
-    public static unsafe void cui__tr_paint_measure__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_ctx* ui, cui__tr_paint* p, cui_rect plot, float px0, float k, cui_rect ruler)
-    {
-        if ((!(((p->mark1 > p->mark0)) )     ))
-            return;
-        float x0 = px0 + (float)((p->mark0 - p->fp.t0) * k), x1 = px0 + (float)((p->mark1 - p->fp.t0) * k);
-        x0 = ((float)(((x0 > plot.x - 2)) ? x0 : plot.x - 2));
-        x1 = ((float)(((x1 < plot.x + plot.w + 2)) ? x1 : plot.x + plot.w + 2));
-        if (((x1 <= x0)))
-            return;
-        cui_color em = cui__emphasis(ui);
-        cui_draw_rect(ui, new cui_rect { x = x0, y = plot.y, w = x1 - x0, h = plot.h }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, cui_alpha(em, 0.08f));
-        cui_draw_rect(ui, new cui_rect { x = x0, y = plot.y, w = 1, h = plot.h }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, cui_alpha(em, 0.7f));
-        cui_draw_rect(ui, new cui_rect { x = x1 - 1, y = plot.y, w = 1, h = plot.h }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, cui_alpha(em, 0.7f));
-        byte* lbl = cui__fl_dur__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, p->mark1 - p->mark0);
-        float fs = cui__fs(ui, ui->theme.text_xs), fh = cui__font_line_height(ui, 1, fs);
-        float lw = cui__text_width(ui, 1, fs, lbl, -1, 1) + 12;
-        float cx = ((float)(((((float)((((x0 + x1) * 0.5f > plot.x + lw * 0.5f + 2)) ? (x0 + x1) * 0.5f : plot.x + lw * 0.5f + 2)) < plot.x + plot.w - lw * 0.5f - 2)) ? ((float)((((x0 + x1) * 0.5f > plot.x + lw * 0.5f + 2)) ? (x0 + x1) * 0.5f : plot.x + lw * 0.5f + 2)) : plot.x + plot.w - lw * 0.5f - 2));
-        cui_rect pill = new cui_rect { x = cx - lw * 0.5f, y = ruler.y + 3, w = lw, h = ruler.h - 6 };
-        cui_draw_rect(ui, pill, new cui_corners { tl = pill.h * 0.5f, tr = pill.h * 0.5f, br = pill.h * 0.5f, bl = pill.h * 0.5f }, em);
-        cui__draw_text_line(ui, 1, fs, pill.x + 6, pill.y + (pill.h - fh) * 0.5f, cui__legible(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE], em, 4.5f), lbl, -1, 1);
-    }
-
-
-
-    public static unsafe void cui__tr_paint_gutter__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_ctx* ui, cui__tr_paint* p, cui_rect g, float body_y)
-    {
-    byte* __dotcc_array_storage1 = null;
-        float fs = cui__fs(ui, ui->theme.text_xs), fh = cui__font_line_height(ui, 1, fs);
-        float rh = p->fp.row_h;
-        for (int t = 0; ((t < p->nl)); t++)
-        {
-            cui__tr_lane* l = &p->lanes[t];
-            float y = body_y + l->row0 * rh - p->fp.scroll;
-            if (((((y > g.y + g.h)) || ((y + l->rows * rh < g.y)))))
-                continue;
-            float x = g.x + 8;
-            cui_color tc = (((((t == p->hover_lane)) && ((unchecked((int)(l->foldable))) != 0))) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND] : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY]);
-            if (((unchecked((int)(l->foldable))) != 0))
-            {
-                float cy = y + (rh - 1) * 0.5f;
-                if (__dotcc_array_storage1 == null)
-                {
-                    byte* __dotcc_array_storage1_new = stackalloc byte[checked(sizeof(cui_vec2) * 3)];
-                    __dotcc_array_storage1 = __dotcc_array_storage1_new;
-                }
-                cui_vec2* tri = (cui_vec2*)__dotcc_array_storage1;
-                new global::System.Span<byte>((void*)tri, checked(sizeof(cui_vec2) * 3)).Clear();
-                if (((unchecked((int)(l->folded))) != 0))
-                {
-                    tri[0] = new cui_vec2 { x = x + 1, y = cy - 4 };
-                    tri[1] = new cui_vec2 { x = x + 1, y = cy + 4 };
-                    tri[2] = new cui_vec2 { x = x + 6, y = cy };
-                }
-                else
-                {
-                    tri[0] = new cui_vec2 { x = x - 1, y = cy - 2 };
-                    tri[1] = new cui_vec2 { x = x + 7, y = cy - 2 };
-                    tri[2] = new cui_vec2 { x = x + 3, y = cy + 3 };
-                }
-                cui_draw_polygon(ui, tri, 3, cui_alpha(tc, 0.8f));
-            }
-            x += 12;
-            cui__draw_text_ellipsis(ui, 1, fs, x, y + (rh - 1 - fh) * 0.5f, g.x + g.w - x - 6, tc, l->name, -1, 0);
-        }
-    }
-
-
-
-    public static unsafe void cui__paint_trace__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui_ctx* ui, cui_node* n, void* data)
-    {
-        cui__tr_paint* p = (cui__tr_paint*)(data);
-        cui__fl_paint* fp = &p->fp;
-        cui_rect r = n->rect;
-        float G = p->gutter, rad = ui->theme.radius_panel;
-        float head = 24.0f + p->marks_h;
-        cui_rect plot = new cui_rect { x = r.x + G, y = r.y + head + 1, w = ((float)(((0.0f > r.w - G - 1)) ? 0.0f : r.w - G - 1)), h = ((float)(((0.0f > r.h - head - 2)) ? 0.0f : r.h - head - 2)) };
-        cui__paint_wheel_hit(ui, p->wid, new cui_rect { x = r.x, y = r.y + head, w = r.w, h = r.h - head });
-        float px0 = plot.x + 8.0f, pw = ((float)(((1.0f > plot.w - 2 * 8.0f)) ? 1.0f : plot.w - 2 * 8.0f));
-        double range = fp->t1 - fp->t0;
-        float k = ((float)(((range > 0)) ? (float)(pw / range) : (float)(0)));
-        float body_y = plot.y + 4.0f;
-        cui_push_clip(ui, cui__rect_inset(r, 1));
-        cui_draw_rect(ui, new cui_rect { x = r.x, y = r.y, w = r.w, h = head }, new cui_corners { tl = rad - 1, tr = rad - 1, br = 0, bl = 0 }, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE_MUTED]);
-        cui_draw_rect(ui, new cui_rect { x = r.x, y = r.y + head, w = r.w, h = 1 }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER]);
-        cui_draw_rect(ui, new cui_rect { x = r.x + G - 1, y = r.y + head + 1, w = 1, h = r.h - head - 1 }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER_SUBTLE]);
-        cui_push_clip(ui, new cui_rect { x = r.x, y = plot.y, w = r.w, h = plot.h });
-        for (int t = 0; ((t < p->nl)); t++)
-        {
-            float y = body_y + p->lanes[t].row0 * fp->row_h - fp->scroll, h = p->lanes[t].rows * fp->row_h;
-            if (((((y > plot.y + plot.h)) || ((y + h < plot.y)))))
-                continue;
-            if (((t & 1) != 0))
-                cui_draw_rect(ui, new cui_rect { x = r.x, y = y - 1, w = r.w, h = h + 1 }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE], ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0.04f));
-            if (((t > 0)))
-                cui_draw_rect(ui, new cui_rect { x = r.x, y = y - 1, w = r.w, h = 1 }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER_SUBTLE]);
-        }
-        cui__tr_paint_gutter__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, p, new cui_rect { x = r.x, y = plot.y, w = G - 1, h = plot.h }, body_y);
-        cui_pop_clip(ui);
-        cui_push_clip(ui, new cui_rect { x = plot.x, y = r.y, w = plot.w, h = r.h });
-        if (((k > 0)))
-            cui__fl_ruler__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, new cui_rect { x = plot.x, y = r.y, w = plot.w, h = 24.0f }, px0, pw, fp->t0, fp->t1, fp->origin, r.h - 24.0f - 2);
-        cui_push_clip(ui, plot);
-        for (int i = 0; ((i < fp->n)); i++)
-            cui__fl_bar__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, fp, &fp->items[i], px0, k, body_y, plot, 0);
-        if (((unchecked((int)(fp->has_sel))) != 0))
-            cui__fl_bar__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, fp, &fp->sel, px0, k, body_y, plot, 1);
-        cui_pop_clip(ui);
-        if (((k > 0)))
-            cui__tr_paint_marks__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, p, plot, px0, k, r.y + 24.0f + 1, plot.y + plot.h);
-        if (((k > 0)))
-            cui__tr_paint_measure__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, p, plot, px0, k, new cui_rect { x = plot.x, y = r.y, w = plot.w, h = 24.0f });
-        if (((unchecked((int)(fp->empty))) != 0))
-        {
-            float fs = cui__fs(ui, ui->theme.text_sm);
-            float lw = cui__text_width(ui, 0, fs, (DotCcLiterals.Pointer + DotCcLiterals.S1417 /*"No spans"*/), -1, 0);
-            cui__draw_text_line(ui, 0, fs, plot.x + (plot.w - lw) * 0.5f, plot.y + plot.h * 0.5f - 8, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], (DotCcLiterals.Pointer + DotCcLiterals.S1417 /*"No spans"*/), -1, 0);
-        }
-        float view_h = plot.h - 2 * 4.0f;
-        if (((((fp->content_h > view_h + 0.5f)) && ((view_h > 8)))))
-        {
-            float th = ((float)(((16.0f > view_h * view_h / fp->content_h)) ? 16.0f : view_h * view_h / fp->content_h));
-            float ty = plot.y + 4.0f + (view_h - th) * (fp->scroll / (fp->content_h - view_h));
-            cui_draw_rect(ui, new cui_rect { x = plot.x + plot.w - 5, y = ty, w = 3, h = th }, new cui_corners { tl = 1.5f, tr = 1.5f, br = 1.5f, bl = 1.5f }, cui_alpha(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0.4f));
-        }
-        cui_pop_clip(ui);
-        if (((fp->focus > 0.01f)))
-            cui__draw_focus_ring(ui, r, new cui_corners { tl = rad, tr = rad, br = rad, bl = rad }, fp->focus);
-        cui_pop_clip(ui);
-    }
-
-
-
-    public static unsafe double cui__tr_time_at__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__trf* f, float x)
-    {
-        return f->v->start + (double)(x - f->c.plot_x) / f->c.plot_w * (f->v->end - f->v->start);
-    }
-
-
-
-    public static unsafe void cui__trf_wheel__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__trf* f)
-    {
-        cui_ctx* ui = f->ui;
-        cui_trace_view* v = f->v;
-        if ((!(((((((ui->scroll_target == f->wid)) && ((ui->hot_layer == ui->current_layer)))) && ((((ui->scroll_dx != 0)) || ((ui->scroll_dy != 0)))))) )     ))
-            return;
-        double range = v->end - v->start;
-        if (((f->mx < f->R.x + f->c.gutter)))
-            v->scroll -= ui->scroll_dy * 40;
-        else
-            if (((((ui->scroll_dx != 0)) || ((ui->mods & (int)__DotCcEnum_6375695F6D6F64.CUI_MOD_SHIFT) != 0))))
-            {
-                float dl = ((float)(((ui->scroll_dx != 0)) ? ui->scroll_dx : ui->scroll_dy));
-                double dt = (double)dl * 40.0 / f->c.plot_w * range;
-                v->start -= dt;
-                v->end -= dt;
-            }
-            else
-            {
-                double z = pow(1.12, (double)ui->scroll_dy);
-                double nr = ((double)(((range / z < f->c.dmax - f->c.dmin)) ? range / z : f->c.dmax - f->c.dmin));
-                double u = ((double)(((((double)((((double)(f->mx - f->c.plot_x) / f->c.plot_w > 0.0)) ? (double)(f->mx - f->c.plot_x) / f->c.plot_w : 0.0)) < 1.0)) ? ((double)((((double)(f->mx - f->c.plot_x) / f->c.plot_w > 0.0)) ? (double)(f->mx - f->c.plot_x) / f->c.plot_w : 0.0)) : 1.0));
-                double tm = v->start + u * range;
-                v->start = tm - u * nr;
-                v->end = v->start + nr;
-            }
-        ui->scroll_dx = ui->scroll_dy = 0;
-        f->user_moved = 1;
-    }
-
-
-
-    public static unsafe void cui__trf_pointer__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__trf* f)
-    {
-        cui_ctx* ui = f->ui;
-        cui__tr_state* st = f->st;
-        cui_trace_view* v = f->v;
-        float mx = f->mx, my = f->my;
-        if (((((((((unchecked((int)(f->bi.hovered))) != 0) && ((unchecked((int)(((CBool*)&ui->mpressed)[0]))) != 0))) && ((st->mode == 0)))) && ((my >= f->c.body_y - 4.0f)))))
-        {
-            st->press_x = st->last_x = mx;
-            st->press_y = st->last_y = my;
-            st->press_hit = cui__tr_hit__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&f->c, v, mx, my, &st->press_track);
-            st->press_double = f->bi.double_clicked;
-            if (((mx < f->R.x + f->c.gutter)))
-            {
-                int t = st->press_track;
-                if (((((t >= 0)) && ((f->c.tk[t].maxd > 0)))))
-                {
-                    f->c.tracks[t].collapsed = (((unchecked((int)(f->c.tracks[t].collapsed))) != 0) ? 0 : 1);
-                    f->user_moved = 1;
-                }
-            }
-            else
-                if (((ui->mods & (int)__DotCcEnum_6375695F6D6F64.CUI_MOD_SHIFT) != 0))
-                {
-                    st->mode = 3;
-                    v->mark_start = v->mark_end = cui__tr_time_at__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(f, mx);
-                }
-                else
-                    st->mode = 1;
-        }
-        if (((st->mode == 3)))
-        {
-            double a = cui__tr_time_at__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(f, st->press_x), b = cui__tr_time_at__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(f, mx);
-            v->mark_start = ((double)(((a < b)) ? a : b));
-            v->mark_end = ((double)(((a > b)) ? a : b));
-            cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_RESIZE_EW);
-            if ((!(((unchecked((int)(((CBool*)&ui->mdown)[0]))) != 0) )     ))
-                st->mode = 0;
-            return;
-        }
-        if (((((st->mode == 1)) && ((unchecked((int)(((CBool*)&ui->mdown)[0]))) != 0))))
-        {
-            float dx = mx - st->press_x, dy = my - st->press_y;
-            if (((dx * dx + dy * dy > 3.0f * 3.0f)))
-                st->mode = 2;
-        }
-        if (((st->mode == 2)))
-        {
-            double dt = (double)(mx - st->last_x) / f->c.plot_w * (v->end - v->start);
-            v->start -= dt;
-            v->end -= dt;
-            v->scroll -= my - st->last_y;
-            st->last_x = mx;
-            st->last_y = my;
-            cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_MOVE);
-            f->user_moved = 1;
-            if ((!(((unchecked((int)(((CBool*)&ui->mdown)[0]))) != 0) )     ))
-                st->mode = 0;
-        }
-        else
-            if (((((st->mode == 1)) && (!(((unchecked((int)(((CBool*)&ui->mdown)[0]))) != 0) )     ))))
-            {
-                st->mode = 0;
-                int h = st->press_hit;
-                *f->sel = h;
-                if (((unchecked((int)(st->press_double))) != 0))
-                {
-                    if (((h >= 0)))
-                    {
-                        cui_trace_span* sp = &f->c.s[h];
-                        double d = ((double)(((sp->end - sp->start > (f->c.dmax - f->c.dmin) * 1e-9)) ? sp->end - sp->start : (f->c.dmax - f->c.dmin) * 1e-9));
-                        cui__tr_animate__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(st, v, sp->start - d * 0.05, sp->start + d * 1.05);
-                    }
-                    else
-                        cui__tr_animate__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(st, v, f->c.dmin, f->c.dmax);
-                }
-            }
-        if (((((st->mode != 0)) && (!(((unchecked((int)(((CBool*)&ui->mdown)[0]))) != 0) )     ))))
-            st->mode = 0;
-    }
-
-
-
-    public static unsafe void cui__trf_keys__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__trf* f)
-    {
-        cui_ctx* ui = f->ui;
-        cui_trace_view* v = f->v;
-        cui__tr_ctx* c = &f->c;
-        int s = *f->sel, ns = s;
-        CBool L = cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_LEFT), Rk = cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_RIGHT), U = cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_UP), D = cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_DOWN);
-        if (((((((((unchecked((int)(L))) != 0) || ((unchecked((int)(Rk))) != 0))) || ((unchecked((int)(U))) != 0))) || ((unchecked((int)(D))) != 0))))
-        {
-            if (((s < 0)))
-            {
-                for (int t = 0; ((((t < c->nt)) && ((ns < 0)))); t++)
-                {
-                    int lo = default, hi = default;
-                    cui__tr_row__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(c, t, 0, &lo, &hi);
-                    int k = cui__tr_end_gt__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(c->s, lo, hi, v->start);
-                    if (((k < hi)))
-                        ns = k;
-                }
-            }
-            else
-                if (((unchecked((int)(L))) != 0))
-                {
-                    if (((((((s > 0)) && ((c->s[s - 1].track == c->s[s].track)))) && ((c->s[s - 1].depth == c->s[s].depth)))))
-                        ns = s - 1;
-                }
-                else
-                    if (((unchecked((int)(Rk))) != 0))
-                    {
-                        if (((((((s + 1 < c->n)) && ((c->s[s + 1].track == c->s[s].track)))) && ((c->s[s + 1].depth == c->s[s].depth)))))
-                            ns = s + 1;
-                    }
-                    else
-                        if (((unchecked((int)(U))) != 0))
-                        {
-                            int pk = cui__tr_parent__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(c, s);
-                            if (((pk >= 0)))
-                                ns = pk;
-                        }
-                        else
-                        {
-                            int ck = cui__tr_child__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(c, s);
-                            if (((ck >= 0)))
-                                ns = ck;
-                        }
-            if (((((ns >= 0)) && ((ns != s)))))
-            {
-                *f->sel = ns;
-                cui__tr_reveal__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(c, v, ns);
-                f->user_moved = 1;
-            }
-            ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_LEFT] = ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_RIGHT] = ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_UP] = ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_DOWN] = 0;
-        }
-        if (((((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_EQUAL)))) != 0) || ((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_MINUS)))) != 0))))
-        {
-            double cx = (v->start + v->end) * 0.5, z = ((double)(((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_EQUAL)))) != 0) ? 1 / 1.25 : 1.25));
-            double nr = ((double)((((v->end - v->start) * z < c->dmax - c->dmin)) ? (v->end - v->start) * z : c->dmax - c->dmin));
-            v->start = cx - nr * 0.5;
-            v->end = cx + nr * 0.5;
-            f->user_moved = 1;
-            ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_EQUAL] = ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_MINUS] = 0;
-        }
-        if (((((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_ENTER)))) != 0) && ((*f->sel >= 0)))))
-        {
-            cui_trace_span* sp = &c->s[*f->sel];
-            double d = ((double)(((sp->end - sp->start > (c->dmax - c->dmin) * 1e-9)) ? sp->end - sp->start : (c->dmax - c->dmin) * 1e-9));
-            cui__tr_animate__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(f->st, v, sp->start - d * 0.05, sp->start + d * 1.05);
-            ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_ENTER] = 0;
-        }
-        if (((((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_F)))) != 0) && (!(((ui->mods & (int)__DotCcEnum_6375695F6D6F64.CUI_MOD_CTRL) != 0) )     ))))
-        {
-            cui__tr_animate__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(f->st, v, c->dmin, c->dmax);
-            ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_F] = 0;
-        }
-        if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_ESCAPE)))) != 0))
-        {
-            if (((v->mark_end > v->mark_start)))
-                v->mark_start = v->mark_end = 0;
-            else
-                *f->sel = -1;
-            ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_ESCAPE] = 0;
-        }
-    }
-
-
-
-    public static unsafe void cui__trf_move_view__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__trf* f)
-    {
-        cui__tr_state* st = f->st;
-        cui_trace_view* v = f->v;
-        if (((unchecked((int)(f->user_moved))) != 0))
-            st->fl.anim_on = 0;
-        if (((unchecked((int)(st->fl.anim_on))) != 0))
-        {
-            float pr = cui__spring(f->ui, &st->fl.anim, 1.0f, 0.32f, 0.0f);
-            double a = default, b = default;
-            cui__fl_lerp__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&st->fl, ((double)(((pr >= 1.0f)) ? 1.0 : (double)pr)), &a, &b);
-            v->start = a;
-            v->end = b;
-            if (((((pr >= 1.0f)) && ((st->fl.anim.v == 0)))))
-            {
-                v->start = st->fl.b0;
-                v->end = st->fl.b1;
-                st->fl.anim_on = 0;
-            }
-        }
-        cui__tr_clamp__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&f->c, v);
-    }
-
-
-
-    public static unsafe void cui__trf_row_items__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__trf* f, cui__fl_paint* p, int t, int d, int row, double k, cui_color run_fill)
-    {
-        cui_ctx* ui = f->ui;
-        cui_trace_span* s = f->c.s;
-        double t0 = f->v->start, t1 = f->v->end;
-        int lo = default, hi = default;
-        cui__tr_row__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&f->c, t, d, &lo, &hi);
-        int i = cui__tr_end_gt__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(s, lo, hi, t0);
-        while (((((i < hi)) && ((s[i].start < t1)))))
-        {
-            double xs = (s[i].start - t0) * k, xe = (s[i].end - t0) * k;
-            cui__fl_item it = default;
-            memset(&it, 0, ((ulong)(sizeof(cui__fl_item))));
-            it.row = row;
-            if (((xe - xs >= 1.0)))
-            {
-                uint key = cui__fl_name_key__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(s[i].name, s[i].color_key);
-                it.s = s[i].start;
-                it.e = s[i].end;
-                it.kind = (byte)(((int)(((i == f->hov)) ? 1 : 0)));
-                it.fill = cui__fl_fill__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, key, ((CBool)(i == f->hov)));
-                if (((((((xe - xs >= 40.0f)) && (((void*)(s[i].name)) != null))) && ((s[i].name[0]) != 0))))
-                {
-                    it.fg = cui__fl_fg__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, key, it.fill);
-                    it.label_len = (int)strlen(s[i].name);
-                    it.label = cui__frame_strdup(ui, s[i].name, it.label_len);
-                }
-                cui__fl_push__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, p, &it);
-                i++;
-                continue;
-            }
-            double rx0 = xs, rx1 = xe;
-            i++;
-            for (; ; )
-            {
-                int j = cui__tr_end_gt__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(s, i, hi, t0 + (rx1 + 1.0) / k);
-                if (((j > i)))
-                {
-                    double e2 = (s[j - 1].end - t0) * k;
-                    if (((e2 > rx1)))
-                        rx1 = e2;
-                    i = j;
-                }
-                if (((i < hi)))
-                {
-                    double ns = (s[i].start - t0) * k, ne = (s[i].end - t0) * k;
-                    if (((((ne - ns < 1.0)) && ((ns <= rx1 + 1.0)))))
-                    {
-                        rx1 = ne;
-                        i++;
-                        continue;
-                    }
-                }
-                break;
-            }
-            if (((rx1 - rx0 >= 1.0)))
-            {
-                it.s = t0 + rx0 / k;
-                it.e = t0 + rx1 / k;
-                it.kind = 2;
-                it.fill = run_fill;
-                cui__fl_push__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, p, &it);
-            }
-        }
-    }
-
-
-
-    public static unsafe void cui__trf_build__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__trf* f, int* node, cui__tr_paint** @out)
-    {
-        cui_ctx* ui = f->ui;
-        cui_trace_opts* o = f->o;
-        cui__tr_ctx* c = &f->c;
-        cui_trace_view* v = f->v;
-        int en = cui__node_new(ui, f->id);
-        cui_node* n = &ui->nodes[en];
-        n->w = ((((int)o->width.kind) != 0) ? o->width : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 });
-        float head = 24.0f + ((float)(((o->marker_count > 0)) ? 18.0f : (float)(0)));
-        float def_h = head + 1 + 2 * 4.0f + ((int)(((4 > c->rows)) ? 4 : c->rows)) * c->row_h + 1;
-        n->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)((float)(((o->height > 0)) ? o->height : ((float)(((320.0f < def_h)) ? 320.0f : def_h)))) };
-        n->bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE];
-        n->border = 1;
-        n->border_color = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER];
-        n->radius = new cui_corners { tl = ui->theme.radius_panel, tr = ui->theme.radius_panel, br = ui->theme.radius_panel, bl = ui->theme.radius_panel };
-        n->flags |= (uint)(16);
-        n->direction = (byte)(__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_LTR);
-        cui__mark_interactive(ui, en, 1);
-        cui__tr_paint* p = (cui__tr_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__tr_paint)))));
-        memset(p, 0, ((ulong)(sizeof(cui__tr_paint))));
-        cui__fl_paint* fp = &p->fp;
-        fp->t0 = v->start;
-        fp->t1 = v->end;
-        fp->origin = c->dmin;
-        fp->row_h = c->row_h;
-        fp->scroll = v->scroll;
-        fp->content_h = c->rows * c->row_h;
-        fp->empty = ((CBool)(c->n == 0));
-        cui__tween(ui, &f->st->fl.focus, ((float)(((unchecked((int)(f->bi.focus_visible))) != 0) ? 1.0f : 0.0f)), 0.14f);
-        fp->focus = f->st->fl.focus;
-        p->wid = f->wid;
-        p->gutter = c->gutter;
-        p->marks_h = head - 24.0f;
-        p->mark0 = v->mark_start;
-        p->mark1 = v->mark_end;
-        p->hover_lane = ((int)(((((unchecked((int)(f->bi.hovered))) != 0) && ((f->mx < f->R.x + c->gutter)))) ? f->hov_track : -1));
-        p->nl = c->nt;
-        p->lanes = (cui__tr_lane*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__tr_lane))) * (ulong)((int)(((1 > c->nt)) ? 1 : c->nt))));
-        for (int t = 0; ((t < c->nt)); t++)
-        {
-            cui__tr_lane* l = &p->lanes[t];
-            l->name = cui__frame_strdup(ui, ((byte*)((((void*)(c->tracks[t].name)) != null) ? c->tracks[t].name : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), -1);
-            l->row0 = c->tk[t].row0;
-            l->rows = c->tk[t].rows;
-            l->foldable = ((CBool)(c->tk[t].maxd > 0));
-            l->folded = c->tracks[t].collapsed;
-        }
-        p->nm = ((int)((((void*)(o->markers)) != null) ? ((int)(((0 > o->marker_count)) ? 0 : o->marker_count)) : 0));
-        p->marks = (cui__tr_mark*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__tr_mark))) * (ulong)((int)(((1 > p->nm)) ? 1 : p->nm))));
-        for (int m = 0; ((m < p->nm)); m++)
-        {
-            p->marks[m].time = o->markers[m].time;
-            p->marks[m].tone = o->markers[m].tone;
-            p->marks[m].name = ((byte*)((((void*)(o->markers[m].name)) != null) ? cui__frame_strdup(ui, o->markers[m].name, -1) : null));
-        }
-        if (((((c->n > 0)) && ((v->end > v->start)))))
-        {
-            double k = c->plot_w / (v->end - v->start);
-            int r0 = ((int)(((0 > (int)floorf(v->scroll / c->row_h))) ? 0 : (int)floorf(v->scroll / c->row_h))), r1 = ((int)(((c->rows - 1 < (int)floorf((v->scroll + c->body_h) / c->row_h))) ? c->rows - 1 : (int)floorf((v->scroll + c->body_h) / c->row_h)));
-            cui_color run_fill = cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE], ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], ((float)((((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK)) ? 0.32f : 0.26f)));
-            for (int row = r0; ((row <= r1)); row++)
-            {
-                int d = default, t__1 = cui__tr_track_of__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(c, row, &d);
-                if (((t__1 >= 0)))
-                    cui__trf_row_items__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(f, fp, t__1, d, row, k, run_fill);
-            }
-            int s = *f->sel;
-            if (((s >= 0)))
-            {
-                cui_trace_span* sp = &c->s[s];
-                int row__1 = c->tk[sp->track].row0 + sp->depth;
-                if ((((((((((((!(((unchecked((int)(c->tracks[sp->track].collapsed))) != 0) )     ) || ((sp->depth == 0)))) && ((row__1 >= r0)))) && ((row__1 <= r1)))) && ((sp->end >= v->start)))) && ((sp->start <= v->end)))))
-                {
-                    uint key = cui__fl_name_key__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(sp->name, sp->color_key);
-                    cui__fl_item it = default;
-                    memset(&it, 0, ((ulong)(sizeof(cui__fl_item))));
-                    it.row = row__1;
-                    it.s = sp->start;
-                    it.e = sp->end;
-                    it.kind = 0;
-                    it.fill = cui__fl_fill__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, key, ((CBool)(s == f->hov)));
-                    if ((((((((sp->end - sp->start) * k >= 40.0f)) && (((void*)(sp->name)) != null))) && ((sp->name[0]) != 0))))
-                    {
-                        it.fg = cui__fl_fg__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, key, it.fill);
-                        it.label_len = (int)strlen(sp->name);
-                        it.label = cui__frame_strdup(ui, sp->name, it.label_len);
-                    }
-                    fp->sel = it;
-                    fp->has_sel = 1;
-                }
-            }
-        }
-        n->paint = DotCcPointers.cui__paint_trace__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA;
-        n->paint_data = p;
-        *node = en;
-        *@out = p;
-    }
-
-
-
-    public static unsafe void cui__trf_tooltip__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(cui__trf* f)
-    {
-        cui_ctx* ui = f->ui;
-        int hov = f->hov;
-        if ((!(((((((hov >= 0)) && ((ui->active == (uint)(0))))) && (!(((unchecked((int)(((CBool*)&ui->mdown)[0]))) != 0) )     ))) )     ))
-            return;
-        cui_trace_span* sp = &f->c.s[hov];
-        uint tid = cui__hash(&hov, ((ulong)(sizeof(int))), f->id ^ 0x7A1Cu);
-        float ry = f->c.body_y + (f->c.tk[sp->track].row0 + sp->depth) * f->c.row_h - f->v->scroll;
-        cui__absolute(ui, tid, f->mx - f->R.x - 1, ry - f->R.y, 2, f->c.row_h - 1);
-        byte* track = f->c.tracks[sp->track].name;
-        byte* tip = cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S486 /*"%s\n%s · at %s%s%s"*/), ((byte*)((((((void*)(sp->name)) != null) && ((sp->name[0]) != 0))) ? sp->name : (DotCcLiterals.Pointer + DotCcLiterals.S343 /*"Unnamed span"*/))), cui__fl_dur__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, sp->end - sp->start), cui__fl_dur__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, sp->start - f->c.dmin), ((byte*)((((((void*)(track)) != null) && ((track[0]) != 0))) ? (DotCcLiterals.Pointer + DotCcLiterals.S161 /*" · "*/) : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), ((byte*)((((void*)(track)) != null) ? track : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))));
-        cui__tooltip_passive(ui, tid, tip);
-    }
-
-
-
-    public static unsafe cui_trace_result cui_trace_view_ex(cui_ctx* ui, byte* id_str, cui_trace_track* tracks, int track_count, cui_trace_span* spans, int span_count, cui_trace_view* view, int* selected, cui_trace_opts* o)
-    {
-        cui_trace_opts d = default;
-        memset(&d, 0, ((ulong)(sizeof(cui_trace_opts))));
-        if ((!((((void*)(o)) != null) )     ))
-            o = &d;
-        cui_trace_result res = new cui_trace_result { selection_changed = 0, view_changed = 0, hovered = -1 };
-        cui__trf f = default;
-        memset(&f, 0, ((ulong)(sizeof(cui__trf))));
-        f.ui = ui;
-        f.o = o;
-        f.res = &res;
-        f.id = cui_make_id(ui, ((byte*)((((void*)(id_str)) != null) ? id_str : (DotCcLiterals.Pointer + DotCcLiterals.S960 /*"trace"*/))));
-        f.wid = f.id ^ 0x7A1Du;
-        cui__tr_state* st = f.st = (cui__tr_state*)(cui_state(ui, f.id ^ 0x7A1Eu, ((ulong)(sizeof(cui__tr_state)))));
-        if ((!(((unchecked((int)(st->init))) != 0) )     ))
-        {
-            st->own_sel = -1;
-            st->init = 1;
-        }
-        cui_trace_view* v = f.v = ((cui_trace_view*)((((void*)(view)) != null) ? view : &st->own_view));
-        int* sel = f.sel = ((int*)((((void*)(selected)) != null) ? selected : &st->own_sel));
-        if ((((!((((void*)(tracks)) != null) )     ) || ((track_count < 0)))))
-            track_count = 0;
-        if ((((((!((((void*)(spans)) != null) )     ) || ((span_count < 0)))) || ((track_count == 0)))))
-            span_count = 0;
-        while (((((span_count > 0)) && ((((spans[span_count - 1].track >= track_count)) || ((spans[span_count - 1].track < 0)))))))
-            span_count--;
-        int sel_before = *sel;
-        if (((((*sel < -1)) || ((*sel >= span_count)))))
-            *sel = -1;
-        cui__tr_ctx* c = &f.c;
-        c->s = spans;
-        c->n = span_count;
-        c->tracks = tracks;
-        c->nt = track_count;
-        c->row_h = ((float)(((o->row_height > 0)) ? o->row_height : 20.0f));
-        cui__tr_layout__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, c, o);
-        f.has_rect = cui__has_prev_rect(ui, f.id);
-        f.R = cui__prev_rect(ui, f.id);
-        c->gutter = ((float)(((((unchecked((int)(f.has_rect))) != 0) && ((f.R.w < 560.0f)))) ? 96.0f : 150.0f));
-        float head = 24.0f + ((float)(((o->marker_count > 0)) ? 18.0f : (float)(0)));
-        c->plot_x = f.R.x + c->gutter + 8.0f;
-        c->plot_w = ((float)(((unchecked((int)(f.has_rect))) != 0) ? ((float)(((1.0f > f.R.w - c->gutter - 1 - 2 * 8.0f)) ? 1.0f : f.R.w - c->gutter - 1 - 2 * 8.0f)) : (float)(600)));
-        c->body_y = f.R.y + head + 1 + 4.0f;
-        c->body_h = ((float)(((unchecked((int)(f.has_rect))) != 0) ? ((float)(((1.0f > f.R.h - head - 2 - 2 * 4.0f)) ? 1.0f : f.R.h - head - 2 - 2 * 4.0f)) : (float)(200)));
-        double b0 = v->start, b1 = v->end;
-        float bs = v->scroll;
-        if ((((((!(((v->end > v->start)) )     ) || (!(((isfinite(v->start)) != 0) )     ))) || (!(((isfinite(v->end)) != 0) )     ))))
-        {
-            v->start = c->dmin;
-            v->end = c->dmax;
-            st->fl.anim_on = 0;
-        }
-        f.bi = cui__interact(ui, f.id, 1 | 2);
-        f.mx = ui->mx;
-        f.my = ui->my;
-        if (((unchecked((int)(f.has_rect))) != 0))
-        {
-            cui__trf_wheel__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&f);
-            cui__trf_pointer__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&f);
-            if (((((unchecked((int)(f.bi.focused))) != 0) && (!(((unchecked((int)(ui->edit_prev))) != 0) )     ))))
-                cui__trf_keys__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&f);
-            if (((unchecked((int)(f.user_moved))) != 0))
-                cui__tr_layout__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(ui, c, o);
-            cui__trf_move_view__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&f);
-        }
-        if (((*sel >= c->n)))
-            *sel = -1;
-        f.hov = -1;
-        f.hov_track = -1;
-        if (((((((((unchecked((int)(f.has_rect))) != 0) && ((unchecked((int)(f.bi.hovered))) != 0))) && ((st->mode != 2)))) && ((unchecked((int)(cui__rect_contains(f.R, f.mx, f.my)))) != 0))))
-            f.hov = cui__tr_hit__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(c, v, f.mx, f.my, &f.hov_track);
-        if (((((((f.hov >= 0)) && ((unchecked((int)(c->tracks[c->s[f.hov].track].collapsed))) != 0))) && ((c->s[f.hov].depth > 0)))))
-            f.hov = -1;
-        res.hovered = f.hov;
-        res.selection_changed = ((CBool)(*sel != sel_before));
-        res.view_changed = ((CBool)(((((v->start != b0)) || ((v->end != b1)))) || ((v->scroll != bs))));
-        int en = default;
-        cui__tr_paint* p = default;
-        cui__trf_build__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&f, &en, &p);
-        cui__open(ui, en);
-        cui__trf_tooltip__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(&f);
-        cui__close(ui);
-        ui->last_id = f.id;
-        return res;
-    }
-
-
-
-    public static unsafe int cui__tr_cmp__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA(void* a, void* b)
-    {
-        cui_trace_span* x = (cui_trace_span*)(a), y = (cui_trace_span*)(b);
-        if (((x->track != y->track)))
-            return ((int)(((x->track < y->track)) ? -1 : 1));
-        if (((x->depth != y->depth)))
-            return ((int)(((x->depth < y->depth)) ? -1 : 1));
-        if (((x->start != y->start)))
-            return ((int)(((x->start < y->start)) ? -1 : 1));
-        if (((x->end != y->end)))
-            return ((int)(((x->end > y->end)) ? -1 : 1));
-        return 0;
-    }
-
-
-
-    public static unsafe void cui_trace_sort(cui_trace_span* spans, int count)
-    {
-        if ((((((void*)(spans)) != null) && ((count > 1)))))
-            qsort(spans, (int)((ulong)count), unchecked((int)(((ulong)(sizeof(cui_trace_span))))), DotCcPointers.cui__tr_cmp__unit_D8964B03E06AA709C1960EF1E81966267F2B807DECE100D0956043DF0BBE3AAA);
-    }
-
-
-
-    public static unsafe CBool cui__cv_bezier_mode__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(int mode)
-    {
-        return ((CBool)(((mode != (int)__DotCcEnum_6375695F63757276655F6D6F6465.CUI_CURVE_LINEAR)) && ((mode != (int)__DotCcEnum_6375695F63757276655F6D6F6465.CUI_CURVE_STEP))));
-    }
-
-
-
-    public static unsafe float cui__cv_auto_slope__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui_curve_key* k, int n, int i)
-    {
-        if (((((i <= 0)) || ((i >= n - 1)))))
-            return 0;
-        float dx0 = k[i].x - k[i - 1].x, dx1 = k[i + 1].x - k[i].x;
-        if ((((!(((dx0 > 0)) )     ) || (!(((dx1 > 0)) )     ))))
-            return 0;
-        float d0 = (k[i].y - k[i - 1].y) / dx0, d1 = (k[i + 1].y - k[i].y) / dx1;
-        if ((!(((d0 * d1 > 0)) )     ))
-            return 0;
-        float s = (k[i + 1].y - k[i - 1].y) / (dx0 + dx1);
-        float lim = 3.0f * fminf(fabsf(d0), fabsf(d1));
-        if (((fabsf(s) > lim)))
-            s = copysignf(lim, s);
-        return s;
-    }
-
-
-
-    public static unsafe void cui__cv_fit__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(float dx, float dy, float len, float* ox, float* oy)
-    {
-        if ((!(((dx > 0)) )     ))
-            dx = 0;
-        if (((dx > len)))
-        {
-            dy *= len / dx;
-            dx = len;
-        }
-        *ox = dx;
-        *oy = dy;
-    }
-
-
-
-    public static unsafe void cui__cv_seg_handles__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui_curve_key* k, int n, int i, float* ox, float* oy, float* ix, float* iy)
-    {
-        cui_curve_key* a = &k[i], b = &k[i + 1];
-        float len = b->x - a->x;
-        if (((a->mode == (int)__DotCcEnum_6375695F63757276655F6D6F6465.CUI_CURVE_FREE)))
-            cui__cv_fit__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(a->out_dx, a->out_dy, len, ox, oy);
-        else
-        {
-            float s = cui__cv_auto_slope__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(k, n, i);
-            *ox = len / 3.0f;
-            *oy = s * len / 3.0f;
-        }
-        if (((b->mode == (int)__DotCcEnum_6375695F63757276655F6D6F6465.CUI_CURVE_FREE)))
-        {
-            float tx = default, ty = default;
-            cui__cv_fit__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(-b->in_dx, b->in_dy, len, &tx, &ty);
-            *ix = -tx;
-            *iy = ty;
-        }
-        else
-        {
-            float s__1 = cui__cv_auto_slope__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(k, n, i + 1);
-            *ix = -len / 3.0f;
-            *iy = -s__1 * len / 3.0f;
-        }
-    }
-
-
-
-    public static unsafe float cui__cv_bez__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(float p0, float p1, float p2, float p3, float t)
-    {
-        float u = 1 - t;
-        return u * u * u * p0 + 3 * u * u * t * p1 + 3 * u * t * t * p2 + t * t * t * p3;
-    }
-
-
-
-    public static unsafe float cui__cv_bez_d__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(float p0, float p1, float p2, float p3, float t)
-    {
-        float u = 1 - t;
-        return 3 * (u * u * (p1 - p0) + 2 * u * t * (p2 - p1) + t * t * (p3 - p2));
-    }
-
-
-
-    public static unsafe float cui__cv_seg_eval__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui_curve_key* k, int n, int i, float x)
-    {
-        cui_curve_key* a = &k[i], b = &k[i + 1];
-        float len = b->x - a->x;
-        if ((!(((len > 0)) )     ))
-            return b->y;
-        float tx = x - a->x;
-        if (((a->mode == (int)__DotCcEnum_6375695F63757276655F6D6F6465.CUI_CURVE_STEP)))
-            return a->y;
-        if (((a->mode == (int)__DotCcEnum_6375695F63757276655F6D6F6465.CUI_CURVE_LINEAR)))
-            return a->y + (b->y - a->y) * (tx / len);
-        float ox = default, oy = default, ix = default, iy = default;
-        cui__cv_seg_handles__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(k, n, i, &ox, &oy, &ix, &iy);
-        float x1 = ox, x2 = len + ix;
-        float lo = 0, hi = 1, t = tx / len;
-        for (int it = 0; ((it < 40)); it++)
-        {
-            float e = cui__cv_bez__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(0, x1, x2, len, t) - tx;
-            if (((fabsf(e) <= len * 1e-6f)))
-                break;
-            if (((e > 0)))
-                hi = t;
-            else
-                lo = t;
-            float d = cui__cv_bez_d__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(0, x1, x2, len, t);
-            float nt = ((float)(((d > 1e-12f)) ? t - e / d : -1.0f));
-            t = ((float)(((((nt > lo)) && ((nt < hi)))) ? nt : 0.5f * (lo + hi)));
-        }
-        return cui__cv_bez__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(a->y, a->y + oy, b->y + iy, b->y, t);
-    }
-
-
-
-    public static unsafe float cui_curve_eval(cui_curve_key* k, int n, float x)
-    {
-        if ((((!((((void*)(k)) != null) )     ) || ((n <= 0)))))
-            return 0;
-        if ((!(((x > k[0].x)) )     ))
-            return k[0].y;
-        if (((x >= k[n - 1].x)))
-            return k[n - 1].y;
-        int i = 0;
-        while (((((i < n - 2)) && ((x >= k[i + 1].x)))))
-            i++;
-        return cui__cv_seg_eval__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(k, n, i, x);
-    }
-
-
-
-    public static unsafe int cui__cv_decimals__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(float step)
-    {
-        int d = 0;
-        float m = step;
-        while (((((d < 6)) && ((fabsf(m - roundf(m)) > 1e-3f * fmaxf(1.0f, fabsf(m)))))))
-        {
-            m *= 10;
-            d++;
-        }
-        return d;
-    }
-
-
-
-    public static unsafe int cui__cv_readout_decimals__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(float range)
-    {
-        float d = ceilf(-log10f(range / 100.0f) - 1e-4f);
-        return (int)((float)(((((float)(((d > 0.0f)) ? d : 0.0f)) < 6.0f)) ? ((float)(((d > 0.0f)) ? d : 0.0f)) : 6.0f));
-    }
-
-
-
-    public static unsafe byte* cui__cv_fmt__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui_ctx* ui, byte* fmt, int dec, float v)
-    {
-        if (((fabsf(v) < 0.5f * powf(10.0f, (float)(-dec)))))
-            v = 0;
-        if ((((void*)(fmt)) != null))
-            return cui__frame_printf(ui, fmt, (double)v);
-        return cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S733 /*"%.*f"*/), dec, (double)v);
-    }
-
-
-
-    public static unsafe int cui__cv_ticks__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(float lo, float hi, float step, float* first)
-    {
-        *first = ceilf(lo / step - 1e-4f) * step;
-        float n = floorf((hi - *first) / step + 1e-4f) + 1;
-        if ((!(((n > 0)) )     ))
-            return 0;
-        return ((int)(((n > 64)) ? 64 : (int)n));
-    }
-
-
-
-    public static unsafe cui__cv_layout cui__cv_layout_of__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui_ctx* ui, cui_rect r, cui__cv_range* g, byte* yfmt)
-    {
-        cui__cv_layout L = default;
-        memset(&L, 0, ((ulong)(sizeof(cui__cv_layout))));
-        L.fs = ui->theme.text_xs + 0.5f;
-        float fh = cui__font_line_height(ui, 0, L.fs);
-        float top = 12, bottom = fh + 14, right = 14;
-        float ph = r.h - top - bottom;
-        float lo = default, hi = default;
-        cui__nice_range(g->y0, g->y1, (int)((float)(((((float)(((ph / 44.0f > 2.0f)) ? ph / 44.0f : 2.0f)) < 8.0f)) ? ((float)(((ph / 44.0f > 2.0f)) ? ph / 44.0f : 2.0f)) : 8.0f)), &lo, &hi, &L.ystep);
-        L.ydec = cui__cv_decimals__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(L.ystep);
-        float first = default, lw = 0;
-        int ny = cui__cv_ticks__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(g->y0, g->y1, L.ystep, &first);
-        for (int k = 0; ((k < ny)); k++)
-            lw = ((float)(((lw > cui__text_width(ui, 0, L.fs, cui__cv_fmt__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(ui, yfmt, L.ydec, first + L.ystep * (float)k), -1, 1))) ? lw : cui__text_width(ui, 0, L.fs, cui__cv_fmt__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(ui, yfmt, L.ydec, first + L.ystep * (float)k), -1, 1)));
-        float left = 12 + lw + 8;
-        float pw = r.w - left - right;
-        cui__nice_range(g->x0, g->x1, (int)((float)(((((float)(((pw / 84.0f > 2.0f)) ? pw / 84.0f : 2.0f)) < 10.0f)) ? ((float)(((pw / 84.0f > 2.0f)) ? pw / 84.0f : 2.0f)) : 10.0f)), &lo, &hi, &L.xstep);
-        L.xdec = cui__cv_decimals__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(L.xstep);
-        L.plot.x = r.x + left;
-        L.plot.y = r.y + top;
-        L.plot.w = ((float)(((1.0f > pw)) ? 1.0f : pw));
-        L.plot.h = ((float)(((1.0f > ph)) ? 1.0f : ph));
-        return L;
-    }
-
-
-
-    public static unsafe float cui__cv_sx__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui__cv_layout* L, cui__cv_range* g, float x)
-    {
-        return L->plot.x + (x - g->x0) / (g->x1 - g->x0) * L->plot.w;
-    }
-
-
-
-    public static unsafe float cui__cv_sy__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui__cv_layout* L, cui__cv_range* g, float y)
-    {
-        return L->plot.y + L->plot.h - (y - g->y0) / (g->y1 - g->y0) * L->plot.h;
-    }
-
-
-
-    public static unsafe float cui__cv_ux__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui__cv_layout* L, cui__cv_range* g, float sx)
-    {
-        return g->x0 + (sx - L->plot.x) / L->plot.w * (g->x1 - g->x0);
-    }
-
-
-
-    public static unsafe float cui__cv_uy__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui__cv_layout* L, cui__cv_range* g, float sy)
-    {
-        return g->y0 + (L->plot.y + L->plot.h - sy) / L->plot.h * (g->y1 - g->y0);
-    }
-
-
-
-    public static unsafe CBool cui__cv_handle_pos__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui_curve_key* k, int n, int i, int side, cui__cv_layout* L, cui__cv_range* g, cui_vec2* @out)
-    {
-        if (((((((i < 0)) || ((i >= n)))) || (!(((unchecked((int)(cui__cv_bezier_mode__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(k[i].mode)))) != 0) )     ))))
-            return 0;
-        float dx = default, dy = default, ox = default, oy = default, ix = default, iy = default;
-        if (((side == 0)))
-        {
-            if (((((((i == 0)) || (!(((unchecked((int)(cui__cv_bezier_mode__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(k[i - 1].mode)))) != 0) )     ))) || (!(((k[i].x > k[i - 1].x)) )     ))))
-                return 0;
-            cui__cv_seg_handles__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(k, n, i - 1, &ox, &oy, &ix, &iy);
-            dx = ix;
-            dy = iy;
-        }
-        else
-        {
-            if (((((i >= n - 1)) || (!(((k[i + 1].x > k[i].x)) )     ))))
-                return 0;
-            cui__cv_seg_handles__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(k, n, i, &ox, &oy, &ix, &iy);
-            dx = ox;
-            dy = oy;
-        }
-        float kx = cui__cv_sx__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(L, g, k[i].x), ky = cui__cv_sy__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(L, g, k[i].y);
-        float hx = cui__cv_sx__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(L, g, k[i].x + dx), hy = cui__cv_sy__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(L, g, k[i].y + dy);
-        float vx = hx - kx, vy = hy - ky, len = sqrtf(vx * vx + vy * vy);
-        if (((len < 18.0f)))
-        {
-            if (((len > 0.01f)))
-            {
-                vx *= 18.0f / len;
-                vy *= 18.0f / len;
-            }
-            else
-            {
-                vx = ((float)(((side) != 0) ? 18.0f : -18.0f));
-                vy = 0;
-            }
-            hx = kx + vx;
-            hy = ky + vy;
-        }
-        @out->x = hx;
-        @out->y = hy;
-        return 1;
-    }
-
-
-
-    public static unsafe void cui__cv_bake__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui_curve_key* k, int n, int i)
-    {
-        float s = cui__cv_auto_slope__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(k, n, i);
-        float lin = ((float)(((i > 0)) ? ((float)(((0.0f > k[i].x - k[i - 1].x)) ? 0.0f : k[i].x - k[i - 1].x)) : (float)(0)));
-        float lout = ((float)(((i < n - 1)) ? ((float)(((0.0f > k[i + 1].x - k[i].x)) ? 0.0f : k[i + 1].x - k[i].x)) : (float)(0)));
-        k[i].in_dx = -lin / 3.0f;
-        k[i].in_dy = -s * lin / 3.0f;
-        k[i].out_dx = lout / 3.0f;
-        k[i].out_dy = s * lout / 3.0f;
-        k[i].mode = (byte)(__DotCcEnum_6375695F63757276655F6D6F6465.CUI_CURVE_FREE);
-    }
-
-
-
-    public static unsafe CBool cui__cv_place__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui_curve_key* k, int n, int i, cui__cv_range* g, float x, float y)
-    {
-        float lo = ((float)(((i > 0)) ? ((float)(((k[i - 1].x > g->x0)) ? k[i - 1].x : g->x0)) : g->x0));
-        float hi = ((float)(((i < n - 1)) ? ((float)(((k[i + 1].x < g->x1)) ? k[i + 1].x : g->x1)) : g->x1));
-        float nx = ((float)(((lo <= hi)) ? cui__clampf(x, lo, hi) : k[i].x));
-        float ny = cui__clampf(y, g->y0, g->y1);
-        if ((!(((nx == nx)) )     ))
-            nx = k[i].x;
-        if ((!(((ny == ny)) )     ))
-            ny = k[i].y;
-        if (((((nx == k[i].x)) && ((ny == k[i].y)))))
-            return 0;
-        k[i].x = nx;
-        k[i].y = ny;
-        return 1;
-    }
-
-
-
-    public static unsafe float cui__cv_snap__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(float v, float step)
-    {
-        return ((float)(((step > 0)) ? roundf(v / step) * step : v));
-    }
-
-
-
-    public static unsafe void cui__cv_key_dot__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui_ctx* ui, cui_vec2 c, CBool selected, float hover, cui_color curve, cui_color surface)
-    {
-        if (((unchecked((int)(selected))) != 0))
-        {
-            cui_draw_circle(ui, c, 6.5f, surface);
-            cui_draw_circle(ui, c, 5.0f, curve);
-        }
-        else
-        {
-            cui_draw_circle(ui, c, 4.75f, curve);
-            cui_draw_circle(ui, c, 3.0f, cui_mix(surface, curve, 0.35f * hover));
-        }
-    }
-
-
-
-    public static unsafe void cui__paint_curve__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui_ctx* ui, cui_node* nd, void* data)
-    {
-        cui__cv_paint* p = (cui__cv_paint*)(data);
-        cui_rect r = nd->rect;
-        cui__cv_range* g = &p->g;
-        cui__cv_layout L = cui__cv_layout_of__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(ui, r, g, p->yfmt);
-        cui_rect P = L.plot;
-        if (((((P.w < 8)) || ((P.h < 8)))))
-            return;
-        float s = ui->scale;
-        float fh = cui__font_line_height(ui, 0, L.fs);
-        cui_color sub = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER_SUBTLE], edge = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER], muted = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED];
-        cui_color surface = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE];
-        float first = default;
-        for (int axis = 0; ((axis < 2)); axis++)
-        {
-            float step = ((float)(((axis) != 0) ? L.ystep : L.xstep));
-            float lo = ((float)(((axis) != 0) ? g->y0 : g->x0)), hi = ((float)(((axis) != 0) ? g->y1 : g->x1));
-            float span = ((float)(((axis) != 0) ? P.h : P.w));
-            CBool minor = ((CBool)(step * 0.5f / (hi - lo) * span >= 18.0f));
-            float st = ((float)(((unchecked((int)(minor))) != 0) ? step * 0.5f : step));
-            int cnt = cui__cv_ticks__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(lo, hi, st, &first);
-            for (int k = 0; ((k < cnt)); k++)
-            {
-                float v = first + st * (float)k;
-                CBool major = ((CBool)((!(((unchecked((int)(minor))) != 0) )     ) || ((fabsf(v / step - roundf(v / step)) < 1e-3f))));
-                cui_color c = (((unchecked((int)(major))) != 0) ? sub : cui_alpha(sub, 0.55f));
-                if (((axis == 0)))
-                {
-                    float x = roundf(cui__cv_sx__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&L, g, v) * s) / s + 0.5f / s;
-                    cui_draw_rect(ui, new cui_rect { x = x - 0.5f, y = P.y, w = 1, h = P.h }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, c);
-                }
-                else
-                {
-                    float y = roundf(cui__cv_sy__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&L, g, v) * s) / s + 0.5f / s;
-                    cui_draw_rect(ui, new cui_rect { x = P.x, y = y - 0.5f, w = P.w, h = 1 }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, c);
-                }
-            }
-        }
-        cui_draw_rect_border(ui, new cui_rect { x = P.x - 0.5f, y = P.y - 0.5f, w = P.w + 1, h = P.h + 1 }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, cui__rgba(0, 0, 0, 0), edge, 1);
-        int cnt__1 = cui__cv_ticks__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(g->y0, g->y1, L.ystep, &first);
-        float last_y = 1e9f;
-        for (int k__1 = 0; ((k__1 < cnt__1)); k__1++)
-        {
-            float v__1 = first + L.ystep * (float)k__1;
-            float y__1 = cui__cv_sy__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&L, g, v__1);
-            if (((((last_y - y__1 < fh + 2)) && ((k__1 > 0)))))
-                continue;
-            byte* t = cui__cv_fmt__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(ui, p->yfmt, L.ydec, v__1);
-            float tw = cui__text_width(ui, 0, L.fs, t, -1, 1);
-            cui__draw_text_line(ui, 0, L.fs, P.x - 8 - tw, y__1 - fh * 0.5f, muted, t, -1, 1);
-            last_y = y__1;
-        }
-        cnt__1 = cui__cv_ticks__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(g->x0, g->x1, L.xstep, &first);
-        float last_end = -1e9f;
-        for (int k__2 = 0; ((k__2 < cnt__1)); k__2++)
-        {
-            float v__2 = first + L.xstep * (float)k__2;
-            byte* t__1 = cui__cv_fmt__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(ui, p->xfmt, L.xdec, v__2);
-            float tw__1 = cui__text_width(ui, 0, L.fs, t__1, -1, 1);
-            float x__1 = cui__cv_sx__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&L, g, v__2) - tw__1 * 0.5f;
-            x__1 = cui__clampf(x__1, r.x + 4, r.x + r.w - 4 - tw__1);
-            if (((x__1 < last_end + 10)))
-                continue;
-            cui__draw_text_line(ui, 0, L.fs, x__1, P.y + P.h + 6, muted, t__1, -1, 1);
-            last_end = x__1 + tw__1;
-        }
-        cui_push_clip(ui, new cui_rect { x = r.x + 1, y = r.y + 1, w = r.w - 2, h = P.y + P.h + 6 - r.y });
-        cui_curve_key* k__3 = p->keys;
-        int n = p->n;
-        cui_color curve = p->curve;
-        if (((n > 0)))
-        {
-            float ky0 = cui__cv_sy__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&L, g, k__3[0].y), kx0 = cui__cv_sx__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&L, g, k__3[0].x);
-            float kyn = cui__cv_sy__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&L, g, k__3[n - 1].y), kxn = cui__cv_sx__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&L, g, k__3[n - 1].x);
-            if (((kx0 > P.x + 0.5f)))
-                cui_draw_line(ui, new cui_vec2 { x = P.x, y = ky0 }, new cui_vec2 { x = kx0, y = ky0 }, 1.5f, cui_alpha(curve, 0.4f));
-            if (((kxn < P.x + P.w - 0.5f)))
-                cui_draw_line(ui, new cui_vec2 { x = kxn, y = kyn }, new cui_vec2 { x = P.x + P.w, y = kyn }, 1.5f, cui_alpha(curve, 0.4f));
-        }
-        if (((n > 1)))
-        {
-            int cap = n * 66 + 2, m = 0;
-            cui_vec2* pts = (cui_vec2*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui_vec2))) * (ulong)cap));
-            pts[m++] = new cui_vec2 { x = cui__cv_sx__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&L, g, k__3[0].x), y = cui__cv_sy__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&L, g, k__3[0].y) };
-            for (int i = 0; ((i < n - 1)); i++)
-            {
-                cui_curve_key* a = &k__3[i], b = &k__3[i + 1];
-                float ax = cui__cv_sx__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&L, g, a->x), ay = cui__cv_sy__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&L, g, a->y);
-                float bx = cui__cv_sx__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&L, g, b->x), by = cui__cv_sy__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&L, g, b->y);
-                if ((!(((b->x > a->x)) )     ))
-                {
-                    pts[m++] = new cui_vec2 { x = bx, y = by };
-                    continue;
-                }
-                if (((a->mode == (int)__DotCcEnum_6375695F63757276655F6D6F6465.CUI_CURVE_STEP)))
-                {
-                    pts[m++] = new cui_vec2 { x = bx, y = ay };
-                    pts[m++] = new cui_vec2 { x = bx, y = by };
-                    continue;
-                }
-                if (((a->mode == (int)__DotCcEnum_6375695F63757276655F6D6F6465.CUI_CURVE_LINEAR)))
-                {
-                    pts[m++] = new cui_vec2 { x = bx, y = by };
-                    continue;
-                }
-                float ox = default, oy = default, ix = default, iy = default;
-                cui__cv_seg_handles__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(k__3, n, i, &ox, &oy, &ix, &iy);
-                float c1x = cui__cv_sx__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&L, g, a->x + ox), c1y = cui__cv_sy__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&L, g, a->y + oy);
-                float c2x = cui__cv_sx__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&L, g, b->x + ix), c2y = cui__cv_sy__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&L, g, b->y + iy);
-                float est = sqrtf((c1x - ax) * (c1x - ax) + (c1y - ay) * (c1y - ay)) + sqrtf((c2x - c1x) * (c2x - c1x) + (c2y - c1y) * (c2y - c1y)) + sqrtf((bx - c2x) * (bx - c2x) + (by - c2y) * (by - c2y));
-                int seg = (int)((float)(((((float)(((est / 3.0f > 8.0f)) ? est / 3.0f : 8.0f)) < 64.0f)) ? ((float)(((est / 3.0f > 8.0f)) ? est / 3.0f : 8.0f)) : 64.0f));
-                for (int j = 1; ((j <= seg)); j++)
-                {
-                    float t__2 = (float)j / (float)seg;
-                    pts[m++] = new cui_vec2 { x = cui__cv_bez__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(ax, c1x, c2x, bx, t__2), y = cui__cv_bez__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(ay, c1y, c2y, by, t__2) };
-                }
-            }
-            cui_draw_polyline(ui, pts, m, 2.0f, curve, 0);
-        }
-        if (((((((unchecked((int)(p->playhead))) != 0) && ((p->px >= g->x0)))) && ((p->px <= g->x1)))))
-        {
-            float x__2 = roundf(cui__cv_sx__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&L, g, p->px) * s) / s;
-            cui_draw_rect(ui, new cui_rect { x = x__2 - 0.75f, y = P.y, w = 1.5f, h = P.h }, new cui_corners { tl = 0.75f, tr = 0.75f, br = 0.75f, bl = 0.75f }, cui_alpha(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0.55f));
-            if (((n > 0)))
-            {
-                cui_vec2 c__1 = new cui_vec2 { x = x__2, y = cui__cv_sy__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&L, g, cui_curve_eval(k__3, n, p->px)) };
-                cui_draw_circle(ui, c__1, 5.0f, surface);
-                cui_draw_circle(ui, c__1, 3.5f, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND]);
-            }
-        }
-        if (((((unchecked((int)(p->hover))) != 0) && ((n > 0)))))
-        {
-            float x__3 = roundf(cui__cv_sx__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&L, g, p->hx) * s) / s + 0.5f / s;
-            cui_draw_rect(ui, new cui_rect { x = x__3 - 0.5f, y = P.y, w = 1, h = P.h }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER]);
-            cui_vec2 c__2 = new cui_vec2 { x = cui__cv_sx__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&L, g, p->hx), y = cui__cv_sy__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&L, g, p->hy) };
-            cui_draw_circle(ui, c__2, 4.5f, surface);
-            cui_draw_circle(ui, c__2, 3.0f, curve);
-        }
-        if (((((p->sel >= 0)) && ((p->sel < n)))))
-        {
-            cui_vec2 kc = new cui_vec2 { x = cui__cv_sx__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&L, g, k__3[p->sel].x), y = cui__cv_sy__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&L, g, k__3[p->sel].y) };
-            for (int side = 0; ((side < 2)); side++)
-            {
-                cui_vec2 h = default;
-                if ((!(((unchecked((int)(cui__cv_handle_pos__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(k__3, n, p->sel, side, &L, g, &h)))) != 0) )     ))
-                    continue;
-                CBool on = ((CBool)(p->active_handle == side)), hov = ((CBool)(p->hot_handle == side));
-                cui_draw_line(ui, kc, h, 1.0f, cui_alpha(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0.8f));
-                cui_draw_circle(ui, h, 4.75f, surface);
-                cui_draw_circle(ui, h, 3.5f, (((unchecked((int)(on))) != 0) ? curve : (((unchecked((int)(hov))) != 0) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND] : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY])));
-            }
-        }
-        for (int pass = 0; ((pass < 2)); pass++)
-            for (int i__1 = 0; ((i__1 < n)); i__1++)
-            {
-                CBool sel = ((CBool)(i__1 == p->sel));
-                if ((((int)((int)(sel)) != ((CBool)(pass == 1)))))
-                    continue;
-                cui_vec2 c__3 = new cui_vec2 { x = cui__cv_sx__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&L, g, k__3[i__1].x), y = cui__cv_sy__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&L, g, k__3[i__1].y) };
-                float hv = ((float)((((void*)(p->key_hover)) != null) ? p->key_hover[i__1] : (float)(0)));
-                cui__cv_key_dot__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(ui, c__3, sel, hv, curve, surface);
-                if (((i__1 == p->focus_key)))
-                    cui_draw_rect_border(ui, new cui_rect { x = c__3.x - 9, y = c__3.y - 9, w = 18, h = 18 }, new cui_corners { tl = 9, tr = 9, br = 9, bl = 9 }, cui__rgba(0, 0, 0, 0), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOCUS_RING], 2);
-            }
-        cui_pop_clip(ui);
-    }
-
-
-
-    public static unsafe uint cui__cv_key_id__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(uint eid, int i)
-    {
-        return cui__hash(&i, ((ulong)(sizeof(int))), eid ^ 0xC0E7u);
-    }
-
-
-
-    public static unsafe void cui__cv_remove__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui_curve_key* keys, int* n, int i)
-    {
-        if (((((i < 0)) || ((i >= *n)))))
-            return;
-        memmove(&keys[i], &keys[i + 1], ((ulong)(sizeof(cui_curve_key))) * (ulong)(*n - i - 1));
-        (*n)--;
-    }
-
-
-
-    public static unsafe void cui__cvf_drag__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui__cvf* f)
-    {
-        cui_ctx* ui = f->ui;
-        cui__cv_state* st = f->st;
-        cui__cv_layout* L = &f->L;
-        cui__cv_range* g = &f->g;
-        for (int i = 0; ((i < f->n)); i++)
-        {
-            if (((ui->active != cui__cv_key_id__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(f->id, i))))
-                continue;
-            float nx = cui__cv_ux__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(L, g, f->mx + st->grab_x), ny = cui__cv_uy__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(L, g, f->my + st->grab_y);
-            if (((unchecked((int)(f->snap))) != 0))
-            {
-                nx = cui__cv_snap__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(nx, L->xstep * 0.5f);
-                ny = cui__cv_snap__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(ny, L->ystep * 0.5f);
-            }
-            if (((unchecked((int)(cui__cv_place__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(f->keys, f->n, i, g, nx, ny)))) != 0))
-                f->res->changed = 1;
-            f->sel = i;
-            break;
-        }
-        for (int side = 0; ((((side < 2)) && ((f->sel >= 0)))); side++)
-        {
-            if (((ui->active != f->hid[side])))
-                continue;
-            cui_curve_key* k = &f->keys[f->sel];
-            float dx = cui__cv_ux__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(L, g, f->mx + st->grab_x) - k->x, dy = cui__cv_uy__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(L, g, f->my + st->grab_y) - k->y;
-            if (((side == 0)))
-            {
-                k->in_dx = ((float)(((dx < 0.0f)) ? dx : 0.0f));
-                k->in_dy = dy;
-            }
-            else
-            {
-                k->out_dx = ((float)(((dx > 0.0f)) ? dx : 0.0f));
-                k->out_dy = dy;
-            }
-            f->res->changed = 1;
-        }
-    }
-
-
-
-    public static unsafe void cui__cvf_keys__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui__cvf* f)
-    {
-        cui_ctx* ui = f->ui;
-        cui_curve_opts* o = f->o;
-        cui_curve_key* keys = f->keys;
-        cui__cv_range* g = &f->g;
-        for (int i = 0; ((i < f->n)); i++)
-        {
-            uint kid = cui__cv_key_id__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(f->id, i);
-            cui_interact r = cui__interact(ui, kid, 1 | 2);
-            if (((((((unchecked((int)(r.pressed))) != 0) && ((unchecked((int)(((CBool*)&ui->mpressed)[0]))) != 0))) && ((unchecked((int)(f->have))) != 0))))
-            {
-                f->sel = i;
-                f->st->grab_x = cui__cv_sx__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&f->L, g, keys[i].x) - f->mx;
-                f->st->grab_y = cui__cv_sy__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&f->L, g, keys[i].y) - f->my;
-            }
-            if (((((unchecked((int)(r.hovered))) != 0) || ((unchecked((int)(r.active))) != 0))))
-            {
-                f->hot_key = i;
-                cui__set_cursor(ui, (cui_cursor)(((int)(((unchecked((int)(r.active))) != 0) ? (int)(__DotCcEnum_6375695F637572736F72.CUI_CURSOR_MOVE) : (int)(__DotCcEnum_6375695F637572736F72.CUI_CURSOR_HAND)))));
-            }
-            if (((unchecked((int)(r.active))) != 0))
-                f->active_key = i;
-            if (((unchecked((int)(r.focus_visible))) != 0))
-            {
-                f->focus_key = i;
-                f->sel = i;
-                float fx = (g->x1 - g->x0) * ((float)(((unchecked((int)(f->shift))) != 0) ? 0.001f : 0.01f)), fy = (g->y1 - g->y0) * ((float)(((unchecked((int)(f->shift))) != 0) ? 0.001f : 0.01f));
-                float nx = keys[i].x, ny = keys[i].y;
-                if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_LEFT)))) != 0))
-                    nx -= fx;
-                if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_RIGHT)))) != 0))
-                    nx += fx;
-                if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_DOWN)))) != 0))
-                    ny -= fy;
-                if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_UP)))) != 0))
-                    ny += fy;
-                if (((((((nx != keys[i].x)) || ((ny != keys[i].y)))) && ((unchecked((int)(cui__cv_place__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(keys, f->n, i, g, nx, ny)))) != 0))))
-                    f->res->changed = 1;
-            }
-            if (((((unchecked((int)(r.focused))) != 0) && ((((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_DELETE)))) != 0) || ((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_BACKSPACE)))) != 0))))))
-                f->remove = i;
-            if (((((((unchecked((int)(r.hovered))) != 0) && (!(((unchecked((int)(r.active))) != 0) )     ))) && ((ui->active == (uint)(0))))))
-                cui__tooltip_passive(ui, kid, cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1166 /*"%s %s, %s %s"*/), f->xname, cui__cv_fmt__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(ui, o->x_format, f->xrd, keys[i].x), f->yname, cui__cv_fmt__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(ui, o->y_format, f->yrd, keys[i].y)));
-        }
-    }
-
-
-
-    public static unsafe void cui__cvf_handles__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui__cvf* f)
-    {
-        cui_ctx* ui = f->ui;
-        cui_curve_key* keys = f->keys;
-        int sel = f->sel;
-        for (int side = 0; ((side < 2)); side++)
-        {
-            ((CBool*)&f->hshow)[side] = ((CBool)(((((unchecked((int)(f->have))) != 0) && ((sel >= 0)))) && ((unchecked((int)(cui__cv_handle_pos__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(keys, f->n, sel, side, &f->L, &f->g, &((cui_vec2*)&f->hpos)[side])))) != 0)));
-            if ((!(((unchecked((int)(((CBool*)&f->hshow)[side]))) != 0) )     ))
-                continue;
-            cui_interact r = cui__interact(ui, f->hid[side], 2);
-            if (((((unchecked((int)(r.pressed))) != 0) && ((unchecked((int)(((CBool*)&ui->mpressed)[0]))) != 0))))
-            {
-                if (((keys[sel].mode != (int)__DotCcEnum_6375695F63757276655F6D6F6465.CUI_CURVE_FREE)))
-                {
-                    cui__cv_bake__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(keys, f->n, sel);
-                    f->res->changed = 1;
-                }
-                f->st->grab_x = ((cui_vec2*)&f->hpos)[side].x - f->mx;
-                f->st->grab_y = ((cui_vec2*)&f->hpos)[side].y - f->my;
-            }
-            if (((((unchecked((int)(r.hovered))) != 0) || ((unchecked((int)(r.active))) != 0))))
-            {
-                f->hot_handle = side;
-                cui__set_cursor(ui, (cui_cursor)(((int)(((unchecked((int)(r.active))) != 0) ? (int)(__DotCcEnum_6375695F637572736F72.CUI_CURSOR_MOVE) : (int)(__DotCcEnum_6375695F637572736F72.CUI_CURSOR_HAND)))));
-            }
-            if (((unchecked((int)(r.active))) != 0))
-                f->active_handle = side;
-        }
-    }
-
-
-
-    public static unsafe void cui__cvf_add_key__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui__cvf* f)
-    {
-        cui_ctx* ui = f->ui;
-        cui__cv_layout* L = &f->L;
-        cui__cv_range* g = &f->g;
-        cui_curve_key* keys = f->keys;
-        int n = f->n;
-        float x = cui__clampf(cui__cv_ux__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(L, g, f->mx), g->x0, g->x1);
-        float y = cui__cv_uy__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(L, g, f->my);
-        float on = ((float)(((n > 0)) ? cui_curve_eval(keys, n, x) : y));
-        if (((((n > 0)) && ((fabsf(cui__cv_sy__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(L, g, on) - f->my) <= 10.0f)))))
-            y = on;
-        else
-            if (((unchecked((int)(f->snap))) != 0))
-            {
-                x = cui__cv_snap__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(x, L->xstep * 0.5f);
-                y = cui__cv_snap__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(y, L->ystep * 0.5f);
-            }
-        x = cui__clampf(x, g->x0, g->x1);
-        y = cui__clampf(y, g->y0, g->y1);
-        int j = 0;
-        while (((((j < n)) && ((keys[j].x <= x)))))
-            j++;
-        memmove(&keys[j + 1], &keys[j], ((ulong)(sizeof(cui_curve_key))) * (ulong)(n - j));
-        cui_curve_key nk = default;
-        memset(&nk, 0, ((ulong)(sizeof(cui_curve_key))));
-        nk.x = x;
-        nk.y = y;
-        nk.mode = (byte)((int)(((((j > 0)) && (!(((unchecked((int)(cui__cv_bezier_mode__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(keys[j - 1].mode)))) != 0) )     ))) ? (int)(keys[j - 1].mode) : (int)(__DotCcEnum_6375695F63757276655F6D6F6465.CUI_CURVE_SMOOTH)));
-        keys[j] = nk;
-        f->n = n + 1;
-        *f->count = f->n;
-        f->sel = j;
-        f->res->added = j;
-        f->res->changed = 1;
-        ui->focus = cui__cv_key_id__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(f->id, j);
-        ui->focus_visible = 0;
-    }
-
-
-
-    public static unsafe void cui__cvf_plot_input__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui__cvf* f)
-    {
-        cui_ctx* ui = f->ui;
-        float mx = f->mx, my = f->my;
-        cui_interact br = cui__interact(ui, f->plot_id, 0);
-        cui_rect P = f->L.plot;
-        CBool inside = ((CBool)(((((((((unchecked((int)(f->have))) != 0) && ((mx >= P.x - 6)))) && ((mx <= P.x + P.w + 6)))) && ((my >= P.y - 6)))) && ((my <= P.y + P.h + 6))));
-        if (((((unchecked((int)(br.pressed))) != 0) && ((unchecked((int)(((CBool*)&ui->mpressed)[0]))) != 0))))
-        {
-            f->sel = -1;
-            if (((((((((((unchecked((int)(br.double_clicked))) != 0) && ((unchecked((int)(inside))) != 0))) && (((void*)(f->keys)) != null))) && (((void*)(f->count)) != null))) && ((f->n < f->capacity)))))
-                cui__cvf_add_key__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(f);
-        }
-        if (((((((((((((((((unchecked((int)(f->have))) != 0) && ((ui->hot == f->plot_id)))) && ((ui->active == (uint)(0))))) && ((f->n > 0)))) && ((mx >= P.x)))) && ((mx <= P.x + P.w)))) && ((my >= f->R.y)))) && ((my <= f->R.y + f->R.h)))))
-        {
-            f->res->hovered = 1;
-            f->res->hover_x = cui__cv_ux__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&f->L, &f->g, mx);
-            f->res->hover_y = cui_curve_eval(f->keys, f->n, f->res->hover_x);
-        }
-    }
-
-
-
-    public static unsafe void cui__cvf_build_hits__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui__cvf* f)
-    {
-        cui_ctx* ui = f->ui;
-        cui__cv_layout* L = &f->L;
-        cui__cv_range* g = &f->g;
-        cui_rect R = f->R;
-        for (int i = 0; ((i < f->n)); i++)
-        {
-            cui_curve_key* k = &f->keys[i];
-            float kx = cui__cv_sx__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(L, g, k->x), ky = cui__cv_sy__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(L, g, k->y);
-            int a = cui__absolute(ui, cui__cv_key_id__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(f->id, i), kx - R.x - 22.0f * 0.5f, ky - R.y - 22.0f * 0.5f, 22.0f, 22.0f);
-            cui__mark_interactive(ui, a, 1);
-            ui->nodes[a].radius = new cui_corners { tl = 22.0f * 0.5f, tr = 22.0f * 0.5f, br = 22.0f * 0.5f, bl = 22.0f * 0.5f };
-        }
-        for (int side = 0; ((side < 2)); side++)
-        {
-            if ((((!(((unchecked((int)(((CBool*)&f->hshow)[side]))) != 0) )     ) || ((f->res->added >= 0)))))
-                continue;
-            int a__1 = cui__absolute(ui, f->hid[side], ((cui_vec2*)&f->hpos)[side].x - R.x - 18.0f * 0.5f, ((cui_vec2*)&f->hpos)[side].y - R.y - 18.0f * 0.5f, 18.0f, 18.0f);
-            cui__mark_interactive(ui, a__1, 0);
-        }
-        if (((unchecked((int)(f->res->hovered))) != 0))
-        {
-            cui_curve_opts* o = f->o;
-            float tx = cui__cv_sx__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(L, g, f->res->hover_x), ty = cui__cv_sy__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(L, g, f->res->hover_y);
-            cui__absolute(ui, f->tip_id, tx - R.x - 1, ty - R.y - 4, 2, 2);
-            cui__tooltip_passive(ui, f->tip_id, cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1166 /*"%s %s, %s %s"*/), f->xname, cui__cv_fmt__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(ui, o->x_format, f->xrd, f->res->hover_x), f->yname, cui__cv_fmt__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(ui, o->y_format, f->yrd, f->res->hover_y)));
-        }
-    }
-
-
-
-    public static unsafe void cui__cvf_build_plot__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui__cvf* f)
-    {
-        cui_ctx* ui = f->ui;
-        cui_curve_opts* o = f->o;
-        int n = f->n;
-        int pn = cui__node_new(ui, f->plot_id);
-        ui->nodes[pn].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        ui->nodes[pn].h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)((float)(((o->height > 0)) ? o->height : 220.0f)) };
-        cui__mark_interactive(ui, pn, 0);
-        cui__cv_paint* pp = (cui__cv_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__cv_paint)))));
-        memset(pp, 0, ((ulong)(sizeof(cui__cv_paint))));
-        pp->n = n;
-        pp->keys = (cui_curve_key*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui_curve_key))) * (ulong)((int)(((1 > n)) ? 1 : n))));
-        if (((n > 0)))
-            memcpy(pp->keys, f->keys, ((ulong)(sizeof(cui_curve_key))) * (ulong)n);
-        pp->key_hover = (float*)(cui__frame_alloc(ui, 4UL * (ulong)((int)(((1 > n)) ? 1 : n))));
-        for (int i = 0; ((i < n)); i++)
-        {
-            float* hv = (float*)(cui_state(ui, cui__cv_key_id__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(f->id, i) ^ 0x40u, 4UL));
-            pp->key_hover[i] = cui__tween(ui, hv, ((float)(((i == f->hot_key)) ? 1.0f : 0.0f)), 0.14f);
-        }
-        pp->g = f->g;
-        pp->xfmt = o->x_format;
-        pp->yfmt = o->y_format;
-        pp->sel = f->sel;
-        pp->focus_key = f->focus_key;
-        pp->hot_key = f->hot_key;
-        pp->active_key = f->active_key;
-        pp->hot_handle = f->hot_handle;
-        pp->active_handle = f->active_handle;
-        pp->hover = f->res->hovered;
-        pp->hx = f->res->hover_x;
-        pp->hy = f->res->hover_y;
-        pp->playhead = o->show_playhead;
-        pp->px = o->playhead;
-        pp->curve = cui__emphasis(ui);
-        ui->nodes[pn].paint = DotCcPointers.cui__paint_curve__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97;
-        ui->nodes[pn].paint_data = pp;
-        cui__open(ui, pn);
-        if (((unchecked((int)(f->have))) != 0))
-            cui__cvf_build_hits__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(f);
-        cui__close(ui);
-    }
-
-
-
-    public static unsafe void cui__cvf_build_key_fields__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui__cvf* f, CBool narrow, CBool tiny)
-    {
-        cui_ctx* ui = f->ui;
-        cui_curve_opts* o = f->o;
-        cui__cv_range* g = &f->g;
-        int sel = f->sel, n = f->n;
-        cui_curve_key* k = &f->keys[sel];
-        int mode = ((int)(((k->mode <= (int)__DotCcEnum_6375695F63757276655F6D6F6465.CUI_CURVE_STEP)) ? (int)(k->mode) : (int)(__DotCcEnum_6375695F63757276655F6D6F6465.CUI_CURVE_SMOOTH)));
-        cui_select_opts so = default;
-        memset(&so, 0, ((ulong)(sizeof(cui_select_opts))));
-        cui_scrub_opts xo = default;
-        memset(&xo, 0, ((ulong)(sizeof(cui_scrub_opts))));
-        cui_scrub_opts yo = default;
-        memset(&yo, 0, ((ulong)(sizeof(cui_scrub_opts))));
-        cui_button_opts bo = default;
-        memset(&bo, 0, ((ulong)(sizeof(cui_button_opts))));
-        so.width = (((unchecked((int)(narrow))) != 0) ? new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = (float)1 } : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)128 });
-        xo.width = yo.width = (((unchecked((int)(narrow))) != 0) ? new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = (float)1 } : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)132 });
-        xo.step = (g->x1 - g->x0) / 100.0f;
-        yo.step = (g->y1 - g->y0) / 100.0f;
-        xo.format = ((byte*)((((void*)(o->x_format)) != null) ? o->x_format : cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S401 /*"%%.%df"*/), f->xrd)));
-        yo.format = ((byte*)((((void*)(o->y_format)) != null) ? o->y_format : cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S401 /*"%%.%df"*/), f->yrd)));
-        bo.variant = __DotCcEnum_6375695F627574746F6E5F76617269616E74.CUI_BUTTON_GHOST;
-        bo.tooltip = (DotCcLiterals.Pointer + DotCcLiterals.S54 /*"Remove key"*/);
-        bo.disabled = ((CBool)(n <= 2));
-        float vx = k->x, vy = k->y;
-        CBool del = 0;
-        int row1 = -1;
-        if (((unchecked((int)(narrow))) != 0))
-        {
-            row1 = cui__node_new(ui, 0);
-            ui->nodes[row1].dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
-            ui->nodes[row1].gap = 8;
-            ui->nodes[row1].align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
-            cui__open(ui, row1);
-        }
-        if (((unchecked((int)(cui_select_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1344 /*"##mode"*/), global::Managed.Cui.Cui.Globals.modes__s0__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97, 4, &mode, &so)))) != 0))
-        {
-            if (((((mode == (int)__DotCcEnum_6375695F63757276655F6D6F6465.CUI_CURVE_FREE)) && ((k->mode != (int)__DotCcEnum_6375695F63757276655F6D6F6465.CUI_CURVE_FREE)))))
-                cui__cv_bake__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(f->keys, n, sel);
-            k->mode = (byte)mode;
-            f->res->changed = 1;
-        }
-        if (((unchecked((int)(narrow))) != 0))
-        {
-            del = cui_icon_button_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1191 /*""*/), &bo);
-            cui__close(ui);
-            int row2 = cui__node_new(ui, 0);
-            ui->nodes[row2].dir = (byte)(((int)(((unchecked((int)(tiny))) != 0) ? (int)(__DotCcEnum_6375695F646972.CUI_COLUMN) : (int)(__DotCcEnum_6375695F646972.CUI_ROW))));
-            ui->nodes[row2].gap = 8;
-            cui__open(ui, row2);
-        }
-        CBool cx = cui_scrub_ex(ui, cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1086 /*"%s##cv-x"*/), f->xlabel), &vx, g->x0, g->x1, &xo);
-        CBool cy = cui_scrub_ex(ui, cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1376 /*"%s##cv-y"*/), f->ylabel), &vy, g->y0, g->y1, &yo);
-        if (((((((unchecked((int)(cx))) != 0) || ((unchecked((int)(cy))) != 0))) && ((unchecked((int)(cui__cv_place__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(f->keys, n, sel, g, vx, vy)))) != 0))))
-            f->res->changed = 1;
-        if (((unchecked((int)(narrow))) != 0))
-            cui__close(ui);
-        else
-        {
-            cui_spacer(ui);
-            del = cui_icon_button_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1191 /*""*/), &bo);
-        }
-        if (((unchecked((int)(del))) != 0))
-            f->remove = sel;
-    }
-
-
-
-    public static unsafe void cui__cvf_build_footer__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui__cvf* f)
-    {
-        cui_ctx* ui = f->ui;
-        int line = cui__leaf(ui, 0, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)1 });
-        ui->nodes[line].bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER_SUBTLE];
-        cui_rect orr = cui__prev_rect(ui, f->id);
-        CBool narrow = ((CBool)(((orr.w > 0)) && ((orr.w < 440.0f))));
-        CBool tiny = ((CBool)(((orr.w > 0)) && ((orr.w < 320.0f))));
-        int foot = cui__node_new(ui, 0);
-        cui_node* fn = &ui->nodes[foot];
-        fn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        fn->pad[0] = fn->pad[2] = 10;
-        fn->pad[1] = fn->pad[3] = 12;
-        fn->gap = 8;
-        fn->dir = (byte)(((int)(((unchecked((int)(narrow))) != 0) ? (int)(__DotCcEnum_6375695F646972.CUI_COLUMN) : (int)(__DotCcEnum_6375695F646972.CUI_ROW))));
-        fn->align = (byte)(((int)(((unchecked((int)(narrow))) != 0) ? (int)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_STRETCH) : (int)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER))));
-        fn->min_h = ((int)(((unchecked((int)(tiny))) != 0) ? 36 * 3 + 16 : ((int)(((unchecked((int)(narrow))) != 0) ? 36 * 2 + 8 : 36)))) + 20;
-        fn->justify = (byte)(((int)(((unchecked((int)(narrow))) != 0) ? (int)(__DotCcEnum_6375695F6A757374696679.CUI_JUSTIFY_CENTER) : (int)(__DotCcEnum_6375695F6A757374696679.CUI_JUSTIFY_START))));
-        cui__open(ui, foot);
-        if (((((f->sel >= 0)) && ((f->sel < f->n)))))
-            cui__cvf_build_key_fields__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(f, narrow, tiny);
-        else
-        {
-            int t = cui__text_node(ui, ((byte*)(((f->n < f->capacity)) ? (DotCcLiterals.Pointer + DotCcLiterals.S224 /*"Double-click the plot to add a key, or select one to edit it."*/) : (DotCcLiterals.Pointer + DotCcLiterals.S809 /*"Select a key to edit it."*/))), -1, 0, cui__fs(ui, ui->theme.text_sm), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 1);
-            ui->nodes[t].line_height = 1.4f;
-        }
-        cui__close(ui);
-    }
-
-
-
-    public static unsafe cui_curve_result cui_curve_editor_ex(cui_ctx* ui, byte* id_str, cui_curve_key* keys, int* count, int capacity, cui_curve_opts* o)
-    {
-        cui_curve_opts d = default;
-        memset(&d, 0, ((ulong)(sizeof(cui_curve_opts))));
-        if ((!((((void*)(o)) != null) )     ))
-            o = &d;
-        cui_curve_result res = default;
-        memset(&res, 0, ((ulong)(sizeof(cui_curve_result))));
-        res.added = res.removed = res.selected = -1;
-        cui__cvf f = default;
-        memset(&f, 0, ((ulong)(sizeof(cui__cvf))));
-        f.ui = ui;
-        f.o = o;
-        f.res = &res;
-        f.keys = keys;
-        f.count = count;
-        f.n = ((int)((((((((void*)(keys)) != null) && (((void*)(count)) != null))) && ((*count > 0)))) ? *count : 0));
-        f.capacity = ((int)(((capacity < f.n)) ? f.n : capacity));
-        cui__cv_range g = new cui__cv_range { x0 = o->x_min, x1 = o->x_max, y0 = o->y_min, y1 = o->y_max };
-        if ((((!(((isfinite((double)(g.x0))) != 0) )     ) || (!(((isfinite((double)(g.x1))) != 0) )     ))))
-            g.x0 = g.x1 = 0;
-        if ((((!(((isfinite((double)(g.y0))) != 0) )     ) || (!(((isfinite((double)(g.y1))) != 0) )     ))))
-            g.y0 = g.y1 = 0;
-        if ((!(((g.x1 > g.x0)) )     ))
-        {
-            if (((((g.x0 == 0)) && ((g.x1 == 0)))))
-                g.x1 = 1;
-            else
-                g.x1 = g.x0 + 1;
-        }
-        if ((!(((g.y1 > g.y0)) )     ))
-        {
-            if (((((g.y0 == 0)) && ((g.y1 == 0)))))
-                g.y1 = 1;
-            else
-                g.y1 = g.y0 + 1;
-        }
-        f.g = g;
-        f.xlabel = ((byte*)((((void*)(o->x_label)) != null) ? o->x_label : (DotCcLiterals.Pointer + DotCcLiterals.S951 /*"X"*/)));
-        f.ylabel = ((byte*)((((void*)(o->y_label)) != null) ? o->y_label : (DotCcLiterals.Pointer + DotCcLiterals.S1448 /*"Y"*/)));
-        f.xname = cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1110 /*"%.*s"*/), cui__display_len(f.xlabel), f.xlabel);
-        f.yname = cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1110 /*"%.*s"*/), cui__display_len(f.ylabel), f.ylabel);
-        f.xrd = cui__cv_readout_decimals__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(g.x1 - g.x0);
-        f.yrd = cui__cv_readout_decimals__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(g.y1 - g.y0);
-        f.id = cui_make_id(ui, id_str);
-        f.plot_id = f.id ^ 0x9107C0u;
-        f.tip_id = f.id ^ 0x7199u;
-        f.hid[0] = f.id ^ 0x4A11u;
-        f.hid[1] = f.id ^ 0x4A12u;
-        cui__cv_state* st = f.st = (cui__cv_state*)(cui_state(ui, f.id ^ 0x5C0Eu, ((ulong)(sizeof(cui__cv_state)))));
-        if ((!(((unchecked((int)(st->init))) != 0) )     ))
-        {
-            st->sel = -1;
-            st->init = 1;
-        }
-        int* selp = ((int*)((((void*)(o->selected)) != null) ? o->selected : &st->sel));
-        f.sel = *selp;
-        if (((((f.sel < -1)) || ((f.sel >= f.n)))))
-            f.sel = -1;
-        f.shift = ((CBool)((ui->mods & (int)__DotCcEnum_6375695F6D6F64.CUI_MOD_SHIFT) != 0));
-        f.snap = ((CBool)(((unchecked((int)(o->snap))) != 0) || ((unchecked((int)(f.shift))) != 0)));
-        f.R = cui__prev_rect(ui, f.plot_id);
-        f.have = ((CBool)(((f.R.w > 0)) && ((f.R.h > 0))));
-        f.L = cui__cv_layout_of__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(ui, f.R, &f.g, o->y_format);
-        f.mx = ui->mx;
-        f.my = ui->my;
-        if (((((((unchecked((int)(f.have))) != 0) && ((unchecked((int)(((CBool*)&ui->mdown)[0]))) != 0))) && (!(((unchecked((int)(((CBool*)&ui->mpressed)[0]))) != 0) )     ))))
-            cui__cvf_drag__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&f);
-        f.remove = f.hot_key = f.active_key = f.focus_key = -1;
-        f.hot_handle = f.active_handle = -1;
-        cui__cvf_keys__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&f);
-        cui__cvf_handles__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&f);
-        cui__cvf_plot_input__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&f);
-        int outer = cui__node_new(ui, f.id);
-        cui_node* on = &ui->nodes[outer];
-        on->w = ((((int)o->width.kind) != 0) ? o->width : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 });
-        on->bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE];
-        on->border = 1;
-        on->border_color = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER];
-        on->radius = new cui_corners { tl = ui->theme.radius_panel, tr = ui->theme.radius_panel, br = ui->theme.radius_panel, bl = ui->theme.radius_panel };
-        on->flags |= (uint)(16);
-        on->gap = 0;
-        cui__open(ui, outer);
-        cui_push_id(ui, id_str);
-        cui__cvf_build_plot__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&f);
-        cui__cvf_build_footer__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&f);
-        cui_pop_id(ui);
-        cui__close(ui);
-        int n = f.n, sel = f.sel, remove = f.remove;
-        if (((((((remove >= 0)) && ((remove < n)))) && ((n > 2)))))
-        {
-            cui__cv_remove__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(keys, &n, remove);
-            *count = n;
-            res.removed = remove;
-            res.changed = 1;
-            sel = ((int)(((remove < n - 1)) ? remove : n - 1));
-            if (((((ui->focus == cui__cv_key_id__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(f.id, remove))) || ((ui->focus == (uint)(0))))))
-                ui->focus = cui__cv_key_id__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(f.id, sel);
-        }
-        *selp = sel;
-        res.selected = sel;
-        ui->last_id = f.id;
-        return res;
-    }
-
-
-
-    public static unsafe byte cui__gr_lerp8__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(byte a, byte b, float t)
-    {
-        float v = (float)a + ((float)b - (float)a) * t;
-        return (byte)((float)(((((float)(((v + 0.5f > 0.0f)) ? v + 0.5f : 0.0f)) < 255.0f)) ? ((float)(((v + 0.5f > 0.0f)) ? v + 0.5f : 0.0f)) : 255.0f));
-    }
-
-
-
-    public static unsafe cui_color cui_gradient_eval(cui_gradient_stop* s, int n, float t)
-    {
-        cui_color none = new cui_color { r = 0, g = 0, b = 0, a = 0 };
-        if ((((!((((void*)(s)) != null) )     ) || ((n <= 0)))))
-            return none;
-        int lo = -1, hi = -1;
-        for (int i = 0; ((i < n)); i++)
-        {
-            if (((((s[i].pos <= t)) && ((((lo < 0)) || ((s[i].pos > s[lo].pos)))))))
-                lo = i;
-            if (((((s[i].pos >= t)) && ((((hi < 0)) || ((s[i].pos < s[hi].pos)))))))
-                hi = i;
-        }
-        if (((((lo < 0)) && ((hi < 0)))))
-            return s[0].color;
-        if (((lo < 0)))
-            return s[hi].color;
-        if (((hi < 0)))
-            return s[lo].color;
-        float span = s[hi].pos - s[lo].pos;
-        if ((!(((span > 0)) )     ))
-            return s[lo].color;
-        float f = (t - s[lo].pos) / span;
-        cui_color a = s[lo].color, b = s[hi].color, c = default;
-        c.r = cui__gr_lerp8__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(a.r, b.r, f);
-        c.g = cui__gr_lerp8__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(a.g, b.g, f);
-        c.b = cui__gr_lerp8__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(a.b, b.b, f);
-        c.a = cui__gr_lerp8__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(a.a, b.a, f);
-        return c;
-    }
-
-
-
-    public static unsafe uint cui__gr_stop_id__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(uint eid, int i)
-    {
-        return cui__hash(&i, ((ulong)(sizeof(int))), eid ^ 0x6A57u);
-    }
-
-
-
-    public static unsafe int cui__gr_resort__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui_gradient_stop* s, int n, int i)
-    {
-        while (((((i > 0)) && ((s[i - 1].pos > s[i].pos)))))
-        {
-            cui_gradient_stop t = s[i - 1];
-            s[i - 1] = s[i];
-            s[i] = t;
-            i--;
-        }
-        while (((((i < n - 1)) && ((s[i + 1].pos < s[i].pos)))))
-        {
-            cui_gradient_stop t__1 = s[i + 1];
-            s[i + 1] = s[i];
-            s[i] = t__1;
-            i++;
-        }
-        return i;
-    }
-
-
-
-    public static unsafe void cui__gr_checker__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui_ctx* ui, cui_rect r, float rad, float cell, cui_color light, cui_color dark)
-    {
-        cui_draw_rect(ui, r, new cui_corners { tl = rad, tr = rad, br = rad, bl = rad }, light);
-        cui_rect* band = stackalloc cui_rect[]{ new cui_rect { x = r.x + rad, y = r.y, w = r.w - 2 * rad, h = r.h }, new cui_rect { x = r.x, y = r.y + rad, w = r.w, h = r.h - 2 * rad } };
-        int cols = (int)ceilf(r.w / cell), rows = (int)ceilf(r.h / cell);
-        for (int y = 0; ((y < rows)); y++)
-            for (int x = y & 1; ((x < cols)); x += 2)
-            {
-                cui_rect c = new cui_rect { x = r.x + (float)x * cell, y = r.y + (float)y * cell, w = cell, h = cell };
-                c = cui__rect_intersect(c, r);
-                for (int b = 0; ((b < 2)); b++)
-                {
-                    cui_rect q = cui__rect_intersect(c, band[b]);
-                    if (((((q.w > 0)) && ((q.h > 0)))))
-                        cui_draw_rect(ui, q, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, dark);
-                }
-            }
-    }
-
-
-
-    public static unsafe void cui__paint_gradient_ramp__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui_ctx* ui, cui_node* nd, void* data)
-    {
-    byte* __dotcc_array_storage0 = null;
-        cui__gr_ramp_paint* p = (cui__gr_ramp_paint*)(data);
-        cui_rect r = nd->rect;
-        if (((((r.w < 4)) || ((p->n <= 0)))))
-            return;
-        float rad = ((float)(((8.0f < r.h * 0.5f)) ? 8.0f : r.h * 0.5f));
-        if (((unchecked((int)(p->alpha))) != 0))
-            cui__gr_checker__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(ui, r, rad, 7.0f, p->light, p->dark);
-        
-        
-        int cap = 2 * (8 + 1) + p->n + 2, m = 0;
-        float* xs = (float*)(cui__frame_alloc(ui, 4UL * (ulong)cap));
-        for (int k = 0; ((k <= 8)); k++)
-        {
-            float e = rad * (1.0f - cosf((float)k / 8 * 3.14159265358979323846f * 0.5f));
-            xs[m++] = r.x + e;
-            xs[m++] = r.x + r.w - e;
-        }
-        for (int i = 0; ((i < p->n)); i++)
-            xs[m++] = r.x + cui__clampf(p->stops[i].pos, 0, 1) * r.w;
-        for (int a = 1; ((a < m)); a++)
-        {
-            float v = xs[a];
-            int b = a - 1;
-            while (((((b >= 0)) && ((xs[b] > v)))))
-            {
-                xs[b + 1] = xs[b];
-                b--;
-            }
-            xs[b + 1] = v;
-        }
-        cui_cvert* v__1 = (cui_cvert*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui_cvert))) * (ulong)m * (ulong)(2)));
-        uint* idx = (uint*)(cui__frame_alloc(ui, ((ulong)(sizeof(uint))) * (ulong)m * (ulong)(6)));
-        int nv = 0, ni = 0;
-        for (int k__1 = 0; ((k__1 < m)); k__1++)
-        {
-            float x = xs[k__1];
-            if (((((k__1 > 0)) && ((x - xs[k__1 - 1] < 1e-3f)))))
-                continue;
-            float dl = r.x + rad - x, dr = x - (r.x + r.w - rad), dd = ((float)(((dl > dr)) ? dl : dr)), h = 0;
-            if (((dd > 0)))
-            {
-                dd = ((float)(((dd < rad)) ? dd : rad));
-                h = rad - sqrtf(((float)(((0.0f > rad * rad - dd * dd)) ? 0.0f : rad * rad - dd * dd)));
-            }
-            cui_color c = cui_gradient_eval(p->stops, p->n, (x - r.x) / r.w);
-            if (((nv >= 2)))
-            {
-                uint a__1 = (uint)nv - (uint)(2);
-                if (__dotcc_array_storage0 == null)
-                {
-                    byte* __dotcc_array_storage0_new = stackalloc byte[checked(sizeof(uint) * 6)];
-                    __dotcc_array_storage0 = __dotcc_array_storage0_new;
-                }
-                uint* q = (uint*)__dotcc_array_storage0;
-                new global::System.Span<byte>((void*)q, checked(sizeof(uint) * 6)).Clear();
-                q[0] = a__1;
-                q[1] = a__1 + (uint)(2);
-                q[2] = a__1 + (uint)(3);
-                q[3] = a__1;
-                q[4] = a__1 + (uint)(3);
-                q[5] = a__1 + (uint)(1);
-                memcpy(idx + ni, q, ((ulong)((6 * sizeof(uint)))));
-                ni += 6;
-            }
-            v__1[nv].x = x;
-            v__1[nv].y = r.y + h;
-            v__1[nv].c = c;
-            nv++;
-            v__1[nv].x = x;
-            v__1[nv].y = r.y + r.h - h;
-            v__1[nv].c = c;
-            nv++;
-        }
-        if (((ni) != 0))
-            cui__draw_triangles(ui, v__1, nv, idx, ni);
-        cui_draw_rect_border(ui, r, new cui_corners { tl = rad, tr = rad, br = rad, bl = rad }, cui__rgba(0, 0, 0, 0), p->edge, 1);
-    }
-
-
-
-    public static unsafe void cui__paint_gradient_track__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui_ctx* ui, cui_node* nd, void* data)
-    {
-    byte* __dotcc_array_storage1 = null;
-        cui__gr_track_paint* p = (cui__gr_track_paint*)(data);
-        cui_rect r = nd->rect;
-        for (int pass = 0; ((pass < 2)); pass++)
-            for (int i = 0; ((i < p->n)); i++)
-            {
-                CBool sel = ((CBool)(i == p->sel));
-                if ((((int)((int)(sel)) != ((CBool)(pass == 1)))))
-                    continue;
-                float cx = roundf(r.x + cui__clampf(p->stops[i].pos, 0, 1) * r.w);
-                CBool lift = ((CBool)(i == p->pending));
-                if (((unchecked((int)(lift))) != 0))
-                    cui__push_xform(ui, 1, 0, 0, 0.4f, 0, p->pending_dy);
-                cui_color ring = (((unchecked((int)(sel))) != 0) ? p->ring_on : (((i == p->hot)) ? cui__control_edge(ui, 1) : p->ring));
-                if (__dotcc_array_storage1 == null)
-                {
-                    byte* __dotcc_array_storage1_new = stackalloc byte[checked(sizeof(cui_vec2) * 3)];
-                    __dotcc_array_storage1 = __dotcc_array_storage1_new;
-                }
-                cui_vec2* tri = (cui_vec2*)__dotcc_array_storage1;
-                new global::System.Span<byte>((void*)tri, checked(sizeof(cui_vec2) * 3)).Clear();
-                tri[0] = new cui_vec2 { x = cx, y = r.y + 1 };
-                tri[1] = new cui_vec2 { x = cx + 5, y = r.y + 7 };
-                tri[2] = new cui_vec2 { x = cx - 5, y = r.y + 7 };
-                cui_draw_polygon(ui, tri, 3, ring);
-                cui_rect body = new cui_rect { x = cx - 8, y = r.y + 6, w = 16, h = 16 };
-                cui_draw_rect_border(ui, body, new cui_corners { tl = 5, tr = 5, br = 5, bl = 5 }, p->surface, ring, ((float)(((unchecked((int)(sel))) != 0) ? 2.0f : 1.0f)));
-                cui_rect sw = cui__rect_inset(body, 3);
-                cui_color c = p->stops[i].color;
-                if (((c.a < 255)))
-                {
-                    cui_draw_rect(ui, sw, new cui_corners { tl = 2.5f, tr = 2.5f, br = 2.5f, bl = 2.5f }, p->light);
-                    cui_draw_rect(ui, new cui_rect { x = sw.x + sw.w * 0.5f, y = sw.y, w = sw.w * 0.5f, h = sw.h * 0.5f }, new cui_corners { tl = 0, tr = 2.5f, br = 0, bl = 0 }, p->dark);
-                    cui_draw_rect(ui, new cui_rect { x = sw.x, y = sw.y + sw.h * 0.5f, w = sw.w * 0.5f, h = sw.h * 0.5f }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 2.5f }, p->dark);
-                }
-                cui_draw_rect_border(ui, sw, new cui_corners { tl = 2.5f, tr = 2.5f, br = 2.5f, bl = 2.5f }, c, p->edge, 1);
-                if (((i == p->focus)))
-                    cui_draw_rect_border(ui, cui__rect_inset(body, -3), new cui_corners { tl = 8, tr = 8, br = 8, bl = 8 }, cui__rgba(0, 0, 0, 0), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOCUS_RING], 2);
-                if (((unchecked((int)(lift))) != 0))
-                    cui__pop_xform(ui);
-            }
-    }
-
-
-
-    public static unsafe void cui__grf_drag__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui__grf* f)
-    {
-        cui_ctx* ui = f->ui;
-        cui__gr_state* st = f->st;
-        cui_gradient_stop* stops = f->stops;
-        int n = f->n;
-        for (int i = 0; ((i < n)); i++)
-        {
-            uint sid = cui__gr_stop_id__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(f->id, i);
-            if (((ui->active != sid)))
-                continue;
-            if (((((unchecked((int)(((CBool*)&ui->mdown)[0]))) != 0) && (!(((unchecked((int)(((CBool*)&ui->mpressed)[0]))) != 0) )     ))))
-            {
-                CBool away = ((CBool)(((n > 2)) && ((((f->my > f->TR.y + f->TR.h + 32.0f)) || ((f->my < f->RR.y - 32.0f))))));
-                st->pending = away;
-                if (((unchecked((int)(away))) != 0))
-                {
-                    f->pending = i;
-                    f->pending_dy = f->my - (f->TR.y + f->TR.h * 0.5f);
-                }
-                else
-                {
-                    float pos = cui__clampf((f->mx - st->grab - f->RR.x) / f->RR.w, 0, 1);
-                    if (((pos != stops[i].pos)))
-                    {
-                        stops[i].pos = pos;
-                        f->res->changed = 1;
-                        int j = cui__gr_resort__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(stops, n, i);
-                        if (((j != i)))
-                        {
-                            ui->active = cui__gr_stop_id__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(f->id, j);
-                            if (((ui->focus == sid)))
-                                ui->focus = ui->active;
-                        }
-                        f->sel = j;
-                    }
-                }
-            }
-            else
-                if (((unchecked((int)(((CBool*)&ui->mreleased)[0]))) != 0))
-                {
-                    if (((((unchecked((int)(st->pending))) != 0) && ((n > 2)))))
-                        f->remove = i;
-                    st->pending = 0;
-                }
-            break;
-        }
-    }
-
-
-
-    public static unsafe void cui__grf_stops__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui__grf* f)
-    {
-        cui_ctx* ui = f->ui;
-        cui_gradient_stop* stops = f->stops;
-        int nudge = -1;
-        float nudge_d = 0;
-        for (int i = 0; ((i < f->n)); i++)
-        {
-            cui_interact r = cui__interact(ui, cui__gr_stop_id__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(f->id, i), 1 | 2);
-            if (((((((unchecked((int)(r.pressed))) != 0) && ((unchecked((int)(((CBool*)&ui->mpressed)[0]))) != 0))) && ((unchecked((int)(f->have))) != 0))))
-            {
-                f->sel = i;
-                f->st->grab = f->mx - (f->RR.x + stops[i].pos * f->RR.w);
-                f->st->pending = 0;
-                if (((unchecked((int)(r.double_clicked))) != 0))
-                    f->open_picker = 1;
-            }
-            if (((((unchecked((int)(r.hovered))) != 0) || ((unchecked((int)(r.active))) != 0))))
-            {
-                f->hot = i;
-                cui__set_cursor(ui, (cui_cursor)(((int)(((unchecked((int)(r.active))) != 0) ? (int)(__DotCcEnum_6375695F637572736F72.CUI_CURSOR_MOVE) : (int)(__DotCcEnum_6375695F637572736F72.CUI_CURSOR_HAND)))));
-            }
-            if (((unchecked((int)(r.focus_visible))) != 0))
-            {
-                f->focus = i;
-                f->sel = i;
-                float step = ((float)(((unchecked((int)(f->shift))) != 0) ? 0.001f : 0.01f));
-                if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_LEFT)))) != 0))
-                {
-                    nudge = i;
-                    nudge_d -= step;
-                }
-                if (((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_RIGHT)))) != 0))
-                {
-                    nudge = i;
-                    nudge_d += step;
-                }
-                if (((unchecked((int)(r.keyboard_activate))) != 0))
-                    f->open_picker = 1;
-            }
-            if (((((unchecked((int)(r.focused))) != 0) && ((((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_DELETE)))) != 0) || ((unchecked((int)(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_BACKSPACE)))) != 0))))))
-                f->remove = i;
-        }
-        if (((nudge >= 0)))
-        {
-            float pos = cui__clampf(stops[nudge].pos + nudge_d, 0, 1);
-            if (((pos != stops[nudge].pos)))
-            {
-                uint was = cui__gr_stop_id__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(f->id, nudge);
-                stops[nudge].pos = pos;
-                f->res->changed = 1;
-                int j = cui__gr_resort__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(stops, f->n, nudge);
-                if (((ui->focus == was)))
-                    ui->focus = cui__gr_stop_id__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(f->id, j);
-                f->sel = j;
-                f->focus = j;
-            }
-        }
-    }
-
-
-
-    public static unsafe void cui__grf_add__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui__grf* f)
-    {
-        cui_ctx* ui = f->ui;
-        cui_interact rr = cui__interact(ui, f->ramp_id, 2);
-        cui_interact tr = cui__interact(ui, f->track_id, 2);
-        if (((((((unchecked((int)(rr.hovered))) != 0) || ((unchecked((int)(tr.hovered))) != 0))) && ((f->n < f->capacity)))))
-            cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_HAND);
-        if ((!(((((((((((((((((unchecked((int)(rr.pressed))) != 0) || ((unchecked((int)(tr.pressed))) != 0))) && ((unchecked((int)(((CBool*)&ui->mpressed)[0]))) != 0))) && ((unchecked((int)(f->have))) != 0))) && (((void*)(f->stops)) != null))) && (((void*)(f->count)) != null))) && ((f->n < f->capacity)))) && ((f->remove < 0)))) )     ))
-            return;
-        cui_gradient_stop* stops = f->stops;
-        int n = f->n;
-        float pos = cui__clampf((f->mx - f->RR.x) / f->RR.w, 0, 1);
-        cui_gradient_stop ns = default;
-        ns.pos = pos;
-        ns.color = cui_gradient_eval(stops, n, pos);
-        int j = 0;
-        while (((((j < n)) && ((stops[j].pos <= pos)))))
-            j++;
-        memmove(&stops[j + 1], &stops[j], ((ulong)(sizeof(cui_gradient_stop))) * (ulong)(n - j));
-        stops[j] = ns;
-        f->n = n + 1;
-        *f->count = f->n;
-        f->sel = j;
-        f->res->added = j;
-        f->res->changed = 1;
-        ui->active = ui->focus = cui__gr_stop_id__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(f->id, j);
-        ui->focus_visible = 0;
-        f->st->grab = 0;
-        f->st->pending = 0;
-    }
-
-
-
-    public static unsafe void cui__grf_build_bars__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui__grf* f)
-    {
-        cui_ctx* ui = f->ui;
-        int n = f->n;
-        CBool any_alpha = 0;
-        for (int i = 0; ((i < n)); i++)
-            if (((f->stops[i].color.a < 255)))
-                any_alpha = 1;
-        CBool dark = ((CBool)((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK));
-        cui_color light = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE], darkc = cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE], ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], ((float)(((unchecked((int)(dark))) != 0) ? 0.16f : 0.1f)));
-        cui_color edge = cui_alpha(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], ((float)(((unchecked((int)(dark))) != 0) ? 0.16f : 0.12f)));
-        cui_gradient_stop* copy = (cui_gradient_stop*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui_gradient_stop))) * (ulong)((int)(((1 > n)) ? 1 : n))));
-        if (((n) != 0))
-            memcpy(copy, f->stops, ((ulong)(sizeof(cui_gradient_stop))) * (ulong)n);
-        int bars = cui__node_new(ui, 0);
-        ui->nodes[bars].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        ui->nodes[bars].pad[1] = ui->nodes[bars].pad[3] = 9.0f;
-        ui->nodes[bars].gap = 0;
-        cui__open(ui, bars);
-        int ramp = cui__leaf(ui, f->ramp_id, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)((float)(((f->o->height > 0)) ? f->o->height : 28.0f)) });
-        cui__mark_interactive(ui, ramp, 0);
-        cui__gr_ramp_paint* rp = (cui__gr_ramp_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__gr_ramp_paint)))));
-        rp->stops = copy;
-        rp->n = n;
-        rp->light = light;
-        rp->dark = darkc;
-        rp->edge = edge;
-        rp->alpha = any_alpha;
-        ui->nodes[ramp].paint = DotCcPointers.cui__paint_gradient_ramp__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97;
-        ui->nodes[ramp].paint_data = rp;
-        int track = cui__node_new(ui, f->track_id);
-        ui->nodes[track].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        ui->nodes[track].h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)26.0f };
-        cui__mark_interactive(ui, track, 0);
-        cui__gr_track_paint* tp = (cui__gr_track_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__gr_track_paint)))));
-        tp->stops = copy;
-        tp->n = n;
-        tp->sel = f->sel;
-        tp->focus = f->focus;
-        tp->hot = f->hot;
-        tp->pending = f->pending;
-        tp->pending_dy = f->pending_dy;
-        tp->light = light;
-        tp->dark = darkc;
-        tp->edge = edge;
-        tp->ring = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER_STRONG];
-        tp->ring_on = cui__emphasis(ui);
-        tp->surface = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE];
-        ui->nodes[track].paint = DotCcPointers.cui__paint_gradient_track__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97;
-        ui->nodes[track].paint_data = tp;
-        cui__open(ui, track);
-        if (((unchecked((int)(f->have))) != 0))
-            for (int i__1 = 0; ((i__1 < n)); i__1++)
-            {
-                float cx = f->RR.x + f->stops[i__1].pos * f->RR.w;
-                int a = cui__absolute(ui, cui__gr_stop_id__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(f->id, i__1), cx - f->TR.x - 22.0f * 0.5f, 0, 22.0f, 26.0f);
-                cui__mark_interactive(ui, a, 1);
-            }
-        cui__close(ui);
-        cui__close(ui);
-    }
-
-
-
-    public static unsafe void cui__grf_build_stop_fields__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(cui__grf* f, CBool narrow, CBool tiny)
-    {
-        cui_ctx* ui = f->ui;
-        int n = f->n;
-        cui_gradient_stop* s = &f->stops[f->sel];
-        uint cid = cui_make_id(ui, (DotCcLiterals.Pointer + DotCcLiterals.S697 /*"##color"*/));
-        if (((unchecked((int)(f->open_picker))) != 0))
-            cui__color_picker_open(ui, cid, s->color);
-        int line1 = -1;
-        if (((unchecked((int)(narrow))) != 0))
-        {
-            line1 = cui__node_new(ui, 0);
-            ui->nodes[line1].dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
-            ui->nodes[line1].gap = 8;
-            ui->nodes[line1].align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
-            cui__open(ui, line1);
-        }
-        cui_color c = s->color;
-        byte alpha = c.a;
-        if (((unchecked((int)(cui_color_picker(ui, (DotCcLiterals.Pointer + DotCcLiterals.S697 /*"##color"*/), &c)))) != 0))
-        {
-            c.a = alpha;
-            if (((memcmp(&c, &s->color, ((ulong)(sizeof(cui_color)))) != 0)))
-            {
-                s->color = c;
-                f->res->changed = 1;
-            }
-        }
-        int pk = ui->nodes[cui__current(ui)].last;
-        if (((((((unchecked((int)(narrow))) != 0) && ((pk >= 0)))) && ((ui->nodes[pk].id == cid)))))
-            ui->nodes[pk].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = (float)1 };
-        cui_button_opts bo = default;
-        memset(&bo, 0, ((ulong)(sizeof(cui_button_opts))));
-        bo.variant = __DotCcEnum_6375695F627574746F6E5F76617269616E74.CUI_BUTTON_GHOST;
-        bo.tooltip = (DotCcLiterals.Pointer + DotCcLiterals.S1218 /*"Remove stop"*/);
-        bo.disabled = ((CBool)(n <= 2));
-        CBool del = 0;
-        if (((unchecked((int)(narrow))) != 0))
-        {
-            del = cui_icon_button_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1191 /*""*/), &bo);
-            cui__close(ui);
-            int line2 = cui__node_new(ui, 0);
-            ui->nodes[line2].dir = (byte)(((int)(((unchecked((int)(tiny))) != 0) ? (int)(__DotCcEnum_6375695F646972.CUI_COLUMN) : (int)(__DotCcEnum_6375695F646972.CUI_ROW))));
-            ui->nodes[line2].gap = 8;
-            cui__open(ui, line2);
-        }
-        cui_scrub_opts lo = default;
-        memset(&lo, 0, ((ulong)(sizeof(cui_scrub_opts))));
-        lo.step = 1;
-        lo.format = (DotCcLiterals.Pointer + DotCcLiterals.S1102 /*"%.0f"*/);
-        lo.suffix = (DotCcLiterals.Pointer + DotCcLiterals.S1083 /*"%"*/);
-        lo.width = (((unchecked((int)(narrow))) != 0) ? new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = (float)1 } : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)140 });
-        cui_scrub_opts ao = lo;
-        float loc = s->pos * 100.0f, op = (float)s->color.a * (100.0f / 255.0f);
-        if (((unchecked((int)(cui_scrub_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S998 /*"Location"*/), &loc, 0, 100, &lo)))) != 0))
-        {
-            s->pos = cui__clampf(loc / 100.0f, 0, 1);
-            f->res->changed = 1;
-            int was = f->sel;
-            f->sel = cui__gr_resort__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(f->stops, n, f->sel);
-            if (((((f->sel != was)) && ((ui->focus == cui__gr_stop_id__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(f->id, was))))))
-                ui->focus = cui__gr_stop_id__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(f->id, f->sel);
-            s = &f->stops[f->sel];
-        }
-        if (((unchecked((int)(cui_scrub_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S532 /*"Opacity"*/), &op, 0, 100, &ao)))) != 0))
-        {
-            s->color.a = (byte)((float)(((((float)(((op * 2.55f + 0.5f > 0.0f)) ? op * 2.55f + 0.5f : 0.0f)) < 255.0f)) ? ((float)(((op * 2.55f + 0.5f > 0.0f)) ? op * 2.55f + 0.5f : 0.0f)) : 255.0f));
-            f->res->changed = 1;
-        }
-        if (((unchecked((int)(narrow))) != 0))
-            cui__close(ui);
-        else
-        {
-            cui_spacer(ui);
-            del = cui_icon_button_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1191 /*""*/), &bo);
-        }
-        if (((unchecked((int)(del))) != 0))
-            f->remove = f->sel;
-    }
-
-
-
-    public static unsafe cui_gradient_result cui_gradient_editor_ex(cui_ctx* ui, byte* id_str, cui_gradient_stop* stops, int* count, int capacity, cui_gradient_opts* o)
-    {
-        cui_gradient_opts d = default;
-        memset(&d, 0, ((ulong)(sizeof(cui_gradient_opts))));
-        if ((!((((void*)(o)) != null) )     ))
-            o = &d;
-        cui_gradient_result res = default;
-        memset(&res, 0, ((ulong)(sizeof(cui_gradient_result))));
-        res.added = res.removed = -1;
-        cui__grf f = default;
-        memset(&f, 0, ((ulong)(sizeof(cui__grf))));
-        f.ui = ui;
-        f.o = o;
-        f.res = &res;
-        f.stops = stops;
-        f.count = count;
-        f.n = ((int)((((((((void*)(stops)) != null) && (((void*)(count)) != null))) && ((*count > 0)))) ? *count : 0));
-        f.capacity = ((int)(((capacity < f.n)) ? f.n : capacity));
-        f.id = cui_make_id(ui, id_str);
-        f.ramp_id = f.id ^ 0x7A3Bu;
-        f.track_id = f.id ^ 0x7AC4u;
-        cui__gr_state* st = f.st = (cui__gr_state*)(cui_state(ui, f.id ^ 0x6E5Du, ((ulong)(sizeof(cui__gr_state)))));
-        if ((!(((unchecked((int)(st->init))) != 0) )     ))
-        {
-            st->sel = 0;
-            st->init = 1;
-        }
-        int* selp = ((int*)((((void*)(o->selected)) != null) ? o->selected : &st->sel));
-        f.sel = *selp;
-        if (((((f.sel < 0)) || ((f.sel >= f.n)))))
-            f.sel = ((int)(((f.n > 0)) ? 0 : -1));
-        f.shift = ((CBool)((ui->mods & (int)__DotCcEnum_6375695F6D6F64.CUI_MOD_SHIFT) != 0));
-        f.RR = cui__prev_rect(ui, f.ramp_id);
-        f.TR = cui__prev_rect(ui, f.track_id);
-        f.have = ((CBool)(((f.RR.w > 0)) && ((f.TR.w > 0))));
-        f.mx = ui->mx;
-        f.my = ui->my;
-        f.remove = f.pending = -1;
-        if (((unchecked((int)(f.have))) != 0))
-            cui__grf_drag__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&f);
-        f.hot = f.focus = -1;
-        cui__grf_stops__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&f);
-        cui__grf_add__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&f);
-        int outer = cui__node_new(ui, f.id);
-        cui_node* on = &ui->nodes[outer];
-        on->w = ((((int)o->width.kind) != 0) ? o->width : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 });
-        on->gap = 0;
-        cui__open(ui, outer);
-        cui_push_id(ui, id_str);
-        cui__grf_build_bars__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&f);
-        cui_rect orr = cui__prev_rect(ui, f.id);
-        CBool narrow = ((CBool)(((orr.w > 0)) && ((orr.w < 440.0f)))), tiny = ((CBool)(((orr.w > 0)) && ((orr.w < 320.0f))));
-        int row = cui__node_new(ui, 0);
-        cui_node* rn = &ui->nodes[row];
-        rn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        rn->dir = (byte)(((int)(((unchecked((int)(narrow))) != 0) ? (int)(__DotCcEnum_6375695F646972.CUI_COLUMN) : (int)(__DotCcEnum_6375695F646972.CUI_ROW))));
-        rn->align = (byte)(((int)(((unchecked((int)(narrow))) != 0) ? (int)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_STRETCH) : (int)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER))));
-        rn->gap = 8;
-        rn->pad[0] = 6;
-        cui__open(ui, row);
-        if (((((f.sel >= 0)) && ((f.sel < f.n)))))
-            cui__grf_build_stop_fields__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(&f, narrow, tiny);
-        cui__close(ui);
-        cui_pop_id(ui);
-        cui__close(ui);
-        int n = f.n, sel = f.sel, remove = f.remove;
-        if (((((((remove >= 0)) && ((remove < n)))) && ((n > 2)))))
-        {
-            memmove(&stops[remove], &stops[remove + 1], ((ulong)(sizeof(cui_gradient_stop))) * (ulong)(n - remove - 1));
-            n--;
-            *count = n;
-            res.removed = remove;
-            res.changed = 1;
-            sel = ((int)(((remove < n - 1)) ? remove : n - 1));
-            if (((ui->focus == cui__gr_stop_id__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(f.id, remove))))
-                ui->focus = cui__gr_stop_id__unit_66F7BF41209EC9958F7F8FBD81156155E0C1FCC487A94CB28170FC827C4E7C97(f.id, sel);
-        }
-        *selp = sel;
-        res.selected = sel;
-        ui->last_id = f.id;
-        return res;
-    }
-
-
-
-    public static unsafe float cui__tl_snap__unit_054FF841CCACDDB7912BC440114CE99A0881BDB911E0BFEC962A8A25BC65A600(float t, float fps)
-    {
-        return roundf(t * fps) / fps;
-    }
-
-
-
-    public static unsafe CBool cui__tl_on_frame__unit_054FF841CCACDDB7912BC440114CE99A0881BDB911E0BFEC962A8A25BC65A600(float t, float fps)
-    {
-        float f = t * fps;
-        return ((CBool)(fabsf(f - roundf(f)) < 1e-3f));
-    }
-
-
-
-    public static unsafe cui__tl_geo cui__tl_geo_of__unit_054FF841CCACDDB7912BC440114CE99A0881BDB911E0BFEC962A8A25BC65A600(cui_rect r, float row_h, float track_w, CBool toggles)
-    {
-        cui__tl_geo g = default;
-        memset(&g, 0, ((ulong)(sizeof(cui__tl_geo))));
-        g.r = r;
-        g.row_h = row_h;
-        float full = ((float)(((track_w > 0)) ? track_w : 184.0f));
-        float lw = default;
-        if (((r.w >= full * 3.0f)))
-            lw = full;
-        else
-            if (((r.w >= 380)))
-                lw = ((float)(((120.0f > ((float)(((full < r.w * 0.32f)) ? full : r.w * 0.32f)))) ? 120.0f : ((float)(((full < r.w * 0.32f)) ? full : r.w * 0.32f))));
-            else
-                lw = 40.0f;
-        g.list_w = lw;
-        g.list_mode = ((int)(((lw <= 40.0f)) ? 2 : ((int)(((((unchecked((int)(toggles))) != 0) && ((lw >= 160)))) ? 0 : 1))));
-        g.area_x = r.x + lw;
-        g.area_w = ((float)(((1.0f > r.w - lw)) ? 1.0f : r.w - lw));
-        g.plot_x = g.area_x + 10.0f;
-        g.plot_w = ((float)(((1.0f > g.area_w - 2 * 10.0f)) ? 1.0f : g.area_w - 2 * 10.0f));
-        g.body_y = r.y + 28.0f + 1;
-        g.body_h = ((float)(((0.0f > r.h - 28.0f - 2)) ? 0.0f : r.h - 28.0f - 2));
-        return g;
-    }
-
-
-
-    public static unsafe int cui__tl_key_lb__unit_054FF841CCACDDB7912BC440114CE99A0881BDB911E0BFEC962A8A25BC65A600(cui_curve_key* k, int n, float t)
-    {
-        int lo = 0, hi = n;
-        while (((lo < hi)))
-        {
-            int m = lo + (hi - lo) / 2;
-            if (((k[m].x < t)))
-                lo = m + 1;
-            else
-                hi = m;
-        }
-        return lo;
-    }
-
-
-
-    public static unsafe int cui__tl_clip_lb__unit_054FF841CCACDDB7912BC440114CE99A0881BDB911E0BFEC962A8A25BC65A600(cui_timeline_clip* c, int n, float t)
-    {
-        int lo = 0, hi = n;
-        while (((lo < hi)))
-        {
-            int m = lo + (hi - lo) / 2;
-            if (((c[m].end <= t)))
-                lo = m + 1;
-            else
-                hi = m;
-        }
-        return lo;
-    }
-
-
-
-    public static unsafe int cui__tl_keys_n__unit_054FF841CCACDDB7912BC440114CE99A0881BDB911E0BFEC962A8A25BC65A600(cui_timeline_track* t)
-    {
-        return ((int)((((((void*)(t->keys)) != null) && ((t->key_count > 0)))) ? t->key_count : 0));
-    }
-
-
-
-    public static unsafe int cui__tl_clips_n__unit_054FF841CCACDDB7912BC440114CE99A0881BDB911E0BFEC962A8A25BC65A600(cui_timeline_track* t)
-    {
-        return ((int)((((((void*)(t->clips)) != null) && ((t->clip_count > 0)))) ? t->clip_count : 0));
-    }
-
-
-
-    public static unsafe int cui__tl_flatten__unit_054FF841CCACDDB7912BC440114CE99A0881BDB911E0BFEC962A8A25BC65A600(cui_timeline_track* t, int n, int* rows, byte* tone, int* sub_end)
-    {
-        int* stack = stackalloc int[16];
-        int sd = 0, top = 0, nr = 0;
-        int open = 1 << 30;
-        int hide = open;
-        for (int i = 0; ((i < n)); i++)
-        {
-            int d = ((int)(((((int)(((t[i].depth > 0)) ? t[i].depth : 0)) < 1000)) ? ((int)(((t[i].depth > 0)) ? t[i].depth : 0)) : 1000));
-            while (((((sd > 0)) && ((((int)(((((int)(((t[stack[sd - 1]].depth > 0)) ? t[stack[sd - 1]].depth : 0)) < 1000)) ? ((int)(((t[stack[sd - 1]].depth > 0)) ? t[stack[sd - 1]].depth : 0)) : 1000)) >= d)))))
-                sub_end[stack[--sd]] = i;
-            int c = t[i].color;
-            if (((((c >= 1)) && ((c <= 6)))))
-                tone[i] = (byte)(c - 1);
-            else
-                if (((sd > 0)))
-                    tone[i] = tone[stack[sd - 1]];
-                else
-                    tone[i] = (byte)(top % 6);
-            if (((sd == 0)))
-                top++;
-            if (((d <= hide)))
-                hide = open;
-            if (((hide == open)))
-                rows[nr++] = i;
-            sub_end[i] = i + 1;
-            CBool group = ((CBool)(((i + 1 < n)) && ((((int)(((((int)(((t[i + 1].depth > 0)) ? t[i + 1].depth : 0)) < 1000)) ? ((int)(((t[i + 1].depth > 0)) ? t[i + 1].depth : 0)) : 1000)) > d))));
-            if (((unchecked((int)(group))) != 0))
-            {
-                if (((sd < 16)))
-                    stack[sd++] = i;
-                if (((((unchecked((int)(t[i].collapsed))) != 0) && ((hide == open)))))
-                    hide = d;
-            }
-        }
-        while (((sd > 0)))
-            sub_end[stack[--sd]] = n;
-        return nr;
-    }
-
-
-
-    public static unsafe byte* cui__tl_timecode__unit_054FF841CCACDDB7912BC440114CE99A0881BDB911E0BFEC962A8A25BC65A600(cui_ctx* ui, double t, float fps, CBool hours)
-    {
-        int F = (int)floorf(fps + 0.5f);
-        if (((F < 1)))
-            F = 1;
-        long f = llround(t * fps);
-        byte* sign = ((byte*)(((f < 0)) ? (DotCcLiterals.Pointer + DotCcLiterals.S201 /*"-"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/)));
-        if (((f < 0)))
-            f = -f;
-        long ff = f % F, s = f / F, ss = s % 60, m = s / 60;
-        if (((unchecked((int)(hours))) != 0))
-            return cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1177 /*"%s%lld:%02lld:%02lld:%02lld"*/), sign, m / 60, m % 60, ss, ff);
-        return cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S152 /*"%s%02lld:%02lld:%02lld"*/), sign, m, ss, ff);
-    }
-
-
-
-    public static unsafe int cui__tl_sec_dec__unit_054FF841CCACDDB7912BC440114CE99A0881BDB911E0BFEC962A8A25BC65A600(double step)
-    {
-        int d = (int)ceil(-log10(step) - 1e-9);
-        return ((int)(((((int)(((d > 0)) ? d : 0)) < 3)) ? ((int)(((d > 0)) ? d : 0)) : 3));
-    }
-
-
-
-    public static unsafe byte* cui__tl_label__unit_054FF841CCACDDB7912BC440114CE99A0881BDB911E0BFEC962A8A25BC65A600(cui_ctx* ui, cui__tl_paint* p, double t, double step)
-    {
-        if (((p->ruler == (int)__DotCcEnum_6375695F74696D656C696E655F72756C6572.CUI_TIMELINE_TIMECODE)))
-            return cui__tl_timecode__unit_054FF841CCACDDB7912BC440114CE99A0881BDB911E0BFEC962A8A25BC65A600(ui, t, p->fps, ((CBool)(p->seq1 >= 3600)));
-        if (((p->ruler == (int)__DotCcEnum_6375695F74696D656C696E655F72756C6572.CUI_TIMELINE_SECONDS)))
-        {
-            double v = ((double)(((fabs(t) < 1e-9)) ? (double)(0) : t));
-            return cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S206 /*"%.*f s"*/), cui__tl_sec_dec__unit_054FF841CCACDDB7912BC440114CE99A0881BDB911E0BFEC962A8A25BC65A600(step), v);
-        }
-        return cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S230 /*"%lld"*/), llround(t * p->fps));
-    }
-
-
-
-    public static unsafe byte* cui__tl_time_text__unit_054FF841CCACDDB7912BC440114CE99A0881BDB911E0BFEC962A8A25BC65A600(cui_ctx* ui, int ruler, float fps, float seq1, float t)
-    {
-        if (((ruler == (int)__DotCcEnum_6375695F74696D656C696E655F72756C6572.CUI_TIMELINE_TIMECODE)))
-            return cui__tl_timecode__unit_054FF841CCACDDB7912BC440114CE99A0881BDB911E0BFEC962A8A25BC65A600(ui, t, fps, ((CBool)(seq1 >= 3600)));
-        if (((ruler == (int)__DotCcEnum_6375695F74696D656C696E655F72756C6572.CUI_TIMELINE_SECONDS)))
-            return cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1087 /*"%.2f s"*/), (double)t);
-        return cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S46 /*"Frame %lld"*/), llround((double)t * fps));
-    }
-
-
-
-    public static unsafe byte* cui__tl_value__unit_054FF841CCACDDB7912BC440114CE99A0881BDB911E0BFEC962A8A25BC65A600(cui_ctx* ui, float v)
-    {
-        float a = fabsf(v);
-        int dec = ((int)(((a >= 100)) ? 0 : ((int)(((a >= 10)) ? 1 : 2))));
-        if (((a < 0.5f * powf(10.0f, (float)(-dec)))))
-            v = 0;
-        return cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S733 /*"%.*f"*/), dec, (double)v);
-    }
-
-
-
-    public static unsafe double cui__tl_step__unit_054FF841CCACDDB7912BC440114CE99A0881BDB911E0BFEC962A8A25BC65A600(cui_ctx* ui, cui__tl_paint* p, double k, float fs)
-    {
-        double fps = p->fps;
-        double* cand = stackalloc double[40];
-        int nc = 0;
-        if (((p->ruler == (int)__DotCcEnum_6375695F74696D656C696E655F72756C6572.CUI_TIMELINE_SECONDS)))
-        {
-            for (double m = 1e-3; ((((m < 1e6)) && ((nc < 36)))); m *= 10)
-            {
-                cand[nc++] = m;
-                cand[nc++] = 2 * m;
-                cand[nc++] = 5 * m;
-            }
-        }
-        else
-            if (((p->ruler == (int)__DotCcEnum_6375695F74696D656C696E655F72756C6572.CUI_TIMELINE_TIMECODE)))
-            {
-                double F = floor(fps + 0.5);
-                for (int i = 0; ((i < 4)); i++)
-                    if (((global::Managed.Cui.Cui.Globals.fr__s0__unit_054FF841CCACDDB7912BC440114CE99A0881BDB911E0BFEC962A8A25BC65A600[i] < F)))
-                        cand[nc++] = global::Managed.Cui.Cui.Globals.fr__s0__unit_054FF841CCACDDB7912BC440114CE99A0881BDB911E0BFEC962A8A25BC65A600[i] / fps;
-                for (int i__1 = 0; ((i__1 < 16)); i__1++)
-                    cand[nc++] = global::Managed.Cui.Cui.Globals.sec__s1__unit_054FF841CCACDDB7912BC440114CE99A0881BDB911E0BFEC962A8A25BC65A600[i__1] * F / fps;
-            }
-            else
-            {
-                for (double m__1 = 1; ((((m__1 < 1e8)) && ((nc < 36)))); m__1 *= 10)
-                {
-                    cand[nc++] = m__1 / fps;
-                    cand[nc++] = 2 * m__1 / fps;
-                    cand[nc++] = 5 * m__1 / fps;
-                }
-            }
-        byte* wide = cui__tl_label__unit_054FF841CCACDDB7912BC440114CE99A0881BDB911E0BFEC962A8A25BC65A600(ui, p, p->seq1, cand[0]);
-        float lw = cui__text_width(ui, 0, fs, wide, -1, 1);
-        for (int i__2 = 0; ((i__2 < nc)); i__2++)
-        {
-            if (((p->ruler == (int)__DotCcEnum_6375695F74696D656C696E655F72756C6572.CUI_TIMELINE_SECONDS)))
-            {
-                wide = cui__tl_label__unit_054FF841CCACDDB7912BC440114CE99A0881BDB911E0BFEC962A8A25BC65A600(ui, p, p->seq1, cand[i__2]);
-                lw = cui__text_width(ui, 0, fs, wide, -1, 1);
-            }
-            if (((cand[i__2] * k >= ((float)(((44.0f > lw + 14)) ? 44.0f : lw + 14)))))
-                return cand[i__2];
-        }
-        return cand[nc - 1];
-    }
-
-
-
-    public static unsafe void cui__tl_shape__unit_054FF841CCACDDB7912BC440114CE99A0881BDB911E0BFEC962A8A25BC65A600(cui_ctx* ui, float x, float y, float r, int shape, cui_color c)
-    {
-        if (((shape == 2)))
-        {
-            float h = r * 0.84f;
-            cui_draw_rect(ui, new cui_rect { x = x - h, y = y - h, w = 2 * h, h = 2 * h }, new cui_corners { tl = ((float)(((1.5f < h * 0.4f)) ? 1.5f : h * 0.4f)), tr = ((float)(((1.5f < h * 0.4f)) ? 1.5f : h * 0.4f)), br = ((float)(((1.5f < h * 0.4f)) ? 1.5f : h * 0.4f)), bl = ((float)(((1.5f < h * 0.4f)) ? 1.5f : h * 0.4f)) }, c);
-        }
-        else
-            if (((shape == 1)))
-            {
-                cui_draw_circle(ui, new cui_vec2 { x = x, y = y }, r * 0.9f, c);
-            }
-            else
-            {
-                cui_vec2* q = stackalloc cui_vec2[]{ new cui_vec2 { x = x, y = y - r }, new cui_vec2 { x = x + r, y = y }, new cui_vec2 { x = x, y = y + r }, new cui_vec2 { x = x - r, y = y } };
-                cui_draw_polygon(ui, q, 4, c);
-            }
-    }
-
-
-
-    public static unsafe cui_color cui__tl_tone__unit_054FF841CCACDDB7912BC440114CE99A0881BDB911E0BFEC962A8A25BC65A600(cui_ctx* ui, int tone)
-    {
-        return ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SERIES_1 + tone % 6];
-    }
-
-
-
-    public static unsafe void cui__tl_fill__unit_054FF841CCACDDB7912BC440114CE99A0881BDB911E0BFEC962A8A25BC65A600(cui_ctx* ui, cui_rect pr, float rad, cui_rect q, cui_color c)
-    {
-        float bot = pr.y + pr.h - 1, R = rad - 1;
-        if (((q.y + q.h > bot)))
-            q.h = bot - q.y;
-        if (((((q.w <= 0)) || ((q.h <= 0)))))
-            return;
-        cui_corners cr = new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 };
-        if (((((q.y + q.h > bot - R)) && ((q.h >= R)))))
-        {
-            if (((q.x < pr.x + 1 + R)))
-                cr.bl = R;
-            if (((q.x + q.w > pr.x + pr.w - 1 - R)))
-                cr.br = R;
-        }
-        cui_draw_rect(ui, q, cr, c);
     }
 
 

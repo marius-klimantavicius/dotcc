@@ -29,7 +29,7 @@ using __DotCcEnum_6375695F6D6F64 = global::Managed.Cui.Cui.cui_mod;
 using __DotCcEnum_6375695F7468656D655F6D6F6465 = global::Managed.Cui.Cui.cui_theme_mode;
 using __DotCcEnum_6375695F746F6E65 = global::Managed.Cui.Cui.cui_tone;
 using __DotCcEnum_6375695F656C65766174696F6E = global::Managed.Cui.Cui.cui_elevation;
-using __DotCcEnum_5F5F446F744363547970656465665F30453045363138353046303939323138444342313336464135443434453336353142413335323030433944453438343444393532313136323837423043463944 = global::Managed.Cui.Cui.cui__text_anchor;
+using __DotCcEnum_5F5F446F744363547970656465665F31383733324539413631304534373639334344373536304538413931383146443146454137313736373931463742444543353734433534454635444546413538 = global::Managed.Cui.Cui.cui__text_anchor;
 using __DotCcEnum_6375695F746578747572655F666F726D6174 = global::Managed.Cui.Cui.cui_texture_format;
 using __DotCcEnum_6375695F646972656374696F6E = global::Managed.Cui.Cui.cui_direction;
 using __DotCcEnum_6375695F6A757374696679 = global::Managed.Cui.Cui.cui_justify;
@@ -39,7 +39,7 @@ using __DotCcEnum_6375695F746578745F616C69676E = global::Managed.Cui.Cui.cui_tex
 using __DotCcEnum_6375695F627574746F6E5F76617269616E74 = global::Managed.Cui.Cui.cui_button_variant;
 using __DotCcEnum_6375695F636F6E74726F6C5F73697A65 = global::Managed.Cui.Cui.cui_control_size;
 using __DotCcEnum_6375695F746162735F76617269616E74 = global::Managed.Cui.Cui.cui_tabs_variant;
-using __DotCcEnum_5F5F446F744363547970656465665F37383132333838343837304536434536353233453436434444443433383833373744363646433646314241334230424639434637324136333833454138353043 = global::Managed.Cui.Cui.cui__field_style;
+using __DotCcEnum_5F5F446F744363547970656465665F34304230353439433246314135414433383143374232414442363442463143414143393430304331413830453744383444394644423346304430413946433346 = global::Managed.Cui.Cui.cui__field_style;
 using __DotCcEnum_6375695F73696465 = global::Managed.Cui.Cui.cui_side;
 using __DotCcEnum_6375695F737461747573 = global::Managed.Cui.Cui.cui_status;
 using __DotCcEnum_6375695F646966665F726F775F6B696E64 = global::Managed.Cui.Cui.cui_diff_row_kind;
@@ -62,4208 +62,4986 @@ using DotCcPointers = global::Managed.Cui.Cui.CuiFunctionPointers;
 
 public static unsafe partial class Cui
 {
-    public static unsafe CBool cui_url_set_params(byte* url, ulong cap, cui_kv_pair* pairs, int count)
+    public static unsafe int cui_host_is_windows()
     {
-        if (Cond.B(((CBool)(Cond.B((Cond.B(url) ? 0 : 1)) || Cond.B(((CBool)(cap == (ulong)(0))))))))
-            return 0;
-        ulong ul = (ulong)(strlen(url));
-        byte* q = strchr(url, 63), hash = strchr(url, 35);
-        ulong @base = ((ulong)(Cond.B(q) ? (ulong)(q - url) : ((ulong)(Cond.B(hash) ? (ulong)(hash - url) : ul))));
-        byte* frag = stackalloc byte[]{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-        if (Cond.B(hash))
-            snprintf(frag, unchecked((int)(((ulong)((256 * sizeof(byte)))))), (DotCcLiterals.Pointer + DotCcLiterals.S260 /*"%s"*/)).Arg(hash).Done();
-        byte* @out = (byte*)(malloc(cap));
-        if (Cond.B((Cond.B(@out) ? 0 : 1)))
-            return 0;
-        memcpy(@out, url, @base);
-        ulong len = @base;
-        CBool first = 1, ok = 1;
-        for (int i = 0; Cond.B(((CBool)(Cond.B(((CBool)(i < count))) && Cond.B(ok)))); i++)
+        return global::Managed.Cui.PlatformHost.IsWindows();
+    }
+
+
+
+
+    public static unsafe cui_terminal_line* cui__tm_cur(cui_terminal_buffer* t)
+    {
+        return &t->lines[(t->first + t->count - 1) % t->line_cap];
+    }
+
+
+
+    public static unsafe cui_terminal_line* cui__tm_line(cui_terminal_buffer* t, int i)
+    {
+        return &t->lines[(t->first + i) % t->line_cap];
+    }
+
+
+
+    public static unsafe void cui_terminal_init(cui_terminal_buffer* t, byte* text, ulong text_cap, cui_terminal_line* lines, int line_cap)
+    {
+        if (Cond.B((Cond.B(t) ? 0 : 1)))
+            return;
+        memset(t, 0, ((ulong)(sizeof(cui_terminal_buffer))));
+        t->text = text;
+        t->text_cap = (uint)((ulong)(Cond.B(((CBool)(text_cap < (ulong)0x7FFFFFFF))) ? text_cap : (ulong)0x7FFFFFFF));
+        t->lines = lines;
+        t->line_cap = line_cap;
+        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(text) ? 0 : 1)) || Cond.B((Cond.B(lines) ? 0 : 1))))) || Cond.B(((CBool)(line_cap < 2)))))) || Cond.B(((CBool)(t->text_cap < (uint)(64))))))))
         {
-            if (Cond.B(((CBool)(Cond.B((Cond.B(pairs[i].enabled) ? 0 : 1)) || Cond.B((Cond.B(pairs[i].key[0]) ? 0 : 1))))))
-                continue;
-            if (Cond.B(((CBool)(len + (ulong)(2) > cap))))
+            t->line_cap = 0;
+            return;
+        }
+        t->count = 1;
+        t->total = 1;
+        lines[0] = new cui_terminal_line { offset = 0, len = 0, cols = 0 };
+    }
+
+
+
+    public static unsafe void cui_terminal_clear(cui_terminal_buffer* t)
+    {
+        if (Cond.B(((CBool)(Cond.B((Cond.B(t) ? 0 : 1)) || Cond.B((Cond.B(t->line_cap) ? 0 : 1))))))
+            return;
+        t->first = 0;
+        t->count = 1;
+        t->end = 0;
+        t->total++;
+        t->lines[0] = new cui_terminal_line { offset = 0, len = 0, cols = 0 };
+        t->cr = 0;
+        t->mode = 0;
+    }
+
+
+
+    public static unsafe void cui__tm_new_line(cui_terminal_buffer* t)
+    {
+        if (Cond.B(((CBool)(t->count == t->line_cap))))
+        {
+            t->first = (t->first + 1) % t->line_cap;
+            t->count--;
+        }
+        t->lines[(t->first + t->count) % t->line_cap] = new cui_terminal_line { offset = t->end, len = 0, cols = 0 };
+        t->count++;
+        t->total++;
+    }
+
+
+
+    public static unsafe CBool cui__tm_room(cui_terminal_buffer* t, uint n)
+    {
+        cui_terminal_line* c = cui__tm_cur(t);
+        if (Cond.B(((CBool)(c->len + n > t->text_cap))))
+            return 0;
+        if (Cond.B(((CBool)(c->offset + c->len + n > t->text_cap))))
+        {
+            uint need = c->len + n;
+            while (Cond.B(((CBool)(t->count > 1))))
             {
-                ok = 0;
-                break;
-            }
-            @out[len++] = (byte)(((int)(Cond.B(first) ? 63 : 38)));
-            first = 0;
-            ok = cui__url_encode__unit_00D7FF0FDCEBC91928145E02624A9693291017FF31B9B80B65A5F87DDE44162B(pairs[i].key, @out, cap, &len);
-            if (Cond.B(((CBool)(Cond.B(ok) && Cond.B(pairs[i].value[0])))))
-            {
-                if (Cond.B(((CBool)(len + (ulong)(2) > cap))))
+                cui_terminal_line* o = cui__tm_line(t, 0);
+                if (Cond.B(((CBool)(o->offset < need))))
                 {
-                    ok = 0;
+                    t->first = (t->first + 1) % t->line_cap;
+                    t->count--;
+                }
+                else
                     break;
-                }
-                @out[len++] = 61;
-                ok = cui__url_encode__unit_00D7FF0FDCEBC91928145E02624A9693291017FF31B9B80B65A5F87DDE44162B(pairs[i].value, @out, cap, &len);
             }
+            memmove(t->text, t->text + c->offset, (ulong)(c->len));
+            c->offset = 0;
+            t->end = c->len;
         }
-        ulong fl = (ulong)(strlen(frag));
-        if (Cond.B(((CBool)(Cond.B(ok) && Cond.B(((CBool)(len + fl + (ulong)(1) <= cap)))))))
+        while (Cond.B(((CBool)(t->count > 1))))
         {
-            memcpy(@out + len, frag, fl + (ulong)(1));
-            len += fl;
-            memcpy(url, @out, len + (ulong)(1));
-        }
-        else
-            ok = 0;
-        free(@out);
-        return ok;
-    }
-
-
-
-    public static unsafe int cui__ff_share__unit_00D7FF0FDCEBC91928145E02624A9693291017FF31B9B80B65A5F87DDE44162B(cui_feature_flag* f, int e)
-    {
-        int r = f->rollout[e];
-        return ((int)(Cond.B(((CBool)(Cond.B(((CBool)(r <= 0))) || Cond.B(((CBool)(r >= 100)))))) ? 100 : r));
-    }
-
-
-
-    public static unsafe void cui__ff_cell__unit_00D7FF0FDCEBC91928145E02624A9693291017FF31B9B80B65A5F87DDE44162B(cui_ctx* ui, cui__ff_state* s, cui_feature_flag* fl, int i, int e, cui_feature_flags_result* res, CBool narrow)
-    {
-        cui_push_id_int(ui, e);
-        int cell = cui__node_new(ui, 0);
-        cui_node* cn = &ui->nodes[cell];
-        cn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
-        cn->gap = 6;
-        cn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
-        cn->w = (Cond.B(narrow) ? new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIT, value = 0 } : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)128.0f });
-        cui__open(ui, cell);
-        cui_check_opts co = default;
-        memset(&co, 0, ((ulong)(sizeof(cui_check_opts))));
-        if (Cond.B(cui_switch_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1174 /*"##on"*/), &((CBool*)&fl->on)[e], &co)))
-        {
-            res->flag = i;
-            res->env = e;
-        }
-        if (Cond.B(((CBool*)&fl->on)[e]))
-        {
-            int share = cui__ff_share__unit_00D7FF0FDCEBC91928145E02624A9693291017FF31B9B80B65A5F87DDE44162B(fl, e);
-            cui_button_opts bo = default;
-            memset(&bo, 0, ((ulong)(sizeof(cui_button_opts))));
-            bo.size = __DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM;
-            bo.variant = __DotCcEnum_6375695F627574746F6E5F76617269616E74.CUI_BUTTON_GHOST;
-            bo.tooltip = (DotCcLiterals.Pointer + DotCcLiterals.S22 /*"Share of users"*/);
-            if (Cond.B(((CBool)(share < 100))))
-                bo.color = cui__tone_color(ui, __DotCcEnum_6375695F746F6E65.CUI_TONE_WARNING);
-            if (Cond.B(cui_button_ex(ui, cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S503 /*"%d%%"*/), share), &bo)))
+            cui_terminal_line* o__1 = cui__tm_line(t, 0);
+            if (Cond.B(((CBool)(Cond.B(((CBool)(o__1->offset >= t->end))) && Cond.B(((CBool)(o__1->offset < t->end + n)))))))
             {
-                s->pop_flag = i;
-                s->pop_env = e;
-                s->rollout = (float)share;
-                cui_popover_open(ui, (DotCcLiterals.Pointer + DotCcLiterals.S433 /*"share"*/));
-            }
-            cui_popover_opts po = default;
-            memset(&po, 0, ((ulong)(sizeof(cui_popover_opts))));
-            po.width = 240;
-            po.placement = __DotCcEnum_6375695F706C6163656D656E74.CUI_PLACE_BOTTOM;
-            if (Cond.B(cui_popover_begin(ui, (DotCcLiterals.Pointer + DotCcLiterals.S433 /*"share"*/), &po)))
-            {
-                {
-                    cui_box __cl0 = new cui_box { _ = 0, gap = 10, width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 } };
-                    cui_column_begin(ui, &__cl0);
-                    int cui__scope_641 = 0;
-                    for (; Cond.B((Cond.B(cui__scope_641) ? 0 : 1)); cui__scope_641 = 1, cui_box_end(ui))
-                    {
-                        cui_text_opts __cl1 = new cui_text_opts { _ = 0, font = 1, size = 13 };
-                        cui_text_ex(ui, cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1208 /*"%s users"*/), ((byte*)(Cond.B(fl->key) ? fl->key : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/)))), &__cl1);
-                        cui_slider_opts sl = default;
-                        memset(&sl, 0, ((ulong)(sizeof(cui_slider_opts))));
-                        sl.step = 1;
-                        sl.show_value = 1;
-                        sl.format = (DotCcLiterals.Pointer + DotCcLiterals.S548 /*"%.0f%%"*/);
-                        if (Cond.B(cui_slider_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S720 /*"##share"*/), &s->rollout, 1, 100, &sl)))
-                        {
-                            fl->rollout[e] = (int)(s->rollout + 0.5f);
-                            res->flag = i;
-                            res->env = e;
-                        }
-                        {
-                            cui_box __cl2 = new cui_box { _ = 0, gap = 6, wrap = 1 };
-                            cui_row_begin(ui, &__cl2);
-                            int cui__scope_648 = 0;
-                            for (; Cond.B((Cond.B(cui__scope_648) ? 0 : 1)); cui__scope_648 = 1, cui_box_end(ui))
-                            {
-                                for (int k = 0; Cond.B(((CBool)(k < 5))); k++)
-                                {
-                                    cui_push_id_int(ui, k);
-                                    cui_button_opts pb = default;
-                                    memset(&pb, 0, ((ulong)(sizeof(cui_button_opts))));
-                                    pb.size = __DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM;
-                                    pb.variant = __DotCcEnum_6375695F627574746F6E5F76617269616E74.CUI_BUTTON_OUTLINE;
-                                    pb.selected = ((CBool)(share == global::Managed.Cui.Cui.Globals.presets__s3__unit_00D7FF0FDCEBC91928145E02624A9693291017FF31B9B80B65A5F87DDE44162B[k]));
-                                    if (Cond.B(cui_button_ex(ui, cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S503 /*"%d%%"*/), global::Managed.Cui.Cui.Globals.presets__s3__unit_00D7FF0FDCEBC91928145E02624A9693291017FF31B9B80B65A5F87DDE44162B[k]), &pb)))
-                                    {
-                                        fl->rollout[e] = global::Managed.Cui.Cui.Globals.presets__s3__unit_00D7FF0FDCEBC91928145E02624A9693291017FF31B9B80B65A5F87DDE44162B[k];
-                                        s->rollout = (float)global::Managed.Cui.Cui.Globals.presets__s3__unit_00D7FF0FDCEBC91928145E02624A9693291017FF31B9B80B65A5F87DDE44162B[k];
-                                        res->flag = i;
-                                        res->env = e;
-                                    }
-                                    cui_pop_id(ui);
-                                }
-                            }
-                        }
-                    }
-                }
-                cui_popover_end(ui);
-            }
-        }
-        cui__close(ui);
-        cui_pop_id(ui);
-    }
-
-
-
-    public static unsafe cui_feature_flags_result cui_feature_flags_ex(cui_ctx* ui, byte* id_str, cui_feature_flag* flags, int count, byte** envs, int env_count, cui_feature_flags_opts* o)
-    {
-        cui_feature_flags_opts d = default;
-        memset(&d, 0, ((ulong)(sizeof(cui_feature_flags_opts))));
-        if (Cond.B((Cond.B(o) ? 0 : 1)))
-            o = &d;
-        cui_feature_flags_result res = new cui_feature_flags_result { flag = -1, env = -1 };
-        if (Cond.B(((CBool)(Cond.B((Cond.B(flags) ? 0 : 1)) || Cond.B(((CBool)(count < 0)))))))
-            count = 0;
-        env_count = ((int)(Cond.B(envs) ? ((int)(Cond.B(((CBool)(((int)(Cond.B(((CBool)(env_count > 0))) ? env_count : 0)) < 8))) ? ((int)(Cond.B(((CBool)(env_count > 0))) ? env_count : 0)) : 8)) : 0));
-        uint id = cui_make_id(ui, id_str);
-        cui__ff_state* s = (cui__ff_state*)(cui_state(ui, id ^ 0xF1A6u, ((ulong)(sizeof(cui__ff_state)))));
-        if (Cond.B((Cond.B(s->init) ? 0 : 1)))
-        {
-            s->init = 1;
-            s->pop_flag = -1;
-        }
-        if (Cond.B(((CBool)(s->env >= env_count))))
-            s->env = 0;
-        cui_rect pr = cui__prev_rect(ui, id);
-        CBool narrow = ((CBool)(Cond.B(((CBool)(pr.w > 0))) && Cond.B(((CBool)(Cond.B(((CBool)(pr.w < 560.0f))) || Cond.B(((CBool)(pr.w < 260 + env_count * 128.0f))))))));
-        int outer = cui__node_new(ui, id);
-        cui_node* on = &ui->nodes[outer];
-        on->gap = 8;
-        on->w = (Cond.B((int)o->width.kind) ? o->width : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 });
-        cui__open(ui, outer);
-        cui_push_id(ui, id_str);
-        int bar = cui__node_new(ui, 0);
-        ui->nodes[bar].dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
-        ui->nodes[bar].gap = 8;
-        ui->nodes[bar].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        ui->nodes[bar].align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
-        ui->nodes[bar].flags |= (uint)(32768);
-        cui__open(ui, bar);
-        cui_input_opts io = default;
-        memset(&io, 0, ((ulong)(sizeof(cui_input_opts))));
-        io.size = __DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM;
-        io.width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        io.placeholder = (DotCcLiterals.Pointer + DotCcLiterals.S1226 /*"Filter flags"*/);
-        io.clearable = 1;
-        cui_search_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S570 /*"filter"*/), s->query, ((ulong)((96 * sizeof(byte)))), &io);
-        ui->nodes[ui->last_node].min_w = 140;
-        if (Cond.B(((CBool)(Cond.B(narrow) && Cond.B(((CBool)(env_count > 1)))))))
-        {
-            cui_segmented_opts so = default;
-            memset(&so, 0, ((ulong)(sizeof(cui_segmented_opts))));
-            so.size = __DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM;
-            _ = cui_segmented_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1267 /*"env"*/), (byte**)envs, env_count, &s->env, &so);
-        }
-        cui__close(ui);
-        int frame = cui__node_new(ui, 0);
-        cui_node* fn = &ui->nodes[frame];
-        fn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        fn->radius = new cui_corners { tl = ui->theme.radius_control, tr = ui->theme.radius_control, br = ui->theme.radius_control, bl = ui->theme.radius_control };
-        fn->border = 1;
-        fn->border_color = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER];
-        fn->bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE];
-        fn->flags |= (uint)(16);
-        if (Cond.B(((CBool)(o->height > 0))))
-            fn->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)o->height };
-        cui__open(ui, frame);
-        float fs = cui__fs(ui, ui->theme.text_sm), fx = cui__fs(ui, ui->theme.text_xs);
-        if (Cond.B(((CBool)(Cond.B((Cond.B(narrow) ? 0 : 1)) && Cond.B(((CBool)(env_count > 0)))))))
-        {
-            int h = cui__node_new(ui, 0);
-            cui_node* hn = &ui->nodes[h];
-            hn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
-            hn->gap = 12;
-            hn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-            hn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
-            hn->pad[0] = hn->pad[2] = 7;
-            hn->pad[1] = hn->pad[3] = 12;
-            hn->bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE_MUTED];
-            cui__open(ui, h);
-            int t = cui__text_node(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1465 /*"Flag"*/), -1, 1, fx, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0);
-            ui->nodes[t].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-            for (int e = 0; Cond.B(((CBool)(e < env_count))); e++)
-            {
-                int et = cui__text_node(ui, ((byte*)(Cond.B(envs[e]) ? envs[e] : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), -1, 1, fx, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0);
-                ui->nodes[et].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)128.0f };
-                ui->nodes[et].flags |= (uint)(16);
-            }
-            cui__close(ui);
-        }
-        cui_scroll_opts sc = default;
-        memset(&sc, 0, ((ulong)(sizeof(cui_scroll_opts))));
-        sc.id = (DotCcLiterals.Pointer + DotCcLiterals.S1021 /*"rows"*/);
-        sc.width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        sc.height = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        CBool scrolls = ((CBool)(o->height > 0));
-        if (Cond.B(scrolls))
-            cui_scroll_begin(ui, &sc);
-        int shown = 0;
-        for (int i = 0; Cond.B(((CBool)(i < count))); i++)
-        {
-            cui_feature_flag* fl = &flags[i];
-            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(s->query[0]) && Cond.B((Cond.B(cui__contains_ci(((byte*)(Cond.B(fl->key) ? fl->key : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), s->query)) ? 0 : 1))))) && Cond.B((Cond.B(cui__contains_ci(((byte*)(Cond.B(fl->description) ? fl->description : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), s->query)) ? 0 : 1))))))
-                continue;
-            if (Cond.B(((CBool)(shown++ > 0))))
-            {
-                int sep = cui__node_new(ui, 0);
-                ui->nodes[sep].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-                ui->nodes[sep].h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)1 };
-                ui->nodes[sep].bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER_SUBTLE];
-            }
-            cui_push_id_int(ui, i);
-            int row = cui__node_new(ui, 0);
-            cui_node* rn = &ui->nodes[row];
-            rn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
-            rn->gap = 12;
-            rn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-            rn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
-            rn->pad[0] = rn->pad[2] = 8;
-            rn->pad[1] = rn->pad[3] = 12;
-            cui__open(ui, row);
-            int txt = cui__node_new(ui, 0);
-            ui->nodes[txt].gap = 2;
-            ui->nodes[txt].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-            cui__open(ui, txt);
-            int k = cui__text_node(ui, ((byte*)(Cond.B(fl->key) ? fl->key : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), -1, 3, fs, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0);
-            ui->nodes[k].flags |= (uint)(16);
-            ui->nodes[k].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-            if (Cond.B(((CBool)(Cond.B(fl->description) && Cond.B(fl->description[0])))))
-            {
-                int dn = cui__text_node(ui, fl->description, -1, 0, fx, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 1);
-                ui->nodes[dn].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-            }
-            cui__close(ui);
-            if (Cond.B(narrow))
-            {
-                if (Cond.B(((CBool)(env_count > 0))))
-                    cui__ff_cell__unit_00D7FF0FDCEBC91928145E02624A9693291017FF31B9B80B65A5F87DDE44162B(ui, s, fl, i, s->env, &res, 1);
+                t->first = (t->first + 1) % t->line_cap;
+                t->count--;
             }
             else
-                for (int e__1 = 0; Cond.B(((CBool)(e__1 < env_count))); e__1++)
-                    cui__ff_cell__unit_00D7FF0FDCEBC91928145E02624A9693291017FF31B9B80B65A5F87DDE44162B(ui, s, fl, i, e__1, &res, 0);
-            cui__close(ui);
-            cui_pop_id(ui);
-        }
-        if (Cond.B(((CBool)(shown == 0))))
-        {
-            int e__2 = cui__text_node(ui, ((byte*)(Cond.B(((CBool)(count == 0))) ? (DotCcLiterals.Pointer + DotCcLiterals.S854 /*"No flags"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S288 /*"No flags match"*/))), -1, 0, fs, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0);
-            ui->nodes[e__2].pad[0] = ui->nodes[e__2].pad[2] = 14;
-            ui->nodes[e__2].pad[3] = 12;
-        }
-        if (Cond.B(scrolls))
-            cui_scroll_end(ui);
-        cui__close(ui);
-        cui_pop_id(ui);
-        cui__close(ui);
-        ui->last_id = id;
-        return res;
-    }
-
-
-
-    public static unsafe byte* cui__ax_tag__unit_00D7FF0FDCEBC91928145E02624A9693291017FF31B9B80B65A5F87DDE44162B(cui_api_endpoint* e)
-    {
-        return ((byte*)(Cond.B(((CBool)(Cond.B(e->tag) && Cond.B(e->tag[0])))) ? e->tag : (DotCcLiterals.Pointer + DotCcLiterals.S524 /*"Other"*/)));
-    }
-
-
-
-    public static unsafe void cui__ax_method__unit_00D7FF0FDCEBC91928145E02624A9693291017FF31B9B80B65A5F87DDE44162B(cui_ctx* ui, byte* m, CBool narrow)
-    {
-        cui_color c = cui__dp_method_color__unit_00D7FF0FDCEBC91928145E02624A9693291017FF31B9B80B65A5F87DDE44162B(ui, m);
-        int b = cui__node_new(ui, 0);
-        cui_node* bn = &ui->nodes[b];
-        bn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)((int)(Cond.B(narrow) ? 52 : 62)) };
-        bn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
-        bn->justify = (byte)(__DotCcEnum_6375695F6A757374696679.CUI_JUSTIFY_CENTER);
-        bn->pad[0] = bn->pad[2] = 2;
-        bn->radius = new cui_corners { tl = 4, tr = 4, br = 4, bl = 4 };
-        bn->bg = cui_alpha(c, ((float)(Cond.B(((CBool)((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK))) ? 0.18f : 0.12f)));
-        cui__open(ui, b);
-        byte* up = stackalloc byte[12];
-        int n = 0;
-        for (byte* p = ((byte*)(Cond.B(m) ? m : (DotCcLiterals.Pointer + DotCcLiterals.S1063 /*"?"*/))); Cond.B(((CBool)(Cond.B(*p) && Cond.B(((CBool)(n < 7)))))); p++)
-            up[n++] = (byte)((int)(Cond.B(((CBool)(Cond.B(((CBool)(*p >= 97))) && Cond.B(((CBool)(*p <= 122)))))) ? *p - 32 : (int)(*p)));
-        up[n] = 0;
-        cui__text_node(ui, up, n, 3, cui__fs(ui, ((float)(Cond.B(narrow) ? 10.5f : 11.0f))), cui__legible(c, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE], 4.5f), 0);
-        cui__close(ui);
-    }
-
-
-
-    public static unsafe void cui__paint_ax_path__unit_00D7FF0FDCEBC91928145E02624A9693291017FF31B9B80B65A5F87DDE44162B(cui_ctx* ui, cui_node* n, void* data)
-    {
-        cui__ax_path_paint* p = (cui__ax_path_paint*)(data);
-        cui_rect r = n->rect;
-        float fh = cui__font_line_height(ui, 3, p->size), y = r.y + (r.h - fh) * 0.5f, x = r.x;
-        byte* s = p->path;
-        cui_push_clip(ui, r);
-        while (Cond.B(*s))
-        {
-            byte* e = s;
-            CBool param = ((CBool)(*s == 123));
-            if (Cond.B(param))
-            {
-                while (Cond.B(((CBool)(Cond.B(*e) && Cond.B(((CBool)(*e != 125)))))))
-                    e++;
-                if (Cond.B(*e))
-                    e++;
-            }
-            else
-                while (Cond.B(((CBool)(Cond.B(*e) && Cond.B(((CBool)(*e != 123)))))))
-                    e++;
-            cui__draw_text_line(ui, 3, p->size, x, y, (Cond.B(param) ? p->param : p->fg), s, (int)(e - s), 1);
-            x += cui__text_width(ui, 3, p->size, s, (int)(e - s), 1);
-            s = e;
-        }
-        if (Cond.B(p->strike))
-            cui_draw_rect(ui, new cui_rect { x = r.x, y = y + fh * 0.55f, w = x - r.x, h = 1 }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, p->fg);
-        cui_pop_clip(ui);
-    }
-
-
-
-    public static unsafe void cui__ax_params__unit_00D7FF0FDCEBC91928145E02624A9693291017FF31B9B80B65A5F87DDE44162B(cui_ctx* ui, cui_api_endpoint* ep, int i, CBool narrow, cui_api_explorer_result* res)
-    {
-        int box = cui__node_new(ui, 0);
-        cui_node* bn = &ui->nodes[box];
-        bn->gap = 8;
-        bn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        bn->pad[0] = 4;
-        bn->pad[2] = 12;
-        bn->pad[1] = 12;
-        bn->pad[3] = ((int)(Cond.B(narrow) ? 12 : 82));
-        cui__open(ui, box);
-        float fs = cui__fs(ui, ui->theme.text_sm), fx = cui__fs(ui, ui->theme.text_xs);
-        if (Cond.B(((CBool)(Cond.B(((CBool)(ep->param_count <= 0))) || Cond.B((Cond.B(ep->@params) ? 0 : 1))))))
-            cui__text_node(ui, (DotCcLiterals.Pointer + DotCcLiterals.S357 /*"No parameters"*/), -1, 0, fx, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0);
-        for (int k = 0; Cond.B(((CBool)(Cond.B(((CBool)(k < ep->param_count))) && Cond.B(ep->@params)))); k++)
-        {
-            cui_api_param* pa = &ep->@params[k];
-            int row = cui__node_new(ui, 0);
-            cui_node* rn = &ui->nodes[row];
-            rn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
-            rn->gap = 10;
-            rn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-            rn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_START);
-            rn->flags |= (uint)(32768);
-            cui__open(ui, row);
-            int nm = cui__node_new(ui, 0);
-            ui->nodes[nm].dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
-            ui->nodes[nm].gap = 2;
-            ui->nodes[nm].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)((int)(Cond.B(narrow) ? 110 : 150)) };
-            ui->nodes[nm].direction = (byte)(__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_LTR);
-            cui__open(ui, nm);
-            int t = cui__text_node(ui, ((byte*)(Cond.B(pa->name) ? pa->name : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), -1, 3, fs, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0);
-            ui->nodes[t].flags |= (uint)(16);
-            if (Cond.B(pa->required))
-                cui__text_node(ui, (DotCcLiterals.Pointer + DotCcLiterals.S132 /*"*"*/), 1, 1, fs, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_DANGER], 0);
-            cui__close(ui);
-            byte* meta = ((byte*)(Cond.B(((CBool)(Cond.B(pa->@in) && Cond.B(pa->type)))) ? cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S746 /*"%s · %s"*/), pa->type, pa->@in) : ((byte*)(Cond.B(pa->type) ? pa->type : ((byte*)(Cond.B(pa->@in) ? pa->@in : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/)))))));
-            int mt = cui__text_node(ui, meta, -1, 0, fx, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0);
-            ui->nodes[mt].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)110 };
-            if (Cond.B(pa->description))
-            {
-                int dn = cui__text_node(ui, pa->description, -1, 0, fx, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY], 1);
-                ui->nodes[dn].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-                ui->nodes[dn].min_w = 160;
-            }
-            cui__close(ui);
-        }
-        cui_button_opts bo = default;
-        memset(&bo, 0, ((ulong)(sizeof(cui_button_opts))));
-        bo.size = __DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM;
-        bo.icon = (DotCcLiterals.Pointer + DotCcLiterals.S364 /*""*/);
-        if (Cond.B(cui_button_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S214 /*"Try it"*/), &bo)))
-            res->try_it = i;
-        cui__close(ui);
-    }
-
-
-
-    public static unsafe cui_api_explorer_result cui_api_explorer_ex(cui_ctx* ui, byte* id_str, cui_api_endpoint* eps, int count, cui_api_explorer_opts* o)
-    {
-        cui_api_explorer_opts d = default;
-        memset(&d, 0, ((ulong)(sizeof(cui_api_explorer_opts))));
-        if (Cond.B((Cond.B(o) ? 0 : 1)))
-            o = &d;
-        cui_api_explorer_result res = new cui_api_explorer_result { selected = -1, try_it = -1 };
-        if (Cond.B(((CBool)(Cond.B((Cond.B(eps) ? 0 : 1)) || Cond.B(((CBool)(count < 0)))))))
-            count = 0;
-        uint id = cui_make_id(ui, id_str);
-        cui__ax_state* s = (cui__ax_state*)(cui_state(ui, id ^ 0xA91Eu, ((ulong)(sizeof(cui__ax_state)))));
-        if (Cond.B((Cond.B(s->init) ? 0 : 1)))
-        {
-            s->init = 1;
-            s->own_sel = -1;
-        }
-        int* sel = ((int*)(Cond.B(o->selected) ? o->selected : &s->own_sel));
-        if (Cond.B(((CBool)(Cond.B(((CBool)(*sel < -1))) || Cond.B(((CBool)(*sel >= count)))))))
-            *sel = -1;
-        cui_rect pr = cui__prev_rect(ui, id);
-        CBool narrow = ((CBool)(Cond.B(((CBool)(pr.w > 0))) && Cond.B(((CBool)(pr.w < 520)))));
-        uint lid = id ^ 0xA91Fu;
-        int outer = cui__node_new(ui, id);
-        cui_node* on = &ui->nodes[outer];
-        on->gap = 8;
-        on->w = (Cond.B((int)o->width.kind) ? o->width : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 });
-        if (Cond.B(((CBool)(o->height != 0))))
-            on->h = (Cond.B(((CBool)(o->height < 0))) ? new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 } : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)o->height });
-        cui__open(ui, outer);
-        cui_push_id(ui, id_str);
-        cui_input_opts io = default;
-        memset(&io, 0, ((ulong)(sizeof(cui_input_opts))));
-        io.size = __DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM;
-        io.width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        io.placeholder = (DotCcLiterals.Pointer + DotCcLiterals.S580 /*"Filter endpoints"*/);
-        io.clearable = 1;
-        cui_search_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S570 /*"filter"*/), s->query, ((ulong)((96 * sizeof(byte)))), &io);
-        ulong nn = (ulong)((int)(Cond.B(((CBool)(1 > count))) ? 1 : count));
-        int* order = (int*)(cui__frame_alloc(ui, 4UL * nn));
-        int no = 0;
-        CBool* done = (CBool*)(cui__frame_alloc(ui, 1UL * nn));
-        memset(done, 0, 1UL * nn);
-        for (int i = 0; Cond.B(((CBool)(i < count))); i++)
-        {
-            if (Cond.B(done[i]))
-                continue;
-            byte* tag = cui__ax_tag__unit_00D7FF0FDCEBC91928145E02624A9693291017FF31B9B80B65A5F87DDE44162B(&eps[i]);
-            for (int j = i; Cond.B(((CBool)(j < count))); j++)
-            {
-                if (Cond.B(((CBool)(Cond.B(done[j]) || Cond.B(strcmp(cui__ax_tag__unit_00D7FF0FDCEBC91928145E02624A9693291017FF31B9B80B65A5F87DDE44162B(&eps[j]), tag))))))
-                    continue;
-                done[j] = 1;
-                if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(s->query[0]) && Cond.B((Cond.B(cui__contains_ci(((byte*)(Cond.B(eps[j].path) ? eps[j].path : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), s->query)) ? 0 : 1))))) && Cond.B((Cond.B(cui__contains_ci(((byte*)(Cond.B(eps[j].summary) ? eps[j].summary : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), s->query)) ? 0 : 1))))))
-                    continue;
-                order[no++] = j;
-            }
-        }
-        cui_interact lr = cui__interact(ui, lid, 1);
-        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(lr.focused) && Cond.B((Cond.B(ui->edit_prev) ? 0 : 1))))) && Cond.B(((CBool)(no > 0)))))))
-        {
-            int at = -1;
-            for (int k = 0; Cond.B(((CBool)(k < no))); k++)
-                if (Cond.B(((CBool)(order[k] == *sel))))
-                    at = k;
-            if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_DOWN)))
-            {
-                at = ((int)(Cond.B(((CBool)(at < 0))) ? 0 : ((int)(Cond.B(((CBool)(no - 1 < at + 1))) ? no - 1 : at + 1))));
-                *sel = order[at];
-                s->scroll_to_sel = 1;
-            }
-            if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_UP)))
-            {
-                at = ((int)(Cond.B(((CBool)(at < 0))) ? 0 : ((int)(Cond.B(((CBool)(0 > at - 1))) ? 0 : at - 1))));
-                *sel = order[at];
-                s->scroll_to_sel = 1;
-            }
-            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_ENTER)) || Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_SPACE))))) && Cond.B(((CBool)(*sel >= 0)))))) && Cond.B(((CBool)(*sel < 512)))))))
-                s->open[*sel] = (byte)((Cond.B(s->open[*sel]) ? 0 : 1));
-        }
-        int frame = cui__node_new(ui, lid);
-        cui_node* fn = &ui->nodes[frame];
-        fn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        if (Cond.B(((CBool)(o->height != 0))))
-            fn->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        fn->radius = new cui_corners { tl = ui->theme.radius_control, tr = ui->theme.radius_control, br = ui->theme.radius_control, bl = ui->theme.radius_control };
-        fn->border = 1;
-        fn->border_color = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER];
-        fn->bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE];
-        fn->flags |= (uint)(16);
-        cui__mark_interactive(ui, frame, 1);
-        cui__focus_ring(ui, frame, ((float)(Cond.B(lr.focus_visible) ? 1.0f : 0.0f)));
-        cui__open(ui, frame);
-        cui_scroll_opts sc = default;
-        memset(&sc, 0, ((ulong)(sizeof(cui_scroll_opts))));
-        sc.id = (DotCcLiterals.Pointer + DotCcLiterals.S949 /*"list"*/);
-        sc.width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        sc.height = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        CBool scrolls = ((CBool)(o->height != 0));
-        if (Cond.B(scrolls))
-            cui_scroll_begin(ui, &sc);
-        uint scroll_id = cui_make_id(ui, (DotCcLiterals.Pointer + DotCcLiterals.S949 /*"list"*/));
-        float fs = cui__fs(ui, ui->theme.text_sm), fx = cui__fs(ui, ui->theme.text_xs);
-        byte* cur_tag = null;
-        CBool tag_folded = 0;
-        for (int k__1 = 0; Cond.B(((CBool)(k__1 < no))); k__1++)
-        {
-            int i__1 = order[k__1];
-            cui_api_endpoint* ep = &eps[i__1];
-            byte* tag__1 = cui__ax_tag__unit_00D7FF0FDCEBC91928145E02624A9693291017FF31B9B80B65A5F87DDE44162B(ep);
-            if (Cond.B(((CBool)(Cond.B((Cond.B(cur_tag) ? 0 : 1)) || Cond.B(strcmp(cur_tag, tag__1))))))
-            {
-                cur_tag = tag__1;
-                uint h = cui__hash_str(tag__1, 0xA9u);
-                tag_folded = 0;
-                for (int f = 0; Cond.B(((CBool)(f < s->nfolded))); f++)
-                    if (Cond.B(((CBool)(s->folded[f] == h))))
-                        tag_folded = 1;
-                int count_in = 0;
-                for (int j__1 = k__1; Cond.B(((CBool)(Cond.B(((CBool)(j__1 < no))) && Cond.B((Cond.B(strcmp(cui__ax_tag__unit_00D7FF0FDCEBC91928145E02624A9693291017FF31B9B80B65A5F87DDE44162B(&eps[order[j__1]]), tag__1)) ? 0 : 1))))); j__1++)
-                    count_in++;
-                uint hid = id ^ h ^ 0x7A6u;
-                cui_interact hi = cui__interact(ui, hid, 0);
-                if (Cond.B(hi.clicked))
-                {
-                    if (Cond.B(tag_folded))
-                    {
-                        for (int f__1 = 0; Cond.B(((CBool)(f__1 < s->nfolded))); f__1++)
-                            if (Cond.B(((CBool)(s->folded[f__1] == h))))
-                            {
-                                s->folded[f__1] = s->folded[--s->nfolded];
-                                break;
-                            }
-                    }
-                    else
-                        if (Cond.B(((CBool)(s->nfolded < 32))))
-                            s->folded[s->nfolded++] = h;
-                    tag_folded = (Cond.B(tag_folded) ? 0 : 1);
-                }
-                int hr = cui__node_new(ui, hid);
-                cui_node* hn = &ui->nodes[hr];
-                hn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
-                hn->gap = 6;
-                hn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
-                hn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-                hn->pad[0] = hn->pad[2] = 7;
-                hn->pad[1] = hn->pad[3] = 10;
-                hn->bg = (Cond.B(hi.hovered) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_HOVER] : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE_MUTED]);
-                cui__mark_interactive(ui, hr, 0);
-                if (Cond.B(hi.hovered))
-                    cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_HAND);
-                cui__open(ui, hr);
-                cui__icon_node(ui, ((byte*)(Cond.B(tag_folded) ? (DotCcLiterals.Pointer + DotCcLiterals.S411 /*""*/) : (DotCcLiterals.Pointer + DotCcLiterals.S485 /*""*/))), 14, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED]);
-                int tt = cui__text_node(ui, tag__1, -1, 1, fs, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0);
-                ui->nodes[tt].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-                cui__text_node(ui, cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S66 /*"%d"*/), count_in), -1, 0, fx, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0);
-                cui__close(ui);
-            }
-            if (Cond.B(tag_folded))
-                continue;
-            uint rid = cui__hash(&i__1, ((ulong)(sizeof(int))), id ^ 0xA9E0u);
-            cui_interact ri = cui__interact(ui, rid, 4);
-            if (Cond.B(ri.clicked))
-            {
-                *sel = i__1;
-                ui->focus = lid;
-                if (Cond.B(((CBool)(i__1 < 512))))
-                    s->open[i__1] = (byte)((Cond.B(s->open[i__1]) ? 0 : 1));
-            }
-            CBool is_sel = ((CBool)(*sel == i__1)), open = ((CBool)(Cond.B(((CBool)(i__1 < 512))) && Cond.B(s->open[i__1])));
-            int row = cui__node_new(ui, rid);
-            cui_node* rn = &ui->nodes[row];
-            rn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
-            rn->gap = 10;
-            rn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
-            rn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-            rn->pad[0] = rn->pad[2] = 6;
-            rn->pad[1] = rn->pad[3] = 10;
-            rn->bg = (Cond.B(is_sel) ? (Cond.B(((CBool)(ui->focus == lid))) ? cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE], cui__emphasis(ui), ((float)(Cond.B(((CBool)((int)ui->accent == (int)__DotCcEnum_6375695F616363656E74.CUI_ACCENT_NEUTRAL))) ? 0.08f : 0.16f))) : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_ACTIVE]) : (Cond.B(ri.hovered) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_HOVER] : cui__rgba(0, 0, 0, 0)));
-            rn->flags |= (uint)(32768);
-            cui__mark_interactive(ui, row, 0);
-            if (Cond.B(ri.hovered))
-                cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_HAND);
-            cui__open(ui, row);
-            cui__ax_method__unit_00D7FF0FDCEBC91928145E02624A9693291017FF31B9B80B65A5F87DDE44162B(ui, ep->method, narrow);
-            cui__ax_path_paint* pp = (cui__ax_path_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__ax_path_paint)))));
-            pp->path = cui__frame_strdup(ui, ((byte*)(Cond.B(ep->path) ? ep->path : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), -1);
-            pp->size = fs;
-            pp->fg = (Cond.B(ep->deprecated) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED] : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND]);
-            pp->param = cui__emphasis(ui);
-            if (Cond.B(((CBool)((int)ui->accent == (int)__DotCcEnum_6375695F616363656E74.CUI_ACCENT_NEUTRAL))))
-                pp->param = cui__tone_color(ui, __DotCcEnum_6375695F746F6E65.CUI_TONE_VIOLET);
-            pp->strike = ep->deprecated;
-            int pn = cui__node_new(ui, 0);
-            float pw = cui__text_width(ui, 3, fs, pp->path, -1, 1);
-            ui->nodes[pn].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)(pw + 1) };
-            ui->nodes[pn].h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)roundf(fs * 1.5f) };
-            ui->nodes[pn].direction = (byte)(__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_LTR);
-            ui->nodes[pn].paint = DotCcPointers.cui__paint_ax_path__unit_00D7FF0FDCEBC91928145E02624A9693291017FF31B9B80B65A5F87DDE44162B;
-            ui->nodes[pn].paint_data = pp;
-            if (Cond.B(((CBool)(Cond.B(ep->summary) && Cond.B(ep->summary[0])))))
-            {
-                int st = cui__text_node(ui, ep->summary, -1, 0, fx, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0);
-                ui->nodes[st].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-                ui->nodes[st].flags |= (uint)(16);
-                ui->nodes[st].min_w = 80;
-            }
-            if (Cond.B(ep->deprecated))
-            {
-                cui_badge_opts bo = default;
-                memset(&bo, 0, ((ulong)(sizeof(cui_badge_opts))));
-                bo.tone = __DotCcEnum_6375695F746F6E65.CUI_TONE_WARNING;
-                bo.size = __DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM;
-                cui_badge_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S578 /*"Deprecated"*/), &bo);
-            }
-            cui__close(ui);
-            if (Cond.B(((CBool)(Cond.B(is_sel) && Cond.B(s->scroll_to_sel)))))
-            {
-                if (Cond.B(scrolls))
-                    cui__dp_reveal__unit_00D7FF0FDCEBC91928145E02624A9693291017FF31B9B80B65A5F87DDE44162B(ui, scroll_id, rid);
-                s->scroll_to_sel = 0;
-            }
-            if (Cond.B(open))
-            {
-                cui_push_id_int(ui, i__1);
-                cui__ax_params__unit_00D7FF0FDCEBC91928145E02624A9693291017FF31B9B80B65A5F87DDE44162B(ui, ep, i__1, narrow, &res);
-                cui_pop_id(ui);
-            }
-        }
-        if (Cond.B(((CBool)(no == 0))))
-        {
-            int e = cui__text_node(ui, ((byte*)(Cond.B(((CBool)(count == 0))) ? (DotCcLiterals.Pointer + DotCcLiterals.S509 /*"No endpoints"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S954 /*"No endpoints match"*/))), -1, 0, fs, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0);
-            ui->nodes[e].pad[0] = ui->nodes[e].pad[2] = 14;
-            ui->nodes[e].pad[3] = 12;
-        }
-        if (Cond.B(scrolls))
-            cui_scroll_end(ui);
-        cui__close(ui);
-        cui_pop_id(ui);
-        cui__close(ui);
-        res.selected = *sel;
-        ui->last_id = id;
-        return res;
-    }
-
-
-
-    public static unsafe int cui__rx_new__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(cui__rx* R, int type)
-    {
-        if (Cond.B(((CBool)(R->nn >= 512))))
-        {
-            R->error = (DotCcLiterals.Pointer + DotCcLiterals.S750 /*"Pattern is too long"*/);
-            return -1;
-        }
-        cui__rx_node* n = &((cui__rx_node*)&R->node)[R->nn];
-        memset(n, 0, ((ulong)(sizeof(cui__rx_node))));
-        n->type = (byte)type;
-        n->group = (short)(-1);
-        n->set = (short)(-1);
-        return R->nn++;
-    }
-
-
-
-    public static unsafe int cui__rx_newset__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(cui__rx* R)
-    {
-        if (Cond.B(((CBool)(R->ns >= 96))))
-        {
-            R->error = (DotCcLiterals.Pointer + DotCcLiterals.S124 /*"Too many character classes"*/);
-            return -1;
-        }
-        memset(R->set + R->ns * 32, 0, (ulong)(32));
-        return R->ns++;
-    }
-
-
-
-    public static unsafe void cui__rx_add__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(byte* s, int c)
-    {
-        s[(c & 255) >> 3] |= (byte)(1u << (c & 7));
-    }
-
-
-
-    public static unsafe CBool cui__rx_has__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(byte* s, int c)
-    {
-        return s[(c & 255) >> 3] >> (c & 7) & 1;
-    }
-
-
-
-    public static unsafe void cui__rx_range__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(byte* s, int a, int b)
-    {
-        for (int c = a; Cond.B(((CBool)(c <= b))); c++)
-            cui__rx_add__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(s, c);
-    }
-
-
-
-    public static unsafe CBool cui__rx_word__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(int c)
-    {
-        return ((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(c >= 97))) && Cond.B(((CBool)(c <= 122)))))) || Cond.B(((CBool)(Cond.B(((CBool)(c >= 65))) && Cond.B(((CBool)(c <= 90))))))))) || Cond.B(((CBool)(Cond.B(((CBool)(c >= 48))) && Cond.B(((CBool)(c <= 57))))))))) || Cond.B(((CBool)(c == 95)))));
-    }
-
-
-
-    public static unsafe CBool cui__rx_class_escape__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(byte* s, int c)
-    {
-        byte* t = stackalloc byte[32];
-        memset(t, 0, ((ulong)((32 * sizeof(byte)))));
-        switch (c | 32)
-        {
-            case 100:
-                cui__rx_range__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(t, 48, 57);
                 break;
-            case 119:
-                cui__rx_range__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(t, 97, 122);
-                cui__rx_range__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(t, 65, 90);
-                cui__rx_range__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(t, 48, 57);
-                cui__rx_add__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(t, 95);
-                break;
-            case 115:
-                cui__rx_add__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(t, 32);
-                cui__rx_range__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(t, 9, 13);
-                break;
-            default:
-                return 0;
         }
-        CBool neg = ((CBool)(Cond.B(((CBool)(c >= 65))) && Cond.B(((CBool)(c <= 90)))));
-        for (int i = 0; Cond.B(((CBool)(i < 32))); i++)
-            s[i] |= (byte)(((int)(Cond.B(neg) ? (int)((byte)(~t[i])) : (int)(t[i]))));
         return 1;
     }
 
 
 
-    public static unsafe int cui__rx_hex__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(int c)
+    public static unsafe void cui__tm_put(cui_terminal_buffer* t, byte* b, uint n, uint cols)
     {
-        return ((int)(Cond.B(((CBool)(Cond.B(((CBool)(c >= 48))) && Cond.B(((CBool)(c <= 57)))))) ? c - 48 : ((int)(Cond.B(((CBool)(Cond.B(((CBool)((c | 32) >= 97))) && Cond.B(((CBool)((c | 32) <= 102)))))) ? (c | 32) - 97 + 10 : -1))));
+        if (Cond.B((Cond.B(cui__tm_room(t, n)) ? 0 : 1)))
+            return;
+        memcpy(t->text + t->end, b, (ulong)(n));
+        t->end += n;
+        cui_terminal_line* c = cui__tm_cur(t);
+        c->len += n;
+        c->cols += cols;
     }
 
 
 
-    public static unsafe int cui__rx_escape__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(cui__rx* R)
+    public static unsafe void cui__tm_restart(cui_terminal_buffer* t)
     {
-        if (Cond.B(((CBool)(R->p >= R->end))))
-        {
-            R->error = (DotCcLiterals.Pointer + DotCcLiterals.S1293 /*"Pattern ends with a backslash"*/);
-            return -2;
-        }
-        int c = (byte)(*R->p++);
-        switch (c)
-        {
-            case 110:
-                return 10;
-            case 116:
-                return 9;
-            case 114:
-                return 13;
-            case 102:
-                return 12;
-            case 118:
-                return 11;
-            case 48:
-                return 0;
-            case 120:
-                {
-                    int h = ((int)(Cond.B(((CBool)(R->p + 1 < R->end))) ? cui__rx_hex__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54((byte)R->p[0]) : -1)), l = ((int)(Cond.B(((CBool)(h >= 0))) ? cui__rx_hex__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54((byte)R->p[1]) : -1));
-                    if (Cond.B(((CBool)(Cond.B(((CBool)(h < 0))) || Cond.B(((CBool)(l < 0)))))))
-                    {
-                        R->error = (DotCcLiterals.Pointer + DotCcLiterals.S330 /*"\\x needs two hex digits"*/);
-                        return -2;
-                    }
-                    R->p += 2;
-                    return h * 16 + l;
-                }
-            default:
-                if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)((c | 32) == 100))) || Cond.B(((CBool)((c | 32) == 119)))))) || Cond.B(((CBool)((c | 32) == 115)))))))
-                {
-                    R->p--;
-                    return -1;
-                }
-                if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(c >= 97))) && Cond.B(((CBool)(c <= 122)))))) || Cond.B(((CBool)(Cond.B(((CBool)(c >= 65))) && Cond.B(((CBool)(c <= 90))))))))) || Cond.B(((CBool)(Cond.B(((CBool)(c >= 49))) && Cond.B(((CBool)(c <= 57))))))))))
-                {
-                    if (Cond.B(((CBool)(Cond.B(((CBool)(c != 98))) && Cond.B(((CBool)(c != 66)))))))
-                    {
-                        R->error = (DotCcLiterals.Pointer + DotCcLiterals.S327 /*"Unknown escape"*/);
-                        return -2;
-                    }
-                }
-                return c;
-        }
+        cui_terminal_line* c = cui__tm_cur(t);
+        t->end = c->offset;
+        c->len = 0;
+        c->cols = 0;
+        t->cr = 0;
     }
 
 
 
-    public static unsafe int cui__rx_class__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(cui__rx* R)
+    public static unsafe void cui_terminal_write(cui_terminal_buffer* t, byte* data, int len)
     {
-        int si = cui__rx_newset__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R);
-        if (Cond.B(((CBool)(si < 0))))
-            return -1;
-        byte* s = R->set + si * 32;
-        CBool neg = ((CBool)(Cond.B(((CBool)(R->p < R->end))) && Cond.B(((CBool)(*R->p == 94)))));
-        if (Cond.B(neg))
-            R->p++;
-        CBool first = 1;
-        while (Cond.B(((CBool)(Cond.B(((CBool)(R->p < R->end))) && Cond.B(((CBool)(Cond.B(((CBool)(*R->p != 93))) || Cond.B(first))))))))
+        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(t) ? 0 : 1)) || Cond.B((Cond.B(t->line_cap) ? 0 : 1))))) || Cond.B((Cond.B(data) ? 0 : 1))))))
+            return;
+        if (Cond.B(((CBool)(len < 0))))
+            len = (int)strlen(data);
+        int run = -1;
+        for (int i = 0; Cond.B(((CBool)(i < len))); i++)
         {
-            first = 0;
-            int a = (byte)(*R->p++);
-            if (Cond.B(((CBool)(a == 92))))
+            byte b = (byte)data[i];
+            switch ((int)t->mode)
             {
-                a = cui__rx_escape__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R);
-                if (Cond.B(((CBool)(a == -2))))
-                    return -1;
-                if (Cond.B(((CBool)(a == -1))))
-                {
-                    _ = cui__rx_class_escape__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(s, (byte)(*R->p++));
-                    continue;
-                }
-            }
-            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(R->p + 1 < R->end))) && Cond.B(((CBool)(*R->p == 45)))))) && Cond.B(((CBool)(R->p[1] != 93)))))))
-            {
-                R->p++;
-                int b = (byte)(*R->p++);
-                if (Cond.B(((CBool)(b == 92))))
-                {
-                    b = cui__rx_escape__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R);
-                    if (Cond.B(((CBool)(b < 0))))
+                case 0:
+                    if (Cond.B(((CBool)(b == 0x1b))))
                     {
-                        if (Cond.B(((CBool)(b == -1))))
-                            R->error = (DotCcLiterals.Pointer + DotCcLiterals.S1032 /*"A range cannot end in a class"*/);
-                        return -1;
-                    }
-                }
-                if (Cond.B(((CBool)(b < a))))
-                {
-                    R->error = (DotCcLiterals.Pointer + DotCcLiterals.S424 /*"Range out of order"*/);
-                    return -1;
-                }
-                cui__rx_range__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(s, a, b);
-            }
-            else
-                cui__rx_add__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(s, a);
-        }
-        if (Cond.B(((CBool)(R->p >= R->end))))
-        {
-            R->error = (DotCcLiterals.Pointer + DotCcLiterals.S1126 /*"Missing ]"*/);
-            return -1;
-        }
-        R->p++;
-        if (Cond.B(R->flags & 1))
-            for (int c = 97; Cond.B(((CBool)(c <= 122))); c++)
-                if (Cond.B(((CBool)(Cond.B(cui__rx_has__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(s, c)) || Cond.B(cui__rx_has__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(s, c - 32))))))
-                {
-                    cui__rx_add__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(s, c);
-                    cui__rx_add__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(s, c - 32);
-                }
-        if (Cond.B(neg))
-            for (int i = 0; Cond.B(((CBool)(i < 32))); i++)
-                s[i] = (byte)(~s[i]);
-        int n = cui__rx_new__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R, 2);
-        if (Cond.B(((CBool)(n >= 0))))
-            ((cui__rx_node*)&R->node)[n].set = (short)si;
-        return n;
-    }
-
-
-
-    public static unsafe int cui__rx_literal__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(cui__rx* R, int c)
-    {
-        if (Cond.B(((CBool)(Cond.B(R->flags & 1) && Cond.B(((CBool)(Cond.B(((CBool)((c | 32) >= 97))) && Cond.B(((CBool)((c | 32) <= 122))))))))))
-        {
-            int si = cui__rx_newset__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R);
-            if (Cond.B(((CBool)(si < 0))))
-                return -1;
-            cui__rx_add__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R->set + si * 32, c | 32);
-            cui__rx_add__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R->set + si * 32, (c | 32) - 32);
-            int n = cui__rx_new__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R, 2);
-            if (Cond.B(((CBool)(n >= 0))))
-                ((cui__rx_node*)&R->node)[n].set = (short)si;
-            return n;
-        }
-        int n__1 = cui__rx_new__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R, 0);
-        if (Cond.B(((CBool)(n__1 >= 0))))
-            ((cui__rx_node*)&R->node)[n__1].ch = c;
-        return n__1;
-    }
-
-
-
-    public static unsafe int cui__rx_atom__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(cui__rx* R)
-    {
-        int c = (byte)(*R->p++);
-        switch (c)
-        {
-            case 40:
-                {
-                    int g = -1;
-                    if (Cond.B(((CBool)(Cond.B(((CBool)(R->p < R->end))) && Cond.B(((CBool)(*R->p == 63)))))))
-                    {
-                        if (Cond.B(((CBool)(Cond.B(((CBool)(R->p + 1 < R->end))) && Cond.B(((CBool)(R->p[1] == 58)))))))
-                            R->p += 2;
-                        else
-                            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(R->p + 1 < R->end))) && Cond.B(((CBool)(Cond.B(((CBool)(R->p[1] == 60))) || Cond.B(((CBool)(R->p[1] == 80))))))))) && Cond.B(((CBool)(R->p + 2 < R->end)))))) && Cond.B(((CBool)(R->p[2] != 61)))))) && Cond.B(((CBool)(R->p[2] != 33)))))))
+                        do
+                        {
+                            if (Cond.B(((CBool)(run >= 0))))
                             {
-                                R->p += ((int)(Cond.B(((CBool)(R->p[1] == 80))) ? 3 : 2));
-                                byte* nm = R->p;
-                                while (Cond.B(((CBool)(Cond.B(((CBool)(R->p < R->end))) && Cond.B(((CBool)(*R->p != 62)))))))
-                                    R->p++;
-                                if (Cond.B(((CBool)(Cond.B(((CBool)(R->p >= R->end))) || Cond.B(((CBool)(R->p == nm)))))))
+                                uint cols_ = 0;
+                                for (int k_ = run; Cond.B(((CBool)(k_ < i))); k_++)
+                                    cols_ += (uint)((int)(((CBool)(((byte)data[k_] & 0xC0) != 0x80))));
+                                cui__tm_put(t, data + run, (uint)(i - run), cols_);
+                                run = -1;
+                            }
+                        }
+                        while (false);
+                        t->mode = 1;
+                        t->seq_n = 0;
+                        t->seq[t->seq_n++] = (byte)b;
+                    }
+                    else
+                        if (Cond.B(((CBool)(b == 10))))
+                        {
+                            do
+                            {
+                                if (Cond.B(((CBool)(run >= 0))))
                                 {
-                                    R->error = (DotCcLiterals.Pointer + DotCcLiterals.S1433 /*"Group name needs a closing >"*/);
-                                    return -1;
+                                    uint cols___1 = 0;
+                                    for (int k___1 = run; Cond.B(((CBool)(k___1 < i))); k___1++)
+                                        cols___1 += (uint)((int)(((CBool)(((byte)data[k___1] & 0xC0) != 0x80))));
+                                    cui__tm_put(t, data + run, (uint)(i - run), cols___1);
+                                    run = -1;
                                 }
-                                if (Cond.B(((CBool)(R->groups >= 10 - 1))))
+                            }
+                            while (false);
+                            t->cr = 0;
+                            cui__tm_new_line(t);
+                        }
+                        else
+                            if (Cond.B(((CBool)(b == 13))))
+                            {
+                                do
                                 {
-                                    R->error = (DotCcLiterals.Pointer + DotCcLiterals.S806 /*"Too many groups"*/);
-                                    return -1;
+                                    if (Cond.B(((CBool)(run >= 0))))
+                                    {
+                                        uint cols___2 = 0;
+                                        for (int k___2 = run; Cond.B(((CBool)(k___2 < i))); k___2++)
+                                            cols___2 += (uint)((int)(((CBool)(((byte)data[k___2] & 0xC0) != 0x80))));
+                                        cui__tm_put(t, data + run, (uint)(i - run), cols___2);
+                                        run = -1;
+                                    }
                                 }
-                                g = ++R->groups;
-                                int len = (int)((ulong)(Cond.B(((CBool)((ulong)(R->p - nm) < unchecked(((ulong)((24 * sizeof(byte)))) - (ulong)(1))))) ? (ulong)(R->p - nm) : unchecked(((ulong)((24 * sizeof(byte)))) - (ulong)(1))));
-                                memcpy(R->names + g * 24, nm, (ulong)len);
-                                (R->names + g * 24)[len] = 0;
-                                R->p++;
+                                while (false);
+                                t->cr = 1;
                             }
                             else
-                            {
-                                R->error = (DotCcLiterals.Pointer + DotCcLiterals.S242 /*"Lookaround is not supported"*/);
-                                return -1;
-                            }
+                                if (Cond.B(((CBool)(b == 9))))
+                                {
+                                    do
+                                    {
+                                        if (Cond.B(((CBool)(run >= 0))))
+                                        {
+                                            uint cols___3 = 0;
+                                            for (int k___3 = run; Cond.B(((CBool)(k___3 < i))); k___3++)
+                                                cols___3 += (uint)((int)(((CBool)(((byte)data[k___3] & 0xC0) != 0x80))));
+                                            cui__tm_put(t, data + run, (uint)(i - run), cols___3);
+                                            run = -1;
+                                        }
+                                    }
+                                    while (false);
+                                    if (Cond.B(t->cr))
+                                        cui__tm_restart(t);
+                                    uint sp = (uint)(8) - cui__tm_cur(t)->cols % (uint)(8);
+                                    cui__tm_put(t, (DotCcLiterals.Pointer + DotCcLiterals.S848 /*"        "*/), sp, sp);
+                                }
+                                else
+                                    if (Cond.B(((CBool)(b == 8))))
+                                    {
+                                        do
+                                        {
+                                            if (Cond.B(((CBool)(run >= 0))))
+                                            {
+                                                uint cols___4 = 0;
+                                                for (int k___4 = run; Cond.B(((CBool)(k___4 < i))); k___4++)
+                                                    cols___4 += (uint)((int)(((CBool)(((byte)data[k___4] & 0xC0) != 0x80))));
+                                                cui__tm_put(t, data + run, (uint)(i - run), cols___4);
+                                                run = -1;
+                                            }
+                                        }
+                                        while (false);
+                                        cui_terminal_line* c = cui__tm_cur(t);
+                                        if (Cond.B(((CBool)(Cond.B(((CBool)(c->len > (uint)(0)))) && Cond.B(((CBool)(c->len == c->cols)))))))
+                                        {
+                                            c->len--;
+                                            c->cols--;
+                                            t->end--;
+                                        }
+                                    }
+                                    else
+                                        if (Cond.B(((CBool)(Cond.B(((CBool)(b < 0x20))) || Cond.B(((CBool)(b == 0x7f)))))))
+                                        {
+                                            do
+                                            {
+                                                if (Cond.B(((CBool)(run >= 0))))
+                                                {
+                                                    uint cols___5 = 0;
+                                                    for (int k___5 = run; Cond.B(((CBool)(k___5 < i))); k___5++)
+                                                        cols___5 += (uint)((int)(((CBool)(((byte)data[k___5] & 0xC0) != 0x80))));
+                                                    cui__tm_put(t, data + run, (uint)(i - run), cols___5);
+                                                    run = -1;
+                                                }
+                                            }
+                                            while (false);
+                                        }
+                                        else
+                                        {
+                                            if (Cond.B(t->cr))
+                                            {
+                                                do
+                                                {
+                                                    if (Cond.B(((CBool)(run >= 0))))
+                                                    {
+                                                        uint cols___6 = 0;
+                                                        for (int k___6 = run; Cond.B(((CBool)(k___6 < i))); k___6++)
+                                                            cols___6 += (uint)((int)(((CBool)(((byte)data[k___6] & 0xC0) != 0x80))));
+                                                        cui__tm_put(t, data + run, (uint)(i - run), cols___6);
+                                                        run = -1;
+                                                    }
+                                                }
+                                                while (false);
+                                                cui__tm_restart(t);
+                                            }
+                                            if (Cond.B(((CBool)(run < 0))))
+                                                run = i;
+                                        }
+                    break;
+                case 1:
+                    if (Cond.B(((CBool)(b == 91))))
+                    {
+                        t->mode = 2;
+                        if (Cond.B(((CBool)(t->seq_n < ((ulong)((30 * sizeof(byte))))))))
+                            t->seq[t->seq_n++] = (byte)b;
                     }
                     else
+                        if (Cond.B(((CBool)(b == 93))))
+                            t->mode = 3;
+                        else
+                            t->mode = 0;
+                    break;
+                case 2:
+                    if (Cond.B(((CBool)(t->seq_n < ((ulong)((30 * sizeof(byte))))))))
+                        t->seq[t->seq_n++] = (byte)b;
+                    if (Cond.B(((CBool)(Cond.B(((CBool)(b >= 0x40))) && Cond.B(((CBool)(b <= 0x7e)))))))
                     {
-                        if (Cond.B(((CBool)(R->groups >= 10 - 1))))
+                        t->mode = 0;
+                        if (Cond.B(((CBool)(Cond.B(((CBool)(b == 109))) && Cond.B(((CBool)(t->seq[t->seq_n - 1] == 109)))))))
                         {
-                            R->error = (DotCcLiterals.Pointer + DotCcLiterals.S806 /*"Too many groups"*/);
-                            return -1;
-                        }
-                        g = ++R->groups;
-                    }
-                    int body = cui__rx_alt__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R);
-                    if (Cond.B(((CBool)(body < 0))))
-                        return -1;
-                    if (Cond.B(((CBool)(Cond.B(((CBool)(R->p >= R->end))) || Cond.B(((CBool)(*R->p != 41)))))))
-                    {
-                        R->error = (DotCcLiterals.Pointer + DotCcLiterals.S303 /*"Missing )"*/);
-                        return -1;
-                    }
-                    R->p++;
-                    int n = cui__rx_new__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R, 9);
-                    if (Cond.B(((CBool)(Cond.B(((CBool)(n < 0))) || Cond.B(((CBool)(R->nk >= 1024)))))))
-                    {
-                        if (Cond.B((Cond.B(R->error) ? 0 : 1)))
-                            R->error = (DotCcLiterals.Pointer + DotCcLiterals.S750 /*"Pattern is too long"*/);
-                        return -1;
-                    }
-                    ((cui__rx_node*)&R->node)[n].group = (short)g;
-                    ((cui__rx_node*)&R->node)[n].kid = R->nk;
-                    ((cui__rx_node*)&R->node)[n].nkid = 1;
-                    R->kid[R->nk++] = body;
-                    return n;
-                }
-            case 91:
-                return cui__rx_class__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R);
-            case 46:
-                return cui__rx_new__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R, 1);
-            case 94:
-                return cui__rx_new__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R, 3);
-            case 36:
-                return cui__rx_new__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R, 4);
-            case 41:
-                R->error = (DotCcLiterals.Pointer + DotCcLiterals.S816 /*"Unmatched )"*/);
-                return -1;
-            case 42:
-            case 43:
-            case 63:
-                R->error = (DotCcLiterals.Pointer + DotCcLiterals.S1222 /*"Nothing to repeat"*/);
-                return -1;
-            case 92:
-                {
-                    if (Cond.B(((CBool)(Cond.B(((CBool)(R->p < R->end))) && Cond.B(((CBool)(Cond.B(((CBool)(*R->p == 98))) || Cond.B(((CBool)(*R->p == 66))))))))))
-                        return cui__rx_new__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R, ((int)(Cond.B(((CBool)(*R->p++ == 98))) ? 5 : 6)));
-                    int e = cui__rx_escape__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R);
-                    if (Cond.B(((CBool)(e == -2))))
-                        return -1;
-                    if (Cond.B(((CBool)(e == -1))))
-                    {
-                        int si = cui__rx_newset__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R);
-                        if (Cond.B(((CBool)(si < 0))))
-                            return -1;
-                        _ = cui__rx_class_escape__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R->set + si * 32, (byte)(*R->p++));
-                        int n__1 = cui__rx_new__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R, 2);
-                        if (Cond.B(((CBool)(n__1 >= 0))))
-                            ((cui__rx_node*)&R->node)[n__1].set = (short)si;
-                        return n__1;
-                    }
-                    return cui__rx_literal__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R, e);
-                }
-            default:
-                return cui__rx_literal__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R, c);
-        }
-    }
-
-
-
-    public static unsafe CBool cui__rx_num__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(cui__rx* R, int* v)
-    {
-        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(R->p >= R->end))) || Cond.B(((CBool)(*R->p < 48)))))) || Cond.B(((CBool)(*R->p > 57)))))))
-            return 0;
-        int x = 0;
-        while (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(R->p < R->end))) && Cond.B(((CBool)(*R->p >= 48)))))) && Cond.B(((CBool)(*R->p <= 57)))))))
-        {
-            x = x * 10 + (*R->p++ - 48);
-            if (Cond.B(((CBool)(x > 100000))))
-                x = 100000;
-        }
-        *v = x;
-        return 1;
-    }
-
-
-
-    public static unsafe int cui__rx_quant__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(cui__rx* R)
-    {
-        int a = cui__rx_atom__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R);
-        if (Cond.B(((CBool)(a < 0))))
-            return -1;
-        while (Cond.B(((CBool)(R->p < R->end))))
-        {
-            int mn = default, mx = default;
-            byte* save = R->p;
-            byte q = *R->p;
-            if (Cond.B(((CBool)(q == 42))))
-            {
-                mn = 0;
-                mx = -1;
-                R->p++;
-            }
-            else
-                if (Cond.B(((CBool)(q == 43))))
-                {
-                    mn = 1;
-                    mx = -1;
-                    R->p++;
-                }
-                else
-                    if (Cond.B(((CBool)(q == 63))))
-                    {
-                        mn = 0;
-                        mx = 1;
-                        R->p++;
-                    }
-                    else
-                        if (Cond.B(((CBool)(q == 123))))
-                        {
-                            R->p++;
-                            if (Cond.B((Cond.B(cui__rx_num__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R, &mn)) ? 0 : 1)))
-                            {
-                                R->p = save;
-                                break;
-                            }
-                            mx = mn;
-                            if (Cond.B(((CBool)(Cond.B(((CBool)(R->p < R->end))) && Cond.B(((CBool)(*R->p == 44)))))))
-                            {
-                                R->p++;
-                                if (Cond.B((Cond.B(cui__rx_num__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R, &mx)) ? 0 : 1)))
-                                    mx = -1;
-                            }
-                            if (Cond.B(((CBool)(Cond.B(((CBool)(R->p >= R->end))) || Cond.B(((CBool)(*R->p != 125)))))))
-                            {
-                                R->p = save;
-                                break;
-                            }
-                            R->p++;
-                            if (Cond.B(((CBool)(Cond.B(((CBool)(mx >= 0))) && Cond.B(((CBool)(mx < mn)))))))
-                            {
-                                R->error = (DotCcLiterals.Pointer + DotCcLiterals.S1335 /*"Repeat range out of order"*/);
-                                return -1;
-                            }
+                            if (Cond.B(t->cr))
+                                cui__tm_restart(t);
+                            cui__tm_put(t, t->seq, t->seq_n, 0);
                         }
                         else
-                            break;
-            byte t = ((cui__rx_node*)&R->node)[a].type;
-            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(t == 3))) || Cond.B(((CBool)(t == 4)))))) || Cond.B(((CBool)(t == 5)))))) || Cond.B(((CBool)(t == 6)))))) || Cond.B(((CBool)(t == 10)))))))
-            {
-                R->error = (DotCcLiterals.Pointer + DotCcLiterals.S1222 /*"Nothing to repeat"*/);
-                return -1;
-            }
-            int n = cui__rx_new__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R, 10);
-            if (Cond.B(((CBool)(Cond.B(((CBool)(n < 0))) || Cond.B(((CBool)(R->nk >= 1024)))))))
-            {
-                if (Cond.B((Cond.B(R->error) ? 0 : 1)))
-                    R->error = (DotCcLiterals.Pointer + DotCcLiterals.S750 /*"Pattern is too long"*/);
-                return -1;
-            }
-            ((cui__rx_node*)&R->node)[n].min = mn;
-            ((cui__rx_node*)&R->node)[n].max = mx;
-            if (Cond.B(((CBool)(Cond.B(((CBool)(R->p < R->end))) && Cond.B(((CBool)(*R->p == 63)))))))
-            {
-                ((cui__rx_node*)&R->node)[n].lazy = 1;
-                R->p++;
-            }
-            else
-                if (Cond.B(((CBool)(Cond.B(((CBool)(R->p < R->end))) && Cond.B(((CBool)(*R->p == 43)))))))
-                {
-                    R->error = (DotCcLiterals.Pointer + DotCcLiterals.S105 /*"Possessive repeats are not supported"*/);
-                    return -1;
-                }
-            ((cui__rx_node*)&R->node)[n].kid = R->nk;
-            ((cui__rx_node*)&R->node)[n].nkid = 1;
-            R->kid[R->nk++] = a;
-            a = n;
-        }
-        return a;
-    }
-
-
-
-    public static unsafe int cui__rx_seq__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(cui__rx* R)
-    {
-        int* items = stackalloc int[256];
-        int ni = 0;
-        while (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(R->p < R->end))) && Cond.B(((CBool)(*R->p != 124)))))) && Cond.B(((CBool)(*R->p != 41)))))))
-        {
-            int q = cui__rx_quant__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R);
-            if (Cond.B(((CBool)(q < 0))))
-                return -1;
-            if (Cond.B(((CBool)(ni >= 256))))
-            {
-                R->error = (DotCcLiterals.Pointer + DotCcLiterals.S750 /*"Pattern is too long"*/);
-                return -1;
-            }
-            items[ni++] = q;
-        }
-        int n = cui__rx_new__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R, 7);
-        if (Cond.B(((CBool)(Cond.B(((CBool)(n < 0))) || Cond.B(((CBool)(R->nk + ni > 1024)))))))
-        {
-            if (Cond.B((Cond.B(R->error) ? 0 : 1)))
-                R->error = (DotCcLiterals.Pointer + DotCcLiterals.S750 /*"Pattern is too long"*/);
-            return -1;
-        }
-        ((cui__rx_node*)&R->node)[n].kid = R->nk;
-        ((cui__rx_node*)&R->node)[n].nkid = ni;
-        memcpy(R->kid + R->nk, items, 4UL * (ulong)ni);
-        R->nk += ni;
-        return n;
-    }
-
-
-
-    public static unsafe int cui__rx_alt__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(cui__rx* R)
-    {
-        int* alts = stackalloc int[64];
-        int na = 0;
-        for (; ; )
-        {
-            int s = cui__rx_seq__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R);
-            if (Cond.B(((CBool)(s < 0))))
-                return -1;
-            if (Cond.B(((CBool)(na >= 64))))
-            {
-                R->error = (DotCcLiterals.Pointer + DotCcLiterals.S1441 /*"Too many alternatives"*/);
-                return -1;
-            }
-            alts[na++] = s;
-            if (Cond.B(((CBool)(Cond.B(((CBool)(R->p < R->end))) && Cond.B(((CBool)(*R->p == 124)))))))
-            {
-                R->p++;
-                continue;
-            }
-            break;
-        }
-        if (Cond.B(((CBool)(na == 1))))
-            return alts[0];
-        int n = cui__rx_new__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R, 8);
-        if (Cond.B(((CBool)(Cond.B(((CBool)(n < 0))) || Cond.B(((CBool)(R->nk + na > 1024)))))))
-        {
-            if (Cond.B((Cond.B(R->error) ? 0 : 1)))
-                R->error = (DotCcLiterals.Pointer + DotCcLiterals.S750 /*"Pattern is too long"*/);
-            return -1;
-        }
-        ((cui__rx_node*)&R->node)[n].kid = R->nk;
-        ((cui__rx_node*)&R->node)[n].nkid = na;
-        memcpy(R->kid + R->nk, alts, 4UL * (ulong)na);
-        R->nk += na;
-        return n;
-    }
-
-
-
-    public static unsafe CBool cui__rx_compile__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(cui__rx* R, byte* pattern, int flags)
-    {
-        memset(R->names, 0, ((ulong)((10 * (24 * sizeof(byte))))));
-        R->nn = R->nk = R->ns = R->groups = 0;
-        R->flags = flags;
-        R->error = null;
-        R->p = pattern;
-        R->end = pattern + strlen(pattern);
-        R->root = cui__rx_alt__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(R);
-        if (Cond.B(((CBool)(Cond.B(((CBool)(R->root >= 0))) && Cond.B(((CBool)(R->p < R->end)))))))
-        {
-            R->error = (DotCcLiterals.Pointer + DotCcLiterals.S816 /*"Unmatched )"*/);
-            R->root = -1;
-        }
-        if (Cond.B(((CBool)(Cond.B(((CBool)(R->root < 0))) && Cond.B((Cond.B(R->error) ? 0 : 1))))))
-            R->error = (DotCcLiterals.Pointer + DotCcLiterals.S1330 /*"Invalid pattern"*/);
-        return ((CBool)(R->root >= 0));
-    }
-
-
-
-    public static unsafe int cui__rx_one__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(cui__rx_m* M, cui__rx_node* n, int i)
-    {
-        if (Cond.B(((CBool)(i >= M->len))))
-            return 0;
-        int c = (byte)M->s[i];
-        switch ((int)n->type)
-        {
-            case 0:
-                return ((int)(Cond.B(((CBool)(c == n->ch))) ? 1 : 0));
-            case 2:
-                return ((int)(Cond.B(cui__rx_has__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(M->R->set + n->set * 32, c)) ? 1 : 0));
-            case 1:
-                {
-                    if (Cond.B(((CBool)(Cond.B(((CBool)(c == 10))) && Cond.B((Cond.B(M->R->flags & 4) ? 0 : 1))))))
-                        return 0;
-                    int j = i + 1;
-                    if (Cond.B(((CBool)(c >= 0xC0))))
-                        while (Cond.B(((CBool)(Cond.B(((CBool)(j < M->len))) && Cond.B(((CBool)(((byte)M->s[j] & 0xC0) == 0x80)))))))
-                            j++;
-                    return j - i;
-                }
-            default:
-                return 0;
-        }
-    }
-
-
-
-    public static unsafe CBool cui__rx_single__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(cui__rx_node* n)
-    {
-        return ((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(n->type == 0))) || Cond.B(((CBool)(n->type == 2)))))) || Cond.B(((CBool)(n->type == 1)))));
-    }
-
-
-
-    public static unsafe CBool cui__rx_budget__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(cui__rx_m* M)
-    {
-        if (Cond.B(M->abort))
-            return 0;
-        if (Cond.B(((CBool)(Cond.B(((CBool)(++M->steps > 2000000))) || Cond.B(((CBool)(M->depth > 2400)))))))
-        {
-            M->abort = 1;
-            return 0;
-        }
-        return 1;
-    }
-
-
-
-    public static unsafe int cui__rx_cont__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(cui__rx_m* M, int i, cui__rx_k* k)
-    {
-        if (Cond.B((Cond.B(k) ? 0 : 1)))
-        {
-            M->end = i;
-            return 1;
-        }
-        if (Cond.B((Cond.B(cui__rx_budget__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(M)) ? 0 : 1)))
-            return 0;
-        cui__rx* R = M->R;
-        M->depth++;
-        int r = 0;
-        switch (k->type)
-        {
-            case 0:
-                {
-                    cui__rx_node* sq = &((cui__rx_node*)&R->node)[k->node];
-                    if (Cond.B(((CBool)(k->index >= sq->nkid))))
-                    {
-                        r = cui__rx_cont__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(M, i, k->next);
-                        break;
+                            if (Cond.B(((CBool)(Cond.B(((CBool)(b == 75))) && Cond.B(t->cr)))))
+                                cui__tm_restart(t);
+                            else
+                                if (Cond.B(((CBool)(Cond.B(((CBool)(b == 74))) && Cond.B(memchr(t->seq, 50, (ulong)(t->seq_n)))))))
+                                    cui_terminal_clear(t);
                     }
-                    cui__rx_k nk = new cui__rx_k { type = 0, node = k->node, index = k->index + 1, from = 0, next = k->next };
-                    r = cui__rx_match__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(M, R->kid[sq->kid + k->index], i, &nk);
                     break;
-                }
-            case 1:
-                {
-                    cui__rx_node* rp = &((cui__rx_node*)&R->node)[k->node];
-                    int child = R->kid[rp->kid], turns = k->index;
-                    if (Cond.B(((CBool)(Cond.B(((CBool)(i == k->from))) && Cond.B(((CBool)(turns > rp->min)))))))
-                    {
-                        r = 0;
-                        break;
-                    }
-                    cui__rx_k again = new cui__rx_k { type = 1, node = k->node, index = turns + 1, from = i, next = k->next };
-                    CBool more = ((CBool)(Cond.B(((CBool)(rp->max < 0))) || Cond.B(((CBool)(turns < rp->max))))), done = ((CBool)(turns >= rp->min));
-                    if (Cond.B(rp->lazy))
-                    {
-                        r = ((int)(Cond.B(done) ? cui__rx_cont__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(M, i, k->next) : 0));
-                        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(r) ? 0 : 1)) && Cond.B(more)))) && Cond.B((Cond.B(M->abort) ? 0 : 1))))))
-                            r = cui__rx_match__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(M, child, i, &again);
-                    }
+                case 3:
+                    if (Cond.B(((CBool)(b == 0x07))))
+                        t->mode = 0;
                     else
-                    {
-                        r = ((int)(Cond.B(more) ? cui__rx_match__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(M, child, i, &again) : 0));
-                        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(r) ? 0 : 1)) && Cond.B(done)))) && Cond.B((Cond.B(M->abort) ? 0 : 1))))))
-                            r = cui__rx_cont__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(M, i, k->next);
-                    }
+                        if (Cond.B(((CBool)(b == 0x1b))))
+                            t->mode = 4;
                     break;
-                }
-            case 2:
-                {
-                    int g = ((cui__rx_node*)&R->node)[k->node].group;
-                    int old = (M->cap + g * 2)[1];
-                    (M->cap + g * 2)[1] = i;
-                    r = cui__rx_cont__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(M, i, k->next);
-                    if (Cond.B((Cond.B(r) ? 0 : 1)))
-                        (M->cap + g * 2)[1] = old;
-                    break;
-                }
-        }
-        M->depth--;
-        return r;
-    }
-
-
-
-    public static unsafe int cui__rx_rep_single__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(cui__rx_m* M, cui__rx_node* n, cui__rx_node* c, int i, cui__rx_k* k)
-    {
-        int lim = ((int)(Cond.B(((CBool)(n->max < 0))) ? 1 << 30 : n->max)), count = 0, j = i, r = 0;
-        M->depth += 4;
-        if (Cond.B(n->lazy))
-        {
-            for (; ; )
-            {
-                if (Cond.B(((CBool)(Cond.B(((CBool)(count >= n->min))) && Cond.B(((CBool)((r = cui__rx_cont__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(M, j, k)) != 0)))))))
-                    break;
-                if (Cond.B(((CBool)(Cond.B(M->abort) || Cond.B(((CBool)(count >= lim)))))))
-                    break;
-                int w = cui__rx_one__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(M, c, j);
-                if (Cond.B((Cond.B(w) ? 0 : 1)))
-                    break;
-                j += w;
-                count++;
-                if (Cond.B((Cond.B(cui__rx_budget__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(M)) ? 0 : 1)))
+                case 4:
+                    t->mode = (byte)(((int)(Cond.B(((CBool)(b == 92))) ? 0 : 3)));
                     break;
             }
-            M->depth -= 4;
-            return r;
         }
-        while (Cond.B(((CBool)(count < lim))))
-        {
-            int w__1 = cui__rx_one__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(M, c, j);
-            if (Cond.B((Cond.B(w__1) ? 0 : 1)))
-                break;
-            j += w__1;
-            count++;
-            if (Cond.B(((CBool)(Cond.B(((CBool)((count & 1023) == 0))) && Cond.B((Cond.B(cui__rx_budget__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(M)) ? 0 : 1))))))
-                break;
-        }
-        for (; Cond.B(((CBool)(Cond.B(((CBool)(count >= n->min))) && Cond.B((Cond.B(M->abort) ? 0 : 1))))); count--)
-        {
-            if (Cond.B(((CBool)((r = cui__rx_cont__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(M, j, k)) != 0))))
-                break;
-            if (Cond.B(((CBool)(Cond.B((Cond.B(cui__rx_budget__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(M)) ? 0 : 1)) || Cond.B(((CBool)(count == 0)))))))
-                break;
-            j--;
-            while (Cond.B(((CBool)(Cond.B(((CBool)(j > i))) && Cond.B(((CBool)(((byte)M->s[j] & 0xC0) == 0x80)))))))
-                j--;
-        }
-        M->depth -= 4;
-        return r;
-    }
-
-
-
-    public static unsafe int cui__rx_match__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(cui__rx_m* M, int node, int i, cui__rx_k* k)
-    {
-        if (Cond.B((Cond.B(cui__rx_budget__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(M)) ? 0 : 1)))
-            return 0;
-        cui__rx* R = M->R;
-        cui__rx_node* n = &((cui__rx_node*)&R->node)[node];
-        CBool ml = ((CBool)((R->flags & 2) != 0));
-        M->depth++;
-        int r = 0;
-        switch ((int)n->type)
-        {
-            case 0:
-            case 2:
-            case 1:
-                {
-                    int w = cui__rx_one__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(M, n, i);
-                    r = ((int)(Cond.B(w) ? cui__rx_cont__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(M, i + w, k) : 0));
-                    break;
-                }
-            case 3:
-                r = ((int)(Cond.B(((CBool)(Cond.B(((CBool)(i == 0))) || Cond.B(((CBool)(Cond.B(ml) && Cond.B(((CBool)(M->s[i - 1] == 10))))))))) ? cui__rx_cont__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(M, i, k) : 0));
-                break;
-            case 4:
-                r = ((int)(Cond.B(((CBool)(Cond.B(((CBool)(i == M->len))) || Cond.B(((CBool)(Cond.B(ml) && Cond.B(((CBool)(M->s[i] == 10))))))))) ? cui__rx_cont__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(M, i, k) : 0));
-                break;
-            case 5:
-            case 6:
-                {
-                    CBool a = ((CBool)(Cond.B(((CBool)(i > 0))) && Cond.B(cui__rx_word__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54((byte)M->s[i - 1])))), b = ((CBool)(Cond.B(((CBool)(i < M->len))) && Cond.B(cui__rx_word__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54((byte)M->s[i]))));
-                    r = ((int)(Cond.B(((CBool)(((CBool)((int)((int)(a)) != (int)((int)(b)))) == ((CBool)(n->type == 5))))) ? cui__rx_cont__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(M, i, k) : 0));
-                    break;
-                }
-            case 7:
-                {
-                    cui__rx_k nk = new cui__rx_k { type = 0, node = node, index = 0, from = 0, next = k };
-                    r = cui__rx_cont__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(M, i, &nk);
-                    break;
-                }
-            case 8:
-                for (int a__1 = 0; Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(a__1 < n->nkid))) && Cond.B((Cond.B(r) ? 0 : 1))))) && Cond.B((Cond.B(M->abort) ? 0 : 1))))); a__1++)
-                    r = cui__rx_match__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(M, R->kid[n->kid + a__1], i, k);
-                break;
-            case 9:
-                {
-                    int g = n->group;
-                    int o0 = (M->cap + g * 2)[0], o1 = (M->cap + g * 2)[1];
-                    (M->cap + g * 2)[0] = i;
-                    cui__rx_k end = new cui__rx_k { type = 2, node = node, index = 0, from = 0, next = k };
-                    r = cui__rx_match__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(M, R->kid[n->kid], i, &end);
-                    if (Cond.B((Cond.B(r) ? 0 : 1)))
-                    {
-                        (M->cap + g * 2)[0] = o0;
-                        (M->cap + g * 2)[1] = o1;
-                    }
-                    break;
-                }
-            case 10:
-                {
-                    cui__rx_node* c = &((cui__rx_node*)&R->node)[R->kid[n->kid]];
-                    if (Cond.B(cui__rx_single__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(c)))
-                    {
-                        r = cui__rx_rep_single__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(M, n, c, i, k);
-                        break;
-                    }
-                    cui__rx_k first = new cui__rx_k { type = 1, node = node, index = 0, from = -1, next = k };
-                    r = cui__rx_cont__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(M, i, &first);
-                    break;
-                }
-        }
-        M->depth--;
-        return r;
-    }
-
-
-
-    public static unsafe int cui_regex_search(byte* pattern, int flags, byte* text, int len, int from, cui_regex_match* m, byte** error)
-    {
-        cui__rx R = default;
-        if (Cond.B(error))
-            *error = null;
-        if (Cond.B(m))
-            memset(m, 0, ((ulong)(sizeof(cui_regex_match))));
-        if (Cond.B(((CBool)(Cond.B((Cond.B(pattern) ? 0 : 1)) || Cond.B((Cond.B(text) ? 0 : 1))))))
-            return 0;
-        if (Cond.B(((CBool)(len < 0))))
-            len = (int)strlen(text);
-        if (Cond.B((Cond.B(cui__rx_compile__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(&R, pattern, flags)) ? 0 : 1)))
-        {
-            if (Cond.B(error))
-                *error = R.error;
-            return -1;
-        }
-        cui__rx_m M = default;
-        memset(&M, 0, ((ulong)(sizeof(cui__rx_m))));
-        M.R = &R;
-        M.s = text;
-        M.len = len;
-        for (int i = ((int)(Cond.B(((CBool)(0 > from))) ? 0 : from)); Cond.B(((CBool)(i <= len))); i++)
-        {
-            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(i > from))) && Cond.B(((CBool)(i < len)))))) && Cond.B(((CBool)(((byte)text[i] & 0xC0) == 0x80)))))))
-                continue;
-            for (int g = 0; Cond.B(((CBool)(g < 10))); g++)
-                (M.cap + g * 2)[0] = (M.cap + g * 2)[1] = -1;
-            M.depth = 0;
-            if (Cond.B(cui__rx_match__unit_2F81BDD1EFEDC412CA6ACC07A0B4322E3CB21D5152636087EC55ACAA430A1F54(&M, R.root, i, null)))
-            {
-                if (Cond.B(m))
-                {
-                    m->start = i;
-                    m->end = M.end;
-                    m->groups = R.groups;
-                    for (int g__1 = 1; Cond.B(((CBool)(g__1 <= R.groups))); g__1++)
-                    {
-                        m->group_start[g__1] = (M.cap + g__1 * 2)[0];
-                        m->group_end[g__1] = ((int)(Cond.B(((CBool)((M.cap + g__1 * 2)[0] >= 0))) ? (M.cap + g__1 * 2)[1] : -1));
-                        memcpy(m->group_name + g__1 * 24, R.names + g__1 * 24, ((ulong)((24 * sizeof(byte)))));
-                    }
-                    m->group_start[0] = i;
-                    m->group_end[0] = M.end;
-                }
-                return 1;
-            }
-            if (Cond.B(M.abort))
-            {
-                if (Cond.B(error))
-                    *error = (DotCcLiterals.Pointer + DotCcLiterals.S1115 /*"Too complex: the pattern backtracks too much"*/);
-                return -2;
-            }
-        }
-        return 0;
-    }
-
-
-
-    public static unsafe byte* cui__dv_age__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(cui_ctx* ui, long dt)
-    {
-        if (Cond.B(((CBool)(dt < 60))))
-            return (DotCcLiterals.Pointer + DotCcLiterals.S703 /*"now"*/);
-        if (Cond.B(((CBool)(dt < 3600))))
-            return cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1294 /*"%d min ago"*/), (int)(dt / 60));
-        if (Cond.B(((CBool)(dt < 86400))))
-        {
-            int h = (int)(dt / 3600);
-            return ((byte*)(Cond.B(((CBool)(h == 1))) ? (DotCcLiterals.Pointer + DotCcLiterals.S567 /*"1 hour ago"*/) : cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S788 /*"%d hours ago"*/), h)));
-        }
-        if (Cond.B(((CBool)(dt < 86400 * 14))))
-        {
-            int d = (int)(dt / 86400);
-            return ((byte*)(Cond.B(((CBool)(d == 1))) ? (DotCcLiterals.Pointer + DotCcLiterals.S1200 /*"yesterday"*/) : cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S592 /*"%d days ago"*/), d)));
-        }
-        if (Cond.B(((CBool)(dt < 86400 * 60))))
-            return cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S181 /*"%d weeks ago"*/), (int)(dt / (86400 * 7)));
-        if (Cond.B(((CBool)(dt < 86400 * 365))))
-            return cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S991 /*"%d months ago"*/), (int)(dt / (86400 * 30)));
-        int y = (int)(dt / (86400 * 365));
-        return ((byte*)(Cond.B(((CBool)(y == 1))) ? (DotCcLiterals.Pointer + DotCcLiterals.S1470 /*"1 year ago"*/) : cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S605 /*"%d years ago"*/), y)));
-    }
-
-
-
-    public static unsafe cui_color cui__up_color__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(cui_ctx* ui, float v)
-    {
-        if (Cond.B(((CBool)(v < 0))))
-            return ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER];
-        if (Cond.B(((CBool)(v >= 0.999f))))
-            return ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SUCCESS];
-        if (Cond.B(((CBool)(v >= 0.99f))))
-            return cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SUCCESS], ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_WARNING], 0.55f);
-        if (Cond.B(((CBool)(v >= 0.95f))))
-            return ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_WARNING];
-        return ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_DANGER];
-    }
-
-
-
-    public static unsafe void cui__paint_uptime__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(cui_ctx* ui, cui_node* nd, void* data)
-    {
-        cui__up_paint* p = (cui__up_paint*)(data);
-        cui_rect r = nd->rect;
-        for (int k = 0; Cond.B(((CBool)(k < p->n))); k++)
-        {
-            float v = p->days[p->first + k];
-            float x = r.x + k * (p->bw + p->gap);
-            cui_color c = cui__up_color__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(ui, v);
-            if (Cond.B(((CBool)(Cond.B(((CBool)(p->hover >= 0))) && Cond.B(((CBool)(k != p->hover)))))))
-                c = cui_alpha(c, 0.75f);
-            float inset = ((int)(Cond.B(((CBool)(k == p->hover))) ? 0 : 2));
-            cui_draw_rect(ui, new cui_rect { x = x, y = r.y + inset, w = p->bw, h = r.h - inset * 2 }, new cui_corners { tl = ((float)(Cond.B(((CBool)(2.0f < p->bw * 0.5f))) ? 2.0f : p->bw * 0.5f)), tr = ((float)(Cond.B(((CBool)(2.0f < p->bw * 0.5f))) ? 2.0f : p->bw * 0.5f)), br = ((float)(Cond.B(((CBool)(2.0f < p->bw * 0.5f))) ? 2.0f : p->bw * 0.5f)), bl = ((float)(Cond.B(((CBool)(2.0f < p->bw * 0.5f))) ? 2.0f : p->bw * 0.5f)) }, c);
-        }
-    }
-
-
-
-    public static unsafe void cui__up_fit__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(float w, int days, int* n, float* bw, float* gap)
-    {
-        *gap = ((int)(Cond.B(((CBool)(w < 500))) ? 2 : 3));
-        int fit = (int)((w + *gap) / (3 + *gap));
-        *n = ((int)(Cond.B(((CBool)(days < ((int)(Cond.B(((CBool)(1 > fit))) ? 1 : fit))))) ? days : ((int)(Cond.B(((CBool)(1 > fit))) ? 1 : fit))));
-        *bw = ((float)(Cond.B(((CBool)(*n > 0))) ? (w - *gap * (*n - 1)) / *n : (float)(0)));
-        if (Cond.B(((CBool)(*bw > 14))))
-            *bw = 14;
-    }
-
-
-
-    public static unsafe cui_uptime_result cui_uptime_ex(cui_ctx* ui, byte* id_str, cui_uptime_service* services, int count, cui_uptime_opts* o)
-    {
-        cui_uptime_opts d = default;
-        memset(&d, 0, ((ulong)(sizeof(cui_uptime_opts))));
-        if (Cond.B((Cond.B(o) ? 0 : 1)))
-            o = &d;
-        cui_uptime_result res = new cui_uptime_result { service = -1, day = -1 };
-        if (Cond.B(((CBool)(Cond.B((Cond.B(services) ? 0 : 1)) || Cond.B(((CBool)(count < 0)))))))
-            count = 0;
-        uint id = cui_make_id(ui, id_str);
-        int col = cui__node_new(ui, id);
-        cui_node* cn = &ui->nodes[col];
-        cn->gap = 18;
-        cn->w = (Cond.B((int)o->width.kind) ? o->width : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 });
-        cui__open(ui, col);
-        cui_push_id(ui, id_str);
-        float fs = cui__fs(ui, ui->theme.text_sm), fx = cui__fs(ui, ui->theme.text_xs);
-        for (int s = 0; Cond.B(((CBool)(s < count))); s++)
-        {
-            cui_uptime_service* sv = &services[s];
-            int nd = ((int)(Cond.B(sv->days) ? ((int)(Cond.B(((CBool)(0 > sv->day_count))) ? 0 : sv->day_count)) : 0));
-            cui_push_id_int(ui, s);
-            double sum = 0;
-            int with = 0;
-            for (int k = 0; Cond.B(((CBool)(k < nd))); k++)
-                if (Cond.B(((CBool)(sv->days[k] >= 0))))
-                {
-                    sum += sv->days[k];
-                    with++;
-                }
-            float last = ((float)(Cond.B(((CBool)(nd > 0))) ? sv->days[nd - 1] : (float)(-1)));
-            int box = cui__node_new(ui, 0);
-            ui->nodes[box].gap = 8;
-            ui->nodes[box].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-            cui__open(ui, box);
-            int head = cui__node_new(ui, 0);
-            cui_node* hn = &ui->nodes[head];
-            hn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
-            hn->gap = 8;
-            hn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-            hn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
-            hn->flags |= (uint)(32768);
-            cui__open(ui, head);
-            int dot = cui__node_new(ui, 0);
-            ui->nodes[dot].w = ui->nodes[dot].h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)8 };
-            ui->nodes[dot].radius = new cui_corners { tl = 4, tr = 4, br = 4, bl = 4 };
-            ui->nodes[dot].bg = cui__up_color__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(ui, last);
-            int nm = cui__text_node(ui, ((byte*)(Cond.B(sv->name) ? sv->name : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), -1, 1, fs, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0);
-            ui->nodes[nm].flags |= (uint)(16);
-            byte* state = ((byte*)(Cond.B(((CBool)(last < 0))) ? (DotCcLiterals.Pointer + DotCcLiterals.S269 /*"No data"*/) : ((byte*)(Cond.B(((CBool)(last >= 0.999f))) ? (DotCcLiterals.Pointer + DotCcLiterals.S140 /*"Operational"*/) : ((byte*)(Cond.B(((CBool)(last >= 0.95f))) ? (DotCcLiterals.Pointer + DotCcLiterals.S4 /*"Degraded"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S1298 /*"Outage"*/)))))));
-            cui__text_node(ui, state, -1, 0, fx, (Cond.B(((CBool)(last < 0))) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED] : (Cond.B(((CBool)(last >= 0.999f))) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY] : cui__up_color__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(ui, last))), 0);
-            int sp = cui__node_new(ui, 0);
-            ui->nodes[sp].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-            int up = cui__text_node(ui, ((byte*)(Cond.B(with) ? cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S838 /*"%.2f%% uptime"*/), sum / with * 100.0) : (DotCcLiterals.Pointer + DotCcLiterals.S417 /*"—"*/))), -1, 0, fx, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0);
-            ui->nodes[up].flags |= (uint)(256);
-            cui__close(ui);
-            uint bid = cui_make_id(ui, (DotCcLiterals.Pointer + DotCcLiterals.S21 /*"bars"*/));
-            cui_rect br = cui__prev_rect(ui, bid);
-            float w = ((float)(Cond.B(((CBool)(br.w > 0))) ? br.w : (float)(600)));
-            cui__up_paint* p = (cui__up_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__up_paint)))));
-            int n = default;
-            cui__up_fit__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(w, nd, &n, &p->bw, &p->gap);
-            p->days = sv->days;
-            p->n = ((int)(Cond.B(((CBool)(nd > 0))) ? n : 0));
-            p->first = nd - p->n;
-            p->hover = -1;
-            cui_interact bi = cui__interact(ui, bid, 0);
-            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(bi.hovered) && Cond.B(((CBool)(p->n > 0)))))) && Cond.B(cui__has_prev_rect(ui, bid))))))
-            {
-                int k__1 = (int)((ui->mx - br.x) / (p->bw + p->gap));
-                if (Cond.B(((CBool)(Cond.B(((CBool)(k__1 >= 0))) && Cond.B(((CBool)(k__1 < p->n)))))))
-                {
-                    p->hover = k__1;
-                    res.service = s;
-                    res.day = p->first + k__1;
-                }
-            }
-            int bars = cui__node_new(ui, bid);
-            cui_node* bn = &ui->nodes[bars];
-            bn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-            bn->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)30.0f };
-            bn->direction = (byte)(__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_LTR);
-            bn->paint = DotCcPointers.cui__paint_uptime__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A;
-            bn->paint_data = p;
-            cui__mark_interactive(ui, bars, 0);
-            if (Cond.B(((CBool)(p->hover >= 0))))
-            {
-                float v = sv->days[p->first + p->hover];
-                int back = p->n - 1 - p->hover;
-                byte* day = default;
-                if (Cond.B(((CBool)(o->last_day.year > 0))))
-                {
-                    cui_date dd = cui_date_from_days(cui_date_to_days(o->last_day) - back);
-                    day = cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S107 /*"%s %d, %d"*/), cui__month_short(ui, dd.month - 1), dd.day, dd.year);
-                }
-                else
-                    day = ((byte*)(Cond.B(((CBool)(back == 0))) ? (DotCcLiterals.Pointer + DotCcLiterals.S310 /*"Latest day"*/) : cui__frame_printf(ui, ((byte*)(Cond.B(((CBool)(back == 1))) ? (DotCcLiterals.Pointer + DotCcLiterals.S313 /*"1 day earlier"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S402 /*"%d days earlier"*/))), back)));
-                byte* tip = ((byte*)(Cond.B(((CBool)(v < 0))) ? cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S737 /*"%s\nNo data"*/), day) : cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S636 /*"%s\n%.2f%% up"*/), day, v * 100.0)));
-                uint tid = bid ^ (uint)((uint)(p->hover) * 2654435761u);
-                cui__absolute(ui, tid, p->hover * (p->bw + p->gap), 0, p->bw, 30.0f);
-                cui__tooltip_passive(ui, tid, tip);
-            }
-            if (Cond.B(((CBool)(Cond.B(((CBool)(s == count - 1))) && Cond.B(((CBool)(p->n > 0)))))))
-            {
-                int ax = cui__node_new(ui, 0);
-                cui_node* an = &ui->nodes[ax];
-                an->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
-                an->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-                an->direction = (byte)(__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_LTR);
-                cui__open(ui, ax);
-                int a0 = cui__text_node(ui, cui__frame_printf(ui, ((byte*)(Cond.B(((CBool)(p->n == 1))) ? (DotCcLiterals.Pointer + DotCcLiterals.S458 /*"1 day"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S592 /*"%d days ago"*/))), p->n), -1, 0, fx, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0);
-                ui->nodes[a0].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-                cui__text_node(ui, (DotCcLiterals.Pointer + DotCcLiterals.S180 /*"Today"*/), -1, 0, fx, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0);
-                cui__close(ui);
-            }
-            cui__close(ui);
-            cui_pop_id(ui);
-        }
-        cui_pop_id(ui);
-        cui__close(ui);
-        ui->last_id = id;
-        return res;
-    }
-
-
-
-    public static unsafe byte* cui__th_label__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(cui_ctx* ui, cui__th_paint* p, double t)
-    {
-        long lt = (long)floor(t) + (long)p->offset * 60;
-        long days = ((long)(Cond.B(((CBool)(lt >= 0))) ? lt / 86400 : (lt - 86399) / 86400));
-        int sec = (int)(lt - days * 86400);
-        if (Cond.B(((CBool)(Cond.B(p->label_dates) && Cond.B(((CBool)(sec == 0)))))))
-        {
-            cui_date d = cui_date_from_days((int)days);
-            return cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1350 /*"%s %d"*/), cui__month_short(ui, d.month - 1), d.day);
-        }
-        if (Cond.B(p->label_secs))
-            return cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S63 /*"%02d:%02d:%02d"*/), sec / 3600, sec / 60 % 60, sec % 60);
-        return cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1274 /*"%02d:%02d"*/), sec / 3600, sec / 60 % 60);
-    }
-
-
-
-    public static unsafe void cui__paint_thist__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(cui_ctx* ui, cui_node* nd, void* data)
-    {
-        cui__th_paint* p = (cui__th_paint*)(data);
-        cui_rect r = nd->rect;
-        cui_rect plot = new cui_rect { x = r.x + 40.0f, y = r.y + 6, w = ((float)(Cond.B(((CBool)(1.0f > r.w - 40.0f - 4))) ? 1.0f : r.w - 40.0f - 4)), h = ((float)(Cond.B(((CBool)(1.0f > r.h - 20.0f - 6))) ? 1.0f : r.h - 20.0f - 6)) };
-        float fx = cui__fs(ui, ui->theme.text_xs), fh = cui__font_line_height(ui, 0, fx);
-        cui_color grid = cui_alpha(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER_SUBTLE], ((float)(Cond.B(((CBool)((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK))) ? 0.8f : 1.0f)));
-        for (double v = 0; Cond.B(((CBool)(Cond.B(((CBool)(v <= p->vmax + 1e-9))) && Cond.B(((CBool)(p->ystep > 0)))))); v += p->ystep)
-        {
-            float y = floorf(plot.y + plot.h - (float)(v / p->vmax) * plot.h);
-            cui_draw_rect(ui, new cui_rect { x = plot.x, y = y, w = plot.w, h = 1 }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, (Cond.B(((CBool)(v == 0))) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER] : grid));
-            byte* lbl = ((byte*)(Cond.B(((CBool)(v >= 10000))) ? cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S961 /*"%.0fk"*/), v / 1000) : ((byte*)(Cond.B(((CBool)(v >= 1000))) ? cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S547 /*"%.1fk"*/), v / 1000) : cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1102 /*"%.0f"*/), v)))));
-            float lw = cui__text_width(ui, 0, fx, lbl, -1, 1);
-            cui__draw_text_line(ui, 0, fx, plot.x - 6 - lw, y - fh * 0.5f, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], lbl, -1, 1);
-        }
-        float slot = plot.w / (float)((int)(Cond.B(((CBool)(1 > p->n))) ? 1 : p->n)), gap = ((float)(Cond.B(((CBool)(slot >= 6))) ? 1.0f : 0.0f));
-        for (int b = 0; Cond.B(((CBool)(b < p->n))); b++)
-        {
-            float x = plot.x + b * slot, y__1 = plot.y + plot.h;
-            for (int s = 0; Cond.B(((CBool)(s < p->ns))); s++)
-            {
-                float v__1 = ((float)(Cond.B(p->counts[s]) ? p->counts[s][b] : (float)(0)));
-                if (Cond.B((Cond.B(((CBool)(v__1 > 0))) ? 0 : 1)))
-                    continue;
-                float h = (float)(v__1 / p->vmax) * plot.h;
-                cui_color c = p->colors[s];
-                if (Cond.B(((CBool)(Cond.B(((CBool)(p->hover >= 0))) && Cond.B(((CBool)(b != p->hover)))))))
-                    c = cui_alpha(c, 0.7f);
-                cui_draw_rect(ui, new cui_rect { x = x + gap * 0.5f, y = y__1 - h, w = ((float)(Cond.B(((CBool)(0.5f > slot - gap))) ? 0.5f : slot - gap)), h = h }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, c);
-                y__1 -= h;
-            }
-        }
-        double t0 = p->start, t1 = p->start + p->bucket * p->n;
-        double first = ceil((t0 + p->offset * 60.0) / p->tstep) * p->tstep - p->offset * 60.0;
-        float last_x = -1e9f;
-        for (double t = first; Cond.B(((CBool)(Cond.B(((CBool)(t <= t1 + 1e-6))) && Cond.B(((CBool)(p->tstep > 0)))))); t += p->tstep)
-        {
-            float x__1 = plot.x + (float)((t - t0) / (t1 - t0)) * plot.w;
-            cui_draw_rect(ui, new cui_rect { x = floorf(x__1), y = plot.y + plot.h, w = 1, h = 4 }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER_STRONG]);
-            byte* lbl__1 = cui__th_label__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(ui, p, t);
-            float lw__1 = cui__text_width(ui, 0, fx, lbl__1, -1, 1);
-            float lx = ((float)(Cond.B(((CBool)(((float)(Cond.B(((CBool)(x__1 - lw__1 * 0.5f > r.x))) ? x__1 - lw__1 * 0.5f : r.x)) < r.x + r.w - lw__1))) ? ((float)(Cond.B(((CBool)(x__1 - lw__1 * 0.5f > r.x))) ? x__1 - lw__1 * 0.5f : r.x)) : r.x + r.w - lw__1));
-            if (Cond.B(((CBool)(lx < last_x + 8))))
-                continue;
-            cui__draw_text_line(ui, 0, fx, lx, plot.y + plot.h + 5, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], lbl__1, -1, 1);
-            last_x = lx + lw__1;
-        }
-        if (Cond.B(((CBool)(p->sel1 > p->sel0))))
-        {
-            float xa = plot.x + (float)((p->sel0 - t0) / (t1 - t0)) * plot.w, xb = plot.x + (float)((p->sel1 - t0) / (t1 - t0)) * plot.w;
-            xa = ((float)(Cond.B(((CBool)(((float)(Cond.B(((CBool)(xa > plot.x))) ? xa : plot.x)) < plot.x + plot.w))) ? ((float)(Cond.B(((CBool)(xa > plot.x))) ? xa : plot.x)) : plot.x + plot.w));
-            xb = ((float)(Cond.B(((CBool)(((float)(Cond.B(((CBool)(xb > plot.x))) ? xb : plot.x)) < plot.x + plot.w))) ? ((float)(Cond.B(((CBool)(xb > plot.x))) ? xb : plot.x)) : plot.x + plot.w));
-            cui_color em = cui__emphasis(ui);
-            cui_draw_rect(ui, new cui_rect { x = xa, y = plot.y, w = xb - xa, h = plot.h }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, cui_alpha(em, 0.10f));
-            cui_draw_rect(ui, new cui_rect { x = xa, y = plot.y, w = 1.5f, h = plot.h }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, em);
-            cui_draw_rect(ui, new cui_rect { x = xb - 1.5f, y = plot.y, w = 1.5f, h = plot.h }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, em);
-        }
-    }
-
-
-
-    public static unsafe double cui__th_nice__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(double raw)
-    {
-        if (Cond.B((Cond.B(((CBool)(raw > 0))) ? 0 : 1)))
-            return 1;
-        double p = pow(10.0, floor(log10(raw))), m = raw / p;
-        return ((int)(Cond.B(((CBool)(m <= 1))) ? 1 : ((int)(Cond.B(((CBool)(m <= 2))) ? 2 : ((int)(Cond.B(((CBool)(m <= 5))) ? 5 : 10)))))) * p;
-    }
-
-
-
-    public static unsafe cui_time_histogram_result cui_time_histogram_ex(cui_ctx* ui, byte* id_str, double start, double bucket, int buckets, cui_histogram_series* series, int series_count, double* sel_start, double* sel_end, cui_time_histogram_opts* o)
-    {
-        cui_time_histogram_opts d = default;
-        memset(&d, 0, ((ulong)(sizeof(cui_time_histogram_opts))));
-        if (Cond.B((Cond.B(o) ? 0 : 1)))
-            o = &d;
-        cui_time_histogram_result res = new cui_time_histogram_result { selection_changed = 0, hovered = -1 };
-        if (Cond.B(((CBool)(Cond.B((Cond.B(series) ? 0 : 1)) || Cond.B(((CBool)(series_count < 0)))))))
-            series_count = 0;
-        if (Cond.B(((CBool)(buckets < 0))))
-            buckets = 0;
-        if (Cond.B((Cond.B(((CBool)(bucket > 0))) ? 0 : 1)))
-            bucket = 60;
-        double own0 = 0, own1 = 0;
-        if (Cond.B(((CBool)(Cond.B((Cond.B(sel_start) ? 0 : 1)) || Cond.B((Cond.B(sel_end) ? 0 : 1))))))
-        {
-            sel_start = &own0;
-            sel_end = &own1;
-        }
-        uint id = cui_make_id(ui, id_str);
-        cui__th_state* st = (cui__th_state*)(cui_state(ui, id ^ 0x7415u, ((ulong)(sizeof(cui__th_state)))));
-        cui_rect R = cui__prev_rect(ui, id);
-        CBool known = cui__has_prev_rect(ui, id);
-        cui_rect plot = new cui_rect { x = R.x + 40.0f, y = R.y + 6, w = ((float)(Cond.B(((CBool)(1.0f > R.w - 40.0f - 4))) ? 1.0f : R.w - 40.0f - 4)), h = ((float)(Cond.B(((CBool)(1.0f > R.h - 20.0f - 6))) ? 1.0f : R.h - 20.0f - 6)) };
-        double t0 = start, t1 = start + bucket * buckets;
-        cui_interact bi = cui__interact(ui, id, 2);
-        double b0 = *sel_start, b1 = *sel_end;
-        double tm = ((double)(Cond.B(((CBool)(Cond.B(known) && Cond.B(((CBool)(buckets > 0)))))) ? t0 + ((float)(Cond.B(((CBool)(((float)(Cond.B(((CBool)((ui->mx - plot.x) / plot.w > 0.0f))) ? (ui->mx - plot.x) / plot.w : 0.0f)) < 1.0f))) ? ((float)(Cond.B(((CBool)((ui->mx - plot.x) / plot.w > 0.0f))) ? (ui->mx - plot.x) / plot.w : 0.0f)) : 1.0f)) * (t1 - t0) : t0));
-        if (Cond.B(((CBool)(Cond.B(known) && Cond.B(((CBool)(buckets > 0)))))))
-        {
-            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(bi.hovered) && Cond.B(((CBool*)&ui->mpressed)[0])))) && Cond.B(((CBool)(ui->mx >= plot.x - 2)))))))
-            {
-                st->mode = 1;
-                st->press_x = ui->mx;
-                st->press_t = tm;
-            }
-            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(st->mode == 1))) && Cond.B(((CBool*)&ui->mdown)[0])))) && Cond.B(((CBool)(fabsf(ui->mx - st->press_x) > 3)))))))
-                st->mode = 2;
-            if (Cond.B(((CBool)(st->mode == 2))))
-            {
-                double a = ((double)(Cond.B(((CBool)(st->press_t < tm))) ? st->press_t : tm)), b = ((double)(Cond.B(((CBool)(st->press_t > tm))) ? st->press_t : tm));
-                a = t0 + floor((a - t0) / bucket) * bucket;
-                b = t0 + ceil((b - t0) / bucket) * bucket;
-                *sel_start = ((double)(Cond.B(((CBool)(a > t0))) ? a : t0));
-                *sel_end = ((double)(Cond.B(((CBool)(b < t1))) ? b : t1));
-                cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_RESIZE_EW);
-            }
-            if (Cond.B((Cond.B(((CBool*)&ui->mdown)[0]) ? 0 : 1)))
-            {
-                if (Cond.B(((CBool)(st->mode == 1))))
-                    *sel_start = *sel_end = 0;
-                st->mode = 0;
-            }
-        }
-        res.selection_changed = ((CBool)(Cond.B(((CBool)(*sel_start != b0))) || Cond.B(((CBool)(*sel_end != b1)))));
-        cui__th_paint* p = (cui__th_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__th_paint)))));
-        memset(p, 0, ((ulong)(sizeof(cui__th_paint))));
-        p->start = start;
-        p->bucket = bucket;
-        p->n = buckets;
-        p->ns = series_count;
-        p->counts = (float**)(cui__frame_alloc(ui, ((ulong)(sizeof(float*))) * (ulong)((int)(Cond.B(((CBool)(1 > series_count))) ? 1 : series_count))));
-        p->colors = (cui_color*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui_color))) * (ulong)((int)(Cond.B(((CBool)(1 > series_count))) ? 1 : series_count))));
-        double vmax = 0;
-        for (int b__1 = 0; Cond.B(((CBool)(b__1 < buckets))); b__1++)
-        {
-            double sum = 0;
-            for (int s = 0; Cond.B(((CBool)(s < series_count))); s++)
-                if (Cond.B(((CBool)(Cond.B(series[s].counts) && Cond.B(((CBool)(series[s].counts[b__1] > 0)))))))
-                    sum += series[s].counts[b__1];
-            vmax = ((double)(Cond.B(((CBool)(vmax > sum))) ? vmax : sum));
-        }
-        for (int s__1 = 0; Cond.B(((CBool)(s__1 < series_count))); s__1++)
-        {
-            float* copy = null;
-            if (Cond.B(((CBool)(Cond.B(series[s__1].counts) && Cond.B(((CBool)(buckets > 0)))))))
-            {
-                copy = (float*)(cui__frame_alloc(ui, 4UL * (ulong)buckets));
-                memcpy(copy, series[s__1].counts, 4UL * (ulong)buckets);
-            }
-            p->counts[s__1] = copy;
-            p->colors[s__1] = (Cond.B((int)series[s__1].tone) ? cui__tone_color(ui, series[s__1].tone) : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SERIES_1 + s__1 % 6]);
-        }
-        float ph = ((float)(Cond.B(known) ? plot.h : (float)(100)));
-        p->ystep = cui__th_nice__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(((double)(Cond.B(((CBool)(vmax > 1.0))) ? vmax : 1.0)) / ((float)(Cond.B(((CBool)(1.0f > ph / 28.0f))) ? 1.0f : ph / 28.0f)));
-        p->vmax = ((double)(Cond.B(((CBool)(p->ystep > ceil(((double)(Cond.B(((CBool)(vmax > 1.0))) ? vmax : 1.0)) / p->ystep) * p->ystep))) ? p->ystep : ceil(((double)(Cond.B(((CBool)(vmax > 1.0))) ? vmax : 1.0)) / p->ystep) * p->ystep));
-        p->sel0 = *sel_start;
-        p->sel1 = *sel_end;
-        p->offset = ((int)(Cond.B(o->utc) ? 0 : cui__utc_offset((long)start)));
-        double span = t1 - t0;
-        float pw = ((float)(Cond.B(known) ? plot.w : (float)(500)));
-        p->tstep = global::Managed.Cui.Cui.Globals.cui__th_steps__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A[unchecked(((ulong)((16 * sizeof(double)))) / ((ulong)(sizeof(double))) - (ulong)(1))];
-        for (ulong k = 0; Cond.B(((CBool)(k < ((ulong)((16 * sizeof(double)))) / ((ulong)(sizeof(double)))))); k++)
-            if (Cond.B(((CBool)(Cond.B(((CBool)(span > 0))) && Cond.B(((CBool)(global::Managed.Cui.Cui.Globals.cui__th_steps__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A[k] / span * pw >= 78)))))))
-            {
-                p->tstep = global::Managed.Cui.Cui.Globals.cui__th_steps__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A[k];
-                break;
-            }
-        p->label_dates = ((CBool)(Cond.B(((CBool)(p->tstep >= 86400))) || Cond.B(((CBool)(span > 86400)))));
-        p->label_secs = ((CBool)(p->tstep < 60));
-        p->hover = -1;
-        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(bi.hovered) && Cond.B(known)))) && Cond.B(((CBool)(buckets > 0)))))) && Cond.B(((CBool)(st->mode != 2)))))) && Cond.B(((CBool)(ui->mx >= plot.x)))))) && Cond.B(((CBool)(ui->mx <= plot.x + plot.w)))))))
-        {
-            int b__2 = ((int)(Cond.B(((CBool)(((int)(Cond.B(((CBool)((int)((ui->mx - plot.x) / plot.w * buckets) > 0))) ? (int)((ui->mx - plot.x) / plot.w * buckets) : 0)) < buckets - 1))) ? ((int)(Cond.B(((CBool)((int)((ui->mx - plot.x) / plot.w * buckets) > 0))) ? (int)((ui->mx - plot.x) / plot.w * buckets) : 0)) : buckets - 1));
-            p->hover = b__2;
-            res.hovered = b__2;
-        }
-        int col = cui__node_new(ui, 0);
-        ui->nodes[col].gap = 8;
-        ui->nodes[col].w = (Cond.B((int)o->width.kind) ? o->width : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 });
-        cui__open(ui, col);
-        int nd = cui__node_new(ui, id);
-        cui_node* n = &ui->nodes[nd];
-        n->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        n->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)((float)(Cond.B(((CBool)(o->height > 0))) ? o->height : (float)(140))) };
-        n->direction = (byte)(__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_LTR);
-        n->paint = DotCcPointers.cui__paint_thist__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A;
-        n->paint_data = p;
-        cui__mark_interactive(ui, nd, 2);
-        if (Cond.B(((CBool)(Cond.B(((CBool)(p->hover >= 0))) && Cond.B(((CBool)(ui->active == (uint)(0))))))))
-        {
-            int b__3 = p->hover;
-            double tb = t0 + b__3 * bucket;
-            byte* buf = stackalloc byte[512];
-            int len = snprintf(buf, unchecked((int)(((ulong)((512 * sizeof(byte)))))), (DotCcLiterals.Pointer + DotCcLiterals.S1133 /*"%s – %s"*/)).Arg(cui__th_label__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(ui, p, tb)).Arg(cui__th_label__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(ui, p, tb + bucket)).Done();
-            for (int s__2 = 0; Cond.B(((CBool)(Cond.B(((CBool)(s__2 < series_count))) && Cond.B(((CBool)(len < unchecked((int)((ulong)((512 * sizeof(byte))))) - 64)))))); s__2++)
-                len += snprintf(buf + len, (int)(((ulong)((512 * sizeof(byte)))) - (ulong)len), (DotCcLiterals.Pointer + DotCcLiterals.S826 /*"\n%s  %.0f"*/)).Arg(((byte*)(Cond.B(series[s__2].name) ? series[s__2].name : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/)))).Arg(((double)(Cond.B(series[s__2].counts) ? (double)series[s__2].counts[b__3] : 0.0))).Done();
-            uint tid = id ^ (uint)((uint)(b__3) * 2654435761u) ^ 0x7416u;
-            float slot = plot.w / buckets;
-            cui__open(ui, nd);
-            cui__absolute(ui, tid, 40.0f + b__3 * slot, 6, ((float)(Cond.B(((CBool)(1.0f > slot))) ? 1.0f : slot)), plot.h);
-            cui__tooltip_passive(ui, tid, cui__frame_strdup(ui, buf, -1));
-            cui__close(ui);
-        }
-        if (Cond.B(((CBool)(series_count > 1))))
-        {
-            int lg = cui__node_new(ui, 0);
-            cui_node* ln = &ui->nodes[lg];
-            ln->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
-            ln->gap = 16;
-            ln->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
-            ln->flags |= (uint)(32768);
-            ln->pad[3] = 40.0f;
-            cui__open(ui, lg);
-            float fx = cui__fs(ui, ui->theme.text_xs);
-            for (int s__3 = 0; Cond.B(((CBool)(s__3 < series_count))); s__3++)
-            {
-                double tot = 0;
-                for (int b__4 = 0; Cond.B(((CBool)(Cond.B(((CBool)(b__4 < buckets))) && Cond.B(series[s__3].counts)))); b__4++)
-                    tot += ((float)(Cond.B(((CBool)(series[s__3].counts[b__4] > 0))) ? series[s__3].counts[b__4] : (float)(0)));
-                int it = cui__node_new(ui, 0);
-                ui->nodes[it].dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
-                ui->nodes[it].gap = 6;
-                ui->nodes[it].align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
-                cui__open(ui, it);
-                int sw = cui__node_new(ui, 0);
-                ui->nodes[sw].w = ui->nodes[sw].h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)8 };
-                ui->nodes[sw].radius = new cui_corners { tl = 2, tr = 2, br = 2, bl = 2 };
-                ui->nodes[sw].bg = p->colors[s__3];
-                cui__text_node(ui, ((byte*)(Cond.B(series[s__3].name) ? series[s__3].name : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), -1, 0, fx, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY], 0);
-                int tt = cui__text_node(ui, ((byte*)(Cond.B(((CBool)(tot >= 10000))) ? cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S547 /*"%.1fk"*/), tot / 1000) : cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1102 /*"%.0f"*/), tot))), -1, 0, fx, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0);
-                ui->nodes[tt].flags |= (uint)(256);
-                cui__close(ui);
-            }
-            cui__close(ui);
-        }
-        cui__close(ui);
-        ui->last_id = id;
-        return res;
-    }
-
-
-
-    public static unsafe void cui__cov_dtor__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(cui_ctx* ui, void* data)
-    {
-        cui__cov_state* s = (cui__cov_state*)(data);
-        cui__free(ui, s->nodes);
-        s->nodes = null;
-        s->nn = s->cap = 0;
-    }
-
-
-
-    public static unsafe int cui__cov_add__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(cui_ctx* ui, cui__cov_state* s, int parent, byte* name, int len, int file)
-    {
         do
         {
-            if (Cond.B(((CBool)(s->nn + 1 > s->cap))))
+            if (Cond.B(((CBool)(run >= 0))))
             {
-                int ncap__ = ((int)(Cond.B(s->cap) ? s->cap * 2 : 64));
-                while (Cond.B(((CBool)(ncap__ < s->nn + 1))))
-                    ncap__ *= 2;
-                s->nodes = (cui__cov_node*)(cui__realloc(ui, s->nodes, ((ulong)(sizeof(cui__cov_node))) * (ulong)ncap__));
-                s->cap = ncap__;
+                uint cols___7 = 0;
+                for (int k___7 = run; Cond.B(((CBool)(k___7 < len))); k___7++)
+                    cols___7 += (uint)((int)(((CBool)(((byte)data[k___7] & 0xC0) != 0x80))));
+                cui__tm_put(t, data + run, (uint)(len - run), cols___7);
+                run = -1;
             }
         }
         while (false);
-        if (Cond.B((Cond.B(s->nodes) ? 0 : 1)))
-        {
-            s->nn = s->cap = 0;
-            return -1;
-        }
-        cui__cov_node* n = &s->nodes[s->nn];
-        memset(n, 0, ((ulong)(sizeof(cui__cov_node))));
-        n->name = name;
-        n->nlen = len;
-        n->parent = parent;
-        n->file = file;
-        n->depth = ((int)(Cond.B(((CBool)(parent >= 0))) ? s->nodes[parent].depth + 1 : 0));
-        n->first_child = n->next = -1;
-        if (Cond.B(((CBool)(parent >= 0))))
-        {
-            int* at = &s->nodes[parent].first_child;
-            while (Cond.B(((CBool)(*at >= 0))))
-                at = &s->nodes[*at].next;
-            *at = s->nn;
-        }
-        return s->nn++;
     }
 
 
 
-    public static unsafe void cui__cov_build__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(cui_ctx* ui, cui__cov_state* s, cui_coverage_file* files, int count)
+    public static unsafe void cui_terminal_printf(cui_terminal_buffer* t, byte* fmt, params ReadOnlySpan<VaArg> _va)
     {
-        uint key = cui__hash(&count, ((ulong)(sizeof(int))), 0xC0Fu);
-        for (int i = 0; Cond.B(((CBool)(i < count))); i++)
+        byte* buf = stackalloc byte[2048];
+        scoped VaList ap = default;
+        ap = new VaList(_va);
+        int n = vsnprintf(buf, ((ulong)((2048 * sizeof(byte)))), fmt, ap);
+        ap.End();
+        if (Cond.B(((CBool)(n > 0))))
+            cui_terminal_write(t, buf, ((int)(Cond.B(((CBool)(n < unchecked((int)((ulong)((2048 * sizeof(byte))))) - 1))) ? n : unchecked((int)((ulong)((2048 * sizeof(byte))))) - 1)));
+    }
+
+
+
+    public static unsafe cui_color cui__tm_palette__unit_52AECEE497E6E75AA7FA1F0681878C34CD37975FE9AD90F23F79364C9B71175B(cui_ctx* ui, int k)
+    {
+        uint v = ((uint*)(Cond.B(((CBool)((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK))) ? global::Managed.Cui.Cui.Globals.dark__s1__unit_52AECEE497E6E75AA7FA1F0681878C34CD37975FE9AD90F23F79364C9B71175B : global::Managed.Cui.Cui.Globals.light__s0__unit_52AECEE497E6E75AA7FA1F0681878C34CD37975FE9AD90F23F79364C9B71175B))[k & 15];
+        return cui__rgba((int)(v >> 16 & (uint)(255)), (int)(v >> 8 & (uint)(255)), (int)(v & (uint)(255)), 255);
+    }
+
+
+
+    public static unsafe cui_color cui__tm_256__unit_52AECEE497E6E75AA7FA1F0681878C34CD37975FE9AD90F23F79364C9B71175B(cui_ctx* ui, int n)
+    {
+        if (Cond.B(((CBool)(n < 16))))
+            return cui__tm_palette__unit_52AECEE497E6E75AA7FA1F0681878C34CD37975FE9AD90F23F79364C9B71175B(ui, n);
+        if (Cond.B(((CBool)(n < 232))))
         {
-            key = cui__hash_str(((byte*)(Cond.B(files[i].path) ? files[i].path : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), key);
-            key = cui__hash(&files[i].lines, unchecked(4UL * (ulong)(6)), key);
+            n -= 16;
+            return cui__rgba(global::Managed.Cui.Cui.Globals.lv__s2__unit_52AECEE497E6E75AA7FA1F0681878C34CD37975FE9AD90F23F79364C9B71175B[n / 36], global::Managed.Cui.Cui.Globals.lv__s2__unit_52AECEE497E6E75AA7FA1F0681878C34CD37975FE9AD90F23F79364C9B71175B[n / 6 % 6], global::Managed.Cui.Cui.Globals.lv__s2__unit_52AECEE497E6E75AA7FA1F0681878C34CD37975FE9AD90F23F79364C9B71175B[n % 6], 255);
         }
-        if (Cond.B(((CBool)(Cond.B(s->init) && Cond.B(((CBool)(s->key == key)))))))
-            return;
-        s->init = 1;
-        s->key = key;
-        s->nn = 0;
-        int root = cui__cov_add__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(ui, s, -1, (DotCcLiterals.Pointer + DotCcLiterals.S100 /*"All files"*/), 9, -1);
-        if (Cond.B(((CBool)(root < 0))))
-            return;
-        for (int i__1 = 0; Cond.B(((CBool)(i__1 < count))); i__1++)
+        int g = 8 + (n - 232) * 10;
+        return cui__rgba(g, g, g, 255);
+    }
+
+
+
+    public static unsafe void cui__tm_sgr(cui_ctx* ui, cui__tm_style* st, byte* s, int n)
+    {
+        int* p = stackalloc int[16];
+        int np = 0, v = -1;
+        for (int k = 2; Cond.B(((CBool)(Cond.B(((CBool)(k < n - 1))) && Cond.B(((CBool)(np < 16)))))); k++)
         {
-            byte* p = ((byte*)(Cond.B(files[i__1].path) ? files[i__1].path : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/)));
-            int at = root;
-            for (; ; )
-            {
-                byte* e = p;
-                while (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(*e) && Cond.B(((CBool)(*e != 47)))))) && Cond.B(((CBool)(*e != 92)))))))
-                    e++;
-                int len = (int)(e - p);
-                CBool leaf = (Cond.B(*e) ? 0 : 1);
-                if (Cond.B(((CBool)(Cond.B(((CBool)(len > 0))) || Cond.B(leaf)))))
+            byte c = s[k];
+            if (Cond.B(((CBool)(Cond.B(((CBool)(c >= 48))) && Cond.B(((CBool)(c <= 57)))))))
+                v = ((int)(Cond.B(((CBool)(v < 0))) ? 0 : v)) * 10 + (c - 48);
+            else
+                if (Cond.B(((CBool)(Cond.B(((CBool)(c == 59))) || Cond.B(((CBool)(c == 58)))))))
                 {
-                    int found = -1;
-                    if (Cond.B((Cond.B(leaf) ? 0 : 1)))
-                        for (int c = s->nodes[at].first_child; Cond.B(((CBool)(c >= 0))); c = s->nodes[c].next)
-                            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(s->nodes[c].file < 0))) && Cond.B(((CBool)(s->nodes[c].nlen == len)))))) && Cond.B((Cond.B(memcmp(s->nodes[c].name, p, (ulong)len)) ? 0 : 1))))))
-                            {
-                                found = c;
-                                break;
-                            }
-                    if (Cond.B(((CBool)(found < 0))))
-                        found = cui__cov_add__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(ui, s, at, p, len, ((int)(Cond.B(leaf) ? i__1 : -1)));
-                    if (Cond.B(((CBool)(found < 0))))
-                        return;
-                    at = found;
+                    p[np++] = ((int)(Cond.B(((CBool)(v < 0))) ? 0 : v));
+                    v = -1;
                 }
-                if (Cond.B(leaf))
-                    break;
-                p = e + 1;
-            }
-            cui_coverage_file* f = &files[i__1];
-            for (int k = at; Cond.B(((CBool)(k >= 0))); k = s->nodes[k].parent)
+        }
+        if (Cond.B(((CBool)(np < 16))))
+            p[np++] = ((int)(Cond.B(((CBool)(v < 0))) ? 0 : v));
+        for (int k__1 = 0; Cond.B(((CBool)(k__1 < np))); k__1++)
+        {
+            int c__1 = p[k__1];
+            if (Cond.B(((CBool)(c__1 == 0))))
             {
-                cui__cov_node* n = &s->nodes[k];
-                n->lines += f->lines;
-                n->lines_hit += f->lines_hit;
-                n->br += f->branches;
-                n->br_hit += f->branches_hit;
-                n->fn += f->functions;
-                n->fn_hit += f->functions_hit;
+                memset(st, 0, ((ulong)(sizeof(cui__tm_style))));
             }
+            else
+                if (Cond.B(((CBool)(c__1 == 1))))
+                    st->bold = 1;
+                else
+                    if (Cond.B(((CBool)(c__1 == 2))))
+                        st->dim = 1;
+                    else
+                        if (Cond.B(((CBool)(c__1 == 3))))
+                            st->italic = 1;
+                        else
+                            if (Cond.B(((CBool)(c__1 == 4))))
+                                st->underline = 1;
+                            else
+                                if (Cond.B(((CBool)(c__1 == 7))))
+                                    st->inverse = 1;
+                                else
+                                    if (Cond.B(((CBool)(c__1 == 22))))
+                                        st->bold = st->dim = 0;
+                                    else
+                                        if (Cond.B(((CBool)(c__1 == 23))))
+                                            st->italic = 0;
+                                        else
+                                            if (Cond.B(((CBool)(c__1 == 24))))
+                                                st->underline = 0;
+                                            else
+                                                if (Cond.B(((CBool)(c__1 == 27))))
+                                                    st->inverse = 0;
+                                                else
+                                                    if (Cond.B(((CBool)(Cond.B(((CBool)(c__1 >= 30))) && Cond.B(((CBool)(c__1 <= 37)))))))
+                                                    {
+                                                        st->fg = cui__tm_palette__unit_52AECEE497E6E75AA7FA1F0681878C34CD37975FE9AD90F23F79364C9B71175B(ui, c__1 - 30);
+                                                        st->has_fg = 1;
+                                                    }
+                                                    else
+                                                        if (Cond.B(((CBool)(Cond.B(((CBool)(c__1 >= 90))) && Cond.B(((CBool)(c__1 <= 97)))))))
+                                                        {
+                                                            st->fg = cui__tm_palette__unit_52AECEE497E6E75AA7FA1F0681878C34CD37975FE9AD90F23F79364C9B71175B(ui, c__1 - 90 + 8);
+                                                            st->has_fg = 1;
+                                                        }
+                                                        else
+                                                            if (Cond.B(((CBool)(Cond.B(((CBool)(c__1 >= 40))) && Cond.B(((CBool)(c__1 <= 47)))))))
+                                                            {
+                                                                st->bg = cui__tm_palette__unit_52AECEE497E6E75AA7FA1F0681878C34CD37975FE9AD90F23F79364C9B71175B(ui, c__1 - 40);
+                                                                st->has_bg = 1;
+                                                            }
+                                                            else
+                                                                if (Cond.B(((CBool)(Cond.B(((CBool)(c__1 >= 100))) && Cond.B(((CBool)(c__1 <= 107)))))))
+                                                                {
+                                                                    st->bg = cui__tm_palette__unit_52AECEE497E6E75AA7FA1F0681878C34CD37975FE9AD90F23F79364C9B71175B(ui, c__1 - 100 + 8);
+                                                                    st->has_bg = 1;
+                                                                }
+                                                                else
+                                                                    if (Cond.B(((CBool)(c__1 == 39))))
+                                                                        st->has_fg = 0;
+                                                                    else
+                                                                        if (Cond.B(((CBool)(c__1 == 49))))
+                                                                            st->has_bg = 0;
+                                                                        else
+                                                                            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(c__1 == 38))) || Cond.B(((CBool)(c__1 == 48)))))) && Cond.B(((CBool)(k__1 + 1 < np)))))))
+                                                                            {
+                                                                                cui_color col = default;
+                                                                                if (Cond.B(((CBool)(Cond.B(((CBool)(p[k__1 + 1] == 5))) && Cond.B(((CBool)(k__1 + 2 < np)))))))
+                                                                                {
+                                                                                    col = cui__tm_256__unit_52AECEE497E6E75AA7FA1F0681878C34CD37975FE9AD90F23F79364C9B71175B(ui, p[k__1 + 2] & 255);
+                                                                                    k__1 += 2;
+                                                                                }
+                                                                                else
+                                                                                    if (Cond.B(((CBool)(Cond.B(((CBool)(p[k__1 + 1] == 2))) && Cond.B(((CBool)(k__1 + 4 < np)))))))
+                                                                                    {
+                                                                                        col = cui__rgba(p[k__1 + 2] & 255, p[k__1 + 3] & 255, p[k__1 + 4] & 255, 255);
+                                                                                        k__1 += 4;
+                                                                                    }
+                                                                                    else
+                                                                                        continue;
+                                                                                if (Cond.B(((CBool)(c__1 == 38))))
+                                                                                {
+                                                                                    st->fg = col;
+                                                                                    st->has_fg = 1;
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    st->bg = col;
+                                                                                    st->has_bg = 1;
+                                                                                }
+                                                                            }
         }
     }
 
 
 
-    public static unsafe double cui__cov_pct__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(long hit, long all)
+    public static unsafe int cui__tm_rows(uint cols, int width_cols)
     {
-        return ((double)(Cond.B(((CBool)(all > 0))) ? 100.0 * (double)hit / (double)all : (double)(-1)));
+        return ((int)(Cond.B(((CBool)(cols == (uint)(0)))) ? 1 : (int)((cols + (uint)width_cols - (uint)(1)) / (uint)width_cols)));
     }
 
 
 
-    public static unsafe double cui__cov_metric__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(cui__cov_node* n, int m)
+    public static unsafe void cui__tm_block(cui_ctx* ui, int k, cui_rect c, cui_color col)
     {
-        return ((double)(Cond.B(((CBool)(m == 1))) ? cui__cov_pct__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(n->lines_hit, n->lines) : ((double)(Cond.B(((CBool)(m == 2))) ? cui__cov_pct__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(n->br_hit, n->br) : cui__cov_pct__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(n->fn_hit, n->fn)))));
+        float s = ((float)(Cond.B(((CBool)(ui->scale > 0))) ? ui->scale : (float)(1)));
+        float x0 = floorf(c.x * s + 0.5f) / s, x1 = floorf((c.x + c.w) * s + 0.5f) / s;
+        float y0 = floorf(c.y * s + 0.5f) / s, y1 = floorf((c.y + c.h) * s + 0.5f) / s;
+        float w = x1 - x0, h = y1 - y0;
+        cui_rect r = new cui_rect { x = x0, y = y0, w = w, h = h };
+        if (Cond.B(((CBool)(k == 0))))
+            r.h = floorf(h * 0.5f * s) / s;
+        else
+            if (Cond.B(((CBool)(Cond.B(((CBool)(k >= 1))) && Cond.B(((CBool)(k <= 8)))))))
+            {
+                float f = k / 8.0f;
+                r.y = y1 - floorf(h * f * s + 0.5f) / s;
+                r.h = y1 - r.y;
+            }
+            else
+                if (Cond.B(((CBool)(Cond.B(((CBool)(k >= 9))) && Cond.B(((CBool)(k <= 15)))))))
+                    r.w = floorf(w * (16 - k) / 8.0f * s + 0.5f) / s;
+                else
+                    if (Cond.B(((CBool)(k == 16))))
+                    {
+                        r.x = x0 + floorf(w * 0.5f * s) / s;
+                        r.w = x1 - r.x;
+                    }
+                    else
+                        if (Cond.B(((CBool)(Cond.B(((CBool)(k >= 17))) && Cond.B(((CBool)(k <= 19)))))))
+                            col = cui_alpha(col, (k - 16) * 0.25f);
+        cui_draw_rect(ui, r, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, col);
     }
 
 
 
-    public static unsafe uint cui__cov_key__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(cui__cov_state* s, int k)
+    public static unsafe void cui__paint_terminal__unit_52AECEE497E6E75AA7FA1F0681878C34CD37975FE9AD90F23F79364C9B71175B(cui_ctx* ui, cui_node* n, void* data)
     {
-        return cui__hash(s->nodes[k].name, (ulong)s->nodes[k].nlen, (uint)s->nodes[k].depth * 977u + (uint)s->nodes[k].parent);
+        cui__tm_paint* p = (cui__tm_paint*)(data);
+        cui_rect r = n->rect;
+        cui__paint_wheel_hit(ui, p->wheel, r);
+        cui_terminal_buffer* t = p->t;
+        if (Cond.B(((CBool)(Cond.B((Cond.B(t) ? 0 : 1)) || Cond.B((Cond.B(t->line_cap) ? 0 : 1))))))
+            return;
+        float pad = 10, x0 = r.x + pad, y0 = r.y + 6;
+        float fh = cui__font_line_height(ui, 3, p->size);
+        double row = 0;
+        int li = 0;
+        long want = (long)floor(p->top);
+        while (Cond.B(((CBool)(li < t->count))))
+        {
+            int rr = cui__tm_rows(cui__tm_line(t, li)->cols, p->cols);
+            if (Cond.B(((CBool)(row + rr > want))))
+                break;
+            row += rr;
+            li++;
+        }
+        float y = y0 + (float)(row - p->top) * p->lh;
+        float first_y = y0 + (float)(floor(p->top) - p->top) * p->lh;
+        float clip_top = ((float)(Cond.B(((CBool)(first_y < y0 - 0.5f))) ? first_y + p->lh : r.y + 3));
+        cui_push_clip(ui, new cui_rect { x = r.x, y = clip_top, w = r.w, h = r.y + r.h - 3 - clip_top });
+        ulong first_no = t->total - (ulong)t->count;
+        cui__tm_pos s0 = p->s0, s1 = p->s1;
+        for (; Cond.B(((CBool)(Cond.B(((CBool)(li < t->count))) && Cond.B(((CBool)(y < r.y + r.h)))))); li++)
+        {
+            cui_terminal_line* L = cui__tm_line(t, li);
+            ulong no = first_no + (ulong)li;
+            int nrows = cui__tm_rows(L->cols, p->cols);
+            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(p->has_sel) && Cond.B(((CBool)(no >= s0.line)))))) && Cond.B(((CBool)(no <= s1.line)))))))
+            {
+                uint c0 = ((uint)(Cond.B(((CBool)(no == s0.line))) ? s0.col : (uint)(0))), c1 = ((uint)(Cond.B(((CBool)(no == s1.line))) ? s1.col : L->cols + (uint)(1)));
+                for (uint c = c0; Cond.B(((CBool)(c < c1))); )
+                {
+                    uint rowi = c / (uint)p->cols, end = ((uint)(Cond.B(((CBool)(c1 < (rowi + (uint)(1)) * (uint)p->cols))) ? c1 : (rowi + (uint)(1)) * (uint)p->cols));
+                    float sy = y + rowi * p->lh;
+                    cui_draw_rect(ui, new cui_rect { x = x0 + c % (uint)p->cols * p->cw, y = sy, w = (end - c) * p->cw, h = p->lh }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, p->sel);
+                    c = end;
+                }
+            }
+            cui__tm_style st = default;
+            memset(&st, 0, ((ulong)(sizeof(cui__tm_style))));
+            byte* s = t->text + L->offset;
+            uint i = 0, col = 0;
+            while (Cond.B(((CBool)(i < L->len))))
+            {
+                if (Cond.B(((CBool)((byte)s[i] == 0x1b))))
+                {
+                    uint j = i + (uint)(1);
+                    while (Cond.B(((CBool)(Cond.B(((CBool)(j < L->len))) && Cond.B((Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)((byte)s[j] >= 0x40))) && Cond.B(((CBool)((byte)s[j] <= 0x7e)))))) && Cond.B(((CBool)(j > i + (uint)(1))))))) ? 0 : 1))))))
+                        j++;
+                    if (Cond.B(((CBool)(j < L->len))))
+                        cui__tm_sgr(ui, &st, s + i, (int)(j - i + (uint)(1)));
+                    i = j + (uint)(1);
+                    continue;
+                }
+                uint j__1 = i, c__1 = col, room = (uint)p->cols - col % (uint)p->cols;
+                uint taken = 0;
+                while (Cond.B(((CBool)(Cond.B(((CBool)(j__1 < L->len))) && Cond.B(((CBool)((byte)s[j__1] != 0x1b)))))))
+                {
+                    CBool lead = ((CBool)(((byte)s[j__1] & 0xC0) != 0x80));
+                    if (Cond.B(lead))
+                    {
+                        if (Cond.B(((CBool)(taken == room))))
+                            break;
+                        taken++;
+                    }
+                    j__1++;
+                }
+                cui_color fg = (Cond.B(st.has_fg) ? st.fg : p->fg), bg = (Cond.B(st.has_bg) ? st.bg : cui__rgba(0, 0, 0, 0));
+                if (Cond.B(st.inverse))
+                {
+                    cui_color tmp = fg;
+                    fg = (Cond.B(st.has_bg) ? st.bg : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE]);
+                    bg = tmp;
+                }
+                if (Cond.B(st.dim))
+                    fg = cui_alpha(fg, 0.6f);
+                float rx = x0 + c__1 % (uint)p->cols * p->cw, ry = y + c__1 / (uint)p->cols * p->lh;
+                if (Cond.B(((CBool)(ry > r.y + r.h))))
+                    break;
+                if (Cond.B(bg.a))
+                    cui_draw_rect(ui, new cui_rect { x = rx, y = ry, w = taken * p->cw, h = p->lh }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, bg);
+                if (Cond.B(((CBool)(ry + p->lh >= r.y))))
+                {
+                    uint k = i;
+                    float cx = rx;
+                    CBool rtl = 0;
+                    for (uint q = i; Cond.B(((CBool)(Cond.B(((CBool)(q < j__1))) && Cond.B((Cond.B(rtl) ? 0 : 1))))); q++)
+                    {
+                        byte ch = (byte)s[q];
+                        rtl = ((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(ch >= 0xD6))) && Cond.B(((CBool)(ch <= 0xDF)))))) || Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(ch == 0xEF))) && Cond.B(((CBool)(q + (uint)(1) < j__1)))))) && Cond.B(((CBool)((byte)s[q + (uint)(1)] >= 0xAC)))))) && Cond.B(((CBool)((byte)s[q + (uint)(1)] <= 0xBB))))))));
+                    }
+                    if (Cond.B(rtl))
+                    {
+                        uint q__1 = i;
+                        while (Cond.B(((CBool)(Cond.B(((CBool)(q__1 < j__1))) && Cond.B(((CBool)(s[q__1] == 32)))))))
+                            q__1++;
+                        cui__draw_text_line(ui, 3, p->size, rx + (q__1 - i) * p->cw, ry + (p->lh - fh) * 0.5f, fg, s + q__1, (int)(j__1 - q__1), 1);
+                        k = j__1;
+                    }
+                    while (Cond.B(((CBool)(k < j__1))))
+                    {
+                        uint e = k + (uint)(1);
+                        while (Cond.B(((CBool)(Cond.B(((CBool)(e < j__1))) && Cond.B(((CBool)(((byte)s[e] & 0xC0) == 0x80)))))))
+                            e++;
+                        byte b0 = (byte)s[k];
+                        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(e - k == (uint)(3)))) && Cond.B(((CBool)(b0 == 0xE2)))))) && Cond.B(((CBool)((byte)s[k + (uint)(1)] == 0x96)))))) && Cond.B(((CBool)((byte)s[k + (uint)(2)] >= 0x80)))))) && Cond.B(((CBool)((byte)s[k + (uint)(2)] <= 0x93)))))))
+                        {
+                            cui__tm_block(ui, (byte)s[k + (uint)(2)] - 0x80, new cui_rect { x = cx, y = ry, w = p->cw, h = p->lh }, fg);
+                        }
+                        else
+                            if (Cond.B(((CBool)(s[k] != 32))))
+                            {
+                                cui__draw_text_line(ui, ((int)(Cond.B(st.bold) ? 3 : 3)), p->size, cx, ry + (p->lh - fh) * 0.5f, fg, s + k, (int)(e - k), 1);
+                                if (Cond.B(st.bold))
+                                    cui__draw_text_line(ui, 3, p->size, cx + 0.45f, ry + (p->lh - fh) * 0.5f, fg, s + k, (int)(e - k), 1);
+                            }
+                        k = e;
+                        cx += p->cw;
+                    }
+                    if (Cond.B(st.underline))
+                        cui_draw_rect(ui, new cui_rect { x = rx, y = ry + p->lh - 3, w = taken * p->cw, h = 1 }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, fg);
+                }
+                col += taken;
+                i = j__1;
+            }
+            y += nrows * p->lh;
+        }
+        cui_pop_clip(ui);
+        if (Cond.B(((CBool)(Cond.B(((CBool)(p->bar_t > 0.01f))) && Cond.B(((CBool)(p->rows_total * p->lh > r.h)))))))
+        {
+            float vh = r.h, th = ((float)(Cond.B(((CBool)(24.0f > vh * vh / (float)(p->rows_total * p->lh)))) ? 24.0f : vh * vh / (float)(p->rows_total * p->lh)));
+            float maxtop = (float)(p->rows_total - (r.h - 12) / p->lh);
+            float ty = r.y + ((float)(Cond.B(((CBool)(maxtop > 0))) ? (float)(p->top / maxtop) : (float)(1))) * (vh - th);
+            cui_draw_rect(ui, new cui_rect { x = r.x + r.w - 6, y = ty, w = 3, h = th }, new cui_corners { tl = 1.5f, tr = 1.5f, br = 1.5f, bl = 1.5f }, cui_alpha(p->bar, p->bar_t));
+        }
     }
 
 
 
-    public static unsafe CBool cui__cov_folded__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(cui__cov_state* s, int k)
+    public static unsafe ulong cui__tm_copy_line(cui_terminal_buffer* t, int li, uint c0, uint c1, byte* @out, ulong cap)
     {
-        uint h = cui__cov_key__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(s, k);
-        for (int i = 0; Cond.B(((CBool)(i < s->nfolded))); i++)
-            if (Cond.B(((CBool)(s->folded[i] == h))))
+        cui_terminal_line* L = cui__tm_line(t, li);
+        byte* s = t->text + L->offset;
+        ulong n = 0;
+        uint col = 0;
+        for (uint i = 0; Cond.B(((CBool)(i < L->len))); )
+        {
+            if (Cond.B(((CBool)((byte)s[i] == 0x1b))))
+            {
+                uint j = i + (uint)(1);
+                while (Cond.B(((CBool)(Cond.B(((CBool)(j < L->len))) && Cond.B((Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)((byte)s[j] >= 0x40))) && Cond.B(((CBool)((byte)s[j] <= 0x7e)))))) && Cond.B(((CBool)(j > i + (uint)(1))))))) ? 0 : 1))))))
+                    j++;
+                i = j + (uint)(1);
+                continue;
+            }
+            uint e = i + (uint)(1);
+            while (Cond.B(((CBool)(Cond.B(((CBool)(e < L->len))) && Cond.B(((CBool)(((byte)s[e] & 0xC0) == 0x80)))))))
+                e++;
+            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(col >= c0))) && Cond.B(((CBool)(col < c1)))))) && Cond.B(((CBool)(n + (e - i) < cap)))))))
+            {
+                memcpy(@out + n, s + i, (ulong)((e - i)));
+                n += e - i;
+            }
+            col++;
+            i = e;
+        }
+        return n;
+    }
+
+
+
+    public static unsafe cui_terminal_result cui_terminal_ex(cui_ctx* ui, byte* id_str, cui_terminal_buffer* t, cui_terminal_opts* o)
+    {
+        int first = ui->node_count;
+        cui_terminal_result r = cui__terminal_ex_body(ui, id_str, t, o);
+        do
+        {
+            int f_ = first;
+            if (Cond.B(((CBool)(Cond.B(((CBool)(f_ < ui->node_count))) && Cond.B((Cond.B(ui->nodes[f_].direction) ? 0 : 1))))))
+                ui->nodes[f_].direction = (byte)(__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_LTR);
+        }
+        while (false);
+        return r;
+    }
+
+
+
+    public static unsafe cui_terminal_result cui__terminal_ex_body(cui_ctx* ui, byte* id_str, cui_terminal_buffer* t, cui_terminal_opts* o)
+    {
+        cui_terminal_opts d = default;
+        memset(&d, 0, ((ulong)(sizeof(cui_terminal_opts))));
+        if (Cond.B((Cond.B(o) ? 0 : 1)))
+            o = &d;
+        cui_terminal_result res = new cui_terminal_result { command = null, interrupt = 0 };
+        uint id = cui_make_id(ui, ((byte*)(Cond.B(id_str) ? id_str : (DotCcLiterals.Pointer + DotCcLiterals.S72 /*"terminal"*/))));
+        uint vid = id ^ 0x7E2Du, wid = id ^ 0x7E2Eu;
+        uint fid = cui__hash_str((DotCcLiterals.Pointer + DotCcLiterals.S1423 /*"#term-input"*/), id);
+        cui__tm_state* st = (cui__tm_state*)(cui_state(ui, id, ((ulong)(sizeof(cui__tm_state)))));
+        if (Cond.B((Cond.B(st->init) ? 0 : 1)))
+        {
+            st->follow = 1;
+            st->init = 1;
+        }
+        float size = cui__fs(ui, ((float)(Cond.B(((CBool)(o->size > 0))) ? o->size : (float)(13))));
+        float cw = cui__text_width(ui, 3, size, (DotCcLiterals.Pointer + DotCcLiterals.S1307 /*"0"*/), 1, 1);
+        if (Cond.B(((CBool)(cw <= 0))))
+            cw = size * 0.6f;
+        float lh = ceilf(size * 1.45f);
+        cui_rect pr = cui__prev_rect(ui, vid);
+        float vw = ((float)(Cond.B(((CBool)(pr.w > 0))) ? pr.w : (float)(600))), vh = ((float)(Cond.B(((CBool)(pr.h > 0))) ? pr.h : ((float)(Cond.B(((CBool)(o->height > 0))) ? o->height : (float)(320))) - 40));
+        int cols = ((int)(Cond.B(((CBool)(8 > (int)((vw - 20) / cw)))) ? 8 : (int)((vw - 20) / cw)));
+        double rows_total = 0;
+        CBool ok = ((CBool)(Cond.B(t) && Cond.B(t->line_cap)));
+        if (Cond.B(ok))
+            for (int i = 0; Cond.B(((CBool)(i < t->count))); i++)
+                rows_total += cui__tm_rows(cui__tm_line(t, i)->cols, cols);
+        double page = (vh - 12) / lh, maxtop = ((double)(Cond.B(((CBool)(0.0 > rows_total - page))) ? 0.0 : rows_total - page));
+        cui_interact vr = cui__interact(ui, vid, 2);
+        if (Cond.B(((CBool)(Cond.B(((CBool)(ui->scroll_target == wid))) && Cond.B(((CBool)(ui->scroll_dy != 0)))))))
+        {
+            st->top -= ui->scroll_dy * 3;
+            st->follow = ((CBool)(st->top >= maxtop - 0.5));
+            ui->scroll_dy = 0;
+        }
+        if (Cond.B(st->follow))
+            st->top = maxtop;
+        st->top = ((double)(Cond.B(((CBool)(((double)(Cond.B(((CBool)(st->top > 0))) ? st->top : (double)(0))) < maxtop))) ? ((double)(Cond.B(((CBool)(st->top > 0))) ? st->top : (double)(0))) : maxtop));
+        if (Cond.B(((CBool)(st->top >= maxtop - 0.01))))
+            st->follow = 1;
+        cui__tm_pos at = new cui__tm_pos { line = 0, col = 0 };
+        CBool at_ok = 0;
+        if (Cond.B(((CBool)(Cond.B(ok) && Cond.B(((CBool)(pr.w > 0)))))))
+        {
+            double rr = st->top + (ui->my - pr.y - 6) / lh;
+            if (Cond.B(((CBool)(rr < 0))))
+                rr = 0;
+            double row = 0;
+            int li = 0;
+            while (Cond.B(((CBool)(li < t->count - 1))))
+            {
+                int nr = cui__tm_rows(cui__tm_line(t, li)->cols, cols);
+                if (Cond.B(((CBool)(row + nr > rr))))
+                    break;
+                row += nr;
+                li++;
+            }
+            int sub = (int)(rr - row);
+            long cc = (long)floorf((ui->mx - pr.x - 10) / cw + 0.5f);
+            cc = ((long)(Cond.B(((CBool)(((long)(Cond.B(((CBool)(cc > 0))) ? cc : (long)(0))) < cols))) ? ((long)(Cond.B(((CBool)(cc > 0))) ? cc : (long)(0))) : (long)(cols)));
+            uint col = (uint)(sub * cols + cc);
+            col = ((uint)(Cond.B(((CBool)(col < cui__tm_line(t, li)->cols))) ? col : cui__tm_line(t, li)->cols));
+            at = new cui__tm_pos { line = t->total - (ulong)t->count + (ulong)li, col = col };
+            at_ok = 1;
+        }
+        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(vr.active) && Cond.B(((CBool*)&ui->mpressed)[0])))) && Cond.B(at_ok)))))
+        {
+            st->a = st->b = at;
+            st->selecting = 1;
+            st->has_sel = 0;
+            st->press_x = ui->mx;
+            st->press_y = ui->my;
+        }
+        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(st->selecting) && Cond.B(((CBool*)&ui->mdown)[0])))) && Cond.B(at_ok)))))
+        {
+            st->b = at;
+            if (Cond.B(((CBool)(fabsf(ui->mx - st->press_x) + fabsf(ui->my - st->press_y) > 3))))
+                st->has_sel = 1;
+            if (Cond.B(((CBool)(ui->my < pr.y))))
+            {
+                st->top = ((double)(Cond.B(((CBool)(0.0 > st->top - 0.5))) ? 0.0 : st->top - 0.5));
+                st->follow = 0;
+                ui->animating = 1;
+            }
+            if (Cond.B(((CBool)(ui->my > pr.y + pr.h))))
+            {
+                st->top = ((double)(Cond.B(((CBool)(maxtop < st->top + 0.5))) ? maxtop : st->top + 0.5));
+                ui->animating = 1;
+            }
+        }
+        if (Cond.B(((CBool)(Cond.B(st->selecting) && Cond.B((Cond.B(((CBool*)&ui->mdown)[0]) ? 0 : 1))))))
+        {
+            st->selecting = 0;
+            ui->focus = ((uint)(Cond.B(o->no_input) ? vid : fid));
+        }
+        if (Cond.B(vr.hovered))
+            cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_TEXT);
+        cui__tm_pos s0 = st->a, s1 = st->b;
+        if (Cond.B(((CBool)(Cond.B(((CBool)(s1.line < s0.line))) || Cond.B(((CBool)(Cond.B(((CBool)(s1.line == s0.line))) && Cond.B(((CBool)(s1.col < s0.col))))))))))
+        {
+            cui__tm_pos tmp = s0;
+            s0 = s1;
+            s1 = tmp;
+        }
+        CBool ours = ((CBool)(Cond.B(((CBool)(ui->focus == fid))) || Cond.B(((CBool)(ui->focus == vid)))));
+        CBool field_sel = 0;
+        if (Cond.B(((CBool)(ui->focus == fid))))
+        {
+            cui_edit_state* e = (cui_edit_state*)(cui_state(ui, fid, ((ulong)(sizeof(cui_edit_state)))));
+            field_sel = ((CBool)(e->cursor != e->anchor));
+        }
+        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(ours) && Cond.B((Cond.B(field_sel) ? 0 : 1))))) && Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_C))))) && Cond.B(ui->mods & ((int)__DotCcEnum_6375695F6D6F64.CUI_MOD_CTRL | (int)__DotCcEnum_6375695F6D6F64.CUI_MOD_CTRL))))))
+        {
+            if (Cond.B(((CBool)(Cond.B(st->has_sel) && Cond.B(ui->mods & (int)__DotCcEnum_6375695F6D6F64.CUI_MOD_CTRL)))))
+            {
+                if (Cond.B(((CBool)(Cond.B(ok) && Cond.B(ui->platform.set_clipboard)))))
+                {
+                    ulong cap = unchecked((ulong)(256 * 1024)), n = 0;
+                    byte* buf = (byte*)(cui__alloc(ui, cap));
+                    if (Cond.B(buf))
+                    {
+                        ulong first_no = t->total - (ulong)t->count;
+                        for (ulong no = ((ulong)(Cond.B(((CBool)(s0.line > first_no))) ? s0.line : first_no)); Cond.B(((CBool)(Cond.B(((CBool)(no <= s1.line))) && Cond.B(((CBool)(no < t->total)))))); no++)
+                        {
+                            int li__1 = (int)(no - first_no);
+                            uint c0 = ((uint)(Cond.B(((CBool)(no == s0.line))) ? s0.col : (uint)(0))), c1 = ((uint)(Cond.B(((CBool)(no == s1.line))) ? s1.col : 0xFFFFFFFFu));
+                            n += cui__tm_copy_line(t, li__1, c0, c1, buf + n, cap - n - (ulong)(2));
+                            if (Cond.B(((CBool)(Cond.B(((CBool)(no != s1.line))) && Cond.B(((CBool)(n < cap - (ulong)(2))))))))
+                                buf[n++] = 10;
+                        }
+                        buf[n] = 0;
+                        ui->platform.set_clipboard(ui->platform.user, buf);
+                        cui__free(ui, buf);
+                    }
+                }
+                st->has_sel = 0;
+                ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_C] = 0;
+            }
+            else
+                if (Cond.B(ui->mods & (int)__DotCcEnum_6375695F6D6F64.CUI_MOD_CTRL))
+                {
+                    res.interrupt = 1;
+                    if (Cond.B(ok))
+                        cui_terminal_write(t, (DotCcLiterals.Pointer + DotCcLiterals.S32 /*"^C\n"*/), 3);
+                    st->input[0] = 0;
+                    ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_C] = 0;
+                }
+        }
+        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(ours) && Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_L))))) && Cond.B(ui->mods & (int)__DotCcEnum_6375695F6D6F64.CUI_MOD_CTRL)))) && Cond.B(ok)))))
+        {
+            cui_terminal_clear(t);
+            st->top = 0;
+            st->follow = 1;
+            st->has_sel = 0;
+        }
+        if (Cond.B(((CBool)(Cond.B(((CBool)(ui->focus == fid))) && Cond.B(((CBool)(st->hn > 0)))))))
+        {
+            int dir = ((int)(Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_UP)) ? -1 : ((int)(Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_DOWN)) ? 1 : 0))));
+            if (Cond.B(dir))
+            {
+                if (Cond.B((Cond.B(st->browsing) ? 0 : 1)))
+                {
+                    st->hpos = st->hn;
+                    st->browsing = 1;
+                }
+                st->hpos = ((int)(Cond.B(((CBool)(((int)(Cond.B(((CBool)(st->hpos + dir > 0))) ? st->hpos + dir : 0)) < st->hn))) ? ((int)(Cond.B(((CBool)(st->hpos + dir > 0))) ? st->hpos + dir : 0)) : st->hn));
+                snprintf(st->input, unchecked((int)(((ulong)((1024 * sizeof(byte)))))), (DotCcLiterals.Pointer + DotCcLiterals.S260 /*"%s"*/)).Arg(((byte*)(Cond.B(((CBool)(st->hpos < st->hn))) ? st->hist + st->hpos * 256 : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/)))).Done();
+                ui->tf_select_all = 0;
+                cui_edit_state* e__1 = (cui_edit_state*)(cui_state(ui, fid, ((ulong)(sizeof(cui_edit_state)))));
+                e__1->cursor = e__1->anchor = (int)strlen(st->input);
+                ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_UP] = ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_DOWN] = 0;
+            }
+        }
+        float h = ((float)(Cond.B(((CBool)(o->height > 0))) ? o->height : (float)(320)));
+        int col__1 = cui__node_new(ui, id);
+        cui_node* cn = &ui->nodes[col__1];
+        cn->w = (Cond.B((int)o->width.kind) ? o->width : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 });
+        cn->h = (Cond.B(((CBool)(o->height < 0))) ? new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 } : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)h });
+        cn->self_align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_STRETCH);
+        cn->gap = 0;
+        cn->bg = (Cond.B(((CBool)((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK))) ? cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BACKGROUND], ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE], 0.5f) : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE]);
+        cn->border = 1;
+        cn->border_color = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER];
+        cn->radius = new cui_corners { tl = ui->theme.radius_control, tr = ui->theme.radius_control, br = ui->theme.radius_control, bl = ui->theme.radius_control };
+        cn->flags |= (uint)(16);
+        cui__open(ui, col__1);
+        int v = cui__leaf(ui, vid, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 });
+        ui->nodes[v].self_align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_STRETCH);
+        cui__mark_interactive(ui, v, 0);
+        cui__tm_paint* p = (cui__tm_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__tm_paint)))));
+        memset(p, 0, ((ulong)(sizeof(cui__tm_paint))));
+        p->t = ((cui_terminal_buffer*)(Cond.B(ok) ? t : null));
+        p->top = st->top;
+        p->cols = cols;
+        p->cw = cw;
+        p->lh = lh;
+        p->size = size;
+        p->has_sel = st->has_sel;
+        p->s0 = s0;
+        p->s1 = s1;
+        p->fg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND];
+        p->sel = cui_alpha(cui__emphasis(ui), ((float)(Cond.B(((CBool)((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK))) ? 0.3f : 0.18f)));
+        p->bar = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER_STRONG];
+        p->bar_t = ((int)(Cond.B(((CBool)(Cond.B(vr.hovered) || Cond.B((Cond.B(st->follow) ? 0 : 1))))) ? 1 : 0));
+        p->rows_total = rows_total;
+        p->wheel = wid;
+        ui->nodes[v].paint = DotCcPointers.cui__paint_terminal__unit_52AECEE497E6E75AA7FA1F0681878C34CD37975FE9AD90F23F79364C9B71175B;
+        ui->nodes[v].paint_data = p;
+        if (Cond.B((Cond.B(o->no_input) ? 0 : 1)))
+        {
+            int line = cui__leaf(ui, 0, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)1 });
+            ui->nodes[line].bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER_SUBTLE];
+            int row__1 = cui__node_new(ui, 0);
+            cui_node* rn = &ui->nodes[row__1];
+            rn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
+            rn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+            rn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+            rn->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)34 };
+            rn->pad[1] = rn->pad[3] = 10;
+            rn->gap = 0;
+            cui__open(ui, row__1);
+            byte* prompt = ((byte*)(Cond.B(o->prompt) ? o->prompt : (DotCcLiterals.Pointer + DotCcLiterals.S1007 /*"$ "*/)));
+            int pt = cui__text_node(ui, prompt, -1, 3, size, (Cond.B(((CBool)((int)ui->accent == (int)__DotCcEnum_6375695F616363656E74.CUI_ACCENT_NEUTRAL))) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY] : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_ACCENT]), 0);
+            ui->nodes[pt].flags |= (uint)(256);
+            cui_input_opts io = default;
+            memset(&io, 0, ((ulong)(sizeof(cui_input_opts))));
+            io.width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+            ui->tf_override = 1;
+            ui->tf_font = 3;
+            ui->tf_size = size;
+            int f = cui__text_field(ui, fid, st->input, ((ulong)((1024 * sizeof(byte)))), &io, 0, 1, null);
+            if (Cond.B(f & 1))
+                st->browsing = 0;
+            if (Cond.B(f & 2))
+            {
+                if (Cond.B(ok))
+                {
+                    cui_terminal_write(t, (DotCcLiterals.Pointer + DotCcLiterals.S1196 /*"\u001B[2m"*/), 4);
+                    cui_terminal_write(t, prompt, -1);
+                    cui_terminal_write(t, (DotCcLiterals.Pointer + DotCcLiterals.S935 /*"\u001B[0m"*/), 4);
+                    cui_terminal_write(t, st->input, -1);
+                    cui_terminal_write(t, (DotCcLiterals.Pointer + DotCcLiterals.S89 /*"\n"*/), 1);
+                }
+                if (Cond.B(((CBool)(Cond.B(st->input[0]) && Cond.B(((CBool)(Cond.B(((CBool)(st->hn == 0))) || Cond.B(strcmp(st->hist + (st->hn - 1) * 256, st->input)))))))))
+                {
+                    if (Cond.B(((CBool)(st->hn == 32))))
+                    {
+                        memmove(st->hist + 0 * 256, st->hist + 1 * 256, unchecked(((ulong)((256 * sizeof(byte)))) * (ulong)(31)));
+                        st->hn--;
+                    }
+                    ulong n__1 = (ulong)(strlen(st->input)), cap__1 = unchecked(((ulong)((256 * sizeof(byte)))) - (ulong)(1));
+                    if (Cond.B(((CBool)(n__1 > cap__1))))
+                    {
+                        n__1 = cap__1;
+                        while (Cond.B(((CBool)(Cond.B(((CBool)(n__1 > (ulong)(0)))) && Cond.B(((CBool)(((byte)st->input[n__1] & 0xC0) == 0x80)))))))
+                            n__1--;
+                    }
+                    memcpy(st->hist + st->hn * 256, st->input, n__1);
+                    (st->hist + st->hn++ * 256)[n__1] = 0;
+                }
+                res.command = cui__frame_strdup(ui, st->input, -1);
+                st->input[0] = 0;
+                st->browsing = 0;
+                st->follow = 1;
+                cui_edit_state* e__2 = (cui_edit_state*)(cui_state(ui, fid, ((ulong)(sizeof(cui_edit_state)))));
+                e__2->cursor = e__2->anchor = 0;
+            }
+            cui__close(ui);
+        }
+        cui__close(ui);
+        ui->last_id = ((uint)(Cond.B(o->no_input) ? vid : fid));
+        return res;
+    }
+
+
+
+    public static unsafe ushort cui__be16(byte* p)
+    {
+        return (ushort)(p[0] << 8 | p[1]);
+    }
+
+
+
+    public static unsafe uint cui__be32(byte* p)
+    {
+        return (uint)p[0] << 24 | (uint)p[1] << 16 | (uint)p[2] << 8 | p[3];
+    }
+
+
+
+    public static unsafe int cui__t16(byte* t, uint len, ulong off)
+    {
+        return ((int)(Cond.B(((CBool)(Cond.B(t) && Cond.B(((CBool)(off + (ulong)(2) <= len)))))) ? (int)(cui__be16(t + off)) : 0));
+    }
+
+
+
+    public static unsafe uint cui__t32(byte* t, uint len, ulong off)
+    {
+        return ((uint)(Cond.B(((CBool)(Cond.B(t) && Cond.B(((CBool)(off + (ulong)(4) <= len)))))) ? cui__be32(t + off) : (uint)(0)));
+    }
+
+
+
+    public static unsafe cui__emoji* cui__em(cui_ctx* ui)
+    {
+        if (Cond.B((Cond.B(ui->emoji) ? 0 : 1)))
+        {
+            ui->emoji = (cui__emoji*)(cui__alloc(ui, ((ulong)(sizeof(cui__emoji)))));
+            if (Cond.B(ui->emoji))
+            {
+                memset(ui->emoji, 0, ((ulong)(sizeof(cui__emoji))));
+                ui->emoji_hook = DotCcPointers.cui__emoji_hook__unit_7763C92B9CFBA360302C83DE6BCDF7E7E505B9CB2BEE2E2C8764C4942CE00CB3;
+            }
+        }
+        return ui->emoji;
+    }
+
+
+
+    public static unsafe CBool cui__em_read(cui__emoji* e, uint off, void* dst, uint n)
+    {
+        if (Cond.B(((CBool)((ulong)off + n > e->size))))
+            return 0;
+        if (Cond.B(e->mem))
+        {
+            memcpy(dst, e->mem + off, (ulong)(n));
+            return 1;
+        }
+        if (Cond.B(((CBool)(Cond.B((Cond.B(e->file) ? 0 : 1)) || Cond.B(fseek(e->file, (long)off, 0))))))
+            return 0;
+        return ((CBool)((uint)(fread(dst, 1, (int)(n), e->file)) == n));
+    }
+
+
+
+    public static unsafe byte* cui__em_table(cui_ctx* ui, cui__emoji* e, uint off, uint len)
+    {
+        if (Cond.B(((CBool)(Cond.B((Cond.B(len) ? 0 : 1)) || Cond.B(((CBool)(len > 64u << 20)))))))
+            return null;
+        byte* t = (byte*)(cui__alloc(ui, len));
+        if (Cond.B(((CBool)(Cond.B(t) && Cond.B((Cond.B(cui__em_read(e, off, t, len)) ? 0 : 1))))))
+        {
+            cui__free(ui, t);
+            t = null;
+        }
+        return t;
+    }
+
+
+
+    public static unsafe void cui__em_close_font(cui_ctx* ui, cui__emoji* e)
+    {
+        cui__free(ui, e->cmap);
+        cui__free(ui, e->gsub);
+        cui__free(ui, e->cblc);
+        cui__free(ui, e->colr);
+        cui__free(ui, e->cpal);
+        cui__free(ui, e->tt);
+        if (Cond.B(e->owned))
+            cui__free(ui, e->mem);
+        if (Cond.B(e->file))
+            fclose(e->file);
+        e->cmap = e->gsub = e->cblc = e->colr = e->cpal = null;
+        e->tt = null;
+        e->mem = null;
+        e->file = null;
+        e->owned = e->loaded = e->mono_font = 0;
+        e->sbix_n = 0;
+        e->sbix = e->cbdt = 0;
+        e->size = 0;
+        for (int i = 0; Cond.B(((CBool)(i < e->nslots))); i++)
+            ((cui__em_slot*)&e->slots)[i].state = 0;
+        e->avail_font = 0;
+    }
+
+
+
+    public static unsafe void cui__emoji_drop_texture(cui_ctx* ui)
+    {
+        cui__emoji* e = ui->emoji;
+        if (Cond.B((Cond.B(e) ? 0 : 1)))
+            return;
+        if (Cond.B(((CBool)(Cond.B(e->tex) && Cond.B(ui->renderer.texture_destroy)))))
+            ui->renderer.texture_destroy(ui->renderer.user, e->tex);
+        e->tex = 0;
+        for (int i = 0; Cond.B(((CBool)(i < e->nslots))); i++)
+            ((cui__em_slot*)&e->slots)[i].state = 0;
+    }
+
+
+
+    public static unsafe void cui__emoji_frame(cui_ctx* ui)
+    {
+        cui__emoji* e = ui->emoji;
+        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(e) && Cond.B(e->tex)))) && Cond.B(((CBool)(ui->frame - e->last_draw > (ulong)(600))))))))
+            cui__emoji_drop_texture(ui);
+    }
+
+
+
+    public static unsafe void cui__emoji_shutdown(cui_ctx* ui)
+    {
+        cui__emoji* e = ui->emoji;
+        if (Cond.B((Cond.B(e) ? 0 : 1)))
+            return;
+        cui__emoji_drop_texture(ui);
+        cui__em_close_font(ui, e);
+        cui__free(ui, e->data);
+        cui__free(ui, e->recs);
+        cui__free(ui, e->avail);
+        cui__free(ui, e);
+        ui->emoji = null;
+    }
+
+
+
+    public static unsafe void cui__emoji_hook__unit_7763C92B9CFBA360302C83DE6BCDF7E7E505B9CB2BEE2E2C8764C4942CE00CB3(cui_ctx* ui, int what)
+    {
+        if (Cond.B(((CBool)(what == 0))))
+            cui__emoji_frame(ui);
+        else
+            if (Cond.B(((CBool)(what == 1))))
+                cui__emoji_drop_texture(ui);
+            else
+                cui__emoji_shutdown(ui);
+    }
+
+
+
+    public static unsafe CBool cui__em_open(cui_ctx* ui, cui__emoji* e)
+    {
+    byte* __dotcc_array_storage0 = null;
+    byte* __dotcc_array_storage1 = null;
+        byte* h = stackalloc byte[12];
+        if (Cond.B((Cond.B(cui__em_read(e, 0, h, 12)) ? 0 : 1)))
+            return 0;
+        e->@base = 0;
+        if (Cond.B((Cond.B(memcmp(h, (DotCcLiterals.Pointer + DotCcLiterals.S1167 /*"ttcf"*/), (ulong)(4))) ? 0 : 1)))
+        {
+            byte* o = stackalloc byte[4];
+            if (Cond.B((Cond.B(cui__em_read(e, 12, o, 4)) ? 0 : 1)))
+                return 0;
+            e->@base = cui__be32(o);
+            if (Cond.B((Cond.B(cui__em_read(e, e->@base, h, 12)) ? 0 : 1)))
+                return 0;
+        }
+        int n = cui__be16(h + 4);
+        if (Cond.B(((CBool)(Cond.B(((CBool)(n <= 0))) || Cond.B(((CBool)(n > 200)))))))
+            return 0;
+        byte* dir = stackalloc byte[3200];
+        if (Cond.B((Cond.B(cui__em_read(e, e->@base + (uint)(12), dir, (uint)n * (uint)(16))) ? 0 : 1)))
+            return 0;
+        uint cmap = 0, cmap_l = 0, gsub = 0, gsub_l = 0, cblc = 0, cblc_l = 0, colr = 0, colr_l = 0, cpal = 0, cpal_l = 0, maxp = 0;
+        CBool glyf = 0, cff = 0;
+        for (int i = 0; Cond.B(((CBool)(i < n))); i++)
+        {
+            byte* r = dir + i * 16;
+            uint off = cui__be32(r + 8), len = cui__be32(r + 12);
+            if (Cond.B((Cond.B(memcmp(r, (DotCcLiterals.Pointer + DotCcLiterals.S790 /*"cmap"*/), (ulong)(4))) ? 0 : 1)))
+            {
+                cmap = off;
+                cmap_l = len;
+            }
+            else
+                if (Cond.B((Cond.B(memcmp(r, (DotCcLiterals.Pointer + DotCcLiterals.S1315 /*"GSUB"*/), (ulong)(4))) ? 0 : 1)))
+                {
+                    gsub = off;
+                    gsub_l = len;
+                }
+                else
+                    if (Cond.B((Cond.B(memcmp(r, (DotCcLiterals.Pointer + DotCcLiterals.S645 /*"CBLC"*/), (ulong)(4))) ? 0 : 1)))
+                    {
+                        cblc = off;
+                        cblc_l = len;
+                    }
+                    else
+                        if (Cond.B((Cond.B(memcmp(r, (DotCcLiterals.Pointer + DotCcLiterals.S511 /*"CBDT"*/), (ulong)(4))) ? 0 : 1)))
+                            e->cbdt = off;
+                        else
+                            if (Cond.B((Cond.B(memcmp(r, (DotCcLiterals.Pointer + DotCcLiterals.S1416 /*"sbix"*/), (ulong)(4))) ? 0 : 1)))
+                                e->sbix = off;
+                            else
+                                if (Cond.B((Cond.B(memcmp(r, (DotCcLiterals.Pointer + DotCcLiterals.S1045 /*"COLR"*/), (ulong)(4))) ? 0 : 1)))
+                                {
+                                    colr = off;
+                                    colr_l = len;
+                                }
+                                else
+                                    if (Cond.B((Cond.B(memcmp(r, (DotCcLiterals.Pointer + DotCcLiterals.S766 /*"CPAL"*/), (ulong)(4))) ? 0 : 1)))
+                                    {
+                                        cpal = off;
+                                        cpal_l = len;
+                                    }
+                                    else
+                                        if (Cond.B((Cond.B(memcmp(r, (DotCcLiterals.Pointer + DotCcLiterals.S477 /*"maxp"*/), (ulong)(4))) ? 0 : 1)))
+                                            maxp = off;
+                                        else
+                                            if (Cond.B((Cond.B(memcmp(r, (DotCcLiterals.Pointer + DotCcLiterals.S789 /*"glyf"*/), (ulong)(4))) ? 0 : 1)))
+                                                glyf = 1;
+                                            else
+                                                if (Cond.B((Cond.B(memcmp(r, (DotCcLiterals.Pointer + DotCcLiterals.S1410 /*"CFF "*/), (ulong)(4))) ? 0 : 1)))
+                                                    cff = 1;
+        }
+        if (Cond.B((Cond.B(cmap) ? 0 : 1)))
+            return 0;
+        byte* mp = stackalloc byte[6];
+        if (Cond.B(((CBool)(Cond.B(maxp) && Cond.B(cui__em_read(e, maxp, mp, 6))))))
+            e->num_glyphs = cui__be16(mp + 4);
+        e->cmap = cui__em_table(ui, e, cmap, cmap_l);
+        e->cmap_len = cmap_l;
+        if (Cond.B((Cond.B(e->cmap) ? 0 : 1)))
+            return 0;
+        int nsub = cui__t16(e->cmap, cmap_l, (ulong)2);
+        for (int pass = 0; Cond.B(((CBool)(Cond.B(((CBool)(pass < 2))) && Cond.B((Cond.B(e->cmap_fmt) ? 0 : 1))))); pass++)
+            for (int i__1 = 0; Cond.B(((CBool)(i__1 < nsub))); i__1++)
+            {
+                uint rec = (uint)(4) + (uint)i__1 * (uint)(8);
+                ushort pid = (ushort)(cui__t16(e->cmap, cmap_l, (ulong)rec)), eid = (ushort)(cui__t16(e->cmap, cmap_l, (ulong)(rec + (uint)(2))));
+                uint off__1 = cui__t32(e->cmap, cmap_l, (ulong)(rec + (uint)(4)));
+                ushort fmt = (ushort)(cui__t16(e->cmap, cmap_l, (ulong)off__1));
+                CBool uni = ((CBool)(Cond.B(((CBool)(pid == 0))) || Cond.B(((CBool)(Cond.B(((CBool)(pid == 3))) && Cond.B(((CBool)(Cond.B(((CBool)(eid == 10))) || Cond.B(((CBool)(eid == 1)))))))))));
+                if (Cond.B(((CBool)(Cond.B(uni) && Cond.B(((CBool)(fmt == ((int)(Cond.B(((CBool)(pass == 0))) ? 12 : 4)))))))))
+                {
+                    e->cmap_fmt = fmt;
+                    e->cmap_sub = off__1;
+                    break;
+                }
+            }
+        if (Cond.B((Cond.B(e->cmap_fmt) ? 0 : 1)))
+            return 0;
+        if (Cond.B(gsub))
+        {
+            e->gsub = cui__em_table(ui, e, gsub, gsub_l);
+            e->gsub_len = ((uint)(Cond.B(e->gsub) ? gsub_l : (uint)(0)));
+        }
+        if (Cond.B(((CBool)(Cond.B(cblc) && Cond.B(e->cbdt)))))
+        {
+            e->cblc = cui__em_table(ui, e, cblc, cblc_l);
+            e->cblc_len = ((uint)(Cond.B(e->cblc) ? cblc_l : (uint)(0)));
+        }
+        if (Cond.B(((CBool)(Cond.B(e->sbix) && Cond.B(e->num_glyphs)))))
+        {
+            byte* sh = stackalloc byte[8];
+            if (Cond.B(cui__em_read(e, e->sbix, sh, 8)))
+            {
+                int ns = (int)((uint)(Cond.B(((CBool)(cui__be32(sh + 4) < 16u))) ? cui__be32(sh + 4) : 16u));
+                for (int i__2 = 0; Cond.B(((CBool)(i__2 < ns))); i__2++)
+                {
+                    if (__dotcc_array_storage0 == null)
+                    {
+                        byte* __dotcc_array_storage0_new = stackalloc byte[checked(sizeof(byte) * 4)];
+                        __dotcc_array_storage0 = __dotcc_array_storage0_new;
+                    }
+                    byte* so = (byte*)__dotcc_array_storage0;
+                    new global::System.Span<byte>((void*)so, checked(sizeof(byte) * 4)).Clear();
+                    if (__dotcc_array_storage1 == null)
+                    {
+                        byte* __dotcc_array_storage1_new = stackalloc byte[checked(sizeof(byte) * 2)];
+                        __dotcc_array_storage1 = __dotcc_array_storage1_new;
+                    }
+                    byte* sp = (byte*)__dotcc_array_storage1;
+                    new global::System.Span<byte>((void*)sp, checked(sizeof(byte) * 2)).Clear();
+                    if (Cond.B((Cond.B(cui__em_read(e, e->sbix + (uint)(8) + (uint)i__2 * (uint)(4), so, 4)) ? 0 : 1)))
+                        break;
+                    uint st = e->sbix + cui__be32(so);
+                    if (Cond.B((Cond.B(cui__em_read(e, st, sp, 2)) ? 0 : 1)))
+                        break;
+                    e->sbix_strike[e->sbix_n] = st;
+                    e->sbix_ppem[e->sbix_n] = cui__be16(sp);
+                    e->sbix_n++;
+                }
+            }
+        }
+        if (Cond.B(((CBool)(Cond.B(colr) && Cond.B(cpal)))))
+        {
+            e->colr = cui__em_table(ui, e, colr, colr_l);
+            e->colr_len = ((uint)(Cond.B(e->colr) ? colr_l : (uint)(0)));
+            e->cpal = cui__em_table(ui, e, cpal, cpal_l);
+            e->cpal_len = ((uint)(Cond.B(e->cpal) ? cpal_l : (uint)(0)));
+            if (Cond.B(((CBool)(Cond.B(e->colr) && Cond.B(((CBool)(cui__t16(e->colr, e->colr_len, (ulong)2) == 0)))))))
+            {
+                cui__free(ui, e->colr);
+                cui__free(ui, e->cpal);
+                e->colr = e->cpal = null;
+            }
+        }
+        CBool outlines = ((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(glyf) || Cond.B(cff)))) && Cond.B((Cond.B(e->cblc) ? 0 : 1))))) && Cond.B((Cond.B(e->sbix_n) ? 0 : 1))));
+        if (Cond.B(outlines))
+        {
+            if (Cond.B((Cond.B(e->mem) ? 0 : 1)))
+            {
+                if (Cond.B(((CBool)(e->size > 96u << 20))))
+                    return 0;
+                byte* m = (byte*)(cui__alloc(ui, e->size));
+                if (Cond.B(((CBool)(Cond.B((Cond.B(m) ? 0 : 1)) || Cond.B((Cond.B(cui__em_read(e, 0, m, (uint)e->size)) ? 0 : 1))))))
+                {
+                    cui__free(ui, m);
+                    return 0;
+                }
+                e->mem = m;
+                e->owned = 1;
+                fclose(e->file);
+                e->file = null;
+            }
+            e->tt = cui__tt_open(ui, e->mem, (int)e->@base);
+            if (Cond.B((Cond.B(e->tt) ? 0 : 1)))
+                return 0;
+            e->mono_font = (Cond.B(e->colr) ? 0 : 1);
+        }
+        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(e->cblc) ? 0 : 1)) && Cond.B((Cond.B(e->sbix_n) ? 0 : 1))))) && Cond.B((Cond.B(e->tt) ? 0 : 1))))))
+            return 0;
+        e->loaded = 1;
+        return 1;
+    }
+
+
+
+    public static unsafe CBool cui_emoji_font_load_memory(cui_ctx* ui, void* data, ulong size, CBool copy)
+    {
+        cui__emoji* e = cui__em(ui);
+        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(e) ? 0 : 1)) || Cond.B((Cond.B(data) ? 0 : 1))))) || Cond.B(((CBool)(size < (ulong)(12))))))) || Cond.B(((CBool)(size > (ulong)(0x7FFFFFFF))))))))
+            return 0;
+        cui__em_close_font(ui, e);
+        e->mem = (byte*)data;
+        e->size = size;
+        if (Cond.B(copy))
+        {
+            e->mem = (byte*)(cui__alloc(ui, size));
+            if (Cond.B((Cond.B(e->mem) ? 0 : 1)))
+                return 0;
+            memcpy(e->mem, data, size);
+            e->owned = 1;
+        }
+        if (Cond.B((Cond.B(cui__em_open(ui, e)) ? 0 : 1)))
+        {
+            cui__em_close_font(ui, e);
+            return 0;
+        }
+        ui->settle_frames = ((int)(Cond.B(((CBool)(ui->settle_frames > 2))) ? ui->settle_frames : 2));
+        return 1;
+    }
+
+
+
+    public static unsafe CBool cui_emoji_font_load_file(cui_ctx* ui, byte* path)
+    {
+        cui__emoji* e = cui__em(ui);
+        if (Cond.B(((CBool)(Cond.B((Cond.B(e) ? 0 : 1)) || Cond.B((Cond.B(path) ? 0 : 1))))))
+            return 0;
+        FILE* f = ((FILE*)(fopen(path, (DotCcLiterals.Pointer + DotCcLiterals.S1373 /*"rb"*/))));
+        if (Cond.B((Cond.B(f) ? 0 : 1)))
+            return 0;
+        if (Cond.B(fseek(f, (long)(0), 2)))
+        {
+            fclose(f);
+            return 0;
+        }
+        long n = ftell(f);
+        if (Cond.B(((CBool)(Cond.B(((CBool)(n < 12))) || Cond.B(((CBool)(n > 0x7FFFFFFF)))))))
+        {
+            fclose(f);
+            return 0;
+        }
+        cui__em_close_font(ui, e);
+        e->file = f;
+        e->size = (ulong)n;
+        if (Cond.B((Cond.B(cui__em_open(ui, e)) ? 0 : 1)))
+        {
+            cui__em_close_font(ui, e);
+            return 0;
+        }
+        ui->settle_frames = ((int)(Cond.B(((CBool)(ui->settle_frames > 2))) ? ui->settle_frames : 2));
+        return 1;
+    }
+
+
+
+    public static unsafe CBool cui_emoji_font_load_system(cui_ctx* ui)
+    {
+        cui__emoji* e = cui__em(ui);
+        if (Cond.B((Cond.B(e) ? 0 : 1)))
+            return 0;
+        e->tried_system = 1;
+        if (Cond.B(cui_host_is_windows()))
+        {
+            byte* p = stackalloc byte[300];
+            byte* win = getenv((DotCcLiterals.Pointer + DotCcLiterals.S1182 /*"WINDIR"*/));
+            int n = snprintf(p, unchecked((int)(((ulong)((300 * sizeof(byte)))))), (DotCcLiterals.Pointer + DotCcLiterals.S602 /*"%s\\Fonts\\seguiemj.ttf"*/)).Arg(((byte*)(Cond.B(((CBool)(Cond.B(win) && Cond.B(*win)))) ? win : (DotCcLiterals.Pointer + DotCcLiterals.S564 /*"C:\\Windows"*/)))).Done();
+            if (Cond.B(((CBool)(Cond.B(((CBool)(n < 0))) || Cond.B(((CBool)((ulong)n >= ((ulong)((300 * sizeof(byte)))))))))))
+                return 0;
+            return cui_emoji_font_load_file(ui, p);
+        }
+        for (ulong i = 0; Cond.B(((CBool)(i < ((ulong)((9 * sizeof(byte*)))) / ((ulong)(sizeof(byte*)))))); i++)
+            if (Cond.B(cui_emoji_font_load_file(ui, global::Managed.Cui.Cui.Globals.paths__s0__unit_7763C92B9CFBA360302C83DE6BCDF7E7E505B9CB2BEE2E2C8764C4942CE00CB3[i])))
                 return 1;
         return 0;
     }
 
 
 
-    public static unsafe void cui__cov_toggle__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(cui__cov_state* s, int k)
+    public static unsafe int cui__em_cmap(cui__emoji* e, uint cp)
     {
-        uint h = cui__cov_key__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(s, k);
-        for (int i = 0; Cond.B(((CBool)(i < s->nfolded))); i++)
-            if (Cond.B(((CBool)(s->folded[i] == h))))
+        byte* t = e->cmap;
+        uint L = e->cmap_len, s = e->cmap_sub;
+        if (Cond.B(((CBool)(e->cmap_fmt == 12))))
+        {
+            uint n = cui__t32(t, L, (ulong)(s + (uint)(12))), lo = 0, hi = n;
+            while (Cond.B(((CBool)(lo < hi))))
             {
-                s->folded[i] = s->folded[--s->nfolded];
-                return;
+                uint mid = (lo + hi) / (uint)(2), g = s + (uint)(16) + mid * (uint)(12);
+                uint a = cui__t32(t, L, (ulong)g), b = cui__t32(t, L, (ulong)(g + (uint)(4)));
+                if (Cond.B(((CBool)(cp < a))))
+                    hi = mid;
+                else
+                    if (Cond.B(((CBool)(cp > b))))
+                        lo = mid + (uint)(1);
+                    else
+                        return (int)(cui__t32(t, L, (ulong)(g + (uint)(8))) + (cp - a));
             }
-        if (Cond.B(((CBool)(s->nfolded < 64))))
-            s->folded[s->nfolded++] = h;
+            return 0;
+        }
+        if (Cond.B(((CBool)(cp > (uint)(0xFFFF)))))
+            return 0;
+        uint seg2 = (uint)(cui__t16(t, L, (ulong)(s + (uint)(6))));
+        uint ends = s + (uint)(14), starts = ends + seg2 + (uint)(2), deltas = starts + seg2, ranges = deltas + seg2;
+        uint lo__1 = 0, hi__1 = seg2 / (uint)(2);
+        while (Cond.B(((CBool)(lo__1 < hi__1))))
+        {
+            uint mid__1 = (lo__1 + hi__1) / (uint)(2);
+            uint end = (uint)(cui__t16(t, L, (ulong)(ends + mid__1 * (uint)(2)))), start = (uint)(cui__t16(t, L, (ulong)(starts + mid__1 * (uint)(2))));
+            if (Cond.B(((CBool)(cp > end))))
+                lo__1 = mid__1 + (uint)(1);
+            else
+                if (Cond.B(((CBool)(cp < start))))
+                    hi__1 = mid__1;
+                else
+                {
+                    uint ro = (uint)(cui__t16(t, L, (ulong)(ranges + mid__1 * (uint)(2))));
+                    ushort delta = (ushort)(cui__t16(t, L, (ulong)(deltas + mid__1 * (uint)(2))));
+                    if (Cond.B((Cond.B(ro) ? 0 : 1)))
+                        return (ushort)(cp + delta);
+                    uint gi = (uint)(cui__t16(t, L, (ulong)(ranges + mid__1 * (uint)(2) + ro + (cp - start) * (uint)(2))));
+                    return ((int)(Cond.B(gi) ? (int)((ushort)(gi + delta)) : 0));
+                }
+        }
+        return 0;
     }
 
 
 
-    public static unsafe void cui__cov_flatten__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(cui_ctx* ui, cui__cov_state* s, int k, int* rows, int* nr)
+    public static unsafe int cui__em_coverage(byte* t, uint L, uint off, int gid)
     {
-        rows[(*nr)++] = k;
-        if (Cond.B(((CBool)(Cond.B(((CBool)(s->nodes[k].file >= 0))) || Cond.B(cui__cov_folded__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(s, k))))))
-            return;
-        int* kids = stackalloc int[512];
-        int nk = 0;
-        for (int c = s->nodes[k].first_child; Cond.B(((CBool)(Cond.B(((CBool)(c >= 0))) && Cond.B(((CBool)(nk < 512)))))); c = s->nodes[c].next)
-            kids[nk++] = c;
-        for (int a = 1; Cond.B(((CBool)(a < nk))); a++)
+        ushort fmt = (ushort)(cui__t16(t, L, (ulong)off)), n = (ushort)(cui__t16(t, L, (ulong)(off + (uint)(2))));
+        int lo = 0, hi = n;
+        while (Cond.B(((CBool)(lo < hi))))
         {
-            int x = kids[a], b = a - 1;
-            for (; Cond.B(((CBool)(b >= 0))); b--)
+            int mid = (lo + hi) / 2;
+            if (Cond.B(((CBool)(fmt == 1))))
             {
-                cui__cov_node* p = &s->nodes[kids[b]], q = &s->nodes[x];
-                CBool pf = ((CBool)(p->file < 0)), qf = ((CBool)(q->file < 0));
-                int c__1 = default;
-                if (Cond.B(((CBool)((int)((int)(pf)) != (int)((int)(qf))))))
-                    c__1 = ((int)(Cond.B(pf) ? -1 : 1));
+                int g = cui__t16(t, L, (ulong)(off + (uint)(4) + (uint)mid * (uint)(2)));
+                if (Cond.B(((CBool)(gid < g))))
+                    hi = mid;
                 else
-                    if (Cond.B(((CBool)(s->sort == 0))))
+                    if (Cond.B(((CBool)(gid > g))))
+                        lo = mid + 1;
+                    else
+                        return mid;
+            }
+            else
+                if (Cond.B(((CBool)(fmt == 2))))
+                {
+                    uint r = off + (uint)(4) + (uint)mid * (uint)(6);
+                    int a = cui__t16(t, L, (ulong)r), b = cui__t16(t, L, (ulong)(r + (uint)(2)));
+                    if (Cond.B(((CBool)(gid < a))))
+                        hi = mid;
+                    else
+                        if (Cond.B(((CBool)(gid > b))))
+                            lo = mid + 1;
+                        else
+                            return cui__t16(t, L, (ulong)(r + (uint)(4))) + gid - a;
+                }
+                else
+                    return -1;
+        }
+        return -1;
+    }
+
+
+
+    public static unsafe int cui__em_liga(byte* t, uint L, uint sub, int* g, int n, int i, int* @out)
+    {
+        if (Cond.B(((CBool)(cui__t16(t, L, (ulong)sub) != 1))))
+            return 0;
+        int ci = cui__em_coverage(t, L, sub + (uint)(cui__t16(t, L, (ulong)(sub + (uint)(2)))), g[i]);
+        if (Cond.B(((CBool)(Cond.B(((CBool)(ci < 0))) || Cond.B(((CBool)(ci >= cui__t16(t, L, (ulong)(sub + (uint)(4))))))))))
+            return 0;
+        uint set = sub + (uint)(cui__t16(t, L, (ulong)(sub + (uint)(6) + (uint)ci * (uint)(2))));
+        int nl = cui__t16(t, L, (ulong)set);
+        for (int k = 0; Cond.B(((CBool)(k < nl))); k++)
+        {
+            uint lig = set + (uint)(cui__t16(t, L, (ulong)(set + (uint)(2) + (uint)k * (uint)(2))));
+            int comp = cui__t16(t, L, (ulong)(lig + (uint)(2)));
+            if (Cond.B(((CBool)(Cond.B(((CBool)(comp < 1))) || Cond.B(((CBool)(i + comp > n)))))))
+                continue;
+            CBool match = 1;
+            for (int c = 1; Cond.B(((CBool)(Cond.B(((CBool)(c < comp))) && Cond.B(match)))); c++)
+                match = ((CBool)(g[i + c] == (int)cui__t16(t, L, (ulong)(lig + (uint)(4) + (uint)(c - 1) * (uint)(2)))));
+            if (Cond.B(match))
+            {
+                *@out = cui__t16(t, L, (ulong)lig);
+                return comp;
+            }
+        }
+        return 0;
+    }
+
+
+
+    public static unsafe int cui__em_gsub(cui__emoji* e, int* g, int n)
+    {
+        byte* t = e->gsub;
+        uint L = e->gsub_len;
+        if (Cond.B(((CBool)(Cond.B((Cond.B(t) ? 0 : 1)) || Cond.B(((CBool)(n < 2)))))))
+            return n;
+        uint list = (uint)(cui__t16(t, L, (ulong)8));
+        int nlook = cui__t16(t, L, (ulong)list);
+        for (int li = 0; Cond.B(((CBool)(Cond.B(((CBool)(li < nlook))) && Cond.B(((CBool)(n > 1)))))); li++)
+        {
+            uint look = list + (uint)(cui__t16(t, L, (ulong)(list + (uint)(2) + (uint)li * (uint)(2))));
+            int type = cui__t16(t, L, (ulong)look), nsub = cui__t16(t, L, (ulong)(look + (uint)(4)));
+            if (Cond.B(((CBool)(Cond.B(((CBool)(type != 4))) && Cond.B(((CBool)(type != 7)))))))
+                continue;
+            for (int i = 0; Cond.B(((CBool)(i < n))); i++)
+            {
+                for (int si = 0; Cond.B(((CBool)(si < nsub))); si++)
+                {
+                    uint sub = look + (uint)(cui__t16(t, L, (ulong)(look + (uint)(6) + (uint)si * (uint)(2))));
+                    if (Cond.B(((CBool)(type == 7))))
                     {
-                        int m = memcmp(p->name, q->name, (ulong)((int)(Cond.B(((CBool)(p->nlen < q->nlen))) ? p->nlen : q->nlen)));
-                        c__1 = ((int)(Cond.B(m) ? m : p->nlen - q->nlen));
+                        if (Cond.B(((CBool)(cui__t16(t, L, (ulong)(sub + (uint)(2))) != 4))))
+                            continue;
+                        sub += cui__t32(t, L, (ulong)(sub + (uint)(4)));
+                    }
+                    int rep = 0, took = cui__em_liga(t, L, sub, g, n, i, &rep);
+                    if (Cond.B(((CBool)(took > 0))))
+                    {
+                        g[i] = rep;
+                        memmove(g + i + 1, g + i + took, 4UL * (ulong)(n - i - took));
+                        n -= took - 1;
+                        break;
+                    }
+                }
+            }
+        }
+        return n;
+    }
+
+
+
+    public static unsafe int cui__utf8_cps(byte* s, int len, uint* cps, int cap)
+    {
+        int n = 0;
+        for (int i = 0; Cond.B(((CBool)(Cond.B(((CBool)(i < len))) && Cond.B(((CBool)(n < cap)))))); )
+        {
+            byte c = (byte)s[i];
+            uint cp = default;
+            int k = default;
+            if (Cond.B(((CBool)(c < 0x80))))
+            {
+                cp = c;
+                k = 1;
+            }
+            else
+                if (Cond.B(((CBool)((c & 0xE0) == 0xC0))))
+                {
+                    cp = (uint)(c & 0x1F);
+                    k = 2;
+                }
+                else
+                    if (Cond.B(((CBool)((c & 0xF0) == 0xE0))))
+                    {
+                        cp = (uint)(c & 0x0F);
+                        k = 3;
                     }
                     else
                     {
-                        double u = cui__cov_metric__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(p, s->sort), v = cui__cov_metric__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(q, s->sort);
-                        c__1 = ((int)(Cond.B(((CBool)(u < v))) ? -1 : ((int)(Cond.B(((CBool)(u > v))) ? 1 : 0))));
+                        cp = (uint)(c & 0x07);
+                        k = 4;
                     }
-                if (Cond.B(((CBool)(Cond.B(s->desc) && Cond.B(((CBool)((int)((int)(pf)) == (int)((int)(qf)))))))))
-                    c__1 = -c__1;
-                if (Cond.B(((CBool)(c__1 <= 0))))
-                    break;
-                kids[b + 1] = kids[b];
-            }
-            kids[b + 1] = x;
+            if (Cond.B(((CBool)(i + k > len))))
+                break;
+            for (int j = 1; Cond.B(((CBool)(j < k))); j++)
+                cp = cp << 6 | (uint)(((byte)s[i + j] & 0x3F));
+            cps[n++] = cp;
+            i += k;
         }
-        for (int i = 0; Cond.B(((CBool)(i < nk))); i++)
-            cui__cov_flatten__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(ui, s, kids[i], rows, nr);
+        return n;
     }
 
 
 
-    public static unsafe void cui__paint_cv_bar__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(cui_ctx* ui, cui_node* n, void* data)
+    public static unsafe int cui__em_glyph(cui__emoji* e, byte* utf8, int len)
+    {
+    byte* __dotcc_array_storage2 = null;
+        uint* cps = stackalloc uint[24];
+        int n = cui__utf8_cps(utf8, len, cps, 24);
+        if (Cond.B((Cond.B(n) ? 0 : 1)))
+            return 0;
+        int* g = stackalloc int[24];
+        for (int pass = 0; Cond.B(((CBool)(pass < 2))); pass++)
+        {
+            int m = 0;
+            CBool missing = 0;
+            for (int i = 0; Cond.B(((CBool)(i < n))); i++)
+            {
+                if (Cond.B(((CBool)(Cond.B(((CBool)(pass == 1))) && Cond.B(((CBool)(cps[i] == (uint)(0xFE0F))))))))
+                    continue;
+                g[m] = cui__em_cmap(e, cps[i]);
+                missing |= (CBool)(((CBool)(Cond.B(((CBool)(g[m] == 0))) && Cond.B(((CBool)(cps[i] != (uint)(0xFE0F)))))));
+                m++;
+            }
+            if (Cond.B(missing))
+                return 0;
+            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(m == 2))) && Cond.B(((CBool)(cps[n - 1] == (uint)(0xFE0F))))))) && Cond.B(((CBool)(pass == 0)))))))
+            {
+                if (__dotcc_array_storage2 == null)
+                {
+                    byte* __dotcc_array_storage2_new = stackalloc byte[checked(sizeof(int) * 2)];
+                    __dotcc_array_storage2 = __dotcc_array_storage2_new;
+                }
+                int* one = (int*)__dotcc_array_storage2;
+                new global::System.Span<byte>((void*)one, checked(sizeof(int) * 2)).Clear();
+                one[0] = g[0];
+                one[1] = g[1];
+                if (Cond.B(((CBool)(cui__em_gsub(e, one, 2) == 1))))
+                    return one[0];
+                return g[0];
+            }
+            m = cui__em_gsub(e, g, m);
+            if (Cond.B(((CBool)(Cond.B(((CBool)(m == 1))) && Cond.B(g[0])))))
+                return g[0];
+        }
+        return 0;
+    }
+
+
+
+    public static unsafe CBool cui__em_png(cui_ctx* ui, cui__emoji* e, int gid, int px, byte** data, uint* len)
+    {
+    byte* __dotcc_array_storage3 = null;
+    byte* __dotcc_array_storage4 = null;
+    byte* __dotcc_array_storage5 = null;
+        if (Cond.B(e->cblc))
+        {
+            byte* t = e->cblc;
+            uint L = e->cblc_len;
+            int ns = (int)cui__t32(t, L, (ulong)4), best = -1, best_ppem = 0;
+            for (int i = 0; Cond.B(((CBool)(Cond.B(((CBool)(i < ns))) && Cond.B(((CBool)(i < 64)))))); i++)
+            {
+                uint bs = (uint)(8) + (uint)i * (uint)(48);
+                int s = cui__t16(t, L, (ulong)(bs + (uint)(40))), en = cui__t16(t, L, (ulong)(bs + (uint)(42))), ppem = t[((uint)(Cond.B(((CBool)(bs + (uint)(44) < L - (uint)(1)))) ? bs + (uint)(44) : L - (uint)(1)))];
+                if (Cond.B(((CBool)(Cond.B(((CBool)(gid < s))) || Cond.B(((CBool)(gid > en)))))))
+                    continue;
+                CBool better = ((CBool)(Cond.B(((CBool)(best < 0))) || Cond.B(((int)(Cond.B(((CBool)(best_ppem < px))) ? ((CBool)(ppem > best_ppem)) : ((CBool)(Cond.B(((CBool)(ppem >= px))) && Cond.B(((CBool)(ppem < best_ppem))))))))));
+                if (Cond.B(better))
+                {
+                    best = i;
+                    best_ppem = ppem;
+                }
+            }
+            if (Cond.B(((CBool)(best >= 0))))
+            {
+                uint bs__1 = (uint)(8) + (uint)best * (uint)(48), arr = cui__t32(t, L, (ulong)bs__1), nsub = cui__t32(t, L, (ulong)(bs__1 + (uint)(8)));
+                for (uint k = 0; Cond.B(((CBool)(Cond.B(((CBool)(k < nsub))) && Cond.B(((CBool)(k < (uint)(4096))))))); k++)
+                {
+                    uint ent = arr + k * (uint)(8);
+                    int first = cui__t16(t, L, (ulong)ent), last = cui__t16(t, L, (ulong)(ent + (uint)(2)));
+                    if (Cond.B(((CBool)(Cond.B(((CBool)(gid < first))) || Cond.B(((CBool)(gid > last)))))))
+                        continue;
+                    uint st = arr + cui__t32(t, L, (ulong)(ent + (uint)(4)));
+                    int ifmt = cui__t16(t, L, (ulong)st), imgfmt = cui__t16(t, L, (ulong)(st + (uint)(2)));
+                    uint @base = cui__t32(t, L, (ulong)(st + (uint)(4))), o0 = 0, o1 = 0;
+                    int rel = gid - first;
+                    CBool found = 1;
+                    if (Cond.B(((CBool)(ifmt == 1))))
+                    {
+                        o0 = cui__t32(t, L, (ulong)(st + (uint)(8) + (uint)rel * (uint)(4)));
+                        o1 = cui__t32(t, L, (ulong)(st + (uint)(12) + (uint)rel * (uint)(4)));
+                    }
+                    else
+                        if (Cond.B(((CBool)(ifmt == 3))))
+                        {
+                            o0 = (uint)(cui__t16(t, L, (ulong)(st + (uint)(8) + (uint)rel * (uint)(2))));
+                            o1 = (uint)(cui__t16(t, L, (ulong)(st + (uint)(10) + (uint)rel * (uint)(2))));
+                        }
+                        else
+                            if (Cond.B(((CBool)(ifmt == 2))))
+                            {
+                                uint sz = cui__t32(t, L, (ulong)(st + (uint)(8)));
+                                o0 = sz * (uint)rel;
+                                o1 = o0 + sz;
+                            }
+                            else
+                                if (Cond.B(((CBool)(Cond.B(((CBool)(ifmt == 4))) || Cond.B(((CBool)(ifmt == 5)))))))
+                                {
+                                    found = 0;
+                                    uint ng = cui__t32(t, L, (ulong)(st + (uint)(((int)(Cond.B(((CBool)(ifmt == 4))) ? 8 : 20)))));
+                                    for (uint q = 0; Cond.B(((CBool)(Cond.B(((CBool)(q < ng))) && Cond.B(((CBool)(q < (uint)(65536))))))); q++)
+                                    {
+                                        if (Cond.B(((CBool)(ifmt == 4))))
+                                        {
+                                            if (Cond.B(((CBool)(cui__t16(t, L, (ulong)(st + (uint)(12) + q * (uint)(4))) == gid))))
+                                            {
+                                                o0 = (uint)(cui__t16(t, L, (ulong)(st + (uint)(14) + q * (uint)(4))));
+                                                o1 = (uint)(cui__t16(t, L, (ulong)(st + (uint)(18) + q * (uint)(4))));
+                                                found = 1;
+                                                break;
+                                            }
+                                        }
+                                        else
+                                            if (Cond.B(((CBool)(cui__t16(t, L, (ulong)(st + (uint)(24) + q * (uint)(2))) == gid))))
+                                            {
+                                                uint sz__1 = cui__t32(t, L, (ulong)(st + (uint)(8)));
+                                                o0 = sz__1 * q;
+                                                o1 = o0 + sz__1;
+                                                found = 1;
+                                                break;
+                                            }
+                                    }
+                                }
+                                else
+                                    found = 0;
+                    if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(found) ? 0 : 1)) || Cond.B(((CBool)(o1 <= o0)))))) || Cond.B(((CBool)(o1 - o0 > 8u << 20)))))))
+                        return 0;
+                    uint at = e->cbdt + @base + o0, skip = ((uint)(Cond.B(((CBool)(imgfmt == 17))) ? (uint)(5) : ((uint)(Cond.B(((CBool)(imgfmt == 18))) ? (uint)(8) : ((uint)(Cond.B(((CBool)(imgfmt == 19))) ? (uint)(0) : 0xFFFFFFFFu))))));
+                    if (Cond.B(((CBool)(skip == 0xFFFFFFFFu))))
+                        return 0;
+                    if (__dotcc_array_storage3 == null)
+                    {
+                        byte* __dotcc_array_storage3_new = stackalloc byte[checked(sizeof(byte) * 4)];
+                        __dotcc_array_storage3 = __dotcc_array_storage3_new;
+                    }
+                    byte* dl = (byte*)__dotcc_array_storage3;
+                    new global::System.Span<byte>((void*)dl, checked(sizeof(byte) * 4)).Clear();
+                    if (Cond.B((Cond.B(cui__em_read(e, at + skip, dl, 4)) ? 0 : 1)))
+                        return 0;
+                    uint n = cui__be32(dl);
+                    if (Cond.B(((CBool)(Cond.B(((CBool)(n == (uint)(0)))) || Cond.B(((CBool)(n > o1 - o0)))))))
+                        return 0;
+                    *data = (byte*)(cui__alloc(ui, n));
+                    if (Cond.B(((CBool)(Cond.B((Cond.B(*data) ? 0 : 1)) || Cond.B((Cond.B(cui__em_read(e, at + skip + (uint)(4), *data, n)) ? 0 : 1))))))
+                    {
+                        cui__free(ui, *data);
+                        *data = null;
+                        return 0;
+                    }
+                    *len = n;
+                    return 1;
+                }
+            }
+        }
+        if (Cond.B(((CBool)(Cond.B(e->sbix_n) && Cond.B(((CBool)(gid < e->num_glyphs)))))))
+        {
+            int best__1 = 0;
+            for (int i__1 = 1; Cond.B(((CBool)(i__1 < e->sbix_n))); i__1++)
+            {
+                int a = e->sbix_ppem[best__1], b = e->sbix_ppem[i__1];
+                if (Cond.B(((int)(Cond.B(((CBool)(a < px))) ? ((CBool)(b > a)) : ((CBool)(Cond.B(((CBool)(b >= px))) && Cond.B(((CBool)(b < a)))))))))
+                    best__1 = i__1;
+            }
+            for (int hop = 0; Cond.B(((CBool)(hop < 2))); hop++)
+            {
+                if (__dotcc_array_storage4 == null)
+                {
+                    byte* __dotcc_array_storage4_new = stackalloc byte[checked(sizeof(byte) * 8)];
+                    __dotcc_array_storage4 = __dotcc_array_storage4_new;
+                }
+                byte* o = (byte*)__dotcc_array_storage4;
+                new global::System.Span<byte>((void*)o, checked(sizeof(byte) * 8)).Clear();
+                if (Cond.B((Cond.B(cui__em_read(e, e->sbix_strike[best__1] + (uint)(4) + (uint)gid * (uint)(4), o, 8)) ? 0 : 1)))
+                    return 0;
+                uint a__1 = cui__be32(o), b__1 = cui__be32(o + 4);
+                if (Cond.B(((CBool)(Cond.B(((CBool)(b__1 <= a__1 + (uint)(8)))) || Cond.B(((CBool)(b__1 - a__1 > 8u << 20)))))))
+                    return 0;
+                if (__dotcc_array_storage5 == null)
+                {
+                    byte* __dotcc_array_storage5_new = stackalloc byte[checked(sizeof(byte) * 10)];
+                    __dotcc_array_storage5 = __dotcc_array_storage5_new;
+                }
+                byte* gh = (byte*)__dotcc_array_storage5;
+                new global::System.Span<byte>((void*)gh, checked(sizeof(byte) * 10)).Clear();
+                uint at__1 = e->sbix_strike[best__1] + a__1;
+                if (Cond.B((Cond.B(cui__em_read(e, at__1, gh, 10)) ? 0 : 1)))
+                    return 0;
+                if (Cond.B((Cond.B(memcmp(gh + 4, (DotCcLiterals.Pointer + DotCcLiterals.S432 /*"dupe"*/), (ulong)(4))) ? 0 : 1)))
+                {
+                    gid = cui__be16(gh + 8);
+                    continue;
+                }
+                if (Cond.B(memcmp(gh + 4, (DotCcLiterals.Pointer + DotCcLiterals.S877 /*"png "*/), (ulong)(4))))
+                    return 0;
+                uint n__1 = b__1 - a__1 - (uint)(8);
+                *data = (byte*)(cui__alloc(ui, n__1));
+                if (Cond.B(((CBool)(Cond.B((Cond.B(*data) ? 0 : 1)) || Cond.B((Cond.B(cui__em_read(e, at__1 + (uint)(8), *data, n__1)) ? 0 : 1))))))
+                {
+                    cui__free(ui, *data);
+                    *data = null;
+                    return 0;
+                }
+                *len = n__1;
+                return 1;
+            }
+        }
+        return 0;
+    }
+
+
+
+    public static unsafe void cui__em_resample(cui_ctx* ui, byte* src, int sw, int sh, byte* dst, int dstride, int dx, int dy, int dw, int dh)
+    {
+    byte* __dotcc_array_storage6 = null;
+    byte* __dotcc_array_storage7 = null;
+    byte* __dotcc_array_storage8 = null;
+    byte* __dotcc_array_storage9 = null;
+        if (Cond.B(((CBool)(Cond.B(((CBool)(dw > sw))) || Cond.B(((CBool)(dh > sh)))))))
+        {
+            for (int y = 0; Cond.B(((CBool)(y < dh))); y++)
+            {
+                float fy = ((float)(Cond.B(((CBool)(((float)(Cond.B(((CBool)(((float)y + 0.5f) * sh / dh - 0.5f > 0.0f))) ? ((float)y + 0.5f) * sh / dh - 0.5f : 0.0f)) < (float)(sh - 1)))) ? ((float)(Cond.B(((CBool)(((float)y + 0.5f) * sh / dh - 0.5f > 0.0f))) ? ((float)y + 0.5f) * sh / dh - 0.5f : 0.0f)) : (float)(sh - 1)));
+                int y0 = (int)fy, y1 = ((int)(Cond.B(((CBool)(y0 + 1 < sh - 1))) ? y0 + 1 : sh - 1));
+                float ty = fy - y0;
+                for (int x = 0; Cond.B(((CBool)(x < dw))); x++)
+                {
+                    float fx = ((float)(Cond.B(((CBool)(((float)(Cond.B(((CBool)(((float)x + 0.5f) * sw / dw - 0.5f > 0.0f))) ? ((float)x + 0.5f) * sw / dw - 0.5f : 0.0f)) < (float)(sw - 1)))) ? ((float)(Cond.B(((CBool)(((float)x + 0.5f) * sw / dw - 0.5f > 0.0f))) ? ((float)x + 0.5f) * sw / dw - 0.5f : 0.0f)) : (float)(sw - 1)));
+                    int x0 = (int)fx, x1 = ((int)(Cond.B(((CBool)(x0 + 1 < sw - 1))) ? x0 + 1 : sw - 1));
+                    float tx = fx - x0;
+                    if (__dotcc_array_storage6 == null)
+                    {
+                        byte* __dotcc_array_storage6_new = stackalloc byte[checked(sizeof(float) * 4)];
+                        __dotcc_array_storage6 = __dotcc_array_storage6_new;
+                    }
+                    float* acc = (float*)__dotcc_array_storage6;
+                    new global::System.Span<byte>((void*)acc, checked(sizeof(float) * 4)).Clear();
+                    if (__dotcc_array_storage7 == null)
+                    {
+                        byte* __dotcc_array_storage7_new = stackalloc byte[checked(sizeof(int) * 4)];
+                        __dotcc_array_storage7 = __dotcc_array_storage7_new;
+                    }
+                    int* xs = (int*)__dotcc_array_storage7;
+                    new global::System.Span<byte>((void*)xs, checked(sizeof(int) * 4)).Clear();
+                    xs[0] = x0;
+                    xs[1] = x1;
+                    xs[2] = x0;
+                    xs[3] = x1;
+                    if (__dotcc_array_storage8 == null)
+                    {
+                        byte* __dotcc_array_storage8_new = stackalloc byte[checked(sizeof(int) * 4)];
+                        __dotcc_array_storage8 = __dotcc_array_storage8_new;
+                    }
+                    int* ys = (int*)__dotcc_array_storage8;
+                    new global::System.Span<byte>((void*)ys, checked(sizeof(int) * 4)).Clear();
+                    ys[0] = y0;
+                    ys[1] = y0;
+                    ys[2] = y1;
+                    ys[3] = y1;
+                    if (__dotcc_array_storage9 == null)
+                    {
+                        byte* __dotcc_array_storage9_new = stackalloc byte[checked(sizeof(float) * 4)];
+                        __dotcc_array_storage9 = __dotcc_array_storage9_new;
+                    }
+                    float* ws = (float*)__dotcc_array_storage9;
+                    new global::System.Span<byte>((void*)ws, checked(sizeof(float) * 4)).Clear();
+                    ws[0] = (1 - tx) * (1 - ty);
+                    ws[1] = tx * (1 - ty);
+                    ws[2] = (1 - tx) * ty;
+                    ws[3] = tx * ty;
+                    for (int k = 0; Cond.B(((CBool)(k < 4))); k++)
+                    {
+                        byte* q = src + ((ulong)ys[k] * (ulong)(sw) + (ulong)(xs[k])) * (ulong)(4);
+                        float a = q[3] * ws[k];
+                        acc[0] += q[0] * a;
+                        acc[1] += q[1] * a;
+                        acc[2] += q[2] * a;
+                        acc[3] += a;
+                    }
+                    byte* o = dst + (ulong)(dy + y) * (ulong)(dstride) + (ulong)(dx + x) * (ulong)(4);
+                    if (Cond.B(((CBool)(acc[3] <= 0))))
+                    {
+                        o[0] = o[1] = o[2] = o[3] = 0;
+                        continue;
+                    }
+                    for (int ch = 0; Cond.B(((CBool)(ch < 3))); ch++)
+                        o[ch] = (byte)((float)(Cond.B(((CBool)(255.0f < acc[ch] / acc[3] + 0.5f))) ? 255.0f : acc[ch] / acc[3] + 0.5f));
+                    o[3] = (byte)((float)(Cond.B(((CBool)(255.0f < acc[3] + 0.5f))) ? 255.0f : acc[3] + 0.5f));
+                }
+            }
+            return;
+        }
+        {
+        }
+        if (Cond.B(((CBool)(Cond.B(((CBool)((sw + dw - 1) / dw + 1 > 8))) || Cond.B(((CBool)((sh + dh - 1) / dh + 1 > 8)))))))
+            return;
+        ulong tbytes = unchecked(4UL * (ulong)(4)) * (ulong)dw * (ulong)sh;
+        ulong wbytes = unchecked(4UL + unchecked(4UL * (ulong)(8))) * (ulong)(dw + dh);
+        byte* mem = (byte*)(cui__alloc(ui, tbytes + wbytes));
+        if (Cond.B((Cond.B(mem) ? 0 : 1)))
+            return;
+        float* tmp = (float*)mem;
+        int* cs = (int*)(mem + tbytes), rs = cs + dw;
+        float* cw = (float*)(rs + dh), rw = cw + (ulong)dw * (ulong)(8);
+        for (int pass = 0; Cond.B(((CBool)(pass < 2))); pass++)
+        {
+            int n = ((int)(Cond.B(pass) ? dh : dw)), sn = ((int)(Cond.B(pass) ? sh : sw));
+            int* st = ((int*)(Cond.B(pass) ? rs : cs));
+            float* wt = ((float*)(Cond.B(pass) ? rw : cw));
+            for (int o__1 = 0; Cond.B(((CBool)(o__1 < n))); o__1++)
+            {
+                float a__1 = (float)o__1 * sn / n, b = (float)(o__1 + 1) * sn / n, inv = (float)n / sn;
+                st[o__1] = (int)a__1;
+                for (int k__1 = 0; Cond.B(((CBool)(k__1 < 8))); k__1++)
+                {
+                    float p0 = (float)(st[o__1] + k__1), p1 = p0 + 1;
+                    float w = ((float)(Cond.B(((CBool)(p1 < b))) ? p1 : b)) - ((float)(Cond.B(((CBool)(p0 > a__1))) ? p0 : a__1));
+                    wt[(ulong)o__1 * (ulong)(8) + (ulong)(k__1)] = ((float)(Cond.B(((CBool)(Cond.B(((CBool)(w > 0))) && Cond.B(((CBool)(st[o__1] + k__1 < sn)))))) ? w * inv : (float)(0)));
+                }
+            }
+        }
+        for (int y__1 = 0; Cond.B(((CBool)(y__1 < sh))); y__1++)
+        {
+            byte* row = src + (ulong)y__1 * (ulong)(sw) * (ulong)(4);
+            float* t = tmp + (ulong)y__1 * (ulong)(dw) * (ulong)(4);
+            for (int x__1 = 0; Cond.B(((CBool)(x__1 < dw))); x__1++)
+            {
+                byte* p = row + (ulong)cs[x__1] * (ulong)(4);
+                float* w__1 = cw + (ulong)x__1 * (ulong)(8);
+                float r = 0, g = 0, b__1 = 0, al = 0;
+                for (int k__2 = 0; Cond.B(((CBool)(k__2 < 8))); k__2++, p += 4)
+                {
+                    if (Cond.B(((CBool)(w__1[k__2] == 0))))
+                        break;
+                    float a__2 = p[3] * w__1[k__2];
+                    r += p[0] * a__2;
+                    g += p[1] * a__2;
+                    b__1 += p[2] * a__2;
+                    al += a__2;
+                }
+                t[0] = r;
+                t[1] = g;
+                t[2] = b__1;
+                t[3] = al;
+                t += 4;
+            }
+        }
+        for (int y__2 = 0; Cond.B(((CBool)(y__2 < dh))); y__2++)
+        {
+            float* w__2 = rw + (ulong)y__2 * (ulong)(8);
+            byte* q__1 = dst + (ulong)(dy + y__2) * (ulong)(dstride) + (ulong)dx * (ulong)(4);
+            for (int x__2 = 0; Cond.B(((CBool)(x__2 < dw))); x__2++, q__1 += 4)
+            {
+                float* t__1 = tmp + ((ulong)rs[y__2] * (ulong)(dw) + (ulong)(x__2)) * (ulong)(4);
+                float r__1 = 0, g__1 = 0, b__2 = 0, al__1 = 0;
+                for (int k__3 = 0; Cond.B(((CBool)(k__3 < 8))); k__3++, t__1 += (ulong)dw * (ulong)(4))
+                {
+                    if (Cond.B(((CBool)(w__2[k__3] == 0))))
+                        break;
+                    r__1 += t__1[0] * w__2[k__3];
+                    g__1 += t__1[1] * w__2[k__3];
+                    b__2 += t__1[2] * w__2[k__3];
+                    al__1 += t__1[3] * w__2[k__3];
+                }
+                if (Cond.B(((CBool)(al__1 <= 0))))
+                {
+                    q__1[0] = q__1[1] = q__1[2] = q__1[3] = 0;
+                    continue;
+                }
+                float inv__1 = 1.0f / al__1;
+                q__1[0] = (byte)((float)(Cond.B(((CBool)(255.0f < r__1 * inv__1 + 0.5f))) ? 255.0f : r__1 * inv__1 + 0.5f));
+                q__1[1] = (byte)((float)(Cond.B(((CBool)(255.0f < g__1 * inv__1 + 0.5f))) ? 255.0f : g__1 * inv__1 + 0.5f));
+                q__1[2] = (byte)((float)(Cond.B(((CBool)(255.0f < b__2 * inv__1 + 0.5f))) ? 255.0f : b__2 * inv__1 + 0.5f));
+                q__1[3] = (byte)((float)(Cond.B(((CBool)(255.0f < al__1 + 0.5f))) ? 255.0f : al__1 + 0.5f));
+            }
+        }
+        cui__free(ui, mem);
+    }
+
+
+
+    public static unsafe CBool cui__em_outline(cui_ctx* ui, cui__emoji* e, int gid, int px, byte* @out, int stride, CBool* mono)
+    {
+    byte* __dotcc_array_storage10 = null;
+        int asc = default, desc = default;
+        cui__tt_vmetrics(e->tt, &asc, &desc);
+        if (Cond.B(((CBool)(asc - desc <= 0))))
+            return 0;
+        float scale = (float)px / (float)(asc - desc) * 0.94f;
+        int first = 0, nl = 0;
+        byte* c = e->colr;
+        uint CL = e->colr_len;
+        if (Cond.B(c))
+        {
+            int nb = cui__t16(c, CL, (ulong)2);
+            uint bo = cui__t32(c, CL, (ulong)4);
+            int lo = 0, hi = nb;
+            while (Cond.B(((CBool)(lo < hi))))
+            {
+                int mid = (lo + hi) / 2, g = cui__t16(c, CL, (ulong)(bo + (uint)mid * (uint)(6)));
+                if (Cond.B(((CBool)(gid < g))))
+                    hi = mid;
+                else
+                    if (Cond.B(((CBool)(gid > g))))
+                        lo = mid + 1;
+                    else
+                    {
+                        first = cui__t16(c, CL, (ulong)(bo + (uint)mid * (uint)(6) + (uint)(2)));
+                        nl = cui__t16(c, CL, (ulong)(bo + (uint)mid * (uint)(6) + (uint)(4)));
+                        break;
+                    }
+            }
+        }
+        *mono = ((CBool)(nl == 0));
+        if (Cond.B(((CBool)(Cond.B(((CBool)(nl == 0))) && Cond.B((Cond.B(e->mono_font) ? 0 : 1))))))
+            return 0;
+        int count = ((int)(Cond.B(nl) ? nl : 1));
+        int bx0 = 1 << 30, by0 = 1 << 30, bx1 = -(1 << 30), by1 = -(1 << 30);
+        uint lo_ = cui__t32(c, CL, (ulong)8);
+        for (int k = 0; Cond.B(((CBool)(k < count))); k++)
+        {
+            int lg = ((int)(Cond.B(nl) ? cui__t16(c, CL, (ulong)(lo_ + (uint)(first + k) * (uint)(4))) : gid));
+            int x0 = default, y0 = default, x1 = default, y1 = default;
+            if (Cond.B((Cond.B(cui__tt_box(e->tt, lg, scale, &x0, &y0, &x1, &y1)) ? 0 : 1)))
+                continue;
+            bx0 = ((int)(Cond.B(((CBool)(bx0 < x0))) ? bx0 : x0));
+            by0 = ((int)(Cond.B(((CBool)(by0 < y0))) ? by0 : y0));
+            bx1 = ((int)(Cond.B(((CBool)(bx1 > x1))) ? bx1 : x1));
+            by1 = ((int)(Cond.B(((CBool)(by1 > y1))) ? by1 : y1));
+        }
+        if (Cond.B(((CBool)(bx1 <= bx0))))
+            return 0;
+        int ox = (px - (bx1 - bx0)) / 2 - bx0, oy = (int)(asc * scale + (px - (asc - desc) * scale) * 0.5f);
+        byte* p = e->cpal;
+        uint PL = e->cpal_len, recs = cui__t32(p, PL, (ulong)8), pal0 = (uint)(cui__t16(p, PL, (ulong)12));
+        for (int k__1 = 0; Cond.B(((CBool)(k__1 < count))); k__1++)
+        {
+            int lg__1 = ((int)(Cond.B(nl) ? cui__t16(c, CL, (ulong)(lo_ + (uint)(first + k__1) * (uint)(4))) : gid));
+            int pi = ((int)(Cond.B(nl) ? cui__t16(c, CL, (ulong)(lo_ + (uint)(first + k__1) * (uint)(4) + (uint)(2))) : 0xFFFF));
+            if (__dotcc_array_storage10 == null)
+            {
+                byte* __dotcc_array_storage10_new = stackalloc byte[checked(sizeof(byte) * 4)];
+                __dotcc_array_storage10 = __dotcc_array_storage10_new;
+            }
+            byte* col = (byte*)__dotcc_array_storage10;
+            new global::System.Span<byte>((void*)col, checked(sizeof(byte) * 4)).Clear();
+            col[0] = 255;
+            col[1] = 255;
+            col[2] = 255;
+            col[3] = 255;
+            if (Cond.B(((CBool)(pi != 0xFFFF))))
+            {
+                uint at = recs + (pal0 + (uint)pi) * (uint)(4);
+                if (Cond.B(((CBool)(Cond.B(p) && Cond.B(((CBool)(at + (uint)(4) <= PL)))))))
+                {
+                    col[0] = p[at + (uint)(2)];
+                    col[1] = p[at + (uint)(1)];
+                    col[2] = p[at];
+                    col[3] = p[at + (uint)(3)];
+                }
+            }
+            int x0__1 = default, y0__1 = default, x1__1 = default, y1__1 = default;
+            if (Cond.B((Cond.B(cui__tt_box(e->tt, lg__1, scale, &x0__1, &y0__1, &x1__1, &y1__1)) ? 0 : 1)))
+                continue;
+            int w = x1__1 - x0__1, h = y1__1 - y0__1, X = ox + x0__1, Y = oy + y0__1;
+            if (Cond.B(((CBool)(Cond.B(((CBool)(w <= 0))) || Cond.B(((CBool)(h <= 0)))))))
+                continue;
+            byte* gm = (byte*)(cui__alloc(ui, (ulong)w * (ulong)(h)));
+            if (Cond.B((Cond.B(gm) ? 0 : 1)))
+                continue;
+            cui__tt_render(e->tt, lg__1, scale, gm, w, h, w);
+            for (int yy = 0; Cond.B(((CBool)(yy < h))); yy++)
+            {
+                int ty = Y + yy;
+                if (Cond.B(((CBool)(Cond.B(((CBool)(ty < 0))) || Cond.B(((CBool)(ty >= px)))))))
+                    continue;
+                for (int xx = 0; Cond.B(((CBool)(xx < w))); xx++)
+                {
+                    int tx = X + xx;
+                    if (Cond.B(((CBool)(Cond.B(((CBool)(tx < 0))) || Cond.B(((CBool)(tx >= px)))))))
+                        continue;
+                    float a = gm[yy * w + xx] / 255.0f * col[3] / 255.0f;
+                    if (Cond.B(((CBool)(a <= 0))))
+                        continue;
+                    byte* o = @out + (ulong)ty * (ulong)(stride) + (ulong)tx * (ulong)(4);
+                    float da = o[3] / 255.0f, ra = a + da * (1 - a);
+                    for (int ch = 0; Cond.B(((CBool)(ch < 3))); ch++)
+                        o[ch] = (byte)((col[ch] * a + o[ch] * da * (1 - a)) / ra + 0.5f);
+                    o[3] = (byte)(ra * 255 + 0.5f);
+                }
+            }
+            cui__free(ui, gm);
+        }
+        return 1;
+    }
+
+
+
+    public static unsafe CBool cui__em_raster(cui_ctx* ui, cui__emoji* e, byte* utf8, int len, int px, byte* @out, int stride, CBool* mono)
+    {
+        *mono = 0;
+        if (Cond.B(e->loaded))
+        {
+            int gid = cui__em_glyph(e, utf8, len);
+            if (Cond.B(gid))
+            {
+                if (Cond.B(e->tt))
+                    return cui__em_outline(ui, e, gid, px, @out, stride, mono);
+                byte* png = null;
+                uint n = 0;
+                if (Cond.B(cui__em_png(ui, e, gid, px * 2, &png, &n)))
+                {
+                    int w = 0, h = 0;
+                    byte* img = cui__png_decode(png, (int)n, &w, &h);
+                    cui__free(ui, png);
+                    if (Cond.B((Cond.B(img) ? 0 : 1)))
+                        return 0;
+                    int m = ((int)(Cond.B(((CBool)(w > h))) ? w : h)), dw = ((int)(Cond.B(((CBool)(1 > px * w / m))) ? 1 : px * w / m)), dh = ((int)(Cond.B(((CBool)(1 > px * h / m))) ? 1 : px * h / m));
+                    cui__em_resample(ui, img, w, h, @out, stride, (px - dw) / 2, (px - dh) / 2, dw, dh);
+                    cui__png_free(img);
+                    return 1;
+                }
+            }
+            return 0;
+        }
+        if (Cond.B(ui->platform.draw_emoji))
+        {
+            byte* tmp = (byte*)(cui__alloc(ui, (ulong)px * (ulong)(px) * (ulong)(4)));
+            if (Cond.B((Cond.B(tmp) ? 0 : 1)))
+                return 0;
+            memset(tmp, 0, (ulong)px * (ulong)(px) * (ulong)(4));
+            CBool ok = ui->platform.draw_emoji(ui->platform.user, utf8, len, px, tmp);
+            if (Cond.B(ok))
+                for (int y = 0; Cond.B(((CBool)(y < px))); y++)
+                    memcpy(@out + (ulong)y * (ulong)(stride), tmp + (ulong)y * (ulong)(px) * (ulong)(4), (ulong)px * (ulong)(4));
+            cui__free(ui, tmp);
+            return ok;
+        }
+        return 0;
+    }
+
+
+
+    public static unsafe CBool cui__em_can_draw(cui_ctx* ui)
+    {
+        cui__emoji* e = cui__em(ui);
+        if (Cond.B((Cond.B(e) ? 0 : 1)))
+            return 0;
+        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(e->loaded) ? 0 : 1)) && Cond.B((Cond.B(ui->platform.draw_emoji) ? 0 : 1))))) && Cond.B((Cond.B(e->tried_system) ? 0 : 1))))))
+            _ = cui_emoji_font_load_system(ui);
+        return ((CBool)(Cond.B(e->loaded) || Cond.B(ui->platform.draw_emoji)));
+    }
+
+
+
+    public static unsafe int cui__em_get_slot(cui_ctx* ui, cui__emoji* e, byte* utf8, int len, int px, CBool* missing)
+    {
+        *missing = 0;
+        if (Cond.B(((CBool)(Cond.B((Cond.B(ui->renderer.texture_create) ? 0 : 1)) || Cond.B((Cond.B(ui->renderer.texture_update) ? 0 : 1))))))
+            return -1;
+        px = ((int)(Cond.B(((CBool)(((int)(Cond.B(((CBool)(px > 8))) ? px : 8)) < 254))) ? ((int)(Cond.B(((CBool)(px > 8))) ? px : 8)) : 254));
+        int need = px + 2 + 7 & ~7;
+        e->last_draw = ui->frame;
+        if (Cond.B(((CBool)(need > e->cell))))
+        {
+            cui__emoji_drop_texture(ui);
+            e->cell = need;
+            e->atlas = ((int)(Cond.B(((CBool)(e->cell <= 40))) ? 512 : 1024));
+            e->per_row = e->atlas / e->cell;
+            e->nslots = ((int)(Cond.B(((CBool)(e->per_row * e->per_row < 1024))) ? e->per_row * e->per_row : 1024));
+            memset((cui__em_slot*)&e->slots, 0, ((ulong)((1024 * sizeof(cui__em_slot)))));
+        }
+        if (Cond.B((Cond.B(e->tex) ? 0 : 1)))
+        {
+            e->tex = ui->renderer.texture_create(ui->renderer.user, e->atlas, e->atlas, __DotCcEnum_6375695F746578747572655F666F726D6174.CUI_TEXTURE_RGBA8, null);
+            if (Cond.B((Cond.B(e->tex) ? 0 : 1)))
+                return -1;
+            for (int i = 0; Cond.B(((CBool)(i < e->nslots))); i++)
+                ((cui__em_slot*)&e->slots)[i].state = 0;
+        }
+        uint key = cui__hash_str((DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/), 0) ^ 0x9E3779B9u;
+        for (int i__1 = 0; Cond.B(((CBool)(i__1 < len))); i__1++)
+            key = (key ^ (byte)utf8[i__1]) * 16777619u;
+        key ^= (uint)px * 2654435761u;
+        int lru = -1;
+        for (int i__2 = 0; Cond.B(((CBool)(i__2 < e->nslots))); i__2++)
+        {
+            cui__em_slot* s = &((cui__em_slot*)&e->slots)[i__2];
+            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(s->state) && Cond.B(((CBool)(s->key == key)))))) && Cond.B(((CBool)(s->px == px)))))))
+            {
+                s->used = ui->frame;
+                *missing = ((CBool)(s->state == 2));
+                return ((int)(Cond.B(((CBool)(s->state == 1))) ? i__2 : -1));
+            }
+            if (Cond.B(((CBool)(Cond.B(((CBool)(s->used != ui->frame))) && Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(lru < 0))) || Cond.B((Cond.B(s->state) ? 0 : 1))))) || Cond.B(((CBool)(Cond.B(((cui__em_slot*)&e->slots)[lru].state) && Cond.B(((CBool)(s->used < ((cui__em_slot*)&e->slots)[lru].used)))))))))))))
+                lru = i__2;
+        }
+        if (Cond.B(((CBool)(lru < 0))))
+            return -1;
+        if (Cond.B(((CBool)(e->budget_frame != ui->frame))))
+        {
+            e->budget_frame = ui->frame;
+            e->budget = 12;
+        }
+        if (Cond.B(((CBool)(e->budget <= 0))))
+        {
+            ui->animating = 1;
+            return -1;
+        }
+        e->budget--;
+        int c = e->cell;
+        byte* buf = (byte*)(cui__alloc(ui, (ulong)c * (ulong)(c) * (ulong)(4)));
+        if (Cond.B((Cond.B(buf) ? 0 : 1)))
+            return -1;
+        memset(buf, 0, (ulong)c * (ulong)(c) * (ulong)(4));
+        CBool mono = 0;
+        CBool ok = cui__em_raster(ui, e, utf8, len, px, buf + (ulong)c * (ulong)(4) + 4, c * 4, &mono);
+        cui__em_slot* s__1 = &((cui__em_slot*)&e->slots)[lru];
+        s__1->key = key;
+        s__1->px = (ushort)px;
+        s__1->used = ui->frame;
+        s__1->mono = mono;
+        s__1->state = (byte)(((int)(Cond.B(ok) ? 1 : 2)));
+        if (Cond.B(ok))
+            ui->renderer.texture_update(ui->renderer.user, e->tex, lru % e->per_row * c, lru / e->per_row * c, c, c, buf, c * 4);
+        cui__free(ui, buf);
+        *missing = (Cond.B(ok) ? 0 : 1);
+        return ((int)(Cond.B(ok) ? lru : -1));
+    }
+
+
+
+    public static unsafe CBool cui__em_draw(cui_ctx* ui, byte* utf8, int len, cui_rect r, float alpha, CBool* missing)
+    {
+        CBool miss = 0;
+        if (Cond.B(missing))
+            *missing = 0;
+        if (Cond.B((Cond.B(cui__em_can_draw(ui)) ? 0 : 1)))
+        {
+            if (Cond.B(missing))
+                *missing = 1;
+            return 0;
+        }
+        cui__emoji* e = ui->emoji;
+        float side = ((float)(Cond.B(((CBool)(r.w < r.h))) ? r.w : r.h));
+        int px = (int)ceilf(side * ui->scale);
+        int i = cui__em_get_slot(ui, e, utf8, len, px, &miss);
+        if (Cond.B(missing))
+            *missing = miss;
+        if (Cond.B(((CBool)(i < 0))))
+            return 0;
+        px = ((cui__em_slot*)&e->slots)[i].px;
+        float c = (float)e->cell, A = (float)e->atlas;
+        float x = (float)(i % e->per_row) * c + 1, y = (float)(i / e->per_row) * c + 1;
+        cui_rect uv = new cui_rect { x = x / A, y = y / A, w = px / A, h = px / A };
+        cui_rect d = new cui_rect { x = r.x + (r.w - side) * 0.5f, y = r.y + (r.h - side) * 0.5f, w = side, h = side };
+        cui_color tint = (Cond.B(((cui__em_slot*)&e->slots)[i].mono) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND] : cui__rgba(255, 255, 255, 255));
+        cui_draw_image(ui, e->tex, d, uv, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, cui_alpha(tint, alpha));
+        return 1;
+    }
+
+
+
+    public static unsafe void cui_draw_emoji(cui_ctx* ui, byte* utf8, int len, cui_rect r)
+    {
+        if (Cond.B(((CBool)(Cond.B((Cond.B(ui) ? 0 : 1)) || Cond.B((Cond.B(utf8) ? 0 : 1))))))
+            return;
+        if (Cond.B(((CBool)(len < 0))))
+            len = (int)strlen(utf8);
+        _ = cui__em_draw(ui, utf8, len, r, 1, null);
+    }
+
+
+
+    public static unsafe CBool cui_emoji_supported(cui_ctx* ui, byte* utf8, int len)
+    {
+        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(ui) ? 0 : 1)) || Cond.B((Cond.B(utf8) ? 0 : 1))))) || Cond.B((Cond.B(cui__em_can_draw(ui)) ? 0 : 1))))))
+            return 0;
+        if (Cond.B(((CBool)(len < 0))))
+            len = (int)strlen(utf8);
+        cui__emoji* e = ui->emoji;
+        return ((int)(Cond.B(e->loaded) ? (int)((int)(((CBool)(cui__em_glyph(e, utf8, len) != 0)))) : 1));
+    }
+
+
+
+    public static unsafe void cui__paint_emoji__unit_7763C92B9CFBA360302C83DE6BCDF7E7E505B9CB2BEE2E2C8764C4942CE00CB3(cui_ctx* ui, cui_node* n, void* data)
+    {
+        cui__em_one* p = (cui__em_one*)(data);
+        _ = cui__em_draw(ui, p->s, p->len, n->rect, 1, null);
+    }
+
+
+
+    public static unsafe void cui_emoji(cui_ctx* ui, byte* utf8, float size)
+    {
+        if (Cond.B(((CBool)(size <= 0))))
+            size = 20;
+        int leaf = cui__leaf(ui, 0, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)size }, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)size });
+        cui__em_one* p = (cui__em_one*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__em_one)))));
+        if (Cond.B(((CBool)(Cond.B((Cond.B(p) ? 0 : 1)) || Cond.B((Cond.B(utf8) ? 0 : 1))))))
+            return;
+        p->len = (int)((ulong)(Cond.B(((CBool)((ulong)(strlen(utf8)) < unchecked(((ulong)((32 * sizeof(byte)))) - (ulong)(1))))) ? (ulong)(strlen(utf8)) : unchecked(((ulong)((32 * sizeof(byte)))) - (ulong)(1))));
+        memcpy(p->s, utf8, (ulong)p->len);
+        ui->nodes[leaf].paint = DotCcPointers.cui__paint_emoji__unit_7763C92B9CFBA360302C83DE6BCDF7E7E505B9CB2BEE2E2C8764C4942CE00CB3;
+        ui->nodes[leaf].paint_data = p;
+    }
+
+
+
+    public static unsafe CBool cui__em_list__unit_7763C92B9CFBA360302C83DE6BCDF7E7E505B9CB2BEE2E2C8764C4942CE00CB3(cui_ctx* ui, cui__emoji* e)
+    {
+        if (Cond.B(e->recs))
+            return 1;
+        e->data = (byte*)(cui__alloc(ui, unchecked((ulong)(41184 + 1))));
+        e->recs = (cui__em_rec*)(cui__alloc(ui, unchecked(((ulong)(sizeof(cui__em_rec))) * (ulong)(1914))));
+        e->avail = (byte*)(cui__alloc(ui, 1914));
+        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(e->data) ? 0 : 1)) || Cond.B((Cond.B(e->recs) ? 0 : 1))))) || Cond.B((Cond.B(e->avail) ? 0 : 1))))) || Cond.B(((CBool)(cui__inflate(global::Managed.Cui.Cui.Globals.cui__emoji_z__unit_7763C92B9CFBA360302C83DE6BCDF7E7E505B9CB2BEE2E2C8764C4942CE00CB3, ((ulong)((16476 * sizeof(byte)))), e->data, 41184) != (ulong)(41184))))))))
+        {
+            cui__free(ui, e->data);
+            cui__free(ui, e->recs);
+            cui__free(ui, e->avail);
+            e->data = null;
+            e->recs = null;
+            e->avail = null;
+            return 0;
+        }
+        e->data[41184] = 0;
+        int group = -1;
+        e->nrec = 0;
+        for (uint i = 0; Cond.B(((CBool)(Cond.B(((CBool)(i < (uint)(41184)))) && Cond.B(((CBool)(e->nrec < 1914)))))); )
+        {
+            uint j = i;
+            while (Cond.B(((CBool)(Cond.B(((CBool)(j < (uint)(41184)))) && Cond.B(((CBool)(e->data[j] != 10)))))))
+                j++;
+            e->data[j] = 0;
+            if (Cond.B(((CBool)(Cond.B(((CBool)(e->data[i] == 35))) && Cond.B(((CBool)((byte)e->data[i + (uint)(1)] < 0x80)))))))
+                group++;
+            else
+            {
+                cui__em_rec* r = &e->recs[e->nrec++];
+                uint k = i;
+                r->tone = ((CBool)(e->data[k] == 43));
+                if (Cond.B(r->tone))
+                    k++;
+                r->text = k;
+                while (Cond.B(((CBool)(Cond.B(((CBool)(k < j))) && Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)((byte)e->data[k] >= 0x80))) || Cond.B(((CBool)(e->data[k] == 35)))))) || Cond.B(((CBool)(e->data[k] == 42)))))) || Cond.B(((CBool)(Cond.B(((CBool)(e->data[k] >= 48))) && Cond.B(((CBool)(e->data[k] <= 57)))))))))))))
+                    k++;
+                r->len = (byte)(k - r->text);
+                r->version = (byte)(e->data[k] - 65);
+                r->name = k + (uint)(1);
+                r->name_len = (byte)((uint)(Cond.B(((CBool)(255u < j - k - (uint)(1)))) ? 255u : j - k - (uint)(1)));
+                r->group = (byte)((int)(Cond.B(((CBool)(group > 0))) ? group : 0));
+            }
+            i = j + (uint)(1);
+        }
+        memset(e->avail, 1, (ulong)(1914));
+        return 1;
+    }
+
+
+
+    public static unsafe void cui__em_check(cui_ctx* ui, cui__emoji* e)
     {
         ;
-        cui__cov_bar* b = (cui__cov_bar*)(data);
-        cui_rect r = n->rect;
-        cui_rect t = new cui_rect { x = r.x, y = r.y + (r.h - 6) * 0.5f, w = r.w, h = 6 };
-        cui_draw_rect(ui, t, new cui_corners { tl = 3, tr = 3, br = 3, bl = 3 }, b->track);
-        float w = ((float)(Cond.B(((CBool)(3.0f > t.w * b->pct / 100.0f))) ? 3.0f : t.w * b->pct / 100.0f));
-        if (Cond.B(((CBool)(b->pct > 0))))
-            cui_draw_rect(ui, new cui_rect { x = ((float)(Cond.B(n->rtl) ? t.x + t.w - w : t.x)), y = t.y, w = w, h = t.h }, new cui_corners { tl = 3, tr = 3, br = 3, bl = 3 }, b->c);
+        if (Cond.B(((CBool)(Cond.B((Cond.B(e->loaded) ? 0 : 1)) || Cond.B(e->avail_font)))))
+            return;
+        e->avail_font = 1;
+        for (int i = 0; Cond.B(((CBool)(i < e->nrec))); i++)
+            e->avail[i] = (byte)(((CBool)(cui__em_glyph(e, e->data + e->recs[i].text, e->recs[i].len) != 0)));
     }
 
 
 
-    public static unsafe cui_color cui__cov_color__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(cui_ctx* ui, double pct, float lo, float hi)
+    public static unsafe CBool cui__em_tone_base__unit_7763C92B9CFBA360302C83DE6BCDF7E7E505B9CB2BEE2E2C8764C4942CE00CB3(uint cp)
     {
-        return (Cond.B(((CBool)(pct < 0))) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED] : (Cond.B(((CBool)(pct < lo))) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_DANGER] : (Cond.B(((CBool)(pct < hi))) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_WARNING] : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SUCCESS])));
+        for (ulong i = 0; Cond.B(((CBool)(i < ((ulong)((41 * (2 * sizeof(uint))))) / ((ulong)((2 * sizeof(uint))))))); i++)
+            if (Cond.B(((CBool)(Cond.B(((CBool)(cp >= (global::Managed.Cui.Cui.Globals.cui__emoji_tone_bases__unit_7763C92B9CFBA360302C83DE6BCDF7E7E505B9CB2BEE2E2C8764C4942CE00CB3 + i * 2)[0]))) && Cond.B(((CBool)(cp <= (global::Managed.Cui.Cui.Globals.cui__emoji_tone_bases__unit_7763C92B9CFBA360302C83DE6BCDF7E7E505B9CB2BEE2E2C8764C4942CE00CB3 + i * 2)[1])))))))
+                return 1;
+        return 0;
     }
 
 
 
-    public static unsafe void cui__cov_pct_cell__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(cui_ctx* ui, double pct, float w, float lo, float hi)
+    public static unsafe int cui__em_toned(byte* s, int len, int tone, byte* @out, int cap)
     {
-        int t = cui__text_node(ui, ((byte*)(Cond.B(((CBool)(pct < 0))) ? (DotCcLiterals.Pointer + DotCcLiterals.S417 /*"—"*/) : cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S878 /*"%.1f%%"*/), pct))), -1, 0, cui__fs(ui, ui->theme.text_xs), (Cond.B(((CBool)(pct < 0))) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED] : cui__cov_color__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(ui, pct, lo, hi)), 0);
-        ui->nodes[t].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)w };
-        ui->nodes[t].text_align = (byte)(__DotCcEnum_6375695F746578745F616C69676E.CUI_TEXT_END);
-        ui->nodes[t].flags |= (uint)(256);
-    }
-
-
-
-    public static unsafe cui_coverage_result cui_coverage_ex(cui_ctx* ui, byte* id_str, cui_coverage_file* files, int count, cui_coverage_opts* o)
-    {
-        cui_coverage_opts d = default;
-        memset(&d, 0, ((ulong)(sizeof(cui_coverage_opts))));
-        if (Cond.B((Cond.B(o) ? 0 : 1)))
-            o = &d;
-        cui_coverage_result res = new cui_coverage_result { activated = -1, lines = 0 };
-        if (Cond.B(((CBool)(Cond.B((Cond.B(files) ? 0 : 1)) || Cond.B(((CBool)(count < 0)))))))
-            count = 0;
-        float lo = ((float)(Cond.B(((CBool)(o->low > 0))) ? o->low : (float)(50))), hi = ((float)(Cond.B(((CBool)(o->high > 0))) ? o->high : (float)(80)));
-        uint id = cui_make_id(ui, id_str);
-        cui__cov_state* s = (cui__cov_state*)(cui_state(ui, id ^ 0xC0E1u, ((ulong)(sizeof(cui__cov_state)))));
-        cui__state_set_dtor(ui, id ^ 0xC0E1u, DotCcPointers.cui__cov_dtor__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A);
-        if (Cond.B((Cond.B(s->init) ? 0 : 1)))
+        uint* cps = stackalloc uint[24];
+        int n = cui__utf8_cps(s, len, cps, 24), o = 0;
+        uint mod = (uint)(0x1F3FA) + (uint)tone;
+        CBool last_toned = 0;
+        for (int i = 0; Cond.B(((CBool)(Cond.B(((CBool)(i < n))) && Cond.B(((CBool)(o < cap - 8)))))); i++)
         {
-            s->sel = -1;
-            s->sort = 0;
-        }
-        cui__cov_build__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(ui, s, files, count);
-        if (Cond.B(((CBool)(s->nn == 0))))
-            return res;
-        res.lines = (float)((double)(Cond.B(((CBool)(0.0 > cui__cov_pct__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(s->nodes[0].lines_hit, s->nodes[0].lines)))) ? 0.0 : cui__cov_pct__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(s->nodes[0].lines_hit, s->nodes[0].lines)));
-        cui_rect pr = cui__prev_rect(ui, id);
-        CBool narrow = ((CBool)(Cond.B(((CBool)(pr.w > 0))) && Cond.B(((CBool)(pr.w < 560.0f)))));
-        int* rows = (int*)(cui__frame_alloc(ui, 4UL * (ulong)s->nn));
-        int nr = 0;
-        cui__cov_flatten__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(ui, s, 0, rows, &nr);
-        if (Cond.B(((CBool)(s->sel >= nr))))
-            s->sel = -1;
-        uint lid = id ^ 0xC0E2u;
-        int outer = cui__node_new(ui, id);
-        cui_node* on = &ui->nodes[outer];
-        on->w = (Cond.B((int)o->width.kind) ? o->width : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 });
-        on->h = (Cond.B(((CBool)(o->height < 0))) ? new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 } : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)((float)(Cond.B(((CBool)(o->height > 0))) ? o->height : ((float)(Cond.B(((CBool)(360.0f < 30.0f * (nr + 1) + 4))) ? 360.0f : 30.0f * (nr + 1) + 4)))) });
-        on->radius = new cui_corners { tl = ui->theme.radius_control, tr = ui->theme.radius_control, br = ui->theme.radius_control, bl = ui->theme.radius_control };
-        on->border = 1;
-        on->border_color = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER];
-        on->bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE];
-        on->flags |= (uint)(16);
-        cui__open(ui, outer);
-        cui_push_id(ui, id_str);
-        float fx = cui__fs(ui, ui->theme.text_xs), fs = cui__fs(ui, ui->theme.text_sm);
-        float bar_w = ((int)(Cond.B(narrow) ? 56 : 90));
-        int h = cui__node_new(ui, 0);
-        cui_node* hn = &ui->nodes[h];
-        hn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
-        hn->gap = 12;
-        hn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        hn->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)30.0f };
-        hn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
-        hn->pad[1] = hn->pad[3] = 12;
-        hn->bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE_MUTED];
-        cui__open(ui, h);
-        int cols = ((int)(Cond.B(narrow) ? 2 : 4));
-        for (int c = 0; Cond.B(((CBool)(c < cols))); c++)
-        {
-            uint cid = cui_make_id(ui, global::Managed.Cui.Cui.Globals.titles__s0__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A[c]);
-            cui_interact ci = cui__interact(ui, cid, 0);
-            if (Cond.B(ci.clicked))
+            if (Cond.B(((CBool)(Cond.B(((CBool)(cps[i] == (uint)(0xFE0F)))) && Cond.B(last_toned)))))
+                continue;
+            uint c = cps[i];
+            CBool toned = ((CBool)(Cond.B(cui__em_tone_base__unit_7763C92B9CFBA360302C83DE6BCDF7E7E505B9CB2BEE2E2C8764C4942CE00CB3(c)) && Cond.B((Cond.B(((CBool)(Cond.B(((CBool)(i > 0))) && Cond.B(((CBool)(c == (uint)(0x1F91D))))))) ? 0 : 1))));
+            for (int rep = 0; Cond.B(((CBool)(rep < ((int)(Cond.B(toned) ? 2 : 1))))); rep++)
             {
-                if (Cond.B(((CBool)(s->sort == c))))
-                    s->desc = (Cond.B(s->desc) ? 0 : 1);
+                uint v = ((uint)(Cond.B(rep) ? mod : c));
+                if (Cond.B(((CBool)(v < (uint)(0x80)))))
+                    @out[o++] = (byte)v;
                 else
-                {
-                    s->sort = c;
-                    s->desc = ((CBool)(c != 0));
-                }
-            }
-            int cell = cui__node_new(ui, cid);
-            cui_node* cn = &ui->nodes[cell];
-            cn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
-            cn->gap = 4;
-            cn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
-            cn->w = (Cond.B(((CBool)(c == 0))) ? new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 } : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)((float)(Cond.B(((CBool)(c == 1))) ? bar_w + 12 + 54 : (float)(70))) });
-            cn->justify = (byte)(((int)(Cond.B(((CBool)(c == 0))) ? (int)(__DotCcEnum_6375695F6A757374696679.CUI_JUSTIFY_START) : (int)(__DotCcEnum_6375695F6A757374696679.CUI_JUSTIFY_END))));
-            cui__mark_interactive(ui, cell, 0);
-            if (Cond.B(ci.hovered))
-                cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_HAND);
-            cui__open(ui, cell);
-            cui__text_node(ui, global::Managed.Cui.Cui.Globals.titles__s0__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A[c], -1, 1, fx, (Cond.B(((CBool)(s->sort == c))) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND] : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED]), 0);
-            if (Cond.B(((CBool)(s->sort == c))))
-                cui__icon_node(ui, ((byte*)(Cond.B(s->desc) ? (DotCcLiterals.Pointer + DotCcLiterals.S1383 /*""*/) : (DotCcLiterals.Pointer + DotCcLiterals.S61 /*""*/))), 12, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY]);
-            cui__close(ui);
-        }
-        cui__close(ui);
-        int line = cui__node_new(ui, 0);
-        ui->nodes[line].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        ui->nodes[line].h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)1 };
-        ui->nodes[line].bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER];
-        cui_interact lr = cui__interact(ui, lid, 1);
-        if (Cond.B(((CBool)(Cond.B(lr.focused) && Cond.B((Cond.B(ui->edit_prev) ? 0 : 1))))))
-        {
-            if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_DOWN)))
-                s->sel = ((int)(Cond.B(((CBool)(nr - 1 < s->sel + 1))) ? nr - 1 : s->sel + 1));
-            if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_UP)))
-                s->sel = ((int)(Cond.B(((CBool)(0 > s->sel - 1))) ? 0 : s->sel - 1));
-            if (Cond.B(((CBool)(s->sel >= 0))))
-            {
-                cui__cov_node* n = &s->nodes[rows[s->sel]];
-                CBool left = cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_LEFT), right = cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_RIGHT);
-                if (Cond.B(((CBool)(Cond.B(((CBool)(n->file < 0))) && Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(left) && Cond.B((Cond.B(cui__cov_folded__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(s, rows[s->sel])) ? 0 : 1))))) || Cond.B(((CBool)(Cond.B(right) && Cond.B(cui__cov_folded__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(s, rows[s->sel]))))))))))))
-                    cui__cov_toggle__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(s, rows[s->sel]);
-                if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_ENTER)))
-                {
-                    if (Cond.B(((CBool)(n->file >= 0))))
-                        res.activated = n->file;
-                    else
-                        cui__cov_toggle__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(s, rows[s->sel]);
-                }
-            }
-        }
-        int frame = cui__node_new(ui, lid);
-        ui->nodes[frame].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        ui->nodes[frame].h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        cui__mark_interactive(ui, frame, 1);
-        cui__focus_ring(ui, frame, ((float)(Cond.B(lr.focus_visible) ? 1.0f : 0.0f)));
-        cui__open(ui, frame);
-        int first = default, last = default;
-        cui_virtual_list_begin(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1021 /*"rows"*/), nr, 30.0f, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, &first, &last);
-        for (int r = first; Cond.B(((CBool)(r < last))); r++)
-        {
-            int k = rows[r];
-            cui__cov_node* n__1 = &s->nodes[k];
-            uint rid = cui__hash(&k, ((ulong)(sizeof(int))), id ^ 0xC0E3u);
-            cui_interact ri = cui__interact(ui, rid, 4);
-            if (Cond.B(ri.clicked))
-            {
-                s->sel = r;
-                ui->focus = lid;
-                if (Cond.B(((CBool)(n__1->file < 0))))
-                    cui__cov_toggle__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(s, k);
-                else
-                    if (Cond.B(((CBool)(ui->click_count >= 2))))
-                        res.activated = n__1->file;
-            }
-            CBool sel = ((CBool)(s->sel == r));
-            int row = cui__node_new(ui, rid);
-            cui_node* rn = &ui->nodes[row];
-            rn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
-            rn->gap = 12;
-            rn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-            rn->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)30.0f };
-            rn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
-            rn->pad[1] = 12;
-            rn->pad[3] = 12;
-            rn->bg = (Cond.B(sel) ? (Cond.B(((CBool)(ui->focus == lid))) ? cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE], cui__emphasis(ui), ((float)(Cond.B(((CBool)((int)ui->accent == (int)__DotCcEnum_6375695F616363656E74.CUI_ACCENT_NEUTRAL))) ? 0.08f : 0.16f))) : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_ACTIVE]) : (Cond.B(ri.hovered) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_HOVER] : cui__rgba(0, 0, 0, 0)));
-            cui__mark_interactive(ui, row, 0);
-            if (Cond.B(ri.hovered))
-                cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_HAND);
-            cui__open(ui, row);
-            int nm = cui__node_new(ui, 0);
-            cui_node* nn = &ui->nodes[nm];
-            nn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
-            nn->gap = 6;
-            nn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
-            nn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-            nn->flags |= (uint)(16);
-            nn->pad[3] = (float)((int)(Cond.B(((CBool)(n__1->depth < 10))) ? n__1->depth : 10)) * ((int)(Cond.B(narrow) ? 10 : 16));
-            cui__open(ui, nm);
-            if (Cond.B(((CBool)(n__1->file < 0))))
-            {
-                CBool f = cui__cov_folded__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(s, k);
-                cui__icon_node(ui, ((byte*)(Cond.B(f) ? (DotCcLiterals.Pointer + DotCcLiterals.S411 /*""*/) : (DotCcLiterals.Pointer + DotCcLiterals.S485 /*""*/))), 14, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED]);
-                cui__icon_node(ui, ((byte*)(Cond.B(f) ? (DotCcLiterals.Pointer + DotCcLiterals.S287 /*""*/) : (DotCcLiterals.Pointer + DotCcLiterals.S1014 /*""*/))), 14, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY]);
-            }
-            else
-            {
-                int sp = cui__node_new(ui, 0);
-                ui->nodes[sp].w = ui->nodes[sp].h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)14 };
-                cui__icon_node(ui, (DotCcLiterals.Pointer + DotCcLiterals.S195 /*""*/), 14, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED]);
-            }
-            int t = cui__text_node(ui, n__1->name, n__1->nlen, ((int)(Cond.B(((CBool)(n__1->file < 0))) ? 1 : 0)), fs, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0);
-            ui->nodes[t].direction = (byte)(__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_LTR);
-            ui->nodes[t].flags |= (uint)(16);
-            cui__close(ui);
-            double lp = cui__cov_pct__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(n__1->lines_hit, n__1->lines);
-            cui__cov_bar* bp = (cui__cov_bar*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__cov_bar)))));
-            bp->pct = (float)((double)(Cond.B(((CBool)(0.0 > lp))) ? 0.0 : lp));
-            bp->c = cui__cov_color__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(ui, lp, lo, hi);
-            bp->track = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER_SUBTLE];
-            int bar = cui__node_new(ui, 0);
-            ui->nodes[bar].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)bar_w };
-            ui->nodes[bar].h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)12 };
-            ui->nodes[bar].paint = DotCcPointers.cui__paint_cv_bar__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A;
-            ui->nodes[bar].paint_data = bp;
-            cui__cov_pct_cell__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(ui, lp, 54, lo, hi);
-            if (Cond.B((Cond.B(narrow) ? 0 : 1)))
-            {
-                cui__cov_pct_cell__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(ui, cui__cov_pct__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(n__1->br_hit, n__1->br), 70, lo, hi);
-                cui__cov_pct_cell__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(ui, cui__cov_pct__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(n__1->fn_hit, n__1->fn), 70, lo, hi);
-            }
-            cui__close(ui);
-            if (Cond.B(((CBool)(Cond.B(ri.hovered) && Cond.B(((CBool)(ui->active == (uint)(0))))))))
-                cui__tooltip_passive(ui, rid, cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1 /*"%ld of %ld lines%s"*/), n__1->lines_hit, n__1->lines, ((byte*)(Cond.B(((CBool)(n__1->br > 0))) ? cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S423 /*"\n%ld of %ld branches"*/), n__1->br_hit, n__1->br) : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/)))));
-        }
-        cui_virtual_list_end(ui);
-        cui__close(ui);
-        cui_pop_id(ui);
-        cui__close(ui);
-        ui->last_id = id;
-        return res;
-    }
-
-
-
-    public static unsafe void cui__blm_dtor__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(cui_ctx* ui, void* data)
-    {
-        cui__blm_state* s = (cui__blm_state*)(data);
-        cui__free(ui, s->in_block);
-        s->in_block = null;
-        s->cap = 0;
-    }
-
-
-
-    public static unsafe void cui__paint_blm_row__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(cui_ctx* ui, cui_node* nd, void* data)
-    {
-        cui__blm_paint* p = (cui__blm_paint*)(data);
-        cui_rect r = nd->rect;
-        float fh = cui__font_line_height(ui, 3, p->size), ty = r.y + (r.h - fh) * 0.5f;
-        float fx = cui__fs(ui, ui->theme.text_xs), bh = cui__font_line_height(ui, 0, fx);
-        cui_color em = (Cond.B(((CBool)((int)ui->accent == (int)__DotCcEnum_6375695F616363656E74.CUI_ACCENT_NEUTRAL))) ? cui__tone_color(ui, __DotCcEnum_6375695F746F6E65.CUI_TONE_INFO) : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_ACCENT]);
-        if (Cond.B(p->marked))
-            cui_draw_rect(ui, r, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, cui_alpha(em, ((float)(Cond.B(((CBool)((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK))) ? 0.12f : 0.07f))));
-        if (Cond.B(p->run_start))
-            cui_draw_rect(ui, new cui_rect { x = r.x, y = r.y, w = r.w, h = 1 }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER_SUBTLE]);
-        cui_draw_rect(ui, new cui_rect { x = r.x, y = r.y, w = 3, h = r.h }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, cui_alpha(em, 0.15f + 0.85f * p->heat));
-        cui_push_clip(ui, new cui_rect { x = r.x, y = r.y, w = p->gutter - 8, h = r.h });
-        if (Cond.B(p->run_start))
-        {
-            float x = r.x + 10;
-            if (Cond.B(p->author))
-            {
-                cui__draw_text_line(ui, 1, fx, x, r.y + (r.h - bh) * 0.5f, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY], p->author, -1, 0);
-                x += cui__text_width(ui, 1, fx, p->author, -1, 0) + 8;
-            }
-            if (Cond.B(p->age))
-                cui__draw_text_line(ui, 0, fx, x, r.y + (r.h - bh) * 0.5f, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], p->age, -1, 0);
-            if (Cond.B(p->hash))
-            {
-                float hw = cui__text_width(ui, 3, fx, p->hash, -1, 1);
-                cui__draw_text_line(ui, 3, fx, r.x + p->gutter - 14 - hw, r.y + (r.h - bh) * 0.5f, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], p->hash, -1, 1);
-            }
-        }
-        cui_pop_clip(ui);
-        cui_draw_rect(ui, new cui_rect { x = r.x + p->gutter - 1, y = r.y, w = 1, h = r.h }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER_SUBTLE]);
-        byte* num = cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S66 /*"%d"*/), p->number);
-        float nw = cui__text_width(ui, 3, p->size, num, -1, 1);
-        cui__draw_text_line(ui, 3, p->size, r.x + p->gutter + p->num_w - nw, ty, cui_alpha(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0.8f), num, -1, 1);
-        float cx = r.x + p->gutter + p->num_w + 14;
-        cui_push_clip(ui, new cui_rect { x = cx, y = r.y, w = ((float)(Cond.B(((CBool)(0.0f > r.x + r.w - cx))) ? 0.0f : r.x + r.w - cx)), h = r.h });
-        CBool block = p->in_block;
-        cui__draw_code_line(ui, p->lang, p->text, p->len, &block, cx, ty, p->size, (cui_color*)&p->colors, r.x + r.w);
-        cui_pop_clip(ui);
-    }
-
-
-
-    public static unsafe cui_blame_result cui_blame_ex(cui_ctx* ui, byte* id_str, byte** lines, int* line_commit, int line_count, cui_blame_commit* commits, int commit_count, cui_blame_opts* o)
-    {
-    byte* __dotcc_array_storage0 = null;
-        cui_blame_opts d = default;
-        memset(&d, 0, ((ulong)(sizeof(cui_blame_opts))));
-        if (Cond.B((Cond.B(o) ? 0 : 1)))
-            o = &d;
-        cui_blame_result res = new cui_blame_result { clicked = -1, hovered = -1 };
-        if (Cond.B(((CBool)(Cond.B((Cond.B(lines) ? 0 : 1)) || Cond.B(((CBool)(line_count < 0)))))))
-            line_count = 0;
-        if (Cond.B(((CBool)(Cond.B((Cond.B(commits) ? 0 : 1)) || Cond.B(((CBool)(commit_count < 0)))))))
-            commit_count = 0;
-        uint id = cui_make_id(ui, id_str);
-        cui__blm_state* s = (cui__blm_state*)(cui_state(ui, id ^ 0xB1A3u, ((ulong)(sizeof(cui__blm_state)))));
-        cui__state_set_dtor(ui, id ^ 0xB1A3u, DotCcPointers.cui__blm_dtor__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A);
-        if (Cond.B((Cond.B(s->init) ? 0 : 1)))
-        {
-            s->init = 1;
-            s->hovered = -1;
-        }
-        if (Cond.B(((CBool)(Cond.B(o->lang) && Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(s->lines != (void*)lines))) || Cond.B(((CBool)(s->count != line_count)))))) || Cond.B(((CBool)(s->lang != o->lang))))))))))
-        {
-            s->lines = lines;
-            s->count = line_count;
-            s->lang = o->lang;
-            if (Cond.B(((CBool)(s->cap < line_count))))
-            {
-                cui__free(ui, s->in_block);
-                s->in_block = (byte*)(cui__alloc(ui, (ulong)((int)(Cond.B(((CBool)(1 > line_count))) ? 1 : line_count))));
-                s->cap = ((int)(Cond.B(s->in_block) ? line_count : 0));
-            }
-            if (Cond.B(s->in_block))
-            {
-                CBool block = 0;
-                cui__tok* tk = stackalloc cui__tok[256];
-                for (int i = 0; Cond.B(((CBool)(i < line_count))); i++)
-                {
-                    s->in_block[i] = (byte)(int)(block);
-                    byte* t = ((byte*)(Cond.B(lines[i]) ? lines[i] : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/)));
-                    cui__tokenize_lang(o->lang, t, (int)((ulong)(Cond.B(((CBool)((ulong)(strlen(t)) < (ulong)2000))) ? (ulong)(strlen(t)) : (ulong)2000)), &block, tk, 256);
-                }
-            }
-        }
-        long now = ((long)(Cond.B(o->now) ? o->now : (long)time(null)));
-        long tmin = 0, tmax = 0;
-        for (int c = 0; Cond.B(((CBool)(c < commit_count))); c++)
-        {
-            if (Cond.B(((CBool)(Cond.B(((CBool)(c == 0))) || Cond.B(((CBool)(commits[c].time < tmin)))))))
-                tmin = commits[c].time;
-            if (Cond.B(((CBool)(Cond.B(((CBool)(c == 0))) || Cond.B(((CBool)(commits[c].time > tmax)))))))
-                tmax = commits[c].time;
-        }
-        cui_rect pr = cui__prev_rect(ui, id);
-        CBool narrow = ((CBool)(Cond.B(((CBool)(pr.w > 0))) && Cond.B(((CBool)(pr.w < 560.0f)))));
-        float size = cui__fs(ui, ((float)(Cond.B(narrow) ? 11.5f : 12.5f)));
-        float gutter = ((float)(Cond.B(narrow) ? (float)(52) : ((float)(Cond.B(((CBool)(((float)(Cond.B(((CBool)(pr.w * 0.32f > 200.0f))) ? pr.w * 0.32f : 200.0f)) < 300.0f))) ? ((float)(Cond.B(((CBool)(pr.w * 0.32f > 200.0f))) ? pr.w * 0.32f : 200.0f)) : 300.0f))));
-        int first_no = ((int)(Cond.B(((CBool)(o->first_line > 0))) ? o->first_line : 1));
-        float num_w = cui__text_width(ui, 3, size, cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S66 /*"%d"*/), first_no + ((int)(Cond.B(((CBool)(0 > line_count - 1))) ? 0 : line_count - 1))), -1, 1) + 10;
-        int outer = cui__node_new(ui, id);
-        cui_node* on = &ui->nodes[outer];
-        on->w = (Cond.B((int)o->width.kind) ? o->width : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 });
-        on->h = (Cond.B(((CBool)(o->height < 0))) ? new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 } : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)((float)(Cond.B(((CBool)(o->height > 0))) ? o->height : (float)(360))) });
-        on->radius = new cui_corners { tl = ui->theme.radius_control, tr = ui->theme.radius_control, br = ui->theme.radius_control, bl = ui->theme.radius_control };
-        on->border = 1;
-        on->border_color = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER];
-        on->bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE];
-        on->flags |= (uint)(16);
-        on->direction = (byte)(__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_LTR);
-        cui__open(ui, outer);
-        cui_push_id(ui, id_str);
-        int hovered = -1;
-        int first = default, last = default;
-        cui_virtual_list_begin(ui, (DotCcLiterals.Pointer + DotCcLiterals.S270 /*"lines"*/), line_count, 20.0f, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, &first, &last);
-        cui_color* colors = stackalloc cui_color[10];
-        cui__syntax_colors(ui, colors);
-        for (int i__1 = first; Cond.B(((CBool)(i__1 < last))); i__1++)
-        {
-            int c__1 = ((int)(Cond.B(line_commit) ? line_commit[i__1] : -1));
-            if (Cond.B(((CBool)(Cond.B(((CBool)(c__1 < 0))) || Cond.B(((CBool)(c__1 >= commit_count)))))))
-                c__1 = -1;
-            int pc = ((int)(Cond.B(((CBool)(Cond.B(((CBool)(i__1 > 0))) && Cond.B(line_commit)))) ? line_commit[i__1 - 1] : -2));
-            CBool run_start = ((CBool)(Cond.B(((CBool)(i__1 == 0))) || Cond.B(((CBool)(pc != line_commit[i__1])))));
-            uint rid = cui__hash(&i__1, ((ulong)(sizeof(int))), id ^ 0xB1A4u);
-            uint gid = rid ^ 0x6u;
-            cui_interact gi = cui__interact(ui, gid, 0);
-            if (Cond.B(((CBool)(Cond.B(gi.hovered) && Cond.B(((CBool)(c__1 >= 0)))))))
-                hovered = c__1;
-            if (Cond.B(((CBool)(Cond.B(gi.clicked) && Cond.B(((CBool)(c__1 >= 0)))))))
-                res.clicked = c__1;
-            cui__blm_paint* p = (cui__blm_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__blm_paint)))));
-            memset(p, 0, ((ulong)(sizeof(cui__blm_paint))));
-            byte* t__1 = ((byte*)(Cond.B(lines[i__1]) ? lines[i__1] : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/)));
-            p->len = (int)((ulong)(Cond.B(((CBool)((ulong)(strlen(t__1)) < (ulong)2000))) ? (ulong)(strlen(t__1)) : (ulong)2000));
-            p->text = cui__frame_strdup(ui, t__1, p->len);
-            p->lang = o->lang;
-            p->in_block = ((int)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(o->lang) && Cond.B(s->in_block)))) && Cond.B(((CBool)(i__1 < s->cap)))))) ? (int)((int)(((CBool)(s->in_block[i__1] != 0)))) : 0));
-            p->size = size;
-            p->gutter = gutter;
-            p->num_w = num_w;
-            p->number = first_no + i__1;
-            p->run_start = ((CBool)(Cond.B(run_start) || Cond.B(((CBool)(i__1 == first)))));
-            p->marked = ((CBool)(Cond.B(((CBool)(c__1 >= 0))) && Cond.B(((CBool)(c__1 == s->hovered)))));
-            memcpy((cui_color*)&p->colors, colors, ((ulong)((10 * sizeof(cui_color)))));
-            if (Cond.B(((CBool)(c__1 >= 0))))
-            {
-                cui_blame_commit* cm = &commits[c__1];
-                p->heat = ((float)(Cond.B(((CBool)(tmax > tmin))) ? (float)(cm->time - tmin) / (float)(tmax - tmin) : 1.0f));
-                if (Cond.B(narrow))
-                {
-                    if (__dotcc_array_storage0 == null)
+                    if (Cond.B(((CBool)(v < (uint)(0x800)))))
                     {
-                        byte* __dotcc_array_storage0_new = stackalloc byte[checked(sizeof(byte) * 8)];
-                        __dotcc_array_storage0 = __dotcc_array_storage0_new;
+                        @out[o++] = (byte)((uint)(0xC0) | v >> 6);
+                        @out[o++] = (byte)((uint)(0x80) | v & (uint)(63));
                     }
-                    byte* ini = (byte*)__dotcc_array_storage0;
-                    new global::System.Span<byte>((void*)ini, checked(sizeof(byte) * 8)).Clear();
-                    int n = 0;
-                    byte* a = ((byte*)(Cond.B(cm->author) ? cm->author : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/)));
-                    CBool start = 1;
-                    for (; Cond.B(((CBool)(Cond.B(*a) && Cond.B(((CBool)(n < 2)))))); a++)
-                    {
-                        if (Cond.B(((CBool)(*a == 32))))
+                    else
+                        if (Cond.B(((CBool)(v < (uint)(0x10000)))))
                         {
-                            start = 1;
-                            continue;
+                            @out[o++] = (byte)((uint)(0xE0) | v >> 12);
+                            @out[o++] = (byte)((uint)(0x80) | v >> 6 & (uint)(63));
+                            @out[o++] = (byte)((uint)(0x80) | v & (uint)(63));
                         }
-                        if (Cond.B(start))
-                        {
-                            ini[n++] = (byte)((int)(Cond.B(((CBool)(Cond.B(((CBool)(*a >= 97))) && Cond.B(((CBool)(*a <= 122)))))) ? *a - 32 : (int)(*a)));
-                            start = 0;
-                        }
-                    }
-                    ini[n] = 0;
-                    p->author = cui__frame_strdup(ui, ini, n);
-                }
-                else
-                {
-                    p->author = ((byte*)(Cond.B(cm->author) ? cui__frame_strdup(ui, cm->author, -1) : null));
-                    p->age = ((byte*)(Cond.B(cm->time) ? cui__dv_age__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(ui, now - cm->time) : null));
-                    p->hash = ((byte*)(Cond.B(cm->hash) ? cui__frame_strdup(ui, cm->hash, (int)((ulong)(Cond.B(((CBool)((ulong)(strlen(cm->hash)) < (ulong)7))) ? (ulong)(strlen(cm->hash)) : (ulong)7))) : null));
-                }
-            }
-            int row = cui__node_new(ui, rid);
-            cui_node* rn = &ui->nodes[row];
-            rn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-            rn->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)20.0f };
-            rn->paint = DotCcPointers.cui__paint_blm_row__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A;
-            rn->paint_data = p;
-            cui__open(ui, row);
-            int g = cui__node_new(ui, gid);
-            ui->nodes[g].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)gutter };
-            ui->nodes[g].h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-            cui__mark_interactive(ui, g, 0);
-            if (Cond.B(((CBool)(Cond.B(gi.hovered) && Cond.B(((CBool)(c__1 >= 0)))))))
-                cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_HAND);
-            cui__close(ui);
-            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(gi.hovered) && Cond.B(((CBool)(c__1 >= 0)))))) && Cond.B(((CBool)(ui->active == (uint)(0))))))))
-            {
-                cui_blame_commit* cm__1 = &commits[c__1];
-                cui__tooltip_passive(ui, gid, cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1016 /*"%s\n%s · %s · %.7s"*/), ((byte*)(Cond.B(cm__1->summary) ? cm__1->summary : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), ((byte*)(Cond.B(cm__1->author) ? cm__1->author : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), ((byte*)(Cond.B(cm__1->time) ? cui__dv_age__unit_FCC77B213B5C657F7707288224AFB5414AD304EF212FE2DF8FC375ED8A96125A(ui, now - cm__1->time) : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), ((byte*)(Cond.B(cm__1->hash) ? cm__1->hash : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/)))));
-            }
-        }
-        cui_virtual_list_end(ui);
-        cui_pop_id(ui);
-        cui__close(ui);
-        s->hovered = hovered;
-        res.hovered = hovered;
-        ui->last_id = id;
-        return res;
-    }
-
-
-
-    public static unsafe byte* cui__ins_label__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(cui_ctx* ui, cui_axis_units units, byte* fmt, double x, CBool short_hours)
-    {
-        if (Cond.B(((CBool)((int)units == (int)__DotCcEnum_6375695F617869735F756E697473.CUI_AXIS_HOURS))))
-        {
-            long m = lround(x * 60.0);
-            long day = 24 * 60;
-            m = (m % day + day) % day;
-            if (Cond.B(((CBool)(Cond.B(short_hours) && Cond.B(((CBool)(m % 60 == 0)))))))
-                return cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1434 /*"%02ld"*/), m / 60);
-            return cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1469 /*"%02ld:%02ld"*/), m / 60, m % 60);
-        }
-        if (Cond.B(((CBool)(fabs(x) < 1e-9))))
-            x = 0;
-        return cui__frame_printf(ui, ((byte*)(Cond.B(((CBool)(Cond.B(fmt) && Cond.B(*fmt)))) ? fmt : (DotCcLiterals.Pointer + DotCcLiterals.S953 /*"%g"*/))), x);
-    }
-
-
-
-    public static unsafe double cui__ins_step__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(cui_axis_units units, double span, float width, float min_px)
-    {
-        if (Cond.B(((CBool)(Cond.B((Cond.B(((CBool)(span > 0))) ? 0 : 1)) || Cond.B(((CBool)(width <= 0)))))))
-            return 0;
-        if (Cond.B(((CBool)((int)units == (int)__DotCcEnum_6375695F617869735F756E697473.CUI_AXIS_HOURS))))
-        {
-            for (int k = 0; Cond.B(((CBool)(k < unchecked((int)(((ulong)((10 * sizeof(double)))) / ((ulong)(sizeof(double)))))))); k++)
-                if (Cond.B(((CBool)(global::Managed.Cui.Cui.Globals.hours__s0__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344[k] / span * width >= min_px))))
-                    return global::Managed.Cui.Cui.Globals.hours__s0__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344[k];
-            return 168;
-        }
-        double raw = span * min_px / width;
-        double p = pow(10.0, floor(log10(raw))), m = raw / p;
-        return ((int)(Cond.B(((CBool)(m <= 1))) ? 1 : ((int)(Cond.B(((CBool)(m <= 2))) ? 2 : ((int)(Cond.B(((CBool)(m <= 5))) ? 5 : 10)))))) * p;
-    }
-
-
-
-    public static unsafe void cui__ins_draw_axis__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(cui_ctx* ui, cui__ins_axis* a, float px, float pw, float y, cui_rect clip, CBool ticks)
-    {
-        if (Cond.B((Cond.B(((CBool)(a->x1 > a->x0))) ? 0 : 1)))
-            return;
-        double step = ((double)(Cond.B(((CBool)(a->step > 0))) ? a->step : cui__ins_step__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(a->units, a->x1 - a->x0, pw, ((int)(Cond.B(((CBool)((int)a->units == (int)__DotCcEnum_6375695F617869735F756E697473.CUI_AXIS_HOURS))) ? 34 : 56)))));
-        if (Cond.B((Cond.B(((CBool)(step > 0))) ? 0 : 1)))
-            return;
-        float fs = cui__fs(ui, ui->theme.text_xs);
-        double first = ceil(a->x0 / step - 1e-9) * step;
-        float last_end = -1e9f;
-        for (double v = first; Cond.B(((CBool)(v <= a->x1 + step * 1e-6))); v += step)
-        {
-            float x = px + (float)((v - a->x0) / (a->x1 - a->x0)) * pw;
-            if (Cond.B(ticks))
-                cui_draw_rect(ui, new cui_rect { x = floorf(x), y = y - 6, w = 1, h = 3 }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER_STRONG]);
-            byte* lbl = cui__ins_label__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(ui, a->units, a->fmt, v, 1);
-            float lw = cui__text_width(ui, 3, fs, lbl, -1, 1);
-            float lx = ((float)(Cond.B(((CBool)(((float)(Cond.B(((CBool)(x - lw * 0.5f > clip.x))) ? x - lw * 0.5f : clip.x)) < clip.x + clip.w - lw))) ? ((float)(Cond.B(((CBool)(x - lw * 0.5f > clip.x))) ? x - lw * 0.5f : clip.x)) : clip.x + clip.w - lw));
-            if (Cond.B(((CBool)(lx < last_end + 6))))
-                continue;
-            cui__draw_text_line(ui, 3, fs, lx, y, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], lbl, -1, 1);
-            last_end = lx + lw;
-        }
-    }
-
-
-
-    public static unsafe void cui__ann_dashes__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(cui_ctx* ui, float x0, float x1, float y, cui_color c)
-    {
-        for (float x = x0; Cond.B(((CBool)(x < x1))); x += 6)
-            cui_draw_rect(ui, new cui_rect { x = x, y = y, w = ((float)(Cond.B(((CBool)(3.0f < x1 - x))) ? 3.0f : x1 - x)), h = 1 }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, c);
-    }
-
-
-
-    public static unsafe void cui__paint_annotations(cui_ctx* ui, cui_chart_annotation* a, int n, cui_rect plot, double x0, double x1, double y0, double y1, float label_top, CBool gutter)
-    {
-        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(a) ? 0 : 1)) || Cond.B(((CBool)(n <= 0)))))) || Cond.B((Cond.B(((CBool)(x1 > x0))) ? 0 : 1))))) || Cond.B((Cond.B(((CBool)(y1 > y0))) ? 0 : 1))))))
-            return;
-        float fs = cui__fs(ui, ui->theme.text_xs), lh = cui__font_line_height(ui, 3, fs);
-        cui_color em = cui__emphasis(ui);
-        cui_rect* box = (cui_rect*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui_rect))) * (ulong)n));
-        for (int i = 0; Cond.B(((CBool)(i < n))); i++)
-        {
-            cui_chart_annotation* an = &a[i];
-            box[i] = new cui_rect { x = 0, y = 0, w = 0, h = 0 };
-            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)((int)an->kind == (int)__DotCcEnum_6375695F616E6E6F746174696F6E5F6B696E64.CUI_ANNOTATION_Y))) || Cond.B(((CBool)(Cond.B((Cond.B(an->label) ? 0 : 1)) && Cond.B((Cond.B(an->detail) ? 0 : 1)))))))) || Cond.B(((CBool)(an->x < x0)))))) || Cond.B(((CBool)(an->x > x1)))))))
-                continue;
-            float xx = floorf(plot.x + (float)((an->x - x0) / (x1 - x0)) * plot.w) + 0.5f;
-            float y = plot.y + plot.h - (float)((an->y - y0) / (y1 - y0)) * plot.h;
-            float bw = ((float)(Cond.B(((CBool)(((float)(Cond.B(an->label) ? cui__text_width(ui, 3, fs, an->label, -1, 1) : (float)(0))) > ((float)(Cond.B(an->detail) ? cui__text_width(ui, 3, fs, an->detail, -1, 1) : (float)(0)))))) ? ((float)(Cond.B(an->label) ? cui__text_width(ui, 3, fs, an->label, -1, 1) : (float)(0))) : ((float)(Cond.B(an->detail) ? cui__text_width(ui, 3, fs, an->detail, -1, 1) : (float)(0)))));
-            float bh = ((float)(Cond.B(an->label) ? lh : (float)(0))) + ((float)(Cond.B(an->detail) ? lh : (float)(0)));
-            CBool point = ((CBool)((int)an->kind == (int)__DotCcEnum_6375695F616E6E6F746174696F6E5F6B696E64.CUI_ANNOTATION_POINT));
-            float by = ((float)(Cond.B(point) ? y - bh - 4 : label_top)), bx = xx + 6;
-            float cx0 = plot.x - ((int)(Cond.B(gutter) ? 0 : 4)), cx1 = plot.x + plot.w + ((float)(Cond.B(gutter) ? 34.0f : (float)(4)));
-            CBool ok = 0;
-            for (int tries = 0; Cond.B(((CBool)(Cond.B(((CBool)(tries < 8))) && Cond.B((Cond.B(ok) ? 0 : 1))))); tries++)
-            {
-                for (int side = 0; Cond.B(((CBool)(Cond.B(((CBool)(side < 2))) && Cond.B((Cond.B(ok) ? 0 : 1))))); side++)
-                {
-                    float cx = ((float)(Cond.B(((CBool)(side == 0))) ? xx + 6 : xx - 6 - bw));
-                    if (Cond.B(((CBool)(Cond.B(((CBool)(cx < cx0))) || Cond.B(((CBool)(cx + bw > cx1)))))))
-                        continue;
-                    cui_rect r = new cui_rect { x = cx - 2, y = by, w = bw + 4, h = bh };
-                    CBool hit = 0;
-                    for (int k = 0; Cond.B(((CBool)(Cond.B(((CBool)(k < i))) && Cond.B((Cond.B(hit) ? 0 : 1))))); k++)
-                        hit = ((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(box[k].w > 0))) && Cond.B(((CBool)(r.x < box[k].x + box[k].w)))))) && Cond.B(((CBool)(box[k].x < r.x + r.w)))))) && Cond.B(((CBool)(r.y < box[k].y + box[k].h)))))) && Cond.B(((CBool)(box[k].y < r.y + r.h)))));
-                    if (Cond.B((Cond.B(hit) ? 0 : 1)))
-                    {
-                        bx = cx;
-                        ok = 1;
-                    }
-                }
-                if (Cond.B((Cond.B(ok) ? 0 : 1)))
-                    by += bh + 2;
-            }
-            if (Cond.B((Cond.B(ok) ? 0 : 1)))
-            {
-                by = ((float)(Cond.B(point) ? y - bh - 4 : label_top));
-                bx = ((float)(Cond.B(((CBool)(((float)(Cond.B(((CBool)(xx + 6 > cx0))) ? xx + 6 : cx0)) < cx1 - bw))) ? ((float)(Cond.B(((CBool)(xx + 6 > cx0))) ? xx + 6 : cx0)) : cx1 - bw));
-            }
-            box[i] = new cui_rect { x = bx - 2, y = by, w = bw + 4, h = bh };
-        }
-        for (int i__1 = 0; Cond.B(((CBool)(i__1 < n))); i__1++)
-        {
-            cui_chart_annotation* an__1 = &a[i__1];
-            cui_color line = (Cond.B(an__1->accent) ? em : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED]);
-            if (Cond.B(((CBool)((int)an__1->kind == (int)__DotCcEnum_6375695F616E6E6F746174696F6E5F6B696E64.CUI_ANNOTATION_Y))))
-            {
-                if (Cond.B(((CBool)(Cond.B(((CBool)(an__1->y < y0))) || Cond.B(((CBool)(an__1->y > y1)))))))
-                    continue;
-                float yy = floorf(plot.y + plot.h - (float)((an__1->y - y0) / (y1 - y0)) * plot.h) + 0.5f;
-                cui__ann_dashes__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(ui, plot.x, plot.x + plot.w, yy - 0.5f, (Cond.B(an__1->accent) ? em : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER_STRONG]));
-                continue;
-            }
-            if (Cond.B(((CBool)(Cond.B(((CBool)(an__1->x < x0))) || Cond.B(((CBool)(an__1->x > x1)))))))
-                continue;
-            float x = plot.x + (float)((an__1->x - x0) / (x1 - x0)) * plot.w, xx__1 = floorf(x) + 0.5f;
-            if (Cond.B(((CBool)((int)an__1->kind == (int)__DotCcEnum_6375695F616E6E6F746174696F6E5F6B696E64.CUI_ANNOTATION_POINT))))
-            {
-                cui_draw_circle(ui, new cui_vec2 { x = x, y = plot.y + plot.h - (float)((an__1->y - y0) / (y1 - y0)) * plot.h }, 3.5f, line);
-            }
-            else
-            {
-                float top = ((float)(Cond.B(((CBool)(box[i__1].w > 0))) ? box[i__1].y + box[i__1].h + 3 : plot.y));
-                if (Cond.B(((CBool)(top < plot.y + plot.h))))
-                    cui_draw_rect(ui, new cui_rect { x = xx__1 - 0.5f, y = top, w = 1, h = plot.y + plot.h - top }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, line);
-            }
-        }
-        for (int i__2 = 0; Cond.B(((CBool)(i__2 < n))); i__2++)
-        {
-            cui_chart_annotation* an__2 = &a[i__2];
-            if (Cond.B(((CBool)((int)an__2->kind == (int)__DotCcEnum_6375695F616E6E6F746174696F6E5F6B696E64.CUI_ANNOTATION_Y))))
-            {
-                if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(an__2->label) ? 0 : 1)) || Cond.B(((CBool)(an__2->y < y0)))))) || Cond.B(((CBool)(an__2->y > y1)))))))
-                    continue;
-                float yy__1 = floorf(plot.y + plot.h - (float)((an__2->y - y0) / (y1 - y0)) * plot.h) + 0.5f;
-                float w1 = cui__text_width(ui, 3, fs, an__2->label, -1, 1);
-                CBool @out = ((CBool)(Cond.B(gutter) && Cond.B(((CBool)(w1 <= 34.0f - 6)))));
-                float lx = ((float)(Cond.B(@out) ? plot.x + plot.w + 6 : plot.x + plot.w - w1 - 2));
-                float ly = ((float)(Cond.B(@out) ? yy__1 - lh * 0.5f : yy__1 - lh - 2));
-                if (Cond.B((Cond.B(@out) ? 0 : 1)))
-                    cui_draw_rect(ui, new cui_rect { x = lx - 3, y = ly, w = w1 + 6, h = lh }, new cui_corners { tl = 3, tr = 3, br = 3, bl = 3 }, cui_alpha(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BACKGROUND], 0.86f));
-                cui__draw_text_line(ui, 3, fs, lx, ly, (Cond.B(an__2->accent) ? em : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED]), an__2->label, -1, 1);
-                continue;
-            }
-            if (Cond.B(((CBool)(box[i__2].w <= 0))))
-                continue;
-            float bx__1 = box[i__2].x + 2, by__1 = box[i__2].y;
-            if (Cond.B(((CBool)(Cond.B(((CBool)((int)an__2->kind == (int)__DotCcEnum_6375695F616E6E6F746174696F6E5F6B696E64.CUI_ANNOTATION_POINT))) || Cond.B(((CBool)(by__1 + box[i__2].h > plot.y + 1)))))))
-                cui_draw_rect(ui, new cui_rect { x = bx__1 - 3, y = by__1, w = box[i__2].w + 2, h = box[i__2].h }, new cui_corners { tl = 3, tr = 3, br = 3, bl = 3 }, cui_alpha(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BACKGROUND], 0.86f));
-            if (Cond.B(an__2->label))
-                cui__draw_text_line(ui, 3, fs, bx__1, by__1, (Cond.B(an__2->accent) ? em : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND]), an__2->label, -1, 1);
-            if (Cond.B(an__2->detail))
-                cui__draw_text_line(ui, 3, fs, bx__1, by__1 + ((float)(Cond.B(an__2->label) ? lh : (float)(0))), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], an__2->detail, -1, 1);
-        }
-    }
-
-
-
-    public static unsafe cui_chart_annotation* cui__copy_annotations(cui_ctx* ui, cui_chart_annotation* a, int n)
-    {
-        if (Cond.B(((CBool)(Cond.B((Cond.B(a) ? 0 : 1)) || Cond.B(((CBool)(n <= 0)))))))
-            return null;
-        cui_chart_annotation* c = (cui_chart_annotation*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui_chart_annotation))) * (ulong)n));
-        for (int i = 0; Cond.B(((CBool)(i < n))); i++)
-        {
-            c[i] = a[i];
-            c[i].label = ((byte*)(Cond.B(a[i].label) ? cui__frame_strdup(ui, a[i].label, -1) : null));
-            c[i].detail = ((byte*)(Cond.B(a[i].detail) ? cui__frame_strdup(ui, a[i].detail, -1) : null));
-        }
-        return c;
-    }
-
-
-
-    public static unsafe float cui__ann_headroom__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(cui_ctx* ui, cui_chart_annotation* a, int n)
-    {
-        int lines = 0;
-        for (int i = 0; Cond.B(((CBool)(i < n))); i++)
-            if (Cond.B(((CBool)((int)a[i].kind == (int)__DotCcEnum_6375695F616E6E6F746174696F6E5F6B696E64.CUI_ANNOTATION_X))))
-                lines = ((int)(Cond.B(((CBool)(lines > ((int)(Cond.B(a[i].label) ? 1 : 0)) + ((int)(Cond.B(a[i].detail) ? 1 : 0))))) ? lines : ((int)(Cond.B(a[i].label) ? 1 : 0)) + ((int)(Cond.B(a[i].detail) ? 1 : 0))));
-        if (Cond.B((Cond.B(lines) ? 0 : 1)))
-            return 0;
-        float fs = cui__fs(ui, ui->theme.text_xs);
-        return lines * cui__font_line_height(ui, 3, fs) + 6;
-    }
-
-
-
-    public static unsafe cui_rect cui__dm_plot__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(cui_rect r, float head, CBool axis_on)
-    {
-        cui_rect p = new cui_rect { x = r.x, y = r.y + head, w = r.w - 34.0f, h = r.h - head - ((float)(Cond.B(axis_on) ? 18.0f : (float)(0))) };
-        p.w = ((float)(Cond.B(((CBool)(p.w > 1.0f))) ? p.w : 1.0f));
-        p.h = ((float)(Cond.B(((CBool)(p.h > 1.0f))) ? p.h : 1.0f));
-        return p;
-    }
-
-
-
-    public static unsafe float cui__dm_v__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(float v)
-    {
-        return ((float)(Cond.B(((CBool)(Cond.B(((CBool)(v > 0))) && Cond.B(((CBool)(v < 1e30f)))))) ? v : (float)(0)));
-    }
-
-
-
-    public static unsafe float cui__dm_at__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(float* v, int n, double f)
-    {
-        if (Cond.B(((CBool)(Cond.B((Cond.B(v) ? 0 : 1)) || Cond.B(((CBool)(n <= 0)))))))
-            return 0;
-        if (Cond.B(((CBool)(Cond.B(((CBool)(n == 1))) || Cond.B((Cond.B(((CBool)(f > 0))) ? 0 : 1))))))
-            return cui__dm_v__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(v[0]);
-        if (Cond.B(((CBool)(f >= n - 1))))
-            return cui__dm_v__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(v[n - 1]);
-        int i = (int)f;
-        float t = (float)(f - i), a = cui__dm_v__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(v[i]), b = cui__dm_v__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(v[i + 1]);
-        return a + (b - a) * t;
-    }
-
-
-
-    public static unsafe float cui__dm_total__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(float** vals, int ns, int n, double f)
-    {
-        float s = 0;
-        for (int k = 0; Cond.B(((CBool)(k < ns))); k++)
-            s += cui__dm_at__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(vals[k], n, f);
-        return s;
-    }
-
-
-
-    public static unsafe void cui__paint_dot_chart__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(cui_ctx* ui, cui_node* nd, void* data)
-    {
-        cui__dm_paint* p = (cui__dm_paint*)(data);
-        cui_rect r = nd->rect;
-        cui_rect plot = cui__dm_plot__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(r, p->head, p->axis_on);
-        float pitch = p->pitch;
-        int cols = (int)floorf(plot.w / pitch), rows = (int)floorf(plot.h / pitch);
-        if (Cond.B(((CBool)(Cond.B(((CBool)(cols < 1))) || Cond.B(((CBool)(rows < 1)))))))
-            return;
-        float gx = plot.x + (plot.w - cols * pitch) * 0.5f + pitch * 0.5f;
-        float gy = plot.y + plot.h - (plot.h - rows * pitch) * 0.5f - pitch * 0.5f;
-        float lit_r = pitch * 0.34f, dim_r = pitch * 0.13f;
-        cui_color fg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], em = cui__emphasis(ui);
-        cui_color dim = cui_alpha(fg, ((float)(Cond.B(((CBool)((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK))) ? 0.16f : 0.12f)));
-        float range = p->hi - p->lo;
-        int shown = (int)ceilf(cols * cui__clampf(p->intro, 0, 1));
-        int cursor_col = -1;
-        if (Cond.B(((CBool)(Cond.B(((CBool)(p->cursor >= 0))) && Cond.B(((CBool)(p->n > 1)))))))
-            cursor_col = (int)lround((double)p->cursor / (p->n - 1) * (cols - 1));
-        float* cum = stackalloc float[16];
-        int ns = ((int)(Cond.B(((CBool)(p->ns < 16))) ? p->ns : 16));
-        CBool any_accent = 0;
-        for (int k = 0; Cond.B(((CBool)(k < ns))); k++)
-            any_accent |= p->accent[k];
-        for (int c = 0; Cond.B(((CBool)(c < cols))); c++)
-        {
-            double fx = ((double)(Cond.B(((CBool)(cols > 1))) ? (double)c / (cols - 1) : 0.5));
-            double f = fx * (p->n - 1);
-            float acc = 0;
-            for (int k__1 = 0; Cond.B(((CBool)(k__1 < ns))); k__1++)
-            {
-                acc += cui__dm_at__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(p->vals[k__1], p->n, f);
-                cum[k__1] = acc;
-            }
-            float x = gx + c * pitch;
-            for (int rr = 0; Cond.B(((CBool)(rr < rows))); rr++)
-            {
-                float v0 = p->lo + range * (float)rr / rows, v1 = p->lo + range * (float)(rr + 1) / rows;
-                float y = gy - rr * pitch;
-                int band = -1;
-                float cover = 0, total = ((float)(Cond.B(((CBool)(ns > 0))) ? cum[ns - 1] : (float)(0)));
-                if (Cond.B(((CBool)(Cond.B(((CBool)(c < shown))) && Cond.B(((CBool)(total > v0)))))))
-                {
-                    cover = cui__clampf((total - v0) / (v1 - v0), 0, 1);
-                    float mid = (v0 + v1) * 0.5f;
-                    if (Cond.B(((CBool)(mid < total))))
-                    {
-                        for (int k__2 = 0; Cond.B(((CBool)(k__2 < ns))); k__2++)
-                            if (Cond.B(((CBool)(cum[k__2] > mid))))
-                            {
-                                band = k__2;
-                                break;
-                            }
-                    }
-                    else
-                        for (int k__3 = 0; Cond.B(((CBool)(k__3 < ns))); k__3++)
-                            if (Cond.B(((CBool)(cum[k__3] >= total))))
-                            {
-                                band = k__3;
-                                break;
-                            }
-                    if (Cond.B(((CBool)(band < 0))))
-                        band = ns - 1;
-                }
-                if (Cond.B(((CBool)(Cond.B(((CBool)(band < 0))) || Cond.B(((CBool)(cover < 0.12f)))))))
-                {
-                    if (Cond.B(p->grid))
-                        cui_draw_circle(ui, new cui_vec2 { x = x, y = y }, dim_r, dim);
-                    continue;
-                }
-                cui_color col = (Cond.B(p->accent[band]) ? em : cui_alpha(fg, ((float)(Cond.B(any_accent) ? ((float)(Cond.B(band % 2) ? 0.34f : 0.56f)) : ((float)(Cond.B(band % 2) ? 0.55f : 0.9f))))));
-                if (Cond.B(((CBool)(Cond.B(((CBool)(cursor_col == c))) && Cond.B((Cond.B(p->accent[band]) ? 0 : 1))))))
-                    col = cui_alpha(fg, ((float)(Cond.B(any_accent) ? ((float)(Cond.B(band % 2) ? 0.6f : 0.8f)) : 1.0f)));
-                if (Cond.B(((CBool)(cover < 1))))
-                    col = cui_alpha(col, 0.35f + 0.65f * cover);
-                cui_draw_circle(ui, new cui_vec2 { x = x, y = y }, lit_r, col);
-            }
-        }
-        cui__paint_annotations(ui, p->ann, p->nann, plot, p->x0, p->x1, p->lo, p->hi, r.y, 1);
-        if (Cond.B(p->axis_on))
-            cui__ins_draw_axis__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(ui, &p->axis, plot.x, plot.w, plot.y + plot.h + 5, new cui_rect { x = r.x, y = r.y, w = r.w, h = r.h }, 0);
-        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(p->cursor >= 0))) && Cond.B(p->readout)))) && Cond.B(((CBool)(p->n > 0)))))))
-        {
-            double f__1 = p->cursor;
-            float v = cui__dm_total__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(p->vals, ns, p->n, f__1);
-            double xv = ((double)(Cond.B(((CBool)(p->n > 1))) ? p->x0 + (p->x1 - p->x0) * f__1 / (p->n - 1) : p->x0));
-            float px = plot.x + (float)((xv - p->x0) / (p->x1 - p->x0)) * plot.w;
-            float py = plot.y + plot.h - cui__clampf((v - p->lo) / range, 0, 1) * plot.h;
-            cui_draw_circle(ui, new cui_vec2 { x = px, y = py }, 3.5f, fg);
-            float fs = cui__fs(ui, ui->theme.text_xs), lh = cui__font_line_height(ui, 3, fs);
-            byte* val = cui__frame_printf(ui, ((byte*)(Cond.B(((CBool)(Cond.B(p->fmt) && Cond.B(*p->fmt)))) ? p->fmt : (DotCcLiterals.Pointer + DotCcLiterals.S1102 /*"%.0f"*/))), (double)v);
-            byte* lbl = cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1270 /*"%s · %s%s%s"*/), cui__ins_label__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(ui, p->axis.units, p->axis.fmt, xv, 0), val, ((byte*)(Cond.B(((CBool)(Cond.B(p->unit) && Cond.B(*p->unit)))) ? (DotCcLiterals.Pointer + DotCcLiterals.S759 /*" "*/) : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), ((byte*)(Cond.B(p->unit) ? p->unit : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))));
-            float lw = cui__text_width(ui, 3, fs, lbl, -1, 1);
-            float lx = ((float)(Cond.B(((CBool)(px + 9 + lw <= r.x + r.w))) ? px + 9 : px - 9 - lw));
-            float ly = ((float)(Cond.B(((CBool)(((float)(Cond.B(((CBool)(py - lh - 2 > r.y))) ? py - lh - 2 : r.y)) < plot.y + plot.h - lh))) ? ((float)(Cond.B(((CBool)(py - lh - 2 > r.y))) ? py - lh - 2 : r.y)) : plot.y + plot.h - lh));
-            cui_rect bg = new cui_rect { x = lx - 3, y = ly, w = lw + 6, h = lh };
-            cui_draw_rect(ui, bg, new cui_corners { tl = 3, tr = 3, br = 3, bl = 3 }, cui_alpha(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BACKGROUND], 0.82f));
-            cui__draw_text_line(ui, 3, fs, lx, ly, fg, lbl, -1, 1);
-        }
-        if (Cond.B(((CBool)(p->focus > 0.01f))))
-            cui__draw_focus_ring(ui, new cui_rect { x = plot.x - 4, y = plot.y - 4, w = plot.w + 8, h = plot.h + 8 }, new cui_corners { tl = 6, tr = 6, br = 6, bl = 6 }, p->focus);
-    }
-
-
-
-    public static unsafe cui_dot_chart_result cui_dot_chart_ex(cui_ctx* ui, byte* id_str, cui_dot_series* series, int series_count, int count, cui_dot_chart_opts* o)
-    {
-        cui_dot_chart_opts d = default;
-        memset(&d, 0, ((ulong)(sizeof(cui_dot_chart_opts))));
-        if (Cond.B((Cond.B(o) ? 0 : 1)))
-            o = &d;
-        cui_dot_chart_result res = new cui_dot_chart_result { hovered = -1, x = 0, value = 0, clicked = 0 };
-        if (Cond.B(((CBool)(Cond.B((Cond.B(series) ? 0 : 1)) || Cond.B(((CBool)(series_count < 0)))))))
-            series_count = 0;
-        series_count = ((int)(Cond.B(((CBool)(series_count < 16))) ? series_count : 16));
-        if (Cond.B(((CBool)(count < 0))))
-            count = 0;
-        uint id = cui_make_id(ui, id_str);
-        cui_interact r = cui__interact(ui, id, 1);
-        cui__dm_state* st = (cui__dm_state*)(cui_state(ui, id, ((ulong)(sizeof(cui__dm_state)))));
-        cui__spring(ui, &st->intro, 1.0f, 0.9f, 0.0f);
-        cui__tween(ui, &st->focus, ((float)(Cond.B(r.focus_visible) ? 1.0f : 0.0f)), 0.14f);
-        double x0 = o->x_min, x1 = o->x_max;
-        if (Cond.B((Cond.B(((CBool)(x1 > x0))) ? 0 : 1)))
-        {
-            x0 = 0;
-            x1 = ((int)(Cond.B(((CBool)(1 > count - 1))) ? 1 : count - 1));
-        }
-        float head = cui__ann_headroom__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(ui, o->annotations, o->annotation_count);
-        CBool axis_on = (Cond.B(o->no_axis) ? 0 : 1);
-        float pitch = ((float)(Cond.B(((CBool)(o->pitch > 0))) ? ((float)(Cond.B(((CBool)(((float)(Cond.B(((CBool)(o->pitch > 3.0f))) ? o->pitch : 3.0f)) < 40.0f))) ? ((float)(Cond.B(((CBool)(o->pitch > 3.0f))) ? o->pitch : 3.0f)) : 40.0f)) : 6.0f));
-        cui_rect R = cui__prev_rect(ui, id);
-        CBool known = cui__has_prev_rect(ui, id);
-        cui_rect plot = cui__dm_plot__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(R, head, axis_on);
-        int cursor = -1;
-        if (Cond.B(((CBool)(count > 0))))
-        {
-            if (Cond.B(r.focused))
-            {
-                int c = ((int)(Cond.B(st->keyed) ? st->cursor : count / 2));
-                int big = ((int)(Cond.B(ui->mods & (int)__DotCcEnum_6375695F6D6F64.CUI_MOD_SHIFT) ? 10 : 1));
-                CBool moved = 1;
-                if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_LEFT)))
-                    c -= big;
-                else
-                    if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_RIGHT)))
-                        c += big;
-                    else
-                        if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_HOME)))
-                            c = 0;
                         else
-                            if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_END)))
-                                c = count - 1;
-                            else
-                                moved = 0;
-                if (Cond.B(moved))
+                        {
+                            @out[o++] = (byte)((uint)(0xF0) | v >> 18);
+                            @out[o++] = (byte)((uint)(0x80) | v >> 12 & (uint)(63));
+                            @out[o++] = (byte)((uint)(0x80) | v >> 6 & (uint)(63));
+                            @out[o++] = (byte)((uint)(0x80) | v & (uint)(63));
+                        }
+            }
+            last_toned = toned;
+        }
+        @out[o] = 0;
+        return o;
+    }
+
+
+
+    public static unsafe CBool cui__em_match(byte* name, int nlen, byte* q)
+    {
+        while (Cond.B(*q))
+        {
+            while (Cond.B(((CBool)(*q == 32))))
+                q++;
+            if (Cond.B((Cond.B(*q) ? 0 : 1)))
+                break;
+            byte* w = q;
+            while (Cond.B(((CBool)(Cond.B(*q) && Cond.B(((CBool)(*q != 32)))))))
+                q++;
+            int wl = (int)(q - w);
+            CBool found = 0;
+            for (int i = 0; Cond.B(((CBool)(Cond.B(((CBool)(i + wl <= nlen))) && Cond.B((Cond.B(found) ? 0 : 1))))); i++)
+            {
+                if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(i > 0))) && Cond.B(((CBool)(name[i - 1] != 32)))))) && Cond.B(((CBool)(name[i - 1] != 45)))))) && Cond.B(((CBool)(name[i - 1] != 58)))))) && Cond.B(((CBool)(name[i - 1] != 40)))))))
+                    continue;
+                int k = 0;
+                while (Cond.B(((CBool)(Cond.B(((CBool)(k < wl))) && Cond.B(((CBool)(cui__ascii_lower((byte)name[i + k]) == cui__ascii_lower((byte)w[k]))))))))
+                    k++;
+                found = ((CBool)(k == wl));
+            }
+            if (Cond.B((Cond.B(found) ? 0 : 1)))
+                return 0;
+        }
+        return 1;
+    }
+
+
+
+    public static unsafe void cui__em_state_free__unit_7763C92B9CFBA360302C83DE6BCDF7E7E505B9CB2BEE2E2C8764C4942CE00CB3(cui_ctx* ui, void* data)
+    {
+        cui__em_state* st = (cui__em_state*)(data);
+        cui__free(ui, st->items);
+        st->items = null;
+    }
+
+
+
+    public static unsafe int cui__em_rows(cui__em_geo* g, int count)
+    {
+        return (count + g->cols - 1) / g->cols;
+    }
+
+
+
+    public static unsafe float cui__em_sec_h(cui__em_geo* g, cui__em_section* s)
+    {
+        return ((float)(Cond.B(((CBool)(s->kind == 10))) ? (float)(0) : g->header)) + cui__em_rows(g, s->count) * g->cell;
+    }
+
+
+
+    public static unsafe float cui__em_total_h(cui__em_geo* g)
+    {
+        float h = 0;
+        for (int i = 0; Cond.B(((CBool)(i < g->nsec))); i++)
+            h += cui__em_sec_h(g, &((cui__em_section*)&g->sec)[i]);
+        return h + g->pad;
+    }
+
+
+
+    public static unsafe int cui__em_item_at(cui__em_geo* g, float x, float y)
+    {
+        float top = 0;
+        for (int i = 0; Cond.B(((CBool)(i < g->nsec))); i++)
+        {
+            cui__em_section* s = &((cui__em_section*)&g->sec)[i];
+            float h = cui__em_sec_h(g, s), hd = ((float)(Cond.B(((CBool)(s->kind == 10))) ? (float)(0) : g->header));
+            if (Cond.B(((CBool)(Cond.B(((CBool)(y >= top + hd))) && Cond.B(((CBool)(y < top + h)))))))
+            {
+                int row = (int)((y - top - hd) / g->cell), col = (int)((x - g->pad) / g->cell);
+                if (Cond.B(((CBool)(Cond.B(((CBool)(x < g->pad))) || Cond.B(((CBool)(col >= g->cols)))))))
+                    return -1;
+                int k = row * g->cols + col;
+                return ((int)(Cond.B(((CBool)(k < s->count))) ? s->start + k : -1));
+            }
+            top += h;
+        }
+        return -1;
+    }
+
+
+
+    public static unsafe int cui__em_item_pos(cui__em_geo* g, int item, float* x, float* y)
+    {
+        float top = 0;
+        for (int i = 0; Cond.B(((CBool)(i < g->nsec))); i++)
+        {
+            cui__em_section* s = &((cui__em_section*)&g->sec)[i];
+            float hd = ((float)(Cond.B(((CBool)(s->kind == 10))) ? (float)(0) : g->header));
+            if (Cond.B(((CBool)(Cond.B(((CBool)(item >= s->start))) && Cond.B(((CBool)(item < s->start + s->count)))))))
+            {
+                int k = item - s->start;
+                *x = g->pad + k % g->cols * g->cell;
+                *y = top + hd + k / g->cols * g->cell;
+                return i;
+            }
+            top += cui__em_sec_h(g, s);
+        }
+        *x = *y = 0;
+        return -1;
+    }
+
+
+
+    public static unsafe float cui__em_sec_top(cui__em_geo* g, int si)
+    {
+        float top = 0;
+        for (int i = 0; Cond.B(((CBool)(Cond.B(((CBool)(i < si))) && Cond.B(((CBool)(i < g->nsec)))))); i++)
+            top += cui__em_sec_h(g, &((cui__em_section*)&g->sec)[i]);
+        return top;
+    }
+
+
+
+    public static unsafe cui__em_str cui__em_item_text(cui__emoji* e, cui__em_state* st, byte* recent, int item_v, int tone)
+    {
+        cui__em_str r = default;
+        if (Cond.B(((CBool)(item_v < 0))))
+        {
+            snprintf(r.s, unchecked((int)(((ulong)((64 * sizeof(byte)))))), (DotCcLiterals.Pointer + DotCcLiterals.S260 /*"%s"*/)).Arg(recent + (-item_v - 1) * 32).Done();
+            r.len = (int)strlen(r.s);
+            return r;
+        }
+        ;
+        cui__em_rec* rec = &e->recs[item_v];
+        if (Cond.B(((CBool)(Cond.B(rec->tone) && Cond.B(((CBool)(tone > 0)))))))
+            r.len = cui__em_toned(e->data + rec->text, rec->len, tone, r.s, unchecked((int)(((ulong)((64 * sizeof(byte)))))));
+        else
+        {
+            r.len = rec->len;
+            memcpy(r.s, e->data + rec->text, (ulong)(rec->len));
+            r.s[r.len] = 0;
+        }
+        return r;
+    }
+
+
+
+    public static unsafe void cui__paint_emoji_grid__unit_7763C92B9CFBA360302C83DE6BCDF7E7E505B9CB2BEE2E2C8764C4942CE00CB3(cui_ctx* ui, cui_node* n, void* data)
+    {
+        cui__em_paint* p = (cui__em_paint*)(data);
+        cui_rect r = n->rect;
+        cui__paint_wheel_hit(ui, p->wheel, r);
+        cui__em_geo* g = &p->g;
+        if (Cond.B(((CBool)(Cond.B(p->none) || Cond.B(((CBool)(g->nsec == 0)))))))
+        {
+            float fs = cui__fs(ui, 13);
+            byte* msg = ((byte*)(Cond.B(p->none) ? (DotCcLiterals.Pointer + DotCcLiterals.S1281 /*"No emoji font found"*/) : p->empty));
+            float w = cui__text_width(ui, 0, fs, msg, -1, 0);
+            cui__draw_text_line(ui, 0, fs, r.x + (r.w - w) * 0.5f, r.y + r.h * 0.4f, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], msg, -1, 0);
+            return;
+        }
+        cui_push_clip(ui, r);
+        float y = r.y - p->top;
+        float hs = cui__fs(ui, 12);
+        int sticky = -1;
+        for (int si = 0; Cond.B(((CBool)(si < g->nsec))); si++)
+        {
+            cui__em_section* s = &((cui__em_section*)&g->sec)[si];
+            float h = cui__em_sec_h(g, s), hd = ((float)(Cond.B(((CBool)(s->kind == 10))) ? (float)(0) : g->header));
+            if (Cond.B(((CBool)(y + h < r.y))))
+            {
+                y += h;
+                continue;
+            }
+            if (Cond.B(((CBool)(y > r.y + r.h))))
+                break;
+            if (Cond.B(((CBool)(Cond.B(((CBool)(hd > 0))) && Cond.B(((CBool)(sticky < 0)))))))
+                sticky = si;
+            if (Cond.B(((CBool)(Cond.B(((CBool)(hd > 0))) && Cond.B(((CBool)(y >= r.y)))))))
+                cui__draw_text_line(ui, 1, hs, r.x + g->pad + 6, y + (hd - hs * 1.3f) * 0.5f + 2, p->header, p->names[s->kind], -1, 0);
+            int rows = cui__em_rows(g, s->count);
+            int r0 = (int)((float)(Cond.B(((CBool)(0.0f > floorf((r.y - (y + hd)) / g->cell)))) ? 0.0f : floorf((r.y - (y + hd)) / g->cell))), r1 = ((int)(Cond.B(((CBool)(rows < (int)ceilf((r.y + r.h - (y + hd)) / g->cell)))) ? rows : (int)ceilf((r.y + r.h - (y + hd)) / g->cell)));
+            for (int row = r0; Cond.B(((CBool)(row < r1))); row++)
+                for (int c = 0; Cond.B(((CBool)(c < g->cols))); c++)
                 {
-                    st->keyed = 1;
-                    st->cursor = ((int)(Cond.B(((CBool)(((int)(Cond.B(((CBool)(c > 0))) ? c : 0)) < count - 1))) ? ((int)(Cond.B(((CBool)(c > 0))) ? c : 0)) : count - 1));
+                    int k = row * g->cols + c;
+                    if (Cond.B(((CBool)(k >= s->count))))
+                        break;
+                    int item = s->start + k;
+                    cui_rect cr = new cui_rect { x = r.x + g->pad + c * g->cell, y = y + hd + row * g->cell, w = g->cell, h = g->cell };
+                    if (Cond.B(((CBool)(Cond.B(((CBool)(item == p->hover))) || Cond.B(((CBool)(Cond.B(((CBool)(item == p->cur))) && Cond.B(((CBool)(Cond.B(p->focus) || Cond.B(p->soft)))))))))))
+                        cui_draw_rect(ui, cui__rect_inset(cr, 2), new cui_corners { tl = 8, tr = 8, br = 8, bl = 8 }, p->hover_bg);
+                    if (Cond.B(((CBool)(Cond.B(((CBool)(item == p->cur))) && Cond.B(p->focus)))))
+                        cui_draw_rect_border(ui, cui__rect_inset(cr, 2), new cui_corners { tl = 8, tr = 8, br = 8, bl = 8 }, cui__rgba(0, 0, 0, 0), p->ring, 2);
+                    cui__em_str t = cui__em_item_text(p->e, p->st, p->recent, p->items[item], p->tone);
+                    CBool missing = 0;
+                    if (Cond.B(((CBool)(Cond.B((Cond.B(cui__em_draw(ui, t.s, t.len, cui__rect_inset(cr, (g->cell - g->size) * 0.5f), 1, &missing)) ? 0 : 1)) && Cond.B((Cond.B(missing) ? 0 : 1))))))
+                        cui_draw_rect(ui, cui__rect_inset(cr, g->cell * 0.3f), new cui_corners { tl = g->cell, tr = g->cell, br = g->cell, bl = g->cell }, cui_alpha(p->header, 0.12f));
                 }
-                if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_ESCAPE)))
-                    st->keyed = 0;
-            }
-            else
-                st->keyed = 0;
-            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(r.hovered) && Cond.B(known)))) && Cond.B(cui__rect_contains(plot, ui->mx, ui->my))))))
+            y += h;
+        }
+        if (Cond.B(((CBool)(sticky >= 0))))
+        {
+            float st_top = r.y - p->top + cui__em_sec_top(g, sticky);
+            if (Cond.B(((CBool)(st_top < r.y))))
             {
-                float t = cui__clampf((ui->mx - plot.x) / plot.w, 0, 1);
-                cursor = (int)lround((double)((t * (count - 1))));
-                st->keyed = 0;
+                float next = st_top + cui__em_sec_h(g, &((cui__em_section*)&g->sec)[sticky]);
+                float hy = ((float)(Cond.B(((CBool)(r.y < next - g->header))) ? r.y : next - g->header));
+                cui_draw_rect(ui, new cui_rect { x = r.x, y = hy, w = r.w, h = g->header }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, (Cond.B(n->bg.a) ? n->bg : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE]));
+                cui__draw_text_line(ui, 1, hs, r.x + g->pad + 6, hy + (g->header - hs * 1.3f) * 0.5f + 2, p->header, p->names[((cui__em_section*)&g->sec)[sticky].kind], -1, 0);
             }
-            else
-                if (Cond.B(st->keyed))
-                    cursor = ((int)(Cond.B(((CBool)(((int)(Cond.B(((CBool)(st->cursor > 0))) ? st->cursor : 0)) < count - 1))) ? ((int)(Cond.B(((CBool)(st->cursor > 0))) ? st->cursor : 0)) : count - 1));
         }
-        cui__dm_paint* p = (cui__dm_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__dm_paint)))));
-        memset(p, 0, ((ulong)(sizeof(cui__dm_paint))));
-        p->ns = series_count;
-        p->n = count;
-        p->vals = (float**)(cui__frame_alloc(ui, ((ulong)(sizeof(float*))) * (ulong)((int)(Cond.B(((CBool)(1 > series_count))) ? 1 : series_count))));
-        p->accent = (CBool*)(cui__frame_alloc(ui, 1UL * (ulong)((int)(Cond.B(((CBool)(1 > series_count))) ? 1 : series_count))));
-        for (int k = 0; Cond.B(((CBool)(k < series_count))); k++)
-        {
-            float* c__1 = null;
-            if (Cond.B(((CBool)(Cond.B(series[k].values) && Cond.B(((CBool)(count > 0)))))))
-            {
-                c__1 = (float*)(cui__frame_alloc(ui, 4UL * (ulong)count));
-                memcpy(c__1, series[k].values, 4UL * (ulong)count);
-            }
-            p->vals[k] = c__1;
-            p->accent[k] = series[k].accent;
-        }
-        float hi = 0;
-        for (int i = 0; Cond.B(((CBool)(i < count))); i++)
-            hi = ((float)(Cond.B(((CBool)(hi > cui__dm_total__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(p->vals, series_count, count, i)))) ? hi : cui__dm_total__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(p->vals, series_count, count, i)));
-        p->lo = 0;
-        p->hi = ((float)(Cond.B(((CBool)(hi > 0))) ? hi * 1.08f : (float)(1)));
-        if (Cond.B(((CBool)(o->min != o->max))))
-        {
-            p->lo = ((float)(Cond.B(((CBool)(o->min < o->max))) ? o->min : o->max));
-            p->hi = ((float)(Cond.B(((CBool)(o->min > o->max))) ? o->min : o->max));
-        }
-        p->x0 = x0;
-        p->x1 = x1;
-        p->pitch = pitch;
-        p->head = head;
-        p->axis.x0 = x0;
-        p->axis.x1 = x1;
-        p->axis.step = o->x_step;
-        p->axis.units = o->x_units;
-        p->axis.fmt = ((byte*)(Cond.B(o->x_format) ? cui__frame_strdup(ui, o->x_format, -1) : null));
-        p->fmt = ((byte*)(Cond.B(o->format) ? cui__frame_strdup(ui, o->format, -1) : null));
-        p->unit = ((byte*)(Cond.B(o->unit) ? cui__frame_strdup(ui, o->unit, -1) : null));
-        p->grid = (Cond.B(o->no_grid) ? 0 : 1);
-        p->axis_on = axis_on;
-        p->readout = (Cond.B(o->no_readout) ? 0 : 1);
-        p->cursor = cursor;
-        p->intro = st->intro.x;
-        p->focus = st->focus;
-        p->ann = cui__copy_annotations(ui, o->annotations, o->annotation_count);
-        p->nann = ((int)(Cond.B(p->ann) ? o->annotation_count : 0));
-        if (Cond.B(((CBool)(cursor >= 0))))
-        {
-            res.hovered = cursor;
-            res.x = ((double)(Cond.B(((CBool)(count > 1))) ? x0 + (x1 - x0) * cursor / (count - 1) : x0));
-            res.value = cui__dm_total__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(p->vals, series_count, count, cursor);
-        }
-        if (Cond.B(((CBool)(Cond.B(r.clicked) && Cond.B(((CBool)(count > 0)))))))
-        {
-            res.clicked = 1;
-            if (Cond.B(((CBool)(Cond.B((Cond.B(r.keyboard_activate) ? 0 : 1)) && Cond.B(known)))))
-                res.x = x0 + (x1 - x0) * cui__clampf((ui->mx - plot.x) / plot.w, 0, 1);
-        }
-        int nd = cui__node_new(ui, id);
-        cui_node* n = &ui->nodes[nd];
-        n->w = (Cond.B((int)o->width.kind) ? o->width : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 });
-        n->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)((float)(Cond.B(((CBool)(o->height > 0))) ? o->height : (float)(200))) };
-        n->direction = (byte)(__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_LTR);
-        n->paint = DotCcPointers.cui__paint_dot_chart__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344;
-        n->paint_data = p;
-        cui__mark_interactive(ui, nd, 1);
-        ui->last_id = id;
-        return res;
+        cui_pop_clip(ui);
     }
 
 
 
-    public static unsafe double cui__ev_time__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(double lo, double hi, double step, cui_rect R, float mx)
+    public static unsafe void cui__paint_emoji_tab__unit_7763C92B9CFBA360302C83DE6BCDF7E7E505B9CB2BEE2E2C8764C4942CE00CB3(cui_ctx* ui, cui_node* n, void* data)
     {
-        float w = ((float)(Cond.B(((CBool)(1.0f > R.w - 34.0f))) ? 1.0f : R.w - 34.0f));
-        double t = lo + (hi - lo) * cui__clampf((mx - R.x) / w, 0, 1);
-        if (Cond.B(((CBool)(step > 0))))
-            t = lo + floor((t - lo) / step + 0.5) * step;
-        return ((double)(Cond.B(((CBool)(((double)(Cond.B(((CBool)(t > lo))) ? t : lo)) < hi))) ? ((double)(Cond.B(((CBool)(t > lo))) ? t : lo)) : hi));
+        cui__em_tab_paint* p = (cui__em_tab_paint*)(data);
+        cui_rect r = n->rect;
+        float side = 18;
+        cui_rect d = new cui_rect { x = r.x + (r.w - side) * 0.5f, y = r.y + (r.h - side) * 0.5f, w = side, h = side };
+        if (Cond.B(p->icon))
+            cui_draw_icon(ui, p->s, d, side - 2, cui_alpha(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], p->alpha * 0.9f));
+        else
+            _ = cui__em_draw(ui, p->s, p->len, d, p->alpha, null);
+        if (Cond.B(p->active))
+            cui_draw_rect(ui, new cui_rect { x = r.x + 6, y = r.y + r.h - 2, w = r.w - 12, h = 2 }, new cui_corners { tl = 1, tr = 1, br = 1, bl = 1 }, p->bar);
     }
 
 
 
-    public static unsafe int cui__ev_settle__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(double* t, int n, int i)
+    public static unsafe void cui__paint_emoji_name__unit_7763C92B9CFBA360302C83DE6BCDF7E7E505B9CB2BEE2E2C8764C4942CE00CB3(cui_ctx* ui, cui_node* n, void* data)
     {
-        while (Cond.B(((CBool)(Cond.B(((CBool)(i > 0))) && Cond.B(((CBool)(t[i] < t[i - 1])))))))
+        cui__em_name_paint* p = (cui__em_name_paint*)(data);
+        float fs = cui__fs(ui, 13);
+        cui__draw_text_ellipsis(ui, 1, fs, n->rect.x, n->rect.y + (n->rect.h - cui__font_line_height(ui, 1, fs)) * 0.5f, n->rect.w, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], p->s, -1, 0);
+    }
+
+
+
+    public static unsafe void cui__em_push_recent(byte* buf, ulong cap, byte* em)
+    {
+        if (Cond.B(((CBool)(Cond.B((Cond.B(buf) ? 0 : 1)) || Cond.B(((CBool)(cap < (ulong)(8))))))))
+            return;
+        byte* old = stackalloc byte[832];
+        snprintf(old, unchecked((int)(((ulong)((832 * sizeof(byte)))))), (DotCcLiterals.Pointer + DotCcLiterals.S260 /*"%s"*/)).Arg(buf).Done();
+        ulong n = (ulong)snprintf(buf, (int)(cap), (DotCcLiterals.Pointer + DotCcLiterals.S260 /*"%s"*/)).Arg(em).Done(), el = (ulong)(strlen(em));
+        int count = 1;
+        for (byte* t = old; Cond.B(((CBool)(Cond.B(*t) && Cond.B(((CBool)(count < 24)))))); )
         {
-            double s = t[i];
-            t[i] = t[i - 1];
-            t[i - 1] = s;
-            i--;
+            while (Cond.B(((CBool)(*t == 32))))
+                t++;
+            byte* w = t;
+            while (Cond.B(((CBool)(Cond.B(*t) && Cond.B(((CBool)(*t != 32)))))))
+                t++;
+            ulong wl = (ulong)(t - w);
+            if (Cond.B(((CBool)(Cond.B((Cond.B(wl) ? 0 : 1)) || Cond.B(((CBool)(Cond.B(((CBool)(wl == el))) && Cond.B((Cond.B(memcmp(w, em, el)) ? 0 : 1)))))))))
+                continue;
+            if (Cond.B(((CBool)(n + (ulong)(1) + wl >= cap))))
+                break;
+            buf[n++] = 32;
+            memcpy(buf + n, w, wl);
+            n += wl;
+            buf[n] = 0;
+            count++;
         }
-        while (Cond.B(((CBool)(Cond.B(((CBool)(i + 1 < n))) && Cond.B(((CBool)(t[i] > t[i + 1])))))))
+    }
+
+
+
+    public static unsafe void cui__em_build(cui__emoji* e, cui__em_state* st, int nrecent)
+    {
+        int cap = e->nrec + 24;
+        st->nitems = 0;
+        st->nsec = 0;
+        if (Cond.B(((CBool)(Cond.B((Cond.B(st->items) ? 0 : 1)) || Cond.B(((CBool)(st->cap < cap)))))))
+            return;
+        if (Cond.B(st->query[0]))
         {
-            double s__1 = t[i];
-            t[i] = t[i + 1];
-            t[i + 1] = s__1;
-            i++;
+            cui__em_section* s = &((cui__em_section*)&st->sec)[st->nsec++];
+            s->start = 0;
+            s->kind = 10;
+            for (int pass = 0; Cond.B(((CBool)(pass < 2))); pass++)
+                for (int i = 0; Cond.B(((CBool)(i < e->nrec))); i++)
+                {
+                    if (Cond.B((Cond.B(e->avail[i]) ? 0 : 1)))
+                        continue;
+                    cui__em_rec* rec = &e->recs[i];
+                    byte* name = e->data + rec->name;
+                    CBool m = cui__em_match(name, rec->name_len, st->query);
+                    if (Cond.B((Cond.B(m) ? 0 : 1)))
+                        continue;
+                    ulong ql = (ulong)(strlen(st->query));
+                    CBool lead = ((CBool)(ql <= rec->name_len));
+                    for (ulong k = 0; Cond.B(((CBool)(Cond.B(((CBool)(k < ql))) && Cond.B(lead)))); k++)
+                        lead = ((CBool)(cui__ascii_lower((byte)name[k]) == cui__ascii_lower((byte)st->query[k])));
+                    if (Cond.B(((CBool)(((CBool)(pass == 0)) == (int)((int)(lead))))))
+                        st->items[st->nitems++] = i;
+                }
+            s->count = st->nitems;
+            if (Cond.B((Cond.B(s->count) ? 0 : 1)))
+                st->nsec = 0;
+            return;
         }
+        if (Cond.B(((CBool)(nrecent > 0))))
+        {
+            cui__em_section* s__1 = &((cui__em_section*)&st->sec)[st->nsec++];
+            s__1->start = 0;
+            s__1->kind = 0;
+            s__1->count = nrecent;
+            for (int k__1 = 0; Cond.B(((CBool)(k__1 < nrecent))); k__1++)
+                st->items[st->nitems++] = -(k__1 + 1);
+        }
+        int gi = -1;
+        for (int i__1 = 0; Cond.B(((CBool)(i__1 < e->nrec))); i__1++)
+        {
+            if (Cond.B((Cond.B(e->avail[i__1]) ? 0 : 1)))
+                continue;
+            int kind = e->recs[i__1].group + 1;
+            if (Cond.B(((CBool)(Cond.B(((CBool)(gi < 0))) || Cond.B(((CBool)(((cui__em_section*)&st->sec)[gi].kind != kind)))))))
+            {
+                if (Cond.B(((CBool)(st->nsec >= 11))))
+                    break;
+                gi = st->nsec++;
+                ((cui__em_section*)&st->sec)[gi] = new cui__em_section { start = st->nitems, count = 0, kind = kind };
+            }
+            st->items[st->nitems++] = i__1;
+            ((cui__em_section*)&st->sec)[gi].count++;
+        }
+    }
+
+
+
+    public static unsafe uint cui__em_read_recent(cui__em_frame* f)
+    {
+        uint rhash = 2166136261u;
+        f->nrecent = 0;
+        for (byte* t = f->rbuf; Cond.B(((CBool)(Cond.B(*t) && Cond.B(((CBool)(f->nrecent < 24)))))); )
+        {
+            while (Cond.B(((CBool)(*t == 32))))
+                t++;
+            byte* w = t;
+            while (Cond.B(((CBool)(Cond.B(*t) && Cond.B(((CBool)(*t != 32)))))))
+                t++;
+            ulong wl = (ulong)(t - w);
+            if (Cond.B(((CBool)(Cond.B((Cond.B(wl) ? 0 : 1)) || Cond.B(((CBool)(wl >= (ulong)(32))))))))
+                continue;
+            memcpy(f->recent + f->nrecent * 32, w, wl);
+            (f->recent + f->nrecent * 32)[wl] = 0;
+            for (ulong k = 0; Cond.B(((CBool)(k < wl))); k++)
+                rhash = (rhash ^ (byte)w[k]) * 16777619u;
+            f->nrecent++;
+        }
+        return rhash;
+    }
+
+
+
+    public static unsafe void cui__em_refresh_list(cui__em_frame* f, uint rhash)
+    {
+        cui__em_state* st = f->st;
+        cui__emoji* e = f->e;
+        if (Cond.B((Cond.B(f->can) ? 0 : 1)))
+        {
+            st->nsec = 0;
+            return;
+        }
+        int cap = e->nrec + 24;
+        if (Cond.B((Cond.B(st->items) ? 0 : 1)))
+        {
+            st->items = (int*)(cui__alloc(f->ui, 4UL * (ulong)cap));
+            st->cap = ((int)(Cond.B(st->items) ? cap : 0));
+        }
+        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(st->built) ? 0 : 1)) || Cond.B(strcmp(st->built_query, st->query))))) || Cond.B(((CBool)(st->built_recent_hash != rhash)))))) || Cond.B(((CBool)(st->built_recent_n != f->nrecent)))))) || Cond.B(((CBool)((int)((int)(st->built_avail)) != (int)((int)(e->avail_font)))))))))
+        {
+            cui__em_build(e, st, f->nrecent);
+            snprintf(st->built_query, unchecked((int)(((ulong)((64 * sizeof(byte)))))), (DotCcLiterals.Pointer + DotCcLiterals.S260 /*"%s"*/)).Arg(st->query).Done();
+            st->built_recent_hash = rhash;
+            st->built_recent_n = f->nrecent;
+            st->built_avail = e->avail_font;
+            st->built = 1;
+            st->cur = ((int)(Cond.B(((CBool)(Cond.B(st->query[0]) && Cond.B(st->nitems)))) ? 0 : -1));
+            if (Cond.B(st->query[0]))
+                st->top = st->target = 0;
+        }
+    }
+
+
+
+    public static unsafe void cui__em_layout(cui__em_frame* f)
+    {
+        cui__em_state* st = f->st;
+        cui__em_geo* g = &f->g;
+        float size = ((float)(Cond.B(((CBool)(f->o->size > 0))) ? f->o->size : (float)(26)));
+        memset(g, 0, ((ulong)(sizeof(cui__em_geo))));
+        g->size = size;
+        g->cell = size + 12;
+        g->header = 30;
+        g->pad = 6;
+        f->pr = cui__prev_rect(f->ui, f->gid);
+        float gw = ((float)(Cond.B(((CBool)(f->pr.w > 0))) ? f->pr.w : (float)(340)));
+        g->cols = ((int)(Cond.B(((CBool)(4 > (int)((gw - g->pad * 2) / g->cell)))) ? 4 : (int)((gw - g->pad * 2) / g->cell)));
+        g->pad = floorf((gw - g->cols * g->cell) * 0.5f);
+        g->nsec = st->nsec;
+        memcpy((cui__em_section*)&g->sec, (cui__em_section*)&st->sec, ((ulong)((11 * sizeof(cui__em_section)))));
+        if (Cond.B(((CBool)(Cond.B(st->jump) && Cond.B((Cond.B(st->query[0]) ? 0 : 1))))))
+        {
+            for (int i = 0; Cond.B(((CBool)(i < g->nsec))); i++)
+                if (Cond.B(((CBool)(((cui__em_section*)&g->sec)[i].kind == st->jump - 1))))
+                    st->top = st->target = cui__em_sec_top(g, i);
+            st->jump = 0;
+            st->animating = 0;
+        }
+        f->view_h = ((float)(Cond.B(((CBool)(f->o->height > 0))) ? f->o->height : (float)(280)));
+        f->maxtop = ((float)(Cond.B(((CBool)(0.0f > cui__em_total_h(g) - ((float)(Cond.B(((CBool)(f->pr.h > 0))) ? f->pr.h : f->view_h))))) ? 0.0f : cui__em_total_h(g) - ((float)(Cond.B(((CBool)(f->pr.h > 0))) ? f->pr.h : f->view_h))));
+    }
+
+
+
+    public static unsafe void cui__em_pointer(cui__em_frame* f)
+    {
+        cui_ctx* ui = f->ui;
+        cui__em_state* st = f->st;
+        cui_rect pr = f->pr;
+        cui_interact gr = cui__interact(ui, f->gid, 1 | 2);
+        f->hover = -1;
+        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(pr.w > 0))) && Cond.B(gr.hovered)))) && Cond.B((Cond.B(st->dragging) ? 0 : 1))))))
+            f->hover = cui__em_item_at(&f->g, ui->mx - pr.x, ui->my - pr.y + st->top);
+        if (Cond.B(((CBool)(Cond.B(((CBool)(ui->scroll_target == f->wid))) && Cond.B(((CBool)(ui->scroll_dy != 0)))))))
+        {
+            st->target = ((float)(Cond.B(((CBool)(((float)(Cond.B(((CBool)(st->target - ui->scroll_dy * 48 > 0))) ? st->target - ui->scroll_dy * 48 : (float)(0))) < f->maxtop))) ? ((float)(Cond.B(((CBool)(st->target - ui->scroll_dy * 48 > 0))) ? st->target - ui->scroll_dy * 48 : (float)(0))) : f->maxtop));
+            st->top = st->target;
+            st->animating = 0;
+            ui->scroll_dy = 0;
+        }
+        if (Cond.B(((CBool)(Cond.B(gr.pressed) && Cond.B(((CBool*)&ui->mpressed)[0])))))
+        {
+            st->pressing = 1;
+            st->dragging = 0;
+            st->press_y = ui->my;
+            st->press_top = st->top;
+            st->press_item = f->hover;
+            st->cur_visible = 0;
+        }
+        if (Cond.B(((CBool)(Cond.B(st->pressing) && Cond.B(((CBool*)&ui->mdown)[0])))))
+        {
+            if (Cond.B(((CBool)(Cond.B((Cond.B(st->dragging) ? 0 : 1)) && Cond.B(((CBool)(fabsf(ui->my - st->press_y) > 6)))))))
+                st->dragging = 1;
+            if (Cond.B(st->dragging))
+            {
+                st->top = st->target = ((float)(Cond.B(((CBool)(((float)(Cond.B(((CBool)(st->press_top - (ui->my - st->press_y) > 0))) ? st->press_top - (ui->my - st->press_y) : (float)(0))) < f->maxtop))) ? ((float)(Cond.B(((CBool)(st->press_top - (ui->my - st->press_y) > 0))) ? st->press_top - (ui->my - st->press_y) : (float)(0))) : f->maxtop));
+                st->animating = 0;
+            }
+        }
+        f->pick_item = -1;
+        if (Cond.B(((CBool)(Cond.B(st->pressing) && Cond.B((Cond.B(((CBool*)&ui->mdown)[0]) ? 0 : 1))))))
+        {
+            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(st->dragging) ? 0 : 1)) && Cond.B(((CBool)(st->press_item >= 0)))))) && Cond.B(((CBool)(st->press_item == f->hover)))))))
+                f->pick_item = f->hover;
+            st->pressing = st->dragging = 0;
+        }
+        if (Cond.B(((CBool)(Cond.B(gr.hovered) && Cond.B(((CBool)(f->hover >= 0)))))))
+            cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_HAND);
+    }
+
+
+
+    public static unsafe void cui__em_cursor_vertical(cui__em_frame* f, int dir)
+    {
+        cui__em_state* st = f->st;
+        cui__em_geo* g = &f->g;
+        float x = default, y = default;
+        int si = cui__em_item_pos(g, st->cur, &x, &y);
+        if (Cond.B(((CBool)(si < 0))))
+            return;
+        cui__em_section* s = &((cui__em_section*)&g->sec)[si];
+        int k = st->cur - s->start, col = k % g->cols, row = k / g->cols, rows = cui__em_rows(g, s->count);
+        if (Cond.B(((CBool)(dir > 0))))
+        {
+            if (Cond.B(((CBool)(row + 1 < rows))))
+                st->cur = s->start + ((int)(Cond.B(((CBool)(s->count - 1 < (row + 1) * g->cols + col))) ? s->count - 1 : (row + 1) * g->cols + col));
+            else
+                if (Cond.B(((CBool)(si + 1 < g->nsec))))
+                    st->cur = ((cui__em_section*)&g->sec)[si + 1].start + ((int)(Cond.B(((CBool)(col < ((cui__em_section*)&g->sec)[si + 1].count - 1))) ? col : ((cui__em_section*)&g->sec)[si + 1].count - 1));
+        }
+        else
+        {
+            if (Cond.B(((CBool)(row > 0))))
+                st->cur = s->start + (row - 1) * g->cols + col;
+            else
+                if (Cond.B(((CBool)(si > 0))))
+                {
+                    cui__em_section* p = &((cui__em_section*)&g->sec)[si - 1];
+                    int pr_ = cui__em_rows(g, p->count) - 1;
+                    st->cur = p->start + ((int)(Cond.B(((CBool)(p->count - 1 < pr_ * g->cols + col))) ? p->count - 1 : pr_ * g->cols + col));
+                }
+                else
+                    if (Cond.B(f->in_grid))
+                    {
+                        f->ui->focus = f->sid;
+                        st->cur = -1;
+                    }
+        }
+    }
+
+
+
+    public static unsafe void cui__em_keys(cui__em_frame* f)
+    {
+        cui_ctx* ui = f->ui;
+        cui__em_state* st = f->st;
+        f->in_search = ((CBool)(ui->focus == f->sid));
+        f->in_grid = ((CBool)(ui->focus == f->gid));
+        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(f->in_grid) || Cond.B(f->in_search)))) && Cond.B(((CBool)(st->nitems > 0)))))) && Cond.B((Cond.B(st->tone_open) ? 0 : 1))))))
+        {
+            int move = 0;
+            CBool horiz = f->in_grid;
+            if (Cond.B(((CBool)(Cond.B(horiz) && Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_LEFT))))))
+                move = -1;
+            if (Cond.B(((CBool)(Cond.B(horiz) && Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_RIGHT))))))
+                move = 1;
+            if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_DOWN)))
+                move = 2;
+            if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_UP)))
+                move = -2;
+            if (Cond.B(((CBool)(Cond.B(f->in_grid) && Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_HOME))))))
+            {
+                st->cur = 0;
+                st->cur_visible = 1;
+                move = 0;
+            }
+            if (Cond.B(((CBool)(Cond.B(f->in_grid) && Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_END))))))
+            {
+                st->cur = st->nitems - 1;
+                st->cur_visible = 1;
+                move = 0;
+            }
+            if (Cond.B(move))
+            {
+                if (Cond.B(((CBool)(st->cur < 0))))
+                    st->cur = 0;
+                else
+                    if (Cond.B(((CBool)(Cond.B(((CBool)(move == 1))) || Cond.B(((CBool)(move == -1)))))))
+                        st->cur = ((int)(Cond.B(((CBool)(((int)(Cond.B(((CBool)(st->cur + move > 0))) ? st->cur + move : 0)) < st->nitems - 1))) ? ((int)(Cond.B(((CBool)(st->cur + move > 0))) ? st->cur + move : 0)) : st->nitems - 1));
+                    else
+                        cui__em_cursor_vertical(f, ((int)(Cond.B(((CBool)(move > 0))) ? 1 : -1)));
+                if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(f->in_search) && Cond.B(((CBool)(move == 2)))))) && Cond.B((Cond.B(st->query[0]) ? 0 : 1))))) && Cond.B(((CBool)(st->cur >= 0)))))))
+                    ui->focus = f->gid;
+                st->cur_visible = 1;
+                ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_UP] = ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_DOWN] = 0;
+            }
+            if (Cond.B(((CBool)(Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_ENTER)) || Cond.B(((CBool)(Cond.B(f->in_grid) && Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_SPACE)))))))))
+            {
+                f->pick_item = ((int)(Cond.B(((CBool)(st->cur >= 0))) ? st->cur : 0));
+                ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_ENTER] = 0;
+            }
+        }
+        if (Cond.B(((CBool)(Cond.B(st->tone_open) && Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_ESCAPE))))))
+        {
+            st->tone_open = 0;
+            ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_ESCAPE] = 0;
+        }
+    }
+
+
+
+    public static unsafe void cui__em_follow_cursor(cui__em_frame* f)
+    {
+        cui__em_state* st = f->st;
+        if (Cond.B((Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(st->cur_visible) && Cond.B(((CBool)(st->cur >= 0)))))) && Cond.B(((CBool)(st->cur < st->nitems)))))) ? 0 : 1)))
+            return;
+        float x = default, y = default;
+        float vh = ((float)(Cond.B(((CBool)(f->pr.h > 0))) ? f->pr.h : f->view_h));
+        if (Cond.B(((CBool)(cui__em_item_pos(&f->g, st->cur, &x, &y) >= 0))))
+        {
+            if (Cond.B(((CBool)(y < st->target + f->g.header))))
+                st->target = ((float)(Cond.B(((CBool)(0.0f > y - f->g.header))) ? 0.0f : y - f->g.header));
+            else
+                if (Cond.B(((CBool)(y + f->g.cell > st->target + vh))))
+                    st->target = y + f->g.cell - vh;
+            st->animating = 1;
+        }
+        st->cur_visible = 0;
+    }
+
+
+
+    public static unsafe void cui__em_glide(cui__em_frame* f)
+    {
+        cui__em_state* st = f->st;
+        st->target = ((float)(Cond.B(((CBool)(((float)(Cond.B(((CBool)(st->target > 0))) ? st->target : (float)(0))) < f->maxtop))) ? ((float)(Cond.B(((CBool)(st->target > 0))) ? st->target : (float)(0))) : f->maxtop));
+        if (Cond.B(st->animating))
+        {
+            cui__tween(f->ui, &st->top, st->target, 0.12f);
+            if (Cond.B(((CBool)(fabsf(st->top - st->target) < 0.5f))))
+            {
+                st->top = st->target;
+                st->animating = 0;
+            }
+            else
+                f->ui->animating = 1;
+        }
+        st->top = ((float)(Cond.B(((CBool)(((float)(Cond.B(((CBool)(st->top > 0))) ? st->top : (float)(0))) < f->maxtop))) ? ((float)(Cond.B(((CBool)(st->top > 0))) ? st->top : (float)(0))) : f->maxtop));
+    }
+
+
+
+    public static unsafe int cui__em_button(cui_ctx* ui, uint tid, cui_interact ti, cui_size w, float h, byte* s, CBool icon)
+    {
+        int b = cui__leaf(ui, tid, w, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)h });
+        cui__mark_interactive(ui, b, 1);
+        ui->nodes[b].radius = new cui_corners { tl = 8, tr = 8, br = 8, bl = 8 };
+        if (Cond.B(ti.focus_visible))
+            cui__focus_ring(ui, b, 1);
+        cui__em_tab_paint* tp = (cui__em_tab_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__em_tab_paint)))));
+        memset(tp, 0, ((ulong)(sizeof(cui__em_tab_paint))));
+        tp->s = s;
+        tp->len = (int)strlen(s);
+        tp->alpha = 1;
+        tp->icon = icon;
+        ui->nodes[b].paint = DotCcPointers.cui__paint_emoji_tab__unit_7763C92B9CFBA360302C83DE6BCDF7E7E505B9CB2BEE2E2C8764C4942CE00CB3;
+        ui->nodes[b].paint_data = tp;
+        return b;
+    }
+
+
+
+    public static unsafe void cui__em_build_top_row__unit_7763C92B9CFBA360302C83DE6BCDF7E7E505B9CB2BEE2E2C8764C4942CE00CB3(cui__em_frame* f)
+    {
+        cui_ctx* ui = f->ui;
+        cui_emoji_picker_opts* o = f->o;
+        cui__em_state* st = f->st;
+        if (Cond.B(((CBool)(Cond.B(o->no_search) && Cond.B(o->no_tone)))))
+            return;
+        int row = cui__node_new(ui, 0);
+        cui_node* rn = &ui->nodes[row];
+        rn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
+        rn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+        rn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+        rn->gap = 6;
+        rn->pad[0] = rn->pad[1] = rn->pad[3] = 10;
+        rn->pad[2] = 6;
+        cui__open(ui, row);
+        if (Cond.B(st->tone_open))
+        {
+            for (int k = 0; Cond.B(((CBool)(k < 6))); k++)
+            {
+                cui_push_id_int(ui, k);
+                uint tid = cui_make_id(ui, (DotCcLiterals.Pointer + DotCcLiterals.S146 /*"#tone"*/));
+                cui_interact ti = cui__interact(ui, tid, 1);
+                if (Cond.B(((CBool)(Cond.B(ti.clicked) || Cond.B(ti.keyboard_activate)))))
+                {
+                    *f->tone = k;
+                    st->tone_open = 0;
+                    st->built = 0;
+                }
+                int b = cui__em_button(ui, tid, ti, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)36 }, 36, global::Managed.Cui.Cui.Globals.cui__em_hands__unit_7763C92B9CFBA360302C83DE6BCDF7E7E505B9CB2BEE2E2C8764C4942CE00CB3[k], 0);
+                if (Cond.B(((CBool)(k == *f->tone))))
+                    ui->nodes[b].bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_HOVER];
+                else
+                    if (Cond.B(ti.hovered))
+                        ui->nodes[b].bg = cui_alpha(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_HOVER], 0.6f);
+                cui_pop_id(ui);
+            }
+        }
+        else
+        {
+            if (Cond.B((Cond.B(o->no_search) ? 0 : 1)))
+            {
+                cui_input_opts io = default;
+                memset(&io, 0, ((ulong)(sizeof(cui_input_opts))));
+                io.width = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+                io.clearable = 1;
+                io.placeholder = ((byte*)(Cond.B(o->placeholder) ? o->placeholder : (DotCcLiterals.Pointer + DotCcLiterals.S1164 /*"Search emoji"*/)));
+                cui__text_field(ui, f->sid, st->query, ((ulong)((64 * sizeof(byte)))), &io, 0, 0, (DotCcLiterals.Pointer + DotCcLiterals.S544 /*""*/));
+            }
+            else
+            {
+                int sp = cui__leaf(ui, 0, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)1 });
+                ;
+            }
+            if (Cond.B((Cond.B(o->no_tone) ? 0 : 1)))
+            {
+                uint tid__1 = cui_make_id(ui, (DotCcLiterals.Pointer + DotCcLiterals.S492 /*"#tones"*/));
+                cui_interact ti__1 = cui__interact(ui, tid__1, 1);
+                if (Cond.B(((CBool)(Cond.B(ti__1.clicked) || Cond.B(ti__1.keyboard_activate)))))
+                    st->tone_open = 1;
+                int b__1 = cui__em_button(ui, tid__1, ti__1, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)36 }, 36, global::Managed.Cui.Cui.Globals.cui__em_hands__unit_7763C92B9CFBA360302C83DE6BCDF7E7E505B9CB2BEE2E2C8764C4942CE00CB3[*f->tone], 0);
+                if (Cond.B(ti__1.hovered))
+                    ui->nodes[b__1].bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_HOVER];
+            }
+        }
+        cui__close(ui);
+    }
+
+
+
+    public static unsafe void cui__em_build_tabs__unit_7763C92B9CFBA360302C83DE6BCDF7E7E505B9CB2BEE2E2C8764C4942CE00CB3(cui__em_frame* f)
+    {
+        cui_ctx* ui = f->ui;
+        cui__em_state* st = f->st;
+        cui__em_geo* g = &f->g;
+        int cur_sec = 0;
+        float acc = 0;
+        for (int i = 0; Cond.B(((CBool)(i < g->nsec))); i++)
+        {
+            float h = cui__em_sec_h(g, &((cui__em_section*)&g->sec)[i]);
+            if (Cond.B(((CBool)(st->top + 1 >= acc))))
+                cur_sec = i;
+            acc += h;
+        }
+        if (Cond.B((Cond.B(f->can) ? 0 : 1)))
+            return;
+        int row = cui__node_new(ui, 0);
+        cui_node* rn = &ui->nodes[row];
+        rn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
+        rn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+        rn->justify = (byte)(__DotCcEnum_6375695F6A757374696679.CUI_JUSTIFY_BETWEEN);
+        rn->pad[1] = rn->pad[3] = 8;
+        cui__open(ui, row);
+        int active_kind = ((int)(Cond.B(((CBool)(Cond.B(st->query[0]) || Cond.B(((CBool)(cur_sec >= g->nsec)))))) ? -1 : ((cui__em_section*)&g->sec)[cur_sec].kind));
+        for (int kind = ((int)(Cond.B(((CBool)(f->nrecent > 0))) ? 0 : 1)); Cond.B(((CBool)(kind <= 9))); kind++)
+        {
+            cui_push_id_int(ui, kind);
+            uint tid = cui_make_id(ui, (DotCcLiterals.Pointer + DotCcLiterals.S175 /*"#tab"*/));
+            cui_interact ti = cui__interact(ui, tid, 1);
+            if (Cond.B(((CBool)(Cond.B(ti.clicked) || Cond.B(ti.keyboard_activate)))))
+            {
+                if (Cond.B(st->query[0]))
+                {
+                    st->query[0] = 0;
+                    st->jump = kind + 1;
+                }
+                else
+                    for (int i__1 = 0; Cond.B(((CBool)(i__1 < g->nsec))); i__1++)
+                        if (Cond.B(((CBool)(((cui__em_section*)&g->sec)[i__1].kind == kind))))
+                        {
+                            st->target = cui__em_sec_top(g, i__1);
+                            st->animating = 1;
+                        }
+            }
+            int b = cui__em_button(ui, tid, ti, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, 34, ((byte*)(Cond.B(((CBool)(kind == 0))) ? (DotCcLiterals.Pointer + DotCcLiterals.S298 /*""*/) : global::Managed.Cui.Cui.Globals.cui__em_tab_icons__unit_7763C92B9CFBA360302C83DE6BCDF7E7E505B9CB2BEE2E2C8764C4942CE00CB3[kind])), ((CBool)(kind == 0)));
+            ui->nodes[b].max_w = 40;
+            if (Cond.B(ti.hovered))
+                ui->nodes[b].bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_HOVER];
+            cui__em_tab_paint* tp = (cui__em_tab_paint*)(ui->nodes[b].paint_data);
+            tp->alpha = ((float)(Cond.B(((CBool)(Cond.B(((CBool)(kind == active_kind))) || Cond.B(ti.hovered)))) ? (float)(1) : 0.5f));
+            tp->active = ((CBool)(kind == active_kind));
+            tp->bar = cui__emphasis(ui);
+            cui_tooltip(ui, f->names[kind]);
+            cui_pop_id(ui);
+        }
+        cui__close(ui);
+    }
+
+
+
+    public static unsafe void cui__em_build_grid(cui__em_frame* f)
+    {
+        cui_ctx* ui = f->ui;
+        cui__em_state* st = f->st;
+        int gn = cui__leaf(ui, f->gid, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)f->view_h });
+        cui__mark_interactive(ui, gn, 1 | 2);
+        cui__em_paint* pp = (cui__em_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__em_paint)))));
+        memset(pp, 0, ((ulong)(sizeof(cui__em_paint))));
+        pp->e = f->e;
+        pp->st = st;
+        pp->g = f->g;
+        pp->items = st->items;
+        pp->recent = (byte*)(cui__frame_alloc(ui, ((ulong)((24 * (32 * sizeof(byte)))))));
+        memcpy(pp->recent, f->recent, ((ulong)((24 * (32 * sizeof(byte))))));
+        pp->hover = f->hover;
+        pp->cur = st->cur;
+        pp->focus = ((CBool)(Cond.B(f->in_grid) && Cond.B(ui->focus_visible)));
+        pp->soft = ((CBool)(Cond.B(f->in_search) && Cond.B(st->query[0])));
+        pp->top = st->top;
+        pp->tone = *f->tone;
+        pp->names = f->names;
+        pp->empty = ((byte*)(Cond.B(f->o->empty_text) ? f->o->empty_text : (DotCcLiterals.Pointer + DotCcLiterals.S1022 /*"No emoji found"*/)));
+        pp->none = (Cond.B(f->can) ? 0 : 1);
+        pp->wheel = f->wid;
+        pp->hover_bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_HOVER];
+        pp->header = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED];
+        pp->ring = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOCUS_RING];
+        ui->nodes[gn].paint = DotCcPointers.cui__paint_emoji_grid__unit_7763C92B9CFBA360302C83DE6BCDF7E7E505B9CB2BEE2E2C8764C4942CE00CB3;
+        ui->nodes[gn].paint_data = pp;
+    }
+
+
+
+    public static unsafe int cui__em_item_name(cui__emoji* e, int v, cui__em_str t, byte** name)
+    {
+    byte* __dotcc_array_storage11 = null;
+        if (Cond.B(((CBool)(v >= 0))))
+        {
+            *name = e->data + e->recs[v].name;
+            return e->recs[v].name_len;
+        }
+        for (int i = 0; Cond.B(((CBool)(i < e->nrec))); i++)
+        {
+            cui__em_rec* rec = &e->recs[i];
+            if (__dotcc_array_storage11 == null)
+            {
+                byte* __dotcc_array_storage11_new = stackalloc byte[checked(sizeof(byte) * 64)];
+                __dotcc_array_storage11 = __dotcc_array_storage11_new;
+            }
+            byte* tb = (byte*)__dotcc_array_storage11;
+            new global::System.Span<byte>((void*)tb, checked(sizeof(byte) * 64)).Clear();
+            int tl = rec->len;
+            if (Cond.B(((CBool)(Cond.B(((CBool)(tl == t.len))) && Cond.B((Cond.B(memcmp(e->data + rec->text, t.s, (ulong)tl)) ? 0 : 1))))))
+            {
+                *name = e->data + rec->name;
+                return rec->name_len;
+            }
+            if (Cond.B(rec->tone))
+                for (int k = 1; Cond.B(((CBool)(k <= 5))); k++)
+                {
+                    tl = cui__em_toned(e->data + rec->text, rec->len, k, tb, unchecked((int)(((ulong)((64 * sizeof(byte)))))));
+                    if (Cond.B(((CBool)(Cond.B(((CBool)(tl == t.len))) && Cond.B((Cond.B(memcmp(tb, t.s, (ulong)tl)) ? 0 : 1))))))
+                    {
+                        *name = e->data + rec->name;
+                        return rec->name_len;
+                    }
+                }
+        }
+        *name = (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/);
+        return 0;
+    }
+
+
+
+    public static unsafe void cui__em_build_preview(cui__em_frame* f)
+    {
+        cui_ctx* ui = f->ui;
+        cui__em_state* st = f->st;
+        int line = cui__leaf(ui, 0, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)1 });
+        ui->nodes[line].bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER_SUBTLE];
+        int row = cui__node_new(ui, 0);
+        cui_node* rn = &ui->nodes[row];
+        rn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
+        rn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
+        rn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
+        rn->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)48 };
+        rn->gap = 10;
+        rn->pad[1] = rn->pad[3] = 12;
+        cui__open(ui, row);
+        int show = ((int)(Cond.B(((CBool)(f->hover >= 0))) ? f->hover : st->cur));
+        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(f->can) && Cond.B(((CBool)(show >= 0)))))) && Cond.B(((CBool)(show < st->nitems)))))))
+        {
+            cui__em_str t = cui__em_item_text(f->e, st, f->recent, st->items[show], *f->tone);
+            cui_emoji(ui, t.s, 28);
+            byte* name = default;
+            int nl = cui__em_item_name(f->e, st->items[show], t, &name);
+            byte* cap = stackalloc byte[256];
+            int cl = ((int)(Cond.B(((CBool)(nl < 255))) ? nl : 255));
+            memcpy(cap, name, (ulong)cl);
+            cap[cl] = 0;
+            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(cl) && Cond.B(((CBool)(cap[0] >= 97)))))) && Cond.B(((CBool)(cap[0] <= 122)))))))
+                cap[0] = (byte)(cap[0] - 32);
+            int tn = cui__leaf(ui, 0, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)20 });
+            cui__em_name_paint* np = (cui__em_name_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__em_name_paint)))));
+            memcpy(np->s, cap, (ulong)cl + (ulong)(1));
+            ui->nodes[tn].paint = DotCcPointers.cui__paint_emoji_name__unit_7763C92B9CFBA360302C83DE6BCDF7E7E505B9CB2BEE2E2C8764C4942CE00CB3;
+            ui->nodes[tn].paint_data = np;
+        }
+        else
+            if (Cond.B(f->can))
+            {
+                int tn__1 = cui__text_node(ui, ((byte*)(Cond.B(f->o->hint) ? f->o->hint : (DotCcLiterals.Pointer + DotCcLiterals.S693 /*"Pick an emoji"*/))), -1, 0, cui__fs(ui, 13), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0);
+                ;
+            }
+        cui__close(ui);
+    }
+
+
+
+    public static unsafe byte* cui_emoji_picker_ex(cui_ctx* ui, byte* id_str, cui_emoji_picker_opts* o)
+    {
+        cui_emoji_picker_opts d = default;
+        memset(&d, 0, ((ulong)(sizeof(cui_emoji_picker_opts))));
+        if (Cond.B((Cond.B(o) ? 0 : 1)))
+            o = &d;
+        byte* picked = null;
+        cui__em_frame f = default;
+        memset(&f, 0, ((ulong)(sizeof(cui__em_frame))));
+        f.ui = ui;
+        f.o = o;
+        f.id = cui_make_id(ui, ((byte*)(Cond.B(id_str) ? id_str : (DotCcLiterals.Pointer + DotCcLiterals.S997 /*"emoji"*/))));
+        cui_push_id(ui, ((byte*)(Cond.B(id_str) ? id_str : (DotCcLiterals.Pointer + DotCcLiterals.S997 /*"emoji"*/))));
+        f.gid = cui_make_id(ui, (DotCcLiterals.Pointer + DotCcLiterals.S496 /*"#grid"*/));
+        f.wid = f.gid ^ 0x3E1Du;
+        f.sid = cui_make_id(ui, (DotCcLiterals.Pointer + DotCcLiterals.S899 /*"#search"*/));
+        cui__em_state* st = f.st = (cui__em_state*)(cui_state(ui, f.id, ((ulong)(sizeof(cui__em_state)))));
+        cui__state_set_dtor(ui, f.id, DotCcPointers.cui__em_state_free__unit_7763C92B9CFBA360302C83DE6BCDF7E7E505B9CB2BEE2E2C8764C4942CE00CB3);
+        f.e = cui__em(ui);
+        f.can = ((CBool)(Cond.B(((CBool)(Cond.B(f.e) && Cond.B(cui__em_can_draw(ui))))) && Cond.B(cui__em_list__unit_7763C92B9CFBA360302C83DE6BCDF7E7E505B9CB2BEE2E2C8764C4942CE00CB3(ui, f.e))));
+        if (Cond.B(f.can))
+            cui__em_check(ui, f.e);
+        f.names = ((byte**)(Cond.B(o->group_names) ? o->group_names : global::Managed.Cui.Cui.Globals.cui__em_group_names__unit_7763C92B9CFBA360302C83DE6BCDF7E7E505B9CB2BEE2E2C8764C4942CE00CB3));
+        f.tone = ((int*)(Cond.B(o->tone) ? o->tone : &st->own_tone));
+        *f.tone = ((int)(Cond.B(((CBool)(((int)(Cond.B(((CBool)(*f.tone > 0))) ? *f.tone : 0)) < 5))) ? ((int)(Cond.B(((CBool)(*f.tone > 0))) ? *f.tone : 0)) : 5));
+        f.rbuf = ((byte*)(Cond.B(((CBool)(Cond.B(o->recent) && Cond.B(o->recent_cap)))) ? o->recent : st->own_recent));
+        f.rcap = ((ulong)(Cond.B(((CBool)(Cond.B(o->recent) && Cond.B(o->recent_cap)))) ? o->recent_cap : ((ulong)((768 * sizeof(byte))))));
+        cui__em_refresh_list(&f, cui__em_read_recent(&f));
+        cui__em_layout(&f);
+        cui__em_pointer(&f);
+        cui__em_keys(&f);
+        cui__em_follow_cursor(&f);
+        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(f.pick_item >= 0))) && Cond.B(((CBool)(f.pick_item < st->nitems)))))) && Cond.B(f.can)))))
+        {
+            cui__em_str t = cui__em_item_text(f.e, st, f.recent, st->items[f.pick_item], *f.tone);
+            picked = cui__frame_strdup(ui, t.s, t.len);
+            cui__em_push_recent(f.rbuf, f.rcap, t.s);
+            st->cur = f.pick_item;
+        }
+        cui__em_glide(&f);
+        int col = cui__node_new(ui, f.id);
+        cui_node* cn = &ui->nodes[col];
+        cn->w = (Cond.B((int)o->width.kind) ? o->width : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 });
+        if (Cond.B((Cond.B((int)o->width.kind) ? 0 : 1)))
+            cn->max_w = 360;
+        cn->gap = 0;
+        cn->self_align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_STRETCH);
+        cn->bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE];
+        cn->border = 1;
+        cn->border_color = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER];
+        cn->radius = new cui_corners { tl = ui->theme.radius_panel, tr = ui->theme.radius_panel, br = ui->theme.radius_panel, bl = ui->theme.radius_panel };
+        cn->flags |= (uint)(16);
+        cui__open(ui, col);
+        cui__em_build_top_row__unit_7763C92B9CFBA360302C83DE6BCDF7E7E505B9CB2BEE2E2C8764C4942CE00CB3(&f);
+        cui__em_build_tabs__unit_7763C92B9CFBA360302C83DE6BCDF7E7E505B9CB2BEE2E2C8764C4942CE00CB3(&f);
+        int line = cui__leaf(ui, 0, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)1 });
+        ui->nodes[line].bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER_SUBTLE];
+        cui__em_build_grid(&f);
+        if (Cond.B((Cond.B(o->no_preview) ? 0 : 1)))
+            cui__em_build_preview(&f);
+        cui__close(ui);
+        cui_pop_id(ui);
+        ui->last_id = f.id;
+        return picked;
+    }
+
+
+
+    public static unsafe void cui__sw_note_change(cui_sw_renderer* r, ulong t, int x0, int y0, int x1, int y1)
+    {
+        for (int i = 0; Cond.B(((CBool)(i < r->nchanged))); i++)
+            if (Cond.B(((CBool)(((__Anon7EE6DDE8D86583F085229CE0DBCA1F261A8A73C55C9F08E50E838F1F112962CD*)&r->changed)[i].t == t))))
+            {
+                if (Cond.B(((CBool)(x0 < ((__Anon7EE6DDE8D86583F085229CE0DBCA1F261A8A73C55C9F08E50E838F1F112962CD*)&r->changed)[i].x0))))
+                    ((__Anon7EE6DDE8D86583F085229CE0DBCA1F261A8A73C55C9F08E50E838F1F112962CD*)&r->changed)[i].x0 = x0;
+                if (Cond.B(((CBool)(y0 < ((__Anon7EE6DDE8D86583F085229CE0DBCA1F261A8A73C55C9F08E50E838F1F112962CD*)&r->changed)[i].y0))))
+                    ((__Anon7EE6DDE8D86583F085229CE0DBCA1F261A8A73C55C9F08E50E838F1F112962CD*)&r->changed)[i].y0 = y0;
+                if (Cond.B(((CBool)(x1 > ((__Anon7EE6DDE8D86583F085229CE0DBCA1F261A8A73C55C9F08E50E838F1F112962CD*)&r->changed)[i].x1))))
+                    ((__Anon7EE6DDE8D86583F085229CE0DBCA1F261A8A73C55C9F08E50E838F1F112962CD*)&r->changed)[i].x1 = x1;
+                if (Cond.B(((CBool)(y1 > ((__Anon7EE6DDE8D86583F085229CE0DBCA1F261A8A73C55C9F08E50E838F1F112962CD*)&r->changed)[i].y1))))
+                    ((__Anon7EE6DDE8D86583F085229CE0DBCA1F261A8A73C55C9F08E50E838F1F112962CD*)&r->changed)[i].y1 = y1;
+                return;
+            }
+        if (Cond.B(((CBool)(r->nchanged == 32))))
+        {
+            r->changed_overflow = 1;
+            return;
+        }
+        ((__Anon7EE6DDE8D86583F085229CE0DBCA1F261A8A73C55C9F08E50E838F1F112962CD*)&r->changed)[r->nchanged].t = t;
+        ((__Anon7EE6DDE8D86583F085229CE0DBCA1F261A8A73C55C9F08E50E838F1F112962CD*)&r->changed)[r->nchanged].x0 = x0;
+        ((__Anon7EE6DDE8D86583F085229CE0DBCA1F261A8A73C55C9F08E50E838F1F112962CD*)&r->changed)[r->nchanged].y0 = y0;
+        ((__Anon7EE6DDE8D86583F085229CE0DBCA1F261A8A73C55C9F08E50E838F1F112962CD*)&r->changed)[r->nchanged].x1 = x1;
+        ((__Anon7EE6DDE8D86583F085229CE0DBCA1F261A8A73C55C9F08E50E838F1F112962CD*)&r->changed)[r->nchanged].y1 = y1;
+        r->nchanged++;
+    }
+
+
+
+    public static unsafe void* cui__sw_xrealloc__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84(void* p, ulong n)
+    {
+        void* q = realloc(p, n);
+        if (Cond.B(((CBool)(Cond.B((Cond.B(q) ? 0 : 1)) && Cond.B(n)))))
+        {
+            fprintf(stderr, (DotCcLiterals.Pointer + DotCcLiterals.S903 /*"cui: out of memory\n"*/)).Done();
+            {
+                abort();
+                throw new global::System.Diagnostics.UnreachableException("A noreturn function returned.");
+            }
+        }
+        return q;
+    }
+
+
+
+    public static unsafe ulong cui__sw_tex_create__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84(void* user, int w, int h, cui_texture_format fmt, void* pixels)
+    {
+        cui_sw_renderer* r = (cui_sw_renderer*)(user);
+        int slot = -1;
+        for (int i = 0; Cond.B(((CBool)(i < r->tex_count))); i++)
+            if (Cond.B((Cond.B(r->tex[i].used) ? 0 : 1)))
+            {
+                slot = i;
+                break;
+            }
+        if (Cond.B(((CBool)(slot < 0))))
+        {
+            if (Cond.B(((CBool)(r->tex_count == r->tex_cap))))
+            {
+                r->tex_cap = ((int)(Cond.B(r->tex_cap) ? r->tex_cap * 2 : 16));
+                r->tex = (cui__sw_tex*)(cui__sw_xrealloc__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84(r->tex, ((ulong)(sizeof(cui__sw_tex))) * (ulong)r->tex_cap));
+            }
+            slot = r->tex_count++;
+        }
+        cui__sw_tex* t = &r->tex[slot];
+        cui__sw_note_change(r, (ulong)(slot + 1), 0, 0, w, h);
+        t->w = w;
+        t->h = h;
+        t->fmt = fmt;
+        t->used = 1;
+        ulong bytes = (ulong)w * (ulong)h * (ulong)fmt;
+        t->data = (byte*)(cui__sw_xrealloc__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84(null, bytes));
+        if (Cond.B(pixels))
+            memcpy(t->data, pixels, bytes);
+        else
+            memset(t->data, 0, bytes);
+        return (ulong)(slot + 1);
+    }
+
+
+
+    public static unsafe void cui__sw_tex_update__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84(void* user, ulong tex, int x, int y, int w, int h, void* pixels, int stride)
+    {
+        cui_sw_renderer* r = (cui_sw_renderer*)(user);
+        int slot = (int)tex - 1;
+        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(slot < 0))) || Cond.B(((CBool)(slot >= r->tex_count)))))) || Cond.B((Cond.B(r->tex[slot].used) ? 0 : 1))))))
+            return;
+        cui__sw_tex* t = &r->tex[slot];
+        cui__sw_note_change(r, tex, x, y, x + w, y + h);
+        int bpp = (int)t->fmt;
+        byte* src = (byte*)(pixels);
+        for (int row = 0; Cond.B(((CBool)(row < h))); row++)
+        {
+            if (Cond.B(((CBool)(Cond.B(((CBool)(y + row < 0))) || Cond.B(((CBool)(y + row >= t->h)))))))
+                continue;
+            memcpy(t->data + ((ulong)(y + row) * (ulong)t->w + (ulong)x) * (ulong)bpp, src + (ulong)row * (ulong)stride, (ulong)w * (ulong)bpp);
+        }
+    }
+
+
+
+    public static unsafe void cui__sw_tex_destroy__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84(void* user, ulong tex)
+    {
+        cui_sw_renderer* r = (cui_sw_renderer*)(user);
+        int slot = (int)tex - 1;
+        if (Cond.B(((CBool)(Cond.B(((CBool)(slot < 0))) || Cond.B(((CBool)(slot >= r->tex_count)))))))
+            return;
+        free(r->tex[slot].data);
+        r->tex[slot].data = null;
+        r->tex[slot].used = 0;
+    }
+
+
+
+    public static unsafe int cui__cpu_count()
+    {
+        return 1;
+    }
+
+
+
+    public static unsafe cui_sw_renderer* cui_sw_create()
+    {
+        cui_sw_renderer* r = (cui_sw_renderer*)(calloc((ulong)(1), ((ulong)(sizeof(cui_sw_renderer)))));
+        if (Cond.B((Cond.B(r) ? 0 : 1)))
+            return null;
+        cui__shadow_lut_init__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84();
+        int n = cui__cpu_count();
+        r->threads = ((int)(Cond.B(((CBool)(n > 8))) ? 8 : ((int)(Cond.B(((CBool)(n < 1))) ? 1 : n))));
+        return r;
+    }
+
+
+
+    public static unsafe void cui_sw_destroy(cui_sw_renderer* r)
+    {
+        if (Cond.B((Cond.B(r) ? 0 : 1)))
+            return;
+        for (int i = 0; Cond.B(((CBool)(i < r->tex_count))); i++)
+            free(r->tex[i].data);
+        free(r->tex);
+        free(r->tiles);
+        free(r->prev);
+        free(r->force);
+        free(r);
+    }
+
+
+
+    public static unsafe void cui_sw_set_threads(cui_sw_renderer* r, int threads)
+    {
+        r->threads = ((int)(Cond.B(((CBool)(threads < 1))) ? 1 : ((int)(Cond.B(((CBool)(threads > 32))) ? 32 : threads))));
+    }
+
+
+
+    public static unsafe void cui_sw_set_incremental(cui_sw_renderer* r, CBool on)
+    {
+        if (Cond.B(r))
+        {
+            r->incremental = on;
+            r->last_px = null;
+        }
+    }
+
+
+
+    public static unsafe CBool cui_sw_last_damage(cui_sw_renderer* r, int* x, int* y, int* w, int* h)
+    {
+        if (Cond.B((Cond.B(r) ? 0 : 1)))
+            return 0;
+        if (Cond.B(x))
+            *x = r->damage[0];
+        if (Cond.B(y))
+            *y = r->damage[1];
+        if (Cond.B(w))
+            *w = r->damage[2] - r->damage[0];
+        if (Cond.B(h))
+            *h = r->damage[3] - r->damage[1];
+        return ((CBool)(Cond.B(((CBool)(r->damage[2] > r->damage[0]))) && Cond.B(((CBool)(r->damage[3] > r->damage[1])))));
+    }
+
+
+
+    public static unsafe cui_renderer_iface cui_sw_iface(cui_sw_renderer* r)
+    {
+        cui_renderer_iface i = default;
+        memset(&i, 0, ((ulong)(sizeof(cui_renderer_iface))));
+        i.user = r;
+        i.texture_create = DotCcPointers.cui__sw_tex_create__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84;
+        i.texture_update = DotCcPointers.cui__sw_tex_update__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84;
+        i.texture_destroy = DotCcPointers.cui__sw_tex_destroy__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84;
         return i;
     }
 
 
 
-    public static unsafe int cui__ev_insert__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(double* t, int* n, int cap, double v)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe float cui__sd_rrect(float px, float py, float hw, float hh, float tl, float tr, float br, float bl)
     {
-        if (Cond.B(((CBool)(*n >= cap))))
-            return -1;
-        t[*n] = v;
-        (*n)++;
-        return cui__ev_settle__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(t, *n, *n - 1);
+        float r = ((float)(Cond.B(((CBool)(px < 0))) ? ((float)(Cond.B(((CBool)(py < 0))) ? tl : bl)) : ((float)(Cond.B(((CBool)(py < 0))) ? tr : br))));
+        float m = ((float)(Cond.B(((CBool)(hw < hh))) ? hw : hh));
+        if (Cond.B(((CBool)(r > m))))
+            r = m;
+        float qx = fabsf(px) - hw + r, qy = fabsf(py) - hh + r;
+        float ox = ((float)(Cond.B(((CBool)(qx > 0))) ? qx : (float)(0))), oy = ((float)(Cond.B(((CBool)(qy > 0))) ? qy : (float)(0)));
+        float inside = ((float)(Cond.B(((CBool)(qx > qy))) ? qx : qy));
+        if (Cond.B(((CBool)(inside > 0))))
+            inside = 0;
+        return inside + sqrtf(ox * ox + oy * oy) - r;
     }
 
 
 
-    public static unsafe void cui__ev_remove__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(double* t, int* n, int i)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe float cui__erf(float x)
     {
-        if (Cond.B(((CBool)(Cond.B(((CBool)(i < 0))) || Cond.B(((CBool)(i >= *n)))))))
-            return;
-        memmove(t + i, t + i + 1, 8UL * (ulong)(*n - i - 1));
-        (*n)--;
+        float s = ((float)(Cond.B(((CBool)(x < 0))) ? -1.0f : 1.0f));
+        x = fabsf(x);
+        float t = 1.0f / (1.0f + 0.3275911f * x);
+        float y = 1.0f - ((((1.061405429f * t - 1.453152027f) * t + 1.421413741f) * t - 0.284496736f) * t + 0.254829592f) * t * expf(-x * x);
+        return s * y;
     }
 
 
 
-    public static unsafe void cui__paint_event_track__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(cui_ctx* ui, cui_node* nd, void* data)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe float cui__sat(float x)
     {
-        cui__ev_paint* p = (cui__ev_paint*)(data);
-        cui_rect r = nd->rect;
-        float w = ((float)(Cond.B(((CBool)(1.0f > r.w - 34.0f))) ? 1.0f : r.w - 34.0f));
-        float fs = cui__fs(ui, ui->theme.text_xs);
-        float y = r.y + 12.0f;
-        cui_color em = cui__emphasis(ui);
-        cui_draw_rect(ui, new cui_rect { x = r.x, y = r.y, w = w, h = 1 }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER_STRONG]);
-        if (Cond.B(p->axis_on))
-            cui__ins_draw_axis__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(ui, &p->axis, r.x, w, r.y + 36, new cui_rect { x = r.x, y = r.y, w = r.w, h = r.h }, 0);
-        if (Cond.B((Cond.B(((CBool)(p->hi > p->lo))) ? 0 : 1)))
+        return ((float)(Cond.B(((CBool)(x < 0))) ? (float)(0) : ((float)(Cond.B(((CBool)(x > 1))) ? (float)(1) : x))));
+    }
+
+
+
+    public static unsafe void cui__shadow_lut_init__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84()
+    {
+        if (Cond.B(((CBool)(global::Managed.Cui.Cui.Globals.cui__shadow_lut__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84[0] != 0))))
             return;
-        int label = ((int)(Cond.B(((CBool)(p->drag >= 0))) ? p->drag : ((int)(Cond.B(((CBool)(p->hover >= 0))) ? p->hover : p->sel))));
-        for (int i = 0; Cond.B(((CBool)(i < p->n))); i++)
+        for (int i = 1024 + 1; Cond.B(((CBool)(i >= 0))); i--)
         {
-            float x = r.x + (float)((p->t[i] - p->lo) / (p->hi - p->lo)) * w;
-            CBool on = ((CBool)(i == p->sel)), hot = ((CBool)(Cond.B(((CBool)(i == p->hover))) || Cond.B(((CBool)(i == p->drag)))));
-            float rad = ((float)(Cond.B(((CBool)(Cond.B(on) || Cond.B(hot)))) ? 5.0f : 4.0f));
-            cui_color c = (Cond.B(on) ? em : (Cond.B(hot) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND] : cui_alpha(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0.82f)));
-            if (Cond.B(on))
-                cui_draw_rect(ui, new cui_rect { x = floorf(x), y = r.y, w = 1, h = y - rad - r.y }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, cui_alpha(em, 0.6f));
-            cui_draw_circle(ui, new cui_vec2 { x = x, y = y }, rad, c);
-            if (Cond.B(((CBool)(Cond.B(on) && Cond.B(((CBool)(p->focus > 0.01f)))))))
-                cui__draw_focus_ring(ui, new cui_rect { x = x - 8, y = y - 8, w = 16, h = 16 }, new cui_corners { tl = 8, tr = 8, br = 8, bl = 8 }, p->focus);
-            if (Cond.B(((CBool)(i == label))))
+            float z = -4.0f + (2.8f - -4.0f) * (float)i / 1024;
+            global::Managed.Cui.Cui.Globals.cui__shadow_lut__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84[i] = 0.5f * (1.0f - cui__erf(z));
+        }
+    }
+
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe float cui__shadow_falloff__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84(float z)
+    {
+        if (Cond.B(((CBool)(z <= -4.0f))))
+            return 1.0f;
+        float f = (z - -4.0f) * ((float)1024 / (2.8f - -4.0f));
+        int i = (int)f;
+        if (Cond.B(((CBool)(i >= 1024))))
+            return global::Managed.Cui.Cui.Globals.cui__shadow_lut__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84[1024];
+        float t = f - (float)i;
+        return global::Managed.Cui.Cui.Globals.cui__shadow_lut__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84[i] + (global::Managed.Cui.Cui.Globals.cui__shadow_lut__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84[i + 1] - global::Managed.Cui.Cui.Globals.cui__shadow_lut__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84[i]) * t;
+    }
+
+
+
+    public static unsafe float cui__sample_r8(cui__sw_tex* t, float u, float v)
+    {
+        float x = u * (float)t->w - 0.5f, y = v * (float)t->h - 0.5f;
+        int x0 = (int)floorf(x), y0 = (int)floorf(y);
+        float fx = x - (float)x0, fy = y - (float)y0;
+        int x1 = x0 + 1, y1 = y0 + 1;
+        x0 = ((int)(Cond.B(((CBool)(((int)(Cond.B(((CBool)(x0 > 0))) ? x0 : 0)) < t->w - 1))) ? ((int)(Cond.B(((CBool)(x0 > 0))) ? x0 : 0)) : t->w - 1));
+        y0 = ((int)(Cond.B(((CBool)(((int)(Cond.B(((CBool)(y0 > 0))) ? y0 : 0)) < t->h - 1))) ? ((int)(Cond.B(((CBool)(y0 > 0))) ? y0 : 0)) : t->h - 1));
+        x1 = ((int)(Cond.B(((CBool)(((int)(Cond.B(((CBool)(x1 > 0))) ? x1 : 0)) < t->w - 1))) ? ((int)(Cond.B(((CBool)(x1 > 0))) ? x1 : 0)) : t->w - 1));
+        y1 = ((int)(Cond.B(((CBool)(((int)(Cond.B(((CBool)(y1 > 0))) ? y1 : 0)) < t->h - 1))) ? ((int)(Cond.B(((CBool)(y1 > 0))) ? y1 : 0)) : t->h - 1));
+        byte* d = t->data;
+        float a = d[y0 * t->w + x0], b = d[y0 * t->w + x1], c = d[y1 * t->w + x0], e = d[y1 * t->w + x1];
+        return ((a * (1 - fx) + b * fx) * (1 - fy) + (c * (1 - fx) + e * fx) * fy) / 255.0f;
+    }
+
+
+
+    public static unsafe cui__px cui__sample_rgba(cui__sw_tex* t, float u, float v)
+    {
+        float x = u * (float)t->w - 0.5f, y = v * (float)t->h - 0.5f;
+        int x0 = (int)floorf(x), y0 = (int)floorf(y);
+        float fx = x - (float)x0, fy = y - (float)y0;
+        int* xs = stackalloc int[]{ x0, x0 + 1 };
+        int* ys = stackalloc int[]{ y0, y0 + 1 };
+        for (int i = 0; Cond.B(((CBool)(i < 2))); i++)
+        {
+            xs[i] = ((int)(Cond.B(((CBool)(((int)(Cond.B(((CBool)(xs[i] > 0))) ? xs[i] : 0)) < t->w - 1))) ? ((int)(Cond.B(((CBool)(xs[i] > 0))) ? xs[i] : 0)) : t->w - 1));
+            ys[i] = ((int)(Cond.B(((CBool)(((int)(Cond.B(((CBool)(ys[i] > 0))) ? ys[i] : 0)) < t->h - 1))) ? ((int)(Cond.B(((CBool)(ys[i] > 0))) ? ys[i] : 0)) : t->h - 1));
+        }
+        float* w = stackalloc float[]{ (1 - fx) * (1 - fy), fx * (1 - fy), (1 - fx) * fy, fx * fy };
+        cui__px o = new cui__px { r = 0, g = 0, b = 0, a = 0 };
+        for (int k = 0; Cond.B(((CBool)(k < 4))); k++)
+        {
+            byte* p = t->data + ((ulong)ys[k >> 1] * (ulong)t->w + (ulong)xs[k & 1]) * (ulong)(4);
+            float a = p[3] / 255.0f;
+            o.r += w[k] * p[0] / 255.0f * a;
+            o.g += w[k] * p[1] / 255.0f * a;
+            o.b += w[k] * p[2] / 255.0f * a;
+            o.a += w[k] * a;
+        }
+        return o;
+    }
+
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe byte cui__blend_ch(float s, byte d, float ia)
+    {
+        return (byte)(cui__sat(s + d / 255.0f * ia) * 255.0f + 0.5f);
+    }
+
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe void cui__blend(byte* p, cui__px s, CBool bgra)
+    {
+        if (Cond.B(((CBool)(s.a <= 0.0005f))))
+            return;
+        if (Cond.B(((CBool)(s.a >= 0.9995f))))
+        {
+            int ri = ((int)(Cond.B(bgra) ? 2 : 0)), bi = ((int)(Cond.B(bgra) ? 0 : 2));
+            p[ri] = (byte)(cui__sat(s.r) * 255.0f + 0.5f);
+            p[1] = (byte)(cui__sat(s.g) * 255.0f + 0.5f);
+            p[bi] = (byte)(cui__sat(s.b) * 255.0f + 0.5f);
+            p[3] = 255;
+            return;
+        }
+        float ia = 1.0f - s.a;
+        int ri__1 = ((int)(Cond.B(bgra) ? 2 : 0)), bi__1 = ((int)(Cond.B(bgra) ? 0 : 2));
+        p[ri__1] = cui__blend_ch(s.r, p[ri__1], ia);
+        p[1] = cui__blend_ch(s.g, p[1], ia);
+        p[bi__1] = cui__blend_ch(s.b, p[bi__1], ia);
+        p[3] = cui__blend_ch(s.a, p[3], ia);
+    }
+
+
+
+    public static unsafe void cui__blend_run(byte* p, int n, cui__px o, CBool bgra, cui__blend_lut* lut)
+    {
+        if (Cond.B(((CBool)(o.a <= 0.0005f))))
+            return;
+        if (Cond.B(((CBool)(Cond.B(((CBool)(n < 96))) || Cond.B(((CBool)(o.a >= 0.9995f)))))))
+        {
+            for (int k = 0; Cond.B(((CBool)(k < n))); k++)
+                cui__blend(p + (ulong)k * (ulong)(4), o, bgra);
+            return;
+        }
+        int ri = ((int)(Cond.B(bgra) ? 2 : 0)), bi = ((int)(Cond.B(bgra) ? 0 : 2));
+        if (Cond.B(((CBool)(Cond.B((Cond.B(lut->ok) ? 0 : 1)) || Cond.B(((CBool)(memcmp(&lut->o, &o, ((ulong)(sizeof(cui__px)))) != 0)))))))
+        {
+            float ia = 1.0f - o.a;
+            for (int v = 0; Cond.B(((CBool)(v < 256))); v++)
             {
-                byte* lbl = cui__ins_label__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(ui, p->axis.units, p->axis.fmt, p->t[i], 0);
-                float lw = cui__text_width(ui, 3, fs, lbl, -1, 1);
-                float lx = ((float)(Cond.B(((CBool)(((float)(Cond.B(((CBool)(x - lw * 0.5f > r.x))) ? x - lw * 0.5f : r.x)) < r.x + r.w - lw))) ? ((float)(Cond.B(((CBool)(x - lw * 0.5f > r.x))) ? x - lw * 0.5f : r.x)) : r.x + r.w - lw));
-                cui_color lc = (Cond.B(on) ? em : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND]);
-                cui__draw_text_line(ui, 3, fs, lx, r.y + 20, lc, lbl, -1, 1);
+                (lut->t + ri * 256)[v] = cui__blend_ch(o.r, (byte)v, ia);
+                (lut->t + 1 * 256)[v] = cui__blend_ch(o.g, (byte)v, ia);
+                (lut->t + bi * 256)[v] = cui__blend_ch(o.b, (byte)v, ia);
+                (lut->t + 3 * 256)[v] = cui__blend_ch(o.a, (byte)v, ia);
             }
+            lut->o = o;
+            lut->ok = 1;
+        }
+        for (int k__1 = 0; Cond.B(((CBool)(k__1 < n))); k__1++, p += 4)
+        {
+            p[0] = (lut->t + 0 * 256)[p[0]];
+            p[1] = (lut->t + 1 * 256)[p[1]];
+            p[2] = (lut->t + 2 * 256)[p[2]];
+            p[3] = (lut->t + 3 * 256)[p[3]];
         }
     }
 
 
 
-    public static unsafe cui_event_track_result cui_event_track_ex(cui_ctx* ui, byte* id_str, double* times, int* count, int capacity, double lo, double hi, cui_event_track_opts* o)
+    public static unsafe void cui__raster_tri(cui__sw_job* job, cui_vertex* a, cui_vertex* b, cui_vertex* c, cui__sw_tex* tex, int cx0, int cy0, int cx1, int cy1)
     {
-        cui_event_track_opts d = default;
-        memset(&d, 0, ((ulong)(sizeof(cui_event_track_opts))));
-        if (Cond.B((Cond.B(o) ? 0 : 1)))
-            o = &d;
-        cui_event_track_result res = new cui_event_track_result { changed = 0, added = -1, removed = -1, selected = -1, dragging = 0 };
-        int zero = 0;
-        if (Cond.B((Cond.B(count) ? 0 : 1)))
-            count = &zero;
-        if (Cond.B(((CBool)(Cond.B((Cond.B(times) ? 0 : 1)) || Cond.B(((CBool)(capacity < 0)))))))
-            capacity = 0;
-        if (Cond.B((Cond.B(times) ? 0 : 1)))
-            *count = 0;
-        *count = ((int)(Cond.B(((CBool)(((int)(Cond.B(((CBool)(*count > 0))) ? *count : 0)) < capacity))) ? ((int)(Cond.B(((CBool)(*count > 0))) ? *count : 0)) : capacity));
-        if (Cond.B((Cond.B(((CBool)(hi > lo))) ? 0 : 1)))
-            hi = lo + 1;
-        uint id = cui_make_id(ui, id_str);
-        cui_interact r = cui__interact(ui, id, 1 | 2);
-        cui__ev_state* st = (cui__ev_state*)(cui_state(ui, id, ((ulong)(sizeof(cui__ev_state)))));
-        if (Cond.B((Cond.B(st->own_init) ? 0 : 1)))
+        float area = (b->x - a->x) * (c->y - a->y) - (b->y - a->y) * (c->x - a->x);
+        if (Cond.B(((CBool)(fabsf(area) < 1e-8f))))
+            return;
+        float minx = ((float)(Cond.B(((CBool)(a->x < ((float)(Cond.B(((CBool)(b->x < c->x))) ? b->x : c->x))))) ? a->x : ((float)(Cond.B(((CBool)(b->x < c->x))) ? b->x : c->x)))), maxx = ((float)(Cond.B(((CBool)(a->x > ((float)(Cond.B(((CBool)(b->x > c->x))) ? b->x : c->x))))) ? a->x : ((float)(Cond.B(((CBool)(b->x > c->x))) ? b->x : c->x))));
+        float miny = ((float)(Cond.B(((CBool)(a->y < ((float)(Cond.B(((CBool)(b->y < c->y))) ? b->y : c->y))))) ? a->y : ((float)(Cond.B(((CBool)(b->y < c->y))) ? b->y : c->y)))), maxy = ((float)(Cond.B(((CBool)(a->y > ((float)(Cond.B(((CBool)(b->y > c->y))) ? b->y : c->y))))) ? a->y : ((float)(Cond.B(((CBool)(b->y > c->y))) ? b->y : c->y))));
+        int x0 = ((int)(Cond.B(((CBool)(cx0 > (int)floorf(minx)))) ? cx0 : (int)floorf(minx))), x1 = ((int)(Cond.B(((CBool)(cx1 < (int)ceilf(maxx)))) ? cx1 : (int)ceilf(maxx)));
+        int y0 = ((int)(Cond.B(((CBool)(cy0 > (int)floorf(miny)))) ? cy0 : (int)floorf(miny))), y1 = ((int)(Cond.B(((CBool)(cy1 < (int)ceilf(maxy)))) ? cy1 : (int)ceilf(maxy)));
+        if (Cond.B(((CBool)(Cond.B(((CBool)(x0 >= x1))) || Cond.B(((CBool)(y0 >= y1)))))))
+            return;
+        float inv = 1.0f / area;
+        float sgn = ((float)(Cond.B(((CBool)(area > 0))) ? 1.0f : -1.0f));
+        cui_vertex** ev = stackalloc cui_vertex*[]{ b, c, c, a, a, b };
+        CBool* tl = stackalloc CBool[3];
+        for (int e = 0; Cond.B(((CBool)(e < 3))); e++)
         {
-            st->own_init = 1;
-            st->drag = -1;
-            st->sel = -1;
+            float dx = ((ev + e * 2)[1]->x - (ev + e * 2)[0]->x) * sgn, dy = ((ev + e * 2)[1]->y - (ev + e * 2)[0]->y) * sgn;
+            tl[e] = ((CBool)(Cond.B(((CBool)(dy < 0))) || Cond.B(((CBool)(Cond.B(((CBool)(dy == 0))) && Cond.B(((CBool)(dx > 0))))))));
         }
-        int* sel = ((int*)(Cond.B(o->selected) ? o->selected : &st->sel));
-        if (Cond.B(((CBool)(Cond.B(((CBool)(*sel >= *count))) || Cond.B(((CBool)(*sel < -1)))))))
-            *sel = -1;
-        cui__tween(ui, &st->focus, ((float)(Cond.B(r.focus_visible) ? 1.0f : 0.0f)), 0.14f);
-        CBool sorted = 1;
-        for (int i = 0; Cond.B(((CBool)(i < *count))); i++)
+        int mode = (int)(a->mode + 0.5f);
+        CBool bgra = ((CBool)((int)job->fmt == (int)__DotCcEnum_6375695F73775F666F726D6174.CUI_SW_BGRA));
+        float hw = a->hw, hh = a->hh, rtl = a->r_tl, rtr = a->r_tr, rbr = a->r_br, rbl = a->r_bl, bw = a->border;
+        float bcr = a->border_color.r / 255.0f, bcg = a->border_color.g / 255.0f, bcb = a->border_color.b / 255.0f, bca = a->border_color.a / 255.0f;
+        CBool flat_color = ((CBool)(Cond.B(((CBool)(memcmp(&a->color, &b->color, (ulong)(4)) == 0))) && Cond.B(((CBool)(memcmp(&a->color, &c->color, (ulong)(4)) == 0)))));
+        cui_vertex** tv = stackalloc cui_vertex*[]{ a, b, c };
+        for (int y = y0; Cond.B(((CBool)(y < y1))); y++)
         {
-            times[i] = ((double)(Cond.B(((CBool)(((double)(Cond.B(((CBool)(times[i] > lo))) ? times[i] : lo)) < hi))) ? ((double)(Cond.B(((CBool)(times[i] > lo))) ? times[i] : lo)) : hi));
-            if (Cond.B(((CBool)(Cond.B(((CBool)(i > 0))) && Cond.B(((CBool)(times[i] < times[i - 1])))))))
-                sorted = 0;
-        }
-        if (Cond.B((Cond.B(sorted) ? 0 : 1)))
-        {
-            double keep = ((double)(Cond.B(((CBool)(*sel >= 0))) ? times[*sel] : (double)(0)));
-            for (int a = 1; Cond.B(((CBool)(a < *count))); a++)
-                cui__ev_settle__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(times, *count, a);
-            if (Cond.B(((CBool)(*sel >= 0))))
-                for (int i__1 = 0; Cond.B(((CBool)(i__1 < *count))); i__1++)
-                    if (Cond.B(((CBool)(times[i__1] == keep))))
-                    {
-                        *sel = i__1;
-                        break;
-                    }
-        }
-        double step = ((double)(Cond.B(((CBool)(o->step > 0))) ? o->step : (double)(0)));
-        cui_rect R = cui__prev_rect(ui, id);
-        CBool known = cui__has_prev_rect(ui, id);
-        float w = ((float)(Cond.B(((CBool)(1.0f > R.w - 34.0f))) ? 1.0f : R.w - 34.0f));
-        int near_i = -1;
-        if (Cond.B(((CBool)(Cond.B(known) && Cond.B(r.hovered)))))
-        {
-            float best = 11.0f;
-            for (int i__2 = 0; Cond.B(((CBool)(i__2 < *count))); i__2++)
+            float py = (float)y + 0.5f;
+            byte* row = job->pixels + (ulong)y * (ulong)job->stride;
+            float sx0 = 1e30f, sx1 = -1e30f;
+            for (int e__1 = 0; Cond.B(((CBool)(e__1 < 3))); e__1++)
             {
-                float x = R.x + (float)((times[i__2] - lo) / (hi - lo)) * w;
-                float dx = fabsf(ui->mx - x);
-                if (Cond.B(((CBool)(Cond.B(((CBool)(dx <= best))) && Cond.B(((CBool)(fabsf(ui->my - (R.y + 12.0f)) <= 16)))))))
+                cui_vertex* p0 = tv[e__1], p1 = tv[(e__1 + 1) % 3];
+                float ya = p0->y, yb = p1->y;
+                if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(py < ya))) && Cond.B(((CBool)(py < yb)))))) || Cond.B(((CBool)(Cond.B(((CBool)(py > ya))) && Cond.B(((CBool)(py > yb))))))))))
+                    continue;
+                float xi = ((float)(Cond.B(((CBool)(yb == ya))) ? p0->x : p0->x + (p1->x - p0->x) * (py - ya) / (yb - ya)));
+                if (Cond.B(((CBool)(yb == ya))))
                 {
-                    best = dx;
-                    near_i = i__2;
+                    sx0 = ((float)(Cond.B(((CBool)(sx0 < ((float)(Cond.B(((CBool)(p0->x < p1->x))) ? p0->x : p1->x))))) ? sx0 : ((float)(Cond.B(((CBool)(p0->x < p1->x))) ? p0->x : p1->x))));
+                    sx1 = ((float)(Cond.B(((CBool)(sx1 > ((float)(Cond.B(((CBool)(p0->x > p1->x))) ? p0->x : p1->x))))) ? sx1 : ((float)(Cond.B(((CBool)(p0->x > p1->x))) ? p0->x : p1->x))));
+                    continue;
                 }
+                sx0 = ((float)(Cond.B(((CBool)(sx0 < xi))) ? sx0 : xi));
+                sx1 = ((float)(Cond.B(((CBool)(sx1 > xi))) ? sx1 : xi));
             }
-        }
-        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(known) && Cond.B(r.hovered)))) && Cond.B(((CBool*)&ui->mpressed)[0])))))
-        {
-            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(r.double_clicked) && Cond.B(((CBool)(near_i >= 0)))))) && Cond.B((Cond.B(o->no_remove) ? 0 : 1))))))
+            if (Cond.B(((CBool)(sx1 < sx0))))
+                continue;
+            int rx0 = ((int)(Cond.B(((CBool)(x0 > (int)floorf(sx0) - 1))) ? x0 : (int)floorf(sx0) - 1)), rx1 = ((int)(Cond.B(((CBool)(x1 < (int)ceilf(sx1) + 1))) ? x1 : (int)ceilf(sx1) + 1));
+            for (int x = rx0; Cond.B(((CBool)(x < rx1))); x++)
             {
-                cui__ev_remove__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(times, count, near_i);
-                res.removed = near_i;
-                res.changed = 1;
-                *sel = -1;
-                st->drag = -1;
-            }
-            else
-                if (Cond.B(((CBool)(near_i >= 0))))
+                float px = (float)x + 0.5f;
+                float e0 = (b->x - px) * (c->y - py) - (b->y - py) * (c->x - px);
+                float e1 = (c->x - px) * (a->y - py) - (c->y - py) * (a->x - px);
+                float e2 = (a->x - px) * (b->y - py) - (a->y - py) * (b->x - px);
+                float w0 = e0 * inv, w1 = e1 * inv, w2 = e2 * inv;
+                if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(w0 < 0))) || Cond.B(((CBool)(w1 < 0)))))) || Cond.B(((CBool)(w2 < 0)))))))
+                    continue;
+                if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(w0 == 0))) && Cond.B((Cond.B(tl[0]) ? 0 : 1))))) || Cond.B(((CBool)(Cond.B(((CBool)(w1 == 0))) && Cond.B((Cond.B(tl[1]) ? 0 : 1)))))))) || Cond.B(((CBool)(Cond.B(((CBool)(w2 == 0))) && Cond.B((Cond.B(tl[2]) ? 0 : 1)))))))))
+                    continue;
+                float cr = default, cg = default, cb = default, ca = default;
+                if (Cond.B(flat_color))
                 {
-                    st->drag = near_i;
-                    *sel = near_i;
-                    st->press_x = ui->mx;
-                    st->moved = 0;
+                    cr = a->color.r / 255.0f;
+                    cg = a->color.g / 255.0f;
+                    cb = a->color.b / 255.0f;
+                    ca = a->color.a / 255.0f;
                 }
                 else
-                    if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(o->no_add) ? 0 : 1)) && Cond.B(((CBool)(*count < capacity)))))) && Cond.B(((CBool)(ui->my <= R.y + 12.0f + 16)))))))
+                {
+                    cr = (a->color.r * w0 + b->color.r * w1 + c->color.r * w2) / 255.0f;
+                    cg = (a->color.g * w0 + b->color.g * w1 + c->color.g * w2) / 255.0f;
+                    cb = (a->color.b * w0 + b->color.b * w1 + c->color.b * w2) / 255.0f;
+                    ca = (a->color.a * w0 + b->color.a * w1 + c->color.a * w2) / 255.0f;
+                }
+                cui__px o = default;
+                if (Cond.B(((CBool)(mode == 4))))
+                {
+                    o.r = cr * ca;
+                    o.g = cg * ca;
+                    o.b = cb * ca;
+                    o.a = ca;
+                }
+                else
+                    if (Cond.B(((CBool)(mode == 0))))
                     {
-                        int at = cui__ev_insert__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(times, count, capacity, cui__ev_time__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(lo, hi, step, R, ui->mx));
-                        if (Cond.B(((CBool)(at >= 0))))
+                        float u = a->u * w0 + b->u * w1 + c->u * w2, v = a->v * w0 + b->v * w1 + c->v * w2;
+                        float cov = ((float)(Cond.B(((CBool)(Cond.B(tex) && Cond.B(((CBool)((int)tex->fmt == (int)__DotCcEnum_6375695F746578747572655F666F726D6174.CUI_TEXTURE_R8)))))) ? cui__sample_r8(tex, u, v) : 1.0f));
+                        float al = ca * cov;
+                        o.r = cr * al;
+                        o.g = cg * al;
+                        o.b = cb * al;
+                        o.a = al;
+                    }
+                    else
+                    {
+                        float lx = a->lx * w0 + b->lx * w1 + c->lx * w2, ly = a->ly * w0 + b->ly * w1 + c->ly * w2;
+                        float d = cui__sd_rrect(lx, ly, hw, hh, rtl, rtr, rbr, rbl);
+                        if (Cond.B(((CBool)(mode == 1))))
                         {
-                            res.added = at;
-                            res.changed = 1;
-                            *sel = at;
-                            st->drag = at;
-                            st->press_x = ui->mx;
-                            st->moved = 1;
+                            float outer = cui__sat(0.5f - d);
+                            if (Cond.B(((CBool)(outer <= 0))))
+                                continue;
+                            float inner = ((float)(Cond.B(((CBool)(bw > 0))) ? cui__sat(0.5f - (d + bw)) : outer));
+                            float fa = ca * inner, ba = bca * (outer - inner);
+                            o.r = cr * fa + bcr * ba;
+                            o.g = cg * fa + bcg * ba;
+                            o.b = cb * fa + bcb * ba;
+                            o.a = fa + ba;
+                        }
+                        else
+                            if (Cond.B(((CBool)(mode == 2))))
+                            {
+                                float sigma = ((float)(Cond.B(((CBool)(bw > 0.01f))) ? bw : 0.01f));
+                                float z = d / (sigma * 1.41421356f);
+                                if (Cond.B(((CBool)(z > 2.8f))))
+                                    continue;
+                                float al__1 = ca * cui__shadow_falloff__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84(z);
+                                o.r = cr * al__1;
+                                o.g = cg * al__1;
+                                o.b = cb * al__1;
+                                o.a = al__1;
+                            }
+                            else
+                            {
+                                float cov__1 = cui__sat(0.5f - d);
+                                if (Cond.B(((CBool)(cov__1 <= 0))))
+                                    continue;
+                                float u__1 = a->u * w0 + b->u * w1 + c->u * w2, v__1 = a->v * w0 + b->v * w1 + c->v * w2;
+                                cui__px t = (Cond.B(((CBool)(Cond.B(tex) && Cond.B(((CBool)((int)tex->fmt == (int)__DotCcEnum_6375695F746578747572655F666F726D6174.CUI_TEXTURE_RGBA8)))))) ? cui__sample_rgba(tex, u__1, v__1) : new cui__px { r = 1, g = 1, b = 1, a = 1 });
+                                float k = ca * cov__1;
+                                o.r = t.r * cr * k;
+                                o.g = t.g * cg * k;
+                                o.b = t.b * cb * k;
+                                o.a = t.a * k;
+                            }
+                    }
+                cui__blend(row + (ulong)x * (ulong)(4), o, bgra);
+            }
+        }
+    }
+
+
+
+    public static unsafe CBool cui__raster_quad(cui__sw_job* job, cui_vertex* v0, cui_vertex* v1, cui_vertex* v2, cui_vertex* v3, cui__sw_tex* tex, int cx0, int cy0, int cx1, int cy1)
+    {
+    byte* __dotcc_array_storage0 = null;
+        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(v0->y != v1->y))) || Cond.B(((CBool)(v1->x != v2->x)))))) || Cond.B(((CBool)(v2->y != v3->y)))))) || Cond.B(((CBool)(v3->x != v0->x)))))))
+            return 0;
+        if (Cond.B(((CBool)(Cond.B(((CBool)(v0->x >= v1->x))) || Cond.B(((CBool)(v0->y >= v3->y)))))))
+            return 0;
+        if (Cond.B(((CBool)(Cond.B(((CBool)(memcmp(&v0->color, &v1->color, (ulong)(4)) != 0))) || Cond.B(((CBool)(memcmp(&v2->color, &v3->color, (ulong)(4)) != 0)))))))
+            return 0;
+        int mode = (int)(v0->mode + 0.5f);
+        float qx0 = v0->x, qy0 = v0->y, qx1 = v1->x, qy1 = v3->y;
+        int x0 = ((int)(Cond.B(((CBool)(cx0 > (int)ceilf(qx0 - 0.5f)))) ? cx0 : (int)ceilf(qx0 - 0.5f))), x1 = ((int)(Cond.B(((CBool)(cx1 < (int)ceilf(qx1 - 0.5f)))) ? cx1 : (int)ceilf(qx1 - 0.5f)));
+        int y0 = ((int)(Cond.B(((CBool)(cy0 > (int)ceilf(qy0 - 0.5f)))) ? cy0 : (int)ceilf(qy0 - 0.5f))), y1 = ((int)(Cond.B(((CBool)(cy1 < (int)ceilf(qy1 - 0.5f)))) ? cy1 : (int)ceilf(qy1 - 0.5f)));
+        if (Cond.B(((CBool)(Cond.B(((CBool)(x0 >= x1))) || Cond.B(((CBool)(y0 >= y1)))))))
+            return 1;
+        CBool bgra = ((CBool)((int)job->fmt == (int)__DotCcEnum_6375695F73775F666F726D6174.CUI_SW_BGRA));
+        int ri = ((int)(Cond.B(bgra) ? 2 : 0)), bi = ((int)(Cond.B(bgra) ? 0 : 2));
+        float qh = qy1 - qy0, qw = qx1 - qx0;
+        CBool gradient = ((CBool)(memcmp(&v0->color, &v3->color, (ulong)(4)) != 0));
+        float hw = v0->hw, hh = v0->hh, bw = v0->border;
+        float rmax = ((float)(Cond.B(((CBool)(((float)(Cond.B(((CBool)(v0->r_tl > v0->r_tr))) ? v0->r_tl : v0->r_tr)) > ((float)(Cond.B(((CBool)(v0->r_br > v0->r_bl))) ? v0->r_br : v0->r_bl))))) ? ((float)(Cond.B(((CBool)(v0->r_tl > v0->r_tr))) ? v0->r_tl : v0->r_tr)) : ((float)(Cond.B(((CBool)(v0->r_br > v0->r_bl))) ? v0->r_br : v0->r_bl))));
+        rmax = ((float)(Cond.B(((CBool)(rmax < ((float)(Cond.B(((CBool)(hw < hh))) ? hw : hh))))) ? rmax : ((float)(Cond.B(((CBool)(hw < hh))) ? hw : hh))));
+        float bcr = v0->border_color.r / 255.0f, bcg = v0->border_color.g / 255.0f, bcb = v0->border_color.b / 255.0f, bca = v0->border_color.a / 255.0f;
+        float du = (v1->u - v0->u) / qw, dv = (v3->v - v0->v) / qh;
+        CBool text_exact = ((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(mode == 0))) && Cond.B(tex)))) && Cond.B(((CBool)(fabsf(du * (float)tex->w - 1.0f) < 0.001f)))))) && Cond.B(((CBool)(fabsf(dv * (float)tex->h - 1.0f) < 0.001f)))));
+        cui__blend_lut lut = default;
+        lut.ok = 0;
+        for (int y = y0; Cond.B(((CBool)(y < y1))); y++)
+        {
+            float py = (float)y + 0.5f;
+            float ty = (py - qy0) / qh;
+            float cr = default, cg = default, cb = default, ca = default;
+            if (Cond.B(gradient))
+            {
+                cr = (v0->color.r + (v3->color.r - v0->color.r) * ty) / 255.0f;
+                cg = (v0->color.g + (v3->color.g - v0->color.g) * ty) / 255.0f;
+                cb = (v0->color.b + (v3->color.b - v0->color.b) * ty) / 255.0f;
+                ca = (v0->color.a + (v3->color.a - v0->color.a) * ty) / 255.0f;
+            }
+            else
+            {
+                cr = v0->color.r / 255.0f;
+                cg = v0->color.g / 255.0f;
+                cb = v0->color.b / 255.0f;
+                ca = v0->color.a / 255.0f;
+            }
+            if (__dotcc_array_storage0 == null)
+            {
+                byte* __dotcc_array_storage0_new = stackalloc byte[checked(sizeof(byte) * 4)];
+                __dotcc_array_storage0 = __dotcc_array_storage0_new;
+            }
+            byte* opaque = (byte*)__dotcc_array_storage0;
+            new global::System.Span<byte>((void*)opaque, checked(sizeof(byte) * 4)).Clear();
+            opaque[ri] = (byte)(cr * 255.0f + 0.5f);
+            opaque[1] = (byte)(cg * 255.0f + 0.5f);
+            opaque[bi] = (byte)(cb * 255.0f + 0.5f);
+            opaque[3] = 255;
+            float ly = v0->ly + (py - qy0);
+            float ay = fabsf(ly);
+            byte* row = job->pixels + (ulong)y * (ulong)job->stride;
+            if (Cond.B(((CBool)(mode == 0))))
+            {
+                float vv = v0->v + (py - qy0) * dv;
+                int tyi = (int)(vv * (float)((int)(Cond.B(tex) ? tex->h : 1)));
+                for (int x = x0; Cond.B(((CBool)(x < x1))); x++)
+                {
+                    float px = (float)x + 0.5f;
+                    float cov = default;
+                    if (Cond.B(((CBool)(Cond.B((Cond.B(tex) ? 0 : 1)) || Cond.B(((CBool)((int)tex->fmt != (int)__DotCcEnum_6375695F746578747572655F666F726D6174.CUI_TEXTURE_R8)))))))
+                        cov = 1.0f;
+                    else
+                        if (Cond.B(text_exact))
+                        {
+                            int txi = (int)((v0->u + (px - qx0) * du) * (float)tex->w);
+                            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(txi < 0))) || Cond.B(((CBool)(txi >= tex->w)))))) || Cond.B(((CBool)(tyi < 0)))))) || Cond.B(((CBool)(tyi >= tex->h)))))))
+                                continue;
+                            byte t = tex->data[(ulong)tyi * (ulong)tex->w + (ulong)txi];
+                            if (Cond.B((Cond.B(t) ? 0 : 1)))
+                                continue;
+                            cov = t / 255.0f;
+                        }
+                        else
+                            cov = cui__sample_r8(tex, v0->u + (px - qx0) * du, vv);
+                    float al = ca * cov;
+                    cui__px o = new cui__px { r = cr * al, g = cg * al, b = cb * al, a = al };
+                    cui__blend(row + (ulong)x * (ulong)(4), o, bgra);
+                }
+                continue;
+            }
+            int sx0 = x1, sx1 = x1;
+            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(mode == 4))) || Cond.B(((CBool)(mode == 1)))))) || Cond.B(((CBool)(mode == 2)))))))
+            {
+                if (Cond.B(((CBool)(mode == 4))))
+                {
+                    sx0 = x0;
+                    sx1 = x1;
+                }
+                else
+                {
+                    float inset = ((float)(Cond.B(((CBool)(mode == 2))) ? 4.0f * 1.41421356f * ((float)(Cond.B(((CBool)(bw > 0.01f))) ? bw : 0.01f)) : bw + 0.5f));
+                    if (Cond.B(((CBool)(ay <= hh - inset))))
+                    {
+                        int a = x0, b = x1;
+                        while (Cond.B(((CBool)(Cond.B(((CBool)(a < x1))) && Cond.B((Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(fabsf(v0->lx + ((float)a + 0.5f - qx0)) <= hw - inset - rmax))) && Cond.B(((CBool)(ay <= hh - inset)))))) || Cond.B(((CBool)(Cond.B(((CBool)(fabsf(v0->lx + ((float)a + 0.5f - qx0)) <= hw - inset))) && Cond.B(((CBool)(ay <= hh - inset - rmax))))))))) ? 0 : 1))))))
+                            a++;
+                        while (Cond.B(((CBool)(Cond.B(((CBool)(b > a))) && Cond.B((Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(fabsf(v0->lx + ((float)(b - 1) + 0.5f - qx0)) <= hw - inset - rmax))) && Cond.B(((CBool)(ay <= hh - inset)))))) || Cond.B(((CBool)(Cond.B(((CBool)(fabsf(v0->lx + ((float)(b - 1) + 0.5f - qx0)) <= hw - inset))) && Cond.B(((CBool)(ay <= hh - inset - rmax))))))))) ? 0 : 1))))))
+                            b--;
+                        if (Cond.B(((CBool)(a < b))))
+                        {
+                            sx0 = a;
+                            sx1 = b;
                         }
                     }
-        }
-        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(st->drag >= 0))) && Cond.B(((CBool)(st->drag < *count)))))) && Cond.B(((CBool*)&ui->mdown)[0])))) && Cond.B(r.active)))))
-        {
-            if (Cond.B(((CBool)(fabsf(ui->mx - st->press_x) > 2))))
-                st->moved = 1;
-            if (Cond.B(st->moved))
-            {
-                double t = cui__ev_time__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(lo, hi, step, R, ui->mx);
-                if (Cond.B(((CBool)(t != times[st->drag]))))
-                {
-                    times[st->drag] = t;
-                    st->drag = cui__ev_settle__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(times, *count, st->drag);
-                    *sel = st->drag;
-                    res.changed = 1;
                 }
-                cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_RESIZE_EW);
-            }
-        }
-        if (Cond.B((Cond.B(((CBool*)&ui->mdown)[0]) ? 0 : 1)))
-            st->drag = -1;
-        if (Cond.B(((CBool)(st->drag >= *count))))
-            st->drag = -1;
-        if (Cond.B(((CBool)(Cond.B(((CBool)(near_i >= 0))) && Cond.B(((CBool)(st->drag < 0)))))))
-            cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_HAND);
-        if (Cond.B(r.focused))
-        {
-            double k = ((double)(Cond.B(((CBool)(step > 0))) ? step : (hi - lo) / 100.0));
-            double big = ((int)(Cond.B(ui->mods & (int)__DotCcEnum_6375695F6D6F64.CUI_MOD_SHIFT) ? 10 : 1));
-            if (Cond.B(((CBool)(Cond.B(((CBool)(*sel >= 0))) && Cond.B(((CBool)(*sel < *count)))))))
-            {
-                double t__1 = times[*sel];
-                if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_LEFT)))
-                    t__1 -= k * big;
-                if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_RIGHT)))
-                    t__1 += k * big;
-                t__1 = ((double)(Cond.B(((CBool)(((double)(Cond.B(((CBool)(t__1 > lo))) ? t__1 : lo)) < hi))) ? ((double)(Cond.B(((CBool)(t__1 > lo))) ? t__1 : lo)) : hi));
-                if (Cond.B(((CBool)(t__1 != times[*sel]))))
+                if (Cond.B(((CBool)(sx0 < sx1))))
                 {
-                    times[*sel] = t__1;
-                    *sel = cui__ev_settle__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(times, *count, *sel);
-                    res.changed = 1;
+                    byte* p = row + (ulong)sx0 * (ulong)(4);
+                    int n = sx1 - sx0;
+                    if (Cond.B(((CBool)(Cond.B(((CBool)(ca >= 0.999f))) && Cond.B(((CBool)(mode != 2)))))))
+                        for (int k = 0; Cond.B(((CBool)(k < n))); k++)
+                            memcpy(p + (ulong)k * (ulong)(4), opaque, (ulong)(4));
+                    else
+                        if (Cond.B(((CBool)(ca > 0.0005f))))
+                            cui__blend_run(p, n, new cui__px { r = cr * ca, g = cg * ca, b = cb * ca, a = ca }, bgra, &lut);
                 }
             }
-            if (Cond.B(((CBool)(*count > 0))))
+            for (int x__1 = x0; Cond.B(((CBool)(x__1 < x1))); x__1++)
             {
-                if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_DOWN)))
-                    *sel = ((int)(Cond.B(((CBool)(*sel < 0))) ? 0 : ((int)(Cond.B(((CBool)(*sel + 1 < *count - 1))) ? *sel + 1 : *count - 1))));
-                if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_UP)))
-                    *sel = ((int)(Cond.B(((CBool)(*sel < 0))) ? *count - 1 : ((int)(Cond.B(((CBool)(*sel - 1 > 0))) ? *sel - 1 : 0))));
-                if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_HOME)))
-                    *sel = 0;
-                if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_END)))
-                    *sel = *count - 1;
-            }
-            if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_ESCAPE)))
-                *sel = -1;
-            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(r.keyboard_activate) && Cond.B((Cond.B(o->no_add) ? 0 : 1))))) && Cond.B(((CBool)(*count < capacity)))))))
-            {
-                double t__2 = ((double)(Cond.B(((CBool)(Cond.B(((CBool)(*sel >= 0))) && Cond.B(((CBool)(*sel < *count)))))) ? times[*sel] + k : lo + (hi - lo) * 0.5));
-                if (Cond.B(((CBool)(step > 0))))
-                    t__2 = lo + floor((t__2 - lo) / step + 0.5) * step;
-                int at__1 = cui__ev_insert__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(times, count, capacity, ((double)(Cond.B(((CBool)(((double)(Cond.B(((CBool)(t__2 > lo))) ? t__2 : lo)) < hi))) ? ((double)(Cond.B(((CBool)(t__2 > lo))) ? t__2 : lo)) : hi)));
-                if (Cond.B(((CBool)(at__1 >= 0))))
+                if (Cond.B(((CBool)(x__1 == sx0))))
                 {
-                    res.added = at__1;
-                    res.changed = 1;
-                    *sel = at__1;
-                }
-            }
-            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_DELETE)) || Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_BACKSPACE))))) && Cond.B((Cond.B(o->no_remove) ? 0 : 1))))) && Cond.B(((CBool)(*sel >= 0)))))) && Cond.B(((CBool)(*sel < *count)))))))
-            {
-                res.removed = *sel;
-                cui__ev_remove__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(times, count, *sel);
-                res.changed = 1;
-                *sel = ((int)(Cond.B(((CBool)(*count > 0))) ? ((int)(Cond.B(((CBool)(res.removed < *count - 1))) ? res.removed : *count - 1)) : -1));
-            }
-        }
-        res.selected = *sel;
-        res.dragging = ((CBool)(Cond.B(((CBool)(st->drag >= 0))) && Cond.B(st->moved)));
-        cui__ev_paint* p = (cui__ev_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__ev_paint)))));
-        memset(p, 0, ((ulong)(sizeof(cui__ev_paint))));
-        p->n = *count;
-        p->lo = lo;
-        p->hi = hi;
-        p->t = (double*)(cui__frame_alloc(ui, 8UL * (ulong)((int)(Cond.B(((CBool)(1 > *count))) ? 1 : *count))));
-        if (Cond.B(((CBool)(*count > 0))))
-            memcpy(p->t, times, 8UL * (ulong)(*count));
-        p->sel = *sel;
-        p->drag = ((int)(Cond.B(res.dragging) ? st->drag : -1));
-        p->hover = ((int)(Cond.B(((CBool)(st->drag < 0))) ? near_i : -1));
-        p->axis.x0 = lo;
-        p->axis.x1 = hi;
-        p->axis.step = o->label_step;
-        p->axis.units = o->units;
-        p->axis.fmt = ((byte*)(Cond.B(o->format) ? cui__frame_strdup(ui, o->format, -1) : null));
-        p->axis_on = (Cond.B(o->no_axis) ? 0 : 1);
-        p->focus = st->focus;
-        int nd = cui__node_new(ui, id);
-        cui_node* n = &ui->nodes[nd];
-        n->w = (Cond.B((int)o->width.kind) ? o->width : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 });
-        n->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)((int)(Cond.B(o->no_axis) ? 36 : 54)) };
-        n->direction = (byte)(__DotCcEnum_6375695F646972656374696F6E.CUI_DIRECTION_LTR);
-        n->paint = DotCcPointers.cui__paint_event_track__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344;
-        n->paint_data = p;
-        cui__mark_interactive(ui, nd, 1 | 2);
-        ui->last_id = id;
-        return res;
-    }
-
-
-
-    public static unsafe void cui_readout_ex(cui_ctx* ui, byte* label, byte* value, cui_readout_opts* o)
-    {
-        cui_readout_opts d = default;
-        memset(&d, 0, ((ulong)(sizeof(cui_readout_opts))));
-        if (Cond.B((Cond.B(o) ? 0 : 1)))
-            o = &d;
-        float vs = ((int)(Cond.B(((CBool)((int)o->size == (int)__DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM))) ? 17 : ((int)(Cond.B(((CBool)((int)o->size == (int)__DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_LG))) ? 44 : 28))));
-        vs = cui__fs(ui, vs);
-        float fx = cui__fs(ui, ui->theme.text_xs);
-        cui_align cross = (cui_align)(((int)(Cond.B(((CBool)((int)o->align == (int)__DotCcEnum_6375695F746578745F616C69676E.CUI_TEXT_CENTER))) ? (int)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER) : ((int)(Cond.B(((CBool)(Cond.B(((CBool)((int)o->align == (int)__DotCcEnum_6375695F746578745F616C69676E.CUI_TEXT_END))) || Cond.B(((CBool)((int)o->align == (int)__DotCcEnum_6375695F746578745F616C69676E.CUI_TEXT_RIGHT)))))) ? (int)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_END) : (int)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_START))))));
-        int col = cui__node_new(ui, 0);
-        ui->nodes[col].gap = 4;
-        ui->nodes[col].align = (byte)(cross);
-        if (Cond.B((int)o->width.kind))
-            ui->nodes[col].w = o->width;
-        cui__open(ui, col);
-        if (Cond.B(((CBool)(Cond.B(label) && Cond.B(*label)))))
-        {
-            int t = cui__text_node(ui, label, -1, 3, fx, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0);
-            ui->nodes[t].line_height = 1.3f;
-        }
-        int row = cui__node_new(ui, 0);
-        ui->nodes[row].dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
-        ui->nodes[row].gap = ((float)(Cond.B(((CBool)(4.0f > vs * 0.18f))) ? 4.0f : vs * 0.18f));
-        ui->nodes[row].align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_END);
-        cui__open(ui, row);
-        cui_color vc = (Cond.B(o->accent) ? cui__emphasis(ui) : (Cond.B((int)o->tone) ? cui__tone_color(ui, o->tone) : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND]));
-        int v = cui__text_node(ui, ((byte*)(Cond.B(value) ? value : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/))), -1, 3, vs, vc, 0);
-        ui->nodes[v].line_height = 1.05f;
-        ui->nodes[v].flags |= (uint)(256);
-        if (Cond.B(((CBool)(Cond.B(o->unit) && Cond.B(*o->unit)))))
-        {
-            float us = ((float)(Cond.B(((CBool)(fx > vs * 0.42f))) ? fx : vs * 0.42f));
-            int u = cui__text_node(ui, o->unit, -1, 3, us, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY], 0);
-            ui->nodes[u].line_height = 1.05f;
-            ui->nodes[u].pad[2] = cui__font_line_height(ui, 3, vs) * 1.05f - cui__font_ascent(ui, 3, vs) - (cui__font_line_height(ui, 3, us) * 1.05f - cui__font_ascent(ui, 3, us));
-            if (Cond.B(((CBool)(ui->nodes[u].pad[2] < 0))))
-                ui->nodes[u].pad[2] = 0;
-        }
-        cui__close(ui);
-        if (Cond.B(((CBool)(Cond.B(o->detail) && Cond.B(*o->detail)))))
-        {
-            int t__1 = cui__text_node(ui, o->detail, -1, 3, fx, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 1);
-            ui->nodes[t__1].line_height = 1.4f;
-            if (Cond.B(((CBool)((int)cross == (int)__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER))))
-                ui->nodes[t__1].text_align = (byte)(__DotCcEnum_6375695F746578745F616C69676E.CUI_TEXT_CENTER);
-            else
-                if (Cond.B(((CBool)((int)cross == (int)__DotCcEnum_6375695F616C69676E.CUI_ALIGN_END))))
-                    ui->nodes[t__1].text_align = (byte)(__DotCcEnum_6375695F746578745F616C69676E.CUI_TEXT_END);
-        }
-        cui__close(ui);
-    }
-
-
-
-    public static unsafe int cui__dmf_index__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(uint cp)
-    {
-        if (Cond.B(((CBool)(Cond.B(((CBool)(cp >= (uint)(32)))) && Cond.B(((CBool)(cp <= (uint)(126))))))))
-            return (int)cp - 32;
-        if (Cond.B(((CBool)(cp == (uint)(0xB0)))))
-            return 95;
-        if (Cond.B(((CBool)(Cond.B(((CBool)(cp == (uint)(0xB7)))) || Cond.B(((CBool)(cp == (uint)(0x2022))))))))
-            return 96;
-        return 97;
-    }
-
-
-
-    public static unsafe void cui__paint_dot_display__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(cui_ctx* ui, cui_node* nd, void* data)
-    {
-        cui__dmf_paint* p = (cui__dmf_paint*)(data);
-        cui_rect r = nd->rect;
-        if (Cond.B(((CBool)(p->n <= 0))))
-            return;
-        int cols = p->n * 6 - 1;
-        float pitch = p->pitch;
-        CBool scroll = ((CBool)(Cond.B(((CBool)(p->scroll >= 0))) && Cond.B(((CBool)(cols * pitch > r.w + 0.5f)))));
-        if (Cond.B(((CBool)(Cond.B((Cond.B(scroll) ? 0 : 1)) && Cond.B(((CBool)(cols * pitch > r.w)))))))
-            pitch = r.w / cols;
-        float dot = pitch * 0.38f, dimr = pitch * 0.2f;
-        float content = cols * pitch;
-        float x0 = r.x;
-        if (Cond.B((Cond.B(scroll) ? 0 : 1)))
-        {
-            CBool right = ((CBool)(Cond.B(((CBool)(Cond.B(((CBool)((int)p->align == (int)__DotCcEnum_6375695F746578745F616C69676E.CUI_TEXT_RIGHT))) || Cond.B(((CBool)(Cond.B(((CBool)((int)p->align == (int)__DotCcEnum_6375695F746578745F616C69676E.CUI_TEXT_END))) && Cond.B((Cond.B(nd->rtl) ? 0 : 1)))))))) || Cond.B(((CBool)(Cond.B(((CBool)((int)p->align == (int)__DotCcEnum_6375695F746578745F616C69676E.CUI_TEXT_START))) && Cond.B(nd->rtl))))));
-            if (Cond.B(((CBool)((int)p->align == (int)__DotCcEnum_6375695F746578745F616C69676E.CUI_TEXT_CENTER))))
-                x0 = r.x + (r.w - content) * 0.5f;
-            else
-                if (Cond.B(right))
-                    x0 = r.x + r.w - content;
-        }
-        float y0 = r.y + (r.h - 7 * pitch) * 0.5f;
-        if (Cond.B(scroll))
-            cui_push_clip(ui, r);
-        float period = content + 12 * pitch;
-        int copies = ((int)(Cond.B(scroll) ? 2 : 1));
-        float off = ((float)(Cond.B(scroll) ? -fmodf(p->scroll, period) : (float)(0)));
-        for (int copy = 0; Cond.B(((CBool)(copy < copies))); copy++)
-        {
-            float bx = x0 + off + copy * period;
-            for (int g = 0; Cond.B(((CBool)(g < p->n))); g++)
-            {
-                byte* rows = global::Managed.Cui.Cui.Globals.cui__dmf_glyphs__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344 + p->glyph[g] * 7;
-                for (int row = 0; Cond.B(((CBool)(row < 7))); row++)
-                    for (int c = 0; Cond.B(((CBool)(c < 5))); c++)
-                    {
-                        float x = bx + (g * 6 + c) * pitch + pitch * 0.5f, y = y0 + row * pitch + pitch * 0.5f;
-                        if (Cond.B(((CBool)(Cond.B(((CBool)(x < r.x - pitch))) || Cond.B(((CBool)(x > r.x + r.w + pitch)))))))
-                            continue;
-                        if (Cond.B(rows[row] & 0x10 >> c))
-                            cui_draw_circle(ui, new cui_vec2 { x = x, y = y }, dot, p->lit);
-                        else
-                            if (Cond.B(p->dim_on))
-                                cui_draw_circle(ui, new cui_vec2 { x = x, y = y }, dimr, p->dim);
-                    }
-                if (Cond.B(((CBool)(Cond.B(p->dim_on) && Cond.B(((CBool)(g + 1 < p->n)))))))
-                    for (int row__1 = 0; Cond.B(((CBool)(row__1 < 7))); row__1++)
-                        cui_draw_circle(ui, new cui_vec2 { x = bx + (g * 6 + 5) * pitch + pitch * 0.5f, y = y0 + row__1 * pitch + pitch * 0.5f }, dimr, p->dim);
-            }
-        }
-        if (Cond.B(scroll))
-            cui_pop_clip(ui);
-    }
-
-
-
-    public static unsafe void cui_dot_display_ex(cui_ctx* ui, byte* text, cui_dot_display_opts* o)
-    {
-        cui_dot_display_opts d = default;
-        memset(&d, 0, ((ulong)(sizeof(cui_dot_display_opts))));
-        if (Cond.B((Cond.B(o) ? 0 : 1)))
-            o = &d;
-        if (Cond.B((Cond.B(text) ? 0 : 1)))
-            text = (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/);
-        float pitch = ((float)(Cond.B(((CBool)(o->pitch > 0))) ? ((float)(Cond.B(((CBool)(((float)(Cond.B(((CBool)(o->pitch > 1.5f))) ? o->pitch : 1.5f)) < 40.0f))) ? ((float)(Cond.B(((CBool)(o->pitch > 1.5f))) ? o->pitch : 1.5f)) : 40.0f)) : 4.0f));
-        int len = (int)strlen(text);
-        cui__dmf_paint* p = (cui__dmf_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__dmf_paint)))));
-        memset(p, 0, ((ulong)(sizeof(cui__dmf_paint))));
-        p->glyph = (byte*)(cui__frame_alloc(ui, (ulong)((int)(Cond.B(((CBool)(1 > len))) ? 1 : len))));
-        for (int i = 0; Cond.B(((CBool)(i < len))); )
-        {
-            uint cp = default;
-            i += cui__utf8_decode(text + i, len - i, &cp);
-            p->glyph[p->n++] = (byte)cui__dmf_index__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344(cp);
-        }
-        cui_color fg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND];
-        p->lit = (Cond.B(o->accent) ? cui__emphasis(ui) : (Cond.B(cui__color_set(o->color)) ? cui_color_of(ui, o->color) : fg));
-        p->dim = cui_alpha(p->lit, ((float)(Cond.B(((CBool)((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK))) ? 0.14f : 0.1f)));
-        p->dim_on = (Cond.B(o->no_dim) ? 0 : 1);
-        p->pitch = pitch;
-        p->align = o->align;
-        p->scroll = -1;
-        int cols = ((int)(Cond.B(((CBool)(1 > p->n * 6 - 1))) ? 1 : p->n * 6 - 1));
-        uint id = cui__position_id(ui, 0xD07Du);
-        int nd = cui__node_new(ui, id);
-        cui_node* n = &ui->nodes[nd];
-        n->w = (Cond.B((int)o->width.kind) ? o->width : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)(cols * pitch) });
-        n->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)(7 * pitch) };
-        if (Cond.B(((CBool)(Cond.B(o->marquee) && Cond.B(((CBool)(ui->theme.motion > 0)))))))
-        {
-            p->scroll = (float)(cui_time(ui) * 24.0 * pitch);
-            if (Cond.B(((CBool)(Cond.B(cui__has_prev_rect(ui, id)) && Cond.B(((CBool)(cui__prev_rect(ui, id).w + 0.5f < cols * pitch)))))))
-                cui_request_wakeup(ui, 1.0f / 30.0f);
-        }
-        n->paint = DotCcPointers.cui__paint_dot_display__unit_A0AB1AB45827B2963534AF2176FBEF69EFC1571DF646D81D78F1F3FB21A11344;
-        n->paint_data = p;
-    }
-
-
-
-    public static unsafe void cui__paint_tour__unit_F246AE24D02241A348D486F44CE71F5B50CA1773674FA07310DC6EA0F52A82EE(cui_ctx* ui, cui_node* n, void* data)
-    {
-        cui__tour_paint* p = (cui__tour_paint*)(data);
-        cui_rect r = n->rect;
-        cui_color c = cui_alpha(p->scrim, p->alpha);
-        if (Cond.B((Cond.B(p->has_hole) ? 0 : 1)))
-        {
-            cui_draw_rect(ui, r, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, c);
-            return;
-        }
-        float sc = ((float)(Cond.B(((CBool)(ui->scale > 0))) ? ui->scale : (float)(1)));
-        float x0 = roundf(p->hole.x * sc) / sc, y0 = roundf(p->hole.y * sc) / sc;
-        float x1 = roundf((p->hole.x + p->hole.w) * sc) / sc, y1 = roundf((p->hole.y + p->hole.h) * sc) / sc;
-        cui_rect h = new cui_rect { x = x0, y = y0, w = x1 - x0, h = y1 - y0 };
-        cui_draw_rect(ui, new cui_rect { x = r.x, y = r.y, w = r.w, h = ((float)(Cond.B(((CBool)(0.0f > y0 - r.y))) ? 0.0f : y0 - r.y)) }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, c);
-        cui_draw_rect(ui, new cui_rect { x = r.x, y = y1, w = r.w, h = ((float)(Cond.B(((CBool)(0.0f > r.y + r.h - y1))) ? 0.0f : r.y + r.h - y1)) }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, c);
-        cui_draw_rect(ui, new cui_rect { x = r.x, y = y0, w = ((float)(Cond.B(((CBool)(0.0f > x0 - r.x))) ? 0.0f : x0 - r.x)), h = h.h }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, c);
-        cui_draw_rect(ui, new cui_rect { x = x1, y = y0, w = ((float)(Cond.B(((CBool)(0.0f > r.x + r.w - x1))) ? 0.0f : r.x + r.w - x1)), h = h.h }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, c);
-        float rr = ((float)(Cond.B(((CBool)(p->radius < ((float)(Cond.B(((CBool)(h.w < h.h))) ? h.w : h.h)) * 0.5f))) ? p->radius : ((float)(Cond.B(((CBool)(h.w < h.h))) ? h.w : h.h)) * 0.5f));
-        if (Cond.B(((CBool)(rr > 0.5f))))
-        {
-            {
-            }
-            cui_cvert* v = stackalloc cui_cvert[10];
-            uint* idx = stackalloc uint[24];
-            for (int k = 0; Cond.B(((CBool)(k < 8))); k++)
-            {
-                idx[k * 3] = 0;
-                idx[k * 3 + 1] = (uint)(k + 1);
-                idx[k * 3 + 2] = (uint)(k + 2);
-            }
-            float* cx = stackalloc float[]{ x0, x1, x1, x0 };
-            float* cy = stackalloc float[]{ y0, y0, y1, y1 };
-            float* ox = stackalloc float[]{ x0 + rr, x1 - rr, x1 - rr, x0 + rr };
-            float* oy = stackalloc float[]{ y0 + rr, y0 + rr, y1 - rr, y1 - rr };
-            for (int q = 0; Cond.B(((CBool)(q < 4))); q++)
-            {
-                float a0 = 3.14159265358979323846f + q * 3.14159265358979323846f * 0.5f;
-                v[0] = new cui_cvert { x = cx[q], y = cy[q], c = c };
-                for (int k__1 = 0; Cond.B(((CBool)(k__1 <= 8))); k__1++)
-                {
-                    float a = a0 + 3.14159265358979323846f * 0.5f * (float)k__1 / 8;
-                    v[k__1 + 1] = new cui_cvert { x = ox[q] + cosf(a) * rr, y = oy[q] + sinf(a) * rr, c = c };
-                }
-                cui__draw_triangles(ui, v, 8 + 2, idx, 8 * 3);
-            }
-        }
-        cui_draw_rect_border(ui, cui__rect_inset(h, -1.5f), new cui_corners { tl = rr + 1.5f, tr = rr + 1.5f, br = rr + 1.5f, bl = rr + 1.5f }, cui__rgba(0, 0, 0, 0), cui_alpha(p->ring, p->alpha), 1.5f);
-    }
-
-
-
-    public static unsafe int cui_tour_ex(cui_ctx* ui, byte* id_str, cui_tour_step* steps, int count, int* step, cui_tour_opts* o)
-    {
-        cui_tour_opts d = default;
-        memset(&d, 0, ((ulong)(sizeof(cui_tour_opts))));
-        if (Cond.B((Cond.B(o) ? 0 : 1)))
-            o = &d;
-        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(step) ? 0 : 1)) || Cond.B((Cond.B(steps) ? 0 : 1))))) || Cond.B(((CBool)(count <= 0)))))) || Cond.B(((CBool)(*step < 0)))))))
-            return 0;
-        if (Cond.B(((CBool)(*step >= count))))
-            *step = count - 1;
-        int result = 0;
-        uint id = cui_make_id(ui, ((byte*)(Cond.B(id_str) ? id_str : (DotCcLiterals.Pointer + DotCcLiterals.S507 /*"tour"*/))));
-        cui__tour_state* st = (cui__tour_state*)(cui_state(ui, id, ((ulong)(sizeof(cui__tour_state)))));
-        cui_tour_step* s = &steps[*step];
-        float pad = ((float)(Cond.B(((CBool)(o->padding > 0))) ? o->padding : (float)(6)));
-        cui_rect tr = (Cond.B(((CBool)(Cond.B(s->target) && Cond.B(cui__has_prev_rect(ui, s->target))))) ? cui__prev_rect(ui, s->target) : new cui_rect { x = 0, y = 0, w = 0, h = 0 });
-        CBool has = ((CBool)(Cond.B(((CBool)(tr.w > 0))) && Cond.B(((CBool)(tr.h > 0)))));
-        cui_rect hole = new cui_rect { x = tr.x - pad, y = tr.y - pad, w = tr.w + pad * 2, h = tr.h + pad * 2 };
-        if (Cond.B(((CBool)(Cond.B((Cond.B(st->init) ? 0 : 1)) || Cond.B((Cond.B(has) ? 0 : 1))))))
-        {
-            st->x.x = hole.x;
-            st->y.x = hole.y;
-            st->w.x = hole.w;
-            st->h.x = hole.h;
-            st->x.v = st->y.v = st->w.v = st->h.v = 0;
-            if (Cond.B((Cond.B(st->init) ? 0 : 1)))
-            {
-                st->show.x = 0;
-                st->shown_step = st->hole_step = *step;
-            }
-            st->init = 1;
-        }
-        if (Cond.B(((CBool)(st->hole_step != *step))))
-        {
-            st->hole_step = *step;
-            st->gliding = 1;
-        }
-        if (Cond.B(st->gliding))
-        {
-            cui__spring(ui, &st->x, hole.x, 0.42f, 0.16f);
-            cui__spring(ui, &st->y, hole.y, 0.42f, 0.16f);
-            cui__spring(ui, &st->w, hole.w, 0.42f, 0.16f);
-            cui__spring(ui, &st->h, hole.h, 0.42f, 0.16f);
-            float off = fabsf(st->x.x - hole.x) + fabsf(st->y.x - hole.y) + fabsf(st->w.x - hole.w) + fabsf(st->h.x - hole.h);
-            if (Cond.B(((CBool)(Cond.B(((CBool)(off < 0.5f))) && Cond.B(((CBool)(fabsf(st->x.v) + fabsf(st->y.v) + fabsf(st->w.v) + fabsf(st->h.v) < 0.5f)))))))
-                st->gliding = 0;
-        }
-        if (Cond.B((Cond.B(st->gliding) ? 0 : 1)))
-        {
-            st->x.x = hole.x;
-            st->y.x = hole.y;
-            st->w.x = hole.w;
-            st->h.x = hole.h;
-            st->x.v = st->y.v = st->w.v = st->h.v = 0;
-        }
-        cui__spring(ui, &st->show, 1, 0.28f, 0.0f);
-        float alpha = cui__clampf(st->show.x, 0, 1);
-        int z = 1900;
-        int root = cui__float_begin(ui, id, z, 0, 100, 0);
-        cui_node* rn = &ui->nodes[root];
-        rn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_STACK);
-        cui__tour_paint* p = (cui__tour_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__tour_paint)))));
-        p->hole = new cui_rect { x = st->x.x, y = st->y.x, w = st->w.x, h = st->h.x };
-        p->has_hole = has;
-        p->radius = 10;
-        p->alpha = alpha;
-        p->scrim = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SCRIM];
-        p->ring = (Cond.B(((CBool)((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK))) ? cui__rgba(255, 255, 255, 200) : cui__rgba(255, 255, 255, 235));
-        rn->paint = DotCcPointers.cui__paint_tour__unit_F246AE24D02241A348D486F44CE71F5B50CA1773674FA07310DC6EA0F52A82EE;
-        rn->paint_data = p;
-        {
-            cui_rect h = p->hole;
-            float vw = ui->vw, vh = ui->vh;
-            cui_rect* bands = stackalloc cui_rect[]{ new cui_rect { x = 0, y = 0, w = vw, h = h.y }, new cui_rect { x = 0, y = h.y + h.h, w = vw, h = vh - h.y - h.h }, new cui_rect { x = 0, y = h.y, w = h.x, h = h.h }, new cui_rect { x = h.x + h.w, y = h.y, w = vw - h.x - h.w, h = h.h } };
-            int nb = ((int)(Cond.B(((CBool)(Cond.B(has) && Cond.B((Cond.B(o->block_target) ? 0 : 1))))) ? 4 : 0));
-            if (Cond.B((Cond.B(nb) ? 0 : 1)))
-            {
-                bands[0] = new cui_rect { x = 0, y = 0, w = vw, h = vh };
-                nb = 1;
-            }
-            for (int k = 0; Cond.B(((CBool)(k < nb))); k++)
-            {
-                if (Cond.B(((CBool)(Cond.B(((CBool)(bands[k].w <= 0))) || Cond.B(((CBool)(bands[k].h <= 0)))))))
+                    x__1 = sx1 - 1;
                     continue;
-                uint bid = id ^ 0x7B0u + (uint)k;
-                cui__interact(ui, bid, 0);
-                int b = cui__absolute(ui, bid, bands[k].x, bands[k].y, bands[k].w, bands[k].h);
-                ui->nodes[b].flags |= (uint)(2048);
-                cui__mark_interactive(ui, b, 0);
-            }
-        }
-        cui__float_end(ui);
-        uint cid = id ^ 0xCA2Du;
-        int card = default;
-        if (Cond.B(has))
-            card = cui__float_begin(ui, cid, z + 1, s->target, (int)(s->placement), pad + 10);
-        else
-            card = cui__float_begin(ui, cid, z + 1, 0, 101, 0);
-        cui_node* cn = &ui->nodes[card];
-        cn->bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE_RAISED];
-        cn->border = 1;
-        cn->border_color = (Cond.B(((CBool)((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK))) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER] : cui_alpha(cui__rgba(0, 0, 0, 255), 0.06f));
-        cn->radius = new cui_corners { tl = ui->theme.radius_panel, tr = ui->theme.radius_panel, br = ui->theme.radius_panel, bl = ui->theme.radius_panel };
-        cn->elevation = __DotCcEnum_6375695F656C65766174696F6E.CUI_ELEVATION_FLOATING;
-        cn->elevation_alpha = 1;
-        cn->pad[0] = cn->pad[2] = 16;
-        cn->pad[1] = cn->pad[3] = 18;
-        cn->gap = 8;
-        cn->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)((float)(Cond.B(((CBool)(((float)(Cond.B(((CBool)(o->width > 0))) ? o->width : (float)(300))) < ui->vw - 24))) ? ((float)(Cond.B(((CBool)(o->width > 0))) ? o->width : (float)(300))) : ui->vw - 24)) };
-        cn->flags |= (uint)(2048);
-        cn->opacity = alpha;
-        if (Cond.B(((CBool)(st->shown_step != *step))))
-        {
-            st->shown_step = *step;
-            st->show.x = ((float)(Cond.B(((CBool)(st->show.x < 0.6f))) ? st->show.x : 0.6f));
-        }
-        cn->ty = (1 - alpha) * 6;
-        cui_push_id(ui, ((byte*)(Cond.B(id_str) ? id_str : (DotCcLiterals.Pointer + DotCcLiterals.S507 /*"tour"*/))));
-        float fs = cui__fs(ui, ui->theme.text_sm), fx = cui__fs(ui, ui->theme.text_xs);
-        int top = cui__node_new(ui, 0);
-        ui->nodes[top].dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
-        ui->nodes[top].align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
-        ui->nodes[top].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        cui__open(ui, top);
-        int sc = cui__text_node(ui, cui__frame_printf(ui, ((byte*)(Cond.B(o->count_format) ? o->count_format : (DotCcLiterals.Pointer + DotCcLiterals.S1107 /*"%d of %d"*/))), *step + 1, count), -1, 1, fx, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0);
-        ui->nodes[sc].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        ui->nodes[sc].flags |= (uint)(256);
-        ui->nodes[sc].line_height = 1.4f;
-        cui_button_opts bo = default;
-        memset(&bo, 0, ((ulong)(sizeof(cui_button_opts))));
-        bo.size = __DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM;
-        bo.variant = __DotCcEnum_6375695F627574746F6E5F76617269616E74.CUI_BUTTON_GHOST;
-        bo.tooltip = (DotCcLiterals.Pointer + DotCcLiterals.S331 /*"End the tour"*/);
-        if (Cond.B(cui_icon_button_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1040 /*""*/), &bo)))
-            result = 4;
-        ui->nodes[ui->last_node].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)24 };
-        ui->nodes[ui->last_node].h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)24 };
-        cui__close(ui);
-        if (Cond.B(((CBool)(Cond.B(s->title) && Cond.B(*s->title)))))
-        {
-            int t = cui__text_node(ui, s->title, -1, 1, cui__fs(ui, ui->theme.text_body + 1), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 1);
-            ui->nodes[t].line_height = 1.35f;
-            ui->nodes[t].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        }
-        if (Cond.B(((CBool)(Cond.B(s->body) && Cond.B(*s->body)))))
-        {
-            int b__1 = cui__text_node(ui, s->body, -1, 0, fs, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY], 1);
-            ui->nodes[b__1].line_height = 1.5f;
-            ui->nodes[b__1].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        }
-        int foot = cui__node_new(ui, 0);
-        ui->nodes[foot].dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
-        ui->nodes[foot].align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
-        ui->nodes[foot].gap = 6;
-        ui->nodes[foot].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-        ui->nodes[foot].pad[0] = 6;
-        cui__open(ui, foot);
-        if (Cond.B(((CBool)(count <= 12))))
-            for (int k__1 = 0; Cond.B(((CBool)(k__1 < count))); k__1++)
-            {
-                int dot = cui__leaf(ui, 0, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)((int)(Cond.B(((CBool)(k__1 == *step))) ? 14 : 6)) }, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)6 });
-                ui->nodes[dot].radius = new cui_corners { tl = 3, tr = 3, br = 3, bl = 3 };
-                ui->nodes[dot].bg = (Cond.B(((CBool)(k__1 == *step))) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND] : ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER_STRONG]);
-            }
-        cui_spacer(ui);
-        if (Cond.B(((CBool)(*step > 0))))
-        {
-            memset(&bo, 0, ((ulong)(sizeof(cui_button_opts))));
-            bo.size = __DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM;
-            bo.variant = __DotCcEnum_6375695F627574746F6E5F76617269616E74.CUI_BUTTON_GHOST;
-            if (Cond.B(cui_button_ex(ui, ((byte*)(Cond.B(o->back_label) ? o->back_label : (DotCcLiterals.Pointer + DotCcLiterals.S1052 /*"Back"*/))), &bo)))
-                result = 2;
-        }
-        memset(&bo, 0, ((ulong)(sizeof(cui_button_opts))));
-        bo.size = __DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM;
-        bo.variant = __DotCcEnum_6375695F627574746F6E5F76617269616E74.CUI_BUTTON_PRIMARY;
-        CBool last = ((CBool)(*step == count - 1));
-        if (Cond.B(cui_button_ex(ui, ((byte*)(Cond.B(last) ? ((byte*)(Cond.B(o->done_label) ? o->done_label : (DotCcLiterals.Pointer + DotCcLiterals.S770 /*"Done"*/))) : ((byte*)(Cond.B(o->next_label) ? o->next_label : (DotCcLiterals.Pointer + DotCcLiterals.S450 /*"Next"*/))))), &bo)))
-            result = ((int)(Cond.B(last) ? 3 : 1));
-        cui__close(ui);
-        cui_pop_id(ui);
-        cui__float_end(ui);
-        CBool button_keys = ((CBool)(Cond.B(((CBool)(Cond.B(ui->focus) && Cond.B(((CBool)(Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_ENTER)) || Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_SPACE)))))))) && Cond.B(ui->focus_visible)));
-        if (Cond.B(((CBool)(Cond.B(((CBool)(result == 0))) && Cond.B((Cond.B(ui->edit_prev) ? 0 : 1))))))
-        {
-            if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_ESCAPE)))
-            {
-                result = 4;
-                ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_ESCAPE] = 0;
-            }
-            else
-                if (Cond.B(((CBool)(Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_RIGHT)) || Cond.B(((CBool)(Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_ENTER)) && Cond.B((Cond.B(button_keys) ? 0 : 1)))))))))
-                    result = ((int)(Cond.B(last) ? 3 : 1));
+                }
+                float px__1 = (float)x__1 + 0.5f;
+                float lx = v0->lx + (px__1 - qx0);
+                cui__px o__1 = default;
+                if (Cond.B(((CBool)(mode == 4))))
+                {
+                    if (Cond.B(((CBool)(ca >= 0.999f))))
+                    {
+                        memcpy(row + (ulong)x__1 * (ulong)(4), opaque, (ulong)(4));
+                        continue;
+                    }
+                    o__1.r = cr * ca;
+                    o__1.g = cg * ca;
+                    o__1.b = cb * ca;
+                    o__1.a = ca;
+                }
                 else
-                    if (Cond.B(((CBool)(Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_LEFT)) && Cond.B(((CBool)(*step > 0)))))))
-                        result = 2;
+                    if (Cond.B(((CBool)(mode == 1))))
+                    {
+                        float ax = fabsf(lx);
+                        float inset__1 = bw + 0.5f;
+                        CBool deep = ((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(ax <= hw - inset__1 - rmax))) && Cond.B(((CBool)(ay <= hh - inset__1)))))) || Cond.B(((CBool)(Cond.B(((CBool)(ax <= hw - inset__1))) && Cond.B(((CBool)(ay <= hh - inset__1 - rmax))))))));
+                        if (Cond.B(deep))
+                        {
+                            if (Cond.B(((CBool)(ca >= 0.999f))))
+                            {
+                                memcpy(row + (ulong)x__1 * (ulong)(4), opaque, (ulong)(4));
+                                continue;
+                            }
+                            if (Cond.B(((CBool)(ca <= 0.0005f))))
+                                continue;
+                            o__1.r = cr * ca;
+                            o__1.g = cg * ca;
+                            o__1.b = cb * ca;
+                            o__1.a = ca;
+                        }
+                        else
+                        {
+                            float d = cui__sd_rrect(lx, ly, hw, hh, v0->r_tl, v0->r_tr, v0->r_br, v0->r_bl);
+                            float outer = cui__sat(0.5f - d);
+                            if (Cond.B(((CBool)(outer <= 0))))
+                                continue;
+                            float inner = ((float)(Cond.B(((CBool)(bw > 0))) ? cui__sat(0.5f - (d + bw)) : outer));
+                            float fa = ca * inner, ba = bca * (outer - inner);
+                            o__1.r = cr * fa + bcr * ba;
+                            o__1.g = cg * fa + bcg * ba;
+                            o__1.b = cb * fa + bcb * ba;
+                            o__1.a = fa + ba;
+                        }
+                    }
+                    else
+                        if (Cond.B(((CBool)(mode == 2))))
+                        {
+                            float d__1 = cui__sd_rrect(lx, ly, hw, hh, v0->r_tl, v0->r_tr, v0->r_br, v0->r_bl);
+                            float sigma = ((float)(Cond.B(((CBool)(bw > 0.01f))) ? bw : 0.01f));
+                            float z = d__1 / (sigma * 1.41421356f);
+                            if (Cond.B(((CBool)(z > 2.8f))))
+                                continue;
+                            float al__1 = ca * cui__shadow_falloff__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84(z);
+                            o__1.r = cr * al__1;
+                            o__1.g = cg * al__1;
+                            o__1.b = cb * al__1;
+                            o__1.a = al__1;
+                        }
+                        else
+                        {
+                            float d__2 = cui__sd_rrect(lx, ly, hw, hh, v0->r_tl, v0->r_tr, v0->r_br, v0->r_bl);
+                            float cov__1 = cui__sat(0.5f - d__2);
+                            if (Cond.B(((CBool)(cov__1 <= 0))))
+                                continue;
+                            float u = v0->u + (px__1 - qx0) * du, vv__1 = v0->v + (py - qy0) * dv;
+                            cui__px t__1 = (Cond.B(((CBool)(Cond.B(tex) && Cond.B(((CBool)((int)tex->fmt == (int)__DotCcEnum_6375695F746578747572655F666F726D6174.CUI_TEXTURE_RGBA8)))))) ? cui__sample_rgba(tex, u, vv__1) : new cui__px { r = 1, g = 1, b = 1, a = 1 });
+                            float k__1 = ca * cov__1;
+                            o__1.r = t__1.r * cr * k__1;
+                            o__1.g = t__1.g * cg * k__1;
+                            o__1.b = t__1.b * cb * k__1;
+                            o__1.a = t__1.a * k__1;
+                        }
+                cui__blend(row + (ulong)x__1 * (ulong)(4), o__1, bgra);
+            }
         }
-        if (Cond.B(((CBool)(result == 1))))
-            (*step)++;
-        else
-            if (Cond.B(((CBool)(result == 2))))
-                (*step)--;
-            else
-                if (Cond.B(((CBool)(Cond.B(((CBool)(result == 3))) || Cond.B(((CBool)(result == 4)))))))
-                {
-                    *step = -1;
-                    st->init = 0;
-                }
-        if (Cond.B(((CBool)(Cond.B(((CBool)(alpha < 0.999f))) || Cond.B(((CBool)(fabsf(st->x.v) + fabsf(st->y.v) + fabsf(st->w.v) + fabsf(st->h.v) > 0.01f)))))))
-            ui->animating = 1;
-        return result;
+        return 1;
     }
 
 
 
-    public static unsafe void cui__draw_image_part__unit_BA4B27726764EA0F627353A5876FF40C7DD1117572A44E1644A3E553A00337E1(cui_ctx* ui, ulong tex, cui_rect dst, cui_rect clip, float rad, cui_color tint)
+    public static unsafe void cui__sw_run(cui__sw_job* job)
     {
-        cui_rect v = cui__rect_intersect(dst, clip);
-        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(v.w <= 0))) || Cond.B(((CBool)(v.h <= 0)))))) || Cond.B(((CBool)(dst.w <= 0)))))) || Cond.B(((CBool)(dst.h <= 0)))))))
+        cui_draw_data* dd = job->dd;
+        cui_sw_renderer* r = job->r;
+        for (int ci = 0; Cond.B(((CBool)(ci < dd->command_count))); ci++)
+        {
+            cui_draw_cmd* cmd = &dd->commands[ci];
+            int cx0 = ((int)(Cond.B(((CBool)(job->x0 > (int)floorf(cmd->clip.x)))) ? job->x0 : (int)floorf(cmd->clip.x)));
+            int cy0 = ((int)(Cond.B(((CBool)(job->y0 > (int)floorf(cmd->clip.y)))) ? job->y0 : (int)floorf(cmd->clip.y)));
+            int cx1 = ((int)(Cond.B(((CBool)(job->x1 < (int)ceilf(cmd->clip.x + cmd->clip.w)))) ? job->x1 : (int)ceilf(cmd->clip.x + cmd->clip.w)));
+            int cy1 = ((int)(Cond.B(((CBool)(job->y1 < (int)ceilf(cmd->clip.y + cmd->clip.h)))) ? job->y1 : (int)ceilf(cmd->clip.y + cmd->clip.h)));
+            if (Cond.B(((CBool)(Cond.B(((CBool)(cx0 >= cx1))) || Cond.B(((CBool)(cy0 >= cy1)))))))
+                continue;
+            ulong tid = ((ulong)(Cond.B(cmd->texture) ? cmd->texture : dd->font_atlas));
+            int slot = (int)tid - 1;
+            cui__sw_tex* tex = ((cui__sw_tex*)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(slot >= 0))) && Cond.B(((CBool)(slot < r->tex_count)))))) && Cond.B(r->tex[slot].used)))) ? &r->tex[slot] : null));
+            for (uint k = 0; Cond.B(((CBool)(k + (uint)(2) < cmd->index_count))); k += (uint)(3))
+            {
+                uint* ix = dd->indices + cmd->index_offset + k;
+                if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(k + (uint)(5) < cmd->index_count))) && Cond.B(((CBool)(ix[3] == ix[0])))))) && Cond.B(((CBool)(ix[4] == ix[2])))))) && Cond.B(((CBool)(ix[1] == ix[0] + (uint)(1))))))) && Cond.B(((CBool)(ix[2] == ix[0] + (uint)(2))))))) && Cond.B(((CBool)(ix[5] == ix[0] + (uint)(3))))))))
+                {
+                    cui_vertex* q = &dd->vertices[ix[0]];
+                    if (Cond.B(cui__raster_quad(job, &q[0], &q[1], &q[2], &q[3], tex, cx0, cy0, cx1, cy1)))
+                    {
+                        k += (uint)(3);
+                        continue;
+                    }
+                }
+                cui__raster_tri(job, &dd->vertices[ix[0]], &dd->vertices[ix[1]], &dd->vertices[ix[2]], tex, cx0, cy0, cx1, cy1);
+            }
+        }
+    }
+
+
+
+    public static unsafe void* cui__sw_thread__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84(void* p)
+    {
+        cui__sw_run((cui__sw_job*)(p));
+        return null;
+    }
+
+
+
+    public static unsafe void cui__sw_paint_rect(cui_sw_renderer* r, cui_draw_data* dd, void* pixels, int width, int height, int stride, cui_sw_format fmt, int x0, int y0, int x1, int y1)
+    {
+        cui_color cc = dd->clear_color;
+        byte* c4 = stackalloc byte[]{ cc.r, cc.g, cc.b, 255 };
+        if (Cond.B(((CBool)((int)fmt == (int)__DotCcEnum_6375695F73775F666F726D6174.CUI_SW_BGRA))))
+        {
+            c4[0] = cc.b;
+            c4[2] = cc.r;
+        }
+        for (int y = y0; Cond.B(((CBool)(y < y1))); y++)
+        {
+            byte* row = (byte*)pixels + (ulong)y * (ulong)stride + (ulong)x0 * (ulong)(4);
+            for (int x = 0, n = x1 - x0; Cond.B(((CBool)(x < n))); x++)
+                memcpy(row + (ulong)x * (ulong)(4), c4, (ulong)(4));
+        }
+        int h = y1 - y0;
+        int threads = r->threads;
+        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(h < 64))) || Cond.B(((CBool)(dd->index_count < 600)))))) || Cond.B(((CBool)((ulong)(x1 - x0) * (ulong)h < (ulong)(200000))))))))
+            threads = 1;
+        if (Cond.B(((CBool)(threads > h / 16))))
+            threads = ((int)(Cond.B(((CBool)(1 > h / 16))) ? 1 : h / 16));
+        cui__sw_job* jobs = stackalloc cui__sw_job[32];
+        int band = (h + threads - 1) / threads;
+        for (int t = 0; Cond.B(((CBool)(t < threads))); t++)
+        {
+            jobs[t].dd = dd;
+            jobs[t].r = r;
+            jobs[t].pixels = (byte*)(pixels);
+            jobs[t].width = width;
+            jobs[t].height = height;
+            jobs[t].stride = stride;
+            jobs[t].fmt = fmt;
+            jobs[t].x0 = x0;
+            jobs[t].x1 = x1;
+            jobs[t].y0 = y0 + t * band;
+            jobs[t].y1 = ((int)(Cond.B(((CBool)(y1 < y0 + (t + 1) * band))) ? y1 : y0 + (t + 1) * band));
+        }
+        if (Cond.B(((CBool)(threads == 1))))
+        {
+            cui__sw_run(&jobs[0]);
             return;
-        cui_rect uv = new cui_rect { x = (v.x - dst.x) / dst.w, y = (v.y - dst.y) / dst.h, w = v.w / dst.w, h = v.h / dst.h };
-        CBool l = ((CBool)(v.x <= clip.x + 0.5f)), t = ((CBool)(v.y <= clip.y + 0.5f)), r = ((CBool)(v.x + v.w >= clip.x + clip.w - 0.5f)), b = ((CBool)(v.y + v.h >= clip.y + clip.h - 0.5f));
-        cui_corners c = new cui_corners { tl = ((float)(Cond.B(((CBool)(Cond.B(l) && Cond.B(t)))) ? rad : (float)(0))), tr = ((float)(Cond.B(((CBool)(Cond.B(r) && Cond.B(t)))) ? rad : (float)(0))), br = ((float)(Cond.B(((CBool)(Cond.B(r) && Cond.B(b)))) ? rad : (float)(0))), bl = ((float)(Cond.B(((CBool)(Cond.B(l) && Cond.B(b)))) ? rad : (float)(0))) };
-        cui_draw_image(ui, tex, v, uv, c, tint);
-    }
-
-
-
-    public static unsafe void cui__checker__unit_BA4B27726764EA0F627353A5876FF40C7DD1117572A44E1644A3E553A00337E1(cui_ctx* ui, cui_rect r)
-    {
-        cui_color a = (Cond.B(((CBool)((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK))) ? cui__rgba(46, 46, 50, 255) : cui__rgba(236, 236, 238, 255));
-        cui_color b = (Cond.B(((CBool)((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK))) ? cui__rgba(58, 58, 62, 255) : cui__rgba(250, 250, 251, 255));
-        cui_draw_rect(ui, r, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, a);
-        float s = 10;
-        for (float y = 0; Cond.B(((CBool)(y < r.h))); y += s)
-            for (float x = (int)(y / s) % 2 * s; Cond.B(((CBool)(x < r.w))); x += 2 * s)
-                cui_draw_rect(ui, new cui_rect { x = r.x + x, y = r.y + y, w = ((float)(Cond.B(((CBool)(s < r.w - x))) ? s : r.w - x)), h = ((float)(Cond.B(((CBool)(s < r.h - y))) ? s : r.h - y)) }, new cui_corners { tl = 0, tr = 0, br = 0, bl = 0 }, b);
-    }
-
-
-
-    public static unsafe void cui__paint_viewer__unit_BA4B27726764EA0F627353A5876FF40C7DD1117572A44E1644A3E553A00337E1(cui_ctx* ui, cui_node* n, void* data)
-    {
-        cui__iv_paint* p = (cui__iv_paint*)(data);
-        cui_rect r = n->rect;
-        cui__paint_wheel_hit(ui, p->wheel, r);
-        cui_rect dst = new cui_rect { x = r.x + r.w * 0.5f - p->cx * p->z, y = r.y + r.h * 0.5f - p->cy * p->z, w = p->iw * p->z, h = p->ih * p->z };
-        if (Cond.B(p->checker))
-            cui__checker__unit_BA4B27726764EA0F627353A5876FF40C7DD1117572A44E1644A3E553A00337E1(ui, cui__rect_intersect(dst, r));
-        cui__draw_image_part__unit_BA4B27726764EA0F627353A5876FF40C7DD1117572A44E1644A3E553A00337E1(ui, p->tex, dst, r, ui->theme.radius_control, cui__rgba(255, 255, 255, 255));
-    }
-
-
-
-    public static unsafe void cui__iv_clamp__unit_BA4B27726764EA0F627353A5876FF40C7DD1117572A44E1644A3E553A00337E1(float* cx, float* cy, float z, float vw, float vh, float iw, float ih)
-    {
-        float hw = vw * 0.5f / z, hh = vh * 0.5f / z;
-        *cx = ((float)(Cond.B(((CBool)(iw * z <= vw))) ? iw * 0.5f : cui__clampf(*cx, hw, iw - hw)));
-        *cy = ((float)(Cond.B(((CBool)(ih * z <= vh))) ? ih * 0.5f : cui__clampf(*cy, hh, ih - hh)));
-    }
-
-
-
-    public static unsafe CBool cui_image_viewer_ex(cui_ctx* ui, byte* id_str, ulong tex, int image_w, int image_h, cui_image_view* view, cui_image_viewer_opts* o)
-    {
-        cui_image_viewer_opts d = default;
-        memset(&d, 0, ((ulong)(sizeof(cui_image_viewer_opts))));
-        if (Cond.B((Cond.B(o) ? 0 : 1)))
-            o = &d;
-        cui_image_view own = new cui_image_view {  };
-        if (Cond.B((Cond.B(view) ? 0 : 1)))
-            view = &own;
-        cui_image_view before = *view;
-        float iw = (float)((int)(Cond.B(((CBool)(1 > image_w))) ? 1 : image_w)), ih = (float)((int)(Cond.B(((CBool)(1 > image_h))) ? 1 : image_h));
-        uint id = cui_make_id(ui, ((byte*)(Cond.B(id_str) ? id_str : (DotCcLiterals.Pointer + DotCcLiterals.S483 /*"viewer"*/))));
-        uint wid = id ^ 0x1A6E1u;
-        cui__iv_state* st = (cui__iv_state*)(cui_state(ui, id, ((ulong)(sizeof(cui__iv_state)))));
-        cui_interact r = cui__interact(ui, id, 1 | 2);
-        cui_rect pr = cui__prev_rect(ui, id);
-        float vw = ((float)(Cond.B(((CBool)(pr.w > 0))) ? pr.w : (float)(480))), vh = ((float)(Cond.B(((CBool)(pr.h > 0))) ? pr.h : ((float)(Cond.B(((CBool)((int)o->height.kind == (int)__DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED))) ? o->height.value : (float)(360)))));
-        float fit = ((float)(Cond.B(((CBool)(vw / iw < vh / ih))) ? vw / iw : vh / ih));
-        float zmin = ((float)(Cond.B(((CBool)(fit < 1.0f))) ? fit : 1.0f)), zmax = ((float)(Cond.B(((CBool)(((float)(Cond.B(((CBool)(o->max_zoom > 0))) ? o->max_zoom : (float)(16))) > fit))) ? ((float)(Cond.B(((CBool)(o->max_zoom > 0))) ? o->max_zoom : (float)(16))) : fit));
-        CBool fitted = ((CBool)(view->zoom <= 0));
-        float z = ((float)(Cond.B(fitted) ? fit : cui__clampf(view->zoom, zmin, zmax)));
-        float cx = ((float)(Cond.B(fitted) ? iw * 0.5f : view->cx)), cy = ((float)(Cond.B(fitted) ? ih * 0.5f : view->cy));
-        float mcx = pr.x + vw * 0.5f, mcy = pr.y + vh * 0.5f;
-        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(ui->scroll_target == wid))) && Cond.B(((CBool)(ui->scroll_dy != 0)))))) && Cond.B(((CBool)(pr.w > 0)))))))
-        {
-            do
-            {
-                float px_ = cx + (ui->mx - mcx) / z, py_ = cy + (ui->my - mcy) / z;
-                z = cui__clampf(z * powf(1.2f, ui->scroll_dy), zmin, zmax);
-                cx = px_ - (ui->mx - mcx) / z;
-                cy = py_ - (ui->my - mcy) / z;
-                fitted = 0;
-            }
-            while (false);
-            ui->scroll_dy = 0;
         }
-        if (Cond.B(((CBool)(Cond.B(r.double_clicked) && Cond.B(((CBool)(pr.w > 0)))))))
+        long* th = stackalloc long[32];
+        CBool* ok = stackalloc CBool[32];
+        for (int t__1 = 1; Cond.B(((CBool)(t__1 < threads))); t__1++)
+            ok[t__1] = ((CBool)(pthread_create(&th[t__1], null, DotCcPointers.cui__sw_thread__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84, &jobs[t__1]) == 0));
+        cui__sw_run(&jobs[0]);
+        for (int t__2 = 1; Cond.B(((CBool)(t__2 < threads))); t__2++)
         {
-            if (Cond.B(((CBool)(Cond.B(((CBool)(z < 0.999f))) || Cond.B(fitted)))))
-                do
-                {
-                    float px___1 = cx + (ui->mx - mcx) / z, py___1 = cy + (ui->my - mcy) / z;
-                    z = cui__clampf(1.0f, zmin, zmax);
-                    cx = px___1 - (ui->mx - mcx) / z;
-                    cy = py___1 - (ui->my - mcy) / z;
-                    fitted = 0;
-                }
-                while (false);
+            if (Cond.B(ok[t__2]))
+                pthread_join(th[t__2], null);
             else
-                fitted = 1;
-            st->dragging = 0;
+                cui__sw_run(&jobs[t__2]);
+        }
+    }
+
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe ulong cui__sw_mix(ulong h, ulong v)
+    {
+        h ^= v + 0x9E3779B97F4A7C15UL + (h << 6) + (h >> 2);
+        return h * 0xFF51AFD7ED558CCDUL;
+    }
+
+
+
+    public static unsafe ulong cui__sw_hash_bytes(void* p, ulong n, ulong h)
+    {
+        byte* b = (byte*)(p);
+        while (Cond.B(((CBool)(n >= (ulong)(8)))))
+        {
+            ulong v = default;
+            memcpy(&v, b, (ulong)(8));
+            h = cui__sw_mix(h, v);
+            b += 8;
+            n -= (ulong)(8);
+        }
+        while (Cond.B(n--))
+            h = cui__sw_mix(h, *b++);
+        return h;
+    }
+
+
+
+    public static unsafe void cui__sw_tile_hashes(cui_sw_renderer* r, cui_draw_data* dd, ulong* tiles, byte* force, int tw, int th)
+    {
+        ulong seed = cui__sw_hash_bytes(&dd->clear_color, ((ulong)(sizeof(cui_color))), 1469598103934665603UL);
+        for (int i = 0; Cond.B(((CBool)(i < tw * th))); i++)
+        {
+            tiles[i] = seed;
+            force[i] = 0;
+        }
+        for (int ci = 0; Cond.B(((CBool)(ci < dd->command_count))); ci++)
+        {
+            cui_draw_cmd* cmd = &dd->commands[ci];
+            ulong tid = ((ulong)(Cond.B(cmd->texture) ? cmd->texture : dd->font_atlas));
+            ulong ch = cui__sw_hash_bytes(&cmd->clip, ((ulong)(sizeof(cui_rect))), (ulong)tid + (ulong)(7));
+            int cx0 = 0, cy0 = 0, cx1 = 0, cy1 = 0;
+            float tw_px = 1, th_px = 1;
+            CBool tex_changed = 0;
+            for (int k = 0; Cond.B(((CBool)(k < r->nchanged))); k++)
+                if (Cond.B(((CBool)(((__Anon7EE6DDE8D86583F085229CE0DBCA1F261A8A73C55C9F08E50E838F1F112962CD*)&r->changed)[k].t == tid))))
+                {
+                    int slot = (int)tid - 1;
+                    if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(slot >= 0))) && Cond.B(((CBool)(slot < r->tex_count)))))) && Cond.B(r->tex[slot].used)))))
+                    {
+                        tw_px = (float)r->tex[slot].w;
+                        th_px = (float)r->tex[slot].h;
+                    }
+                    cx0 = ((__Anon7EE6DDE8D86583F085229CE0DBCA1F261A8A73C55C9F08E50E838F1F112962CD*)&r->changed)[k].x0;
+                    cy0 = ((__Anon7EE6DDE8D86583F085229CE0DBCA1F261A8A73C55C9F08E50E838F1F112962CD*)&r->changed)[k].y0;
+                    cx1 = ((__Anon7EE6DDE8D86583F085229CE0DBCA1F261A8A73C55C9F08E50E838F1F112962CD*)&r->changed)[k].x1;
+                    cy1 = ((__Anon7EE6DDE8D86583F085229CE0DBCA1F261A8A73C55C9F08E50E838F1F112962CD*)&r->changed)[k].y1;
+                    tex_changed = 1;
+                    break;
+                }
+            for (uint k__1 = 0; Cond.B(((CBool)(k__1 + (uint)(2) < cmd->index_count))); k__1 += (uint)(3))
+            {
+                uint* ix = dd->indices + cmd->index_offset + k__1;
+                cui_vertex* a = &dd->vertices[ix[0]], b = &dd->vertices[ix[1]], c = &dd->vertices[ix[2]];
+                float x0 = ((float)(Cond.B(((CBool)(a->x < ((float)(Cond.B(((CBool)(b->x < c->x))) ? b->x : c->x))))) ? a->x : ((float)(Cond.B(((CBool)(b->x < c->x))) ? b->x : c->x)))), x1 = ((float)(Cond.B(((CBool)(a->x > ((float)(Cond.B(((CBool)(b->x > c->x))) ? b->x : c->x))))) ? a->x : ((float)(Cond.B(((CBool)(b->x > c->x))) ? b->x : c->x))));
+                float y0 = ((float)(Cond.B(((CBool)(a->y < ((float)(Cond.B(((CBool)(b->y < c->y))) ? b->y : c->y))))) ? a->y : ((float)(Cond.B(((CBool)(b->y < c->y))) ? b->y : c->y)))), y1 = ((float)(Cond.B(((CBool)(a->y > ((float)(Cond.B(((CBool)(b->y > c->y))) ? b->y : c->y))))) ? a->y : ((float)(Cond.B(((CBool)(b->y > c->y))) ? b->y : c->y))));
+                x0 = ((float)(Cond.B(((CBool)(x0 > cmd->clip.x))) ? x0 : cmd->clip.x));
+                y0 = ((float)(Cond.B(((CBool)(y0 > cmd->clip.y))) ? y0 : cmd->clip.y));
+                x1 = ((float)(Cond.B(((CBool)(x1 < cmd->clip.x + cmd->clip.w))) ? x1 : cmd->clip.x + cmd->clip.w));
+                y1 = ((float)(Cond.B(((CBool)(y1 < cmd->clip.y + cmd->clip.h))) ? y1 : cmd->clip.y + cmd->clip.h));
+                if (Cond.B(((CBool)(Cond.B(((CBool)(x1 <= x0))) || Cond.B(((CBool)(y1 <= y0)))))))
+                    continue;
+                ulong h = cui__sw_hash_bytes(a, ((ulong)(sizeof(cui_vertex))), ch);
+                h = cui__sw_hash_bytes(b, ((ulong)(sizeof(cui_vertex))), h);
+                h = cui__sw_hash_bytes(c, ((ulong)(sizeof(cui_vertex))), h);
+                CBool forced = 0;
+                if (Cond.B(tex_changed))
+                {
+                    float u0 = ((float)(Cond.B(((CBool)(a->u < ((float)(Cond.B(((CBool)(b->u < c->u))) ? b->u : c->u))))) ? a->u : ((float)(Cond.B(((CBool)(b->u < c->u))) ? b->u : c->u)))) * tw_px, u1 = ((float)(Cond.B(((CBool)(a->u > ((float)(Cond.B(((CBool)(b->u > c->u))) ? b->u : c->u))))) ? a->u : ((float)(Cond.B(((CBool)(b->u > c->u))) ? b->u : c->u)))) * tw_px;
+                    float v0 = ((float)(Cond.B(((CBool)(a->v < ((float)(Cond.B(((CBool)(b->v < c->v))) ? b->v : c->v))))) ? a->v : ((float)(Cond.B(((CBool)(b->v < c->v))) ? b->v : c->v)))) * th_px, v1 = ((float)(Cond.B(((CBool)(a->v > ((float)(Cond.B(((CBool)(b->v > c->v))) ? b->v : c->v))))) ? a->v : ((float)(Cond.B(((CBool)(b->v > c->v))) ? b->v : c->v)))) * th_px;
+                    forced = ((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(u1 >= (float)cx0 - 1))) && Cond.B(((CBool)(u0 <= (float)cx1 + 1)))))) && Cond.B(((CBool)(v1 >= (float)cy0 - 1)))))) && Cond.B(((CBool)(v0 <= (float)cy1 + 1)))));
+                }
+                int tx0 = ((int)(Cond.B(((CBool)(0 > (int)floorf(x0 - 1) / 64))) ? 0 : (int)floorf(x0 - 1) / 64)), ty0 = ((int)(Cond.B(((CBool)(0 > (int)floorf(y0 - 1) / 64))) ? 0 : (int)floorf(y0 - 1) / 64));
+                int tx1 = ((int)(Cond.B(((CBool)(tw - 1 < (int)ceilf(x1 + 1) / 64))) ? tw - 1 : (int)ceilf(x1 + 1) / 64)), ty1 = ((int)(Cond.B(((CBool)(th - 1 < (int)ceilf(y1 + 1) / 64))) ? th - 1 : (int)ceilf(y1 + 1) / 64));
+                for (int ty = ty0; Cond.B(((CBool)(ty <= ty1))); ty++)
+                    for (int tx = tx0; Cond.B(((CBool)(tx <= tx1))); tx++)
+                    {
+                        tiles[ty * tw + tx] = cui__sw_mix(tiles[ty * tw + tx], h);
+                        if (Cond.B(forced))
+                            force[ty * tw + tx] = 1;
+                    }
+            }
+        }
+    }
+
+
+
+    public static unsafe void cui_sw_render(cui_sw_renderer* r, cui_draw_data* dd, void* pixels, int width, int height, int stride, cui_sw_format fmt)
+    {
+        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(r) ? 0 : 1)) || Cond.B((Cond.B(dd) ? 0 : 1))))) || Cond.B((Cond.B(pixels) ? 0 : 1))))))
+            return;
+        if (Cond.B((Cond.B(r->incremental) ? 0 : 1)))
+        {
+            r->nchanged = 0;
+            r->changed_overflow = 0;
+            cui__sw_paint_rect(r, dd, pixels, width, height, stride, fmt, 0, 0, width, height);
+            r->damage[0] = 0;
+            r->damage[1] = 0;
+            r->damage[2] = width;
+            r->damage[3] = height;
+            return;
+        }
+        int tw = (width + 64 - 1) / 64, th = (height + 64 - 1) / 64;
+        if (Cond.B(((CBool)(tw * th > r->tiles_cap))))
+        {
+            free(r->tiles);
+            free(r->prev);
+            free(r->force);
+            r->tiles_cap = tw * th;
+            r->tiles = (ulong*)(malloc(((ulong)(sizeof(ulong))) * (ulong)r->tiles_cap));
+            r->prev = (ulong*)(malloc(((ulong)(sizeof(ulong))) * (ulong)r->tiles_cap));
+            r->force = (byte*)(malloc((ulong)r->tiles_cap));
+            r->last_px = null;
+            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(r->tiles) ? 0 : 1)) || Cond.B((Cond.B(r->prev) ? 0 : 1))))) || Cond.B((Cond.B(r->force) ? 0 : 1))))))
+            {
+                free(r->tiles);
+                free(r->prev);
+                free(r->force);
+                r->tiles = r->prev = null;
+                r->force = null;
+                r->tiles_cap = 0;
+                r->incremental = 0;
+                cui_sw_render(r, dd, pixels, width, height, stride, fmt);
+                return;
+            }
+        }
+        cui__sw_tile_hashes(r, dd, r->tiles, r->force, tw, th);
+        CBool full = ((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(pixels != r->last_px))) || Cond.B(((CBool)(width != r->last_w)))))) || Cond.B(((CBool)(height != r->last_h)))))) || Cond.B(((CBool)(stride != r->last_stride)))))) || Cond.B(((CBool)((int)fmt != (int)r->last_fmt)))))) || Cond.B(r->changed_overflow)));
+        r->last_px = pixels;
+        r->last_w = width;
+        r->last_h = height;
+        r->last_stride = stride;
+        r->last_fmt = fmt;
+        r->nchanged = 0;
+        r->changed_overflow = 0;
+        r->damage[0] = width;
+        r->damage[1] = height;
+        r->damage[2] = 0;
+        r->damage[3] = 0;
+        if (Cond.B(full))
+        {
+            cui__sw_paint_rect(r, dd, pixels, width, height, stride, fmt, 0, 0, width, height);
+            r->damage[0] = 0;
+            r->damage[1] = 0;
+            r->damage[2] = width;
+            r->damage[3] = height;
         }
         else
-            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(r.active) && Cond.B(((CBool*)&ui->mdown)[0])))) && Cond.B(((CBool)(pr.w > 0)))))))
+        {
+            int rx0 = 0, rx1 = 0, ry0 = -1, ry1 = 0, dirty_tiles = 0;
+            for (int ty = 0; Cond.B(((CBool)(ty <= th))); ty++)
             {
-                if (Cond.B(((CBool)(Cond.B(((CBool*)&ui->mpressed)[0]) || Cond.B((Cond.B(st->dragging) ? 0 : 1))))))
+                int a = -1, b = -1;
+                if (Cond.B(((CBool)(ty < th))))
+                    for (int tx = 0; Cond.B(((CBool)(tx < tw))); tx++)
+                        if (Cond.B(((CBool)(Cond.B(((CBool)(r->tiles[ty * tw + tx] != r->prev[ty * tw + tx]))) || Cond.B(r->force[ty * tw + tx])))))
+                        {
+                            if (Cond.B(((CBool)(a < 0))))
+                                a = tx;
+                            b = tx;
+                            dirty_tiles++;
+                        }
+                if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(a >= 0))) && Cond.B(((CBool)(ry0 >= 0)))))) && Cond.B(((CBool)(a <= rx1)))))) && Cond.B(((CBool)(b >= rx0 - 1)))))))
                 {
-                    st->press_mx = ui->mx;
-                    st->press_my = ui->my;
-                    st->press_cx = cx;
-                    st->press_cy = cy;
-                    st->dragging = 1;
+                    rx0 = ((int)(Cond.B(((CBool)(rx0 < a))) ? rx0 : a));
+                    rx1 = ((int)(Cond.B(((CBool)(rx1 > b))) ? rx1 : b));
+                    ry1 = ty;
+                    continue;
                 }
-                cx = st->press_cx - (ui->mx - st->press_mx) / z;
-                cy = st->press_cy - (ui->my - st->press_my) / z;
-                if (Cond.B(((CBool)(Cond.B(((CBool)(cx != before.cx))) || Cond.B(((CBool)(cy != before.cy)))))))
-                    fitted = ((CBool)(Cond.B(((CBool)(Cond.B(fitted) && Cond.B(((CBool)(cx == iw * 0.5f)))))) && Cond.B(((CBool)(cy == ih * 0.5f)))));
-                cui__set_cursor(ui, __DotCcEnum_6375695F637572736F72.CUI_CURSOR_MOVE);
+                if (Cond.B(((CBool)(ry0 >= 0))))
+                {
+                    int x0 = rx0 * 64, y0 = ry0 * 64, x1 = ((int)(Cond.B(((CBool)(width < (rx1 + 1) * 64))) ? width : (rx1 + 1) * 64)), y1 = ((int)(Cond.B(((CBool)(height < (ry1 + 1) * 64))) ? height : (ry1 + 1) * 64));
+                    cui__sw_paint_rect(r, dd, pixels, width, height, stride, fmt, x0, y0, x1, y1);
+                    r->damage[0] = ((int)(Cond.B(((CBool)(r->damage[0] < x0))) ? r->damage[0] : x0));
+                    r->damage[1] = ((int)(Cond.B(((CBool)(r->damage[1] < y0))) ? r->damage[1] : y0));
+                    r->damage[2] = ((int)(Cond.B(((CBool)(r->damage[2] > x1))) ? r->damage[2] : x1));
+                    r->damage[3] = ((int)(Cond.B(((CBool)(r->damage[3] > y1))) ? r->damage[3] : y1));
+                    ry0 = -1;
+                }
+                if (Cond.B(((CBool)(a >= 0))))
+                {
+                    rx0 = a;
+                    rx1 = b;
+                    ry0 = ry1 = ty;
+                }
+            }
+            ;
+        }
+        ulong* t = r->prev;
+        r->prev = r->tiles;
+        r->tiles = t;
+    }
+
+
+
+    public static unsafe void stbi_flip_vertically_on_write__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84(int flag)
+    {
+        global::Managed.Cui.Cui.Globals.stbi__flip_vertically_on_write__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84 = flag;
+    }
+
+
+
+    public static unsafe void stbi__start_write_callbacks(stbi__write_context* s, delegate*<void*, void*, int, void> c, void* context)
+    {
+        s->func = c;
+        s->context = context;
+    }
+
+
+
+    public static unsafe void stbi__stdio_write__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84(void* context, void* data, int size)
+    {
+        fwrite(data, 1, size, (FILE*)context);
+    }
+
+
+
+    public static unsafe FILE* stbiw__fopen(byte* filename, byte* mode)
+    {
+        FILE* f = default;
+        f = ((FILE*)(fopen(filename, mode)));
+        return f;
+    }
+
+
+
+    public static unsafe int stbi__start_write_file(stbi__write_context* s, byte* filename)
+    {
+        FILE* f = stbiw__fopen(filename, (DotCcLiterals.Pointer + DotCcLiterals.S186 /*"wb"*/));
+        stbi__start_write_callbacks(s, DotCcPointers.stbi__stdio_write__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84, (void*)f);
+        return ((CBool)(f != (void*)0));
+    }
+
+
+
+    public static unsafe void stbi__end_write_file(stbi__write_context* s)
+    {
+        fclose((FILE*)s->context);
+    }
+
+
+
+    public static unsafe void stbiw__writefv(stbi__write_context* s, byte* fmt, VaList v)
+    {
+    byte* __dotcc_array_storage1 = null;
+    byte* __dotcc_array_storage2 = null;
+        while (Cond.B(*fmt))
+        {
+            switch ((int)(*fmt++))
+            {
+                case 32:
+                    break;
+                case 49:
+                    {
+                        byte x = (byte)((int)(v.Next()) & 0xff);
+                        s->func(s->context, &x, 1);
+                        break;
+                    }
+                case 50:
+                    {
+                        int x__1 = (int)(v.Next());
+                        if (__dotcc_array_storage1 == null)
+                        {
+                            byte* __dotcc_array_storage1_new = stackalloc byte[checked(sizeof(byte) * 2)];
+                            __dotcc_array_storage1 = __dotcc_array_storage1_new;
+                        }
+                        byte* b = (byte*)__dotcc_array_storage1;
+                        new global::System.Span<byte>((void*)b, checked(sizeof(byte) * 2)).Clear();
+                        b[0] = (byte)(x__1 & 0xff);
+                        b[1] = (byte)(x__1 >> 8 & 0xff);
+                        s->func(s->context, b, 2);
+                        break;
+                    }
+                case 52:
+                    {
+                        uint x__2 = (uint)((int)(v.Next()));
+                        if (__dotcc_array_storage2 == null)
+                        {
+                            byte* __dotcc_array_storage2_new = stackalloc byte[checked(sizeof(byte) * 4)];
+                            __dotcc_array_storage2 = __dotcc_array_storage2_new;
+                        }
+                        byte* b__1 = (byte*)__dotcc_array_storage2;
+                        new global::System.Span<byte>((void*)b__1, checked(sizeof(byte) * 4)).Clear();
+                        b__1[0] = (byte)(x__2 & (uint)(0xff));
+                        b__1[1] = (byte)(x__2 >> 8 & (uint)(0xff));
+                        b__1[2] = (byte)(x__2 >> 16 & (uint)(0xff));
+                        b__1[3] = (byte)(x__2 >> 24 & (uint)(0xff));
+                        s->func(s->context, b__1, 4);
+                        break;
+                    }
+                default:
+                    __dotcc_assert(0);
+                    return;
+            }
+        }
+    }
+
+
+
+    public static unsafe void stbiw__writef(stbi__write_context* s, byte* fmt, params ReadOnlySpan<VaArg> _va)
+    {
+        scoped VaList v = default;
+        v = new VaList(_va);
+        stbiw__writefv(s, fmt, v);
+        v.End();
+    }
+
+
+
+    public static unsafe void stbiw__write_flush(stbi__write_context* s)
+    {
+        if (Cond.B(s->buf_used))
+        {
+            s->func(s->context, s->buffer, s->buf_used);
+            s->buf_used = 0;
+        }
+    }
+
+
+
+    public static unsafe void stbiw__putc(stbi__write_context* s, byte c)
+    {
+        s->func(s->context, &c, 1);
+    }
+
+
+
+    public static unsafe void stbiw__write1(stbi__write_context* s, byte a)
+    {
+        if (Cond.B(((CBool)((ulong)s->buf_used + (ulong)(1) > ((ulong)((64 * sizeof(byte))))))))
+            stbiw__write_flush(s);
+        s->buffer[s->buf_used++] = a;
+    }
+
+
+
+    public static unsafe void stbiw__write3(stbi__write_context* s, byte a, byte b, byte c)
+    {
+        int n = default;
+        if (Cond.B(((CBool)((ulong)s->buf_used + (ulong)(3) > ((ulong)((64 * sizeof(byte))))))))
+            stbiw__write_flush(s);
+        n = s->buf_used;
+        s->buf_used = n + 3;
+        s->buffer[n + 0] = a;
+        s->buffer[n + 1] = b;
+        s->buffer[n + 2] = c;
+    }
+
+
+
+    public static unsafe void stbiw__write_pixel(stbi__write_context* s, int rgb_dir, int comp, int write_alpha, int expand_mono, byte* d)
+    {
+        byte* bg = stackalloc byte[]{ 255, 0, 255 };
+        byte* px = stackalloc byte[3];
+        int k = default;
+        if (Cond.B(((CBool)(write_alpha < 0))))
+            stbiw__write1(s, d[comp - 1]);
+        switch (comp)
+        {
+            case 2:
+            case 1:
+                if (Cond.B(expand_mono))
+                    stbiw__write3(s, d[0], d[0], d[0]);
+                else
+                    stbiw__write1(s, d[0]);
+                break;
+            case 4:
+                if (Cond.B((Cond.B(write_alpha) ? 0 : 1)))
+                {
+                    for (k = 0; Cond.B(((CBool)(k < 3))); ++k)
+                        px[k] = (byte)(bg[k] + (d[k] - bg[k]) * d[3] / 255);
+                    stbiw__write3(s, px[1 - rgb_dir], px[1], px[1 + rgb_dir]);
+                    break;
+                }
+                goto case 3;
+            case 3:
+                stbiw__write3(s, d[1 - rgb_dir], d[1], d[1 + rgb_dir]);
+                break;
+        }
+        if (Cond.B(((CBool)(write_alpha > 0))))
+            stbiw__write1(s, d[comp - 1]);
+    }
+
+
+
+    public static unsafe void stbiw__write_pixels__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84(stbi__write_context* s, int rgb_dir, int vdir, int x, int y, int comp, void* data, int write_alpha, int scanline_pad, int expand_mono)
+    {
+        uint zero = 0;
+        int i = default, j = default, j_end = default;
+        if (Cond.B(((CBool)(y <= 0))))
+            return;
+        if (Cond.B(global::Managed.Cui.Cui.Globals.stbi__flip_vertically_on_write__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84))
+            vdir *= -1;
+        if (Cond.B(((CBool)(vdir < 0))))
+        {
+            j_end = -1;
+            j = y - 1;
+        }
+        else
+        {
+            j_end = y;
+            j = 0;
+        }
+        for (; Cond.B(((CBool)(j != j_end))); j += vdir)
+        {
+            for (i = 0; Cond.B(((CBool)(i < x))); ++i)
+            {
+                byte* d = (byte*)data + (j * x + i) * comp;
+                stbiw__write_pixel(s, rgb_dir, comp, write_alpha, expand_mono, d);
+            }
+            stbiw__write_flush(s);
+            s->func(s->context, &zero, scanline_pad);
+        }
+    }
+
+
+
+    public static unsafe int stbiw__outfile(stbi__write_context* s, int rgb_dir, int vdir, int x, int y, int comp, int expand_mono, void* data, int alpha, int pad, byte* fmt, params ReadOnlySpan<VaArg> _va)
+    {
+        if (Cond.B(((CBool)(Cond.B(((CBool)(y < 0))) || Cond.B(((CBool)(x < 0)))))))
+        {
+            return 0;
+        }
+        else
+        {
+            scoped VaList v = default;
+            v = new VaList(_va);
+            stbiw__writefv(s, fmt, v);
+            v.End();
+            stbiw__write_pixels__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84(s, rgb_dir, vdir, x, y, comp, data, alpha, pad, expand_mono);
+            return 1;
+        }
+    }
+
+
+
+    public static unsafe int stbi_write_bmp_core(stbi__write_context* s, int x, int y, int comp, void* data)
+    {
+        if (Cond.B(((CBool)(comp != 4))))
+        {
+            int pad = -x * 3 & 3;
+            return stbiw__outfile(s, -1, -1, x, y, comp, 1, (void*)data, 0, pad, (DotCcLiterals.Pointer + DotCcLiterals.S200 /*"11 4 22 44 44 22 444444"*/), 66, 77, 14 + 40 + (x * 3 + pad) * y, 0, 0, 14 + 40, 40, x, y, 1, 24, 0, 0, 0, 0, 0, 0);
+        }
+        else
+        {
+            return stbiw__outfile(s, -1, -1, x, y, comp, 1, (void*)data, 1, 0, (DotCcLiterals.Pointer + DotCcLiterals.S79 /*"11 4 22 44 44 22 444444 4444 4 444 444 444 444"*/), 66, 77, 14 + 108 + x * y * 4, 0, 0, 14 + 108, 108, x, y, 1, 32, 3, 0, 0, 0, 0, 0, 0xff0000, 0xff00, 0xff, 0xff000000u, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        }
+    }
+
+
+
+    public static unsafe int stbi_write_bmp_to_func(delegate*<void*, void*, int, void> func, void* context, int x, int y, int comp, void* data)
+    {
+        stbi__write_context s = new stbi__write_context {  };
+        stbi__start_write_callbacks(&s, func, context);
+        return stbi_write_bmp_core(&s, x, y, comp, data);
+    }
+
+
+
+    public static unsafe int stbi_write_bmp(byte* filename, int x, int y, int comp, void* data)
+    {
+        stbi__write_context s = new stbi__write_context {  };
+        if (Cond.B(stbi__start_write_file(&s, filename)))
+        {
+            int r = stbi_write_bmp_core(&s, x, y, comp, data);
+            stbi__end_write_file(&s);
+            return r;
+        }
+        else
+            return 0;
+    }
+
+
+
+    public static unsafe int stbi_write_tga_core__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84(stbi__write_context* s, int x, int y, int comp, void* data)
+    {
+        int has_alpha = ((CBool)(Cond.B(((CBool)(comp == 2))) || Cond.B(((CBool)(comp == 4)))));
+        int colorbytes = ((int)(Cond.B(has_alpha) ? comp - 1 : comp));
+        int format = ((int)(Cond.B(((CBool)(colorbytes < 2))) ? 3 : 2));
+        if (Cond.B(((CBool)(Cond.B(((CBool)(y < 0))) || Cond.B(((CBool)(x < 0)))))))
+            return 0;
+        if (Cond.B((Cond.B(global::Managed.Cui.Cui.Globals.stbi_write_tga_with_rle__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84) ? 0 : 1)))
+        {
+            return stbiw__outfile(s, -1, -1, x, y, comp, 0, (void*)data, has_alpha, 0, (DotCcLiterals.Pointer + DotCcLiterals.S1089 /*"111 221 2222 11"*/), 0, 0, format, 0, 0, 0, 0, 0, x, y, (colorbytes + has_alpha) * 8, has_alpha * 8);
+        }
+        else
+        {
+            int i = default, j = default, k = default;
+            int jend = default, jdir = default;
+            stbiw__writef(s, (DotCcLiterals.Pointer + DotCcLiterals.S1089 /*"111 221 2222 11"*/), 0, 0, format + 8, 0, 0, 0, 0, 0, x, y, (colorbytes + has_alpha) * 8, has_alpha * 8);
+            if (Cond.B(global::Managed.Cui.Cui.Globals.stbi__flip_vertically_on_write__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84))
+            {
+                j = 0;
+                jend = y;
+                jdir = 1;
             }
             else
-                st->dragging = 0;
-        if (Cond.B(r.focused))
-        {
-            float step = 48 / z;
-            if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_EQUAL)))
-                do
+            {
+                j = y - 1;
+                jend = -1;
+                jdir = -1;
+            }
+            for (; Cond.B(((CBool)(j != jend))); j += jdir)
+            {
+                byte* row = (byte*)data + j * x * comp;
+                int len = default;
+                for (i = 0; Cond.B(((CBool)(i < x))); i += len)
                 {
-                    float px___2 = cx + (mcx - mcx) / z, py___2 = cy + (mcy - mcy) / z;
-                    z = cui__clampf(z * 1.5f, zmin, zmax);
-                    cx = px___2 - (mcx - mcx) / z;
-                    cy = py___2 - (mcy - mcy) / z;
-                    fitted = 0;
+                    byte* begin = row + i * comp;
+                    int diff = 1;
+                    len = 1;
+                    if (Cond.B(((CBool)(i < x - 1))))
+                    {
+                        ++len;
+                        diff = memcmp(begin, row + (i + 1) * comp, (ulong)(comp));
+                        if (Cond.B(diff))
+                        {
+                            byte* prev = begin;
+                            for (k = i + 2; Cond.B(((CBool)(Cond.B(((CBool)(k < x))) && Cond.B(((CBool)(len < 128)))))); ++k)
+                            {
+                                if (Cond.B(memcmp(prev, row + k * comp, (ulong)(comp))))
+                                {
+                                    prev += comp;
+                                    ++len;
+                                }
+                                else
+                                {
+                                    --len;
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            for (k = i + 2; Cond.B(((CBool)(Cond.B(((CBool)(k < x))) && Cond.B(((CBool)(len < 128)))))); ++k)
+                            {
+                                if (Cond.B((Cond.B(memcmp(begin, row + k * comp, (ulong)(comp))) ? 0 : 1)))
+                                {
+                                    ++len;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (Cond.B(diff))
+                    {
+                        byte header = (byte)(len - 1 & 0xff);
+                        stbiw__write1(s, header);
+                        for (k = 0; Cond.B(((CBool)(k < len))); ++k)
+                        {
+                            stbiw__write_pixel(s, -1, comp, has_alpha, 0, begin + k * comp);
+                        }
+                    }
+                    else
+                    {
+                        byte header__1 = (byte)(len - 129 & 0xff);
+                        stbiw__write1(s, header__1);
+                        stbiw__write_pixel(s, -1, comp, has_alpha, 0, begin);
+                    }
                 }
-                while (false);
-            if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_MINUS)))
-                do
-                {
-                    float px___3 = cx + (mcx - mcx) / z, py___3 = cy + (mcy - mcy) / z;
-                    z = cui__clampf(z / 1.5f, zmin, zmax);
-                    cx = px___3 - (mcx - mcx) / z;
-                    cy = py___3 - (mcy - mcy) / z;
-                    fitted = 0;
-                }
-                while (false);
-            if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_0)))
-                fitted = 1;
-            if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_1)))
-                do
-                {
-                    float px___4 = cx + (mcx - mcx) / z, py___4 = cy + (mcy - mcy) / z;
-                    z = cui__clampf(1.0f, zmin, zmax);
-                    cx = px___4 - (mcx - mcx) / z;
-                    cy = py___4 - (mcy - mcy) / z;
-                    fitted = 0;
-                }
-                while (false);
-            if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_LEFT)))
-            {
-                cx -= step;
-                fitted = 0;
             }
-            if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_RIGHT)))
-            {
-                cx += step;
-                fitted = 0;
-            }
-            if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_UP)))
-            {
-                cy -= step;
-                fitted = 0;
-            }
-            if (Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_DOWN)))
-            {
-                cy += step;
-                fitted = 0;
-            }
+            stbiw__write_flush(s);
         }
-        if (Cond.B(fitted))
+        return 1;
+    }
+
+
+
+    public static unsafe int stbi_write_tga_to_func(delegate*<void*, void*, int, void> func, void* context, int x, int y, int comp, void* data)
+    {
+        stbi__write_context s = new stbi__write_context {  };
+        stbi__start_write_callbacks(&s, func, context);
+        return stbi_write_tga_core__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84(&s, x, y, comp, (void*)data);
+    }
+
+
+
+    public static unsafe int stbi_write_tga(byte* filename, int x, int y, int comp, void* data)
+    {
+        stbi__write_context s = new stbi__write_context {  };
+        if (Cond.B(stbi__start_write_file(&s, filename)))
         {
-            z = fit;
-            cx = iw * 0.5f;
-            cy = ih * 0.5f;
+            int r = stbi_write_tga_core__unit_D8AFD63AB07D96CCA75DD678C6FC91E452EE8A39A3F6C5F5C778D9DBC6D49F84(&s, x, y, comp, (void*)data);
+            stbi__end_write_file(&s);
+            return r;
         }
-        cui__iv_clamp__unit_BA4B27726764EA0F627353A5876FF40C7DD1117572A44E1644A3E553A00337E1(&cx, &cy, z, vw, vh, iw, ih);
-        if (Cond.B(fitted))
-            *view = new cui_image_view { zoom = 0, cx = cx, cy = cy };
         else
-            *view = new cui_image_view { zoom = z, cx = cx, cy = cy };
-        if (Cond.B((Cond.B(st->init) ? 0 : 1)))
+            return 0;
+    }
+
+
+
+    public static unsafe void stbiw__linear_to_rgbe(byte* rgbe, float* linear)
+    {
+        int exponent = default;
+        float maxcomp = ((float)(Cond.B(((CBool)(linear[0] > ((float)(Cond.B(((CBool)(linear[1] > linear[2]))) ? linear[1] : linear[2]))))) ? linear[0] : ((float)(Cond.B(((CBool)(linear[1] > linear[2]))) ? linear[1] : linear[2]))));
+        if (Cond.B(((CBool)(maxcomp < 1e-32f))))
         {
-            st->z.x = z;
-            st->x.x = cx;
-            st->y.x = cy;
-            st->init = 1;
-        }
-        if (Cond.B(st->dragging))
-        {
-            st->x.x = cx;
-            st->y.x = cy;
-            st->x.v = st->y.v = 0;
-            cui__spring(ui, &st->z, z, 0.40f, 0.0f);
+            rgbe[0] = rgbe[1] = rgbe[2] = rgbe[3] = 0;
         }
         else
         {
-            cui__spring(ui, &st->z, z, 0.28f, 0.0f);
-            cui__spring(ui, &st->x, cx, 0.28f, 0.0f);
-            cui__spring(ui, &st->y, cy, 0.28f, 0.0f);
+            float normalize = (float)frexp((double)(maxcomp), &exponent) * 256.0f / maxcomp;
+            rgbe[0] = (byte)(linear[0] * normalize);
+            rgbe[1] = (byte)(linear[1] * normalize);
+            rgbe[2] = (byte)(linear[2] * normalize);
+            rgbe[3] = (byte)(exponent + 128);
         }
-        if (Cond.B(((CBool)(Cond.B(r.hovered) && Cond.B((Cond.B(r.active) ? 0 : 1))))))
-            cui__set_cursor(ui, (cui_cursor)(((int)(Cond.B(((CBool)(z > fit + 0.001f))) ? (int)(__DotCcEnum_6375695F637572736F72.CUI_CURSOR_MOVE) : (int)(__DotCcEnum_6375695F637572736F72.CUI_CURSOR_ARROW)))));
-        int n = cui__node_new(ui, id);
-        cui_node* nd = &ui->nodes[n];
-        nd->w = (Cond.B((int)o->width.kind) ? o->width : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 });
-        nd->h = (Cond.B((int)o->height.kind) ? o->height : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)360 });
-        nd->self_align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_STRETCH);
-        nd->bg = (Cond.B(((CBool)((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK))) ? cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BACKGROUND], ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0.04f) : cui_mix(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE], ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0.035f));
-        nd->radius = new cui_corners { tl = ui->theme.radius_control, tr = ui->theme.radius_control, br = ui->theme.radius_control, bl = ui->theme.radius_control };
-        nd->flags |= (uint)(16);
-        cui__mark_interactive(ui, n, 1);
-        cui__focus_ring(ui, n, ((float)(Cond.B(r.focus_visible) ? 1.0f : 0.0f)));
-        cui__iv_paint* p = (cui__iv_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__iv_paint)))));
-        p->tex = tex;
-        p->iw = iw;
-        p->ih = ih;
-        p->z = st->z.x;
-        p->cx = st->x.x;
-        p->cy = st->y.x;
-        p->wheel = wid;
-        p->checker = o->checkerboard;
-        nd->paint = DotCcPointers.cui__paint_viewer__unit_BA4B27726764EA0F627353A5876FF40C7DD1117572A44E1644A3E553A00337E1;
-        nd->paint_data = p;
-        if (Cond.B((Cond.B(o->no_toolbar) ? 0 : 1)))
+    }
+
+
+
+    public static unsafe void stbiw__write_run_data(stbi__write_context* s, int length, byte databyte)
+    {
+        byte lengthbyte = (byte)(length + 128 & 0xff);
+        __dotcc_assert(((CBool)(length + 128 <= 255)));
+        s->func(s->context, &lengthbyte, 1);
+        s->func(s->context, &databyte, 1);
+    }
+
+
+
+    public static unsafe void stbiw__write_dump_data(stbi__write_context* s, int length, byte* data)
+    {
+        byte lengthbyte = (byte)(length & 0xff);
+        __dotcc_assert(((CBool)(length <= 128)));
+        s->func(s->context, &lengthbyte, 1);
+        s->func(s->context, data, length);
+    }
+
+
+
+    public static unsafe void stbiw__write_hdr_scanline(stbi__write_context* s, int width, int ncomp, byte* scratch, float* scanline)
+    {
+        byte* scanlineheader = stackalloc byte[]{ 2, 2, 0, 0 };
+        byte* rgbe = stackalloc byte[4];
+        float* linear = stackalloc float[3];
+        int x = default;
+        scanlineheader[2] = (byte)((width & 0xff00) >> 8);
+        scanlineheader[3] = (byte)(width & 0x00ff);
+        if (Cond.B(((CBool)(Cond.B(((CBool)(width < 8))) || Cond.B(((CBool)(width >= 32768)))))))
         {
-            cui__open(ui, n);
-            cui_push_id(ui, ((byte*)(Cond.B(id_str) ? id_str : (DotCcLiterals.Pointer + DotCcLiterals.S483 /*"viewer"*/))));
-            float bw = 172, bh = 32;
-            int bar = cui__absolute(ui, id ^ 0x1A6E2u, vw - bw - 10, vh - bh - 10, bw, bh);
-            cui_node* bn = &ui->nodes[bar];
-            bn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
-            bn->align = (byte)(__DotCcEnum_6375695F616C69676E.CUI_ALIGN_CENTER);
-            bn->pad[1] = bn->pad[3] = 3;
-            bn->gap = 0;
-            bn->bg = cui_alpha(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE_RAISED], 0.94f);
-            bn->radius = new cui_corners { tl = bh * 0.5f, tr = bh * 0.5f, br = bh * 0.5f, bl = bh * 0.5f };
-            bn->border = 1;
-            bn->border_color = (Cond.B(((CBool)((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK))) ? ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_BORDER] : cui__rgba(0, 0, 0, 22));
-            bn->elevation = __DotCcEnum_6375695F656C65766174696F6E.CUI_ELEVATION_RAISED;
-            bn->elevation_alpha = 1;
-            bn->flags |= (uint)(2048);
-            cui__open(ui, bar);
-            cui_button_opts bo = default;
-            memset(&bo, 0, ((ulong)(sizeof(cui_button_opts))));
-            bo.size = __DotCcEnum_6375695F636F6E74726F6C5F73697A65.CUI_SIZE_SM;
-            bo.variant = __DotCcEnum_6375695F627574746F6E5F76617269616E74.CUI_BUTTON_GHOST;
-            bo.tooltip = (DotCcLiterals.Pointer + DotCcLiterals.S476 /*"Zoom out"*/);
-            if (Cond.B(cui_icon_button_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S995 /*""*/), &bo)))
+            for (x = 0; Cond.B(((CBool)(x < width))); x++)
             {
-                fitted = 0;
-                do
+                switch (ncomp)
                 {
-                    float px___5 = cx + (mcx - mcx) / z, py___5 = cy + (mcy - mcy) / z;
-                    z = cui__clampf(z / 1.5f, zmin, zmax);
-                    cx = px___5 - (mcx - mcx) / z;
-                    cy = py___5 - (mcy - mcy) / z;
-                    fitted = 0;
+                    case 4:
+                    case 3:
+                        linear[2] = scanline[x * ncomp + 2];
+                        linear[1] = scanline[x * ncomp + 1];
+                        linear[0] = scanline[x * ncomp + 0];
+                        break;
+                    default:
+                        linear[0] = linear[1] = linear[2] = scanline[x * ncomp + 0];
+                        break;
                 }
-                while (false);
-                cui__iv_clamp__unit_BA4B27726764EA0F627353A5876FF40C7DD1117572A44E1644A3E553A00337E1(&cx, &cy, z, vw, vh, iw, ih);
-                *view = new cui_image_view { zoom = z, cx = cx, cy = cy };
+                stbiw__linear_to_rgbe(rgbe, linear);
+                s->func(s->context, rgbe, 4);
             }
-            int pt = cui__text_node(ui, cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S548 /*"%.0f%%"*/), (double)(z * 100)), -1, 1, cui__fs(ui, ui->theme.text_sm), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0);
-            ui->nodes[pt].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
-            ui->nodes[pt].text_align = (byte)(__DotCcEnum_6375695F746578745F616C69676E.CUI_TEXT_CENTER);
-            ui->nodes[pt].flags |= (uint)(256);
-            bo.tooltip = (DotCcLiterals.Pointer + DotCcLiterals.S1085 /*"Zoom in"*/);
-            if (Cond.B(cui_icon_button_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S437 /*""*/), &bo)))
-            {
-                fitted = 0;
-                do
-                {
-                    float px___6 = cx + (mcx - mcx) / z, py___6 = cy + (mcy - mcy) / z;
-                    z = cui__clampf(z * 1.5f, zmin, zmax);
-                    cx = px___6 - (mcx - mcx) / z;
-                    cy = py___6 - (mcy - mcy) / z;
-                    fitted = 0;
-                }
-                while (false);
-                cui__iv_clamp__unit_BA4B27726764EA0F627353A5876FF40C7DD1117572A44E1644A3E553A00337E1(&cx, &cy, z, vw, vh, iw, ih);
-                *view = new cui_image_view { zoom = z, cx = cx, cy = cy };
-            }
-            bo.tooltip = (DotCcLiterals.Pointer + DotCcLiterals.S125 /*"Fit"*/);
-            if (Cond.B(cui_icon_button_ex(ui, (DotCcLiterals.Pointer + DotCcLiterals.S20 /*""*/), &bo)))
-                *view = new cui_image_view { zoom = 0, cx = iw * 0.5f, cy = ih * 0.5f };
-            cui__close(ui);
-            cui_pop_id(ui);
-            cui__close(ui);
         }
-        float moving = fabsf(st->z.v) + fabsf(st->x.v) + fabsf(st->y.v);
-        if (Cond.B(((CBool)(moving > 0.001f))))
-            ui->animating = 1;
-        ui->last_id = id;
-        return ((CBool)(memcmp(&before, view, ((ulong)(sizeof(cui_image_view)))) != 0));
+        else
+        {
+            int c = default, r = default;
+            for (x = 0; Cond.B(((CBool)(x < width))); x++)
+            {
+                switch (ncomp)
+                {
+                    case 4:
+                    case 3:
+                        linear[2] = scanline[x * ncomp + 2];
+                        linear[1] = scanline[x * ncomp + 1];
+                        linear[0] = scanline[x * ncomp + 0];
+                        break;
+                    default:
+                        linear[0] = linear[1] = linear[2] = scanline[x * ncomp + 0];
+                        break;
+                }
+                stbiw__linear_to_rgbe(rgbe, linear);
+                scratch[x + width * 0] = rgbe[0];
+                scratch[x + width * 1] = rgbe[1];
+                scratch[x + width * 2] = rgbe[2];
+                scratch[x + width * 3] = rgbe[3];
+            }
+            s->func(s->context, scanlineheader, 4);
+            for (c = 0; Cond.B(((CBool)(c < 4))); c++)
+            {
+                byte* comp = &scratch[width * c];
+                x = 0;
+                while (Cond.B(((CBool)(x < width))))
+                {
+                    r = x;
+                    while (Cond.B(((CBool)(r + 2 < width))))
+                    {
+                        if (Cond.B(((CBool)(Cond.B(((CBool)(comp[r] == comp[r + 1]))) && Cond.B(((CBool)(comp[r] == comp[r + 2])))))))
+                            break;
+                        ++r;
+                    }
+                    if (Cond.B(((CBool)(r + 2 >= width))))
+                        r = width;
+                    while (Cond.B(((CBool)(x < r))))
+                    {
+                        int len = r - x;
+                        if (Cond.B(((CBool)(len > 128))))
+                            len = 128;
+                        stbiw__write_dump_data(s, len, &comp[x]);
+                        x += len;
+                    }
+                    if (Cond.B(((CBool)(r + 2 < width))))
+                    {
+                        while (Cond.B(((CBool)(Cond.B(((CBool)(r < width))) && Cond.B(((CBool)(comp[r] == comp[x])))))))
+                            ++r;
+                        while (Cond.B(((CBool)(x < r))))
+                        {
+                            int len__1 = r - x;
+                            if (Cond.B(((CBool)(len__1 > 127))))
+                                len__1 = 127;
+                            stbiw__write_run_data(s, len__1, comp[x]);
+                            x += len__1;
+                        }
+                    }
+                }
+            }
+        }
     }
 
 
