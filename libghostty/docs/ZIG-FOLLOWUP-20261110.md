@@ -39,17 +39,12 @@ The integrated focused run passes 136 functional cases with zero skips/failures;
 explicitly outside that passing total, as described below. Evidence and commands
 are in [summary.json](../artifacts/zig-pending-20261110/summary.json).
 
-## Legacy Patch16 checkpoint
+## Removed unused legacy checkpoint
 
-`patches/direct/0016-concrete-size-report.patch`, its README and manifest now
-form a qualified **legacy C-ABI-profile** checkpoint for pin `93967b7f9478`.
-Actual original/patched source encoders and real `std.Io.Writer` compare equal
-for 11,700 native C/Zig Debug/Fast cases. Managed source and object/link both
-pass the C profile's native layout and Writer checks. Non-C managed Writer
-parity passes separately; strict native non-C layout does not pass. See the
-[exact scope and proof](../artifacts/zig-pending-20261110/legacy-size/REPORT.txt).
-The active 1.0.0 recipe still uses `patches/vt-1.0.0` and does not apply this
-legacy patch. Native/reflection type names change as documented by the patch.
+The old-pin Size-declaration checkpoint recorded in `9bb4f93cd` was unused by
+the 1.0.0 product. Its patch, registration and dedicated proof files were later
+removed at the user's request. The active recipe still uses `patches/vt-1.0.0`;
+the generic compiler fixes and tests above remain in place.
 
 ## Concrete remaining limitations
 
@@ -62,11 +57,6 @@ The following existing limitations are recorded, not silently counted as passes:
    unexpected `switch`). The already accepted 1.0.0 compiler reproduces the same
    failure. No parser changes were made in this follow-up. Finishing it requires
    supporting that stdlib grammar path and rerunning the two cases.
-2. `libghostty/patches/direct/0016-concrete-size-report.patch`, non-C profile:
-   native Zig auto-layout offsets are 8/10/0/4, while both original and patched
-   managed structs use 0/2/4/8. Strict source/object layout probes return 15.
-   Native C layout is qualified; non-C native ABI parity requires an explicit
-   compiler auto-layout policy and is not a claim of this checkpoint.
 
 The full upstream managed campaign is still open. Concurrent CUI/gallery,
 managed-symbol and printf changes are independent work and were not included

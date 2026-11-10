@@ -54,8 +54,8 @@ dependent comptime string parameters, explicit comptime type comparisons,
 full-width vector OR reduction and wide untyped integer peers. The compiler is
 built from the accepted baseline plus these changes in one small clean export;
 unrelated runtime edits and earlier unvalidated loop/keys/metadata/optional
-experiments are excluded. Old pending `patches/direct/0016` is not part of the
-release patch chain.
+experiments are excluded. The separate unused legacy Size-declaration patch
+was subsequently removed; it was never part of the release patch chain.
 
 Passed upgrade checks cover actual raw/processed emission and build, owning
 terminal behavior, 45 native differential/version/API cases in both JIT and

@@ -1,7 +1,7 @@
 # Direct vt-1.0.0 upgrade milestone
 
 Follow-up, 2026-11-10: the Zig source fragments excluded from this milestone
-have since been completed and checked, including the legacy Patch16 checkpoint.
+have since been completed and checked. The unused legacy Size checkpoint was removed.
 See [the current inventory and remaining limitations](ZIG-FOLLOWUP-20261110.md).
 The isolation description below records the original milestone's scope.
 
@@ -40,8 +40,8 @@ Commit isolation uses the qualified source export documented by
 whole working-tree copies of mixed compiler files. Only the validated portions
 of `ZigLowering.Generics.cs`, `ZigLowering.Loops.cs`, `ZigLowering.TypeInfo.cs` and
 `ZigLowering.Types.cs` enter this milestone. Their unfinished edits remain in the
-working tree. Prior loop-else/keys/composite metadata/optional experiments and the
-old unapplied `patches/direct/0016-concrete-size-report.patch` stay out. The new
+working tree. Prior loop-else/keys/composite metadata/optional experiments and a
+separate unused legacy Size-declaration patch stayed out. The new
 release's validated `patches/vt-1.0.0/0016-explicit-sized-validation.patch` is a
 separate adaptation. Unrelated Pthread/runtime and other user changes are also
 excluded. No push or PR is part of this request.

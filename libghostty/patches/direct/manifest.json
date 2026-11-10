@@ -120,25 +120,6 @@
       "patched_sha256": "d01655fdb9b32fb57a5b3c7134def01724616832b0ab512411828e2b96e6a788",
       "patch_sha256": "dfd377d3966a94e09a6aeaa0f0c06dcfd00905ce6e75edf2ec3484e34f4e1d2a",
       "reason": "Declare the same two color-scheme values and c_int/u1 target-dependent backing explicitly instead of a generic enum factory. Preserve C/Zig ordinals, size/alignment, exhaustive tags, pointer representation and exact Writer report bytes/errors. The compiler diagnostic type name becomes the ordinary ColorScheme declaration; this avoids reproducing Zig generic-argument diagnostic pretty printing for the reached callback signature."
-    },
-    {
-      "patch": "0016-concrete-size-report.patch",
-      "source": "src/terminal/size_report.zig",
-      "original_sha256": "b728fb0270b99525e8a35536b54a70857d1b2ec8b6ae527219acba9b5ce49520",
-      "patched_sha256": "cc226ee8c4c6d62b2a46f9361030b69ec35dbd8cafb5348ff2e40eb51ff9f1d5",
-      "patch_sha256": "f9ac04b9afe250e97ee07a0cc378b5c9d6d6bd85e851eb00604f033ee8c603cd",
-      "reason": "Declare Size with the same four fields as an explicit extern struct for terminal_options.c_abi and an ordinary struct otherwise. Preserve C/Zig field order, types, size/alignment, actual field offsets and unchanged Writer report encoding/error behavior. Nominal/reflection names become those of the ordinary conditional Size declaration instead of a generic Struct factory instance or anonymous factory argument; avoid generic-argument diagnostic name printing in the reached callback signature.",
-      "qualification": {
-        "upstream_commit": "93967b7f9478e94dcbb42125c8a90f34feb40d75",
-        "scope": "Legacy Size declaration and actual Writer encoding; selected c_abi=true profile.",
-        "native_original_patched": "C/Zig x Debug/ReleaseFast passed (11,700 Writer comparisons).",
-        "managed_c_abi_true": "Source and serialized-object/link native layout and Writer comparisons passed (5,850 comparisons).",
-        "managed_non_c_writer_parity": "Source and serialized-object/link original/patched Writer parity passed (5,850 comparisons).",
-        "managed_non_c_native_layout": "Unqualified: both managed declarations use offsets 0/2/4/8 while native auto layout uses 8/10/0/4; strict source/object probes exit 15.",
-        "full_upstream_acceptance": "Not claimed by this bounded checkpoint.",
-        "active_vt_1_0_0_dependency": false,
-        "evidence": "artifacts/zig-pending-20261110/legacy-size/"
-      }
     }
   ]
 }

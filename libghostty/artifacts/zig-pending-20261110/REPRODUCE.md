@@ -64,6 +64,3 @@ NativeAOT build/run success. The ordinary canonical solution builds with zero
 warnings/errors and prints the same owning transcript PASS without a
 `TranslatedProject` override. No canonical generated files were replaced.
 Full upstream managed qualification is still pending.
-
-The independent old-pin Patch16 reproduction and its non-C layout limitation
-are documented in `legacy-size/REPORT.txt`.

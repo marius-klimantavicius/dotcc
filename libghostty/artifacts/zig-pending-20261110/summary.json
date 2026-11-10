@@ -1,5 +1,5 @@
 {
-  "status": "completed scoped Zig follow-up; qualified for commit",
+  "status": "completed scoped Zig follow-up; unused legacy Size checkpoint subsequently removed",
   "compiler_base": "7a449b290f3fd9b28b584cf03f00a9f47d7cbdc6",
   "source_export": "/mnt/storage/dotcc-libghostty-disposable/zig-pending-20261110/compiler-source",
   "compiler_build": "0warnings/errors",
@@ -32,11 +32,6 @@
       "test": "ZigStaticPointerExecutionTests/testing-allocator.zig (source+object)",
       "reason": "Pinned std/Thread.zig LinuxThreadImpl parseerror1178:42, unexpected switch; accepted1.0CLI independently reproduces it",
       "evidence": "preexisting-thread-parser.txt"
-    },
-    {
-      "profile": "legacy size_report non-C auto layout",
-      "reason": "nativeZigoffsets8/10/0/4 differ from managedsourceorder0/2/4/8; strictprobeexits15inbothroutes",
-      "evidence": "legacy-size/zig-native-layout-failure.json"
     }
   ],
   "full_upstream_managed_qualification": "pending",
