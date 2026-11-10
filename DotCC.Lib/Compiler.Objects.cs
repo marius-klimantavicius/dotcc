@@ -147,6 +147,7 @@ public static partial class Compiler
         if (outputOptions?.AggregateData == true)
             throw new CompileException("--aggregate-data requires source emission; set AggregateData at EmitObject and rebuild objects, then link without --aggregate-data");
         ValidateOutputOptions(outputOptions, emit);
+        var managedSymbols = ReadManagedSymbols(outputOptions);
         bool nested = outputOptions?.NestTypes == true;
         bool? usesZig = false;
         namespaceName = ResolveNamespace(namespaceName, emit);
@@ -465,6 +466,8 @@ public static partial class Compiler
         typeOrder.RemoveAll(name => !typeByName.ContainsKey(name));
         if (!missingBoundaries) { functions.Clear(); functions.Append(inline.Functions); functionSources = inline.Parts.ToList(); }
         definedNames.UnionWith(functionSources.Select(f => f.Name));
+        var importedTypes = ImportManagedTypes(managedSymbols, typeByName, aggregateByName, identityGraphs, variantNames);
+        typeOrder.RemoveAll(name => !typeByName.ContainsKey(name));
         var structDecls = new StringBuilder();
         foreach (var name in typeOrder.Where(name => !name.StartsWith(MacroConstantPrefix, StringComparison.Ordinal))) { structDecls.Append(typeByName[name]); }
         var aliasText = aliasLines.Count > 0 ? string.Join("\n", aliasLines) + "\n" : "";
@@ -485,8 +488,10 @@ public static partial class Compiler
         }
         if (className != null) CheckLibraryClassCollision(libraryClass, typeByName.Keys, definedNames);
         var tagLayout = PlanNestedTags(typeByName.Keys, functionSources.Select(f => f.Name), libraryClass, namespaceName, nested);
-        aliasText = ResolveGeneratedAliases(aliasText, nested ? NamespacePrefix(namespaceName) + libraryClass : namespaceName, tagLayout.TypeNames)
-            + tagLayout.Aliases + GeneratedOwnerAliases(typeByName.Keys, definedNames, libraryMode, libraryClass, namespaceName, nested, outputOptions?.LiteralPool == true);
+        aliasText = ResolveGeneratedAliases(aliasText, nested ? NamespacePrefix(namespaceName) + libraryClass : namespaceName, tagLayout.TypeNames.Concat(importedTypes).ToDictionary(pair => pair.Key, pair => pair.Value))
+            + tagLayout.Aliases + string.Concat(importedTypes.Select(pair => $"using {pair.Key} = global::{pair.Value};\n"))
+            + (managedSymbols == null ? "" : $"using static global::{managedSymbols.Owner};\n")
+            + GeneratedOwnerAliases(typeByName.Keys, definedNames, libraryMode, libraryClass, namespaceName, nested, outputOptions?.LiteralPool == true, managedSymbols);
         bool includeZig = IncludeZigRuntime(outputOptions, usesZig);
         var owner = libraryMode ? libraryClass : "DotCcProgram";
         var literals = LiteralPool.CreateOutput(typeByName, HelperClass(owner, "Literals"), outputOptions?.LiteralPool == true);
@@ -530,11 +535,13 @@ public static partial class Compiler
             (functionText, fileAliases, partial) => BuildShell(mainArity, pointerResolvers.Methods + ownerInitializers + RenderMacroFields(typeByName, owner, definedNames) + functionText, types, fileAliases, globalText,
                 emit, System.Array.Empty<EmitHelpers.Export>(), debugHeap, importsClass,
                 importsAreStatic: false, mainReturnsVoid: mainReturnsVoid,
-                mainReturnsErrUnion: mainReturnsErrUnion, mainErrPayloadIsVoid: mainErrPayloadIsVoid, libraryClass: libraryClass, partial: partial, namespaceName: namespaceName, nested: nested, includeZig: includeZig), instanceMethods: outputOptions?.InstanceMethods == true);
-        return AnonymousTypedefNames.Resolve(files, anonymousTypedefs, typeByName.Keys, definedNames);
+                mainReturnsErrUnion: mainReturnsErrUnion, mainErrPayloadIsVoid: mainErrPayloadIsVoid, libraryClass: libraryClass, partial: partial, namespaceName: namespaceName, nested: nested, includeZig: includeZig, runtimeOwner: managedSymbols?.Owner), instanceMethods: outputOptions?.InstanceMethods == true, runtimeOwner: managedSymbols?.Owner);
+        var resolvedFiles = AnonymousTypedefNames.Resolve(files, anonymousTypedefs, typeByName.Keys, definedNames);
+        return ExportManagedSymbols(resolvedFiles, outputOptions, NamespacePrefix(namespaceName) + libraryClass,
+            typeByName, aggregateByName, identityGraphs, variantNames, anonymousTypedefs, tagLayout, definedNames);
     }
 
-    private static string GeneratedOwnerAliases(IEnumerable<string> typeKeys, IEnumerable<string> definitions, bool libraryMode, string libraryClass, string? namespaceName = null, bool nested = false, bool literalPool = false)
+    private static string GeneratedOwnerAliases(IEnumerable<string> typeKeys, IEnumerable<string> definitions, bool libraryMode, string libraryClass, string? namespaceName = null, bool nested = false, bool literalPool = false, ManagedSymbols? managedSymbols = null)
     {
         var scope = TypeScope(namespaceName, libraryClass, nested);
         var ownerClass = libraryMode ? libraryClass : "DotCcProgram";
@@ -550,7 +557,9 @@ public static partial class Compiler
         foreach (var key in keys)
         {
             var name = key[FunctionPointerNames.TypeKeyPrefix.Length..];
-            var owner = defined.Contains(name) ? NamespacePrefix(namespaceName) + ownerClass : scope + "Libc";
+            var owner = defined.Contains(name) ? NamespacePrefix(namespaceName) + ownerClass
+                : managedSymbols?.Functions.Contains(name, StringComparer.Ordinal) == true ? managedSymbols.Owner
+                : managedSymbols != null ? managedSymbols.Owner + ".Libc" : scope + "Libc";
             aliases.Append("using ").Append(FunctionPointerNames.OwnerAlias(name))
                 .Append(" = global::").Append(owner).Append(";\n");
         }

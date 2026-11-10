@@ -62,7 +62,7 @@ public static partial class Compiler
     private static IReadOnlyDictionary<string, string> BuildSourceFiles(string functions,
         IReadOnlyList<CSharpFunctionSource>? parts, string aliases, EmitMode emit, string libraryClass,
         string importsClass, bool importsAreStatic, SourceSplit split, int splitSize, string? namespaceName, bool nested,
-        Func<string, string, bool, string> shell, bool instanceMethods = false)
+        Func<string, string, bool, string> shell, bool instanceMethods = false, string? runtimeOwner = null)
     {
         bool library = emit is EmitMode.ManagedLib or EmitMode.SharedLib;
         var owner = library ? libraryClass : "DotCcProgram";
@@ -86,7 +86,7 @@ public static partial class Compiler
                 "System.Runtime.InteropServices", "System.Runtime.CompilerServices", "System.Threading",
                 "System.Collections.Generic", "System.Collections.Concurrent", "System.Text", "System.Net", "System.Net.Sockets" }
                 .Select(ns => "using " + ns + ";")) + "\n"
-            + $"using static global::{scope}Libc;\nusing static global::{scope}{HelperClass(owner, "Globals")}Special;\nusing DotCcGlobals = global::{scope}{HelperClass(owner, "Globals")}Special;\nusing static {owner};\nusing DotCcFunctions = global::{NamespacePrefix(namespaceName)}{owner};\n"
+            + $"using static global::{(runtimeOwner != null ? runtimeOwner + "." : scope)}Libc;\nusing static global::{scope}{HelperClass(owner, "Globals")}Special;\nusing DotCcGlobals = global::{scope}{HelperClass(owner, "Globals")}Special;\nusing static {owner};\nusing DotCcFunctions = global::{NamespacePrefix(namespaceName)}{owner};\n"
             + (nested ? string.Join("\n", aliases.Split('\n').Where(line => !line.StartsWith("using __DotCcFunctionOwner_", StringComparison.Ordinal))) + "\n" : "")
             + (importsClass.Length == 0 ? "" : $"using static global::{scope}{(importsAreStatic ? "DotCcStaticImports" : "DotCcImports")};\n")
             + (emit == EmitMode.ManagedLib ? "public " : "internal ") + $"{(instanceMethods ? "sealed" : "static")} unsafe partial class {owner}\n{{\n";

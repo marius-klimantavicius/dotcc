@@ -19,6 +19,8 @@
 | `--class-name <name>` | Set the generated API class for `--emit=managedlib` or `-shared` (default `DotCcLib`). Applies to whole-program emission and object linking; specify it at link time, not with `--emit=obj`. Accepts a single ASCII identifier, optionally `@`-escaped; keywords are escaped automatically. Executable, preprocessing and WAT modes reject this option. |
 | `--namespace <name>` | Place generated functions, aggregate types and embedded runtime in a dotted C# namespace. Default: global namespace. Supported by C# executable/library output and object linking; rejected with preprocessing, WAT and object emission. Specify at link time for objects. |
 | `--nest-types` | Place translated types, globals/cache helpers and embedded runtime inside the library wrapper. Supports managed/shared libraries and object linking. Split output uses file-local aliases so differently named translations can share a consumer namespace. |
+| `--export-managed-symbols` | Export a `Dotcc.ManagedSymbols.cs` manifest for dependent managed-library object links. Requires a nested static managed library and `--runtime=c`. |
+| `--managed-reference <manifest>` | Import canonical aggregate types, functions and the C runtime from one exported managed-library manifest at object link time. Requires the same nested/static/C-runtime mode and an ordinary project reference to that library. |
 | `--runtime=all\|c\|auto` | Select embedded runtime modules. `all` (default) retains everything; `c` excludes Zig-only modules and requires known C-only inputs; `auto` uses source/object language provenance (unknown old objects retain all). Set at link time for objects. |
 | `--aggregate-data` | Opt in to immutable byte payloads for fully constant aggregates of at least 1024 bytes in the LP64 little-endian C# target layout. Default off; unproved cases retain ordinary initialization. Set during source/object emission; linking existing objects with this option is rejected. See [usage and fallback](#aggregate-byte-data). |
 | `--deduplicate-inline` | Merge provably equivalent static inline definitions and redirect their bound calls. Set at link time for objects. C function addresses and distinct static dependencies prevent merging. |
@@ -164,6 +166,19 @@ types with `using static Managed.Database.Sqlite;`. Different wrappers may be
 copied into the same consumer project/namespace. Each owns its runtime state.
 Nesting applies to generated helpers too, including layout and inline-array types.
 The platform sidecars supplied by a translation campaign are maintained separately.
+
+For a separate workload that shares a translated engine, link the engine objects
+with `--export-managed-symbols`, then link the workload objects with
+`--managed-reference engine-output/Dotcc.ManagedSymbols.cs`. Add an ordinary
+`ProjectReference` from the workload project to the engine project. The workload
+uses the engine's canonical types and runtime, including callback boolean types,
+instead of emitting another engine/runtime copy. The manifest travels as a C#
+comment file with the generated project and survives semantic postprocessing.
+It checks aggregate identities/layout signatures and the runtime fingerprint;
+compile against the same shared C headers. Incompatible complete aggregates are
+rejected. Currently one imported runtime owner is supported, with static nested
+C managed libraries and object linking only; instance/state-context modes are
+not supported by this option.
 
 With nesting, aliases are file-local; no `{class_name}.GlobalUsings.g.cs` is needed.
 Function-owner aliases appear only in the shared source; function files carry

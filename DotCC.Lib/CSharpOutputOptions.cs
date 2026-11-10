@@ -13,4 +13,5 @@ public sealed record CSharpOutputOptions(bool NestTypes = false, RuntimeProfile 
     bool DeduplicateInline = false, System.Collections.Generic.IReadOnlyList<string>? ExportInline = null,
     bool LiteralPool = false, bool StateContext = false,
     bool InstanceMethods = false, System.Collections.Generic.IReadOnlyList<string>? ExportEnum = null,
-    bool DeduplicateStatic = false, bool PruneUnusedInline = false, bool AggregateData = false);
+    bool DeduplicateStatic = false, bool PruneUnusedInline = false, bool AggregateData = false, bool ExportManagedSymbols = false,
+    System.Collections.Generic.IReadOnlyList<string>? ManagedReferences = null);

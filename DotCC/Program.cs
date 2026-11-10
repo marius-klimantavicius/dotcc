@@ -56,6 +56,12 @@ internal static class Program
             Description = "Export file-scope C enumerators as public integral constants. Repeatable exact names or * / ? patterns (quote globs); set at link time for objects.",
             AllowMultipleArgumentsPerToken = false
         };
+        var managedReferenceOpt = new Option<string[]>("--managed-reference")
+        {
+            Description = "Import canonical types, functions and C runtime from a Dotcc.ManagedSymbols.cs manifest. Object link only.",
+            AllowMultipleArgumentsPerToken = false
+        };
+        var exportManagedSymbolsOpt = new Option<bool>("--export-managed-symbols") { Description = "Write Dotcc.ManagedSymbols.cs for dependent managed-library object links." };
         var instanceMethodsOpt = new Option<bool>("--instance-methods") { Description = "Emit an instance managed library with explicit-context function pointers; set at object emission and link." };
         var stateContextOpt = new Option<bool>("--state-context") { Description = "Emit explicitly bound, disposable C program state for independent managed-library instances (--runtime=c). Link-time option." };
         var literalPoolOpt = new Option<bool>("--literal-pool") { Description = "Copy translated literals into rooted pinned storage with short names and usage comments (default: Libc.L). Set at link time for objects." };
@@ -176,7 +182,7 @@ internal static class Program
         };
         var root = new RootCommand("dotcc — a C compiler frontend that transpiles to .NET 10 / C# 14.")
         {
-            inputArg, outOpt, emitOpt, emitDefineOpt, typeNameOpt, overrideOpt, overridesFileOpt, zigModulesOpt, overrideReportOpt, classNameOpt, namespaceOpt, nestTypesOpt, literalPoolOpt, aggregateDataOpt, stateContextOpt, instanceMethodsOpt, runtimeOpt, deduplicateInlineOpt, pruneUnusedInlineOpt, deduplicateStaticOpt, exportInlineOpt, exportEnumOpt, splitOpt, splitSizeOpt, targetOpt, preprocessOpt, includeOpt, defineOpt, undefineOpt, compileOpt, sharedOpt, stdOpt,
+            inputArg, outOpt, emitOpt, managedReferenceOpt, exportManagedSymbolsOpt, emitDefineOpt, typeNameOpt, overrideOpt, overridesFileOpt, zigModulesOpt, overrideReportOpt, classNameOpt, namespaceOpt, nestTypesOpt, literalPoolOpt, aggregateDataOpt, stateContextOpt, instanceMethodsOpt, runtimeOpt, deduplicateInlineOpt, pruneUnusedInlineOpt, deduplicateStaticOpt, exportInlineOpt, exportEnumOpt, splitOpt, splitSizeOpt, targetOpt, preprocessOpt, includeOpt, defineOpt, undefineOpt, compileOpt, sharedOpt, stdOpt,
             pedanticOpt, pedanticErrorsOpt, wconversionOpt, wnoDiscardedQualifiersOpt, wimplicitFallthroughOpt, sanitizeOpt, mdOpt, mmdOpt, mfOpt, mtOpt, linkOpt, libDirOpt,
         };
         // Accept-and-ignore unknown flags (-Wall, -O2, -g, -f*, -m*, …) instead
@@ -312,7 +318,7 @@ internal static class Program
             return Run(inputs, output, emit, target, preprocessOnly, includes, defines.ToArray(), sharedFlag, dialect,
                        mdFlag, mmdFlag, depFile, depTargets, debugHeapFlag, imports, warnings,
                        buildManaged: compileFlag && emit == EmitKind.ManagedLib, className: parse.GetValue(classNameOpt), zigOptions: zigOptions,
-                       split: parse.GetValue(splitOpt), splitSize: parse.GetValue(splitSizeOpt), namespaceName: parse.GetValue(namespaceOpt), preprocessing: preprocessing, outputOptions: new CSharpOutputOptions(NestTypes: parse.GetValue(nestTypesOpt), Runtime: parse.GetValue(runtimeOpt), DeduplicateInline: parse.GetValue(deduplicateInlineOpt), PruneUnusedInline: parse.GetValue(pruneUnusedInlineOpt), DeduplicateStatic: parse.GetValue(deduplicateStaticOpt), ExportInline: parse.GetValue(exportInlineOpt), ExportEnum: parse.GetValue(exportEnumOpt), LiteralPool: parse.GetValue(literalPoolOpt), AggregateData: parse.GetValue(aggregateDataOpt), StateContext: parse.GetValue(stateContextOpt), InstanceMethods: parse.GetValue(instanceMethodsOpt)));
+                       split: parse.GetValue(splitOpt), splitSize: parse.GetValue(splitSizeOpt), namespaceName: parse.GetValue(namespaceOpt), preprocessing: preprocessing, outputOptions: new CSharpOutputOptions(NestTypes: parse.GetValue(nestTypesOpt), Runtime: parse.GetValue(runtimeOpt), DeduplicateInline: parse.GetValue(deduplicateInlineOpt), PruneUnusedInline: parse.GetValue(pruneUnusedInlineOpt), DeduplicateStatic: parse.GetValue(deduplicateStaticOpt), ExportInline: parse.GetValue(exportInlineOpt), ExportEnum: parse.GetValue(exportEnumOpt), LiteralPool: parse.GetValue(literalPoolOpt), AggregateData: parse.GetValue(aggregateDataOpt), ExportManagedSymbols: parse.GetValue(exportManagedSymbolsOpt), ManagedReferences: parse.GetValue(managedReferenceOpt), StateContext: parse.GetValue(stateContextOpt), InstanceMethods: parse.GetValue(instanceMethodsOpt)));
             }
             catch (Exception ex) when (ex is CompileException or IOException or UnauthorizedAccessException)
             {

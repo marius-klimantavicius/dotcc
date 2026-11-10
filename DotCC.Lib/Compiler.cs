@@ -250,6 +250,8 @@ public static partial class Compiler
         if (className != null)
             CheckLibraryClassCollision(libraryClass, cg.TypeDeclarations?.Keys ?? Array.Empty<string>(),
                 cg.FunctionSources!.Select(f => f.Name).Concat(irBuilder.Globals.Select(g => g.Sym.TargetName)));
+        if (outputOptions?.ExportManagedSymbols == true || outputOptions?.ManagedReferences is { Count: > 0 })
+            throw new CompileException("managed symbols require object linking; emit objects first");
         var tagLayout = PlanNestedTags(cg.TypeDeclarations!.Keys,
             irBuilder.Functions.Select(function => function.Sym.TargetName), libraryClass, namespaceName, nested);
         var aliases = ResolveGeneratedAliases(cg.Aliases, nested ? NamespacePrefix(namespaceName) + libraryClass : namespaceName, tagLayout.TypeNames)

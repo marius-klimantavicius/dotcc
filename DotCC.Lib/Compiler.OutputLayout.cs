@@ -16,6 +16,13 @@ public static partial class Compiler
             foreach (var pattern in options.ExportInline) _ = new InlineExportSelector(pattern);
         if (emit == EmitMode.Object && (options.NestTypes || options.Runtime != RuntimeProfile.All || UsesInlineOptions(options) || options.ExportEnum is { Count: > 0 } || options.LiteralPool || options.StateContext))
             throw new CompileException("--nest-types, --runtime, --deduplicate-inline, --deduplicate-static, --export-inline, --export-enum, --literal-pool and --state-context must be set at link time for objects");
+        if ((options.ExportManagedSymbols || options.ManagedReferences is { Count: > 0 })
+            && (emit != EmitMode.ManagedLib || !options.NestTypes || options.InstanceMethods || options.StateContext || options.Runtime != RuntimeProfile.C))
+            throw new CompileException("managed symbols require a nested static managed library with --runtime=c");
+        if (options.ExportManagedSymbols && options.ManagedReferences is { Count: > 0 })
+            throw new CompileException("re-exporting a managed-reference consumer is not currently supported");
+        if (options.ManagedReferences is { Count: > 1 })
+            throw new CompileException("one managed runtime owner is currently supported per object link");
         if (options.InstanceMethods && emit is not (EmitMode.Object or EmitMode.ManagedLib))
             throw new CompileException("--instance-methods requires object or managed-library output");
         if (options.InstanceMethods && options.StateContext)

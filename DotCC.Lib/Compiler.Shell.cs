@@ -139,12 +139,12 @@ public static partial class Compiler
         bool mainReturnsErrUnion = false,
         bool mainErrPayloadIsVoid = false,
         bool testMode = false,
-        IReadOnlyList<(string Name, string FnName)>? tests = null, string libraryClass = "DotCcLib", bool partial = false, string? namespaceName = null, bool nested = false, bool includeZig = true)
+        IReadOnlyList<(string Name, string FnName)>? tests = null, string libraryClass = "DotCcLib", bool partial = false, string? namespaceName = null, bool nested = false, bool includeZig = true, string? runtimeOwner = null)
     {
         if (emit is EmitMode.SharedLib or EmitMode.ManagedLib)
         {
             return BuildLibraryShell(emittedFnList, structDecls, usingAliases, globals, exports, importsClass, importsAreStatic,
-                managedLibrary: emit == EmitMode.ManagedLib, libraryClass: libraryClass, partial: partial, namespaceName: namespaceName, nested: nested, includeZig: includeZig);
+                managedLibrary: emit == EmitMode.ManagedLib, libraryClass: libraryClass, partial: partial, namespaceName: namespaceName, nested: nested, includeZig: includeZig, runtimeOwner: runtimeOwner);
         }
         // Import mode: surface the import table by bare name and splice it into the
         // type-decls section. A GOT (-l) table is bound before main; static [DllImport]
@@ -443,7 +443,7 @@ public static partial class Compiler
         Backends.CSharpGlobalOutput globals,
         IReadOnlyList<EmitHelpers.Export> exports,
         string importsClass = "",
-        bool importsAreStatic = false, bool managedLibrary = false, string libraryClass = "DotCcLib", bool partial = false, string? namespaceName = null, bool nested = false, bool includeZig = true)
+        bool importsAreStatic = false, bool managedLibrary = false, string libraryClass = "DotCcLib", bool partial = false, string? namespaceName = null, bool nested = false, bool includeZig = true, string? runtimeOwner = null)
     {
         var scope = TypeScope(namespaceName, libraryClass, nested);
         var globalsType = HelperClass(libraryClass, "Globals");
@@ -456,7 +456,7 @@ public static partial class Compiler
         // library and exe shells share the same set of stdlib functions;
         // only the framing (DotCcLib + DotCcExports vs. top-level
         // statements + `main`) differs.
-        var runtimeBlock = includeZig ? _runtimeBlock.Value : _cRuntimeBlock.Value;
+        var runtimeBlock = runtimeOwner != null ? "" : includeZig ? _runtimeBlock.Value : _cRuntimeBlock.Value;
         // Visitor emits user fns as `static unsafe T name(...)` — class-member
         // default is private, which would block DotCcExports from calling
         // them. Promote to `public static unsafe …`. Managed mode exposes this
@@ -567,7 +567,7 @@ public static partial class Compiler
             using System.Net;
             using System.Net.Sockets;
             using Microsoft.Win32.SafeHandles;
-            using static global::{{scope}}Libc;
+            using static global::{{(runtimeOwner != null ? runtimeOwner + "." : scope)}}Libc;
             using static {{libraryClass}};
             using DotCcFunctions = global::{{NamespacePrefix(namespaceName)}}{{libraryClass}};
             using static global::{{scope}}{{globalsType}}Special;

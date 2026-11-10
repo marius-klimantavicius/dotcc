@@ -118,7 +118,7 @@ class Context:
         return self.run(command, label or path.stem, timeout)
 
     def managed(self, action, project, label, *args, timeout=900):
-        return self.run(["dotnet", action, project, "-c", "Release", "--nologo", *args], label, timeout)
+        return self.run(["dotnet", action, project, "-c", "Release", "--nologo", "-m:1", *args], label, timeout)
 
     def restore(self, project, label):
         if self.options.restore == "none":
