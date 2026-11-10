@@ -585,16 +585,15 @@ public unsafe ref partial struct PrintfBuilder
     private static string FormatFloat(double v, Spec spec, CultureInfo ci)
     {
         var prec = spec.Precision >= 0 ? spec.Precision : 6;
+        // C %g/%G use six significant digits by default and treat precision
+        // zero as one. BCL general formatting without precision (or with zero)
+        // instead selects the shortest round-trippable representation.
         string s = spec.Conv switch
         {
             (byte)'e' => v.ToString("e" + prec.ToString(ci), ci),
             (byte)'E' => v.ToString("E" + prec.ToString(ci), ci),
-            (byte)'g' => spec.Precision >= 0
-                ? v.ToString("g" + prec.ToString(ci), ci)
-                : v.ToString("g", ci),
-            (byte)'G' => spec.Precision >= 0
-                ? v.ToString("G" + prec.ToString(ci), ci)
-                : v.ToString("G", ci),
+            (byte)'g' => v.ToString("g" + Math.Max(1, prec).ToString(ci), ci),
+            (byte)'G' => v.ToString("G" + Math.Max(1, prec).ToString(ci), ci),
             _ => v.ToString("F" + prec.ToString(ci), ci),
         };
         // '#' flag for floats: force a decimal point even when precision is 0
