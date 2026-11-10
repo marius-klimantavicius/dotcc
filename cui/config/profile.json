@@ -1,0 +1,19 @@
+{
+  "name": "desktop",
+  "architectures": ["x64"],
+  "operating_systems": ["windows", "linux"],
+  "window_backends": ["glfw"],
+  "backend_status": "GLFW first; CUI direct Win32/X11 backends deferred by user",
+  "defines": ["CUI_TEXT_SHAPING", "CUI_IMAGE_ALL_FORMATS"],
+  "features": {
+    "CUI_WITH_APP": true,
+    "CUI_DEFAULT_FONTS": true,
+    "CUI_STB_IMAGE": true,
+    "CUI_IMAGE_ALL_FORMATS": true,
+    "CUI_TEXT_SHAPING": true
+  },
+  "window_renderers": ["opengl"],
+  "offscreen_renderers": ["software"],
+  "glfw_software_presentation": "unsupported by upstream; do not claim or silently succeed",
+  "excluded": ["cui-win32", "cui-x11", "cocoa", "sdl2", "webassembly", "native-wayland", "32-bit"]
+}

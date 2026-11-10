@@ -1,0 +1,9 @@
+{
+  "upstream": "https://github.com/yappologistic/CUI",
+  "version": "1.3.1-development",
+  "revision": "629b6fcb991d71527f2d67b25c51429c3dcdb498",
+  "url": "https://github.com/yappologistic/CUI/archive/629b6fcb991d71527f2d67b25c51429c3dcdb498.tar.gz",
+  "archive": "cui-source.tar.gz",
+  "directory": "CUI-629b6fcb991d71527f2d67b25c51429c3dcdb498",
+  "required": ["CMakeLists.txt", "include/cui/cui.h", "src/cui_core.c", "src/platform/cui_platform.h", "LICENSE", "THIRD_PARTY.md"]
+}
