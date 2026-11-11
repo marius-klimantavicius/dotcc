@@ -2,5 +2,7 @@
   <Project Path="generated/TranslatedCui/TranslatedCui.csproj" />
   <Project Path="generated/TranslatedCuiGallery/TranslatedCuiGallery.csproj" />
   <Project Path="src/Glfw/Glfw.csproj" />
+  <Project Path="src/ManagedCui/ManagedCui.csproj" />
   <Project Path="samples/ManagedConsumer/ManagedConsumer.csproj" />
+  <Project Path="samples/ManagedGallery/ManagedGallery.csproj" />
 </Solution>

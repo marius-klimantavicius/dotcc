@@ -6,6 +6,13 @@ source copied into `src/Glfw`. The same library selects Windows x64 or Linux
 x64/X11 at runtime. Native CUI and native GLFW are not product dependencies.
 The pinned source and feature profile are in `config/`.
 
+For safe C# applications, reference `src/ManagedCui/ManagedCui.csproj` and use
+the `Cui.Managed` namespace. [ManagedGallery](samples/ManagedGallery/) is the
+authored wrapper-based showcase; its caller code has unsafe blocks disabled.
+The original translated gallery and `ManagedConsumer` remain the independent
+comparison application. Read the [API guide](docs/MANAGED-API-GUIDE.md),
+[contract](docs/MANAGED-API-CONTRACT.md) and [managed campaign plan](docs/MANAGED-PLAN.md).
+
 The product includes embedded Inter/Geist/Lucide fonts, all widgets, PNG/JPEG/
 BMP/GIF/TGA decoding, shaping/bidi, OpenGL windows, and offscreen software
 rendering. Native Wayland and CUI's direct Win32/X11 backends are outside this
