@@ -6,6 +6,9 @@ source copied into `src/Glfw`. The same library selects Windows x64 or Linux
 x64/X11 at runtime. Native CUI and native GLFW are not product dependencies.
 The pinned source and feature profile are in `config/`.
 
+The current pin is CUI **1.4.0**, with opt-in root-relative compiler identities
+enabled for the campaign. See [the refresh and qualification](docs/UPSTREAM-1.4.md).
+
 For safe C# applications, reference `src/ManagedCui/ManagedCui.csproj` and use
 the `Cui.Managed` namespace. [ManagedGallery](samples/ManagedGallery/) is the
 authored wrapper-based showcase; its caller code has unsafe blocks disabled.
@@ -33,6 +36,14 @@ inputs, tool snapshots, emissions and managed intermediates use that directory.
 Final generated projects and durable campaign receipts live under `cui/`.
 `CUI_SOURCE_ROOT` can select an existing usable CUI source tree. Otherwise the
 recipe acquires its pinned archive into `CUI_WORK_ROOT/inputs`.
+
+The recipe stages campaign headers under `source/dotcc/include` and passes that
+same source root during core/gallery object emission. Private names preserve
+logical subdirectories and `/` separators across staging locations. Object-only
+links consume those identities; they do not rewrite old objects. The compiler's
+default outside this campaign remains the legacy absolute-path policy. See the
+[source identity contract](../docs/cli.md#stable-source-identities) and
+[complete CUI relocation proof](tests/source-identity/README.md).
 
 From the repository root, with environment variables set:
 

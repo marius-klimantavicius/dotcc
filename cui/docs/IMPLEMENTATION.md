@@ -1,5 +1,12 @@
 # Implementation ledger
 
+The current CUI 1.4.0 and stable source-identity refresh is documented in
+[UPSTREAM-1.4.md](UPSTREAM-1.4.md), with current source/product bindings in
+[UPSTREAM-1.4-VALIDATION.json](UPSTREAM-1.4-VALIDATION.json). All earlier receipts
+below retain their historical bindings. The refresh adds safe AppId support,
+source-inventoried test groups and common-root qualification staging; it preserves
+the existing platform scope, emoji adaptations, safe storage and namespace.
+
 Updated 2026-11-11. Linux qualification passes. Overall acceptance remains open
 for actual Windows x64 execution. Behavioral qualification is summarized in
 [EMOJI-VALIDATION.json](EMOJI-VALIDATION.json). The metadata-only JSON migration

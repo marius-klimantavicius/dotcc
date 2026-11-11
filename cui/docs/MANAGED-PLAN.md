@@ -1,5 +1,9 @@
 # Safe managed CUI and ManagedGallery
 
+For the subsequent CUI 1.4.0 and stable source-identity refresh, see
+[UPSTREAM-1.4.md](UPSTREAM-1.4.md). Original delivery measurements below keep
+their original bindings; that refresh records replacement-product evidence.
+
 Status: Linux delivery complete, including the stack-local storage correction.
 Actual Windows execution remains unrun. Baseline: `d1aec0cc9`. This campaign extends
 [the translated CUI plan](PLAN.md), preserving its translated behavior, managed

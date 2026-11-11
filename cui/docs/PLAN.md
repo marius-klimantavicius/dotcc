@@ -4,6 +4,11 @@ Status: Linux implementation and qualification passed; overall acceptance remain
 open for required actual Windows x64 execution.
 Campaign: `cui/`. Updated: 2026-11-11.
 
+The current upstream refresh selects CUI 1.4.0 and enables explicit common-root
+logical source identities for core, gallery and qualification emissions. See
+[the refresh](UPSTREAM-1.4.md) and its source/product-bound receipt. Earlier
+milestone receipts below retain their original source/tool/product scope.
+
 The safe managed follow-up is also complete on Linux. `ManagedCui` and the
 authored 27-page `ManagedGallery` pass raw/processed × JIT/NativeAOT, all
 theme/accent differential captures, real OS interactions, lifetime/allocation

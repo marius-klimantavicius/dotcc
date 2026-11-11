@@ -1,5 +1,10 @@
 # ManagedCui and ManagedGallery delivery
 
+This report records the original safe-library delivery. Its measurements and
+receipts precede the namespace rename and CUI 1.4 refresh. Current regenerated
+product qualification is recorded in [UPSTREAM-1.4.md](UPSTREAM-1.4.md) and its
+receipt; historical timings are not rebound to new binaries.
+
 Linux delivery is complete for raw/processed CUI × JIT/NativeAOT. This includes
 the requested replacement of synchronous native singleton arena allocations with
 stack locals. Actual Windows execution is unavailable and remains **unrun**.
