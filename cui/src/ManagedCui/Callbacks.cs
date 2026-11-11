@@ -20,45 +20,45 @@ public sealed class CanvasPainter : IDisposable
 /// <summary>A callback-scoped drawing capability; copies expire when the callback returns.</summary>
 public readonly struct PaintContext
 {
-    private readonly Ui ui;
-    private readonly long epoch;
+    private readonly Ui _ui;
+    private readonly long _epoch;
     public Rect Rect { get; }
-    internal PaintContext(Ui ui, Rect rect, long epoch) { this.ui = ui; Rect = rect; this.epoch = epoch; }
-    private void Check() => ui.ValidatePaint(epoch);
-    public Color ColorOf(Color color) { Check(); return ui.PaintColor(color); }
-    public void DrawCircle(Vec2 center, float radius, Color color) { Check(); ui.DrawCircle(center, radius, color); }
-    public void DrawRect(Rect rect, Corners corners, Color color) { Check(); ui.DrawRect(rect, corners, color); }
-    public void DrawRectBorder(Rect rect, Corners corners, Color fill, Color border, float width) { Check(); ui.DrawRectBorder(rect, corners, fill, border, width); }
-    public void DrawRectGradient(Rect rect, Corners corners, Color top, Color bottom) { Check(); ui.DrawRectGradient(rect, corners, top, bottom); }
-    public void DrawLine(Vec2 a, Vec2 b, float thickness, Color color) { Check(); ui.DrawLine(a, b, thickness, color); }
-    public void DrawPolyline(ReadOnlySpan<Vec2> points, float thickness, Color color, bool closed = false) { Check(); ui.DrawPolyline(points, points.Length, thickness, color, closed); }
-    public void DrawPolygon(ReadOnlySpan<Vec2> points, Color color) { Check(); ui.DrawPolygon(points, points.Length, color); }
-    public void DrawArc(Vec2 center, float radius, float start, float end, float thickness, Color color) { Check(); ui.DrawArc(center, radius, start, end, thickness, color); }
-    public void DrawText(Font font, float size, Vec2 position, Color color, string text) { Check(); ui.DrawText(font, size, position, color, text, -1); }
-    public void DrawText(Font font, float size, Vec2 position, Color color, ReadOnlySpan<byte> text) { Check(); ui.DrawText(font, size, position, color, text, -1); }
-    public void DrawText(Font font, float size, Vec2 position, Color color, TextBuffer text) { Check(); ui.DrawText(font, size, position, color, text, -1); }
-    public void DrawIcon(string icon, Rect rect, float size, Color color) { Check(); ui.DrawIcon(icon, rect, size, color); }
-    public void DrawIcon(ReadOnlySpan<byte> icon, Rect rect, float size, Color color) { Check(); ui.DrawIcon(icon, rect, size, color); }
-    public void DrawIcon(TextBuffer icon, Rect rect, float size, Color color) { Check(); ui.DrawIcon(icon, rect, size, color); }
-    public void DrawImage(Texture texture, Rect rect, Rect uv, Corners corners, Color tint) { Check(); ui.DrawImage(texture, rect, uv, corners, tint); }
-    public void DrawShadow(Rect rect, Corners corners, float blur, float spread, Vec2 offset, Color color) { Check(); ui.DrawShadow(rect, corners, blur, spread, offset, color); }
+    internal PaintContext(Ui ui, Rect rect, long epoch) { this._ui = ui; Rect = rect; this._epoch = epoch; }
+    private void Check() => _ui.ValidatePaint(_epoch);
+    public Color ColorOf(Color color) { Check(); return _ui.PaintColor(color); }
+    public void DrawCircle(Vec2 center, float radius, Color color) { Check(); _ui.DrawCircle(center, radius, color); }
+    public void DrawRect(Rect rect, Corners corners, Color color) { Check(); _ui.DrawRect(rect, corners, color); }
+    public void DrawRectBorder(Rect rect, Corners corners, Color fill, Color border, float width) { Check(); _ui.DrawRectBorder(rect, corners, fill, border, width); }
+    public void DrawRectGradient(Rect rect, Corners corners, Color top, Color bottom) { Check(); _ui.DrawRectGradient(rect, corners, top, bottom); }
+    public void DrawLine(Vec2 a, Vec2 b, float thickness, Color color) { Check(); _ui.DrawLine(a, b, thickness, color); }
+    public void DrawPolyline(ReadOnlySpan<Vec2> points, float thickness, Color color, bool closed = false) { Check(); _ui.DrawPolyline(points, points.Length, thickness, color, closed); }
+    public void DrawPolygon(ReadOnlySpan<Vec2> points, Color color) { Check(); _ui.DrawPolygon(points, points.Length, color); }
+    public void DrawArc(Vec2 center, float radius, float start, float end, float thickness, Color color) { Check(); _ui.DrawArc(center, radius, start, end, thickness, color); }
+    public void DrawText(Font font, float size, Vec2 position, Color color, string text) { Check(); _ui.DrawText(font, size, position, color, text, -1); }
+    public void DrawText(Font font, float size, Vec2 position, Color color, ReadOnlySpan<byte> text) { Check(); _ui.DrawText(font, size, position, color, text, -1); }
+    public void DrawText(Font font, float size, Vec2 position, Color color, TextBuffer text) { Check(); _ui.DrawText(font, size, position, color, text, -1); }
+    public void DrawIcon(string icon, Rect rect, float size, Color color) { Check(); _ui.DrawIcon(icon, rect, size, color); }
+    public void DrawIcon(ReadOnlySpan<byte> icon, Rect rect, float size, Color color) { Check(); _ui.DrawIcon(icon, rect, size, color); }
+    public void DrawIcon(TextBuffer icon, Rect rect, float size, Color color) { Check(); _ui.DrawIcon(icon, rect, size, color); }
+    public void DrawImage(Texture texture, Rect rect, Rect uv, Corners corners, Color tint) { Check(); _ui.DrawImage(texture, rect, uv, corners, tint); }
+    public void DrawShadow(Rect rect, Corners corners, float blur, float spread, Vec2 offset, Color color) { Check(); _ui.DrawShadow(rect, corners, blur, spread, offset, color); }
 }
 
 public sealed unsafe partial class Ui
 {
     private sealed record FileRoot(Ui Ui, FileListHandler Handler, FileEntry[] Entries);
-    private readonly Dictionary<FileListHandler, nint> fileRoots = new Dictionary<FileListHandler, IntPtr>();
-    private readonly Dictionary<long, CanvasPainter> painters = new Dictionary<long, CanvasPainter>();
-    private long nextPainter;
-    private long paintEpoch;
-    private nint selfRoot;
+    private readonly Dictionary<FileListHandler, nint> _fileRoots = new Dictionary<FileListHandler, IntPtr>();
+    private readonly Dictionary<long, CanvasPainter> _painters = new Dictionary<long, CanvasPainter>();
+    private long _nextPainter;
+    private long _paintEpoch;
+    private nint _selfRoot;
     private void* RootFileList(FileListHandler handler)
     {
-        if (fileRoots.TryGetValue(handler, out var pointer)) return (void*)pointer;
-        if (callbackRoots.Count >= 1024) throw new InvalidOperationException("CUI callback root limit exceeded. Reuse callback registrations.");
+        if (_fileRoots.TryGetValue(handler, out var pointer)) return (void*)pointer;
+        if (_callbackRoots.Count >= 1024) throw new InvalidOperationException("CUI callback root limit exceeded. Reuse callback registrations.");
         // Upstream default max_entries is 20000. The bridge rejects larger callbacks explicitly.
         var root = GCHandle.Alloc(new FileRoot(this, handler, new FileEntry[65536]));
-        callbackRoots.Add(root); pointer = GCHandle.ToIntPtr(root); fileRoots.Add(handler, pointer); return (void*)pointer;
+        _callbackRoots.Add(root); pointer = GCHandle.ToIntPtr(root); _fileRoots.Add(handler, pointer); return (void*)pointer;
     }
     private static int FileListThunk(void* user, byte* path, cui_file_entry* output, int capacity, byte* names, ulong namesCapacity, global::Managed.Forms.Cui.CBool hidden)
     {
@@ -69,9 +69,9 @@ public sealed unsafe partial class Ui
             root.Ui.Check();
             if (capacity < 0 || capacity > root.Entries.Length) throw new ArgumentOutOfRangeException(nameof(capacity), "File callback capacity exceeds 65536.");
             var entries = root.Entries.AsSpan(0, capacity); entries.Clear();
-            int count; root.Ui.fileCallback = true;
+            int count; root.Ui._fileCallback = true;
             try { count = root.Handler(Decode(path) ?? "", entries, hidden != 0); }
-            finally { root.Ui.fileCallback = false; }
+            finally { root.Ui._fileCallback = false; }
             if (count == -1) return -1; // Upstream's ordinary listing failure.
             CheckLength(count, capacity, nameof(count));
             ulong offset = 0;
@@ -92,21 +92,21 @@ public sealed unsafe partial class Ui
     public CanvasPainter CreateCanvasPainter(Action<PaintContext> paint)
     {
         Check(); ArgumentNullException.ThrowIfNull(paint);
-        if (painters.Count >= 1024) throw new InvalidOperationException("CUI painter limit exceeded. Reuse registrations.");
-        var painter = new CanvasPainter(this, paint, ++nextPainter); painters.Add(painter.Key, painter); return painter;
+        if (_painters.Count >= 1024) throw new InvalidOperationException("CUI painter limit exceeded. Reuse registrations.");
+        var painter = new CanvasPainter(this, paint, ++_nextPainter); _painters.Add(painter.Key, painter); return painter;
     }
     public CanvasResult Canvas(string id, Size width, Size height, CanvasPainter painter)
     {
         CheckFrame(); ArgumentNullException.ThrowIfNull(painter);
         if (painter.Owner != this) throw new ArgumentException("Painter belongs to another context.");
         ObjectDisposedException.ThrowIf(painter.Callback == null, painter);
-        if (selfRoot == 0)
+        if (_selfRoot == 0)
         {
-            var root = GCHandle.Alloc(this); callbackRoots.Add(root); selfRoot = GCHandle.ToIntPtr(root);
+            var root = GCHandle.Alloc(this); _callbackRoots.Add(root); _selfRoot = GCHandle.ToIntPtr(root);
         }
         // CUI copies user bytes into its frame arena, retaining the stable root/key values.
-        CanvasUser user = new CanvasUser { Context = selfRoot, Key = painter.Key };
-        return FromNative(Raw.cui_canvas(ctx, Utf8Required(id), ToNative(width), ToNative(height), &CanvasThunk, &user, (ulong)sizeof(CanvasUser)));
+        CanvasUser user = new CanvasUser { Context = _selfRoot, Key = painter.Key };
+        return FromNative(Raw.cui_canvas(_ctx, Utf8Required(id), ToNative(width), ToNative(height), &CanvasThunk, &user, (ulong)sizeof(CanvasUser)));
     }
     private struct CanvasUser { internal nint Context; internal long Key; }
     private static void CanvasThunk(cui_ctx* context, cui_rect rect, void* user)
@@ -116,18 +116,18 @@ public sealed unsafe partial class Ui
         {
             var data = *(CanvasUser*)user;
             ui = (Ui)GCHandle.FromIntPtr(data.Context).Target!; ui.Check();
-            if (context != ui.ctx) throw new InvalidOperationException("Canvas callback context mismatch.");
-            var painter = ui.painters[data.Key];
+            if (context != ui._ctx) throw new InvalidOperationException("Canvas callback context mismatch.");
+            var painter = ui._painters[data.Key];
             if (painter.Callback == null) return;
-            ui.painting = true; var epoch = ++ui.paintEpoch;
+            ui._painting = true; var epoch = ++ui._paintEpoch;
             painter.Callback(new PaintContext(ui, ui.FromNative(rect), epoch));
         }
         catch (Exception error) { ui?.Contain(error); }
-        finally { if (ui != null) { ui.painting = false; ui.paintEpoch++; } }
+        finally { if (ui != null) { ui._painting = false; ui._paintEpoch++; } }
     }
     internal void ValidatePaint(long epoch)
     {
-        CheckDraw(); if (paintEpoch != epoch) throw new InvalidOperationException("PaintContext has expired.");
+        CheckDraw(); if (_paintEpoch != epoch) throw new InvalidOperationException("PaintContext has expired.");
     }
-    internal Color PaintColor(Color color) { CheckDraw(); return FromNative(Raw.cui_color_of(ctx, ToNative(color))); }
+    internal Color PaintColor(Color color) { CheckDraw(); return FromNative(Raw.cui_color_of(_ctx, ToNative(color))); }
 }

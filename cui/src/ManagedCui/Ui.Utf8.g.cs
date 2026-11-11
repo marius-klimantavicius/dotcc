@@ -16,7 +16,7 @@ public sealed unsafe partial class Ui
         title.ThrowIfNull(nameof(title));
         CheckBegin();
         CBool native_open = open;
-        var result = Raw.cui_accordion_begin(ctx, Utf8(title), &native_open);
+        var result = Raw.cui_accordion_begin(_ctx, Utf8(title), &native_open);
         open = (native_open != 0);
         SyncState();
         return TrackScope(ScopeKind.Accordion, result != 0, result != 0 ? 1 : 0);
@@ -30,7 +30,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, rings.Length, nameof(count));
         var native_rings = CopyVizItem(rings);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_activity_rings_ex(ctx, Utf8(id), native_rings, count, &native_opts);
+        var result = Raw.cui_activity_rings_ex(_ctx, Utf8(id), native_rings, count, &native_opts);
         SyncState();
         return result;
     }
@@ -43,7 +43,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, steps.Length, nameof(count));
         var native_steps = CopyPlanStep(steps);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_agent_plan_ex(ctx, Utf8(id), native_steps, count, &native_opts);
+        var result = Raw.cui_agent_plan_ex(_ctx, Utf8(id), native_steps, count, &native_opts);
         SyncState();
         return result;
     }
@@ -54,7 +54,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         text.ThrowIfNull(nameof(text));
         var native_opts = ToNative(opts);
-        Raw.cui_agent_status_ex(ctx, Utf8(text), &native_opts);
+        Raw.cui_agent_status_ex(_ctx, Utf8(text), &native_opts);
         SyncState();
     }
     public bool Alert(ReadOnlySpan<byte> title, AlertOpts opts = default) => AlertUtf8Core(new Utf8Argument(title), opts);
@@ -64,7 +64,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         title.ThrowIfNull(nameof(title));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_alert_ex(ctx, Utf8(title), &native_opts);
+        var result = Raw.cui_alert_ex(_ctx, Utf8(title), &native_opts);
         SyncState();
         return (result != 0);
     }
@@ -77,7 +77,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, endpoints.Length, nameof(count));
         var native_endpoints = CopyApiEndpoint(endpoints);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_api_explorer_ex(ctx, Utf8(id), native_endpoints, count, &native_opts);
+        var result = Raw.cui_api_explorer_ex(_ctx, Utf8(id), native_endpoints, count, &native_opts);
         SyncState();
         return FromNative(result, default);
     }
@@ -88,7 +88,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         name.ThrowIfNull(nameof(name));
         var native_opts = ToNative(opts);
-        Raw.cui_avatar_ex(ctx, Utf8(name), &native_opts);
+        Raw.cui_avatar_ex(_ctx, Utf8(name), &native_opts);
         SyncState();
     }
     public void AvatarGroup(ReadOnlySpan<ReadOnlyMemory<byte>> names, int count, int max_visible, float size) => AvatarGroupUtf8Core(new Utf8Arguments(names), count, max_visible, size);
@@ -97,7 +97,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         CheckLength(count, names.Length, nameof(count));
-        Raw.cui_avatar_group(ctx, Strings(names), count, max_visible, size);
+        Raw.cui_avatar_group(_ctx, Strings(names), count, max_visible, size);
         SyncState();
     }
     public int AvatarUpload(string id, ReadOnlySpan<byte> name, ref Texture? image, float size) => AvatarUploadUtf8Core(new Utf8Argument(id), new Utf8Argument(name), ref image, size);
@@ -114,8 +114,8 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         name.ThrowIfNull(nameof(name));
         var native_image = Unwrap(image);
-        var result = Raw.cui_avatar_upload(ctx, Utf8(id), Utf8(name), &native_image, size);
-        if (image != null && image.Value != native_image) { textures.Remove(image.Value); pendingTextures.Remove(image); image.Invalidate(); }
+        var result = Raw.cui_avatar_upload(_ctx, Utf8(id), Utf8(name), &native_image, size);
+        if (image != null && image.Value != native_image) { _textures.Remove(image.Value); _pendingTextures.Remove(image); image.Invalidate(); }
         image = FindTexture(native_image);
         SyncState();
         return result;
@@ -127,7 +127,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         text.ThrowIfNull(nameof(text));
         var native_opts = ToNative(opts);
-        Raw.cui_badge_ex(ctx, Utf8(text), &native_opts);
+        Raw.cui_badge_ex(_ctx, Utf8(text), &native_opts);
         SyncState();
     }
     public bool Banner(ReadOnlySpan<byte> text, ref bool open, BannerOpts opts = default) => BannerUtf8Core(new Utf8Argument(text), ref open, opts);
@@ -138,7 +138,7 @@ public sealed unsafe partial class Ui
         text.ThrowIfNull(nameof(text));
         CBool native_open = open;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_banner_ex(ctx, Utf8(text), &native_open, &native_opts);
+        var result = Raw.cui_banner_ex(_ctx, Utf8(text), &native_open, &native_opts);
         open = (native_open != 0);
         SyncState();
         return (result != 0);
@@ -152,7 +152,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, series.Length, nameof(count));
         var native_series = CopySeries(series);
         var native_opts = ToNative(opts);
-        Raw.cui_bar_chart_ex(ctx, Utf8(id), native_series, count, &native_opts);
+        Raw.cui_bar_chart_ex(_ctx, Utf8(id), native_series, count, &native_opts);
         SyncState();
     }
     public int BarList(ReadOnlySpan<byte> id, ReadOnlySpan<VizItem> items, int count, BarListOpts opts = default) => BarListUtf8Core(new Utf8Argument(id), items, count, opts);
@@ -164,7 +164,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, items.Length, nameof(count));
         var native_items = CopyVizItem(items);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_bar_list_ex(ctx, Utf8(id), native_items, count, &native_opts);
+        var result = Raw.cui_bar_list_ex(_ctx, Utf8(id), native_items, count, &native_opts);
         SyncState();
         return result;
     }
@@ -186,7 +186,7 @@ public sealed unsafe partial class Ui
         var native_line_commit = CopyInt(line_commit);
         var native_commits = CopyBlameCommit(commits);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_blame_ex(ctx, Utf8(id), Strings(lines), native_line_commit, line_count, native_commits, commit_count, &native_opts);
+        var result = Raw.cui_blame_ex(_ctx, Utf8(id), Strings(lines), native_line_commit, line_count, native_commits, commit_count, &native_opts);
         SyncState();
         return FromNative(result, default);
     }
@@ -196,7 +196,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         CheckLength(count, items.Length, nameof(count));
-        var result = Raw.cui_breadcrumb(ctx, Strings(items), count);
+        var result = Raw.cui_breadcrumb(_ctx, Strings(items), count);
         SyncState();
         return result;
     }
@@ -207,7 +207,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         label.ThrowIfNull(nameof(label));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_button_ex(ctx, Utf8(label), &native_opts);
+        var result = Raw.cui_button_ex(_ctx, Utf8(label), &native_opts);
         SyncState();
         return (result != 0);
     }
@@ -220,7 +220,7 @@ public sealed unsafe partial class Ui
         CheckLength(days, values.Length, nameof(days));
         var native_values = CopyFloat(values);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_calendar_heatmap_ex(ctx, Utf8(id), ToNative(start), native_values, days, &native_opts);
+        var result = Raw.cui_calendar_heatmap_ex(_ctx, Utf8(id), ToNative(start), native_values, days, &native_opts);
         SyncState();
         return result;
     }
@@ -234,7 +234,7 @@ public sealed unsafe partial class Ui
         CheckOptional(count, opts.Labels.Length, nameof(opts.Labels));
         var native_candles = CopyCandle(candles);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_candlestick_ex(ctx, Utf8(id), native_candles, count, &native_opts);
+        var result = Raw.cui_candlestick_ex(_ctx, Utf8(id), native_candles, count, &native_opts);
         SyncState();
         return result;
     }
@@ -246,7 +246,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         CheckBegin();
         var native_opts = ToNative(opts);
-        Raw.cui_card_stack_begin(ctx, Utf8(id), count, &native_opts);
+        Raw.cui_card_stack_begin(_ctx, Utf8(id), count, &native_opts);
         SyncState();
         return TrackScope(ScopeKind.CardStack, true, 0);
     }
@@ -260,7 +260,7 @@ public sealed unsafe partial class Ui
         if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
         ArgumentNullException.ThrowIfNull(index);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_carousel_begin(ctx, Utf8(id), count, BindInt(index), &native_opts);
+        var result = Raw.cui_carousel_begin(_ctx, Utf8(id), count, BindInt(index), &native_opts);
         SyncState();
         return TrackScope(ScopeKind.Carousel, true, result != 0 ? 1 : 0);
     }
@@ -272,7 +272,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         ArgumentNullException.ThrowIfNull(buf);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_chat_composer_ex(ctx, Utf8(id), Use(buf), (ulong)buf.Capacity, &native_opts);
+        var result = Raw.cui_chat_composer_ex(_ctx, Utf8(id), Use(buf), (ulong)buf.Capacity, &native_opts);
         SyncState();
         return result;
     }
@@ -282,7 +282,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         label.ThrowIfNull(nameof(label));
-        Raw.cui_chat_divider(ctx, Utf8(label));
+        Raw.cui_chat_divider(_ctx, Utf8(label));
         SyncState();
     }
     public void ChatMessage(ReadOnlySpan<byte> text, ChatOpts opts = default) => ChatMessageUtf8Core(new Utf8Argument(text), opts);
@@ -292,7 +292,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         text.ThrowIfNull(nameof(text));
         var native_opts = ToNative(opts);
-        Raw.cui_chat_message_ex(ctx, Utf8(text), &native_opts);
+        Raw.cui_chat_message_ex(_ctx, Utf8(text), &native_opts);
         SyncState();
     }
     public bool Checkbox(ReadOnlySpan<byte> label, ref bool value, CheckOpts opts = default) => CheckboxUtf8Core(new Utf8Argument(label), ref value, opts);
@@ -303,7 +303,7 @@ public sealed unsafe partial class Ui
         label.ThrowIfNull(nameof(label));
         CBool native_value = value;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_checkbox_ex(ctx, Utf8(label), &native_value, &native_opts);
+        var result = Raw.cui_checkbox_ex(_ctx, Utf8(label), &native_value, &native_opts);
         value = (native_value != 0);
         SyncState();
         return (result != 0);
@@ -317,7 +317,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, steps.Length, nameof(count));
         var native_steps = CopyCheckStep(steps);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_checklist_ex(ctx, Utf8(id), native_steps, count, &native_opts);
+        var result = Raw.cui_checklist_ex(_ctx, Utf8(id), native_steps, count, &native_opts);
         for (var i = 0; i < steps.Length; i++) steps[i] = FromNative(native_steps[i], steps[i]);
         SyncState();
         return result;
@@ -330,7 +330,7 @@ public sealed unsafe partial class Ui
         label.ThrowIfNull(nameof(label));
         CBool native_selected = selected;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_chip_ex(ctx, Utf8(label), &native_selected, &native_opts);
+        var result = Raw.cui_chip_ex(_ctx, Utf8(label), &native_selected, &native_opts);
         selected = (native_selected != 0);
         SyncState();
         return (result != 0);
@@ -349,7 +349,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         code.ThrowIfNull(nameof(code));
         var native_opts = ToNative(opts);
-        Raw.cui_code_block_ex(ctx, Utf8(id), Utf8(code), &native_opts);
+        Raw.cui_code_block_ex(_ctx, Utf8(id), Utf8(code), &native_opts);
         SyncState();
     }
     public bool ColorPicker(ReadOnlySpan<byte> id, ref Color value) => ColorPickerUtf8Core(new Utf8Argument(id), ref value);
@@ -359,7 +359,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         var native_value = ToNative(value);
-        var result = Raw.cui_color_picker(ctx, Utf8(id), &native_value);
+        var result = Raw.cui_color_picker(_ctx, Utf8(id), &native_value);
         value = FromNative(native_value, value);
         SyncState();
         return (result != 0);
@@ -397,7 +397,7 @@ public sealed unsafe partial class Ui
         author.ThrowIfNull(nameof(author));
         text.ThrowIfNull(nameof(text));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_comment_ex(ctx, Utf8(id), Utf8(author), Utf8(text), &native_opts);
+        var result = Raw.cui_comment_ex(_ctx, Utf8(id), Utf8(author), Utf8(text), &native_opts);
         SyncState();
         return result;
     }
@@ -410,7 +410,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, commits.Length, nameof(count));
         var native_commits = CopyCommit(commits);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_commit_graph_ex(ctx, Utf8(id), native_commits, count, &native_opts);
+        var result = Raw.cui_commit_graph_ex(_ctx, Utf8(id), native_commits, count, &native_opts);
         SyncState();
         return FromNative(result, default);
     }
@@ -421,7 +421,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         label.ThrowIfNull(nameof(label));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_confirm_button_ex(ctx, Utf8(label), &native_opts);
+        var result = Raw.cui_confirm_button_ex(_ctx, Utf8(label), &native_opts);
         SyncState();
         return (result != 0);
     }
@@ -432,7 +432,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_confirm_popover_ex(ctx, Utf8(id), &native_opts);
+        var result = Raw.cui_confirm_popover_ex(_ctx, Utf8(id), &native_opts);
         SyncState();
         return (result != 0);
     }
@@ -443,7 +443,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         CheckBegin();
-        var result = Raw.cui_context_menu_begin(ctx, Utf8(id));
+        var result = Raw.cui_context_menu_begin(_ctx, Utf8(id));
         SyncState();
         return TrackScope(ScopeKind.ContextMenu, result != 0, result != 0 ? 1 : 0);
     }
@@ -454,7 +454,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         var native_opts = ToNative(opts);
-        Raw.cui_context_meter_ex(ctx, Utf8(id), used, limit, &native_opts);
+        Raw.cui_context_meter_ex(_ctx, Utf8(id), used, limit, &native_opts);
         SyncState();
     }
     public bool ControlTile(ReadOnlySpan<byte> label, ref bool on, TileOpts opts = default) => ControlTileUtf8Core(new Utf8Argument(label), ref on, opts);
@@ -465,7 +465,7 @@ public sealed unsafe partial class Ui
         label.ThrowIfNull(nameof(label));
         CBool native_on = on;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_control_tile_ex(ctx, Utf8(label), &native_on, &native_opts);
+        var result = Raw.cui_control_tile_ex(_ctx, Utf8(label), &native_on, &native_opts);
         on = (native_on != 0);
         SyncState();
         return (result != 0);
@@ -483,7 +483,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         text.ThrowIfNull(nameof(text));
-        var result = Raw.cui_copy_button(ctx, Utf8(id), Utf8(text));
+        var result = Raw.cui_copy_button(_ctx, Utf8(id), Utf8(text));
         SyncState();
         return (result != 0);
     }
@@ -494,7 +494,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         var native_opts = ToNative(opts);
-        Raw.cui_countdown_ex(ctx, Utf8(id), seconds_left, &native_opts);
+        Raw.cui_countdown_ex(_ctx, Utf8(id), seconds_left, &native_opts);
         SyncState();
     }
     public void Counter(ReadOnlySpan<byte> id, double value, CounterOpts opts = default) => CounterUtf8Core(new Utf8Argument(id), value, opts);
@@ -504,7 +504,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         var native_opts = ToNative(opts);
-        Raw.cui_counter_ex(ctx, Utf8(id), value, &native_opts);
+        Raw.cui_counter_ex(_ctx, Utf8(id), value, &native_opts);
         SyncState();
     }
     public CoverageResult Coverage(ReadOnlySpan<byte> id, ReadOnlySpan<CoverageFile> files, int count, CoverageOpts opts = default) => CoverageUtf8Core(new Utf8Argument(id), files, count, opts);
@@ -516,7 +516,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, files.Length, nameof(count));
         var native_files = CopyCoverageFile(files);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_coverage_ex(ctx, Utf8(id), native_files, count, &native_opts);
+        var result = Raw.cui_coverage_ex(_ctx, Utf8(id), native_files, count, &native_opts);
         SyncState();
         return FromNative(result, default);
     }
@@ -528,7 +528,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         var native_crop = ToNative(crop);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_cropper_ex(ctx, Utf8(id), Unwrap(tex), image_w, image_h, &native_crop, &native_opts);
+        var result = Raw.cui_cropper_ex(_ctx, Utf8(id), Unwrap(tex), image_w, image_h, &native_crop, &native_opts);
         crop = FromNative(native_crop, crop);
         SyncState();
         return (result != 0);
@@ -546,7 +546,7 @@ public sealed unsafe partial class Ui
         var native_first = first;
         var native_last = last;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_data_grid_begin_ex(ctx, Utf8(id), native_columns, column_count, row_count, &native_first, &native_last, &native_opts);
+        var result = Raw.cui_data_grid_begin_ex(_ctx, Utf8(id), native_columns, column_count, row_count, &native_first, &native_last, &native_opts);
         first = native_first;
         last = native_last;
         SyncState();
@@ -557,10 +557,10 @@ public sealed unsafe partial class Ui
     private void DataGridCellTextUtf8Core(Utf8Argument text)
     {
         CheckFrame();
-        if (ctx->building.grid == null || ctx->building.grid->in_row == 0)
+        if (_ctx->building.grid == null || _ctx->building.grid->in_row == 0)
             throw new InvalidOperationException("Build a grid row before its text cells.");
         text.ThrowIfNull(nameof(text));
-        Raw.cui_data_grid_cell_text(ctx, Utf8(text));
+        Raw.cui_data_grid_cell_text(_ctx, Utf8(text));
         SyncState();
     }
     public bool DatePicker(ReadOnlySpan<byte> id, ref Date value, DateOpts opts = default) => DatePickerUtf8Core(new Utf8Argument(id), ref value, opts);
@@ -571,7 +571,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         var native_value = ToNative(value);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_date_picker_ex(ctx, Utf8(id), &native_value, &native_opts);
+        var result = Raw.cui_date_picker_ex(_ctx, Utf8(id), &native_value, &native_opts);
         value = FromNative(native_value, value);
         SyncState();
         return (result != 0);
@@ -584,7 +584,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         var native_range = ToNative(range);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_date_range_picker_ex(ctx, Utf8(id), &native_range, &native_opts);
+        var result = Raw.cui_date_range_picker_ex(_ctx, Utf8(id), &native_range, &native_opts);
         range = FromNative(native_range, range);
         SyncState();
         return (result != 0);
@@ -598,7 +598,7 @@ public sealed unsafe partial class Ui
         CheckBegin();
         CBool native_open = open;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_dialog_begin(ctx, Utf8(title), &native_open, &native_opts);
+        var result = Raw.cui_dialog_begin(_ctx, Utf8(title), &native_open, &native_opts);
         open = (native_open != 0);
         SyncState();
         return TrackScope(ScopeKind.Dialog, result != 0, result != 0 ? 1 : 0);
@@ -611,7 +611,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         CheckBegin();
         var native_opts = ToNative(opts);
-        Raw.cui_dock_begin(ctx, Utf8(id), &native_opts);
+        Raw.cui_dock_begin(_ctx, Utf8(id), &native_opts);
         SyncState();
         return TrackScope(ScopeKind.Dock, true, 0);
     }
@@ -629,7 +629,7 @@ public sealed unsafe partial class Ui
         icon.ThrowIfNull(nameof(icon));
         label.ThrowIfNull(nameof(label));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_dock_item_ex(ctx, Utf8(icon), Utf8(label), &native_opts);
+        var result = Raw.cui_dock_item_ex(_ctx, Utf8(icon), Utf8(label), &native_opts);
         SyncState();
         return (result != 0);
     }
@@ -648,7 +648,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, values.Length, nameof(count)); CheckOptional(count, labels.Length, nameof(labels));
         var native_values = CopyFloat(values);
         var native_opts = ToNative(opts);
-        Raw.cui_donut_chart_ex(ctx, Utf8(id), native_values, Strings(labels), count, &native_opts);
+        Raw.cui_donut_chart_ex(_ctx, Utf8(id), native_values, Strings(labels), count, &native_opts);
         SyncState();
     }
     public DotChartResult DotChart(ReadOnlySpan<byte> id, ReadOnlySpan<DotSeries> series, int series_count, int count, DotChartOpts opts = default) => DotChartUtf8Core(new Utf8Argument(id), series, series_count, count, opts);
@@ -661,7 +661,7 @@ public sealed unsafe partial class Ui
         CheckLength(series_count, series.Length, nameof(series_count));
         var native_series = CopyDotSeries(series);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_dot_chart_ex(ctx, Utf8(id), native_series, series_count, count, &native_opts);
+        var result = Raw.cui_dot_chart_ex(_ctx, Utf8(id), native_series, series_count, count, &native_opts);
         SyncState();
         return FromNative(result, default);
     }
@@ -672,7 +672,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         text.ThrowIfNull(nameof(text));
         var native_opts = ToNative(opts);
-        Raw.cui_dot_display_ex(ctx, Utf8(text), &native_opts);
+        Raw.cui_dot_display_ex(_ctx, Utf8(text), &native_opts);
         SyncState();
     }
     public void DrawEmoji(ReadOnlySpan<byte> utf8, int len, Rect r) => DrawEmojiUtf8Core(new Utf8Argument(utf8), len, r);
@@ -682,7 +682,7 @@ public sealed unsafe partial class Ui
         CheckDraw();
         utf8.ThrowIfNull(nameof(utf8));
         CheckUtf8Length(utf8, len);
-        Raw.cui_draw_emoji(ctx, Utf8(utf8), len, ToNative(r));
+        Raw.cui_draw_emoji(_ctx, Utf8(utf8), len, ToNative(r));
         SyncState();
     }
     public void DrawIcon(ReadOnlySpan<byte> icon, Rect r, float size, Color color) => DrawIconUtf8Core(new Utf8Argument(icon), r, size, color);
@@ -691,7 +691,7 @@ public sealed unsafe partial class Ui
     {
         CheckDraw();
         icon.ThrowIfNull(nameof(icon));
-        Raw.cui_draw_icon(ctx, Utf8(icon), ToNative(r), size, ToNative(color));
+        Raw.cui_draw_icon(_ctx, Utf8(icon), ToNative(r), size, ToNative(color));
         SyncState();
     }
     public void DrawText(Font font, float size, Vec2 pos, Color color, ReadOnlySpan<byte> text, int len) => DrawTextUtf8Core(font, size, pos, color, new Utf8Argument(text), len);
@@ -701,7 +701,7 @@ public sealed unsafe partial class Ui
         CheckDraw();
         text.ThrowIfNull(nameof(text));
         CheckUtf8Length(text, len);
-        Raw.cui_draw_text(ctx, (int)CheckEnum(font), size, ToNative(pos), ToNative(color), Utf8(text), len);
+        Raw.cui_draw_text(_ctx, (int)CheckEnum(font), size, ToNative(pos), ToNative(color), Utf8(text), len);
         SyncState();
     }
     public int Dropzone(ReadOnlySpan<byte> id, DropzoneOpts opts = default) => DropzoneUtf8Core(new Utf8Argument(id), opts);
@@ -711,7 +711,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_dropzone_ex(ctx, Utf8(id), &native_opts);
+        var result = Raw.cui_dropzone_ex(_ctx, Utf8(id), &native_opts);
         SyncState();
         return result;
     }
@@ -721,7 +721,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         utf8.ThrowIfNull(nameof(utf8));
-        Raw.cui_emoji(ctx, Utf8(utf8), size);
+        Raw.cui_emoji(_ctx, Utf8(utf8), size);
         SyncState();
     }
     public bool EmojiFontLoadFile(ReadOnlySpan<byte> path) => EmojiFontLoadFileUtf8Core(new Utf8Argument(path));
@@ -730,7 +730,7 @@ public sealed unsafe partial class Ui
     {
         Check();
         path.ThrowIfNull(nameof(path));
-        var result = Raw.cui_emoji_font_load_file(ctx, Utf8(path));
+        var result = Raw.cui_emoji_font_load_file(_ctx, Utf8(path));
         SyncState();
         return (result != 0);
     }
@@ -741,7 +741,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_emoji_picker_ex(ctx, Utf8(id), &native_opts);
+        var result = Raw.cui_emoji_picker_ex(_ctx, Utf8(id), &native_opts);
         SyncState();
         return Decode(result);
     }
@@ -752,7 +752,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         title.ThrowIfNull(nameof(title));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_empty_state_ex(ctx, Utf8(title), &native_opts);
+        var result = Raw.cui_empty_state_ex(_ctx, Utf8(title), &native_opts);
         SyncState();
         return (result != 0);
     }
@@ -768,7 +768,7 @@ public sealed unsafe partial class Ui
         var native_times = CopyDouble(times);
         var native_count = count;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_event_track_ex(ctx, Utf8(id), native_times, &native_count, capacity, min, max, &native_opts);
+        var result = Raw.cui_event_track_ex(_ctx, Utf8(id), native_times, &native_count, capacity, min, max, &native_opts);
         for (var i = 0; i < times.Length; i++) times[i] = native_times[i];
         count = native_count;
         SyncState();
@@ -783,7 +783,7 @@ public sealed unsafe partial class Ui
         CheckBegin();
         CBool native_open = open;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_expandable_card_begin(ctx, Utf8(title), &native_open, &native_opts);
+        var result = Raw.cui_expandable_card_begin(_ctx, Utf8(title), &native_open, &native_opts);
         open = (native_open != 0);
         SyncState();
         return TrackScope(ScopeKind.ExpandableCard, result != 0, result != 0 ? 1 : 0);
@@ -802,7 +802,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         text.ThrowIfNull(nameof(text));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_expandable_text_ex(ctx, Utf8(id), Utf8(text), &native_opts);
+        var result = Raw.cui_expandable_text_ex(_ctx, Utf8(id), Utf8(text), &native_opts);
         SyncState();
         return (result != 0);
     }
@@ -815,7 +815,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         var native_value = value;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_fader_ex(ctx, Utf8(id), &native_value, min, max, &native_opts);
+        var result = Raw.cui_fader_ex(_ctx, Utf8(id), &native_value, min, max, &native_opts);
         value = native_value;
         SyncState();
         return (result != 0);
@@ -837,7 +837,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, flags.Length, nameof(count));
         var native_flags = CopyFeatureFlag(flags);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_feature_flags_ex(ctx, Utf8(id), native_flags, count, Strings(envs), env_count, &native_opts);
+        var result = Raw.cui_feature_flags_ex(_ctx, Utf8(id), native_flags, count, Strings(envs), env_count, &native_opts);
         for (var i = 0; i < flags.Length; i++) flags[i] = FromNative(native_flags[i], flags[i]);
         SyncState();
         return FromNative(result, default);
@@ -850,7 +850,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         ArgumentNullException.ThrowIfNull(path);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_file_browser_ex(ctx, Utf8(id), Use(path), (ulong)path.Capacity, &native_opts);
+        var result = Raw.cui_file_browser_ex(_ctx, Utf8(id), Use(path), (ulong)path.Capacity, &native_opts);
         SyncState();
         return FromNative(result, default);
     }
@@ -863,7 +863,7 @@ public sealed unsafe partial class Ui
         CBool native_open = open;
         ArgumentNullException.ThrowIfNull(@out);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_file_picker_ex(ctx, Utf8(id), &native_open, Use(@out), (ulong)@out.Capacity, &native_opts);
+        var result = Raw.cui_file_picker_ex(_ctx, Utf8(id), &native_open, Use(@out), (ulong)@out.Capacity, &native_opts);
         open = (native_open != 0);
         SyncState();
         return (result != 0);
@@ -879,7 +879,7 @@ public sealed unsafe partial class Ui
         var native_fields = CopyFilterField(fields);
         var native_selected = CopyUint32T(selected);
         ArgumentNullException.ThrowIfNull(search);
-        var result = Raw.cui_filter_bar(ctx, Utf8(id), native_fields, count, native_selected, Use(search), (ulong)search.Capacity);
+        var result = Raw.cui_filter_bar(_ctx, Utf8(id), native_fields, count, native_selected, Use(search), (ulong)search.Capacity);
         for (var i = 0; i < selected.Length; i++) selected[i] = native_selected[i];
         SyncState();
         return (result != 0);
@@ -893,7 +893,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, stages.Length, nameof(count));
         var native_stages = CopyVizItem(stages);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_funnel_ex(ctx, Utf8(id), native_stages, count, &native_opts);
+        var result = Raw.cui_funnel_ex(_ctx, Utf8(id), native_stages, count, &native_opts);
         SyncState();
         return result;
     }
@@ -907,7 +907,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, tasks.Length, nameof(count));
         var native_tasks = CopyGanttTask(tasks);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_gantt_ex(ctx, Utf8(id), native_tasks, count, ToNative(origin), days, &native_opts);
+        var result = Raw.cui_gantt_ex(_ctx, Utf8(id), native_tasks, count, ToNative(origin), days, &native_opts);
         for (var i = 0; i < tasks.Length; i++) tasks[i] = FromNative(native_tasks[i], tasks[i]);
         SyncState();
         return result;
@@ -918,7 +918,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         label.ThrowIfNull(nameof(label));
-        Raw.cui_gauge(ctx, Utf8(label), value, size);
+        Raw.cui_gauge(_ctx, Utf8(label), value, size);
         SyncState();
     }
     public void GradientText(ReadOnlySpan<byte> text, GradientTextOpts opts = default) => GradientTextUtf8Core(new Utf8Argument(text), opts);
@@ -928,7 +928,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         text.ThrowIfNull(nameof(text));
         var native_opts = ToNative(opts);
-        Raw.cui_gradient_text_ex(ctx, Utf8(text), &native_opts);
+        Raw.cui_gradient_text_ex(_ctx, Utf8(text), &native_opts);
         SyncState();
     }
     public GraphResult GraphView(ReadOnlySpan<byte> id, ReadOnlySpan<GraphNode> nodes, int node_count, ReadOnlySpan<GraphEdge> edges, int edge_count, GraphOpts opts = default) => GraphViewUtf8Core(new Utf8Argument(id), nodes, node_count, edges, edge_count, opts);
@@ -943,7 +943,7 @@ public sealed unsafe partial class Ui
         var native_nodes = CopyGraphNode(nodes);
         var native_edges = CopyGraphEdge(edges);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_graph_view_ex(ctx, Utf8(id), native_nodes, node_count, native_edges, edge_count, &native_opts);
+        var result = Raw.cui_graph_view_ex(_ctx, Utf8(id), native_nodes, node_count, native_edges, edge_count, &native_opts);
         SyncState();
         return FromNative(result, default);
     }
@@ -953,7 +953,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         text.ThrowIfNull(nameof(text));
-        Raw.cui_heading(ctx, Utf8(text), level);
+        Raw.cui_heading(_ctx, Utf8(text), level);
         SyncState();
     }
     public int Heatmap(ReadOnlySpan<byte> id, ReadOnlySpan<float> values, int rows, int cols, HeatmapOpts opts = default) => HeatmapUtf8Core(new Utf8Argument(id), values, rows, cols, opts);
@@ -966,7 +966,7 @@ public sealed unsafe partial class Ui
         CheckLength(checked(rows * cols), values.Length, nameof(values));
         var native_values = CopyFloat(values);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_heatmap_ex(ctx, Utf8(id), native_values, rows, cols, &native_opts);
+        var result = Raw.cui_heatmap_ex(_ctx, Utf8(id), native_values, rows, cols, &native_opts);
         SyncState();
         return result;
     }
@@ -982,7 +982,7 @@ public sealed unsafe partial class Ui
         var native_lo = lo;
         var native_hi = hi;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_histogram_slider_ex(ctx, Utf8(label), native_bins, bin_count, &native_lo, &native_hi, min, max, &native_opts);
+        var result = Raw.cui_histogram_slider_ex(_ctx, Utf8(label), native_bins, bin_count, &native_lo, &native_hi, min, max, &native_opts);
         lo = native_lo;
         hi = native_hi;
         SyncState();
@@ -995,7 +995,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         label.ThrowIfNull(nameof(label));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_hold_button_ex(ctx, Utf8(label), &native_opts);
+        var result = Raw.cui_hold_button_ex(_ctx, Utf8(label), &native_opts);
         SyncState();
         return (result != 0);
     }
@@ -1007,7 +1007,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         CheckBegin();
         var native_opts = ToNative(opts);
-        var result = Raw.cui_hover_card_begin(ctx, Utf8(id), &native_opts);
+        var result = Raw.cui_hover_card_begin(_ctx, Utf8(id), &native_opts);
         SyncState();
         return TrackScope(ScopeKind.HoverCard, result != 0, result != 0 ? 1 : 0);
     }
@@ -1017,7 +1017,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         icon.ThrowIfNull(nameof(icon));
-        Raw.cui_icon(ctx, Utf8(icon), size, ToNative(color));
+        Raw.cui_icon(_ctx, Utf8(icon), size, ToNative(color));
         SyncState();
     }
     public bool IconButton(ReadOnlySpan<byte> icon, ButtonOpts opts = default) => IconButtonUtf8Core(new Utf8Argument(icon), opts);
@@ -1027,7 +1027,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         icon.ThrowIfNull(nameof(icon));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_icon_button_ex(ctx, Utf8(icon), &native_opts);
+        var result = Raw.cui_icon_button_ex(_ctx, Utf8(icon), &native_opts);
         SyncState();
         return (result != 0);
     }
@@ -1039,7 +1039,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         var native_pos = pos;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_image_compare_ex(ctx, Utf8(id), Unwrap(before), Unwrap(after), &native_pos, &native_opts);
+        var result = Raw.cui_image_compare_ex(_ctx, Utf8(id), Unwrap(before), Unwrap(after), &native_pos, &native_opts);
         pos = native_pos;
         SyncState();
         return (result != 0);
@@ -1052,7 +1052,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         var native_view = ToNative(view);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_image_viewer_ex(ctx, Utf8(id), Unwrap(tex), image_w, image_h, &native_view, &native_opts);
+        var result = Raw.cui_image_viewer_ex(_ctx, Utf8(id), Unwrap(tex), image_w, image_h, &native_view, &native_opts);
         view = FromNative(native_view, view);
         SyncState();
         return (result != 0);
@@ -1065,7 +1065,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         ArgumentNullException.ThrowIfNull(buf);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_inline_edit_ex(ctx, Utf8(id), Use(buf), (ulong)buf.Capacity, &native_opts);
+        var result = Raw.cui_inline_edit_ex(_ctx, Utf8(id), Use(buf), (ulong)buf.Capacity, &native_opts);
         SyncState();
         return result;
     }
@@ -1077,7 +1077,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         ArgumentNullException.ThrowIfNull(buf);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_input_ex(ctx, Utf8(id), Use(buf), (ulong)buf.Capacity, &native_opts);
+        var result = Raw.cui_input_ex(_ctx, Utf8(id), Use(buf), (ulong)buf.Capacity, &native_opts);
         SyncState();
         return result;
     }
@@ -1087,7 +1087,7 @@ public sealed unsafe partial class Ui
     {
         Check();
         CheckLength(count, paths.Length, nameof(count));
-        Raw.cui_input_file_drop(ctx, Strings(paths), count, x, y);
+        Raw.cui_input_file_drop(_ctx, Strings(paths), count, x, y);
         SyncState();
     }
     public void InputText(ReadOnlySpan<byte> utf8) => InputTextUtf8Core(new Utf8Argument(utf8));
@@ -1096,7 +1096,7 @@ public sealed unsafe partial class Ui
     {
         Check();
         utf8.ThrowIfNull(nameof(utf8));
-        Raw.cui_input_text(ctx, Utf8(utf8));
+        Raw.cui_input_text(_ctx, Utf8(utf8));
         SyncState();
     }
     public bool JsonView(string id, ReadOnlySpan<byte> json, JsonOpts opts = default) => JsonViewUtf8Core(new Utf8Argument(id), new Utf8Argument(json), opts);
@@ -1113,7 +1113,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         json.ThrowIfNull(nameof(json));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_json_view_ex(ctx, Utf8(id), Utf8(json), &native_opts);
+        var result = Raw.cui_json_view_ex(_ctx, Utf8(id), Utf8(json), &native_opts);
         SyncState();
         return (result != 0);
     }
@@ -1124,7 +1124,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         CheckBegin();
-        Raw.cui_kanban_begin(ctx, Utf8(id));
+        Raw.cui_kanban_begin(_ctx, Utf8(id));
         SyncState();
         return TrackScope(ScopeKind.Kanban, true, 0);
     }
@@ -1137,7 +1137,7 @@ public sealed unsafe partial class Ui
         CheckBegin();
         RequireScope(ScopeKind.Kanban);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_kanban_column_begin_ex(ctx, Utf8(title), card_count, &native_opts);
+        var result = Raw.cui_kanban_column_begin_ex(_ctx, Utf8(title), card_count, &native_opts);
         SyncState();
         return TrackScope(ScopeKind.KanbanColumn, true, result != 0 ? 1 : 0);
     }
@@ -1150,7 +1150,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, bindings.Length, nameof(count));
         var native_bindings = CopyKeymapBinding(bindings);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_keymap_ex(ctx, Utf8(id), native_bindings, count, &native_opts);
+        var result = Raw.cui_keymap_ex(_ctx, Utf8(id), native_bindings, count, &native_opts);
         SyncState();
         return FromNative(result, default);
     }
@@ -1163,7 +1163,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         var native_value = value;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_knob_ex(ctx, Utf8(id), &native_value, min, max, &native_opts);
+        var result = Raw.cui_knob_ex(_ctx, Utf8(id), &native_value, min, max, &native_opts);
         value = native_value;
         SyncState();
         return (result != 0);
@@ -1179,7 +1179,7 @@ public sealed unsafe partial class Ui
         var native_pairs = CopyKvPair(pairs);
         var native_count = count;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_kv_editor_ex(ctx, Utf8(id), native_pairs, &native_count, capacity, &native_opts);
+        var result = Raw.cui_kv_editor_ex(_ctx, Utf8(id), native_pairs, &native_count, capacity, &native_opts);
         for (var i = 0; i < pairs.Length; i++) pairs[i] = FromNative(native_pairs[i], pairs[i]);
         count = native_count;
         SyncState();
@@ -1191,7 +1191,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         text.ThrowIfNull(nameof(text));
-        Raw.cui_label(ctx, Utf8(text));
+        Raw.cui_label(_ctx, Utf8(text));
         SyncState();
     }
     public bool LevelMeter(ReadOnlySpan<byte> id, ReadOnlySpan<float> levels, int channels, LevelMeterOpts opts = default) => LevelMeterUtf8Core(new Utf8Argument(id), levels, channels, opts);
@@ -1203,7 +1203,7 @@ public sealed unsafe partial class Ui
         CheckLength(channels, levels.Length, nameof(channels));
         var native_levels = CopyFloat(levels);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_level_meter_ex(ctx, Utf8(id), native_levels, channels, &native_opts);
+        var result = Raw.cui_level_meter_ex(_ctx, Utf8(id), native_levels, channels, &native_opts);
         SyncState();
         return (result != 0);
     }
@@ -1216,7 +1216,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, series.Length, nameof(count));
         var native_series = CopySeries(series);
         var native_opts = ToNative(opts);
-        Raw.cui_line_chart_ex(ctx, Utf8(id), native_series, count, &native_opts);
+        Raw.cui_line_chart_ex(_ctx, Utf8(id), native_series, count, &native_opts);
         SyncState();
     }
     public bool Link(ReadOnlySpan<byte> text) => LinkUtf8Core(new Utf8Argument(text));
@@ -1225,7 +1225,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         text.ThrowIfNull(nameof(text));
-        var result = Raw.cui_link(ctx, Utf8(text));
+        var result = Raw.cui_link(_ctx, Utf8(text));
         SyncState();
         return (result != 0);
     }
@@ -1236,7 +1236,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         title.ThrowIfNull(nameof(title));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_list_item_ex(ctx, Utf8(title), &native_opts);
+        var result = Raw.cui_list_item_ex(_ctx, Utf8(title), &native_opts);
         SyncState();
         return (result != 0);
     }
@@ -1246,7 +1246,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         str.ThrowIfNull(nameof(str));
-        var result = Raw.cui_make_id(ctx, Utf8(str));
+        var result = Raw.cui_make_id(_ctx, Utf8(str));
         SyncState();
         return new Id(this, result);
     }
@@ -1258,7 +1258,7 @@ public sealed unsafe partial class Ui
         label.ThrowIfNull(nameof(label));
         CheckBegin();
         var native_opts = ToNative(opts);
-        var result = Raw.cui_menu_begin(ctx, Utf8(label), &native_opts);
+        var result = Raw.cui_menu_begin(_ctx, Utf8(label), &native_opts);
         SyncState();
         return TrackScope(ScopeKind.Menu, result != 0, result != 0 ? 1 : 0);
     }
@@ -1269,7 +1269,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         label.ThrowIfNull(nameof(label));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_menu_item_ex(ctx, Utf8(label), &native_opts);
+        var result = Raw.cui_menu_item_ex(_ctx, Utf8(label), &native_opts);
         SyncState();
         return (result != 0);
     }
@@ -1279,7 +1279,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         text.ThrowIfNull(nameof(text));
-        Raw.cui_menu_label(ctx, Utf8(text));
+        Raw.cui_menu_label(_ctx, Utf8(text));
         SyncState();
     }
     public void Meter(string label, float used, float total, ReadOnlySpan<byte> unit) => MeterUtf8Core(new Utf8Argument(label), used, total, new Utf8Argument(unit));
@@ -1295,7 +1295,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         label.ThrowIfNull(nameof(label));
         unit.ThrowIfNull(nameof(unit));
-        Raw.cui_meter(ctx, Utf8(label), used, total, Utf8(unit));
+        Raw.cui_meter(_ctx, Utf8(label), used, total, Utf8(unit));
         SyncState();
     }
     public void Metric(string label, ReadOnlySpan<byte> value, MetricOpts opts = default) => MetricUtf8Core(new Utf8Argument(label), new Utf8Argument(value), opts);
@@ -1312,7 +1312,7 @@ public sealed unsafe partial class Ui
         label.ThrowIfNull(nameof(label));
         value.ThrowIfNull(nameof(value));
         var native_opts = ToNative(opts);
-        Raw.cui_metric_ex(ctx, Utf8(label), Utf8(value), &native_opts);
+        Raw.cui_metric_ex(_ctx, Utf8(label), Utf8(value), &native_opts);
         SyncState();
     }
     public bool MoneyInput(ReadOnlySpan<byte> id, ref double value, MoneyOpts opts = default) => MoneyInputUtf8Core(new Utf8Argument(id), ref value, opts);
@@ -1323,7 +1323,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         var native_value = value;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_money_input_ex(ctx, Utf8(id), &native_value, &native_opts);
+        var result = Raw.cui_money_input_ex(_ctx, Utf8(id), &native_value, &native_opts);
         value = native_value;
         SyncState();
         return (result != 0);
@@ -1338,7 +1338,7 @@ public sealed unsafe partial class Ui
         var native_month = ToNative(month);
         var native_events = CopyMonthEvent(events);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_month_calendar_ex(ctx, Utf8(id), &native_month, native_events, count, &native_opts);
+        var result = Raw.cui_month_calendar_ex(_ctx, Utf8(id), &native_month, native_events, count, &native_opts);
         month = FromNative(native_month, month);
         SyncState();
         return FromNative(result, default);
@@ -1360,7 +1360,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, items.Length, nameof(count));
         var native_selected = CopyBool(selected);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_multi_select_ex(ctx, Utf8(id), Strings(items), count, native_selected, &native_opts);
+        var result = Raw.cui_multi_select_ex(_ctx, Utf8(id), Strings(items), count, native_selected, &native_opts);
         for (var i = 0; i < selected.Length; i++) selected[i] = (native_selected[i] != 0);
         SyncState();
         return (result != 0);
@@ -1371,7 +1371,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         text.ThrowIfNull(nameof(text));
-        Raw.cui_muted(ctx, Utf8(text));
+        Raw.cui_muted(_ctx, Utf8(text));
         SyncState();
     }
     public bool NavItem(ReadOnlySpan<byte> label, NavOpts opts = default) => NavItemUtf8Core(new Utf8Argument(label), opts);
@@ -1381,7 +1381,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         label.ThrowIfNull(nameof(label));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_nav_item_ex(ctx, Utf8(label), &native_opts);
+        var result = Raw.cui_nav_item_ex(_ctx, Utf8(label), &native_opts);
         SyncState();
         return (result != 0);
     }
@@ -1391,7 +1391,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         title.ThrowIfNull(nameof(title));
-        Raw.cui_nav_section(ctx, Utf8(title));
+        Raw.cui_nav_section(_ctx, Utf8(title));
         SyncState();
     }
     public UiScope NodeBegin(int node_id, ref float x, ref float y, ReadOnlySpan<byte> title, NodeOpts opts = default) => NodeBeginUtf8Core(node_id, ref x, ref y, new Utf8Argument(title), opts);
@@ -1405,7 +1405,7 @@ public sealed unsafe partial class Ui
         var native_x = x;
         var native_y = y;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_node_begin_ex(ctx, node_id, &native_x, &native_y, Utf8(title), &native_opts);
+        var result = Raw.cui_node_begin_ex(_ctx, node_id, &native_x, &native_y, Utf8(title), &native_opts);
         x = native_x;
         y = native_y;
         SyncState();
@@ -1420,7 +1420,7 @@ public sealed unsafe partial class Ui
         CheckBegin();
         ArgumentNullException.ThrowIfNull(view);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_node_editor_begin_ex(ctx, Utf8(id), BindNodeView(view), &native_opts);
+        var result = Raw.cui_node_editor_begin_ex(_ctx, Utf8(id), BindNodeView(view), &native_opts);
         SyncState();
         return TrackScope(ScopeKind.NodeEditor, true, result != 0 ? 1 : 0);
     }
@@ -1432,7 +1432,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         var native_np = ToNative(np);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_now_playing_ex(ctx, Utf8(id), &native_np, &native_opts);
+        var result = Raw.cui_now_playing_ex(_ctx, Utf8(id), &native_np, &native_opts);
         np = FromNative(native_np, np);
         SyncState();
         return result;
@@ -1446,7 +1446,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         var native_value = value;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_number_ex(ctx, Utf8(id), &native_value, min, max, &native_opts);
+        var result = Raw.cui_number_ex(_ctx, Utf8(id), &native_value, min, max, &native_opts);
         value = native_value;
         SyncState();
         return (result != 0);
@@ -1460,7 +1460,7 @@ public sealed unsafe partial class Ui
         ArgumentNullException.ThrowIfNull(code);
         if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
         CheckLength(checked(length + 1), code.Capacity, nameof(length));
-        var result = Raw.cui_otp_input(ctx, Utf8(id), Use(code), length);
+        var result = Raw.cui_otp_input(_ctx, Utf8(id), Use(code), length);
         SyncState();
         return (result != 0);
     }
@@ -1471,7 +1471,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         var native_page = page;
-        var result = Raw.cui_pagination(ctx, Utf8(id), &native_page, page_count);
+        var result = Raw.cui_pagination(_ctx, Utf8(id), &native_page, page_count);
         page = native_page;
         SyncState();
         return (result != 0);
@@ -1482,7 +1482,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         password.ThrowIfNull(nameof(password));
-        var result = Raw.cui_password_strength(ctx, Utf8(password));
+        var result = Raw.cui_password_strength(_ctx, Utf8(password));
         SyncState();
         return result;
     }
@@ -1502,7 +1502,7 @@ public sealed unsafe partial class Ui
         CheckLength(stage_count, stages.Length, nameof(stage_count));
         var native_jobs = CopyPipelineJob(jobs);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_pipeline_ex(ctx, Utf8(id), Strings(stages), stage_count, native_jobs, job_count, &native_opts);
+        var result = Raw.cui_pipeline_ex(_ctx, Utf8(id), Strings(stages), stage_count, native_jobs, job_count, &native_opts);
         SyncState();
         return FromNative(result, default);
     }
@@ -1514,7 +1514,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         CheckBegin();
         var native_opts = ToNative(opts);
-        var result = Raw.cui_popover_begin(ctx, Utf8(id), &native_opts);
+        var result = Raw.cui_popover_begin(_ctx, Utf8(id), &native_opts);
         SyncState();
         return TrackScope(ScopeKind.Popover, result != 0, result != 0 ? 1 : 0);
     }
@@ -1524,7 +1524,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         id.ThrowIfNull(nameof(id));
-        Raw.cui_popover_close(ctx, Utf8(id));
+        Raw.cui_popover_close(_ctx, Utf8(id));
         SyncState();
     }
     public bool PopoverIsOpen(ReadOnlySpan<byte> id) => PopoverIsOpenUtf8Core(new Utf8Argument(id));
@@ -1533,7 +1533,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         id.ThrowIfNull(nameof(id));
-        var result = Raw.cui_popover_is_open(ctx, Utf8(id));
+        var result = Raw.cui_popover_is_open(_ctx, Utf8(id));
         SyncState();
         return (result != 0);
     }
@@ -1543,7 +1543,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         id.ThrowIfNull(nameof(id));
-        Raw.cui_popover_open(ctx, Utf8(id));
+        Raw.cui_popover_open(_ctx, Utf8(id));
         SyncState();
     }
     public void PopoverToggle(ReadOnlySpan<byte> id) => PopoverToggleUtf8Core(new Utf8Argument(id));
@@ -1552,7 +1552,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         id.ThrowIfNull(nameof(id));
-        Raw.cui_popover_toggle(ctx, Utf8(id));
+        Raw.cui_popover_toggle(_ctx, Utf8(id));
         SyncState();
     }
     public void Presence(ReadOnlySpan<byte> id, ReadOnlySpan<PresenceUser> users, int count, int max_visible, float size) => PresenceUtf8Core(new Utf8Argument(id), users, count, max_visible, size);
@@ -1563,7 +1563,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         CheckLength(count, users.Length, nameof(count));
         var native_users = CopyPresenceUser(users);
-        Raw.cui_presence(ctx, Utf8(id), native_users, count, max_visible, size);
+        Raw.cui_presence(_ctx, Utf8(id), native_users, count, max_visible, size);
         SyncState();
     }
     public ProblemsResult Problems(ReadOnlySpan<byte> id, ReadOnlySpan<Diagnostic> diags, int count, ProblemsOpts opts = default) => ProblemsUtf8Core(new Utf8Argument(id), diags, count, opts);
@@ -1575,7 +1575,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, diags.Length, nameof(count));
         var native_diags = CopyDiagnostic(diags);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_problems_ex(ctx, Utf8(id), native_diags, count, &native_opts);
+        var result = Raw.cui_problems_ex(_ctx, Utf8(id), native_diags, count, &native_opts);
         SyncState();
         return FromNative(result, default);
     }
@@ -1585,7 +1585,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         label.ThrowIfNull(nameof(label));
-        Raw.cui_progress_ring(ctx, Utf8(label), value, size);
+        Raw.cui_progress_ring(_ctx, Utf8(label), value, size);
         SyncState();
     }
     public int PromptSuggestions(ReadOnlySpan<byte> id, ReadOnlySpan<PromptSuggestion> items, int count, PromptSuggestionsOpts opts = default) => PromptSuggestionsUtf8Core(new Utf8Argument(id), items, count, opts);
@@ -1597,7 +1597,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, items.Length, nameof(count));
         var native_items = CopyPromptSuggestion(items);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_prompt_suggestions_ex(ctx, Utf8(id), native_items, count, &native_opts);
+        var result = Raw.cui_prompt_suggestions_ex(_ctx, Utf8(id), native_items, count, &native_opts);
         SyncState();
         return result;
     }
@@ -1608,7 +1608,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         str.ThrowIfNull(nameof(str));
         CheckBegin();
-        Raw.cui_push_id(ctx, Utf8(str));
+        Raw.cui_push_id(_ctx, Utf8(str));
         SyncState();
         return TrackScope(ScopeKind.Id, true, 0);
     }
@@ -1626,7 +1626,7 @@ public sealed unsafe partial class Ui
         var native_nodes = CopyQueryNode(nodes);
         var native_count = count;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_query_builder_ex(ctx, Utf8(id), native_fields, field_count, native_nodes, &native_count, capacity, &native_opts);
+        var result = Raw.cui_query_builder_ex(_ctx, Utf8(id), native_fields, field_count, native_nodes, &native_count, capacity, &native_opts);
         for (var i = 0; i < nodes.Length; i++) nodes[i] = FromNative(native_nodes[i], nodes[i]);
         count = native_count;
         SyncState();
@@ -1648,7 +1648,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, series.Length, nameof(count));
         var native_series = CopySeries(series);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_radar_chart_ex(ctx, Utf8(id), native_series, count, Strings(axes), axis_count, &native_opts);
+        var result = Raw.cui_radar_chart_ex(_ctx, Utf8(id), native_series, count, Strings(axes), axis_count, &native_opts);
         SyncState();
         return result;
     }
@@ -1660,7 +1660,7 @@ public sealed unsafe partial class Ui
         CheckRange(min, max);
         id.ThrowIfNull(nameof(id));
         var native_opts = ToNative(opts);
-        Raw.cui_radial_gauge_ex(ctx, Utf8(id), value, min, max, &native_opts);
+        Raw.cui_radial_gauge_ex(_ctx, Utf8(id), value, min, max, &native_opts);
         SyncState();
     }
     public bool RadioCards(ReadOnlySpan<byte> id, ReadOnlySpan<Choice> choices, int count, ref int index, RadioCardsOpts opts = default) => RadioCardsUtf8Core(new Utf8Argument(id), choices, count, ref index, opts);
@@ -1673,7 +1673,7 @@ public sealed unsafe partial class Ui
         var native_choices = CopyChoice(choices);
         var native_index = index;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_radio_cards_ex(ctx, Utf8(id), native_choices, count, &native_index, &native_opts);
+        var result = Raw.cui_radio_cards_ex(_ctx, Utf8(id), native_choices, count, &native_index, &native_opts);
         index = native_index;
         SyncState();
         return (result != 0);
@@ -1686,7 +1686,7 @@ public sealed unsafe partial class Ui
         label.ThrowIfNull(nameof(label));
         var native_value = value;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_radio_ex(ctx, Utf8(label), &native_value, option, &native_opts);
+        var result = Raw.cui_radio_ex(_ctx, Utf8(label), &native_value, option, &native_opts);
         value = native_value;
         SyncState();
         return (result != 0);
@@ -1698,7 +1698,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         var native_range = ToNative(range);
-        var result = Raw.cui_range_calendar(ctx, Utf8(id), &native_range, months);
+        var result = Raw.cui_range_calendar(_ctx, Utf8(id), &native_range, months);
         range = FromNative(native_range, range);
         SyncState();
         return (result != 0);
@@ -1712,7 +1712,7 @@ public sealed unsafe partial class Ui
         label.ThrowIfNull(nameof(label));
         var native_lo = lo;
         var native_hi = hi;
-        var result = Raw.cui_range_slider(ctx, Utf8(label), &native_lo, &native_hi, min, max);
+        var result = Raw.cui_range_slider(_ctx, Utf8(label), &native_lo, &native_hi, min, max);
         lo = native_lo;
         hi = native_hi;
         SyncState();
@@ -1725,7 +1725,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         var native_value = value;
-        var result = Raw.cui_rating(ctx, Utf8(id), &native_value, max);
+        var result = Raw.cui_rating(_ctx, Utf8(id), &native_value, max);
         value = native_value;
         SyncState();
         return (result != 0);
@@ -1738,7 +1738,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         CheckLength(count, items.Length, nameof(count));
         var native_items = CopyReaction(items);
-        var result = Raw.cui_reactions(ctx, Utf8(id), native_items, count);
+        var result = Raw.cui_reactions(_ctx, Utf8(id), native_items, count);
         for (var i = 0; i < items.Length; i++) items[i] = FromNative(native_items[i], items[i]);
         SyncState();
         return result;
@@ -1757,7 +1757,7 @@ public sealed unsafe partial class Ui
         label.ThrowIfNull(nameof(label));
         value.ThrowIfNull(nameof(value));
         var native_opts = ToNative(opts);
-        Raw.cui_readout_ex(ctx, Utf8(label), Utf8(value), &native_opts);
+        Raw.cui_readout_ex(_ctx, Utf8(label), Utf8(value), &native_opts);
         SyncState();
     }
     public UiScope ReasoningBegin(ReadOnlySpan<byte> id, ReasoningOpts opts = default) => ReasoningBeginUtf8Core(new Utf8Argument(id), opts);
@@ -1768,7 +1768,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         CheckBegin();
         var native_opts = ToNative(opts);
-        var result = Raw.cui_reasoning_begin(ctx, Utf8(id), &native_opts);
+        var result = Raw.cui_reasoning_begin(_ctx, Utf8(id), &native_opts);
         SyncState();
         return TrackScope(ScopeKind.Reasoning, result != 0, result != 0 ? 1 : 0);
     }
@@ -1781,7 +1781,7 @@ public sealed unsafe partial class Ui
         ArgumentNullException.ThrowIfNull(pattern);
         ArgumentNullException.ThrowIfNull(text);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_regex_tester_ex(ctx, Utf8(id), Use(pattern), (ulong)pattern.Capacity, Use(text), (ulong)text.Capacity, &native_opts);
+        var result = Raw.cui_regex_tester_ex(_ctx, Utf8(id), Use(pattern), (ulong)pattern.Capacity, Use(text), (ulong)text.Capacity, &native_opts);
         SyncState();
         return FromNative(result, default);
     }
@@ -1797,7 +1797,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, order.Length, nameof(count));
         var native_order = CopyInt(order.Span);
         JournalInt(order, native_order);
-        Raw.cui_reorder_begin(ctx, Utf8(id), native_order, count);
+        Raw.cui_reorder_begin(_ctx, Utf8(id), native_order, count);
         SyncState();
         return TrackScope(ScopeKind.Reorder, true, 0);
     }
@@ -1810,7 +1810,7 @@ public sealed unsafe partial class Ui
         var native_method = method;
         ArgumentNullException.ThrowIfNull(url);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_request_bar_ex(ctx, Utf8(id), &native_method, Use(url), (ulong)url.Capacity, &native_opts);
+        var result = Raw.cui_request_bar_ex(_ctx, Utf8(id), &native_method, Use(url), (ulong)url.Capacity, &native_opts);
         method = native_method;
         SyncState();
         return FromNative(result, default);
@@ -1822,7 +1822,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_response_actions_ex(ctx, Utf8(id), &native_opts);
+        var result = Raw.cui_response_actions_ex(_ctx, Utf8(id), &native_opts);
         SyncState();
         return result;
     }
@@ -1835,7 +1835,7 @@ public sealed unsafe partial class Ui
         label.ThrowIfNull(nameof(label));
         var native_value = value;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_ruler_slider_ex(ctx, Utf8(label), &native_value, min, max, &native_opts);
+        var result = Raw.cui_ruler_slider_ex(_ctx, Utf8(label), &native_value, min, max, &native_opts);
         value = native_value;
         SyncState();
         return (result != 0);
@@ -1857,7 +1857,7 @@ public sealed unsafe partial class Ui
         CheckLength(node_count, nodes.Length, nameof(node_count));
         var native_links = CopySankeyLink(links);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_sankey_ex(ctx, Utf8(id), Strings(nodes), node_count, native_links, link_count, &native_opts);
+        var result = Raw.cui_sankey_ex(_ctx, Utf8(id), Strings(nodes), node_count, native_links, link_count, &native_opts);
         SyncState();
         return result;
     }
@@ -1870,7 +1870,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, series.Length, nameof(count));
         var native_series = CopyScatterSeries(series);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_scatter_chart_ex(ctx, Utf8(id), native_series, count, &native_opts);
+        var result = Raw.cui_scatter_chart_ex(_ctx, Utf8(id), native_series, count, &native_opts);
         SyncState();
         return result;
     }
@@ -1882,7 +1882,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         ArgumentNullException.ThrowIfNull(cron);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_schedule_picker_ex(ctx, Utf8(id), Use(cron), (ulong)cron.Capacity, &native_opts);
+        var result = Raw.cui_schedule_picker_ex(_ctx, Utf8(id), Use(cron), (ulong)cron.Capacity, &native_opts);
         SyncState();
         return FromNative(result, default);
     }
@@ -1892,7 +1892,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         scroll_id.ThrowIfNull(nameof(scroll_id));
-        Raw.cui_scroll_to(ctx, Utf8(scroll_id), y);
+        Raw.cui_scroll_to(_ctx, Utf8(scroll_id), y);
         SyncState();
     }
     public bool Scrub(ReadOnlySpan<byte> label, ref float value, float min, float max, ScrubOpts opts = default) => ScrubUtf8Core(new Utf8Argument(label), ref value, min, max, opts);
@@ -1904,7 +1904,7 @@ public sealed unsafe partial class Ui
         label.ThrowIfNull(nameof(label));
         var native_value = value;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_scrub_ex(ctx, Utf8(label), &native_value, min, max, &native_opts);
+        var result = Raw.cui_scrub_ex(_ctx, Utf8(label), &native_value, min, max, &native_opts);
         value = native_value;
         SyncState();
         return (result != 0);
@@ -1917,7 +1917,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         ArgumentNullException.ThrowIfNull(buf);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_search_ex(ctx, Utf8(id), Use(buf), (ulong)buf.Capacity, &native_opts);
+        var result = Raw.cui_search_ex(_ctx, Utf8(id), Use(buf), (ulong)buf.Capacity, &native_opts);
         SyncState();
         return result;
     }
@@ -1927,7 +1927,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         text.ThrowIfNull(nameof(text));
-        Raw.cui_secondary(ctx, Utf8(text));
+        Raw.cui_secondary(_ctx, Utf8(text));
         SyncState();
     }
     public bool Segmented(string id, ReadOnlySpan<ReadOnlyMemory<byte>> items, int count, ref int index, SegmentedOpts opts = default) => SegmentedUtf8Core(new Utf8Argument(id), new Utf8Arguments(items), count, ref index, opts);
@@ -1946,7 +1946,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, items.Length, nameof(count));
         var native_index = index;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_segmented_ex(ctx, Utf8(id), Strings(items), count, &native_index, &native_opts);
+        var result = Raw.cui_segmented_ex(_ctx, Utf8(id), Strings(items), count, &native_index, &native_opts);
         index = native_index;
         SyncState();
         return (result != 0);
@@ -1967,7 +1967,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, items.Length, nameof(count));
         var native_index = index;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_select_ex(ctx, Utf8(id), Strings(items), count, &native_index, &native_opts);
+        var result = Raw.cui_select_ex(_ctx, Utf8(id), Strings(items), count, &native_index, &native_opts);
         index = native_index;
         SyncState();
         return (result != 0);
@@ -1981,7 +1981,7 @@ public sealed unsafe partial class Ui
         CheckBegin();
         CBool native_open = open;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_sheet_begin(ctx, Utf8(title), &native_open, &native_opts);
+        var result = Raw.cui_sheet_begin(_ctx, Utf8(title), &native_open, &native_opts);
         open = (native_open != 0);
         SyncState();
         return TrackScope(ScopeKind.Sheet, result != 0, result != 0 ? 1 : 0);
@@ -1993,7 +1993,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         text.ThrowIfNull(nameof(text));
         var native_opts = ToNative(opts);
-        Raw.cui_shimmer_text_ex(ctx, Utf8(text), &native_opts);
+        Raw.cui_shimmer_text_ex(_ctx, Utf8(text), &native_opts);
         SyncState();
     }
     public bool ShortcutRecorder(ReadOnlySpan<byte> id, ref KeyCombo combo, ShortcutRecorderOpts opts = default) => ShortcutRecorderUtf8Core(new Utf8Argument(id), ref combo, opts);
@@ -2004,7 +2004,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         var native_combo = ToNative(combo);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_shortcut_recorder_ex(ctx, Utf8(id), &native_combo, &native_opts);
+        var result = Raw.cui_shortcut_recorder_ex(_ctx, Utf8(id), &native_combo, &native_opts);
         combo = FromNative(native_combo, combo);
         SyncState();
         return (result != 0);
@@ -2016,7 +2016,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_signature_pad_ex(ctx, Utf8(id), &native_opts);
+        var result = Raw.cui_signature_pad_ex(_ctx, Utf8(id), &native_opts);
         SyncState();
         return (result != 0);
     }
@@ -2029,7 +2029,7 @@ public sealed unsafe partial class Ui
         label.ThrowIfNull(nameof(label));
         var native_value = value;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_slider_ex(ctx, Utf8(label), &native_value, min, max, &native_opts);
+        var result = Raw.cui_slider_ex(_ctx, Utf8(label), &native_value, min, max, &native_opts);
         value = native_value;
         SyncState();
         return (result != 0);
@@ -2042,7 +2042,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         CheckLength(count, sources.Length, nameof(count));
         var native_sources = CopySource(sources);
-        var result = Raw.cui_source_list(ctx, Utf8(id), native_sources, count);
+        var result = Raw.cui_source_list(_ctx, Utf8(id), native_sources, count);
         SyncState();
         return result;
     }
@@ -2055,7 +2055,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, actions.Length, nameof(count));
         var native_actions = CopySpeedAction(actions);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_speed_dial_ex(ctx, Utf8(id), native_actions, count, &native_opts);
+        var result = Raw.cui_speed_dial_ex(_ctx, Utf8(id), native_actions, count, &native_opts);
         SyncState();
         return result;
     }
@@ -2068,7 +2068,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, items.Length, nameof(count));
         var native_items = CopyVizItem(items);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_split_bar_ex(ctx, Utf8(id), native_items, count, &native_opts);
+        var result = Raw.cui_split_bar_ex(_ctx, Utf8(id), native_items, count, &native_opts);
         SyncState();
         return result;
     }
@@ -2087,7 +2087,7 @@ public sealed unsafe partial class Ui
         CheckOptional(count, opts.ItemIcons.Length, nameof(opts.ItemIcons));
         CheckLength(count, items.Length, nameof(count));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_split_button_ex(ctx, Utf8(label), Strings(items), count, &native_opts);
+        var result = Raw.cui_split_button_ex(_ctx, Utf8(label), Strings(items), count, &native_opts);
         SyncState();
         return result;
     }
@@ -2099,7 +2099,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         CheckBegin();
         var native_opts = ToNative(opts);
-        Raw.cui_spotlight_begin(ctx, Utf8(id), &native_opts);
+        Raw.cui_spotlight_begin(_ctx, Utf8(id), &native_opts);
         SyncState();
         return TrackScope(ScopeKind.Spotlight, true, 0);
     }
@@ -2112,7 +2112,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, frames.Length, nameof(count));
         var native_frames = CopyStackFrame(frames);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_stack_trace_ex(ctx, Utf8(id), native_frames, count, &native_opts);
+        var result = Raw.cui_stack_trace_ex(_ctx, Utf8(id), native_frames, count, &native_opts);
         SyncState();
         return FromNative(result, default);
     }
@@ -2123,7 +2123,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         label.ThrowIfNull(nameof(label));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_status_button_ex(ctx, Utf8(label), (cui_status)CheckEnum(status), &native_opts);
+        var result = Raw.cui_status_button_ex(_ctx, Utf8(label), (cui_status)CheckEnum(status), &native_opts);
         SyncState();
         return (result != 0);
     }
@@ -2133,7 +2133,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         CheckLength(count, steps.Length, nameof(count));
-        Raw.cui_stepper(ctx, Strings(steps), count, current);
+        Raw.cui_stepper(_ctx, Strings(steps), count, current);
         SyncState();
     }
     public UiScope SwipeItemBegin(ReadOnlySpan<byte> id, ReadOnlySpan<SwipeAction> left, int left_count, ReadOnlySpan<SwipeAction> right, int right_count) => SwipeItemBeginUtf8Core(new Utf8Argument(id), left, left_count, right, right_count);
@@ -2147,7 +2147,7 @@ public sealed unsafe partial class Ui
         CheckLength(left_count, left.Length, nameof(left_count));
         var native_left = CopySwipeAction(left);
         var native_right = CopySwipeAction(right);
-        Raw.cui_swipe_item_begin(ctx, Utf8(id), native_left, left_count, native_right, right_count);
+        Raw.cui_swipe_item_begin(_ctx, Utf8(id), native_left, left_count, native_right, right_count);
         SyncState();
         return TrackScope(ScopeKind.SwipeItem, true, 0);
     }
@@ -2159,7 +2159,7 @@ public sealed unsafe partial class Ui
         label.ThrowIfNull(nameof(label));
         CBool native_value = value;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_switch_ex(ctx, Utf8(label), &native_value, &native_opts);
+        var result = Raw.cui_switch_ex(_ctx, Utf8(label), &native_value, &native_opts);
         value = (native_value != 0);
         SyncState();
         return (result != 0);
@@ -2174,7 +2174,7 @@ public sealed unsafe partial class Ui
         var native_items = CopyTabBarItem(items);
         var native_selected = selected;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_tab_bar_ex(ctx, Utf8(id), native_items, count, &native_selected, &native_opts);
+        var result = Raw.cui_tab_bar_ex(_ctx, Utf8(id), native_items, count, &native_selected, &native_opts);
         selected = native_selected;
         SyncState();
         return (result != 0);
@@ -2189,7 +2189,7 @@ public sealed unsafe partial class Ui
         CheckLength(column_count, columns.Length, nameof(column_count));
         var native_columns = CopyTableColumn(columns);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_table_begin_ex(ctx, Utf8(id), native_columns, column_count, &native_opts);
+        var result = Raw.cui_table_begin_ex(_ctx, Utf8(id), native_columns, column_count, &native_opts);
         SyncState();
         return TrackScope(ScopeKind.Table, true, result != 0 ? 1 : 0);
     }
@@ -2198,10 +2198,10 @@ public sealed unsafe partial class Ui
     private void TableCellTextUtf8Core(Utf8Argument text)
     {
         CheckFrame();
-        if (ctx->building.table == null || ctx->building.table->in_row == 0)
+        if (_ctx->building.table == null || _ctx->building.table->in_row == 0)
             throw new InvalidOperationException("Build a table row before its text cells.");
         text.ThrowIfNull(nameof(text));
-        Raw.cui_table_cell_text(ctx, Utf8(text));
+        Raw.cui_table_cell_text(_ctx, Utf8(text));
         SyncState();
     }
     public bool Tabs(string id, ReadOnlySpan<ReadOnlyMemory<byte>> items, int count, ref int index, TabsOpts opts = default) => TabsUtf8Core(new Utf8Argument(id), new Utf8Arguments(items), count, ref index, opts);
@@ -2220,7 +2220,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, items.Length, nameof(count));
         var native_index = index;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_tabs_ex(ctx, Utf8(id), Strings(items), count, &native_index, &native_opts);
+        var result = Raw.cui_tabs_ex(_ctx, Utf8(id), Strings(items), count, &native_index, &native_opts);
         index = native_index;
         SyncState();
         return (result != 0);
@@ -2233,7 +2233,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         ArgumentNullException.ThrowIfNull(buf);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_tag_input_ex(ctx, Utf8(id), Use(buf), (ulong)buf.Capacity, &native_opts);
+        var result = Raw.cui_tag_input_ex(_ctx, Utf8(id), Use(buf), (ulong)buf.Capacity, &native_opts);
         SyncState();
         return (result != 0);
     }
@@ -2246,7 +2246,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, items.Length, nameof(count));
         var native_items = CopyTestItem(items);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_test_explorer_ex(ctx, Utf8(id), native_items, count, &native_opts);
+        var result = Raw.cui_test_explorer_ex(_ctx, Utf8(id), native_items, count, &native_opts);
         SyncState();
         return FromNative(result, default);
     }
@@ -2257,7 +2257,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         text.ThrowIfNull(nameof(text));
         var native_opts = ToNative(opts);
-        Raw.cui_text_ex(ctx, Utf8(text), &native_opts);
+        Raw.cui_text_ex(_ctx, Utf8(text), &native_opts);
         SyncState();
     }
     public void TextReveal(string id, ReadOnlySpan<byte> text, TextFxOpts opts = default) => TextRevealUtf8Core(new Utf8Argument(id), new Utf8Argument(text), opts);
@@ -2274,7 +2274,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         text.ThrowIfNull(nameof(text));
         var native_opts = ToNative(opts);
-        Raw.cui_text_reveal_ex(ctx, Utf8(id), Utf8(text), &native_opts);
+        Raw.cui_text_reveal_ex(_ctx, Utf8(id), Utf8(text), &native_opts);
         SyncState();
     }
     public int Textarea(ReadOnlySpan<byte> id, TextBuffer buf, InputOpts opts = default) => TextareaUtf8Core(new Utf8Argument(id), buf, opts);
@@ -2285,7 +2285,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         ArgumentNullException.ThrowIfNull(buf);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_textarea_ex(ctx, Utf8(id), Use(buf), (ulong)buf.Capacity, &native_opts);
+        var result = Raw.cui_textarea_ex(_ctx, Utf8(id), Use(buf), (ulong)buf.Capacity, &native_opts);
         SyncState();
         return result;
     }
@@ -2298,7 +2298,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, items.Length, nameof(count));
         var native_items = CopyTickerItem(items);
         var native_opts = ToNative(opts);
-        Raw.cui_ticker_ex(ctx, Utf8(id), native_items, count, &native_opts);
+        Raw.cui_ticker_ex(_ctx, Utf8(id), native_items, count, &native_opts);
         SyncState();
     }
     public bool TimeDial(ReadOnlySpan<byte> id, ref int hour, ref int minute, float size) => TimeDialUtf8Core(new Utf8Argument(id), ref hour, ref minute, size);
@@ -2309,7 +2309,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         var native_hour = hour;
         var native_minute = minute;
-        var result = Raw.cui_time_dial(ctx, Utf8(id), &native_hour, &native_minute, size);
+        var result = Raw.cui_time_dial(_ctx, Utf8(id), &native_hour, &native_minute, size);
         hour = native_hour;
         minute = native_minute;
         SyncState();
@@ -2327,7 +2327,7 @@ public sealed unsafe partial class Ui
         var native_sel_start = sel_start;
         var native_sel_end = sel_end;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_time_histogram_ex(ctx, Utf8(id), start, bucket_seconds, buckets, native_series, series_count, &native_sel_start, &native_sel_end, &native_opts);
+        var result = Raw.cui_time_histogram_ex(_ctx, Utf8(id), start, bucket_seconds, buckets, native_series, series_count, &native_sel_start, &native_sel_end, &native_opts);
         sel_start = native_sel_start;
         sel_end = native_sel_end;
         SyncState();
@@ -2342,7 +2342,7 @@ public sealed unsafe partial class Ui
         var native_hour = hour;
         var native_minute = minute;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_time_picker_ex(ctx, Utf8(id), &native_hour, &native_minute, &native_opts);
+        var result = Raw.cui_time_picker_ex(_ctx, Utf8(id), &native_hour, &native_minute, &native_opts);
         hour = native_hour;
         minute = native_minute;
         SyncState();
@@ -2355,7 +2355,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         title.ThrowIfNull(nameof(title));
         var native_opts = ToNative(opts);
-        Raw.cui_timeline_item_ex(ctx, Utf8(title), &native_opts);
+        Raw.cui_timeline_item_ex(_ctx, Utf8(title), &native_opts);
         SyncState();
     }
     public int Toast(ReadOnlySpan<byte> title, ToastOpts opts = default) => ToastUtf8Core(new Utf8Argument(title), opts);
@@ -2365,7 +2365,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         title.ThrowIfNull(nameof(title));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_toast_ex(ctx, Utf8(title), &native_opts);
+        var result = Raw.cui_toast_ex(_ctx, Utf8(title), &native_opts);
         SyncState();
         return result;
     }
@@ -2377,7 +2377,7 @@ public sealed unsafe partial class Ui
         scroll_id.ThrowIfNull(nameof(scroll_id));
         CheckLength(count, items.Length, nameof(count));
         var native_items = CopyTocItem(items);
-        var result = Raw.cui_toc(ctx, Utf8(scroll_id), native_items, count);
+        var result = Raw.cui_toc(_ctx, Utf8(scroll_id), native_items, count);
         SyncState();
         return result;
     }
@@ -2387,7 +2387,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         anchor.ThrowIfNull(nameof(anchor));
-        Raw.cui_toc_anchor(ctx, Utf8(anchor));
+        Raw.cui_toc_anchor(_ctx, Utf8(anchor));
         SyncState();
     }
     public bool ToggleGroup(string id, ReadOnlySpan<ReadOnlyMemory<byte>> labels, int count, Span<bool> values, ToggleGroupOpts opts = default) => ToggleGroupUtf8Core(new Utf8Argument(id), new Utf8Arguments(labels), count, values, opts);
@@ -2407,7 +2407,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, labels.Length, nameof(count));
         var native_values = CopyBool(values);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_toggle_group_ex(ctx, Utf8(id), Strings(labels), count, native_values, &native_opts);
+        var result = Raw.cui_toggle_group_ex(_ctx, Utf8(id), Strings(labels), count, native_values, &native_opts);
         for (var i = 0; i < values.Length; i++) values[i] = (native_values[i] != 0);
         SyncState();
         return (result != 0);
@@ -2426,7 +2426,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         name.ThrowIfNull(nameof(name));
         var native_opts = ToNative(opts);
-        Raw.cui_tool_call_ex(ctx, Utf8(id), Utf8(name), &native_opts);
+        Raw.cui_tool_call_ex(_ctx, Utf8(id), Utf8(name), &native_opts);
         SyncState();
     }
     public void Tooltip(ReadOnlySpan<byte> text) => TooltipUtf8Core(new Utf8Argument(text));
@@ -2435,7 +2435,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         text.ThrowIfNull(nameof(text));
-        Raw.cui_tooltip(ctx, Utf8(text));
+        Raw.cui_tooltip(_ctx, Utf8(text));
         SyncState();
     }
     public int Tour(ReadOnlySpan<byte> id, ReadOnlySpan<TourStep> steps, int count, ref int step, TourOpts opts = default) => TourUtf8Core(new Utf8Argument(id), steps, count, ref step, opts);
@@ -2448,7 +2448,7 @@ public sealed unsafe partial class Ui
         var native_steps = CopyTourStep(steps);
         var native_step = step;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_tour_ex(ctx, Utf8(id), native_steps, count, &native_step, &native_opts);
+        var result = Raw.cui_tour_ex(_ctx, Utf8(id), native_steps, count, &native_step, &native_opts);
         step = native_step;
         SyncState();
         return result;
@@ -2467,7 +2467,7 @@ public sealed unsafe partial class Ui
         var native_view = ToNative(view);
         var native_selected = selected;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_trace_view_ex(ctx, Utf8(id), native_tracks, track_count, native_spans, span_count, &native_view, &native_selected, &native_opts);
+        var result = Raw.cui_trace_view_ex(_ctx, Utf8(id), native_tracks, track_count, native_spans, span_count, &native_view, &native_selected, &native_opts);
         for (var i = 0; i < tracks.Length; i++) tracks[i] = FromNative(native_tracks[i], tracks[i]);
         view = FromNative(native_view, view);
         selected = native_selected;
@@ -2483,7 +2483,7 @@ public sealed unsafe partial class Ui
         CheckBegin();
         CBool native_open = open;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_tree_begin(ctx, Utf8(label), &native_open, &native_opts);
+        var result = Raw.cui_tree_begin(_ctx, Utf8(label), &native_open, &native_opts);
         open = (native_open != 0);
         SyncState();
         return TrackScope(ScopeKind.Tree, result != 0, result != 0 ? 1 : 0);
@@ -2502,7 +2502,7 @@ public sealed unsafe partial class Ui
         label.ThrowIfNull(nameof(label));
         icon.ThrowIfNull(nameof(icon));
         CBool native_open = open;
-        var result = Raw.cui_tree_cell(ctx, Utf8(label), depth, has_children, &native_open, Utf8(icon));
+        var result = Raw.cui_tree_cell(_ctx, Utf8(label), depth, has_children, &native_open, Utf8(icon));
         open = (native_open != 0);
         SyncState();
         return (result != 0);
@@ -2516,7 +2516,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, items.Length, nameof(count));
         var native_items = CopyVizItem(items);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_treemap_ex(ctx, Utf8(id), native_items, count, &native_opts);
+        var result = Raw.cui_treemap_ex(_ctx, Utf8(id), native_items, count, &native_opts);
         SyncState();
         return result;
     }
@@ -2534,7 +2534,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         text.ThrowIfNull(nameof(text));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_typewriter_ex(ctx, Utf8(id), Utf8(text), &native_opts);
+        var result = Raw.cui_typewriter_ex(_ctx, Utf8(id), Utf8(text), &native_opts);
         SyncState();
         return (result != 0);
     }
@@ -2544,7 +2544,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         name.ThrowIfNull(nameof(name));
-        Raw.cui_typing_indicator(ctx, Utf8(name));
+        Raw.cui_typing_indicator(_ctx, Utf8(name));
         SyncState();
     }
     public UptimeResult Uptime(ReadOnlySpan<byte> id, ReadOnlySpan<UptimeService> services, int count, UptimeOpts opts = default) => UptimeUtf8Core(new Utf8Argument(id), services, count, opts);
@@ -2556,7 +2556,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, services.Length, nameof(count));
         var native_services = CopyUptimeService(services);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_uptime_ex(ctx, Utf8(id), native_services, count, &native_opts);
+        var result = Raw.cui_uptime_ex(_ctx, Utf8(id), native_services, count, &native_opts);
         SyncState();
         return FromNative(result, default);
     }
@@ -2568,7 +2568,7 @@ public sealed unsafe partial class Ui
         name.ThrowIfNull(nameof(name));
         CheckBegin();
         var native_opts = ToNative(opts);
-        var result = Raw.cui_user_menu_begin(ctx, Utf8(name), &native_opts);
+        var result = Raw.cui_user_menu_begin(_ctx, Utf8(name), &native_opts);
         SyncState();
         return TrackScope(ScopeKind.UserMenu, result != 0, result != 0 ? 1 : 0);
     }
@@ -2581,7 +2581,7 @@ public sealed unsafe partial class Ui
         CheckBegin();
         var native_first = first;
         var native_last = last;
-        Raw.cui_virtual_list_begin(ctx, Utf8(id), count, row_height, ToNative(height), &native_first, &native_last);
+        Raw.cui_virtual_list_begin(_ctx, Utf8(id), count, row_height, ToNative(height), &native_first, &native_last);
         first = native_first;
         last = native_last;
         SyncState();
@@ -2594,7 +2594,7 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_voice_orb_ex(ctx, Utf8(id), (cui_voice_state)CheckEnum(state), level, &native_opts);
+        var result = Raw.cui_voice_orb_ex(_ctx, Utf8(id), (cui_voice_state)CheckEnum(state), level, &native_opts);
         SyncState();
         return (result != 0);
     }
@@ -2607,7 +2607,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, items.Length, nameof(count));
         var native_items = CopyVizItem(items);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_waffle_ex(ctx, Utf8(id), native_items, count, &native_opts);
+        var result = Raw.cui_waffle_ex(_ctx, Utf8(id), native_items, count, &native_opts);
         SyncState();
         return result;
     }
@@ -2620,7 +2620,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, requests.Length, nameof(count));
         var native_requests = CopyNetRequest(requests);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_waterfall_ex(ctx, Utf8(id), native_requests, count, &native_opts);
+        var result = Raw.cui_waterfall_ex(_ctx, Utf8(id), native_requests, count, &native_opts);
         SyncState();
         return FromNative(result, default);
     }
@@ -2634,7 +2634,7 @@ public sealed unsafe partial class Ui
         var native_peaks = CopyFloat(peaks);
         var native_progress = progress;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_waveform_ex(ctx, Utf8(id), native_peaks, count, &native_progress, &native_opts);
+        var result = Raw.cui_waveform_ex(_ctx, Utf8(id), native_peaks, count, &native_progress, &native_opts);
         progress = native_progress;
         SyncState();
         return (result != 0);
@@ -2648,7 +2648,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, events.Length, nameof(count));
         var native_events = CopyCalEvent(events);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_week_calendar_ex(ctx, Utf8(id), ToNative(week_start), native_events, count, &native_opts);
+        var result = Raw.cui_week_calendar_ex(_ctx, Utf8(id), ToNative(week_start), native_events, count, &native_opts);
         for (var i = 0; i < events.Length; i++) events[i] = FromNative(native_events[i], events[i]);
         SyncState();
         return result;
@@ -2668,7 +2668,7 @@ public sealed unsafe partial class Ui
         CheckLength(count, items.Length, nameof(count));
         var native_index = index;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_wheel_picker_ex(ctx, Utf8(id), Strings(items), count, &native_index, &native_opts);
+        var result = Raw.cui_wheel_picker_ex(_ctx, Utf8(id), Strings(items), count, &native_index, &native_opts);
         index = native_index;
         SyncState();
         return (result != 0);
@@ -2687,7 +2687,7 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         CheckLength(count, words.Length, nameof(count));
         var native_opts = ToNative(opts);
-        Raw.cui_word_rotate_ex(ctx, Utf8(id), Strings(words), count, interval, &native_opts);
+        Raw.cui_word_rotate_ex(_ctx, Utf8(id), Strings(words), count, interval, &native_opts);
         SyncState();
     }
     public UiScope Accordion(ReadOnlySpan<byte> title, ref bool open) => AccordionUtf8Core(new Utf8Argument(title), ref open);
@@ -2700,7 +2700,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame(); CheckBegin(); label.ThrowIfNull(nameof(label));
         var native = ToNative(opts);
-        var opened = Raw.cui_tree_begin(ctx, Utf8(label), null, &native) != 0;
+        var opened = Raw.cui_tree_begin(_ctx, Utf8(label), null, &native) != 0;
         SyncState(); return TrackScope(ScopeKind.Tree, opened, opened ? 1 : 0);
     }
     public UiScope Tree(ReadOnlySpan<byte> label, TreeOpts opts = default) => TreeUtf8Core(new Utf8Argument(label), opts);
@@ -2718,7 +2718,7 @@ public sealed unsafe partial class Ui
     private bool TreeCellUtf8Core(Utf8Argument label, int depth, bool hasChildren, Utf8Argument icon)
     {
         CheckFrame(); label.ThrowIfNull(nameof(label)); icon.ThrowIfNull(nameof(icon));
-        var result = Raw.cui_tree_cell(ctx, Utf8(label), depth, hasChildren, null, Utf8(icon)) != 0;
+        var result = Raw.cui_tree_cell(_ctx, Utf8(label), depth, hasChildren, null, Utf8(icon)) != 0;
         SyncState(); return result;
     }
     public UiScope Tree(ReadOnlySpan<byte> label, ref bool open, TreeOpts opts = default) => TreeUtf8Core(new Utf8Argument(label), ref open, opts);
@@ -2779,7 +2779,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         var state = index;
-        var changed = Raw.cui_radio_group(ctx, Utf8Required(id), Strings(items), items.Length, &state) != 0;
+        var changed = Raw.cui_radio_group(_ctx, Utf8Required(id), Strings(items), items.Length, &state) != 0;
         index = state; SyncState(); return changed;
     }
     public bool MultiSelect(string id, ReadOnlySpan<ReadOnlyMemory<byte>> items, Span<bool> selected, MultiSelectOpts opts = default) => MultiSelectUtf8Core(new Utf8Argument(id), new Utf8Arguments(items), selected, opts);
@@ -2945,7 +2945,7 @@ public sealed unsafe partial class Ui
     private int SignaturePointsUtf8Core(Utf8Argument id, Span<Vec2> points, Span<int> strokeEnds, out int strokeCount)
     {
         CheckFrame(); cui_vec2* rawPoints; int* rawEnds; int strokes;
-        var count = Raw.cui_signature_points(ctx, Utf8Required(id), &rawPoints, &rawEnds, &strokes);
+        var count = Raw.cui_signature_points(_ctx, Utf8Required(id), &rawPoints, &rawEnds, &strokes);
         strokeCount = strokes;
         CheckLength(count, points.Length, nameof(points)); CheckLength(strokes, strokeEnds.Length, nameof(strokeEnds));
         for (var i = 0; i < count; i++) points[i] = FromNative(rawPoints[i]);
@@ -2955,7 +2955,7 @@ public sealed unsafe partial class Ui
     public void SignatureClear(ReadOnlySpan<byte> id) => SignatureClearUtf8Core(new Utf8Argument(id));
     public void SignatureClear(TextBuffer id) => SignatureClearUtf8Core(new Utf8Argument(id));
     private void SignatureClearUtf8Core(Utf8Argument id)
-    { CheckFrame(); Raw.cui_signature_clear(ctx, Utf8Required(id)); }
+    { CheckFrame(); Raw.cui_signature_clear(_ctx, Utf8Required(id)); }
     public UiScope Menu(ReadOnlySpan<byte> label, MenuOpts opts = default) => MenuUtf8Core(new Utf8Argument(label), opts);
     public UiScope Menu(TextBuffer label, MenuOpts opts = default) => MenuUtf8Core(new Utf8Argument(label), opts);
     private UiScope MenuUtf8Core(Utf8Argument label, MenuOpts opts = default)
@@ -2985,7 +2985,7 @@ public sealed unsafe partial class Ui
     private Texture ImageLoadUtf8Core(Utf8Argument path, out int width, out int height)
     {
         Check(); path.ThrowIfNull(nameof(path)); int w, h;
-        var value = Raw.cui_image_load(ctx, Utf8(path), &w, &h); width = w; height = h;
+        var value = Raw.cui_image_load(_ctx, Utf8(path), &w, &h); width = w; height = h;
         if (value == 0) throw new InvalidOperationException("CUI image loading failed.");
         return FindTexture(value)!;
     }
@@ -2994,9 +2994,9 @@ public sealed unsafe partial class Ui
     private TerminalResult TerminalUtf8Core(Utf8Argument id, TerminalBuffer terminal, TerminalOpts opts = default)
     {
         CheckFrame(); ArgumentNullException.ThrowIfNull(terminal);
-        terminal.Acquire(this); terminals.Add(terminal);
+        terminal.Acquire(this); _terminals.Add(terminal);
         var native = ToNative(opts);
-        var result = Raw.cui_terminal_ex(ctx, Utf8(id), terminal.Pointer, &native);
+        var result = Raw.cui_terminal_ex(_ctx, Utf8(id), terminal.Pointer, &native);
         SyncState(); return FromNative(result);
     }
     public int FsList(ReadOnlySpan<byte> path, Span<FileEntry> entries, bool hidden = false, int nameBytes = 65536) => FsListUtf8Core(new Utf8Argument(path), entries, hidden, nameBytes);
@@ -3005,8 +3005,8 @@ public sealed unsafe partial class Ui
     {
         Check(); path.ThrowIfNull(nameof(path));
         if (nameBytes < 1) throw new ArgumentOutOfRangeException(nameof(nameBytes));
-        var output = (cui_file_entry*)arena.Allocate(checked(entries.Length * sizeof(cui_file_entry)));
-        var names = (byte*)arena.Allocate(nameBytes);
+        var output = (cui_file_entry*)_arena.Allocate(checked(entries.Length * sizeof(cui_file_entry)));
+        var names = (byte*)_arena.Allocate(nameBytes);
         var count = Raw.cui_fs_list(null, Utf8(path), output, entries.Length, names, (ulong)nameBytes, hidden);
         if (count > entries.Length) throw new InvalidOperationException("Invalid CUI filesystem result.");
         for (var i = 0; i < count; i++) entries[i] = FromNative(output[i], entries[i]);
@@ -3026,12 +3026,12 @@ public sealed unsafe partial class Ui
         CheckFrame(); ArgumentNullException.ThrowIfNull(painter);
         if (painter.Owner != this) throw new ArgumentException("Painter belongs to another context.");
         ObjectDisposedException.ThrowIf(painter.Callback == null, painter);
-        if (selfRoot == 0)
+        if (_selfRoot == 0)
         {
-            var root = GCHandle.Alloc(this); callbackRoots.Add(root); selfRoot = GCHandle.ToIntPtr(root);
+            var root = GCHandle.Alloc(this); _callbackRoots.Add(root); _selfRoot = GCHandle.ToIntPtr(root);
         }
         // CUI copies user bytes into its frame arena, retaining the stable root/key values.
-        CanvasUser user = new CanvasUser { Context = selfRoot, Key = painter.Key };
-        return FromNative(Raw.cui_canvas(ctx, Utf8Required(id), ToNative(width), ToNative(height), &CanvasThunk, &user, (ulong)sizeof(CanvasUser)));
+        CanvasUser user = new CanvasUser { Context = _selfRoot, Key = painter.Key };
+        return FromNative(Raw.cui_canvas(_ctx, Utf8Required(id), ToNative(width), ToNative(height), &CanvasThunk, &user, (ulong)sizeof(CanvasUser)));
     }
 }

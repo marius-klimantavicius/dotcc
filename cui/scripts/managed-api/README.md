@@ -59,6 +59,11 @@ After review, update the affected `reviewed_outputs` SHA-256 entries in
 evidence only after reviewing changed native retention behavior and updating
 [the storage audit](../../docs/MANAGED-STORAGE-AUDIT.md).
 
+Private instance fields in the managed wrapper use `_camelCase`, including
+nested types and fields declared in templates. Keep parameter/local names
+distinct when updating references, and update any test `UnsafeAccessor` field
+names when renaming their targets.
+
 Synchronous native singleton inputs/in-out values use unmanaged locals and `&`.
 Do not add a `fixed` statement around an unmanaged local. Pointer fields are a
 separate decision: retained strings/arrays stay in stable frame storage and

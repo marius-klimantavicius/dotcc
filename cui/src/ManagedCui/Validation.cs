@@ -25,7 +25,7 @@ public sealed unsafe partial class Ui
     }
     private void RequireScope(ScopeKind kind)
     {
-        foreach (var scope in scopes) if (scope.Kind == kind) return;
+        foreach (var scope in _scopes) if (scope.Kind == kind) return;
         throw new InvalidOperationException("This component requires its matching container.");
     }
     private static void Validate(ScatterSeries value) => CheckOptional(value.Points.Length, value.Sizes.Length, nameof(value.Sizes));

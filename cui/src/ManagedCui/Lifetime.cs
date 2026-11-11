@@ -24,52 +24,52 @@ public readonly struct Id : IEquatable<Id>
 /// <summary>Reusable, context-bound scalar state for writable pointers in options.</summary>
 public sealed class State<T>
 {
-    private T value;
+    private T _value;
     internal Ui? Owner;
     internal IStateLease? Lease;
-    public State(T value = default!) { this.value = value; }
+    public State(T value = default!) { this._value = value; }
     public T Value
     {
-        get { Owner?.Check(); return value; }
-        set { Owner?.Check(); this.value = value; Lease?.Write(); }
+        get { Owner?.Check(); return _value; }
+        set { Owner?.Check(); this._value = value; Lease?.Write(); }
     }
-    internal T Current { get => value; set => this.value = value; }
+    internal T Current { get => _value; set => this._value = value; }
 }
 internal interface IStateLease : IDisposable { void Read(); void Write(); }
 internal sealed unsafe class StateLease<T, R> : IStateLease where R : unmanaged
 {
-    private readonly Ui ui;
-    private readonly State<T> state;
+    private readonly Ui _ui;
+    private readonly State<T> _state;
     internal R* Pointer;
-    private readonly delegate*<Ui, T, R> encode;
-    private readonly delegate*<Ui, R, T, T> decode;
+    private readonly delegate*<Ui, T, R> _encode;
+    private readonly delegate*<Ui, R, T, T> _decode;
     internal StateLease(Ui ui, State<T> state, delegate*<Ui, T, R> encode, delegate*<Ui, R, T, T> decode)
     {
-        this.ui = ui; this.state = state; this.encode = encode; this.decode = decode;
+        this._ui = ui; this._state = state; this._encode = encode; this._decode = decode;
         Pointer = (R*)NativeMemory.AllocZeroed((nuint)sizeof(R));
         if (Pointer is null) throw new OutOfMemoryException();
     }
-    public void Write() { if (Pointer != null) *Pointer = encode(ui, state.Current); }
-    public void Read() { if (Pointer != null) state.Current = decode(ui, *Pointer, state.Current); }
+    public void Write() { if (Pointer != null) *Pointer = _encode(_ui, _state.Current); }
+    public void Read() { if (Pointer != null) _state.Current = _decode(_ui, *Pointer, _state.Current); }
     public void Dispose() { NativeMemory.Free(Pointer); Pointer = null; }
 }
 
 /// <summary>Persistent UTF-8 storage. Capacity includes the trailing NUL byte.</summary>
 public sealed unsafe class TextBuffer : IDisposable
 {
-    private byte* data;
-    private readonly int owner = Environment.CurrentManagedThreadId;
+    private byte* _data;
+    private readonly int _owner = Environment.CurrentManagedThreadId;
     internal Ui? Context;
-    private bool disposed;
-    private int leases;
+    private bool _disposed;
+    private int _leases;
     public int Capacity { get; }
     public TextBuffer(int capacity, string text = "")
     {
         if (capacity < 1) throw new ArgumentOutOfRangeException(nameof(capacity));
         Capacity = capacity;
-        data = (byte*)NativeMemory.AllocZeroed((nuint)capacity);
-        if (data == null) throw new OutOfMemoryException();
-        try { Set(text); } catch { NativeMemory.Free(data); data = null; throw; }
+        _data = (byte*)NativeMemory.AllocZeroed((nuint)capacity);
+        if (_data == null) throw new OutOfMemoryException();
+        try { Set(text); } catch { NativeMemory.Free(_data); _data = null; throw; }
     }
     public TextBuffer(int capacity, ReadOnlySpan<byte> text) : this(capacity)
     {
@@ -77,12 +77,12 @@ public sealed unsafe class TextBuffer : IDisposable
     }
     private void Check()
     {
-        if (owner != Environment.CurrentManagedThreadId) throw new InvalidOperationException("Use the text buffer on its owner thread.");
-        ObjectDisposedException.ThrowIf(disposed, this);
+        if (_owner != Environment.CurrentManagedThreadId) throw new InvalidOperationException("Use the text buffer on its owner thread.");
+        ObjectDisposedException.ThrowIf(_disposed, this);
         Context?.Check();
     }
-    public string Text { get { Check(); return Encoding.UTF8.GetString(new ReadOnlySpan<byte>(data, Length)); } set => Set(value); }
-    public int Length { get { Check(); var n = 0; while (n < Capacity && data[n] != 0) n++; return n; } }
+    public string Text { get { Check(); return Encoding.UTF8.GetString(new ReadOnlySpan<byte>(_data, Length)); } set => Set(value); }
+    public int Length { get { Check(); var n = 0; while (n < Capacity && _data[n] != 0) n++; return n; } }
     public void Set(string text) { ArgumentNullException.ThrowIfNull(text); Set(text.AsSpan()); }
     public void Set(ReadOnlySpan<char> text)
     {
@@ -90,100 +90,100 @@ public sealed unsafe class TextBuffer : IDisposable
         if (text.Contains('\0')) throw new ArgumentException("Text cannot contain NUL.", nameof(text));
         var bytes = Encoding.UTF8.GetByteCount(text);
         if (bytes >= Capacity) throw new ArgumentException("UTF-8 text exceeds buffer capacity.", nameof(text));
-        Encoding.UTF8.GetBytes(text, new Span<byte>(data, bytes)); data[bytes] = 0;
+        Encoding.UTF8.GetBytes(text, new Span<byte>(_data, bytes)); _data[bytes] = 0;
     }
     public int CopyUtf8To(Span<byte> destination)
     {
         Check(); var length = Length;
         if (destination.Length < length) throw new ArgumentException("Destination is too short.", nameof(destination));
-        new ReadOnlySpan<byte>(data, length).CopyTo(destination); return length;
+        new ReadOnlySpan<byte>(_data, length).CopyTo(destination); return length;
     }
     public void SetUtf8(ReadOnlySpan<byte> text)
     {
         Check(); Utf8Validation.Check(text);
         if (text.Length >= Capacity) throw new ArgumentException("UTF-8 text exceeds buffer capacity.", nameof(text));
-        text.CopyTo(new Span<byte>(data, text.Length)); data[text.Length] = 0;
+        text.CopyTo(new Span<byte>(_data, text.Length)); _data[text.Length] = 0;
     }
     public void Set(ReadOnlySpan<byte> text) => SetUtf8(text);
     // Public API must not expose spans into disposable unmanaged storage.
-    internal ReadOnlySpan<byte> ReadUtf8() { int length = Length; return new(data, length); }
-    internal byte* Pointer => data;
+    internal ReadOnlySpan<byte> ReadUtf8() { int length = Length; return new(_data, length); }
+    internal byte* Pointer => _data;
     internal byte* Acquire(Ui ui)
     {
         Check();
         if (Context != null && !ReferenceEquals(Context, ui)) throw new ArgumentException("Text buffer belongs to another context.");
-        Context = ui; leases++; return data;
+        Context = ui; _leases++; return _data;
     }
-    internal void Release() { if (--leases == 0 && disposed) Free(); }
-    private void Free() { NativeMemory.Free(data); data = null; GC.SuppressFinalize(this); }
+    internal void Release() { if (--_leases == 0 && _disposed) Free(); }
+    private void Free() { NativeMemory.Free(_data); _data = null; GC.SuppressFinalize(this); }
     public void Dispose()
     {
-        if (owner != Environment.CurrentManagedThreadId) throw new InvalidOperationException("Dispose the text buffer on its owner thread.");
-        if (disposed) return; disposed = true;
-        if (leases == 0) Free();
+        if (_owner != Environment.CurrentManagedThreadId) throw new InvalidOperationException("Dispose the text buffer on its owner thread.");
+        if (_disposed) return; _disposed = true;
+        if (_leases == 0) Free();
     }
-    ~TextBuffer() { NativeMemory.Free(data); }
+    ~TextBuffer() { NativeMemory.Free(_data); }
 }
 
 internal sealed unsafe class FrameArena : IDisposable
 {
     private struct Block { internal byte* Pointer; internal int Size; internal int Used; }
-    private readonly List<Block> blocks = new List<Block>();
-    private readonly int limit;
-    private int allocated;
-    private int current;
-    internal int ReservedBytes => allocated;
+    private readonly List<Block> _blocks = new List<Block>();
+    private readonly int _limit;
+    private int _allocated;
+    private int _current;
+    internal int ReservedBytes => _allocated;
     internal int UsedBytes
     {
-        get { var used = 0; foreach (var block in blocks) used = checked(used + block.Used); return used; }
+        get { var used = 0; foreach (var block in _blocks) used = checked(used + block.Used); return used; }
     }
-    internal FrameArena(int limit) { if (limit < 4096) throw new ArgumentOutOfRangeException(nameof(limit)); this.limit = limit; }
+    internal FrameArena(int limit) { if (limit < 4096) throw new ArgumentOutOfRangeException(nameof(limit)); this._limit = limit; }
     internal void* Allocate(int bytes)
     {
         if (bytes < 0) throw new ArgumentOutOfRangeException(nameof(bytes));
         if (bytes == 0) return null;
         var aligned = checked((bytes + 15) & ~15);
-        while (current < blocks.Count)
+        while (_current < _blocks.Count)
         {
-            var b = blocks[current];
+            var b = _blocks[_current];
             if (aligned <= b.Size - b.Used)
             {
-                var p = b.Pointer + b.Used; b.Used += aligned; blocks[current] = b;
+                var p = b.Pointer + b.Used; b.Used += aligned; _blocks[_current] = b;
                 new Span<byte>(p, aligned).Clear(); return p;
             }
-            current++;
+            _current++;
         }
         var size = Math.Max(65536, aligned);
-        if (size > limit - allocated) size = aligned;
-        if (size > limit - allocated) throw new InvalidOperationException("Managed CUI frame arena limit exceeded.");
+        if (size > _limit - _allocated) size = aligned;
+        if (size > _limit - _allocated) throw new InvalidOperationException("Managed CUI frame arena limit exceeded.");
         var pointer = (byte*)NativeMemory.Alloc((nuint)size);
         if (pointer == null) throw new OutOfMemoryException();
-        blocks.Add(new Block { Pointer = pointer, Size = size, Used = aligned }); allocated += size;
+        _blocks.Add(new Block { Pointer = pointer, Size = size, Used = aligned }); _allocated += size;
         new Span<byte>(pointer, aligned).Clear(); return pointer;
     }
     internal void Reset()
     {
-        for (var i = 0; i < blocks.Count; i++) { var b = blocks[i]; b.Used = 0; blocks[i] = b; }
-        current = 0;
+        for (var i = 0; i < _blocks.Count; i++) { var b = _blocks[i]; b.Used = 0; _blocks[i] = b; }
+        _current = 0;
     }
-    public void Dispose() { foreach (var b in blocks) NativeMemory.Free(b.Pointer); blocks.Clear(); allocated = current = 0; }
+    public void Dispose() { foreach (var b in _blocks) NativeMemory.Free(b.Pointer); _blocks.Clear(); _allocated = _current = 0; }
 }
 
 public readonly struct UiScope : IDisposable
 {
-    private readonly Ui? ui;
-    private readonly long id;
-    private readonly long generation;
+    private readonly Ui? _ui;
+    private readonly long _id;
+    private readonly long _generation;
     public bool IsOpen { get; }
     public int Result { get; }
-    internal UiScope(Ui ui, long id, long generation, bool open, int result) { this.ui = ui; this.id = id; this.generation = generation; IsOpen = open; Result = result; }
-    public void Dispose() { if (IsOpen) ui?.CloseScope(id, generation); }
+    internal UiScope(Ui ui, long id, long generation, bool open, int result) { this._ui = ui; this._id = id; this._generation = generation; IsOpen = open; Result = result; }
+    public void Dispose() { if (IsOpen) _ui?.CloseScope(_id, _generation); }
     public static implicit operator bool(UiScope scope) => scope.IsOpen;
 }
 public readonly struct UiFrame : IDisposable
 {
-    private readonly Ui? ui;
-    private readonly long generation;
-    internal UiFrame(Ui ui, long generation) { this.ui = ui; this.generation = generation; }
-    public void Dispose() => ui?.FinishFrame(generation);
+    private readonly Ui? _ui;
+    private readonly long _generation;
+    internal UiFrame(Ui ui, long generation) { this._ui = ui; this._generation = generation; }
+    public void Dispose() => _ui?.FinishFrame(_generation);
 }

@@ -8,7 +8,7 @@ using Raw = Managed.Forms.Cui;
 internal static unsafe partial class Program
 {
     private static int assertions;
-    [UnsafeAccessor(UnsafeAccessorKind.Field, Name = "ctx")]
+    [UnsafeAccessor(UnsafeAccessorKind.Field, Name = "_ctx")]
     internal static extern ref Raw.cui_ctx* Context(Ui ui);
     internal static void Check(bool condition, string message)
     {

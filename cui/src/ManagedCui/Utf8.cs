@@ -25,27 +25,27 @@ public sealed unsafe partial class Ui
         internal readonly string? Text;
         internal readonly ReadOnlySpan<byte> Bytes;
         internal readonly TextBuffer? Buffer;
-        private readonly bool present;
-        internal Utf8Argument(string text) { Text = text; present = text != null; }
-        internal Utf8Argument(ReadOnlySpan<byte> bytes) { Bytes = bytes; present = true; }
-        internal Utf8Argument(TextBuffer buffer) { Buffer = buffer; present = buffer != null; }
-        internal void ThrowIfNull(string name) { if (!present) throw new ArgumentNullException(name); }
+        private readonly bool _present;
+        internal Utf8Argument(string text) { Text = text; _present = text != null; }
+        internal Utf8Argument(ReadOnlySpan<byte> bytes) { Bytes = bytes; _present = true; }
+        internal Utf8Argument(TextBuffer buffer) { Buffer = buffer; _present = buffer != null; }
+        internal void ThrowIfNull(string name) { if (!_present) throw new ArgumentNullException(name); }
         internal ReadOnlySpan<byte> GetBytes() => Buffer is null ? Bytes : Buffer.ReadUtf8();
     }
 
     private readonly ref struct Utf8Arguments
     {
-        private readonly ReadOnlySpan<string> strings;
-        private readonly ReadOnlySpan<ReadOnlyMemory<byte>> bytes;
-        private readonly ReadOnlySpan<TextBuffer> buffers;
-        private readonly byte kind;
-        internal Utf8Arguments(ReadOnlySpan<string> values) { strings = values; }
-        internal Utf8Arguments(ReadOnlySpan<ReadOnlyMemory<byte>> values) { bytes = values; kind = 1; }
-        internal Utf8Arguments(ReadOnlySpan<TextBuffer> values) { buffers = values; kind = 2; }
-        internal int Length => kind switch { 0 => strings.Length, 1 => bytes.Length, _ => buffers.Length };
-        internal Utf8Argument this[int index] => kind switch
+        private readonly ReadOnlySpan<string> _strings;
+        private readonly ReadOnlySpan<ReadOnlyMemory<byte>> _bytes;
+        private readonly ReadOnlySpan<TextBuffer> _buffers;
+        private readonly byte _kind;
+        internal Utf8Arguments(ReadOnlySpan<string> values) { _strings = values; }
+        internal Utf8Arguments(ReadOnlySpan<ReadOnlyMemory<byte>> values) { _bytes = values; _kind = 1; }
+        internal Utf8Arguments(ReadOnlySpan<TextBuffer> values) { _buffers = values; _kind = 2; }
+        internal int Length => _kind switch { 0 => _strings.Length, 1 => _bytes.Length, _ => _buffers.Length };
+        internal Utf8Argument this[int index] => _kind switch
         {
-            0 => new(strings[index]), 1 => new(bytes[index].Span), _ => new(buffers[index])
+            0 => new(_strings[index]), 1 => new(_bytes[index].Span), _ => new(_buffers[index])
         };
     }
 
@@ -57,7 +57,7 @@ public sealed unsafe partial class Ui
     private byte* Utf8Required(Utf8Argument text) => Utf8(text);
     private byte** Strings(Utf8Arguments values)
     {
-        var result = (byte**)arena.Allocate(checked(values.Length * sizeof(byte*)));
+        var result = (byte**)_arena.Allocate(checked(values.Length * sizeof(byte*)));
         for (int i = 0; i < values.Length; i++) result[i] = Utf8(values[i]);
         return result;
     }
@@ -70,7 +70,7 @@ public sealed unsafe partial class Ui
     private byte* CopyUtf8(ReadOnlySpan<byte> text)
     {
         Utf8Validation.Check(text);
-        var result = (byte*)arena.Allocate(checked(text.Length + 1));
+        var result = (byte*)_arena.Allocate(checked(text.Length + 1));
         text.CopyTo(new Span<byte>(result, text.Length)); result[text.Length] = 0;
         return result;
     }

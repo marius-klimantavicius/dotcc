@@ -5,21 +5,21 @@ namespace Cui.Managed;
 
 public sealed unsafe partial class Ui
 {
-    public ulong FrameCount() { Check(); return Raw.cui_frame_count(ctx); }
+    public ulong FrameCount() { Check(); return Raw.cui_frame_count(_ctx); }
     public UiScope Box(Box opts = default) => BoxBegin(opts);
     public UiScope Accordion(string title, ref bool open) => AccordionBegin(title, ref open);
     public UiScope TreeBegin(string label, TreeOpts opts = default)
     {
         CheckFrame(); CheckBegin(); ArgumentNullException.ThrowIfNull(label);
         var native = ToNative(opts);
-        var opened = Raw.cui_tree_begin(ctx, Utf8(label), null, &native) != 0;
+        var opened = Raw.cui_tree_begin(_ctx, Utf8(label), null, &native) != 0;
         SyncState(); return TrackScope(ScopeKind.Tree, opened, opened ? 1 : 0);
     }
     public UiScope Tree(string label, TreeOpts opts = default) => TreeBegin(label, opts);
     public bool TreeCell(string label, int depth, bool hasChildren, string icon)
     {
         CheckFrame(); ArgumentNullException.ThrowIfNull(label); ArgumentNullException.ThrowIfNull(icon);
-        var result = Raw.cui_tree_cell(ctx, Utf8(label), depth, hasChildren, null, Utf8(icon)) != 0;
+        var result = Raw.cui_tree_cell(_ctx, Utf8(label), depth, hasChildren, null, Utf8(icon)) != 0;
         SyncState(); return result;
     }
     public UiScope Tree(string label, ref bool open, TreeOpts opts = default) => TreeBegin(label, ref open, opts);
@@ -35,7 +35,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         var state = index;
-        var changed = Raw.cui_radio_group(ctx, Utf8Required(id), Strings(items), items.Length, &state) != 0;
+        var changed = Raw.cui_radio_group(_ctx, Utf8Required(id), Strings(items), items.Length, &state) != 0;
         index = state; SyncState(); return changed;
     }
     public bool MultiSelect(string id, ReadOnlySpan<string> items, Span<bool> selected, MultiSelectOpts opts = default) => MultiSelect(id, items, items.Length, selected, opts);
@@ -78,12 +78,12 @@ public sealed unsafe partial class Ui
     public int SignaturePoints(string id, Span<Vec2> points, Span<int> strokeEnds, out int strokeCount)
     {
         CheckFrame(); cui_vec2* rawPoints; int* rawEnds; int strokes;
-        var count = Raw.cui_signature_points(ctx, Utf8Required(id), &rawPoints, &rawEnds, &strokes);
+        var count = Raw.cui_signature_points(_ctx, Utf8Required(id), &rawPoints, &rawEnds, &strokes);
         strokeCount = strokes;
         CheckLength(count, points.Length, nameof(points)); CheckLength(strokes, strokeEnds.Length, nameof(strokeEnds));
         for (var i = 0; i < count; i++) points[i] = FromNative(rawPoints[i]);
         for (var i = 0; i < strokes; i++) strokeEnds[i] = rawEnds[i];
         return count;
     }
-    public void SignatureClear(string id) { CheckFrame(); Raw.cui_signature_clear(ctx, Utf8Required(id)); }
+    public void SignatureClear(string id) { CheckFrame(); Raw.cui_signature_clear(_ctx, Utf8Required(id)); }
 }

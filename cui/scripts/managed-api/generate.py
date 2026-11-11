@@ -27,7 +27,7 @@ def check_storage(directory):
     # No frame-arena singleton address is retained by this reviewed API surface.
     # Fail closed if an author introduces one; re-audit native retention first.
     for path in sorted(directory.glob("*.cs")):
-        if re.search(r"arena\s*\.\s*Allocate\s*\(\s*(?:checked\s*\(\s*)?sizeof\b", path.read_text()):
+        if re.search(r"\b_?arena\s*\.\s*Allocate\s*\(\s*(?:checked\s*\(\s*)?sizeof\b", path.read_text()):
             raise ValueError(f"{path.name}: singleton arena allocation needs a retention audit")
 
 
@@ -65,7 +65,7 @@ def main():
     outputs = {}
     for name in FILES:
         data = (template_dir / (name + ".in")).read_bytes()
-        if re.search(rb"arena\s*\.\s*Allocate\s*\(\s*(?:checked\s*\(\s*)?sizeof\b", data):
+        if re.search(rb"\b_?arena\s*\.\s*Allocate\s*\(\s*(?:checked\s*\(\s*)?sizeof\b", data):
             raise ValueError(f"{name}.in: singleton arena allocation needs a retention audit")
         outputs[name] = data
     outputs["Ui.Utf8.g.cs"] = generate_utf8(wrapper, outputs)

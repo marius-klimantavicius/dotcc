@@ -9,99 +9,99 @@ namespace Cui.Managed;
 /// <summary>Safe owner-thread view of a CUI context. Its surface/application owns its lifetime.</summary>
 public sealed unsafe partial class Ui
 {
-    private cui_ctx* ctx;
-    private readonly int owner = Environment.CurrentManagedThreadId;
+    private cui_ctx* _ctx;
+    private readonly int _owner = Environment.CurrentManagedThreadId;
     // Stable pointees (UTF-8 and arrays), not synchronous singleton arguments.
-    private readonly FrameArena arena;
-    private bool inFrame;
-    private bool painting;
-    private bool fileCallback;
-    private long generation;
-    private long nextScope;
-    private long closedScope;
-    private readonly List<(long Id, ScopeKind Kind)> scopes = new List<(long Id, ScopeKind Kind)>();
-    private readonly List<IStateLease> states = new List<IStateLease>();
-    private readonly List<IStateLease> activeStates = new List<IStateLease>();
-    private readonly HashSet<TextBuffer> buffers = new HashSet<TextBuffer>();
-    private readonly HashSet<TerminalBuffer> terminals = new HashSet<TerminalBuffer>();
-    private readonly Dictionary<ulong, Texture> textures = new Dictionary<ulong, Texture>();
-    private readonly List<Texture> pendingTextures = new List<Texture>();
-    private readonly List<GCHandle> callbackRoots = new List<GCHandle>();
-    private ExceptionDispatchInfo? callbackError;
-    private bool arraysDirty;
+    private readonly FrameArena _arena;
+    private bool _inFrame;
+    private bool _painting;
+    private bool _fileCallback;
+    private long _generation;
+    private long _nextScope;
+    private long _closedScope;
+    private readonly List<(long Id, ScopeKind Kind)> _scopes = new List<(long Id, ScopeKind Kind)>();
+    private readonly List<IStateLease> _states = new List<IStateLease>();
+    private readonly List<IStateLease> _activeStates = new List<IStateLease>();
+    private readonly HashSet<TextBuffer> _buffers = new HashSet<TextBuffer>();
+    private readonly HashSet<TerminalBuffer> _terminals = new HashSet<TerminalBuffer>();
+    private readonly Dictionary<ulong, Texture> _textures = new Dictionary<ulong, Texture>();
+    private readonly List<Texture> _pendingTextures = new List<Texture>();
+    private readonly List<GCHandle> _callbackRoots = new List<GCHandle>();
+    private ExceptionDispatchInfo? _callbackError;
+    private bool _arraysDirty;
     internal Ui(cui_ctx* context, int arenaLimit)
     {
         if (context == null) throw new ArgumentNullException(nameof(context));
-        ctx = context; arena = new FrameArena(arenaLimit);
+        _ctx = context; _arena = new FrameArena(arenaLimit);
     }
     internal void Check()
     {
         CheckOwnerThread();
-        ObjectDisposedException.ThrowIf(ctx == null, this);
+        ObjectDisposedException.ThrowIf(_ctx == null, this);
     }
     internal void CheckOwnerThread()
     {
-        if (Environment.CurrentManagedThreadId != owner) throw new InvalidOperationException("Use CUI on its creating thread.");
+        if (Environment.CurrentManagedThreadId != _owner) throw new InvalidOperationException("Use CUI on its creating thread.");
     }
     private void CheckFrame()
     {
         Check();
-        if (!inFrame || painting || fileCallback) throw new InvalidOperationException("Build widgets inside a frame, outside paint callbacks.");
+        if (!_inFrame || _painting || _fileCallback) throw new InvalidOperationException("Build widgets inside a frame, outside paint callbacks.");
     }
     private void CheckBegin()
     {
-        if (scopes.Count >= 32) throw new InvalidOperationException("CUI managed scope nesting limit exceeded.");
+        if (_scopes.Count >= 32) throw new InvalidOperationException("CUI managed scope nesting limit exceeded.");
     }
     internal void CheckLifecycle()
     {
         Check();
-        if (painting || fileCallback) throw new InvalidOperationException("Do not change CUI lifecycle inside a callback.");
+        if (_painting || _fileCallback) throw new InvalidOperationException("Do not change CUI lifecycle inside a callback.");
     }
     private void CheckDraw()
     {
         Check();
-        if (!inFrame || !painting) throw new InvalidOperationException("Draw inside a canvas paint callback.");
+        if (!_inFrame || !_painting) throw new InvalidOperationException("Draw inside a canvas paint callback.");
     }
     internal void PrepareFrame()
     {
         CheckLifecycle();
-        if (inFrame) throw new InvalidOperationException("Finish the previous frame before starting another.");
+        if (_inFrame) throw new InvalidOperationException("Finish the previous frame before starting another.");
     }
     internal UiFrame AdoptFrame()
     {
         // Desktop NextFrame can poll and re-present the previous draw data
         // before native begin. Retire inputs/resources only after it returns a
         // new frame, when native begin has discarded previous build pointers.
-        ReleasePendingTextures(); arena.Reset(); ClearArrays(); arraysDirty = false; activeStates.Clear();
-        generation++; closedScope = nextScope; scopes.Clear();
-        foreach (var buffer in buffers) buffer.Release(); buffers.Clear();
-        foreach (var terminal in terminals) terminal.Release(); terminals.Clear();
-        inFrame = true; return new UiFrame(this, generation);
+        ReleasePendingTextures(); _arena.Reset(); ClearArrays(); _arraysDirty = false; _activeStates.Clear();
+        _generation++; _closedScope = _nextScope; _scopes.Clear();
+        foreach (var buffer in _buffers) buffer.Release(); _buffers.Clear();
+        foreach (var terminal in _terminals) terminal.Release(); _terminals.Clear();
+        _inFrame = true; return new UiFrame(this, _generation);
     }
     internal UiFrame BeginFrame(float dt)
     {
         if (!float.IsFinite(dt) || dt < 0) throw new ArgumentOutOfRangeException(nameof(dt));
-        PrepareFrame(); Raw.cui_begin_frame(ctx, dt); return AdoptFrame();
+        PrepareFrame(); Raw.cui_begin_frame(_ctx, dt); return AdoptFrame();
     }
     internal void FinishFrame(long expected)
     {
         Check();
-        if (generation != expected) throw new InvalidOperationException("Frame token is stale.");
-        if (!inFrame) return;
-        if (painting || fileCallback) throw new InvalidOperationException("Cannot finish a frame from a callback.");
+        if (_generation != expected) throw new InvalidOperationException("Frame token is stale.");
+        if (!_inFrame) return;
+        if (_painting || _fileCallback) throw new InvalidOperationException("Cannot finish a frame from a callback.");
         try
         {
-            while (scopes.Count > 0)
+            while (_scopes.Count > 0)
             {
-                var entry = scopes[^1]; NativeEnd(entry.Kind); scopes.RemoveAt(scopes.Count - 1); closedScope = Math.Max(closedScope, entry.Id);
+                var entry = _scopes[^1]; NativeEnd(entry.Kind); _scopes.RemoveAt(_scopes.Count - 1); _closedScope = Math.Max(_closedScope, entry.Id);
             }
-            Raw.cui_end_frame(ctx);
+            Raw.cui_end_frame(_ctx);
             SyncState();
         }
-        finally { inFrame = false; }
+        finally { _inFrame = false; }
         ThrowCallbackError();
     }
-    internal void EndFrame() { Check(); if (inFrame) FinishFrame(generation); }
+    internal void EndFrame() { Check(); if (_inFrame) FinishFrame(_generation); }
     internal void DestroyContext(Action destroy)
     {
         CheckLifecycle();
@@ -109,36 +109,36 @@ public sealed unsafe partial class Ui
         finally
         {
             // Native destruction can still consult callbacks and edit backing storage.
-            try { try { foreach (var texture in textures.Values) Raw.cui_image_destroy(ctx, texture.Value); } finally { destroy(); } }
+            try { try { foreach (var texture in _textures.Values) Raw.cui_image_destroy(_ctx, texture.Value); } finally { destroy(); } }
             finally
             {
-                ctx = null;
-                foreach (var texture in textures.Values) texture.Invalidate(); textures.Clear();
-                foreach (var state in states) state.Dispose(); states.Clear(); activeStates.Clear();
-                foreach (var buffer in buffers) buffer.Release(); buffers.Clear();
-                foreach (var terminal in terminals) terminal.Release(); terminals.Clear();
-                foreach (var painter in painters.Values) painter.Callback = null;
-                painters.Clear(); fileRoots.Clear(); selfRoot = 0;
-                foreach (var root in callbackRoots) root.Free(); callbackRoots.Clear();
-                pendingTextures.Clear(); callbackError = null;
-                arena.Dispose(); ClearArrays();
+                _ctx = null;
+                foreach (var texture in _textures.Values) texture.Invalidate(); _textures.Clear();
+                foreach (var state in _states) state.Dispose(); _states.Clear(); _activeStates.Clear();
+                foreach (var buffer in _buffers) buffer.Release(); _buffers.Clear();
+                foreach (var terminal in _terminals) terminal.Release(); _terminals.Clear();
+                foreach (var painter in _painters.Values) painter.Callback = null;
+                _painters.Clear(); _fileRoots.Clear(); _selfRoot = 0;
+                foreach (var root in _callbackRoots) root.Free(); _callbackRoots.Clear();
+                _pendingTextures.Clear(); _callbackError = null;
+                _arena.Dispose(); ClearArrays();
             }
         }
     }
-    internal bool IsDisposed => ctx == null;
-    internal void Contain(Exception error) => callbackError ??= ExceptionDispatchInfo.Capture(error);
+    internal bool IsDisposed => _ctx == null;
+    internal void Contain(Exception error) => _callbackError ??= ExceptionDispatchInfo.Capture(error);
     private void ThrowCallbackError()
     {
-        var error = callbackError; callbackError = null; error?.Throw();
+        var error = _callbackError; _callbackError = null; error?.Throw();
     }
     private void SyncState()
     {
-        foreach (var lease in activeStates) lease.Read();
+        foreach (var lease in _activeStates) lease.Read();
         // Retained writable arrays are currently grid selection and reorder
         // order. Text/cell/layout calls cannot mutate them. Synchronize only
         // after registration or the upstream mutation points, not per cell.
-        if (arraysDirty) { SyncArrays(); arraysDirty = false; }
-        if (!painting) ThrowCallbackError();
+        if (_arraysDirty) { SyncArrays(); _arraysDirty = false; }
+        if (!_painting) ThrowCallbackError();
     }
     private R* Bind<T, R>(State<T>? state, delegate*<Ui, T, R> encode, delegate*<Ui, R, T, T> decode) where R : unmanaged
     {
@@ -146,18 +146,18 @@ public sealed unsafe partial class Ui
         if (state.Owner != null && !ReferenceEquals(state.Owner, this)) throw new ArgumentException("State belongs to another context.");
         if (state.Lease == null)
         {
-            if (states.Count >= 65536) throw new InvalidOperationException("CUI state owner limit exceeded.");
+            if (_states.Count >= 65536) throw new InvalidOperationException("CUI state owner limit exceeded.");
             state.Owner = this;
-            var created = new StateLease<T, R>(this, state, encode, decode); state.Lease = created; states.Add(created);
+            var created = new StateLease<T, R>(this, state, encode, decode); state.Lease = created; _states.Add(created);
         }
         var lease = (StateLease<T, R>)state.Lease;
-        if (!activeStates.Contains(lease)) { lease.Write(); activeStates.Add(lease); }
+        if (!_activeStates.Contains(lease)) { lease.Write(); _activeStates.Add(lease); }
         return lease.Pointer;
     }
     private byte* Use(TextBuffer? buffer)
     {
         if (buffer == null) return null;
-        if (!buffers.Contains(buffer)) { var pointer = buffer.Acquire(this); buffers.Add(buffer); return pointer; }
+        if (!_buffers.Contains(buffer)) { var pointer = buffer.Acquire(this); _buffers.Add(buffer); return pointer; }
         // Repeated Acquire would add a lease; validate without changing ownership.
         _ = buffer.Length;
         return buffer.Pointer;
@@ -168,12 +168,12 @@ public sealed unsafe partial class Ui
     {
         if (value.Contains('\0')) throw new ArgumentException("CUI strings cannot contain NUL.", nameof(value));
         var size = Encoding.UTF8.GetByteCount(value);
-        var pointer = (byte*)arena.Allocate(checked(size + 1));
+        var pointer = (byte*)_arena.Allocate(checked(size + 1));
         Encoding.UTF8.GetBytes(value, new Span<byte>(pointer, size)); pointer[size] = 0; return pointer;
     }
     private byte** Strings(ReadOnlySpan<string> values)
     {
-        var result = (byte**)arena.Allocate(checked(values.Length * sizeof(byte*)));
+        var result = (byte**)_arena.Allocate(checked(values.Length * sizeof(byte*)));
         for (var i = 0; i < values.Length; i++)
         {
             if (values[i] == null) throw new ArgumentException("String array entries must be non-null.", nameof(values));
@@ -183,7 +183,7 @@ public sealed unsafe partial class Ui
     }
     private byte** OptionalStrings(ReadOnlySpan<string?> values)
     {
-        var result = (byte**)arena.Allocate(checked(values.Length * sizeof(byte*)));
+        var result = (byte**)_arena.Allocate(checked(values.Length * sizeof(byte*)));
         for (var i = 0; i < values.Length; i++) result[i] = Utf8(values[i]);
         return result;
     }
@@ -228,25 +228,25 @@ public sealed unsafe partial class Ui
     }
     private UiScope TrackScope(ScopeKind kind, bool open, int result)
     {
-        if (!open) return new UiScope(this, 0, generation, false, result);
-        var id = ++nextScope; scopes.Add((id, kind)); return new UiScope(this, id, generation, true, result);
+        if (!open) return new UiScope(this, 0, _generation, false, result);
+        var id = ++_nextScope; _scopes.Add((id, kind)); return new UiScope(this, id, _generation, true, result);
     }
     internal void CloseScope(long id, long expected)
     {
         Check();
-        if (expected != generation) throw new InvalidOperationException("Scope token is stale.");
-        if (id <= closedScope || !inFrame) return;
-        var index = scopes.Count - 1;
-        while (index >= 0 && scopes[index].Id != id) index--;
+        if (expected != _generation) throw new InvalidOperationException("Scope token is stale.");
+        if (id <= _closedScope || !_inFrame) return;
+        var index = _scopes.Count - 1;
+        while (index >= 0 && _scopes[index].Id != id) index--;
         if (index < 0) return;
-        if (index != scopes.Count - 1) throw new InvalidOperationException("Dispose CUI scopes in reverse nesting order.");
-        NativeEnd(scopes[index].Kind); scopes.RemoveAt(index);
+        if (index != _scopes.Count - 1) throw new InvalidOperationException("Dispose CUI scopes in reverse nesting order.");
+        NativeEnd(_scopes[index].Kind); _scopes.RemoveAt(index);
         // Individual closed ids are absent from the stack; never suppress an outer token.
     }
     private void BeforeExplicitEnd(ScopeKind kind)
     {
-        if (scopes.Count == 0 || scopes[^1].Kind != kind) throw new InvalidOperationException("End does not match the active CUI scope.");
-        scopes.RemoveAt(scopes.Count - 1);
+        if (_scopes.Count == 0 || _scopes[^1].Kind != kind) throw new InvalidOperationException("End does not match the active CUI scope.");
+        _scopes.RemoveAt(_scopes.Count - 1);
     }
     public UiScope Row(Box opts = default) => RowBegin(opts);
     public UiScope Column(Box opts = default) => ColumnBegin(opts);
@@ -260,7 +260,7 @@ public sealed unsafe partial class Ui
     public UiScope Table(string id, ReadOnlySpan<TableColumn> columns, TableOpts opts = default) => TableBegin(id, columns, columns.Length, opts);
     public void Text(ReadOnlySpan<char> text, TextOpts opts = default)
     {
-        CheckFrame(); var native = ToNative(opts); Raw.cui_text_ex(ctx, Utf8(text), &native);
+        CheckFrame(); var native = ToNative(opts); Raw.cui_text_ex(_ctx, Utf8(text), &native);
     }
 
 }

@@ -10,7 +10,7 @@ internal static unsafe partial class Program
     private static bool GridSelectionAt(Session s, int row) => s.State.Demo.IsGridRowSelected(row);
     private static int GridSortColumn(Session s) => s.State.Demo.GridSort.Column;
     private static string GridName(Session s, int row) => s.State.Demo.GridRowName(row);
-    [UnsafeAccessor(UnsafeAccessorKind.Field, Name = "ctx")]
+    [UnsafeAccessor(UnsafeAccessorKind.Field, Name = "_ctx")]
     private static extern ref cui_ctx* Context(Ui ui);
 
     // The showcase itself has no raw access. This qualification adapter keeps

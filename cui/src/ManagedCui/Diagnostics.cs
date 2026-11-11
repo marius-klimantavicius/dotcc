@@ -12,7 +12,7 @@ public sealed unsafe partial class Ui
     public UiDiagnostics GetDiagnostics()
     {
         Check();
-        return new UiDiagnostics(arena.ReservedBytes, arena.UsedBytes, scopes.Count, buffers.Count,
-            terminals.Count, states.Count, textures.Count, callbackRoots.Count, painters.Count);
+        return new UiDiagnostics(_arena.ReservedBytes, _arena.UsedBytes, _scopes.Count, _buffers.Count,
+            _terminals.Count, _states.Count, _textures.Count, _callbackRoots.Count, _painters.Count);
     }
 }
