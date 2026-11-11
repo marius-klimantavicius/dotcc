@@ -11,13 +11,14 @@ internal static class Program
     {
         try
         {
-            bool gallerySmoke = false, listPages = false, help = false;
+            bool gallerySmoke = false, listPages = false, help = false, showFps = true;
             string? requestedPage = null, capture = null;
             for (int i = 0; i < arguments.Length; i++)
             {
                 switch (arguments[i])
                 {
                     case "--gallery-smoke": gallerySmoke = true; break;
+                    case "--no-fps": showFps = false; break;
                     case "--list-pages": listPages = true; break;
                     case "--help": case "-h": help = true; break;
                     case "--page": requestedPage = Value(arguments, ref i); break;
@@ -32,6 +33,7 @@ internal static class Program
                     "  --list-pages       Print page indices and names without opening a window.\n" +
                     "  --gallery-smoke    Render all 27 pages, four frames each, and check cleanup.\n" +
                     "  --capture PATH     Save raw RGBA (last smoke page, or interactive frame four).\n" +
+                    "  --no-fps           Hide the frame-rate readout (also hidden in smoke/captures).\n" +
                     "  --help, -h         Show this help.");
                 return 0;
             }
@@ -40,7 +42,7 @@ internal static class Program
                 for (int i = 0; i < GalleryDemo.PageCount; i++) Console.WriteLine($"{i}\t{GalleryDemo.PageName(i)}");
                 return 0;
             }
-            return RunGallery(ResolvePage(requestedPage), gallerySmoke, capture);
+            return RunGallery(ResolvePage(requestedPage), gallerySmoke, capture, showFps);
         }
         catch (Exception error) { Console.Error.WriteLine(error.Message); return 1; }
     }
@@ -66,7 +68,7 @@ internal static class Program
         throw new ArgumentException($"Unknown gallery page '{requested}'. Use --list-pages.");
     }
 
-    private static int RunGallery(int firstPage, bool smoke, string? capture)
+    private static int RunGallery(int firstPage, bool smoke, string? capture, bool showFps)
     {
         using var app = new Application(new()
         {
@@ -74,12 +76,13 @@ internal static class Program
             Hidden = smoke, Continuous = smoke || capture is not null, Theme = ThemeMode.Light, Accent = Accent.Neutral
         });
         using var demo = new GalleryDemo { Page = firstPage };
+        var frameRate = showFps && !smoke && capture is null ? new FrameRateCounter() : null;
         int frames = 0, visited = 0, pageFrames = 0;
         bool resetScroll = false;
         while (app.NextFrame())
         {
             if (resetScroll) { app.Ui.ScrollTo("main", 0); resetScroll = false; }
-            demo.Frame(app.Ui);
+            demo.Frame(app.Ui, frameRate is null ? default : frameRate.NextFrame());
             frames++;
             pageFrames++;
             if (smoke && pageFrames == 4)

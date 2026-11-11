@@ -22,6 +22,15 @@ Use `--list-pages`, `--page INDEX|NAME`, `--gallery-smoke`, `--capture PATH`, or
 differential, interaction and safety qualification use the test suites rather
 than treating a smoke run as acceptance.
 
+Interactive runs show FPS in the sidebar (or the header at narrow widths).
+The counter averages the last 120 frame intervals and refreshes at most four
+times per second, using reusable storage and UTF-8 formatting without managed
+allocations per frame. It measures actual frame cadence, including presentation
+and event waits, rather than uncapped rendering capacity. Event-driven rendering
+is preserved: the readout updates when frames run and may remain unchanged while
+idle. Use `--no-fps` to hide it. Smoke runs and captures hide it automatically,
+and `GalleryDemo.Frame(ui)` retains its original deterministic layout.
+
 Build with `-p:CuiVariant=Raw` to select raw translated CUI through the same
 ordinary wrapper reference. NativeAOT uses `dotnet publish -r linux-x64
 -p:PublishAot=true` (or the actual target RID) with the same external artifacts

@@ -172,7 +172,7 @@ public sealed partial class GalleryDemo : IDisposable
         }
     }
 
-    private void Sidebar(Ui ui, bool inDrawer)
+    private void Sidebar(Ui ui, bool inDrawer, ReadOnlySpan<byte> frameRate)
     {
         if (swatchUi is not null && !ReferenceEquals(swatchUi, ui)) throw new InvalidOperationException("A gallery instance belongs to one UI context.");
         swatchUi = ui;
@@ -217,6 +217,7 @@ public sealed partial class GalleryDemo : IDisposable
                 if (result.Clicked) { accent = a; ui.SetAccent((Accent)a); }
             }
         }
+        if (!frameRate.IsEmpty) DrawFrameRate(ui, frameRate);
     }
     private void NavigationItem(Ui ui, int index)
     {
@@ -226,7 +227,9 @@ public sealed partial class GalleryDemo : IDisposable
         ui.ScrollTo("main", 0);
     }
 
-    public void Frame(Ui ui)
+    public void Frame(Ui ui) => Frame(ui, default);
+
+    public void Frame(Ui ui, ReadOnlySpan<byte> frameRate)
     {
         CheckAlive();
         ArgumentNullException.ThrowIfNull(ui);
@@ -239,7 +242,7 @@ public sealed partial class GalleryDemo : IDisposable
         if (!narrow) drawer = false;
         using (ui.RowBegin(new() { Width = Size.Fill, Height = Size.Fill, Align = Align.Stretch, Bg = Color.Background }))
         {
-            if (!narrow) { Sidebar(ui, false); ui.Separator(); }
+            if (!narrow) { Sidebar(ui, false, frameRate); ui.Separator(); }
             using var scroll = ui.ScrollBegin(new() { Id = "main", Width = Size.Fill, FadeEdges = true });
             using var row = ui.RowBegin(new() { Justify = Justify.Center, Align = Align.Start });
             using var column = ui.ColumnBegin(new() { Width = Size.Fill, MaxWidth = 920, PadX = narrow ? 16 : 40, PadTop = narrow ? 12 : 36, PadBottom = 64, Gap = 20 });
@@ -248,6 +251,7 @@ public sealed partial class GalleryDemo : IDisposable
                 using var header = ui.RowBegin(new() { Gap = 8, Width = Size.Fill });
                 if (ui.IconButton(Icons.Menu, new() { Tooltip = "Components" })) drawer = true;
                 ui.Text("CUI", new() { Font = Font.Medium, Size = 15 });
+                if (!frameRate.IsEmpty) { ui.Spacer(); DrawFrameRate(ui, frameRate); }
             }
             if (page != 0)
             {
@@ -274,9 +278,12 @@ public sealed partial class GalleryDemo : IDisposable
             }
         }
         using (var sheet = ui.SheetBegin("CUI", ref drawer, new() { Side = Side.Left, Size = 280 }))
-            if (sheet.IsOpen) Sidebar(ui, true);
+            if (sheet.IsOpen) Sidebar(ui, true, frameRate);
         Dialogs(ui);
     }
+
+    private static void DrawFrameRate(Ui ui, ReadOnlySpan<byte> frameRate) =>
+        ui.TextUtf8(frameRate, new() { Size = 12, Color = Color.TextSecondary, Nowrap = true });
 
     private void Dialogs(Ui ui)
     {
