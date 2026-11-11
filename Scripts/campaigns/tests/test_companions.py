@@ -117,6 +117,17 @@ class CompanionDeliveryTests(unittest.TestCase):
         deliver(self.ctx, self.raw, self.configure, self.finish,
                 {self.companion: self.frontend} if companions is None else companions)
 
+    def test_symbol_sidecar_survives_processing_and_publication(self):
+        metadata = '{"Version":1,"Owner":"Engine.Core"}\n'
+        (self.raw / "Dotcc.ManagedSymbols.json").write_text(metadata)
+        with (self.raw / "Dotcc.SourceFiles.txt").open("a") as manifest:
+            manifest.write("Dotcc.ManagedSymbols.json\n")
+        self.deliver()
+        for form in ("raw", "processed"):
+            directory = self.layout(self.main).directory("default", form)
+            self.assertEqual((directory / "Dotcc.ManagedSymbols.json").read_text(), metadata)
+            self.assertIn("Dotcc.ManagedSymbols.json", json.loads((directory / ".campaign-files.json").read_text()))
+
     def layout(self, name):
         return Layout(self.root, name, "default")
 

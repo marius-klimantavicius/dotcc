@@ -35,8 +35,8 @@ public sealed partial class ManagedLibraryTests
             var options = new CSharpOutputOptions(NestTypes: true, Runtime: RuntimeProfile.C);
             var core = Compiler.LinkObjectFiles([Emit("core", "#include \"model.h\"\n" + "_Bool call(struct context *c) { return c->callback(&c->value); }")],
                 emit: EmitMode.ManagedLib, className: "Core", namespaceName: "Engine", outputOptions: options with { ExportManagedSymbols = true });
-            var manifest = Path.Combine(directory, "Dotcc.ManagedSymbols.cs");
-            File.WriteAllText(manifest, core["Dotcc.ManagedSymbols.cs"]);
+            var manifest = Path.Combine(directory, "Dotcc.ManagedSymbols.json");
+            File.WriteAllText(manifest, core["Dotcc.ManagedSymbols.json"]);
             var companion = Compiler.LinkObjectFiles([Emit("companion", "#include \"model.h\"\n" + """
                 static _Bool positive(item *p) { return p->value == 42; }
                 _Bool (*saved)(struct context *) = call;
@@ -47,7 +47,7 @@ public sealed partial class ManagedLibraryTests
                 """)], emit: EmitMode.ManagedLib, className: "Companion", namespaceName: "Client", split: SourceSplit.Size, splitSize: 100,
                 outputOptions: options with { ManagedReferences = [manifest] });
             var references = RuntimeReferences();
-            var coreImage = Compile("ManagedReferenceCore_" + Guid.NewGuid().ToString("N"), string.Join("\n", core.Values), references);
+            var coreImage = Compile("ManagedReferenceCore_" + Guid.NewGuid().ToString("N"), string.Join("\n", core.Where(file => file.Key.EndsWith(".cs", StringComparison.Ordinal)).Select(file => file.Value)), references);
             references.Add(MetadataReference.CreateFromImage(coreImage));
             // Split emission is compiled as separate trees: aliases must be
             // available in both the owner shell and every function file.

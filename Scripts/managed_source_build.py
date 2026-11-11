@@ -42,10 +42,11 @@ def source_inputs(project, references=()):
     manifest = project.parent / "Dotcc.SourceFiles.txt"
     names = manifest.read_text().splitlines()
     if (not names or len(names) != len(set(names)) or
-            any(Path(name).name != name or not name.endswith(".cs") for name in names)):
+            any(Path(name).name != name or not (name.endswith(".cs") or name == "Dotcc.ManagedSymbols.json")
+                for name in names)):
         raise RuntimeError("Expected an exact flat generated-source manifest")
     actual = {p.name for p in project.parent.glob("*.cs")}
-    if set(names) != actual:
+    if {name for name in names if name.endswith(".cs")} != actual:
         raise RuntimeError("Unmanifested or missing generated source")
     tree = ET.parse(project).getroot()
     if tree.attrib != {"Sdk": "Microsoft.NET.Sdk"}:
@@ -63,11 +64,11 @@ def source_inputs(project, references=()):
     if (not re.fullmatch(r"net\d+\.\d+", properties.get("TargetFramework", "")) or
             properties.get("OutputType") not in ("Exe", "Library")):
         raise RuntimeError("Expected an explicit .NET framework and output type")
-    sources = [project.parent / name for name in names]
+    sources = [project.parent / name for name in names if name.endswith(".cs")]
     references = list(map(Path, references))
     if len({p.stem for p in references}) != len(references):
         raise RuntimeError("Duplicate declared assembly reference")
-    paths = [project, manifest, *sources, *references]
+    paths = [project, manifest, *(project.parent / name for name in names), *references]
     expected = {str(p): digest(p) for p in paths}
     verify_files(expected)
     return properties, sources, references, expected
@@ -179,7 +180,8 @@ def reconstruct(project, output_root, references=(), notices=()):
                       [(p.stem, p) for p in references])
         build(linked, "original-paths")
         entries = {}
-        for collection, folder in ((sources, "sources"), (references, "references"), (notices, "notices")):
+        sidecars = [Path(path) for path in expected if Path(path).name == "Dotcc.ManagedSymbols.json"]
+        for collection, folder in ((sources + sidecars, "sources"), (references, "references"), (notices, "notices")):
             if collection:
                 (package / folder).mkdir()
             for path in collection:

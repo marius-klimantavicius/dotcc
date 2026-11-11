@@ -13,13 +13,14 @@ internal sealed record CSharpFunctionSource(string Name, string Text);
 
 public static partial class Compiler
 {
-    /// <summary>Write emitted sources and remove obsolete files listed in dotcc's
-    /// previous source manifest. Unlisted application files are preserved.</summary>
+    /// <summary>Write emitted sources and metadata, and remove obsolete files listed
+    /// in dotcc's previous ownership manifest. Unlisted application files are preserved.</summary>
     public static void WriteCSharpFiles(string directory, IReadOnlyDictionary<string, string> sources)
     {
         const string manifest = "Dotcc.SourceFiles.txt";
         static bool GeneratedName(string name)
         {
+            if (name == ManagedSymbolsFile) return true;
             if (name == "Program.cs" || name == "Dotcc.GlobalUsings.g.cs") return true;
             // Accept the old naming scheme too so existing manifests migrate cleanly.
             if (name.StartsWith("Dotcc.Functions.", StringComparison.Ordinal) && name.EndsWith(".g.cs", StringComparison.Ordinal)

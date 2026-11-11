@@ -9,14 +9,15 @@ namespace DotCC;
 
 public static partial class Compiler
 {
-    // A source-only manifest travels with generated projects and remains valid
-    // C#. It is compiler metadata, never inferred from postprocessed C# bodies.
-    internal const string ManagedSymbolsFile = "Dotcc.ManagedSymbols.cs";
+    // A JSON sidecar travels with generated projects. It is compiler metadata,
+    // never inferred from postprocessed C# bodies or compiled into the library.
+    internal const string ManagedSymbolsFile = "Dotcc.ManagedSymbols.json";
     private const string ManagedSymbolsMarker = "//!!dotcc-managed-symbols:1 ";
     private sealed record ManagedTypeSymbol(string Target, bool Incomplete, bool Union, string Signature);
     private sealed record ManagedSymbols(int Version, string Owner, string RuntimeHash,
         Dictionary<string, ManagedTypeSymbol> Types, string[] Functions);
 
+    [JsonSourceGenerationOptions(WriteIndented = true)]
     [JsonSerializable(typeof(ManagedSymbols))]
     private partial class ManagedSymbolsContext : JsonSerializerContext { }
 
@@ -24,10 +25,12 @@ public static partial class Compiler
     {
         if (options?.ManagedReferences is not { Count: > 0 } paths) return null;
         var text = File.ReadAllText(paths[0]).Trim();
-        if (!text.StartsWith(ManagedSymbolsMarker, StringComparison.Ordinal))
-            throw new CompileException("invalid managed symbol manifest: " + paths[0]);
+        // Continue accepting the original comment-wrapped manifests so already
+        // generated libraries can be referenced without regeneration.
+        if (text.StartsWith(ManagedSymbolsMarker, StringComparison.Ordinal))
+            text = text[ManagedSymbolsMarker.Length..];
         ManagedSymbols symbols;
-        try { symbols = JsonSerializer.Deserialize(text[ManagedSymbolsMarker.Length..], ManagedSymbolsContext.Default.ManagedSymbols)!; }
+        try { symbols = JsonSerializer.Deserialize(text, ManagedSymbolsContext.Default.ManagedSymbols)!; }
         catch (JsonException) { throw new CompileException("invalid managed symbol JSON: " + paths[0]); }
         static bool Qualified(string? name) => name is { Length: > 0 } && name.Split('.').All(part => CPreprocessingOptions.Identifier(part.TrimStart('@')));
         if (symbols is not { Version: 1, Types: not null, Functions: not null }
@@ -85,7 +88,7 @@ public static partial class Compiler
         var metadata = new ManagedSymbols(1, owner, AggregateIdentities.Hash(_cRuntimeBlock.Value), types,
             definitions.Distinct().Order(StringComparer.Ordinal).ToArray());
         var result = new Dictionary<string, string>(files, StringComparer.Ordinal);
-        result.Add(ManagedSymbolsFile, ManagedSymbolsMarker + JsonSerializer.Serialize(metadata, ManagedSymbolsContext.Default.ManagedSymbols) + "\n");
+        result.Add(ManagedSymbolsFile, JsonSerializer.Serialize(metadata, ManagedSymbolsContext.Default.ManagedSymbols) + "\n");
         return result;
     }
 }

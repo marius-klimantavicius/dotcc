@@ -159,8 +159,11 @@ target-specific; use `dotnet publish` with `-r linux-x64` or `-r win-x64`,
 Run `bash cui/scripts/test.sh --suite gallery --form all --mode all` for the
 Linux native/translated gallery differential and real desktop-input workflows.
 That suite owns its Xvfb display. Gallery follow-up evidence is recorded
-in [EMOJI-VALIDATION.json](docs/EMOJI-VALIDATION.json), including current product
-hashes and the native/managed emoji-selection regression. Preparation applies
+in [EMOJI-VALIDATION.json](docs/EMOJI-VALIDATION.json), including the native/managed
+emoji-selection regression. The subsequent metadata-only migration is recorded
+in [METADATA-VALIDATION.json](docs/METADATA-VALIDATION.json): core link metadata is
+now `Dotcc.ManagedSymbols.json`, and all executable C# remains unchanged. Keep
+this sidecar with the core when regenerating the gallery. Preparation applies
 one guarded upstream gallery repair: close the emoji popup after leaving its
 ID scope. The original acquired source remains unchanged; the native control
 uses the identical repair. Earlier gallery, deduplication and core reports

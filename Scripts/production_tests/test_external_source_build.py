@@ -59,6 +59,18 @@ class ExternalSourceBuildTests(unittest.TestCase):
         self.assertEqual(recorded['DOTNET_CLI_HOME'], str(self.root / 'dotnet-home'))
         self.assertEqual(actual['DOTNET_CLI_HOME'], recorded['DOTNET_CLI_HOME'])
 
+    def test_symbol_sidecar_is_hashed_but_not_compiled(self):
+        sidecar = self.root / "Dotcc.ManagedSymbols.json"
+        sidecar.write_text('{"Version":1}')
+        with (self.root / "Dotcc.SourceFiles.txt").open("a") as manifest:
+            manifest.write("Dotcc.ManagedSymbols.json\n")
+        _, sources, _, expected = source_inputs(self.project)
+        self.assertNotIn(sidecar, sources)
+        self.assertEqual(expected[str(sidecar)], sha(sidecar))
+        sidecar.unlink()
+        with self.assertRaises(FileNotFoundError):
+            source_inputs(self.project)
+
     def test_undeclared_source_cannot_disappear_during_reconstruction(self):
         (self.root / "Unlisted.cs").write_text("// must not silently drop this source")
         with self.assertRaisesRegex(RuntimeError, "Unmanifested"):

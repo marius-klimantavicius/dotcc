@@ -8,6 +8,7 @@ import os
 import pathlib
 import subprocess
 import tempfile
+import xml.etree.ElementTree as ET
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--tool', required=True, type=pathlib.Path)
@@ -45,6 +46,8 @@ with tempfile.TemporaryDirectory(prefix='dotcc-postprocess-tests-') as temporary
     project = source / 'Sample.csproj'
     project.write_text('''<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net10.0</TargetFramework><OutputType>Exe</OutputType><ImplicitUsings>enable</ImplicitUsings><DebugType>portable</DebugType><EmbedAllSources>true</EmbedAllSources><NoWarn>CS0162;CS0219;CS0649;CS1701;CS1702</NoWarn></PropertyGroup><ItemGroup><ProjectReference Include="../dependency/Dependency.csproj"/><EmbeddedResource Include="data.txt" LogicalName="payload" /><Compile Include="../shared/Program.cs" Link="Program.cs" /></ItemGroup></Project>''')
     (source / 'data.txt').write_text('resource-preserved')
+    symbols = source / 'Dotcc.ManagedSymbols.json'
+    symbols.write_text('{"Version":1,"Owner":"Sample"}\n')
     shared = root / 'shared'
     shared.mkdir()
     code = shared / 'Program.cs'
@@ -78,6 +81,8 @@ static class Program {
         assert hashlib.sha256((output / item['Path']).read_bytes()).hexdigest() == item['Sha256']
     for variant in ('OriginalProject', 'OptimizedProject'):
         snapshot = output / manifest[variant]
+        assert (snapshot.parent / symbols.name).read_bytes() == symbols.read_bytes()
+        assert not any(symbols.name in node.get('Include', '') for node in ET.parse(snapshot).iter('Compile'))
         # Building Debug must retain the evaluated Release source semantics.
         run('dotnet', 'build', snapshot, '-c', 'Debug', '-v:q')
         actual = run('dotnet', snapshot.parent / 'bin/Debug/net10.0/Sample.dll')
@@ -99,7 +104,7 @@ static class Program {
                     ('--in-place', '--configuration')):
         run('dotnet', tool, project, *options, expected=1)
         assert before == hashlib.sha256(code.read_bytes()).hexdigest()
-    protected = {path: path.read_bytes() for path in (project, source / 'data.txt', dependency / 'Value.cs')}
+    protected = {path: path.read_bytes() for path in (project, source / 'data.txt', dependency / 'Value.cs', symbols)}
     result = run('dotnet', tool, project, '--in-place')
     assert 'Updated 1 source files in place.' in result, result
     optimized_code = next((output / 'Optimized/src').rglob('Program.cs'))

@@ -17,7 +17,7 @@
   "Cui.00015.cs",
   "Cui.00016.cs",
   "Cui.cs",
-  "Dotcc.ManagedSymbols.cs",
+  "Dotcc.ManagedSymbols.json",
   "Dotcc.SourceFiles.txt",
   "TranslatedCui.csproj",
   "notices/GLFW-LICENSE.md",

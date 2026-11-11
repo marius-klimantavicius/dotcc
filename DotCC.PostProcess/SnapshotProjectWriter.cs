@@ -22,6 +22,11 @@ internal static class SnapshotProjectWriter
         CSharpCompilation optimized, string outputDirectory)
     {
         Directory.CreateDirectory(outputDirectory);
+        // Link metadata is not a syntax tree, but dependent translations still
+        // need it beside either exported project. Preserve the exact payload.
+        const string symbolsName = "Dotcc.ManagedSymbols.json";
+        var symbolsPath = Path.Combine(Path.GetDirectoryName(input.ProjectPath)!, symbolsName);
+        var symbols = File.Exists(symbolsPath) ? File.ReadAllBytes(symbolsPath) : null;
         // Prevent the input repository (or the destination's parents) from
         // injecting build targets, source files, packages, or compiler options.
         foreach (var name in new[] { "Directory.Build.props", "Directory.Build.targets", "Directory.Packages.props" })
@@ -91,6 +96,7 @@ internal static class SnapshotProjectWriter
         {
             var variant = Path.Combine(outputDirectory, directory);
             Directory.CreateDirectory(Path.Combine(variant, "src"));
+            if (symbols != null) File.WriteAllBytes(Path.Combine(variant, symbolsName), symbols);
             var sourcePaths = new Dictionary<string, string>(StringComparer.Ordinal);
             var sourceItems = new XElement("ItemGroup");
             var mappings = new List<string>();

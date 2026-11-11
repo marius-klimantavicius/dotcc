@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-11",
+  "scope": "Managed-symbol JSON sidecar migration; no executable C# changes",
+  "status": "passed",
+  "baseline_commit": "188ac02bf64d4c8710e65496aeb7de8ed73e8a41",
+  "behavioral_evidence": "docs/EMOJI-VALIDATION.json",
+  "migration": {
+    "old": "Dotcc.ManagedSymbols.cs",
+    "new": "Dotcc.ManagedSymbols.json",
+    "payload_equivalent": true,
+    "legacy_import_supported": true,
+    "emitter_relink": "Core and gallery relinked from retained qualified objects using the updated compiler; all emitted executable C# byte-identical to delivered raw products."
+  },
+  "products": {
+    "TranslatedCui": {
+      "unchanged_executable_sources": [
+        "Cui.00000.cs",
+        "Cui.00001.cs",
+        "Cui.00002.cs",
+        "Cui.00003.cs",
+        "Cui.00004.cs",
+        "Cui.00005.cs",
+        "Cui.00006.cs",
+        "Cui.00007.cs",
+        "Cui.00008.cs",
+        "Cui.00009.cs",
+        "Cui.00010.cs",
+        "Cui.00011.cs",
+        "Cui.00012.cs",
+        "Cui.00013.cs",
+        "Cui.00014.cs",
+        "Cui.00015.cs",
+        "Cui.00016.cs",
+        "Cui.cs"
+      ],
+      "metadata_sha256": {
+        "Dotcc.ManagedSymbols.json": "1bf5940682ecf45967a6b15e14835ad23d98c5b0e66bed62fc7ca0c850177760",
+        "Dotcc.SourceFiles.txt": "666c95f6248d2251ef3a2836cad3da507c83c7b1c5704775aa386d316c897548",
+        ".campaign-files.json": "5a53c3654d17d2a2e500f1b60ddab7724112fe3d7a71ae904bc9dd48de29ac95"
+      }
+    },
+    "TranslatedCui.Raw": {
+      "unchanged_executable_sources": [
+        "Cui.00000.cs",
+        "Cui.00001.cs",
+        "Cui.00002.cs",
+        "Cui.00003.cs",
+        "Cui.00004.cs",
+        "Cui.00005.cs",
+        "Cui.00006.cs",
+        "Cui.00007.cs",
+        "Cui.00008.cs",
+        "Cui.00009.cs",
+        "Cui.00010.cs",
+        "Cui.00011.cs",
+        "Cui.00012.cs",
+        "Cui.00013.cs",
+        "Cui.00014.cs",
+        "Cui.00015.cs",
+        "Cui.00016.cs",
+        "Cui.cs"
+      ],
+      "metadata_sha256": {
+        "Dotcc.ManagedSymbols.json": "1bf5940682ecf45967a6b15e14835ad23d98c5b0e66bed62fc7ca0c850177760",
+        "Dotcc.SourceFiles.txt": "666c95f6248d2251ef3a2836cad3da507c83c7b1c5704775aa386d316c897548",
+        ".campaign-files.json": "5a53c3654d17d2a2e500f1b60ddab7724112fe3d7a71ae904bc9dd48de29ac95"
+      }
+    },
+    "TranslatedCuiGallery": {
+      "unchanged_executable_sources": [
+        "Gallery.00000.cs",
+        "Gallery.00001.cs",
+        "Gallery.cs"
+      ],
+      "metadata_sha256": {
+        "Dotcc.SourceFiles.txt": "efe527a441ddc9ea704f9d6b26ccbe609028d2932a9b62cc961959e5e59b92ec",
+        ".campaign-files.json": "9860c9eff544a6c21d89e7a7006e688b635e3f26cc40997fdb20b51b1a350fb3"
+      }
+    },
+    "TranslatedCuiGallery.Raw": {
+      "unchanged_executable_sources": [
+        "Gallery.00000.cs",
+        "Gallery.00001.cs",
+        "Gallery.cs"
+      ],
+      "metadata_sha256": {
+        "Dotcc.SourceFiles.txt": "efe527a441ddc9ea704f9d6b26ccbe609028d2932a9b62cc961959e5e59b92ec",
+        ".campaign-files.json": "9860c9eff544a6c21d89e7a7006e688b635e3f26cc40997fdb20b51b1a350fb3"
+      }
+    }
+  },
+  "unchanged_executable_source_files": 42,
+  "validation": {
+    "unit_tests": {
+      "passed": 10
+    },
+    "functional_tests": {
+      "passed": 1,
+      "behavior": "Separate core and companion assemblies execute imported callback/types/runtime successfully."
+    },
+    "source_packaging_tests": {
+      "passed": 16
+    },
+    "cui_recipe_tests": {
+      "passed": 2
+    },
+    "campaign_framework_tests": {
+      "passed": 95,
+      "failed": 1,
+      "unrelated_failure": "Existing blink/scripts/full_jit_copy_bindings.py contains a digest literal rejected by test_campaign_helpers_keep_hash_literals_in_metadata; file unchanged."
+    },
+    "core_gallery_relink": [
+      {
+        "product": "TranslatedCui",
+        "status": "passed",
+        "csharp_unchanged": true
+      },
+      {
+        "product": "TranslatedCuiGallery",
+        "status": "passed",
+        "csharp_unchanged": true
+      }
+    ],
+    "consumer": [
+      {
+        "form": "raw",
+        "status": "passed",
+        "metadata_compilation_input": false,
+        "pages": 27
+      },
+      {
+        "form": "processed",
+        "status": "passed",
+        "metadata_compilation_input": false,
+        "pages": 27
+      }
+    ],
+    "in_place_postprocessing": {
+      "status": "passed",
+      "json_preserved": true,
+      "consumer_import_after_processing": true
+    },
+    "postprocessor_cli_smoke": {
+      "status": "passed",
+      "checks": "Snapshot sidecar copies for Original/Optimized, exclusion from Compile, in-place preservation, existing snapshot references/resources/PDBs/determinism and failure checks."
+    }
+  },
+  "limits": [
+    "Full gallery OS input/pixel and NativeAOT runtime matrices were not repeated for this metadata-only change; executable sources remain byte-identical to prior qualified products.",
+    "Actual Windows execution remains unrun."
+  ],
+  "reproduction": {
+    "compiler": "dotnet build DotCC/DotCC.csproj -c Release --artifacts-path \"$WORK/tools\" -p:UseLocalLalrCc=false -m:1",
+    "unit": "dotnet test DotCC.Tests/DotCC.Tests.csproj -c Release --artifacts-path \"$WORK/tests\" -p:UseLocalLalrCc=false -m:1 --filter FullyQualifiedName~ManagedSymbolReferenceTests",
+    "cui": "Normal cui/scripts/translate.sh regeneration now emits and imports the JSON sidecar. This migration retained unchanged C# and replaced only re-emitted metadata and ownership manifests.",
+    "scratch": "Set TMPDIR and artifact/work roots to caller-selected external storage."
+  },
+  "validation_log_sha256": {
+    "unit-final.log": "41c924b3b249c6d3ec9d29a8bc37f2ac0ca96bf950bd42894c145208538664f9",
+    "functional.log": "1898d2ebab6f1e130ae9e88624f4232180420b33430ebe38ee4356cb248237b4",
+    "source-tests.log": "eebb9fe9bdaf6f681bdb28772e6c45823b2729e01508791df033d1985674b72b",
+    "recipe-tests.log": "38e23272f8fcf07bea90f94147d374c00ae29c52b3d15725d914506bf41d3ac8",
+    "campaign-tests.log": "1bfe906d3a8d27a2d89cd020db3ed455f8308ba359de492e70e3a6daa646ad82",
+    "postprocessor-smoke.log": "2e06fc6ab78ac02fffdbc61a7dac7e31186f57db51db220ef3572477a70722dd",
+    "link.log": "c6fa34f8f42938e2f1b75f4859cc3693a8412b28f8d1988784286d55421419f3",
+    "gallery-link.log": "f913291008adf2cfe0e1248c24731378c2c9124ea60fd1fb7d867934ce1fd313",
+    "consumer-raw.log": "f4de1e5e447c214ddea421e8a0fea8a5f1a9f9f40e03c685446105a8cbabb059",
+    "consumer-processed.log": "74a0ed674fca15af9f273aa67ba7d873382a2945f46c31915c8e586b07c41d0c"
+  },
+  "implementation_sha256": {
+    "DotCC.Lib/Compiler.ManagedSymbols.cs": "27aac2201ce86854c046c804c49dd07622a6d968f7fcf2a293b9bc81c586a4f3",
+    "DotCC.Lib/Compiler.SourceFiles.cs": "7a81c619a333398b1664a72d2ba99851bd582878ac9d7158b6d3e6e00e7689a4",
+    "DotCC.PostProcess/SnapshotProjectWriter.cs": "baefa2bf9f262bfad71597a63b8b414933968dc86efa02d1ff5b5d9b8e463892",
+    "cui/scripts/gallery.py": "a9e45200f7babbafc52c5e554576cf5d9e0d568ec3f99e38ddf238ced799d344",
+    "Scripts/campaigns/delivery.py": "b310ff8b681943c5bff1e578e9affd890911d7a6de0f4a51538b1761fd8024fa",
+    "Scripts/managed_source_build.py": "c5b302d5732442d415c3b712b674607f465e3143f4671f81dce3575541ced809",
+    "Scripts/production_support.py": "ce949f48e35c54b04682785ef475c4a16672bfd4db7b6609a9fa733e5b4882aa"
+  },
+  "metadata_receipt": "artifacts/campaign/20261111-062316-metadata-json/receipt.json"
+}

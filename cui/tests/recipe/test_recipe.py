@@ -64,7 +64,7 @@ class RecipeContracts(unittest.TestCase):
                 self.assertEqual(command.count(flag), 1)
             self.assertIn("--managed-reference", command)
             self.assertEqual(command[command.index("--managed-reference") + 1],
-                             work / "raw/TranslatedCui/Dotcc.ManagedSymbols.cs")
+                             work / "raw/TranslatedCui/Dotcc.ManagedSymbols.json")
             qualification = recipe.helper(ROOT / "scripts/qualify.py")
             runner = object.__new__(qualification.Run)
             runner.work, runner.report = work, {}

@@ -26,7 +26,7 @@ def companions(ctx):
     core = ctx.work / "raw" / ctx.recipe.product
     ctx.run(["dotnet", ctx.compiler, *inputs, "--emit=managedlib",
              *helper(ctx.root / "scripts/codegen.py").link_flags(ctx.root, config["class"], config["namespace"]),
-             "--managed-reference", core / "Dotcc.ManagedSymbols.cs", "-o", output],
+             "--managed-reference", core / "Dotcc.ManagedSymbols.json", "-o", output],
             "gallery-link", timeout=max(600, ctx.options.timeout))
     project = output / (config["product"] + ".csproj")
     tree = ET.parse(project)

@@ -1,9 +1,10 @@
 # Implementation ledger
 
-Updated 2026-11-10. Linux qualification passes. Overall acceptance remains open
-for actual Windows x64 execution. Current hashes/receipts are summarized in
-[EMOJI-VALIDATION.json](EMOJI-VALIDATION.json); earlier reports retain their
-historical product hashes and qualification scope.
+Updated 2026-11-11. Linux qualification passes. Overall acceptance remains open
+for actual Windows x64 execution. Behavioral qualification is summarized in
+[EMOJI-VALIDATION.json](EMOJI-VALIDATION.json). The metadata-only JSON migration
+and current sidecar hashes are in [METADATA-VALIDATION.json](METADATA-VALIDATION.json);
+earlier reports retain their historical product hashes and qualification scope.
 
 ## Executed integration findings
 
@@ -298,3 +299,22 @@ hashes and verification limits are recorded in
 [EMOJI-VALIDATION.json](EMOJI-VALIDATION.json). Earlier gallery and deduplication
 reports describe their historical products. Actual Windows execution remains
 unrun.
+
+
+## Managed-symbol metadata format
+
+`--export-managed-symbols` now emits an indented `Dotcc.ManagedSymbols.json`
+sidecar. It carries the same versioned type mappings, function names and runtime
+fingerprint, and `--managed-reference` accepts both JSON and the original
+comment-wrapped format. CUI's companion recipe imports JSON. Generated-file
+ownership removes the old marker on regeneration; postprocessing preserves the
+sidecar in place and alongside both snapshot projects, without compiling it.
+
+The migration re-linked the retained qualified core/gallery objects with the
+updated compiler. Their emitted C# and the decoded metadata payload are unchanged;
+only the re-emitted sidecar and ownership manifests were published. Both CUI
+consumer forms build and enumerate all 27 pages. Unit, separate-assembly execution,
+packaging, recipe and postprocessor checks pass. The broader campaign framework
+suite has one unrelated existing Blink digest-literal failure; details and
+current metadata hashes are in [METADATA-VALIDATION.json](METADATA-VALIDATION.json).
+Prior runtime qualification remains recorded against its original inputs.

@@ -9,6 +9,73 @@ namespace DotCC.Tests;
 public sealed class ManagedSymbolReferenceTests
 {
     [Fact]
+    public void Export_is_json_and_writer_migrates_and_removes_owned_metadata()
+    {
+        WithLibraries("int answer(void) { return 42; }", "int answer(void); int run(void) { return answer(); }",
+            (manifest, _) =>
+            {
+                Path.GetFileName(manifest).ShouldBe("Dotcc.ManagedSymbols.json");
+                var json = File.ReadAllText(manifest);
+                using var document = System.Text.Json.JsonDocument.Parse(json);
+                document.RootElement.GetProperty("Version").GetInt32().ShouldBe(1);
+                document.RootElement.GetProperty("Owner").GetString().ShouldBe("Engine.Core");
+                var directory = Path.Combine(Path.GetDirectoryName(manifest)!, "project");
+                Compiler.WriteCSharpFiles(directory, new System.Collections.Generic.Dictionary<string, string>
+                {
+                    ["Core.cs"] = "public static class Core {}",
+                    ["Dotcc.ManagedSymbols.cs"] = "//!!dotcc-managed-symbols:1 " + json
+                });
+                File.WriteAllText(Path.Combine(directory, "app.json"), "{}");
+                Compiler.WriteCSharpFiles(directory, new System.Collections.Generic.Dictionary<string, string>
+                {
+                    ["Core.cs"] = "public static class Core {}",
+                    [Compiler.ManagedSymbolsFile] = json
+                });
+                File.Exists(Path.Combine(directory, "Dotcc.ManagedSymbols.cs")).ShouldBeFalse();
+                File.ReadAllText(Path.Combine(directory, Compiler.ManagedSymbolsFile)).ShouldBe(json);
+                File.ReadAllLines(Path.Combine(directory, "Dotcc.SourceFiles.txt")).ShouldContain(Compiler.ManagedSymbolsFile);
+                Compiler.WriteCSharpFiles(directory, new System.Collections.Generic.Dictionary<string, string>
+                {
+                    ["Core.cs"] = "public static class Core {}"
+                });
+                File.Exists(Path.Combine(directory, Compiler.ManagedSymbolsFile)).ShouldBeFalse();
+                File.Exists(Path.Combine(directory, "app.json")).ShouldBeTrue();
+            });
+    }
+
+    [Fact]
+    public void Legacy_comment_manifest_remains_readable()
+    {
+        WithLibraries("struct item { int value; }; void take(struct item *p) { }",
+            "struct item; void take(struct item *); void bridge(struct item *p) { take(p); }",
+            (manifest, consumer) =>
+            {
+                var legacy = Path.ChangeExtension(manifest, ".cs");
+                var compact = System.Text.Json.Nodes.JsonNode.Parse(File.ReadAllText(manifest))!.ToJsonString();
+                File.WriteAllText(legacy, "//!!dotcc-managed-symbols:1 " + compact + "\n");
+                var files = Compiler.LinkObjectFiles([consumer], emit: EmitMode.ManagedLib,
+                    outputOptions: Options with { ManagedReferences = [legacy] });
+                string.Join("\n", files.Values).ShouldContain("using item = global::Engine.Core.item;");
+            });
+    }
+
+    [Theory]
+    [InlineData("not json", "invalid managed symbol JSON")]
+    [InlineData("{", "invalid managed symbol JSON")]
+    [InlineData("null", "invalid or incompatible")]
+    [InlineData("{\"Version\":2}", "invalid or incompatible")]
+    public void Malformed_or_incompatible_manifest_is_rejected(string text, string error)
+    {
+        WithLibraries("int answer(void) { return 42; }", "int answer(void); int run(void) { return answer(); }",
+            (manifest, consumer) =>
+            {
+                File.WriteAllText(manifest, text);
+                Should.Throw<CompileException>(() => Compiler.LinkObjectFiles([consumer], emit: EmitMode.ManagedLib,
+                    outputOptions: Options with { ManagedReferences = [manifest] })).Message.ShouldContain(error);
+            });
+    }
+
+    [Fact]
     public void Dependent_library_uses_canonical_aggregate_enum_callback_and_runtime_owners()
     {
         WithLibraries("""
@@ -70,11 +137,10 @@ public sealed class ManagedSymbolReferenceTests
                 var original = File.ReadAllText(manifest);
                 foreach (var mutation in new[] { "type", "function" })
                 {
-                    const string marker = "//!!dotcc-managed-symbols:1 ";
-                    var json = System.Text.Json.Nodes.JsonNode.Parse(original[marker.Length..])!;
+                    var json = System.Text.Json.Nodes.JsonNode.Parse(original)!;
                     if (mutation == "type") json["Types"]!["item"] = null;
                     else json["Functions"] = new System.Text.Json.Nodes.JsonArray((System.Text.Json.Nodes.JsonNode?)null);
-                    File.WriteAllText(manifest, marker + json.ToJsonString());
+                    File.WriteAllText(manifest, json.ToJsonString());
                     Should.Throw<CompileException>(() => Compiler.LinkObjectFiles([consumer], emit: EmitMode.ManagedLib,
                         outputOptions: Options with { ManagedReferences = [manifest] })).Message.ShouldContain("invalid or incompatible");
                 }

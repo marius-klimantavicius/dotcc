@@ -58,10 +58,10 @@ internal static class Program
         };
         var managedReferenceOpt = new Option<string[]>("--managed-reference")
         {
-            Description = "Import canonical types, functions and C runtime from a Dotcc.ManagedSymbols.cs manifest. Object link only.",
+            Description = "Import canonical types, functions and C runtime from a Dotcc.ManagedSymbols.json manifest. Object link only.",
             AllowMultipleArgumentsPerToken = false
         };
-        var exportManagedSymbolsOpt = new Option<bool>("--export-managed-symbols") { Description = "Write Dotcc.ManagedSymbols.cs for dependent managed-library object links." };
+        var exportManagedSymbolsOpt = new Option<bool>("--export-managed-symbols") { Description = "Write Dotcc.ManagedSymbols.json for dependent managed-library object links." };
         var instanceMethodsOpt = new Option<bool>("--instance-methods") { Description = "Emit an instance managed library with explicit-context function pointers; set at object emission and link." };
         var stateContextOpt = new Option<bool>("--state-context") { Description = "Emit explicitly bound, disposable C program state for independent managed-library instances (--runtime=c). Link-time option." };
         var literalPoolOpt = new Option<bool>("--literal-pool") { Description = "Copy translated literals into rooted pinned storage with short names and usage comments (default: Libc.L). Set at link time for objects." };

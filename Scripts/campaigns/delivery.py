@@ -79,7 +79,8 @@ def validate_emission(directory, product):
         raise RuntimeError(f"Missing/duplicate generated source manifest: {manifest}")
     for name in names:
         path = directory / name
-        if Path(name).name != name or not name.endswith(".cs") or path.is_symlink() or not path.is_file():
+        if (Path(name).name != name or not (name.endswith(".cs") or name == "Dotcc.ManagedSymbols.json")
+                or path.is_symlink() or not path.is_file()):
             raise RuntimeError(f"Invalid emitted source: {name}")
     if not (directory / (product + ".csproj")).is_file():
         raise RuntimeError(f"Emitter did not write {product}.csproj")

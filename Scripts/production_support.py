@@ -170,7 +170,9 @@ def existing_product_binding(root, product, profile="default", *, compiler=None)
         names = (expected.parent / "Dotcc.SourceFiles.txt").read_text().splitlines()
         actual = {p.relative_to(expected.parent).as_posix() for p in expected.parent.rglob("*.cs")
                   if not {"bin", "obj"}.intersection(p.relative_to(expected.parent).parts)}
-        if (not names or len(set(names)) != len(names) or set(names) != actual or
+        source_names = {name for name in names if name.endswith(".cs")}
+        if (not names or len(set(names)) != len(names) or source_names != actual or
+                any(not name.endswith(".cs") and name != "Dotcc.ManagedSymbols.json" for name in names) or
                 not set(names).issubset(hashes)):
             raise RuntimeError(f"{product}: incomplete or unmanifested {form} source closure")
         if not any(row.get("label") == f"final-{form}-build" and row.get("status") == "passed"

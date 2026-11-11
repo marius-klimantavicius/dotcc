@@ -16,4 +16,4 @@ Cui.00014.cs
 Cui.00015.cs
 Cui.00016.cs
 Cui.cs
-Dotcc.ManagedSymbols.cs
+Dotcc.ManagedSymbols.json
