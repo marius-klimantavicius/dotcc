@@ -734,7 +734,8 @@ audits, 75 safety assertions per variant and three equivalent-work benchmark
 trials per variant. All three workloads add zero steady-state managed bytes,
 with exact software RGBA equality, stable retained storage and the documented
 timing gates. See MANAGED-LIBRARY-VALIDATION.json and MANAGED-API-GUIDE.md.
-Full authored-gallery and actual Windows acceptance remain separate gates.
+Full authored-gallery Linux qualification also passes; see
+MANAGED-GALLERY-VALIDATION.json. Actual Windows execution remains unrun.
 
 Current storage qualification includes returned-stack-frame overwrite, compacting
 GC and caller-array mutation before exact deferred rendering, plus a 256-box

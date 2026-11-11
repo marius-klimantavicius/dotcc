@@ -968,7 +968,7 @@
   "gates": [
     "Zero steady-state wrapper managed bytes over identical direct workload",
     "Construction p95 overhead <= 0.5 us per emitted node",
-    "Build + layout/paint median <= twice direct CUI",
+    "Sum of construction and layout/paint medians <= twice direct CUI; not a full-frame quantile",
     "Stable wrapper arena and core allocation retention; observed core allocations freed at disposal"
   ],
   "scope": "Current stack-local ManagedCui library; full gallery and standalone receipts are separate.",

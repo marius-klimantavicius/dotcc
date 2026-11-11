@@ -11,7 +11,8 @@ the `Cui.Managed` namespace. [ManagedGallery](samples/ManagedGallery/) is the
 authored wrapper-based showcase; its caller code has unsafe blocks disabled.
 The original translated gallery and `ManagedConsumer` remain the independent
 comparison application. Read the [API guide](docs/MANAGED-API-GUIDE.md),
-[contract](docs/MANAGED-API-CONTRACT.md) and [managed campaign plan](docs/MANAGED-PLAN.md).
+[contract](docs/MANAGED-API-CONTRACT.md), [managed campaign plan](docs/MANAGED-PLAN.md)
+and [qualified delivery report](docs/MANAGED-DELIVERY.md).
 
 The product includes embedded Inter/Geist/Lucide fonts, all widgets, PNG/JPEG/
 BMP/GIF/TGA decoding, shaping/bidi, OpenGL windows, and offscreen software
@@ -71,6 +72,10 @@ python3 -m venv "$CUI_WORK_ROOT/python"
 export PATH="$CUI_WORK_ROOT/python/bin:$PATH"
 ```
 
+The `managed-gallery` suite additionally needs a qualification-only libfaketime
+shared library. Set `CUI_FAKETIME_LIBRARY` to its absolute path on external
+storage; see [the managed gallery runner](tests/managed-gallery/README.md).
+
 Set `CUI_SHAPING_FONT` to the trusted Noto font described in
 [font.json](tests/qualification/font.json). The font is a test fixture. Optional
 `CUI_NATIVE_BUILD` reuses a matching native GLFW control; otherwise verification
@@ -82,8 +87,8 @@ LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a -s '-screen 0 1280x800x24 +extension GLX' \
   bash cui/scripts/verify.sh --jobs 4 --form all --mode all
 ```
 
-Verification declares `native`, `consumer`, `gallery`, `abi`, `upstream`, `render`,
-`lifecycle` and `audit`. It executes original upstream tests and compares native
+Verification declares `native`, `consumer`, `gallery`, `managed`, `managed-gallery`,
+`abi`, `upstream`, `render`, `lifecycle` and `audit`. It executes original upstream tests and compares native
 results, exact shaping records and software pixels. Its ABI suite also runs
 real desktop input, GL readback, dialog/URL tools and cleanup tests. The native
 and consumer suites compare the same full-window GL workload when selected
@@ -125,8 +130,9 @@ sample supplies it. COM apartment initialization failure reports dialog failure.
 Raw GLFW handles are adapter-owned opaque tokens. Pass them only to this
 translation's GLFW API; they are not native GLFW pointers or OS window handles.
 
-`ManagedConsumer.slnx` builds the separate sample and its translated upstream
-gallery companion. The core library remains separate from this example workload.
+`ManagedConsumer.slnx` builds both independent samples, the safe wrapper and the
+translated upstream gallery companion. The core library remains separate from
+these example workloads.
 Use `-p:CuiProject=...` to select the raw core; the sample selects the matching
 raw gallery automatically. `-p:CuiGalleryProject=...` overrides the companion.
 Build outputs should stay on external storage:
@@ -135,6 +141,7 @@ Build outputs should stay on external storage:
 dotnet build cui/ManagedConsumer.slnx -c Release \
   --artifacts-path "$CUI_WORK_ROOT/consumer" -m:1
 dotnet "$CUI_WORK_ROOT/consumer/bin/ManagedConsumer/release/ManagedConsumer.dll"
+dotnet "$CUI_WORK_ROOT/consumer/bin/ManagedGallery/release/ManagedGallery.dll"
 ```
 
 The default application is the pinned upstream component gallery: all 27 pages

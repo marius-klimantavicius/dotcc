@@ -2,7 +2,14 @@
 
 Status: Linux implementation and qualification passed; overall acceptance remains
 open for required actual Windows x64 execution.
-Campaign: `cui/`. Updated: 2026-11-10.
+Campaign: `cui/`. Updated: 2026-11-11.
+
+The safe managed follow-up is also complete on Linux. `ManagedCui` and the
+authored 27-page `ManagedGallery` pass raw/processed × JIT/NativeAOT, all
+theme/accent differential captures, real OS interactions, lifetime/allocation
+and repeated performance qualification. See [its plan](MANAGED-PLAN.md) and
+[delivery report](MANAGED-DELIVERY.md). This does not close the Windows axis or
+replace the historical translated-core evidence.
 
 This plan adopts [translation baseline v4](../../docs/plans/translation-baseline.md)
 and the [shared framework](../../docs/campaigns.md). The user selected the simpler

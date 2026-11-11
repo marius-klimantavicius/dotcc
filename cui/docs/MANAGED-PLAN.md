@@ -1,17 +1,26 @@
 # Safe managed CUI and ManagedGallery
 
-Status: implementation in progress. Baseline: `d1aec0cc9`. This campaign extends
+Status: Linux delivery complete, including the stack-local storage correction.
+Actual Windows execution remains unrun. Baseline: `d1aec0cc9`. This campaign extends
 [the translated CUI plan](PLAN.md), preserving its generated products, managed
 GLFW implementation and independent `ManagedConsumer` reference application.
 The [translation baseline](../../docs/plans/translation-baseline.md) applies.
 
-Library milestone: Linux raw/processed × JIT/NativeAOT passed ordinary builds,
-whole-wrapper AOT rooting, recursive public API audits, 69 safety assertions per
-variant and three repeated equivalent-work benchmark trials per variant. The
-source-hashed receipt is `MANAGED-LIBRARY-VALIDATION.json`. All 27 authored page
-captures now match the translated gallery's full RGBA/text/layout exactly;
-frozen wall-clock qualification also removes native Planning clock drift without
-masking pixels. Full gallery interaction/matrix delivery remains in progress.
+All 225 synchronous native option/scalar singleton arena allocations now use
+unmanaged locals. Retained pointees and builder state keep their audited stable
+storage. The checked-in templates and source/native retention hashes enforce
+reproduction. See [the storage audit](MANAGED-STORAGE-AUDIT.md).
+
+Current Linux raw/processed × JIT/NativeAOT qualification passes ordinary builds,
+whole-wrapper AOT rooting, recursive public API audits, 75 safety assertions per
+variant and three repeated equivalent-work benchmark trials per variant. All
+27 authored pages pass exact translated full-window pixels, text and node layout
+across both themes and all eight accents. Each variant passes 4,042 assertions
+and 95 state-asserted real OS actions. Copied standalone outputs pass lifecycle
+and dependency-closure checks in all four variants. Current source-bound receipts
+are [library](MANAGED-LIBRARY-VALIDATION.json) and
+[gallery](MANAGED-GALLERY-VALIDATION.json); the
+[delivery report](MANAGED-DELIVERY.md) explains performance and limitations.
 
 ## Product and boundary
 

@@ -6,6 +6,15 @@ for actual Windows x64 execution. Behavioral qualification is summarized in
 and current sidecar hashes are in [METADATA-VALIDATION.json](METADATA-VALIDATION.json);
 earlier reports retain their historical product hashes and qualification scope.
 
+The safe wrapper and fully authored gallery follow-up is complete on Linux;
+see [MANAGED-DELIVERY.md](MANAGED-DELIVERY.md),
+[MANAGED-LIBRARY-VALIDATION.json](MANAGED-LIBRARY-VALIDATION.json) and
+[MANAGED-GALLERY-VALIDATION.json](MANAGED-GALLERY-VALIDATION.json). All four
+raw/processed JIT/NativeAOT variants pass after the synchronous-singleton storage
+correction. This follow-up leaves generated core/gallery implementations,
+metadata, managed GLFW and existing host unchanged. The original consumer remains
+the independent reference application. Actual Windows execution remains unrun.
+
 ## Executed integration findings
 
 The matching GLFW native control passes all nine selected deterministic CTest
